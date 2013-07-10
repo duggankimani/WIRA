@@ -1,0 +1,83 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:v='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:DialogBox text="Add Document" modal="true" glassEnabled="true">
+	    <g:HTMLPanel>
+	    <v:IssuesPanel ui:field="issues">
+	    </v:IssuesPanel>
+	    
+	    <table class="edittable">
+	        <tr>
+	            <td class="label">Document Type</td>
+	            <td>
+	                <g:ListBox ui:field="lstDocumentType" title="Type of document e.g Invoice, Contract etc - mandatory"></g:ListBox>
+	                <span class="mandatory" title="Required Field">*</span>
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td class="label">Subject</td>
+	            <td>
+	                <g:TextBox ui:field="txtSubject" title="A unique title for the document e.g an invoice number"></g:TextBox>
+	                <span class="mandatory" title="Required Field">*</span>
+	            </td>
+	        </tr>	
+	             
+	        <tr>
+	            <td class="label">Document Date</td>
+	            <td>
+	                <dt:DateBox ui:field="dtDocDate" title="A date on the document (for dated documents) e.g invoice date"></dt:DateBox>
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td class="label">Business Partner</td>
+	            <td>
+	                <g:TextBox ui:field="txtPartner" title="Name of the external party/company to whom this document relates e.g Supplier Name on an invoice"></g:TextBox>
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td class="label">Document Value</td>
+	            <td>
+	                <g:TextBox ui:field="txtValue" title="Total amount/value of this document - e.g Invoice value "></g:TextBox>
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td class="label">Description</td>
+	            <td>
+	                <g:TextArea ui:field="txtDescription" title="General description of this document"></g:TextArea>
+	                <span class="mandatory" title="Required Field">*</span>
+	            </td>
+	        </tr>
+	        	        
+	        <tr>
+	            <td class="label">Priority</td>
+	            <td>
+	                <g:CheckBox ui:field="chkNormal"/>Normal
+	                <g:CheckBox ui:field="chkHigh"/>High
+	                <g:CheckBox ui:field="chkCritical"/>Urgent
+	            </td>
+	        </tr>
+	        
+	        <tr>
+				<td colspan="2">
+					<g:FlowPanel styleName="button-group reportbutton">
+					    <g:Button ui:field="btnSave">Save</g:Button>
+					    <g:Button ui:field="btnApproval">Forward For Approval</g:Button>
+					    <g:Button ui:field="btnCancel">Cancel</g:Button>					    
+					</g:FlowPanel>
+				</td>
+			</tr>
+	    </table>
+	  </g:HTMLPanel>
+	</g:DialogBox>
+</ui:UiBinder>

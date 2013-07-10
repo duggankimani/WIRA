@@ -1,0 +1,1235 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	ui:generateFormat="com.google.gwt.i18n.rebind.format.PropertiesFormat" ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default"
+>
+	<g:HTMLPanel>
+	    <g:HTMLPanel ui:field="pToobarContainer" styleName="toolbar"/>
+		<div style="margin:0 auto; text-align:center;" class="P35"> Performance Review 
+		</div>
+		<table style="width:400px">
+			<tr>
+				<td> Names 
+				</td>
+				<td> Justus Gikonyo Kiogothe - SN018 
+				</td>
+			</tr>
+			<tr>
+				<td> Review Period 
+				</td>
+				<td> 26th Jan - 30th March 
+				</td>
+			</tr>
+			<tr>
+				<td> Review Reason 
+				</td>
+				<td>
+					<select>
+						<option> Annual 
+						</option>
+						<option> Probation 
+						</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td> Department 
+				</td>
+				<td> Engineering 
+				</td>
+			</tr>
+			<tr>
+				<td> Grade 
+				</td>
+				<td> DD 
+				</td>
+			</tr>
+		</table>
+		<table style="margin-top:20px" border="0" cellpadding="0" cellspacing="0" class="Table1">
+			<colgroup>
+				<col width="285" />
+				<col width="30" />
+				<col width="22" />
+				<col width="30" />
+				<col width="29" />
+				<col width="31" />
+				<col width="425" />
+			</colgroup>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A1" colspan="6">
+					<input style="margin:0px;" type="checkbox" />
+					<p class="Standard">
+						<span class="T2"> PERFORMANCE 
+						</span>
+						<span class="T3">                   
+						</span>
+						<span class="T4"> Rate 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Only 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Those 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Categories 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T2"> CATEGORIES 
+						</span>
+						<span class="T3">               
+						</span>
+						<span class="T5">                     
+						</span>
+						<span class="T4"> That 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Apply 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> to 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Job 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T5">                                                                       
+						</span>
+						<span class="T4"> Requirements 
+						</span>
+					</p>
+					<p class="P16">   
+					</p>
+				</td>
+				<td style="text-align: left; width: 3.8299in;" class="Table1_G1" rowspan="31">
+					<p class="P19">   
+					</p>
+					<p class="Standard">
+						<span class="T3">       
+						</span>
+						<span class="T6"> RATING 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> DEFINITIONS 
+						</span>
+					</p>
+					<p class="P17">   
+					</p>
+					<p class="Standard">
+						<span class="T7">       
+						</span>
+						<span class="T6"> U 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> - 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> UNSATISFACTORY 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T5">             
+						</span>
+						<span class="T4"> Fails 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> to 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Meet 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Job 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Requirements 
+						</span>
+					</p>
+					<h1 class="Heading_20_1">
+						<a id="a__I_-_IMPROVEMENT_REQUIRED">
+						</a>
+						<span class="T3">       
+						</span>
+						<span class="T2"> I 
+						</span>
+						<span class="T3">   
+						</span>
+						<span class="T2"> - 
+						</span>
+						<span class="T3">
+						</span>
+						<span class="T2"> IMPROVEMENT 
+						</span>
+						<span class="T3">
+						</span>
+						<span class="T2"> REQUIRED 
+						</span>
+					</h1>
+					<p class="Standard">
+						<span class="T7">             
+						</span>
+						<span class="T4"> Need 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> for 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Further 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Development 
+						</span>
+					</p>
+					<h1 class="Heading_20_1">
+						<a id="a__C_-_COMPETENT">
+						</a>
+						<span class="T3">       
+						</span>
+						<span class="T2"> C 
+						</span>
+						<span class="T3">
+						</span>
+						<span class="T2"> - 
+						</span>
+						<span class="T3">
+						</span>
+						<span class="T2"> COMPETENT 
+						</span>
+					</h1>
+					<p class="Standard">
+						<span class="T7">             
+						</span>
+						<span class="T4"> Fully 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Satisfactory 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T5">       
+						</span>
+						<span class="T6"> E 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> - 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> EXCEPTIONAL 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T7">             
+						</span>
+						<span class="T4"> Meets 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> and 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> In 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Many 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Cases 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Exceeds 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Job 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Requirements 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T5">       
+						</span>
+						<span class="T6"> O 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> - 
+						</span>
+						<span class="T7">
+						</span>
+						<span class="T6"> OUTSTANDING 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T7">             
+						</span>
+						<span class="T4"> Consistently 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Exceeds 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Job 
+						</span>
+						<span class="T5">
+						</span>
+						<span class="T4"> Requirements 
+						</span>
+						<span class="T3">                                                                 
+						</span>
+						<span class="T8"> _________________________________________ 
+						</span>
+					</p>
+					<p class="P20">
+						DUTIES
+						<span class="T1">
+						</span>
+						PERFORMED
+					</p>
+					<p class="P2">
+						(Please
+						<span class="T1">
+						</span>
+						refer
+						<span class="T1">
+						</span>
+						to
+						<span class="T1">
+						</span>
+						current
+						<span class="T1">
+						</span>
+						job
+						<span class="T1">
+						</span>
+						description)
+					</p>
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P22"> PRODUCTIVITY 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> U 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<p class="P22"> I 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> C 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<p class="P22"> E 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<p class="P22"> O 
+					</p>
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Job
+						<span class="T1">
+						</span>
+						Knowledge
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Quality 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Quantity 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Meeting
+						<span class="T1">
+						</span>
+						Schedule
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Resource
+						<span class="T1">
+						</span>
+						Utilization
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Cost
+						<span class="T1">
+						</span>
+						Awareness
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Meeting
+						<span class="T1">
+						</span>
+						Objectives
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Initiative 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P22">
+						WORK
+						<span class="T1">
+						</span>
+						HABITS
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> U 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<p class="P22"> I 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> C 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<p class="P22"> E 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<p class="P22"> O 
+					</p>
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Dependability 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Flexibility 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Communication
+						<span class="T1"> – 
+						</span>
+						Oral
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P29">
+						<span class="T3">                               
+						</span>
+						<span class="T2"> Written 
+						</span>
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Cooperation 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Contact
+						<span class="T1">
+						</span>
+						with
+						<span class="T1">
+						</span>
+						Public
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Response
+						<span class="T1">
+						</span>
+						to
+						<span class="T1">
+						</span>
+						Supervision
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P22"> RESPONSIBILITY 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> U 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<p class="P22"> I 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> C 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<p class="P22"> E 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<p class="P22"> O 
+					</p>
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Problem
+						<span class="T1">
+						</span>
+						Analysis
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Initiative 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Growth
+						<span class="T1">
+						</span>
+						Potential
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P22"> SUPERVISION/MANAGEMENT 
+					</p>
+					<p class="P21">
+						(If
+						<span class="T1">
+						</span>
+						Applicable)
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> U 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<p class="P22"> I 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<p class="P22"> C 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<p class="P22"> E 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<p class="P22"> O 
+					</p>
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Decision
+						<span class="T1">
+						</span>
+						Making
+						<span class="T1">
+						</span>
+						&amp;
+						<span class="T1">
+						</span>
+						Execution
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Delegation 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7"> Leadership 
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Planning
+						<span class="T1">
+						</span>
+						&amp;
+						<span class="T1">
+						</span>
+						Controlling
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Performance
+						<span class="T1">
+						</span>
+						Review
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Employee
+						<span class="T1">
+						</span>
+						Development
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A2">
+					<p class="P7">
+						Handling
+						<span class="T1">
+						</span>
+						Employee
+						<span class="T1">
+						</span>
+						Problems
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B2">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="Table11">
+				<td style="text-align: left; width: 2.5701in;" class="Table1_A31">
+					<p class="P7">
+						Policies
+						<span class="T1">
+						</span>
+						&amp;
+						<span class="T1">
+						</span>
+						Procedures
+					</p>
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B31">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.1993in;" class="Table1_B31">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2736in;" class="Table1_B31">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2583in;" class="Table1_B31">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+				<td style="text-align: left; width: 0.2799in;" class="Table1_B31">
+					<input style="margin:0px;" type="checkbox" />
+				</td>
+			</tr>
+		</table>
+		<p class="Standard">   
+		</p>
+		<p class="P33"> PERFORMANCE REVIEW DETAIL 
+		</p>
+		<p class="Standard"> Select essential or “key” performance categories from those rated above. Please refer
+			to objectives determined at the point of last review, and provide comments stating results
+			achieved, accomplishments, and improvements. Also, note areas still requiring improvement. 
+		</p>
+		<div style="margin-top:10px;  margin-bottom:10px;">
+			<textarea style="width:100%;" rows="10">
+			</textarea>
+		</div>
+		<p class="P23">
+			OVERALL
+			<span class="T1">
+			</span>
+			PERFORMANCE
+			<span class="T1">
+			</span>
+			RATING
+		</p>
+		<p class="P10">
+			Use
+			<span class="T1">
+			</span>
+			one
+			<span class="T1">
+			</span>
+			mark
+			<span class="T1">
+			</span>
+			[x]
+			<span class="T1">
+			</span>
+			to
+			<span class="T1">
+			</span>
+			indicate
+			<span class="T1">
+			</span>
+			Overall
+			<span class="T1">
+			</span>
+			Performance
+			<span class="T1">
+			</span>
+			Rating
+		</p>
+		<!-- Next 'div' was a 'text:p'. -->
+		<div class="P18">
+			<!-- Next ' div' is a draw:frame. -->
+			<div id="Frame2"
+				style="height: 1.3839in; width: 7.5091in; padding: 0; float: left; position: relative; left: -0.0119cm; top: 0.3071cm; margin:10px;"
+				class="fr2"
+			>
+				<!-- Next 'div' was a 'draw:text-box'. -->
+				<div style="">
+					<p class="P28">   
+					</p>
+					<p class="P26">   
+					</p>
+					<p class="Standard">
+						<span class="T12">
+							   |___
+							<input type="checkbox"></input>
+							___|___
+							<input type="checkbox"></input>
+							___|___
+							<input type="checkbox"></input>
+							___| ___
+							<input type="checkbox"></input>
+							___|___
+							<input type="checkbox"></input>
+							___| ___
+							<input type="checkbox"></input>
+							___|___
+							<input type="checkbox"></input>
+							___|___
+							<input type="checkbox"></input>
+							___| ___
+							<input type="checkbox"></input>
+							___|___
+							<input type="checkbox"> ___|   
+							</input>
+						</span>
+					</p>
+					<p class="P26">   
+					</p>
+					<p class="Standard">
+						<span class="T12">         Unsatisfactory            Improvement             Competent        
+							       Exceptional               Outstanding 
+						</span>
+					</p>
+					<p class="Standard">
+						<span class="T12">                                                Required 
+						</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div style="clear: both;">
+			<p class="P30">
+				<span class="T9"> OBJECTIVES 
+				</span>
+				Discuss and list past and future development plans and goals for the employee within scope of
+				assigned duties.
+			</p>
+		</div>
+		<div style="margin-top:10px;  margin-bottom:10px;">
+			<textarea style="width:100%;" rows="10">
+			</textarea>
+		</div>
+		<table>
+			<tr>
+				<td> Evaluation Date 
+				</td>
+				<td> 12th Jun 2012 
+				</td>
+			</tr>
+			<tr>
+				<td> Review Date 
+				</td>
+				<td> 15th Jun 2012 
+				</td>
+			</tr>
+		</table>
+		<p class="P34"> EMPLOYEE COMMENTS 
+		</p>
+		<p class="P12"> The employee is encouraged to make comments regarding the review. Please make your
+			comments in the space provided 
+		</p>
+		<div style="margin-top:10px;  margin-bottom:10px;">
+			<textarea style="width:100%;" rows="5">
+			</textarea>
+		</div>
+		<p class="P31">
+			<span class="T9"> EMPLOYEE 
+			</span>
+			<span class="T2">                         
+			</span>
+			<span class="T9"> Date 
+			</span>
+			<span class="T3">
+			</span>
+			<span class="T2">         
+			</span>
+		</p>
+	</g:HTMLPanel>
+</ui:UiBinder>

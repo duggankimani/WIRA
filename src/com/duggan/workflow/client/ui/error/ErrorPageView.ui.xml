@@ -1,0 +1,137 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    ui:generateFormat="com.google.gwt.i18n.rebind.format.PropertiesFormat"
+    ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+    ui:generateLocales="default" >
+
+    <g:HTMLPanel>
+
+        <html>
+
+            <title>
+Error 404: doughnut not found!
+            </title>
+
+            <body>
+
+                <center>
+
+                    <table
+                        height="100%"
+                        width="90%" >
+
+                        <tr>
+
+                            <td>
+
+                                <img src="images/simpsons404.png" >
+                                </img>
+                            </td>
+
+                            <td width="100%" >
+
+                                <center>
+
+                                    <img src="images/404.gif" >
+                                    </img>
+                                </center>
+
+                                <center>
+
+                                    <h1>
+
+                                        <u>
+404 Error: requested doughnut does not exists!
+                                        </u>
+                                    </h1>
+
+                                    <font
+                                        face="Verdana"
+                                        size="-2" >
+URL: http://livadaru.net/404
+                                    </font>
+
+                                    <br>
+
+                                        <br>
+
+                                            <font face="Arial" >
+You have reach this page because the requested
+doughnut does not exists on this server. Please check that the URL
+is correct or inform the webmaster of the website of an incorrect
+link.
+
+                                                <br>
+
+                                                    <br>
+
+                                                        <a href="http://livadaru.net" >
+Go to
+website home page
+                                                        </a>
+                                                    </br>
+                                                </br>
+                                            </font>
+
+                                            <br>
+
+                                                <br>
+
+                                                    <br>
+                                                    </br>
+                                                </br>
+                                            </br>
+                                        </br>
+                                    </br>
+                                </center>
+                            </td>
+
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table width="90%" >
+
+                        <tr>
+
+                            <td
+                                height="1"
+                                width="100%" >
+
+                                <center>
+
+                                    <font
+                                        face="Arial"
+                                        size="-2" >
+This website server is powered by 
+
+                                        <a href="http://gplhost.com/software-dtc.html" >
+Domain Technologie Control (DTC),
+                                        </a>
+an open-source control panel
+
+                                        <br>
+
+                                            <i>
+Webhosting by:
+
+                                                <a
+                                                    href="https://lcx.at"
+                                                    target="_blank" >
+lcX.at
+                                                </a>
+                                            </i>
+                                        </br>
+                                    </font>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </body>
+        </html>
+    </g:HTMLPanel>
+
+</ui:UiBinder>

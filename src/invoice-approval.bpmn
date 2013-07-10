@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_subjectItem" structureRef="String" />
+  <itemDefinition id="_descriptionItem" structureRef="String" />
+  <itemDefinition id="_valueItem" structureRef="String" />
+  <itemDefinition id="_documentIdItem" structureRef="Integer" />
+  <itemDefinition id="_isApprovedItem" structureRef="Boolean" />
+
+  <itemDefinition id="_2-subjectItem" structureRef="String" />
+  <itemDefinition id="_2-descriptionItem" structureRef="String" />
+  <itemDefinition id="_2-valueItem" structureRef="String" />
+  <itemDefinition id="_2-documentIdItem" structureRef="Integer" />
+  <itemDefinition id="_2-isApprovedItem" structureRef="Boolean" />
+
+  <itemDefinition id="_3-subjectItem" structureRef="String" />
+  <itemDefinition id="_3-descriptionItem" structureRef="String" />
+  <itemDefinition id="_3-valueItem" structureRef="String" />
+  <itemDefinition id="_3-documentIdItem" structureRef="Integer" />
+  <itemDefinition id="_3-isApprovedItem" structureRef="Boolean" />
+
+  <process processType="Private" isExecutable="true" id="invoice-approval" name="Invoice Approval Process" tns:packageName="com.duggan.workflow.invoice" tns:version="V1" >
+
+    <!-- process variables -->
+    <property id="subject" itemSubjectRef="_subjectItem"/>
+    <property id="description" itemSubjectRef="_descriptionItem"/>
+    <property id="value" itemSubjectRef="_valueItem"/>
+    <property id="documentId" itemSubjectRef="_documentIdItem"/>
+    <property id="isApproved" itemSubjectRef="_isApprovedItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <userTask id="_2" name="HOD Approval" >
+      <ioSpecification>
+        <dataInput id="_2_descriptionInput" name="description" />
+        <dataInput id="_2_subjectInput" name="subject" />
+        <dataInput id="_2_valueInput" name="value" />
+        <dataInput id="_2_documentIdInput" name="documentId" />
+        <dataInput id="_2_CommentInput" name="Comment" />
+        <dataInput id="_2_SkippableInput" name="Skippable" />
+        <dataInput id="_2_LocaleInput" name="Locale" />
+        <dataInput id="_2_TaskNameInput" name="TaskName" />
+        <dataInput id="_2_GroupIdInput" name="GroupId" />
+        <dataInput id="_2_PriorityInput" name="Priority" />
+        <dataOutput id="_2_isApprovedOutput" name="isApproved" />
+        <inputSet>
+          <dataInputRefs>_2_descriptionInput</dataInputRefs>
+          <dataInputRefs>_2_subjectInput</dataInputRefs>
+          <dataInputRefs>_2_valueInput</dataInputRefs>
+          <dataInputRefs>_2_documentIdInput</dataInputRefs>
+          <dataInputRefs>_2_CommentInput</dataInputRefs>
+          <dataInputRefs>_2_SkippableInput</dataInputRefs>
+          <dataInputRefs>_2_LocaleInput</dataInputRefs>
+          <dataInputRefs>_2_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_2_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_2_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2_isApprovedOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_2_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_2_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>value</sourceRef>
+        <targetRef>_2_valueInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_2_documentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_2_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_2_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">_2_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">HOD Approval</from>
+          <to xsi:type="tFormalExpression">_2_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">com.duggan.workflow.invoice</from>
+          <to xsi:type="tFormalExpression">_2_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_2_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2_isApprovedOutput</sourceRef>
+        <targetRef>isApproved</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>mariano</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="_3" name="Finance Approval" >
+      <ioSpecification>
+        <dataInput id="_3_subjectInput" name="subject" />
+        <dataInput id="_3_descriptionInput" name="description" />
+        <dataInput id="_3_valueInput" name="value" />
+        <dataInput id="_3_documentIdInput" name="documentId" />
+        <dataInput id="_3_CommentInput" name="Comment" />
+        <dataInput id="_3_SkippableInput" name="Skippable" />
+        <dataInput id="_3_LocaleInput" name="Locale" />
+        <dataInput id="_3_TaskNameInput" name="TaskName" />
+        <dataInput id="_3_GroupIdInput" name="GroupId" />
+        <dataInput id="_3_PriorityInput" name="Priority" />
+        <dataOutput id="_3_isApprovedOutput" name="isApproved" />
+        <inputSet>
+          <dataInputRefs>_3_subjectInput</dataInputRefs>
+          <dataInputRefs>_3_descriptionInput</dataInputRefs>
+          <dataInputRefs>_3_valueInput</dataInputRefs>
+          <dataInputRefs>_3_documentIdInput</dataInputRefs>
+          <dataInputRefs>_3_CommentInput</dataInputRefs>
+          <dataInputRefs>_3_SkippableInput</dataInputRefs>
+          <dataInputRefs>_3_LocaleInput</dataInputRefs>
+          <dataInputRefs>_3_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_3_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_3_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_isApprovedOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_3_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_3_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>value</sourceRef>
+        <targetRef>_3_valueInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_3_documentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_3_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_3_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">_3_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_3_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">com.duggan.workflow.invoice</from>
+          <to xsi:type="tFormalExpression">_3_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_3_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_isApprovedOutput</sourceRef>
+        <targetRef>isApproved</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>esteban</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <endEvent id="_4" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <exclusiveGateway id="_5" name="approved?" gatewayDirection="Diverging" />
+    <scriptTask id="_6" name="service tsk" scriptFormat="http://www.java.com/java" >
+      <script>System.err.println("Rejected!!!!!");</script>
+    </scriptTask>
+    <endEvent id="_7" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <exclusiveGateway id="_8" name="approved?" gatewayDirection="Diverging" />
+    <scriptTask id="_9" name="service tsk" scriptFormat="http://www.java.com/java" >
+      <script>System.err.println("Rejected!!!!!");</script>
+    </scriptTask>
+    <endEvent id="_10" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <scriptTask id="_11" name="update doc" scriptFormat="http://www.java.com/java" >
+      <script>System.err.println("Completed!!!");</script>
+    </scriptTask>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_5-_3" sourceRef="_5" targetRef="_3" name="approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_11-_4" sourceRef="_11" targetRef="_4" />
+    <sequenceFlow id="_2-_5" sourceRef="_2" targetRef="_5" />
+    <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" name="not approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_3-_8" sourceRef="_3" targetRef="_8" />
+    <sequenceFlow id="_8-_9" sourceRef="_8" targetRef="_9" name="not approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+    <sequenceFlow id="_8-_11" sourceRef="_8" targetRef="_11" name="approved" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
+    </sequenceFlow>
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="invoice-approval" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="6" y="45" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="106" y="45" width="116" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="386" y="48" width="123" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="824" y="49" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="272" y="46" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="254" y="159" width="88" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="273" y="268" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="565" y="47" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="545" y="158" width="92" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="568" y="269" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="685" y="49" width="111" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="30" y="69" />
+        <di:waypoint x="164" y="69" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_3" >
+        <di:waypoint x="296" y="70" />
+        <di:waypoint x="447" y="72" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_4" >
+        <di:waypoint x="740" y="73" />
+        <di:waypoint x="848" y="73" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_5" >
+        <di:waypoint x="164" y="69" />
+        <di:waypoint x="296" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_6" >
+        <di:waypoint x="296" y="70" />
+        <di:waypoint x="298" y="183" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="298" y="183" />
+        <di:waypoint x="297" y="292" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_8" >
+        <di:waypoint x="447" y="72" />
+        <di:waypoint x="589" y="71" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_9" >
+        <di:waypoint x="589" y="71" />
+        <di:waypoint x="591" y="182" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="591" y="182" />
+        <di:waypoint x="592" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_11" >
+        <di:waypoint x="589" y="71" />
+        <di:waypoint x="740" y="73" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:v='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+	    <div style="text-align:right;padding-top:4px; padding-right:5px; padding-bottom:4px; background:url(images/header_bg1.gif);">
+			<g:TextBox ui:field="usernameBox"/>
+			<g:PasswordTextBox ui:field="passwordBox"/>		
+			<g:Button ui:field="btnLogin" text="Login"></g:Button>		
+		</div>
+		<div>
+		    <v:IssuesPanel ui:field="issues">
+	    	</v:IssuesPanel>
+			<img src="images/helpdesk.png" />
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

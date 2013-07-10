@@ -1,0 +1,53 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+		
+	<g:HTMLPanel>	   
+		<div>
+			<g:Anchor ui:field="aForward">Forward for approval</g:Anchor>
+		</div>
+		<table width="100%">
+			<tr>
+				<td>Created: <span ui:field="spnCreated"></span></td>
+			</tr>
+			<tr>					
+				<td>
+					<span class="docsubject subject">
+					    <span ui:field="spnDocType"></span> -&nbsp;
+					    <span ui:field="spnSubject"></span>&nbsp;&nbsp;
+					    <span ui:field="spnDocDate"></span>	
+					</span>		
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div ui:field="divValue">Value: 
+						<span ui:field="spnValue" class="subject"></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				    <div ui:field="divPartner" style="padding-top:2px;">
+						Business Partner: <span ui:field="spnPartner" class="subject"></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span ui:field="spnDescription" style="background-color:#FDF0F0;">
+					    
+					</span>  
+				</td>
+			</tr>
+		</table>
+		
+		<div class="commentscontainer">
+			Comments
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

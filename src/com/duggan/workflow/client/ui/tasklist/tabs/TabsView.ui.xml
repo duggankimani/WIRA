@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+	    <ul class="tabrow">
+			<li class="selected">
+				Tasks
+			</li>
+			<li>
+				History
+			</li>
+			<li>
+				Events
+			</li>
+			<li>
+				Settings
+			</li>
+			<li>
+				About
+			</li>
+	   </ul>
+	</g:HTMLPanel>
+</ui:UiBinder>
