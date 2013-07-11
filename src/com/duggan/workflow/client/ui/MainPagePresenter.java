@@ -1,10 +1,10 @@
 package com.duggan.workflow.client.ui;
 
-import com.duggan.workflow.client.events.ErrorEvent;
-import com.duggan.workflow.client.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
+import com.duggan.workflow.client.ui.events.ErrorEvent;
+import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.tasklist.tabs.TabsPresenter;
 import com.duggan.workflow.shared.model.CurrentUser;

@@ -2,10 +2,10 @@ package com.duggan.workflow.client.ui.save;
 
 import java.util.Date;
 
-import com.duggan.workflow.client.events.AfterSaveEvent;
-import com.duggan.workflow.client.events.ErrorEvent;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;

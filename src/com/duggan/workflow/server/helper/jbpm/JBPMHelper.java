@@ -387,9 +387,12 @@ public class JBPMHelper implements Closeable{
 		return true;
 	}
 	
-	private boolean complete(long taskId, String userId){
+	private boolean complete(long taskId, String userId, Map<String, Object> values){
 		
-		this.service.start(taskId, userId);
+		Map<String, Object> content = getMappedData(service.getTask(taskId));
+		content.putAll(values);
+		
+		this.service.completeWithResults(taskId, userId, content);
 		
 		return true;
 	}
@@ -467,20 +470,27 @@ public class JBPMHelper implements Closeable{
 	 * @param userId This is the user executing the task
 	 * @param action This is the action to be executed
 	 */
-	public void execute(long taskId, String userId, Actions action) {
+	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
 
 		switch(action){
 		case CLAIM:
 			get().service.claim(taskId, userId);
 			break;
 		case COMPLETE:
-			get().complete(taskId, userId);
+			get().complete(taskId, userId, values);
+			System.err.println("Completing Document -- TaskId "+taskId);
+			for(String key:values.keySet()){
+				System.err.println("var>>  "+key+" : "+values.get(key));
+			}
 			break;
 		case DELEGATE:
+			//get().service.delegate(taskId, userId, targetUserId);
 			break;
 		case FORWARD:
+			//get().service.forward(taskId, userId, targetEntityId)
 			break;
 		case RESUME:
+			get().service.resume(taskId, userId);
 			break;
 		case REVOKE:
 			break;
@@ -488,8 +498,10 @@ public class JBPMHelper implements Closeable{
 			get().start(taskId, userId);
 			break;
 		case STOP:
+			get().service.start(taskId, userId);
 			break;
 		case SUSPEND:
+			get().service.suspend(taskId, userId);
 			break;
 		}
 				

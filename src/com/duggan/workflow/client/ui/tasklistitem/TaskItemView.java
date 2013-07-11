@@ -49,6 +49,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	
 	@UiField Anchor aForwardForApproval;
 	
+	
+	@UiField Anchor aApprove;
+	@UiField Anchor aReject;
+	
 	@UiField HasClickHandlers aView;
 	
 	@UiField FocusPanel container;
@@ -126,10 +130,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		}
 	}
 
+	/**
+	 * Task Life Cycle Actions
+	 * 
+	 * @param actions
+	 */
 	public void setTaskAction(List<Actions> actions){
 		
 		String style="visible";
-		
 		
 		if(actions!=null)
 		for(Actions action : actions){
@@ -140,7 +148,9 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 				target=aClaim;
 				break;
 			case COMPLETE:
-				target=aComplete;
+				//target=aComplete;
+				show(aApprove);
+				show(aReject);
 				break;
 			case DELEGATE:
 				target=aDelegate;
@@ -166,10 +176,15 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 			}
 			
 			if(target!=null){
-				target.setStyleName(style);
+				show(target);
 			}
 		}
 		
+	}
+	
+	public void show(Anchor target){
+		String style="visible";
+		target.setStyleName(style);
 	}
 	
 	public HasClickHandlers getClaimLink(){
@@ -216,6 +231,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		return aForwardForApproval;
 	}
 
+	public HasClickHandlers getApproveLink(){
+		return aApprove;
+	}
+	
+	public HasClickHandlers getRejectLink(){
+		return aReject;
+	}
+	
 	@Override
 	public FocusPanel getContainer() {
 

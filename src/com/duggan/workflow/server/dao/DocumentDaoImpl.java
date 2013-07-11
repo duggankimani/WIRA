@@ -26,7 +26,10 @@ public class DocumentDaoImpl {
 	@SuppressWarnings("unchecked")
 	public List<DocumentModel> getAllDocuments(DocStatus status){
 		
-		return em.createQuery("FROM DocumentModel d where status=:status").setParameter("status", status).getResultList();
+		return em.createQuery("FROM DocumentModel d where status=:status and createdBy=:createdBy").
+				setParameter("status", status).
+				setParameter("createdBy", SessionHelper.getCurrentUser().getId()).
+				getResultList();
 	}
 	
 	public DocumentModel getById(Integer id){

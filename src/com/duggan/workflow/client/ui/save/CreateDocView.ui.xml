@@ -68,6 +68,7 @@
 	            </td>
 	        </tr>
 	        
+	        
 	        <tr>
 				<td colspan="2">
 					<g:FlowPanel styleName="button-group reportbutton">

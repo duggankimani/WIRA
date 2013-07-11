@@ -1,11 +1,18 @@
 package com.duggan.workflow.client.ui.view;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
+import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
+import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
@@ -29,6 +36,14 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getForward();
 		
 		void showForward(boolean show);
+		
+		void setValidTaskActions(List<Actions> actions);
+		
+		public HasClickHandlers getApproveButton();
+		
+		public HasClickHandlers getRejectButton();
+
+		public void show(boolean IsShowapprovalLink, boolean IsShowRejectLink);
 	}
 
 	Integer documentId;
@@ -59,6 +74,25 @@ public class GenericDocumentPresenter extends
 				
 			}
 		});
+		
+		getView().getApproveButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getView().show(false,false);
+				fireEvent(new CompleteDocumentEvent(documentId, true));				
+			}
+		});
+		
+		getView().getRejectButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getView().show(false,false);
+				fireEvent(new CompleteDocumentEvent(documentId,false));
+			}
+		});
+		
 	}
 	
 	@Override
@@ -84,6 +118,13 @@ public class GenericDocumentPresenter extends
 					
 					getView().setValues(created,
 							docType, subject, docDate,  value, partner, description, priority,status);
+					
+					AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId);
+					fireEvent(e);
+					if(e.getValidActions()!=null){
+						getView().setValidTaskActions(e.getValidActions());
+					}
+					
 				}
 			});
 		}

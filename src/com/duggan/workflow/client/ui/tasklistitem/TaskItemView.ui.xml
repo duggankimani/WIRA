@@ -57,16 +57,20 @@
 						
 						<div class="actions itemdisplay">
 						    <g:Anchor ui:field="aClaim" styleName="{style.hidden}">Claim</g:Anchor>
-						    <g:Anchor ui:field="aStart"  styleName="{style.hidden}">Start</g:Anchor>
-						    <g:Anchor ui:field="aSuspend"  styleName="{style.hidden}">Suspend</g:Anchor>
+						    <g:Anchor ui:field="aStart"  styleName="{style.hidden}">Start</g:Anchor>						    
 							<g:Anchor ui:field="aResume"  styleName="{style.hidden}">Resume</g:Anchor>
 							<g:Anchor ui:field="aComplete"  styleName="{style.hidden}">Complete</g:Anchor>
+							<g:Anchor ui:field="aSuspend"  styleName="{style.hidden}">Suspend</g:Anchor>
+							
 							<g:Anchor ui:field="aDelegate"  styleName="{style.hidden}">Delegate</g:Anchor>
 							<g:Anchor ui:field="aRevoke"  styleName="{style.hidden}">Revoke</g:Anchor>
 							<g:Anchor ui:field="aStop"  styleName="{style.hidden}">Stop</g:Anchor>
 							<g:Anchor ui:field="aForward"  styleName="{style.hidden}">Forward</g:Anchor>
 							<g:Anchor ui:field="aView" styleName="{style.link} {style.hidden}">View Task</g:Anchor>		
 							<g:Anchor ui:field="aForwardForApproval" styleName="{style.link} hidden">Submit For Approval</g:Anchor>
+							
+							<g:Anchor ui:field="aApprove"  styleName="{style.hidden}">Approve</g:Anchor>
+							<g:Anchor ui:field="aReject"  styleName="{style.hidden}">Reject</g:Anchor>
 						</div>	
 							
 					</td>

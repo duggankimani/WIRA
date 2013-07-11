@@ -1,7 +1,9 @@
 package com.duggan.workflow.client.ui.view;
 
 import java.util.Date;
+import java.util.List;
 
+import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -11,6 +13,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -43,6 +46,10 @@ public class GenericDocumentView extends ViewImpl implements
 	DivElement divValue;
 	@UiField
 	DivElement divPartner;
+	
+	@UiField Button btnApprove;
+	
+	@UiField Button btnReject;
 
 	@UiField Anchor aForward;
 	
@@ -52,6 +59,8 @@ public class GenericDocumentView extends ViewImpl implements
 		UIObject.setVisible(divValue, false);
 		UIObject.setVisible(divPartner, false);
 		UIObject.setVisible(aForward.getElement(), false);
+		UIObject.setVisible(btnApprove.getElement(), false);
+		UIObject.setVisible(btnReject.getElement(), false);
 	}
 
 	@Override
@@ -97,9 +106,54 @@ public class GenericDocumentView extends ViewImpl implements
 		return aForward;
 	}
 
+	public HasClickHandlers getApproveButton(){
+		return btnApprove;
+	}
+	
+	public HasClickHandlers getRejectButton(){
+		return btnReject;
+	}
+	
+	public void setValidTaskActions(List<Actions> actions){
+		
+		if(actions!=null)
+		for(Actions action : actions){			
+			switch(action){
+			case CLAIM:
+				break;
+			case COMPLETE:
+				//target=aComplete;
+				UIObject.setVisible(btnApprove.getElement(),true);
+				UIObject.setVisible(btnReject.getElement(),true);
+				break;
+			case DELEGATE:
+				break;
+			case FORWARD:
+				break;
+			case RESUME:
+				break;
+			case REVOKE:
+				break;
+			case START:
+				break;
+			case STOP:
+				break;
+			case SUSPEND:
+				break;
+			}
+		}
+		
+	}
+	
 	@Override
 	public void showForward(boolean show) {
 		UIObject.setVisible(aForward.getElement(), show);
+	}
+
+	@Override
+	public void show(boolean IsShowapprovalLink, boolean IsShowRejectLink) {
+		UIObject.setVisible(btnApprove.getElement(), IsShowapprovalLink);
+		UIObject.setVisible(btnReject.getElement(), IsShowapprovalLink);
 	}
 	
 	

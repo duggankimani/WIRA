@@ -3,19 +3,6 @@ package com.duggan.workflow.client.ui.home;
 import java.util.Date;
 import java.util.List;
 
-import org.jbpm.eventmessaging.EventKey;
-import org.jbpm.eventmessaging.EventResponseHandler;
-import org.jbpm.task.Attachment;
-import org.jbpm.task.Comment;
-import org.jbpm.task.Content;
-import org.jbpm.task.OrganizationalEntity;
-import org.jbpm.task.Status;
-import org.jbpm.task.Task;
-import org.jbpm.task.TaskService;
-import org.jbpm.task.query.TaskSummary;
-import org.jbpm.task.service.ContentData;
-import org.jbpm.task.service.FaultData;
-
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -25,10 +12,6 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.duggan.workflow.client.events.AfterSaveEvent;
-import com.duggan.workflow.client.events.AfterSaveEvent.AfterSaveHandler;
-import com.duggan.workflow.client.events.DocumentSelectionEvent;
-import com.duggan.workflow.client.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -41,26 +24,31 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
+import com.duggan.workflow.client.ui.events.ReloadEvent;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
+import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.CurrentUser;
+import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.LogoutAction;
@@ -70,7 +58,7 @@ import com.duggan.workflow.shared.responses.LogoutActionResult;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
-		DocumentSelectionHandler{
+		DocumentSelectionHandler, ReloadHandler{
 
 	public interface MyView extends View {
 		Button getSimulationBtn();
@@ -134,6 +122,7 @@ public class HomePresenter extends
 		super.onBind();
 		addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
+		addRegisteredHandler(ReloadEvent.TYPE, this);
 		
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			
@@ -222,6 +211,10 @@ public class HomePresenter extends
 		//clear document slot
 		setInSlot(DOCUMENT_SLOT, null);
 	}
+	
+	private void loadTasks() {
+		loadTasks(currentTaskType);
+	}
 
 	/**
 	 * Load JBPM records
@@ -240,6 +233,25 @@ public class HomePresenter extends
 				GetTaskListResult rst = (GetTaskListResult)result;
 				List<DocSummary> tasks = rst.getTasks();
 				loadLines(tasks);
+				
+				if(tasks.size()>0){
+					DocSummary doc = tasks.get(0);
+					
+					Integer docId=null;
+					DocMode docMode = DocMode.READ;
+					
+					if(doc instanceof Document){
+						docId = (Integer)doc.getId();
+						if(((Document)doc).getStatus()==DocStatus.DRAFTED){
+							docMode = DocMode.READWRITE;
+						}
+					}else{
+						docId = ((HTSummary)doc).getDocumentRef();
+					}
+					
+					fireEvent(new DocumentSelectionEvent(docId,docMode));
+				}
+				
 			}
 			
 		});
@@ -322,5 +334,10 @@ public class HomePresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
+	}
+
+	@Override
+	public void onReload(ReloadEvent event) {
+		loadTasks();
 	}
 }

@@ -1,9 +1,13 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.Map;
+
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.BaseResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
+import com.google.gwt.dev.util.collect.HashMap;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -20,7 +24,16 @@ public class ExecuteWorkflowActionHandler extends
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		JBPMHelper.get().execute(action.getTaskId(),action.getUserId(), action.getAction());
+		Map<String, Object> vals = new HashMap<>();
+		
+		Map<String, ParamValue> values = action.getValues();
+		if(values!=null){
+			for(String key: values.keySet()){
+				vals.put(key, values.get(key)==null?null: values.get(key).getValue());
+			}
+		}
+		
+		JBPMHelper.get().execute(action.getTaskId(),action.getUserId(), action.getAction(), vals);
 		
 		ExecuteWorkflowResult result = (ExecuteWorkflowResult)actionResult;
 		

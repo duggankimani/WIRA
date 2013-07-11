@@ -9,6 +9,8 @@
 	<g:HTMLPanel>	   
 		<div>
 			<g:Anchor ui:field="aForward">Forward for approval</g:Anchor>
+			<g:Button ui:field="btnApprove">Approve</g:Button>
+			<g:Button ui:field="btnReject">Reject</g:Button>
 		</div>
 		<table width="100%">
 			<tr>

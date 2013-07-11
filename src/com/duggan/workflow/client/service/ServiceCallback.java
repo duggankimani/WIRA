@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.service;
 
-import com.duggan.workflow.client.events.ErrorEvent;
+import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,6 +11,8 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 
 	@Override
 	public void onFailure(Throwable caught) {	
+		
+		caught.printStackTrace();
 		if(caught instanceof InvalidSessionException){
 			AppContext.destroy();
 			AppContext.getPlaceManager().revealPlace(new PlaceRequest("login"));

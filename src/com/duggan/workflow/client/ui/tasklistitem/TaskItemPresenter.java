@@ -1,17 +1,28 @@
 package com.duggan.workflow.client.ui.tasklistitem;
 
-import com.duggan.workflow.client.events.DocumentSelectionEvent;
-import com.duggan.workflow.client.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
+import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
+import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
+import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.HTask;
+import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
@@ -39,7 +50,8 @@ import com.google.gwt.user.client.ui.FocusPanel;
  *
  */
 public class TaskItemPresenter extends
-		PresenterWidget<TaskItemPresenter.MyView> implements DocumentSelectionHandler{
+		PresenterWidget<TaskItemPresenter.MyView> 
+	implements DocumentSelectionHandler, AfterDocumentLoadHandler, CompleteDocumentHandler{
 
 	public interface MyView extends View {
 
@@ -60,6 +72,9 @@ public class TaskItemPresenter extends
 		HasClickHandlers getForwardLink();
 		HasClickHandlers getViewLink();
 		HasClickHandlers getSubmitForApprovalLink();
+		HasClickHandlers getApproveLink();
+		HasClickHandlers getRejectLink();
+		
 		void setSelected(boolean selected);
 		
 	}
@@ -81,6 +96,9 @@ public class TaskItemPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		addRegisteredHandler(CompleteDocumentEvent.TYPE, this);
+		addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
+		
 		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		 
 		this.addHandler(DocumentSelectionEvent.TYPE, this);
@@ -89,8 +107,7 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				getView().setSelected(true);
-				
+				//getView().setSelected(true);				
 				if(task instanceof Document){
 					//check status too
 					//local tasks
@@ -204,11 +221,39 @@ public class TaskItemPresenter extends
 			}
 		});
 		
+		getView().getApproveLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				completeDocument(true);
+			}
+		});
+		
+		getView().getRejectLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				completeDocument(false);
+			}
+		});
+		
+	}
+	
+	void completeDocument(boolean approved){
+		Map<String, ParamValue> arguments = new HashMap<String, ParamValue>();	
+		arguments.put("isApproved", new BooleanValue(approved));
+		
+		submitRequest(Actions.COMPLETE, arguments);
 	}
 
-	protected void submitRequest(Actions action) {
+	protected void submitRequest(Actions action){
+		submitRequest(action, null);
+	}
+	
+	protected void submitRequest(Actions action, Map<String, ParamValue> values) {
 		workflow.setAction(action);
-		
+		workflow.setValues(values);
+				
 		if(task instanceof Document){
 			//workflow.setTaskId(new Long((Integer)task.getId()));
 		}			
@@ -219,7 +264,8 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
-				
+				//refresh list
+				fireEvent(new ReloadEvent());
 			}
 		});
 	}
@@ -244,16 +290,50 @@ public class TaskItemPresenter extends
 			Document doc = (Document)task;
 			if(doc.getId()!=documentId){
 				getView().setSelected(false);
+			}else{
+				getView().setSelected(true);
 			}
 		}else if(task instanceof HTSummary){
 			Integer docRef= ((HTSummary) task).getDocumentRef();
 			
 			if(docRef==null || docRef!=documentId){
 				getView().setSelected(false);
+			}else{
+				getView().setSelected(true);
 			}
 			
 		}else{
 			getView().setSelected(false);
+		}
+	}
+
+	@Override
+	public void onAfterDocumentLoad(AfterDocumentLoadEvent event) {
+		if(task instanceof Document){
+			return;
+		}
+		
+		HTSummary summary = (HTSummary)task;
+		
+		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
+			event.setValidActions(summary.getStatus().getValidActions());
+		}
+	}
+
+	@Override
+	public void onCompleteDocument(CompleteDocumentEvent event) {
+		if(task instanceof Document){
+			return;
+		}
+		
+		HTSummary summary = (HTSummary)task;
+		
+		//System.err.println(event.getDocumentId()+" ");
+		
+		if(summary.getDocumentRef()!=null && (summary.getDocumentRef()==event.getDocumentId()) 
+			&& summary.getDocumentRef()!=0){
+			
+			completeDocument(event.IsApproved());
 		}
 	}
 }
