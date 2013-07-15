@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.home;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,13 +34,16 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
+import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
 import com.duggan.workflow.client.util.AppContext;
@@ -61,11 +65,11 @@ public class HomePresenter extends
 		DocumentSelectionHandler, ReloadHandler{
 
 	public interface MyView extends View {
-		Button getSimulationBtn();
-		Button getAddButton();
-		Button getEditButton();
-		void showEdit(boolean displayed);
-		HasClickHandlers getLogout();
+		HasClickHandlers getSimulationBtn();
+		HasClickHandlers getAddButton();
+		HasClickHandlers getEditButton();
+		void showEdit(boolean displayed);	
+		void setHeading(String heading);
 	}
 
 	@ProxyCodeSplit
@@ -74,7 +78,7 @@ public class HomePresenter extends
 	public interface MyProxy extends ProxyPlace<HomePresenter> {
 	}
 
-	public static final Object ITEM_SLOT = new Object();
+	public static final Object DATEGROUP_SLOT = new Object();
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
@@ -83,11 +87,11 @@ public class HomePresenter extends
 	
 	@Inject PlaceManager placeManager;
 	
-	private IndirectProvider<TaskItemPresenter> presenterProvider;
-	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
+	
+	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
 	
 	private TaskType currentTaskType;
 	
@@ -103,12 +107,15 @@ public class HomePresenter extends
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final CurrentUser user,
-			final MyProxy proxy, Provider<TaskItemPresenter> provider,
-			Provider<CreateDocPresenter> docProvider, Provider<GenericDocumentPresenter> docViewProvider) {
+			final MyProxy proxy,
+			Provider<CreateDocPresenter> docProvider,
+			Provider<GenericDocumentPresenter> docViewProvider,
+			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy);
-		presenterProvider = new StandardProvider<TaskItemPresenter>(provider);
+		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
+		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
 		this.user = user;
 	}
 
@@ -123,15 +130,7 @@ public class HomePresenter extends
 		addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
-		
-		getView().getLogout().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				logout();
-			}
-		});
-		
+				
 		getView().getEditButton().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -178,16 +177,6 @@ public class HomePresenter extends
 			}
 		});
 	}
-	
-	protected void logout() {
-		dispatcher.execute(new LogoutAction(), new TaskServiceCallback<LogoutActionResult>() {
-			@Override
-			public void processResult(LogoutActionResult result) {
-				AppContext.destroy();
-				placeManager.revealErrorPlace("login");
-			}
-		});
-	}
 
 	/**
 	 * 
@@ -221,6 +210,7 @@ public class HomePresenter extends
 	 * @param type
 	 */
 	private void loadTasks(final TaskType type) {
+		getView().setHeading(type.getTitle());
 		
 		String userId = user.getUserId();
 		//System.err.println("##UserID = "+userId+" :: TaskType= "+currentTaskType);
@@ -263,22 +253,33 @@ public class HomePresenter extends
 	 * @param tasks
 	 */
 	protected void loadLines(final List<DocSummary> tasks) {
-		HomePresenter.this.setInSlot(ITEM_SLOT, null);
+		HomePresenter.this.setInSlot(DATEGROUP_SLOT, null);
+		final List<String> dates=new ArrayList<String>();
 		
 		for(int i=0; i< tasks.size(); i++){
 			
-			final int row = i+1;
-			presenterProvider.get(new ServiceCallback<TaskItemPresenter>() {
+			final String dt = DateUtils.DATEFORMAT.format(tasks.get(i).getCreated());
+			final DocSummary doc = tasks.get(i);
+			
+			if(dates.contains(dt)){
+				fireEvent(new PresentTaskEvent(tasks.get(i)));
+				System.out.println("### [2] Doc -- "+doc);
+			}else{
+				System.out.println("### [1] Doc -- "+doc);
+				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
+					@Override
+					public void processResult(DateGroupPresenter result) {
+						result.setDate(dt);
+						HomePresenter.this.addToSlot(DATEGROUP_SLOT, result);						
+						fireEvent(new PresentTaskEvent(doc));
+						
+						dates.add(dt);
+					}
+				});
 				
-				@Override
-				public void processResult(TaskItemPresenter result) {
-					result.setRowNo(row);
-					result.setDocSummary(tasks.get(row-1));
-					HomePresenter.this.addToSlot(ITEM_SLOT, result);
-				}
-				
-			});
+			}
 		}
+		
 	}
 	
 	protected void showEditForm(final MODE mode) {

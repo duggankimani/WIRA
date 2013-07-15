@@ -37,17 +37,12 @@ public class MainPagePresenter extends
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> HEADER_content = new Type<RevealContentHandler<?>>();
-
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> TABS_content = new Type<RevealContentHandler<?>>();
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> CONTENT_SLOT = new Type<RevealContentHandler<?>>();
 
 	@Inject HeaderPresenter headerPresenter;
-	
-	@Inject TabsPresenter tabsPresenter;
-	
+		
 	IndirectProvider<ErrorPresenter> errorFactory;
 	
 	@Inject DispatchAsync dispatcher;
@@ -97,9 +92,7 @@ public class MainPagePresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		setInSlot(HEADER_content, headerPresenter);
-		setInSlot(TABS_content, tabsPresenter);
-	
+		setInSlot(HEADER_content, headerPresenter);	
 	}
 	
 	@Override

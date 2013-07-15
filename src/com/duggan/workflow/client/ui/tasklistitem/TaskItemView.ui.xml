@@ -2,6 +2,7 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -18,67 +19,32 @@
 			font-style:italic;
 		}
 	</ui:style>
-	<g:FocusPanel ui:field="container" styleName="approvalitem">
-		<g:HTMLPanel>
-			<div class="date itemdisplay">
-				<g:InlineLabel ui:field="spnDateCreated"></g:InlineLabel>		    
-			</div>
-			<table width="100%">
-				<tr>
-					<td>
-					    <g:InlineLabel styleName="rowNo itemdisplay" ui:field="spnRowNo"></g:InlineLabel>							
-					</td>
-					
-					<td>
-						<g:Image ui:field="imgFlag"/>
-					</td>
-				
-					<td>
-						<div class="subject itemdisplay">
-						    <g:InlineLabel ui:field="spnTaskName"></g:InlineLabel>
-							<g:InlineLabel ui:field="spnSubject"></g:InlineLabel>
-						</div> 
-					</td>
-					
-					<td style="width:1px;vertical-align:top; background:red; padding:0;margin:0;" rowspan="2">
-					   
-					</td>
-					<!-- td rowspan="2" style="width:10px; vertical-align:top">
-					    <img src="images/priority_orange.jpg"></img>
-					</td -->
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td colspan="2">
-						<div class="description itemdisplay">
-						    <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>
-						</div>
-						
-						<div class="actions itemdisplay">
-						    <g:Anchor ui:field="aClaim" styleName="{style.hidden}">Claim</g:Anchor>
-						    <g:Anchor ui:field="aStart"  styleName="{style.hidden}">Start</g:Anchor>						    
-							<g:Anchor ui:field="aResume"  styleName="{style.hidden}">Resume</g:Anchor>
-							<g:Anchor ui:field="aComplete"  styleName="{style.hidden}">Complete</g:Anchor>
-							<g:Anchor ui:field="aSuspend"  styleName="{style.hidden}">Suspend</g:Anchor>
-							
-							<g:Anchor ui:field="aDelegate"  styleName="{style.hidden}">Delegate</g:Anchor>
-							<g:Anchor ui:field="aRevoke"  styleName="{style.hidden}">Revoke</g:Anchor>
-							<g:Anchor ui:field="aStop"  styleName="{style.hidden}">Stop</g:Anchor>
-							<g:Anchor ui:field="aForward"  styleName="{style.hidden}">Forward</g:Anchor>
-							<g:Anchor ui:field="aView" styleName="{style.link} {style.hidden}">View Task</g:Anchor>		
-							<g:Anchor ui:field="aForwardForApproval" styleName="{style.link} hidden">Submit For Approval</g:Anchor>
-							
-							<g:Anchor ui:field="aApprove"  styleName="{style.hidden}">Approve</g:Anchor>
-							<g:Anchor ui:field="aReject"  styleName="{style.hidden}">Reject</g:Anchor>
-						</div>	
-							
-					</td>
-					<td>
-					     						    
-					</td>
-				</tr>
-			</table>
-		</g:HTMLPanel>		
-	</g:FocusPanel>
+	<g:HTMLPanel styleName="message-container">
+        <g:FocusPanel styleName="unread" ui:field="container">
+          <d:ParaPanel>
+           <g:InlineLabel styleName="label label-important" ui:field="spnUrgent">Urgent</g:InlineLabel>                       	
+           <g:InlineLabel ui:field="spnSubject"></g:InlineLabel>     
+           <d:Break/>
+           <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
+            		
+           </d:ParaPanel>
+         </g:FocusPanel>
+         <span class="actions itemdisplay" style="display:none">
+		    <g:Anchor ui:field="aClaim" styleName="{style.hidden}">Claim</g:Anchor>
+		    <g:Anchor ui:field="aStart"  styleName="{style.hidden}">Start</g:Anchor>						    
+			<g:Anchor ui:field="aResume"  styleName="{style.hidden}">Resume</g:Anchor>
+			<g:Anchor ui:field="aComplete"  styleName="{style.hidden}">Complete</g:Anchor>
+			<g:Anchor ui:field="aSuspend"  styleName="{style.hidden}">Suspend</g:Anchor>
+			
+			<g:Anchor ui:field="aDelegate"  styleName="{style.hidden}">Delegate</g:Anchor>
+			<g:Anchor ui:field="aRevoke"  styleName="{style.hidden}">Revoke</g:Anchor>
+			<g:Anchor ui:field="aStop"  styleName="{style.hidden}">Stop</g:Anchor>
+			<g:Anchor ui:field="aForward"  styleName="{style.hidden}">Forward</g:Anchor>
+			<g:Anchor ui:field="aView" styleName="{style.link} {style.hidden}">View Task</g:Anchor>		
+			<g:Anchor ui:field="aForwardForApproval" styleName="{style.link} hidden">Submit For Approval</g:Anchor>
+			
+			<g:Anchor ui:field="aApprove"  styleName="{style.hidden}">Approve</g:Anchor>
+			<g:Anchor ui:field="aReject"  styleName="{style.hidden}">Reject</g:Anchor>
+		</span>
+	</g:HTMLPanel>
 </ui:UiBinder>

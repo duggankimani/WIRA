@@ -9,8 +9,6 @@
 	<g:HTMLPanel>
 	 	<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
 	    <!-- g:HTMLPanel ui:field="pContainer"/-->
-	    
-	    <g:HTMLPanel ui:field="tabsContainer"></g:HTMLPanel>
   		
     	<!-- g:HTMLPanel ui:field="taskHeader"></g:HTMLPanel-->
 		

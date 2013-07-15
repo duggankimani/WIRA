@@ -41,6 +41,8 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.FocusPanel;
 
 /**
@@ -54,12 +56,7 @@ public class TaskItemPresenter extends
 	implements DocumentSelectionHandler, AfterDocumentLoadHandler, CompleteDocumentHandler{
 
 	public interface MyView extends View {
-
-		void setRowNo(int row);
-
 		void bind(DocSummary summaryTask);
-		
-		FocusPanel getContainer();
 		
 		HasClickHandlers getClaimLink();
 		HasClickHandlers getStartLink();
@@ -74,7 +71,8 @@ public class TaskItemPresenter extends
 		HasClickHandlers getSubmitForApprovalLink();
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
-		
+		HasClickHandlers getFocusContainer();
+
 		void setSelected(boolean selected);
 		
 	}
@@ -103,7 +101,7 @@ public class TaskItemPresenter extends
 		 
 		this.addHandler(DocumentSelectionEvent.TYPE, this);
 		
-		getView().getContainer().addClickHandler(new ClickHandler() {
+		getView().getFocusContainer().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -270,10 +268,6 @@ public class TaskItemPresenter extends
 		});
 	}
 
-	public void setRowNo(int row) {
-		getView().setRowNo(row);
-	}
-
 	public void setDocSummary(DocSummary summaryTask) {
 		this.task = summaryTask;
 		
@@ -315,9 +309,9 @@ public class TaskItemPresenter extends
 		
 		HTSummary summary = (HTSummary)task;
 		
-		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
-			event.setValidActions(summary.getStatus().getValidActions());
-		}
+//		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
+//			event.setValidActions(summary.getStatus().getValidActions());
+//		}
 	}
 
 	@Override
@@ -336,4 +330,15 @@ public class TaskItemPresenter extends
 			completeDocument(event.IsApproved());
 		}
 	}
+	
+	EventListener DivEventListener = new EventListener() {
+		
+		@Override
+		public void onBrowserEvent(Event event) {
+			
+			if(event.equals(Event.ONCLICK)){
+				System.out.println("##### labs");
+			}
+		}
+	};
 }

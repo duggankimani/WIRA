@@ -3,72 +3,29 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat' 
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'
  	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container"
   xmlns:gxt="urn:import:com.sencha.gxt.widget.core.client">
  
-  <ui:with type="com.sencha.gxt.core.client.util.Margins" field="outerMargins">
-    <ui:attributes top="20" right="20" bottom="20" left="20" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.core.client.util.Margins" field="northMargins">
-    <ui:attributes top="5" right="5" bottom="5" left="5" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.core.client.util.Margins" field="westMargins">
-    <ui:attributes top="0" right="5" bottom="0" left="5" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.core.client.util.Margins" field="centerMargins">
-    <ui:attributes top="0" right="0" bottom="0" left="0" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.core.client.util.Margins" field="eastMargins">
-    <ui:attributes top="0" right="5" bottom="0" left="5" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.core.client.util.Margins" field="southMargins">
-    <ui:attributes top="5" right="5" bottom="5" left="5" />
-  </ui:with>
- 
-  <ui:with type="com.sencha.gxt.widget.core.client.container.MarginData" field="outerData">
-    <ui:attributes margins="{outerMargins}" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData" field="northData">
-    <ui:attributes size="100" margins="{northMargins}" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData" field="westData">
-    <ui:attributes size="150" margins="{westMargins}" collapsible="true" split="true" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData" field="centerData">
-    <ui:attributes size=".4" margins="{centerMargins}" />
-  </ui:with>
-  
-  <!-- ui:with type="com.sencha.gxt.widget.core.client.container.MarginData" field="centerData">
-    <ui:attributes margins="{centerMargins}" />
-  </ui:with-->
-  
-  <ui:with type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData" field="eastData">
-    <ui:attributes size=".5" margins="{eastMargins}" />
-  </ui:with>
-  <ui:with type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData" field="southData">
-    <ui:attributes size="100" margins="{southMargins}" />
-  </ui:with>
- 
- 
-  <container:SimpleContainer>
-    <container:child layoutData="{outerData}">
-      <container:BorderLayoutContainer ui:field="con" borders="false">
-        
-        <!-- container:north layoutData="{northData}">
-        </container:north -->
-        
-        <container:west layoutData="{westData}">
-        	<!-- gxt:ContentPanel hideCollapseTool="false" bodyBorder="false" headerVisible="false" -->
-        	<g:HTMLPanel>
-        	<g:Button ui:field="btnAdd">Add Document</g:Button>
-          	<div>
-          		My Documents
-				<ul>
-					<li> 
-						<g:Hyperlink targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink> 
-					</li>
-					<li> 
+ <g:HTMLPanel styleName="row-fluid main-container">    
+      <div id="sidebar-nav" class="span2">
+        <!--Button Add Document -->
+        <div class="add-doc">
+            <!-- g:Button ui:field="btnAdd" styleName="btn-danger btn-large" type="button">Add Document</g:Button-->
+            <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>		            
+        </div>
+       
+        <ul id="dashboard-menu">
+           <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-book"></i>
+                    <span>My Documents</span>
+                    <i class="icon-chevron-up"></i>
+                </a>
+                <ul class="submenu">
+                    <li><g:Hyperlink targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink></li>
+                    <li> 
 						<g:Hyperlink targetHistoryToken="home;type=inprog" text="In Progress"></g:Hyperlink> 
 					</li>
 					<li> 
@@ -77,63 +34,114 @@
 					<li> 
 						<g:Hyperlink targetHistoryToken="home;type=rejected" text="Rejected"></g:Hyperlink> 
 					</li>
-				</ul>
-			</div>
-			<div>
-				Approval Requests
-				<ul>
-					<li> 
+                </ul>
+            </li>
+
+            <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-tasks"></i>
+                    <span>Approval Request</span>
+                    <i class="icon-chevron-up"></i>
+                </a>
+                <ul class="submenu second-menu">
+                    <li> 
 						<g:Hyperlink targetHistoryToken="home;type=appreqnew" text="New Requests"></g:Hyperlink> 
 					</li>
 					<li> 
 						<g:Hyperlink targetHistoryToken="home;type=appredone" text="Recent Approvals"></g:Hyperlink> 
 					</li>
-				</ul>
-			</div>
-			<div>
-				Flagged
-				<ol>
 					<li> 
 						<g:Hyperlink targetHistoryToken="home;type=flagged" text="Flagged"></g:Hyperlink> 
 					</li>
-				</ol>
-			</div>
-			<div>
-				<ol>
-					<li> 
-						<g:Anchor ui:field="aLogout">Logout</g:Anchor> 
-					</li>
-				</ol>
-			</div>			
+                </ul>
+            </li>
+        </ul>
+     </div>
+     
+      
+      <!--middle navigation-->
+      <div id="middle-nav" class="span4">
+        <div class="row-fluid nav-top">
+          <input class="search" type="text"/>
+          <i class="icon-refresh icon-large"></i>
+        </div>
+
+          <div class="header-nav row-fluid">
+               <h5 ui:field="hCategory">IN PROGRESS</h5>         
+               <div class="ui-dropdown">
+                  <div class="head">
+                      Filter
+                      <i class="arrow-down"></i>
+                  </div> 
+                   <!-- custom popup filter -->
+                  <!-- styles are located in css/elements.css -->
+                  <!-- script that enables this dropdown is located in js/theme.js -->
+                  <div class="dialog">
+                      <div class="pointer">
+                          <div class="arrow"></div>
+                          <div class="arrow_border"></div>
+                      </div>
+                      <div class="body">
+                          <p class="title">
+                              Filter Option:
+                          </p>
+                          <div class="form">
+                              <select>
+                                  <option>Name</option>
+                                  <option>Email</option>
+                                  <option>Number of orders</option>
+                                  <option>Signed up</option>
+                                  <option>Last seen</option>
+                              </select>
+                              <select>
+                                  <option>is equal to</option>
+                                  <option>is not equal to</option>
+                                  <option>is greater than</option>
+                                  <option>starts with</option>
+                                  <option>contains</option>
+                              </select>
+                              <input type="text" />
+                              <a class="btn-flat small">Add filter</a>
+                          </div>
+                      </div>
+                  </div>
+               </div>
+          </div>
+
+        <div class="content-nav row-fluid">
+	        <!-- ul id="navigation-menu" ui:field="ulTaskGroups"-->
+	        <d:BulletListPanel ui:field="ulTaskGroups">	           	          	
+	       	</d:BulletListPanel>
+        </div>
+      </div>
+      
+        
+      <!--Detailed Panel Description-->
+      <div id="detailed-info" class="span5">
+          <g:Anchor ui:field="aSimulate" text="Simulate" styleName="btn-success btn-large hidden"></g:Anchor>
+          <g:Anchor ui:field="aEdit" text="Edit" styleName="btn-success btn-large hidden"></g:Anchor>  
+          <g:HTMLPanel ui:field="docContainer">              
           </g:HTMLPanel>
-        </container:west>
-        
-        <container:center layoutData="{centerData}">
-        	<g:HTMLPanel>
-	          	<g:HTMLPanel>
-					<g:Button ui:field="btnEdit">Edit Document</g:Button>
-					<button>search</button>
-					<button>filter</button>
-					<g:Button ui:field="btnSimulate">Simulate</g:Button>
-				</g:HTMLPanel>
-			
-				<g:HTMLPanel ui:field="container">
-					
-				</g:HTMLPanel>		
-			</g:HTMLPanel>
-        </container:center>
-        
-        
-        <container:east layoutData="{eastData}">     
-        	<g:HTMLPanel ui:field="docContainer">
-       			
-			</g:HTMLPanel>
-        </container:east>
-        
-        <!-- container:south layoutData="{southData}">
-          <gxt:ContentPanel />
-        </container:south -->
-      </container:BorderLayoutContainer>
-    </container:child>
-  </container:SimpleContainer>
+                  
+      </div>
+      
+      <!--Footer-->
+      <!--div class="container"> 
+        <hr>
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="span8">
+                  <a href="#">Terms of Service</a>    
+                  <a href="#">Privacy</a>    
+                  <a href="#">Security</a>
+                </div>
+                <div class="span4">
+                  <p class="muted pull-right">© MD-Kimani Inc. All rights reserved</p>
+                </div>
+              </div>
+            </div>
+      </div-->
+    </g:HTMLPanel><!--End of Container-->
+    
+    	
 </ui:UiBinder>

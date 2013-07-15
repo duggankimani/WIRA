@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.tasklistitem;
 
 import java.util.List;
 
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.resources.ICONS;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -9,19 +10,27 @@ import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
 
 public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 
@@ -30,13 +39,9 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, TaskItemView> {
 	}
 
-	@UiField InlineLabel spnRowNo;
-	@UiField InlineLabel spnTaskName;
-	//@UiField InlineLabel spnDateDue;
-	@UiField InlineLabel spnDateCreated;
 	@UiField InlineLabel spnSubject;
 	@UiField InlineLabel spnDescription;
-	//@UiField InlineLabel spnPriority;
+	@UiField InlineLabel spnUrgent;
 	@UiField Anchor aClaim;
 	@UiField Anchor aStart;
 	@UiField Anchor aSuspend;
@@ -49,7 +54,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	
 	@UiField Anchor aForwardForApproval;
 	
-	
 	@UiField Anchor aApprove;
 	@UiField Anchor aReject;
 	
@@ -57,35 +61,61 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	
 	@UiField FocusPanel container;
 	
-	@UiField Image imgFlag;
 	private int severity=0; //(0-grey, 1-yellow, 2-red)
+	
+	@Inject EventBus eventBus;
 	
 	@Inject
 	public TaskItemView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		spnUrgent.removeStyleName("gwt-InlineLabel");
+		spnSubject.removeStyleName("gwt-InlineLabel");
+		spnDescription.removeStyleName("gwt-InlineLabel");
 		
-		imgFlag.setResource(ICONS.INSTANCE.flagwhite());
-		imgFlag.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				if(severity==0){
-					severity=1;
-					imgFlag.setResource(ICONS.INSTANCE.flagyellow());
-				}else if(severity==1){
-					severity=2;
-					imgFlag.setResource(ICONS.INSTANCE.flagred());
-				}else if(severity==2){
-					severity=0;
-					imgFlag.setResource(ICONS.INSTANCE.flagwhite());
-				}
-				
-				
-			}
-		});
+//		imgFlag.setResource(ICONS.INSTANCE.flagwhite());
+//		imgFlag.addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				
+//				if(severity==0){
+//					severity=1;
+//					imgFlag.setResource(ICONS.INSTANCE.flagyellow());
+//				}else if(severity==1){
+//					severity=2;
+//					imgFlag.setResource(ICONS.INSTANCE.flagred());
+//				}else if(severity==2){
+//					severity=0;
+//					imgFlag.setResource(ICONS.INSTANCE.flagwhite());
+//				}
+//				
+//				
+//			}
+//		});
 		
 	}
+	
+//	private void addClickListener() {
+//		
+//		NodeList<Element> nodes = divItem.getElementsByTagName("span");
+//		for (int i=0; i<nodes.getLength(); i++) {	      
+//		  Element elem = nodes.getItem(i);
+//	      com.google.gwt.user.client.Element castedElem = (com.google.gwt.user.client.Element) elem;
+//	      DOM.sinkEvents(castedElem, Event.ONCLICK);
+////	      DOM.sinkEvents(castedElem, Event.ONMOUSEDOWN);
+////	      DOM.sinkEvents(castedElem, Event.ONMOUSEOUT);
+////	      DOM.sinkEvents(castedElem, Event.ONMOUSEOVER);
+//	      
+//	      DOM.setEventListener(castedElem, new EventListener() {
+//			
+//			@Override
+//			public void onBrowserEvent(Event event) {
+//				System.err.println("selected!!!");				
+//			}
+//		});
+//	      
+//	    }
+//	}
 
 	@Override
 	public Widget asWidget() {
@@ -94,15 +124,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	}
 
 	@Override
-	public void setRowNo(int row) {
-		spnRowNo.setText(row+"");
-	}
-
-	@Override
 	public void bind(DocSummary summaryTask) {
-		if(summaryTask.getCreated()!=null)
-			spnDateCreated.setText(CREATEDFORMAT.format(summaryTask.getCreated()));
-
 		//spnTaskName.setText(summaryTask.getTaskName());
 		//spnTaskName.setText("Contract Approval");
 		//spnDateDue.setText(format(summaryTask.getDateDue()));
@@ -239,9 +261,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		return aReject;
 	}
 	
-	@Override
-	public FocusPanel getContainer() {
-
+	public HasClickHandlers getFocusContainer(){
 		return container;
 	}
 	

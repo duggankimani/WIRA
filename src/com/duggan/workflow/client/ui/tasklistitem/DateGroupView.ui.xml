@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	<d:BulletPanel styleName="active" ui:field="lstGroup">
+       <g:Anchor styleName="dropdown-toggle">
+           <i class="icon-caret-right"></i>
+           <span ui:field="spnDate"></span>
+       </g:Anchor>
+	   <d:BulletListPanel styleName="submenu" ui:field="ulItemsContainer">
+	     	
+	   </d:BulletListPanel>
+	</d:BulletPanel>
+</ui:UiBinder>

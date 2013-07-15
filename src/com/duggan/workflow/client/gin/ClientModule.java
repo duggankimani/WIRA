@@ -35,6 +35,8 @@ import com.duggan.workflow.client.ui.login.LoginView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.CurrentUser;
+import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -95,5 +97,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		requestStaticInjection(AppContext.class);
 		
+
+		bindPresenterWidget(DateGroupPresenter.class,
+				DateGroupPresenter.MyView.class, DateGroupView.class);
 	}
 }

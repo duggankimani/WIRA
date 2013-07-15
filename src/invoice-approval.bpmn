@@ -43,8 +43,8 @@
     <startEvent id="_1" name="StartProcess" />
     <userTask id="_2" name="HOD Approval" >
       <ioSpecification>
-        <dataInput id="_2_descriptionInput" name="description" />
         <dataInput id="_2_subjectInput" name="subject" />
+        <dataInput id="_2_descriptionInput" name="description" />
         <dataInput id="_2_valueInput" name="value" />
         <dataInput id="_2_documentIdInput" name="documentId" />
         <dataInput id="_2_CommentInput" name="Comment" />
@@ -55,8 +55,8 @@
         <dataInput id="_2_PriorityInput" name="Priority" />
         <dataOutput id="_2_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_2_descriptionInput</dataInputRefs>
           <dataInputRefs>_2_subjectInput</dataInputRefs>
+          <dataInputRefs>_2_descriptionInput</dataInputRefs>
           <dataInputRefs>_2_valueInput</dataInputRefs>
           <dataInputRefs>_2_documentIdInput</dataInputRefs>
           <dataInputRefs>_2_CommentInput</dataInputRefs>
@@ -71,12 +71,12 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_2_descriptionInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>subject</sourceRef>
         <targetRef>_2_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_2_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -140,8 +140,8 @@
     </userTask>
     <userTask id="_3" name="Finance Approval" >
       <ioSpecification>
-        <dataInput id="_3_subjectInput" name="subject" />
         <dataInput id="_3_descriptionInput" name="description" />
+        <dataInput id="_3_subjectInput" name="subject" />
         <dataInput id="_3_valueInput" name="value" />
         <dataInput id="_3_documentIdInput" name="documentId" />
         <dataInput id="_3_CommentInput" name="Comment" />
@@ -152,8 +152,8 @@
         <dataInput id="_3_PriorityInput" name="Priority" />
         <dataOutput id="_3_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_3_subjectInput</dataInputRefs>
           <dataInputRefs>_3_descriptionInput</dataInputRefs>
+          <dataInputRefs>_3_subjectInput</dataInputRefs>
           <dataInputRefs>_3_valueInput</dataInputRefs>
           <dataInputRefs>_3_documentIdInput</dataInputRefs>
           <dataInputRefs>_3_CommentInput</dataInputRefs>
@@ -168,12 +168,12 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_3_subjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>description</sourceRef>
         <targetRef>_3_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_3_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>

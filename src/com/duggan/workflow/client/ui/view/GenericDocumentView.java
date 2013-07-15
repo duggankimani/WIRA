@@ -42,25 +42,29 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnPartner;
 	@UiField
 	SpanElement spnDescription;
-	@UiField
-	DivElement divValue;
-	@UiField
-	DivElement divPartner;
+
+//	@UiField
+//	DivElement divValue;
+//	@UiField
+//	DivElement divPartner;
 	
-	@UiField Button btnApprove;
+	@UiField Anchor aApprove;
 	
-	@UiField Button btnReject;
+	@UiField Anchor aReject;
 
 	@UiField Anchor aForward;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		UIObject.setVisible(divValue, false);
-		UIObject.setVisible(divPartner, false);
+//		UIObject.setVisible(divValue, false);
+//		UIObject.setVisible(divPartner, false);
 		UIObject.setVisible(aForward.getElement(), false);
-		UIObject.setVisible(btnApprove.getElement(), false);
-		UIObject.setVisible(btnReject.getElement(), false);
+		UIObject.setVisible(aApprove.getElement(), false);
+		UIObject.setVisible(aReject.getElement(), false);
+		aApprove.getElement().setAttribute("type", "button");
+		aReject.getElement().setAttribute("type", "button");
+		aForward.getElement().setAttribute("type", "button");
 	}
 
 	@Override
@@ -84,11 +88,11 @@ public class GenericDocumentView extends ViewImpl implements
 
 		if(value!=null){
 			spnValue.setInnerText(value);
-			UIObject.setVisible(divValue, true);
+			//UIObject.setVisible(divValue, true);
 		}
 		
 		if (partner != null){
-			UIObject.setVisible(divPartner, true);
+			//UIObject.setVisible(divPartner, true);
 			spnPartner.setInnerText(partner);
 		}			
 
@@ -107,11 +111,11 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	public HasClickHandlers getApproveButton(){
-		return btnApprove;
+		return aApprove;
 	}
 	
 	public HasClickHandlers getRejectButton(){
-		return btnReject;
+		return aReject;
 	}
 	
 	public void setValidTaskActions(List<Actions> actions){
@@ -123,8 +127,8 @@ public class GenericDocumentView extends ViewImpl implements
 				break;
 			case COMPLETE:
 				//target=aComplete;
-				UIObject.setVisible(btnApprove.getElement(),true);
-				UIObject.setVisible(btnReject.getElement(),true);
+				UIObject.setVisible(aApprove.getElement(),true);
+				UIObject.setVisible(aReject.getElement(),true);
 				break;
 			case DELEGATE:
 				break;
@@ -152,8 +156,8 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@Override
 	public void show(boolean IsShowapprovalLink, boolean IsShowRejectLink) {
-		UIObject.setVisible(btnApprove.getElement(), IsShowapprovalLink);
-		UIObject.setVisible(btnReject.getElement(), IsShowapprovalLink);
+		UIObject.setVisible(aApprove.getElement(), IsShowapprovalLink);
+		UIObject.setVisible(aReject.getElement(), IsShowapprovalLink);
 	}
 	
 	

@@ -125,6 +125,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-3.0.1.jar" sourcepath="/home/duggan/.m2/repository/com/sencha/gxt/gxt/3.0.1/gxt-3.0.1-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/uibinder-bridge-2.4.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-5.1.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bootstrap4gwt.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

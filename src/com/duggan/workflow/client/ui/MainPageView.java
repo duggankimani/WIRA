@@ -20,8 +20,6 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	
 	@UiField HTMLPanel pContainer;
 	
-	@UiField HTMLPanel tabsContainer;
-	
 	@Inject
 	public MainPageView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -48,14 +46,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 			}
 			
 		}
-		else if(slot==TABS_content){
-			tabsContainer.clear();
-			
-			if(content!=null){
-				tabsContainer.add(content);
-			}
-			
-		}else{
+		else{
 			super.setInSlot(slot, content);
 		}
 	}

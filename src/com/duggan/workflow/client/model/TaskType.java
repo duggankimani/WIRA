@@ -3,7 +3,7 @@ package com.duggan.workflow.client.model;
 public enum TaskType {
 
 	DRAFT("drafts", "Drafts"),
-	INPROGRESS("inprog", "Sent"),
+	INPROGRESS("inprog", "In Progress"),
 	APPROVED("approved", "Approved"),
 	REJECTED("rejected", "Rejected"),
 	APPROVALREQUESTNEW("appreqnew", "New Requests"),

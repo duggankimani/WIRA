@@ -1,18 +1,20 @@
 package com.duggan.workflow.client.ui.home;
 
+import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.gwtplatform.mvp.client.ViewImpl;
-import com.google.gwt.dom.client.ButtonElement;
+import com.google.gwt.dom.client.HeadingElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 
 import static com.duggan.workflow.client.ui.home.HomePresenter.*;
 
@@ -24,22 +26,34 @@ public class HomeView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, HomeView> {
 	}
 
-	@UiField HTMLPanel container;
-	
-	@UiField Button btnSimulate;
+	@UiField Anchor aSimulate;
 	
 	@UiField Button btnAdd;
 	
-	@UiField Button btnEdit;
-	
-	@UiField Anchor aLogout;
+	@UiField Anchor aEdit;
 	
 	@UiField HTMLPanel docContainer;
 	
+	@UiField BulletListPanel ulTaskGroups;
+	
+	@UiField HeadingElement hCategory;
+		
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		UIObject.setVisible(btnEdit.getElement(), false);
+		UIObject.setVisible(aEdit.getElement(), false);
+		ulTaskGroups.setId("navigation-menu");		
+		aEdit.getElement().setAttribute("type","button");
+		aSimulate.getElement().setAttribute("type","button");
+		btnAdd.getElement().setAttribute("type","button");
+
+		docContainer.addHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				System.err.println("### ABS");
+			}
+		}, ClickEvent.getType());
 	}
 
 	@Override
@@ -50,20 +64,17 @@ public class HomeView extends ViewImpl implements
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		
-		if(slot==ITEM_SLOT){
+		if(slot==DATEGROUP_SLOT){
 			
-			container.clear();
-			
+			ulTaskGroups.clear();
 			if(content!=null){
-				
-				container.add(content);
+				ulTaskGroups.add(content);
 			}
 			
 		}else if(slot==DOCUMENT_SLOT){
 			docContainer.clear();
 			
 			if(content!=null){
-				
 				docContainer.add(content);
 			}
 		}	
@@ -75,36 +86,34 @@ public class HomeView extends ViewImpl implements
 	@Override
 	public void addToSlot(Object slot, Widget content) {
 		
-		if(slot==ITEM_SLOT){
-			if(content!=null){
-				
-				container.add(content);
-			}
-			
+		if(slot==DATEGROUP_SLOT){
+			if(content!=null){				
+				ulTaskGroups.add(content);
+			}			
 		}else{
 			super.addToSlot(slot, content);
 		}
 	}
-	
-	public Button getSimulationBtn(){
-		return btnSimulate;
+
+	public HasClickHandlers getSimulationBtn(){
+		return aSimulate;
 	}
 	
-	public Button getAddButton(){
+	public HasClickHandlers getAddButton(){
 		return btnAdd;
 	}
 	
-	public Button getEditButton(){
-		return btnEdit;
+	public HasClickHandlers getEditButton(){
+		return aEdit;
 	}
 
-	@Override
-	public void showEdit(boolean displayed) {
-		UIObject.setVisible(btnEdit.getElement(), displayed);
+	public void setHeading(String heading){
+		hCategory.setInnerText(heading);
 	}
 	
-	public HasClickHandlers getLogout(){
-		return aLogout;
+	@Override
+	public void showEdit(boolean displayed) {
+		UIObject.setVisible(aEdit.getElement(), displayed);
 	}
 	
 }
