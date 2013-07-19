@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class BulletPanel extends ComplexPanel {
 
-	HTMLPanel p;
+	//HTMLPanel p;
 	
 	public BulletPanel() {
 		setElement(Document.get().createLIElement());

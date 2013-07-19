@@ -1,21 +1,50 @@
 package com.duggan.workflow.server.db;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.transaction.Status;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
+import org.drools.runtime.Environment;
 import org.hibernate.HibernateException;
+import org.jbpm.bpmn2.xml.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 /**
+ * <p>
+ * This class provides utility methods for 
+ * beginning/committing & rolling back user transactions
+ * 
+ * <p>
+ * Further it provides utility methods for retrieving {@link EntityManagerFactory}
+ *  and the {@link EntityManager} 
+ * 
+ * <P>
+ * Whenever an entity manager is requested, a corresponding {@link UserTransaction} is 
+ * generated. 
+ * 
+ * <p>
+ * A scenario that arises from this is one where {@link JBPMHelper} which initializes
+ * an {@link Environment} variable and {@link TaskHandler} using a {@link EntityManagerFactory}
+ * generates an {@link EntityManager} without a {@link UserTransaction} - since the UserTransaction
+ * is application managed. In this case, an exception is thrown with a 'no active transaction' message.
+ * 
+ * <p>
+ * To mitigate the above error, a {@link UserTransaction} transaction will be started for every
+ * request and committed at the end of the request -see {@link BaseActionHandler}  
  * 
  * @author duggan
  *
- *Bootstrap Hibernate
  */
 public class DB{
 	
@@ -45,9 +74,8 @@ public class DB{
 	            }
         	}
         	
+        	//beginTransaction();
             em = emf.createEntityManager();
-  
-            beginTransaction(em);
             entityManagers.set(em);
         }
 
@@ -62,7 +90,11 @@ public class DB{
 		
 		synchronized (log) {
 			if(emf==null){
-				emf = Persistence.createEntityManagerFactory("org.jbpm.task");
+				try{				
+					emf = Persistence.createEntityManagerFactory("org.jbpm.task");
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -75,10 +107,8 @@ public class DB{
 			
 			EntityManager em = (EntityManager) entityManagers.get();
 	        if(em==null)
-	        	return;
+	        	return;	        
 	        
-	        commitTransaction(em);
-
 		}catch(Exception e){
 			
 			try{
@@ -113,26 +143,55 @@ public class DB{
         
     }
 
-    private static void beginTransaction(EntityManager em) {
-		em.getTransaction().begin();
+    /**
+     * Begin a {@link UserTransaction}
+     * 
+     * <p>
+     * This is called whenever a new entity manager is requested
+     */
+    public static void beginTransaction() {
+    	try{    						
+			getUserTrx().begin();
+    	}catch(Exception e){
+    		throw new RuntimeException(e);
+    	}
+    	
 	}
 
-	private static void commitTransaction(EntityManager em) {
-		EntityTransaction trx = em.getTransaction();
-		if(trx!=null){
-			trx.commit();
-		}
+    /**
+     * This method commits a {@link UserTransaction}
+     * <p>
+     * A transaction is always generated whenever an entity manager is requested
+     */
+	public static void commitTransaction() {
+		try{						
+			//if(entityManagers.get()!=null)
+			getUserTrx().commit();			
+			
+    	}catch(Exception e){
+    		throw new RuntimeException(e);
+    	}
 		
 	}
-	
+
+	/**
+	 * Rollback a {@link UserTransaction}
+	 */
 	public static void rollback(){
-		EntityManager em = entityManagers.get();
-		
-		if(em!=null){
-			EntityTransaction trx = em.getTransaction();
-			if(trx!=null)
-				trx.rollback();
-		}
+		try{
+			
+			//if(entityManagers.get()!=null)
+			getUserTrx().rollback();
+			
+    	}catch(Exception e){
+    		throw new RuntimeException(e);
+    	}
+	}
+	
+	private static UserTransaction getUserTrx() throws NamingException {
+		Context ctx = new InitialContext();
+		UserTransaction userTrx = (UserTransaction)ctx.lookup("java:comp/UserTransaction");
+		return userTrx;
 	}
 	
 	private static DaoFactory factory(){
@@ -156,5 +215,24 @@ public class DB{
 			return;
 		
 		factory.set(null);
+	}
+
+	public static boolean hasActiveTrx() throws SystemException, NamingException {
+		
+		int status = getUserTrx().getStatus();
+		
+		boolean active = false;
+		
+		switch (status) {
+		case Status.STATUS_NO_TRANSACTION:
+			active=false;
+			break;
+
+		default:
+			active=true;
+			break;
+		}
+		
+		return active;
 	}
 }

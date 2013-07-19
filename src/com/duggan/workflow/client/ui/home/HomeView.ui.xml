@@ -5,8 +5,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'
- 	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container"
-  xmlns:gxt="urn:import:com.sencha.gxt.widget.core.client">
+ 	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container">
  
  <g:HTMLPanel styleName="row-fluid main-container">    
       <div id="sidebar-nav" class="span2">

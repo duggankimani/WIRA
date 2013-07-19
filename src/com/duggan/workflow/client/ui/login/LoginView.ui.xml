@@ -7,16 +7,26 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-	    <div style="text-align:right;padding-top:4px; padding-right:5px; padding-bottom:4px; background:url(images/header_bg1.gif);">
-			<g:TextBox ui:field="usernameBox"/>
-			<g:PasswordTextBox ui:field="passwordBox"/>		
-			<g:Button ui:field="btnLogin" text="Login"></g:Button>		
-		</div>
-		<div>
-		    <v:IssuesPanel ui:field="issues">
-	    	</v:IssuesPanel>
-			<img src="images/helpdesk.png" />
-		</div>
+    <g:HTMLPanel styleName="login-bg">
+	<g:HTMLPanel styleName="row-fluid login-wrapper">
+        <a href="#">
+        <a class="brand" href="#">E-Business Task List | Kenya Power Ltd</a> 
+        </a>
+        <div class="span4 box">
+            <div class="content-wrap">
+                <h6>Log in</h6>
+                <input id="userid" class="span12" type="text" placeholder="Username"></input>
+                <input id="userpass" class="span12" type="password" placeholder="Your password"></input>
+                <a href="#" class="forgot">Forgot password?</a>
+                <div class="remember">
+                    <input id="remember-me" type="checkbox"></input>
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <g:Anchor ui:field="aLogin" styleName="btn-glow primary login">Log in</g:Anchor>
+                <v:IssuesPanel ui:field="issues">
+	    		</v:IssuesPanel>
+            </div>
+        </div>
+	</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

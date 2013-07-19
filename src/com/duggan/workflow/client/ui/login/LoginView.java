@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -21,9 +22,7 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, LoginView> {
 	}
 
-	@UiField TextBox usernameBox;
-	@UiField PasswordTextBox passwordBox;
-	@UiField Button btnLogin;
+	@UiField Anchor aLogin;
 	@UiField IssuesPanel issues;
 
 	
@@ -31,27 +30,29 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	public LoginView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 	}
+	
+	public native String getUsername()/*-{
+		var userid = $doc.getElementById("userid").value;
+		return userid;
+	}-*/;
 
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
 	
-	public String getUsername(){
-		return usernameBox.getValue();
-	}
-	
-	public String getPassword(){
-		return passwordBox.getValue();
-	}
+	public native String getPassword()/*-{
+		var userpass = $doc.getElementById("userpass").value;
+		return userpass;	
+	}-*/;
 	
 	public HasClickHandlers getLoginBtn(){
-		return btnLogin;
+		return aLogin;
 	}
 
 	@Override
 	public void setPasswordKeyHandler(KeyDownHandler keyHandler) {
-		passwordBox.addKeyDownHandler(keyHandler);
+		//passwordBox.addKeyDownHandler(keyHandler);
 	}
 
 	@Override

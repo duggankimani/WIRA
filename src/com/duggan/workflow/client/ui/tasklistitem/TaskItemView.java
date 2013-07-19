@@ -15,6 +15,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -28,6 +29,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -57,7 +59,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	@UiField Anchor aApprove;
 	@UiField Anchor aReject;
 	
-	@UiField HasClickHandlers aView;
+	@UiField Anchor aView;
 	
 	@UiField FocusPanel container;
 	
@@ -71,52 +73,22 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnUrgent.removeStyleName("gwt-InlineLabel");
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
-		
-//		imgFlag.setResource(ICONS.INSTANCE.flagwhite());
-//		imgFlag.addClickHandler(new ClickHandler() {
-//			
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				
-//				if(severity==0){
-//					severity=1;
-//					imgFlag.setResource(ICONS.INSTANCE.flagyellow());
-//				}else if(severity==1){
-//					severity=2;
-//					imgFlag.setResource(ICONS.INSTANCE.flagred());
-//				}else if(severity==2){
-//					severity=0;
-//					imgFlag.setResource(ICONS.INSTANCE.flagwhite());
-//				}
-//				
-//				
-//			}
-//		});
+		show(aClaim, false);
+		show(aStart, false);
+		show(aSuspend, false);
+		show(aResume, false);
+		show(aComplete, false);
+		show(aDelegate, false);
+		show(aReject, false);
+		show(aRevoke, false);
+		show(aStop, false);
+		show(aForward, false);
+		show(aForwardForApproval, false);
+		show(aApprove, false);
+		show(aView, false);
 		
 	}
 	
-//	private void addClickListener() {
-//		
-//		NodeList<Element> nodes = divItem.getElementsByTagName("span");
-//		for (int i=0; i<nodes.getLength(); i++) {	      
-//		  Element elem = nodes.getItem(i);
-//	      com.google.gwt.user.client.Element castedElem = (com.google.gwt.user.client.Element) elem;
-//	      DOM.sinkEvents(castedElem, Event.ONCLICK);
-////	      DOM.sinkEvents(castedElem, Event.ONMOUSEDOWN);
-////	      DOM.sinkEvents(castedElem, Event.ONMOUSEOUT);
-////	      DOM.sinkEvents(castedElem, Event.ONMOUSEOVER);
-//	      
-//	      DOM.setEventListener(castedElem, new EventListener() {
-//			
-//			@Override
-//			public void onBrowserEvent(Event event) {
-//				System.err.println("selected!!!");				
-//			}
-//		});
-//	      
-//	    }
-//	}
-
 	@Override
 	public Widget asWidget() {
 		//return container;
@@ -205,8 +177,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	}
 	
 	public void show(Anchor target){
-		String style="visible";
-		target.setStyleName(style);
+		show(target,true);
+	}
+	public void show(Anchor target, boolean isvisible){
+		if(isvisible){
+			target.removeStyleName("hidden");
+		}
+		UIObject.setVisible(target.getElement(), isvisible);
+		
 	}
 	
 	public HasClickHandlers getClaimLink(){

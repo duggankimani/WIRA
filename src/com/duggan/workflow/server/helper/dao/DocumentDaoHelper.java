@@ -119,4 +119,17 @@ public class DocumentDaoHelper {
 
 		return doc;
 	}
+
+	public static void saveApproval(Integer docId,
+			Boolean isApproved) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		DocumentModel model = dao.getById(docId);
+		if(model==null){
+			throw new IllegalArgumentException("Cannot Approve/Reject document: Unknown Model");
+		}
+		
+		model.setStatus(isApproved? DocStatus.APPROVED: DocStatus.REJECTED);
+		
+		dao.saveDocument(model);
+	}
 }

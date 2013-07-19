@@ -1,11 +1,11 @@
-body {
+*body {
 	font-family: 'Open Sans', sans-serif;
 	background-color: #f7f7f7;
 	position: relative;
 	margin: 0px;
 	font-size: 12px;
 	padding: 0px;
-	overflow-y:hidden; 
+	/*overflow-y:hidden;*/ 
 	/*-webkit-font-smoothing: antialiased;*/
 }
 h1,h2,h3,h4,h5 {
@@ -55,6 +55,13 @@ textarea{
 .navbar .brand{
 	color: #1B1464;
 	margin-top: 10px;
+	text-shadow:1px 1px #1B1464; 
+}
+.login-wrapper .brand{
+	text-decoration: none;
+	font-size: 2em;
+	color: #ffffff;
+	margin: 20px;
 	text-shadow:1px 1px #1B1464; 
 }
 
@@ -845,4 +852,12 @@ textarea{
 		left: 0;
 		height: 100%;
 	}
+}
+
+.hidden{
+	display:none;
+}
+
+.wfactions a{
+	display:inline;
 }

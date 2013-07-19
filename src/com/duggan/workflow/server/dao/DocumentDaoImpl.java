@@ -32,6 +32,16 @@ public class DocumentDaoImpl {
 				getResultList();
 	}
 	
+	public DocumentModel getBySubject(String subject){
+		List lst = em.createQuery("FROM DocumentModel d where subject= :subject").setParameter("subject", subject).getResultList();
+		
+		if(lst.size()>0){
+			return (DocumentModel)lst.get(0);
+		}
+		
+		return null;
+	}
+	
 	public DocumentModel getById(Integer id){
 		List lst = em.createQuery("FROM DocumentModel d where id= :id").setParameter("id", id).getResultList();
 		
@@ -54,13 +64,14 @@ public class DocumentDaoImpl {
 		}
 		
 		em.persist(document);
-		
+		em.flush();
 		return document;
 	}
 	
 	public void delete(DocumentModel document){
 		
 		em.remove(document);
+		em.flush();
 		
 	}
 }

@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Status;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +38,19 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
 		SessionHelper.setHttpRequest(request.get());
-		
+				
 		log.info("Executing command " + action.getClass().getName());
 		
 		B result = (B) action.createDefaultActionResponse();
 
 		try {
+			if(!DB.hasActiveTrx()){
+				
+				DB.beginTransaction();
+			}
+			
 			result = execute(action, result, execContext);
-
+			DB.commitTransaction();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			DB.rollback();

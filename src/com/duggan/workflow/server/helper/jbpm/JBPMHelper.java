@@ -11,15 +11,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.TransactionManager;
+
 import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
+import org.drools.persistence.info.SessionInfo;
+import org.drools.persistence.jpa.JPAKnowledgeService;
+import org.drools.runtime.Environment;
+import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
+import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
+import org.jbpm.process.audit.JPAProcessInstanceDbLog;
+import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.AccessType;
@@ -40,6 +50,11 @@ import org.jbpm.task.utils.ContentMarshallerHelper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.ldap.server.ApacheDSContainer;
+import org.springframework.transaction.jta.JtaTransactionManager;
+
+import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
+
+import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.db.DB;
@@ -69,8 +84,7 @@ public class JBPMHelper implements Closeable{
 	
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession session;
-	LocalHTWorkItemHandler taskHandler;
-	
+	JPAWorkingMemoryDbLogger mlogger;
 	private static JBPMHelper helper;
 	
 	private JBPMHelper(){
@@ -81,9 +95,12 @@ public class JBPMHelper implements Closeable{
 	        System.setProperty("jbpm.usergroup.callback",
 	                "org.jbpm.task.identity.LDAPUserGroupCallbackImpl");
 	        
-
 			session = this.initializeSession();
+			//ConsoleLogger
 			KnowledgeRuntimeLoggerFactory.newConsoleLogger(session);
+			
+			//register work item handlers
+			session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
 			
 			GenericHTWorkItemHandler htHandler = this.createTaskHandler(session);
 			session.getWorkItemManager().registerWorkItemHandler("Human Task", htHandler);
@@ -92,6 +109,101 @@ public class JBPMHelper implements Closeable{
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+	
+	
+	private GenericHTWorkItemHandler createTaskHandler(
+			StatefulKnowledgeSession ksession) {
+			
+    	TaskService ts = new TaskService(DB.getEntityManagerFactory(),
+    			SystemEventListenerFactory.getSystemEventListener());
+    	
+    	LocalTaskService taskService = new LocalTaskService(ts);
+    	
+    	LocalHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskService, ksession);
+    	
+    	this.service = taskService;
+    	
+    	return taskHandler;
+	}
+
+	/**
+	 * Creates a StatefulKnowledgeSession
+	 * @return
+	 */
+	private StatefulKnowledgeSession initializeSession() {
+		
+		if(session!=null)
+			return (StatefulKnowledgeSession) session;
+		
+		
+    	KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+    	//builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
+    	builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
+    	
+    	kbase = builder.newKnowledgeBase();
+    	
+    	//session=kbase.newStatefulKnowledgeSession();
+    	
+    	//Initializing a stateful session from JPAKnowledgeService
+    	
+    	Environment env = KnowledgeBaseFactory.newEnvironment();
+    	env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, DB.getEntityManagerFactory());
+    	env.set(EnvironmentName.TRANSACTION_MANAGER, TransactionManagerServices.getTransactionManager());
+    	
+    	session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
+    	
+    	
+    	//Process Logger - to Provide data for querying process status
+    	//:- How far a particular approval has gone
+    	mlogger = new JPAWorkingMemoryDbLogger(session);
+		
+		return session;
+	}
+	
+	//not thread safe
+	public static JBPMHelper get(){
+		if(helper==null){
+			helper = new JBPMHelper();
+		}
+		
+		return helper;
+	}
+
+	@Override
+	public void close() throws IOException {
+		
+	}
+
+	/**
+	 * This method clears the runtime environment when the application is shutdown
+	 * 
+	 */
+	public static void destroy() {
+		JBPMHelper h = JBPMHelper.get();
+		
+		if(h!=null){
+			try {
+				h.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * This is a test method for JBPM Transaction
+	 * management. Key to note: JBPM does not support use of local transactions
+	 * 
+	 *  ideas borrowed from here http://docs.jboss.org/jbpm/v5.3/userguide/ch.core-persistence.html#d0e3744
+	 *  
+	 */
+	public void createTrx(){
+		Environment env = KnowledgeBaseFactory.newEnvironment();
+		env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, DB.getEntityManagerFactory());
+		//env.set(EnvironmentName.TRANSACTION_MANAGER, new JtaTransactionManager()); //find a transaction manager to use
+		
 	}
 	
 	/**
@@ -120,6 +232,11 @@ public class JBPMHelper implements Closeable{
 		
 		List completed = getTasksForUser(userId, TaskType.APPROVALREQUESTDONE);
 		counts.put(TaskType.APPROVALREQUESTDONE, completed.size());
+	}
+	
+	public void getDocumentStatus(){
+		
+		//JPAProcessInstanceDbLog dblogger =  JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
 	}
 	
 	/**
@@ -397,71 +514,6 @@ public class JBPMHelper implements Closeable{
 		return true;
 	}
 	
-	
-	private GenericHTWorkItemHandler createTaskHandler(
-			StatefulKnowledgeSession ksession) {
-		
-		if(taskHandler!=null){
-			return taskHandler;
-		}
-
-    	TaskService ts = new TaskService(DB.getEntityManagerFactory(),
-    			SystemEventListenerFactory.getSystemEventListener());
-    	
-    	LocalTaskService taskService = new LocalTaskService(ts);
-    	
-    	taskHandler = new LocalHTWorkItemHandler(taskService, ksession);
-    	
-    	this.service = taskService;
-    	
-    	return taskHandler;
-	}
-
-	private StatefulKnowledgeSession initializeSession() {
-		
-		if(session!=null)
-			return (StatefulKnowledgeSession) session;
-		
-		
-    	KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-    	//builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
-    	builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
-    	
-    	kbase = builder.newKnowledgeBase();
-    	
-		return session=kbase.newStatefulKnowledgeSession();
-	}
-	
-	//not thread safe
-	public static JBPMHelper get(){
-		if(helper==null){
-			helper = new JBPMHelper();
-		}
-		
-		return helper;
-	}
-
-	@Override
-	public void close() throws IOException {
-		
-	}
-
-	/**
-	 * This method clears the runtime environment when the application is shutdown
-	 * 
-	 */
-	public static void destroy() {
-		JBPMHelper h = JBPMHelper.get();
-		
-		if(h!=null){
-			try {
-				h.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
 
 	/**
 	 * This method provides a generic way for task execution. 

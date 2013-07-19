@@ -30,6 +30,24 @@
   <itemDefinition id="_3-documentIdItem" structureRef="Integer" />
   <itemDefinition id="_3-isApprovedItem" structureRef="Boolean" />
 
+  <itemDefinition id="_12-subjectItem" structureRef="String" />
+  <itemDefinition id="_12-descriptionItem" structureRef="String" />
+  <itemDefinition id="_12-valueItem" structureRef="String" />
+  <itemDefinition id="_12-documentIdItem" structureRef="Integer" />
+  <itemDefinition id="_12-isApprovedItem" structureRef="Boolean" />
+
+  <itemDefinition id="_13-subjectItem" structureRef="String" />
+  <itemDefinition id="_13-descriptionItem" structureRef="String" />
+  <itemDefinition id="_13-valueItem" structureRef="String" />
+  <itemDefinition id="_13-documentIdItem" structureRef="Integer" />
+  <itemDefinition id="_13-isApprovedItem" structureRef="Boolean" />
+
+  <itemDefinition id="_14-subjectItem" structureRef="String" />
+  <itemDefinition id="_14-descriptionItem" structureRef="String" />
+  <itemDefinition id="_14-valueItem" structureRef="String" />
+  <itemDefinition id="_14-documentIdItem" structureRef="Integer" />
+  <itemDefinition id="_14-isApprovedItem" structureRef="Boolean" />
+
   <process processType="Private" isExecutable="true" id="invoice-approval" name="Invoice Approval Process" tns:packageName="com.duggan.workflow.invoice" tns:version="V1" >
 
     <!-- process variables -->
@@ -43,8 +61,8 @@
     <startEvent id="_1" name="StartProcess" />
     <userTask id="_2" name="HOD Approval" >
       <ioSpecification>
-        <dataInput id="_2_subjectInput" name="subject" />
         <dataInput id="_2_descriptionInput" name="description" />
+        <dataInput id="_2_subjectInput" name="subject" />
         <dataInput id="_2_valueInput" name="value" />
         <dataInput id="_2_documentIdInput" name="documentId" />
         <dataInput id="_2_CommentInput" name="Comment" />
@@ -55,8 +73,8 @@
         <dataInput id="_2_PriorityInput" name="Priority" />
         <dataOutput id="_2_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_2_subjectInput</dataInputRefs>
           <dataInputRefs>_2_descriptionInput</dataInputRefs>
+          <dataInputRefs>_2_subjectInput</dataInputRefs>
           <dataInputRefs>_2_valueInput</dataInputRefs>
           <dataInputRefs>_2_documentIdInput</dataInputRefs>
           <dataInputRefs>_2_CommentInput</dataInputRefs>
@@ -71,12 +89,12 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_2_subjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>description</sourceRef>
         <targetRef>_2_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_2_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -140,8 +158,8 @@
     </userTask>
     <userTask id="_3" name="Finance Approval" >
       <ioSpecification>
-        <dataInput id="_3_descriptionInput" name="description" />
         <dataInput id="_3_subjectInput" name="subject" />
+        <dataInput id="_3_descriptionInput" name="description" />
         <dataInput id="_3_valueInput" name="value" />
         <dataInput id="_3_documentIdInput" name="documentId" />
         <dataInput id="_3_CommentInput" name="Comment" />
@@ -152,8 +170,8 @@
         <dataInput id="_3_PriorityInput" name="Priority" />
         <dataOutput id="_3_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_3_descriptionInput</dataInputRefs>
           <dataInputRefs>_3_subjectInput</dataInputRefs>
+          <dataInputRefs>_3_descriptionInput</dataInputRefs>
           <dataInputRefs>_3_valueInput</dataInputRefs>
           <dataInputRefs>_3_documentIdInput</dataInputRefs>
           <dataInputRefs>_3_CommentInput</dataInputRefs>
@@ -168,12 +186,12 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_3_descriptionInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>subject</sourceRef>
         <targetRef>_3_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_3_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -239,40 +257,91 @@
         <terminateEventDefinition />
     </endEvent>
     <exclusiveGateway id="_5" name="approved?" gatewayDirection="Diverging" />
-    <scriptTask id="_6" name="service tsk" scriptFormat="http://www.java.com/java" >
-      <script>System.err.println("Rejected!!!!!");</script>
-    </scriptTask>
     <endEvent id="_7" name="End" >
         <terminateEventDefinition />
     </endEvent>
     <exclusiveGateway id="_8" name="approved?" gatewayDirection="Diverging" />
-    <scriptTask id="_9" name="service tsk" scriptFormat="http://www.java.com/java" >
-      <script>System.err.println("Rejected!!!!!");</script>
-    </scriptTask>
     <endEvent id="_10" name="End" >
         <terminateEventDefinition />
     </endEvent>
-    <scriptTask id="_11" name="update doc" scriptFormat="http://www.java.com/java" >
-      <script>System.err.println("Completed!!!");</script>
-    </scriptTask>
+    <task id="_12" name="Update Reject" tns:taskName="UpdateLocal" >
+      <ioSpecification>
+        <dataInput id="_12_isApprovedInput" name="isApproved" />
+        <dataInput id="_12_documentIdInput" name="documentId" />
+        <inputSet>
+          <dataInputRefs>_12_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_12_documentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_12_isApprovedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_12_documentIdInput</targetRef>
+      </dataInputAssociation>
+    </task>
+    <task id="_13" name="Update Reject" tns:taskName="UpdateLocal" >
+      <ioSpecification>
+        <dataInput id="_13_isApprovedInput" name="isApproved" />
+        <dataInput id="_13_documentIdInput" name="documentId" />
+        <inputSet>
+          <dataInputRefs>_13_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_13_documentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_13_isApprovedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_13_documentIdInput</targetRef>
+      </dataInputAssociation>
+    </task>
+    <task id="_14" name="Update Success" tns:taskName="UpdateLocal" >
+      <ioSpecification>
+        <dataInput id="_14_isApprovedInput" name="isApproved" />
+        <dataInput id="_14_documentIdInput" name="documentId" />
+        <inputSet>
+          <dataInputRefs>_14_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_14_documentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_14_isApprovedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_14_documentIdInput</targetRef>
+      </dataInputAssociation>
+    </task>
 
     <!-- connections -->
     <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
     <sequenceFlow id="_5-_3" sourceRef="_5" targetRef="_3" name="approved" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_11-_4" sourceRef="_11" targetRef="_4" />
+    <sequenceFlow id="_14-_4" sourceRef="_14" targetRef="_4" />
     <sequenceFlow id="_2-_5" sourceRef="_2" targetRef="_5" />
-    <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" name="not approved" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_12-_7" sourceRef="_12" targetRef="_7" />
     <sequenceFlow id="_3-_8" sourceRef="_3" targetRef="_8" />
-    <sequenceFlow id="_8-_9" sourceRef="_8" targetRef="_9" name="not approved" tns:priority="1" >
+    <sequenceFlow id="_13-_10" sourceRef="_13" targetRef="_10" />
+    <sequenceFlow id="_5-_12" sourceRef="_5" targetRef="_12" name="Denied" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
-    <sequenceFlow id="_8-_11" sourceRef="_8" targetRef="_11" name="approved" >
+    <sequenceFlow id="_8-_13" sourceRef="_8" targetRef="_13" name="Denied" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_8-_14" sourceRef="_8" targetRef="_14" name="Approved" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
     </sequenceFlow>
 
@@ -281,77 +350,77 @@
   <bpmndi:BPMNDiagram>
     <bpmndi:BPMNPlane bpmnElement="invoice-approval" >
       <bpmndi:BPMNShape bpmnElement="_1" >
-        <dc:Bounds x="6" y="45" width="48" height="48" />
+        <dc:Bounds x="16" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_2" >
-        <dc:Bounds x="106" y="45" width="116" height="48" />
+        <dc:Bounds x="96" y="96" width="116" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="386" y="48" width="123" height="48" />
+        <dc:Bounds x="327" y="36" width="123" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
-        <dc:Bounds x="824" y="49" width="48" height="48" />
+        <dc:Bounds x="758" y="123" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="272" y="46" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_6" >
-        <dc:Bounds x="254" y="159" width="88" height="48" />
+        <dc:Bounds x="244" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_7" >
-        <dc:Bounds x="273" y="268" width="48" height="48" />
+        <dc:Bounds x="491" y="180" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_8" >
-        <dc:Bounds x="565" y="47" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_9" >
-        <dc:Bounds x="545" y="158" width="92" height="48" />
+        <dc:Bounds x="489" y="58" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_10" >
-        <dc:Bounds x="568" y="269" width="48" height="48" />
+        <dc:Bounds x="756" y="-1" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_11" >
-        <dc:Bounds x="685" y="49" width="111" height="48" />
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="313" y="176" width="123" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="570" y="8" width="114" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="580" y="123" width="114" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_2" >
-        <di:waypoint x="30" y="69" />
-        <di:waypoint x="164" y="69" />
+        <di:waypoint x="40" y="120" />
+        <di:waypoint x="154" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_5-_3" >
-        <di:waypoint x="296" y="70" />
-        <di:waypoint x="447" y="72" />
+        <di:waypoint x="268" y="120" />
+        <di:waypoint x="388" y="60" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_11-_4" >
-        <di:waypoint x="740" y="73" />
-        <di:waypoint x="848" y="73" />
+      <bpmndi:BPMNEdge bpmnElement="_14-_4" >
+        <di:waypoint x="637" y="147" />
+        <di:waypoint x="782" y="147" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_2-_5" >
-        <di:waypoint x="164" y="69" />
-        <di:waypoint x="296" y="70" />
+        <di:waypoint x="154" y="120" />
+        <di:waypoint x="268" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5-_6" >
-        <di:waypoint x="296" y="70" />
-        <di:waypoint x="298" y="183" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
-        <di:waypoint x="298" y="183" />
-        <di:waypoint x="297" y="292" />
+      <bpmndi:BPMNEdge bpmnElement="_12-_7" >
+        <di:waypoint x="374" y="200" />
+        <di:waypoint x="515" y="204" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_3-_8" >
-        <di:waypoint x="447" y="72" />
-        <di:waypoint x="589" y="71" />
+        <di:waypoint x="388" y="60" />
+        <di:waypoint x="513" y="82" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_8-_9" >
-        <di:waypoint x="589" y="71" />
-        <di:waypoint x="591" y="182" />
+      <bpmndi:BPMNEdge bpmnElement="_13-_10" >
+        <di:waypoint x="627" y="32" />
+        <di:waypoint x="780" y="23" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
-        <di:waypoint x="591" y="182" />
-        <di:waypoint x="592" y="293" />
+      <bpmndi:BPMNEdge bpmnElement="_5-_12" >
+        <di:waypoint x="268" y="120" />
+        <di:waypoint x="374" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_8-_11" >
-        <di:waypoint x="589" y="71" />
-        <di:waypoint x="740" y="73" />
+      <bpmndi:BPMNEdge bpmnElement="_8-_13" >
+        <di:waypoint x="513" y="82" />
+        <di:waypoint x="627" y="32" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_14" >
+        <di:waypoint x="513" y="82" />
+        <di:waypoint x="637" y="147" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

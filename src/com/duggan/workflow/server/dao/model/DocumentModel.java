@@ -30,7 +30,7 @@ public class DocumentModel extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length=200,nullable=false)
+	@Column(length=200,nullable=false, unique=true)
 	private String subject;
 	
 	@Column(length=350,nullable=false)
