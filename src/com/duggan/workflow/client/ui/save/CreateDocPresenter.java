@@ -4,24 +4,24 @@ import java.util.Date;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
-import com.duggan.workflow.client.ui.events.ErrorEvent;
+import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.PopupView;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PopupView;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class CreateDocPresenter extends
 		PresenterWidget<CreateDocPresenter.ICreateDocView> {
@@ -34,7 +34,7 @@ public class CreateDocPresenter extends
 		boolean isValid();
 		void setValues(DocType docType, String subject, Date docDate,
 				String partner, String value, String description,
-				Integer priority);
+				Priority priority);
 	}
 
 	@Inject DispatchAsync requestHelper;
@@ -66,7 +66,8 @@ public class CreateDocPresenter extends
 					String description = document.getDescription();
 					Integer priority = document.getPriority();									
 										
-					getView().setValues(docType, subject, docDate, partner, value, description, priority);
+					getView().setValues(docType, subject, docDate, partner, value, description, 
+							Priority.get(priority));
 				}
 			});
 		}
@@ -96,7 +97,8 @@ public class CreateDocPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				Document document = getView().getDocument();
+				Document document = getView().getDocument();	
+				document.setStatus(DocStatus.DRAFTED);
 				document.setId(Id);
 				
 				//document.setDescription(null);

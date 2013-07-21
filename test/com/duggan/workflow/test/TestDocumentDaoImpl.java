@@ -1,6 +1,7 @@
 package com.duggan.workflow.test;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.After;
@@ -12,6 +13,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
@@ -25,10 +27,21 @@ public class TestDocumentDaoImpl {
 	
 	@Before
 	public void setup(){
+		DBTrxProvider.init();
 		dao = DB.getDocumentDao();
 	}
 	
 	@Test
+	public void getCount(){
+		HashMap<TaskType, Integer> counts = new HashMap<TaskType, Integer>();
+		DocumentDaoHelper.getCounts(counts);
+		
+		for(TaskType key: counts.keySet()){
+			System.err.println(key+" : "+counts.get(key));
+		}
+	}
+	
+	@Ignore
 	public void getEM(){
 		Assert.assertNotNull(dao);
 		
@@ -54,7 +67,7 @@ public class TestDocumentDaoImpl {
 		
 	}
 	
-	@Test
+	@Ignore
 	public void createDocumentHelper(){
 		
 		Document doc = new Document();

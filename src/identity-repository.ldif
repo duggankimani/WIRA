@@ -39,6 +39,7 @@ objectClass: top
 objectClass: group
 cn: HR
 uniqueMember: cn=mariano,ou=users,o=mojo
+uniqueMember: cn=gatheru,ou=users,o=mojo
 
 dn: cn=Admin,ou=groups,o=mojo
 objectClass: groupOfUniqueNames
@@ -100,4 +101,16 @@ cn: salaboy
 sn: salaboy
 uid: salaboy
 mail: salaboy@gmail.com
+userPassword:: cGFzcw==
+
+
+dn: cn=gatheru,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: gatheru
+sn: gatheru
+uid: gatheru
+mail: gatheru@gmail.com
 userPassword:: cGFzcw==

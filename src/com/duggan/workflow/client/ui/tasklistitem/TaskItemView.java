@@ -9,6 +9,7 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.Priority;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -43,7 +44,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 
 	@UiField InlineLabel spnSubject;
 	@UiField InlineLabel spnDescription;
-	@UiField InlineLabel spnUrgent;
+	@UiField InlineLabel spnPriority;
 	@UiField Anchor aClaim;
 	@UiField Anchor aStart;
 	@UiField Anchor aSuspend;
@@ -62,15 +63,13 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	@UiField Anchor aView;
 	
 	@UiField FocusPanel container;
-	
-	private int severity=0; //(0-grey, 1-yellow, 2-red)
-	
+		
 	@Inject EventBus eventBus;
 	
 	@Inject
 	public TaskItemView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		spnUrgent.removeStyleName("gwt-InlineLabel");
+		spnPriority.removeStyleName("gwt-InlineLabel");
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
 		show(aClaim, false);
@@ -114,7 +113,25 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		}
 		
 		summaryTask.getId();
-				
+		
+		Priority priority = Priority.get(summaryTask.getPriority());
+		
+		switch (priority) {
+		case CRITICAL:
+			spnPriority.addStyleName("label-important");
+			spnPriority.setText("Urgent");
+			break;
+
+		case HIGH:
+			spnPriority.addStyleName("label-warning"); //
+			spnPriority.setText("Important");
+			break;
+
+		default:
+			spnPriority.addStyleName("label-info");
+			spnPriority.setText("info");
+			break;
+		}
 	}
 	
 	private void setDocumentActions(DocStatus status) {

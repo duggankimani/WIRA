@@ -22,6 +22,8 @@ import com.duggan.workflow.server.actionhandlers.GetContextRequestActionHandler;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionvalidator.SessionValidator;
+import com.duggan.workflow.shared.requests.GetAlertCount;
+import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -50,5 +52,8 @@ public class ServerModule extends HandlerModule {
 				GetContextRequestActionHandler.class, SessionValidator.class);
 
 		bindHandler(LogoutAction.class, LogoutActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetAlertCount.class, GetAlertCountActionHandler.class,
+				SessionValidator.class);
 	}
 }

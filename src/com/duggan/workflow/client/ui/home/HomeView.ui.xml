@@ -23,15 +23,15 @@
                     <i class="icon-chevron-up"></i>
                 </a>
                 <ul class="submenu">
-                    <li><g:Hyperlink targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink></li>
+                    <li><g:Hyperlink ui:field="aDrafts" targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink></li>
                     <li> 
-						<g:Hyperlink targetHistoryToken="home;type=inprog" text="In Progress"></g:Hyperlink> 
+						<g:Hyperlink ui:field="aProgress" targetHistoryToken="home;type=inprog" text="In Progress"></g:Hyperlink> 
 					</li>
 					<li> 
-						<g:Hyperlink targetHistoryToken="home;type=approved" text="Approved"></g:Hyperlink> 
+						<g:Hyperlink ui:field="aApproved" targetHistoryToken="home;type=approved" text="Approved"></g:Hyperlink> 
 					</li>
 					<li> 
-						<g:Hyperlink targetHistoryToken="home;type=rejected" text="Rejected"></g:Hyperlink> 
+						<g:Hyperlink ui:field="aRejected" targetHistoryToken="home;type=rejected" text="Rejected"></g:Hyperlink> 
 					</li>
                 </ul>
             </li>
@@ -44,13 +44,13 @@
                 </a>
                 <ul class="submenu second-menu">
                     <li> 
-						<g:Hyperlink targetHistoryToken="home;type=appreqnew" text="New Requests"></g:Hyperlink> 
+						<g:Hyperlink ui:field="aNewReq" targetHistoryToken="home;type=appreqnew" text="New Requests"></g:Hyperlink> 
 					</li>
 					<li> 
-						<g:Hyperlink targetHistoryToken="home;type=appredone" text="Recent Approvals"></g:Hyperlink> 
+						<g:Hyperlink ui:field="aRecentApprovals" targetHistoryToken="home;type=appredone" text="Completed"></g:Hyperlink> 
 					</li>
 					<li> 
-						<g:Hyperlink targetHistoryToken="home;type=flagged" text="Flagged"></g:Hyperlink> 
+						<g:Hyperlink ui:field="aFlagged" targetHistoryToken="home;type=flagged" text="Flagged"></g:Hyperlink> 
 					</li>
                 </ul>
             </li>
@@ -109,17 +109,17 @@
 
         <div class="content-nav row-fluid">
 	        <!-- ul id="navigation-menu" ui:field="ulTaskGroups"-->
-	        <d:BulletListPanel ui:field="ulTaskGroups">	           	          	
+	        <d:BulletListPanel ui:field="ulTaskGroups">	    
+	            <g:InlineLabel ui:field="spnNoItems">No items to display</g:InlineLabel>       	          	
 	       	</d:BulletListPanel>
         </div>
       </div>
       
         
       <!--Detailed Panel Description-->
-      <div id="detailed-info" class="span5">
-          <g:Anchor ui:field="aSimulate" text="Simulate" styleName="btn-success btn-large hidden"></g:Anchor>
-          <g:Anchor ui:field="aEdit" text="Edit" styleName="btn-success btn-large hidden"></g:Anchor>  
-          <g:HTMLPanel ui:field="docContainer">              
+      <div id="detailed-info" class="span5">            
+          <g:HTMLPanel ui:field="docContainer">  
+                          
           </g:HTMLPanel>
                   
       </div>

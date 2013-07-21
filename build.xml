@@ -1,0 +1,24 @@
+<project name="gwtht" basedir="." default="default">
+	<target name="default" depends="war,deploy"></target>
+
+	<!--target name="copydepnd">
+		<copy todir="war/WEB-INF/lib">
+			<fileset dir="../../../ExternalLibraries/" includes="**/*.jar" /> 
+		</copy>
+	</target-->
+	<target name="war">
+		<war basedir="war" destfile="ebusiness.war" webxml="war/WEB-INF/web.xml">
+			<exclude name="WEB-INF/**" />
+			<webinf dir="war/WEB-INF/">
+				<include name="**/*.jar" />
+            			<exclude name="**/gwt-dev.jar" />
+            			<exclude name="**/gwt-user.jar" />
+				<include name="resources/**" />
+			</webinf>
+		</war>
+	</target>
+	<target name="deploy">		
+		<copy file="ebusiness.war" todir="/home/duggan/" />
+	</target>
+</project>
+<!-- http://blog.elitecoderz.net/gwt-and-tomcat-create-war-using-eclipse-to-deploy-war-on-tomcat/2009/12/ -->

@@ -103,6 +103,10 @@ public class AppContext {
 		return user.getFullName();
 	}
 	
+	public static String getUserGroups(){
+		return "";
+	}
+	
 	public static EventBus getEventBus(){
 		return eventBus;
 	}

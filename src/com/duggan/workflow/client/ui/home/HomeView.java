@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.home;
 
+import java.util.HashMap;
+
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.HeadingElement;
@@ -12,6 +15,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -25,26 +29,29 @@ public class HomeView extends ViewImpl implements
 
 	public interface Binder extends UiBinder<Widget, HomeView> {
 	}
-
-	@UiField Anchor aSimulate;
 	
 	@UiField Button btnAdd;
-	
-	@UiField Anchor aEdit;
-	
+		
 	@UiField HTMLPanel docContainer;
 	
 	@UiField BulletListPanel ulTaskGroups;
 	
 	@UiField HeadingElement hCategory;
+	
+	@UiField Hyperlink aDrafts;
+	@UiField Hyperlink aProgress;
+	@UiField Hyperlink aApproved;
+	@UiField Hyperlink aRejected;
+	@UiField Hyperlink aNewReq;
+	@UiField Hyperlink aRecentApprovals;
+	@UiField Hyperlink aFlagged;
 		
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		UIObject.setVisible(aEdit.getElement(), false);
-		ulTaskGroups.setId("navigation-menu");		
-		aEdit.getElement().setAttribute("type","button");
-		aSimulate.getElement().setAttribute("type","button");
+		
+		ulTaskGroups.setId("navigation-menu");
+		
 		btnAdd.getElement().setAttribute("type","button");
 
 		docContainer.addHandler(new ClickHandler() {
@@ -95,25 +102,45 @@ public class HomeView extends ViewImpl implements
 		}
 	}
 
-	public HasClickHandlers getSimulationBtn(){
-		return aSimulate;
-	}
-	
 	public HasClickHandlers getAddButton(){
 		return btnAdd;
-	}
-	
-	public HasClickHandlers getEditButton(){
-		return aEdit;
 	}
 
 	public void setHeading(String heading){
 		hCategory.setInnerText(heading);
 	}
 	
+	
 	@Override
-	public void showEdit(boolean displayed) {
-		UIObject.setVisible(aEdit.getElement(), displayed);
+	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
+		
+		for(TaskType type: alerts.keySet()){
+			String txt = type.getTitle();
+			switch(type){
+				case APPROVALREQUESTDONE:					
+					aRecentApprovals.setText(txt+" ("+alerts.get(type)+")");
+					break;				
+				case APPROVALREQUESTNEW:
+					aNewReq.setText(txt+" ("+alerts.get(type)+")");
+					break;
+				case DRAFT:
+					aDrafts.setText(txt+" ("+alerts.get(type)+")");
+					break;
+				case APPROVED:
+					aApproved.setText(txt+" ("+alerts.get(type)+")");
+					break;		
+				case INPROGRESS:
+					aProgress.setText(txt+" ("+alerts.get(type)+")");
+					break;
+				case REJECTED:
+					aRejected.setText(txt+" ("+alerts.get(type)+")");
+					break;
+				case FLAGGED:
+					aFlagged.setText(txt+" ("+alerts.get(type)+")");
+					break;
+			}
+		}
+		
 	}
 	
 }

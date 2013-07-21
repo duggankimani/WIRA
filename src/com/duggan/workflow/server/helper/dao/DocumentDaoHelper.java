@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.helper.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +11,15 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 
+/**
+ * This class is Dao Helper for persisting all document related entities.
+ * 
+ * @author duggan
+ *
+ */
 public class DocumentDaoHelper {
 
 	public static List<DocSummary> getAllDocuments(DocStatus status) {
@@ -28,6 +36,13 @@ public class DocumentDaoHelper {
 		return lst;
 	}
 
+	/**
+	 * This method saves updates a document
+	 * 
+	 * @param document
+	 * 
+	 * @return Document
+	 */
 	public static Document save(Document document) {
 		DocumentModel model = getDoc(document);
 
@@ -52,6 +67,11 @@ public class DocumentDaoHelper {
 		return doc;
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
 	private static Document getDoc(DocumentModel model) {
 
 		Document doc = new Document();
@@ -71,6 +91,11 @@ public class DocumentDaoHelper {
 		return doc;
 	}
 
+	/**
+	 * 
+	 * @param document
+	 * @return
+	 */
 	private static DocumentModel getDoc(Document document) {
 		DocumentModel model = new DocumentModel(document.getId(),
 				document.getSubject(), document.getDescription(),
@@ -86,6 +111,11 @@ public class DocumentDaoHelper {
 		return model;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public static Document getDocument(Integer id) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
@@ -94,6 +124,11 @@ public class DocumentDaoHelper {
 		return getDoc(model);
 	}
 
+	/**
+	 * 
+	 * @param content
+	 * @return
+	 */
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
 		Object idStr = content.get("documentId");
@@ -120,6 +155,11 @@ public class DocumentDaoHelper {
 		return doc;
 	}
 
+	/**
+	 * 
+	 * @param docId
+	 * @param isApproved
+	 */
 	public static void saveApproval(Integer docId,
 			Boolean isApproved) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
@@ -131,5 +171,15 @@ public class DocumentDaoHelper {
 		model.setStatus(isApproved? DocStatus.APPROVED: DocStatus.REJECTED);
 		
 		dao.saveDocument(model);
+	}
+
+	public static void getCounts(HashMap<TaskType, Integer> counts) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		
+		counts.put(TaskType.DRAFT, dao.count(DocStatus.DRAFTED));
+		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
+		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
+		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
+		//counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 }

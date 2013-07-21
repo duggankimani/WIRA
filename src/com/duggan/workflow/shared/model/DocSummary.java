@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public abstract class DocSummary implements Serializable{
+public abstract class DocSummary implements Serializable,Comparable<DocSummary>{
 
 	/**
 	 * 
@@ -22,5 +22,15 @@ public abstract class DocSummary implements Serializable{
 	public abstract Integer getPriority();
 
 	public abstract Object getId();
+	
+	/**
+	 * Sorts document/task elements in descending order
+	 * hence the negative sign (-)
+	 */
+	@Override
+	public int compareTo(DocSummary o) {
+		
+		return - getCreated().compareTo(o.getCreated());
+	}
 
 }

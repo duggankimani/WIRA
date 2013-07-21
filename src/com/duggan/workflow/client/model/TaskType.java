@@ -7,7 +7,7 @@ public enum TaskType {
 	APPROVED("approved", "Approved"),
 	REJECTED("rejected", "Rejected"),
 	APPROVALREQUESTNEW("appreqnew", "New Requests"),
-	APPROVALREQUESTDONE("appredone", "Completed Approvals"),
+	APPROVALREQUESTDONE("appredone", "Completed"),
 	FLAGGED("flagged", "Flagged");
 	
 	String url;

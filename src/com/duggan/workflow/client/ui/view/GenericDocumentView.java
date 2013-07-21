@@ -43,10 +43,9 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField
 	SpanElement spnDescription;
 
-//	@UiField
-//	DivElement divValue;
-//	@UiField
-//	DivElement divPartner;
+	@UiField Anchor aSimulate;
+	
+	@UiField Anchor aEdit;
 	
 	@UiField Anchor aApprove;
 	
@@ -57,8 +56,9 @@ public class GenericDocumentView extends ViewImpl implements
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-//		UIObject.setVisible(divValue, false);
-//		UIObject.setVisible(divPartner, false);
+		UIObject.setVisible(aEdit.getElement(), false);
+		aEdit.getElement().setAttribute("type","button");
+		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
 		UIObject.setVisible(aApprove.getElement(), false);
 		UIObject.setVisible(aReject.getElement(), false);
@@ -84,7 +84,7 @@ public class GenericDocumentView extends ViewImpl implements
 			spnSubject.setInnerText(subject);
 
 		if (docDate != null)
-			spnDocDate.setInnerText("Dated "+DATEFORMAT.format(docDate));
+			spnDocDate.setInnerText(DATEFORMAT.format(docDate));
 
 		if(value!=null){
 			spnValue.setInnerText(value);
@@ -159,6 +159,23 @@ public class GenericDocumentView extends ViewImpl implements
 		UIObject.setVisible(aApprove.getElement(), IsShowapprovalLink);
 		UIObject.setVisible(aReject.getElement(), IsShowapprovalLink);
 	}
+	
+
+	public HasClickHandlers getSimulationBtn(){
+		return aSimulate;
+	}
+	
+	
+	public HasClickHandlers getEditButton(){
+		return aEdit;
+	}
+
+	@Override
+	public void showEdit(boolean displayed) {
+		UIObject.setVisible(aEdit.getElement(), displayed);
+		System.err.println("Edit: "+displayed);
+	}
+
 	
 	
 }

@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.header;
 
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.github.gwtbootstrap.client.ui.base.InlineLabel;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,6 +17,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, HeaderView> {
 	}
 	
+	@UiField SpanElement spnUser;
+	@UiField SpanElement spnUserPull;
 
 	@UiField Anchor aLogout;
 	
@@ -30,5 +34,17 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	
 	public HasClickHandlers getLogout(){
 		return aLogout;
+	}
+	
+	public void setValues(String user_names){
+		
+		if(user_names!=null){
+			spnUser.setInnerText(user_names);
+			spnUserPull.setInnerText(user_names);
+		}
+		else{
+			spnUser.setInnerText("");
+			spnUserPull.setInnerText("");
+		}
 	}
 }

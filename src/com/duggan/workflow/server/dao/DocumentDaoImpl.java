@@ -74,4 +74,13 @@ public class DocumentDaoImpl {
 		em.flush();
 		
 	}
+
+	public Integer count(DocStatus status) {
+
+		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d where status=:status and createdBy=:createdBy").
+				setParameter("status", status).
+				setParameter("createdBy", SessionHelper.getCurrentUser().getId()).getSingleResult();
+		 
+		 return value.intValue();
+	}
 }

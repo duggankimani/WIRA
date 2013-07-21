@@ -1,13 +1,13 @@
-*body {
+/*body {
 	font-family: 'Open Sans', sans-serif;
 	background-color: #f7f7f7;
 	position: relative;
 	margin: 0px;
 	font-size: 12px;
 	padding: 0px;
-	/*overflow-y:hidden;*/ 
-	/*-webkit-font-smoothing: antialiased;*/
-}
+	overflow-y:hidden;
+	-webkit-font-smoothing: antialiased;
+}*/
 h1,h2,h3,h4,h5 {
 	margin: 0;
 	line-height: inherit;
@@ -852,12 +852,4 @@ textarea{
 		left: 0;
 		height: 100%;
 	}
-}
-
-.hidden{
-	display:none;
-}
-
-.wfactions a{
-	display:inline;
 }

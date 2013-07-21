@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.home;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.gwtplatform.common.client.IndirectProvider;
@@ -13,6 +14,7 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -27,12 +29,13 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
@@ -62,14 +65,13 @@ import com.duggan.workflow.shared.responses.LogoutActionResult;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
-		DocumentSelectionHandler, ReloadHandler{
+		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler{
 
 	public interface MyView extends View {
-		HasClickHandlers getSimulationBtn();
-		HasClickHandlers getAddButton();
-		HasClickHandlers getEditButton();
-		void showEdit(boolean displayed);	
+		
+		HasClickHandlers getAddButton();	
 		void setHeading(String heading);
+		void bindAlerts(HashMap<TaskType, Integer> alerts);
 	}
 
 	@ProxyCodeSplit
@@ -99,11 +101,6 @@ public class HomePresenter extends
 	
 	final CurrentUser user;
 	
-	enum MODE{
-		EDIT,
-		CREATE
-	}
-	
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final CurrentUser user,
@@ -130,44 +127,8 @@ public class HomePresenter extends
 		addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
-				
-		getView().getEditButton().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				if(selectedValue!=null){
-					showEditForm(MODE.EDIT);
-				}
-			}
-		});
-		
-		//testing code
-		getView().getSimulationBtn().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Document doc = new Document();
-				doc.setCreated(new Date());
-				doc.setDateDue(new Date());
-				doc.setSubject("CNT/B&C/01/2013");
-				doc.setDescription("Contract for the constrution of Hall6");
-				doc.setPartner("B&C Contactors");
-				doc.setValue("5.5Mil");
-				doc.setType(DocType.CONTRACT);
-				
-				dispatcher.execute(new ApprovalRequest(user.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
-					@Override
-					public void processResult(ApprovalRequestResult result) {						
-						PlaceRequest request = new PlaceRequest("home").
-								with("type", TaskType.APPROVALREQUESTNEW.getDisplayName());
-						
-						placeManager.revealPlace(request);
-						
-					}
-				});
-			}
-		});
-		
+		addRegisteredHandler(AlertLoadEvent.TYPE, this);
+					
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -196,7 +157,6 @@ public class HomePresenter extends
 	}	
 
 	private void clear() {
-		getView().showEdit(false);
 		//clear document slot
 		setInSlot(DOCUMENT_SLOT, null);
 	}
@@ -263,9 +223,7 @@ public class HomePresenter extends
 			
 			if(dates.contains(dt)){
 				fireEvent(new PresentTaskEvent(tasks.get(i)));
-				System.out.println("### [2] Doc -- "+doc);
 			}else{
-				System.out.println("### [1] Doc -- "+doc);
 				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
 					@Override
 					public void processResult(DateGroupPresenter result) {
@@ -311,9 +269,6 @@ public class HomePresenter extends
 		Integer id = event.getDocumentId();
 		this.selectedValue=id;
 		
-		if(selectedValue!=null){
-			getView().showEdit(true);
-		}
 		displayDocument();
 	}
 	
@@ -340,5 +295,11 @@ public class HomePresenter extends
 	@Override
 	public void onReload(ReloadEvent event) {
 		loadTasks();
+	}
+
+	@Override
+	public void onAlertLoad(AlertLoadEvent event) {
+		event.getAlerts();
+		getView().bindAlerts(event.getAlerts());
 	}
 }

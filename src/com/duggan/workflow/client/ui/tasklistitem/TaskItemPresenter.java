@@ -248,7 +248,7 @@ public class TaskItemPresenter extends
 		submitRequest(action, null);
 	}
 	
-	protected void submitRequest(Actions action, Map<String, ParamValue> values) {
+	protected void submitRequest(final Actions action, Map<String, ParamValue> values) {
 		workflow.setAction(action);
 		workflow.setValues(values);
 				
@@ -263,9 +263,23 @@ public class TaskItemPresenter extends
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
 				//refresh list
-				fireEvent(new ReloadEvent());
+				//
+								
+				if(action==Actions.COMPLETE){
+					removeFromParent();
+				}else{
+					refreshTask();
+				}
 			}
 		});
+	}
+
+	protected void refreshTask() {
+		fireEvent(new ReloadEvent());
+	}
+
+	protected void removeFromParent() {
+		this.getView().asWidget().removeFromParent();
 	}
 
 	public void setDocSummary(DocSummary summaryTask) {
@@ -309,9 +323,9 @@ public class TaskItemPresenter extends
 		
 		HTSummary summary = (HTSummary)task;
 		
-//		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
-//			event.setValidActions(summary.getStatus().getValidActions());
-//		}
+		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
+			event.setValidActions(summary.getStatus().getValidActions());
+		}
 	}
 
 	@Override

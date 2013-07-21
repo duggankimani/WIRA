@@ -1,26 +1,34 @@
 package com.duggan.workflow.client.ui.view;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.duggan.workflow.client.model.MODE;
+import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
+import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -44,6 +52,10 @@ public class GenericDocumentPresenter extends
 		public HasClickHandlers getRejectButton();
 
 		public void show(boolean IsShowapprovalLink, boolean IsShowRejectLink);
+		
+		HasClickHandlers getSimulationBtn();
+		HasClickHandlers getEditButton();
+		void showEdit(boolean displayed);
 	}
 
 	Integer documentId;
@@ -52,9 +64,14 @@ public class GenericDocumentPresenter extends
 	
 	@Inject DispatchAsync requestHelper;
 	
+	@Inject PlaceManager placeManager;
+	
+	private IndirectProvider<CreateDocPresenter> createDocProvider;
+	
 	@Inject
-	public GenericDocumentPresenter(final EventBus eventBus, final MyView view) {
-		super(eventBus, view);
+	public GenericDocumentPresenter(final EventBus eventBus, final MyView view, Provider<CreateDocPresenter> docProvider) {
+		super(eventBus, view);		
+		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 	}
 
 	@Override
@@ -66,9 +83,12 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				requestHelper.execute(new ApprovalRequest("calcacuervo", doc), new TaskServiceCallback<ApprovalRequestResult>(){
+				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
 					@Override
 					public void processResult(ApprovalRequestResult result) {
+						GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
+						//clear selected document
+						fireEvent(new AfterSaveEvent());
 					}
 				});
 				
@@ -93,6 +113,60 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
+		getView().getEditButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(doc.getStatus()==DocStatus.DRAFTED)
+					showEditForm(MODE.EDIT);
+				}
+		});
+		
+		//testing code
+		getView().getSimulationBtn().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Document doc = new Document();
+				doc.setCreated(new Date());
+				doc.setDateDue(new Date());
+				doc.setSubject("CNT/B&C/01/2013");
+				doc.setDescription("Contract for the constrution of Hall6");
+				doc.setPartner("B&C Contactors");
+				doc.setValue("5.5Mil");
+				doc.setType(DocType.CONTRACT);
+				
+				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
+					@Override
+					public void processResult(ApprovalRequestResult result) {						
+						PlaceRequest request = new PlaceRequest("home").
+								with("type", TaskType.APPROVALREQUESTNEW.getDisplayName());
+						
+						placeManager.revealPlace(request);
+						
+					}
+				});
+			}
+		});
+	
+		
+	}
+	
+	protected void showEditForm(final MODE mode) {
+		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
+			@Override
+			public void processResult(CreateDocPresenter result) {
+				if(mode.equals(MODE.EDIT)){
+					result.setDocumentId(documentId);
+				}
+				
+				addToPopupSlot(result, true);				
+			}
+		});
+	}
+
+	private void clear() {
+		getView().showEdit(false);
 	}
 	
 	@Override
@@ -118,6 +192,12 @@ public class GenericDocumentPresenter extends
 					
 					getView().setValues(created,
 							docType, subject, docDate,  value, partner, description, priority,status);
+					
+					if(status==DocStatus.DRAFTED){
+						getView().showEdit(true);
+					}else{
+						clear();
+					}
 					
 					AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId);
 					fireEvent(e);

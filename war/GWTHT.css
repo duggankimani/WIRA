@@ -3,3 +3,39 @@
 .dummycontainer{
 	display:none;
 }
+
+.hidden{
+	display:none;
+}
+
+#navigation-menu ul.submenu .wfactions a{
+	display:inline;
+}
+
+.button-group{
+	text-align:center;
+}
+
+.button-group button{
+	margin-right:3px;
+}
+
+.button-group {
+	background: url("images/gradient-t-b.png") repeat-x scroll 0 0 transparent;
+	border-top: 1px solid #D5D7DB;
+	padding: 10px;
+	text-align: center;
+}
+
+.mandatory{
+	color:red
+}
+
+.priority-group{
+	display:inline;
+}
+
+.priority-group input, .priority-group label{
+	display:inline;
+	margin-right:5px;
+}

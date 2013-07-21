@@ -39,7 +39,6 @@ public class DateGroupView extends ViewImpl implements
 			ulItemsContainer.clear();
 			
 			if(content!=null){
-				System.err.println("adiing....");
 				ulItemsContainer.add(content);
 			}
 		}else{
@@ -54,7 +53,6 @@ public class DateGroupView extends ViewImpl implements
 		if(slot==ITEM_SLOT){
 			
 			if(content!=null){
-				System.err.println("adiing....");
 				ulItemsContainer.add(content);
 			}
 		}else{

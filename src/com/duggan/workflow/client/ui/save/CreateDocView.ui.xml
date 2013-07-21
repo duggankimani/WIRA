@@ -15,7 +15,7 @@
 	    
 	    <table class="edittable">
 	        <tr>
-	            <td class="label">Document Type</td>
+	            <td class="label" ui:field="tdDocType">Document Type</td>
 	            <td>
 	                <g:ListBox ui:field="lstDocumentType" title="Type of document e.g Invoice, Contract etc - mandatory"></g:ListBox>
 	                <span class="mandatory" title="Required Field">*</span>
@@ -62,9 +62,11 @@
 	        <tr>
 	            <td class="label">Priority</td>
 	            <td>
-	                <g:CheckBox ui:field="chkNormal"/>Normal
-	                <g:CheckBox ui:field="chkHigh"/>High
-	                <g:CheckBox ui:field="chkCritical"/>Urgent
+	                <div class="priority-group">
+		                <g:CheckBox ui:field="chkNormal" text="Normal"/>
+		                <g:CheckBox ui:field="chkHigh" text="High"/>
+		                <g:CheckBox ui:field="chkCritical" text="Urgent"/>
+	                </div>
 	            </td>
 	        </tr>
 	        

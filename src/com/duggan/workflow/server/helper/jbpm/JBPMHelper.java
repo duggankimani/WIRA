@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.helper.jbpm;
 
+import static com.duggan.workflow.server.helper.dao.DocumentDaoHelper.getDocument;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.TransactionManager;
-
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
@@ -21,14 +21,11 @@ import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
-import org.drools.persistence.info.SessionInfo;
 import org.drools.persistence.jpa.JPAKnowledgeService;
 import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
-import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
-import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
@@ -47,13 +44,8 @@ import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.task.utils.ContentMarshallerHelper;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.core.support.LdapContextSource;
-import org.springframework.security.ldap.server.ApacheDSContainer;
-import org.springframework.transaction.jta.JtaTransactionManager;
 
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
-
 import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.client.model.TaskType;
@@ -64,12 +56,10 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTAccessType;
 import com.duggan.workflow.shared.model.HTComment;
 import com.duggan.workflow.shared.model.HTData;
-import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTStatus;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
-
-import static com.duggan.workflow.server.helper.dao.DocumentDaoHelper.*;
 
 /**
  * This is a Helper Class for all JBPM associated requests.
@@ -129,7 +119,8 @@ public class JBPMHelper implements Closeable{
 
 	/**
 	 * Creates a StatefulKnowledgeSession
-	 * @return
+	 * 
+	 * @return {@link StatefulKnowledgeSession}
 	 */
 	private StatefulKnowledgeSession initializeSession() {
 		
@@ -152,8 +143,7 @@ public class JBPMHelper implements Closeable{
     	env.set(EnvironmentName.TRANSACTION_MANAGER, TransactionManagerServices.getTransactionManager());
     	
     	session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
-    	
-    	
+    	    	
     	//Process Logger - to Provide data for querying process status
     	//:- How far a particular approval has gone
     	mlogger = new JPAWorkingMemoryDbLogger(session);
@@ -191,20 +181,6 @@ public class JBPMHelper implements Closeable{
 			}
 		}
 	}
-
-	/**
-	 * This is a test method for JBPM Transaction
-	 * management. Key to note: JBPM does not support use of local transactions
-	 * 
-	 *  ideas borrowed from here http://docs.jboss.org/jbpm/v5.3/userguide/ch.core-persistence.html#d0e3744
-	 *  
-	 */
-	public void createTrx(){
-		Environment env = KnowledgeBaseFactory.newEnvironment();
-		env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, DB.getEntityManagerFactory());
-		//env.set(EnvironmentName.TRANSACTION_MANAGER, new JtaTransactionManager()); //find a transaction manager to use
-		
-	}
 	
 	/**
 	 * This method creates initiates an approval process for a document. 
@@ -222,26 +198,44 @@ public class JBPMHelper implements Closeable{
 		
 		ProcessInstance processInstance = session.startProcess("invoice-approval", initialParams);
 		
+		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
+		
 		assert (ProcessInstance.STATE_ACTIVE ==processInstance.getState());
 		
 	}
 	
-	public void setCount(String userId, HashMap<TaskType, Integer> counts){
-		List approvalTasks = getTasksForUser(userId, TaskType.APPROVALREQUESTNEW);
-		counts.put(TaskType.APPROVALREQUESTNEW, approvalTasks.size());
-		
-		List completed = getTasksForUser(userId, TaskType.APPROVALREQUESTDONE);
-		counts.put(TaskType.APPROVALREQUESTDONE, completed.size());
-	}
-	
-	public void getDocumentStatus(){
-		
-		//JPAProcessInstanceDbLog dblogger =  JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
+	/**
+	 * Count the number of tasks - completed/ or new
+	 * 
+	 * @param userId
+	 * @param counts
+	 */
+	public void getCount(String userId, HashMap<TaskType, Integer> counts){	
+
+//		List approvalTasks = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
+//				Arrays.asList(Status.Created,
+//						Status.InProgress,
+//						Status.Error,
+//						Status.Exited,
+//						Status.Failed,
+//						Status.Obsolete,
+//						Status.Ready,
+//						Status.Reserved,
+//						Status.Suspended), 
+//				"en-UK");
+//		counts.put(TaskType.APPROVALREQUESTNEW, approvalTasks.size());
+//		
+//		
+//		List completed = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
+//				Arrays.asList(Status.Completed), 
+//				"en-UK");
+//		counts.put(TaskType.APPROVALREQUESTDONE, completed.size());
 	}
 	
 	/**
 	 * 
 	 * This method retrieves all tasks assigned to a user.
+	 * <p>
 	 * @param userId This is the username of the user whose tasks are to be retrieved
 	 * @param type 
 	 * @return List This is a list of human task summaries retrieved for the user
@@ -264,6 +258,7 @@ public class JBPMHelper implements Closeable{
 			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
 					Arrays.asList(Status.Completed), 
 					"en-UK");
+			break;
 		case APPROVALREQUESTNEW:
 			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
 					Arrays.asList(Status.Created,
@@ -320,7 +315,7 @@ public class JBPMHelper implements Closeable{
 	 * @return HTask Human Task DTO object retrieved
 	 */
 	public HTask getTask(long taskId){
-		
+
 		//Human Task
 		HTask myTask = new HTask(); 
 		
@@ -431,18 +426,20 @@ public class JBPMHelper implements Closeable{
 	}
 	
 	/**
-	 * 
+	 * <p>
 	 * This method returns the Values passed when the task was initiated
 	 * Several methods of retrieving these parameters are offered
-	 * online but the use of {@link ContentMarshallerHelper} is what worked
-	 * for me. 
+	 * online but the use of {@link ContentMarshallerHelper} is what worked in this instance
 	 * 
+	 * <p>
 	 * The use of {@link ObjectInputStream} to read the bytes failed with an {@link OptionalDataException}; trying
 	 * to fix this did not work.
 	 * 
-	 * Further, if the Content value of the JBPM task(JBPM Task properties) is set, it overrides
+	 * <p>
+	 * Further, if the Content value of the JBPM task(<i>JBPM Task properties</i>) is set, it overrides
 	 * any inputs(map) passed to the process when the task is created {@link #createApprovalRequest(HTSummary)}
 	 * 
+	 * <p>
 	 * @param task
 	 * @return Parameter-Value Map for a task
 	 */
@@ -481,29 +478,7 @@ public class JBPMHelper implements Closeable{
 		
 		return params;
 	}
-
-	/**
-	 * This method claims a task
-	 * 
-	 * @param taskId Task Id of the task to be claimed
-	 * @param userId the username of the person claiming the task
-	 * @return true
-	 */
-	private boolean claim(long taskId, String userId){
 		
-		this.service.claim(taskId, userId);
-		
-		return true;
-	}
-	
-	
-	private boolean start(long taskId, String userId){
-		
-		this.service.start(taskId, userId);
-		
-		return true;
-	}
-	
 	private boolean complete(long taskId, String userId, Map<String, Object> values){
 		
 		Map<String, Object> content = getMappedData(service.getTask(taskId));
@@ -529,11 +504,7 @@ public class JBPMHelper implements Closeable{
 			get().service.claim(taskId, userId);
 			break;
 		case COMPLETE:
-			get().complete(taskId, userId, values);
-			System.err.println("Completing Document -- TaskId "+taskId);
-			for(String key:values.keySet()){
-				System.err.println("var>>  "+key+" : "+values.get(key));
-			}
+			get().complete(taskId, userId, values);			
 			break;
 		case DELEGATE:
 			//get().service.delegate(taskId, userId, targetUserId);
@@ -547,10 +518,10 @@ public class JBPMHelper implements Closeable{
 		case REVOKE:
 			break;
 		case START:
-			get().start(taskId, userId);
+			get().service.start(taskId, userId);
 			break;
 		case STOP:
-			get().service.start(taskId, userId);
+			get().service.stop(taskId, userId);
 			break;
 		case SUSPEND:
 			get().service.suspend(taskId, userId);

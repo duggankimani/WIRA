@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.duggan.workflow.client.model.TaskType;
@@ -61,6 +62,9 @@ public class GetTaskListActionHandler extends
 		}
 
 		GetTaskListResult result = (GetTaskListResult) actionResult;
+		
+		Collections.sort(summary);
+		
 		result.setTasks(summary);
 
 		return result;

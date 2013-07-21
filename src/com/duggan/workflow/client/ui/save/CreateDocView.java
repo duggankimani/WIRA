@@ -5,6 +5,7 @@ import java.util.Date;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.Priority;
 import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -30,6 +32,8 @@ public class CreateDocView extends PopupViewImpl implements
 	public interface Binder extends UiBinder<Widget, CreateDocView> {
 	}
 
+	@UiField TableCellElement tdDocType;
+	
 	@UiField HasClickHandlers btnSave;
 	@UiField HasClickHandlers btnApproval;
 	@UiField HasClickHandlers btnCancel;
@@ -52,7 +56,6 @@ public class CreateDocView extends PopupViewImpl implements
 	public CreateDocView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
-		
 		dtDocDate.setFormat(new DateBox.DefaultFormat(DATEFORMAT));
 		
 		lstDocumentType.addItem("--Document type--", "");
@@ -112,6 +115,7 @@ public class CreateDocView extends PopupViewImpl implements
 		doc.setDocumentDate(dtDocDate.getValue());
 		doc.setPartner(txtPartner.getValue());
 		doc.setValue(txtValue.getValue());
+		doc.setPriority(getPriority().ordinal());
 		
 		DocType type=null;
 		int sel = lstDocumentType.getSelectedIndex();
@@ -156,7 +160,7 @@ public class CreateDocView extends PopupViewImpl implements
 
 	@Override
 	public void setValues(DocType docType, String subject, Date docDate,
-			String partner, String value, String description, Integer priority) {
+			String partner, String value, String description, Priority priority) {
 	
 		if(docType!=null)
 		setDocumentType(docType);
@@ -176,8 +180,42 @@ public class CreateDocView extends PopupViewImpl implements
 		if(description!=null)
 		txtDescription.setValue(description);
 		
+		if(priority==null){
+			priority = Priority.NORMAL;
+		}
+		
+		setPriority(priority);
+		
 	}
 
+	private void setPriority(Priority priority) {
+		switch(priority){
+		case CRITICAL:
+			chkCritical.setValue(true);
+			break;
+		case HIGH:
+			chkHigh.setValue(true);
+			break;
+		case NORMAL:
+			chkNormal.setValue(true);
+			break;
+		}
+	}
+
+	public Priority getPriority(){
+		Priority priority = Priority.NORMAL;
+		
+		if(chkCritical.getValue()){
+			priority = Priority.CRITICAL;
+		}
+		
+		if(chkHigh.getValue()){
+			priority = Priority.HIGH;
+		}
+		
+		return priority;
+	}
+	
 	private void setDocumentType(DocType docType) {
 		if(docType!=null){
 			for(int i=0; i<lstDocumentType.getItemCount(); i++){

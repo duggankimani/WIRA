@@ -39,7 +39,6 @@ public class DateGroupPresenter extends
 	}
 	
 	public void setDate(String dt){
-		System.err.println("Date:: "+dt);
 		this.date = dt;
 		getView().setDate(dt);
 	}
