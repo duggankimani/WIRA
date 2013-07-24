@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.duggan.workflow.server.actionhandlers.ServerConstants;
+import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.HTUser;
 
 /**
@@ -25,6 +26,7 @@ public class SessionHelper{
 	 * @return User This is the currently logged in user
 	 */
 	public static HTUser getCurrentUser(){
+				
 		HttpSession session = request.get().getSession(false);
 		if(session==null){
 			return null;
@@ -49,5 +51,9 @@ public class SessionHelper{
 	
 	public static void afterRequest(){
 		request.set(null);
+	}
+	
+	public static HttpServletRequest getHttpRequest(){
+		return request.get();
 	}
 }

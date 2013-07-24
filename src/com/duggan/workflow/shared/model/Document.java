@@ -39,6 +39,7 @@ public class Document extends DocSummary implements Serializable{
 	
 	private Date dateDue;
 	
+	private Long processInstanceId;
 
 	public Document() {
 		//serialization
@@ -158,4 +159,13 @@ public class Document extends DocSummary implements Serializable{
 	public void setDateDue(Date dateDue) {
 		this.dateDue = dateDue;
 	}
+
+	public Long getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
 }

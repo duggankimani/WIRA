@@ -5,7 +5,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
              xmlns:orm="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns="http://java.sun.com/xml/ns/persistence">
 
-    <persistence-unit name="org.jbpm.task" transaction-type="JTA">
+    <persistence-unit name="org.jbpm.persistence.jpa" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
   		<jta-data-source>jdbc/ebusinessds</jta-data-source>
         <mapping-file>META-INF/Taskorm.xml</mapping-file>

@@ -72,6 +72,7 @@ public class HomePresenter extends
 		HasClickHandlers getAddButton();	
 		void setHeading(String heading);
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
+		HasClickHandlers getRefreshButton();
 	}
 
 	@ProxyCodeSplit
@@ -137,6 +138,14 @@ public class HomePresenter extends
 				showEditForm(MODE.CREATE);
 			}
 		});
+		
+		getView().getRefreshButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				loadTasks();
+			}
+		});
 	}
 
 	/**
@@ -158,7 +167,8 @@ public class HomePresenter extends
 
 	private void clear() {
 		//clear document slot
-		setInSlot(DOCUMENT_SLOT, null);
+		setInSlot(DATEGROUP_SLOT, null);
+		setInSlot(DOCUMENT_SLOT, null);	
 	}
 	
 	private void loadTasks() {
@@ -170,6 +180,7 @@ public class HomePresenter extends
 	 * @param type
 	 */
 	private void loadTasks(final TaskType type) {
+		clear();
 		getView().setHeading(type.getTitle());
 		
 		String userId = user.getUserId();

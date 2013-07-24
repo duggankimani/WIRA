@@ -55,6 +55,8 @@ public class DocumentModel extends PO{
 	@Enumerated(EnumType.STRING)
 	private DocStatus status;
 	
+	private Long processInstanceId;
+	
 	public DocumentModel(){
 		
 	}
@@ -136,6 +138,14 @@ public class DocumentModel extends PO{
 
 	public void setStatus(DocStatus status) {
 		this.status = status;
+	}
+
+	public void setProcessInstanceId(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
+	public Long getProcessInstanceId() {
+		return processInstanceId;
 	}
 	
 }

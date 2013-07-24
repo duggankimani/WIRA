@@ -115,7 +115,6 @@ public class CreateDocPresenter extends
 									PlaceRequest request = new PlaceRequest("home").
 											with("type", TaskType.DRAFT.getDisplayName());
 									
-									//loadTasks(TaskType.APPROVALREQUESTNEW);
 									placeManager.revealPlace(request);
 									
 									getView().hide();

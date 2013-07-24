@@ -58,6 +58,7 @@ public class DocumentDaoHelper {
 			model.setType(document.getType());
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
+			model.setProcessInstanceId(document.getProcessInstanceId());
 		}
 
 		model = dao.saveDocument(model);
@@ -107,7 +108,8 @@ public class DocumentDaoHelper {
 		model.setValue(document.getValue());
 		model.setCreated(document.getCreated());
 		model.setStatus(document.getStatus());
-
+		model.setProcessInstanceId(document.getProcessInstanceId());
+		
 		return model;
 	}
 

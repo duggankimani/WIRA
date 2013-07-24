@@ -19,6 +19,7 @@ import org.drools.SystemEventListenerFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.definition.process.Node;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.persistence.jpa.JPAKnowledgeService;
@@ -26,7 +27,10 @@ import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
+import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
+import org.jbpm.process.audit.NodeInstanceLog;
+import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.AccessType;
@@ -44,13 +48,19 @@ import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.task.utils.ContentMarshallerHelper;
+import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
+import org.jbpm.workflow.core.node.HumanTaskNode;
+import org.jbpm.workflow.core.node.StartNode;
 
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTAccessType;
@@ -91,6 +101,14 @@ public class JBPMHelper implements Closeable{
 			
 			//register work item handlers
 			session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
+			
+			EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
+					EmailServiceHelper.getProperty("smtp.host"),
+					EmailServiceHelper.getProperty("smtp.port"),
+					EmailServiceHelper.getProperty("smtp.user"),
+					EmailServiceHelper.getProperty("smtp.password"));
+			emailHandler.getConnection().setStartTls(true);
+			session.getWorkItemManager().registerWorkItemHandler("Email", emailHandler);
 			
 			GenericHTWorkItemHandler htHandler = this.createTaskHandler(session);
 			session.getWorkItemManager().registerWorkItemHandler("Human Task", htHandler);
@@ -197,8 +215,9 @@ public class JBPMHelper implements Closeable{
 		initialParams.put("value", null);
 		
 		ProcessInstance processInstance = session.startProcess("invoice-approval", initialParams);
-		
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
+		summary.setProcessInstanceId(processInstance.getId());
+		DocumentDaoHelper.save(summary);
 		
 		assert (ProcessInstance.STATE_ACTIVE ==processInstance.getState());
 		
@@ -530,6 +549,60 @@ public class JBPMHelper implements Closeable{
 				
 	}
 	
+	
+	public void getWorkFlowHistory(long processInstanceId){
+		List<NodeInstanceLog> nodeInstanceLogs = JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
+		for(NodeInstanceLog log: nodeInstanceLogs){
+			
+			String name = log.getNodeName();
+			Date date = log.getDate();
+			int type = log.getType(); // 0=in, 1=out
+			String nodeInstanceId = log.getNodeInstanceId();
+			//get output data for each node
+			
+			System.err.println(nodeInstanceId+" : Name - "+name + ", Date - "+date+ ", Type - "+type);
+		}
+	}
+	
+	public void getProcessDia(long processInstanceId){
+		
+		String processDefId = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId).getProcessId();
+		org.drools.definition.process.Process process = kbase.getProcess(processDefId);
+		
+		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl)process;
+		
+		
+		for(Node node : wfprocess.getNodes()){
+			
+			long nodeId = node.getId();
+			List<NodeInstanceLog> nodeLogInstance =
+					JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, new Long(nodeId).toString());
+		
+			String nodeName = node.getName();
+			
+			System.err.println(nodeName+"# size= "+nodeLogInstance.size());
+			
+			StartNode s;
+			HumanTaskNode ht;
+			
+			//ht.get
+			
+			if(nodeLogInstance.size() == 1){
+				//Executed nodes only
+				
+				Object x = node.getMetaData().get("x");
+				Object y = node.getMetaData().get("x");
+				Object width = node.getMetaData().get("width");
+				Object height = node.getMetaData().get("height");
+				System.err.println("Done: "+nodeName+" : x= "+x+", y="+y+", w="+width+", h="+height);
+			}else{
+				//System.err.println("Awaiting: Node name= "+nodeName);
+			}
+						
+			//nodeInstance.get
+		}
+
+	}
 	
 	
 }

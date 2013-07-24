@@ -8,7 +8,8 @@
 
 	<g:DialogBox text="Error" modal="true" width="500px" glassEnabled="true">
 	    <g:HTMLPanel>
-		    <g:InlineLabel ui:field="spnError"></g:InlineLabel>
+		    <span ui:field="spnError"></span>
+		    <g:Hyperlink ui:field="lnkError" targetHistoryToken="#"></g:Hyperlink>
 		    <g:FlowPanel styleName="button-group reportbutton">
 		        <g:Button ui:field="btnOk" text="Ok"></g:Button>
 		    </g:FlowPanel>

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 /**
@@ -91,7 +92,7 @@ public class DB{
 		synchronized (log) {
 			if(emf==null){
 				try{				
-					emf = Persistence.createEntityManagerFactory("org.jbpm.task");
+					emf = Persistence.createEntityManagerFactory("org.jbpm.persistence.jpa");
 				}catch(Exception e){
 					e.printStackTrace();
 				}
@@ -184,6 +185,7 @@ public class DB{
 			getUserTrx().rollback();
 			
     	}catch(Exception e){
+    		e.printStackTrace();
     		throw new RuntimeException(e);
     	}
 	}
@@ -191,6 +193,7 @@ public class DB{
 	private static UserTransaction getUserTrx() throws NamingException {
 		Context ctx = new InitialContext();
 		UserTransaction userTrx = (UserTransaction)ctx.lookup("java:comp/UserTransaction");
+		System.err.println(userTrx.toString());
 		return userTrx;
 	}
 	
@@ -208,6 +211,11 @@ public class DB{
 	
 	public static DocumentDaoImpl getDocumentDao(){
 		return factory().getDocumentDao(getEntityManager());
+	}
+	
+	public static ErrorDaoImpl getErrorDao() {
+
+		return factory().getErrorDao(getEntityManager());
 	}
 
 	private static void closeFactory() {

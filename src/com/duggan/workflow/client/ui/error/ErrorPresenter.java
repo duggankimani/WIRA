@@ -9,7 +9,7 @@ public class ErrorPresenter extends PresenterWidget<ErrorPresenter.MyView> {
 
 	public interface MyView extends PopupView {
 
-		void setMessage(String message);
+		void setMessage(String message, Integer id);
 		
 	}
 
@@ -22,9 +22,8 @@ public class ErrorPresenter extends PresenterWidget<ErrorPresenter.MyView> {
 	protected void onBind() {
 		super.onBind();
 	}
-
-	public void setMessage(String message) {
-
-		getView().setMessage(message);
+	
+	public void setMessage(String message, Integer id) {
+		getView().setMessage(message, id);
 	}
 }

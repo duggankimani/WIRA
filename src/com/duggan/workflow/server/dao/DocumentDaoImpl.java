@@ -64,14 +64,21 @@ public class DocumentDaoImpl {
 		}
 		
 		em.persist(document);
-		em.flush();
+		
+		/*
+		 * Do not flush - This reflects data in the database immediately and the BTM transaction 
+		 * in my tests so far cannot rollback the flushed data - You can actually query the new values 
+		 * directly from the database even as the transaction is ongoing - Could it be the isolation
+		 * level being used in the db?
+		 * 
+		 */
+		//em.flush();
 		return document;
 	}
 	
 	public void delete(DocumentModel document){
 		
 		em.remove(document);
-		em.flush();
 		
 	}
 

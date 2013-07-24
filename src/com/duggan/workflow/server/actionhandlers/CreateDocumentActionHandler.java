@@ -28,7 +28,6 @@ public class CreateDocumentActionHandler extends
 			throws ActionException {
 				
 		Document doc = action.getDocument();
-		System.err.println("Handler:- "+doc.getDescription());
 		
 		doc = DocumentDaoHelper.save(doc);
 				

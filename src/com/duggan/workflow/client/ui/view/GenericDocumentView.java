@@ -173,7 +173,6 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public void showEdit(boolean displayed) {
 		UIObject.setVisible(aEdit.getElement(), displayed);
-		System.err.println("Edit: "+displayed);
 	}
 
 	

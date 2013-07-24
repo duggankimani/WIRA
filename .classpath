@@ -62,12 +62,12 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-impl-2.2.4-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-xjc-2.2.4-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-bam-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-bam/5.4.0.Final/jbpm-bam-5.4.0.Final-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-bpmn2-5.4.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-bpmn2-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-bpmn2/5.4.0.Final/jbpm-bpmn2-5.4.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-flow-5.4.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-flow-builder-5.4.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-human-task-core-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-human-task-core/5.4.0.Final/jbpm-human-task-core-5.4.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-persistence-jpa-5.4.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-workitems-5.4.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-workitems-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-workitems/5.4.0.Final/jbpm-workitems-5.4.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jta-1.1.jar"/>

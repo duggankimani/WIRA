@@ -39,3 +39,8 @@
 	display:inline;
 	margin-right:5px;
 }
+
+.hand:hover{
+	cursor:pointer;
+	cursor:hand;
+}

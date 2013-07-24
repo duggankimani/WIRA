@@ -70,15 +70,17 @@ public class CreateDocView extends PopupViewImpl implements
 				
 				boolean v = event.getValue();
 				
-				if(v){
-					chkNormal.setValue(event.getSource().equals(chkNormal)? true:false);
-					chkHigh.setValue(event.getSource().equals(chkHigh)? true: false);					
-					chkCritical.setValue(event.getSource().equals(chkCritical)? true:false);
-				}
+				//if(v){
+					chkNormal.setValue(event.getSource().equals(chkNormal)? v:false);
+					chkHigh.setValue(event.getSource().equals(chkHigh)? v: false);					
+					chkCritical.setValue(event.getSource().equals(chkCritical)? v:false);
+				//}
 			}
 		};
 		
 		chkCritical.addValueChangeHandler(changeHandler);
+		chkHigh.addValueChangeHandler(changeHandler);
+		chkNormal.addValueChangeHandler(changeHandler);
 		
 	}
 

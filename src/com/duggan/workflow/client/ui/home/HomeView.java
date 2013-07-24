@@ -5,7 +5,10 @@ import java.util.HashMap;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.github.gwtbootstrap.client.ui.base.InlineLabel;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
@@ -45,22 +48,26 @@ public class HomeView extends ViewImpl implements
 	@UiField Hyperlink aNewReq;
 	@UiField Hyperlink aRecentApprovals;
 	@UiField Hyperlink aFlagged;
-		
+	@UiField Anchor aRefresh;
+	//@UiField SpanElement iRefresh;
+	
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		
 		ulTaskGroups.setId("navigation-menu");
 		
 		btnAdd.getElement().setAttribute("type","button");
 
+		//InlineLabel l;
+		//l.addClickHandler(handler)
 		docContainer.addHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				System.err.println("### ABS");
+				//System.err.println("### ABS");
 			}
 		}, ClickEvent.getType());
+		
 	}
 
 	@Override
@@ -110,6 +117,9 @@ public class HomeView extends ViewImpl implements
 		hCategory.setInnerText(heading);
 	}
 	
+	public HasClickHandlers getRefreshButton(){
+		return aRefresh;
+	}
 	
 	@Override
 	public void bindAlerts(HashMap<TaskType, Integer> alerts) {

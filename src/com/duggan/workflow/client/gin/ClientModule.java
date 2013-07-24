@@ -37,6 +37,8 @@ import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
+import com.duggan.workflow.client.ui.error.NotfoundPresenter;
+import com.duggan.workflow.client.ui.error.NotfoundView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -100,5 +102,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(DateGroupPresenter.class,
 				DateGroupPresenter.MyView.class, DateGroupView.class);
+
+		bindPresenter(NotfoundPresenter.class, NotfoundPresenter.MyView.class,
+				NotfoundView.class, NotfoundPresenter.MyProxy.class);
 	}
 }

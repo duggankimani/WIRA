@@ -62,7 +62,8 @@
       <div id="middle-nav" class="span4">
         <div class="row-fluid nav-top">
           <input class="search" type="text"/>
-          <i class="icon-refresh icon-large"></i>
+          <!-- i class="icon-refresh icon-large"></i -->
+          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
         </div>
 
           <div class="header-nav row-fluid">

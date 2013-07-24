@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
@@ -17,6 +18,8 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
@@ -47,7 +50,7 @@ public class MainPagePresenter extends
 	
 	@Inject DispatchAsync dispatcher;
 	
-	@Inject CurrentUser user;
+	@Inject PlaceManager placeManager;
 	
 	@Inject
 	public MainPagePresenter(final EventBus eventBus, final MyView view,
@@ -65,28 +68,6 @@ public class MainPagePresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(ErrorEvent.TYPE, this);
-//		System.err.println("#####MainPage Bind Called!!");
-
-		//		This is never called
-		
-//		dispatcher.execute(new GetContextRequest(),
-//				new TaskServiceCallback<GetContextRequestResult>() {
-//					@Override
-//					public void processResult(GetContextRequestResult result) {
-//						
-//						if(result.getIsValid()){
-//
-//							user.setValid(result.getIsValid());
-//							user.setFullName(result.getUserId());
-//							user.setUserId(result.getUserId());
-//							
-//						}
-//						
-//						setInSlot(HEADER_content, headerPresenter);
-//						setInSlot(TABS_content, tabsPresenter);
-//						
-//					}
-//				});
 	}
 	
 	@Override
@@ -97,10 +78,15 @@ public class MainPagePresenter extends
 	
 	@Override
 	public void onError(final ErrorEvent event) {
+		System.err.println("--====== MPP - Error Occured");
 		errorFactory.get(new ServiceCallback<ErrorPresenter>() {
 			@Override
 			public void processResult(ErrorPresenter result) {
-				result.setMessage(event.getMessage());
+				String message = event.getMessage();
+				
+				result.setMessage(message, event.getId());
+				
+				System.err.println("--====== MPP - Error Occured2222");
 				MainPagePresenter.this.addToPopupSlot(result);
 			}
 		});

@@ -6,8 +6,9 @@ public class NameTokens {
 	public static final String task = "task";
 	public static final String personalreview = "personalreview";
 	public static final String personnelreview = "personnelreview";
-	public static final String notfound = "notfound";
+	public static final String error = "error";
 	public static final String login = "login";
+	public static final String error404 = "error404";
 
 	public static String getHome() {
 		return home;
@@ -27,6 +28,10 @@ public class NameTokens {
 
 	public static String getLogin() {
 		return login;
+	}
+
+	public static String getError404() {
+		return error404;
 	}
 	
 }

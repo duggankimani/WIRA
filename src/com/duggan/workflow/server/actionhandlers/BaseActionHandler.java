@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResult;
@@ -43,6 +44,9 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 		
 		B result = (B) action.createDefaultActionResponse();
 
+		boolean hasError= false;
+		Throwable throwable=null;
+		
 		try {
 			if(!DB.hasActiveTrx()){
 				
@@ -50,22 +54,60 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			}
 			
 			result = execute(action, result, execContext);
+			
+			//DB.rollback();	
 			DB.commitTransaction();
-		} catch (RuntimeException e) {
+		} catch (Exception e) {	
 			e.printStackTrace();
-			DB.rollback();
-			throw e;
-		}catch(Exception e){
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage(),e); 
+			DB.rollback();			
+			hasError = true;
+			throwable = e;
 		}finally {
-			DB.closeSession();
+			DB.closeSession();		
+			logErrors(hasError, throwable, result);
 			SessionHelper.afterRequest();
 		}
-
+		
 		postExecute((BaseResult) result);
-
+		
 		return result;
+
+	}
+
+	private void logErrors(boolean hasError, Throwable throwable, B result) {
+
+		if(hasError){
+			Integer errorId=null;
+			
+			try{
+				
+				if(!DB.hasActiveTrx())
+					DB.beginTransaction();
+				
+				errorId=ErrorLogDaoHelper.saveLog(throwable, this.getActionType().getName());
+				DB.commitTransaction();
+			}catch(Exception e){
+				e.printStackTrace();
+				try{
+					DB.rollback();
+				}catch(Exception ee){
+					ee.printStackTrace();
+				}
+				
+			}finally{
+				DB.closeSession();				
+			}
+			
+			//set error msg
+			BaseResult baseResult = (BaseResult)result;
+			baseResult.setErrorCode(1);
+			baseResult.setErrorId(errorId);
+			
+			if(errorId!=null)
+				baseResult.setErrorMessage("An error occured during processing of your request");
+			else
+				baseResult.setErrorMessage(throwable.getMessage());
+		}
 
 	}
 

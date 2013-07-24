@@ -4,6 +4,7 @@ import com.gwtplatform.dispatch.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.requests.GetTask;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
@@ -24,6 +25,7 @@ import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionvalidator.SessionValidator;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -54,6 +56,9 @@ public class ServerModule extends HandlerModule {
 		bindHandler(LogoutAction.class, LogoutActionHandler.class, SessionValidator.class);
 
 		bindHandler(GetAlertCount.class, GetAlertCountActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(GetErrorRequest.class, GetErrorRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }
