@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
+import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetAlertCountResult;
@@ -13,12 +14,15 @@ import com.duggan.workflow.shared.responses.LogoutActionResult;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
 
 public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
@@ -27,11 +31,22 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 		HasClickHandlers getLogout();
 
 		void setValues(String userNames);
+		
+		HasClickHandlers getNotificationsButton();
+
+		void setPopupVisible();
+		
 	}
 
 	@Inject DispatchAsync dispatcher;
 	
 	@Inject PlaceManager placeManager;
+	
+	@Inject NotificationsPresenter notifications;
+	
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> NOTIFICATIONS_SLOT = new Type<RevealContentHandler<?>>();
+
 	
 	@Inject
 	public HeaderPresenter(final EventBus eventBus, final MyView view) {
@@ -59,6 +74,14 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 			}
 		});
 		
+		getView().getNotificationsButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getView().setPopupVisible();
+				setInSlot(NOTIFICATIONS_SLOT, notifications);		
+			}
+		});
 	}
 	
 	@Override
