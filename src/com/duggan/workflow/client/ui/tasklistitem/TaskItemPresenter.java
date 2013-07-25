@@ -7,43 +7,34 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
+import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
-import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.BooleanValue;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.google.inject.Inject;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.ui.FocusPanel;
 
 /**
  * This class displays a Task or a Document 
@@ -83,7 +74,6 @@ public class TaskItemPresenter extends
 	
 	@Inject PlaceManager placeManager;
 	
-
 	ExecuteWorkflow workflow;
 	
 	@Inject
@@ -96,11 +86,10 @@ public class TaskItemPresenter extends
 		super.onBind();
 		addRegisteredHandler(CompleteDocumentEvent.TYPE, this);
 		addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
-		
+		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
+//		
 		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		 
-		this.addHandler(DocumentSelectionEvent.TYPE, this);
-		
 		getView().getFocusContainer().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -268,17 +257,14 @@ public class TaskItemPresenter extends
 				if(action==Actions.COMPLETE){
 					removeFromParent();
 				}else{
-					refreshTask();
+					fireEvent(new ReloadEvent());
 				}
 			}
 		});
 	}
 
-	protected void refreshTask() {
-		fireEvent(new ReloadEvent());
-	}
-
 	protected void removeFromParent() {
+		unbind();
 		this.getView().asWidget().removeFromParent();
 	}
 
@@ -338,21 +324,27 @@ public class TaskItemPresenter extends
 		
 		//System.err.println(event.getDocumentId()+" ");
 		
-		if(summary.getDocumentRef()!=null && (summary.getDocumentRef()==event.getDocumentId()) 
-			&& summary.getDocumentRef()!=0){
+		Integer ref= summary.getDocumentRef();
+		Integer documentId = event.getDocumentId();
+		
+		if(ref==documentId){
+			System.out.println("####### Processing "+task.getSubject()+" -- "
+		+summary.getId()+" :: "+this.toString()+ 
+		":: "+event.getSource().toString());
 			
 			completeDocument(event.IsApproved());
 		}
 	}
+
+	/**
+	 * Duggan - 25/Jul/2013 - Had to add this
+	 * since unbind is not automatically called, leaving removed/hidden
+	 * instances of TaskItemPresenter still respondng to events
+	 */
+	@Override
+	protected void onHide() {
+		super.onHide();
+		this.unbind();
+	}
 	
-	EventListener DivEventListener = new EventListener() {
-		
-		@Override
-		public void onBrowserEvent(Event event) {
-			
-			if(event.equals(Event.ONCLICK)){
-				System.out.println("##### labs");
-			}
-		}
-	};
 }

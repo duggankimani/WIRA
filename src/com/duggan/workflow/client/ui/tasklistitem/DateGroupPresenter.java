@@ -5,13 +5,13 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent.PresentTaskHandler;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.gwt.event.shared.EventBus;
 
 public class DateGroupPresenter extends
 		PresenterWidget<DateGroupPresenter.MyView> implements PresentTaskHandler{
@@ -36,6 +36,7 @@ public class DateGroupPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(PresentTaskEvent.TYPE, this);
+		//addRegisteredHandler(ClearTasksEvent.TYPE, this);
 	}
 	
 	public void setDate(String dt){
@@ -51,6 +52,7 @@ public class DateGroupPresenter extends
 			return;
 		}
 				
+		System.err.println("Added item ## "+event.getDoc().getSubject()+" :: "+DateGroupPresenter.this.toString());
 		presenterProvider.get(new ServiceCallback<TaskItemPresenter>() {
 			
 			@Override
@@ -60,6 +62,13 @@ public class DateGroupPresenter extends
 			}
 			
 		});			
+	}
+		
+	
+	@Override
+	protected void onHide() {
+		super.onHide();
+		this.unbind();
 	}
 	
 }

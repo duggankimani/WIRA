@@ -31,11 +31,11 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
  *  and the {@link EntityManager} 
  * 
  * <P>
- * Whenever an entity manager is requested, a corresponding {@link UserTransaction} is 
- * generated. 
+ * Whenever an entity manager is requested, a corresponding {@link UserTransaction} has to have been
+ * started/ began
  * 
  * <p>
- * A scenario that arises from this is one where {@link JBPMHelper} which initializes
+ * A problem scenario that arises from this is one where {@link JBPMHelper} which initializes
  * an {@link Environment} variable and {@link TaskHandler} using a {@link EntityManagerFactory}
  * generates an {@link EntityManager} without a {@link UserTransaction} - since the UserTransaction
  * is application managed. In this case, an exception is thrown with a 'no active transaction' message.

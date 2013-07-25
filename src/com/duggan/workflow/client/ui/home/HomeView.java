@@ -17,6 +17,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.UIObject;
@@ -49,6 +50,8 @@ public class HomeView extends ViewImpl implements
 	@UiField Hyperlink aRecentApprovals;
 	@UiField Hyperlink aFlagged;
 	@UiField Anchor aRefresh;
+	
+	CheckBox k;
 	//@UiField SpanElement iRefresh;
 	
 	@Inject

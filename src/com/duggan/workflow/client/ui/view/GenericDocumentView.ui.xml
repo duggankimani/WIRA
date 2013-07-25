@@ -23,7 +23,7 @@
 			<g:Anchor ui:field="aApprove" styleName="btn-success btn-large">
 			    <i class="icon-ok"></i>
 			    Approve</g:Anchor>
-			<g:Anchor ui:field="aReject" styleName="btn-success btn-large">
+			<g:Anchor ui:field="aReject" styleName="btn-danger btn-large">
 			    <i class="icon-remove"></i>Reject
 			 </g:Anchor>			 
           </div>

@@ -517,6 +517,10 @@ public class JBPMHelper implements Closeable{
 	 * @param action This is the action to be executed
 	 */
 	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
+		if(values!=null){
+			values.put("userId", userId);// approver
+			values.put("taskId", taskId);//task approved
+		}
 
 		switch(action){
 		case CLAIM:

@@ -1,67 +1,59 @@
 package com.duggan.workflow.client.ui.home;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import com.duggan.workflow.client.service.ServiceCallback;
+import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.PresentTaskEvent;
+import com.duggan.workflow.client.ui.events.ReloadEvent;
+import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.ui.util.DocMode;
+import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
+import com.duggan.workflow.shared.model.CurrentUser;
+import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.requests.GetTaskList;
+import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
-import com.duggan.workflow.client.ui.events.AlertLoadEvent;
-import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
-import com.duggan.workflow.client.ui.events.PresentTaskEvent;
-import com.duggan.workflow.client.ui.events.ReloadEvent;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
-import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
-import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
-import com.duggan.workflow.client.ui.util.DateUtils;
-import com.duggan.workflow.client.ui.util.DocMode;
-import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
-import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.CurrentUser;
-import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocSummary;
-import com.duggan.workflow.shared.model.DocType;
-import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.requests.ApprovalRequest;
-import com.duggan.workflow.shared.requests.GetTaskList;
-import com.duggan.workflow.shared.requests.LogoutAction;
-import com.duggan.workflow.shared.responses.ApprovalRequestResult;
-import com.duggan.workflow.shared.responses.GetTaskListResult;
-import com.duggan.workflow.shared.responses.LogoutActionResult;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
@@ -153,7 +145,6 @@ public class HomePresenter extends
 	 */
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		
 		clear();
 		
 		String name = request.getParameter("type", TaskType.DRAFT.getDisplayName());
@@ -166,9 +157,10 @@ public class HomePresenter extends
 	}	
 
 	private void clear() {
+		
 		//clear document slot
 		setInSlot(DATEGROUP_SLOT, null);
-		setInSlot(DOCUMENT_SLOT, null);	
+		setInSlot(DOCUMENT_SLOT, null);
 	}
 	
 	private void loadTasks() {
@@ -224,24 +216,21 @@ public class HomePresenter extends
 	 * @param tasks
 	 */
 	protected void loadLines(final List<DocSummary> tasks) {
-		HomePresenter.this.setInSlot(DATEGROUP_SLOT, null);
 		final List<String> dates=new ArrayList<String>();
 		
 		for(int i=0; i< tasks.size(); i++){
-			
 			final String dt = DateUtils.DATEFORMAT.format(tasks.get(i).getCreated());
 			final DocSummary doc = tasks.get(i);
 			
 			if(dates.contains(dt)){
-				fireEvent(new PresentTaskEvent(tasks.get(i)));
+				//fireEvent(new PresentTaskEvent(doc));
 			}else{
 				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
 					@Override
 					public void processResult(DateGroupPresenter result) {
 						result.setDate(dt);
 						HomePresenter.this.addToSlot(DATEGROUP_SLOT, result);						
-						fireEvent(new PresentTaskEvent(doc));
-						
+						fireEvent(new PresentTaskEvent(doc));						
 						dates.add(dt);
 					}
 				});

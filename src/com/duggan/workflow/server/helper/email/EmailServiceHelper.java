@@ -18,7 +18,4 @@ public class EmailServiceHelper {
 		return val;
 	}
 	
-	public static void sendEmail(String from, String to, String subject, String message){
-		
-	}
 }
