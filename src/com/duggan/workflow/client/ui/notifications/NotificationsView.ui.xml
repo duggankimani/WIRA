@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="body"> 
+		<div class="notifications">
+		 
+              <h3>You have 8 new notifications</h3>
+              <a href="#" class="item">
+                  <i class="icon-signin"></i> Tom Kimani approved your Invoice INV/JKUAT/001
+                  <span class="time"><i class="icon-time"></i> 13 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-signin"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <span class="time"><i class="icon-time"></i> 18 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-envelope-alt"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <span class="time"><i class="icon-time"></i> 28 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-signin"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <span class="time"><i class="icon-time"></i> 49 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-download-alt"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <span class="time"><i class="icon-time"></i> 1 day.</span>
+              </a>
+              <div class="footer">
+                  <a href="#" class="logout">View all notifications</a>
+              </div>
+            </div>
+         </g:HTMLPanel>
+</ui:UiBinder>

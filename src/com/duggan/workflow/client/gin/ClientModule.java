@@ -32,6 +32,8 @@ import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.view.GenericDocumentView;
 import com.duggan.workflow.client.ui.login.LoginPresenter;
 import com.duggan.workflow.client.ui.login.LoginView;
+import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
+import com.duggan.workflow.client.ui.notifications.NotificationsView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.CurrentUser;
@@ -105,5 +107,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(NotfoundPresenter.class, NotfoundPresenter.MyView.class,
 				NotfoundView.class, NotfoundPresenter.MyProxy.class);
+
+		bindPresenterWidget(NotificationsPresenter.class,
+				NotificationsPresenter.MyView.class, NotificationsView.class);
 	}
 }
