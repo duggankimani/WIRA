@@ -21,8 +21,8 @@
               <li class="notification-dropdown hidden-phone">
                     
                       <g:Anchor ui:field="aNotifications" styleName="close-icon hand">
-                        <i class="icon-envelope-alt"></i>
-                        <span class="count">8</span>
+                        <i class="icon-bell"></i>
+                        <span class="label label-important">2</span>
                     </g:Anchor>    
 
                      <g:FocusPanel ui:field="popupContainer" styleName="pop-dialog">     

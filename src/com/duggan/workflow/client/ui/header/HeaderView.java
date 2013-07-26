@@ -40,7 +40,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 				if(isSelected){
 					popupContainer.removeStyleName("is-visible");
 					isSelected=false;
-					System.err.println("event.....");
+					//System.err.println("event.....");
 				}else{
 					popupContainer.addStyleName("is-visible");
 					isSelected=true;
@@ -94,6 +94,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}else{
 			popupContainer.addStyleName("is-visible");
 			isSelected=true;
-		}
+		}	
 	}
 }
