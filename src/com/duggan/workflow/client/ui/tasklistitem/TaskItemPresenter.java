@@ -327,11 +327,7 @@ public class TaskItemPresenter extends
 		Integer ref= summary.getDocumentRef();
 		Integer documentId = event.getDocumentId();
 		
-		if(ref==documentId){
-			System.out.println("####### Processing "+task.getSubject()+" -- "
-		+summary.getId()+" :: "+this.toString()+ 
-		":: "+event.getSource().toString());
-			
+		if(ref==documentId){			
 			completeDocument(event.IsApproved());
 		}
 	}

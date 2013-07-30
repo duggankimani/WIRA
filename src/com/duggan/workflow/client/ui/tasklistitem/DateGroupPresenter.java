@@ -36,7 +36,6 @@ public class DateGroupPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(PresentTaskEvent.TYPE, this);
-		//addRegisteredHandler(ClearTasksEvent.TYPE, this);
 	}
 	
 	public void setDate(String dt){
@@ -52,7 +51,6 @@ public class DateGroupPresenter extends
 			return;
 		}
 				
-		System.err.println("Added item ## "+event.getDoc().getSubject()+" :: "+DateGroupPresenter.this.toString());
 		presenterProvider.get(new ServiceCallback<TaskItemPresenter>() {
 			
 			@Override

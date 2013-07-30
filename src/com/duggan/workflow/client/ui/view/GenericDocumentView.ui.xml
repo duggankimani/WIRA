@@ -9,7 +9,7 @@
 	<g:HTMLPanel>	   
 	    <br/>
           <div class="action-area row-fluid">  
-           	<g:Anchor ui:field="aSimulate" styleName="btn-success btn-large">
+           	<g:Anchor ui:field="aSimulate" styleName="btn-success btn-large hidden">
 			    <i class="icon-ok"></i>Simulate
 			</g:Anchor>
 			
