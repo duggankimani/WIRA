@@ -92,6 +92,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}else{
 			popupContainer.addStyleName("is-visible");
 			isSelected=true;
-		}
+		}	
 	}
 }

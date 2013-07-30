@@ -1,13 +1,7 @@
-/*body {
-	font-family: 'Open Sans', sans-serif;
-	background-color: #f7f7f7;
-	position: relative;
-	margin: 0px;
-	font-size: 12px;
-	padding: 0px;
+body {
 	overflow-y:hidden;
-	-webkit-font-smoothing: antialiased;
-}*/
+	font-family:'lucida grande',tahoma,verdana,arial,sans-serif;
+}
 h1,h2,h3,h4,h5 {
 	margin: 0;
 	line-height: inherit;
@@ -97,24 +91,24 @@ textarea{
 
 /* notification menu with custom dropdowns */
 .navbar .notification-dropdown {
+	height:41px;
 	border-left: 1px solid #dae1e8;
 	border-right: 1px solid #dae1e8;
 	position: relative;
 	padding-top: 5px;
 }
-.navbar .notification-dropdown > a:hover,
-.navbar .notification-dropdown > a.active {
-	background: #dae1e8 !important;
-}
 .navbar .notification-dropdown i {
 	font-size: 25px;
-	color: #9ba3ad;	
+	opacity:.75	
 }
-.navbar .notification-dropdown .count {
+
+.navbar .notification-dropdown > i.active {
+	opacity:1;
+}
+.navbar .notification-dropdown .label {
 	position: absolute;
-	top: 1px;
-	left: 58%;
-	background: rgb(53, 186, 196);
+	top: 5px;
+	left: 60%;
 	padding: 0px 5px;
 	border-radius: 30px;
 	color: #fff;
@@ -140,12 +134,7 @@ textarea{
 .navbar .pop-dialog .body {
 	box-shadow: 0px 1px 9px 1px #c2c2c2;
 }
-.navbar .pop-dialog .close-icon {
-	float: right;
-	text-decoration: none;
-	z-index: 9999;
-	position: relative;
-}
+
 .navbar  .pop-dialog .footer {
 	border-top: 1px solid #e6e8e9;
 	background-color: #eff4f7;
@@ -159,24 +148,25 @@ textarea{
 	color: #7d91a8;
 }
 
-/* navar popup dialog for notifications */
+/* navbar popup dialog for notifications */
 .navbar  .pop-dialog .notifications {
 	width: 330px;
-	margin: 10px -10px 0px -10px;
+	margin: 0px 0px 0px 0px;
 }
 .navbar  .pop-dialog .notifications h3 {
 	font-size: 13px;
 	color: #404951;
 	font-weight: bold;
-	padding-left: 20px;
-	margin-top: 5px;
-	margin-bottom: 15px;
+	padding-left:5px;
+	margin-top:0px;
+	margin-bottom:5px;
 }
 .navbar  .pop-dialog .notifications .item {
 	display: block;
 	padding: 10px 0px 8px 20px;
 	border-top: 1px solid #e7e8ea;
 	color: rgb(54, 54, 54);
+	font-size:11px;
 	text-decoration: none;
 	padding-left: 50px;
 	position: relative;
@@ -185,8 +175,14 @@ textarea{
 	-webkit-transition: all .25s linear;
 	-o-transition: all .25s linear;
 }
+.navbar  .pop-dialog .notifications .unread{
+	background: #f4f6f9;
+}
 .navbar  .pop-dialog .notifications .item:hover {
-	background: rgb(240, 246, 255);
+	background:#f4f6f9;
+}
+.navbar  .pop-dialog .notifications .item .bluename{
+	font-weight:bold;
 }
 .navbar  .pop-dialog .notifications .item > i {
 	color: rgb(252, 130, 123);
@@ -198,7 +194,6 @@ textarea{
 	left: 18px;
 }
 .navbar  .pop-dialog .notifications .item .time {
-	float: right;
 	color: #82a3c1;
 	font-style: italic;
 	font-weight: 600;
@@ -212,7 +207,7 @@ textarea{
 	margin-right: 1px;
 }
 
-/* navar popup dialog for messages */
+/* navbar popup dialog for messages */
 .navbar .pop-dialog .messages {
 	width: 330px;
 	margin: 10px -10px 0px -10px;

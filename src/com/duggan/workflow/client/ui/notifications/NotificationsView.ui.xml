@@ -7,27 +7,30 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="body"> 
-		<div class="notifications">
-		 
-              <h3>You have 8 new notifications</h3>
-              <a href="#" class="item">
-                  <i class="icon-signin"></i> Tom Kimani approved your Invoice INV/JKUAT/001
+		<div class="notifications">	 
+              <h3>Notifications</h3>
+              <a href="#" class="item unread">
+                  <i class="icon-signin"></i> 
+                  <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
                   <span class="time"><i class="icon-time"></i> 13 min.</span>
               </a>
               <a href="#" class="item">
-                  <i class="icon-signin"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <i class="icon-signin"></i>
+                  <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
                   <span class="time"><i class="icon-time"></i> 18 min.</span>
               </a>
               <a href="#" class="item">
-                  <i class="icon-envelope-alt"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <i class="icon-envelope-alt"></i> 
+                   <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
                   <span class="time"><i class="icon-time"></i> 28 min.</span>
               </a>
               <a href="#" class="item">
-                  <i class="icon-signin"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                   <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
                   <span class="time"><i class="icon-time"></i> 49 min.</span>
               </a>
               <a href="#" class="item">
-                  <i class="icon-download-alt"></i> Stanley Kamau disapproved your invoice INV/JKUAT/001
+                  <i class="icon-download-alt"></i> 
+                   <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
                   <span class="time"><i class="icon-time"></i> 1 day.</span>
               </a>
               <div class="footer">
