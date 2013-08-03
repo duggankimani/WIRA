@@ -27,6 +27,7 @@ import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
+import org.jbpm.executor.commands.SendMailCommand;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.audit.NodeInstanceLog;
@@ -52,6 +53,7 @@ import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 
+import xtension.workitems.GenerateNotificationsWorkItemHandler;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import bitronix.tm.TransactionManagerServices;
 
@@ -61,6 +63,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTAccessType;
@@ -70,6 +73,8 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
+import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.test.LDAPAuth;
 
 /**
  * This is a Helper Class for all JBPM associated requests.
@@ -101,6 +106,8 @@ public class JBPMHelper implements Closeable{
 			
 			//register work item handlers
 			session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
+			session.getWorkItemManager().registerWorkItemHandler("GenerateSysNotification",new GenerateNotificationsWorkItemHandler());
+			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new GenerateNotificationsWorkItemHandler());
 			
 			EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 					EmailServiceHelper.getProperty("smtp.host"),
@@ -136,6 +143,15 @@ public class JBPMHelper implements Closeable{
 	}
 
 	/**
+	 * Using this to test initiation of process from Command {@link SendMailCommand}
+	 * 
+	 * @return
+	 */
+	public StatefulKnowledgeSession getSession(){
+		return session;
+	}
+	
+	/**
 	 * Creates a StatefulKnowledgeSession
 	 * 
 	 * @return {@link StatefulKnowledgeSession}
@@ -149,6 +165,9 @@ public class JBPMHelper implements Closeable{
     	KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
     	//builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
     	builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
+    	builder.add(new ClassPathResource("send-email.bpmn"), ResourceType.BPMN2);
+    	builder.add(new ClassPathResource("beforetask-notification.bpmn"), ResourceType.BPMN2);
+    	builder.add(new ClassPathResource("aftertask-notification.bpmn"), ResourceType.BPMN2);
     	
     	kbase = builder.newKnowledgeBase();
     	
@@ -209,10 +228,12 @@ public class JBPMHelper implements Closeable{
 		
 		Map<String, Object> initialParams = new HashMap<String, Object>();		
 		//initialParams.put("user_self_evaluation", "calcacuervo");
-		initialParams.put("subject", summary.getSubject());
-		initialParams.put("description", summary.getDescription());
-		initialParams.put("documentId", summary.getId());
-		initialParams.put("value", null);
+		initialParams.put("Subject", summary.getSubject());
+		initialParams.put("Description", summary.getDescription());
+		initialParams.put("DocumentId", summary.getId());
+		initialParams.put("OwnerId", SessionHelper.getCurrentUser()==null? "System": SessionHelper.getCurrentUser().getId());
+		initialParams.put("Value", null);
+		initialParams.put("Priority", summary.getPriority());
 		
 		ProcessInstance processInstance = session.startProcess("invoice-approval", initialParams);
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
@@ -231,26 +252,52 @@ public class JBPMHelper implements Closeable{
 	 */
 	public void getCount(String userId, HashMap<TaskType, Integer> counts){	
 
-//		List approvalTasks = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-//				Arrays.asList(Status.Created,
-//						Status.InProgress,
-//						Status.Error,
-//						Status.Exited,
-//						Status.Failed,
-//						Status.Obsolete,
-//						Status.Ready,
-//						Status.Reserved,
-//						Status.Suspended), 
-//				"en-UK");
-//		counts.put(TaskType.APPROVALREQUESTNEW, approvalTasks.size());
-//		
-//		
-//		List completed = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-//				Arrays.asList(Status.Completed), 
-//				"en-UK");
-//		counts.put(TaskType.APPROVALREQUESTDONE, completed.size());
+		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
+		List<String> groupIds = new ArrayList<>();
+		for(UserGroup group: groups){
+			groupIds.add(group.getName());
+		}
+		
+		Long count = (Long)DB.getEntityManager().createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups")
+				.setParameter("userId", userId)
+				.setParameter("groupIds", groupIds)
+				.setParameter("language", "en-UK")
+				.setParameter("status", getStatusesForTaskType(TaskType.APPROVALREQUESTNEW))
+				.getSingleResult();
+		counts.put(TaskType.APPROVALREQUESTNEW, count.intValue());
+		
+		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatus")
+		.setParameter("userId", userId)
+		.setParameter("language", "en-UK")
+		.setParameter("status", getStatusesForTaskType(TaskType.APPROVALREQUESTDONE))
+		.getSingleResult();
+		counts.put(TaskType.APPROVALREQUESTDONE, count2.intValue());
+
 	}
 	
+	public List<Status> getStatusesForTaskType(TaskType type){
+		
+		List<Status> statuses = new ArrayList<>();
+		
+		switch (type) {
+		case APPROVALREQUESTNEW:
+			statuses = Arrays.asList(Status.Created,
+					Status.InProgress,
+					//Status.Error,
+					//Status.Exited,
+					//Status.Failed,
+					//Status.Obsolete,
+					Status.Ready,
+					Status.Reserved,
+					Status.Suspended
+					);
+			break;
+		case APPROVALREQUESTDONE:
+			statuses = Arrays.asList(Status.Completed);
+			break;			
+		}
+		return statuses;
+	}
 	/**
 	 * 
 	 * This method retrieves all tasks assigned to a user.
@@ -275,23 +322,14 @@ public class JBPMHelper implements Closeable{
 		switch (type) {
 		case APPROVALREQUESTDONE:
 			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-					Arrays.asList(Status.Completed), 
+					getStatusesForTaskType(type), 
 					"en-UK");
 			break;
 		case APPROVALREQUESTNEW:
 			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-					Arrays.asList(Status.Created,
-							Status.InProgress,
-							Status.Error,
-							Status.Exited,
-							Status.Failed,
-							Status.Obsolete,
-							Status.Ready,
-							Status.Reserved,
-							Status.Suspended), 
-					"en-UK");
-			
-			 ts=  this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
+					getStatusesForTaskType(type), 
+					"en-UK");			
+			// ts=  this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			break;
 
 		default:
@@ -518,8 +556,7 @@ public class JBPMHelper implements Closeable{
 	 */
 	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
 		if(values!=null){
-			values.put("userId", userId);// approver
-			values.put("taskId", taskId);//task approved
+			values.put("OwnerId", userId);// approver
 		}
 
 		switch(action){
@@ -607,6 +644,6 @@ public class JBPMHelper implements Closeable{
 		}
 
 	}
-	
+		
 	
 }

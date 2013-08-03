@@ -11,8 +11,8 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.Notification;
 
 /**
  * This class is Dao Helper for persisting all document related entities.
@@ -118,7 +118,7 @@ public class DocumentDaoHelper {
 	 * @param id
 	 * @return
 	 */
-	public static Document getDocument(Integer id) {
+	public static Document getDocument(Long id) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		DocumentModel model = dao.getById(id);
@@ -138,7 +138,7 @@ public class DocumentDaoHelper {
 			idStr = null;
 		}
 
-		Integer id = idStr == null ? null : new Integer(idStr.toString());
+		Long id = idStr == null ? null : new Long(idStr.toString());
 
 		String description = content.get("description") == null ? null
 				: (String) content.get("description");
@@ -162,7 +162,7 @@ public class DocumentDaoHelper {
 	 * @param docId
 	 * @param isApproved
 	 */
-	public static void saveApproval(Integer docId,
+	public static void saveApproval(Long docId,
 			Boolean isApproved) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentModel model = dao.getById(docId);
@@ -183,5 +183,17 @@ public class DocumentDaoHelper {
 		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
 		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
 		//counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
+	}
+
+	public static List<Document> search(String subject) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		List<DocumentModel> models = dao.search(subject);
+		
+		List<Document> docs = new ArrayList<>();
+		for(DocumentModel doc: models){
+			docs.add(getDoc(doc));
+		}
+		
+		return docs;
 	}
 }

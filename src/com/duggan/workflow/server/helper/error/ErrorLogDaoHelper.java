@@ -17,7 +17,7 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
  */
 public class ErrorLogDaoHelper {
 
-	public static Integer saveLog(Throwable e, String actionType){
+	public static Long saveLog(Throwable e, String actionType){
 		return saveLog(e.getMessage(),getStackTrace(e));
 	}
 	
@@ -29,7 +29,7 @@ public class ErrorLogDaoHelper {
 	 * @param stackTrace This is the stacktrace message
 	 * @return logId This is the log id of the log saved
 	 */
-	private static Integer saveLog(String msg, String stackTrace){
+	private static Long saveLog(String msg, String stackTrace){
 		
 		ErrorDaoImpl dao = DB.getErrorDao();
 		
@@ -53,7 +53,7 @@ public class ErrorLogDaoHelper {
 		log.setAgent(agent);
 		log.setRemoteAddress(ip);		
 		
-		Integer logId =  dao.saveError(log);	
+		Long logId =  dao.saveError(log);	
 		
 		return logId;
 	}
@@ -65,7 +65,7 @@ public class ErrorLogDaoHelper {
 	 * @param logId This is the logId of the ErrorLog to be retrieved
 	 * @return ErrorLog - This is the ErrorLog retrieved
 	 */
-	public static ErrorLog retrieveError(Integer logId){
+	public static ErrorLog retrieveError(Long logId){
 		ErrorDaoImpl dao = DB.getErrorDao();
 		
 		ErrorLog log = dao.retrieveError(logId);

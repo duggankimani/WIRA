@@ -19,7 +19,7 @@ public class LocalAttachment extends PO{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	private String name;
 	
@@ -32,14 +32,14 @@ public class LocalAttachment extends PO{
 		super();
 	}
 	
-	public LocalAttachment(Integer id,String name, byte[] attachment){
+	public LocalAttachment(Long id,String name, byte[] attachment){
 		this();
 		this.name=name;
 		this.attachment=attachment;
 		this.id=id;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 

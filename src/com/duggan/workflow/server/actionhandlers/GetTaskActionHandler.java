@@ -17,15 +17,13 @@ public class GetTaskActionHandler extends
 	}
 
 	@Override
-	public GetTaskResult execute(GetTask action, BaseResult actionResult,
+	public void execute(GetTask action, BaseResult actionResult,
 			ExecutionContext execContext) throws ActionException {
 
 		HTask task = JBPMHelper.get().getTask(action.getTaskId());
 		
 		GetTaskResult result = (GetTaskResult)actionResult;
 		result.setTask(task);
-		
-		return result;
 		
 	}
 

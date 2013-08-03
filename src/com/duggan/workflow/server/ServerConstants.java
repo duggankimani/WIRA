@@ -1,4 +1,4 @@
-package com.duggan.workflow.server.actionhandlers;
+package com.duggan.workflow.server;
 
 import com.duggan.workflow.client.util.Definitions;
 

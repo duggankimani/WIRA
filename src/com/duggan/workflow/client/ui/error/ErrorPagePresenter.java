@@ -49,7 +49,7 @@ public class ErrorPagePresenter extends
 			return;
 		}
 		
-		dispatcher.execute(new GetErrorRequest(new Integer(errorId)), new TaskServiceCallback<GetErrorRequestResult>() {
+		dispatcher.execute(new GetErrorRequest(new Long(errorId)), new TaskServiceCallback<GetErrorRequestResult>() {
 			@Override
 			public void processResult(GetErrorRequestResult result) {
 				getView().setError(result.getErrorDate(), result.getMessage(), result.getStack(), result.getAgent(), result.getRemoteAddress());

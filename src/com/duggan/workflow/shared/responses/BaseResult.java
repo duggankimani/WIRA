@@ -16,7 +16,7 @@ public class BaseResult implements Result{
 	 */
 	int errorCode=0;
 	String errorMessage;
-	Integer errorId;
+	Long errorId;
 	
 	public String getErrorMessage() {
 		return errorMessage;
@@ -30,10 +30,10 @@ public class BaseResult implements Result{
 	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;
 	}
-	public Integer getErrorId() {
+	public Long getErrorId() {
 		return errorId;
 	}
-	public void setErrorId(Integer errorId) {
+	public void setErrorId(Long errorId) {
 		this.errorId = errorId;
 	}
 }

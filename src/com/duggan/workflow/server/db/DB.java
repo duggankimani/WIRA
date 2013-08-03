@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
+import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 /**
@@ -60,7 +61,7 @@ public class DB{
 
 	private static EntityManagerFactory emf;
     
-    private static EntityManager getEntityManager(){
+    public static EntityManager getEntityManager(){
     	
     	EntityManager em = entityManagers.get();
     	
@@ -84,7 +85,7 @@ public class DB{
     }
 
 	/**
-	 * 
+	 * This must be called before XA transaction is started
 	 * @return
 	 */
 	public static EntityManagerFactory getEntityManagerFactory() {
@@ -217,6 +218,13 @@ public class DB{
 
 		return factory().getErrorDao(getEntityManager());
 	}
+	
+	public static NotificationDaoImpl getNotificationDao() {
+
+		return factory().getNotificationDao(getEntityManager());
+	}
+
+	
 
 	private static void closeFactory() {
 		if(factory.get()==null)

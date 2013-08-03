@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.duggan.workflow.server.actionhandlers.ServerConstants;
+import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.HTUser;
 
@@ -27,7 +27,7 @@ public class SessionHelper{
 	 */
 	public static HTUser getCurrentUser(){
 				
-		HttpSession session = request.get().getSession(false);
+		HttpSession session = request.get()==null? null: request.get().getSession(false);
 		if(session==null){
 			return null;
 		}

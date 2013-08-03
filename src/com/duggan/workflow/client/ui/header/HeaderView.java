@@ -28,8 +28,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	@UiField Anchor aLogout;
 	@UiField HTMLPanel notificationsContainer;
 	@UiField FocusPanel popupContainer;
-	
+	@UiField SpanElement lblCount;
 	boolean isSelected=false;
+	
 	@Inject
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);

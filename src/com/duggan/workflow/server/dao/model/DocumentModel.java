@@ -28,7 +28,7 @@ public class DocumentModel extends PO{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	@Column(length=200,nullable=false, unique=true)
 	private String subject;
@@ -61,18 +61,18 @@ public class DocumentModel extends PO{
 		
 	}
 	
-	public DocumentModel(Integer id, String subject, String description, DocType type){
+	public DocumentModel(Long id, String subject, String description, DocType type){
 		this.id=id;
 		this.subject=subject;
 		this.description=description;
 		this.type = type;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -22,19 +22,15 @@ public class LogoutActionHandler extends
 	}
 
 	@Override
-	public LogoutActionResult execute(LogoutAction action,
+	public void execute(LogoutAction action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
-		
-		LogoutActionResult result = (LogoutActionResult)actionResult;
-		
 		HttpSession session =httpRequest.get().getSession(false);
 		
 		if(session!=null){
 			session.invalidate();
 		}
 		
-		return result;
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class ApprovalRequestActionHandler extends
 	}
 
 	@Override
-	public ApprovalRequestResult execute(ApprovalRequest action,
+	public void execute(ApprovalRequest action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		Document doc= action.getDocument();
@@ -31,7 +31,6 @@ public class ApprovalRequestActionHandler extends
 		ApprovalRequestResult result = (ApprovalRequestResult)actionResult;
 		result.setSuccessfulSubmit(true);
 		
-		return result;
 	}
 	
 

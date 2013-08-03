@@ -3,10 +3,12 @@ package com.duggan.workflow.test;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.client.model.TaskType;
@@ -15,11 +17,12 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
-import com.google.gwt.editor.client.Editor.Ignore;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 
 public class TestDocumentDaoImpl {
 
@@ -32,6 +35,11 @@ public class TestDocumentDaoImpl {
 	}
 	
 	@Test
+	public void search(){
+		//List<Document> docs =DocumentDaoHelper.search("INV");
+	}
+	
+	@Ignore
 	public void getCount(){
 		HashMap<TaskType, Integer> counts = new HashMap<TaskType, Integer>();
 		DocumentDaoHelper.getCounts(counts);

@@ -30,7 +30,7 @@ public class GetTaskListActionHandler extends
 	}
 
 	@Override
-	public GetTaskListResult execute(GetTaskList action,
+	public void execute(GetTaskList action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 
@@ -67,7 +67,6 @@ public class GetTaskListActionHandler extends
 		
 		result.setTasks(summary);
 
-		return result;
 	}
 
 	private List<DocSummary> getPendingApprovals(String userId, TaskType type) {

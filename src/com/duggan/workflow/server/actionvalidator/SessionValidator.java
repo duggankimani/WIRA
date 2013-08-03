@@ -4,7 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.duggan.workflow.server.actionhandlers.ServerConstants;
+import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;

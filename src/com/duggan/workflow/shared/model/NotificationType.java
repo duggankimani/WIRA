@@ -12,11 +12,13 @@ package com.duggan.workflow.shared.model;
  */
 public enum NotificationType {
 
-	APPROVAL_REQUEST,
-	TASKCOMPLETED_APPROVED,
-	TASKCOMPLETED_DENIED,
+	APPROVALREQUEST_APPROVERNOTE,//for approver
+	APPOVALREQUEST_OWNERNOTE,//for ownere - request assigned
+	TASKCOMPLETED_APPROVERNOTE,//for approver
+	TASKCOMPLETED_OWNERNOTE,//for owner
 	COMMENT,
-	TASK_REMINDER
+	TASK_REMINDER,
+	PROCESS_COMPLETED;
 	
 	
 }

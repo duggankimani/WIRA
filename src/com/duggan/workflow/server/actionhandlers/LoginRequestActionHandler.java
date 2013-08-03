@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.LoginRequest;
@@ -26,7 +27,7 @@ public class LoginRequestActionHandler extends
 	}
 
 	@Override
-	public LoginRequestResult execute(LoginRequest action,
+	public void execute(LoginRequest action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		String userId = action.getUsername();
@@ -48,7 +49,6 @@ public class LoginRequestActionHandler extends
 			result.setSessionId(sessionId);
 		}		
 		
-		return result;
 	}
 
 	@Override

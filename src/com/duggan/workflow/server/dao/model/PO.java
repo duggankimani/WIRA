@@ -62,7 +62,7 @@ public abstract class PO implements Serializable{
 		this.created = created;
 	}
 
-	public Date getUpdated() {
+	public Date getUpdated() {		
 		return updated;
 	}
 
@@ -70,6 +70,6 @@ public abstract class PO implements Serializable{
 		this.updated = updated;
 	}
 	
-	public abstract Integer getId();
+	public abstract Long getId();
 		
 }

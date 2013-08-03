@@ -279,7 +279,7 @@ public class TaskItemPresenter extends
 	
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
-		Integer documentId = event.getDocumentId();
+		Long documentId = event.getDocumentId();
 		if(task instanceof  Document){
 			Document doc = (Document)task;
 			if(doc.getId()!=documentId){
@@ -288,7 +288,7 @@ public class TaskItemPresenter extends
 				getView().setSelected(true);
 			}
 		}else if(task instanceof HTSummary){
-			Integer docRef= ((HTSummary) task).getDocumentRef();
+			Long docRef= ((HTSummary) task).getDocumentRef();
 			
 			if(docRef==null || docRef!=documentId){
 				getView().setSelected(false);
@@ -324,8 +324,8 @@ public class TaskItemPresenter extends
 		
 		//System.err.println(event.getDocumentId()+" ");
 		
-		Integer ref= summary.getDocumentRef();
-		Integer documentId = event.getDocumentId();
+		Long ref= summary.getDocumentRef();
+		Long documentId = event.getDocumentId();
 		
 		if(ref==documentId){			
 			completeDocument(event.IsApproved());

@@ -22,7 +22,7 @@ public class GetDocumentRequestHandler extends
 	}
 
 	@Override
-	public GetDocumentResult execute(GetDocumentRequest action,
+	public void execute(GetDocumentRequest action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
@@ -31,7 +31,6 @@ public class GetDocumentRequestHandler extends
 		GetDocumentResult result = (GetDocumentResult)actionResult;
 		result.setDocument(document);		
 		
-		return result;
 	}
 
 	@Override

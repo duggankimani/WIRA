@@ -58,7 +58,7 @@ public class GenericDocumentPresenter extends
 		void showEdit(boolean displayed);
 	}
 
-	Integer documentId;
+	Long documentId;
 	
 	Document doc;
 	
@@ -210,7 +210,7 @@ public class GenericDocumentPresenter extends
 		}
 	}
 
-	public void setDocumentId(Integer selectedValue) {
+	public void setDocumentId(Long selectedValue) {
 		this.documentId=selectedValue;
 	}
 	

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.NotificationType;
 
 @Entity
@@ -21,17 +22,15 @@ public class NotificationModel extends PO {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
-	private Integer documentId;
+	private Long documentId;
 	
-	private Long taskId;
+	private String targetUserId;
 	
-	private Long processInstanceId;
+	private String subject;
 	
-	private String toUserId;
-	
-	private String fromUserId;
+	private String owner;
 	
 	@Enumerated(EnumType.STRING)
 	private NotificationType notificationType;
@@ -41,53 +40,13 @@ public class NotificationModel extends PO {
 	public NotificationModel() {
 		isRead=true;
 	}
-	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getDocumentId() {
+	public Long getDocumentId() {
 		return documentId;
 	}
 
-	public void setDocumentId(Integer documentId) {
+	public void setDocumentId(Long documentId) {
 		this.documentId = documentId;
-	}
-
-	public Long getTaskId() {
-		return taskId;
-	}
-
-	public void setTaskId(Long taskId) {
-		this.taskId = taskId;
-	}
-
-	public Long getProcessInstanceId() {
-		return processInstanceId;
-	}
-
-	public void setProcessInstanceId(Long processInstanceId) {
-		this.processInstanceId = processInstanceId;
-	}
-
-	public String getToUserId() {
-		return toUserId;
-	}
-
-	public void setToUserId(String toUserId) {
-		this.toUserId = toUserId;
-	}
-
-	public String getFromUserId() {
-		return fromUserId;
-	}
-
-	public void setFromUserId(String fromUserId) {
-		this.fromUserId = fromUserId;
 	}
 
 	public NotificationType getNotificationType() {
@@ -104,6 +63,38 @@ public class NotificationModel extends PO {
 
 	public void setRead(Boolean isRead) {
 		this.isRead = isRead;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getTargetUserId() {
+		return targetUserId;
+	}
+
+	public void setTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 }

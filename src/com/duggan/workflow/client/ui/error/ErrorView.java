@@ -56,7 +56,7 @@ public class ErrorView extends PopupViewImpl implements ErrorPresenter.MyView {
 	}
 
 	@Override
-	public void setMessage(String message, Integer id) {
+	public void setMessage(String message, Long id) {
 
 		spnError.setInnerHTML(message);
 		

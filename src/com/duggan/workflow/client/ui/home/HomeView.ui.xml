@@ -110,9 +110,9 @@
 
         <div class="content-nav row-fluid">
 	        <!-- ul id="navigation-menu" ui:field="ulTaskGroups"-->
-	        <d:BulletListPanel ui:field="ulTaskGroups">	    
-	            <g:InlineLabel ui:field="spnNoItems">No items to display</g:InlineLabel>       	          	
+	        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
 	       	</d:BulletListPanel>
+	       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
         </div>
       </div>
       

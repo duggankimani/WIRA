@@ -2,6 +2,7 @@ package com.duggan.workflow.server.guice;
 
 import com.gwtplatform.dispatch.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
+import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
@@ -11,7 +12,6 @@ import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskActionHandler;
-import com.duggan.workflow.server.actionhandlers.ServerConstants;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
@@ -26,6 +26,12 @@ import com.duggan.workflow.server.actionvalidator.SessionValidator;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetNotificationCount;
+import com.duggan.workflow.server.actionhandlers.GetNotificationCountActionHandler;
+import com.duggan.workflow.shared.requests.GetNotificationsAction;
+import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
+import com.duggan.workflow.shared.requests.SearchDocumentRequest;
+import com.duggan.workflow.server.actionhandlers.SearchDocumentRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -59,6 +65,17 @@ public class ServerModule extends HandlerModule {
 				SessionValidator.class);
 
 		bindHandler(GetErrorRequest.class, GetErrorRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(GetNotificationCount.class,
+				GetNotificationCountActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetNotificationsAction.class,
+				GetNotificationsActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(SearchDocumentRequest.class,
+				SearchDocumentRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }

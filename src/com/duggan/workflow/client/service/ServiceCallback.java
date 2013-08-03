@@ -24,7 +24,7 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 		if(caught.getCause()!=null)
 			message = caught.getCause().getMessage();
 		
-		AppContext.getEventBus().fireEvent(new ErrorEvent(message, 0));
+		AppContext.getEventBus().fireEvent(new ErrorEvent(message, 0L));
 	}
 
 	@Override

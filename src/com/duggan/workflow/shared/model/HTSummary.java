@@ -16,7 +16,7 @@ public class HTSummary extends DocSummary implements Serializable{
 	private String subject;
 	private Integer priority;
 	private String description;
-	private Integer documentRef;
+	private Long documentRef;
 	
 	public HTSummary() {
 	}
@@ -99,11 +99,11 @@ public class HTSummary extends DocSummary implements Serializable{
 		this.description = description;
 	}
 
-	public Integer getDocumentRef() {
+	public Long getDocumentRef() {
 		return documentRef;
 	}
 
-	public void setDocumentRef(Integer documentRef) {
+	public void setDocumentRef(Long documentRef) {
 		this.documentRef = documentRef;
 	}
 

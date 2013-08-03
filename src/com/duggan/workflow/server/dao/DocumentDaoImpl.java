@@ -9,6 +9,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.Document;
 
 /**
  * 
@@ -32,17 +33,7 @@ public class DocumentDaoImpl {
 				getResultList();
 	}
 	
-	public DocumentModel getBySubject(String subject){
-		List lst = em.createQuery("FROM DocumentModel d where subject= :subject").setParameter("subject", subject).getResultList();
-		
-		if(lst.size()>0){
-			return (DocumentModel)lst.get(0);
-		}
-		
-		return null;
-	}
-	
-	public DocumentModel getById(Integer id){
+	public DocumentModel getById(Long id){
 		List lst = em.createQuery("FROM DocumentModel d where id= :id").setParameter("id", id).getResultList();
 		
 		if(lst.size()>0){
@@ -90,4 +81,13 @@ public class DocumentDaoImpl {
 		 
 		 return value.intValue();
 	}
+
+	public List<DocumentModel> search(String subject) {
+		List lst = em.createQuery("FROM DocumentModel d where subject like :subject")
+				.setParameter("subject", "%"+subject+"%")
+				.getResultList();
+				
+		return lst;
+	}
+
 }

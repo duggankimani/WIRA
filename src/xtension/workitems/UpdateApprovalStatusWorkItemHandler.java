@@ -27,7 +27,7 @@ public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
 			throw new IllegalArgumentException("DocumentID and isApproved cannot be null");			
 		}
 		
-		DocumentDaoHelper.saveApproval((Integer)documentId, (Boolean)isApproved);
+		DocumentDaoHelper.saveApproval(new Long(documentId.toString()), (Boolean)isApproved);
 		
 	}
 

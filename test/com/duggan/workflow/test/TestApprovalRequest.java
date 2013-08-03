@@ -24,7 +24,7 @@ public class TestApprovalRequest {
 		//HTSummary doc = document.toTask();
 		Document doc = new Document();
 		doc.setSubject("Inv/Fin/100/13");
-		doc.setId(5);
+		doc.setId(5L);
 		doc.setDescription("Invoice for the delivery of goat milk");
 		doc.setPriority(5);
 		

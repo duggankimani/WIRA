@@ -20,7 +20,7 @@ public class ExecuteWorkflowActionHandler extends
 	}
 
 	@Override
-	public ExecuteWorkflowResult execute(ExecuteWorkflow action,
+	public void execute(ExecuteWorkflow action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
@@ -38,7 +38,6 @@ public class ExecuteWorkflowActionHandler extends
 		ExecuteWorkflowResult result = (ExecuteWorkflowResult)actionResult;
 		//result.setDocument(JBPMHelper.get().getTask(action.getTaskId()));
 		
-		return result;
 	}
 
 	@Override

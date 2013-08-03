@@ -15,7 +15,7 @@ public class Document extends DocSummary implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
 	
 	private DocType type;
 	
@@ -66,11 +66,11 @@ public class Document extends DocSummary implements Serializable{
 		return serialVersionUID;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -166,6 +166,12 @@ public class Document extends DocSummary implements Serializable{
 
 	public void setProcessInstanceId(Long processInstanceId) {
 		this.processInstanceId = processInstanceId;
+	}
+	
+	@Override
+	public String toString() {
+	
+		return "DocumentId = "+id+", subject="+subject;
 	}
 
 }

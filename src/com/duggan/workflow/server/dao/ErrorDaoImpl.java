@@ -11,13 +11,13 @@ public class ErrorDaoImpl {
 		this.em = em;
 	}
 	
-	public Integer saveError(ErrorLog log){
+	public Long saveError(ErrorLog log){
 		em.persist(log);
 		
 		return log.getId();
 	}
 	
-	public ErrorLog retrieveError(Integer logId){
+	public ErrorLog retrieveError(Long logId){
 		return em.find(ErrorLog.class, logId);
 	}
 }

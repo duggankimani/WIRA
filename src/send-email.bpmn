@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_FromItem" structureRef="String" />
+  <itemDefinition id="_Reply-ToItem" structureRef="String" />
+  <itemDefinition id="_ToItem" structureRef="String" />
+  <itemDefinition id="_CcItem" structureRef="String" />
+  <itemDefinition id="_BccItem" structureRef="String" />
+  <itemDefinition id="_SubjectItem" structureRef="String" />
+  <itemDefinition id="_BodyItem" structureRef="String" />
+
+  <itemDefinition id="_2-FromItem" structureRef="String" />
+  <itemDefinition id="_2-Reply-ToItem" structureRef="String" />
+  <itemDefinition id="_2-ToItem" structureRef="String" />
+  <itemDefinition id="_2-CcItem" structureRef="String" />
+  <itemDefinition id="_2-BccItem" structureRef="String" />
+  <itemDefinition id="_2-SubjectItem" structureRef="String" />
+  <itemDefinition id="_2-BodyItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="sendemail" name="Send Email" >
+
+    <!-- process variables -->
+    <property id="From" itemSubjectRef="_FromItem"/>
+    <property id="Reply-To" itemSubjectRef="_Reply-ToItem"/>
+    <property id="To" itemSubjectRef="_ToItem"/>
+    <property id="Cc" itemSubjectRef="_CcItem"/>
+    <property id="Bcc" itemSubjectRef="_BccItem"/>
+    <property id="Subject" itemSubjectRef="_SubjectItem"/>
+    <property id="Body" itemSubjectRef="_BodyItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="Start" />
+    <task id="_2" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_2_BodyInput" name="Body" />
+        <dataInput id="_2_SubjectInput" name="Subject" />
+        <dataInput id="_2_ToInput" name="To" />
+        <dataInput id="_2_BccInput" name="Bcc" />
+        <dataInput id="_2_CcInput" name="Cc" />
+        <dataInput id="_2_Reply-ToInput" name="Reply-To" />
+        <dataInput id="_2_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_2_BodyInput</dataInputRefs>
+          <dataInputRefs>_2_SubjectInput</dataInputRefs>
+          <dataInputRefs>_2_ToInput</dataInputRefs>
+          <dataInputRefs>_2_BccInput</dataInputRefs>
+          <dataInputRefs>_2_CcInput</dataInputRefs>
+          <dataInputRefs>_2_Reply-ToInput</dataInputRefs>
+          <dataInputRefs>_2_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>Body</sourceRef>
+        <targetRef>_2_BodyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>Subject</sourceRef>
+        <targetRef>_2_SubjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>To</sourceRef>
+        <targetRef>_2_ToInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>Bcc</sourceRef>
+        <targetRef>_2_BccInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>Cc</sourceRef>
+        <targetRef>_2_CcInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>Reply-To</sourceRef>
+        <targetRef>_2_Reply-ToInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>From</sourceRef>
+        <targetRef>_2_FromInput</targetRef>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_3" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="sendemail" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="100" y="100" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="279" y="100" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="487" y="102" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="124" y="124" />
+        <di:waypoint x="329" y="124" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="329" y="124" />
+        <di:waypoint x="511" y="126" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

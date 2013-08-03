@@ -58,6 +58,7 @@ public class DBTrxProvider{
 			synchronized(DBTrxProvider.class){
 				if(provider==null){
 					provider = new DBTrxProvider();
+					DB.getEntityManagerFactory();//initialize emf
 				}
 			}
 			

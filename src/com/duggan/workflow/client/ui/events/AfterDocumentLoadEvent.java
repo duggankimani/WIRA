@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.events;
 import com.duggan.workflow.shared.model.Actions;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
-import java.lang.Integer;
+import java.lang.Long;
 import java.util.List;
 
 import com.google.gwt.event.shared.HasHandlers;
@@ -12,18 +12,18 @@ public class AfterDocumentLoadEvent extends
 		GwtEvent<AfterDocumentLoadEvent.AfterDocumentLoadHandler> {
 
 	public static Type<AfterDocumentLoadHandler> TYPE = new Type<AfterDocumentLoadHandler>();
-	private Integer documentId;
+	private Long documentId;
 	private List<Actions> validActions;
 	
 	public interface AfterDocumentLoadHandler extends EventHandler {
 		void onAfterDocumentLoad(AfterDocumentLoadEvent event);
 	}
 
-	public AfterDocumentLoadEvent(Integer documentId) {
+	public AfterDocumentLoadEvent(Long documentId) {
 		this.documentId = documentId;
 	}
 
-	public Integer getDocumentId() {
+	public Long getDocumentId() {
 		return documentId;
 	}
 
@@ -41,7 +41,7 @@ public class AfterDocumentLoadEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Integer documentId) {
+	public static void fire(HasHandlers source, Long documentId) {
 		source.fireEvent(new AfterDocumentLoadEvent(documentId));
 	}
 

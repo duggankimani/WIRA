@@ -10,13 +10,13 @@ public class CompleteDocumentEvent extends
 
 	public static Type<CompleteDocumentHandler> TYPE = new Type<CompleteDocumentHandler>();
 	private Boolean isApproved;
-	private Integer documentId;
+	private Long documentId;
 
 	public interface CompleteDocumentHandler extends EventHandler {
 		void onCompleteDocument(CompleteDocumentEvent event);
 	}
 
-	public CompleteDocumentEvent(Integer docId, Boolean isApproved) {
+	public CompleteDocumentEvent(Long docId, Boolean isApproved) {
 		this.isApproved = isApproved;
 		this.documentId = docId;
 	}
@@ -39,11 +39,11 @@ public class CompleteDocumentEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Boolean isApproved, Integer documentId) {
+	public static void fire(HasHandlers source, Boolean isApproved, Long documentId) {
 		source.fireEvent(new CompleteDocumentEvent(documentId, isApproved));
 	}
 
-	public Integer getDocumentId() {
+	public Long getDocumentId() {
 		return documentId;
 	}
 }

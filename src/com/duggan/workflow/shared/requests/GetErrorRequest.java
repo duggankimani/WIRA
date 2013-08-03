@@ -1,7 +1,5 @@
 package com.duggan.workflow.shared.requests;
 
-import java.lang.Integer;
-
 import com.duggan.workflow.shared.responses.BaseResult;
 import com.duggan.workflow.shared.responses.GetErrorRequestResult;
 
@@ -14,14 +12,14 @@ import com.duggan.workflow.shared.responses.GetErrorRequestResult;
  */
 public class GetErrorRequest extends BaseRequest<GetErrorRequestResult> {
 
-	private Integer errorId;
+	private Long errorId;
 
 	@SuppressWarnings("unused")
 	private GetErrorRequest() {
 		// For serialization only
 	}
 
-	public GetErrorRequest(Integer errorId) {
+	public GetErrorRequest(Long errorId) {
 		this.errorId = errorId;
 	}
 
@@ -31,7 +29,7 @@ public class GetErrorRequest extends BaseRequest<GetErrorRequestResult> {
 		return new GetErrorRequestResult();
 	}
 	
-	public Integer getErrorId() {
+	public Long getErrorId() {
 		return errorId;
 	}
 }

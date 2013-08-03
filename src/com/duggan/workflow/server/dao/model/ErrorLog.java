@@ -20,7 +20,7 @@ public class ErrorLog extends PO{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	@Column(length=500)
 	private String msg;
@@ -41,12 +41,12 @@ public class ErrorLog extends PO{
 	}
 	
 	@Override
-	public Integer getId() {
+	public Long getId() {
 
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -19,7 +19,7 @@ public class GetErrorRequestActionHandler extends
 	}
 
 	@Override
-	public GetErrorRequestResult execute(GetErrorRequest action,
+	public void execute(GetErrorRequest action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
@@ -39,7 +39,6 @@ public class GetErrorRequestActionHandler extends
 			result.setErrorDate(new Date());
 		}
 		result.setErrorCode(0);
-		return result;
 	}
 	
 	@Override

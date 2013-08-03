@@ -3,20 +3,20 @@ package com.duggan.workflow.client.ui.events;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
 import java.lang.String;
-import java.lang.Integer;
+import java.lang.Long;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class ErrorEvent extends GwtEvent<ErrorEvent.ErrorHandler> {
 
 	public static Type<ErrorHandler> TYPE = new Type<ErrorHandler>();
 	private String message;
-	private Integer id;
+	private Long id;
 
 	public interface ErrorHandler extends EventHandler {
 		void onError(ErrorEvent event);
 	}
 
-	public ErrorEvent(String message, Integer id) {
+	public ErrorEvent(String message, Long id) {
 		this.message = message;
 		this.id = id;
 	}
@@ -25,7 +25,7 @@ public class ErrorEvent extends GwtEvent<ErrorEvent.ErrorHandler> {
 		return message;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -43,7 +43,7 @@ public class ErrorEvent extends GwtEvent<ErrorEvent.ErrorHandler> {
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, String message, Integer id) {
+	public static void fire(HasHandlers source, String message, Long id) {
 		source.fireEvent(new ErrorEvent(message, id));
 	}
 }

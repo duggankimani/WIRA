@@ -65,6 +65,7 @@ public class HomePresenter extends
 		void setHeading(String heading);
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 		HasClickHandlers getRefreshButton();
+		public void setHasItems(boolean hasItems);
 	}
 
 	@ProxyCodeSplit
@@ -90,7 +91,7 @@ public class HomePresenter extends
 	
 	private TaskType currentTaskType;
 	
-	private Integer selectedValue;
+	private Long selectedValue;
 	
 	final CurrentUser user;
 	
@@ -188,13 +189,14 @@ public class HomePresenter extends
 				loadLines(tasks);
 				
 				if(tasks.size()>0){
-					DocSummary doc = tasks.get(0);
+					getView().setHasItems(true);
 					
-					Integer docId=null;
+					DocSummary doc = tasks.get(0);
+					Long docId=null;
 					DocMode docMode = DocMode.READ;
 					
 					if(doc instanceof Document){
-						docId = (Integer)doc.getId();
+						docId = (Long)doc.getId();
 						if(((Document)doc).getStatus()==DocStatus.DRAFTED){
 							docMode = DocMode.READWRITE;
 						}
@@ -203,6 +205,9 @@ public class HomePresenter extends
 					}
 					
 					fireEvent(new DocumentSelectionEvent(docId,docMode));
+					
+				}else{
+					getView().setHasItems(false);
 				}
 				
 			}
@@ -223,7 +228,7 @@ public class HomePresenter extends
 			final DocSummary doc = tasks.get(i);
 			
 			if(dates.contains(dt)){
-				//fireEvent(new PresentTaskEvent(doc));
+				fireEvent(new PresentTaskEvent(doc));
 			}else{
 				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
 					@Override
@@ -266,7 +271,7 @@ public class HomePresenter extends
 
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
-		Integer id = event.getDocumentId();
+		Long id = event.getDocumentId();
 		this.selectedValue=id;
 		
 		displayDocument();

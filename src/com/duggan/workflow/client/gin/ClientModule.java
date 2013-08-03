@@ -41,6 +41,8 @@ import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundView;
+import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
+import com.duggan.workflow.client.ui.notifications.note.NoteView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -110,5 +112,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(NotificationsPresenter.class,
 				NotificationsPresenter.MyView.class, NotificationsView.class);
+
+		bindPresenterWidget(NotePresenter.class,
+				NotePresenter.MyView.class, NoteView.class);
 	}
 }

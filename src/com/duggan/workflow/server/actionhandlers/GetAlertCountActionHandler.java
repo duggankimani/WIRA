@@ -18,14 +18,13 @@ public class GetAlertCountActionHandler extends
 	}
 
 	@Override
-	public GetAlertCountResult execute(GetAlertCount action,
+	public void execute(GetAlertCount action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 
 		GetAlertCountResult countResult = (GetAlertCountResult)actionResult;
 		JBPMHelper.get().getCount(SessionHelper.getCurrentUser().getId(), countResult.getCounts());
 		DocumentDaoHelper.getCounts(countResult.getCounts());
-		return countResult;
 	}
 	
 	@Override

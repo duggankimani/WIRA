@@ -20,7 +20,7 @@ public class BTMTrxTest {
 	
 	@Test
 	public void persist(){
-		Document doc = DocumentDaoHelper.getDocument(31);
+		Document doc = DocumentDaoHelper.getDocument(31L);
 		String desc = "#####try - 4";
 		doc.setDescription(desc);
 		DocumentDaoHelper.save(doc);
@@ -28,7 +28,7 @@ public class BTMTrxTest {
 		
 		//new transaction
 		DB.beginTransaction();
-		Document saved = DocumentDaoHelper.getDocument(31);
+		Document saved = DocumentDaoHelper.getDocument(31L);
 		Assert.assertNotSame(desc, saved.getDescription());
 		DB.commitTransaction();
 	}

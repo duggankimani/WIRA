@@ -53,7 +53,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 				DB.beginTransaction();
 			}
 			
-			result = execute(action, result, execContext);
+			execute(action, result, execContext);
 			
 			//DB.rollback();	
 			DB.commitTransaction();
@@ -77,7 +77,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	private void logErrors(boolean hasError, Throwable throwable, B result) {
 
 		if(hasError){
-			Integer errorId=null;
+			Long errorId=null;
 			
 			try{
 				
@@ -111,7 +111,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 
 	}
 
-	public abstract B execute(A action, BaseResult actionResult,
+	public abstract void execute(A action, BaseResult actionResult,
 			ExecutionContext execContext) throws ActionException;
 
 	@Override

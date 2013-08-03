@@ -23,7 +23,7 @@ public class CreateDocumentActionHandler extends
 	}
 
 	@Override
-	public CreateDocumentResult execute(CreateDocumentRequest action,
+	public void execute(CreateDocumentRequest action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 				
@@ -34,7 +34,6 @@ public class CreateDocumentActionHandler extends
 		CreateDocumentResult result = (CreateDocumentResult)actionResult;
 		result.setDocument(doc);
 		
-		return result;
 	}
 
 	@Override

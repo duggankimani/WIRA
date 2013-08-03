@@ -1,30 +1,27 @@
 package com.duggan.workflow.client.ui.home;
 
+import static com.duggan.workflow.client.ui.home.HomePresenter.DATEGROUP_SLOT;
+import static com.duggan.workflow.client.ui.home.HomePresenter.DOCUMENT_SLOT;
+
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
-import com.gwtplatform.mvp.client.ViewImpl;
-import com.github.gwtbootstrap.client.ui.base.InlineLabel;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.home.HomePresenter.*;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class HomeView extends ViewImpl implements
 		HomePresenter.MyView {
@@ -51,8 +48,7 @@ public class HomeView extends ViewImpl implements
 	@UiField Hyperlink aFlagged;
 	@UiField Anchor aRefresh;
 	
-	CheckBox k;
-	//@UiField SpanElement iRefresh;
+	@UiField InlineLabel spnNoItems;
 	
 	@Inject
 	public HomeView(final Binder binder) {
@@ -152,6 +148,14 @@ public class HomeView extends ViewImpl implements
 					aFlagged.setText(txt+" ("+alerts.get(type)+")");
 					break;
 			}
+		}
+		
+	}
+	
+	public void setHasItems(boolean hasItems){
+		UIObject.setVisible(spnNoItems.getElement(), !hasItems);
+		if(!hasItems){
+			spnNoItems.setText("No items to display");
 		}
 		
 	}

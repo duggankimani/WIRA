@@ -10,6 +10,9 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
   		<jta-data-source>jdbc/ebusinessds</jta-data-source>
         <mapping-file>META-INF/Taskorm.xml</mapping-file>
         <mapping-file>META-INF/ProcessInstanceInfo.hbm.xml</mapping-file>
+        <mapping-file>META-INF/Executor-orm.xml</mapping-file>
+        <mapping-file>META-INF/orm.xml</mapping-file>
+        <mapping-file>META-INF/ext-Task-orm.xml</mapping-file>
         <class>org.jbpm.task.Attachment</class>
         <class>org.jbpm.task.Content</class>
         <class>org.jbpm.task.BooleanExpression</class>
@@ -42,7 +45,14 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
     	<class>org.jbpm.persistence.processinstance.ProcessInstanceInfo</class>
     	
         <class>com.duggan.workflow.server.dao.model.DocumentModel</class>
+        <class>com.duggan.workflow.server.dao.model.NotificationModel</class>
         
+        <!-- Async Executor Classes -->
+        <class>org.jbpm.executor.entities.RequestInfo</class>
+        <class>org.jbpm.executor.entities.ErrorInfo</class>
+        
+        <!-- class>org.jbpm.executor.entities.TestTable</class -->
+                
         <properties>            
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <!-- property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
@@ -52,7 +62,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
             <property name="hibernate.connection.autocommit" value="false" />
             <property name="hibernate.max_fetch_depth" value="3" /-->
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.transaction.manager_lookup_class"
                 value="org.hibernate.transaction.BTMTransactionManagerLookup"/>
         </properties>

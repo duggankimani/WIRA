@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.duggan.workflow.client.util.Definitions;
+import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.BaseResult;
@@ -13,7 +14,7 @@ import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-import static com.duggan.workflow.server.actionhandlers.ServerConstants.*;
+import static com.duggan.workflow.server.ServerConstants.*;
 
 public class GetContextRequestActionHandler extends 
 		BaseActionHandler<GetContextRequest, GetContextRequestResult> {
@@ -26,7 +27,7 @@ public class GetContextRequestActionHandler extends
 	}
 
 	@Override
-	public GetContextRequestResult execute(GetContextRequest action,
+	public void execute(GetContextRequest action,
 			BaseResult actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
@@ -43,7 +44,6 @@ public class GetContextRequestActionHandler extends
 			result.setUser((HTUser)user);
 		}
 		
-		return result;
 	}
 
 	@Override

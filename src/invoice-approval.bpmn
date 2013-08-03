@@ -30,12 +30,6 @@
   <itemDefinition id="_3-documentIdItem" structureRef="Integer" />
   <itemDefinition id="_3-isApprovedItem" structureRef="Boolean" />
 
-  <itemDefinition id="_12-subjectItem" structureRef="String" />
-  <itemDefinition id="_12-descriptionItem" structureRef="String" />
-  <itemDefinition id="_12-valueItem" structureRef="String" />
-  <itemDefinition id="_12-documentIdItem" structureRef="Integer" />
-  <itemDefinition id="_12-isApprovedItem" structureRef="Boolean" />
-
   <itemDefinition id="_14-subjectItem" structureRef="String" />
   <itemDefinition id="_14-descriptionItem" structureRef="String" />
   <itemDefinition id="_14-valueItem" structureRef="String" />
@@ -48,14 +42,14 @@
   <itemDefinition id="_15-documentIdItem" structureRef="Integer" />
   <itemDefinition id="_15-isApprovedItem" structureRef="Boolean" />
 
-  <itemDefinition id="_16-subjectItem" structureRef="String" />
-  <itemDefinition id="_16-descriptionItem" structureRef="String" />
-  <itemDefinition id="_16-valueItem" structureRef="String" />
-  <itemDefinition id="_16-documentIdItem" structureRef="Integer" />
-  <itemDefinition id="_16-isApprovedItem" structureRef="Boolean" />
-
   <process processType="Private" isExecutable="true" id="invoice-approval" name="Invoice Approval Process" tns:packageName="com.duggan.workflow.invoice" tns:version="V1" >
 
+    <extensionElements>
+     <tns:import name="java.util.Map" />
+     <tns:import name="java.util.HashMap" />
+     <tns:import name="org.jbpm.workflow.instance.node.HumanTaskNodeInstance" />
+     <tns:global identifier="OwnerId" type="java.lang.String" />
+    </extensionElements>
     <!-- process variables -->
     <property id="subject" itemSubjectRef="_subjectItem"/>
     <property id="description" itemSubjectRef="_descriptionItem"/>
@@ -67,8 +61,23 @@
     <startEvent id="_1" name="StartProcess" />
     <userTask id="_2" name="HOD Approval" >
       <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>Map map = new HashMap();
+map.put("GroupId", ((HumanTaskNodeInstance)kcontext.getNodeInstance()).getWorkItem().getParameter("GroupId"));
+map.put("ActorId", ((HumanTaskNodeInstance)kcontext.getNodeInstance()).getWorkItem().getParameter("GroupId"));
+map.put("OwnerId", kcontext.getVariable("OwnerId"));
+map.put("DocumentId", kcontext.getVariable("DocumentId"));
+map.put("Subject", kcontext.getVariable("Subject"));		
+kcontext.getKnowledgeRuntime().startProcess("beforetask-notification", map);</tns:script>
+        </tns:onEntry-script>
         <tns:onExit-script scriptFormat="http://www.java.com/java">
-          <tns:script>kcontext.getProcessInstance().signalEvent("CompleteDocumentEvent",null);</tns:script>
+          <tns:script>Map map = new HashMap();
+map.put("OwnerId", kcontext.getVariable("GroupId"));
+map.put("ActorId", kcontext.getVariable("ActorId"));
+map.put("OwnerId", kcontext.getVariable("OwnerId"));
+map.put("DocumentId", kcontext.getVariable("DocumentId"));
+map.put("Subject", kcontext.getVariable("Subject"));		
+kcontext.getKnowledgeRuntime().startProcess("aftertask-notification", map);</tns:script>
         </tns:onExit-script>
       </extensionElements>
       <ioSpecification>
@@ -285,33 +294,13 @@ eBusiness Administration]@[]</from>
         <terminateEventDefinition />
     </endEvent>
     <exclusiveGateway id="_5" name="approved?" gatewayDirection="Diverging" />
-    <endEvent id="_7" name="End" >
+    <endEvent id="_20" name="End" >
         <terminateEventDefinition />
     </endEvent>
     <exclusiveGateway id="_8" name="approved?" gatewayDirection="Diverging" />
     <endEvent id="_10" name="End" >
         <terminateEventDefinition />
     </endEvent>
-    <task id="_12" name="Update Reject" tns:taskName="UpdateLocal" >
-      <ioSpecification>
-        <dataInput id="_12_isApprovedInput" name="isApproved" />
-        <dataInput id="_12_documentIdInput" name="documentId" />
-        <inputSet>
-          <dataInputRefs>_12_isApprovedInput</dataInputRefs>
-          <dataInputRefs>_12_documentIdInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>isApproved</sourceRef>
-        <targetRef>_12_isApprovedInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>documentId</sourceRef>
-        <targetRef>_12_documentIdInput</targetRef>
-      </dataInputAssociation>
-    </task>
     <task id="_14" name="Update Success" tns:taskName="UpdateLocal" >
       <ioSpecification>
         <dataInput id="_14_isApprovedInput" name="isApproved" />
@@ -429,58 +418,6 @@ eBusiness Administration]@[]</from>
         </resourceAssignmentExpression>
       </potentialOwner>
     </userTask>
-    <parallelGateway id="_17" name="Send Notifications" gatewayDirection="Diverging" />
-    <task id="_16" name="Approval Notification" tns:taskName="Email" >
-      <ioSpecification>
-        <dataInput id="_16_BodyInput" name="Body" />
-        <dataInput id="_16_SubjectInput" name="Subject" />
-        <dataInput id="_16_ToInput" name="To" />
-        <dataInput id="_16_FromInput" name="From" />
-        <inputSet>
-          <dataInputRefs>_16_BodyInput</dataInputRefs>
-          <dataInputRefs>_16_SubjectInput</dataInputRefs>
-          <dataInputRefs>_16_ToInput</dataInputRefs>
-          <dataInputRefs>_16_FromInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <targetRef>_16_BodyInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">The above document has been successful approved</from>
-          <to xsi:type="tFormalExpression">_16_BodyInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_16_SubjectInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{subject} Approval Update</from>
-          <to xsi:type="tFormalExpression">_16_SubjectInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_16_ToInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">mdkimani@gmail.com</from>
-          <to xsi:type="tFormalExpression">_16_ToInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_16_FromInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">ebpm.mgr@gmail.com</from>
-          <to xsi:type="tFormalExpression">_16_FromInput</to>
-        </assignment>
-      </dataInputAssociation>
-    </task>
-    <intermediateCatchEvent id="_19" name="Signal" >
-      <signalEventDefinition signalRef="CompleteDocumentEvent"/>
-    </intermediateCatchEvent>
-    <parallelGateway id="_18" name="Done Notifying" gatewayDirection="Converging" />
-    <endEvent id="_20" name="End" >
-        <terminateEventDefinition />
-    </endEvent>
 
     <!-- connections -->
     <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
@@ -489,22 +426,16 @@ eBusiness Administration]@[]</from>
     </sequenceFlow>
     <sequenceFlow id="_14-_4" sourceRef="_14" targetRef="_4" />
     <sequenceFlow id="_2-_5" sourceRef="_2" targetRef="_5" />
-    <sequenceFlow id="_18-_7" sourceRef="_18" targetRef="_7" />
+    <sequenceFlow id="_5-_20" sourceRef="_5" targetRef="_20" name="Denied" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="_3-_8" sourceRef="_3" targetRef="_8" />
     <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" name="Denied" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved=false;</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_17-_12" sourceRef="_17" targetRef="_12" />
     <sequenceFlow id="_15-_14" sourceRef="_15" targetRef="_14" />
     <sequenceFlow id="_8-_15" sourceRef="_8" targetRef="_15" name="ok" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="_19-_17" sourceRef="_19" targetRef="_17" />
-    <sequenceFlow id="_17-_16" sourceRef="_17" targetRef="_16" />
-    <sequenceFlow id="_16-_18" sourceRef="_16" targetRef="_18" />
-    <sequenceFlow id="_12-_18" sourceRef="_12" targetRef="_18" />
-    <sequenceFlow id="_5-_20" sourceRef="_5" targetRef="_20" name="Denied" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
     </sequenceFlow>
 
   </process>
@@ -526,8 +457,8 @@ eBusiness Administration]@[]</from>
       <bpmndi:BPMNShape bpmnElement="_5" >
         <dc:Bounds x="244" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_7" >
-        <dc:Bounds x="645" y="303" width="48" height="48" />
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="245" y="183" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_8" >
         <dc:Bounds x="465" y="78" width="48" height="48" />
@@ -535,29 +466,11 @@ eBusiness Administration]@[]</from>
       <bpmndi:BPMNShape bpmnElement="_10" >
         <dc:Bounds x="563" y="131" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_12" >
-        <dc:Bounds x="365" y="254" width="123" height="48" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_14" >
         <dc:Bounds x="711" y="28" width="114" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_15" >
         <dc:Bounds x="561" y="27" width="114" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_17" >
-        <dc:Bounds x="266" y="307" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_16" >
-        <dc:Bounds x="361" y="350" width="150" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_19" >
-        <dc:Bounds x="164" y="308" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_18" >
-        <dc:Bounds x="566" y="305" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_20" >
-        <dc:Bounds x="245" y="183" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_2" >
         <di:waypoint x="40" y="120" />
@@ -575,9 +488,9 @@ eBusiness Administration]@[]</from>
         <di:waypoint x="160" y="120" />
         <di:waypoint x="268" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_18-_7" >
-        <di:waypoint x="590" y="329" />
-        <di:waypoint x="669" y="327" />
+      <bpmndi:BPMNEdge bpmnElement="_5-_20" >
+        <di:waypoint x="268" y="120" />
+        <di:waypoint x="269" y="207" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_3-_8" >
         <di:waypoint x="368" y="63" />
@@ -587,10 +500,6 @@ eBusiness Administration]@[]</from>
         <di:waypoint x="489" y="102" />
         <di:waypoint x="587" y="155" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_17-_12" >
-        <di:waypoint x="290" y="331" />
-        <di:waypoint x="426" y="278" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_15-_14" >
         <di:waypoint x="618" y="51" />
         <di:waypoint x="768" y="52" />
@@ -598,26 +507,6 @@ eBusiness Administration]@[]</from>
       <bpmndi:BPMNEdge bpmnElement="_8-_15" >
         <di:waypoint x="489" y="102" />
         <di:waypoint x="618" y="51" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_19-_17" >
-        <di:waypoint x="188" y="332" />
-        <di:waypoint x="290" y="331" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_17-_16" >
-        <di:waypoint x="290" y="331" />
-        <di:waypoint x="436" y="374" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_16-_18" >
-        <di:waypoint x="436" y="374" />
-        <di:waypoint x="590" y="329" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_12-_18" >
-        <di:waypoint x="426" y="278" />
-        <di:waypoint x="590" y="329" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5-_20" >
-        <di:waypoint x="268" y="120" />
-        <di:waypoint x="269" y="207" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

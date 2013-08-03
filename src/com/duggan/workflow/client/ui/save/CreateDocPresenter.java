@@ -39,7 +39,7 @@ public class CreateDocPresenter extends
 
 	@Inject DispatchAsync requestHelper;
 	
-	private Integer Id;
+	private Long Id;
 	
 	@Inject PlaceManager placeManager;
 	
@@ -125,7 +125,7 @@ public class CreateDocPresenter extends
 		});
 	}
 
-	public void setDocumentId(Integer selectedValue) {
+	public void setDocumentId(Long selectedValue) {
 		this.Id = selectedValue;
 	}
 }

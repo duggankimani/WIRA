@@ -4,25 +4,49 @@ import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
+import com.duggan.workflow.server.dao.NotificationDaoImpl;
 
 class DaoFactory {
 
-	DocumentDaoImpl documentDao=null;
+	DocumentDaoImpl documentDao = null;
 	ErrorDaoImpl errorDao = null;
-	
-	DocumentDaoImpl getDocumentDao(EntityManager em){
-		if(documentDao==null){
-			documentDao = new DocumentDaoImpl(em);
+	NotificationDaoImpl notificationDao;
+
+	DocumentDaoImpl getDocumentDao(EntityManager em) {
+		if (documentDao == null) {
+			synchronized (DaoFactory.class) {
+				if (documentDao == null) {
+					documentDao = new DocumentDaoImpl(em);
+				}
+			}
+
 		}
-		
+
 		return documentDao;
 	}
 
 	ErrorDaoImpl getErrorDao(EntityManager entityManager) {
-		if(errorDao==null){
-			errorDao = new ErrorDaoImpl(entityManager);
+		if (errorDao == null) {
+			synchronized (DaoFactory.class) {
+				if (errorDao == null) {
+					errorDao = new ErrorDaoImpl(entityManager);
+				}
+			}
 		}
-		
+
 		return errorDao;
 	}
+
+	NotificationDaoImpl getNotificationDao(EntityManager em) {
+		if (notificationDao == null) {
+			synchronized (DaoFactory.class) {
+				if (notificationDao == null) {
+					notificationDao = new NotificationDaoImpl(em);
+				}
+			}
+		}
+
+		return notificationDao;
+	}
+
 }
