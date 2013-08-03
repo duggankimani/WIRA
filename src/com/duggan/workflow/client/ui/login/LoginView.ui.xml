@@ -10,7 +10,7 @@
     <g:HTMLPanel styleName="login-bg">
 	<g:HTMLPanel styleName="row-fluid login-wrapper">
         <a href="#">
-        <a class="brand" href="#">E-Business Task List | Kenya Power Ltd</a> 
+        <a class="brand" href="#">E-Business Task List | Your Organisation</a> 
         </a>
         <div class="span4 box">
             <div class="content-wrap">

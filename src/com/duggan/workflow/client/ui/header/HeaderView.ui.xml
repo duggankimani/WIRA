@@ -47,17 +47,22 @@
                   </a>
                   
                   <ul class="dropdown-menu">
-                       <img class="pull-left" data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="70px" height="70px"/>
-                        <div class="pull-right">
-                          <span ui:field="spnUserPull"></span>
-                          <br/>
-                          Assistant Director<br/>
-                          Kengen Ltd
+                        <div class="user-details row-fluid">
+                        	<div class="span1">
+  				          	<img class="" data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="70px" height="90px"/>                      
+                         	<!--span id="changephoto" class="gbxo">
+                         		<span class="gbxv">Change photo</span>
+                         	</span  -->
+                         	</div>
+	                         <div class="span2">
+		                          <span class="text" ui:field="spnUserPull"></span>
+		                          <br/>Assistant Director
+	                         </div>
                         </div>
-                        <div>
-                      <button class="btn" type="button">View Profile</button> 
-                      <g:Anchor ui:field="aLogout">Logout</g:Anchor>
-                      </div>
+                        <div class="action-area">
+		                      <button class="btn btn-primary" type="button">View Profile</button> 
+		                      <g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
+                      	</div>
                   </ul>
             </li>
         </ul>
