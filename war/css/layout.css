@@ -51,6 +51,7 @@ textarea{
 	margin-top: 10px;
 	text-shadow:1px 1px #1B1464; 
 }
+/* Login Logo*/
 .login-wrapper .brand{
 	text-decoration: none;
 	font-size: 2em;
@@ -269,12 +270,66 @@ textarea{
 .navbar  .pop-dialog .messages .footer {
 	margin-top: 6px;
 }
+/*User-Account*/
+.navbar .dropdown-menu{
+	background:#f5f5f5;	
+	margin: 0px;
+	padding: 0px;
+	vertical-align: top;
+	width: 240px;
+}
+.navbar #changephoto{
+	padding: 7px 0;
+	-webkit-transition: background-color .218s ease-in-out;
+	transition: background-color .218s ease-in-out;
+	background-color: #4d90fe;
+	bottom: 0;
+	color: #fff;
+	display: block;
+	font-size: 9px;
+	font-weight: bold;
+	position: absolute;
+	text-align: center;
+	text-decoration: none !important;
+	-moz-transition: opacity .218s ease-in-out;
+	-o-transition: opacity .218s ease-in-out;
+	-webkit-transition: opacity .218s ease-in-out;
+	transition: opacity .218s ease-in-out;
+	white-space: normal;
+	width: 96px;
+}
+.navbar .dropdown-menu .user-details{
+	display:inline-block;
+	background:#fff;
+	border-bottom: 1px solid #bebebe;
+	-webkit-box-shadow: 0 2px 4px rgba(0,0,0,.12);
+	box-shadow: 0 2px 4px rgba(0,0,0,.12);
+	padding: 15px 8px;
+	width: 225px;	
+}
+.navbar .dropdown-menu .user-details .span1{
+	width:70px;
+	/* height:70px; */
+}
+.navbar .dropdown-menu .user-details .span2{
+	width: 130px;
+	/* height:70px; */
+	padding-left: 10px;
+}
 
+.navbar .dropdown-menu .action-area{
+	padding:10px;
+	padding-top:0px;
+}
+.navbar .dropdown-menu .text{
+	font-weight:bold;
+	color:#000;
+}
 /*Whole Inside Container*/
 .main-container{
 	background-color: #fafafa;
-
 }
+
 /* Sidebar */
 #sidebar-nav .add-doc{
 	padding-bottom: 10px;
