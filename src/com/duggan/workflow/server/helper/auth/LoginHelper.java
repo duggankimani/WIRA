@@ -27,6 +27,7 @@ import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
+import org.springframework.ldap.filter.PresentFilter;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.authentication.LdapAuthenticator;
@@ -73,7 +74,9 @@ public class LoginHelper implements Closeable {
 			ldapQuery = new LdapQueryHelper(ldapTemplate);
 
 		} catch (Exception e) {
-			throw new InitializationFailureError("Could not initialize LDAP container : "+e.getMessage(), e);
+			throw new InitializationFailureError(
+					"Could not initialize LDAP container : " + e.getMessage(),
+					e);
 		}
 	}
 
@@ -153,7 +156,7 @@ public class LoginHelper implements Closeable {
 					password);
 		} catch (AuthenticationException ex) {
 			String message = ex.getMessage();
-			//log?
+			// log?
 		}
 
 		return isvalid;
@@ -190,16 +193,16 @@ public class LoginHelper implements Closeable {
 
 		return lst;
 	}
-	
-	public HTUser getUser(String userId){
-		
-		AndFilter filter = new AndFilter().and(new EqualsFilter("objectClass",
-				"person"))
-				.and(new EqualsFilter("uid", userId));
+
+	public HTUser getUser(String userId) {
+
+		AndFilter filter = new AndFilter().and(
+				new EqualsFilter("objectClass", "person")).and(
+				new EqualsFilter("uid", userId));
 		List lst = ldapTemplate.search("", filter.toString(),
 				userAttributesMapper);
-		
-		return (HTUser)lst.get(0);
+
+		return (HTUser) lst.get(0);
 	}
 
 	/**
@@ -219,7 +222,7 @@ public class LoginHelper implements Closeable {
 	 * Create/Update New User
 	 */
 	public HTUser createUser(HTUser user) {
-		
+
 		DirContextOperations ctx = new DirContextAdapter(new DistinguishedName(
 				"uid=" + user.getId() + "," + usersBaseDN));
 		ctx.addAttributeValue("objectClass", "organizationalPerson");
@@ -229,8 +232,9 @@ public class LoginHelper implements Closeable {
 		ctx.addAttributeValue("cn", user.getName());
 		ctx.addAttributeValue("sn", user.getSurname());
 		ctx.addAttributeValue("mail", user.getEmail());
-		
-		ctx.addAttributeValue("userPassword", "{SHA}" + this.encrypt(user.getPassword()));
+
+		ctx.addAttributeValue("userPassword",
+				"{SHA}" + this.encrypt(user.getPassword()));
 
 		ldapTemplate.bind(ctx);
 
@@ -273,6 +277,30 @@ public class LoginHelper implements Closeable {
 		return groups;
 	}
 
+	public List<HTUser> getUsersForGroup(String groupName) {
+		List users = null;
+
+		AndFilter filter = new AndFilter()
+				.and(new EqualsFilter("dn", "cn=HOD_FIN,ou=groups,o=mojo"));
+		
+		System.err.println(filter.toString());
+		List userDns = ldapTemplate.search("", filter.toString(), new AttributesMapper() {
+			
+			@Override
+			public Object mapFromAttributes(Attributes attributes)
+					throws NamingException {
+				
+				return attributes.get("uniqueMember").get();
+			}
+		});
+		
+		for(Object str: userDns){
+			System.err.println(str);
+		}
+		
+		return users;
+	}
+
 	@Override
 	public void close() throws IOException {
 		container.stop();
@@ -292,24 +320,24 @@ public class LoginHelper implements Closeable {
 
 	private String encrypt(final String plaintext) {
 		MessageDigest md = null;
-		
+
 		try {
-			
+
 			md = MessageDigest.getInstance("SHA");
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e.getMessage());
 		}
-		
+
 		try {
 			md.update(plaintext.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e.getMessage());
 		}
-		
+
 		byte raw[] = md.digest();
-		
+
 		String hash = (new BASE64Encoder()).encode(raw);
-		
+
 		return hash;
 	}
 

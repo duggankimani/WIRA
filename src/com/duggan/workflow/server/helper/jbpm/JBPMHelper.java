@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -25,6 +26,7 @@ import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.persistence.jpa.JPAKnowledgeService;
 import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
+import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.executor.commands.SendMailCommand;
@@ -45,6 +47,10 @@ import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 import org.jbpm.task.User;
+import org.jbpm.task.event.TaskEventKey;
+import org.jbpm.task.event.entity.TaskCompletedEvent;
+import org.jbpm.task.event.entity.TaskFailedEvent;
+import org.jbpm.task.event.entity.TaskSkippedEvent;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
@@ -53,7 +59,7 @@ import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 
-import xtension.workitems.GenerateNotificationsWorkItemHandler;
+import xtension.workitems.GenerateNotificationWorkItemHandler;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import bitronix.tm.TransactionManagerServices;
 
@@ -106,8 +112,8 @@ public class JBPMHelper implements Closeable{
 			
 			//register work item handlers
 			session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
-			session.getWorkItemManager().registerWorkItemHandler("GenerateSysNotification",new GenerateNotificationsWorkItemHandler());
-			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new GenerateNotificationsWorkItemHandler());
+			session.getWorkItemManager().registerWorkItemHandler("GenerateSysNotification",new GenerateNotificationWorkItemHandler());
+			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new GenerateNotificationWorkItemHandler());
 			
 			EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 					EmailServiceHelper.getProperty("smtp.host"),
@@ -135,10 +141,8 @@ public class JBPMHelper implements Closeable{
     	
     	LocalTaskService taskService = new LocalTaskService(ts);
     	
-    	LocalHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskService, ksession);
-    	
+    	LocalHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskService, ksession);//new BPMHTWorkItemHandler(taskService, ksession);
     	this.service = taskService;
-    	
     	return taskHandler;
 	}
 
@@ -230,7 +234,9 @@ public class JBPMHelper implements Closeable{
 		//initialParams.put("user_self_evaluation", "calcacuervo");
 		initialParams.put("Subject", summary.getSubject());
 		initialParams.put("Description", summary.getDescription());
-		initialParams.put("DocumentId", summary.getId());
+		initialParams.put("Subject", summary.getSubject());//Human Tasks need this
+		initialParams.put("Description", summary.getDescription());//Human Tasks need this
+		initialParams.put("DocumentId", summary.getId().toString());
 		initialParams.put("OwnerId", SessionHelper.getCurrentUser()==null? "System": SessionHelper.getCurrentUser().getId());
 		initialParams.put("Value", null);
 		initialParams.put("Priority", summary.getPriority());
@@ -541,8 +547,12 @@ public class JBPMHelper implements Closeable{
 		Map<String, Object> content = getMappedData(service.getTask(taskId));
 		content.putAll(values);
 		
+		Set<String> keys = content.keySet();
+		for(String key: keys){
+			System.err.println(">> Key="+key+" : "+content.get(key));
+		}
 		this.service.completeWithResults(taskId, userId, content);
-		
+		//this.service.complete(taskId, userId, null);
 		return true;
 	}
 	
@@ -555,10 +565,7 @@ public class JBPMHelper implements Closeable{
 	 * @param action This is the action to be executed
 	 */
 	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
-		if(values!=null){
-			values.put("OwnerId", userId);// approver
-		}
-
+		
 		switch(action){
 		case CLAIM:
 			get().service.claim(taskId, userId);

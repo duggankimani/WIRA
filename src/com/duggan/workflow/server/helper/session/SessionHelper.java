@@ -29,11 +29,13 @@ public class SessionHelper{
 				
 		HttpSession session = request.get()==null? null: request.get().getSession(false);
 		if(session==null){
-			return null;
+			return new HTUser("System");
+			//return null;
 		}
 		
 		if(session.getAttribute(ServerConstants.USER)==null){
-			return null;
+			return new HTUser("System");
+			//return null;
 		}
 		
 		return (HTUser)session.getAttribute(ServerConstants.USER);

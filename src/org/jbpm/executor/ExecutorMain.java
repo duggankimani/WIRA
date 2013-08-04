@@ -68,8 +68,6 @@ public class ExecutorMain {
 
 	public static void main2(String[] args) {
 		DBTrxProvider.init();
-		DB.getEntityManagerFactory();// Force PersistenceUnit to be initialised
-										// outside an active BTM transaction
 
 		DB.beginTransaction();
 
