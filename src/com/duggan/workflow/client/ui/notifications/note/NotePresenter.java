@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.notifications.note;
 
+import java.util.Date;
+
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -11,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 
 public class NotePresenter extends
 		PresenterWidget<NotePresenter.MyView> {
@@ -21,10 +25,10 @@ public class NotePresenter extends
 
 		void setValues(String subject, DocType documentType,
 				NotificationType notificationType, String owner,
-				String targetUserId, String time, boolean isRead);
+				String targetUserId, String time, boolean isRead, String createdBy);
 	}
 
-	private Notification notification;
+	private Notification note;
 
 	@Inject PlaceManager placeManager;
 	
@@ -40,26 +44,75 @@ public class NotePresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//save read
-				getView().setValues(notification.getSubject(),
-						notification.getDocumentType(),
-						notification.getNotificationType(),
-						notification.getOwner(),
-						notification.getTargetUserId(), "10 mins",
-						true);
-				//open 
-				//placeManager.revealDefaultPlace();
+				//save read				
 			}
 		});
 	}
 	
 	public void setNotification(Notification notification){
-		this.notification = notification;
+		this.note = notification;
+		String time=getTimeDifferenceAsString(notification.getCreated());
 		getView().setValues(notification.getSubject(),
 				notification.getDocumentType(),
 				notification.getNotificationType(),
 				notification.getOwner(),
-				notification.getTargetUserId(), "10 mins",
-				notification.IsRead()==null? false: notification.IsRead());
+				notification.getTargetUserId(),time,
+				notification.IsRead()==null? false: notification.IsRead(), notification.getCreatedBy());
+	}
+	
+	public String getTimeDifferenceAsString(Date createdDate){
+
+		if(createdDate==null){
+			return "";
+		}
+	
+		Date today =new Date(); 
+		long now = today.getTime();
+		long created = createdDate.getTime();
+		long diff = now -created;
+		
+		StringBuffer buff = new StringBuffer();
+		
+		long dayInMillis = 24*3600*1000;
+		long hourInMillis = 3600*1000;
+		long minInMillis = 60*1000;
+		
+		if(diff>5*dayInMillis){
+			return DateUtils.DATEFORMAT.format(createdDate);
+		}
+		
+		if(diff>dayInMillis){
+			int days = CalendarUtil.getDaysBetween(createdDate, today);
+			if(days==1){
+				return "yesterday";
+			}
+			
+			return days+" days ago";
+		}
+				
+		if(!CalendarUtil.isSameDate(createdDate, new Date())){
+			return "yesterday";
+		}
+		
+		if(diff>hourInMillis){
+			long hrs = diff/hourInMillis;
+			buff.append(hrs+" "+((hrs)==1? "hr":"hrs"));
+			diff= diff%hourInMillis;
+		}
+		
+		if(diff>minInMillis){
+			long mins = diff/minInMillis;
+			buff.append(mins+" "+((mins)==1? "min":"mins"));
+			diff= diff%minInMillis;
+		}
+		
+		if(buff.length()==0){
+			long secs = diff/1000;
+			buff.append(secs+" "+(secs==1? "sec":"secs"));
+		}
+		
+		buff.append(" ago");
+		return buff.toString();
+	
 	}
 }

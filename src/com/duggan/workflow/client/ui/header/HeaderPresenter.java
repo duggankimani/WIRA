@@ -5,11 +5,14 @@ import java.util.HashMap;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
+import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetAlertCountResult;
+import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.LogoutAction;
+import com.duggan.workflow.shared.responses.GetNotificationsActionResult;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -59,7 +62,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 
         @Override
         public void run() {
-            loadAlerts();
+            loadAlertCount();
         }
     };
     
@@ -79,19 +82,20 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().setPopupVisible();
-				setInSlot(NOTIFICATIONS_SLOT, notifications);		
+				setInSlot(NOTIFICATIONS_SLOT, notifications);	
+				loadAlerts();
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onReset() {		
 		super.onReset();
-		loadAlerts();
+		loadAlertCount();
 		getView().setValues(AppContext.getUserNames());
 	}
 	
-	protected void loadAlerts() {
+	protected void loadAlertCount() {
 		alertTimer.cancel();
 		
 		dispatcher.execute(new GetAlertCount(), new TaskServiceCallback<GetAlertCountResult>() {
@@ -101,6 +105,19 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 				fireEvent(new AlertLoadEvent(alerts));
 				
 				alertTimer.schedule(alertReloadInterval);
+			}
+		});
+		
+	}
+
+	
+	protected void loadAlerts() {
+		dispatcher.execute(new GetNotificationsAction(AppContext.getUserId()),
+				new TaskServiceCallback<GetNotificationsActionResult>() {
+			@Override
+			public void processResult(
+					GetNotificationsActionResult result) {
+				fireEvent(new NotificationsLoadEvent(result.getNotifications()));				
 			}
 		});
 	}

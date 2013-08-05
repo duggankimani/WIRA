@@ -85,7 +85,18 @@ objectClass: top
 cn: Admin
 sn: Admin
 uid: Administrator
-nail: mdkimani@gmail.com
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=System,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: System
+sn: System
+uid: System
+mail: ebpm.mgr@gmail.com
 userPassword:: cGFzcw==
 
 dn: cn=esteban,ou=users,o=mojo

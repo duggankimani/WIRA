@@ -21,17 +21,13 @@ public class ExecutorModule {
         if(instance == null){
             instance = new ExecutorModule();
             DBTrxProvider.init();
-          //This is a hack to force generation of a persistence unit before any XA transactions are started/ Activated
-            //Hibernate cannot perform DDL within an active XA trx
-            DB.getEntityManagerFactory();  
         }
         return instance;
     }
 
     private ExecutorModule() {
-        executorService = new ExecutorServiceEntryPointImpl();        
-    	//Singleton.. that we need to instantiate
-        //this.container.instance().select(TaskLifeCycleEventListener.class).get(); 
+        executorService = new ExecutorServiceEntryPointImpl(); 
+        executorService.init();
     }
 
 	public ExecutorServiceEntryPoint getExecutorServiceEntryPoint() {

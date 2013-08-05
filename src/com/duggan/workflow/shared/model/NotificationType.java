@@ -12,13 +12,18 @@ package com.duggan.workflow.shared.model;
  */
 public enum NotificationType {
 
-	APPROVALREQUEST_APPROVERNOTE,//for approver
-	APPOVALREQUEST_OWNERNOTE,//for ownere - request assigned
-	TASKCOMPLETED_APPROVERNOTE,//for approver
-	TASKCOMPLETED_OWNERNOTE,//for owner
-	COMMENT,
-	TASK_REMINDER,
-	PROCESS_COMPLETED;
+	APPROVALREQUEST_APPROVERNOTE("Request for approval - Invoice INV/001/2013 from Calcacuervo. (2 mins ago)"),//for approver
+	APPROVALREQUEST_OWNERNOTE("You have successfuly submitted Invoice INV/001/2013 for approval (10 seconds ago)"),//for ownere - request assigned
+	TASKCOMPLETED_APPROVERNOTE("You approved/denied Invoice INV/001/2013 from calcacuervo (20mins ago)"),//for approver
+	TASKCOMPLETED_OWNERNOTE("Your Invoice INV/001/2013 was approved/Denied by HOD (1hr ago)"),//for owner
+	COMMENT("HOD - Andrew commented on your document INV/001/2013 (5 hrs ago)"),
+	TASK_REMINDER("Reminder re: Document INV/001/2013"),
+	PROCESS_COMPLETED("Invoice INV/001/2013 approval process completed (3 mins ago)");
 	
+	String notificationTemplate;//example template - To be removed later
+	
+	private NotificationType(String template){
+		this.notificationTemplate=template;
+	}
 	
 }

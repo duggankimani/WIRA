@@ -15,6 +15,7 @@ public class ExecutorFactory {
 			synchronized (ExecutorFactory.class) {
 				if (executor == null) {
 					executor = new ExecutorImpl();
+					executor.init();
 				}
 			}
 		}

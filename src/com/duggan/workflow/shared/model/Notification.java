@@ -18,6 +18,7 @@ public class Notification implements Serializable{
 	private DocType documentType;
 	private Boolean isRead;
 	private Date created;
+	private String createdBy;
 	
 	public Notification() {
 	}
@@ -85,5 +86,28 @@ public class Notification implements Serializable{
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+	
+	public Notification clone(){
+
+		Notification note = new Notification();
+		note.setCreated(created);
+		note.setDocumentId(documentId);
+		note.setDocumentType(documentType);
+		note.setNotificationType(notificationType);
+		note.setOwner(owner);
+		note.setRead(isRead);
+		note.setSubject(subject);
+		note.setTargetUserId(targetUserId);
+		
+		return note;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

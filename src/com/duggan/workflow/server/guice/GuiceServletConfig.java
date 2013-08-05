@@ -2,6 +2,8 @@ package com.duggan.workflow.server.guice;
 
 import javax.servlet.ServletContextEvent;
 
+import org.jbpm.executor.ExecutorModule;
+
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.Injector;
 import com.google.inject.Guice;
@@ -10,6 +12,7 @@ import com.duggan.workflow.server.guice.ServerModule;
 import com.duggan.workflow.server.guice.DispatchServletModule;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.test.LDAPAuth;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 
@@ -25,6 +28,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		super.contextInitialized(servletContextEvent);
 		DBTrxProvider.init();
 		JBPMHelper.get();
+		ExecutorModule.getInstance().getExecutorServiceEntryPoint().init();
 	}
 	
 	@Override
@@ -34,6 +38,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		
 		JBPMHelper.destroy();
 		DBTrxProvider.close();
+		ExecutorModule.getInstance().getExecutorServiceEntryPoint().destroy();
 		try{
 			//close ldap connection
 			LoginHelper.get().close();

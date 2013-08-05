@@ -152,8 +152,8 @@ public class DB{
      * This is called whenever a new entity manager is requested
      */
     public static void beginTransaction() {
-    	try{    						
-			getUserTrx().begin();
+    	try{    	
+    		getUserTrx().begin();
     	}catch(Exception e){
     		throw new RuntimeException(e);
     	}

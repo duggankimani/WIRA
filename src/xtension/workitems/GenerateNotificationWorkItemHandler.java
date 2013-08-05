@@ -1,7 +1,9 @@
 package xtension.workitems;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +28,7 @@ import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import static com.duggan.workflow.shared.model.NotificationType.*;
@@ -51,6 +54,15 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		String actorId = (String) workItem.getParameter("ActorId");
 		String ownerId = (String) workItem.getParameter("OwnerId");
 
+		
+		System.err.println("Class : "+this.getClass());
+		System.err.println("Subject : "+subject);
+		System.err.println("NotificationType : "+noteType);
+		System.err.println("DocumentId : "+documentId);
+		System.err.println("GroupId : "+groupId);
+		System.err.println("ActorId : "+actorId);
+		System.err.println("OwnerId : "+ownerId);		
+
 		Notification notification = new Notification();
 		notification.setCreated(new Date());
 		notification.setDocumentId(new Long(documentId));
@@ -61,25 +73,35 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
 		notification.setDocumentType(doc.getType());
 		
+		List<HTUser> users = null;
 		//notification.setTargetUserId(targetUserId);
+		if(actorId!=null && !actorId.trim().isEmpty()){
+			users = new ArrayList<>();
+			users.add(LoginHelper.get().getUser(actorId));
+		}if(groupId!=null && !groupId.trim().isEmpty()){
+			users = LoginHelper.get().getUsersForGroup(groupId);
+		}
 		
-		//LoginHelper.get().get
+		List<HTUser> owner = new ArrayList<>();
+		owner.add(LoginHelper.get().getUser(ownerId));
+		
 		switch (type) {
-		case APPOVALREQUEST_OWNERNOTE:
-			notification.setTargetUserId(ownerId);
+		case APPROVALREQUEST_OWNERNOTE:
+			generateNotes(owner, notification);
 			break;
 		case APPROVALREQUEST_APPROVERNOTE:
-			notification.setTargetUserId(ownerId);
+			System.err.println("###############Approvers "+users);
+			generateNotes(users, notification);
 			break;
 		case TASKCOMPLETED_APPROVERNOTE:
-
+			System.err.println("###############Approvers "+users);
+			generateNotes(users, notification);
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
-
+			generateNotes(owner, notification);
 			break;
-
 		case PROCESS_COMPLETED:
-
+			
 			break;
 
 		case TASK_REMINDER:
@@ -92,6 +114,20 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		}
 
 		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
+	}
+
+	private void generateNotes(List<HTUser> users, Notification notification) {
+		
+		for(HTUser user: users){
+			Notification note = notification.clone();
+			note.setTargetUserId(user.getId());
+			note.setRead(false);
+			
+			if(note.getTargetUserId()==null)
+				throw new IllegalArgumentException("Target Id must not be null");
+			NotificationDaoHelper.saveNotification(note);
+		}
+		
 	}
 
 	public void executeWorkItem1(WorkItem workItem, WorkItemManager manager) {

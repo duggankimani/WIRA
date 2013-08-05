@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
@@ -196,6 +197,7 @@ public class LoginHelper implements Closeable {
 
 	public HTUser getUser(String userId) {
 
+		System.err.println("LDAP Search :uid="+userId);
 		AndFilter filter = new AndFilter().and(
 				new EqualsFilter("objectClass", "person")).and(
 				new EqualsFilter("uid", userId));
@@ -278,26 +280,44 @@ public class LoginHelper implements Closeable {
 	}
 
 	public List<HTUser> getUsersForGroup(String groupName) {
-		List users = null;
+		List users = new ArrayList<>();
 
-		AndFilter filter = new AndFilter()
-				.and(new EqualsFilter("dn", "cn=HOD_FIN,ou=groups,o=mojo"));
-		
+		AndFilter filter = new AndFilter().and(
+				new EqualsFilter("objectClass", "group")).and(
+				new EqualsFilter("cn", groupName));
+
 		System.err.println(filter.toString());
-		List userDns = ldapTemplate.search("", filter.toString(), new AttributesMapper() {
-			
+		final List userDns = new ArrayList<>();
+
+		ldapTemplate.search("", filter.toString(), new AttributesMapper() {
+
 			@Override
 			public Object mapFromAttributes(Attributes attributes)
 					throws NamingException {
-				
-				return attributes.get("uniqueMember").get();
+
+				int size = attributes.get("uniqueMember").size();
+
+				if (size == 0) {
+					userDns.add(attributes.get("uniqueMember").get());
+				} else {
+					for (int i = 0; i < size; i++) {
+						userDns.add(attributes.get("uniqueMember").get(i));
+					}
+				}
+				return null;
 			}
 		});
-		
-		for(Object str: userDns){
-			System.err.println(str);
+
+		for (Object dn : userDns) {
+			String dname= dn.toString();
+			dname = dname.substring(0, dname.indexOf(","));
+			dname = dname.substring(dname.indexOf("=")+1, dname.length());
+			
+			System.err.println("############search "+dname);
+			
+			users.add(getUser(dname));
 		}
-		
+
 		return users;
 	}
 

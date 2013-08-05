@@ -1,14 +1,12 @@
 package com.duggan.workflow.test.bpm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.jbpm.task.identity.LDAPUserGroupCallbackImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -22,10 +20,13 @@ import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
+import com.google.gwt.thirdparty.streamhtmlparser.util.EntityResolver.Status;
 
 public class TestNotications {
 
@@ -35,41 +36,69 @@ public class TestNotications {
 		LoginHelper.get();
 	}
 	
-	@Test
-	public void ldap() throws Exception{
-		Thread.sleep(1200000);
+	@Ignore
+	public void getUsersForGroup(){
 		List<HTUser> users = LoginHelper.get().getUsersForGroup("HOD_DEV");
 		
 		Assert.assertTrue(users.size()>0);
+		
+		Assert.assertEquals("mariano", users.get(0).getId());
+		Assert.assertEquals("mariano", users.get(0).getName());
 	}
 	
-	@Ignore
+	@Test
 	public void setRequest(){
 		String approver = "mariano";
 		
+		Document doc = new Document();
+		doc.setCreated(new Date());
+		doc.setDateDue(new Date());
+		doc.setDescription("Invoice for the purchase of breakfast");
+		doc.setDocumentDate(new Date());
+		doc.setOwner(new HTUser("calcacuervo"));
+		doc.setPartner("Damon Enterprises");
+		doc.setPriority(2);
+		doc.setStatus(DocStatus.DRAFTED);
+		//unique - increment by one on every run
+		doc.setSubject("INV/20024/2013");
+		doc.setType(DocType.INVOICE);
+		doc.setValue("10,000Ksh");
+	
 		DB.beginTransaction();
-		Document doc = DocumentDaoHelper.getDocument(50L);
+		doc = DocumentDaoHelper.save(doc);
 		
 		//create approval request
 		JBPMHelper.get().createApprovalRequest(doc);
 		DB.commitTransaction();
+		DB.closeSession();
 		
-		//get tasks for approver
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver, TaskType.APPROVALREQUESTNEW);
 		
 		DB.beginTransaction();
+		//get tasks for approver
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver, TaskType.APPROVALREQUESTNEW);
+		DB.commitTransaction();
+		DB.closeSession();
+		
 		HTSummary summary = summaries.get(0); //last
 		Long taskId = summary.getId();
 		System.err.println("Id = "+taskId+ ", Size="+summaries.size());
+		
+		DB.beginTransaction();
 		//claim
 		JBPMHelper.get().execute(taskId, approver, Actions.CLAIM, null);
+		DB.commitTransaction();
+		DB.closeSession();
+		
+		DB.beginTransaction();
 		//start
 		JBPMHelper.get().execute(taskId, approver, Actions.START, null);
+		DB.commitTransaction();
+		DB.closeSession();
 		
+		DB.beginTransaction();
 		Map<String, Object> values = new HashMap<>();
 		values.put("isApproved", true);
-		JBPMHelper.get().execute(taskId, approver, Actions.COMPLETE, values);
-		
+		JBPMHelper.get().execute(taskId, approver, Actions.COMPLETE, values);		
 		DB.commitTransaction();
 		DB.closeSession();
 	}

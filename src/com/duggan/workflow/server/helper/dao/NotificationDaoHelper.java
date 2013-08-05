@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.helper.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -84,6 +85,9 @@ public class NotificationDaoHelper {
 		notificationTo.setCreated(modelFrom.getCreated());
 		notificationTo.setTargetUserId(modelFrom.getTargetUserId());
 		notificationTo.setRead(modelFrom.IsRead());
+		notificationTo.setCreatedBy(modelFrom.getCreatedBy());
+		notificationTo.setId(modelFrom.getId());
+		
 	}
 
 	public static void delete(Long id) {

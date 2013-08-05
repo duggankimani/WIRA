@@ -91,7 +91,11 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
         return adminService.clearAllErrors();
     }
 
-    public Long scheduleRequest(CommandCodes commandName, CommandContext ctx) {
+    public synchronized Long scheduleRequest(CommandCodes commandName, CommandContext ctx) {
+    	assert executor!=null;
+    	assert commandName!=null;
+    	assert ctx!=null;
+    	
         return executor.scheduleRequest(commandName, ctx);
     }
 
@@ -101,7 +105,6 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
 
     public void init() {
     	executor = ExecutorFactory.getExecutor();
-    	executor.init();
     	queryService = ExecutorFactory.getExecutorQueryService();
     	adminService = ExecutorFactory.getExecutorRequestAdminService();
     	       
@@ -109,7 +112,6 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
 
     public void destroy() {
         executor.destroy();
-        DBTrxProvider.close();
     }
 
     public int getInterval() {

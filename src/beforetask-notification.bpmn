@@ -67,20 +67,24 @@
     <task id="_11" name="Owner Notification" tns:taskName="GenerateSysNotification" >
       <ioSpecification>
         <dataInput id="_11_PriorityInput" name="Priority" />
+        <dataInput id="_11_ActorIdInput" name="ActorId" />
         <dataInput id="_11_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_11_NotificationTypeInput" name="NotificationType" />
         <dataInput id="_11_SubjectInput" name="Subject" />
+        <dataInput id="_11_NotificationTypeInput" name="NotificationType" />
         <dataInput id="_11_OwnerIdInput" name="OwnerId" />
         <dataInput id="_11_TargetGroupIdInput" name="TargetGroupId" />
         <dataInput id="_11_TargetUserIdInput" name="TargetUserId" />
+        <dataInput id="_11_GroupIdInput" name="GroupId" />
         <inputSet>
           <dataInputRefs>_11_PriorityInput</dataInputRefs>
+          <dataInputRefs>_11_ActorIdInput</dataInputRefs>
           <dataInputRefs>_11_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_11_NotificationTypeInput</dataInputRefs>
           <dataInputRefs>_11_SubjectInput</dataInputRefs>
+          <dataInputRefs>_11_NotificationTypeInput</dataInputRefs>
           <dataInputRefs>_11_OwnerIdInput</dataInputRefs>
           <dataInputRefs>_11_TargetGroupIdInput</dataInputRefs>
           <dataInputRefs>_11_TargetUserIdInput</dataInputRefs>
+          <dataInputRefs>_11_GroupIdInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
@@ -90,6 +94,13 @@
         <targetRef>_11_PriorityInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
+        <targetRef>_11_ActorIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{ActorId}</from>
+          <to xsi:type="tFormalExpression">_11_ActorIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
         <targetRef>_11_DocumentIdInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">#{DocumentId}</from>
@@ -97,17 +108,17 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_11_NotificationTypeInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">APPOVALREQUEST_OWNERNOTE</from>
-          <to xsi:type="tFormalExpression">_11_NotificationTypeInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <targetRef>_11_SubjectInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">#{Subject}</from>
           <to xsi:type="tFormalExpression">_11_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_NotificationTypeInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">APPROVALREQUEST_OWNERNOTE</from>
+          <to xsi:type="tFormalExpression">_11_NotificationTypeInput</to>
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
@@ -131,6 +142,13 @@
           <to xsi:type="tFormalExpression">_11_TargetUserIdInput</to>
         </assignment>
       </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{GroupId}</from>
+          <to xsi:type="tFormalExpression">_11_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
     </task>
     <task id="_12" name="Approver Notification" tns:taskName="GenerateSysNotification" >
       <ioSpecification>
@@ -138,23 +156,27 @@
         <dataInput id="_12_DocumentIdInput" name="DocumentId" />
         <dataInput id="_12_SubjectInput" name="Subject" />
         <dataInput id="_12_GroupIdInput" name="GroupId" />
+        <dataInput id="_12_ActorIdInput" name="ActorId" />
         <dataInput id="_12_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_12_SubjectInput" name="Subject" />
         <dataInput id="_12_NotificationTypeInput" name="NotificationType" />
+        <dataInput id="_12_SubjectInput" name="Subject" />
         <dataInput id="_12_OwnerIdInput" name="OwnerId" />
         <dataInput id="_12_TargetGroupIdInput" name="TargetGroupId" />
         <dataInput id="_12_TargetUserIdInput" name="TargetUserId" />
+        <dataInput id="_12_GroupIdInput" name="GroupId" />
         <inputSet>
           <dataInputRefs>_12_ActorIdInput</dataInputRefs>
           <dataInputRefs>_12_DocumentIdInput</dataInputRefs>
           <dataInputRefs>_12_SubjectInput</dataInputRefs>
           <dataInputRefs>_12_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_12_ActorIdInput</dataInputRefs>
           <dataInputRefs>_12_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_12_SubjectInput</dataInputRefs>
           <dataInputRefs>_12_NotificationTypeInput</dataInputRefs>
+          <dataInputRefs>_12_SubjectInput</dataInputRefs>
           <dataInputRefs>_12_OwnerIdInput</dataInputRefs>
           <dataInputRefs>_12_TargetGroupIdInput</dataInputRefs>
           <dataInputRefs>_12_TargetUserIdInput</dataInputRefs>
+          <dataInputRefs>_12_GroupIdInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
@@ -176,17 +198,17 @@
         <targetRef>_12_GroupIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
+        <targetRef>_12_ActorIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{ActorId}</from>
+          <to xsi:type="tFormalExpression">_12_ActorIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
         <targetRef>_12_DocumentIdInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">#{DocumentId}</from>
           <to xsi:type="tFormalExpression">_12_DocumentIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_12_SubjectInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{Subject}</from>
-          <to xsi:type="tFormalExpression">_12_SubjectInput</to>
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
@@ -197,9 +219,16 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
+        <targetRef>_12_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{Subject}</from>
+          <to xsi:type="tFormalExpression">_12_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
         <targetRef>_12_OwnerIdInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">TESTING</from>
+          <from xsi:type="tFormalExpression">#{OwnerId}</from>
           <to xsi:type="tFormalExpression">_12_OwnerIdInput</to>
         </assignment>
       </dataInputAssociation>
@@ -217,6 +246,13 @@
           <to xsi:type="tFormalExpression">_12_TargetUserIdInput</to>
         </assignment>
       </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_12_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{GroupId}</from>
+          <to xsi:type="tFormalExpression">_12_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
     </task>
     <task id="_13" name="Approver Email" tns:taskName="ScheduleEmailNotification" >
       <ioSpecification>
@@ -225,14 +261,22 @@
         <dataInput id="_13_SubjectInput" name="Subject" />
         <dataInput id="_13_OwnerIdInput" name="OwnerId" />
         <dataInput id="_13_GroupIdInput" name="GroupId" />
+        <dataInput id="_13_ActorIdInput" name="ActorId" />
+        <dataInput id="_13_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_13_SubjectInput" name="Subject" />
         <dataInput id="_13_NotificationTypeInput" name="NotificationType" />
+        <dataInput id="_13_GroupIdInput" name="GroupId" />
         <inputSet>
           <dataInputRefs>_13_ActorIdInput</dataInputRefs>
           <dataInputRefs>_13_DocumentIdInput</dataInputRefs>
           <dataInputRefs>_13_SubjectInput</dataInputRefs>
           <dataInputRefs>_13_OwnerIdInput</dataInputRefs>
           <dataInputRefs>_13_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_13_ActorIdInput</dataInputRefs>
+          <dataInputRefs>_13_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_13_SubjectInput</dataInputRefs>
           <dataInputRefs>_13_NotificationTypeInput</dataInputRefs>
+          <dataInputRefs>_13_GroupIdInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
@@ -258,10 +302,38 @@
         <targetRef>_13_GroupIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
+        <targetRef>_13_ActorIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{ActorId}</from>
+          <to xsi:type="tFormalExpression">_13_ActorIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_13_DocumentIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{DocumentId}</from>
+          <to xsi:type="tFormalExpression">_13_DocumentIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_13_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{Subject}</from>
+          <to xsi:type="tFormalExpression">_13_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
         <targetRef>_13_NotificationTypeInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">APPROVALREQUEST_APPROVERNOTE</from>
           <to xsi:type="tFormalExpression">_13_NotificationTypeInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_13_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{GroupId}</from>
+          <to xsi:type="tFormalExpression">_13_GroupIdInput</to>
         </assignment>
       </dataInputAssociation>
     </task>
@@ -272,14 +344,22 @@
         <dataInput id="_14_SubjectInput" name="Subject" />
         <dataInput id="_14_OwnerIdInput" name="OwnerId" />
         <dataInput id="_14_GroupIdInput" name="GroupId" />
+        <dataInput id="_14_ActorIdInput" name="ActorId" />
+        <dataInput id="_14_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_14_SubjectInput" name="Subject" />
         <dataInput id="_14_NotificationTypeInput" name="NotificationType" />
+        <dataInput id="_14_GroupIdInput" name="GroupId" />
         <inputSet>
           <dataInputRefs>_14_ActorIdInput</dataInputRefs>
           <dataInputRefs>_14_DocumentIdInput</dataInputRefs>
           <dataInputRefs>_14_SubjectInput</dataInputRefs>
           <dataInputRefs>_14_OwnerIdInput</dataInputRefs>
           <dataInputRefs>_14_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_14_ActorIdInput</dataInputRefs>
+          <dataInputRefs>_14_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_14_SubjectInput</dataInputRefs>
           <dataInputRefs>_14_NotificationTypeInput</dataInputRefs>
+          <dataInputRefs>_14_GroupIdInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
@@ -305,10 +385,38 @@
         <targetRef>_14_GroupIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
+        <targetRef>_14_ActorIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{ActorId}</from>
+          <to xsi:type="tFormalExpression">_14_ActorIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_14_DocumentIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{DocumentId}</from>
+          <to xsi:type="tFormalExpression">_14_DocumentIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_14_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{Subject}</from>
+          <to xsi:type="tFormalExpression">_14_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
         <targetRef>_14_NotificationTypeInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">APPOVALREQUEST_OWNERNOTE</from>
+          <from xsi:type="tFormalExpression">APPROVALREQUEST_OWNERNOTE</from>
           <to xsi:type="tFormalExpression">_14_NotificationTypeInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_14_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{GroupId}</from>
+          <to xsi:type="tFormalExpression">_14_GroupIdInput</to>
         </assignment>
       </dataInputAssociation>
     </task>

@@ -12,7 +12,6 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 	@Override
 	public void onFailure(Throwable caught) {	
 		
-		caught.printStackTrace();
 		if(caught instanceof InvalidSessionException){
 			AppContext.destroy();
 			AppContext.getPlaceManager().revealPlace(new PlaceRequest("login"));

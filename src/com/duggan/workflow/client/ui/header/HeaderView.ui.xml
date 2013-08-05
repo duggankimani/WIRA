@@ -22,7 +22,7 @@
                     
                       <g:Anchor ui:field="aNotifications" styleName="close-icon hand">
                         <i class="icon-bell"></i>
-                        <span ui:field="lblCount" class="label label-important">2</span>
+                        <span ui:field="lblCount" class="label label-important"></span>
                     </g:Anchor>    
 
                      <g:FocusPanel ui:field="popupContainer" styleName="pop-dialog">     

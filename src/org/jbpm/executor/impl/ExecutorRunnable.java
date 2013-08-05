@@ -31,7 +31,7 @@ import com.duggan.workflow.server.db.DB;
  *
  * @author salaboy
  */
-public class ExecutorRunnable implements Runnable {
+public class ExecutorRunnable extends Thread {
     
 	
     private Logger logger = Logger.getLogger(ExecutorRunnable.class.getCanonicalName());
@@ -39,16 +39,21 @@ public class ExecutorRunnable implements Runnable {
     
     
     public ExecutorRunnable(){
-    	
+    	setDaemon(true);
     }
 
+    /**
+     * BTM will rollback transactions that live for too
+     * long, therefore it is important to reduce the number of 
+     * requests sent/retried to an optimum number. 
+     */
     public void run() {
     	
     	DB.beginTransaction();
     	EntityManager em = DB.getEntityManagerFactory().createEntityManager();
     	
         logger.log(Level.INFO, " >>> Executor Thread {0} Waking Up!!!", this.toString());
-        List<?> resultList = em.createQuery("Select r from RequestInfo as r where r.status ='QUEUED' or r.status = 'RETRYING' ORDER BY r.time DESC").getResultList();
+        List<?> resultList = em.createQuery("Select r from RequestInfo as r where r.status ='QUEUED' or r.status = 'RETRYING' ORDER BY r.time DESC").setMaxResults(5).getResultList();
         logger.log(Level.INFO, " >>> Pending Requests = {0}", resultList.size());
         if (resultList.size() > 0) {
             RequestInfo r = null;
@@ -70,6 +75,11 @@ public class ExecutorRunnable implements Runnable {
                     try {
                         ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(reqData));
                         ctx = (CommandContext) in.readObject();
+                        String subject = ctx.getData().get("Subject")==null? "Subject" : ctx.getData().get("Subject").toString();
+                        
+                        subject = subject.concat(" -ID "+r.getId());
+                        ctx.setData("Subject", subject);
+                        
                     } catch (IOException e) {
                         ctx = null;
                         e.printStackTrace();

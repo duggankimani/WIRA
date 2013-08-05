@@ -33,7 +33,7 @@ public class NotificationDaoImpl {
 	@SuppressWarnings("unchecked")
 	public List<NotificationModel> getAllNotifications(String userId) {
 
-		return em.createQuery("FROM NotificationModel n where n.targetUserId=:userId")
+		return em.createQuery("FROM NotificationModel n where n.targetUserId=:userId order by created desc")
 				.setParameter("userId", userId)
 				.getResultList();
 	}

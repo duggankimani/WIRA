@@ -19,8 +19,11 @@ public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		Object documentId = workItem.getParameter("documentId");
-		//Object subject = workItem.getParameter("documentsubject");
+		Object documentId = workItem.getParameter("DocumentId");
+		if(documentId==null){
+			documentId = workItem.getParameter("documentId");
+		}
+
 		Object isApproved = workItem.getParameter("isApproved");
 		
 		if(documentId==null || isApproved==null){

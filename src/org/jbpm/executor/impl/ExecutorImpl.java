@@ -28,6 +28,7 @@ import org.jbpm.executor.api.Executor;
 import com.duggan.workflow.server.db.DB;
 
 /**
+ *	Singleton
  *
  * @author salaboy
  */
@@ -86,7 +87,6 @@ public class ExecutorImpl implements Executor {
     }
     
     public synchronized Long scheduleRequest(CommandCodes commandId, CommandContext ctx) {      
-    	DB.beginTransaction();
     	em = DB.getEntityManagerFactory().createEntityManager();
     	long start = System.currentTimeMillis();
         if (ctx == null) {
@@ -118,9 +118,6 @@ public class ExecutorImpl implements Executor {
         
         em.persist(requestInfo);
         System.out.println("Before Persist.... "+(System.currentTimeMillis()-start)+"ms");
-        DB.commitTransaction();
-        DB.closeSession();
-        
         System.out.println("After Persist.... "+(System.currentTimeMillis()-start)+"ms");
         
         logger.log(Level.INFO, " >>> Scheduling request for Command: {0} - requestId: {1} with {2} retries", new Object[]{commandId, requestInfo.getId(), requestInfo.getRetries()});

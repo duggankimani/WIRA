@@ -60,6 +60,7 @@ import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 
 import xtension.workitems.GenerateNotificationWorkItemHandler;
+import xtension.workitems.SendMailWorkItemHandler;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import bitronix.tm.TransactionManagerServices;
 
@@ -113,7 +114,7 @@ public class JBPMHelper implements Closeable{
 			//register work item handlers
 			session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
 			session.getWorkItemManager().registerWorkItemHandler("GenerateSysNotification",new GenerateNotificationWorkItemHandler());
-			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new GenerateNotificationWorkItemHandler());
+			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new SendMailWorkItemHandler());
 			
 			EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 					EmailServiceHelper.getProperty("smtp.host"),
@@ -232,14 +233,12 @@ public class JBPMHelper implements Closeable{
 		
 		Map<String, Object> initialParams = new HashMap<String, Object>();		
 		//initialParams.put("user_self_evaluation", "calcacuervo");
-		initialParams.put("Subject", summary.getSubject());
-		initialParams.put("Description", summary.getDescription());
-		initialParams.put("Subject", summary.getSubject());//Human Tasks need this
-		initialParams.put("Description", summary.getDescription());//Human Tasks need this
-		initialParams.put("DocumentId", summary.getId().toString());
-		initialParams.put("OwnerId", SessionHelper.getCurrentUser()==null? "System": SessionHelper.getCurrentUser().getId());
-		initialParams.put("Value", null);
-		initialParams.put("Priority", summary.getPriority());
+		initialParams.put("subject", summary.getSubject());//Human Tasks need this
+		initialParams.put("description", summary.getDescription());//Human Tasks need this
+		initialParams.put("documentId", summary.getId().toString());
+		initialParams.put("ownerId", SessionHelper.getCurrentUser()==null? "System": SessionHelper.getCurrentUser().getId());
+		initialParams.put("value", null);
+		initialParams.put("priority", summary.getPriority());
 		
 		ProcessInstance processInstance = session.startProcess("invoice-approval", initialParams);
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
