@@ -14,5 +14,6 @@
              <span class="bluename" ui:field="spnSubject"></span>
             <span class="time" ui:field="spnTime"><i class="icon-time"></i></span>
         </g:Anchor>
+     
 	</g:HTMLPanel>
 </ui:UiBinder>
