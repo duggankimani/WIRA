@@ -1,7 +1,5 @@
 package com.duggan.workflow.client.ui.header;
 
-import com.gwtplatform.mvp.client.ViewImpl;
-import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -10,10 +8,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 

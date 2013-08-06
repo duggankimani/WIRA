@@ -18,12 +18,16 @@
         <a class="brand" href="#">E-Business Task List | Your Organisation</a> 
         
         <ul class="nav pull-right">
+              <li class="home">
+               		 <g:Anchor styleName="close-icon hand">
+	                        <i class="icon-home"> &nbspHome</i>
+                   	  </g:Anchor>  
+              </li>
               <li class="notification-dropdown hidden-phone">
-                    
                       <g:Anchor ui:field="aNotifications" styleName="close-icon hand">
                         <i class="icon-bell"></i>
                         <span ui:field="lblCount" class="label label-important"></span>
-                    </g:Anchor>    
+                   	  </g:Anchor>    
 
                      <g:FocusPanel ui:field="popupContainer" styleName="pop-dialog">     
                      	<g:HTMLPanel>                 
