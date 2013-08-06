@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.requests.GetAlertCount;
@@ -25,6 +26,7 @@ public class GetAlertCountActionHandler extends
 		GetAlertCountResult countResult = (GetAlertCountResult)actionResult;
 		JBPMHelper.get().getCount(SessionHelper.getCurrentUser().getId(), countResult.getCounts());
 		DocumentDaoHelper.getCounts(countResult.getCounts());
+		NotificationDaoHelper.getCounts(countResult.getCounts());
 	}
 	
 	@Override

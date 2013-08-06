@@ -35,6 +35,12 @@ public class TestDocumentDaoImpl {
 	}
 	
 	@Test
+	public void getDocType(){
+		DocType type = dao.getDocumentType(2L);
+		Assert.assertNotNull(type);
+	}
+	
+	@Ignore
 	public void search(){
 		//List<Document> docs =DocumentDaoHelper.search("INV");
 	}

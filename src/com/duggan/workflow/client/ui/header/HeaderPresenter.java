@@ -39,6 +39,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 
 		void setPopupVisible();
 		
+		void setCount(Integer count);
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -102,8 +103,11 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 			@Override
 			public void processResult(GetAlertCountResult result) {
 				HashMap<TaskType,Integer> alerts = result.getCounts();
-				fireEvent(new AlertLoadEvent(alerts));
 				
+				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));
+				
+				System.out.println("Alerts - "+alerts.get(TaskType.APPROVALREQUESTDONE));
+				fireEvent(new AlertLoadEvent(alerts));				
 				alertTimer.schedule(alertReloadInterval);
 			}
 		});

@@ -2,10 +2,14 @@ package com.duggan.workflow.client.ui.notifications.note;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.duggan.workflow.shared.requests.SaveNotificationRequest;
+import com.duggan.workflow.shared.responses.SaveNotificationRequestResult;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -32,6 +36,8 @@ public class NotePresenter extends
 
 	@Inject PlaceManager placeManager;
 	
+	@Inject DispatchAsync dispatcher;
+		
 	@Inject
 	public NotePresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -44,7 +50,23 @@ public class NotePresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//save read				
+				//save read		
+				if(!note.IsRead()){
+					SaveNotificationRequest request = new SaveNotificationRequest(note.getId(), true);
+					dispatcher.execute(request, new TaskServiceCallback<SaveNotificationRequestResult>() {
+						public void processResult(SaveNotificationRequestResult result) {
+							Notification notification = result.getNotification();
+							String time=getTimeDifferenceAsString(notification.getCreated());
+							getView().setValues(notification.getSubject(),
+									notification.getDocumentType(),
+									notification.getNotificationType(),
+									notification.getOwner(),
+									notification.getTargetUserId(),time,
+									notification.IsRead()==null? false: notification.IsRead(), notification.getCreatedBy());
+						};
+					});
+					
+				}
 			}
 		});
 	}

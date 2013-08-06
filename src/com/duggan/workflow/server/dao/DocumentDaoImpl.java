@@ -9,6 +9,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 
 /**
@@ -88,6 +89,14 @@ public class DocumentDaoImpl {
 				.getResultList();
 				
 		return lst;
+	}
+
+	public DocType getDocumentType(Long documentId) {
+		
+		DocType type = (DocType)em.createQuery("select d.type FROM DocumentModel d where d.id=:documentId")
+		.setParameter("documentId", documentId).getSingleResult();
+		
+		return type;
 	}
 
 }

@@ -32,6 +32,8 @@ import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
 import com.duggan.workflow.shared.requests.SearchDocumentRequest;
 import com.duggan.workflow.server.actionhandlers.SearchDocumentRequestActionHandler;
+import com.duggan.workflow.shared.requests.SaveNotificationRequest;
+import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -76,6 +78,10 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(SearchDocumentRequest.class,
 				SearchDocumentRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(SaveNotificationRequest.class,
+				SaveNotificationRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }
