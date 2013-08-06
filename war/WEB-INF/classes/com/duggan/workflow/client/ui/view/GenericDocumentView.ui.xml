@@ -1,0 +1,87 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+		
+	<g:HTMLPanel>	   
+	    <br/>
+          <div class="action-area row-fluid">  
+           	<g:Anchor ui:field="aSimulate" styleName="btn-success btn-large hidden">
+			    <i class="icon-ok"></i>Simulate
+			</g:Anchor>
+			
+          	<g:Anchor ui:field="aEdit" styleName="btn-success btn-large">
+          	    <i class="icon-ok"></i>Edit
+          	</g:Anchor>     
+           	
+           	<g:Anchor ui:field="aForward" styleName="btn-success btn-large">
+           	    <i class="icon-share-alt"></i>
+           	    Forward for approval</g:Anchor>
+			<g:Anchor ui:field="aApprove" styleName="btn-success btn-large">
+			    <i class="icon-ok"></i>
+			    Approve</g:Anchor>
+			<g:Anchor ui:field="aReject" styleName="btn-danger btn-large">
+			    <i class="icon-remove"></i>Reject
+			 </g:Anchor>			 
+          </div>
+
+             
+           <div class="well personal_info row-fluid">
+                 <div class="span1">
+                 <img data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="50px" height="100px"/>
+                </div>
+                <div class="span4">
+                  <address>
+                  <strong>Tom Kimani</strong><br/>
+                  <span ui:field="spnCreated"></span>
+                  </address>
+                </div>
+          </div>
+
+          <div class="row-fluid content-area">       
+           <strong>
+               <u>
+               <span ui:field="spnDocType"></span> -&nbsp;
+			    <span ui:field="spnSubject"></span>
+			   </u>	    
+            </strong>
+            <br/>
+            Document Date: <span ui:field="spnDocDate"></span>
+            <br/>    
+           		Value: <span ui:field="spnValue" class="subject"></span>
+           <br/>
+	           Business Partner: <span ui:field="spnPartner" class="subject"></span>
+	       <br/>
+	           <span ui:field="spnDescription" style="background-color:#FDF0F0;"></span>
+           </div>
+
+           <div class="attachment-section row-fluid">
+             <strong>Attachments:</strong><br/>
+             <i class="icon-paper-clip icon-large"></i>
+               <img src="img/image_holder.png" class="img-polaroid" height="50px" width="50px"/>
+                Scanned_Invoice.jpg
+               <a href="#">View</a>
+               <a href="#">Download</a>
+            </div>
+
+
+            <div class="status-section row-fluid">
+              <strong>Document Status:</strong><br/>
+              <span class="label label-success"><i class="icon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span>
+            </div>
+            <hr/>
+
+        <div class="row-fluid comment-section">
+            <strong>Comments:</strong><br/>
+            <textarea name="comments"></textarea>
+            <div class="well"><a class="btn-success btn-large pull-right" type="button">Save</a></div>
+        </div>  
+	    
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -1,0 +1,44 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="body" ui:field="bodyNotification"> 
+		<div class="notifications">	
+              <h3>Notifications</h3>
+              <g:HTMLPanel ui:field="panelNotification" styleName="loading">
+                  
+              </g:HTMLPanel>
+              <!-- a href="#" class="item unread">
+                  <i class="icon-signin"></i> 
+                  <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
+                  <span class="time"><i class="icon-time"></i> 13 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-signin"></i>
+                  <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
+                  <span class="time"><i class="icon-time"></i> 18 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-envelope-alt"></i> 
+                   <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
+                  <span class="time"><i class="icon-time"></i> 28 min.</span>
+              </a>
+              <a href="#" class="item">
+                   <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
+                  <span class="time"><i class="icon-time"></i> 49 min.</span>
+              </a>
+              <a href="#" class="item">
+                  <i class="icon-download-alt"></i> 
+                   <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
+                  <span class="time"><i class="icon-time"></i> 1 day.</span>
+              </a-->
+            </div>
+          <div class="footer">
+               <a href="#" class="logout">View all</a>
+           </div>
+         </g:HTMLPanel>
+</ui:UiBinder>

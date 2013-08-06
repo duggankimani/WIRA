@@ -1,0 +1,51 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	<ui:style>
+	    .hidden{
+			display:none;
+		}
+		.visible{
+			display:inline;
+		}
+		.link{
+			text-decoration:underline;
+			cursor:pointer;
+			font-style:italic;
+		}
+	</ui:style>
+	<g:HTMLPanel styleName="message-container">
+        <g:FocusPanel styleName="unread" ui:field="container">
+          <d:ParaPanel>
+           <!-- styles:: label-info label-success label-warning label-inverse -->
+           <g:InlineLabel styleName="label" ui:field="spnPriority">Urgent</g:InlineLabel>                       	
+           <g:InlineLabel ui:field="spnSubject"></g:InlineLabel>     
+           <d:Break/>
+           <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
+            		
+           </d:ParaPanel>
+         </g:FocusPanel>
+         <div class="wfactions">
+		    <g:Anchor ui:field="aClaim" styleName="hidden">Claim</g:Anchor>
+		    <g:Anchor ui:field="aStart"  styleName="hidden">Start</g:Anchor>						    
+			<g:Anchor ui:field="aResume"  styleName="hidden">Resume</g:Anchor>
+			<g:Anchor ui:field="aComplete"  styleName="hidden">Complete</g:Anchor>
+			<g:Anchor ui:field="aSuspend"  styleName="hidden">Suspend</g:Anchor>
+			
+			<g:Anchor ui:field="aDelegate"  styleName="hidden">Delegate</g:Anchor>
+			<g:Anchor ui:field="aRevoke"  styleName="hidden">Revoke</g:Anchor>
+			<g:Anchor ui:field="aStop"  styleName="hidden">Stop</g:Anchor>
+			<g:Anchor ui:field="aForward"  styleName="hidden">Forward</g:Anchor>
+			<g:Anchor ui:field="aView" styleName="{style.link} hidden">View Task</g:Anchor>		
+			<g:Anchor ui:field="aForwardForApproval" styleName="{style.link} hidden">Submit For Approval</g:Anchor>
+			
+			<g:Anchor ui:field="aApprove"  styleName="hidden">Approve</g:Anchor>
+			<g:Anchor ui:field="aReject"  styleName="hidden">Reject</g:Anchor>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

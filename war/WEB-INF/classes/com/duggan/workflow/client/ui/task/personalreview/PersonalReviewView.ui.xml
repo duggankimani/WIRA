@@ -1,0 +1,87 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat' ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	<ui:style src="personalreview.css">
+	</ui:style>
+	<g:HTMLPanel styleName="{style.rootp}">
+	
+		<g:HTMLPanel ui:field="pToobarContainer" styleName="toolbar"/>
+		
+		<div class="{style.heading}">
+			<span>
+				Employee Performance
+				<br />
+				Personal/ Confidential
+				<br />
+				Planning Worksheet
+			</span>
+			<table width="400px" cellpadding="0" cellspacing="0" style="margin-top: 15px; margin-bottom:5px;">
+				<tr>
+					<td width="70px">Name:</td>
+					<td>Duggan K Macharia S01</td>
+				</tr>
+				<tr>
+					<td width="70px">Date:</td>
+					<td>12th Jan 2013</td>
+				</tr>
+			</table>
+		</div>
+		<div class="{style.paragraph}"> This worksheet is intended as a help in joint performance planning by you and your
+			supervisor. It is designed to contribute to better communication, and mutual understanding of
+			your job assignments and accomplishments. 
+		</div>
+		<div class="{style.section}">
+			<h1 class="{style.sectionHeader}">SECTION I - WORK PLANNING</h1>
+			<h3>A. MY JOB ASSIGNMENT:</h3>
+			Describe your job responsibilities, duties, and tasks as assigned by your supervisor. You should
+			review your job description at this time and make note of any substantive changes that may have
+			occurred since your last review.
+			<div class="{style.txtarea}">
+				<g:TextArea ui:field="txtWorkAssignment">
+				</g:TextArea>
+			</div>
+			<h3>B. FUTURE OBJECTIVES:</h3>
+			List your performance plans and what you plan to do in your work to achieve them. You may also
+			wish to list your overall objectives for the coming year.
+			<div class="{style.txtarea}">
+				<g:TextArea ui:field="txtFutureObjectives">
+				</g:TextArea>
+			</div>
+		</div>
+		<div class="{style.section}">
+			<h1 class="{style.sectionHeader}">SECTION II - PERFORMANCE DISCUSSION:</h1>
+			For the most benefit to you, it is suggested you complete this section before your performance
+			review.
+			<h3>A. JOB ACCOMPLISHMENTS:</h3>
+			Briefly state contributions you have made during the review period: goals reached, problems
+			solved, difficult special assignments completed, etc.
+			<div class="{style.txtarea}">
+				<g:TextArea ui:field="txtPerfomanceDiscussion">
+				</g:TextArea>
+			</div>
+			<h3>B. PERFORMANCE DIFFICULTIES:</h3>
+			Note any "roadblocks" you encountered during the review period: resource limitations, skills
+			deficiencies (yours or others), time constraints, or other factors that made your performance
+			more difficult than it should have been.
+			<div class="{style.txtarea}">
+				<g:TextArea ui:field="txtPerformanceDifficulties">
+				</g:TextArea>
+			</div>
+			<h3>C. SUGGESTIONS:</h3>
+			List realistic, specific actions you and your supervisor can take to improve your job performance
+			and overall contribution to the organization: training, reassignment, day-to-day job practices,
+			etc.
+			<div class="{style.txtarea}">
+				<g:TextArea ui:field="txtSuggestions">
+				</g:TextArea>
+			</div>
+			<h3>D. ADDITIONAL COMMENTS:</h3>
+			Anything else pertaining to your job performance you would like to discuss with your supervisor.
+			<div class="{style.txtarea}">
+				<g:TextArea ui:field="txtComments">
+				</g:TextArea>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -1,0 +1,134 @@
+version: 1
+
+dn: o=mojo
+objectClass: organization
+objectClass: extensibleObject
+objectClass: top
+o: mojo
+
+dn: ou=users,o=mojo
+objectClass: extensibleObject
+objectClass: organizationalUnit
+objectClass: top
+ou: users
+
+dn: ou=groups,o=mojo
+objectClass: extensibleObject
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+
+dn: cn=USER,ou=groups,o=mojo
+objectClass: groupOfUniqueNames
+objectClass: top
+objectClass: group
+cn: USER
+uniqueMember: cn=calcacuervo,ou=users,o=mojo
+
+dn: cn=HOD_FIN,ou=groups,o=mojo
+objectClass: groupOfUniqueNames
+objectClass: top
+objectClass: group
+cn: HOD_FIN
+uniqueMember: cn=esteban,ou=users,o=mojo
+
+dn: cn=HOD_DEV,ou=groups,o=mojo
+objectClass: groupOfUniqueNames
+objectClass: top
+objectClass: group
+cn: HOD_DEV
+uniqueMember: cn=mariano,ou=users,o=mojo
+
+dn: cn=CEO,ou=groups,o=mojo
+objectClass: groupOfUniqueNames
+objectClass: top
+objectClass: group
+cn: CEO
+uniqueMember: cn=gatheru,ou=users,o=mojo
+
+dn: cn=Admin,ou=groups,o=mojo
+objectClass: groupOfUniqueNames
+objectClass: top
+objectClass: group
+cn: Admin
+uniqueMember: cn=salaboy,ou=users,o=mojo
+uniqueMember: cn=Administrator,ou=users,o=mojo
+
+dn: cn=demian,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: Demian calcaprina
+sn: Calca
+uid: calcacuervo
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=mariano,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: mariano
+sn: mariano
+uid: mariano
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=Administrator,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: Admin
+sn: Admin
+uid: Administrator
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=System,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: System
+sn: System
+uid: System
+mail: ebpm.mgr@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=esteban,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: esteban
+sn: esteban
+uid: esteban
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=salaboy,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: salaboy
+sn: salaboy
+uid: salaboy
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+
+dn: cn=gatheru,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: gatheru
+sn: gatheru
+uid: gatheru
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==

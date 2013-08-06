@@ -1,0 +1,70 @@
+.heading{
+	border-bottom: 1px solid #000000;
+    color: #000000;
+    font-size: 18pt;
+    /*font-weight: bold;*/
+    margin-bottom: 5px;
+    margin-top: 0;
+    padding: 0;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.rootp{
+	/*font-family:Verdana, Helvetica, sans-serif;*/
+	font-size:12pt;
+	margin:0 auto;
+	width:900px;
+	
+	font-family: Helvetica Neue;
+    text-align: left !important;
+}
+.paragraph {
+    border-spacing: 0px; 
+    padding: 0px;
+    border-spacing: 0px;
+    empty-cells: show;
+    page-break-inside: avoid;
+    border: 0px SOLID #EEEEEE;                    
+    word-wrap: break-word;
+}
+
+.section{
+	padding:5px;
+	padding-right:10px;
+	margin-top:10px;	
+	border-bottom:1px solid #EEEEEE;
+		
+}
+
+.sectionHeader{
+	width: 100%;
+    font-size: 18px;
+    /*font-weight: bold;*/
+    color: #000000;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    border-bottom: 1px SOLID #000000;;
+    padding: 0px;
+    word-wrap: break-word;
+}
+
+.txtarea{
+	 margin-top:5px;
+	  
+}
+
+.txtarea textarea{
+	width: 100%;
+	font-family: inherit;
+	font-size:11pt;
+	color:blue;
+	font-weight:bold;
+	height:100px;
+}
+
+h3{
+	font-size:13pt;
+	font-weight: bolder;
+	text-decoration:underline;
+}
