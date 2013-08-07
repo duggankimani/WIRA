@@ -20,7 +20,7 @@
         <ul class="nav pull-right">
               <li class="home">
                		 <g:Anchor styleName="close-icon hand">
-	                        <i class="icon-home"> &nbspHome</i>
+	                        <i class="icon-home"> &nbsp; Home</i>
                    	  </g:Anchor>  
               </li>
               <li class="notification-dropdown hidden-phone">

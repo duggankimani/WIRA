@@ -393,8 +393,8 @@ textarea {
 	/*border-right: 1pt solid #B3B3B3;*/
 	width: 200px;
 	min-height: 700px;
-	padding: 10px 0px 0px 10px;
-	margin: 0px 5px 0px 5px;
+	padding: 10px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
 }
 
 /*---Middle-Pane--- */
@@ -526,11 +526,9 @@ textarea {
 #dashboard-menu>li>a {
 	display: block;
 	margin-right: 0px;
-	margin-left: -15px;
-	padding: 5px 0px 0px 10px;
+	margin-left: 0px;
+	padding: 5px 0px 0px 0px;
 	margin-bottom: 5px;
-	/*border-bottom: 1px solid #dae1e8;
-	box-shadow: 0 2px 1px -1px #FFFFFF;*/
 	color: rgb(110, 130, 155);
 	outline: 0px;
 	width: 90%;
@@ -546,7 +544,7 @@ textarea {
 }
 
 #dashboard-menu>li i {
-	font-size: 23px;
+	font-size: 15px;
 	top: 3px;
 }
 
@@ -582,7 +580,7 @@ textarea {
 }
 
 #dashboard-menu a span {
-	margin-left: 35px;
+	margin-left: 31px;
 	transition: color .1s linear;
 	-moz-transition: color .1s linear;
 	-webkit-transition: color .1s linear;
@@ -597,22 +595,23 @@ textarea {
 	position: absolute;
 	left: 0;
 	height: 24px;
-	width: 24px;
+	/* width: 11px; */
 	opacity: 0.7;
 	transition: opacity .1s ease;
 	-moz-transition: opacity .1s ease;
 	-webkit-transition: opacity .1s ease;
 	-o-transition: opacity .1s ease;
+	padding: 5px 0px 0px 10px;
 }
 
 #dashboard-menu a i.icon-chevron-up {
 	position: relative;
-	float: right;
-	top: 5px;
+	top: 0px;
 	font-size: 11px;
 	color: rgb(104, 104, 104);
 	width: initial;
 	height: initial;
+	right: 19px;
 }
 
 #dashboard-menu>li:hover i {
@@ -626,7 +625,6 @@ textarea {
 
 #dashboard-menu>li.active a {
 	font-weight: 600;
-	text-shadow: 1px 1px 1px #fff;
 }
 
 #dashboard-menu>li.active i {
@@ -640,15 +638,16 @@ textarea {
 
 #dashboard-menu ul.submenu {
 	list-style-type: none;
-	margin-top: 7px;
-	margin-bottom: 15px;
-	margin-right: 5px;
-	margin-left: 0px;
-	padding-left: 40px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	margin: 0px 10px;
+	padding-left: 1px;
 	border-bottom: 1px solid #dae1e8;
 	box-shadow: 0 2px 1px -1px #FFFFFF;
-	padding-bottom: 10px;
+	padding-bottom:0px;
 }
+
 
 #dashboard-menu ul.second-menu {
 	border-bottom: none;
@@ -656,19 +655,31 @@ textarea {
 
 #dashboard-menu ul.submenu.active {
 	display: block;
+	background: #CDCDCD;
 }
 
 #dashboard-menu ul.submenu a {
 	font-weight: normal;
 	font-size: 13px;
-	color: rgb(76, 83, 90);
+	color: #000;
 	text-decoration: none;
 	display: block;
-	margin-bottom: 7px;
+	margin-bottom: 0;
+	padding-left: 30px;
+}
+
+#dashboard-menu .submenu li{
+    height:25px;
+}
+#dashboard-menu .submenu li:hover{
+    background: #f0f0f0;
+}
+
+#dashboard-menu .submenu li.active{
+    background-color:#CDCDCD;
 }
 
 #dashboard-menu ul.submenu a:hover {
-	text-decoration: underline;
 }
 
 #dashboard-menu ul.submenu a.active {

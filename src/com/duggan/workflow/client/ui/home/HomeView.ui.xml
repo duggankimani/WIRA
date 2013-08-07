@@ -23,7 +23,7 @@
                     <i class="icon-chevron-up"></i>
                 </a>
                 <ul class="submenu">
-                    <li><g:Hyperlink ui:field="aDrafts" targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink></li>
+                    <li class="active"><g:Hyperlink styleName="active" ui:field="aDrafts" targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink></li>
                     <li> 
 						<g:Hyperlink ui:field="aProgress" targetHistoryToken="home;type=inprog" text="In Progress"></g:Hyperlink> 
 					</li>

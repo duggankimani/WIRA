@@ -2,12 +2,15 @@ package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -24,11 +27,35 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 
 	@UiField Anchor aLogin;
 	@UiField IssuesPanel issues;
+	/*@UiField TextBox username;
+	@UiField TextBox password; */
 
 	
 	@Inject
 	public LoginView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		
+		/*
+		//Username Enter
+		username.addKeyDownHandler(new KeyDownHandler() {			
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				 if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			            Window.alert("Link this feature");
+			         }				
+			}
+		});
+		
+		//Password Enter
+		password.addKeyDownHandler(new KeyDownHandler() {			
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				 if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			            Window.alert("Link this feature");
+			         }				
+			}
+		});
+		*/
 	}
 	
 	public native String getUsername()/*-{
@@ -39,6 +66,7 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	@Override
 	public Widget asWidget() {
 		return widget;
+		
 	}
 	
 	public native String getPassword()/*-{
