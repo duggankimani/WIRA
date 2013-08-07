@@ -3,12 +3,15 @@ package com.duggan.workflow.server.helper.dao;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Notification;
 
 public class NotificationDaoHelper {
@@ -87,6 +90,8 @@ public class NotificationDaoHelper {
 		notificationTo.setRead(modelFrom.IsRead());
 		notificationTo.setCreatedBy(modelFrom.getCreatedBy());
 		notificationTo.setId(modelFrom.getId());
+		DocType documentType = DB.getDocumentDao().getDocumentType(modelFrom.getDocumentId());
+		notificationTo.setDocumentType(documentType);
 		
 	}
 
@@ -96,8 +101,21 @@ public class NotificationDaoHelper {
 	}
 
 	public static Integer getNotificationCount(String userId) {
-		NotificationDaoImpl dao = DB.getNotificationDao();
+		NotificationDaoImpl dao =DB.getNotificationDao();
 		Integer count = dao.getAlertCount(userId);
 		return count;
+	}
+
+	public static Notification getNotification(Long noteId) {
+		NotificationDaoImpl dao =DB.getNotificationDao();
+		NotificationModel model = dao.getNotification(noteId);
+		
+		Notification notification = new Notification();
+		copyData(notification, model);
+		return notification;
+	}
+
+	public static void getCounts(HashMap<TaskType, Integer> counts) {
+		counts.put(TaskType.NOTIFICATIONS, getNotificationCount(SessionHelper.getCurrentUser().getId()));
 	}
 }

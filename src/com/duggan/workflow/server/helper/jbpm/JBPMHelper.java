@@ -271,11 +271,14 @@ public class JBPMHelper implements Closeable{
 				.getSingleResult();
 		counts.put(TaskType.APPROVALREQUESTNEW, count.intValue());
 		
-		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatus")
+		List<Status> statuses = getStatusesForTaskType(TaskType.APPROVALREQUESTDONE);
+		System.err.println(statuses);
+		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups")//TasksAssignedCountAsPotentialOwnerByStatus")
 		.setParameter("userId", userId)
+		.setParameter("groupIds", groupIds)
 		.setParameter("language", "en-UK")
-		.setParameter("status", getStatusesForTaskType(TaskType.APPROVALREQUESTDONE))
-		.getSingleResult();
+		.setParameter("status", statuses)
+		.getSingleResult();		
 		counts.put(TaskType.APPROVALREQUESTDONE, count2.intValue());
 
 	}

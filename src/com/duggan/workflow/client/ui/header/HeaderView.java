@@ -93,4 +93,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 			isSelected=true;
 		}	
 	}
+	
+	public void setCount(Integer count){
+		lblCount.setInnerText(count+"");
+	}
 }

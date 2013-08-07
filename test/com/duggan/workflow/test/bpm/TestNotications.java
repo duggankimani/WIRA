@@ -35,6 +35,17 @@ public class TestNotications {
 		DBTrxProvider.init();
 		LoginHelper.get();
 	}
+	@Test
+	public void getcompleted(){
+		HashMap<TaskType, Integer> counts = new HashMap<>();
+		
+		JBPMHelper.get().getCount("mariano", counts);
+		
+		Integer count = counts.get(TaskType.APPROVALREQUESTDONE);
+		
+		Assert.assertNotNull(count);
+		Assert.assertEquals(new Integer(1), count);
+	}
 	
 	@Ignore
 	public void getUsersForGroup(){
@@ -46,7 +57,7 @@ public class TestNotications {
 		Assert.assertEquals("mariano", users.get(0).getName());
 	}
 	
-	@Test
+	@Ignore
 	public void setRequest(){
 		String approver = "mariano";
 		
