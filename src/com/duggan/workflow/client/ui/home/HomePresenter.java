@@ -266,7 +266,7 @@ public class HomePresenter extends
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
-		loadTasks(TaskType.DRAFT);
+		loadTasks();
 	}
 
 	@Override

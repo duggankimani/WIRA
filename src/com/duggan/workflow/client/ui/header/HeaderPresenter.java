@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
@@ -28,7 +30,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
 
-public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
+public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> implements AfterSaveHandler{
 
 	public interface MyView extends View {
 		HasClickHandlers getLogout();
@@ -70,6 +72,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 	@Override
 	protected void onBind() {
 		super.onBind();
+		this.addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -135,6 +138,11 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 				placeManager.revealErrorPlace("login");
 			}
 		});
+	}
+
+	@Override
+	public void onAfterSave(AfterSaveEvent event) {
+		loadAlertCount();
 	}
 	
 	

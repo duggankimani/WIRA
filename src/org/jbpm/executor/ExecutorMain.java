@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.entities.RequestInfo;
-import org.jbpm.executor.entities.TestTable;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
@@ -74,9 +73,6 @@ public class ExecutorMain {
 		EntityManager em = DB.getEntityManager();
 		RequestInfo req = new RequestInfo();
 		em.persist(req);
-
-		TestTable table = new TestTable();
-		em.persist(table);
 
 		DB.commitTransaction();
 		DB.closeSession();
