@@ -9,6 +9,7 @@ public class NameTokens {
 	public static final String error = "error";
 	public static final String login = "login";
 	public static final String error404 = "error404";
+	public static final String activities = "activities";
 
 	public static String getHome() {
 		return home;
@@ -32,6 +33,10 @@ public class NameTokens {
 
 	public static String getError404() {
 		return error404;
+	}
+
+	public static String getActivities() {
+		return activities;
 	}
 	
 }

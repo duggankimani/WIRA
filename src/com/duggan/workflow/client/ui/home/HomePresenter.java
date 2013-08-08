@@ -10,6 +10,8 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
+import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
@@ -32,12 +34,16 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -57,7 +63,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
-		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler{
+		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler{
 
 	public interface MyView extends View {
 		
@@ -66,6 +72,18 @@ public class HomePresenter extends
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 		HasClickHandlers getRefreshButton();
 		public void setHasItems(boolean hasItems);
+		void setTaskType(TaskType currentTaskType);
+		void showActivitiesPanel(boolean b);
+		HTMLPanel getWholeContainer();
+		SpanElement getLoadingtext();
+		public Anchor getaDrafts();
+		public Anchor getaProgress();
+		public Anchor getaApproved();
+		public Anchor getaRejected();
+		public Anchor getaNewReq();
+		public Anchor getaRecentApprovals();
+		public Anchor getaFlagged();
+		public Anchor getaRefresh() ;
 	}
 
 	@ProxyCodeSplit
@@ -78,6 +96,10 @@ public class HomePresenter extends
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
+	
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
+
 	
 	@Inject DispatchAsync dispatcher;
 	
@@ -122,21 +144,88 @@ public class HomePresenter extends
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
 		addRegisteredHandler(AlertLoadEvent.TYPE, this);
+		addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 					
 		getView().getAddButton().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
-				
+				getView().getWholeContainer().addStyleName("working-request");
 				showEditForm(MODE.CREATE);
 			}
 		});
 		
 		getView().getRefreshButton().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
+				getView().getLoadingtext().removeClassName("hide");
 				loadTasks();
+				getView().getLoadingtext().addClassName("hide");
+			}
+		});
+		
+		
+		getView().getaDrafts().addClickHandler(new ClickHandler() {		
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=drafts");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
+			}
+		});
+		
+
+		getView().getaProgress().addClickHandler(new ClickHandler() {		
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=inprog");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
+			}
+		});
+		
+		getView().getaApproved().addClickHandler(new ClickHandler() {		
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=approved");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
+			}
+		});
+		
+		getView().getaRejected().addClickHandler(new ClickHandler() {		
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=rejected");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
+			}
+		});
+		
+		getView().getaNewReq().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=appreqnew");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
+			}
+		});
+		
+		
+		getView().getaRecentApprovals().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=appredone");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
+			}
+		});
+		
+		getView().getaFlagged().addClickHandler(new ClickHandler() {		
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("home;type=flagged");
+				getView().getLoadingtext().removeClassName("hide");
+				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 	}
@@ -152,13 +241,12 @@ public class HomePresenter extends
 		
 		TaskType type = TaskType.getTaskType(name);
 		this.currentTaskType=type;
-		
+		getView().setTaskType(currentTaskType);
 		loadTasks(type);			
 		
 	}	
 
-	private void clear() {
-		
+	private void clear() {		
 		//clear document slot
 		setInSlot(DATEGROUP_SLOT, null);
 		setInSlot(DOCUMENT_SLOT, null);
@@ -179,10 +267,8 @@ public class HomePresenter extends
 		String userId = user.getUserId();
 		//System.err.println("##UserID = "+userId+" :: TaskType= "+currentTaskType);
 		dispatcher.execute(new GetTaskList(userId,currentTaskType), new TaskServiceCallback<GetTaskListResult>(){
-
 			@Override
-			public void processResult(GetTaskListResult result) {
-				
+			public void processResult(GetTaskListResult result) {		
 				Window.setTitle(type.getTitle());
 				GetTaskListResult rst = (GetTaskListResult)result;
 				List<DocSummary> tasks = rst.getTasks();
@@ -213,7 +299,6 @@ public class HomePresenter extends
 			}
 			
 		});
-
 	}
 	
 	/**
@@ -242,7 +327,8 @@ public class HomePresenter extends
 				
 			}
 		}
-		
+		getView().getWholeContainer().removeStyleName("working-request");
+		getView().getLoadingtext().addClassName("hide");
 	}
 	
 	protected void showEditForm(final MODE mode) {
@@ -253,7 +339,8 @@ public class HomePresenter extends
 					result.setDocumentId(selectedValue);
 				}
 				
-				addToPopupSlot(result, true);				
+				addToPopupSlot(result, true);	
+			
 			}
 		});
 	}
@@ -266,6 +353,7 @@ public class HomePresenter extends
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
+		getView().getWholeContainer().removeStyleName("working-request");
 		loadTasks(TaskType.DRAFT);
 	}
 
@@ -306,5 +394,10 @@ public class HomePresenter extends
 	public void onAlertLoad(AlertLoadEvent event) {
 		event.getAlerts();
 		getView().bindAlerts(event.getAlerts());
+	}
+
+	@Override
+	public void onActivitiesSelected(ActivitiesSelectedEvent event) {
+		getView().showActivitiesPanel(true);
 	}
 }

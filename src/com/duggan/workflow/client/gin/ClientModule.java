@@ -43,6 +43,8 @@ import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundView;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.notifications.note.NoteView;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -115,5 +117,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(NotePresenter.class,
 				NotePresenter.MyView.class, NoteView.class);
+
+		bindPresenter(ActivitiesPresenter.class,
+				ActivitiesPresenter.MyView.class, ActivitiesView.class,
+				ActivitiesPresenter.MyProxy.class);
 	}
 }

@@ -80,6 +80,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			safeHtml = Template4.render(subject, approver, time, action);
 			break;
 		default:
+			//safeHtml= "<p>You have no new notification</p>";
 			break;
 		}
 		
@@ -94,20 +95,19 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	interface APPROVALREQUEST_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
-
 		@Template("<i class=\"icon-signin\"></i>"+
 				"Request for approval - <span class=\"bluename\">{0}</span>"
 				+ " from <span class=\"bluename\" >{1}</span>."
-				+ "<span class=\"time\" ><br/><i class=\"icon-time\"> {2}</i></span>")
+				+ "<span class=\"time\" ><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time);
 		// eg Request for approval - Invoice INV/001/2013 from Calcacuervo. (2
 		// mins ago)
 	}
 
 	interface APPROVALREQUEST_OWNERNOTE_TEMPATE extends SafeHtmlTemplates {
-		@Template("<i class=\"icon-signin\"></i>"+
+		@Template("<i class=\"icon-check\"></i>"+
 				"You have successfuly submitted <span class=\"bluename\">{0}</span>"
-				+ " for approval <span class=\"time\"><br/><i class=\"icon-time\">{1}</i></span>")
+				+ " for approval <span class=\"time\"><i class=\"icon-time\">{1}</i></span>")
 		public SafeHtml render(String subject, String time);
 
 		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
@@ -115,10 +115,10 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	interface TASKCOMPLETED_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
-		@Template("<i class=\"icon-signin\"></i>"+
+		@Template("<i class=\"icon-check\"></i>"+
 				"You {3} <span class=\"bluename\">{0}</span>"
 				+ " from <span class=\"bluename\">{1}</span>."
-				+ " <span class=\"time\"><br/><i class=\"icon-time\"> {2}</i></span>")
+				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time,
 				String action);
 		// e.g You approved/denied Invoice INV/001/2013 from calcacuervo (20mins
@@ -130,7 +130,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		@Template("<i class=\"icon-signin\"></i>"+
 				"Your <span class=\"bluename\">{0}</span>"
 				+ " was {3} by <span class=\"bluename\">{1}</span>"
-				+ " <span class=\"time\"><br/><i class=\"icon-time\"> {2}</i></span>")
+				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String approver, String time,
 				String action);
 

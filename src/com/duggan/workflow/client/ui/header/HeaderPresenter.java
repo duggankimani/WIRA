@@ -14,32 +14,33 @@ import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.shared.responses.GetNotificationsActionResult;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasBlurHandlers;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.google.inject.Inject;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Timer;
 
 public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 
 	public interface MyView extends View {
 		HasClickHandlers getLogout();
-
 		void setValues(String userNames);
-		
-		HasClickHandlers getNotificationsButton();
-
+		Anchor getNotificationsButton();
 		void setPopupVisible();
-		
 		void setCount(Integer count);
+		HasBlurHandlers getpopupContainer();
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -47,6 +48,8 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 	@Inject PlaceManager placeManager;
 	
 	@Inject NotificationsPresenter notifications;
+	boolean onFocus =true;
+	
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> NOTIFICATIONS_SLOT = new Type<RevealContentHandler<?>>();
@@ -78,15 +81,24 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> {
 			}
 		});
 		
+		
 		getView().getNotificationsButton().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().setPopupVisible();
 				setInSlot(NOTIFICATIONS_SLOT, notifications);	
 				loadAlerts();
+				onFocus =true;
 			}
 		});
+		
+		getView().getNotificationsButton().addBlurHandler(new BlurHandler() {
+			@Override
+			public void onBlur(BlurEvent event) {
+				getView().setPopupVisible();
+			}
+		});	
+		
 	}
 
 	@Override

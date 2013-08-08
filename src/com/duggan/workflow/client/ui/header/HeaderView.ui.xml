@@ -15,11 +15,11 @@
       </button>
      
      <div class="navbar-inner">
-        <a class="brand" href="#">E-Business Task List | Your Organisation</a> 
+        <a class="brand" href="#activities">E-Business Task List | Your Organisation</a> 
         
         <ul class="nav pull-right">
               <li class="home">
-               		 <g:Anchor styleName="close-icon hand">
+               		 <g:Anchor href="#activities" styleName="close-icon hand">
 	                        <i class="icon-home"> &nbsp; Home</i>
                    	  </g:Anchor>  
               </li>
@@ -31,13 +31,13 @@
 
                      <g:FocusPanel ui:field="popupContainer" styleName="pop-dialog">     
                      	<g:HTMLPanel>                 
-                        <g:HTMLPanel styleName="pointer right">
-                            <div class="arrow"></div>
-                            <div class="arrow_border"></div>
-                        </g:HTMLPanel>
-                     
-                    	<g:HTMLPanel ui:field="notificationsContainer">
-                    	</g:HTMLPanel>
+	                        <g:HTMLPanel styleName="pointer right">
+	                            <div class="arrow"></div>
+	                            <div class="arrow_border"></div>
+	                        </g:HTMLPanel>
+	                     
+	                    	<g:HTMLPanel ui:field="notificationsContainer">
+	                    	</g:HTMLPanel>
                     	</g:HTMLPanel> 
                     </g:FocusPanel>
                                        

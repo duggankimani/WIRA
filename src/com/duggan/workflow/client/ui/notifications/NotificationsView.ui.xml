@@ -6,10 +6,10 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="body" ui:field="bodyNotification"> 
+	<g:HTMLPanel styleName="body loading" ui:field="bodyNotification"> 
 		<div class="notifications">	
               <h3>Notifications</h3>
-              <g:HTMLPanel ui:field="panelNotification" styleName="loading">
+              <g:HTMLPanel ui:field="panelNotification">
                   
               </g:HTMLPanel>
               <!-- a href="#" class="item unread">
@@ -37,8 +37,8 @@
                   <span class="time"><i class="icon-time"></i> 1 day.</span>
               </a-->
             </div>
-          <div class="footer">
-               <a href="#" class="logout">View all</a>
-           </div>
+          	<div class="footer">
+                <a href="#" class="logout">View all</a>
+     		 </div>  
          </g:HTMLPanel>
 </ui:UiBinder>

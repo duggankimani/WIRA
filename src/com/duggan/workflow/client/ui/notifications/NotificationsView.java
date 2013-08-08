@@ -18,24 +18,12 @@ public class NotificationsView extends ViewImpl implements
 	}
 	
 	@UiField HTMLPanel panelNotification;
+	@UiField HTMLPanel bodyNotification;
 	
 	
 	@Inject
 	public NotificationsView( final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		/*
-		bodyNotification.addFocusHandler(new FocusHandler() {	
-			@Override
-			public void onFocus(FocusEvent event) {
-				if(isSelected){
-					popupContainer.removeStyleName("is-visible");
-					isSelected=false;
-				}else{
-					popupContainer.addStyleName("is-visible");
-					isSelected=true;
-				}
-			}
-		});*/
 	}
 
 	@Override
@@ -47,8 +35,6 @@ public class NotificationsView extends ViewImpl implements
 	public void setInSlot(Object slot, Widget content) {
 		if(slot == NOTE_SLOT){
 			panelNotification.clear();
-			//panelNotification.removeStyleName("loading");
-			
 			if(content!=null){
 				panelNotification.add(content);
 			}
@@ -62,6 +48,7 @@ public class NotificationsView extends ViewImpl implements
 	public void addToSlot(Object slot, Widget content) {
 		if(slot == NOTE_SLOT){			
 			if(content!=null){
+				bodyNotification.removeStyleName("loading");
 				panelNotification.add(content);
 			}
 		}else{

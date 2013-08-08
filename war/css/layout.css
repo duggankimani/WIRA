@@ -41,9 +41,29 @@ textarea {
 	float: left;
 	margin-top: 5px;
 }
+#loading-text{
+	text-align: center;
+	color:#222;
+	border-color:#f0c36d;
+	background-color: #f0c36d;
+	padding: 1px 0px;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	font-weight: bold;
+	width: 100px;
+	margin: 0px;
+	position: absolute;
+	right: 648px;
+	top: 0px;
+	height: 20px;
+}
+
 
 /* Custom navbar stuff */
 .navbar {
+	background: url("../img/loading.gif")no-repeat #ffffff center;
 	margin-bottom: 5px;
 }
 
@@ -111,7 +131,7 @@ textarea {
 }
 
 .navbar .loading {
-	background: url("../img/loading.gif") #fcfcfc no-repeat 95%;
+	background: url("../img/ajax-loader.gif")no-repeat top;
 }
 
 .navbar .notification-dropdown i {
@@ -162,7 +182,7 @@ textarea {
 	/* background-color: #eff4f7; */
 	margin: 0px 0px 0px 0px;
 	border-radius: 0px 0px 5px 5px;
-	padding: 5px 20px;
+	padding: 3px 20px;
 	text-align: center;
 	color: #3b5998;
 }
@@ -191,13 +211,11 @@ textarea {
 
 .navbar  .pop-dialog .notifications .item {
 	display: block;
-	/*padding: 10px 0px 8px 20px;*/
-	padding: 1px 0px 8px 20px;
+	padding: 1px 0px 1px 45px;
 	border-top: 1px solid #e7e8ea;
 	color: rgb(54, 54, 54);
 	font-size: 11px;
 	text-decoration: none;
-	padding-left: 50px;
 	position: relative;
 	transition: all .25s linear;
 	-moz-transition: all .25s linear;
@@ -399,7 +417,7 @@ textarea {
 
 /*---Middle-Pane--- */
 #middle-nav {
-	background-color: #ffffff;
+    background:#ffffff;
 	margin: 0em;
 	padding: 10px;
 	padding-right: 0px;
@@ -407,6 +425,11 @@ textarea {
 	width: 295px;
 	height: 580px;
 	overflow: auto;
+}
+
+.working-request{
+	background: #ffffff;
+    opacity:.4; 
 }
 
 #middle-nav .nav-top i {
@@ -465,7 +488,7 @@ textarea {
 	margin-left: 10px;
 	padding: 0px 20px 10px 10px;
 	border: 1px solid #CCCCCC;
-	width: 830px;
+	width: 855px;
 	min-height: 580px;
 	overflow: auto;
 }
@@ -1013,4 +1036,7 @@ textarea {
 		left: 0;
 		height: 100%;
 	}
+}
+.hide{
+	display:none;
 }
