@@ -59,7 +59,7 @@ public class LoginPresenter extends
 	public LoginPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, final CurrentUser user) {
 		super(eventBus, view, proxy);
-		this.user = user;
+		this.user = user;	
 	}
 
 	@Override

@@ -149,6 +149,7 @@ public class HomePresenter extends
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				getView().getLoadingtext().removeClassName("hide");
 				getView().getWholeContainer().addStyleName("working-request");
 				showEditForm(MODE.CREATE);
 			}
@@ -338,9 +339,10 @@ public class HomePresenter extends
 				if(mode.equals(MODE.EDIT) && selectedValue!=null){
 					result.setDocumentId(selectedValue);
 				}
-				
+					
 				addToPopupSlot(result, true);	
-			
+				getView().getLoadingtext().addClassName("hide");
+				getView().getWholeContainer().removeStyleName("working-request");
 			}
 		});
 	}
