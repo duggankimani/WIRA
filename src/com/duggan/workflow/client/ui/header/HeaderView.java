@@ -1,19 +1,17 @@
 package com.duggan.workflow.client.ui.header;
 
-import com.gwtplatform.mvp.client.ViewImpl;
-import com.github.gwtbootstrap.client.ui.base.InlineLabel;
+import com.github.gwtbootstrap.client.ui.Label;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 
@@ -34,19 +32,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	@Inject
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		popupContainer.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				if(isSelected){
-					popupContainer.removeStyleName("is-visible");
-					isSelected=false;
-				}else{
-					popupContainer.addStyleName("is-visible");
-					isSelected=true;
-				}
-			}
-		});
+		aNotifications.setTabIndex(3);
+		
 	}
 
 	@Override
@@ -58,15 +45,18 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		return aLogout;
 	}
 	
-	public HasClickHandlers getNotificationsButton(){
+	public Anchor getNotificationsButton(){
 		return aNotifications;
+	}
+	
+	public HasBlurHandlers getpopupContainer(){
+		return popupContainer;
 	}
 	
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		if(slot==HeaderPresenter.NOTIFICATIONS_SLOT){
-			notificationsContainer.clear();
-			
+			notificationsContainer.clear();		
 			if(content!=null){
 				notificationsContainer.add(content);
 			}
@@ -91,6 +81,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 			popupContainer.removeStyleName("is-visible");
 			isSelected=false;
 		}else{
+			notificationsContainer.addStyleName("loading");
 			popupContainer.addStyleName("is-visible");
 			isSelected=true;
 		}	

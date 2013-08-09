@@ -1,13 +1,13 @@
 package com.duggan.workflow.client.ui.notifications;
 
+import static com.duggan.workflow.client.ui.notifications.NotificationsPresenter.NOTE_SLOT;
+
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
-
-import static com.duggan.workflow.client.ui.notifications.NotificationsPresenter.NOTE_SLOT;
 
 public class NotificationsView extends ViewImpl implements
 		NotificationsPresenter.MyView {
@@ -18,6 +18,8 @@ public class NotificationsView extends ViewImpl implements
 	}
 	
 	@UiField HTMLPanel panelNotification;
+	@UiField HTMLPanel bodyNotification;
+	
 	
 	@Inject
 	public NotificationsView( final Binder binder) {
@@ -33,7 +35,6 @@ public class NotificationsView extends ViewImpl implements
 	public void setInSlot(Object slot, Widget content) {
 		if(slot == NOTE_SLOT){
 			panelNotification.clear();
-			
 			if(content!=null){
 				panelNotification.add(content);
 			}
@@ -47,6 +48,7 @@ public class NotificationsView extends ViewImpl implements
 	public void addToSlot(Object slot, Widget content) {
 		if(slot == NOTE_SLOT){			
 			if(content!=null){
+				bodyNotification.removeStyleName("loading");
 				panelNotification.add(content);
 			}
 		}else{

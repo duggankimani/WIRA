@@ -7,11 +7,11 @@
 	ui:generateLocales='default'
  	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container">
  
- <g:HTMLPanel styleName="row-fluid main-container">    
+ <g:HTMLPanel styleName="row-fluid main-container"> 
+ 		<span ui:field="loadingtext"  class="span2 hide">Loading ...</span>   
       <div id="sidebar-nav" class="span2">
         <!--Button Add Document -->
         <div class="add-doc">
-            <!-- g:Button ui:field="btnAdd" styleName="btn-danger btn-large" type="button">Add Document</g:Button-->
             <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>		            
         </div>
        
@@ -23,15 +23,16 @@
                     <i class="icon-chevron-up"></i>
                 </a>
                 <ul class="submenu">
-                    <li><g:Hyperlink ui:field="aDrafts" targetHistoryToken="home;type=drafts" text="Drafts"></g:Hyperlink></li>
-                    <li> 
-						<g:Hyperlink ui:field="aProgress" targetHistoryToken="home;type=inprog" text="In Progress"></g:Hyperlink> 
+                    <li ui:field="liDrafts" class="active">
+                    	<g:Anchor ui:field="aDrafts" styleName="hand" text="Drafts"></g:Anchor></li>
+                    <li ui:field="liProgress"> 
+						<g:Anchor ui:field="aProgress" text="In Progress" styleName="hand"></g:Anchor> 
 					</li>
-					<li> 
-						<g:Hyperlink ui:field="aApproved" targetHistoryToken="home;type=approved" text="Approved"></g:Hyperlink> 
+					<li ui:field="liApproved"> 
+						<g:Anchor ui:field="aApproved" styleName="hand" text="Approved"></g:Anchor> 
 					</li>
-					<li> 
-						<g:Hyperlink ui:field="aRejected" targetHistoryToken="home;type=rejected" text="Rejected"></g:Hyperlink> 
+					<li ui:field="liRejected"> 
+						<g:Anchor ui:field="aRejected" styleName="hand" text="Rejected"></g:Anchor> 
 					</li>
                 </ul>
             </li>
@@ -43,87 +44,91 @@
                     <i class="icon-chevron-up"></i>
                 </a>
                 <ul class="submenu second-menu">
-                    <li> 
-						<g:Hyperlink ui:field="aNewReq" targetHistoryToken="home;type=appreqnew" text="New Requests"></g:Hyperlink> 
+                    <li ui:field="liNewReq"> 
+						<g:Anchor ui:field="aNewReq" styleName="hand" text="New Requests"></g:Anchor>
+					</li>					
+					<li ui:field="liRecentApprovals"> 
+						<g:Anchor ui:field="aRecentApprovals" styleName="hand" text="Completed"></g:Anchor> 
 					</li>
-					<li> 
-						<g:Hyperlink ui:field="aRecentApprovals" targetHistoryToken="home;type=appredone" text="Completed"></g:Hyperlink> 
-					</li>
-					<li> 
-						<g:Hyperlink ui:field="aFlagged" targetHistoryToken="home;type=flagged" text="Flagged"></g:Hyperlink> 
+					<li ui:field="liFlagged"> 
+						<g:Anchor ui:field="aFlagged" styleName="hand" text="Flagged"></g:Anchor> 
 					</li>
                 </ul>
             </li>
         </ul>
      </div>
      
-      
-      <!--middle navigation-->
-      <div id="middle-nav" class="span4">
-        <div class="row-fluid nav-top">
-          <input class="search" type="text"/>
-          <!-- i class="icon-refresh icon-large"></i -->
-          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
-        </div>
-
-          <div class="header-nav row-fluid">
-               <h5 ui:field="hCategory">IN PROGRESS</h5>         
-               <div class="ui-dropdown">
-                  <div class="head">
-                      Filter
-                      <i class="arrow-down"></i>
-                  </div> 
-                   <!-- custom popup filter -->
-                  <!-- styles are located in css/elements.css -->
-                  <!-- script that enables this dropdown is located in js/theme.js -->
-                  <div class="dialog">
-                      <div class="pointer">
-                          <div class="arrow"></div>
-                          <div class="arrow_border"></div>
-                      </div>
-                      <div class="body">
-                          <p class="title">
-                              Filter Option:
-                          </p>
-                          <div class="form">
-                              <select>
-                                  <option>Name</option>
-                                  <option>Email</option>
-                                  <option>Number of orders</option>
-                                  <option>Signed up</option>
-                                  <option>Last seen</option>
-                              </select>
-                              <select>
-                                  <option>is equal to</option>
-                                  <option>is not equal to</option>
-                                  <option>is greater than</option>
-                                  <option>starts with</option>
-                                  <option>contains</option>
-                              </select>
-                              <input type="text" />
-                              <a class="btn-flat small">Add filter</a>
-                          </div>
-                      </div>
-                  </div>
-               </div>
-          </div>
-
-        <div class="content-nav row-fluid">
-	        <!-- ul id="navigation-menu" ui:field="ulTaskGroups"-->
-	        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
-	       	</d:BulletListPanel>
-	       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
-        </div>
-      </div>
-      
-        
-      <!--Detailed Panel Description-->
-      <div id="detailed-info" class="span5">            
-          <g:HTMLPanel ui:field="docContainer">  
-                          
-          </g:HTMLPanel>
-                  
-      </div>
+      <g:HTMLPanel ui:field="wholeContainer">
+	      <!--middle navigation-->
+	      <div ui:field="divDocListing" class="span4 hide ">
+	        <div class="row-fluid nav-top">
+	          <input class="search" type="text"/>
+	          <!-- i class="icon-refresh icon-large"></i -->
+	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
+	        </div>
+	
+	          <div class="header-nav row-fluid">
+	               <h5 ui:field="hCategory">IN PROGRESS</h5>         
+	               <div class="ui-dropdown">
+	                  <div class="head">
+	                      Filter
+	                      <i class="arrow-down"></i>
+	                  </div> 
+	                   <!-- custom popup filter -->
+	                  <!-- styles are located in css/elements.css -->
+	                  <!-- script that enables this dropdown is located in js/theme.js -->
+	                  <div class="dialog">
+	                      <div class="pointer">
+	                          <div class="arrow"></div>
+	                          <div class="arrow_border"></div>
+	                      </div>
+	                      <div class="body">
+	                          <p class="title">
+	                              Filter Option:
+	                          </p>
+	                          <div class="form">
+	                              <select>
+	                                  <option>Name</option>
+	                                  <option>Email</option>
+	                                  <option>Number of orders</option>
+	                                  <option>Signed up</option>
+	                                  <option>Last seen</option>
+	                              </select>
+	                              <select>
+	                                  <option>is equal to</option>
+	                                  <option>is not equal to</option>
+	                                  <option>is greater than</option>
+	                                  <option>starts with</option>
+	                                  <option>contains</option>
+	                              </select>
+	                              <input type="text" />
+	                              <a class="btn-flat small">Add filter</a>
+	                          </div>
+	                      </div>
+	                  </div>
+	               </div>
+	          </div>
+	
+	        <div class="content-nav row-fluid">
+		        <!-- ul id="navigation-menu" ui:field="ulTaskGroups"-->
+		        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
+		       	</d:BulletListPanel>
+		       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
+	        </div>
+	      </div>
+	      
+	        
+	      <!--Detailed Panel Description-->
+	      <div ui:field="divDocView" class="span5 hide">            
+	          <g:HTMLPanel ui:field="docContainer">  
+	                          
+	          </g:HTMLPanel>
+	                  
+	      </div>
+	      
+	      <g:HTMLPanel ui:field="activityContainer">  	
+	      </g:HTMLPanel> 
+      </g:HTMLPanel>
       
       <!--Footer-->
       <!--div class="container"> 

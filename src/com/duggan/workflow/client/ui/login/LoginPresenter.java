@@ -1,20 +1,11 @@
 package com.duggan.workflow.client.ui.login;
 
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -22,8 +13,18 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 
 public class LoginPresenter extends
@@ -33,10 +34,11 @@ public class LoginPresenter extends
 
 		String getUsername();
 		String getPassword();
-		HasClickHandlers getLoginBtn();
-		void setPasswordKeyHandler(KeyDownHandler keyHandler);
+		Anchor getLoginBtn();
+		TextBox getPasswordBox();
 		boolean isValid();
 		void setError(String err);
+		TextBox getUserNameBox();
 	}
 
 	@ProxyCodeSplit
@@ -57,7 +59,7 @@ public class LoginPresenter extends
 	public LoginPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, final CurrentUser user) {
 		super(eventBus, view, proxy);
-		this.user = user;
+		this.user = user;	
 	}
 
 	@Override
@@ -78,9 +80,9 @@ public class LoginPresenter extends
 		super.onBind();
 
 		getView().getLoginBtn().addClickHandler(new ClickHandler() {
-
 			@Override
 			public void onClick(ClickEvent event) {
+				getView().getLoginBtn().setText("Logging In...");
 				login();
 			}
 		});
@@ -95,7 +97,9 @@ public class LoginPresenter extends
 			}
 		};
 		
-		getView().setPasswordKeyHandler(keyHandler);
+		getView().getUserNameBox().addKeyDownHandler(keyHandler);
+		
+		getView().getPasswordBox().addKeyDownHandler(keyHandler);
 	}
 
 	protected void onReset() {

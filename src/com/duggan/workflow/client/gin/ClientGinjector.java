@@ -15,6 +15,7 @@ import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresen
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.login.LoginPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -37,7 +38,9 @@ public interface ClientGinjector extends Ginjector {
 	
 	LoginGateKeeper getLoggedInGateKeeper();
 
-	AsyncProvider<NotfoundPresenter> getNotfoundPresenter(); 
+	AsyncProvider<NotfoundPresenter> getNotfoundPresenter();
+
+	AsyncProvider<ActivitiesPresenter> getActivitiesPresenter(); 
 	
 
 }

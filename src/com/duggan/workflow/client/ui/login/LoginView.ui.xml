@@ -15,8 +15,8 @@
         <div class="span4 box">
             <div class="content-wrap">
                 <h6>Log in</h6>
-                <input id="userid" class="span12" type="text" placeholder="Username"></input>
-                <input id="userpass" class="span12" type="password" placeholder="Your password"></input>
+                <g:TextBox ui:field="username" styleName="span12"></g:TextBox>
+                <g:PasswordTextBox ui:field="password" styleName="span12"></g:PasswordTextBox>
                 <a href="#" class="forgot">Forgot password?</a>
                 <div class="remember">
                     <input id="remember-me" type="checkbox"></input>

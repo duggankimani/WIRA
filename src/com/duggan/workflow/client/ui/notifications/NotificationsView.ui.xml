@@ -6,8 +6,8 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="body"> 
-		<div class="notifications">	 
+	<g:HTMLPanel styleName="body loading" ui:field="bodyNotification"> 
+		<div class="notifications">	
               <h3>Notifications</h3>
               <g:HTMLPanel ui:field="panelNotification">
                   
@@ -36,9 +36,9 @@
                    <span class="bluename">Tom Kimani</span> approved your <span class="bluename">Invoice INV/JKUAT/001</span>
                   <span class="time"><i class="icon-time"></i> 1 day.</span>
               </a-->
-              <div class="footer">
-                  <a href="#" class="logout">View all notifications</a>
-              </div>
             </div>
+          	<div class="footer">
+                <a href="#" class="logout">View all</a>
+     		 </div>  
          </g:HTMLPanel>
 </ui:UiBinder>
