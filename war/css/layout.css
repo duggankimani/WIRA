@@ -211,8 +211,8 @@ textarea {
 
 .navbar  .pop-dialog .notifications .item {
 	display: block;
-	padding: 1px 0px 1px 45px;
-	border-top: 1px solid #e7e8ea;
+	padding: 1px 0px 7px 42px;
+	border-top: 1px solid #E7E8EA;
 	color: rgb(54, 54, 54);
 	font-size: 11px;
 	text-decoration: none;
@@ -239,8 +239,8 @@ textarea {
 	color: rgb(252, 130, 123);
 	position: absolute;
 	left: 13px;
-	font-size: 25px;
-	top: 4px;
+	font-size: 20px;
+	top: 11px;
 }
 
 .navbar  .pop-dialog .notifications .item>i.icon-user {

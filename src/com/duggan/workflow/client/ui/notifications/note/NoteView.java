@@ -110,8 +110,10 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 	interface APPROVALREQUEST_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
 		@Template("<i class=\"icon-signin\"></i>"+
-				"Request for approval - <span class=\"bluename\">{0}</span>"
-				+ " from <span class=\"bluename\" >{1}</span>."
+				"<span class=\"bluename\" >{0}</span>"+
+				
+				" Request for approval from <span class=\"bluename\">{1}</span>"
+				+ "."
 				+ "<span class=\"time\" ><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time);
 		// eg Request for approval - Invoice INV/001/2013 from Calcacuervo. (2
@@ -120,8 +122,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 	interface APPROVALREQUEST_OWNERNOTE_TEMPATE extends SafeHtmlTemplates {
 		@Template("<i class=\"icon-check\"></i>"+
-				"You have successfuly submitted <span class=\"bluename\">{0}</span>"
-				+ " for approval <span class=\"time\"><i class=\"icon-time\">{1}</i></span>")
+				"<span class=\"bluename\">{0}</span>"+
+				" succesfully submitted for approval "
+				+ " <span class=\"time\"><i class=\"icon-time\">{1}</i></span>")
 		public SafeHtml render(String subject, String time);
 
 		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
@@ -130,8 +133,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 	interface TASKCOMPLETED_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
 		@Template("<i class=\"{4}\"></i>"+
-				"You {3} <span class=\"bluename\">{0}</span>"
-				+ " from <span class=\"bluename\">{1}</span>."
+				"<span class=\"bluename\">{0}</span>"+
+				" has been {3}. "+
+				" (requested by <span class=\"bluename\">{1}</span>.) "
 				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time,
 				String action, String styleName);
@@ -142,8 +146,8 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	interface TASKCOMPLETED_OWNERNOTE_TEMPLATE extends SafeHtmlTemplates {
 
 		@Template("<i class=\"{4}\"></i>"+
-				"Your <span class=\"bluename\">{0}</span>"
-				+ " was {3} by <span class=\"bluename\">{1}</span>"
+				"<span class=\"bluename\">{0}</span>"
+				+ " {3} by <span class=\"bluename\">{1}</span>"
 				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String approver, String time,
 				String action, String style);
