@@ -34,7 +34,7 @@ public class NotificationsPresenter extends
 	public NotificationsPresenter(final EventBus eventBus, final MyView view,
 			Provider<NotePresenter> noteProvider) {
 		super(eventBus, view);
-		notesFactory = new StandardProvider(noteProvider);
+		notesFactory = new StandardProvider<NotePresenter>(noteProvider);
 	}
 
 	@Override
@@ -52,6 +52,7 @@ public class NotificationsPresenter extends
 	public void onNotificationsLoad(NotificationsLoadEvent event) {
 		
 		List<Notification> notes = event.getNotifications();
+		
 		// clear
 		NotificationsPresenter.this.setInSlot(NOTE_SLOT, null);
 		

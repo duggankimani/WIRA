@@ -17,9 +17,20 @@
 		serve(String).with(Class<? extends HttpServlet>) and
 		filter(String).through(Class<? extends Filter)
 	-->
+	<resource-env-ref>
+	    <resource-env-ref-name>jdbc/ebusinessds</resource-env-ref-name>
+	    <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+	
 	<listener>
 		<listener-class>com.duggan.workflow.server.guice.GuiceServletConfig</listener-class>
 	</listener>
+	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.InitializerServlet</servlet-class>
+	    <servlet-name>daemon-initializer</servlet-name>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
 
 	<filter>
 		<filter-name>guiceFilter</filter-name>

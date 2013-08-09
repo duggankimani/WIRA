@@ -2,8 +2,10 @@ package com.duggan.workflow.client.ui.notifications.note;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -13,6 +15,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,7 +32,8 @@ public class NotePresenter extends
 
 		void setValues(String subject, DocType documentType,
 				NotificationType notificationType, String owner,
-				String targetUserId, String time, boolean isRead, String createdBy);
+				String targetUserId, String time, boolean isRead, 
+				String createdBy,ApproverAction approverAction, Long processInstanceId);
 	}
 
 	private Notification note;
@@ -62,7 +66,16 @@ public class NotePresenter extends
 									notification.getNotificationType(),
 									notification.getOwner(),
 									notification.getTargetUserId(),time,
-									notification.IsRead()==null? false: notification.IsRead(), notification.getCreatedBy());
+									notification.IsRead()==null? false: notification.IsRead(),
+											notification.getCreatedBy(),
+											notification.getApproverAction(),
+											notification.getProcessInstanceId());
+//							
+//							PlaceRequest request = new PlaceRequest("home")
+//							.with("type", TaskType.SEARCH.getURL())
+//							.with("pid", notification.getProcessInstanceId()+"");
+//							
+//							placeManager.revealPlace(request);
 						};
 					});
 					
@@ -79,7 +92,9 @@ public class NotePresenter extends
 				notification.getNotificationType(),
 				notification.getOwner(),
 				notification.getTargetUserId(),time,
-				notification.IsRead()==null? false: notification.IsRead(), notification.getCreatedBy());
+				notification.IsRead()==null? false: notification.IsRead(),
+						notification.getCreatedBy(),
+						notification.getApproverAction(),notification.getProcessInstanceId());
 	}
 	
 	public String getTimeDifferenceAsString(Date createdDate){

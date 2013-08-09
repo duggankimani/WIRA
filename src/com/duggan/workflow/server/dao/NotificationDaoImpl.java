@@ -62,5 +62,4 @@ public class NotificationDaoImpl {
 		
 		return count.intValue();
 	}
-
 }

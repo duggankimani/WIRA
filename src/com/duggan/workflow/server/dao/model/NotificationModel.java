@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.NotificationType;
 
@@ -36,6 +37,9 @@ public class NotificationModel extends PO {
 	private NotificationType notificationType;
 	
 	private Boolean isRead; /*Mark as read/unread*/
+	
+	@Enumerated(EnumType.STRING)
+	private ApproverAction approverAction;
 	
 	public NotificationModel() {
 		isRead=true;
@@ -95,6 +99,14 @@ public class NotificationModel extends PO {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public ApproverAction getApproverAction() {
+		return approverAction;
+	}
+
+	public void setApproverAction(ApproverAction approverAction) {
+		this.approverAction = approverAction;
 	}
 
 }

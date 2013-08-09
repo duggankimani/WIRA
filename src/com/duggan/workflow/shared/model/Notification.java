@@ -19,6 +19,8 @@ public class Notification implements Serializable{
 	private Boolean isRead;
 	private Date created;
 	private String createdBy;
+	private ApproverAction approverAction;
+	private Long processInstanceId;
 	
 	public Notification() {
 	}
@@ -99,6 +101,8 @@ public class Notification implements Serializable{
 		note.setRead(isRead);
 		note.setSubject(subject);
 		note.setTargetUserId(targetUserId);
+		note.setApproverAction(approverAction);
+		note.setProcessInstanceId(processInstanceId);
 		
 		return note;
 	}
@@ -109,5 +113,21 @@ public class Notification implements Serializable{
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public ApproverAction getApproverAction() {
+		return approverAction;
+	}
+
+	public void setApproverAction(ApproverAction approverAction) {
+		this.approverAction = approverAction;
+	}
+
+	public Long getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
 	}
 }

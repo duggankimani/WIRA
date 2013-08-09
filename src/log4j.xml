@@ -16,11 +16,17 @@
     <logger name="org.apache.directory">
         <level value="FATAL"/>
     </logger>
-    <logger name="com.salaboy.jbpm5.dev.guide">
+    <logger name="com.jbpm.executor">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.apache">
+        <level value="FATAL"/>
+    </logger>
+    <logger name="com.duggan.workflow.server.db">
         <level value="INFO"/>
     </logger>
     <root> 
-        <priority value ="INFO" /> 
+        <priority value ="WARNING" /> 
         <appender-ref ref="console" /> 
     </root> 
 </log4j:configuration>

@@ -9,6 +9,7 @@ import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.BaseResult;
@@ -56,6 +57,18 @@ public class GetTaskListActionHandler extends
 			status = DocStatus.REJECTED;
 			summary = DocumentDaoHelper.getAllDocuments(status);
 			break;
+		case SEARCH:
+			Document doc = DocumentDaoHelper.getDocumentByProcessInstance(action.getProcessInstanceId());
+			if(doc!=null)
+				summary.add(doc);
+			
+			List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(action.getUserId(), action.getProcessInstanceId());
+			
+			if(tasks!=null){
+				summary.addAll(tasks);
+			}
+			break;
+			
 		default:
 			summary = getPendingApprovals(action.getUserId(), type);
 			break;

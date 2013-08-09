@@ -74,7 +74,9 @@ public class DocumentDaoHelper {
 	 * @return
 	 */
 	private static Document getDoc(DocumentModel model) {
-
+		if(model==null){
+			return null;
+		}
 		Document doc = new Document();
 		doc.setCreated(model.getCreated());
 		doc.setDescription(model.getDescription());
@@ -122,6 +124,19 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		DocumentModel model = dao.getById(id);
+
+		return getDoc(model);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static Document getDocumentByProcessInstance(Long processInstanceId) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+
+		DocumentModel model = dao.getDocumentByProcessInstanceId(processInstanceId);
 
 		return getDoc(model);
 	}
@@ -195,6 +210,12 @@ public class DocumentDaoHelper {
 		}
 		
 		return docs;
+	}
+
+	public static Long getProcessInstanceIdByDocumentId(Long documentId) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		
+		return dao.getProcessInstanceIdByDocumentId(documentId);
 	}
 	
 

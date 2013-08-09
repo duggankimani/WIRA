@@ -99,4 +99,27 @@ public class DocumentDaoImpl {
 		return type;
 	}
 
+	public Long getProcessInstanceIdByDocumentId(Long documentId) {
+		Object processInstanceId = em.createQuery("select n.processInstanceId FROM DocumentModel n" +
+				" where n.id=:documentId")
+				.setParameter("documentId", documentId)
+				.getSingleResult();
+	
+		return processInstanceId==null? null : (Long)processInstanceId;
+	}
+	
+	public DocumentModel getDocumentByProcessInstanceId(Long processInstanceId){
+		List lst = em.createQuery("FROM DocumentModel d where processInstanceId= :processInstanceId " +
+				"and createdBy=:createdBy")
+				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("createdBy", SessionHelper.getCurrentUser().getId())
+				.getResultList();
+		
+		if(lst.size()>0){
+			return (DocumentModel)lst.get(0);
+		}
+		
+		return null;
+	}
+
 }

@@ -176,10 +176,7 @@ public class JBPMHelper implements Closeable{
     	
     	kbase = builder.newKnowledgeBase();
     	
-    	//session=kbase.newStatefulKnowledgeSession();
-    	
-    	//Initializing a stateful session from JPAKnowledgeService
-    	
+    	//Initializing a stateful session from JPAKnowledgeService    	
     	Environment env = KnowledgeBaseFactory.newEnvironment();
     	env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, DB.getEntityManagerFactory());
     	env.set(EnvironmentName.TRANSACTION_MANAGER, TransactionManagerServices.getTransactionManager());
@@ -271,9 +268,6 @@ public class JBPMHelper implements Closeable{
 				.getSingleResult();
 		counts.put(TaskType.APPROVALREQUESTNEW, count.intValue());
 		
-		List<Status> statuses = getStatusesForTaskType(TaskType.APPROVALREQUESTDONE);
-		
-		
 		/**
 		 * If John & James share the Role HOD_DEV
 		 * John Claims, Starts and completes a task, should
@@ -281,11 +275,9 @@ public class JBPMHelper implements Closeable{
 		 * This mechanism creates the posibility of this scenario happening
 		 * TODO: Test the query with two users sharing a role
 		 */
-		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups")//TasksAssignedCountAsPotentialOwnerByStatus")
+		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksOwnedCount")
 		.setParameter("userId", userId)
-		.setParameter("groupIds", groupIds)
 		.setParameter("language", "en-UK")
-		.setParameter("status", statuses)
 		.getSingleResult();		
 		counts.put(TaskType.APPROVALREQUESTDONE, count2.intValue());
 
@@ -313,6 +305,25 @@ public class JBPMHelper implements Closeable{
 			break;			
 		}
 		return statuses;
+	}
+	
+	
+	public List<HTSummary>  getTasksForUser(String userId, Long processInstanceId){
+		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
+		List<String> groupIds = new ArrayList<>();
+		for(UserGroup group: groups){
+			groupIds.add(group.getName());
+		}
+		
+		@SuppressWarnings("unchecked")
+		List<TaskSummary> ts = DB.getEntityManager().createNamedQuery("TasksOwnedBySubject")
+		.setParameter("userId", userId)
+		.setParameter("language", "en-UK")
+		.setParameter("groupIds", groupIds)
+		.setParameter("processInstanceId", processInstanceId)
+		.getResultList();
+		
+		return translateSummaries(ts);
 	}
 	/**
 	 * 
@@ -343,17 +354,17 @@ public class JBPMHelper implements Closeable{
 			break;
 		case APPROVALREQUESTNEW:
 			ts = this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
-			
-//			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-//					getStatusesForTaskType(type), 
-//					"en-UK");			
-			// ts=  this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			break;
 
 		default:
 			break;
 		}
 		
+		return translateSummaries(ts);
+		
+	}
+	
+	public List<HTSummary> translateSummaries(List<TaskSummary> ts){
 		
 		List<HTSummary> tasks = new ArrayList<>();
 		for(TaskSummary summary : ts){

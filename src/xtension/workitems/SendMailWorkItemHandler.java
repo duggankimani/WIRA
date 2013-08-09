@@ -18,6 +18,7 @@ import org.jbpm.executor.api.CommandContext;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
@@ -40,6 +41,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		String groupId = (String) workItem.getParameter("GroupId");
 		String actorId = (String) workItem.getParameter("ActorId");
 		String ownerId = (String) workItem.getParameter("OwnerId");
+		Object isApproved = workItem.getParameter("isApproved");
 
 		
 		System.err.println("Class : "+this.getClass());
@@ -74,11 +76,13 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			params.put("Body", "Document #"+subject+" requires your attention");
 			break;
 		case TASKCOMPLETED_APPROVERNOTE:
-			params.put("Body", "You Approved Document #"+subject);
+			String action = (Boolean)isApproved? "approved": "denied";	
+			params.put("Body", "You "+action+" Document #"+subject);
 			sendMail(users, params);
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
-			params.put("Body", "Your Document #"+subject+" was approved by "+groupId);
+			String noteaction = (Boolean)isApproved? "approved": "denied";			
+			params.put("Body", "Your Document #"+subject+" was "+noteaction+" by "+groupId);
 			sendMail(owner, params);
 			break;
 		case PROCESS_COMPLETED:

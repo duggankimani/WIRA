@@ -93,6 +93,8 @@ public class HomePresenter extends
 	
 	private Long selectedValue;
 	
+	private Long processInstanceId=null;
+	
 	final CurrentUser user;
 	
 	@Inject
@@ -146,13 +148,17 @@ public class HomePresenter extends
 	 */
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		clear();
-		
-		String name = request.getParameter("type", TaskType.DRAFT.getDisplayName());
+		clear();		
+		String name = request.getParameter("type", TaskType.DRAFT.getURL());
+		String processInstID = request.getParameter("pid", null);
+		if(processInstID!=null){
+			processInstanceId = Long.parseLong(processInstID);
+		}
 		
 		TaskType type = TaskType.getTaskType(name);
 		this.currentTaskType=type;
 		
+		System.err.println("Type="+currentTaskType+", processInstance="+processInstanceId);
 		loadTasks(type);			
 		
 	}	
@@ -177,8 +183,10 @@ public class HomePresenter extends
 		getView().setHeading(type.getTitle());
 		
 		String userId = user.getUserId();
-		//System.err.println("##UserID = "+userId+" :: TaskType= "+currentTaskType);
-		dispatcher.execute(new GetTaskList(userId,currentTaskType), new TaskServiceCallback<GetTaskListResult>(){
+		GetTaskList request = new GetTaskList(userId,currentTaskType);
+		request.setProcessInstanceId(processInstanceId);
+		
+		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
 
 			@Override
 			public void processResult(GetTaskListResult result) {

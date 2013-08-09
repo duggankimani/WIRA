@@ -87,7 +87,8 @@ public class ExecutorImpl implements Executor {
     }
     
     public synchronized Long scheduleRequest(CommandCodes commandId, CommandContext ctx) {      
-    	em = DB.getEntityManagerFactory().createEntityManager();
+    	//em = DB.getEntityManagerFactory().createEntityManager();
+    	em = DB.getEntityManager();
     	long start = System.currentTimeMillis();
         if (ctx == null) {
             throw new IllegalStateException("A Context Must Be Provided! ");
@@ -138,7 +139,6 @@ public class ExecutorImpl implements Executor {
         r.setStatus(STATUS.CANCELLED);
         em.merge(r);
         
-        DB.commitTransaction();
         logger.log(Level.INFO, " >>> After - Cancelling Request with Id: {0}", requestId);
     }
     

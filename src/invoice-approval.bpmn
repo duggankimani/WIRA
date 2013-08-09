@@ -19,7 +19,6 @@
   <itemDefinition id="_ownerIdItem" structureRef="String" />
   <itemDefinition id="_priorityItem" structureRef="Integer" />
   <itemDefinition id="_subjectItem" structureRef="String" />
-  <itemDefinition id="_descriptionItem" structureRef="String" />
   <itemDefinition id="_actorItem" structureRef="String" />
   <itemDefinition id="_groupItem" structureRef="String" />
 
@@ -30,7 +29,6 @@
   <itemDefinition id="_2-ownerIdItem" structureRef="String" />
   <itemDefinition id="_2-priorityItem" structureRef="Integer" />
   <itemDefinition id="_2-subjectItem" structureRef="String" />
-  <itemDefinition id="_2-descriptionItem" structureRef="String" />
   <itemDefinition id="_2-actorItem" structureRef="String" />
   <itemDefinition id="_2-groupItem" structureRef="String" />
 
@@ -41,7 +39,6 @@
   <itemDefinition id="_3-ownerIdItem" structureRef="String" />
   <itemDefinition id="_3-priorityItem" structureRef="Integer" />
   <itemDefinition id="_3-subjectItem" structureRef="String" />
-  <itemDefinition id="_3-descriptionItem" structureRef="String" />
   <itemDefinition id="_3-actorItem" structureRef="String" />
   <itemDefinition id="_3-groupItem" structureRef="String" />
 
@@ -52,7 +49,6 @@
   <itemDefinition id="_14-ownerIdItem" structureRef="String" />
   <itemDefinition id="_14-priorityItem" structureRef="Integer" />
   <itemDefinition id="_14-subjectItem" structureRef="String" />
-  <itemDefinition id="_14-descriptionItem" structureRef="String" />
   <itemDefinition id="_14-actorItem" structureRef="String" />
   <itemDefinition id="_14-groupItem" structureRef="String" />
 
@@ -63,7 +59,6 @@
   <itemDefinition id="_15-ownerIdItem" structureRef="String" />
   <itemDefinition id="_15-priorityItem" structureRef="Integer" />
   <itemDefinition id="_15-subjectItem" structureRef="String" />
-  <itemDefinition id="_15-descriptionItem" structureRef="String" />
   <itemDefinition id="_15-actorItem" structureRef="String" />
   <itemDefinition id="_15-groupItem" structureRef="String" />
 
@@ -80,7 +75,6 @@
     <property id="ownerId" itemSubjectRef="_ownerIdItem"/>
     <property id="priority" itemSubjectRef="_priorityItem"/>
     <property id="subject" itemSubjectRef="_subjectItem"/>
-    <property id="description" itemSubjectRef="_descriptionItem"/>
     <property id="actor" itemSubjectRef="_actorItem"/>
     <property id="group" itemSubjectRef="_groupItem"/>
 
@@ -89,8 +83,8 @@
     <userTask id="_2" name="HOD Approval" >
       <ioSpecification>
         <dataInput id="_2_subjectInput" name="subject" />
-        <dataInput id="_2_descriptionInput" name="description" />
         <dataInput id="_2_priorityInput" name="priority" />
+        <dataInput id="_2_descriptionInput" name="description" />
         <dataInput id="_2_valueInput" name="value" />
         <dataInput id="_2_documentIdInput" name="documentId" />
         <dataInput id="_2_NotStartedNotifyInput" name="NotStartedNotify" />
@@ -104,8 +98,8 @@
         <dataOutput id="_2_isApprovedOutput" name="isApproved" />
         <inputSet>
           <dataInputRefs>_2_subjectInput</dataInputRefs>
-          <dataInputRefs>_2_descriptionInput</dataInputRefs>
           <dataInputRefs>_2_priorityInput</dataInputRefs>
+          <dataInputRefs>_2_descriptionInput</dataInputRefs>
           <dataInputRefs>_2_valueInput</dataInputRefs>
           <dataInputRefs>_2_documentIdInput</dataInputRefs>
           <dataInputRefs>_2_NotStartedNotifyInput</dataInputRefs>
@@ -126,12 +120,12 @@
         <targetRef>_2_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_2_descriptionInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>priority</sourceRef>
         <targetRef>_2_priorityInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_2_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -591,7 +585,7 @@ kcontext.setVariable("actor", null);</tns:script>
         <dc:Bounds x="238" y="96" width="116" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="609" y="44" width="123" height="48" />
+        <dc:Bounds x="609" y="56" width="123" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
         <dc:Bounds x="1137" y="96" width="48" height="48" />
@@ -600,7 +594,7 @@ kcontext.setVariable("actor", null);</tns:script>
         <dc:Bounds x="528" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_20" >
-        <dc:Bounds x="638" y="155" width="48" height="48" />
+        <dc:Bounds x="646" y="136" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_23" >
         <dc:Bounds x="386" y="96" width="110" height="48" />
@@ -626,7 +620,7 @@ kcontext.setVariable("actor", null);</tns:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_5-_3" >
         <di:waypoint x="552" y="120" />
-        <di:waypoint x="670" y="68" />
+        <di:waypoint x="670" y="80" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_14-_4" >
         <di:waypoint x="1048" y="120" />
@@ -638,7 +632,7 @@ kcontext.setVariable("actor", null);</tns:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_5-_20" >
         <di:waypoint x="552" y="120" />
-        <di:waypoint x="662" y="179" />
+        <di:waypoint x="670" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_2-_23" >
         <di:waypoint x="296" y="120" />
@@ -649,7 +643,7 @@ kcontext.setVariable("actor", null);</tns:script>
         <di:waypoint x="151" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_3-_8" >
-        <di:waypoint x="670" y="68" />
+        <di:waypoint x="670" y="80" />
         <di:waypoint x="788" y="80" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_8-_10" >

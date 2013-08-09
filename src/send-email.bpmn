@@ -50,8 +50,6 @@
         <dataInput id="_2_BccInput" name="Bcc" />
         <dataInput id="_2_FromInput" name="From" />
         <dataInput id="_2_Reply-ToInput" name="Reply-To" />
-        <dataInput id="_2_SubjectInput" name="Subject" />
-        <dataInput id="_2_FromInput" name="From" />
         <inputSet>
           <dataInputRefs>_2_BodyInput</dataInputRefs>
           <dataInputRefs>_2_SubjectInput</dataInputRefs>
@@ -60,8 +58,6 @@
           <dataInputRefs>_2_BccInput</dataInputRefs>
           <dataInputRefs>_2_FromInput</dataInputRefs>
           <dataInputRefs>_2_Reply-ToInput</dataInputRefs>
-          <dataInputRefs>_2_SubjectInput</dataInputRefs>
-          <dataInputRefs>_2_FromInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>

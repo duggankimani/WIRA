@@ -10,6 +10,7 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 
 	private String userId;
 	private TaskType type;
+	private Long processInstanceId;
 	
 	@SuppressWarnings("unused")
 	private GetTaskList() {
@@ -33,6 +34,14 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 	public BaseResult createDefaultActionResponse() {
 		
 		return new GetTaskListResult();
+	}
+
+	public Long getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
 	}
 
 }

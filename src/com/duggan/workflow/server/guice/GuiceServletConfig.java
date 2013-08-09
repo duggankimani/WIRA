@@ -28,7 +28,6 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		super.contextInitialized(servletContextEvent);
 		DBTrxProvider.init();
 		JBPMHelper.get();
-		ExecutorModule.getInstance().getExecutorServiceEntryPoint().init();
 	}
 	
 	@Override
@@ -38,7 +37,6 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		
 		JBPMHelper.destroy();
 		DBTrxProvider.close();
-		ExecutorModule.getInstance().getExecutorServiceEntryPoint().destroy();
 		try{
 			//close ldap connection
 			LoginHelper.get().close();

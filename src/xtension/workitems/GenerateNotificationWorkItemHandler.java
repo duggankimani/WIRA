@@ -26,6 +26,7 @@ import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
@@ -53,6 +54,7 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		String groupId = (String) workItem.getParameter("GroupId");
 		String actorId = (String) workItem.getParameter("ActorId");
 		String ownerId = (String) workItem.getParameter("OwnerId");
+		Object isApproved = workItem.getParameter("isApproved");
 
 		
 		System.err.println("Class : "+this.getClass());
@@ -101,10 +103,12 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 				generateNotes(potentialActors, notification);
 			}
 			break;
-		case TASKCOMPLETED_APPROVERNOTE:			
+		case TASKCOMPLETED_APPROVERNOTE:	
+			notification.setApproverAction((Boolean)isApproved? ApproverAction.APPROVED: ApproverAction.REJECTED);
 			generateNotes(actors, notification);
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
+			notification.setApproverAction((Boolean)isApproved? ApproverAction.APPROVED: ApproverAction.REJECTED);
 			generateNotes(owner, notification);
 			break;
 		case PROCESS_COMPLETED:

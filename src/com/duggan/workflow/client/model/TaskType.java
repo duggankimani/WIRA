@@ -9,7 +9,8 @@ public enum TaskType {
 	APPROVALREQUESTNEW("appreqnew", "New Requests"),
 	APPROVALREQUESTDONE("appredone", "Completed"),
 	FLAGGED("flagged", "Flagged"),
-	NOTIFICATIONS("notifications", "Notifications");
+	NOTIFICATIONS("notifications", "Notifications"),
+	SEARCH("search","Search");
 	
 	String url;
 	String title;
@@ -19,7 +20,7 @@ public enum TaskType {
 		this.title=title;
 	}
 	
-	public String getDisplayName(){
+	public String getURL(){
 		return url;
 	}
 	

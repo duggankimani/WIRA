@@ -191,10 +191,15 @@ public class DB{
     	}
 	}
 	
-	private static UserTransaction getUserTrx() throws NamingException {
+	public static UserTransaction getUserTrx() throws NamingException {
 		Context ctx = new InitialContext();
-		UserTransaction userTrx = (UserTransaction)ctx.lookup("java:comp/UserTransaction");
-		System.err.println(userTrx.toString());
+		Object value = ctx.lookup("java:comp/UserTransaction");
+		
+		if(value==null){
+			return null;
+		}
+		
+		UserTransaction userTrx = (UserTransaction)value;
 		return userTrx;
 	}
 	

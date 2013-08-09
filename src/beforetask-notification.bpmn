@@ -40,7 +40,7 @@
   <itemDefinition id="_13-SubjectItem" structureRef="String" />
   <itemDefinition id="_13-PriorityItem" structureRef="Integer" />
 
-  <process processType="Private" isExecutable="true" id="beforetask-notification" name="Task Assignment Notifications" >
+  <process processType="Private" isExecutable="true" id="beforetask-notification" name="Task Assignment Notifications" tns:packageName="com.duggan.process.before" >
 
     <!-- process variables -->
     <property id="DocumentId" itemSubjectRef="_DocumentIdItem"/>
@@ -148,20 +148,12 @@
         <dataInput id="_12_ActorIdInput" name="ActorId" />
         <dataInput id="_12_DocumentIdInput" name="DocumentId" />
         <dataInput id="_12_SubjectInput" name="Subject" />
-        <dataInput id="_12_GroupIdInput" name="GroupId" />
-        <dataInput id="_12_ActorIdInput" name="ActorId" />
-        <dataInput id="_12_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_12_SubjectInput" name="Subject" />
         <dataInput id="_12_NotificationTypeInput" name="NotificationType" />
         <dataInput id="_12_OwnerIdInput" name="OwnerId" />
         <dataInput id="_12_TargetGroupIdInput" name="TargetGroupId" />
         <dataInput id="_12_TargetUserIdInput" name="TargetUserId" />
         <dataInput id="_12_GroupIdInput" name="GroupId" />
         <inputSet>
-          <dataInputRefs>_12_ActorIdInput</dataInputRefs>
-          <dataInputRefs>_12_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_12_SubjectInput</dataInputRefs>
-          <dataInputRefs>_12_GroupIdInput</dataInputRefs>
           <dataInputRefs>_12_ActorIdInput</dataInputRefs>
           <dataInputRefs>_12_DocumentIdInput</dataInputRefs>
           <dataInputRefs>_12_SubjectInput</dataInputRefs>
@@ -174,22 +166,6 @@
         <outputSet>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>ActorId</sourceRef>
-        <targetRef>_12_ActorIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>DocumentId</sourceRef>
-        <targetRef>_12_DocumentIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>Subject</sourceRef>
-        <targetRef>_12_SubjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>GroupId</sourceRef>
-        <targetRef>_12_GroupIdInput</targetRef>
-      </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_12_ActorIdInput</targetRef>
         <assignment>
@@ -249,22 +225,14 @@
     </task>
     <task id="_13" name="Approver Email" tns:taskName="ScheduleEmailNotification" >
       <ioSpecification>
-        <dataInput id="_13_ActorIdInput" name="ActorId" />
-        <dataInput id="_13_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_13_SubjectInput" name="Subject" />
         <dataInput id="_13_OwnerIdInput" name="OwnerId" />
-        <dataInput id="_13_GroupIdInput" name="GroupId" />
         <dataInput id="_13_ActorIdInput" name="ActorId" />
         <dataInput id="_13_DocumentIdInput" name="DocumentId" />
         <dataInput id="_13_NotificationTypeInput" name="NotificationType" />
         <dataInput id="_13_SubjectInput" name="Subject" />
         <dataInput id="_13_GroupIdInput" name="GroupId" />
         <inputSet>
-          <dataInputRefs>_13_ActorIdInput</dataInputRefs>
-          <dataInputRefs>_13_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_13_SubjectInput</dataInputRefs>
           <dataInputRefs>_13_OwnerIdInput</dataInputRefs>
-          <dataInputRefs>_13_GroupIdInput</dataInputRefs>
           <dataInputRefs>_13_ActorIdInput</dataInputRefs>
           <dataInputRefs>_13_DocumentIdInput</dataInputRefs>
           <dataInputRefs>_13_NotificationTypeInput</dataInputRefs>
@@ -275,24 +243,8 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>ActorId</sourceRef>
-        <targetRef>_13_ActorIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>DocumentId</sourceRef>
-        <targetRef>_13_DocumentIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>Subject</sourceRef>
-        <targetRef>_13_SubjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>OwnerId</sourceRef>
         <targetRef>_13_OwnerIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>GroupId</sourceRef>
-        <targetRef>_13_GroupIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_13_ActorIdInput</targetRef>

@@ -1,8 +1,14 @@
 package com.duggan.workflow.server.db;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.transaction.UserTransaction;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import bitronix.tm.Configuration;
 import bitronix.tm.TransactionManagerServices;
@@ -42,13 +48,24 @@ public class DBTrxProvider{
 
 	static DBTrxProvider provider;
 	
+	Log logger = LogFactory.getLog(DBTrxProvider.class);
+	
 	private DBTrxProvider(){
 		
-		Configuration config = TransactionManagerServices.getConfiguration();
-		File resourceProperties = new File(Thread.currentThread().getContextClassLoader().getResource("").getPath());
-		config.setResourceConfigurationFilename(resourceProperties.getPath()+"/db.properties");
-		resourceProperties=null;
-		TransactionManagerServices.getResourceLoader().init();
+//		Object userTrx = null;
+//		try{
+//			userTrx = DB.getUserTrx();
+//		}catch(Exception e){}
+		
+		if(true){
+			logger.warn("No Global User Trx Found - Could you be running in development mode?");
+			//non
+			Configuration config = TransactionManagerServices.getConfiguration();
+			File resourceProperties = new File(Thread.currentThread().getContextClassLoader().getResource("").getPath());
+			config.setResourceConfigurationFilename(resourceProperties.getPath()+"/db.properties");
+			resourceProperties=null;
+			TransactionManagerServices.getResourceLoader().init();
+		}
 		
 	}
 	

@@ -44,6 +44,10 @@ public class NotificationDaoHelper {
 		NotificationDaoImpl dao = DB.getNotificationDao();
 		List<NotificationModel> models = dao.getAllNotifications(userId);
 		
+		return copyData(models);
+	}
+	
+	private static List<Notification> copyData(List<NotificationModel> models) {
 		List<Notification> notifications = new ArrayList<>();
 		
 		for(NotificationModel m:models){
@@ -54,6 +58,7 @@ public class NotificationDaoHelper {
 		
 		return notifications;
 	}
+
 
 	private static void copyData(NotificationModel notificationTo,
 			Notification modelFrom) {
@@ -75,6 +80,7 @@ public class NotificationDaoHelper {
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setRead(modelFrom.IsRead());
 		notificationTo.setSubject(modelFrom.getSubject());
+		notificationTo.setApproverAction(modelFrom.getApproverAction());
 	}
 	
 	private static void copyData(Notification notificationTo,
@@ -92,6 +98,9 @@ public class NotificationDaoHelper {
 		notificationTo.setId(modelFrom.getId());
 		DocType documentType = DB.getDocumentDao().getDocumentType(modelFrom.getDocumentId());
 		notificationTo.setDocumentType(documentType);
+		notificationTo.setApproverAction(modelFrom.getApproverAction());
+		notificationTo.setProcessInstanceId(
+				DocumentDaoHelper.getProcessInstanceIdByDocumentId(modelFrom.getDocumentId()));
 		
 	}
 

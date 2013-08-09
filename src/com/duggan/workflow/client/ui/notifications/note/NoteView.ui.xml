@@ -7,7 +7,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-	    <g:Anchor ui:field="aDocument" styleName="item unread hand">
+	    <g:Anchor ui:field="aDocument" href="#home;type=search;pid=108" styleName="item unread hand">
             <i class="icon-signin"></i> 
             <span class="bluename" ui:field="spnActor"></span>
              approved your 

@@ -43,59 +43,20 @@ where
           <!-- hint name="org.hibernate.timeout" value="200"/ -->
       </named-query>
  
-       
-       <named-query name="TasksAssignedCountAsPotentialOwner">
-          <query>
-select count(*)
-from
-    Task t
-    left join t.taskData.createdBy as createdBy 
-    left join t.taskData.actualOwner as actualOwner
-    left join t.subjects as subject
-    left join t.descriptions as description
-    left join t.names as name,
-    OrganizationalEntity potentialOwners
-where
-    t.archived = 0 and
-    potentialOwners.id = :userId and
-    potentialOwners in elements ( t.peopleAssignments.potentialOwners  )  and
-
-    (
-    name.language = :language
-    or t.names.size = 0
-    ) and
-
-    (
-    subject.language = :language
-    or t.subjects.size = 0
-    ) and
-
-    (
-    description.language = :language
-    or t.descriptions.size = 0
-    ) and
-
-    t.taskData.status in ('Created', 'Ready', 'Reserved', 'InProgress', 'Suspended') and
-
-    t.taskData.expirationTime is null
-   </query>
-   </named-query>
-	 <named-query name="TasksAssignedCountAsPotentialOwnerByStatus">
+     <named-query name="TasksOwnedCount">
           <query>
 select
-    count(*)
+  count(*)
 from
     Task t 
     left join t.taskData.createdBy as createdBy
-    left join t.taskData.actualOwner as actualOwner
+    left join t.taskData.actualOwner as actualOwner 
     left join t.subjects as subject
     left join t.descriptions as description
-    left join t.names as name,
-    OrganizationalEntity potentialOwners
+    left join t.names as name
 where
     t.archived = 0 and
-    potentialOwners.id = :userId and
-    potentialOwners in elements ( t.peopleAssignments.potentialOwners  )  and
+    t.taskData.actualOwner.id = :userId and
 
     (
     name.language = :language
@@ -112,10 +73,67 @@ where
     or t.descriptions.size = 0
     ) and
 
-    t.taskData.status in (:status) and
-
     t.taskData.expirationTime is null
-  </query>
-  </named-query>
-     
+          </query>
+          <!-- hint name="org.hibernate.timeout" value="200"/ -->
+      </named-query>
+      
+        <named-query name="TasksOwnedBySubject">
+          <query>
+select
+   distinct
+   new org.jbpm.task.query.TaskSummary(
+    t.id,
+    t.taskData.processInstanceId,
+    name.text,
+    subject.text,
+    description.text,
+    t.taskData.status,
+    t.priority,
+    t.taskData.skipable,
+    actualOwner,
+    createdBy,
+    t.taskData.createdOn,
+    t.taskData.activationTime,
+    t.taskData.expirationTime,
+    t.taskData.processId,
+    t.taskData.processSessionId)
+from
+    Task t 
+    left join t.taskData.createdBy as createdBy
+    left join t.taskData.actualOwner as actualOwner 
+    left join t.subjects as subject
+    left join t.descriptions as description
+    left join t.names as name,
+    OrganizationalEntity potentialOwners
+where
+    t.archived = 0 and
+    (t.taskData.actualOwner.id = :userId
+    or 
+    	( potentialOwners.id = :userId or potentialOwners.id in (:groupIds) ) and
+    	potentialOwners in elements ( t.peopleAssignments.potentialOwners )
+    )
+    
+     and
+
+    (
+    name.language = :language
+    or t.names.size = 0
+    ) and
+
+    (
+    subject.language = :language
+    or t.subjects.size = 0
+    ) and
+
+    (
+    description.language = :language
+    or t.descriptions.size = 0
+    )and 
+    t.taskData.processInstanceId = :processInstanceId
+    and
+    t.taskData.expirationTime is null
+          </query>
+          <!-- hint name="org.hibernate.timeout" value="200"/ -->
+      </named-query>
 </entity-mappings>

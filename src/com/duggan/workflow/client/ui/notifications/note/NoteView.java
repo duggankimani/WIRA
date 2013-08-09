@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.notifications.note;
 
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -46,7 +47,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	@Override
 	public void setValues(String subject, DocType documentType,
 			NotificationType notificationType, String owner,
-			String targetUserId, String time, boolean isRead, String createdBy) {
+			String targetUserId, String time, boolean isRead,
+			String createdBy, ApproverAction approverAction,
+			 Long processInstanceId) {
 		
 		String prefix = documentType == null ? "Document" : documentType
 				.getDisplayName();
@@ -60,7 +63,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			aDocument.addStyleName("unread");
 		}
 
-		String action = "approved"; //approved/denied
+		String action = "";
+		
+		if(approverAction!=null){
+			action = approverAction.getAction();
+		}
+		
 		String approver = createdBy;
 		
 		SafeHtml safeHtml = null;
@@ -85,6 +93,10 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		
 		if(safeHtml!=null){
 			aDocument.setHTML(safeHtml);
+		}
+		
+		if(processInstanceId!=null){
+			aDocument.setHref("#home;type=search;pid="+processInstanceId);
 		}
 
 	}

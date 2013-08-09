@@ -50,7 +50,7 @@ public class ExecutorRunnable extends Thread {
     public void run() {
     	
     	DB.beginTransaction();
-    	EntityManager em = DB.getEntityManagerFactory().createEntityManager();
+    	EntityManager em = DB.getEntityManager();//getEntityManagerFactory().createEntityManager();
     	
         logger.log(Level.INFO, " >>> Executor Thread {0} Waking Up!!!", this.toString());
         List<?> resultList = em.createQuery("Select r from RequestInfo as r where r.status ='QUEUED' or r.status = 'RETRYING' ORDER BY r.time DESC").setMaxResults(5).getResultList();
@@ -110,13 +110,12 @@ public class ExecutorRunnable extends Thread {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 exception = e;
             }
+            
             if (exception != null) {
                 logger.log(Level.SEVERE, "{0} >>> Before - Error Handling!!!{1}", new Object[]{System.currentTimeMillis(), exception.getMessage()});
-
-
 
                 ErrorInfo errorInfo = new ErrorInfo(exception.getMessage(), ExceptionUtils.getFullStackTrace(exception.fillInStackTrace()));
                 errorInfo.setRequestInfo(r);
@@ -144,10 +143,12 @@ public class ExecutorRunnable extends Thread {
                 r.setStatus(STATUS.DONE);
                 em.merge(r);
 
-            }
-            DB.commitTransaction();
-            DB.closeSession();
+            }          
         }
+        logger.log(Level.INFO, " >>> Executor Thread {0} Committing.....!!!", this.toString());
+        DB.commitTransaction();
+        DB.closeSession();
+        logger.log(Level.INFO, " >>> Executor Thread {0} Committed . Closed Session.....!!!", this.toString());
     }
 
     private Command findCommand(CommandCodes name) {
