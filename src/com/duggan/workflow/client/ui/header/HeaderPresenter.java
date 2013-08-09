@@ -41,8 +41,10 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 		void setValues(String userNames);
 		Anchor getNotificationsButton();
 		void setPopupVisible();
+		void removePopup();
 		void setCount(Integer count);
 		HasBlurHandlers getpopupContainer();
+		void setLoading(boolean b);
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -98,7 +100,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 		getView().getNotificationsButton().addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				getView().setPopupVisible();
+				getView().removePopup();
 			}
 		});	
 		
@@ -131,12 +133,14 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 
 	
 	protected void loadAlerts() {
+		getView().setLoading(true);
 		dispatcher.execute(new GetNotificationsAction(AppContext.getUserId()),
 				new TaskServiceCallback<GetNotificationsActionResult>() {
 			@Override
 			public void processResult(
 					GetNotificationsActionResult result) {
-				fireEvent(new NotificationsLoadEvent(result.getNotifications()));				
+				fireEvent(new NotificationsLoadEvent(result.getNotifications()));
+				getView().setLoading(false);
 			}
 		});
 	}

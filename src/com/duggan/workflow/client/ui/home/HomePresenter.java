@@ -11,6 +11,8 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
@@ -19,6 +21,8 @@ import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
@@ -63,7 +67,8 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
-		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler{
+		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler,
+		ProcessingHandler, ProcessingCompletedHandler{
 
 	public interface MyView extends View {
 		
@@ -147,12 +152,12 @@ public class HomePresenter extends
 		addRegisteredHandler(ReloadEvent.TYPE, this);
 		addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
+		addRegisteredHandler(ProcessingEvent.TYPE, this);
+		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 					
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 				showEditForm(MODE.CREATE);
 			}
 		});
@@ -171,8 +176,6 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				History.newItem("home;type=drafts");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 		
@@ -181,8 +184,6 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				History.newItem("home;type=inprog");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 		
@@ -190,8 +191,6 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				History.newItem("home;type=approved");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 		
@@ -199,8 +198,6 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				History.newItem("home;type=rejected");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 		
@@ -208,27 +205,21 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				History.newItem("home;type=appreqnew");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 		
 		
 		getView().getaRecentApprovals().addClickHandler(new ClickHandler() {
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onClick(ClickEvent event) {				
 				History.newItem("home;type=appredone");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
 			}
 		});
 		
 		getView().getaFlagged().addClickHandler(new ClickHandler() {		
 			@Override
 			public void onClick(ClickEvent event) {
-				History.newItem("home;type=flagged");
-				getView().getLoadingtext().removeClassName("hide");
-				getView().getWholeContainer().addStyleName("working-request");
+				History.newItem("home;type=flagged");				
 			}
 		});
 	}
@@ -277,6 +268,7 @@ public class HomePresenter extends
 		GetTaskList request = new GetTaskList(userId,currentTaskType);
 		request.setProcessInstanceId(processInstanceId);
 		
+		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
 			@Override
 			public void processResult(GetTaskListResult result) {		
@@ -307,6 +299,7 @@ public class HomePresenter extends
 					getView().setHasItems(false);
 				}
 				
+				fireEvent(new ProcessingCompletedEvent());
 			}
 			
 		});
@@ -338,8 +331,7 @@ public class HomePresenter extends
 				
 			}
 		}
-		getView().getWholeContainer().removeStyleName("working-request");
-		getView().getLoadingtext().addClassName("hide");
+	
 	}
 	
 	protected void showEditForm(final MODE mode) {
@@ -412,5 +404,17 @@ public class HomePresenter extends
 	@Override
 	public void onActivitiesSelected(ActivitiesSelectedEvent event) {
 		getView().showActivitiesPanel(true);
+	}
+
+	@Override
+	public void onProcessingCompleted(ProcessingCompletedEvent event) {
+		getView().getWholeContainer().removeStyleName("working-request");
+		getView().getLoadingtext().addClassName("hide");
+	}
+
+	@Override
+	public void onProcessing(ProcessingEvent event) {		
+		getView().getWholeContainer().addStyleName("working-request");
+		getView().getLoadingtext().removeClassName("hide");
 	}
 }

@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.header;
 
-import com.github.gwtbootstrap.client.ui.Label;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -75,13 +74,17 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}
 	}
 
+	public void removePopup(){
+		popupContainer.removeStyleName("is-visible");
+		isSelected=false;
+	}
+	
 	@Override
 	public void setPopupVisible() {
 		if(isSelected){
 			popupContainer.removeStyleName("is-visible");
 			isSelected=false;
-		}else{
-			notificationsContainer.addStyleName("loading");
+		}else{			
 			popupContainer.addStyleName("is-visible");
 			isSelected=true;
 		}	
@@ -89,5 +92,15 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	
 	public void setCount(Integer count){
 		lblCount.setInnerText(count+"");
+	}
+
+	@Override
+	public void setLoading(boolean loading) {
+		if(loading){
+			notificationsContainer.setStyleName("loading");
+		}else{
+			notificationsContainer.removeStyleName("loading");
+		}
+		
 	}
 }
