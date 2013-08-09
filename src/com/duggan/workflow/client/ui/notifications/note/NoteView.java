@@ -82,10 +82,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			break;
 
 		case TASKCOMPLETED_APPROVERNOTE:
-			safeHtml = Template3.render(subject, owner, time, action);
+			safeHtml = Template3.render(subject, owner, time, action, 
+					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
-			safeHtml = Template4.render(subject, approver, time, action);
+			safeHtml = Template4.render(subject, approver, time, action, 
+					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
 			break;
 		default:
 			//safeHtml= "<p>You have no new notification</p>";
@@ -127,24 +129,24 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	interface TASKCOMPLETED_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
-		@Template("<i class=\"icon-check\"></i>"+
+		@Template("<i class=\"{4}\"></i>"+
 				"You {3} <span class=\"bluename\">{0}</span>"
 				+ " from <span class=\"bluename\">{1}</span>."
 				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time,
-				String action);
+				String action, String styleName);
 		// e.g You approved/denied Invoice INV/001/2013 from calcacuervo (20mins
 		// ago)
 	}
 
 	interface TASKCOMPLETED_OWNERNOTE_TEMPLATE extends SafeHtmlTemplates {
 
-		@Template("<i class=\"icon-signin\"></i>"+
+		@Template("<i class=\"{4}\"></i>"+
 				"Your <span class=\"bluename\">{0}</span>"
 				+ " was {3} by <span class=\"bluename\">{1}</span>"
 				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String approver, String time,
-				String action);
+				String action, String style);
 
 		// e.g Your Invoice INV/001/2013 was approved/Denied by HOD (1hr ago)
 	}

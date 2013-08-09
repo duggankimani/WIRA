@@ -100,7 +100,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 		getView().getNotificationsButton().addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				getView().removePopup();
+				//getView().removePopup();
 			}
 		});	
 		
@@ -123,7 +123,6 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 				
 				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));
 				
-				System.out.println("Alerts - "+alerts.get(TaskType.APPROVALREQUESTDONE));
 				fireEvent(new AlertLoadEvent(alerts));				
 				alertTimer.schedule(alertReloadInterval);
 			}
