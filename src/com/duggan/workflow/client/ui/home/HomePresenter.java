@@ -355,8 +355,9 @@ public class HomePresenter extends
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
+
 		getView().getWholeContainer().removeStyleName("working-request");
-		loadTasks(TaskType.DRAFT);
+		loadTasks();
 	}
 
 	@Override

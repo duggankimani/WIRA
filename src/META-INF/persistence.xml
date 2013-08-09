@@ -50,9 +50,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
         <!-- Async Executor Classes -->
         <class>org.jbpm.executor.entities.RequestInfo</class>
         <class>org.jbpm.executor.entities.ErrorInfo</class>
-        
-        <!-- class>org.jbpm.executor.entities.TestTable</class -->
-                
+                        
         <properties>            
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <!-- property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />

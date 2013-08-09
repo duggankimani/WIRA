@@ -73,13 +73,18 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
 		notification.setDocumentType(doc.getType());
 		
-		List<HTUser> users = null;
+		List<HTUser> actors = null;
+		List<HTUser> potentialActors = null;
+		
 		//notification.setTargetUserId(targetUserId);
 		if(actorId!=null && !actorId.trim().isEmpty()){
-			users = new ArrayList<>();
-			users.add(LoginHelper.get().getUser(actorId));
-		}if(groupId!=null && !groupId.trim().isEmpty()){
-			users = LoginHelper.get().getUsersForGroup(groupId);
+			actors = new ArrayList<>();
+			actors.add(LoginHelper.get().getUser(actorId));
+		}
+		
+		//potential users
+		if(groupId!=null && !groupId.trim().isEmpty()){
+			potentialActors = LoginHelper.get().getUsersForGroup(groupId);
 		}
 		
 		List<HTUser> owner = new ArrayList<>();
@@ -90,12 +95,14 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 			generateNotes(owner, notification);
 			break;
 		case APPROVALREQUEST_APPROVERNOTE:
-			System.err.println("###############Approvers "+users);
-			generateNotes(users, notification);
+			if(actors!=null){
+				generateNotes(actors, notification);
+			}else{
+				generateNotes(potentialActors, notification);
+			}
 			break;
-		case TASKCOMPLETED_APPROVERNOTE:
-			System.err.println("###############Approvers "+users);
-			generateNotes(users, notification);
+		case TASKCOMPLETED_APPROVERNOTE:			
+			generateNotes(actors, notification);
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
 			generateNotes(owner, notification);

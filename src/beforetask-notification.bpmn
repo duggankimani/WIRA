@@ -40,13 +40,6 @@
   <itemDefinition id="_13-SubjectItem" structureRef="String" />
   <itemDefinition id="_13-PriorityItem" structureRef="Integer" />
 
-  <itemDefinition id="_14-DocumentIdItem" structureRef="String" />
-  <itemDefinition id="_14-OwnerIdItem" structureRef="String" />
-  <itemDefinition id="_14-GroupIdItem" structureRef="String" />
-  <itemDefinition id="_14-ActorIdItem" structureRef="String" />
-  <itemDefinition id="_14-SubjectItem" structureRef="String" />
-  <itemDefinition id="_14-PriorityItem" structureRef="Integer" />
-
   <process processType="Private" isExecutable="true" id="beforetask-notification" name="Task Assignment Notifications" >
 
     <!-- process variables -->
@@ -69,8 +62,8 @@
         <dataInput id="_11_PriorityInput" name="Priority" />
         <dataInput id="_11_ActorIdInput" name="ActorId" />
         <dataInput id="_11_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_11_SubjectInput" name="Subject" />
         <dataInput id="_11_NotificationTypeInput" name="NotificationType" />
+        <dataInput id="_11_SubjectInput" name="Subject" />
         <dataInput id="_11_OwnerIdInput" name="OwnerId" />
         <dataInput id="_11_TargetGroupIdInput" name="TargetGroupId" />
         <dataInput id="_11_TargetUserIdInput" name="TargetUserId" />
@@ -79,8 +72,8 @@
           <dataInputRefs>_11_PriorityInput</dataInputRefs>
           <dataInputRefs>_11_ActorIdInput</dataInputRefs>
           <dataInputRefs>_11_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_11_SubjectInput</dataInputRefs>
           <dataInputRefs>_11_NotificationTypeInput</dataInputRefs>
+          <dataInputRefs>_11_SubjectInput</dataInputRefs>
           <dataInputRefs>_11_OwnerIdInput</dataInputRefs>
           <dataInputRefs>_11_TargetGroupIdInput</dataInputRefs>
           <dataInputRefs>_11_TargetUserIdInput</dataInputRefs>
@@ -108,17 +101,17 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_11_SubjectInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{Subject}</from>
-          <to xsi:type="tFormalExpression">_11_SubjectInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <targetRef>_11_NotificationTypeInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">APPROVALREQUEST_OWNERNOTE</from>
           <to xsi:type="tFormalExpression">_11_NotificationTypeInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{Subject}</from>
+          <to xsi:type="tFormalExpression">_11_SubjectInput</to>
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
@@ -158,8 +151,8 @@
         <dataInput id="_12_GroupIdInput" name="GroupId" />
         <dataInput id="_12_ActorIdInput" name="ActorId" />
         <dataInput id="_12_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_12_NotificationTypeInput" name="NotificationType" />
         <dataInput id="_12_SubjectInput" name="Subject" />
+        <dataInput id="_12_NotificationTypeInput" name="NotificationType" />
         <dataInput id="_12_OwnerIdInput" name="OwnerId" />
         <dataInput id="_12_TargetGroupIdInput" name="TargetGroupId" />
         <dataInput id="_12_TargetUserIdInput" name="TargetUserId" />
@@ -171,8 +164,8 @@
           <dataInputRefs>_12_GroupIdInput</dataInputRefs>
           <dataInputRefs>_12_ActorIdInput</dataInputRefs>
           <dataInputRefs>_12_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_12_NotificationTypeInput</dataInputRefs>
           <dataInputRefs>_12_SubjectInput</dataInputRefs>
+          <dataInputRefs>_12_NotificationTypeInput</dataInputRefs>
           <dataInputRefs>_12_OwnerIdInput</dataInputRefs>
           <dataInputRefs>_12_TargetGroupIdInput</dataInputRefs>
           <dataInputRefs>_12_TargetUserIdInput</dataInputRefs>
@@ -212,17 +205,17 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_12_NotificationTypeInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">APPROVALREQUEST_APPROVERNOTE</from>
-          <to xsi:type="tFormalExpression">_12_NotificationTypeInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <targetRef>_12_SubjectInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">#{Subject}</from>
           <to xsi:type="tFormalExpression">_12_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_12_NotificationTypeInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">APPROVALREQUEST_APPROVERNOTE</from>
+          <to xsi:type="tFormalExpression">_12_NotificationTypeInput</to>
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
@@ -263,8 +256,8 @@
         <dataInput id="_13_GroupIdInput" name="GroupId" />
         <dataInput id="_13_ActorIdInput" name="ActorId" />
         <dataInput id="_13_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_13_SubjectInput" name="Subject" />
         <dataInput id="_13_NotificationTypeInput" name="NotificationType" />
+        <dataInput id="_13_SubjectInput" name="Subject" />
         <dataInput id="_13_GroupIdInput" name="GroupId" />
         <inputSet>
           <dataInputRefs>_13_ActorIdInput</dataInputRefs>
@@ -274,8 +267,8 @@
           <dataInputRefs>_13_GroupIdInput</dataInputRefs>
           <dataInputRefs>_13_ActorIdInput</dataInputRefs>
           <dataInputRefs>_13_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_13_SubjectInput</dataInputRefs>
           <dataInputRefs>_13_NotificationTypeInput</dataInputRefs>
+          <dataInputRefs>_13_SubjectInput</dataInputRefs>
           <dataInputRefs>_13_GroupIdInput</dataInputRefs>
         </inputSet>
         <outputSet>
@@ -316,17 +309,17 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_13_SubjectInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{Subject}</from>
-          <to xsi:type="tFormalExpression">_13_SubjectInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <targetRef>_13_NotificationTypeInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">APPROVALREQUEST_APPROVERNOTE</from>
           <to xsi:type="tFormalExpression">_13_NotificationTypeInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_13_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{Subject}</from>
+          <to xsi:type="tFormalExpression">_13_SubjectInput</to>
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
@@ -337,117 +330,32 @@
         </assignment>
       </dataInputAssociation>
     </task>
-    <task id="_14" name="Owner Email" tns:taskName="ScheduleEmailNotification" >
-      <ioSpecification>
-        <dataInput id="_14_ActorIdInput" name="ActorId" />
-        <dataInput id="_14_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_14_SubjectInput" name="Subject" />
-        <dataInput id="_14_OwnerIdInput" name="OwnerId" />
-        <dataInput id="_14_GroupIdInput" name="GroupId" />
-        <dataInput id="_14_ActorIdInput" name="ActorId" />
-        <dataInput id="_14_DocumentIdInput" name="DocumentId" />
-        <dataInput id="_14_SubjectInput" name="Subject" />
-        <dataInput id="_14_NotificationTypeInput" name="NotificationType" />
-        <dataInput id="_14_GroupIdInput" name="GroupId" />
-        <inputSet>
-          <dataInputRefs>_14_ActorIdInput</dataInputRefs>
-          <dataInputRefs>_14_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_14_SubjectInput</dataInputRefs>
-          <dataInputRefs>_14_OwnerIdInput</dataInputRefs>
-          <dataInputRefs>_14_GroupIdInput</dataInputRefs>
-          <dataInputRefs>_14_ActorIdInput</dataInputRefs>
-          <dataInputRefs>_14_DocumentIdInput</dataInputRefs>
-          <dataInputRefs>_14_SubjectInput</dataInputRefs>
-          <dataInputRefs>_14_NotificationTypeInput</dataInputRefs>
-          <dataInputRefs>_14_GroupIdInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>ActorId</sourceRef>
-        <targetRef>_14_ActorIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>DocumentId</sourceRef>
-        <targetRef>_14_DocumentIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>Subject</sourceRef>
-        <targetRef>_14_SubjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>OwnerId</sourceRef>
-        <targetRef>_14_OwnerIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>GroupId</sourceRef>
-        <targetRef>_14_GroupIdInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_14_ActorIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{ActorId}</from>
-          <to xsi:type="tFormalExpression">_14_ActorIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_14_DocumentIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{DocumentId}</from>
-          <to xsi:type="tFormalExpression">_14_DocumentIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_14_SubjectInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{Subject}</from>
-          <to xsi:type="tFormalExpression">_14_SubjectInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_14_NotificationTypeInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">APPROVALREQUEST_OWNERNOTE</from>
-          <to xsi:type="tFormalExpression">_14_NotificationTypeInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>_14_GroupIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{GroupId}</from>
-          <to xsi:type="tFormalExpression">_14_GroupIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-    </task>
 
     <!-- connections -->
     <sequenceFlow id="_1-_4" sourceRef="_1" targetRef="_4" />
     <sequenceFlow id="_13-_5" sourceRef="_13" targetRef="_5" />
-    <sequenceFlow id="_14-_5" sourceRef="_14" targetRef="_5" />
     <sequenceFlow id="_12-_5" sourceRef="_12" targetRef="_5" />
     <sequenceFlow id="_11-_5" sourceRef="_11" targetRef="_5" />
     <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" />
     <sequenceFlow id="_4-_11" sourceRef="_4" targetRef="_11" />
     <sequenceFlow id="_4-_12" sourceRef="_4" targetRef="_12" />
     <sequenceFlow id="_4-_13" sourceRef="_4" targetRef="_13" />
-    <sequenceFlow id="_4-_14" sourceRef="_4" targetRef="_14" />
 
   </process>
 
   <bpmndi:BPMNDiagram>
     <bpmndi:BPMNPlane bpmnElement="beforetask-notification" >
       <bpmndi:BPMNShape bpmnElement="_1" >
-        <dc:Bounds x="329" y="16" width="48" height="48" />
+        <dc:Bounds x="241" y="16" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
-        <dc:Bounds x="329" y="96" width="48" height="48" />
+        <dc:Bounds x="241" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="329" y="257" width="48" height="48" />
+        <dc:Bounds x="241" y="257" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_6" >
-        <dc:Bounds x="329" y="338" width="48" height="48" />
+        <dc:Bounds x="241" y="338" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_11" >
         <dc:Bounds x="16" y="177" width="145" height="48" />
@@ -458,48 +366,37 @@
       <bpmndi:BPMNShape bpmnElement="_13" >
         <dc:Bounds x="370" y="177" width="145" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_14" >
-        <dc:Bounds x="547" y="177" width="145" height="48" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_4" >
-        <di:waypoint x="353" y="40" />
-        <di:waypoint x="353" y="120" />
+        <di:waypoint x="265" y="40" />
+        <di:waypoint x="265" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_13-_5" >
         <di:waypoint x="442" y="201" />
-        <di:waypoint x="353" y="281" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_14-_5" >
-        <di:waypoint x="619" y="201" />
-        <di:waypoint x="353" y="281" />
+        <di:waypoint x="265" y="281" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_12-_5" >
         <di:waypoint x="265" y="201" />
-        <di:waypoint x="353" y="281" />
+        <di:waypoint x="265" y="281" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_11-_5" >
         <di:waypoint x="88" y="201" />
-        <di:waypoint x="353" y="281" />
+        <di:waypoint x="265" y="281" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_5-_6" >
-        <di:waypoint x="353" y="281" />
-        <di:waypoint x="353" y="362" />
+        <di:waypoint x="265" y="281" />
+        <di:waypoint x="265" y="362" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_4-_11" >
-        <di:waypoint x="353" y="120" />
+        <di:waypoint x="265" y="120" />
         <di:waypoint x="88" y="201" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_4-_12" >
-        <di:waypoint x="353" y="120" />
+        <di:waypoint x="265" y="120" />
         <di:waypoint x="265" y="201" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_4-_13" >
-        <di:waypoint x="353" y="120" />
+        <di:waypoint x="265" y="120" />
         <di:waypoint x="442" y="201" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_4-_14" >
-        <di:waypoint x="353" y="120" />
-        <di:waypoint x="619" y="201" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

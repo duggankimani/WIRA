@@ -39,6 +39,7 @@ objectClass: top
 objectClass: group
 cn: HOD_DEV
 uniqueMember: cn=mariano,ou=users,o=mojo
+uniqueMember: cn=james,ou=users,o=mojo
 
 dn: cn=CEO,ou=groups,o=mojo
 objectClass: groupOfUniqueNames
@@ -74,6 +75,17 @@ objectClass: top
 cn: mariano
 sn: mariano
 uid: mariano
+mail: mdkimani@gmail.com
+userPassword:: cGFzcw==
+
+dn: cn=james,ou=users,o=mojo
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: james
+sn: james
+uid: james
 mail: mdkimani@gmail.com
 userPassword:: cGFzcw==
 

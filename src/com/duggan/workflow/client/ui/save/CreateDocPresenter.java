@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
@@ -111,11 +112,11 @@ public class CreateDocPresenter extends
 									
 									Document saved = result.getDocument();
 									assert saved.getId()!=null;
-									//fireEvent(new AfterSaveEvent());
-									PlaceRequest request = new PlaceRequest("home").
-											with("type", TaskType.DRAFT.getDisplayName());
-									
-									placeManager.revealPlace(request);
+									fireEvent(new AfterSaveEvent());
+//									PlaceRequest request = new PlaceRequest("home").
+//											with("type", TaskType.DRAFT.getDisplayName());
+//									
+									//placeManager.revealPlace(request);
 									
 									getView().hide();
 								}

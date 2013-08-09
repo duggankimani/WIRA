@@ -272,7 +272,15 @@ public class JBPMHelper implements Closeable{
 		counts.put(TaskType.APPROVALREQUESTNEW, count.intValue());
 		
 		List<Status> statuses = getStatusesForTaskType(TaskType.APPROVALREQUESTDONE);
-		System.err.println(statuses);
+		
+		
+		/**
+		 * If John & James share the Role HOD_DEV
+		 * John Claims, Starts and completes a task, should
+		 * that task be presented to James as one of his completed tasks?
+		 * This mechanism creates the posibility of this scenario happening
+		 * TODO: Test the query with two users sharing a role
+		 */
 		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups")//TasksAssignedCountAsPotentialOwnerByStatus")
 		.setParameter("userId", userId)
 		.setParameter("groupIds", groupIds)
@@ -329,14 +337,16 @@ public class JBPMHelper implements Closeable{
 		
 		switch (type) {
 		case APPROVALREQUESTDONE:
-			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-					getStatusesForTaskType(type), 
-					"en-UK");
+			//approvals - show only items I have approved
+			ts = this.service.getTasksOwned(userId, Arrays.asList(Status.Completed), "en-UK");
+			
 			break;
 		case APPROVALREQUESTNEW:
-			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
-					getStatusesForTaskType(type), 
-					"en-UK");			
+			ts = this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
+			
+//			ts = this.service.getTasksAssignedAsPotentialOwnerByStatus(userId,
+//					getStatusesForTaskType(type), 
+//					"en-UK");			
 			// ts=  this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			break;
 
@@ -548,11 +558,9 @@ public class JBPMHelper implements Closeable{
 		
 		Map<String, Object> content = getMappedData(service.getTask(taskId));
 		content.putAll(values);
-		
-		Set<String> keys = content.keySet();
-		for(String key: keys){
-			System.err.println(">> Key="+key+" : "+content.get(key));
-		}
+		//completing tasks is a single individuals responsibility
+		//Notifications & Emails sent after task completion must reflect this
+		content.put("ActorId", SessionHelper.getCurrentUser().getId());
 		this.service.completeWithResults(taskId, userId, content);
 		//this.service.complete(taskId, userId, null);
 		return true;
