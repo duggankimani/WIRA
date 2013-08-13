@@ -4,6 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
 	xmlns:v='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -58,7 +59,17 @@
 	                <span class="mandatory" title="Required Field">*</span>
 	            </td>
 	        </tr>
-	        	        
+	        	 
+	        <tr>
+	            <td colspan="2">	             
+	                <g:HTMLPanel ui:field="uploadPanel">
+	                    <up:Uploader ui:field="uploader"></up:Uploader>	                    
+	                </g:HTMLPanel>	        		
+	            </td>
+	            <td>	                
+	            </td>
+	        </tr>
+	        
 	        <tr>
 	            <td class="label">Priority</td>
 	            <td>
@@ -69,7 +80,6 @@
 	                </div>
 	            </td>
 	        </tr>
-	        
 	        
 	        <tr>
 				<td colspan="2">

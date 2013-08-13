@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
+import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
@@ -255,5 +256,10 @@ public class DB{
 		}
 		
 		return active;
+	}
+
+	public static AttachmentDaoImpl getAttachmentDao() {
+
+		return factory().getAttachmentDaoImpl(getEntityManager());
 	}
 }
