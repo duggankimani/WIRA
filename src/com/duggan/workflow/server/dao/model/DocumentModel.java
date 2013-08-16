@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -42,9 +44,8 @@ public class DocumentModel extends PO{
 	
 	private Date documentDate;
 	
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="attachmentid", referencedColumnName="id")
-	private LocalAttachment attachment;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="document")
+	private List<LocalAttachment> attachment;
 	
 	protected Integer priority;
 	

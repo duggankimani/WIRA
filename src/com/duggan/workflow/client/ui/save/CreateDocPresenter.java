@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.save;
 
 import java.util.Date;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -17,12 +16,14 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CreateDocPresenter extends
 		PresenterWidget<CreateDocPresenter.ICreateDocView> {
@@ -35,9 +36,13 @@ public class CreateDocPresenter extends
 		boolean isValid();
 		void setValues(DocType docType, String subject, Date docDate,
 				String partner, String value, String description,
-				Priority priority);
+				Priority priority, Long documentId);
 	}
 
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> UPLOAD_SLOT = new Type<RevealContentHandler<?>>();
+	
 	@Inject DispatchAsync requestHelper;
 	
 	private Long Id;
@@ -68,10 +73,12 @@ public class CreateDocPresenter extends
 					Integer priority = document.getPriority();									
 										
 					getView().setValues(docType, subject, docDate, partner, value, description, 
-							Priority.get(priority));
+							Priority.get(priority), document.getId());
 				}
 			});
 		}
+		
+		//setInSlot(UPLOAD_SLOT, presenter);
 	}
 	
 	@Override
@@ -125,6 +132,8 @@ public class CreateDocPresenter extends
 			}
 		});
 	}
+	
+	
 
 	public void setDocumentId(Long selectedValue) {
 		this.Id = selectedValue;

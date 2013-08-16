@@ -17,6 +17,12 @@
 		serve(String).with(Class<? extends HttpServlet>) and
 		filter(String).through(Class<? extends Filter)
 	-->
+	<env-entry>
+	    <env-entry-name>jndi-ds-runtime</env-entry-name>
+	    <env-entry-type>java.lang.Boolean</env-entry-type>
+	    <env-entry-value>true</env-entry-value>
+	</env-entry>
+	
 	<resource-env-ref>
 	    <resource-env-ref-name>jdbc/ebusinessds</resource-env-ref-name>
 	    <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>

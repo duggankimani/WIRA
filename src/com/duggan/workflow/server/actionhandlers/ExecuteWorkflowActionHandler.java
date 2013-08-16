@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
@@ -7,7 +8,6 @@ import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.BaseResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
-import com.google.gwt.dev.util.collect.HashMap;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;

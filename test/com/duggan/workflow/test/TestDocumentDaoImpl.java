@@ -34,15 +34,15 @@ public class TestDocumentDaoImpl {
 		dao = DB.getDocumentDao();
 	}
 	
-	@Test
+	@Ignore
 	public void getDocType(){
 		DocType type = dao.getDocumentType(2L);
 		Assert.assertNotNull(type);
 	}
 	
-	@Ignore
+	@Test
 	public void search(){
-		//List<Document> docs =DocumentDaoHelper.search("INV");
+		Document model = DocumentDaoHelper.getDocument(3L);
 	}
 	
 	@Ignore

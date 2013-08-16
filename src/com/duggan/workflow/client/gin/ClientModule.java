@@ -1,50 +1,50 @@
 package com.duggan.workflow.client.gin;
 
-import com.gwtplatform.dispatch.shared.SecurityCookie;
-import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.duggan.workflow.client.place.ClientPlaceManager;
 import com.duggan.workflow.client.place.DefaultPlace;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.MainPageView;
-import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
-import com.duggan.workflow.client.ui.tasklistitem.TaskItemView;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
 import com.duggan.workflow.client.ui.error.ErrorPagePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPageView;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.error.ErrorView;
+import com.duggan.workflow.client.ui.error.NotfoundPresenter;
+import com.duggan.workflow.client.ui.error.NotfoundView;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.header.HeaderView;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeView;
-import com.duggan.workflow.client.ui.tasklist.tabs.TabsPresenter;
-import com.duggan.workflow.client.ui.tasklist.tabs.TabsView;
-import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewPresenter;
-import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewView;
-import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
-import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewView;
-import com.duggan.workflow.client.ui.toolbar.ToolbarPresenter;
-import com.duggan.workflow.client.ui.toolbar.ToolbarView;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.save.CreateDocView;
-import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
-import com.duggan.workflow.client.ui.view.GenericDocumentView;
 import com.duggan.workflow.client.ui.login.LoginPresenter;
 import com.duggan.workflow.client.ui.login.LoginView;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.ui.notifications.NotificationsView;
+import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
+import com.duggan.workflow.client.ui.notifications.note.NoteView;
+import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.ui.save.CreateDocView;
+import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
+import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewView;
+import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewPresenter;
+import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewView;
+import com.duggan.workflow.client.ui.tasklist.tabs.TabsPresenter;
+import com.duggan.workflow.client.ui.tasklist.tabs.TabsView;
+import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
+import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
+import com.duggan.workflow.client.ui.tasklistitem.TaskItemView;
+import com.duggan.workflow.client.ui.toolbar.ToolbarPresenter;
+import com.duggan.workflow.client.ui.toolbar.ToolbarView;
+import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
+import com.duggan.workflow.client.ui.view.GenericDocumentView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.CurrentUser;
-import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
-import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
-import com.duggan.workflow.client.ui.error.NotfoundPresenter;
-import com.duggan.workflow.client.ui.error.NotfoundView;
-import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
-import com.duggan.workflow.client.ui.notifications.note.NoteView;
-import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
-import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
+import com.gwtplatform.dispatch.shared.SecurityCookie;
+import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
+import com.gwtplatform.mvp.client.gin.DefaultModule;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -121,5 +121,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(ActivitiesPresenter.class,
 				ActivitiesPresenter.MyView.class, ActivitiesView.class,
 				ActivitiesPresenter.MyProxy.class);
+		
 	}
 }

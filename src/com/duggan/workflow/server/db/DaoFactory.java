@@ -2,6 +2,7 @@ package com.duggan.workflow.server.db;
 
 import javax.persistence.EntityManager;
 
+import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
@@ -11,7 +12,8 @@ class DaoFactory {
 	DocumentDaoImpl documentDao = null;
 	ErrorDaoImpl errorDao = null;
 	NotificationDaoImpl notificationDao;
-
+	AttachmentDaoImpl attachmentDao;
+	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
 			synchronized (DaoFactory.class) {
@@ -47,6 +49,19 @@ class DaoFactory {
 		}
 
 		return notificationDao;
+	}
+
+	public AttachmentDaoImpl getAttachmentDaoImpl(EntityManager em) {
+
+		if(attachmentDao ==null){
+			synchronized (DaoFactory.class) {
+				if(attachmentDao == null){
+					attachmentDao = new AttachmentDaoImpl(em);
+				}
+			}
+		}
+		
+		return attachmentDao;
 	}
 
 }

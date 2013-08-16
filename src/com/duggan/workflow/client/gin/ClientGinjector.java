@@ -42,5 +42,4 @@ public interface ClientGinjector extends Ginjector {
 
 	AsyncProvider<ActivitiesPresenter> getActivitiesPresenter(); 
 	
-
 }

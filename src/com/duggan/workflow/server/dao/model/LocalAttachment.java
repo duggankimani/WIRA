@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -27,6 +29,14 @@ public class LocalAttachment extends PO{
 	private byte[] attachment;
 	
 	private boolean archived;
+	
+	@ManyToOne
+	@JoinColumn(name="documentId",referencedColumnName="id")
+	private DocumentModel document;
+	
+	private long size;
+	
+	private String contentType;
 
 	public LocalAttachment(){
 		super();
@@ -53,6 +63,46 @@ public class LocalAttachment extends PO{
 
 	public boolean isArchived() {
 		return archived;
+	}
+
+	public DocumentModel getDocument() {
+		return document;
+	}
+
+	public void setDocument(DocumentModel document) {
+		this.document = document;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setAttachment(byte[] attachment) {
+		this.attachment = attachment;
+	}
+
+	public void setArchived(boolean archived) {
+		this.archived = archived;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 }

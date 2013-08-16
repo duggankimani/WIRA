@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/gwt-2.4.0"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-1.5-post-gwt-2.2.jar" sourcepath="/home/duggan/.m2/repository/com/google/gwt/inject/gin/1.5.0/gin-1.5.0-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtp-all-0.6.jar" sourcepath="/home/duggan/.m2/repository/com/gwtplatform/gwtp-all/0.6/gwtp-all-0.6-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance.jar"/>
@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/apacheds-all-1.5.5.jar" sourcepath="/home/duggan/.m2/repository/org/apache/directory/server/apacheds-all/1.5.5/apacheds-all-1.5.5-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/asm-3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aspectjrt-1.6.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aspectjweaver-1.6.8.jar"/>
@@ -128,8 +127,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jms_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtupload-0.6.4.jar" sourcepath="/home/duggan/.m2/repository/com/googlecode/gwtupload/gwtupload/0.6.4/gwtupload-0.6.4-sources.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/apacheds-all-1.5.5.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
