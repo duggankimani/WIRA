@@ -12,9 +12,12 @@
         <a href="#">
         <a class="brand" href="#">E-Business Task List | Your Organisation</a> 
         </a>
-        <div class="span4 box">
+        <g:HTMLPanel styleName="span4 box" ui:field="loadingbox">
             <div class="content-wrap">
                 <h6>Log in</h6>
+                <span class="hide loadingtext" ui:field="loading"><i class="icon-spinner icon-spin icon-large"></i>Logging In...</span>
+                <v:IssuesPanel ui:field="issues">
+	    		</v:IssuesPanel>
                 <g:TextBox ui:field="username" styleName="span12"></g:TextBox>
                 <g:PasswordTextBox ui:field="password" styleName="span12"></g:PasswordTextBox>
                 <a href="#" class="forgot">Forgot password?</a>
@@ -23,10 +26,8 @@
                     <label for="remember-me">Remember me</label>
                 </div>
                 <g:Anchor ui:field="aLogin" styleName="btn-glow primary login">Log in</g:Anchor>
-                <v:IssuesPanel ui:field="issues">
-	    		</v:IssuesPanel>
             </div>
-        </div>
+        </g:HTMLPanel>
 	</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

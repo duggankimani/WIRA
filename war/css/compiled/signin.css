@@ -23,6 +23,27 @@
     box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.65); }
+    
+    .login-wrapper li{
+        list-style-type:none;
+    }
+    .login-wrapper .loading{
+        background: #fcfcfc;
+        opacity: 0.5;
+    }
+    
+     .login-wrapper .loadingtext{
+         color: #1119EE;
+         font-size: 20px;
+         top: 600px;
+         opacity: 1;
+     
+}
+    
+    .login-wrapper .hide{
+        display:none;
+    }
+    
     .login-wrapper .box .content-wrap {
       width: 82%;
       margin: 0 auto; }

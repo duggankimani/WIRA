@@ -2,19 +2,21 @@ package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -35,6 +37,9 @@ public class LoginPresenter extends
 		String getUsername();
 		String getPassword();
 		Anchor getLoginBtn();
+		Element getLoadingSpinner();
+		HTMLPanel getLoadingBox();
+		IssuesPanel getIssuePanel();
 		TextBox getPasswordBox();
 		boolean isValid();
 		void setError(String err);
@@ -82,13 +87,11 @@ public class LoginPresenter extends
 		getView().getLoginBtn().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				getView().getLoginBtn().setText("Logging In...");
 				login();
 			}
 		});
 
 		KeyDownHandler keyHandler = new KeyDownHandler() {
-
 			@Override
 			public void onKeyDown(KeyDownEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
@@ -98,12 +101,19 @@ public class LoginPresenter extends
 		};
 		
 		getView().getUserNameBox().addKeyDownHandler(keyHandler);
-		
 		getView().getPasswordBox().addKeyDownHandler(keyHandler);
 	}
 
 	protected void onReset() {
 		Window.setTitle("Tasks");	
+		//remove loading
+		getView().getLoadingBox().removeStyleName("loading");
+		getView().getLoadingSpinner().addClassName("hide");
+		getView().getIssuePanel().addStyleName("hide");
+		
+		//remove any Data written
+		getView().getUserNameBox().setText("");
+		getView().getPasswordBox().setText("");
 	};
 	
 	protected void login() {		
@@ -114,19 +124,15 @@ public class LoginPresenter extends
 						@Override
 						public void processResult(LoginRequestResult result) {
 							boolean isValid = result.isValid();
-							if(isValid){								
+							if(isValid){
+								getView().getIssuePanel().addStyleName("hide");
+								getView().getLoadingBox().addStyleName("loading");
+								getView().getLoadingSpinner().removeClassName("hide");
 								AppContext.setSessionValues(
 										result.getUser().getId(), result.getUser().getName(), result.getSessionId());
-								
-								//System.err.println(AppContext.getLastRequestUrl());
-//								if(AppContext.getLastRequestUrl()!=null &&
-//										AppContext.getLastRequestUrl()!=NameTokens.login){
-//									History.newItem(AppContext.getLastRequestUrl());
-//								}else{
 									placeManager.revealDefaultPlace();
-								
-								
 							}else{
+								getView().getPasswordBox().setText("");
 								getView().setError("Wrong username or password");
 							}
 						}
