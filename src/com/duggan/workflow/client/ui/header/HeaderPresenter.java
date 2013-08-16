@@ -100,7 +100,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 		getView().getNotificationsButton().addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				getView().removePopup();
+				//getView().removePopup();
 			}
 		});	
 		

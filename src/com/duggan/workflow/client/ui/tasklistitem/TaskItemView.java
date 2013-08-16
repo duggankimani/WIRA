@@ -245,7 +245,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	
 	public void setSelected(boolean selected){
 		if(selected){
-			//container.getElement().getStyle().setBackgroundColor("#f3fffe");
 			container.getElement().getStyle().setBackgroundColor("#e3e0e0");
 		}else{
 			container.getElement().getStyle().setBackgroundColor("#ffffff");

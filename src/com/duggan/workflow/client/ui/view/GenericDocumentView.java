@@ -1,24 +1,23 @@
 package com.duggan.workflow.client.ui.view;
 
+import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+
 import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
-import com.gwtplatform.mvp.client.ViewImpl;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class GenericDocumentView extends ViewImpl implements
 		GenericDocumentPresenter.MyView {
@@ -65,6 +64,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aApprove.getElement().setAttribute("type", "button");
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
+		aForward.getElement().setAttribute("alt", "Forward for Approval");
 	}
 
 	@Override

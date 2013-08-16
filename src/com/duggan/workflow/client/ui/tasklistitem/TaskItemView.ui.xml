@@ -20,16 +20,15 @@
 		}
 	</ui:style>
 	<g:HTMLPanel styleName="message-container">
-        <g:FocusPanel styleName="unread" ui:field="container">
+        <g:FocusPanel styleName="read" ui:field="container">
           <d:ParaPanel>
-           <!-- styles:: label-info label-success label-warning label-inverse -->
            <g:InlineLabel styleName="label" ui:field="spnPriority">Urgent</g:InlineLabel>                       	
-           <g:InlineLabel ui:field="spnSubject"></g:InlineLabel>     
+           <g:InlineLabel ui:field="spnSubject" styleName="bluename"></g:InlineLabel>     
            <d:Break/>
            <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
-            		
            </d:ParaPanel>
          </g:FocusPanel>
+         
          <div class="wfactions">
 		    <g:Anchor ui:field="aClaim" styleName="hidden">Claim</g:Anchor>
 		    <g:Anchor ui:field="aStart"  styleName="hidden">Start</g:Anchor>						    
