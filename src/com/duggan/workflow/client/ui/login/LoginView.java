@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.ui.component.IssuesPanel;
-import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -22,7 +22,7 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	@UiField IssuesPanel issues;
 	@UiField TextBox username;
 	@UiField TextBox password;
-	@UiField Element loading;
+	@UiField SpanElement loading;
 	@UiField HTMLPanel loadingbox;
 
 	
@@ -100,18 +100,23 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 		return password;
 	}
 
+
 	@Override
-	public Element getLoadingSpinner() {
-		return loading;
+	public void showLoginProgress(boolean show) {
+		issues.addStyleName("hide");
+		loadingbox.addStyleName("loading");
+		loading.removeClassName("hide");
 	}
 
 	@Override
-	public HTMLPanel getLoadingBox() {
-		return loadingbox;
-	}
-
-	@Override
-	public IssuesPanel getIssuePanel() {
-		return issues;
+	public void clearViewItems(boolean status) {
+		//remove loading
+		loadingbox.removeStyleName("loading");
+		loading.addClassName("hide");
+		issues.addStyleName("hide");
+		
+		//remove any Data written
+		username.setText("");
+		password.setText("");		
 	}
 }
