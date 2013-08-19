@@ -11,7 +11,6 @@
            <span ui:field="spnDate"></span>
        </g:Anchor>
 	   <d:BulletListPanel styleName="submenu" ui:field="ulItemsContainer">
-	     	
 	   </d:BulletListPanel>
 	</d:BulletPanel>
 </ui:UiBinder>

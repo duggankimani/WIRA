@@ -6,81 +6,153 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 		
-	<g:HTMLPanel>	   
-	    <br/>
+	<g:HTMLPanel>	
           <div class="action-area row-fluid">  
-           	<g:Anchor ui:field="aSimulate" styleName="btn-success btn-large hidden">
-			    <i class="icon-ok"></i>Simulate
-			</g:Anchor>
+      	    <div class="doc-title span8">   
+	               <span ui:field="spnDocType"></span> -&nbsp;
+				   <span ui:field="spnSubject"></span>
+            </div>
+            <div class="action-buttons pull-right">
+	           	<g:Anchor ui:field="aClaim" styleName="btn btn-default hidden">
+				    <i class="icon-arrow-down"></i>Claim
+				</g:Anchor>
+				
+				<g:Anchor ui:field="aSimulate" styleName="btn btn-default hidden">
+				    <i class="icon-play"></i>Start
+				</g:Anchor>
+				
+	           	<g:Anchor ui:field="aForward" styleName="btn btn-success hidden">
+	           	    <i class="icon-share-alt"></i>Forward for Approval
+	           	 </g:Anchor>
 			
-          	<g:Anchor ui:field="aEdit" styleName="btn-success btn-large">
-          	    <i class="icon-ok"></i>Edit
-          	</g:Anchor>     
-           	
-           	<g:Anchor ui:field="aForward" styleName="btn-success btn-large">
-           	    <i class="icon-share-alt"></i>
-           	    Forward for approval</g:Anchor>
-			<g:Anchor ui:field="aApprove" styleName="btn-success btn-large">
-			    <i class="icon-ok"></i>
-			    Approve</g:Anchor>
-			<g:Anchor ui:field="aReject" styleName="btn-danger btn-large">
-			    <i class="icon-remove"></i>Reject
-			 </g:Anchor>			 
+				<g:Anchor ui:field="aApprove" styleName="btn btn-success">
+				    <i class="icon-ok"></i>Approve
+			    </g:Anchor>
+				<g:Anchor ui:field="aReject" styleName="btn btn-danger">
+				    <i class="icon-ban-circle"></i>Reject
+				 </g:Anchor>
+				 
+				 <div class="btn-group">
+				 	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				    	<i class="icon-cog"></i> <span class="caret"></span>
+				 	 </button>
+				   <ul class="dropdown-menu" role="menu">
+					    <li>
+						<g:Anchor ui:field="aEdit"><i class="icon-edit"></i>Edit</g:Anchor>
+					    </li>
+					    <li>
+					    <g:Anchor ui:field="aDelete"><i class="icon-trash"></i>Delete</g:Anchor>
+					    </li>
+					  </ul>
+					</div>
+			 </div>			 
           </div>
 
-             
-           <div class="well personal_info row-fluid">
-                 <div class="span1">
-                 <img data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="50px" height="100px"/>
-                </div>
-                <div class="span4">
-                  <address>
+       
+           <div class="personal_info row-fluid span12">
+                 <div class="span3">
+                  <i class="icon-user"></i>
                   <strong ui:field="eOwner"></strong><br/>
+                  </div>
+                  
+                 <div class="span3">
+                  <i class="icon-calendar"></i>
                   <span ui:field="spnCreated"></span>
-                  </address>
-                </div>
+                  </div>
+                  
+                  <div class="span3">
+                  <span>Priority:</span>
+                  <span class="label label-info">Urgent</span>
+                  </div>
+                  
+                  <div class="span3">
+                  <span>Current Status:</span>
+                  <span class="label label-info"><i class="icon-edit"></i>Drafted</span>
+                  </div>
           </div>
 
-          <div class="row-fluid content-area">       
-           <strong>
-               <u>
-               <span ui:field="spnDocType"></span> -&nbsp;
-			    <span ui:field="spnSubject"></span>
-			   </u>	    
-            </strong>
-            <br/>
-            Document Date: <span ui:field="spnDocDate"></span>
-            <br/>    
-           		Value: <span ui:field="spnValue" class="subject"></span>
-           <br/>
-	           Business Partner: <span ui:field="spnPartner" class="subject"></span>
-	       <br/>
-	           <span ui:field="spnDescription" style="background-color:#FDF0F0;"></span>
+          <div class="row-fluid content-area">  
+                <div>
+           		<strong>Value:</strong><span ui:field="spnValue" class="subject"></span>
+           		</div>
+           		<div>
+	         	<strong>Business Partner:</strong><span ui:field="spnPartner" class="subject"></span>
+	         	</div>
+	         	<div>
+	           	<strong>Description:</strong><span ui:field="spnDescription"></span>
+	           	</div>
+	           	
+	           	<div class="attachment-section row-fluid span6">
+		             <img src="img/pdf.gif"></img>
+		               <b>Scanned_Invoice.pdf</b><br/>
+		               <div class="row-fluid attachment-links span5">
+		               	   <span ui:field="spansize">9488K</span>
+			               <a href="#">View</a>&nbsp;&nbsp;
+	            	 	   <a href="#">Download</a>
+            	 	   </div>
+            	</div>
            </div>
 
-           <div class="attachment-section row-fluid">
-             <strong>Attachments:</strong><br/>
-             <i class="icon-paper-clip icon-large"></i>
-               <img src="img/image_holder.png" class="img-polaroid" height="50px" width="50px"/>
-                Scanned_Invoice.jpg
-               <a href="#">View</a>
-               <a href="#">Download</a>
-            </div>
+          
 
 
-            <g:HTMLPanel styleName="status-section row-fluid" ui:field="statusContainer">
-              <strong>Document Status:</strong><br/>        
+            <g:HTMLPanel styleName="status-section span3 pull-right row-fluid" ui:field="statusContainer">
+              <strong>Business Process:</strong>    
+              <span class="label label-success"><i class="icon-ok-circle"></i>DRAFTING</span><i class="icon-arrow-down pull-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-arrow-down pull-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-arrow-down pull-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span>
               <!-- span class="label label-success"><i class="icon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
               <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
               <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
               <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span -->
             </g:HTMLPanel>
-            <hr/>
+            
+        <span class="title">Recent Activity</span>
 
-        <div class="row-fluid comment-section">
-            <strong>Comments:</strong><br/>
-            <textarea name="comments"></textarea>
-            <div class="well"><a class="btn-success btn-large pull-right" type="button">Save</a></div>
+        <div class="row-fluid recent-activity span8">
+             	  <div class="row-fluid">
+	             	 <div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
+		             <div class="span8">
+			             <span class="name">Njoroge Waweru</span> claimed this invoice and started the workflow process<br/>
+			             <g:Anchor>Comment</g:Anchor>
+			             <i class="icon-time">2 days Ago</i>
+		             </div>
+	             </div>
+             	 
+             	 <div class="row-fluid">
+	             	 <div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
+		             <div class="span8">
+			             <span class="name">Njoroge Waweru</span> claimed this invoice and started the workflow process<br/>
+			             <g:Anchor>Comment</g:Anchor>
+			             <i class="icon-time">2 days Ago</i>
+		             </div>
+	             </div>
+	             
+	             <div class="row-fluid">
+	             	 <div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
+		             <div class="span8">
+			             <span class="name">Charles Njoroge</span> approved this invoice<br/>
+			             <g:Anchor>Comment</g:Anchor>
+			             <i class="icon-time">1 days Ago</i>
+		             </div>
+	             </div>
+             	 
+             	 <div class="row-fluid">
+	             	 <div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
+		             <div class="span8">
+			             <span class="name">Duggan Kimani</span> created and submitted this invoice for approval<br/>
+			             <g:Anchor styleName="hand">Comment</g:Anchor>
+			             <i class="icon-time">2 days Ago</i>
+		             </div>
+	             </div>
+	             <div class="well row-fluid">
+	             	<div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
+	             	<div class="span8">
+		             	<span class="name">Duggan Kimani</span><br/>
+		              	<input placeholder="write your comment..."></input>
+	              	</div>
+	             </div>
         </div>  
 	    
 	</g:HTMLPanel>

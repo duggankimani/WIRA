@@ -59,58 +59,19 @@
      </div>
      
       <g:HTMLPanel ui:field="wholeContainer">
+      		<div id="nav-top">
+      		   <i class="icon-tag"></i>
+	    	   <h5 ui:field="hCategory">Completed</h5>
+	    	   <br/>
+	          <input class="search" type="text"/>
+	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
+	        <div id="separator"></div>
+	        </div>
+	        
 	      <!--middle navigation-->
 	      <div ui:field="divDocListing" class="span4 hide ">
-	        <div class="row-fluid nav-top">
-	          <input class="search" type="text"/>
-	          <!-- i class="icon-refresh icon-large"></i -->
-	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
-	        </div>
-	
-	          <div class="header-nav row-fluid">
-	               <h5 ui:field="hCategory">IN PROGRESS</h5>         
-	               <div class="ui-dropdown">
-	                  <div class="head">
-	                      Filter
-	                      <i class="arrow-down"></i>
-	                  </div> 
-	                   <!-- custom popup filter -->
-	                  <!-- styles are located in css/elements.css -->
-	                  <!-- script that enables this dropdown is located in js/theme.js -->
-	                  <div class="dialog">
-	                      <div class="pointer">
-	                          <div class="arrow"></div>
-	                          <div class="arrow_border"></div>
-	                      </div>
-	                      <div class="body">
-	                          <p class="title">
-	                              Filter Option:
-	                          </p>
-	                          <div class="form">
-	                              <select>
-	                                  <option>Name</option>
-	                                  <option>Email</option>
-	                                  <option>Number of orders</option>
-	                                  <option>Signed up</option>
-	                                  <option>Last seen</option>
-	                              </select>
-	                              <select>
-	                                  <option>is equal to</option>
-	                                  <option>is not equal to</option>
-	                                  <option>is greater than</option>
-	                                  <option>starts with</option>
-	                                  <option>contains</option>
-	                              </select>
-	                              <input type="text" />
-	                              <a class="btn-flat small">Add filter</a>
-	                          </div>
-	                      </div>
-	                  </div>
-	               </div>
-	          </div>
-	
+	        
 	        <div class="content-nav row-fluid">
-		        <!-- ul id="navigation-menu" ui:field="ulTaskGroups"-->
 		        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
 		       	</d:BulletListPanel>
 		       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>

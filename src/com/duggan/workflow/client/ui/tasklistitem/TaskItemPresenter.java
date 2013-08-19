@@ -97,8 +97,6 @@ public class TaskItemPresenter extends
 			public void onClick(ClickEvent event) {
 				//getView().setSelected(true);				
 				if(task instanceof Document){
-					//check status too
-					//local tasks
 					Document doc = (Document)task;
 					fireEvent(new DocumentSelectionEvent(doc.getId(), DocMode.READWRITE));
 				}else{
@@ -253,7 +251,6 @@ public class TaskItemPresenter extends
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
 				//refresh list
-				//
 								
 				if(action==Actions.COMPLETE){
 					removeFromParent();
@@ -323,8 +320,6 @@ public class TaskItemPresenter extends
 		}
 		
 		HTSummary summary = (HTSummary)task;
-		
-		//System.err.println(event.getDocumentId()+" ");
 		
 		Long ref= summary.getDocumentRef();
 		Long documentId = event.getDocumentId();

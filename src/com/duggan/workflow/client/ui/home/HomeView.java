@@ -58,7 +58,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField HTMLPanel wholeContainer;
 	@UiField SpanElement loadingtext;
 	
-	@SuppressWarnings("deprecation")
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);

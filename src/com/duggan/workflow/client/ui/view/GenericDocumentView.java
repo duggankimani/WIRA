@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.view;
 
+import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
+
 import java.util.Date;
 import java.util.List;
 
@@ -9,21 +11,17 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
-import com.gwtplatform.mvp.client.ViewImpl;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class GenericDocumentView extends ViewImpl implements
 		GenericDocumentPresenter.MyView {
@@ -39,8 +37,7 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnDocType;
 	@UiField
 	SpanElement spnSubject;
-	@UiField
-	SpanElement spnDocDate;
+	//@UiFieldSpanElement spnDocDate;
 	@UiField
 	SpanElement spnValue;
 	@UiField
@@ -69,11 +66,10 @@ public class GenericDocumentView extends ViewImpl implements
 		aEdit.getElement().setAttribute("type","button");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
-		UIObject.setVisible(aApprove.getElement(), false);
-		UIObject.setVisible(aReject.getElement(), false);
 		aApprove.getElement().setAttribute("type", "button");
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
+		aForward.getElement().setAttribute("alt", "Forward for Approval");
 	}
 
 	@Override
@@ -96,7 +92,7 @@ public class GenericDocumentView extends ViewImpl implements
 			spnSubject.setInnerText(subject);
 
 		if (docDate != null)
-			spnDocDate.setInnerText(DATEFORMAT.format(docDate));
+			//spnDocDate.setInnerText(DATEFORMAT.format(docDate));
 
 		if(value!=null){
 			spnValue.setInnerText(value);

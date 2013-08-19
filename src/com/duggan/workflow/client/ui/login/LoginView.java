@@ -1,14 +1,11 @@
 package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.ui.component.IssuesPanel;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -25,6 +22,8 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	@UiField IssuesPanel issues;
 	@UiField TextBox username;
 	@UiField TextBox password;
+	@UiField Element loading;
+	@UiField HTMLPanel loadingbox;
 
 	
 	@Inject
@@ -33,6 +32,10 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 		username.getElement().setAttribute("Placeholder", "Username");
 		username.getElement().setId("userid");
 		username.removeStyleName("gwt-TextBox");
+		
+		issues.addStyleName("alert alert-danger");
+		issues.addStyleName("hide");
+	
 		
 		password.getElement().setAttribute("Placeholder", "Password");
 		password.getElement().setId("userid");
@@ -63,17 +66,17 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 		String username=getUsername();
 		String pass=getPassword();
 		boolean isValid=true;
-		
+		issues.clear();
 		if(isNullOrEmpty(username)){
 			issues.addError("Username required");
+			issues.removeStyleName("hide");
 			isValid=false;
 		}
-		
 		if(isNullOrEmpty(pass)){
 			issues.addError("Password required");
+			issues.removeStyleName("hide");
 			isValid=false;
 		}
-		
 		return isValid;
 	}
 	
@@ -84,7 +87,9 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 
 	@Override
 	public void setError(String error) {
+		issues.clear();
 		issues.addError(error);
+		issues.removeStyleName("hide");
 	}
 	
 	public TextBox getUserNameBox(){
@@ -98,5 +103,19 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	@Override
 	public void clearErrors() {
 		issues.clear();
+	}
+
+	public Element getLoadingSpinner() {
+		return loading;
+	}
+
+	@Override
+	public HTMLPanel getLoadingBox() {
+		return loadingbox;
+	}
+
+	@Override
+	public IssuesPanel getIssuePanel() {
+		return issues;
 	}
 }
