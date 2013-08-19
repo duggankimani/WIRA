@@ -33,8 +33,7 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnDocType;
 	@UiField
 	SpanElement spnSubject;
-	@UiField
-	SpanElement spnDocDate;
+	//@UiFieldSpanElement spnDocDate;
 	@UiField
 	SpanElement spnValue;
 	@UiField
@@ -59,8 +58,6 @@ public class GenericDocumentView extends ViewImpl implements
 		aEdit.getElement().setAttribute("type","button");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
-		UIObject.setVisible(aApprove.getElement(), false);
-		UIObject.setVisible(aReject.getElement(), false);
 		aApprove.getElement().setAttribute("type", "button");
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
@@ -84,7 +81,7 @@ public class GenericDocumentView extends ViewImpl implements
 			spnSubject.setInnerText(subject);
 
 		if (docDate != null)
-			spnDocDate.setInnerText(DATEFORMAT.format(docDate));
+			//spnDocDate.setInnerText(DATEFORMAT.format(docDate));
 
 		if(value!=null){
 			spnValue.setInnerText(value);

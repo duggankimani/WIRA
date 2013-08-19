@@ -1,6 +1,6 @@
 body {
 	overflow-y: hidden;
-	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	font-family:arial, sans-serif;
 }
 
 h1,h2,h3,h4,h5 {
@@ -9,10 +9,6 @@ h1,h2,h3,h4,h5 {
 	color: #29323d;
 }
 
-h1 small,h2 small,h3 small,h4 small,h5 small {
-	margin-left: 15px;
-	font-style: italic;
-}
 
 input.search {
 	background: url("../img/ico-arrow-black.png") #fcfcfc no-repeat 208px 8px;
@@ -539,22 +535,37 @@ textarea {
 #detailed-info {
 	background-color: #ffffff;
 	margin-left: 0px;
-	padding: 0px 20px 10px 10px;
+	/* padding: 0px 15px 10px 0px; */
 	border: 1px solid #CCCCCC;
-	width: 855px;
+	width: 870px;
 	min-height: 580px;
-	overflow: auto;
-	/* border-right: none; */
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 #detailed-info .doc-title{
 	text-transform: uppercase;
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
+	padding: 14px 0px 0px 0px;
+}
+#detailed-info .action-area i{
+    margin-right:5px;
+}
+
+#detailed-info .action-buttons{  
+    padding-top: 5px;
+    padding-right: 10px;
+}
+#detailed-info .action-buttons .dropdown-menu{
+    left:-45px; 
+    min-width:100px;
 }
 
 #detailed-info .action-area {
-	margin-bottom: 20px;
 	display:inline-block;
+	padding: 0px 0px 7px 10px;
+	border-bottom:2px solid #CCCCCC;
+	width: 858px;
 }
 
 #detailed-info .action-area a:hover {
@@ -562,39 +573,92 @@ textarea {
 	cursor: pointer;
 }
 
-#detailed-info .content-area h5 {
-	text-decoration: underline;
-}
-
 #detailed-info .personal_info {
-	padding: 5px 0 0 5px;
-	height: 40px;
+	padding: 1px 0 0px 15px;
+	height: 30px;
+	border-bottom:2px solid #CCCCCC;
+	margin-left: 0px;
 }
 
 #detailed-info .personal_info .span4 {
 	margin-left: 5px;
 }
+#detailed-info .content-area{
+    padding: 39px 0 0 12px;
+    font-size:14px;
+}
+#detailed-info .content-area div{	
+	padding-bottom:10px;
+}
 
 #detailed-info .attachment-section {
 	border-top: 1px solid #CCCCCC;
-	border-bottom: 1px solid #CCCCCC;
-	margin-top: 10px;
+	margin: 0px;
 	padding: 5px 0 10px 0;
+	
+}
+#detailed-info .attachment-section attatchment-links{
+	font-size:11px;
+	padding-left:10px;
 }
 
-#detailed-info .status-section i {
-	font-size: 17px;
-	margin-right: 6px;
-}
+#detailed-info .status-section{
+	font-weight:normal;
+	border:1px solid #CCCCCC;
+	padding:10px;
+	margin-left:0px;
+	}
 
-#detailed-info .status-section .icon-chevron-right {
-	margin: 6px;
-}
-
-#detailed-info .comment-section .well {
-	padding: 5px;
-	height: 40px;
+#detailed-info .status-section span{
+	display: block;
 	margin-bottom: 10px;
+}
+#detailed-info .status-section i {
+	text-align:center;
+	font-size: 17px;
+	margin-right:6px;
+}
+
+#detailed-info .status-section .pull-right {
+	float:none;
+	margin-left:80px;
+}
+#detailed-info .recent-activity{
+	border:1px solid #cccccc;
+	padding: 10px 6px 6px 6px;
+	width: 642px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin-left: 12px;
+	z-index: -1;
+}
+.title{
+	position: relative;
+	text-align:center;
+	font-weight:bold;
+	text-transform:uppercase;
+	top: 10px;
+	left: 231px;
+	background:#ffffff;
+}
+#detailed-info .recent-activity .span1{
+	padding-top: 4px;
+	width: 50px;
+	height: 50px;
+}
+#detailed-info .recent-activity .span8{
+    margin-left:3px;
+}
+
+#detailed-info .recent-activity .name{
+	font-weight:bold;
+	color:#419AB0;	
+}
+
+#detailed-info .recent-activity .well{
+	padding: 5px;
+	margin-left: 53px;
+	width: 390px;
 }
 
 /*--Dashboard Menu--*/

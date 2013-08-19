@@ -129,7 +129,7 @@ public class LoginPresenter extends
 								getView().getLoadingBox().addStyleName("loading");
 								getView().getLoadingSpinner().removeClassName("hide");
 								AppContext.setSessionValues(
-										result.getUser().getId(), result.getUser().getName(), result.getSessionId());
+									result.getUser().getId(), result.getUser().getName(), result.getSessionId());
 									placeManager.revealDefaultPlace();
 							}else{
 								getView().getPasswordBox().setText("");
