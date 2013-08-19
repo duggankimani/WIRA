@@ -39,6 +39,7 @@ public class LoginPresenter extends
 		boolean isValid();
 		void setError(String err);
 		TextBox getUserNameBox();
+		void clearErrors();
 	}
 
 	@ProxyCodeSplit
@@ -108,6 +109,7 @@ public class LoginPresenter extends
 	
 	protected void login() {		
 		if (getView().isValid()) {
+			getView().clearErrors();
 			requestHelper.execute(new LoginRequest(getView().getUsername(),
 					getView().getPassword()),
 					new TaskServiceCallback<LoginRequestResult>() {
@@ -129,6 +131,12 @@ public class LoginPresenter extends
 							}else{
 								getView().setError("Wrong username or password");
 							}
+						}
+						
+						@Override
+						public void onFailure(Throwable caught) {
+							super.onFailure(caught);
+							getView().setError("Could authenticate user.");
 						}
 					});
 		}

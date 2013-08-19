@@ -53,7 +53,7 @@ public class ExecutorRunnable extends Thread {
     	EntityManager em = DB.getEntityManager();//getEntityManagerFactory().createEntityManager();
     	
         logger.log(Level.INFO, " >>> Executor Thread {0} Waking Up!!!", this.toString());
-        List<?> resultList = em.createQuery("Select r from RequestInfo as r where r.status ='QUEUED' or r.status = 'RETRYING' ORDER BY r.time DESC").setMaxResults(5).getResultList();
+        List<?> resultList = em.createQuery("Select r from RequestInfo as r where r.status ='QUEUED' or r.status = 'RETRYING' ORDER BY r.time DESC").setMaxResults(3).getResultList();
         logger.log(Level.INFO, " >>> Pending Requests = {0}", resultList.size());
         if (resultList.size() > 0) {
             RequestInfo r = null;

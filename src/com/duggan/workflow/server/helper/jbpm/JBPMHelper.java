@@ -629,11 +629,15 @@ public class JBPMHelper implements Closeable{
 			String nodeInstanceId = log.getNodeInstanceId();
 			//get output data for each node
 			
+			
+			
 			System.err.println(nodeInstanceId+" : Name - "+name + ", Date - "+date+ ", Type - "+type);
 		}
 	}
 	
-	public void getProcessDia(long processInstanceId){
+	public List<Node> getProcessDia(long processInstanceId){
+		
+		List<Node> nodes = new ArrayList<>();
 		
 		String processDefId = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId).getProcessId();
 		org.drools.definition.process.Process process = kbase.getProcess(processDefId);
@@ -649,27 +653,32 @@ public class JBPMHelper implements Closeable{
 		
 			String nodeName = node.getName();
 			
-			System.err.println(nodeName+"# size= "+nodeLogInstance.size());
+			//System.err.println(nodeName+"# size= "+nodeLogInstance.size());
 			
 			StartNode s;
-			HumanTaskNode ht;
 			
 			//ht.get
 			
 			if(nodeLogInstance.size() == 1){
 				//Executed nodes only
-				
 				Object x = node.getMetaData().get("x");
 				Object y = node.getMetaData().get("x");
 				Object width = node.getMetaData().get("width");
 				Object height = node.getMetaData().get("height");
-				System.err.println("Done: "+nodeName+" : x= "+x+", y="+y+", w="+width+", h="+height);
-			}else{
-				//System.err.println("Awaiting: Node name= "+nodeName);
+								
+			}
+			
+
+			if(node instanceof HumanTaskNode){
+				HumanTaskNode ht = (HumanTaskNode) node;	
+				nodes.add(ht);
+				//System.err.println("################### Done: "+nodeName+" :: ");
 			}
 						
 			//nodeInstance.get
 		}
+		
+		return nodes;
 
 	}
 		

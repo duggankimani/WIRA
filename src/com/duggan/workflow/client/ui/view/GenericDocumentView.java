@@ -3,17 +3,22 @@ package com.duggan.workflow.client.ui.view;
 import java.util.Date;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.NodeDetail;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -53,6 +58,10 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@UiField Anchor aForward;
 	
+	@UiField HTMLPanel statusContainer;
+	
+	@UiField Element eOwner;
+	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -72,8 +81,11 @@ public class GenericDocumentView extends ViewImpl implements
 		return widget;
 	}
 
-	public void setValues(Date created, DocType type, String subject,
+	public void setValues(HTUser createdBy, Date created, DocType type, String subject,
 			Date docDate, String value, String partner, String description, Integer priority,DocStatus status) {
+		if(createdBy!=null){
+			eOwner.setInnerText(createdBy.getName());
+		}
 		if (created != null)
 			spnCreated.setInnerText(CREATEDFORMAT.format(created));
 
@@ -173,6 +185,14 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public void showEdit(boolean displayed) {
 		UIObject.setVisible(aEdit.getElement(), displayed);
+	}
+
+	@Override
+	public void setStates(List<NodeDetail> states) {
+		if(states!=null)
+			for(NodeDetail state:states){
+				statusContainer.add(new ProcessState(state));
+			}
 	}
 
 	

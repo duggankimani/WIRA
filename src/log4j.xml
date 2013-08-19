@@ -16,8 +16,8 @@
     <logger name="org.apache.directory">
         <level value="FATAL"/>
     </logger>
-    <logger name="com.jbpm.executor">
-        <level value="INFO"/>
+    <logger name="org.jbpm.executor">
+        <level value="SEVERE"/>
     </logger>
     <logger name="org.apache">
         <level value="FATAL"/>

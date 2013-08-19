@@ -94,4 +94,9 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	public TextBox getPasswordBox(){
 		return password;
 	}
+
+	@Override
+	public void clearErrors() {
+		issues.clear();
+	}
 }

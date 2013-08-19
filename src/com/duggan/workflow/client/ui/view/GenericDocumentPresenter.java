@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.view;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,14 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
@@ -38,7 +42,7 @@ public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView>{
 
 	public interface MyView extends View {
-		public void setValues(Date created, DocType type, String subject,
+		public void setValues(HTUser createdBy, Date created, DocType type, String subject,
 				Date docDate, String value, String partner, String description, Integer priority,DocStatus status);
 		
 		HasClickHandlers getForward();
@@ -56,6 +60,8 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getSimulationBtn();
 		HasClickHandlers getEditButton();
 		void showEdit(boolean displayed);
+
+		public void setStates(List<NodeDetail> states);
 	}
 
 	Long documentId;
@@ -190,7 +196,7 @@ public class GenericDocumentPresenter extends
 					Integer priority = document.getPriority();									
 					DocStatus status = document.getStatus();
 					
-					getView().setValues(created,
+					getView().setValues(doc.getOwner(),created,
 							docType, subject, docDate,  value, partner, description, priority,status);
 					
 					if(status==DocStatus.DRAFTED){
@@ -201,6 +207,15 @@ public class GenericDocumentPresenter extends
 					
 					AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId);
 					fireEvent(e);
+					
+					List<NodeDetail> details = new ArrayList<NodeDetail>();
+					details.add(new NodeDetail("Created", true,false));
+					details.add(new NodeDetail("HOD Development", false,false));
+					details.add(new NodeDetail("Finance", false,false));
+					details.add(new NodeDetail("Gatheru", false,false));
+					details.add(new NodeDetail("Complete", false,true));
+					setProcessState(details);
+					
 					if(e.getValidActions()!=null){
 						getView().setValidTaskActions(e.getValidActions());
 					}
@@ -208,6 +223,10 @@ public class GenericDocumentPresenter extends
 				}
 			});
 		}
+	}
+	
+	public void setProcessState(List<NodeDetail> states){
+		getView().setStates(states);
 	}
 
 	public void setDocumentId(Long selectedValue) {

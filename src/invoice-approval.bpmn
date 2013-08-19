@@ -21,6 +21,7 @@
   <itemDefinition id="_subjectItem" structureRef="String" />
   <itemDefinition id="_actorItem" structureRef="String" />
   <itemDefinition id="_groupItem" structureRef="String" />
+  <itemDefinition id="_PROCESS_COMPLETEDItem" structureRef="Boolean" />
 
   <itemDefinition id="_2-descriptionItem" structureRef="String" />
   <itemDefinition id="_2-valueItem" structureRef="String" />
@@ -31,6 +32,7 @@
   <itemDefinition id="_2-subjectItem" structureRef="String" />
   <itemDefinition id="_2-actorItem" structureRef="String" />
   <itemDefinition id="_2-groupItem" structureRef="String" />
+  <itemDefinition id="_2-PROCESS_COMPLETEDItem" structureRef="Boolean" />
 
   <itemDefinition id="_3-descriptionItem" structureRef="String" />
   <itemDefinition id="_3-valueItem" structureRef="String" />
@@ -41,6 +43,7 @@
   <itemDefinition id="_3-subjectItem" structureRef="String" />
   <itemDefinition id="_3-actorItem" structureRef="String" />
   <itemDefinition id="_3-groupItem" structureRef="String" />
+  <itemDefinition id="_3-PROCESS_COMPLETEDItem" structureRef="Boolean" />
 
   <itemDefinition id="_14-descriptionItem" structureRef="String" />
   <itemDefinition id="_14-valueItem" structureRef="String" />
@@ -51,6 +54,7 @@
   <itemDefinition id="_14-subjectItem" structureRef="String" />
   <itemDefinition id="_14-actorItem" structureRef="String" />
   <itemDefinition id="_14-groupItem" structureRef="String" />
+  <itemDefinition id="_14-PROCESS_COMPLETEDItem" structureRef="Boolean" />
 
   <itemDefinition id="_15-descriptionItem" structureRef="String" />
   <itemDefinition id="_15-valueItem" structureRef="String" />
@@ -61,6 +65,7 @@
   <itemDefinition id="_15-subjectItem" structureRef="String" />
   <itemDefinition id="_15-actorItem" structureRef="String" />
   <itemDefinition id="_15-groupItem" structureRef="String" />
+  <itemDefinition id="_15-PROCESS_COMPLETEDItem" structureRef="Boolean" />
 
   <process processType="Private" isExecutable="true" id="invoice-approval" name="Invoice Approval Process" tns:packageName="com.duggan.workflow.invoice" tns:version="V1" >
 
@@ -77,6 +82,7 @@
     <property id="subject" itemSubjectRef="_subjectItem"/>
     <property id="actor" itemSubjectRef="_actorItem"/>
     <property id="group" itemSubjectRef="_groupItem"/>
+    <property id="PROCESS_COMPLETED" itemSubjectRef="_PROCESS_COMPLETEDItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
@@ -218,6 +224,7 @@ eBusiness Administration]@[]</from>
         <dataInput id="_3_TaskNameInput" name="TaskName" />
         <dataInput id="_3_GroupIdInput" name="GroupId" />
         <dataInput id="_3_PriorityInput" name="Priority" />
+        <dataOutput id="_3_ActorIdOutput" name="ActorId" />
         <dataOutput id="_3_isApprovedOutput" name="isApproved" />
         <inputSet>
           <dataInputRefs>_3_subjectInput</dataInputRefs>
@@ -232,6 +239,7 @@ eBusiness Administration]@[]</from>
           <dataInputRefs>_3_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
+          <dataOutputRefs>_3_ActorIdOutput</dataOutputRefs>
           <dataOutputRefs>_3_isApprovedOutput</dataOutputRefs>
         </outputSet>
       </ioSpecification>
@@ -294,6 +302,10 @@ eBusiness Administration]@[]</from>
         </assignment>
       </dataInputAssociation>
       <dataOutputAssociation>
+        <sourceRef>_3_ActorIdOutput</sourceRef>
+        <targetRef>actor</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
         <sourceRef>_3_isApprovedOutput</sourceRef>
         <targetRef>isApproved</targetRef>
       </dataOutputAssociation>
@@ -307,6 +319,141 @@ eBusiness Administration]@[]</from>
         <terminateEventDefinition />
     </endEvent>
     <exclusiveGateway id="_5" name="approved?" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_8" name="approved?" gatewayDirection="Diverging" />
+    <endEvent id="_10" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <task id="_14" name="Update Success" tns:taskName="UpdateLocal" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("PROCESS_COMPLETED",Boolean.TRUE);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_14_isApprovedInput" name="isApproved" />
+        <dataInput id="_14_DocumentIdInput" name="DocumentId" />
+        <inputSet>
+          <dataInputRefs>_14_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_14_DocumentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_14_isApprovedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_14_DocumentIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{documentId}</from>
+          <to xsi:type="tFormalExpression">_14_DocumentIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_15" name="CEO Approval" >
+      <ioSpecification>
+        <dataInput id="_15_subjectInput" name="subject" />
+        <dataInput id="_15_descriptionInput" name="description" />
+        <dataInput id="_15_valueInput" name="value" />
+        <dataInput id="_15_documentIdInput" name="documentId" />
+        <dataInput id="_15_CommentInput" name="Comment" />
+        <dataInput id="_15_SkippableInput" name="Skippable" />
+        <dataInput id="_15_LocaleInput" name="Locale" />
+        <dataInput id="_15_TaskNameInput" name="TaskName" />
+        <dataInput id="_15_GroupIdInput" name="GroupId" />
+        <dataInput id="_15_PriorityInput" name="Priority" />
+        <dataOutput id="_15_ActorIdOutput" name="ActorId" />
+        <dataOutput id="_15_isApprovedOutput" name="isApproved" />
+        <inputSet>
+          <dataInputRefs>_15_subjectInput</dataInputRefs>
+          <dataInputRefs>_15_descriptionInput</dataInputRefs>
+          <dataInputRefs>_15_valueInput</dataInputRefs>
+          <dataInputRefs>_15_documentIdInput</dataInputRefs>
+          <dataInputRefs>_15_CommentInput</dataInputRefs>
+          <dataInputRefs>_15_SkippableInput</dataInputRefs>
+          <dataInputRefs>_15_LocaleInput</dataInputRefs>
+          <dataInputRefs>_15_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_15_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_15_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_15_ActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_15_isApprovedOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_15_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_15_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>value</sourceRef>
+        <targetRef>_15_valueInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_15_documentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_15_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_15_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">_15_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Gatheru Approval</from>
+          <to xsi:type="tFormalExpression">_15_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CEO</from>
+          <to xsi:type="tFormalExpression">_15_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_15_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_15_ActorIdOutput</sourceRef>
+        <targetRef>actor</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_15_isApprovedOutput</sourceRef>
+        <targetRef>isApproved</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression></formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
     <endEvent id="_20" name="End" >
         <terminateEventDefinition />
     </endEvent>
@@ -431,232 +578,409 @@ kcontext.setVariable("actor", null);</tns:script>
         <targetRef>_22_PriorityInput</targetRef>
       </dataInputAssociation>
     </callActivity>
-    <exclusiveGateway id="_8" name="approved?" gatewayDirection="Diverging" />
-    <endEvent id="_10" name="End" >
-        <terminateEventDefinition />
-    </endEvent>
-    <task id="_14" name="Update Success" tns:taskName="UpdateLocal" >
+    <callActivity id="_25" name="Notification" calledElement="aftertask-notification" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script></tns:script>
+        </tns:onEntry-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("group", null);
+kcontext.setVariable("actor", null);</tns:script>
+        </tns:onExit-script>
+      </extensionElements>
       <ioSpecification>
-        <dataInput id="_14_isApprovedInput" name="isApproved" />
-        <dataInput id="_14_documentIdInput" name="documentId" />
+        <dataInput id="_25_ActorIdInput" name="ActorId" />
+        <dataInput id="_25_DescriptionInput" name="Description" />
+        <dataInput id="_25_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_25_SubjectInput" name="Subject" />
+        <dataInput id="_25_OwnerIdInput" name="OwnerId" />
+        <dataInput id="_25_isApprovedInput" name="isApproved" />
+        <dataInput id="_25_GroupIdInput" name="GroupId" />
+        <dataInput id="_25_PriorityInput" name="Priority" />
         <inputSet>
-          <dataInputRefs>_14_isApprovedInput</dataInputRefs>
-          <dataInputRefs>_14_documentIdInput</dataInputRefs>
+          <dataInputRefs>_25_ActorIdInput</dataInputRefs>
+          <dataInputRefs>_25_DescriptionInput</dataInputRefs>
+          <dataInputRefs>_25_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_25_SubjectInput</dataInputRefs>
+          <dataInputRefs>_25_OwnerIdInput</dataInputRefs>
+          <dataInputRefs>_25_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_25_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_25_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>isApproved</sourceRef>
-        <targetRef>_14_isApprovedInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>documentId</sourceRef>
-        <targetRef>_14_documentIdInput</targetRef>
-      </dataInputAssociation>
-    </task>
-    <userTask id="_15" name="CEO Approval" >
-      <ioSpecification>
-        <dataInput id="_15_subjectInput" name="subject" />
-        <dataInput id="_15_descriptionInput" name="description" />
-        <dataInput id="_15_valueInput" name="value" />
-        <dataInput id="_15_documentIdInput" name="documentId" />
-        <dataInput id="_15_CommentInput" name="Comment" />
-        <dataInput id="_15_SkippableInput" name="Skippable" />
-        <dataInput id="_15_LocaleInput" name="Locale" />
-        <dataInput id="_15_TaskNameInput" name="TaskName" />
-        <dataInput id="_15_GroupIdInput" name="GroupId" />
-        <dataInput id="_15_PriorityInput" name="Priority" />
-        <dataOutput id="_15_isApprovedOutput" name="isApproved" />
-        <inputSet>
-          <dataInputRefs>_15_subjectInput</dataInputRefs>
-          <dataInputRefs>_15_descriptionInput</dataInputRefs>
-          <dataInputRefs>_15_valueInput</dataInputRefs>
-          <dataInputRefs>_15_documentIdInput</dataInputRefs>
-          <dataInputRefs>_15_CommentInput</dataInputRefs>
-          <dataInputRefs>_15_SkippableInput</dataInputRefs>
-          <dataInputRefs>_15_LocaleInput</dataInputRefs>
-          <dataInputRefs>_15_TaskNameInput</dataInputRefs>
-          <dataInputRefs>_15_GroupIdInput</dataInputRefs>
-          <dataInputRefs>_15_PriorityInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-          <dataOutputRefs>_15_isApprovedOutput</dataOutputRefs>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_15_subjectInput</targetRef>
+        <sourceRef>actor</sourceRef>
+        <targetRef>_25_ActorIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>description</sourceRef>
-        <targetRef>_15_descriptionInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>value</sourceRef>
-        <targetRef>_15_valueInput</targetRef>
+        <targetRef>_25_DescriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>documentId</sourceRef>
-        <targetRef>_15_documentIdInput</targetRef>
+        <targetRef>_25_DocumentIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_15_CommentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">_15_CommentInput</to>
-        </assignment>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_25_SubjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_15_SkippableInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">false</from>
-          <to xsi:type="tFormalExpression">_15_SkippableInput</to>
-        </assignment>
+        <sourceRef>ownerId</sourceRef>
+        <targetRef>_25_OwnerIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_15_LocaleInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">en-UK</from>
-          <to xsi:type="tFormalExpression">_15_LocaleInput</to>
-        </assignment>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_25_isApprovedInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_15_TaskNameInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">Gatheru Approval</from>
-          <to xsi:type="tFormalExpression">_15_TaskNameInput</to>
-        </assignment>
+        <sourceRef>group</sourceRef>
+        <targetRef>_25_GroupIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_15_GroupIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">CEO</from>
-          <to xsi:type="tFormalExpression">_15_GroupIdInput</to>
-        </assignment>
+        <sourceRef>priority</sourceRef>
+        <targetRef>_25_PriorityInput</targetRef>
+      </dataInputAssociation>
+    </callActivity>
+    <callActivity id="_24" name="Notifications" calledElement="beforetask-notification" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <tns:script>kcontext.setVariable("group", "HOD_FIN");
+kcontext.setVariable("actor", null);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_24_ActorIdInput" name="ActorId" />
+        <dataInput id="_24_DescriptionInput" name="Description" />
+        <dataInput id="_24_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_24_SubjectInput" name="Subject" />
+        <dataInput id="_24_OwnerIdInput" name="OwnerId" />
+        <dataInput id="_24_GroupIdInput" name="GroupId" />
+        <dataInput id="_24_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>_24_ActorIdInput</dataInputRefs>
+          <dataInputRefs>_24_DescriptionInput</dataInputRefs>
+          <dataInputRefs>_24_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_24_SubjectInput</dataInputRefs>
+          <dataInputRefs>_24_OwnerIdInput</dataInputRefs>
+          <dataInputRefs>_24_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_24_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>actor</sourceRef>
+        <targetRef>_24_ActorIdInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_15_PriorityInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">_15_PriorityInput</to>
-        </assignment>
+        <sourceRef>description</sourceRef>
+        <targetRef>_24_DescriptionInput</targetRef>
       </dataInputAssociation>
-      <dataOutputAssociation>
-        <sourceRef>_15_isApprovedOutput</sourceRef>
-        <targetRef>isApproved</targetRef>
-      </dataOutputAssociation>
-      <potentialOwner>
-        <resourceAssignmentExpression>
-          <formalExpression></formalExpression>
-        </resourceAssignmentExpression>
-      </potentialOwner>
-    </userTask>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_24_DocumentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_24_SubjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>ownerId</sourceRef>
+        <targetRef>_24_OwnerIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>group</sourceRef>
+        <targetRef>_24_GroupIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>priority</sourceRef>
+        <targetRef>_24_PriorityInput</targetRef>
+      </dataInputAssociation>
+    </callActivity>
+    <callActivity id="_27" name="Notification" calledElement="aftertask-notification" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script></tns:script>
+        </tns:onEntry-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("group", null);
+kcontext.setVariable("actor", null);</tns:script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_27_ActorIdInput" name="ActorId" />
+        <dataInput id="_27_DescriptionInput" name="Description" />
+        <dataInput id="_27_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_27_SubjectInput" name="Subject" />
+        <dataInput id="_27_OwnerIdInput" name="OwnerId" />
+        <dataInput id="_27_isApprovedInput" name="isApproved" />
+        <dataInput id="_27_GroupIdInput" name="GroupId" />
+        <dataInput id="_27_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>_27_ActorIdInput</dataInputRefs>
+          <dataInputRefs>_27_DescriptionInput</dataInputRefs>
+          <dataInputRefs>_27_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_27_SubjectInput</dataInputRefs>
+          <dataInputRefs>_27_OwnerIdInput</dataInputRefs>
+          <dataInputRefs>_27_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_27_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_27_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>actor</sourceRef>
+        <targetRef>_27_ActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_27_DescriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_27_DocumentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_27_SubjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>ownerId</sourceRef>
+        <targetRef>_27_OwnerIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_27_isApprovedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>group</sourceRef>
+        <targetRef>_27_GroupIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>priority</sourceRef>
+        <targetRef>_27_PriorityInput</targetRef>
+      </dataInputAssociation>
+    </callActivity>
+    <callActivity id="_26" name="Notification" calledElement="beforetask-notification" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("group", "CEO");
+kcontext.setVariable("actor", null);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_26_ActorIdInput" name="ActorId" />
+        <dataInput id="_26_DescriptionInput" name="Description" />
+        <dataInput id="_26_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_26_SubjectInput" name="Subject" />
+        <dataInput id="_26_OwnerIdInput" name="OwnerId" />
+        <dataInput id="_26_GroupIdInput" name="GroupId" />
+        <dataInput id="_26_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>_26_ActorIdInput</dataInputRefs>
+          <dataInputRefs>_26_DescriptionInput</dataInputRefs>
+          <dataInputRefs>_26_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_26_SubjectInput</dataInputRefs>
+          <dataInputRefs>_26_OwnerIdInput</dataInputRefs>
+          <dataInputRefs>_26_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_26_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>actor</sourceRef>
+        <targetRef>_26_ActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_26_DescriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_26_DocumentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_26_SubjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>ownerId</sourceRef>
+        <targetRef>_26_OwnerIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>group</sourceRef>
+        <targetRef>_26_GroupIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>priority</sourceRef>
+        <targetRef>_26_PriorityInput</targetRef>
+      </dataInputAssociation>
+    </callActivity>
+    <endEvent id="_29" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <exclusiveGateway id="_28" name="approved?" gatewayDirection="Diverging" />
 
     <!-- connections -->
     <sequenceFlow id="_22-_2" sourceRef="_22" targetRef="_2" />
-    <sequenceFlow id="_5-_3" sourceRef="_5" targetRef="_3" name="approved" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="_24-_3" sourceRef="_24" targetRef="_3" />
     <sequenceFlow id="_14-_4" sourceRef="_14" targetRef="_4" />
     <sequenceFlow id="_23-_5" sourceRef="_23" targetRef="_5" />
-    <sequenceFlow id="_5-_20" sourceRef="_5" targetRef="_20" name="Denied" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==false;</conditionExpression>
+    <sequenceFlow id="_25-_8" sourceRef="_25" targetRef="_8" />
+    <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" name="Denied" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_28-_14" sourceRef="_28" targetRef="_14" name="Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_26-_15" sourceRef="_26" targetRef="_15" />
+    <sequenceFlow id="_5-_20" sourceRef="_5" targetRef="_20" name="Denied" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return true;</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_2-_23" sourceRef="_2" targetRef="_23" />
     <sequenceFlow id="_1-_22" sourceRef="_1" targetRef="_22" />
-    <sequenceFlow id="_3-_8" sourceRef="_3" targetRef="_8" />
-    <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" name="Denied" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved=false;</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="_15-_14" sourceRef="_15" targetRef="_14" />
-    <sequenceFlow id="_8-_15" sourceRef="_8" targetRef="_15" name="ok" tns:priority="1" >
+    <sequenceFlow id="_3-_25" sourceRef="_3" targetRef="_25" />
+    <sequenceFlow id="_5-_24" sourceRef="_5" targetRef="_24" name="Approved" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="_15-_27" sourceRef="_15" targetRef="_27" />
+    <sequenceFlow id="_8-_26" sourceRef="_8" targetRef="_26" name="Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_28-_29" sourceRef="_28" targetRef="_29" name="Denied" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_27-_28" sourceRef="_27" targetRef="_28" />
 
   </process>
 
   <bpmndi:BPMNDiagram>
     <bpmndi:BPMNPlane bpmnElement="invoice-approval" >
       <bpmndi:BPMNShape bpmnElement="_1" >
-        <dc:Bounds x="16" y="96" width="48" height="48" />
+        <dc:Bounds x="16" y="56" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_2" >
-        <dc:Bounds x="238" y="96" width="116" height="48" />
+        <dc:Bounds x="238" y="56" width="116" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="609" y="56" width="123" height="48" />
+        <dc:Bounds x="751" y="96" width="123" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
-        <dc:Bounds x="1137" y="96" width="48" height="48" />
+        <dc:Bounds x="1786" y="95" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="528" y="96" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_20" >
-        <dc:Bounds x="646" y="136" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_23" >
-        <dc:Bounds x="386" y="96" width="110" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_22" >
-        <dc:Bounds x="96" y="96" width="110" height="48" />
+        <dc:Bounds x="528" y="56" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_8" >
-        <dc:Bounds x="764" y="56" width="48" height="48" />
+        <dc:Bounds x="1048" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_10" >
-        <dc:Bounds x="878" y="16" width="48" height="48" />
+        <dc:Bounds x="1160" y="55" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_14" >
-        <dc:Bounds x="991" y="96" width="114" height="48" />
+        <dc:Bounds x="1635" y="63" width="114" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_15" >
-        <dc:Bounds x="845" y="96" width="114" height="48" />
+        <dc:Bounds x="1271" y="135" width="114" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="640" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" >
+        <dc:Bounds x="386" y="56" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" >
+        <dc:Bounds x="96" y="56" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_25" >
+        <dc:Bounds x="906" y="96" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_24" >
+        <dc:Bounds x="609" y="96" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_27" >
+        <dc:Bounds x="1417" y="135" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_26" >
+        <dc:Bounds x="1129" y="135" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_29" >
+        <dc:Bounds x="1666" y="192" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28" >
+        <dc:Bounds x="1559" y="135" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_22-_2" >
-        <di:waypoint x="151" y="120" />
-        <di:waypoint x="296" y="120" />
+        <di:waypoint x="151" y="80" />
+        <di:waypoint x="296" y="80" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5-_3" >
-        <di:waypoint x="552" y="120" />
-        <di:waypoint x="670" y="80" />
+      <bpmndi:BPMNEdge bpmnElement="_24-_3" >
+        <di:waypoint x="664" y="120" />
+        <di:waypoint x="812" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_14-_4" >
-        <di:waypoint x="1048" y="120" />
-        <di:waypoint x="1161" y="120" />
+        <di:waypoint x="1692" y="87" />
+        <di:waypoint x="1810" y="119" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_23-_5" >
-        <di:waypoint x="441" y="120" />
-        <di:waypoint x="552" y="120" />
+        <di:waypoint x="441" y="80" />
+        <di:waypoint x="552" y="80" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5-_20" >
-        <di:waypoint x="552" y="120" />
-        <di:waypoint x="670" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_2-_23" >
-        <di:waypoint x="296" y="120" />
-        <di:waypoint x="441" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_1-_22" >
-        <di:waypoint x="40" y="120" />
-        <di:waypoint x="151" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_3-_8" >
-        <di:waypoint x="670" y="80" />
-        <di:waypoint x="788" y="80" />
+      <bpmndi:BPMNEdge bpmnElement="_25-_8" >
+        <di:waypoint x="961" y="120" />
+        <di:waypoint x="1072" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_8-_10" >
-        <di:waypoint x="788" y="80" />
-        <di:waypoint x="902" y="40" />
+        <di:waypoint x="1072" y="120" />
+        <di:waypoint x="1184" y="79" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_15-_14" >
-        <di:waypoint x="902" y="120" />
-        <di:waypoint x="1048" y="120" />
+      <bpmndi:BPMNEdge bpmnElement="_28-_14" >
+        <di:waypoint x="1583" y="159" />
+        <di:waypoint x="1692" y="87" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_8-_15" >
-        <di:waypoint x="788" y="80" />
-        <di:waypoint x="902" y="120" />
+      <bpmndi:BPMNEdge bpmnElement="_26-_15" >
+        <di:waypoint x="1184" y="159" />
+        <di:waypoint x="1328" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_20" >
+        <di:waypoint x="552" y="80" />
+        <di:waypoint x="664" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_23" >
+        <di:waypoint x="296" y="80" />
+        <di:waypoint x="441" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_22" >
+        <di:waypoint x="40" y="80" />
+        <di:waypoint x="151" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_25" >
+        <di:waypoint x="812" y="120" />
+        <di:waypoint x="961" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_24" >
+        <di:waypoint x="552" y="80" />
+        <di:waypoint x="664" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_27" >
+        <di:waypoint x="1328" y="159" />
+        <di:waypoint x="1472" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_26" >
+        <di:waypoint x="1072" y="120" />
+        <di:waypoint x="1184" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_29" >
+        <di:waypoint x="1583" y="159" />
+        <di:waypoint x="1690" y="216" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27-_28" >
+        <di:waypoint x="1472" y="159" />
+        <di:waypoint x="1583" y="159" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -43,7 +43,7 @@ public class ExecutorImpl implements Executor {
     private ScheduledFuture<?> handle;
     private int threadPoolSize = 1;
     private int retries = 3;
-    private int interval = 3;
+    private int interval = 10;
     
     private ScheduledExecutorService scheduler;
     

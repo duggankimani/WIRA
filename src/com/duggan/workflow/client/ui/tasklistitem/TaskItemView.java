@@ -111,8 +111,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 			break;
 
 		default:
-			spnPriority.addStyleName("label-info");
-			spnPriority.setText("info");
 			break;
 		}
 	}

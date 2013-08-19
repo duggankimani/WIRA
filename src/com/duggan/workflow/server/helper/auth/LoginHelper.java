@@ -9,12 +9,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.server.core.authn.LdapPrincipal;
+import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.server.protocol.shared.transport.TcpTransport;
 import org.apache.directory.shared.ldap.constants.AuthenticationLevel;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.springframework.ldap.AuthenticationException;
@@ -32,7 +35,6 @@ import org.springframework.ldap.filter.PresentFilter;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.authentication.LdapAuthenticator;
-import org.springframework.security.ldap.server.ApacheDSContainer;
 
 import sun.misc.BASE64Encoder;
 
@@ -50,23 +52,37 @@ import com.duggan.workflow.shared.model.UserGroup;
 public class LoginHelper implements Closeable {
 
 	private static LoginHelper helper;
-	private ApacheDSContainer container;
+	private LDAPService container;
 	private LdapQueryHelper ldapQuery;
 	LdapTemplate ldapTemplate;
 	private String usersBaseDN = "ou=users";
-
+	private Properties properties = new Properties();
+	
 	private LoginHelper() {
 		try {
-			container = new ApacheDSContainer("o=mojo",
+			
+			properties.load(Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream("jbpm.usergroup.callback.properties"));
+			
+			container = new LDAPService("o=mojo",
 					"classpath:identity-repository.ldif");
-			container.setPort(9898);
+			
+			container.setPort(new Integer(properties.getProperty("java.naming.provider.port")));
+			container.setHost(properties.getProperty("java.naming.provider.host"));
 			container.afterPropertiesSet();
+			
 
 			LdapContextSource cs = new LdapContextSource();
-			cs.setUrl("ldap://localhost:9898/");
+			
+			cs.setUrl(properties.getProperty("java.naming.provider.url"));
 			cs.setBase("o=mojo");
-			cs.setUserDn("uid=admin,ou=system");
-			cs.setPassword("secret");
+			cs.setUserDn(properties.getProperty("ldap.bind.user"));
+			cs.setPassword(properties.getProperty("ldap.bind.pwd"));
+			
+//			cs.setUrl("ldap://localhost:9898/");
+//			cs.setBase("o=mojo");
+//			cs.setUserDn("uid=admin,ou=system");
+//			cs.setPassword("secret");
 			cs.afterPropertiesSet();
 			ldapTemplate = new LdapTemplate(cs);
 			// ldapTemplate.setIgnorePartialResultException(true);
@@ -196,7 +212,7 @@ public class LoginHelper implements Closeable {
 	}
 
 	public HTUser getUser(String userId) {
-
+		
 		System.err.println("LDAP Search :uid="+userId);
 		AndFilter filter = new AndFilter().and(
 				new EqualsFilter("objectClass", "person")).and(
@@ -330,7 +346,7 @@ public class LoginHelper implements Closeable {
 		return helper;
 	}
 
-	public ApacheDSContainer getContainer() {
+	public LDAPService getContainer() {
 		return container;
 	}
 
