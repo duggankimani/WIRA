@@ -36,7 +36,8 @@ public class LoginPresenter extends
 		TextBox getPasswordBox();
 		boolean isValid();
 		void setError(String err);
-		void showLoginProgress(boolean show);
+		void showLoginProgress();
+		void clearLoginProgress();
 		void clearViewItems(boolean status);
 		TextBox getUserNameBox();
 		void clearErrors();
@@ -108,6 +109,7 @@ public class LoginPresenter extends
 	protected void login() {		
 		if (getView().isValid()) {
 			getView().clearErrors();
+			getView().showLoginProgress();
 			requestHelper.execute(new LoginRequest(getView().getUsername(),
 					getView().getPassword()),
 					new TaskServiceCallback<LoginRequestResult>() {
@@ -119,6 +121,7 @@ public class LoginPresenter extends
 									result.getUser().getId(), result.getUser().getName(), result.getSessionId());
 									placeManager.revealDefaultPlace();
 							}else{
+								getView().clearLoginProgress();
 								getView().getPasswordBox().setText("");
 								getView().setError("Wrong username or password");
 							}
@@ -126,6 +129,7 @@ public class LoginPresenter extends
 						
 						@Override
 						public void onFailure(Throwable caught) {
+							getView().clearLoginProgress();
 							super.onFailure(caught);
 							getView().setError("Could authenticate user.");
 						}

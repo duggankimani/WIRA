@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.ui.component.IssuesPanel;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -106,16 +105,18 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 		issues.clear();
 	}
 
-	public Element getLoadingSpinner() {
-		return loading;
-	}
-
-
 	@Override
-	public void showLoginProgress(boolean show) {
+	public void showLoginProgress() {
 		issues.addStyleName("hide");
 		loadingbox.addStyleName("loading");
 		loading.removeClassName("hide");
+	}
+	
+	@Override
+	public void clearLoginProgress() {
+		issues.removeStyleName("hide");
+		loadingbox.removeStyleName("loading");
+		loading.addClassName("hide");
 	}
 
 	@Override
