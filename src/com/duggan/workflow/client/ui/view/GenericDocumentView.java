@@ -11,6 +11,7 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
+import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -45,19 +46,27 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField
 	SpanElement spnDescription;
 
-	@UiField Anchor aSimulate;
-	
-	@UiField Anchor aEdit;
-	
-	@UiField Anchor aApprove;
-	
+	@UiField Anchor aSimulate;	
+	@UiField Anchor aEdit;	
+	@UiField Anchor aClaim;
+	@UiField Anchor aStart;
+	@UiField Anchor aSuspend;
+	@UiField Anchor aResume;
+	@UiField Anchor aComplete;
+	@UiField Anchor aDelegate;
+	@UiField Anchor aRevoke;
+	@UiField Anchor aStop;
+	@UiField Anchor aForward;	
+	@UiField Anchor aApprove;	
 	@UiField Anchor aReject;
-
-	@UiField Anchor aForward;
 	
 	@UiField HTMLPanel statusContainer;
 	
 	@UiField Element eOwner;
+	
+	@UiField SpanElement spnPriority;
+	
+	@UiField SpanElement spnStatus;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -70,6 +79,18 @@ public class GenericDocumentView extends ViewImpl implements
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
+		
+		show(aClaim, false);
+		show(aStart, false);
+		show(aSuspend, false);
+		show(aResume, false);
+		show(aComplete, false);
+		show(aDelegate, false);
+		show(aReject, false);
+		show(aRevoke, false);
+		show(aStop, false);
+		show(aForward, false);
+		show(aApprove, false);
 	}
 
 	@Override
@@ -112,46 +133,71 @@ public class GenericDocumentView extends ViewImpl implements
 		}else{
 			showForward(false);
 		}
-	}
-	
-	public HasClickHandlers getForward(){
-		return aForward;
-	}
+		
+		if(status!=null)
+			spnStatus.setInnerText(status.name());
+		
+		if(priority!=null){
+			Priority prty = Priority.get(priority);
+			
+			switch (prty) {
+			case CRITICAL:
+				spnPriority.addClassName("label-important");
+				spnPriority.setInnerText("Urgent");
+				break;
 
-	public HasClickHandlers getApproveButton(){
-		return aApprove;
+			case HIGH:
+				spnPriority.addClassName("label-warning"); //
+				spnPriority.setInnerText("Important");
+				break;
+
+			default:
+				spnPriority.addClassName("hide");
+				break;
+			}
+		}
+		
 	}
-	
-	public HasClickHandlers getRejectButton(){
-		return aReject;
-	}
-	
+		
 	public void setValidTaskActions(List<Actions> actions){
 		
 		if(actions!=null)
-		for(Actions action : actions){			
+		for(Actions action : actions){		
+			Anchor target=null;
 			switch(action){
 			case CLAIM:
+				target=aClaim;
 				break;
 			case COMPLETE:
 				//target=aComplete;
-				UIObject.setVisible(aApprove.getElement(),true);
-				UIObject.setVisible(aReject.getElement(),true);
+				show(aApprove);
+				show(aReject);
 				break;
 			case DELEGATE:
+				target=aDelegate;
 				break;
 			case FORWARD:
+				target=aForward;
 				break;
 			case RESUME:
+				target=aResume;
 				break;
 			case REVOKE:
+				target=aRevoke;
 				break;
 			case START:
+				target=aStart;
 				break;
 			case STOP:
+				target=aStop;
 				break;
 			case SUSPEND:
+				target=aSuspend;
 				break;
+			}
+			
+			if(target!=null){
+				show(target);
 			}
 		}
 		
@@ -159,13 +205,14 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	@Override
 	public void showForward(boolean show) {
-		UIObject.setVisible(aForward.getElement(), show);
+		show(aForward, show);
 	}
 
 	@Override
 	public void show(boolean IsShowapprovalLink, boolean IsShowRejectLink) {
-		UIObject.setVisible(aApprove.getElement(), IsShowapprovalLink);
-		UIObject.setVisible(aReject.getElement(), IsShowapprovalLink);
+		
+		show(aApprove, IsShowapprovalLink);
+		show(aReject, IsShowRejectLink);
 	}
 	
 
@@ -190,7 +237,60 @@ public class GenericDocumentView extends ViewImpl implements
 				statusContainer.add(new ProcessState(state));
 			}
 	}
+	
+	public void show(Anchor target){
+		show(target,true);
+	}
+	public void show(Anchor target, boolean isvisible){
+		if(isvisible){
+			target.removeStyleName("hidden");
+		}
+		UIObject.setVisible(target.getElement(), isvisible);
+		
+	}
 
+	public HasClickHandlers getClaimLink(){
+		return aClaim;
+	}
 	
+	public HasClickHandlers getStartLink(){
+		return aStart;
+	}
 	
+	public HasClickHandlers getSuspendLink(){
+		return aSuspend;
+	}
+	
+	public HasClickHandlers getResumeLink(){
+		return aResume;
+	}
+	
+	public HasClickHandlers getCompleteLink(){
+		return aComplete;
+	}
+	
+	public HasClickHandlers getDelegateLink(){
+		return aDelegate;
+	}
+	
+	public HasClickHandlers getRevokeLink(){
+		return aRevoke;
+	}
+	
+	public HasClickHandlers getStopLink(){
+		return aStop;
+	}
+	
+	public HasClickHandlers getForwardForApproval(){
+		return aForward;
+	}
+
+	public HasClickHandlers getApproveLink(){
+		return aApprove;
+	}
+	
+	public HasClickHandlers getRejectLink(){
+		return aReject;
+	}
+
 }

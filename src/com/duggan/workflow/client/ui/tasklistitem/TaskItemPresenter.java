@@ -13,6 +13,8 @@ import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.ExecTaskEvent;
+import com.duggan.workflow.client.ui.events.ExecTaskEvent.ExecTaskHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
@@ -45,7 +47,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
  */
 public class TaskItemPresenter extends
 		PresenterWidget<TaskItemPresenter.MyView> 
-	implements DocumentSelectionHandler, AfterDocumentLoadHandler, CompleteDocumentHandler{
+	implements DocumentSelectionHandler, AfterDocumentLoadHandler, CompleteDocumentHandler, ExecTaskHandler{
 
 	public interface MyView extends View {
 		void bind(DocSummary summaryTask);
@@ -88,6 +90,7 @@ public class TaskItemPresenter extends
 		addRegisteredHandler(CompleteDocumentEvent.TYPE, this);
 		addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
+		addRegisteredHandler(ExecTaskEvent.TYPE, this);
 //		
 		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		 
@@ -328,6 +331,24 @@ public class TaskItemPresenter extends
 			completeDocument(event.IsApproved());
 		}
 	}
+	
+	@Override
+	public void onExecTask(ExecTaskEvent event) {
+		if(task instanceof Document){
+			return;
+		}
+		
+		HTSummary summary = (HTSummary)task;
+		
+		Long ref= summary.getDocumentRef();
+		Long documentId = event.getDocumentId();
+		
+		if(ref==documentId){			
+			submitRequest(event.getAction());
+		}
+	}
+	
+	
 
 	/**
 	 * Duggan - 25/Jul/2013 - Had to add this

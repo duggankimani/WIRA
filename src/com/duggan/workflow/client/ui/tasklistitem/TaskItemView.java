@@ -111,6 +111,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 			break;
 
 		default:
+			spnPriority.addStyleName("hide");
 			break;
 		}
 	}
@@ -128,8 +129,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	 * @param actions
 	 */
 	public void setTaskAction(List<Actions> actions){
-		
-		String style="visible";
 		
 		if(actions!=null)
 		for(Actions action : actions){

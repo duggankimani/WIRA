@@ -13,24 +13,51 @@
 				   <span ui:field="spnSubject"></span>
             </div>
             <div class="action-buttons pull-right">
-	           	<g:Anchor ui:field="aClaim" styleName="btn btn-default hidden">
+	           	<g:Anchor ui:field="aClaim" styleName="btn btn-default hidden"
+	           	     title="Reserve this task. Other users with the same role cannot work on this task if claimed" >
 				    <i class="icon-arrow-down"></i>Claim
 				</g:Anchor>
+			    <g:Anchor ui:field="aStart"  styleName="btn btn-default hidden"
+			        title="Start working on the task">
+				    <i class="icon-play"></i>Start</g:Anchor>			
+				    			    
+				<g:Anchor ui:field="aResume"  styleName="btn btn-default hidden">
+				    <i class="icon-play"></i>Resume</g:Anchor>
+				    
+				<g:Anchor ui:field="aComplete"  styleName="btn btn-default hidden">
+				    <i class="icon-ok"></i>Complete</g:Anchor>
+				    
+				<g:Anchor ui:field="aSuspend"  styleName="btn btn-default hidden"
+				    title="Suspend this task">
+				    <i class="icon-ok"></i>Suspend</g:Anchor>		
+				    		
+				<g:Anchor ui:field="aDelegate"  styleName="btn btn-default hidden"
+				    title="Delegate this task">
+				    <i class="icon-ok"></i>Delegate</g:Anchor>
+				    
+				<g:Anchor ui:field="aRevoke"  styleName="btn btn-default hidden"
+				    title="Revoke this task so that its re-assignable to other users in your group">
+				    <i class="icon-ok"></i>Revoke</g:Anchor>
+				    
+				<g:Anchor ui:field="aStop"  styleName="btn btn-default hidden">
+				    <i class="icon-ok"></i>Stop</g:Anchor>
 				
-				<g:Anchor ui:field="aSimulate" styleName="btn btn-default hidden">
-				    <i class="icon-play"></i>Start
-				</g:Anchor>
+				<g:Anchor ui:field="aForward"  styleName="btn btn-success hidden">
+				    <i class="icon-share-alt"></i>Forward for Approval</g:Anchor>			
 				
-	           	<g:Anchor ui:field="aForward" styleName="btn btn-success hidden">
-	           	    <i class="icon-share-alt"></i>Forward for Approval
-	           	 </g:Anchor>
-			
-				<g:Anchor ui:field="aApprove" styleName="btn btn-success">
+				<g:Anchor ui:field="aApprove" styleName="btn btn-success"
+				    title="Approve document">
 				    <i class="icon-ok"></i>Approve
 			    </g:Anchor>
-				<g:Anchor ui:field="aReject" styleName="btn btn-danger">
+				
+				<g:Anchor ui:field="aReject" styleName="btn btn-danger"
+				    title="Reject document">
 				    <i class="icon-ban-circle"></i>Reject
 				 </g:Anchor>
+				 
+				<g:Anchor ui:field="aSimulate" styleName="btn btn-default hidden">
+				    <i class="icon-play"></i>Simulate
+				</g:Anchor>							
 				 
 				 <div class="btn-group">
 				 	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -62,12 +89,14 @@
                   
                   <div class="span3">
                   <span>Priority:</span>
-                  <span class="label label-info">Urgent</span>
+                  <span ui:field="spnPriority" class="label"></span>
                   </div>
                   
                   <div class="span3">
                   <span>Current Status:</span>
-                  <span class="label label-info"><i class="icon-edit"></i>Drafted</span>
+                  <span class="label label-info"><i class="icon-edit"></i>
+                      <span ui:field="spnStatus"></span>
+                  </span>
                   </div>
           </div>
 
