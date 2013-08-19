@@ -10,8 +10,10 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 
 public class NotificationDaoHelper {
@@ -87,14 +89,20 @@ public class NotificationDaoHelper {
 			NotificationModel modelFrom) {
 				
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
-		notificationTo.setOwner(modelFrom.getOwner());
+		
+		String owner = modelFrom.getOwner();
+		HTUser htOwner = LoginHelper.get().getUser(owner);
+		notificationTo.setOwner(htOwner==null? owner: htOwner.getName());
 		notificationTo.setNotificationType(modelFrom.getNotificationType());
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setSubject(modelFrom.getSubject());
 		notificationTo.setCreated(modelFrom.getCreated());
 		notificationTo.setTargetUserId(modelFrom.getTargetUserId());
 		notificationTo.setRead(modelFrom.IsRead());
-		notificationTo.setCreatedBy(modelFrom.getCreatedBy());
+		
+		String createdBy = modelFrom.getCreatedBy();
+		HTUser user = LoginHelper.get().getUser(createdBy);
+		notificationTo.setCreatedBy(user==null?modelFrom.getCreatedBy(): user.getName());
 		notificationTo.setId(modelFrom.getId());
 		DocType documentType = DB.getDocumentDao().getDocumentType(modelFrom.getDocumentId());
 		notificationTo.setDocumentType(documentType);

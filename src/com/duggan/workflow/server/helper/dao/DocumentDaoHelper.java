@@ -9,6 +9,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
@@ -82,7 +83,7 @@ public class DocumentDaoHelper {
 		doc.setDescription(model.getDescription());
 		doc.setDocumentDate(model.getDocumentDate());
 		doc.setId(model.getId());
-		// doc.setOwner(model.getCreatedBy());
+		doc.setOwner(LoginHelper.get().getUser(model.getCreatedBy()));
 		doc.setSubject(model.getSubject());
 		doc.setType(model.getType());
 		doc.setDocumentDate(model.getDocumentDate());
@@ -168,7 +169,6 @@ public class DocumentDaoHelper {
 		doc.setSubject(subject);
 		doc.setId(id);
 		doc.setValue(value);
-
 		return doc;
 	}
 

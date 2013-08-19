@@ -121,6 +121,5 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(ActivitiesPresenter.class,
 				ActivitiesPresenter.MyView.class, ActivitiesView.class,
 				ActivitiesPresenter.MyProxy.class);
-		
 	}
 }

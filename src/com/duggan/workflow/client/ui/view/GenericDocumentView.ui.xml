@@ -48,11 +48,11 @@
 			 </div>			 
           </div>
 
-             
+       
            <div class="personal_info row-fluid span12">
                  <div class="span3">
                   <i class="icon-user"></i>
-                  Tom Kimani
+                  <strong ui:field="eOwner"></strong><br/>
                   </div>
                   
                  <div class="span3">
@@ -96,14 +96,18 @@
           
 
 
-            <div class="status-section span3 pull-right row-fluid">
-              <strong>Business Process:</strong>
+            <g:HTMLPanel styleName="status-section span3 pull-right row-fluid" ui:field="statusContainer">
+              <strong>Business Process:</strong>    
               <span class="label label-success"><i class="icon-ok-circle"></i>DRAFTING</span><i class="icon-arrow-down pull-right"></i>
               <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-arrow-down pull-right"></i>
               <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-arrow-down pull-right"></i>
               <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span>
-            </div>
-
+              <!-- span class="label label-success"><i class="icon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span -->
+            </g:HTMLPanel>
+            
         <span class="title">Recent Activity</span>
 
         <div class="row-fluid recent-activity span8">

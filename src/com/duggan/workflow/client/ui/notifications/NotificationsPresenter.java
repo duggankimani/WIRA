@@ -3,7 +3,9 @@ package com.duggan.workflow.client.ui.notifications;
 import java.util.List;
 
 import com.duggan.workflow.client.service.ServiceCallback;
+import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
+import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent.BeforeNotificationsLoadHandler;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent.NotificationsLoadHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.shared.model.Notification;
@@ -18,7 +20,7 @@ import com.gwtplatform.mvp.client.View;
 
 public class NotificationsPresenter extends
 		PresenterWidget<NotificationsPresenter.MyView> implements
-		NotificationsLoadHandler {
+		NotificationsLoadHandler, BeforeNotificationsLoadHandler {
 
 	public interface MyView extends View {
 	}
@@ -41,6 +43,7 @@ public class NotificationsPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(NotificationsLoadEvent.TYPE, this);
+		addRegisteredHandler(BeforeNotificationsLoadEvent.TYPE, this);
 	}
 
 	@Override
@@ -52,8 +55,6 @@ public class NotificationsPresenter extends
 	public void onNotificationsLoad(NotificationsLoadEvent event) {
 		
 		List<Notification> notes = event.getNotifications();
-		
-		// clear
 		NotificationsPresenter.this.setInSlot(NOTE_SLOT, null);
 		
 		if(notes!=null)
@@ -67,5 +68,10 @@ public class NotificationsPresenter extends
 				}
 			});
 		}
+	}
+	
+	@Override
+	public void onBeforeNotificationsLoad(BeforeNotificationsLoadEvent event) {
+		NotificationsPresenter.this.setInSlot(NOTE_SLOT, null);
 	}
 }

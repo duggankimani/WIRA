@@ -32,14 +32,18 @@ public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
 		 * end of process by an approver rejecting a document
 		 * 
 		 */
-		if(workItem.getParameter("PROCESS_COMPLETED")==null || !(Boolean)isApproved){
+		
+		String work = workItem.getId()+""+workItem.getName()+"; Process Completed = "+workItem.getParameter("PROCESS_COMPLETED")+
+				" :: Approved = "+isApproved;
+		Boolean processCompleted = workItem.getParameter("PROCESS_COMPLETED")==null ? false: 
+			(Boolean)workItem.getParameter("PROCESS_COMPLETED");
+		
+		//only update document if process is completed or the document was rejected
+		if(processCompleted || !(Boolean)isApproved){
 			DocumentDaoHelper.saveApproval(new Long(documentId.toString()), (Boolean)isApproved);
-			
-		}else if((Boolean)isApproved){
-			Object completed =workItem.getParameter("PROCESS_COMPLETED"); 
-			if(completed!=null && completed.toString().equalsIgnoreCase("true")){
-				DocumentDaoHelper.saveApproval(new Long(documentId.toString()), (Boolean)isApproved);
-			}
+			System.err.println("SAVE :: "+work);
+		}else{
+			System.err.println("Ignore :: "+work);
 		}
 		
 		manager.completeWorkItem(workItem.getId(), workItem.getParameters());

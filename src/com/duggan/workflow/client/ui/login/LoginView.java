@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.ui.component.IssuesPanel;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -98,6 +99,15 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
 	
 	public TextBox getPasswordBox(){
 		return password;
+	}
+
+	@Override
+	public void clearErrors() {
+		issues.clear();
+	}
+
+	public Element getLoadingSpinner() {
+		return loading;
 	}
 
 
