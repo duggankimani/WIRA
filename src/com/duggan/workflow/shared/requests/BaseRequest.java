@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.gwtplatform.dispatch.shared.ActionImpl;
 
 /**
@@ -10,11 +10,11 @@ import com.gwtplatform.dispatch.shared.ActionImpl;
  *
  * @param <T>
  */
-public class BaseRequest<T extends BaseResult> extends ActionImpl<T>{
+public class BaseRequest<T extends BaseResponse> extends ActionImpl<T>{
 	
 
-	public BaseResult createDefaultActionResponse(){
-		return new BaseResult();
+	public BaseResponse createDefaultActionResponse(){
+		return new BaseResponse();
 	}
 	
 	@Override

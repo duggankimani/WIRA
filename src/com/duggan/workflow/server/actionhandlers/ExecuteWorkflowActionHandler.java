@@ -6,7 +6,7 @@ import java.util.Map;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -21,7 +21,7 @@ public class ExecuteWorkflowActionHandler extends
 
 	@Override
 	public void execute(ExecuteWorkflow action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
 		Map<String, Object> vals = new HashMap<>();

@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.requests.BaseRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveNotificationRequestResult;
 
 import java.lang.Long;
@@ -24,7 +24,7 @@ public class SaveNotificationRequest extends
 	}
 
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 		return new SaveNotificationRequestResult();
 	}
 	

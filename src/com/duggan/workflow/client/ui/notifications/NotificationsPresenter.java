@@ -59,7 +59,6 @@ public class NotificationsPresenter extends
 		
 		if(notes!=null)
 		for (final Notification note : notes) {
-			//System.err.println("Note id= "+note.getId()+", subject="+note.getSubject());
 			notesFactory.get(new ServiceCallback<NotePresenter>() {
 				@Override
 				public void processResult(NotePresenter result) {

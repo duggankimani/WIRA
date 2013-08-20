@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.ParamValue;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
 
 /**
@@ -56,7 +56,7 @@ public class ExecuteWorkflow extends BaseRequest<ExecuteWorkflowResult> {
 	}
 	
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 		
 		return new ExecuteWorkflowResult();
 	}

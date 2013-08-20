@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 
 import java.lang.String;
 
@@ -25,7 +25,7 @@ public class ApprovalRequest extends BaseRequest<ApprovalRequestResult> {
 	}
 	
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 		
 		return new ApprovalRequestResult(false);
 	}

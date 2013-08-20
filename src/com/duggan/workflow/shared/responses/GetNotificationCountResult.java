@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.responses;
 
-public class GetNotificationCountResult extends BaseResult {
+public class GetNotificationCountResult extends BaseResponse {
 
 	private Integer count;
 

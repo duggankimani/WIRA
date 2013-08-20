@@ -5,7 +5,7 @@ import java.util.Date;
 import com.duggan.workflow.server.dao.model.ErrorLog;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetErrorRequestResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -20,7 +20,7 @@ public class GetErrorRequestActionHandler extends
 
 	@Override
 	public void execute(GetErrorRequest action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
 		ErrorLog log = ErrorLogDaoHelper.retrieveError(action.getErrorId());

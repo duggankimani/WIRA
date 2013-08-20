@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.requests.BaseRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.model.Document;
 
@@ -24,7 +24,7 @@ public class CreateDocumentRequest extends
 	}
 	
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 	
 		return new CreateDocumentResult();
 	}

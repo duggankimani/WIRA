@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.Document;
 
-public class CreateDocumentResult extends BaseResult {
+public class CreateDocumentResult extends BaseResponse {
 
 	private Document document;
 

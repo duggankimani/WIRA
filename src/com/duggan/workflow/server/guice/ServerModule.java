@@ -12,6 +12,7 @@ import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskActionHandler;
+import com.duggan.workflow.server.actionhandlers.MultiRequestActionHandler;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
@@ -34,6 +35,11 @@ import com.duggan.workflow.shared.requests.SearchDocumentRequest;
 import com.duggan.workflow.server.actionhandlers.SearchDocumentRequestActionHandler;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
+import com.duggan.workflow.shared.requests.SaveCommentRequest;
+import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.GetCommentsRequest;
+import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -83,5 +89,14 @@ public class ServerModule extends HandlerModule {
 		bindHandler(SaveNotificationRequest.class,
 				SaveNotificationRequestActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(SaveCommentRequest.class,
+				SaveCommentRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(MultiRequestAction.class,
+				MultiRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetCommentsRequest.class,
+				GetCommentsRequestActionHandler.class, SessionValidator.class);
 	}
 }

@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.requests.GetTask;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -17,7 +17,7 @@ public class GetTaskActionHandler extends
 	}
 
 	@Override
-	public void execute(GetTask action, BaseResult actionResult,
+	public void execute(GetTask action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 
 		HTask task = JBPMHelper.get().getTask(action.getTaskId());

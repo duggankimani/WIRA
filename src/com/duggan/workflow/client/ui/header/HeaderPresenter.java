@@ -15,8 +15,10 @@ import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetAlertCountResult;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.LogoutAction;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetNotificationsActionResult;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -93,7 +95,6 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 			public void onClick(ClickEvent event) {
 				getView().setPopupVisible();
 				setInSlot(NOTIFICATIONS_SLOT, notifications);	
-				loadAlerts();
 				onFocus =true;
 			}
 		});
@@ -116,36 +117,30 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 	
 	protected void loadAlertCount() {
 		alertTimer.cancel();
+		getView().setLoading(true);
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetAlertCount());
+		action.addRequest(new GetNotificationsAction(AppContext.getUserId()));
 		
-		dispatcher.execute(new GetAlertCount(), new TaskServiceCallback<GetAlertCountResult>() {
+		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
-			public void processResult(GetAlertCountResult result) {
-				HashMap<TaskType,Integer> alerts = result.getCounts();
+			public void processResult(MultiRequestActionResult results) {
 				
-				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));
 				
+				GetAlertCountResult result = (GetAlertCountResult)results.get(0);				
+				HashMap<TaskType,Integer> alerts = result.getCounts();				
+				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));				
 				fireEvent(new AlertLoadEvent(alerts));				
 				alertTimer.schedule(alertReloadInterval);
-			}
-		});
-		
-	}
-
-	
-	protected void loadAlerts() {
-		getView().setLoading(true);
-		fireEvent(new BeforeNotificationsLoadEvent());
-		dispatcher.execute(new GetNotificationsAction(AppContext.getUserId()),
-				new TaskServiceCallback<GetNotificationsActionResult>() {
-			@Override
-			public void processResult(
-					GetNotificationsActionResult result) {
-				fireEvent(new NotificationsLoadEvent(result.getNotifications()));
+				
+				GetNotificationsActionResult notificationsResult = (GetNotificationsActionResult)results.get(1);
+				assert notificationsResult!=null;
+				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
 				getView().setLoading(false);
 			}
 		});
+		
 	}
-
 
 	protected void logout() {
 		dispatcher.execute(new LogoutAction(), new TaskServiceCallback<LogoutActionResult>() {

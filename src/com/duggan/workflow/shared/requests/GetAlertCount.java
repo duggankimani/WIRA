@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.requests.GetAlertCountResult;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 
 public class GetAlertCount extends BaseRequest<GetAlertCountResult> {
 
@@ -13,7 +13,7 @@ public class GetAlertCount extends BaseRequest<GetAlertCountResult> {
 	}
 	
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 	
 		return new GetAlertCountResult(new HashMap<TaskType, Integer>());
 	}

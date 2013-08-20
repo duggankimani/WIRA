@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -23,7 +23,7 @@ public class GetDocumentRequestHandler extends
 
 	@Override
 	public void execute(GetDocumentRequest action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
 		Document document = DocumentDaoHelper.getDocument(action.getId());

@@ -4,7 +4,7 @@ import java.lang.Boolean;
 
 import com.duggan.workflow.shared.model.HTUser;
 
-public class LoginRequestResult extends BaseResult {
+public class LoginRequestResult extends BaseResponse {
 
 	private Boolean isValid=false;
 	private HTUser user;

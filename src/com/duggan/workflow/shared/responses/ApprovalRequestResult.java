@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import java.lang.Boolean;
 
-public class ApprovalRequestResult extends BaseResult {
+public class ApprovalRequestResult extends BaseResponse {
 
 	private Boolean successfulSubmit;
 

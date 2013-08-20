@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 
 public class GetDocumentRequest extends BaseRequest<GetDocumentResult> {
@@ -20,7 +20,7 @@ public class GetDocumentRequest extends BaseRequest<GetDocumentResult> {
 		return id;
 	}
 	
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 		return new GetDocumentResult();
 	};
 }

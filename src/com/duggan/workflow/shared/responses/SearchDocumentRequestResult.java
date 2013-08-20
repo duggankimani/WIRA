@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.responses;
 import com.duggan.workflow.shared.model.Document;
 import java.util.List;
 
-public class SearchDocumentRequestResult extends BaseResult {
+public class SearchDocumentRequestResult extends BaseResponse {
 
 	private List<Document> document;
 

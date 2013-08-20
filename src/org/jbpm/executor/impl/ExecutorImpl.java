@@ -82,8 +82,8 @@ public class ExecutorImpl implements Executor {
                + " \t - Interval: {1}"+" Seconds\n"+" \t - Retries per Request: {2}\n", 
                 new Object[]{threadPoolSize, interval, retries});
         
-        scheduler = Executors.newScheduledThreadPool(threadPoolSize);
-        handle = scheduler.scheduleAtFixedRate(task, 2, interval, TimeUnit.SECONDS);
+//        scheduler = Executors.newScheduledThreadPool(threadPoolSize);
+//        handle = scheduler.scheduleAtFixedRate(task, 2, interval, TimeUnit.SECONDS);
     }
     
     public synchronized Long scheduleRequest(CommandCodes commandId, CommandContext ctx) {      
