@@ -27,9 +27,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 
 public class LoginPresenter extends
-		Presenter<LoginPresenter.MyView, LoginPresenter.MyProxy> {
+		Presenter<LoginPresenter.ILoginView, LoginPresenter.MyProxy> {
 
-	public interface MyView extends View {
+	public interface ILoginView  extends View {
 		String getUsername();
 		String getPassword();
 		Anchor getLoginBtn();
@@ -58,7 +58,7 @@ public class LoginPresenter extends
 	final CurrentUser user;
 	
 	@Inject
-	public LoginPresenter(final EventBus eventBus, final MyView view,
+	public LoginPresenter(final EventBus eventBus, final ILoginView view,
 			final MyProxy proxy, final CurrentUser user) {
 		super(eventBus, view, proxy);
 		this.user = user;	

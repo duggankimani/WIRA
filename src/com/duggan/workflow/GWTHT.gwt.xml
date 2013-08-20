@@ -18,14 +18,15 @@
 	  <!-- Load dinamically predefined styles in the library when the application starts -->
 	  <stylesheet src="Upload.css"/>
 	  
-	<!-- GXT extensions -->
+	 <!-- GXT extensions -->
 	 <!-- inherits name='com.sencha.gxt.ui.GXT'/>
      <inherits name="com.sencha.gwt.uibinder.UiBinder" /-->
           
 	<!-- Other module inherits                                      -->
 	<inherits name='com.gwtplatform.mvp.Mvp'/>
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
-
+	<!-- inherits name="com.github.gwtbootstrap.Bootstrap" / -->
+	 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='com.duggan.workflow.client.GWTHT'/>
 

@@ -55,18 +55,18 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnPriority.removeStyleName("gwt-InlineLabel");
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
-		show(aClaim, false);
-		show(aStart, false);
+		show(aClaim, true);
+		show(aStart, true);
 		show(aSuspend, false);
 		show(aResume, false);
 		show(aComplete, false);
 		show(aDelegate, false);
-		show(aReject, false);
+		show(aReject, true);
 		show(aRevoke, false);
 		show(aStop, false);
-		show(aForward, false);
-		show(aForwardForApproval, false);
-		show(aApprove, false);
+		show(aForward, true);
+		show(aForwardForApproval, true);
+		show(aApprove, true);
 		show(aView, false);
 		
 	}

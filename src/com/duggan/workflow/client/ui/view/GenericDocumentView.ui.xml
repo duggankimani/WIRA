@@ -93,9 +93,6 @@
             	</div>
            </div>
 
-          
-
-
             <g:HTMLPanel styleName="status-section span3 pull-right row-fluid" ui:field="statusContainer">
               <strong>Business Process:</strong>    
               <span class="label label-success"><i class="icon-ok-circle"></i>DRAFTING</span><i class="icon-arrow-down pull-right"></i>

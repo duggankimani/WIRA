@@ -30,6 +30,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -92,10 +93,8 @@ public class TaskItemPresenter extends
 		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		 
 		getView().getFocusContainer().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
-				//getView().setSelected(true);				
 				if(task instanceof Document){
 					Document doc = (Document)task;
 					fireEvent(new DocumentSelectionEvent(doc.getId(), DocMode.READWRITE));

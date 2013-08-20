@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class LoginView extends ViewImpl implements LoginPresenter.MyView {
+public class LoginView extends ViewImpl implements LoginPresenter.ILoginView{
 
 	private final Widget widget;
 
