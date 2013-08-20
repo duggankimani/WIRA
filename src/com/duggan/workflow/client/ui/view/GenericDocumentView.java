@@ -20,6 +20,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -39,9 +40,9 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnDocType;
 	@UiField
 	SpanElement spnSubject;
-	//@UiFieldSpanElement spnDocDate;
+
 	@UiField
-	SpanElement spnValue;
+	SpanElement spnValue;	
 	@UiField
 	SpanElement spnPartner;
 	@UiField
@@ -94,6 +95,8 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
+		
+		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
 
 	@Override
@@ -235,10 +238,12 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@Override
 	public void setStates(List<NodeDetail> states) {
-		if(states!=null)
+		statusContainer.clear();
+		if(states!=null){
 			for(NodeDetail state:states){
 				statusContainer.add(new ProcessState(state));
 			}
+		}
 	}
 	
 	public void show(Anchor target){

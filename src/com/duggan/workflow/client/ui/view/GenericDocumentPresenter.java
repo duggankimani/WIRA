@@ -25,10 +25,12 @@ import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
+import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
+import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -274,16 +276,7 @@ public class GenericDocumentPresenter extends
 					bindDocumentResult(result);
 					
 					GetCommentsResponse commentsResult = (GetCommentsResponse)results.get(1);
-					bindCommentsResult(commentsResult);
-					
-					List<NodeDetail> details = new ArrayList<NodeDetail>();
-					details.add(new NodeDetail("Created", true,false));
-					details.add(new NodeDetail("HOD Development", false,false));
-					details.add(new NodeDetail("Finance", false,false));
-					details.add(new NodeDetail("Gatheru", false,false));
-					details.add(new NodeDetail("Complete", false,true));
-					setProcessState(details);
-					
+					bindCommentsResult(commentsResult);					
 				}
 			});
 		}
@@ -332,7 +325,22 @@ public class GenericDocumentPresenter extends
 		fireEvent(e);		
 		if(e.getValidActions()!=null){
 			getView().setValidTaskActions(e.getValidActions());
-		}		
+		}	
+		
+		Long processInstanceId = document.getProcessInstanceId();
+		System.err.println();
+		if(processInstanceId!=null){
+			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
+					new TaskServiceCallback<GetProcessStatusRequestResult>() {
+				@Override
+				public void processResult(
+						GetProcessStatusRequestResult result) {
+					List<NodeDetail> details = result.getNodes();
+					setProcessState(details);
+				}
+			});
+						
+		}
 	}
 
 	public void setProcessState(List<NodeDetail> states){

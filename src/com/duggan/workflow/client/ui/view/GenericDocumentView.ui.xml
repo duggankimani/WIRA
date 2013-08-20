@@ -127,14 +127,6 @@
 
             <g:HTMLPanel styleName="status-section span3 pull-right row-fluid" ui:field="statusContainer">
               <strong>Business Process:</strong>    
-              <span class="label label-success"><i class="icon-ok-circle"></i>DRAFTING</span><i class="icon-arrow-down pull-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-arrow-down pull-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-arrow-down pull-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span>
-              <!-- span class="label label-success"><i class="icon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span -->
             </g:HTMLPanel>
             
         <span class="title">Recent Activity</span>

@@ -44,10 +44,11 @@ public class ProcessState extends Composite {
 			
 		}
 		
-		if(state.isEndNode()){
+		if(state.isEndNode() || state.isCurrentNode()){
 			html =  lastApprovalTemplate.display(state.getName());			
 		}
 		
+		//default
 		if(html==null)
 			html = approvalTemplate.display(state.getName());
 		
@@ -59,24 +60,25 @@ public class ProcessState extends Composite {
 	}
 
 	interface STARTNODETEMPLATE extends SafeHtmlTemplates {
-		@Template("<span class=\"label label-success\">"
-				+ "<i class=\"icon-ok-circle\"></i>"
-				+ "{0}</span><i class=\"icon-chevron-right\"></i>")
+		
+		@Template("<span class=\"label label-success\">" +
+				"<i class=\"icon-ok-circle\"></i>{0}</span>" +
+						"<i class=\"icon-arrow-down pull-right\"></i>")		
 		public SafeHtml display(String name);
 	}
 
 	interface APPROVALNODETEMPLATE extends SafeHtmlTemplates {
-		@Template("<span class=\"label label-default\">"
-				+ "<i class=\"icon-remove-circle\"></i>{0}"
-				+ "</span><i class=\"icon-chevron-right\"></i>")
+		@Template("<span class=\"label label-success\">" +
+				"<i class=\"icon-ok-circle\"></i>" +
+						"{0}</span><i class=\"icon-arrow-down pull-right\"></i>")
 		public SafeHtml display(String name);
 	}
 	
 	
 	interface APPROVALNOTELAST extends SafeHtmlTemplates{
 		@Template("<span class=\"label label-default\">" +
-				"<i class=\"icon-remove-circle\"></i>{0}</span>"
-				)
+				"<i class=\"icon-remove-circle\"></i>" +
+						"{0}</span>")
 		public SafeHtml display(String name);
 	}
 	

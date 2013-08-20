@@ -91,6 +91,7 @@ public class DocumentDaoHelper {
 		doc.setPriority(model.getPriority());
 		doc.setValue(model.getValue());
 		doc.setStatus(model.getStatus());
+		doc.setProcessInstanceId(model.getProcessInstanceId());
 
 		return doc;
 	}
