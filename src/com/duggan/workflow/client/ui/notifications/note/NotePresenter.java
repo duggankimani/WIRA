@@ -1,27 +1,23 @@
 package com.duggan.workflow.client.ui.notifications.note;
 
-import java.util.Date;
+import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsString;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.responses.SaveNotificationRequestResult;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 public class NotePresenter extends
 		PresenterWidget<NotePresenter.MyView> {
@@ -97,59 +93,4 @@ public class NotePresenter extends
 						notification.getApproverAction(),notification.getProcessInstanceId());
 	}
 	
-	public String getTimeDifferenceAsString(Date createdDate){
-
-		if(createdDate==null){
-			return "";
-		}
-	
-		Date today =new Date(); 
-		long now = today.getTime();
-		long created = createdDate.getTime();
-		long diff = now -created;
-		
-		StringBuffer buff = new StringBuffer();
-		
-		long dayInMillis = 24*3600*1000;
-		long hourInMillis = 3600*1000;
-		long minInMillis = 60*1000;
-		
-		if(diff>5*dayInMillis){
-			return DateUtils.DATEFORMAT.format(createdDate);
-		}
-		
-		if(diff>dayInMillis){
-			int days = CalendarUtil.getDaysBetween(createdDate, today);
-			if(days==1){
-				return "yesterday";
-			}
-			
-			return days+" days ago";
-		}
-				
-		if(!CalendarUtil.isSameDate(createdDate, new Date())){
-			return "yesterday";
-		}
-		
-		if(diff>hourInMillis){
-			long hrs = diff/hourInMillis;
-			buff.append(hrs+" "+((hrs)==1? "hr":"hrs"));
-			diff= diff%hourInMillis;
-		}
-		
-		if(diff>minInMillis){
-			long mins = diff/minInMillis;
-			buff.append(mins+" "+((mins)==1? "min":"mins"));
-			diff= diff%minInMillis;
-		}
-		
-		if(buff.length()==0){
-			long secs = diff/1000;
-			buff.append(secs+" "+(secs==1? "sec":"secs"));
-		}
-		
-		buff.append(" ago");
-		return buff.toString();
-	
-	}
 }

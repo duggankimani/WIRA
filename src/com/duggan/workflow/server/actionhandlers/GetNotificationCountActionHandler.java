@@ -2,7 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.shared.requests.GetNotificationCount;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetNotificationCountResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -17,7 +17,7 @@ public class GetNotificationCountActionHandler extends
 	
 	@Override
 	public void execute(GetNotificationCount action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
 		Integer count = NotificationDaoHelper.getNotificationCount(action.getUserId());

@@ -9,7 +9,7 @@ import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.LoginRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -28,7 +28,7 @@ public class LoginRequestActionHandler extends
 
 	@Override
 	public void execute(LoginRequest action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		String userId = action.getUsername();
 		String password = action.getPassword();

@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	<g:HTMLPanel ui:field="root" styleName="row-fluid">
+         <div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
+         <div class="span8">
+           <span class="name">
+               <span ui:field="spnCreatedBy"></span>                 
+           </span>
+           <span ui:field="spnMessage" class="message hidden"/><br/>
+           <g:Anchor ui:field="aEdit" styleName="hidden">Comment</g:Anchor>
+           <span ui:field="spnTime" class="hidden">
+           <i class="icon-time"><span ui:field="spnCreated"></span></i>
+           </span>
+           
+           <g:TextArea ui:field="txtCommentBox"
+             	    styleName="mmadministrationcommenttextarea"/>
+           <div ui:field="divSave" class="button small-button hand">
+			 <g:Anchor ui:field="lnkSaveComment"><Strong>Save</Strong></g:Anchor>
+		   </div>
+        </div>
+	</g:HTMLPanel>
+</ui:UiBinder>

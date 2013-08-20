@@ -7,7 +7,7 @@ import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -28,7 +28,7 @@ public class GetContextRequestActionHandler extends
 
 	@Override
 	public void execute(GetContextRequest action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
 		HttpSession session = httpRequest.get().getSession(false);

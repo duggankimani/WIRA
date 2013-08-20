@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.view;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.view.GenericDocumentPresenter.*;
 
 import java.util.Date;
 import java.util.List;
@@ -67,6 +68,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField SpanElement spnPriority;
 	
 	@UiField SpanElement spnStatus;
+	
+	@UiField HTMLPanel panelActivity;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -292,5 +295,34 @@ public class GenericDocumentView extends ViewImpl implements
 	public HasClickHandlers getRejectLink(){
 		return aReject;
 	}
+	
+	@Override
+	public void setInSlot(Object slot, Widget content) {
 
+		if(slot==ACTIVITY_SLOT){
+			panelActivity.clear();
+			
+			if(content!=null){
+				panelActivity.add(content);
+			}
+		}else{		
+			super.setInSlot(slot, content);
+		}
+	}
+
+	@Override
+	public void addToSlot(Object slot, Widget content) {
+		
+		if(slot==ACTIVITY_SLOT){
+			
+			if(content!=null){
+				panelActivity.add(content);
+			}
+		}else{
+			super.addToSlot(slot, content);
+		}
+		
+	}
+	
+	
 }

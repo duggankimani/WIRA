@@ -8,7 +8,7 @@ import com.gwtplatform.dispatch.shared.Result;
  * @author duggan
  *
  */
-public class BaseResult implements Result{
+public class BaseResponse implements Result{
 	
 	/**
 	 * 0 - OK

@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.requests.BaseRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SearchDocumentRequestResult;
 
 import java.lang.String;
@@ -24,7 +24,7 @@ public class SearchDocumentRequest extends
 	}
 
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 		return new SearchDocumentRequestResult();
 	}
 	

@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
 
 import java.lang.String;
@@ -34,7 +34,7 @@ public class LoginRequest extends BaseRequest<LoginRequestResult> {
 	}
 	
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 
 		return new LoginRequestResult();
 	}

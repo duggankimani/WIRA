@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.HTask;
 
-public class GetTaskResult extends BaseResult {
+public class GetTaskResult extends BaseResponse {
 
 	private HTask task;
 

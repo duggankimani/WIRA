@@ -5,7 +5,7 @@ import java.lang.String;
 
 import com.duggan.workflow.shared.model.HTUser;
 
-public class GetContextRequestResult extends BaseResult {
+public class GetContextRequestResult extends BaseResponse {
 
 	private Boolean isValid;
 	private HTUser user;

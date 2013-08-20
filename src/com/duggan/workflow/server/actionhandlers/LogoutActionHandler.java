@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.duggan.workflow.shared.requests.LogoutAction;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -23,7 +23,7 @@ public class LogoutActionHandler extends
 
 	@Override
 	public void execute(LogoutAction action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		HttpSession session =httpRequest.get().getSession(false);
 		

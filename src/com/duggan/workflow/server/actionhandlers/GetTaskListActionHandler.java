@@ -12,7 +12,7 @@ import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.requests.GetTaskList;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -32,7 +32,7 @@ public class GetTaskListActionHandler extends
 
 	@Override
 	public void execute(GetTaskList action,
-			BaseResult actionResult, ExecutionContext execContext)
+			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
 		TaskType type = action.getType();

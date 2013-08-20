@@ -2,36 +2,34 @@ package com.duggan.workflow.client.ui.view;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
-import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.BooleanValue;
+import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
-import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
-import com.duggan.workflow.shared.requests.ExecuteWorkflow;
+import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
-import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
+import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -82,11 +80,16 @@ public class GenericDocumentPresenter extends
 	@Inject PlaceManager placeManager;
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
+	private IndirectProvider<CommentPresenter> commentPresenterFactory;
+	
+	public static final Object ACTIVITY_SLOT = new Object();
 	
 	@Inject
-	public GenericDocumentPresenter(final EventBus eventBus, final MyView view, Provider<CreateDocPresenter> docProvider) {
+	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
+			Provider<CreateDocPresenter> docProvider, Provider<CommentPresenter> commentProvider) {
 		super(eventBus, view);		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
+		commentPresenterFactory = new StandardProvider<CommentPresenter>(commentProvider);
 	}
 
 	@Override
@@ -256,35 +259,22 @@ public class GenericDocumentPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
+		
+		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(new GetDocumentRequest(documentId));
+		requests.addRequest(new GetCommentsRequest(documentId));
+		
 		if(documentId != null){
-			requestHelper.execute(new GetDocumentRequest(documentId), 
-					new TaskServiceCallback<GetDocumentResult>() {
+			requestHelper.execute(requests, 
+					new TaskServiceCallback<MultiRequestActionResult>() {
 				
-				public void processResult(GetDocumentResult result) {
-					Document document = result.getDocument();
-					doc = document;
+				public void processResult(MultiRequestActionResult results) {					
 					
-					Date created = document.getCreated();
-					DocType docType = document.getType();	
-					String subject = document.getSubject();						
-					Date docDate = document.getDocumentDate();					
-					String partner = document.getPartner();
-					String value= document.getValue();			
-					String description = document.getDescription();
-					Integer priority = document.getPriority();									
-					DocStatus status = document.getStatus();
+					GetDocumentResult result = (GetDocumentResult)results.get(0);
+					bindDocumentResult(result);
 					
-					getView().setValues(doc.getOwner(),created,
-							docType, subject, docDate,  value, partner, description, priority,status);
-					
-					if(status==DocStatus.DRAFTED){
-						getView().showEdit(true);
-					}else{
-						clear();
-					}
-					
-					AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId);
-					fireEvent(e);
+					GetCommentsResponse commentsResult = (GetCommentsResponse)results.get(1);
+					bindCommentsResult(commentsResult);
 					
 					List<NodeDetail> details = new ArrayList<NodeDetail>();
 					details.add(new NodeDetail("Created", true,false));
@@ -294,15 +284,57 @@ public class GenericDocumentPresenter extends
 					details.add(new NodeDetail("Complete", false,true));
 					setProcessState(details);
 					
-					if(e.getValidActions()!=null){
-						getView().setValidTaskActions(e.getValidActions());
-					}
-					
 				}
 			});
 		}
 	}
 	
+	protected void bindCommentsResult(GetCommentsResponse commentsResult) {
+		setInSlot(ACTIVITY_SLOT, null);
+		List<Comment> comments = commentsResult.getComments();
+		for(final Comment comment: comments){
+			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
+				@Override
+				public void processResult(CommentPresenter result) {
+					result.setComment(comment);
+					addToSlot(ACTIVITY_SLOT,result);
+				}
+			});
+		}
+	}
+
+	protected void bindDocumentResult(GetDocumentResult result) {
+
+		Document document = result.getDocument();
+		doc = document;
+		
+		Date created = document.getCreated();
+		DocType docType = document.getType();	
+		String subject = document.getSubject();						
+		Date docDate = document.getDocumentDate();					
+		String partner = document.getPartner();
+		String value= document.getValue();			
+		String description = document.getDescription();
+		Integer priority = document.getPriority();									
+		DocStatus status = document.getStatus();
+		
+		getView().setValues(doc.getOwner(),created,
+				docType, subject, docDate,  value, partner, description, priority,status);
+		
+		if(status==DocStatus.DRAFTED){
+			getView().showEdit(true);
+		}else{
+			clear();
+		}
+		
+		//get document actions - if any
+		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId);
+		fireEvent(e);		
+		if(e.getValidActions()!=null){
+			getView().setValidTaskActions(e.getValidActions());
+		}		
+	}
+
 	public void setProcessState(List<NodeDetail> states){
 		getView().setStates(states);
 	}

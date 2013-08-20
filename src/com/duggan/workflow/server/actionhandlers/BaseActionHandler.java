@@ -10,7 +10,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.requests.BaseRequest;
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -27,7 +27,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  * @param <A>
  * @param <B>
  */
-public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends BaseResult>
+public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends BaseResponse>
 		implements ActionHandler<A, B> {
 
 	private static Logger log = LoggerFactory
@@ -38,12 +38,17 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	@Override
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
-		SessionHelper.setHttpRequest(request.get());
-				
+		B result = (B) action.createDefaultActionResponse();		
 		log.info("Executing command " + action.getClass().getName());
-		
-		B result = (B) action.createDefaultActionResponse();
 
+		if(SessionHelper.getHttpRequest()!=null){
+			//embedded call -- needed when executing multiple commands in one call
+			execute(action, result, execContext);
+			return result;
+		}
+				
+		SessionHelper.setHttpRequest(request.get());
+	
 		boolean hasError= false;
 		Throwable throwable=null;
 		
@@ -68,7 +73,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			SessionHelper.afterRequest();
 		}
 		
-		postExecute((BaseResult) result);
+		postExecute((BaseResponse) result);
 		
 		return result;
 
@@ -99,7 +104,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			}
 			
 			//set error msg
-			BaseResult baseResult = (BaseResult)result;
+			BaseResponse baseResult = (BaseResponse)result;
 			baseResult.setErrorCode(1);
 			baseResult.setErrorId(errorId);
 			
@@ -111,7 +116,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 
 	}
 
-	public abstract void execute(A action, BaseResult actionResult,
+	public abstract void execute(A action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException;
 
 	@Override
@@ -126,7 +131,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	 * 
 	 * @param result
 	 */
-	private void postExecute(BaseResult result) {
+	private void postExecute(BaseResponse result) {
 
 	}
 }

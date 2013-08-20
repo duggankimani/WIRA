@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.DocSummary;
 
-public class ExecuteWorkflowResult extends BaseResult {
+public class ExecuteWorkflowResult extends BaseResponse {
 
 	DocSummary document;
 	

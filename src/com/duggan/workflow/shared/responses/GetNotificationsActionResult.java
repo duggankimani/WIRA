@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.responses;
 import com.duggan.workflow.shared.model.Notification;
 import java.util.List;
 
-public class GetNotificationsActionResult extends BaseResult{
+public class GetNotificationsActionResult extends BaseResponse{
 
 	private List<Notification> notifications;
 

@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.Notification;
 
-public class SaveNotificationRequestResult extends BaseResult {
+public class SaveNotificationRequestResult extends BaseResponse {
 
 	Notification notification;
 	

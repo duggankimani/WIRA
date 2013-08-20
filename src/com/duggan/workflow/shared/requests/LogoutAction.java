@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
 
 public class LogoutAction extends BaseRequest<LogoutActionResult> {
@@ -9,7 +9,7 @@ public class LogoutAction extends BaseRequest<LogoutActionResult> {
 	}
 	
 	@Override
-	public BaseResult createDefaultActionResponse() {
+	public BaseResponse createDefaultActionResponse() {
 	
 		return new LogoutActionResult();
 	}

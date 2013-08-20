@@ -45,6 +45,8 @@ import com.duggan.workflow.shared.model.CurrentUser;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.duggan.workflow.client.ui.comments.CommentPresenter;
+import com.duggan.workflow.client.ui.comments.CommentView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -121,5 +123,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(ActivitiesPresenter.class,
 				ActivitiesPresenter.MyView.class, ActivitiesView.class,
 				ActivitiesPresenter.MyProxy.class);
+
+		bindPresenterWidget(CommentPresenter.class,
+				CommentPresenter.ICommentView.class, CommentView.class);
 	}
 }

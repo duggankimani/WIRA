@@ -3,9 +3,11 @@ package com.duggan.workflow.server.db;
 import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
+import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 
 class DaoFactory {
 
@@ -13,6 +15,7 @@ class DaoFactory {
 	ErrorDaoImpl errorDao = null;
 	NotificationDaoImpl notificationDao;
 	AttachmentDaoImpl attachmentDao;
+	CommentDaoImpl commentDaoImpl;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -62,6 +65,19 @@ class DaoFactory {
 		}
 		
 		return attachmentDao;
+	}
+
+	public CommentDaoImpl getCommentDao(EntityManager entityManager) {
+
+		if(commentDaoImpl==null){
+			synchronized (DaoFactory.class) {
+				if(commentDaoImpl==null){
+					commentDaoImpl = new CommentDaoImpl(entityManager);
+				}
+			}
+		}
+		
+		return commentDaoImpl;
 	}
 
 }

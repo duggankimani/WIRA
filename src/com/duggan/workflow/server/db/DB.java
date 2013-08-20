@@ -18,9 +18,11 @@ import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
+import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 /**
@@ -230,6 +232,9 @@ public class DB{
 		return factory().getNotificationDao(getEntityManager());
 	}
 
+	public static CommentDaoImpl getCommentDao(){
+		return factory().getCommentDao(getEntityManager());
+	}
 	
 
 	private static void closeFactory() {
