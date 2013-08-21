@@ -495,6 +495,10 @@ textarea {
 	background-color: #fafafa;
 }
 
+#middle-nav .message-container .inside-container{
+	display: inline-table;
+}
+
 #middle-nav .message-container:hover {
 	background-color: #fafafa;
 }
@@ -509,9 +513,9 @@ textarea {
     font-weight:bold;
     font-size:12px;
 }
-
 #middle-nav .message-container .wfactions {
     float:right;
+    display: inline;
 }
 
 #middle-nav .icon-refresh{
@@ -520,13 +524,17 @@ textarea {
 
 #middle-nav p {
 	margin: 0 0 2px;
-	padding-left: 20px;
-	padding-bottom: 10px;
+	padding-left: 2px;
+	padding-bottom: 8px;
+	display: inline-block;
 }
 
 #middle-nav .icon-book{
-    font-size:16px;
+    font-size: 12px;
     
+    padding-left: 5px;
+    position: relative;
+    top: -20px;
 }
 
 #middle-nav .unread {

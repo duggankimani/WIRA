@@ -57,6 +57,8 @@ $(function () {
     }
 
   });
+  
+  $('#example').tooltip();
 
 
   // sidebar menu dropdown toggle

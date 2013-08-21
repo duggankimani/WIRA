@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,6 +49,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	@UiField Anchor aView;
 	
 	@UiField FocusPanel container;
+	
+	@UiField HTMLPanel insidecontainer;
 		
 	@Inject
 	public TaskItemView(final Binder binder) {
@@ -55,6 +58,11 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnPriority.removeStyleName("gwt-InlineLabel");
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
+		insidecontainer.setStyleName("inside-container");
+		
+		aClaim.getElement().setAttribute("data-toggle", "tooltip");
+		aClaim.getElement().setAttribute("title", "Claim");
+		aClaim.getElement().setId("example");
 		show(aClaim, true);
 		show(aStart, true);
 		show(aSuspend, false);
