@@ -11,6 +11,7 @@ public class NodeDetail implements Serializable {
 	private String name;
 	private boolean isStartNode;
 	private boolean isEndNode;
+	private boolean isCurrentNode;
 
 	public NodeDetail() {
 	}
@@ -51,5 +52,13 @@ public class NodeDetail implements Serializable {
 
 	public void setEndNode(boolean isEndNode) {
 		this.isEndNode = isEndNode;
+	}
+
+	public boolean isCurrentNode() {
+		return isCurrentNode;
+	}
+
+	public void setCurrentNode(boolean isCurrentNode) {
+		this.isCurrentNode = isCurrentNode;
 	}
 }

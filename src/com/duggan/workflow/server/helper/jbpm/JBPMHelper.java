@@ -33,6 +33,7 @@ import org.jbpm.executor.commands.SendMailCommand;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.audit.NodeInstanceLog;
+import org.jbpm.process.core.Process;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
@@ -56,6 +57,7 @@ import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.task.utils.ContentMarshallerHelper;
 import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
+import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 
@@ -80,6 +82,7 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
+import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.test.LDAPAuth;
 
@@ -618,68 +621,70 @@ public class JBPMHelper implements Closeable{
 				
 	}
 	
-	
-	public void getWorkFlowHistory(long processInstanceId){
-		List<NodeInstanceLog> nodeInstanceLogs = JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
-		for(NodeInstanceLog log: nodeInstanceLogs){
-			
-			String name = log.getNodeName();
-			Date date = log.getDate();
-			int type = log.getType(); // 0=in, 1=out
-			String nodeInstanceId = log.getNodeInstanceId();
-			//get output data for each node
-			
-			
-			
-			System.err.println(nodeInstanceId+" : Name - "+name + ", Date - "+date+ ", Type - "+type);
-		}
-	}
-	
 	public List<Node> getProcessDia(long processInstanceId){
 		
 		List<Node> nodes = new ArrayList<>();
 		
 		String processDefId = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId).getProcessId();
 		org.drools.definition.process.Process process = kbase.getProcess(processDefId);
-		
+				
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl)process;
-		
-		
+			
 		for(Node node : wfprocess.getNodes()){
 			
 			long nodeId = node.getId();
 			List<NodeInstanceLog> nodeLogInstance =
 					JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, new Long(nodeId).toString());
 		
-			String nodeName = node.getName();
-			
-			//System.err.println(nodeName+"# size= "+nodeLogInstance.size());
-			
-			StartNode s;
-			
-			//ht.get
-			
-			if(nodeLogInstance.size() == 1){
+			String nodeName = node.getName();					
+			if(nodeLogInstance.size() > 0){
 				//Executed nodes only
 				Object x = node.getMetaData().get("x");
 				Object y = node.getMetaData().get("x");
 				Object width = node.getMetaData().get("width");
 				Object height = node.getMetaData().get("height");
-								
-			}
 			
-
-			if(node instanceof HumanTaskNode){
-				HumanTaskNode ht = (HumanTaskNode) node;	
-				nodes.add(ht);
-				//System.err.println("################### Done: "+nodeName+" :: ");
+				//System.err.println(node.getName());
+				//Ignore all other nodes - Only work pick human Task Nodes
+				if(node instanceof HumanTaskNode || node instanceof StartNode || node instanceof EndNode){
+					//HumanTaskNode ht = (HumanTaskNode) node;	
+					nodes.add(node);
+				}
 			}
-						
-			//nodeInstance.get
 		}
 		
 		return nodes;
 
+	}
+
+
+	public List<NodeDetail> getWorkflowProcessDia(Long processInstanceId) {
+		List<Node> nodes = getProcessDia(processInstanceId);
+		
+		List<NodeDetail> details= new ArrayList<>();
+		
+		boolean hasEndNode=false;
+		for(Node node: nodes){
+			//find status of the node if human node:: approved/ Rejected
+			
+			NodeDetail detail = new NodeDetail();
+			String name = node.getName();
+			detail.setName(name);
+			details.add(detail);
+			detail.setStartNode(node instanceof StartNode);
+			detail.setEndNode(node instanceof EndNode);			
+			//assuming current task is the last task unless its the end node
+			
+			if(node instanceof EndNode){
+				hasEndNode=true;
+			}
+		}
+		
+		if(!hasEndNode && details.size()>0){
+			details.get(details.size()-1).setCurrentNode(true);
+		}
+		
+		return details;
 	}
 		
 	

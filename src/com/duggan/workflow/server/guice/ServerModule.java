@@ -6,6 +6,7 @@ import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
+import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetTask;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
@@ -27,8 +28,6 @@ import com.duggan.workflow.server.actionvalidator.SessionValidator;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
-import com.duggan.workflow.shared.requests.GetNotificationCount;
-import com.duggan.workflow.server.actionhandlers.GetNotificationCountActionHandler;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
 import com.duggan.workflow.shared.requests.SearchDocumentRequest;
@@ -40,6 +39,7 @@ import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -75,9 +75,6 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetErrorRequest.class, GetErrorRequestActionHandler.class,
 				SessionValidator.class);
 
-		bindHandler(GetNotificationCount.class,
-				GetNotificationCountActionHandler.class, SessionValidator.class);
-
 		bindHandler(GetNotificationsAction.class,
 				GetNotificationsActionHandler.class,
 				SessionValidator.class);
@@ -98,5 +95,9 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetCommentsRequest.class,
 				GetCommentsRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetProcessStatusRequest.class,
+				GetProcessStatusRequestActionHandler.class,
+				SessionValidator.class);
 	}
 }

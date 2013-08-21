@@ -30,13 +30,13 @@ public class TestGetApprovalNodes {
 		 *Approach 2 - Get all completed Human Task nodes 
 		 */
 		//long processInstanceId =  118L;
-		long processInstanceId =  121L;
-		List<Node> nodes = JBPMHelper.get().getProcessDia(processInstanceId);
-		
-		for(Node node: nodes){
-			System.err.println("############ "+node.getName());
-		}
-		
+		long processInstanceId =  1L;
+//		List<Node> nodes = JBPMHelper.get().getProcessDia(processInstanceId);
+//		
+//		for(Node node: nodes){
+//			System.err.println("############ "+node.getName());
+//		}
+		JBPMHelper.get().getWorkflowProcessDia(processInstanceId);
 	}
 
 	@After
