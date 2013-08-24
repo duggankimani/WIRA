@@ -45,8 +45,28 @@
 
 	<filter-mapping>
 		<filter-name>guiceFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/dispatch/*</url-pattern>
 	</filter-mapping>
+	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.upload.UploadServlet</servlet-class>
+	    <servlet-name>uploader</servlet-name>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>uploader</servlet-name>
+	    <url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.upload.GetReport</servlet-class>
+	    <servlet-name>getReport</servlet-name>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>getReport</servlet-name>
+	    <url-pattern>/getreport</url-pattern>
+	</servlet-mapping>
 	
 	<!-- For Servlet 3.0 -Securing cookies http://www.jtmelton.com/2012/01/17/year-of-security-for-java-week-3-session-cookie-secure-flag/ -->
 	<!-- session-config>

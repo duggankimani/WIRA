@@ -55,6 +55,11 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnPriority.removeStyleName("gwt-InlineLabel");
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
+		disable();
+		
+	}
+	
+	private void disable() {
 		show(aClaim, false);
 		show(aStart, false);
 		show(aSuspend, false);
@@ -68,9 +73,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		show(aForwardForApproval, false);
 		show(aApprove, false);
 		show(aView, false);
-		
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		//return container;
@@ -82,6 +86,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		//spnTaskName.setText(summaryTask.getTaskName());
 		//spnTaskName.setText("Contract Approval");
 		//spnDateDue.setText(format(summaryTask.getDateDue()));
+		
+		disable();
 		
 		spnSubject.setText(summaryTask.getSubject());
 		
@@ -96,6 +102,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		}
 		
 		summaryTask.getId();
+		
+		System.err.println("Priority :: "+summaryTask.getPriority());
 		
 		Priority priority = Priority.get(summaryTask.getPriority());
 		

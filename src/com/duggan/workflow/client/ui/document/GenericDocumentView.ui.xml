@@ -2,6 +2,7 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.upload'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -111,19 +112,15 @@
 	           	<strong>Description:</strong><span ui:field="spnDescription"></span>
 	           	</div>
 	           	
-	           	<div class="attachment-section row-fluid span6">
-		             <img src="img/pdf.gif"></img>
-		               <b>Scanned_Invoice.pdf</b><br/>
-		               <div class="row-fluid attachment-links span5">
-		               	   <span ui:field="spansize">9488K</span>
-			               <a href="#">View</a>&nbsp;&nbsp;
-	            	 	   <a href="#">Download</a>
-            	 	   </div>
+	           	<g:HTMLPanel ui:field="panelAttachments"> <!--styleName="attachment-section row-fluid span6" -->
+		            
+            	</g:HTMLPanel>
+            	
+            	<!-- div class="attachment-section row-fluid span6"-->
+            	<div class="uploader">
+            		<d:Uploader ui:field="uploader"></d:Uploader>
             	</div>
            </div>
-
-          
-
 
             <g:HTMLPanel styleName="status-section span3 pull-right row-fluid" ui:field="statusContainer">
               <strong>Business Process:</strong>    

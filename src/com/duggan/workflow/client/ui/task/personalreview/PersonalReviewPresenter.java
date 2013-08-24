@@ -27,9 +27,9 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
-import com.duggan.workflow.shared.requests.GetTask;
+import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
-import com.duggan.workflow.shared.responses.GetTaskResult;
+import com.duggan.workflow.shared.responses.GetItemResult;
 
 public class PersonalReviewPresenter
 		extends

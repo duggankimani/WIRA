@@ -44,3 +44,7 @@
 	cursor:pointer;
 	cursor:hand;
 }
+
+.uploader{
+	display:block;
+}

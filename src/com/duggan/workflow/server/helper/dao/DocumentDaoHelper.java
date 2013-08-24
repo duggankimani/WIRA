@@ -165,11 +165,15 @@ public class DocumentDaoHelper {
 		
 		String value = content.get("value") == null ? null : (String) content
 				.get("value");
+		
+		Integer priority = content.get("priority")==null? null:
+					(Integer)content.get("priority");
 
 		doc.setDescription(description);
 		doc.setSubject(subject);
 		doc.setId(id);
 		doc.setValue(value);
+		doc.setPriority(priority);
 		return doc;
 	}
 

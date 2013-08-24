@@ -72,7 +72,9 @@ where
     description.language = :language
     or t.descriptions.size = 0
     ) and
-
+    
+	t.taskData.status in (:status) and
+	
     t.taskData.expirationTime is null
           </query>
           <!-- hint name="org.hibernate.timeout" value="200"/ -->

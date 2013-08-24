@@ -119,7 +119,8 @@ public class LoginPresenter extends
 							if(isValid){
 								AppContext.setSessionValues(
 									result.getUser().getId(), result.getUser().getName(), result.getSessionId());
-									placeManager.revealDefaultPlace();
+									//placeManager.revealDefaultPlace();
+									placeManager.navigateBack();
 							}else{
 								getView().clearLoginProgress();
 								getView().getPasswordBox().setText("");

@@ -281,6 +281,7 @@ public class JBPMHelper implements Closeable{
 		Long count2 = (Long)DB.getEntityManager().createNamedQuery("TasksOwnedCount")
 		.setParameter("userId", userId)
 		.setParameter("language", "en-UK")
+		.setParameter("status", Status.Completed)
 		.getSingleResult();		
 		counts.put(TaskType.APPROVALREQUESTDONE, count2.intValue());
 
@@ -374,21 +375,9 @@ public class JBPMHelper implements Closeable{
 			
 			HTSummary task = new HTSummary(summary.getId());
 			Task master_task = this.service.getTask(summary.getId());
-			Map<String, Object> content = getMappedData(master_task);
-			Document doc = getDocument(content);
-						
-			task.setCreated(summary.getCreatedOn());
-			task.setDateDue(summary.getCreatedOn());			
-			task.setSubject(doc.getSubject());
-			task.setDescription(doc.getDescription());
-			task.setPriority(doc.getPriority());
-			task.setDocumentRef(doc.getId());
-			//task.setLastUpdate(summary.get);			
-			task.setTaskName(summary.getName());		
 			
-			task.setStatus(HTStatus.valueOf(summary.getStatus().name().toUpperCase()));
+			copy(task, master_task);
 			tasks.add(task);
-			
 			//call for test
 			//getTask(userId, summary.getId());
 			
@@ -397,6 +386,25 @@ public class JBPMHelper implements Closeable{
 		return tasks;
 	}
 	
+	private void copy(HTSummary task, Task master_task) {
+
+		Map<String, Object> content = getMappedData(master_task);
+		Document doc = getDocument(content);
+					
+		task.setCreated(master_task.getTaskData().getCreatedOn());
+		task.setDateDue(master_task.getTaskData().getCreatedOn());			
+		task.setSubject(doc.getSubject());
+		task.setDescription(doc.getDescription());
+		task.setPriority(doc.getPriority());
+		task.setDocumentRef(doc.getId());
+		//task.setTaskName(summary.getName());		//TODO: LOOK INTO JBPM TASKSUMMARY / TASK USAGES
+		//task.setTaskName(master_task.getNames().);
+		task.setTaskName(doc.getSubject());
+		Status status = master_task.getTaskData().getStatus();
+		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
+	}
+
+
 	/**
 	 * This method retrieves the full task object, which provides more comprehensive details for a task 
 	 * 
@@ -685,6 +693,18 @@ public class JBPMHelper implements Closeable{
 		}
 		
 		return details;
+	}
+
+
+	public HTSummary getSummary(Long taskId) {
+		
+		HTSummary summary = new HTSummary(taskId);
+		
+		Task master_task = this.service.getTask(taskId);
+		
+		copy(summary, master_task);
+		 
+		return summary;
 	}
 		
 	

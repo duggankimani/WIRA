@@ -2,65 +2,67 @@ package com.duggan.workflow.client.ui.upload;
 
 import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
-import gwtupload.client.SingleUploader;
+import gwtupload.client.PreloadedImage;
 import gwtupload.client.IUploadStatus.Status;
-import gwtupload.client.IUploader.OnStartUploaderHandler;
 import gwtupload.client.IUploader.UploadedInfo;
+import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
+import com.duggan.workflow.client.model.UploadContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * 
+ * @author duggan
+ *
+ */
 public class Uploader extends Composite {
 
-	interface Binder extends UiBinder<Widget, Uploader>{
+	interface Binder extends UiBinder<Widget, Uploader> {
 	}
-	
+
 	Binder binder = GWT.create(Binder.class);
+
+	@UiField
+	FlowPanel panelImages;
+	@UiField
+	HTMLPanel uploaderPanel;
+
+	MultiUploader uploader;
 	
-	@UiField HTMLPanel container;
-	
-	//MultiUploader uploader;
-	SingleUploader uploader;
-	private String documentId;
-	
-	public Uploader(){		
+	UploadContext context;
+
+	public Uploader() {
 		initWidget(binder.createAndBindUi(this));
-		uploader = new SingleUploader();
-		uploader.setWidth("100%");
-		uploader.setServletPath("/upload");
-		uploader.setAvoidRepeatFiles(true);
+		uploader = new MultiUploader();		
+		uploader.setAutoSubmit(true);
+		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
-		container.add(uploader);	
-		
-		uploader.addOnStartUploadHandler(new OnStartUploaderHandler() {
-			
-			@Override
-			public void onStart(IUploader uploader) {
-				uploader.cancel();
-			}
-		});
-	}
 
-	public String getDocumentId() {
-		return documentId;
-	}
-
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
-		uploader.setServletPath("upload?docid="+documentId);
 	}
 	
+	public void setContext(UploadContext context){
+		this.context = context;
+		
+		StringBuffer servletPath = new StringBuffer();
+		String url = context.getUrl() == null ? "upload" : context.getUrl();
+		servletPath.append(url + "?" + context.getContextValuesAsURLParams());
+		uploader.setServletPath(servletPath.toString());
+	}
+
 	IUploader.OnFinishUploaderHandler onFinishHandler = new IUploader.OnFinishUploaderHandler() {
 
 		@Override
 		public void onFinish(IUploader uploader) {
 			if (uploader.getStatus() == Status.SUCCESS) {
 
-				//new PreloadedImage(uploader.fileUrl(), showImage);
+				new PreloadedImage(uploader.fileUrl(), showImage);
 
 				// The server sends useful information to the client by default
 				UploadedInfo info = uploader.getServerInfo();
@@ -74,12 +76,13 @@ public class Uploader extends Composite {
 		}
 	};
 
-//	OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
-//
-//		@Override
-//		public void onLoad(PreloadedImage image) {
-//			image.setWidth("75px");
-//			panelImages.add(image);
-//		}
-//	};
+	OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
+
+		@Override
+		public void onLoad(PreloadedImage image) {
+			//image.setWidth("75px");
+			panelImages.add(image);
+		}
+	};
+
 }

@@ -10,6 +10,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
@@ -30,7 +31,6 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
-import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
@@ -272,7 +272,7 @@ public class HomePresenter extends
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
 			@Override
 			public void processResult(GetTaskListResult result) {		
-				Window.setTitle(type.getTitle());
+				
 				GetTaskListResult rst = (GetTaskListResult)result;
 				List<DocSummary> tasks = rst.getTasks();
 				loadLines(tasks);
@@ -397,8 +397,10 @@ public class HomePresenter extends
 
 	@Override
 	public void onAlertLoad(AlertLoadEvent event) {
-		event.getAlerts();
+		//event.getAlerts();
 		getView().bindAlerts(event.getAlerts());
+		int count = event.getAlerts().get(currentTaskType);
+		Window.setTitle(currentTaskType.getTitle()+ (count==0? "" : " ("+count+")"));
 	}
 
 	@Override

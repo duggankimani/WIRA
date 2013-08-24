@@ -1,11 +1,12 @@
-package com.duggan.workflow.client.ui.view;
+package com.duggan.workflow.client.ui.document;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
@@ -13,9 +14,14 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
+import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
+import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.ui.upload.Uploader;
+import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
@@ -23,11 +29,13 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
+import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
@@ -47,7 +55,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class GenericDocumentPresenter extends
-		PresenterWidget<GenericDocumentPresenter.MyView>{
+		PresenterWidget<GenericDocumentPresenter.MyView> implements ReloadDocumentHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, DocType type, String subject,
@@ -71,6 +79,7 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getStopLink();
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
+		Uploader getUploader();
 	}
 
 	Long documentId;
@@ -83,20 +92,27 @@ public class GenericDocumentPresenter extends
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
+	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	
 	public static final Object ACTIVITY_SLOT = new Object();
+	public static final Object ATTACHMENTS_SLOT = new Object();
 	
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
-			Provider<CreateDocPresenter> docProvider, Provider<CommentPresenter> commentProvider) {
+			Provider<CreateDocPresenter> docProvider,
+			Provider<CommentPresenter> commentProvider,
+			Provider<AttachmentPresenter> attachmentProvider) {
 		super(eventBus, view);		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		commentPresenterFactory = new StandardProvider<CommentPresenter>(commentProvider);
+		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(attachmentProvider);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();		
+		
+		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			
@@ -262,9 +278,14 @@ public class GenericDocumentPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		
+		loadData();
+	}
+	
+	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new GetDocumentRequest(documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
+		requests.addRequest(new GetAttachmentsRequest(documentId));
 		
 		if(documentId != null){
 			requestHelper.execute(requests, 
@@ -276,12 +297,32 @@ public class GenericDocumentPresenter extends
 					bindDocumentResult(result);
 					
 					GetCommentsResponse commentsResult = (GetCommentsResponse)results.get(1);
-					bindCommentsResult(commentsResult);					
-				}
+					bindCommentsResult(commentsResult);
+					
+					GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(2);
+					bindAttachments(attachmentsresponse);
+				}	
 			});
 		}
 	}
-	
+
+	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
+		List<Attachment> attachments = attachmentsresponse.getAttachments();
+		
+		setInSlot(ATTACHMENTS_SLOT, null);//clear
+		for(final Attachment attachment: attachments){
+			attachmentPresenterFactory.get(new ServiceCallback<AttachmentPresenter>() {
+				@Override
+				public void processResult(AttachmentPresenter result) {
+					result.setAttachment(attachment);
+					addToSlot(ATTACHMENTS_SLOT, result);
+				
+				}
+			});
+		}
+		
+	}
+
 	protected void bindCommentsResult(GetCommentsResponse commentsResult) {
 		setInSlot(ACTIVITY_SLOT, null);
 		List<Comment> comments = commentsResult.getComments();
@@ -328,7 +369,7 @@ public class GenericDocumentPresenter extends
 		}	
 		
 		Long processInstanceId = document.getProcessInstanceId();
-		System.err.println();
+		
 		if(processInstanceId!=null){
 			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
 					new TaskServiceCallback<GetProcessStatusRequestResult>() {
@@ -341,6 +382,12 @@ public class GenericDocumentPresenter extends
 			});
 						
 		}
+		
+		UploadContext context = new UploadContext();
+		context.setAction(UPLOADACTION.ATTACHDOCUMENT);
+		context.setContext("documentId", doc.getId()+"");
+		context.setContext("userid", AppContext.getUserId());
+		getView().getUploader().setContext(context);
 	}
 
 	public void setProcessState(List<NodeDetail> states){
@@ -355,6 +402,13 @@ public class GenericDocumentPresenter extends
 	protected void onHide() {
 		super.onHide();
 		this.unbind();
+	}
+
+	@Override
+	public void onReloadDocument(ReloadDocumentEvent event) {
+		if(event.getDocumentId()==this.documentId){
+			loadData();
+		}
 	}
 	
 }

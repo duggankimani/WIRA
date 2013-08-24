@@ -2,6 +2,8 @@ package com.duggan.workflow.client.ui.save;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.upload.Uploader;
 import com.duggan.workflow.shared.model.DocType;
@@ -231,8 +233,12 @@ public class CreateDocView extends PopupViewImpl implements
 		
 		if(documentId!=null){
 			//will be enabled in edit mode
-			UIObject.setVisible(uploadPanel.getElement(), true);
-			uploader.setDocumentId(documentId.toString());
+			//UIObject.setVisible(uploadPanel.getElement(), true);
+			//set upload context here
+			UploadContext context = new UploadContext();
+			context.setContext("documentId", documentId+"");
+			context.setAction(UPLOADACTION.ATTACHDOCUMENT);
+			uploader.setContext(context);
 		}
 
 	}

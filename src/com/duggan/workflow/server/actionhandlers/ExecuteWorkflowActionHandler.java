@@ -36,8 +36,8 @@ public class ExecuteWorkflowActionHandler extends
 		JBPMHelper.get().execute(action.getTaskId(),action.getUserId(), action.getAction(), vals);
 		
 		ExecuteWorkflowResult result = (ExecuteWorkflowResult)actionResult;
-		//result.setDocument(JBPMHelper.get().getTask(action.getTaskId()));
 		
+		result.setDocument(JBPMHelper.get().getSummary(action.getTaskId()));
 	}
 
 	@Override

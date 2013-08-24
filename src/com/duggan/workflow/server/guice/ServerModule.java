@@ -7,12 +7,12 @@ import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
-import com.duggan.workflow.shared.requests.GetTask;
+import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
-import com.duggan.workflow.server.actionhandlers.GetTaskActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetItemActionHandler;
 import com.duggan.workflow.server.actionhandlers.MultiRequestActionHandler;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
@@ -40,6 +40,8 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
+import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -54,7 +56,7 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(ExecuteWorkflow.class, ExecuteWorkflowActionHandler.class, SessionValidator.class);
 
-		bindHandler(GetTask.class, GetTaskActionHandler.class, SessionValidator.class);
+		bindHandler(GetItemRequest.class, GetItemActionHandler.class, SessionValidator.class);
 
 		bindHandler(CreateDocumentRequest.class,
 				CreateDocumentActionHandler.class, SessionValidator.class);
@@ -98,6 +100,10 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetProcessStatusRequest.class,
 				GetProcessStatusRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(GetAttachmentsRequest.class,
+				GetAttachmentsRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }
