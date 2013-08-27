@@ -1,32 +1,26 @@
 package com.duggan.workflow.server.servlets.upload;
 
 //import java.io.File;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
+import gwtupload.server.UploadAction;
+import gwtupload.server.exceptions.UploadActionException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.IOUtils;
 
-import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
-import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.Document;
-
-import gwtupload.server.UploadAction;
-import gwtupload.server.exceptions.UploadActionException;
-import gwtupload.shared.UConsts;
+import com.duggan.workflow.server.helper.dao.AttachmentDaoHelper;
 
 public class UploadServlet extends UploadAction {
 
@@ -44,12 +38,39 @@ public class UploadServlet extends UploadAction {
 	@Override
 	public String executeAction(HttpServletRequest request,
 			List<FileItem> sessionFiles) throws UploadActionException {
-		String response = "";
-		String docId = request.getParameter("docid");
-		Long documentId = null;		
-		if(docId!=null && docId.matches("[0-9]+")){
-			documentId = Long.parseLong(docId);
+		
+		String result=null;
+		try{
+			//check session
+			
+			DB.beginTransaction();
+			
+			result = execute(request, sessionFiles);
+			
+			DB.commitTransaction();
+		}catch(Exception e){
+			DB.rollback();
+			e.printStackTrace();			
+		}finally{
+			DB.closeSession();
 		}
+		
+		return result;
+	}
+	
+	private String execute(HttpServletRequest request,
+			List<FileItem> sessionFiles) throws UploadActionException{
+		
+		String response = "";
+		
+		Enumeration<String> keys= request.getParameterNames();
+		
+		System.err.println("------------------- Parameters ------------- ");
+		while(keys.hasMoreElements()){
+			String key = keys.nextElement();
+			System.err.println(key+""+request.getParameter(key));
+		}		
+		System.err.println("------------------- END Parameters ------------- ");
 		
 		int cont = 0;
 		for (FileItem item : sessionFiles) {
@@ -66,77 +87,43 @@ public class UploadServlet extends UploadAction {
 					response += "";
 					System.err.format("########### FieldName=%s ; contentType=%s ; IS=%s ; itenName=%s; size=%s",
 							fieldName, contentType, is.toString(), name, size+"").println();
+					
+					
+					LocalAttachment attachment  = new LocalAttachment();
+					attachment.setCreated(new Date());
+					attachment.setArchived(false);
+					attachment.setContentType(contentType);
+					attachment.setId(null);
+					attachment.setName(name);
+					attachment.setSize(size);
+					attachment.setAttachment(item.get());
+					
+					saveAttachment(attachment, request);
 				} catch (Exception e) {
 					throw new UploadActionException(e);
 				}
+			}else{
+				//handle form fields here 
 			}
 		}
 
 		// / Remove files from session because we have a copy of them
 		removeSessionFileItems(request);
 
-		// / Send your customized message to the client.
+		// / Send your customized message to the client. 
 		return response;
 	}
 
 
-	/**
-	 * 
-	 * @param is
-	 * @param documentId
-	 * @param name
-	 * @param contentType
-	 * @param size
-	 *
-	 */
-	private void save(InputStream is, Long documentId, String name,
-			String contentType, long size) {
-		LocalAttachment attachment = new LocalAttachment();
-		attachment.setCreated(new Date());
-		attachment.setCreatedBy(SessionHelper.getCurrentUser().getId());
-		attachment.setArchived(false);
-		attachment.setName(name);
-		attachment.setSize(size);
-		attachment.setContentType(contentType);
+	private void saveAttachment(LocalAttachment attachment,
+			HttpServletRequest request) {
 		
-		try{
-			DB.beginTransaction();
-			
-			DocumentModel document = DB.getDocumentDao().getById(documentId);
-			attachment.setDocument(document);			
-			attachment.setAttachment(IsToBytes(is));
-			
-			if(document==null){
-				throw new IllegalStateException("Error: DocumentId must be specified for an attachment");
-			}
-			DB.getAttachmentDao().saveOrUpdate(attachment);
-			
-			DB.commitTransaction();
-		}catch(Exception e){
-			DB.rollback();
-			e.printStackTrace();			
-			//ErrorLogDaoHelper.saveLog(e, "Upload File");
-		}finally{
-			DB.closeSession();
+		String id = request.getParameter("documentId");
+		
+		if(id!=null){
+			AttachmentDaoHelper.saveDocument(Long.parseLong(id.toString()), attachment);
 		}
-		
-		
 	}
-
-
-	private byte[] IsToBytes(InputStream is) {
-
-		byte[] bites = null;
-		try{
-			bites = IOUtils.toByteArray(is);
-			IOUtils.closeQuietly(is);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return bites;
-	}
-
 
 	/**
 	 * Get the content of an uploaded file.

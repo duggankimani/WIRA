@@ -1184,3 +1184,11 @@ textarea {
 .hide{
 	display:none;
 }
+
+.button-group {
+	/*background: url("images/gradient-t-b.png") repeat-x scroll 0 0
+		transparent;*/
+	border-top: 1px solid #D5D7DB;
+	padding: 10px;
+	text-align: center;
+}

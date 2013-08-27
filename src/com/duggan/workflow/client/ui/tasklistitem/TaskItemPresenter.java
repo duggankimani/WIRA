@@ -15,6 +15,7 @@ import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent.ExecTaskHandler;
+import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
@@ -278,10 +279,22 @@ public class TaskItemPresenter extends
 					removeFromParent();
 					fireEvent(new AfterSaveEvent());
 				}else{
-					fireEvent(new ReloadEvent());
+					//fireEvent(new ReloadEvent());
+					reload((HTSummary)result.getDocument());
 				}
 			}
 		});
+	}
+
+	protected void reload(HTSummary summary) {
+		setDocSummary(summary);
+		if(task instanceof Document){
+			Document doc = (Document)task;
+			fireEvent(new DocumentSelectionEvent(doc.getId(), DocMode.READWRITE));
+		}else{
+			fireEvent(new DocumentSelectionEvent(((HTSummary)task).getDocumentRef(), DocMode.READ));
+		}
+		
 	}
 
 	protected void removeFromParent() {
@@ -291,7 +304,6 @@ public class TaskItemPresenter extends
 
 	public void setDocSummary(DocSummary summaryTask) {
 		this.task = summaryTask;
-		
 		if(summaryTask!=null){
 			getView().bind(summaryTask);
 			

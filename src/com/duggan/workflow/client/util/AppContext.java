@@ -2,6 +2,7 @@ package com.duggan.workflow.client.util;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
@@ -58,7 +59,7 @@ public class AppContext {
 			//store targetUrl
 			PlaceRequest req = placeManager.getCurrentPlaceRequest();
 			
-			if(req!=null){
+			if(req!=null && !req.matchesNameToken(NameTokens.login)){
 				String token = placeManager.buildHistoryToken(req);
 				Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
 			}

@@ -1,11 +1,12 @@
-package com.duggan.workflow.client.ui.view;
+package com.duggan.workflow.client.ui.document;
 
+import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.*;
 import static com.duggan.workflow.client.ui.util.DateUtils.*;
-import static com.duggan.workflow.client.ui.view.GenericDocumentPresenter.*;
 
 import java.util.Date;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.upload.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -16,6 +17,7 @@ import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -61,16 +63,14 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aForward;	
 	@UiField Anchor aApprove;	
 	@UiField Anchor aReject;
-	
 	@UiField HTMLPanel statusContainer;
-	
 	@UiField Element eOwner;
-	
 	@UiField SpanElement spnPriority;
-	
 	@UiField SpanElement spnStatus;
-	
 	@UiField HTMLPanel panelActivity;
+	@UiField Uploader uploader;
+	@UiField HTMLPanel panelAttachments;
+	
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -83,7 +83,11 @@ public class GenericDocumentView extends ViewImpl implements
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
-		
+		disableAll();
+		statusContainer.add(new InlineLabel("Nothing to show"));
+	}
+
+	private void disableAll() {
 		show(aClaim, false);
 		show(aStart, false);
 		show(aSuspend, false);
@@ -95,8 +99,6 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
-		
-		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
 
 	@Override
@@ -106,6 +108,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 	public void setValues(HTUser createdBy, Date created, DocType type, String subject,
 			Date docDate, String value, String partner, String description, Integer priority,DocStatus status) {
+		disableAll();
 		if(createdBy!=null){
 			eOwner.setInnerText(createdBy.getName());
 		}
@@ -310,6 +313,12 @@ public class GenericDocumentView extends ViewImpl implements
 			if(content!=null){
 				panelActivity.add(content);
 			}
+		}if(slot==ATTACHMENTS_SLOT){
+			panelAttachments.clear();
+			
+			if(content!=null){
+				panelAttachments.add(content);
+			}
 		}else{		
 			super.setInSlot(slot, content);
 		}
@@ -323,11 +332,20 @@ public class GenericDocumentView extends ViewImpl implements
 			if(content!=null){
 				panelActivity.add(content);
 			}
+		}if(slot==ATTACHMENTS_SLOT){
+			
+			if(content!=null){
+				panelAttachments.add(content);
+			}
 		}else{
 			super.addToSlot(slot, content);
 		}
 		
 	}
-	
+
+	@Override
+	public Uploader getUploader() {
+		return uploader;
+	}
 	
 }

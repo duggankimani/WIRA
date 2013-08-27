@@ -25,7 +25,6 @@ public class BaseDaoImpl<T extends PO> {
 			model.setUpdatedBy(SessionHelper.getCurrentUser().getId());
 		}
 		
-
 		/*
 		 * Do not flush - This reflects data in the database immediately and the BTM transaction 
 		 * in my tests so far cannot rollback the flushed data - You can actually query the new values 

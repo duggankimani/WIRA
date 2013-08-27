@@ -7,6 +7,8 @@ import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.MainPageView;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
+import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
+import com.duggan.workflow.client.ui.document.GenericDocumentView;
 import com.duggan.workflow.client.ui.error.ErrorPagePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPageView;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
@@ -37,8 +39,8 @@ import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemView;
 import com.duggan.workflow.client.ui.toolbar.ToolbarPresenter;
 import com.duggan.workflow.client.ui.toolbar.ToolbarView;
-import com.duggan.workflow.client.ui.view.GenericDocumentPresenter;
-import com.duggan.workflow.client.ui.view.GenericDocumentView;
+import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
+import com.duggan.workflow.client.ui.upload.attachment.AttachmentView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.CurrentUser;
@@ -126,5 +128,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(CommentPresenter.class,
 				CommentPresenter.ICommentView.class, CommentView.class);
+		
+		bindPresenterWidget(AttachmentPresenter.class, 
+				AttachmentPresenter.IAttachmentView.class, AttachmentView.class);
 	}
 }

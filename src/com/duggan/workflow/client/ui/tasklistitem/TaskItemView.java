@@ -68,8 +68,13 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		aClaim.getElement().setAttribute("data-toggle", "tooltip");
 		aClaim.getElement().setAttribute("title", "Claim");
 		aClaim.getElement().setId("example");
-		show(aClaim, true);
-		show(aStart, true);
+		disable();
+		
+	}
+	
+	private void disable() {
+		show(aClaim, false);
+		show(aStart, false);
 		show(aSuspend, false);
 		show(aResume, false);
 		show(aComplete, false);
@@ -81,9 +86,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		show(aForwardForApproval, true);
 		show(aApprove, true);
 		show(aView, false);
-		
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		//return container;
@@ -95,6 +99,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		//spnTaskName.setText(summaryTask.getTaskName());
 		//spnTaskName.setText("Contract Approval");
 		//spnDateDue.setText(format(summaryTask.getDateDue()));
+		
+		disable();
 		
 		spnSubject.setText(summaryTask.getSubject());
 		
@@ -109,6 +115,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		}
 		
 		summaryTask.getId();
+		
+		System.err.println("Priority :: "+summaryTask.getPriority());
 		
 		Priority priority = Priority.get(summaryTask.getPriority());
 		
