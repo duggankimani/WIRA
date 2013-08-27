@@ -285,6 +285,16 @@ public class GenericDocumentPresenter extends
 	protected void bindCommentsResult(GetCommentsResponse commentsResult) {
 		setInSlot(ACTIVITY_SLOT, null);
 		List<Comment> comments = commentsResult.getComments();
+		
+		{
+			Comment comment = new Comment();
+			comment.setComment("I have seen this; need details");
+			comment.setCreatedby("Tom");
+			comment.setCreated(new Date());
+			comment.setDocumentId(documentId);
+			comments.add(comment);
+		}
+		
 		for(final Comment comment: comments){
 			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
 				@Override
@@ -328,7 +338,7 @@ public class GenericDocumentPresenter extends
 		}	
 		
 		Long processInstanceId = document.getProcessInstanceId();
-		System.err.println();
+		
 		if(processInstanceId!=null){
 			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
 					new TaskServiceCallback<GetProcessStatusRequestResult>() {

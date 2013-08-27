@@ -51,6 +51,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	@UiField FocusPanel container;
 	
 	@UiField HTMLPanel insidecontainer;
+	
+	@UiField HTMLPanel wfactions;
+	
+	@UiField InlineLabel spnDocIcon;
 		
 	@Inject
 	public TaskItemView(final Binder binder) {
@@ -59,6 +63,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
 		insidecontainer.setStyleName("inside-container");
+		wfactions.setStyleName("wfactions hidden");
 		
 		aClaim.getElement().setAttribute("data-toggle", "tooltip");
 		aClaim.getElement().setAttribute("title", "Claim");
@@ -128,6 +133,19 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		if(status==DocStatus.DRAFTED){
 			aForwardForApproval.removeStyleName("hidden");
 			aForwardForApproval.setStyleName("visible", true);
+		}
+	}
+	
+
+	@Override
+	public void setMiniDocumentActions(boolean status) {
+		/*Sets the actions in TaskItemView*/
+		if(status){
+		wfactions.removeStyleName("hidden");
+		aForwardForApproval.removeStyleName("hidden");
+		}else{
+			wfactions.addStyleName("hidden");
+			aForwardForApproval.addStyleName("hidden");
 		}
 	}
 
@@ -244,7 +262,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		return aReject;
 	}
 	
-	public HasClickHandlers getFocusContainer(){
+	public FocusPanel getFocusContainer(){
 		return container;
 	}
 	
@@ -255,4 +273,11 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 			container.getElement().getStyle().setBackgroundColor("#ffffff");
 		}
 	}
+
+	@Override
+	public void setTask(boolean isTask) {
+		if(isTask)
+		spnDocIcon.setStyleName("icon-tasks");
+	}
+
 }

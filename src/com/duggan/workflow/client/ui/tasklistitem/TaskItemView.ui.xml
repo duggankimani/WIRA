@@ -23,7 +23,7 @@
 	<g:HTMLPanel styleName="message-container">
          <g:FocusPanel styleName="read" ui:field="container">
            <g:HTMLPanel ui:field="insidecontainer">
-	            <g:InlineLabel styleName="icon-book"></g:InlineLabel>
+	            <g:InlineLabel ui:field="spnDocIcon" styleName="icon-book"></g:InlineLabel>
 	           <d:ParaPanel>
 		           <g:InlineLabel styleName="label" ui:field="spnPriority">Urgent</g:InlineLabel>                       	
 		           <g:InlineLabel ui:field="spnSubject" styleName="bluename"></g:InlineLabel>     
@@ -31,9 +31,9 @@
 		           <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
 	           </d:ParaPanel>
 	           
-	            <div class="wfactions hidden">
-				    <g:Anchor ui:field="aClaim" styleName="icon-arrow-down"></g:Anchor>
-				    <g:Anchor ui:field="aStart"  styleName="icon-play"></g:Anchor>						    
+	            <g:HTMLPanel ui:field="wfactions">
+				    <g:Anchor ui:field="aClaim" styleName="icon-arrow-down hidden"></g:Anchor>
+				    <g:Anchor ui:field="aStart"  styleName="icon-play hidden"></g:Anchor>						    
 					<g:Anchor ui:field="aResume"  styleName="hidden">Resume</g:Anchor>
 					<g:Anchor ui:field="aComplete"  styleName="hidden">Complete</g:Anchor>
 					<g:Anchor ui:field="aSuspend"  styleName="hidden">Suspend</g:Anchor>
@@ -47,7 +47,7 @@
 					
 					<g:Anchor ui:field="aApprove"  styleName="icon-ok"></g:Anchor>
 					<g:Anchor ui:field="aReject"  styleName="icon-ban-circle"></g:Anchor>
-			   </div>
+			   </g:HTMLPanel>
            </g:HTMLPanel>
          </g:FocusPanel>
 	</g:HTMLPanel>

@@ -7,8 +7,8 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
@@ -31,8 +31,12 @@ import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -66,9 +70,12 @@ public class TaskItemPresenter extends
 		HasClickHandlers getSubmitForApprovalLink();
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
-		HasClickHandlers getFocusContainer();
+		FocusPanel getFocusContainer();
 
 		void setSelected(boolean selected);
+		void setMiniDocumentActions(boolean status);
+
+		void setTask(boolean isTask);
 		
 	}
 
@@ -106,6 +113,19 @@ public class TaskItemPresenter extends
 				}
 			}
 		});		
+		getView().getFocusContainer().addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				getView().setMiniDocumentActions(true);
+			}
+		});
+		
+		getView().getFocusContainer().addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				getView().setMiniDocumentActions(false);
+			}
+		});
 		
 		getView().getSubmitForApprovalLink().addClickHandler(new ClickHandler() {
 			
@@ -275,6 +295,12 @@ public class TaskItemPresenter extends
 		if(summaryTask!=null){
 			getView().bind(summaryTask);
 			
+		}
+		
+		if(task instanceof HTSummary){
+			getView().setTask(true);
+		}else{
+			getView().setTask(false);
 		}
 	}
 	
