@@ -72,7 +72,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
 	@UiField Anchor aSaveComment;
-	@UiField TextArea txtComments;
+	@UiField TextArea commentBox;
 	
 	
 	@Inject
@@ -86,7 +86,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
-		txtComments.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
+		commentBox.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
 		disableAll();
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
@@ -369,7 +369,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public String getComment() {
 		
-		return txtComments.getValue();
+		return commentBox.getValue();
 	}
 	
 }
