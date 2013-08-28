@@ -11,7 +11,10 @@ public class SendMailCommand implements Command{
 	@Override
 	public ExecutionResults execute(CommandContext ctx) throws Exception {
 		
-		JBPMHelper.get().getSession().startProcess("sendemail",ctx.getData());
+		if(ctx.getData()==null){
+			throw new IllegalStateException(ctx.getClass()+":: COMMAND CONTEXT MUST NOT BE NULL");
+		}
+		JBPMHelper.get().startProcess("sendemail",ctx.getData());
 		
 		ExecutionResults result = new ExecutionResults();
 		result.setData(ctx.getData());

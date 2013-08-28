@@ -15,7 +15,7 @@
       </button>
      
      <div class="navbar-inner">
-        <a class="brand" href="#activities">E-Business Task List | Your Organisation</a> 
+        <a class="brand" href="#activities">E-Business Task List | Diaspora Architecture Group</a> 
         
         <ul class="nav pull-right">
               <li class="home">
@@ -60,7 +60,7 @@
                          	</div>
 	                         <div class="span2">
 		                          <span class="text" ui:field="spnUserPull"></span>
-		                          <br/>Assistant Director
+		                          <br/><span ui:field="spnUserGroup"></span>
 	                         </div>
                         </div>
                         <div class="action-area">

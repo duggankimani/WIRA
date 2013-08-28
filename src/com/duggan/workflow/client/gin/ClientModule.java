@@ -41,6 +41,8 @@ import com.duggan.workflow.client.ui.toolbar.ToolbarPresenter;
 import com.duggan.workflow.client.ui.toolbar.ToolbarView;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentView;
+import com.duggan.workflow.client.ui.user.UserSelectionPresenter;
+import com.duggan.workflow.client.ui.user.UserSelectionView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.CurrentUser;
@@ -131,5 +133,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(AttachmentPresenter.class, 
 				AttachmentPresenter.IAttachmentView.class, AttachmentView.class);
+		
+		bindPresenterWidget(UserSelectionPresenter.class,
+				UserSelectionPresenter.MyView.class, UserSelectionView.class);
 	}
 }

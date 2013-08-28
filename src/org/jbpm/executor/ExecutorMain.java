@@ -5,12 +5,17 @@
 package org.jbpm.executor;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.EntityManager;
 
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.entities.RequestInfo;
+import org.jbpm.executor.impl.ExecutorFactory;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
@@ -37,45 +42,34 @@ public class ExecutorMain {
 
 		// executorServiceEntryPoint.scheduleRequest(CommandCodes.SendEmailCommand,
 		// context);
-		for (int i = 0; i < 1; i++) {
+		ScheduledExecutorService service = Executors.newScheduledThreadPool(3);
+		Runnable command = new Runnable() {
 			
-			try{
-				//Thread.sleep(1000);
-			}catch(Exception e){}
-
-			Thread t = new Thread() {
-
-				public void run() {
-
-					CommandContext context = new CommandContext();
-					context.setData("to", "mdkimani@gmail.com");
-					context.setData("from", "ebpm.mgr@gmail.com");
-					context.setData("body", "Document above approved");
-					context.setData("subject", "Inv/JKUAT/002/2013");
-					context.setData("businessKey", UUID.randomUUID().toString());
-					context.setData("callbacks", SendEmailCallback.name());
+			public void run() {
+				
+				CommandContext context = new CommandContext();
+				context.setData("to", "mdkimani@gmail.com");
+				context.setData("from", "ebpm.mgr@gmail.com");
+				context.setData("body", "Document above approved");
+				context.setData("subject", "Inv/JKUAT/002/2013");
+				context.setData("businessKey", UUID.randomUUID().toString());
+				context.setData("callbacks", SendEmailCallback.name());
+				
+				try{
+					DB.beginTransaction();
 					executorServiceEntryPoint.scheduleRequest(
 							CommandCodes.SendEmailCommand, context);
-
+					DB.commitTransaction();
+				}catch(Exception e){
+					DB.rollback();
+				}finally{
+					DB.closeSession();
 				}
-
-			};
-			t.start();
-		}
-
-	}
-
-	public static void main2(String[] args) {
-		DBTrxProvider.init();
-
-		DB.beginTransaction();
-
-		EntityManager em = DB.getEntityManager();
-		RequestInfo req = new RequestInfo();
-		em.persist(req);
-
-		DB.commitTransaction();
-		DB.closeSession();
-		DBTrxProvider.close();
+				
+			}
+		};
+		
+		
+		service.scheduleAtFixedRate(command, 3,25, TimeUnit.SECONDS);
 	}
 }

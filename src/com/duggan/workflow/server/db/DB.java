@@ -57,7 +57,7 @@ public class DB{
 
     private static final ThreadLocal<EntityManager> entityManagers = new ThreadLocal<EntityManager>();
 
-	private static ThreadLocal<DaoFactory> factory = new ThreadLocal<>();
+	private static ThreadLocal<DaoFactory> daoFactory = new ThreadLocal<>();
     
     private DB(){}
     
@@ -190,7 +190,7 @@ public class DB{
 			
     	}catch(Exception e){
     		e.printStackTrace();
-    		throw new RuntimeException(e);
+    		//throw new RuntimeException(e);
     	}
 	}
 	
@@ -208,14 +208,14 @@ public class DB{
 	
 	private static DaoFactory factory(){
 		
-		DaoFactory daoFactory=factory.get();
+		DaoFactory factory=daoFactory.get();
 		
-		if(daoFactory==null){
-			daoFactory = new DaoFactory();
-			factory.set(daoFactory);
+		if(factory==null){
+			factory = new DaoFactory();
+			daoFactory.set(factory);
 		}
 		
-		return daoFactory;
+		return factory;
 	}
 	
 	public static DocumentDaoImpl getDocumentDao(){
@@ -238,10 +238,10 @@ public class DB{
 	
 
 	private static void closeFactory() {
-		if(factory.get()==null)
+		if(daoFactory.get()==null)
 			return;
 		
-		factory.set(null);
+		daoFactory.set(null);
 	}
 
 	public static boolean hasActiveTrx() throws SystemException, NamingException {

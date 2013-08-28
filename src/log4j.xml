@@ -17,12 +17,15 @@
         <level value="FATAL"/>
     </logger>
     <logger name="org.jbpm.executor">
-        <level value="SEVERE"/>
+        <level value="INFO"/>
     </logger>
     <logger name="org.apache">
         <level value="FATAL"/>
     </logger>
     <logger name="com.duggan.workflow.server.db">
+        <level value="INFO"/>
+    </logger>
+    <logger name="bitronix">
         <level value="INFO"/>
     </logger>
     <root> 

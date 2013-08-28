@@ -82,12 +82,11 @@ public class ExecutorImpl implements Executor {
                + " \t - Interval: {1}"+" Seconds\n"+" \t - Retries per Request: {2}\n", 
                 new Object[]{threadPoolSize, interval, retries});
         
-//        scheduler = Executors.newScheduledThreadPool(threadPoolSize);
-//        handle = scheduler.scheduleAtFixedRate(task, 2, interval, TimeUnit.SECONDS);
+        scheduler = Executors.newScheduledThreadPool(threadPoolSize);
+        //handle = scheduler.scheduleAtFixedRate(task, 2, interval, TimeUnit.SECONDS);
     }
     
     public synchronized Long scheduleRequest(CommandCodes commandId, CommandContext ctx) {      
-    	//em = DB.getEntityManagerFactory().createEntityManager();
     	em = DB.getEntityManager();
     	long start = System.currentTimeMillis();
         if (ctx == null) {
@@ -144,9 +143,9 @@ public class ExecutorImpl implements Executor {
     
     public void destroy() {
         logger.info(" >>>>> Destroying Executor !!!");
-        handle.cancel(true);
+        if(handle!=null)
+        	handle.cancel(true);
         if (scheduler != null) {
-        	//DB.rollback();
             scheduler.shutdownNow();            
         }
     }

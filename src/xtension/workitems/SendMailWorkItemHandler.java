@@ -128,8 +128,8 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		params.put("businessKey", UUID.randomUUID().toString());
 		context.setData(params);
 
-//		ExecutorModule.getInstance().getExecutorServiceEntryPoint()		
-//				.scheduleRequest(CommandCodes.SendEmailCommand, context);
+		ExecutorModule.getInstance().getExecutorServiceEntryPoint()		
+				.scheduleRequest(CommandCodes.SendEmailCommand, context);
 		
 	}
 

@@ -1,20 +1,20 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Comment implements Serializable {
+public class Comment extends Activity {
 
 	private static final long serialVersionUID = 6882858941033696924L;
 	private String comment;
 	private Long id;
-	private String createdby;
+	private String createdBy;
 	private Date created;
 	private String updatedBy;
 	private Date updated;
 	private String userId;
 	private Long documentId;
 	private HTUser createdByUser;
+	private Long parentId;
 	
 	public String getComment() {
 		return comment;
@@ -48,11 +48,11 @@ public class Comment implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getCreatedby() {
-		return createdby;
+	public String getCreatedBy() {
+		return createdBy;
 	}
-	public void setCreatedby(String createdby) {
-		this.createdby = createdby;
+	public void setCreatedBy(String createdby) {
+		this.createdBy = createdby;
 	}
 	public String getUpdatedBy() {
 		return updatedBy;
@@ -71,5 +71,42 @@ public class Comment implements Serializable {
 	}
 	public void setCreatedByUser(HTUser createdByUser) {
 		this.createdByUser = createdByUser;
+	}
+	
+	@Override
+	public String getStatement() {
+
+		return comment;
+	}
+	@Override
+	public String getTargetUserId() {
+		return null;
+	}
+	public Long getParentId() {
+		return parentId;
+	}
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		if(this.id!=null){
+			return (id+comment).hashCode();
+		}
+		
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {	
+		Comment other = (Comment)obj;
+		
+		if(id!=null && other.id!=null){
+			return id.equals(other.id) && comment.equals(other.comment);
+		}
+		
+		return super.equals(obj);
 	}
 }

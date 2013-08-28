@@ -73,6 +73,9 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			SessionHelper.afterRequest();
 		}
 		
+		if(throwable!=null){
+			
+		}
 		postExecute((BaseResponse) result);
 		
 		return result;
@@ -108,7 +111,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			baseResult.setErrorCode(1);
 			baseResult.setErrorId(errorId);
 			
-			if(errorId!=null)
+			if(throwable.getMessage()==null)
 				baseResult.setErrorMessage("An error occured during processing of your request");
 			else
 				baseResult.setErrorMessage(throwable.getMessage());

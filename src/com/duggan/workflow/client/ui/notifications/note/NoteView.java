@@ -121,7 +121,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	interface APPROVALREQUEST_OWNERNOTE_TEMPATE extends SafeHtmlTemplates {
-		@Template("<i class=\"icon-check\"></i>"+
+		@Template("<i class=\"icon-signin\"></i>"+
 				"<span class=\"bluename\">{0}</span>"+
 				" succesfully submitted for approval "
 				+ " <span class=\"time\"><i class=\"icon-time\">{1}</i></span>")

@@ -26,6 +26,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	@UiField HTMLPanel notificationsContainer;
 	@UiField FocusPanel popupContainer;
 	@UiField SpanElement lblCount;
+	@UiField SpanElement spnUserGroup;
+	
 	boolean isSelected=false;
 	
 	@Inject
@@ -62,7 +64,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}
 		super.setInSlot(slot, content);
 	}
-	public void setValues(String user_names){
+	public void setValues(String user_names, String userGroups){
 		
 		if(user_names!=null){
 			spnUser.setInnerText(user_names);
@@ -71,6 +73,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		else{
 			spnUser.setInnerText("");
 			spnUserPull.setInnerText("");
+		}
+		
+		if(userGroups!=null){
+			spnUserGroup.setInnerText(userGroups);
 		}
 	}
 

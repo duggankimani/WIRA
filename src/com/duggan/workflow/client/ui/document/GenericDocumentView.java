@@ -50,8 +50,6 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnPartner;
 	@UiField
 	SpanElement spnDescription;
-	
-	@UiField TextArea commentbox;
 
 	@UiField Anchor aSimulate;	
 	@UiField Anchor aEdit;	
@@ -73,6 +71,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
+	@UiField Anchor aSaveComment;
+	@UiField TextArea commentBox;
 	
 	
 	@Inject
@@ -82,12 +82,11 @@ public class GenericDocumentView extends ViewImpl implements
 		aEdit.getElement().setAttribute("type","button");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
-		commentbox.getElement().setAttribute("placeholder", "write comments, Clarifications and Questions...");
-		
 		aApprove.getElement().setAttribute("type", "button");
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
+		commentBox.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
 		disableAll();
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
@@ -248,8 +247,18 @@ public class GenericDocumentView extends ViewImpl implements
 	public void setStates(List<NodeDetail> states) {
 		statusContainer.clear();
 		if(states!=null){
+			NodeDetail detail = null;
 			for(NodeDetail state:states){
-				statusContainer.add(new ProcessState(state));
+				if(state.isEndNode())
+					detail = state;
+				else
+					statusContainer.add(new ProcessState(state));
+				
+			}
+			
+			//ensure end node always comes last
+			if(detail!=null){
+				statusContainer.add(new ProcessState(detail));
 			}
 		}
 	}
@@ -309,6 +318,10 @@ public class GenericDocumentView extends ViewImpl implements
 		return aReject;
 	}
 	
+	public Anchor getSaveCommentButton(){
+		return aSaveComment;
+	}
+	
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 
@@ -354,8 +367,9 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	@Override
-	public TextArea getCommentBox() {
-		return commentbox;
+	public String getComment() {
+		
+		return commentBox.getValue();
 	}
 	
 }

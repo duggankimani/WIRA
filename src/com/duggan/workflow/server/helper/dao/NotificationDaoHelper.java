@@ -15,6 +15,7 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.NotificationType;
 
 public class NotificationDaoHelper {
 
@@ -28,6 +29,15 @@ public class NotificationDaoHelper {
 		NotificationDaoImpl dao = DB.getNotificationDao();
 		
 		NotificationModel model = new NotificationModel();
+		
+		//avoid repetitions of successful submission
+		if(notification.getNotificationType()==NotificationType.APPROVALREQUEST_OWNERNOTE){
+			List items = dao.getNotification(notification.getDocumentId(), notification.getOwner());
+			if(items.size()>0){
+				copyData(notification,(NotificationModel)items.get(0));
+				return notification; 
+			}
+		}
 		
 		if(notification.getId()!=null){
 			model = dao.getNotification(notification.getId());			
@@ -45,6 +55,13 @@ public class NotificationDaoHelper {
 	public static List<Notification> getAllNotifications(String userId){
 		NotificationDaoImpl dao = DB.getNotificationDao();
 		List<NotificationModel> models = dao.getAllNotifications(userId);
+		
+		return copyData(models);
+	}
+	
+	public static List<Notification> getAllNotifications(Long documentId, NotificationType...notificationTypes){
+		NotificationDaoImpl dao = DB.getNotificationDao();
+		List<NotificationModel> models = dao.getAllNotificationsByDocumentId(documentId, notificationTypes);
 		
 		return copyData(models);
 	}

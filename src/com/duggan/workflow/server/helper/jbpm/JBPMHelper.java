@@ -151,15 +151,6 @@ public class JBPMHelper implements Closeable{
 	}
 
 	/**
-	 * Using this to test initiation of process from Command {@link SendMailCommand}
-	 * 
-	 * @return
-	 */
-	public StatefulKnowledgeSession getSession(){
-		return session;
-	}
-	
-	/**
 	 * Creates a StatefulKnowledgeSession
 	 * 
 	 * @return {@link StatefulKnowledgeSession}
@@ -615,6 +606,8 @@ public class JBPMHelper implements Closeable{
 			get().service.resume(taskId, userId);
 			break;
 		case REVOKE:
+			//TODO: investigate what revoke actually does
+			get().service.release(taskId, userId);
 			break;
 		case START:
 			get().service.start(taskId, userId);
@@ -705,6 +698,18 @@ public class JBPMHelper implements Closeable{
 		copy(summary, master_task);
 		 
 		return summary;
+	}
+
+
+	/**
+	 * What happens to this process if you try to execute it and 
+	 * it fails/throws an exception
+	 * @param processId
+	 * @param contextInfo
+	 */
+	public void startProcess(String processId, Map<String, Object> contextInfo) {		
+		session.startProcess(processId, contextInfo);
+				
 	}
 		
 	

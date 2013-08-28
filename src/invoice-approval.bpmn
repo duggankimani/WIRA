@@ -21,7 +21,7 @@
   <itemDefinition id="_subjectItem" structureRef="String" />
   <itemDefinition id="_actorItem" structureRef="String" />
   <itemDefinition id="_groupItem" structureRef="String" />
-  <itemDefinition id="_PROCESS_COMPLETEDItem" structureRef="Boolean" />
+  <itemDefinition id="_isProcessCompleteItem" structureRef="Boolean" />
 
   <itemDefinition id="_2-descriptionItem" structureRef="String" />
   <itemDefinition id="_2-valueItem" structureRef="String" />
@@ -32,7 +32,7 @@
   <itemDefinition id="_2-subjectItem" structureRef="String" />
   <itemDefinition id="_2-actorItem" structureRef="String" />
   <itemDefinition id="_2-groupItem" structureRef="String" />
-  <itemDefinition id="_2-PROCESS_COMPLETEDItem" structureRef="Boolean" />
+  <itemDefinition id="_2-isProcessCompleteItem" structureRef="Boolean" />
 
   <itemDefinition id="_3-descriptionItem" structureRef="String" />
   <itemDefinition id="_3-valueItem" structureRef="String" />
@@ -43,7 +43,7 @@
   <itemDefinition id="_3-subjectItem" structureRef="String" />
   <itemDefinition id="_3-actorItem" structureRef="String" />
   <itemDefinition id="_3-groupItem" structureRef="String" />
-  <itemDefinition id="_3-PROCESS_COMPLETEDItem" structureRef="Boolean" />
+  <itemDefinition id="_3-isProcessCompleteItem" structureRef="Boolean" />
 
   <itemDefinition id="_14-descriptionItem" structureRef="String" />
   <itemDefinition id="_14-valueItem" structureRef="String" />
@@ -54,7 +54,7 @@
   <itemDefinition id="_14-subjectItem" structureRef="String" />
   <itemDefinition id="_14-actorItem" structureRef="String" />
   <itemDefinition id="_14-groupItem" structureRef="String" />
-  <itemDefinition id="_14-PROCESS_COMPLETEDItem" structureRef="Boolean" />
+  <itemDefinition id="_14-isProcessCompleteItem" structureRef="Boolean" />
 
   <itemDefinition id="_15-descriptionItem" structureRef="String" />
   <itemDefinition id="_15-valueItem" structureRef="String" />
@@ -65,11 +65,12 @@
   <itemDefinition id="_15-subjectItem" structureRef="String" />
   <itemDefinition id="_15-actorItem" structureRef="String" />
   <itemDefinition id="_15-groupItem" structureRef="String" />
-  <itemDefinition id="_15-PROCESS_COMPLETEDItem" structureRef="Boolean" />
+  <itemDefinition id="_15-isProcessCompleteItem" structureRef="Boolean" />
 
   <process processType="Private" isExecutable="true" id="invoice-approval" name="Invoice Approval Process" tns:packageName="com.duggan.workflow.invoice" tns:version="V1" >
 
     <extensionElements>
+     <tns:global identifier="isProcessComplete" type="java.lang.Boolean" />
      <tns:global identifier="OwnerId" type="java.lang.String" />
     </extensionElements>
     <!-- process variables -->
@@ -82,15 +83,15 @@
     <property id="subject" itemSubjectRef="_subjectItem"/>
     <property id="actor" itemSubjectRef="_actorItem"/>
     <property id="group" itemSubjectRef="_groupItem"/>
-    <property id="PROCESS_COMPLETED" itemSubjectRef="_PROCESS_COMPLETEDItem"/>
+    <property id="isProcessComplete" itemSubjectRef="_isProcessCompleteItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
     <userTask id="_2" name="HOD Approval" >
       <ioSpecification>
-        <dataInput id="_2_subjectInput" name="subject" />
-        <dataInput id="_2_priorityInput" name="priority" />
         <dataInput id="_2_descriptionInput" name="description" />
+        <dataInput id="_2_priorityInput" name="priority" />
+        <dataInput id="_2_subjectInput" name="subject" />
         <dataInput id="_2_valueInput" name="value" />
         <dataInput id="_2_documentIdInput" name="documentId" />
         <dataInput id="_2_NotStartedNotifyInput" name="NotStartedNotify" />
@@ -103,9 +104,9 @@
         <dataOutput id="_2_ActorIdOutput" name="ActorId" />
         <dataOutput id="_2_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_2_subjectInput</dataInputRefs>
-          <dataInputRefs>_2_priorityInput</dataInputRefs>
           <dataInputRefs>_2_descriptionInput</dataInputRefs>
+          <dataInputRefs>_2_priorityInput</dataInputRefs>
+          <dataInputRefs>_2_subjectInput</dataInputRefs>
           <dataInputRefs>_2_valueInput</dataInputRefs>
           <dataInputRefs>_2_documentIdInput</dataInputRefs>
           <dataInputRefs>_2_NotStartedNotifyInput</dataInputRefs>
@@ -122,16 +123,16 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_2_subjectInput</targetRef>
+        <sourceRef>description</sourceRef>
+        <targetRef>_2_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>priority</sourceRef>
         <targetRef>_2_priorityInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_2_descriptionInput</targetRef>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_2_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -214,8 +215,8 @@ eBusiness Administration]@[]</from>
     </userTask>
     <userTask id="_3" name="Finance Approval" >
       <ioSpecification>
-        <dataInput id="_3_subjectInput" name="subject" />
         <dataInput id="_3_descriptionInput" name="description" />
+        <dataInput id="_3_subjectInput" name="subject" />
         <dataInput id="_3_valueInput" name="value" />
         <dataInput id="_3_documentIdInput" name="documentId" />
         <dataInput id="_3_CommentInput" name="Comment" />
@@ -227,8 +228,8 @@ eBusiness Administration]@[]</from>
         <dataOutput id="_3_ActorIdOutput" name="ActorId" />
         <dataOutput id="_3_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_3_subjectInput</dataInputRefs>
           <dataInputRefs>_3_descriptionInput</dataInputRefs>
+          <dataInputRefs>_3_subjectInput</dataInputRefs>
           <dataInputRefs>_3_valueInput</dataInputRefs>
           <dataInputRefs>_3_documentIdInput</dataInputRefs>
           <dataInputRefs>_3_CommentInput</dataInputRefs>
@@ -244,12 +245,12 @@ eBusiness Administration]@[]</from>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_3_subjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>description</sourceRef>
         <targetRef>_3_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_3_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -326,7 +327,7 @@ eBusiness Administration]@[]</from>
     <task id="_14" name="Update Success" tns:taskName="UpdateLocal" >
       <extensionElements>
         <tns:onEntry-script scriptFormat="http://www.java.com/java">
-          <tns:script>kcontext.setVariable("PROCESS_COMPLETED",Boolean.TRUE);</tns:script>
+          <tns:script>kcontext.setVariable("isProcessComplete",true);</tns:script>
         </tns:onEntry-script>
       </extensionElements>
       <ioSpecification>
@@ -353,8 +354,8 @@ eBusiness Administration]@[]</from>
     </task>
     <userTask id="_15" name="CEO Approval" >
       <ioSpecification>
-        <dataInput id="_15_subjectInput" name="subject" />
         <dataInput id="_15_descriptionInput" name="description" />
+        <dataInput id="_15_subjectInput" name="subject" />
         <dataInput id="_15_valueInput" name="value" />
         <dataInput id="_15_documentIdInput" name="documentId" />
         <dataInput id="_15_CommentInput" name="Comment" />
@@ -366,8 +367,8 @@ eBusiness Administration]@[]</from>
         <dataOutput id="_15_ActorIdOutput" name="ActorId" />
         <dataOutput id="_15_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_15_subjectInput</dataInputRefs>
           <dataInputRefs>_15_descriptionInput</dataInputRefs>
+          <dataInputRefs>_15_subjectInput</dataInputRefs>
           <dataInputRefs>_15_valueInput</dataInputRefs>
           <dataInputRefs>_15_documentIdInput</dataInputRefs>
           <dataInputRefs>_15_CommentInput</dataInputRefs>
@@ -383,12 +384,12 @@ eBusiness Administration]@[]</from>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_15_subjectInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>description</sourceRef>
         <targetRef>_15_descriptionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_15_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -824,6 +825,12 @@ kcontext.setVariable("actor", null);</tns:script>
         <terminateEventDefinition />
     </endEvent>
     <exclusiveGateway id="_28" name="approved?" gatewayDirection="Diverging" />
+    <scriptTask id="_31" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>System.err.println("###ISAPPROVED IS FALSE----Ending!!!");</script>
+    </scriptTask>
+    <scriptTask id="_30" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>System.err.println("###ISAPPROVED IS TRUE- CALLING UPDATE SUCCESS!!!");</script>
+    </scriptTask>
 
     <!-- connections -->
     <sequenceFlow id="_22-_2" sourceRef="_22" targetRef="_2" />
@@ -834,9 +841,7 @@ kcontext.setVariable("actor", null);</tns:script>
     <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" name="Denied" tns:priority="2" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return true;</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_28-_14" sourceRef="_28" targetRef="_14" name="Approved" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="_30-_14" sourceRef="_30" targetRef="_14" />
     <sequenceFlow id="_26-_15" sourceRef="_26" targetRef="_15" />
     <sequenceFlow id="_5-_20" sourceRef="_5" targetRef="_20" name="Denied" tns:priority="2" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return true;</conditionExpression>
@@ -851,10 +856,14 @@ kcontext.setVariable("actor", null);</tns:script>
     <sequenceFlow id="_8-_26" sourceRef="_8" targetRef="_26" name="Approved" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return isApproved==true;</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_28-_29" sourceRef="_28" targetRef="_29" name="Denied" tns:priority="2" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return true;</conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="_31-_29" sourceRef="_31" targetRef="_29" />
     <sequenceFlow id="_27-_28" sourceRef="_27" targetRef="_28" />
+    <sequenceFlow id="_28-_31" sourceRef="_28" targetRef="_31" name="Denied" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return isApproved==false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_28-_30" sourceRef="_28" targetRef="_30" name="Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return isApproved==true;</conditionExpression>
+    </sequenceFlow>
 
   </process>
 
@@ -870,7 +879,7 @@ kcontext.setVariable("actor", null);</tns:script>
         <dc:Bounds x="751" y="96" width="123" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
-        <dc:Bounds x="1786" y="95" width="48" height="48" />
+        <dc:Bounds x="1776" y="65" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_5" >
         <dc:Bounds x="528" y="56" width="48" height="48" />
@@ -882,7 +891,7 @@ kcontext.setVariable("actor", null);</tns:script>
         <dc:Bounds x="1160" y="55" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_14" >
-        <dc:Bounds x="1635" y="63" width="114" height="48" />
+        <dc:Bounds x="1630" y="68" width="114" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_15" >
         <dc:Bounds x="1271" y="135" width="114" height="48" />
@@ -914,6 +923,12 @@ kcontext.setVariable("actor", null);</tns:script>
       <bpmndi:BPMNShape bpmnElement="_28" >
         <dc:Bounds x="1559" y="135" width="48" height="48" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_31" >
+        <dc:Bounds x="1583" y="251" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_30" >
+        <dc:Bounds x="1516" y="71" width="80" height="48" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_22-_2" >
         <di:waypoint x="151" y="80" />
         <di:waypoint x="296" y="80" />
@@ -923,8 +938,8 @@ kcontext.setVariable("actor", null);</tns:script>
         <di:waypoint x="812" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_14-_4" >
-        <di:waypoint x="1692" y="87" />
-        <di:waypoint x="1810" y="119" />
+        <di:waypoint x="1687" y="92" />
+        <di:waypoint x="1800" y="89" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_23-_5" >
         <di:waypoint x="441" y="80" />
@@ -938,9 +953,9 @@ kcontext.setVariable("actor", null);</tns:script>
         <di:waypoint x="1072" y="120" />
         <di:waypoint x="1184" y="79" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_28-_14" >
-        <di:waypoint x="1583" y="159" />
-        <di:waypoint x="1692" y="87" />
+      <bpmndi:BPMNEdge bpmnElement="_30-_14" >
+        <di:waypoint x="1556" y="95" />
+        <di:waypoint x="1687" y="92" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_26-_15" >
         <di:waypoint x="1184" y="159" />
@@ -974,13 +989,21 @@ kcontext.setVariable("actor", null);</tns:script>
         <di:waypoint x="1072" y="120" />
         <di:waypoint x="1184" y="159" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_28-_29" >
-        <di:waypoint x="1583" y="159" />
+      <bpmndi:BPMNEdge bpmnElement="_31-_29" >
+        <di:waypoint x="1623" y="275" />
         <di:waypoint x="1690" y="216" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_27-_28" >
         <di:waypoint x="1472" y="159" />
         <di:waypoint x="1583" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_31" >
+        <di:waypoint x="1583" y="159" />
+        <di:waypoint x="1623" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_30" >
+        <di:waypoint x="1583" y="159" />
+        <di:waypoint x="1556" y="95" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -42,6 +42,8 @@ import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler
 import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetActivitiesRequest;
+import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -105,5 +107,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetAttachmentsRequest.class,
 				GetAttachmentsRequestActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(GetActivitiesRequest.class,
+				GetActivitiesRequestActionHandler.class, SessionValidator.class);
 	}
 }

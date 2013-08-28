@@ -10,7 +10,7 @@ public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAt
 
 	public interface IAttachmentView extends View{
 
-		void setValues(long id, String name, Long size);
+		void setValues(long id, String name, String size);
 		
 	}
 	
@@ -25,7 +25,7 @@ public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAt
 	}
 
 	public void setAttachment(Attachment attachment){
-		getView().setValues(attachment.getId(), attachment.getName(), attachment.getSize());
+		getView().setValues(attachment.getId(), attachment.getName(), attachment.getSizeAsStr());
 	}
 	
 }
