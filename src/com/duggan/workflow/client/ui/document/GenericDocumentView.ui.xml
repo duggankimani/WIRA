@@ -126,7 +126,8 @@
 	           <strong>Business Process:</strong>    
 	       </g:HTMLPanel>
 
-        <g:HTMLPanel ui:field="panelActivity" styleName="row-fluid recent-activity span8">
+		
+        <g:HTMLPanel styleName="row-fluid recent-activity span8">
 	       	      <span class="title"><i class="icon-comment"></i>Recent Activity</span>
 	       	      
 	       		  <div class="row-fluid comment-box">
@@ -138,22 +139,8 @@
 	     			  </div>
 	     		  </div>
         
-             	  <div class="row-fluid">
-	             	 <div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
-		             <div class="span8">
-			             <span class="name">Njoroge Waweru</span> claimed this invoice and started the workflow process<br/>
-			             <g:Anchor>Comment</g:Anchor>
-			             <i class="icon-time">2 days Ago</i>
-		             </div>
-	             </div>
-             	 
-	             <div class="well row-fluid">
-	             	<div class="span1"><img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/></div>
-	             	<div class="span8">
-		             	<span class="name">Duggan Kimani</span><br/>
-		              	<input placeholder="write your comment..."></input>
-	              	</div>
-	             </div>
+	       		  <g:HTMLPanel  ui:field="panelActivity">      		      
+	             </g:HTMLPanel>
         </g:HTMLPanel> 
 	</g:HTMLPanel>
 </ui:UiBinder>

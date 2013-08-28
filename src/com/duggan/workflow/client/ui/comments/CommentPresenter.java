@@ -4,9 +4,15 @@ import java.util.Date;
 
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.requests.GetActivitiesRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
+import com.duggan.workflow.shared.responses.GetActivitiesResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveCommentResponse;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -72,33 +78,38 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 	}
 
 	private void bind(Comment comment) {
-		getView().setComment(
-				comment.getId(),
-				comment.getComment(), "Created By",
-				comment.getCreated(), "Updated By",
-				comment.getUpdated(), comment.getDocumentId());
-
+		
+		getView().setComment(comment.getId(), comment.getComment(), comment.getCreatedBy(),
+				comment.getCreated(), comment.getUpdatedBy(), comment.getUpdated(), comment.getDocumentId());
 	}
 
 	protected void saveComment(final String commentTxt) {
 
-		comment.setComment(commentTxt);
 		
-		final SaveCommentRequest request = new SaveCommentRequest(comment);
+		Comment commentToSave = new Comment();
+		commentToSave.setComment(commentTxt);
+		commentToSave.setDocumentId(comment.getDocumentId());
+		commentToSave.setUserId(AppContext.getUserId());
+		commentToSave.setParentId(comment.getId());
+		commentToSave.setComment(commentTxt);
+		commentToSave.setCreatedBy(AppContext.getUserId());
 
-		requestHelper.execute(request,
-				new TaskServiceCallback<SaveCommentResponse>() {
-					public void processResult(SaveCommentResponse response) {
-
-						comment = response.getComment();
-
-						if (comment == null) {
-							getView().asWidget().removeFromParent();
-							return;
-						}
-						bind(comment);
-					};
-				});
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new SaveCommentRequest(commentToSave));
+		action.addRequest(new GetActivitiesRequest(comment.getDocumentId()));
+		
+		requestHelper.execute(action,
+				 new TaskServiceCallback<MultiRequestActionResult>(){
+			@Override
+			public void processResult(MultiRequestActionResult result) {
+				result.get(0);
+				
+				GetActivitiesResponse response = (GetActivitiesResponse)result.get(1);
+				
+				fireEvent(new ActivitiesLoadEvent(response.getActivityMap()));
+			}
+		});
+		
 	}
 
 	public void setComment(Comment comment) {

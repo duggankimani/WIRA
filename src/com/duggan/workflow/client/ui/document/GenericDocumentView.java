@@ -17,6 +17,8 @@ import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -87,6 +89,13 @@ public class GenericDocumentView extends ViewImpl implements
 		aForward.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		commentBox.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
+		commentBox.addFocusHandler(new FocusHandler() {
+			
+			@Override
+			public void onFocus(FocusEvent event) {
+				aSaveComment.removeStyleName("hidden");
+			}
+		});
 		disableAll();
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}

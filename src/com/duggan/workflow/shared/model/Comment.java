@@ -93,7 +93,7 @@ public class Comment extends Activity {
 	public int hashCode() {
 		
 		if(this.id!=null){
-			return (id+comment).hashCode();
+			return (id+getClass().getName()).hashCode();
 		}
 		
 		return super.hashCode();
@@ -101,10 +101,14 @@ public class Comment extends Activity {
 	
 	@Override
 	public boolean equals(Object obj) {	
+		if(!(obj instanceof Comment)){
+			return false;
+		}
+		
 		Comment other = (Comment)obj;
 		
 		if(id!=null && other.id!=null){
-			return id.equals(other.id) && comment.equals(other.comment);
+			return id.equals(other.id);
 		}
 		
 		return super.equals(obj);
