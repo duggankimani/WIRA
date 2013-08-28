@@ -61,19 +61,6 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 				
 				if(mode==MODE.VIEW){
 					setMode(MODE.EDIT);		
-				}else{
-					if(commentid==null){
-						asWidget().removeFromParent();
-						return;
-					}else{
-						setMode(MODE.VIEW);		
-						String txt = txtCommentBox.getText();
-						txtCommentBox.setText(spnMessage.getInnerText());//cancel hit
-						if((txt==null || txt.trim().isEmpty()) && commentid==null){
-							asWidget().removeFromParent();
-							return;
-						}
-					}
 				}
 			}
 		});
@@ -87,12 +74,16 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 
 	@Override
 	public void setComment(Long commentId, String comment, String createdBy,
-			Date created, String updatedby, Date updated, long documentId) {
+			Date created, String updatedby, Date updated, long documentId, boolean isChild) {
 		
 		this.commentid=commentId;
 		if(createdBy!=null){
 			spnCreated.setInnerText(getTimeDifferenceAsString(created));
 			spnCreatedBy.setInnerText(createdBy);
+		}
+		
+		if(isChild){
+			root.addStyleName("well");
 		}
 						
 		setComment(comment);
@@ -100,11 +91,8 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 	}
 
 	public void setComment(String comments) {
+		spnMessage.setInnerText(comments);
 		if(commentid!=null){
-			spnMessage.setInnerText(comments);	
-			txtCommentBox.setText(comments);
-		
-			//setMode(MODE.VIEW);
 			setMode(MODE.VIEW);
 		}else{
 			setMode(MODE.EDIT);
@@ -124,7 +112,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			divSave.removeClassName(HIDDEN);
 			txtCommentBox.removeStyleName(HIDDEN);
 			
-			spnMessage.addClassName(HIDDEN);
+			//spnMessage.addClassName(HIDDEN);
 			aReply.addStyleName(HIDDEN);
 			spnTime.setClassName(HIDDEN);
 		}else{
@@ -133,7 +121,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			divSave.addClassName(HIDDEN);
 			txtCommentBox.addStyleName(HIDDEN);
 
-			spnMessage.removeClassName(HIDDEN);
+			//spnMessage.removeClassName(HIDDEN);
 			aReply.removeStyleName(HIDDEN);
 			spnTime.removeClassName(HIDDEN);
 		}

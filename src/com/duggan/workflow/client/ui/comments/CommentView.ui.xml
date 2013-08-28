@@ -11,7 +11,7 @@
            <span class="name">
                <span ui:field="spnCreatedBy"></span>                 
            </span>
-           <span ui:field="spnMessage" class="message hidden"/><br/>
+           <span ui:field="spnMessage" class="message"/><br/>
            <g:Anchor ui:field="aReply" styleName="hidden">Reply</g:Anchor>
            <g:Anchor styleName="hidden">Edit</g:Anchor>
            <span ui:field="spnTime" class="hidden">
