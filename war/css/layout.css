@@ -25,9 +25,14 @@ input.search {
 
 textarea {
 	width: 98%;
-	padding-right: 5px;
+	/* padding-right: 5px; */
 	height: 70px;
 	margin-bottom: 0px;
+}
+
+textarea:hover{
+	outline:none;
+	border:none;
 }
 
 .header {
@@ -606,6 +611,7 @@ textarea {
 #detailed-info .content-area{
     padding: 39px 0 0 12px;
     font-size:14px;
+    max-height: 160px;
 }
 #detailed-info .content-area div{	
 	padding-bottom:10px;
@@ -645,23 +651,66 @@ textarea {
 }
 #detailed-info .recent-activity{
 	border:1px solid #cccccc;
-	padding: 10px 6px 6px 6px;
-	width: 642px;
+	padding: 10px 6px 0px 0px;
+	width: 653px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	margin-left: 12px;
-	position: relative;
-	top : -20px;
+	margin-left: 13px;
+	border-left: none;
 }
-.title{
-	position: relative;
+#detailed-info .recent-activity .title{
 	text-align:center;
 	font-weight:bold;
-	text-transform:uppercase;
-	top: -10px;
-	left: 231px;
 	background:#ffffff;
 }
+#detailed-info .recent-activity .icon-comment{
+	margin-right:6px;	
+}
+#detailed-info .recent-activity .comment-container{
+    background-color:#f1f1f1;
+}
+
+#detailed-info .recent-activity .comment-box .icon-chevron-up{
+	position: relative;
+	top: -7px;
+	color: #b4bbcd;
+	font-size: 13px;
+	background: #fff;
+	left: 30px;
+	z-index: 1;
+}
+
+#detailed-info .recent-activity .comment-box .button-post{
+	min-height: 20px;
+	padding: 1px 8px;
+	font-size: 11px;
+	margin-top: 4px;
+	margin-right: 7px;
+}
+#detailed-info .recent-activity .comment-box .textarea-box{
+	margin: 0px;
+	max-height: 50px;
+	z-index: 0;
+	border: 0;
+	resize: none;
+	outline:none;
+}
+#detailed-info .recent-activity .comment-box .textarea-box:focus{
+   	 outline: none;
+      border: none;
+}
+
+#detailed-info .recent-activity .comment-container{
+	border:1px solid #b4bbcd;
+	position: relative;
+	top: -14px;
+	z-index: 0;
+	padding: 2px;
+	width: 570px;
+	height: 87px;
+}
+
+
 #detailed-info .recent-activity .span1{
 	padding-top: 4px;
 	width: 50px;

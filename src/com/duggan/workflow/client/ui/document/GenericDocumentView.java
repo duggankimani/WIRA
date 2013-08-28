@@ -1,7 +1,8 @@
 package com.duggan.workflow.client.ui.document;
 
-import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.*;
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ACTIVITY_SLOT;
+import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
+import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,6 @@ import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
