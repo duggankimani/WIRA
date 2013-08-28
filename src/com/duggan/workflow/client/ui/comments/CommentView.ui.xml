@@ -17,8 +17,7 @@
            <i class="icon-time"><span ui:field="spnCreated"></span></i>
            </span>
            
-           <g:TextArea ui:field="txtCommentBox"
-             	    styleName="mmadministrationcommenttextarea"/>
+           <g:TextArea ui:field="txtCommentBox" styleName="mmadministrationcommenttextarea"/>
            <div ui:field="divSave" class="button small-button hand">
 			 <g:Anchor ui:field="lnkSaveComment"><Strong>Save</Strong></g:Anchor>
 		   </div>

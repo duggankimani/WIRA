@@ -104,7 +104,7 @@ public class ClientModule extends AbstractPresenterModule {
 				GenericDocumentPresenter.MyView.class,
 				GenericDocumentView.class);
 
-		bindPresenter(LoginPresenter.class, LoginPresenter.MyView.class,
+		bindPresenter(LoginPresenter.class, LoginPresenter.ILoginView.class,
 				LoginView.class, LoginPresenter.MyProxy.class);
 		
 		bind(CurrentUser.class).asEagerSingleton();

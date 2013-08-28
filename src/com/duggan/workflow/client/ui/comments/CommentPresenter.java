@@ -46,20 +46,14 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 	protected void onBind() {
 		super.onBind();
 
-		//bind(comment);
-
 		getView().getSaveCommentsLink().addClickHandler(new ClickHandler() {
-
 			@Override
 			public void onClick(ClickEvent event) {
 				String commentText = getView().getCommentBox().getText();
 
 				if (commentText == null || commentText.trim().isEmpty()) {
 					if (comment.getId() == null) {
-						getView().asWidget().removeFromParent();// not
-																// previously
-																// saved & not
-																// mandatory
+						getView().asWidget().removeFromParent();// not previously saved & not mandatory
 						return;
 					} else {
 						// not mandatory/ clear previously saved
@@ -102,7 +96,6 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 							getView().asWidget().removeFromParent();
 							return;
 						}
-
 						bind(comment);
 					};
 				});
