@@ -91,6 +91,7 @@ public class CommentDaoHelper {
 		commentTo.setUpdated(modelFrom.getUpdated());
 		commentTo.setUpdatedBy(modelFrom.getUpdatedBy());
 		commentTo.setUserId(commentTo.getUserId());
+		commentTo.setComment(modelFrom.getComment());
 		commentTo.setParentId(modelFrom.getParentId());
 	}
 

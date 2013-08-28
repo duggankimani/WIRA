@@ -35,10 +35,8 @@ public class GetActivitiesRequestActionHandler extends
 		activities.addAll(NotificationDaoHelper.getAllNotifications(documentId,
 				NotificationType.TASKCOMPLETED_APPROVERNOTE, NotificationType.APPROVALREQUEST_OWNERNOTE));
 				
-		activities.addAll(CommentDaoHelper.getAllComments(documentId));
-		
+		activities.addAll(CommentDaoHelper.getAllComments(documentId));		
 		Collections.sort(activities);
-		Collections.reverse(activities);
 				
 		Map<Activity, List<Activity>> activityMap = new LinkedHashMap<>();
 		for(Activity activity: activities){
@@ -46,16 +44,19 @@ public class GetActivitiesRequestActionHandler extends
 				activityMap.put(activity, null);
 			}else{
 				Comment comment = (Comment)activity;
+				System.err.println(">>>"+comment.getId());
 				//check if this is a child
 				
 				if(comment.getParentId()==null){
 					//possible parent
 					activityMap.put(comment, new ArrayList<Activity>());
 				}else{
-					List<Activity> children = activityMap.get(activity);
+					Comment parent = new Comment();
+					parent.setId(comment.getId());
+					List<Activity> children = activityMap.get(parent);
 					
 					if(children==null){
-						//parent hasnt been loaded yet						
+						System.err.println("#############SERVER IGNORING CHILD.............");						
 					}else{
 						children.add(comment);//activity map loaded						
 					}

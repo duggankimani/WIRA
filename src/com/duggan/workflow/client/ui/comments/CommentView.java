@@ -33,7 +33,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 	@UiField SpanElement spnMessage;
 	
 	@UiField Anchor lnkSaveComment;
-	@UiField Anchor aEdit;
+	@UiField Anchor aReply;
 	@UiField TextArea txtCommentBox;
 	@UiField DivElement divSave;
 	
@@ -55,7 +55,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 		 txtCommentBox.getElement().setAttribute("placeholder","write your comment...");
 		 txtCommentBox.setHeight("15px");
 		 
-		aEdit.addClickHandler(new ClickHandler() {			
+		aReply.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
 				
@@ -120,21 +120,21 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 		this.mode=mode;
 		
 		if(mode==MODE.EDIT){			
-			((Widget)aEdit).setTitle("Edit");
+			((Widget)aReply).setTitle("Edit");
 			divSave.removeClassName(HIDDEN);
 			txtCommentBox.removeStyleName(HIDDEN);
 			
 			spnMessage.addClassName(HIDDEN);
-			aEdit.addStyleName(HIDDEN);
+			aReply.addStyleName(HIDDEN);
 			spnTime.setClassName(HIDDEN);
 		}else{
 
-			((Widget)aEdit).setTitle("Cancel");
+			((Widget)aReply).setTitle("Cancel");
 			divSave.addClassName(HIDDEN);
 			txtCommentBox.addStyleName(HIDDEN);
 
 			spnMessage.removeClassName(HIDDEN);
-			aEdit.removeStyleName(HIDDEN);
+			aReply.removeStyleName(HIDDEN);
 			spnTime.removeClassName(HIDDEN);
 		}
 	}

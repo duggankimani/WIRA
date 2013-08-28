@@ -14,6 +14,8 @@ import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
+import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
+import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
@@ -67,7 +69,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class GenericDocumentPresenter extends
-		PresenterWidget<GenericDocumentPresenter.MyView> implements ReloadDocumentHandler{
+		PresenterWidget<GenericDocumentPresenter.MyView> implements ReloadDocumentHandler, ActivitiesLoadHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, DocType type, String subject,
@@ -130,6 +132,7 @@ public class GenericDocumentPresenter extends
 		super.onBind();		
 		
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
+		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			
@@ -360,13 +363,18 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
-		setInSlot(ACTIVITY_SLOT, null);
 		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
+		bindActivities(activitiesMap);		
+	}
+	
+	public void bindActivities(Map<Activity, List<Activity>> activitiesMap){
+		setInSlot(ACTIVITY_SLOT, null);
 		
 		Set<Activity> keyset = activitiesMap.keySet();
 		List<Activity> activities= new ArrayList<Activity>();
 		activities.addAll(keyset);
 		Collections.sort(activities);
+		Collections.reverse(activities);
 		
 		for(Activity activity: activities){
 			
@@ -389,6 +397,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void processResult(CommentPresenter result) {
 				result.setComment((Comment)child);
+				
 				addToSlot(ACTIVITY_SLOT,result);
 			}
 		});
@@ -519,6 +528,11 @@ public class GenericDocumentPresenter extends
 		if(event.getDocumentId()==this.documentId){
 			loadData();
 		}
+	}
+
+	@Override
+	public void onActivitiesLoad(ActivitiesLoadEvent event) {
+		bindActivities(event.getActivitiesMap());
 	}
 	
 }
