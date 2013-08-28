@@ -41,7 +41,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 
 	public interface MyView extends View {
 		HasClickHandlers getLogout();
-		void setValues(String userNames);
+		void setValues(String userNames, String userGroups);
 		Anchor getNotificationsButton();
 		void setPopupVisible();
 		void removePopup();
@@ -112,7 +112,7 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 	protected void onReset() {		
 		super.onReset();
 		loadAlertCount();
-		getView().setValues(AppContext.getUserNames());
+		getView().setValues(AppContext.getUserNames(), AppContext.getUserGroups());
 	}
 	
 	protected void loadAlertCount() {
@@ -131,12 +131,13 @@ public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> imp
 				HashMap<TaskType,Integer> alerts = result.getCounts();				
 				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));				
 				fireEvent(new AlertLoadEvent(alerts));				
-				alertTimer.schedule(alertReloadInterval);
 				
 				GetNotificationsActionResult notificationsResult = (GetNotificationsActionResult)results.get(1);
 				assert notificationsResult!=null;
 				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
 				getView().setLoading(false);
+				
+				alertTimer.schedule(alertReloadInterval);
 			}
 		});
 		

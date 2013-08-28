@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.helper.dao;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +38,29 @@ public class AttachmentDaoHelper{
 		attachment.setId(model.getId());
 		attachment.setName(model.getName());
 		attachment.setSize(model.getSize());
+		attachment.setSizeStr(getSizeAsStr(model.getSize()));
 		
 		return attachment;
+	}
+	
+	public static String getSizeAsStr(long size){
+		
+		int kb = 1024;
+		
+		int mb = kb*kb;
+		
+		if(size<kb){
+			return size+"b";
+		}
+		
+		DecimalFormat formatter = new DecimalFormat("0.0");
+		
+		if(size<mb){
+			
+			return formatter.format(((double)size/kb))+"Kb";
+		}
+		
+		return formatter.format(((double)size/mb))+" MB";
 	}
 
 }

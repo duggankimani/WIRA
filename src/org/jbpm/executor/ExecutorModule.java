@@ -19,8 +19,8 @@ public class ExecutorModule {
     
     public static ExecutorModule getInstance(){
         if(instance == null){
+        	DBTrxProvider.init();
             instance = new ExecutorModule();
-            DBTrxProvider.init();
         }
         return instance;
     }

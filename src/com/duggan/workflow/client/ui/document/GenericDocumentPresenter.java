@@ -1,7 +1,11 @@
 package com.duggan.workflow.client.ui.document;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
@@ -16,11 +20,13 @@ import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
+import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.upload.Uploader;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -28,13 +34,16 @@ import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
+import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
+import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
@@ -93,6 +102,7 @@ public class GenericDocumentPresenter extends
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
+	private IndirectProvider<NotePresenter> notePresenterFactory;
 	
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
@@ -101,11 +111,13 @@ public class GenericDocumentPresenter extends
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
 			Provider<CreateDocPresenter> docProvider,
 			Provider<CommentPresenter> commentProvider,
-			Provider<AttachmentPresenter> attachmentProvider) {
+			Provider<AttachmentPresenter> attachmentProvider,
+			Provider<NotePresenter> noteProvider) {
 		super(eventBus, view);		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		commentPresenterFactory = new StandardProvider<CommentPresenter>(commentProvider);
 		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(attachmentProvider);
+		notePresenterFactory = new StandardProvider<NotePresenter>(noteProvider);
 	}
 
 	@Override
@@ -286,6 +298,7 @@ public class GenericDocumentPresenter extends
 		requests.addRequest(new GetDocumentRequest(documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
+		requests.addRequest(new GetActivitiesRequest(documentId));
 		
 		if(documentId != null){
 			requestHelper.execute(requests, 
@@ -301,9 +314,58 @@ public class GenericDocumentPresenter extends
 					
 					GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(2);
 					bindAttachments(attachmentsresponse);
+					
+					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(3);
+					bindActivities(getActivities);
 				}	
 			});
 		}
+	}
+
+	protected void bindActivities(GetActivitiesResponse response) {
+		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
+		
+		Set<Activity> keyset = activitiesMap.keySet();
+		List<Activity> activities= new ArrayList<Activity>();
+		activities.addAll(keyset);
+		Collections.sort(activities);
+		
+		for(Activity activity: activities){
+			
+			bind(activity,false);			
+			List<Activity> children = activitiesMap.get(activity);			
+			if(children!=null){
+				for(Activity child: children){
+					bind(child, true);
+				}
+			}
+		}		
+		
+	}
+
+	private void bind(final Activity child, boolean isChild) {
+		System.err.println(child.getClass()+" :: "+child.getCreated()+" :: "+child.getCreatedBy());
+				
+		if(child instanceof Comment)
+		commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
+			@Override
+			public void processResult(CommentPresenter result) {
+				result.setComment((Comment)child);
+				addToSlot(ACTIVITY_SLOT,result);
+			}
+		});
+		
+		
+		if(child instanceof Notification)
+			notePresenterFactory.get(new ServiceCallback<NotePresenter>() {				
+				@Override
+				public void processResult(NotePresenter result) {
+					result.setNotification((Notification)child);
+					addToSlot(ACTIVITY_SLOT, result);
+				}
+			});
+			
+		
 	}
 
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {

@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class Attachment implements Serializable {
 
@@ -14,6 +15,7 @@ public class Attachment implements Serializable {
 	private boolean archived;
 	private Long documentid;
 	private Long size;
+	private String sizeStr;
 	private String contentType;
 	
 	public Long getId() {
@@ -53,4 +55,10 @@ public class Attachment implements Serializable {
 		this.contentType = contentType;
 	}
 	
+	public String getSizeAsStr() {
+		return sizeStr;
+	}
+	public void setSizeStr(String size) {
+		this.sizeStr = size;
+	}
 }

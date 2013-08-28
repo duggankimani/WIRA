@@ -243,8 +243,18 @@ public class GenericDocumentView extends ViewImpl implements
 	public void setStates(List<NodeDetail> states) {
 		statusContainer.clear();
 		if(states!=null){
+			NodeDetail detail = null;
 			for(NodeDetail state:states){
-				statusContainer.add(new ProcessState(state));
+				if(state.isEndNode())
+					detail = state;
+				else
+					statusContainer.add(new ProcessState(state));
+				
+			}
+			
+			//ensure end node always comes last
+			if(detail!=null){
+				statusContainer.add(new ProcessState(detail));
 			}
 		}
 	}

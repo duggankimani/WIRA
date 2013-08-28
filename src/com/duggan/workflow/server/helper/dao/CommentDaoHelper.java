@@ -72,6 +72,7 @@ public class CommentDaoHelper {
 		commentTo.setComment(modelFrom.getComment());
 		commentTo.setId(modelFrom.getId());
 		commentTo.setUserId(modelFrom.getUserId());
+		commentTo.setParentId(modelFrom.getParentId());
 		
 	}
 	
@@ -84,12 +85,13 @@ public class CommentDaoHelper {
 		HTUser createdBy = LoginHelper.get().getUser(owner);
 		commentTo.setCreatedByUser(createdBy);
 		commentTo.setCreated(modelFrom.getCreated());
-		commentTo.setCreatedby(owner);
+		commentTo.setCreatedBy(owner);
 		commentTo.setDocumentId(modelFrom.getDocumentId());
 		commentTo.setId(modelFrom.getId());
 		commentTo.setUpdated(modelFrom.getUpdated());
 		commentTo.setUpdatedBy(modelFrom.getUpdatedBy());
 		commentTo.setUserId(commentTo.getUserId());
+		commentTo.setParentId(modelFrom.getParentId());
 	}
 
 	public static void delete(Long id) {

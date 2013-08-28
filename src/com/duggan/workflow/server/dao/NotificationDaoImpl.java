@@ -1,11 +1,14 @@
 package com.duggan.workflow.server.dao;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.NotificationModel;
+import com.duggan.workflow.shared.model.NotificationType;
 
 public class NotificationDaoImpl {
 
@@ -61,5 +64,41 @@ public class NotificationDaoImpl {
 				.getSingleResult();
 		
 		return count.intValue();
+	}
+
+	/**
+	 * To handle repetition of Doc Forwarded Notification 
+	 * @param documentId
+	 * @param owner
+	 */
+	public List getNotification(Long documentId, String owner) {
+
+		List models = em.createQuery("FROM NotificationModel n where documentId= :documentId " +
+				"and notificationType=:notificationType and owner=:owner")
+				.setParameter("documentId", documentId)
+				.setParameter("notificationType", NotificationType.APPROVALREQUEST_OWNERNOTE)
+				.setParameter("owner", owner)
+				.getResultList();
+		return models;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<NotificationModel> getAllNotificationsByDocumentId(Long documentId, NotificationType[] notificationTypes) {
+
+		List<NotificationType> notes = new ArrayList<>();
+		
+		if(notificationTypes!=null)
+		for(NotificationType type: notificationTypes){
+			notes.add(type);
+		}
+		
+		return em.createQuery("FROM NotificationModel n " +
+				"where n.documentId=:documentId " +
+				"and n.notificationType in (:notificationType)" +
+				"order by created desc")
+		.setParameter("documentId", documentId)
+		.setParameter("notificationType", notes)
+		.getResultList();
+		
 	}
 }

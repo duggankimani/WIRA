@@ -52,7 +52,7 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 	}
 
 	@Override
-	public void setValues(long id,String name, Long size) {
+	public void setValues(long id,String name, String size) {
 		spnName.setInnerText(name);
 		spnSize.setInnerText(""+size);
 		

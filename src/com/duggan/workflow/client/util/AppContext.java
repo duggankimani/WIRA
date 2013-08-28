@@ -79,6 +79,7 @@ public class AppContext {
 			public void processResult(GetContextRequestResult result) {
 				user.setUserId(result.getUser().getId());
 				user.setFullName(result.getUser().getName());
+				user.setGroups(result.getGroups());
 			}
 			
 			@Override
@@ -105,7 +106,7 @@ public class AppContext {
 	}
 	
 	public static String getUserGroups(){
-		return "";
+		return user.getGroupsAsString();
 	}
 	
 	public static EventBus getEventBus(){

@@ -21,12 +21,12 @@ public class InitializerServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {		
 		super.init();
-		//ExecutorModule.getInstance().getExecutorServiceEntryPoint().init();
+		ExecutorModule.getInstance().getExecutorServiceEntryPoint().init();
 	}
 	
 	@Override
 	public void destroy() {
-		//ExecutorModule.getInstance().getExecutorServiceEntryPoint().destroy();
+		ExecutorModule.getInstance().getExecutorServiceEntryPoint().destroy();
 		super.destroy();
 	}
 }

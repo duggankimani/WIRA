@@ -45,7 +45,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cxf-tools-common-2.4.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-compiler-5.5.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-core-5.5.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-core-5.5.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/drools/drools-core/5.5.0.Final/drools-core-5.5.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-persistence-jpa-5.5.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.5.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ejb3-persistence-1.0.2.GA.jar"/>

@@ -2,6 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.List;
 
 import com.google.gwt.user.client.Cookies;
 
@@ -17,6 +18,7 @@ public class CurrentUser implements Serializable {
 	private String fullName;
 	private String firstName;
 	private String sirName;
+	private List<UserGroup> groups;
 	private boolean isValid;
 
 	public CurrentUser() {
@@ -56,6 +58,29 @@ public class CurrentUser implements Serializable {
 
 	public String getSirName() {
 		return sirName;
+	}
+
+	public void setGroups(List<UserGroup> groups) {
+		this.groups = groups;		
+	}
+
+	public List<UserGroup> getGroups() {
+		return groups;
+	}
+	
+	public String getGroupsAsString(){
+		StringBuffer out = new StringBuffer();
+		if(groups!=null){
+			for(UserGroup group: groups){
+				out.append(group.getName()+",");
+			}
+		}
+		
+		if(out.length()>0){
+			return out.substring(0, out.length()-1);
+		}
+		
+		return "";
 	}
 
 	/**

@@ -18,9 +18,11 @@ public class TestLdapAuth {
 	@Test
 	public void getUser(){
 		String userId = "calcacuervo";
-		HTUser user = LoginHelper.get().getUser(userId);
+		List<String> list= LoginHelper.get().getLdapQuery().groupsForUser("likoko");
 		
-		Assert.assertNotNull(user);
+		Assert.assertNotNull(list);
+
+		Assert.assertTrue(list.size()>0);
 	}
 	
 	@Ignore

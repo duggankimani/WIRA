@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.transaction.UserTransaction;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.jbpm.executor.api.Command;
 import org.jbpm.executor.api.CommandCallback;
@@ -26,6 +28,7 @@ import org.jbpm.executor.entities.RequestInfo;
 import org.jbpm.executor.entities.STATUS;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 
 /**
  *
@@ -39,7 +42,7 @@ public class ExecutorRunnable extends Thread {
     
     
     public ExecutorRunnable(){
-    	setDaemon(true);
+    	//setDaemon(true);
     }
 
     /**
@@ -49,7 +52,27 @@ public class ExecutorRunnable extends Thread {
      */
     public void run() {
     	
-    	DB.beginTransaction();
+    	try{
+    		DB.beginTransaction();
+    		
+    		execute();
+    		
+    		DB.commitTransaction();
+    	}catch(Exception e){
+    		System.err.println("############ Error : "+e.getMessage());
+    		
+    		try{
+    			DB.rollback();
+    		}catch(Exception f){System.err.println("############ RollbackError : "+f.getMessage());}
+    		//
+    	}finally{
+    		DB.closeSession();
+    	}
+    	
+    	
+    }
+
+    private void execute() {
     	EntityManager em = DB.getEntityManager();//getEntityManagerFactory().createEntityManager();
     	
         logger.log(Level.INFO, " >>> Executor Thread {0} Waking Up!!!", this.toString());
@@ -85,7 +108,11 @@ public class ExecutorRunnable extends Thread {
                         e.printStackTrace();
                     }
                 }
-                ExecutionResults results = cmd.execute(ctx);
+                
+                //Duggan-2 cents: if an exception happens here
+                //rollback anything saved by processes called
+                //by command .: this means the process should run in its own trx?                
+                ExecutionResults results = runInIndependentTrx(cmd, ctx);
                 if (ctx != null && ctx.getData("callbacks") != null) {
                     logger.log(Level.INFO, " ### Callback: {0}", ctx.getData("callbacks"));
                     String[] callbacksArray = ((String) ctx.getData("callbacks")).split(",");;
@@ -146,12 +173,23 @@ public class ExecutorRunnable extends Thread {
             }          
         }
         logger.log(Level.INFO, " >>> Executor Thread {0} Committing.....!!!", this.toString());
-        DB.commitTransaction();
-        DB.closeSession();
         logger.log(Level.INFO, " >>> Executor Thread {0} Committed . Closed Session.....!!!", this.toString());
-    }
 
-    private Command findCommand(CommandCodes name) {
+	}
+
+    /**
+     * BTM does not support nested transactions!!
+     * 
+     * @param cmd
+     * @param ctx
+     * @return
+     * @throws Exception
+     */
+	private ExecutionResults runInIndependentTrx(Command cmd, CommandContext ctx) throws Exception{
+		return cmd.execute(ctx);
+	}
+
+	private Command findCommand(CommandCodes name) {
 
     	Class<?> handler = null;
     	try{

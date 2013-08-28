@@ -55,15 +55,14 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		String actorId = (String) workItem.getParameter("ActorId");
 		String ownerId = (String) workItem.getParameter("OwnerId");
 		Object isApproved = workItem.getParameter("isApproved");
-
 		
-		System.err.println("Class : "+this.getClass());
-		System.err.println("Subject : "+subject);
-		System.err.println("NotificationType : "+noteType);
-		System.err.println("DocumentId : "+documentId);
-		System.err.println("GroupId : "+groupId);
-		System.err.println("ActorId : "+actorId);
-		System.err.println("OwnerId : "+ownerId);		
+//		System.err.println("Class : "+this.getClass());
+//		System.err.println("Subject : "+subject);
+//		System.err.println("NotificationType : "+noteType);
+//		System.err.println("DocumentId : "+documentId);
+//		System.err.println("GroupId : "+groupId);
+//		System.err.println("ActorId : "+actorId);
+//		System.err.println("OwnerId : "+ownerId);		
 
 		Notification notification = new Notification();
 		notification.setCreated(new Date());

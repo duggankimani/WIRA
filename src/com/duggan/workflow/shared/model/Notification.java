@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Notification implements Serializable{
+public class Notification extends Activity{
 
 	/**
 	 * 
@@ -107,14 +106,6 @@ public class Notification implements Serializable{
 		return note;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public ApproverAction getApproverAction() {
 		return approverAction;
 	}
@@ -129,5 +120,38 @@ public class Notification implements Serializable{
 
 	public void setProcessInstanceId(Long processInstanceId) {
 		this.processInstanceId = processInstanceId;
+	}
+
+	@Override
+	public String getStatement() {
+		
+		return null;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Notification other = (Notification)obj;
+		
+		if(id!=null && other.id!=null){
+			return id.equals(other.id) && notificationType.equals(other.notificationType);
+		}
+		return super.equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		if(this.id!=null){
+			return (id+notificationType.name()).hashCode();
+		}
+		
+		return super.hashCode();
 	}
 }

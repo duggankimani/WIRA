@@ -399,7 +399,8 @@ public class HomePresenter extends
 	public void onAlertLoad(AlertLoadEvent event) {
 		//event.getAlerts();
 		getView().bindAlerts(event.getAlerts());
-		int count = event.getAlerts().get(currentTaskType);
+		Integer count = event.getAlerts().get(currentTaskType);
+		if(count==null) count=0;
 		Window.setTitle(currentTaskType.getTitle()+ (count==0? "" : " ("+count+")"));
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
@@ -35,6 +36,9 @@ public class GetTaskListActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
+		String userId = action.getUserId()==null? SessionHelper.getCurrentUser().getId():
+			action.getUserId();
+		
 		TaskType type = action.getType();
 
 		List<DocSummary> summary = new ArrayList<>();
@@ -62,7 +66,7 @@ public class GetTaskListActionHandler extends
 			if(doc!=null)
 				summary.add(doc);
 			
-			List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(action.getUserId(), action.getProcessInstanceId());
+			List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, action.getProcessInstanceId());
 			
 			if(tasks!=null){
 				summary.addAll(tasks);
@@ -70,7 +74,7 @@ public class GetTaskListActionHandler extends
 			break;
 			
 		default:
-			summary = getPendingApprovals(action.getUserId(), type);
+			summary = getPendingApprovals(userId, type);
 			break;
 		}
 
