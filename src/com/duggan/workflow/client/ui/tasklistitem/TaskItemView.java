@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.tasklistitem;
+ package com.duggan.workflow.client.ui.tasklistitem;
 
 import java.util.List;
 

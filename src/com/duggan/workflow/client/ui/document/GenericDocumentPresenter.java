@@ -44,6 +44,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -79,6 +80,7 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getStopLink();
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
+		TextArea getCommentBox();
 		Uploader getUploader();
 	}
 
@@ -130,6 +132,8 @@ public class GenericDocumentPresenter extends
 				
 			}
 		});
+		
+		getView().getCommentBox().addFocusHandler(new Focus)
 		
 		getView().getEditButton().addClickHandler(new ClickHandler() {
 			

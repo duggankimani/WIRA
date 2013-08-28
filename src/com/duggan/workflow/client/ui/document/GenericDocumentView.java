@@ -23,6 +23,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -49,6 +50,8 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnPartner;
 	@UiField
 	SpanElement spnDescription;
+	
+	@UiField TextArea commentbox;
 
 	@UiField Anchor aSimulate;	
 	@UiField Anchor aEdit;	
@@ -79,6 +82,8 @@ public class GenericDocumentView extends ViewImpl implements
 		aEdit.getElement().setAttribute("type","button");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
+		commentbox.getElement().setAttribute("placeholder", "write comments, Clarifications and Questions...");
+		
 		aApprove.getElement().setAttribute("type", "button");
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
@@ -346,6 +351,11 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public Uploader getUploader() {
 		return uploader;
+	}
+
+	@Override
+	public TextArea getCommentBox() {
+		return commentbox;
 	}
 	
 }

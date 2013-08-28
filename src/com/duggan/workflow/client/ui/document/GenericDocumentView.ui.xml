@@ -132,9 +132,9 @@
 	       		  <div class="row-fluid comment-box">
 	       		 	  <i class="icon-chevron-up"></i>
 	     			  <input class="hidden" placeholder="write comments, Clarifications and Questions ..."></input>
-	     			  <div class="comment-container"><textarea placeholder="write comments, Clarifications and Questions ..." class="textarea-box">
-	     			  </textarea>
-	     			  <a class="hand btn btn-primary pull-right button-post">POST</a>
+	     			  <div class="comment-container">
+		     			  <g:TextArea ui:field="commentbox" styleName="textarea-box"></g:TextArea>
+		     			  <a class="hand btn btn-primary pull-right button-post hidden">POST</a>
 	     			  </div>
 	     		  </div>
         

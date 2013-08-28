@@ -25,7 +25,6 @@ input.search {
 
 textarea {
 	width: 98%;
-	/* padding-right: 5px; */
 	height: 70px;
 	margin-bottom: 0px;
 }
@@ -35,6 +34,10 @@ textarea:hover{
 	border:none;
 }
 
+textarea:focus{
+	outline:none;
+	border:none;
+}
 .header {
 	margin-bottom: 60px;
 }
@@ -657,6 +660,7 @@ textarea:hover{
 	overflow-x: hidden;
 	margin-left: 13px;
 	border-left: none;
+	max-height: 335px;
 }
 #detailed-info .recent-activity .title{
 	text-align:center;
@@ -694,10 +698,12 @@ textarea:hover{
 	border: 0;
 	resize: none;
 	outline:none;
+	width: 99%;
+	padding: 3px;
 }
 #detailed-info .recent-activity .comment-box .textarea-box:focus{
    	 outline: none;
-      border: none;
+     border: none;
 }
 
 #detailed-info .recent-activity .comment-container{
@@ -705,7 +711,6 @@ textarea:hover{
 	position: relative;
 	top: -14px;
 	z-index: 0;
-	padding: 2px;
 	width: 570px;
 	height: 87px;
 }
