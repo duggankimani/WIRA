@@ -133,8 +133,6 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
-		getView().getCommentBox().addFocusHandler(new Focus)
-		
 		getView().getEditButton().addClickHandler(new ClickHandler() {
 			
 			@Override
