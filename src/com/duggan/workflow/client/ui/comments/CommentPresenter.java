@@ -30,7 +30,7 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 		TextArea getCommentBox();
 
 		void setComment(Long commentId, String comment, String createdBy,
-				Date created, String updatedby, Date updated, long documentId);
+				Date created, String updatedby, Date updated, long documentId, boolean isChild);
 
 		HasClickHandlers getSaveCommentsLink();
 
@@ -79,8 +79,10 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 
 	private void bind(Comment comment) {
 		
+		System.err.println("####Display Comemnt :: "+comment.getComment());
 		getView().setComment(comment.getId(), comment.getComment(), comment.getCreatedBy(),
-				comment.getCreated(), comment.getUpdatedBy(), comment.getUpdated(), comment.getDocumentId());
+				comment.getCreated(), comment.getUpdatedBy(), comment.getUpdated(),
+				comment.getDocumentId(), comment.getParentId()!=null);
 	}
 
 	protected void saveComment(final String commentTxt) {
@@ -90,7 +92,13 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 		commentToSave.setComment(commentTxt);
 		commentToSave.setDocumentId(comment.getDocumentId());
 		commentToSave.setUserId(AppContext.getUserId());
-		commentToSave.setParentId(comment.getId());
+		
+		if(comment.getParentId()!=null){
+			commentToSave.setParentId(comment.getParentId());
+		}else{
+			commentToSave.setParentId(comment.getId());
+		}
+		
 		commentToSave.setComment(commentTxt);
 		commentToSave.setCreatedBy(AppContext.getUserId());
 

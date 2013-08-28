@@ -44,7 +44,7 @@ public class GetActivitiesRequestActionHandler extends
 				activityMap.put(activity, null);
 			}else{
 				Comment comment = (Comment)activity;
-				System.err.println(">>>"+comment.getId());
+				System.err.println("Adding Comment >>>"+comment.getId()+" :: Parent = "+comment.getParentId());
 				//check if this is a child
 				
 				if(comment.getParentId()==null){
@@ -52,7 +52,7 @@ public class GetActivitiesRequestActionHandler extends
 					activityMap.put(comment, new ArrayList<Activity>());
 				}else{
 					Comment parent = new Comment();
-					parent.setId(comment.getId());
+					parent.setId(comment.getParentId());
 					List<Activity> children = activityMap.get(parent);
 					
 					if(children==null){
