@@ -23,6 +23,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -70,6 +71,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
+	@UiField Anchor aSaveComment;
+	@UiField TextArea txtComments;
 	
 	
 	@Inject
@@ -83,6 +86,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
+		txtComments.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
 		disableAll();
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
@@ -314,6 +318,10 @@ public class GenericDocumentView extends ViewImpl implements
 		return aReject;
 	}
 	
+	public Anchor getSaveCommentButton(){
+		return aSaveComment;
+	}
+	
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 
@@ -356,6 +364,12 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public Uploader getUploader() {
 		return uploader;
+	}
+
+	@Override
+	public String getComment() {
+		
+		return txtComments.getValue();
 	}
 	
 }

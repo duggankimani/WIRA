@@ -42,6 +42,7 @@ import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
@@ -49,6 +50,7 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.duggan.workflow.shared.responses.SaveCommentResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -88,6 +90,8 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getStopLink();
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
+		HasClickHandlers getSaveCommentButton();
+		String getComment();
 		Uploader getUploader();
 	}
 
@@ -150,6 +154,15 @@ public class GenericDocumentPresenter extends
 				if(doc.getStatus()==DocStatus.DRAFTED)
 					showEditForm(MODE.EDIT);
 				}
+		});
+		
+		getView().getSaveCommentButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				String comment = getView().getComment();
+				save(comment);
+			}
 		});
 		
 		//testing code
@@ -269,6 +282,29 @@ public class GenericDocumentPresenter extends
 		
 	}
 
+	protected void save(String commenttxt) {
+		Comment comment = new Comment();
+		comment.setComment(commenttxt);
+		comment.setDocumentId(documentId);
+		comment.setParentId(null);
+		comment.setUserId(AppContext.getUserId());
+		comment.setCreatedBy(AppContext.getUserId());
+		
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new SaveCommentRequest(comment));
+		action.addRequest(new GetActivitiesRequest(documentId));
+		
+		requestHelper.execute(action,
+				 new TaskServiceCallback<MultiRequestActionResult>(){
+			@Override
+			public void processResult(MultiRequestActionResult result) {
+				result.get(0);
+				bindActivities((GetActivitiesResponse)result.get(1));
+			}
+		});
+		
+	}
+
 	protected void showEditForm(final MODE mode) {
 		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
 			@Override
@@ -323,6 +359,7 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
+		setInSlot(ACTIVITY_SLOT, null);
 		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
 		
 		Set<Activity> keyset = activitiesMap.keySet();
@@ -392,7 +429,7 @@ public class GenericDocumentPresenter extends
 		{
 			Comment comment = new Comment();
 			comment.setComment("I have seen this; need details");
-			comment.setCreatedby("Tom");
+			comment.setCreatedBy("Tom");
 			comment.setCreated(new Date());
 			comment.setDocumentId(documentId);
 			comments.add(comment);
