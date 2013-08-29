@@ -7,7 +7,7 @@ import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
 import java.util.Date;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.upload.Uploader;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -17,12 +17,18 @@ import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -74,8 +80,10 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
 	@UiField Anchor aSaveComment;
+	@UiField HTMLPanel commentContainer;
 	@UiField TextArea commentBox;
-	
+	@UiField FocusPanel commentPanel;
+	@UiField Button aAttach;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -87,15 +95,54 @@ public class GenericDocumentView extends ViewImpl implements
 		aApprove.getElement().setAttribute("type", "button");
 		aReject.getElement().setAttribute("type", "button");
 		aForward.getElement().setAttribute("type", "button");
+		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		commentBox.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
-		commentBox.addFocusHandler(new FocusHandler() {
-			
+		commentPanel.getElement().removeAttribute("tabindex");
+		
+		/*Comment Box Effect
+		 * --OnFocus
+		 * */
+		FocusHandler handler = new FocusHandler() {
 			@Override
 			public void onFocus(FocusEvent event) {
+				commentContainer.addStyleName("comment-big");
+				commentContainer.removeStyleName("comment-small");
+				commentBox.addStyleName("textarea-big");
+				commentBox.removeStyleName("textarea-small");
 				aSaveComment.removeStyleName("hidden");
 			}
+		};
+		
+		
+		BlurHandler blurHandler = new BlurHandler() {
+			@Override
+			public void onBlur(BlurEvent event) {
+				
+				if(commentBox.getValue().trim().isEmpty()){
+					commentContainer.addStyleName("comment-small");
+					commentContainer.removeStyleName("comment-big");
+					commentBox.addStyleName("textarea-small");
+					commentBox.removeStyleName("textarea-big");
+					aSaveComment.addStyleName("hidden");
+				}
+			}
+		};
+		
+		aSaveComment.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				commentContainer.addStyleName("comment-small");
+				commentContainer.removeStyleName("comment-big");
+				commentBox.addStyleName("textarea-small");
+				commentBox.removeStyleName("textarea-big");
+				aSaveComment.addStyleName("hidden");
+			}
 		});
+		commentBox.addFocusHandler(handler);
+		commentBox.addBlurHandler(blurHandler);		
+		
 		disableAll();
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
@@ -379,6 +426,15 @@ public class GenericDocumentView extends ViewImpl implements
 	public String getComment() {
 		
 		return commentBox.getValue();
+	}
+
+	@Override
+	public void setComment(String string) {
+		commentBox.setText("");
+	}
+	
+	public HasClickHandlers getUploadLink(){
+		return aAttach;
 	}
 	
 }

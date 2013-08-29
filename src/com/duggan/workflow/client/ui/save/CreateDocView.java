@@ -5,7 +5,7 @@ import java.util.Date;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
-import com.duggan.workflow.client.ui.upload.Uploader;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Priority;

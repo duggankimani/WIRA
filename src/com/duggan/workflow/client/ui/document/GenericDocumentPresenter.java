@@ -24,8 +24,9 @@ import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.upload.Uploader;
+import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Activity;
@@ -52,12 +53,10 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.duggan.workflow.shared.responses.SaveCommentResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -96,6 +95,8 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getSaveCommentButton();
 		String getComment();
 		Uploader getUploader();
+		void setComment(String string);
+		HasClickHandlers getUploadLink();
 	}
 
 	Long documentId;
@@ -110,6 +111,7 @@ public class GenericDocumentPresenter extends
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
+	@Inject UploadDocumentPresenter uploader;
 	
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
@@ -134,6 +136,13 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		
+		getView().getUploadLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addToPopupSlot(uploader, true);
+			}
+		});
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -290,6 +299,7 @@ public class GenericDocumentPresenter extends
 		if(commenttxt==null || commenttxt.trim().isEmpty())
 			return;
 		
+		getView().setComment("");
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
 		comment.setDocumentId(documentId);
@@ -509,7 +519,7 @@ public class GenericDocumentPresenter extends
 		context.setAction(UPLOADACTION.ATTACHDOCUMENT);
 		context.setContext("documentId", doc.getId()+"");
 		context.setContext("userid", AppContext.getUserId());
-		getView().getUploader().setContext(context);
+		uploader.setContext(context);
 	}
 
 	public void setProcessState(List<NodeDetail> states){

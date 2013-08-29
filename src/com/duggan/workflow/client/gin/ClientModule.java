@@ -39,6 +39,8 @@ import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemView;
 import com.duggan.workflow.client.ui.toolbar.ToolbarPresenter;
 import com.duggan.workflow.client.ui.toolbar.ToolbarView;
+import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
+import com.duggan.workflow.client.ui.upload.UploadDocumentView;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentView;
 import com.duggan.workflow.client.ui.user.UserSelectionPresenter;
@@ -136,5 +138,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(UserSelectionPresenter.class,
 				UserSelectionPresenter.MyView.class, UserSelectionView.class);
+
+		bindPresenterWidget(UploadDocumentPresenter.class,
+				UploadDocumentPresenter.MyView.class, UploadDocumentView.class);
 	}
 }
