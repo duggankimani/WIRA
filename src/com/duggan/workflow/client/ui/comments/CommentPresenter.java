@@ -87,7 +87,9 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 
 	protected void saveComment(final String commentTxt) {
 
-		
+		if(comment==null || commentTxt.trim().isEmpty())
+			return;
+
 		Comment commentToSave = new Comment();
 		commentToSave.setComment(commentTxt);
 		commentToSave.setDocumentId(comment.getDocumentId());

@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.upload;
 
+import java.util.Iterator;
+
 import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -42,6 +45,13 @@ public class Uploader extends Composite {
 		initWidget(binder.createAndBindUi(this));
 		uploader = new MultiUploader();		
 		uploader.setAutoSubmit(true);
+		HasWidgets w = (HasWidgets)uploader.getWidget();
+		
+		Iterator<Widget> children = w.iterator();
+		while(children.hasNext()){
+			System.out.println(">>>>>>>>>>>>>"+children.next().getClass());
+		}		
+		
 		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
 

@@ -2,6 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 public class Attachment implements Serializable {
 
@@ -17,6 +18,8 @@ public class Attachment implements Serializable {
 	private Long size;
 	private String sizeStr;
 	private String contentType;
+	private String createdBy;
+	private Date created;
 	
 	public Long getId() {
 		return id;
@@ -60,5 +63,20 @@ public class Attachment implements Serializable {
 	}
 	public void setSizeStr(String size) {
 		this.sizeStr = size;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public String getSizeStr() {
+		return sizeStr;
 	}
 }

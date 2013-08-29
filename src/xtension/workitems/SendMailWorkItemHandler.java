@@ -1,5 +1,9 @@
 package xtension.workitems;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.drools.process.instance.WorkItemHandler;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
@@ -68,7 +73,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		
 		switch (type) {
 		case APPROVALREQUEST_OWNERNOTE:
-			params.put("Body", "Your document #"+subject+" was assigned to "+(groupId));
+			params.put("Body", "Your document #"+subject+" was submitted to "+(groupId));
 			sendMail(owner, params);
 			break;
 		case APPROVALREQUEST_APPROVERNOTE:
@@ -103,15 +108,15 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 
 	private void sendMail(List<HTUser> users, Map<String, Object> params) {
 		
-		StringBuffer email=new StringBuffer();
+		StringBuffer recipient=new StringBuffer();
 		
 		Iterator<HTUser> iter = users.iterator();
 		
 		while(iter.hasNext()){
-			email.append(iter.next().getEmail());
+			recipient.append(iter.next().getEmail());
 			
 			if(iter.hasNext())
-				email.append(",");
+				recipient.append(",");
 		}
 		
 		
@@ -122,9 +127,31 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		 */
 		CommandContext context = new CommandContext();
 		params.put("callbacks", CommandCodes.SendEmailCallback.name());
-		params.put("To", email.toString());
+		params.put("To", recipient.toString());
 		params.put("From", params.get("From")==null? "ebpm.mgr@gmail.com": params.get("From"));
-		params.put("Body", params.get("Body")==null? "": params.get("Body"));
+		
+		try{
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("email.html");			
+			String html = "";			
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			IOUtils.copy(is, bout);
+			html = new String(bout.toByteArray());
+			
+			String owner = params.get("OwnerId")==null? "Unknown":params.get("OwnerId").toString();
+			String desc = params.get("Description")==null? "Description Unavailable" : params.get("Description").toString();  
+			String subject = 	params.get("Subject")==null? "Subject Unavailable" : params.get("Subject").toString();
+			
+			html = html.replace("${OwnerId}", owner);			
+			html = html.replace("${Description}",desc);
+			html = html.replace("${DocumentURL}", "#");
+			html = html.replace("${Subject}", subject);
+			
+			params.put("Body", html);
+						
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		params.put("businessKey", UUID.randomUUID().toString());
 		context.setData(params);
 

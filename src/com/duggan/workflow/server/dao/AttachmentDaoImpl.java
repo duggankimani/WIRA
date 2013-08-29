@@ -28,6 +28,17 @@ public class AttachmentDaoImpl extends BaseDaoImpl<LocalAttachment>{
 		List lst  = em.createQuery("FROM LocalAttachment l where documentId= :documentId").setParameter("documentId", documentId).getResultList();
 		
 		return lst;
+	}
+
+	public void deactivate(long attachmentId) {
+		LocalAttachment attachment = getAttachmentById(attachmentId);
+		attachment.setArchived(true);
+		em.persist(attachment);
 	}	
+	
+	public void delete(long attachmentId){
+		LocalAttachment attachment = getAttachmentById(attachmentId);
+		em.remove(attachment);
+	}
 	
 }

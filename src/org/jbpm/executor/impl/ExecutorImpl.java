@@ -43,7 +43,7 @@ public class ExecutorImpl implements Executor {
     private ScheduledFuture<?> handle;
     private int threadPoolSize = 1;
     private int retries = 3;
-    private int interval = 10;
+    private int interval = 15;
     
     private ScheduledExecutorService scheduler;
     
@@ -83,7 +83,7 @@ public class ExecutorImpl implements Executor {
                 new Object[]{threadPoolSize, interval, retries});
         
         scheduler = Executors.newScheduledThreadPool(threadPoolSize);
-        //handle = scheduler.scheduleAtFixedRate(task, 2, interval, TimeUnit.SECONDS);
+        handle = scheduler.scheduleAtFixedRate(task, 2, interval, TimeUnit.SECONDS);
     }
     
     public synchronized Long scheduleRequest(CommandCodes commandId, CommandContext ctx) {      

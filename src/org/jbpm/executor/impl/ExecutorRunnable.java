@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
+import javax.transaction.SystemException;
+import javax.transaction.Transaction;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -26,6 +29,8 @@ import org.jbpm.executor.api.ExecutionResults;
 import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
 import org.jbpm.executor.entities.STATUS;
+
+import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
@@ -59,7 +64,7 @@ public class ExecutorRunnable extends Thread {
     		
     		DB.commitTransaction();
     	}catch(Exception e){
-    		System.err.println("############ Error : "+e.getMessage());
+    		System.err.println("############[1] Error : "+e.getMessage());
     		
     		try{
     			DB.rollback();
@@ -142,10 +147,26 @@ public class ExecutorRunnable extends Thread {
             }
             
             if (exception != null) {
+            	try {
+            		//JBPM marks this/the current transaction for Rollback if an error occurs - 
+            		//This means that any command that starts off a process may have to be 
+            		//executed in its own transaction - However; embedded trx's are not supported
+            		//further, mysql XA bug -during Suspend Resume
+            		//Starting off processes from async commands may have wait - - -
+					System.err.println("##########[Transaction status] - "+DB.getUserTrx().getStatus());
+				} catch (SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NamingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 logger.log(Level.SEVERE, "{0} >>> Before - Error Handling!!!{1}", new Object[]{System.currentTimeMillis(), exception.getMessage()});
 
                 ErrorInfo errorInfo = new ErrorInfo(exception.getMessage(), ExceptionUtils.getFullStackTrace(exception.fillInStackTrace()));
                 errorInfo.setRequestInfo(r);
+                em.persist(errorInfo);
+                em.merge(errorInfo);
                 r.getErrorInfo().add(errorInfo);
                 logger.log(Level.SEVERE, " >>> Error Number: {0}", r.getErrorInfo().size());
                 if (r.getRetries() > 0) {
@@ -180,12 +201,59 @@ public class ExecutorRunnable extends Thread {
     /**
      * BTM does not support nested transactions!!
      * 
+     * There's need to rollback processes initiated 
+     * by the command execution in case of an error.
+     * 
      * @param cmd
      * @param ctx
      * @return
      * @throws Exception
      */
 	private ExecutionResults runInIndependentTrx(Command cmd, CommandContext ctx) throws Exception{
+//		Transaction transaction = TransactionManagerServices.getTransactionManager().suspend();
+//		assert transaction!=null; //current Transaction not null;
+		
+		
+		try{
+			//DB.beginTransaction();//resource local trx - Not JTA
+			int status = DB.getUserTrx().getStatus();
+			/*STATUS_ACTIVE               0
+			STATUS_COMMITTED            3
+			STATUS_COMMITTING           8
+			STATUS_MARKED_ROLLBACK      1
+			STATUS_NO_TRANSACTION       6
+			STATUS_PREPARED             2
+			STATUS_PREPARING            7
+			STATUS_ROLLEDBACK           4
+			STATUS_ROLLING_BACK         9
+			STATUS_UNKNOWN              5*/
+			
+			System.err.println("############## Transaction Status - "+status);
+			//begin new
+			
+			
+		}catch(Exception e){
+			
+		}finally{
+			
+		}
+		
+		
+		//resume previous trx
+		try{
+			System.err.println("######### Beofre Resume TrxStatus: "+DB.getUserTrx().getStatus());
+			
+			/**
+			 * Support issues from mysql
+			 * http://bugs.mysql.com/bug.php?id=27832
+			 */
+			//TransactionManagerServices.getTransactionManager().resume(transaction);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.err.println("######### After Resume TrxStatus: "+DB.getUserTrx().getStatus());
+		}
+		
 		return cmd.execute(ctx);
 	}
 

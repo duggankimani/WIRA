@@ -120,10 +120,10 @@ public class JBPMHelper implements Closeable{
 			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new SendMailWorkItemHandler());
 			
 			EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
-					EmailServiceHelper.getProperty("smtp.host"),
-					EmailServiceHelper.getProperty("smtp.port"),
-					EmailServiceHelper.getProperty("smtp.user"),
-					EmailServiceHelper.getProperty("smtp.password"));
+					EmailServiceHelper.getProperty("mail.smtp.host"),
+					EmailServiceHelper.getProperty("mail.smtp.port"),
+					EmailServiceHelper.getProperty("mail.smtp.user"),
+					EmailServiceHelper.getProperty("mail.smtp.password"));
 			emailHandler.getConnection().setStartTls(true);
 			session.getWorkItemManager().registerWorkItemHandler("Email", emailHandler);
 			

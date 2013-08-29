@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
@@ -39,6 +40,8 @@ public class AttachmentDaoHelper{
 		attachment.setName(model.getName());
 		attachment.setSize(model.getSize());
 		attachment.setSizeStr(getSizeAsStr(model.getSize()));
+		attachment.setCreated(model.getCreated());
+		attachment.setCreatedBy(model.getCreatedBy());
 		
 		return attachment;
 	}
@@ -62,5 +65,16 @@ public class AttachmentDaoHelper{
 		
 		return formatter.format(((double)size/mb))+" MB";
 	}
+	
+	public static boolean deactivate(long attachmentId){
+		AttachmentDaoImpl dao = DB.getAttachmentDao();
+		dao.deactivate(attachmentId);
+		return true;
+	}
 
+	public static boolean delete(long attachmentId){
+		AttachmentDaoImpl dao = DB.getAttachmentDao();
+		dao.delete(attachmentId);
+		return true;
+	}
 }

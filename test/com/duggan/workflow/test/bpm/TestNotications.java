@@ -1,5 +1,7 @@
 package com.duggan.workflow.test.bpm;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,13 +33,42 @@ import com.google.gwt.thirdparty.streamhtmlparser.util.EntityResolver.Status;
 
 public class TestNotications {
 
-	@Before
+	@Ignore
 	public void setup(){
 		DBTrxProvider.init();
 		LoginHelper.get();
 	}
 	
 	@Test
+	public void load(){
+		Map<String, Object> params = new HashMap<>();
+		params.put("OwnerId", "Calcacuervo");
+		params.put("Description", "This is the description of this description");
+		params.put("documentUrl", "#");
+		params.put("Subject", "Invoice/ABC/13");
+		
+		try{
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("email.html");			
+			String html = "";			
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			IOUtils.copy(is, bout);
+			html = new String(bout.toByteArray());
+			
+			html = html.replace("${OwnerId}", params.get("OwnerId").toString());
+			html = html.replace("${Description}", params.get("Description").toString());
+			html = html.replace("${DocumentURL}", "#");
+			html = html.replace("${Subject}", params.get("Subject").toString());
+			
+			params.put("Body", html);
+			
+			System.err.println("Body: "+html);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	@Ignore
 	public void getTasksForUser(){
 		String userId ="mariano";
 		Long processInstanceId = 108L; //88
@@ -174,7 +206,7 @@ public class TestNotications {
 		Assert.assertEquals(actualCount2, count2);
 	}
 	
-	@After
+	@Ignore
 	public void tearDown(){
 		try{
 			LoginHelper.get().close();

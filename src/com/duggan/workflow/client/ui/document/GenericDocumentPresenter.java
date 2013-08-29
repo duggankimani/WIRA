@@ -287,6 +287,9 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void save(String commenttxt) {
+		if(commenttxt==null || commenttxt.trim().isEmpty())
+			return;
+		
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
 		comment.setDocumentId(documentId);

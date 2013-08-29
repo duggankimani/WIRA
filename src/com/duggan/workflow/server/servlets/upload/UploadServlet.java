@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +22,7 @@ import org.apache.commons.fileupload.FileItem;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.dao.AttachmentDaoHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 
 public class UploadServlet extends UploadAction {
 
@@ -29,23 +31,19 @@ public class UploadServlet extends UploadAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	Hashtable<String, String> receivedContentTypes = new Hashtable<String, String>();
+	Hashtable<String, Long> receivedFiles = new Hashtable<String, Long>();
 
-	/**
-	 * Override executeAction to save the received files in a custom place and
-	 * delete this items from session.
-	 */
 	@Override
-	public String executeAction(HttpServletRequest request,
-			List<FileItem> sessionFiles) throws UploadActionException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException {
 		
-		String result=null;
 		try{
 			//check session
+			SessionHelper.setHttpRequest(request);
 			
-			DB.beginTransaction();
+			DB.beginTransaction();			
 			
-			result = execute(request, sessionFiles);
+			super.doPost(request, response);	
 			
 			DB.commitTransaction();
 		}catch(Exception e){
@@ -53,9 +51,38 @@ public class UploadServlet extends UploadAction {
 			e.printStackTrace();			
 		}finally{
 			DB.closeSession();
+			SessionHelper.setHttpRequest(null);
 		}
+	}
+
+	
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException {
 		
-		return result;
+		try{
+			//check session
+			SessionHelper.setHttpRequest(request);
+			DB.beginTransaction();			
+			super.doGet(request, response);			
+			DB.commitTransaction();
+		}catch(Exception e){
+			DB.rollback();
+			e.printStackTrace();			
+		}finally{
+			DB.closeSession();
+			SessionHelper.setHttpRequest(null);
+		}
+	}
+	
+	/**
+	 * Override executeAction to save the received files in a custom place and
+	 * delete this items from session.
+	 */
+	@Override
+	public String executeAction(HttpServletRequest request,
+			List<FileItem> sessionFiles) throws UploadActionException {		
+		return  execute(request, sessionFiles);
 	}
 	
 	private String execute(HttpServletRequest request,
@@ -96,9 +123,10 @@ public class UploadServlet extends UploadAction {
 					attachment.setId(null);
 					attachment.setName(name);
 					attachment.setSize(size);
-					attachment.setAttachment(item.get());
-					
+					attachment.setAttachment(item.get());					
 					saveAttachment(attachment, request);
+					
+					receivedFiles.put(fieldName, attachment.getId());
 				} catch (Exception e) {
 					throw new UploadActionException(e);
 				}
@@ -148,6 +176,13 @@ public class UploadServlet extends UploadAction {
 	@Override
 	public void removeItem(HttpServletRequest request, String fieldName)
 			throws UploadActionException {
+		
+		Long attachmentId = receivedFiles.get(fieldName);
+		
+		if(attachmentId!=null){
+			System.err.println("#################LOG DElete "+attachmentId);
+			AttachmentDaoHelper.delete(attachmentId);
+		}
 //		File file = receivedFiles.get(fieldName);
 //		receivedFiles.remove(fieldName);
 //		receivedContentTypes.remove(fieldName);
