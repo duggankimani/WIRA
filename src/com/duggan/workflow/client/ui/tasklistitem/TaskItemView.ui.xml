@@ -30,7 +30,7 @@
 		           <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
 	           </d:ParaPanel>
 	           
-	            <g:HTMLPanel ui:field="wfactions">
+	            <g:HTMLPanel ui:field="wfactions" styleName="hidden">
 				    <g:Anchor ui:field="aClaim" styleName="icon-arrow-down hidden"></g:Anchor>
 				    <g:Anchor ui:field="aStart"  styleName="icon-play hidden"></g:Anchor>						    
 					<g:Anchor ui:field="aResume"  styleName="hidden">Resume</g:Anchor>

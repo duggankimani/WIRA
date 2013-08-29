@@ -63,7 +63,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
 		insidecontainer.setStyleName("inside-container");
-		wfactions.setStyleName("wfactions hidden");
+		//wfactions.setStyleName("wfactions hidden");
 		
 		aClaim.getElement().setAttribute("data-toggle", "tooltip");
 		aClaim.getElement().setAttribute("title", "Claim");
@@ -149,10 +149,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	public void setMiniDocumentActions(boolean status) {
 		/*Sets the actions in TaskItemView*/
 		if(status){
-		wfactions.removeStyleName("hidden");
+		//wfactions.removeStyleName("hidden");
 		aForwardForApproval.removeStyleName("hidden");
 		}else{
-			wfactions.addStyleName("hidden");
+			//wfactions.addStyleName("hidden");
 			aForwardForApproval.addStyleName("hidden");
 		}
 	}
