@@ -4,7 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
 	xmlns:v='urn:import:com.duggan.workflow.client.ui.component'
-	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>

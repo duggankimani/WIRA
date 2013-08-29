@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:DialogBox text="Upload Document" modal="true" width="400px"  height="100px">
+		<g:HTMLPanel>
+			<g:HTMLPanel ui:field="uploadPanel">
+	            <up:Uploader ui:field="uploader"></up:Uploader>	                    
+	        </g:HTMLPanel>	 
+	        
+	        <g:HTMLPanel>
+	           <g:Button styleName="btn btn-primary" ui:field="btnDone" text="DONE"/>
+	           <g:Button styleName="btn btn-default" ui:field="btnCancel" text="CANCEL"/>
+	        </g:HTMLPanel>
+        </g:HTMLPanel>
+	</g:DialogBox>
+</ui:UiBinder>

@@ -133,5 +133,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/apacheds-all-1.5.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maggy&apos;s/Documents/Downloads/gwt-bootstrap-2.2.2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

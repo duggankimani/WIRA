@@ -434,7 +434,6 @@ textarea:focus{
 }
 
 /*---Middle-Pane--- */
-
 #nav-top {
     position: absolute;
     border-bottom: 1px solid #b5b5b5;
@@ -461,15 +460,12 @@ textarea:focus{
     padding: 0px 0px 5px 0px;
 	padding-right: 0px;
 	border: 1px solid #CCCCCC;
-	
 	width: 295px;
-	
     margin-top: 56px;
     height: 531px;
 	border-right: none;
     overflow-y:auto
 }
-
 
 #middle-nav .nav-top i {
 	margin-left: 5px;
@@ -556,11 +552,10 @@ textarea:focus{
 	padding-left: 7px;
 }
 
-/*---Detailed-Info---*/
+/*---Detailed-Info Styles---*/
 #detailed-info {
 	background-color: #ffffff;
 	margin-left: 0px;
-	/* padding: 0px 15px 10px 0px; */
 	border: 1px solid #CCCCCC;
 	width: 870px;
 	min-height: 580px;
@@ -661,7 +656,9 @@ textarea:focus{
 	margin-left: 13px;
 	border-left: none;
 	max-height: 335px;
+	min-height: 335px;
 }
+
 #detailed-info .recent-activity .title{
 	text-align:center;
 	font-weight:bold;
@@ -669,9 +666,6 @@ textarea:focus{
 }
 #detailed-info .recent-activity .icon-comment{
 	margin-right:6px;	
-}
-#detailed-info .recent-activity .comment-container{
-    background-color:#f1f1f1;
 }
 
 #detailed-info .recent-activity .comment-box .icon-chevron-up{
@@ -701,9 +695,22 @@ textarea:focus{
 	width: 99%;
 	padding: 3px;
 }
+
+#detailed-info .recent-activity .textarea-small{
+	height: 25px;	
+}
+
+#detailed-info .recent-activity .textarea-big{
+	height:70px;
+}
+
 #detailed-info .recent-activity .comment-box .textarea-box:focus{
    	 outline: none;
      border: none;
+}
+
+#detailed-info .recent-activity .comment-container{
+    background-color:#f1f1f1;
 }
 
 #detailed-info .recent-activity .comment-container{
@@ -712,9 +719,14 @@ textarea:focus{
 	top: -14px;
 	z-index: 0;
 	width: 570px;
-	height: 87px;
+}
+#detailed-info .recent-activity .comment-small{
+	 height: 31px;
 }
 
+#detailed-info .recent-activity .comment-big{
+	 height: 87px;
+}
 
 #detailed-info .recent-activity .span1{
 	padding-top: 4px;
@@ -735,6 +747,57 @@ textarea:focus{
 	margin-left: 53px;
 	width: 390px;
 }
+
+
+#detailed-info .panel-activity{
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+}
+#detailed-info .panel-activity .row-fluid{
+    border-top:1px solid #E7E8EA;
+}
+
+#detailed-info .panel-activity .item{
+	display: block;
+	cursor:default;
+	padding: 10px 0px 7px 49px;
+	border-top: 1px solid #E7E8EA;
+	color: rgb(54, 54, 54);
+	font-size: 12px;
+	text-decoration: none;
+	position: relative;
+	transition: all .25s linear;
+	-moz-transition: all .25s linear;
+	-webkit-transition: all .25s linear;
+	-o-transition: all .25s linear;
+}
+
+#detailed-info .panel-activity .item .bluename{
+	font-weight:bold;
+}
+#detailed-info .panel-activity .item>i {
+	color: rgb(252, 130, 123);
+	position: absolute;
+	left: 13px;
+	font-size: 20px;
+	top: 11px;
+}
+
+#detailed-info .panel-activity .item .time{
+	color: #228BEB;
+	font-style: italic;
+	font-weight: 600;
+	font-size: 11px;
+	min-width: 60px;
+	margin-left: 5px;
+}
+
+#detailed-info .panel-activity .item .time i {
+	font-size: 11px;
+	color: #999;
+	margin-right: 1px;
+}
+
 
 /*--Dashboard Menu--*/
 #dashboard-menu {
@@ -1165,84 +1228,13 @@ textarea:focus{
 /* end skin changer*/
 /* responsive */
 @media ( max-width : 1020px) {
-	.content {
-		margin-left: 65px;
-	}
-	#dashboard-menu {
-		margin-left: 5px;
-	}
-	#dashboard-menu .pointer {
-		display: none;
-	}
-	#dashboard-menu li a span {
-		visibility: hidden;
-	}
 }
 
 @media ( max-width : 600px) {
-	.content {
-		margin-left: 0em;
-		border-left-width: 0px;
-	}
 }
 
-@media ( max-width : 822px) {
-	.navbar input.search {
-		display: none;
-	}
+@media (max-width : 822px) {
 }
 
-@media ( max-width : 767px) {
-	#pad-wrapper {
-		padding: 0px 10px;
-	}
-	.content {
-		min-width: 0px;
-		margin: 0;
-	}
-	#main-stats .stat {
-		width: 50%;
-		float: left;
-	}
-	#sidebar-nav {
-		left: -200px;
-		position: fixed;
-		z-index: 9999;
-		background-color: #f7f7f7;
-		padding-top: 0px;
-		border-right: 1px solid #ccc;
-		width: 165px;
-		box-shadow: 1px 1px 4px 1px rgb(233, 233, 233);
-		-webkit-transition: left .25s ease;
-		-moz-transition: left .25s ease;
-		-o-transition: left .25s ease;
-		-ms-transition: left .25s ease;
-		transition: left .25s ease;
-	}
-	#sidebar-nav #dashboard-menu {
-		margin-left: 10px;
-	}
-	#sidebar-nav #dashboard-menu li a span {
-		visibility: visible;
-	}
-	#sidebar-nav #dashboard-menu li:last-child a {
-		border-bottom: 0px;
-		box-shadow: none;
-	}
-	#sidebar-nav.display {
-		position: absolute;
-		left: 0;
-		height: 100%;
-	}
-}
-.hide{
-	display:none;
-}
-
-.button-group {
-	/*background: url("images/gradient-t-b.png") repeat-x scroll 0 0
-		transparent;*/
-	border-top: 1px solid #D5D7DB;
-	padding: 10px;
-	text-align: center;
+@media (max-width : 767px) {
 }

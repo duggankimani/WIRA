@@ -1,17 +1,16 @@
-package com.duggan.workflow.client.ui.upload;
+package com.duggan.workflow.client.ui.upload.custom;
 
+import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.UploadedInfo;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
-import gwtupload.client.IUploadStatus.Status;
-import gwtupload.client.IUploader.UploadedInfo;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -42,9 +41,8 @@ public class Uploader extends Composite {
 		initWidget(binder.createAndBindUi(this));
 		uploader = new MultiUploader();		
 		uploader.setAutoSubmit(true);
-		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
-
+		uploaderPanel.add(uploader);
 	}
 	
 	public void setContext(UploadContext context){

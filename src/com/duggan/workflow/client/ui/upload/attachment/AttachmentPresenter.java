@@ -9,9 +9,7 @@ import com.gwtplatform.mvp.client.View;
 public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAttachmentView> {
 
 	public interface IAttachmentView extends View{
-
 		void setValues(long id, String name, String size);
-		
 	}
 	
 	@Inject
