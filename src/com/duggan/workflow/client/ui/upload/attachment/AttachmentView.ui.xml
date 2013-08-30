@@ -7,9 +7,9 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 	
-    <g:HTMLPanel styleName="attachment-section row-fluid span6">
+    <g:HTMLPanel styleName="attachment-section row-fluid span4">
 		<img src="img/pdf.gif"></img>
-        <b><span ui:field="spnName"></span></b>
+        <span ui:field="spnName"></span>
         <br/>
         <div class="row-fluid attachment-links span5">
            <span ui:field="spnSize"></span>

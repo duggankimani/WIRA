@@ -9,7 +9,6 @@
 	ui:generateLocales='default'>
 	
     <g:HTMLPanel>        
-		<strong>Attachments:</strong>		    
 	    <g:FlowPanel ui:field="panelImages"></g:FlowPanel>
 	    <g:HTMLPanel ui:field="uploaderPanel"></g:HTMLPanel>
 	</g:HTMLPanel>

@@ -284,8 +284,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 
 	@Override
 	public void setTask(boolean isTask) {
-		if(isTask)
-		spnDocIcon.setStyleName("icon-tasks");
+		/*if(isTask)
+		spnDocIcon.setStyleName("icon-tasks");*/
 	}
 
 }

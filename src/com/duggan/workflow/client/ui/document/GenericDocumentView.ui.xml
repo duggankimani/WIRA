@@ -8,7 +8,7 @@
 
 	<g:HTMLPanel styleName="upper-content">
 		<div class="action-area row-fluid">
-			<div class="doc-title span8">
+			<div class="doc-title span5">
 				<span ui:field="spnDocType"></span>
 				-&nbsp;
 				<span ui:field="spnSubject"></span>
@@ -79,6 +79,11 @@
 					<i class="icon-play"></i>
 					Simulate
 				</g:Anchor>
+				
+				<g:Anchor ui:field="aAttach" styleName="btn btn-default">
+					<i class="icon-upload-alt"></i>
+					Upload
+				</g:Anchor>
 
 				<div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle"
@@ -107,13 +112,13 @@
 
 		<div class="personal_info row-fluid span12">
 			<div class="span3">
-				<i class="icon-user"></i>
-				<strong ui:field="eOwner"></strong>
+				<i class="icon-user icon-large"></i>
+				<span ui:field="eOwner"></span>
 				<br />
 			</div>
 
 			<div class="span3">
-				<i class="icon-calendar"></i>
+				<i class="icon-calendar icon-large"></i>
 				<span ui:field="spnCreated"></span>
 			</div>
 
@@ -122,7 +127,7 @@
 				<span ui:field="spnPriority" class="label"></span>
 			</div>
 
-			<div class="span3">
+			<div class="span4">
 				<span>Current Status:</span>
 				<span class="label label-info">
 					<i class="icon-edit"></i>
@@ -145,8 +150,7 @@
 				<span ui:field="spnDescription"></span>
 			</div>
 
-			<g:Button ui:field="aAttach" text="Attach" styleName="btn btn-default icon-paper-clip"></g:Button>
-			<g:HTMLPanel ui:field="panelAttachments">
+			<g:HTMLPanel ui:field="panelAttachments" styleName="attachment-panel">
 				<!--styleName="attachment-section row-fluid span6" -->
 
 			</g:HTMLPanel>

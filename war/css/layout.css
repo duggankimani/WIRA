@@ -65,6 +65,26 @@ textarea:focus{
 	height: 20px;
 }
 
+/*Uploader Modal */
+.modal{
+	max-width: 443px; 
+	min-height: 100px;
+}
+.modlal .upload-panel{
+    max-width: 443px; 
+    overflow-x:auto;
+}
+.modal-header{
+     background:#EDEDED;  
+     padding: 5px;
+}
+
+.modal-header i{
+    margin-right:7px
+}
+.modal-footer{
+    padding: 5px 6px 5px 0px;
+}
 
 /* Custom navbar stuff */
 .navbar {
@@ -510,8 +530,9 @@ textarea:focus{
 #middle-nav .message-container .label {
 	float: right;
 	margin-right: 20px;
-	margin-top: 10px;
+	margin-left: 10px;
 	font-weight: normal;
+	margin-top: 3px;
 }
 #middle-nav .message-container .bluename {
     font-weight:bold;
@@ -561,15 +582,19 @@ textarea:focus{
 	min-height: 580px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	max-height: 587px;
 }
 #detailed-info .upper-content{
     min-height:500px;
 }
 #detailed-info .doc-title{
 	text-transform: uppercase;
-	font-size: 14px;
+	font-size: 115%;
 	font-weight: bold;
 	padding: 14px 0px 0px 0px;
+	color: #222;
+	font-family: arial,sans-serif;
+	width: 300px;
 }
 #detailed-info .action-area i{
     margin-right:5px;
@@ -577,7 +602,7 @@ textarea:focus{
 
 #detailed-info .action-buttons{  
     padding-top: 5px;
-    padding-right: 10px;
+    padding-right: 20px;
 }
 #detailed-info .action-buttons .dropdown-menu{
     left:-45px; 
@@ -586,8 +611,7 @@ textarea:focus{
 
 #detailed-info .action-area {
 	display:inline-block;
-	padding: 0px 0px 7px 10px;
-	border-bottom:2px solid #CCCCCC;
+	padding: 0px 0px 2px 10px;
 	width: 858px;
 }
 
@@ -597,22 +621,46 @@ textarea:focus{
 }
 
 #detailed-info .personal_info {
-	padding: 1px 0 0px 15px;
-	height: 30px;
-	border-bottom:2px solid #CCCCCC;
+	padding: 0px 0px 7px 2px;
+	height: 35px;
+	border-bottom: 1px solid #CCCCCC;
 	margin-left: 0px;
+	border-top: 1px solid #CCCCCC;
 }
 
-#detailed-info .personal_info .span4 {
+#detailed-info .personal_info .span3{
 	margin-left: 5px;
+	border-right: 1px solid #E2E2E2;
+	height: inherit;
+	padding-top: 5px;
 }
+#detailed-info .personal_info .span4{
+    width: 220px;
+    padding-top: 5px;
+}
+
+#detailed-info .personal_info .icon-large{
+    /* opacity:.7; */
+    color: #928E8E;
+}
+
+#detailed-info .personal_info strong{
+     margin-top: 5px;   
+}
+
 #detailed-info .content-area{
     padding: 39px 0 0 12px;
     font-size:14px;
     max-height: 160px;
 }
 #detailed-info .content-area div{	
-	padding-bottom:10px;
+	padding-bottom:7px;
+}
+#detailed-info .attachment-panel{
+	max-height: 65px;
+	overflow-y:auto;
+	width: 850px;
+	overflow-x: auto;
 }
 
 #detailed-info .attachment-section {

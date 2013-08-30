@@ -15,8 +15,6 @@ import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent.ExecTaskHandler;
-import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
-import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;

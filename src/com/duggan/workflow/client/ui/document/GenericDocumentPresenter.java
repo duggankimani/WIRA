@@ -142,7 +142,7 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addToPopupSlot(uploader, true);
+				addToPopupSlot(uploader,false);
 			}
 		});
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
