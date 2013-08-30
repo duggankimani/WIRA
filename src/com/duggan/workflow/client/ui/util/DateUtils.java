@@ -34,7 +34,7 @@ public class DateUtils {
 		long hourInMillis = 3600*1000;
 		long minInMillis = 60*1000;
 		
-		if(diff>5*dayInMillis){
+		if(diff>2*dayInMillis){
 			return DateUtils.DATEFORMAT.format(createdDate);
 		}
 		
@@ -57,7 +57,7 @@ public class DateUtils {
 			diff= diff%hourInMillis;
 		}
 		
-		if(diff>minInMillis){
+		if(diff>minInMillis && buff.length()==0){
 			long mins = diff/minInMillis;
 			buff.append(mins+" "+((mins)==1? "min":"mins"));
 			diff= diff%minInMillis;
