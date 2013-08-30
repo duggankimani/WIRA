@@ -43,6 +43,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 
 		if(SessionHelper.getHttpRequest()!=null){
 			//embedded call -- needed when executing multiple commands in one call
+			//not usable when working with servlets
 			execute(action, result, execContext);
 			return result;
 		}
@@ -60,7 +61,6 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			
 			execute(action, result, execContext);
 			
-			//DB.rollback();	
 			DB.commitTransaction();
 		} catch (Exception e) {	
 			e.printStackTrace();

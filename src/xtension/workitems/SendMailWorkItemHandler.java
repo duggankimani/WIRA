@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
@@ -48,6 +50,10 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		String ownerId = (String) workItem.getParameter("OwnerId");
 		Object isApproved = workItem.getParameter("isApproved");
 
+		Document doc = null;
+		try{
+			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
+		}catch(Exception e){}
 		
 		System.err.println("Class : "+this.getClass());
 		System.err.println("Subject : "+subject);
@@ -71,24 +77,34 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		List<HTUser> owner = new ArrayList<>();
 		owner.add(LoginHelper.get().getUser(ownerId));
 		
+		String body = "";
+		String approver = groupId;
+		if(approver==null){
+			approver = actorId;
+		}
+		
+		if(approver==null){
+			approver="";
+		}
+		
 		switch (type) {
 		case APPROVALREQUEST_OWNERNOTE:
-			params.put("Body", "Your document #"+subject+" was submitted to "+(groupId));
-			sendMail(owner, params);
+			subject = subject+" Approval Request Submitted";
+			body = "Your document #"+subject+" was submitted to "+approver;
 			break;
 		case APPROVALREQUEST_APPROVERNOTE:
-			sendMail(users, params);
-			params.put("Body", "Document #"+subject+" requires your attention");
+			subject = subject+" Approval Request -"+approver;
+			body =  "The following document requires your review and approval.";
 			break;
 		case TASKCOMPLETED_APPROVERNOTE:
-			String action = (Boolean)isApproved? "approved": "denied";	
-			params.put("Body", "You "+action+" Document #"+subject);
-			sendMail(users, params);
+			String action = (Boolean)isApproved? "Approved": "Denied";
+			subject = subject+" - "+action;
+			body =  "You "+action.toLowerCase()+" Document #"+subject;
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
-			String noteaction = (Boolean)isApproved? "approved": "denied";			
-			params.put("Body", "Your Document #"+subject+" was "+noteaction+" by "+groupId);
-			sendMail(owner, params);
+			String noteaction = (Boolean)isApproved? "Approved": "Denied";			
+			subject = subject+" - "+approver+" "+noteaction;
+			body =  "The following document approved by "+approver;
 			break;
 		case PROCESS_COMPLETED:
 			
@@ -102,11 +118,14 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		default:
 			break;
 		}
-
+		
+		params.put("Body", body);
+		params.put("Subject", subject);
+		sendMail(doc,owner, params);
 		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
 	}
 
-	private void sendMail(List<HTUser> users, Map<String, Object> params) {
+	private void sendMail(Document doc,List<HTUser> users, Map<String, Object> params) {
 		
 		StringBuffer recipient=new StringBuffer();
 		
@@ -138,13 +157,18 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			html = new String(bout.toByteArray());
 			
 			String owner = params.get("OwnerId")==null? "Unknown":params.get("OwnerId").toString();
-			String desc = params.get("Description")==null? "Description Unavailable" : params.get("Description").toString();  
-			String subject = 	params.get("Subject")==null? "Subject Unavailable" : params.get("Subject").toString();
+			String desc = params.get("Description")==null?
+					doc.getDescription() : params.get("Description").toString();  
+			String body = params.get("Body")==null?"":params.get("Body").toString();
 			
+			html = html.replace("${Request}",body);
 			html = html.replace("${OwnerId}", owner);			
 			html = html.replace("${Description}",desc);
 			html = html.replace("${DocumentURL}", "#");
-			html = html.replace("${Subject}", subject);
+			html = html.replace("${DocSubject}", doc.getSubject());
+			html = html.replace("${DocumentDate}", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(doc.getCreated()));
+			html = html.replace("${Value}", doc.getValue());
+			html = html.replace("${BPartner}", doc.getPartner());
 			
 			params.put("Body", html);
 						

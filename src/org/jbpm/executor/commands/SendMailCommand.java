@@ -22,6 +22,7 @@ public class SendMailCommand implements Command{
 		EmailServiceHelper.sendEmail(body, subject, recipients);
 		
 		ExecutionResults result = new ExecutionResults();
+		
 		result.setData(ctx.getData());
 		
 		return result;

@@ -102,12 +102,7 @@ public class ExecutorRunnable extends Thread {
                 if (reqData != null) {
                     try {
                         ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(reqData));
-                        ctx = (CommandContext) in.readObject();
-                        String subject = ctx.getData().get("Subject")==null? "Subject" : ctx.getData().get("Subject").toString();
-                        
-                        subject = subject.concat(" -ID "+r.getId());
-                        ctx.setData("Subject", subject);
-                        
+                        ctx = (CommandContext) in.readObject();                        
                     } catch (IOException e) {
                         ctx = null;
                         e.printStackTrace();
