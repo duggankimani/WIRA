@@ -27,7 +27,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -83,7 +82,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel commentContainer;
 	@UiField TextArea commentBox;
 	@UiField FocusPanel commentPanel;
-	@UiField Button aAttach;
+	@UiField Anchor aAttach;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
