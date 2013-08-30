@@ -34,17 +34,18 @@ public class UploadDocumentView extends PopupViewImpl implements
 		btnDone.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-			 UploadDocumentView.this.hide();
+				hide();
 			}
 		});
 		
 		btnCancel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-			 hide();
+				uploader.cancel();
+				hide();
 			}
 		});
-		
+
 		uploaderDialog.setPopupPosition(1019,35);
 		
 	}

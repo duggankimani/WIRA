@@ -1,7 +1,11 @@
 package com.duggan.workflow.client.ui.upload.custom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnCancelUploaderHandler;
 import gwtupload.client.IUploader.UploadedInfo;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
@@ -74,6 +78,13 @@ public class Uploader extends Composite {
 		}
 	};
 
+	OnCancelUploaderHandler handler = new OnCancelUploaderHandler() {
+		
+		@Override
+		public void onCancel(IUploader uploader) {
+			
+		}
+	};
 	OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 
 		@Override
@@ -82,5 +93,16 @@ public class Uploader extends Composite {
 			panelImages.add(image);
 		}
 	};
+	
+	public void cancel(){
+		List<IUploader> uploaders = uploader.getUploaders();
+		if(uploaders!=null){
+			List<IUploader> uplodas = new ArrayList<IUploader>();
+			uplodas.addAll(uploaders);
+			for(IUploader uploader: uplodas){
+				uploader.cancel();
+			}
+		}
+	}
 
 }

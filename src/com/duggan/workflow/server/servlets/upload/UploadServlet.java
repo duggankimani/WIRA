@@ -92,12 +92,12 @@ public class UploadServlet extends UploadAction {
 		Enumeration<String> keys= request.getParameterNames();
 
 		Hashtable<String, Long> receivedFiles = getSessionFiles(request, true);
-		System.err.println("------------------- Parameters ------------- ");
-		while(keys.hasMoreElements()){
-			String key = keys.nextElement();
-			System.err.println(key+""+request.getParameter(key));
-		}		
-		System.err.println("------------------- END Parameters ------------- ");
+//		System.err.println("------------------- Parameters ------------- ");
+//		while(keys.hasMoreElements()){
+//			String key = keys.nextElement();
+//			System.err.println(key+""+request.getParameter(key));
+//		}		
+//		System.err.println("------------------- END Parameters ------------- ");
 		
 		int cont = 0;
 		for (FileItem item : sessionFiles) {
@@ -181,7 +181,7 @@ public class UploadServlet extends UploadAction {
 		Long attachmentId = receivedFiles.get(fieldName);
 		
 		if(attachmentId!=null){
-			System.err.println("#################LOG DElete "+attachmentId);
+			//System.err.println("#################LOG DElete "+attachmentId);
 			AttachmentDaoHelper.delete(attachmentId);
 		}
 //		File file = receivedFiles.get(fieldName);
@@ -206,5 +206,6 @@ public class UploadServlet extends UploadAction {
 		
 		return receivedFiles;
 	}
+	
 	
 }
