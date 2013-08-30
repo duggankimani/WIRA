@@ -192,6 +192,20 @@ public class UploadServlet extends UploadAction {
 //		}
 	}
 	
+	@Override
+	public void cancelUpload(HttpServletRequest request) {
+		Enumeration<String> keys= request.getParameterNames();
+
+		Hashtable<String, Long> receivedFiles = getSessionFiles(request, true);
+		System.err.println("------------------- CANCEL Parameters ------------- ");
+		while(keys.hasMoreElements()){
+			String key = keys.nextElement();
+			System.err.println(key+""+request.getParameter(key));
+		}		
+		System.err.println("------------------- CANCEL END Parameters ------------- ");
+		super.cancelUpload(request);
+	}
+	
 	public Hashtable<String, Long> getSessionFiles(HttpServletRequest request, boolean createNewIfNone){
 
 		Hashtable<String, Long> receivedFiles = new Hashtable<String, Long>();
@@ -206,5 +220,6 @@ public class UploadServlet extends UploadAction {
 		
 		return receivedFiles;
 	}
+	
 	
 }
