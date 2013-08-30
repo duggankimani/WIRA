@@ -23,7 +23,8 @@
 	<g:HTMLPanel styleName="message-container">
          <g:FocusPanel styleName="read" ui:field="container">
            <g:HTMLPanel ui:field="insidecontainer">
-	             <g:InlineLabel ui:field="spnDocIcon" styleName="icon-book hidden"></g:InlineLabel>
+
+	            <g:InlineLabel ui:field="spnDocIcon" styleName="hidden"></g:InlineLabel>
 	           <d:ParaPanel>
 		           <g:InlineLabel styleName="label" ui:field="spnPriority">Urgent</g:InlineLabel>                       	
 		           <g:InlineLabel ui:field="spnSubject" styleName="bluename"></g:InlineLabel>     

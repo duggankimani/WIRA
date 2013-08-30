@@ -15,9 +15,9 @@
 				<tr>
 				
 					<td>
-					Kindly review the document sent by&nbsp;&nbsp;
+					${Request}&nbsp;&nbsp;
 					<span style="text-decoration:underline;font-weight:bold;color:#000000;cursor:pointer;">
-					${OwnerId}
+					
 					</span> 
 					</td>	
 				</tr>
@@ -27,12 +27,30 @@
 
 				<tr>
 					<td style="border-top:1px dashed #000000; padding-top:10px;">
-					<a style="text-decoration:underline; font-weight:bold; color:#000000; font-size:16px;" href="#">${Subject}</a>
+					<a style="text-decoration:underline; font-weight:bold; color:#000000; font-size:16px;" href="#">
+						${DocSubject}
+					</a>
 					</td>	
 				</tr>
-
 				<tr>
-					<td style="margin-bottom:5px; padding-bottom:5px;">${Description}</td>
+					<td style="margin-bottom:5px; padding-bottom:5px;">
+						<span style="font-weight:bold">Document date</span> ${DocumentDate}
+					</td>
+				</tr>
+				<tr>
+					<td style="margin-bottom:5px; padding-bottom:5px;">
+						<span style="font-weight:bold">Value</span> : ${Value}	
+					</td>
+				</tr>
+				<tr>
+					<td style="margin-bottom:5px; padding-bottom:5px;">
+						<span style="font-weight:bold">Business Partner:</span> ${BPartner}	
+					</td>
+				</tr>
+				<tr>
+					<td style="margin-bottom:5px; padding-bottom:5px;">
+						${Description}
+					</td>
 				</tr>
 
 				<tr>

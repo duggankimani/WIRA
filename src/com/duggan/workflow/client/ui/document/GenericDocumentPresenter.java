@@ -20,6 +20,8 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
@@ -353,6 +355,7 @@ public class GenericDocumentPresenter extends
 		requests.addRequest(new GetAttachmentsRequest(documentId));
 		requests.addRequest(new GetActivitiesRequest(documentId));
 		
+		fireEvent(new ProcessingEvent());
 		if(documentId != null){
 			requestHelper.execute(requests, 
 					new TaskServiceCallback<MultiRequestActionResult>() {
@@ -370,6 +373,7 @@ public class GenericDocumentPresenter extends
 					
 					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(3);
 					bindActivities(getActivities);
+					fireEvent(new ProcessingCompletedEvent());
 				}	
 			});
 		}

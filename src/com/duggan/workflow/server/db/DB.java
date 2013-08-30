@@ -171,7 +171,26 @@ public class DB{
 	public static void commitTransaction() {
 		try{						
 			//if(entityManagers.get()!=null)
-			getUserTrx().commit();			
+			
+			int status = DB.getUserTrx().getStatus();
+			/*STATUS_ACTIVE               0
+			STATUS_COMMITTED            3
+			STATUS_COMMITTING           8
+			STATUS_MARKED_ROLLBACK      1
+			STATUS_NO_TRANSACTION       6
+			STATUS_PREPARED             2
+			STATUS_PREPARING            7
+			STATUS_ROLLEDBACK           4
+			STATUS_ROLLING_BACK         9
+			STATUS_UNKNOWN              5*/
+			
+			//JBPM engine marks transactions for rollback everytime
+			//something goes wrong - it does'nt necessarily throw an exception 
+			if(status ==1 || status==4 || status==9){
+				getUserTrx().rollback();
+			}else{
+				getUserTrx().commit();
+			}
 			
     	}catch(Exception e){
     		throw new RuntimeException(e);

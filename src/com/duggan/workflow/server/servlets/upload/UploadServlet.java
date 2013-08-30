@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -30,8 +31,6 @@ public class UploadServlet extends UploadAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	Hashtable<String, Long> receivedFiles = new Hashtable<String, Long>();
 
 	@Override
 	protected void doPost(HttpServletRequest request,
@@ -91,7 +90,8 @@ public class UploadServlet extends UploadAction {
 		String response = "";
 		
 		Enumeration<String> keys= request.getParameterNames();
-		
+
+		Hashtable<String, Long> receivedFiles = getSessionFiles(request, true);
 		System.err.println("------------------- Parameters ------------- ");
 		while(keys.hasMoreElements()){
 			String key = keys.nextElement();
@@ -176,7 +176,8 @@ public class UploadServlet extends UploadAction {
 	@Override
 	public void removeItem(HttpServletRequest request, String fieldName)
 			throws UploadActionException {
-		
+	
+		Hashtable<String, Long> receivedFiles = getSessionFiles(request, false);
 		Long attachmentId = receivedFiles.get(fieldName);
 		
 		if(attachmentId!=null){
@@ -190,4 +191,20 @@ public class UploadServlet extends UploadAction {
 //			file.delete();
 //		}
 	}
+	
+	public Hashtable<String, Long> getSessionFiles(HttpServletRequest request, boolean createNewIfNone){
+
+		Hashtable<String, Long> receivedFiles = new Hashtable<String, Long>();
+		HttpSession session = request.getSession(false);
+		if(session!=null){
+			if(session.getAttribute("RECEIVEDFILES")!=null){
+				receivedFiles = (Hashtable<String, Long>)session.getAttribute("RECEIVEDFILES");
+			}else{
+				session.setAttribute("RECEIVEDFILES", receivedFiles);
+			}
+		}
+		
+		return receivedFiles;
+	}
+	
 }

@@ -149,4 +149,9 @@ public class DocumentModel extends PO{
 		return processInstanceId;
 	}
 	
+	@Override
+	public String toString() {
+		return type+" - "+subject+" - "+getCreated()+" - "+getCreatedBy();
+	}
+	
 }
