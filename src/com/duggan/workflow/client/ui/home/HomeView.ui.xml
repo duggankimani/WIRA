@@ -62,14 +62,14 @@
       		   <i class="icon-tag"></i>
 	    	   <h5 ui:field="hCategory">Completed</h5>
 	    	   <br/>
+
 	    	  	 <div class="search">
-	         	 	<input class="search-box" type="text"/>
+	         	 	 <g:TextBox styleName="search-box" ui:field="txtSearch"/>
 	         	 	<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
 	         	 </div>
+	         
 	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
-	          
 	          <g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
-	        <div id="separator"></div>
 	        </div>
 	        
 	      <!--middle navigation-->

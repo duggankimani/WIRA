@@ -14,6 +14,7 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.SearchFilter;
 
 /**
  * This class is Dao Helper for persisting all document related entities.
@@ -221,6 +222,17 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		
 		return dao.getProcessInstanceIdByDocumentId(documentId);
+	}
+
+	public static List<Document> search(SearchFilter filter) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		List<DocumentModel> models = dao.search(filter);
+		List<Document> docs = new ArrayList<>();
+		for(DocumentModel doc: models){
+			docs.add(getDoc(doc));
+		}
+		
+		return docs;
 	}
 	
 

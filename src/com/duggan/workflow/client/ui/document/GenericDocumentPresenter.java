@@ -22,7 +22,9 @@ import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
@@ -70,7 +72,8 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class GenericDocumentPresenter extends
-		PresenterWidget<GenericDocumentPresenter.MyView> implements ReloadDocumentHandler, ActivitiesLoadHandler{
+		PresenterWidget<GenericDocumentPresenter.MyView> 
+		implements ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, DocType type, String subject,
@@ -113,7 +116,7 @@ public class GenericDocumentPresenter extends
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
-	@Inject UploadDocumentPresenter uploader;
+	private IndirectProvider<UploadDocumentPresenter> uploaderFactory;
 	
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
@@ -123,12 +126,14 @@ public class GenericDocumentPresenter extends
 			Provider<CreateDocPresenter> docProvider,
 			Provider<CommentPresenter> commentProvider,
 			Provider<AttachmentPresenter> attachmentProvider,
-			Provider<NotePresenter> noteProvider) {
+			Provider<NotePresenter> noteProvider,
+			Provider<UploadDocumentPresenter> uploaderProvider) {
 		super(eventBus, view);		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		commentPresenterFactory = new StandardProvider<CommentPresenter>(commentProvider);
 		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(attachmentProvider);
 		notePresenterFactory = new StandardProvider<NotePresenter>(noteProvider);
+		uploaderFactory = new StandardProvider<UploadDocumentPresenter>(uploaderProvider);
 	}
 
 	@Override
@@ -137,12 +142,25 @@ public class GenericDocumentPresenter extends
 		
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
+		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addToPopupSlot(uploader,false);
+				
+				uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
+					@Override
+					public void processResult(UploadDocumentPresenter result) {
+						UploadContext context = new UploadContext();
+						context.setAction(UPLOADACTION.ATTACHDOCUMENT);
+						context.setContext("documentId", doc.getId()+"");
+						context.setContext("userid", AppContext.getUserId());
+						result.setContext(context);
+						addToPopupSlot(result,false);						
+					}
+				});
+				
 			}
 		});
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
@@ -519,11 +537,6 @@ public class GenericDocumentPresenter extends
 						
 		}
 		
-		UploadContext context = new UploadContext();
-		context.setAction(UPLOADACTION.ATTACHDOCUMENT);
-		context.setContext("documentId", doc.getId()+"");
-		context.setContext("userid", AppContext.getUserId());
-		uploader.setContext(context);
 	}
 
 	public void setProcessState(List<NodeDetail> states){
@@ -550,6 +563,22 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onActivitiesLoad(ActivitiesLoadEvent event) {
 		bindActivities(event.getActivitiesMap());
+	}
+
+	@Override
+	public void onReloadAttachments(ReloadAttachmentsEvent event) {
+		reloadAttachments();
+	}
+
+	private void reloadAttachments() {
+		requestHelper.execute(new GetAttachmentsRequest(documentId),
+				new TaskServiceCallback<GetAttachmentsResponse>() {
+			@Override
+			public void processResult(GetAttachmentsResponse result) {
+				
+				bindAttachments(result);
+			}
+		});
 	}
 	
 }

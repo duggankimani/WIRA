@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
@@ -50,6 +51,10 @@ public class UploadDocumentView extends PopupViewImpl implements
 		
 	}
 
+	public HasClickHandlers getDoneButton(){
+		return btnDone;
+	}
+	
 	@Override
 	public Widget asWidget() {
 		return widget;

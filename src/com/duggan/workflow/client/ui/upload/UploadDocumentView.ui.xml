@@ -12,9 +12,9 @@
 					<h5><i class="icon-arrow-up"></i>Upload Documents</h5>
 			 </g:HTMLPanel>
 				
-			<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
-				<up:Uploader ui:field="uploader"></up:Uploader>
-			</g:HTMLPanel>
+				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
+					<up:Uploader ui:field="uploader"></up:Uploader>
+				</g:HTMLPanel>
 	
 			<g:HTMLPanel styleName="modal-footer">
 				<g:Button styleName="btn btn-primary pull-right" ui:field="btnDone"

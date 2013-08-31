@@ -12,8 +12,6 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
@@ -22,7 +20,9 @@ import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
@@ -32,23 +32,30 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -90,6 +97,7 @@ public class HomePresenter extends
 		public Anchor getaRecentApprovals();
 		public Anchor getaFlagged();
 		public Anchor getaRefresh() ;
+		TextBox getSearchBox();
 	}
 
 	@ProxyCodeSplit
@@ -130,7 +138,13 @@ public class HomePresenter extends
 	final CurrentUser user;
 	
 	@Inject FilterPresenter filterPresenter;
-	
+	Timer timer = new Timer() {
+		
+		@Override
+		public void run() {
+			search();
+		}
+	};
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final CurrentUser user,
@@ -146,11 +160,41 @@ public class HomePresenter extends
 		this.user = user;
 	}
 
+	protected void search() {
+		timer.cancel();
+		if(searchTerm.isEmpty()){
+			return;
+		}
+		
+		
+			
+		//fireEvent(new ProcessingEvent());
+		SearchFilter filter = new SearchFilter();
+		filter.setSubject(searchTerm);
+		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
+		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
+			@Override
+			public void processResult(GetTaskListResult result) {		
+				
+				GetTaskListResult rst = (GetTaskListResult)result;
+				List<DocSummary> tasks = rst.getTasks();
+				loadLines(tasks);
+				if(tasks.isEmpty())
+					getView().setHasItems(false);
+				else
+					getView().setHasItems(true);
+				//fireEvent(new ProcessingCompletedEvent());
+			}
+		});		
+	}
+
 	@Override
 	protected void revealInParent() {
 		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
 	}
-
+	
+	String searchTerm="";
+	
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -161,7 +205,22 @@ public class HomePresenter extends
 		addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
-					
+		
+		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				String txt = getView().getSearchBox().getValue().trim();
+				
+				if(!txt.equals(searchTerm) || event.getNativeKeyCode()==KeyCodes.KEY_ENTER){
+					searchTerm = txt;
+					timer.cancel();
+					timer.schedule(400);
+				}
+				
+			}
+		});
+		
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -317,6 +376,7 @@ public class HomePresenter extends
 	 * @param tasks
 	 */
 	protected void loadLines(final List<DocSummary> tasks) {
+		setInSlot(DATEGROUP_SLOT, null);
 		final List<String> dates=new ArrayList<String>();
 		
 		for(int i=0; i< tasks.size(); i++){

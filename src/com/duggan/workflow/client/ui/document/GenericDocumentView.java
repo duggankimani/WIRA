@@ -96,7 +96,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aForward.getElement().setAttribute("type", "button");
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
-		commentBox.getElement().setAttribute("placeholder","write comments, Clarifications and Questions ...");
+		commentBox.getElement().setAttribute("placeholder","Make comments, ask for clarifications ...");
 		commentPanel.getElement().removeAttribute("tabindex");
 		
 		/*Comment Box Effect
