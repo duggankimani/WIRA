@@ -62,15 +62,22 @@ public class GetTaskListActionHandler extends
 			summary = DocumentDaoHelper.getAllDocuments(status);
 			break;
 		case SEARCH:
-			Document doc = DocumentDaoHelper.getDocumentByProcessInstance(action.getProcessInstanceId());
-			if(doc!=null)
-				summary.add(doc);
 			
-			List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, action.getProcessInstanceId());
-			
-			if(tasks!=null){
-				summary.addAll(tasks);
+			if(action.getFilter()!=null){
+				summary.addAll(DocumentDaoHelper.search(action.getFilter()));
+			}else if(action.getProcessInstanceId()!=null){
+				
+				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(action.getProcessInstanceId());
+				if(doc!=null)
+					summary.add(doc);
+				
+				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, action.getProcessInstanceId());
+				
+				if(tasks!=null){
+					summary.addAll(tasks);
+				}
 			}
+			
 			break;
 			
 		default:

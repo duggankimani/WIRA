@@ -62,7 +62,7 @@
       		   <i class="icon-tag"></i>
 	    	   <h5 ui:field="hCategory">Completed</h5>
 	    	   <br/>
-	          <input class="search" type="text"/>
+	          <g:TextBox styleName="search" ui:field="txtSearch"/>
 	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
 	        <div id="separator"></div>
 	        </div>

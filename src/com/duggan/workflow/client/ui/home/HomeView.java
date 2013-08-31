@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -57,6 +58,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField Element divDocView;
 	@UiField HTMLPanel wholeContainer;
 	@UiField SpanElement loadingtext;
+	@UiField TextBox txtSearch;
 	
 	@Inject
 	public HomeView(final Binder binder) {
@@ -273,6 +275,10 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	
 	public SpanElement getLoadingtext() {
 		return loadingtext;
+	}
+	
+	public TextBox getSearchBox(){
+		return txtSearch;
 	}
 
 }

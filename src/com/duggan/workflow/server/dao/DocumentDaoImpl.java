@@ -217,7 +217,7 @@ public class DocumentDaoImpl {
 			isFirst=false;
 			query.append("createdBy=:createdBy");
 			//params.put("createdBy", SessionHelper.getCurrentUser().getId());
-			params.put("createdBy", "calcacuervo");
+			params.put("createdBy", SessionHelper.getCurrentUser().getId());
 		}
 		
 		if(isFirst){

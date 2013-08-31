@@ -80,9 +80,10 @@
 					Simulate
 				</g:Anchor>
 				
-				<g:Anchor ui:field="aAttach" styleName="btn btn-default">
+				<g:Anchor ui:field="aAttach" styleName="btn btn-default" 
+				    title="Attach word, pdf, scanned documents etc">
 					<i class="icon-upload-alt"></i>
-					Upload
+					Attach
 				</g:Anchor>
 
 				<div class="btn-group">

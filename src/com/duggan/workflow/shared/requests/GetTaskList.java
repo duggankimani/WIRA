@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 
@@ -11,6 +12,7 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 	private String userId;
 	private TaskType type;
 	private Long processInstanceId;
+	private SearchFilter filter;
 	
 	@SuppressWarnings("unused")
 	private GetTaskList() {
@@ -22,6 +24,12 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 		
 	}
 
+	public GetTaskList(String userId, SearchFilter filter) {
+		this.userId = userId;
+		this.filter = filter;
+		this.type=TaskType.SEARCH;
+	}
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -42,6 +50,10 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 
 	public void setProcessInstanceId(Long processInstanceId) {
 		this.processInstanceId = processInstanceId;
+	}
+
+	public SearchFilter getFilter() {
+		return filter;
 	}
 
 }

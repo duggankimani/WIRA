@@ -22,7 +22,9 @@ import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
@@ -70,7 +72,8 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class GenericDocumentPresenter extends
-		PresenterWidget<GenericDocumentPresenter.MyView> implements ReloadDocumentHandler, ActivitiesLoadHandler{
+		PresenterWidget<GenericDocumentPresenter.MyView> 
+		implements ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, DocType type, String subject,
@@ -139,6 +142,7 @@ public class GenericDocumentPresenter extends
 		
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
+		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
 			
@@ -559,6 +563,22 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onActivitiesLoad(ActivitiesLoadEvent event) {
 		bindActivities(event.getActivitiesMap());
+	}
+
+	@Override
+	public void onReloadAttachments(ReloadAttachmentsEvent event) {
+		reloadAttachments();
+	}
+
+	private void reloadAttachments() {
+		requestHelper.execute(new GetAttachmentsRequest(documentId),
+				new TaskServiceCallback<GetAttachmentsResponse>() {
+			@Override
+			public void processResult(GetAttachmentsResponse result) {
+				
+				bindAttachments(result);
+			}
+		});
 	}
 	
 }

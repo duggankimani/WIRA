@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.upload;
 
 import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
@@ -34,7 +35,7 @@ public class UploadDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//fireEvent(new ReloadDocumentEvent(documentId));
+				fireEvent(new ReloadAttachmentsEvent());
 			}
 		});
 	}
