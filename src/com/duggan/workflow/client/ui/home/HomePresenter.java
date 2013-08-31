@@ -26,6 +26,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingC
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
+import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
@@ -102,6 +103,10 @@ public class HomePresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
 	
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
+	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
 
@@ -123,6 +128,8 @@ public class HomePresenter extends
 	private Long processInstanceId=null;
 	
 	final CurrentUser user;
+	
+	@Inject FilterPresenter filterPresenter;
 	
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
@@ -352,6 +359,7 @@ public class HomePresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		setInSlot(FILTER_SLOT, filterPresenter);
 		
 	}
 

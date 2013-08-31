@@ -10,19 +10,6 @@ h1,h2,h3,h4,h5 {
 }
 
 
-input.search {
-	background: url("../img/ico-arrow-black.png") #fcfcfc no-repeat 208px 8px;
-	box-shadow: none;
-	height: 19px;
-	font-size: 13px;
-	padding: 2px 6px;
-	border: 1px solid #d0dde9;
-	margin: 0;
-	border-radius: 2px;
-	top: 29px;
-
-}
-
 textarea {
 	width: 98%;
 	height: 70px;
@@ -106,25 +93,6 @@ textarea:focus{
 	text-shadow: 1px 1px #1B1464;
 }
 
-/* search input */
-.navbar input.search {
-	background: url("img/lens.png") #0f1217 no-repeat 95%;
-	border: 1px solid #0f1217;
-	position: relative;
-	border-radius: 4px;
-	top: 9px;
-	padding: 3px 6px;
-	color: #000;
-	font-size: 13px;
-	margin-right: 40px;
-	-webkit-transition: all .3s linear;
-	-moz-transition: all .3s linear;
-	transition: all .3s linear;
-}
-
-.navbar input.search:focus {
-	background-color: #fff;
-}
 /* navbar settings and logout icons */
 .navbar .settings i {
 	color: #9ba3ad;
@@ -474,6 +442,40 @@ textarea:focus{
     margin-top: 5px;
 }
 
+#nav-top .search {
+	box-shadow: none;
+	height: 20px;
+	font-size: 13px;
+	padding: 0px;
+	border: 1px solid #d0dde9;
+	margin: 0;
+	border-radius: 2px;
+	top: 29px;
+	width: 259px;
+	display: inline-block;
+}
+
+#nav-top .search-box{
+	margin: 0px;
+	border: 0;
+	outline:none;
+	width: 94%;
+	padding: 0px;
+	position: relative;
+	top : -2px;
+}
+
+#nav-top .search-box:hover, #nav-top .search-box:focus {
+    outline-style:none;
+    box-shadow:none;
+    border-color:transparent;
+}
+
+#nav-top .search-box .icon-caret-down{
+	opacity:.7;
+	cursor:pointer;
+}
+
 #middle-nav {
     background:#ffffff;
 	margin: 0em;
@@ -549,7 +551,7 @@ textarea:focus{
 
 #middle-nav p {
 	margin: 0 0 2px;
-	padding-left: 2px;
+	padding-left: 7px;
 	padding-bottom: 8px;
 	display: inline-block;
 }
@@ -745,7 +747,7 @@ textarea:focus{
 }
 
 #detailed-info .recent-activity .textarea-small{
-	height: 25px;	
+	height: 20px;	
 }
 
 #detailed-info .recent-activity .textarea-big{
@@ -754,6 +756,7 @@ textarea:focus{
 
 #detailed-info .recent-activity .comment-box .textarea-box:focus{
    	 outline: none;
+   	 box-shadow:none;
      border: none;
 }
 
@@ -769,7 +772,7 @@ textarea:focus{
 	width: 570px;
 }
 #detailed-info .recent-activity .comment-small{
-	 height: 31px;
+	 height: 26px;
 }
 
 #detailed-info .recent-activity .comment-big{
