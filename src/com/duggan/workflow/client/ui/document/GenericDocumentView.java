@@ -15,6 +15,7 @@ import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -26,6 +27,7 @@ import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -83,6 +85,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField TextArea commentBox;
 	@UiField FocusPanel commentPanel;
 	@UiField Anchor aAttach;
+	@UiField Anchor aShowProcess;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -143,6 +146,15 @@ public class GenericDocumentView extends ViewImpl implements
 		commentBox.addBlurHandler(blurHandler);		
 		
 		disableAll();
+		aShowProcess.removeStyleName("gwt-Anchor");
+		aShowProcess.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.open(GWT.getModuleBaseURL()+"/invoice-approval.png", "Business Process", null);
+			}
+		});
+		
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
 

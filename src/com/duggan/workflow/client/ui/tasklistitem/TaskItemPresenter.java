@@ -15,6 +15,8 @@ import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent.ExecTaskHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
@@ -262,7 +264,7 @@ public class TaskItemPresenter extends
 	protected void submitRequest(final Actions action, Map<String, ParamValue> values) {
 		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
 		//values.put("DocumentURL", new StringValue(docUrl));
-		
+		fireEvent(new ProcessingEvent());
 		workflow.setAction(action);
 		workflow.setValues(values);
 				
@@ -277,7 +279,7 @@ public class TaskItemPresenter extends
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
 				//refresh list
-								
+				fireEvent(new ProcessingCompletedEvent());				
 				if(action==Actions.COMPLETE){
 					removeFromParent();
 					fireEvent(new AfterSaveEvent());

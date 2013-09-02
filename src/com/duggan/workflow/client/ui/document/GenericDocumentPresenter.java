@@ -165,13 +165,15 @@ public class GenericDocumentPresenter extends
 		});
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			
+			
 			@Override
 			public void onClick(ClickEvent event) {
-				
+				fireEvent(new ProcessingEvent());
 				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
 					@Override
 					public void processResult(ApprovalRequestResult result) {
 						GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
+						fireEvent(new ProcessingCompletedEvent());
 						//clear selected document
 						fireEvent(new AfterSaveEvent());
 					}

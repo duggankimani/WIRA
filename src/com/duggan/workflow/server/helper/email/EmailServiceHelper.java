@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.helper.email;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,17 @@ public class EmailServiceHelper {
 	static Session session = null;
 	static {
 		try {
-			props.load(ClassLoader.getSystemResourceAsStream("smtp.properties"));
+			
+			InputStream is =null;
+			is = ClassLoader.getSystemResourceAsStream("smtp.properties");
+			//is = Thread.currentThread().getContextClassLoader().getResourceAsStream("smtp.properies");
+			//is = EmailServiceHelper.class.getResourceAsStream("/smtp.properies");
+			
+			//ClassLoader.
+			
+			assert is!=null;			
+			props.load(is);
+			is.close();
 			session = Session.getDefaultInstance(props,new Authenticator() {
 	            @Override
 	            protected PasswordAuthentication getPasswordAuthentication() {
