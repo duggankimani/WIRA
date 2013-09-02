@@ -53,6 +53,8 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
+import com.duggan.workflow.client.ui.filter.FilterPresenter;
+import com.duggan.workflow.client.ui.filter.FilterView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -141,5 +143,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(UploadDocumentPresenter.class,
 				UploadDocumentPresenter.MyView.class, UploadDocumentView.class);
+
+		bindPresenterWidget(FilterPresenter.class,
+				FilterPresenter.MyView.class, FilterView.class);
 	}
 }

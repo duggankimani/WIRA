@@ -6,7 +6,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:DialogBox styleName="modal" modal="true" width="100%" ui:field="uploaderDialog">
+	<g:DialogBox styleName="modal" modal="false" width="100%" ui:field="uploaderDialog">
 		<g:HTMLPanel>
 			<g:HTMLPanel styleName="modal-header">
 					<h5><i class="icon-arrow-up"></i>Upload Documents</h5>

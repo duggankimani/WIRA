@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.home;
 import static com.duggan.workflow.client.ui.home.HomePresenter.ACTIVITIES_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.DATEGROUP_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.DOCUMENT_SLOT;
+import static com.duggan.workflow.client.ui.home.HomePresenter.FILTER_SLOT;
 
 import java.util.HashMap;
 
@@ -52,6 +53,8 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField Element liRecentApprovals;
 	@UiField Element liProgress;
 	@UiField Element liFlagged;
+	@UiField Anchor iFilterdropdown;
+	@UiField HTMLPanel filterDialog;
 	@UiField InlineLabel spnNoItems;
 	@UiField HTMLPanel activityContainer;
 	@UiField Element divDocListing;
@@ -81,6 +84,13 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 				// System.err.println("### ABS");
 			}
 		}, ClickEvent.getType());
+		
+		iFilterdropdown.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				filterDialog.removeStyleName("hidden");
+			}
+		});
 		
 	}
 
@@ -140,6 +150,12 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			if (content != null) {
 				docContainer.add(content);
 			}
+		} else if (slot == FILTER_SLOT) {
+			filterDialog.clear();
+			if (content != null) {
+				filterDialog.add(content);
+			}
+			
 		}else if(slot== ACTIVITIES_SLOT){
 			showActivitiesPanel(true);
 			activityContainer.clear();
