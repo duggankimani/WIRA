@@ -12,6 +12,7 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 	private String userId;
 	private TaskType type;
 	private Long processInstanceId;
+	private Long documentId;
 	private SearchFilter filter;
 	
 	@SuppressWarnings("unused")
@@ -54,6 +55,14 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 
 	public SearchFilter getFilter() {
 		return filter;
+	}
+
+	public Long getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(Long documentId) {
+		this.documentId = documentId;
 	}
 
 }

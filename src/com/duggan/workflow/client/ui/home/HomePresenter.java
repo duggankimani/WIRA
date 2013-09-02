@@ -134,6 +134,8 @@ public class HomePresenter extends
 	
 	private Long processInstanceId=null;
 	
+	private Long documentId=null;
+	
 	final CurrentUser user;
 	
 	Timer timer = new Timer() {
@@ -161,6 +163,7 @@ public class HomePresenter extends
 	protected void search() {
 		timer.cancel();
 		if(searchTerm.isEmpty()){
+			loadTasks();
 			return;
 		}
 		
@@ -296,8 +299,13 @@ public class HomePresenter extends
 		clear();		
 		String name = request.getParameter("type", TaskType.DRAFT.getURL());
 		String processInstID = request.getParameter("pid", null);
+		String documentSearchID = request.getParameter("did", null);
 		if(processInstID!=null){
 			processInstanceId = Long.parseLong(processInstID);
+		}
+		
+		if(documentSearchID!=null){
+			documentId = Long.parseLong(documentSearchID);
 		}
 		
 		TaskType type = TaskType.getTaskType(name);
@@ -331,6 +339,7 @@ public class HomePresenter extends
 		
 		GetTaskList request = new GetTaskList(userId,currentTaskType);
 		request.setProcessInstanceId(processInstanceId);
+		request.setDocumentId(documentId);
 		
 		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){

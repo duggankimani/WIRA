@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpRequest;
 import org.drools.process.instance.WorkItemHandler;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
@@ -25,6 +28,7 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
@@ -164,7 +168,15 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			html = html.replace("${Request}",body);
 			html = html.replace("${OwnerId}", owner);			
 			html = html.replace("${Description}",desc);
-			html = html.replace("${DocumentURL}", "#");
+			HttpServletRequest request = SessionHelper.getHttpRequest();
+			if(request!=null){
+				String requestURL = request.getRequestURL().toString();
+				String servletPath = request.getServletPath();
+				requestURL = requestURL.replace(servletPath, "?#home;type=search;did="+doc.getId());
+				html = html.replace("${DocumentURL}", requestURL);
+			}else{
+				html = html.replace("${DocumentURL}", "#");
+			}
 			html = html.replace("${DocSubject}", doc.getSubject());
 			html = html.replace("${DocumentDate}", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(doc.getCreated()));
 			html = html.replace("${Value}", doc.getValue());

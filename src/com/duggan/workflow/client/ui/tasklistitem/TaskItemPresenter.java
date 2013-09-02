@@ -23,10 +23,12 @@ import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.ParamValue;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -258,6 +260,9 @@ public class TaskItemPresenter extends
 	}
 	
 	protected void submitRequest(final Actions action, Map<String, ParamValue> values) {
+		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
+		//values.put("DocumentURL", new StringValue(docUrl));
+		
 		workflow.setAction(action);
 		workflow.setValues(values);
 				

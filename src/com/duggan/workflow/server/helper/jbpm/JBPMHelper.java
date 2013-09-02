@@ -49,9 +49,11 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 import org.jbpm.task.User;
 import org.jbpm.task.event.TaskEventKey;
+import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskCompletedEvent;
 import org.jbpm.task.event.entity.TaskFailedEvent;
 import org.jbpm.task.event.entity.TaskSkippedEvent;
+import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
@@ -83,6 +85,7 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.NodeDetail;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.test.LDAPAuth;
 
@@ -144,6 +147,7 @@ public class JBPMHelper implements Closeable{
     			SystemEventListenerFactory.getSystemEventListener());
     	
     	LocalTaskService taskService = new LocalTaskService(ts);
+    	//taskService.addEventListener(new TaskEventListener)
     	
     	LocalHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskService, ksession);//new BPMHTWorkItemHandler(taskService, ksession);
     	this.service = taskService;
@@ -220,14 +224,14 @@ public class JBPMHelper implements Closeable{
 	 * 
 	 * @param summary This is the document to be submitted for approval
 	 */
-	public void createApprovalRequest(Document summary){
+	public void createApprovalRequest(String userId, Document summary){
 		
 		Map<String, Object> initialParams = new HashMap<String, Object>();		
 		//initialParams.put("user_self_evaluation", "calcacuervo");
 		initialParams.put("subject", summary.getSubject());//Human Tasks need this
 		initialParams.put("description", summary.getDescription());//Human Tasks need this
 		initialParams.put("documentId", summary.getId().toString());
-		initialParams.put("ownerId", SessionHelper.getCurrentUser()==null? "System": SessionHelper.getCurrentUser().getId());
+		initialParams.put("ownerId", userId);
 		initialParams.put("value", null);
 		initialParams.put("priority", summary.getPriority());
 		
@@ -320,6 +324,12 @@ public class JBPMHelper implements Closeable{
 		
 		return translateSummaries(ts);
 	}
+	
+	public List<HTSummary> searchTasks(String userId, SearchFilter filter){
+		List<TaskSummary> tasks = DB.getDocumentDao().searchTasks(userId, filter);
+		
+		return translateSummaries(tasks);
+	}
 	/**
 	 * 
 	 * This method retrieves all tasks assigned to a user.
@@ -380,8 +390,14 @@ public class JBPMHelper implements Closeable{
 	private void copy(HTSummary task, Task master_task) {
 
 		Map<String, Object> content = getMappedData(master_task);
+//		System.err.println("Content Map :: "+content.toString());
+//		System.err.println("Content Keys :: "+content.keySet());
+//		System.err.println("Content Values :: "+content.values());
 		Document doc = getDocument(content);
 					
+		assert doc!=null;
+		
+//		System.err.println("############## Document : "+doc.getSubject());
 		task.setCreated(master_task.getTaskData().getCreatedOn());
 		task.setDateDue(master_task.getTaskData().getCreatedOn());			
 		task.setSubject(doc.getSubject());
@@ -533,13 +549,15 @@ public class JBPMHelper implements Closeable{
 	 */
 	private Map<String, Object> getMappedData(Task task) {
 		
-		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> params = null;
 		
 		Long contentId= task.getTaskData()==null? null : task.getTaskData().getDocumentContentId();
 		
 		if(contentId==null){
 			return params;
 		}
+		
+		params = new HashMap<>();
 		
 		byte[] objectinBytes = service.getContent(contentId).getContent();
 		

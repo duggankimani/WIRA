@@ -1,11 +1,17 @@
 package com.duggan.workflow.test;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.aspectj.lang.annotation.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocSummary;
@@ -17,21 +23,23 @@ public class TestApprovalRequest {
 	Integer documentId=5;
 	String userId="calcacuervo";
 	
+	DocumentDaoImpl dao;
+	
+	@Before
+	public void setup(){
+		DBTrxProvider.init();
+		
+		DB.beginTransaction();
+		dao = DB.getDocumentDao();
+	}
+	
 	@Test
 	public void submit(){
 		//Document document = DocumentDaoHelper.getDocument(documentId);
 		
 		//HTSummary doc = document.toTask();
-		Document doc = new Document();
-		doc.setSubject("Inv/Fin/100/13");
-		doc.setId(5L);
-		doc.setDescription("Invoice for the delivery of goat milk");
-		doc.setPriority(5);
-		
-		
-		System.err.println("Document>> "+doc.getId()+" : "+doc.getSubject()+" : "+doc.getDescription());
-		
-		JBPMHelper.get().createApprovalRequest(doc);
+		Document doc = DocumentDaoHelper.getDocument(1L);
+		JBPMHelper.get().createApprovalRequest("calcacuervo",doc);
 		
 		List<HTSummary> lst = JBPMHelper.get().getTasksForUser(userId, TaskType.APPROVALREQUESTNEW);
 		
@@ -42,8 +50,10 @@ public class TestApprovalRequest {
 	}
 	
 	@org.junit.After
-	public void destroy(){
-		JBPMHelper.destroy();
+	public void destroy() throws IOException{
+		DB.commitTransaction();
+		LoginHelper.get().close();
+		DB.closeSession();
 	}
 	
 }

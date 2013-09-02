@@ -86,7 +86,7 @@ public class UploadServlet extends UploadAction {
 	
 	private String execute(HttpServletRequest request,
 			List<FileItem> sessionFiles) throws UploadActionException{
-		
+				
 		String response = "";
 		
 		Enumeration<String> keys= request.getParameterNames();

@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,15 +10,18 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.UserGroup;
 import com.google.gwt.dev.util.collect.HashMap;
 
 /**
@@ -131,7 +135,7 @@ public class DocumentDaoImpl {
 	}
 	
 	@SuppressWarnings("unused")
-	public List<DocumentModel> search(SearchFilter filter){
+	public List<DocumentModel> search(String userId,SearchFilter filter){
 		
 		String subject=filter.getSubject();
 		Date startDate= filter.getStartDate();
@@ -217,15 +221,13 @@ public class DocumentDaoImpl {
 			isFirst=false;
 			query.append("createdBy=:createdBy");
 			//params.put("createdBy", SessionHelper.getCurrentUser().getId());
-			params.put("createdBy", SessionHelper.getCurrentUser().getId());
+			params.put("createdBy", userId);
 		}
 		
 		if(isFirst){
 			//we ended up with an and at the end
 			query = new StringBuffer(query.subSequence(0, query.length()-5).toString());
 		}
-		
-		System.err.println("SEARCH SQL - "+query.toString());
 		
 		Query hquery = em.createQuery(query.toString());
 		Set<String> keys = params.keySet();
@@ -239,7 +241,186 @@ public class DocumentDaoImpl {
 		return list;
 	}
 	
-	public List<TaskSummary> search(SearchFilter filter, boolean tasks){
+	public List<TaskSummary> searchTasks(String userId,SearchFilter filter){
+		
+		String subject=filter.getSubject();
+		Date startDate= filter.getStartDate();
+		Date endDate = filter.getEndDate();
+		Integer priority=filter.getPriority();
+		String phrase=filter.getPhrase();
+		DocType docType=filter.getDocType();
+		Boolean hasAttachment=filter.hasAttachment();
+		
+		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
+		String groupsIds="";
+		for(UserGroup group: groups){
+			groupsIds = groupsIds.concat(group.getName()+",");
+		}
+		
+		if(groupsIds.isEmpty()){
+			return new ArrayList<>();
+		}
+		groupsIds = groupsIds.substring(0, groupsIds.length()-1);
+		
+		
+		List<Object> params = new ArrayList<>();
+		
+		StringBuffer query = new StringBuffer("select t.id "+
+		//"d.id documentId "+
+		"from localdocument d "+
+		"inner join Task t on (t.processInstanceId=d.processInstanceId) "+
+		"left join OrganizationalEntity owner on (owner.id= t.actualOwner_id and owner.DTYPE='User') "+ 
+		"left join PeopleAssignments_PotOwners potowners on (potowners.task_id=t.id)  "+
+		"where "+
+		"t.archived = 0 and "+ 
+		"(owner.id = ? "+
+		 "or "+
+		"( potowners.entity_id = ? or potowners.entity_id in (?) )) " +
+		"and " +
+		"t.expirationTime is null "
+		 );
+		
+		params.add(userId);
+		params.add(userId);
+		params.add(groupsIds);
+		
+		boolean isFirst=false;
+		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		if(subject!=null){
+			isFirst=false;
+			query.append("d.subject like ?");
+			params.add( "%"+subject+"%");
+		}
+		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		if(startDate!=null && endDate!=null){
+			isFirst=false;
+			query.append("t.createdOn>? " +
+					"and " +
+					"t.createdOn<?");
+			
+			params.add( startDate);
+			params.add( endDate);
+		}else if(startDate!=null){
+			isFirst=false;
+			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
+			params.add( startDate);
+		}else if(endDate!=null){
+			isFirst=false;
+			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
+			params.add( endDate);
+		}
+		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		if(priority!=null){
+			isFirst=false;
+			query.append("d.priority=?");
+			params.add( priority);
+		}
+		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		if(phrase!=null){
+			isFirst=false;
+			query.append("d.description like ?");
+			params.add("%"+phrase+"%");
+		}
+		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		if(docType!=null){
+			isFirst=false;
+			query.append("type=?");
+			params.add( docType.name());
+		}
+		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		if(isFirst){
+			//we ended up with an "and" at the end
+			query = new StringBuffer(query.subSequence(0, query.length()-5).toString());
+		}
+	
+		Query hquery = em.createNativeQuery(query.toString());
+		
+		for(int i=0; i<params.size(); i++){
+			hquery.setParameter(i+1, params.get(i));
+		}
+		
+		List<BigInteger> b_ids = hquery.getResultList();
+		
+		List<Long> ids = new ArrayList<>();
+		
+		for(BigInteger b: b_ids){
+			ids.add(b.longValue());
+		}
+		
+		if(ids.isEmpty()){
+			return new ArrayList<>();
+		}
+		
+		return searchTasks(ids);
+		
+//		String queryIds = "select t.id taskId " +
+//				"d.id as documentId " +
+//				"from localdocument d " +
+//				"inner join Task t "+
+//				"on t.processInstanceId=d.processInstanceId " +
+//				"left join OrganizationalEntity owner " +
+//				"on (owner.id= t.actualOwner_id and owner.DTYPE='User') "+
+//				"left join PeopleAssignments_PotOwners potowners " +
+//				"on (potowners.taskid=t.id) "+
+//				"where " +
+//				 "t.archived = 0 and "+
+//			    "(owner.id = ? "+
+//			   " or  "+
+//			    	"( potowners.entity_id = ? or potowners.entity_id in (?) ) "+
+//			    ") "+
+//			    
+//			     "and "+
+//
+//			    "( "+
+//			    "name.language = :language "+
+//			    "or t.names.size = 0 "+
+//			    ") and "+
+//			    
+//			    "( "+
+//			   " subject.language = :language "+
+//			   " or t.subjects.size = 0 "+
+//			   " ) and "+
+//
+//			    "( "+
+//			    "description.language = :language "+
+//			    "or t.descriptions.size = 0 "+ 
+//			    ")and  "+
+//			    "t.taskData.expirationTime is null ";
+		
+				
+	}
+
+	private List<TaskSummary> searchTasks(List<Long> ids) {
 		String query = "select "+
 		   "distinct "+
 		   "new org.jbpm.task.query.TaskSummary( "+
@@ -259,48 +440,22 @@ public class DocumentDaoImpl {
 		    "t.taskData.processId, "+
 		    "t.taskData.processSessionId) "+
 		"from "+
-		    "Task t "+ 
+		    "Task t " +
 		    "left join t.taskData.createdBy as createdBy "+
 		    "left join t.taskData.actualOwner as actualOwner "+ 
 		    "left join t.subjects as subject "+
 		    "left join t.descriptions as description "+
 		    "left join t.names as name, "+
 		    "OrganizationalEntity potentialOwners "+
-		"where "+
-		    "t.archived = 0 and "+
-		    "(t.taskData.actualOwner.id = :userId "+
-		   " or  "+
-		    	"( potentialOwners.id = :userId or potentialOwners.id in (:groupIds) ) and "+
-		    	"potentialOwners in elements ( t.peopleAssignments.potentialOwners ) "+
-		    ") "+
-		    
-		     "and "+
+		"where " +
+		//"t.processInstanceId=d.processInstanceId "+
+		    "t.id in (:taskIds) ";
 
-		    "( "+
-		    "name.language = :language "+
-		    "or t.names.size = 0 "+
-		    ") and "+
-		    
-		    "( "+
-		   " subject.language = :language "+
-		   " or t.subjects.size = 0 "+
-		   " ) and "+
-
-		    "( "+
-		    "description.language = :language "+
-		    "or t.descriptions.size = 0 "+ 
-		    ")and  "+
-		    "t.taskData.processInstanceId = :processInstanceId "+
-		    "and "+
-		    "t.taskData.expirationTime is null ";
+		Query hquery = em.createQuery(query)		
+		.setParameter("taskIds", ids);
 		
-		
-		
-		
-		
-		Query hquery = em.createQuery(query);		
 		List list = hquery.getResultList();
-		
+
 		return list;
 	}
 

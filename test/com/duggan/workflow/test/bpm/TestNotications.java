@@ -129,7 +129,7 @@ public class TestNotications {
 		doc = DocumentDaoHelper.save(doc);
 		
 		//create approval request
-		JBPMHelper.get().createApprovalRequest(doc);
+		JBPMHelper.get().createApprovalRequest(approver,doc);
 		DB.commitTransaction();
 		DB.closeSession();
 		

@@ -343,7 +343,7 @@ public class LoginHelper implements Closeable {
 	}
 
 	public static LoginHelper getHelper() {
-		return helper;
+		return get();
 	}
 
 	public LDAPService getContainer() {

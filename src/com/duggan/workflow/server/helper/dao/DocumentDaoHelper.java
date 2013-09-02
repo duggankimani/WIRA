@@ -224,9 +224,9 @@ public class DocumentDaoHelper {
 		return dao.getProcessInstanceIdByDocumentId(documentId);
 	}
 
-	public static List<Document> search(SearchFilter filter) {
+	public static List<Document> search(String userId,SearchFilter filter) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		List<DocumentModel> models = dao.search(filter);
+		List<DocumentModel> models = dao.search(userId, filter);
 		List<Document> docs = new ArrayList<>();
 		for(DocumentModel doc: models){
 			docs.add(getDoc(doc));

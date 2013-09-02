@@ -239,6 +239,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//submitRequest(Actions.START);
+				assert documentId!=null;
 				fireEvent(new ExecTaskEvent(documentId, Actions.START));
 			}
 		});

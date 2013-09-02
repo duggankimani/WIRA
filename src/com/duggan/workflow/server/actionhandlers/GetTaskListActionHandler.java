@@ -63,10 +63,16 @@ public class GetTaskListActionHandler extends
 			break;
 		case SEARCH:
 			
-			if(action.getFilter()!=null){
-				summary.addAll(DocumentDaoHelper.search(action.getFilter()));
-			}else if(action.getProcessInstanceId()!=null){
+			if(action.getFilter()!=null){				
+				summary.addAll(DocumentDaoHelper.search(userId,action.getFilter()));
+				summary.addAll(JBPMHelper.get().searchTasks(userId, action.getFilter()));
+			}else if(action.getProcessInstanceId()!=null || action.getDocumentId()!=null){
 				
+				Long processInstanceId = action.getProcessInstanceId();
+				if(processInstanceId==null){
+					processInstanceId = DocumentDaoHelper.getProcessInstanceIdByDocumentId(action.getDocumentId());
+				}
+								
 				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(action.getProcessInstanceId());
 				if(doc!=null)
 					summary.add(doc);
