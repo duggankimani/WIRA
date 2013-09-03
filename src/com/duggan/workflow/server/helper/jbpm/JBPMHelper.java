@@ -179,6 +179,7 @@ public class JBPMHelper implements Closeable{
     	env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, DB.getEntityManagerFactory());
     	env.set(EnvironmentName.TRANSACTION_MANAGER, TransactionManagerServices.getTransactionManager());
     	
+    	//JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, configuration, environment)
     	session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
     	    	
     	//Process Logger - to Provide data for querying process status
