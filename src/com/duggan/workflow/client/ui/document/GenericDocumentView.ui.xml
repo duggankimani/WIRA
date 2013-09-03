@@ -139,6 +139,10 @@
 
 		<div class="row-fluid content-area">
 			<div>
+				<strong>Document Date:</strong>
+				<!-- span ui:field="spnDate" class="subject"></span>-->
+			</div>
+			<div>
 				<strong>Value:</strong>
 				<span ui:field="spnValue" class="subject"></span>
 			</div>
@@ -161,20 +165,22 @@
 			</div>
 		</div>
 
-		<g:HTMLPanel styleName="status-section span3 pull-right row-fluid"
-			>
-			<g:Anchor ui:field="aShowProcess" 
-			    title="View full process" styleName="hand">
-				<strong>Business Process:</strong>
+		<g:HTMLPanel styleName="status-section span3 pull-right row-fluid panel panel-default">
+			<div class="panel-heading row-fluid">
+				<div class="span2"><i class="icon-briefcase"></i></div>
+			    <div class="span10"><h3 class="panel-title">Business Process</h3></div>
+			  </div>
+			 <g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>
+			 <g:Anchor ui:field="aShowProcess"  title="View full process" styleName="hand">
+				<strong>View Complete Process</strong>
 			</g:Anchor>
-			<g:HTMLPanel ui:field="statusContainer"></g:HTMLPanel>
 		</g:HTMLPanel>
 
 
 		<g:HTMLPanel styleName="row-fluid recent-activity span8">
 			<span class="title">
-				<i class="icon-comment"></i>
-				Recent Activity
+				<i class="icon-comments"></i>
+				Comments and Activity
 			</span>
 
 			<div class="row-fluid comment-box">

@@ -14,6 +14,8 @@ import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -63,6 +65,9 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField SpanElement loadingtext;
 	@UiField TextBox txtSearch;
 	
+	//Filter Dialog Caret
+	boolean isNotDisplayed=true;
+	
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -88,7 +93,20 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		iFilterdropdown.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				if(isNotDisplayed){
 				filterDialog.removeStyleName("hidden");
+				isNotDisplayed=false;
+				}else{
+				filterDialog.addStyleName("hidden");
+				isNotDisplayed=true;
+				}
+			}
+		});
+		
+		txtSearch.addFocusHandler(new FocusHandler() {
+			@Override
+			public void onFocus(FocusEvent event) {
+				hideFilterDialog();
 			}
 		});
 		
@@ -295,6 +313,17 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	
 	public TextBox getSearchBox(){
 		return txtSearch;
+	}
+
+	@Override
+	public void hideFilterDialog() {
+		filterDialog.addStyleName("hidden");
+		isNotDisplayed=true;
+	}
+	
+	@Override
+	public void setSearchBox(String text) {
+		txtSearch.setValue(text);
 	}
 
 }

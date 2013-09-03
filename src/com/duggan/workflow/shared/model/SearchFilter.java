@@ -75,4 +75,23 @@ public class SearchFilter implements Serializable {
 	public void setDocType(DocType docType) {
 		this.docType = docType;
 	}
+	
+	public boolean isEmpty(){
+		if(subject!=null)
+			return false;
+		if(phrase!=null)
+			return false;
+		if(startDate!=null)
+			return false;
+		if(endDate!=null)
+			return false;
+		if(priority!=null)
+			return false;
+		if(hasAttachment!=null)
+			return false;
+		if(docType!=null)
+			return false;
+		return  true;
+		
+	}
 }

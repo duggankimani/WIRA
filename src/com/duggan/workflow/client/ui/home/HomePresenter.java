@@ -26,6 +26,8 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
@@ -76,10 +78,9 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
 		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler,
-		ProcessingHandler, ProcessingCompletedHandler{
+		ProcessingHandler, ProcessingCompletedHandler, SearchHandler{
 
 	public interface MyView extends View {
-		
 		HasClickHandlers getAddButton();	
 		void setHeading(String heading);
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
@@ -98,6 +99,8 @@ public class HomePresenter extends
 		public Anchor getaFlagged();
 		public Anchor getaRefresh() ;
 		TextBox getSearchBox();
+		public void hideFilterDialog();
+		public void setSearchBox(String text);
 	}
 
 	@ProxyCodeSplit
@@ -169,11 +172,15 @@ public class HomePresenter extends
 			return;
 		}
 		
-		
-			
 		//fireEvent(new ProcessingEvent());
 		SearchFilter filter = new SearchFilter();
 		filter.setSubject(searchTerm);
+		filter.setPhrase(searchTerm);
+		search(filter);
+	}
+	
+	public void search(SearchFilter filter){
+			
 		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
 			@Override
@@ -208,6 +215,7 @@ public class HomePresenter extends
 		addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
+		addRegisteredHandler(SearchEvent.TYPE, this);
 		
 		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
 			
@@ -496,5 +504,11 @@ public class HomePresenter extends
 	public void onProcessing(ProcessingEvent event) {		
 		getView().getWholeContainer().addStyleName("working-request");
 		getView().getLoadingtext().removeClassName("hide");
+	}
+
+	@Override
+	public void onSearch(SearchEvent event) {
+		SearchFilter filter= event.getFilter();
+		search(filter);
 	}
 }
