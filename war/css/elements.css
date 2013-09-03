@@ -510,7 +510,7 @@
  .dialog {
 	display: none;
 	position: absolute;
-	right: 8px;
+	right: 4px;
 	top: 55px;
 	z-index: 100;
 }
@@ -535,6 +535,10 @@
 	z-index: 1002;
 	right: 25px;
 }
+/*DateBox Popup*/
+.dateBoxPopup{
+    z-index:100;
+}
  .dialog .pointer .arrow_border {
 	border-color: transparent transparent #a1a1a1;
 	border-width: 9px;
@@ -543,7 +547,7 @@
 	right: 24px;
 }
  .dialog .body {
-	width: 440px;
+	width: 265px;
 	background-color: #fff;
 	border: 1px solid #a1a1a1;
 	border-radius: 5px;
@@ -552,9 +556,17 @@
 }
  .dialog .body p.title {
 	font-weight: 600;
-	margin-bottom: 10px;
+	margin-bottom: 7px;
 	font-size: 13px;
+	color: grey;
 }
+ .dialog .body span {
+     color:grey;
+     font-size: 12px;   
+ } 
+ .dialog .body span.input-group-addon {
+     color:#000000;
+ }
  .dialog .body .form { }
  .dialog .body .form select {
 	display: inline-block;
@@ -565,7 +577,7 @@
 }
  .dialog .body .form input[type="text"] {
 	height: 17px;
-	width: 90px;
+	width: 90%;
 	margin-right: 2px;
 }
  .dialog .body .form a {

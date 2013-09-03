@@ -65,7 +65,7 @@
 
 	    	  	 <div class="search">
 	         	 	 <g:TextBox styleName="search-box" ui:field="txtSearch"/>
-	         	 	<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
+	         	 	 <g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
 	         	 </div>
 	         
 	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>

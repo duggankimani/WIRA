@@ -8,6 +8,14 @@ h1,h2,h3,h4,h5 {
 	line-height: inherit;
 	color: #29323d;
 }
+a{
+    color: grey;
+    cursor:pointer;
+}
+a, a:visited, a:hover{
+    text-decoration:none;
+    color: #cccccc;
+}
 
 
 textarea {
@@ -21,9 +29,10 @@ textarea:hover{
 	border:none;
 }
 
-textarea:focus{
+*:focus{
 	outline:none;
 	border:none;
+	box-shadow:none;
 }
 .header {
 	margin-bottom: 60px;
@@ -424,7 +433,6 @@ textarea:focus{
 /*---Middle-Pane--- */
 #nav-top {
     position: absolute;
-    border-bottom: 1px solid #b5b5b5;
     width: 288px;
     background: #ffffff;
     padding-left: 5px;
@@ -433,6 +441,7 @@ textarea:focus{
     border: 1px solid #CCCCCC;
     border-bottom:none;
     border-right: none;
+    height: 51px;
 }
 #nav-top i{
     display: inline;
@@ -453,6 +462,13 @@ textarea:focus{
 	top: 29px;
 	width: 259px;
 	display: inline-block;
+}
+#nav-top .search a.icon-caret-down{
+    color:grey;
+    opacity:.7;
+}
+#nav-top .search a.icon-caret-down:hover{
+    opacity:1;
 }
 
 #nav-top .search-box{
@@ -483,8 +499,8 @@ textarea:focus{
 	padding-right: 0px;
 	border: 1px solid #CCCCCC;
 	width: 295px;
-    margin-top: 56px;
-    height: 531px;
+    margin-top: 52px;
+    height: 535px;
 	border-right: none;
     overflow-y:auto
 }
@@ -653,7 +669,7 @@ textarea:focus{
 #detailed-info .content-area{
     padding: 39px 0 0 12px;
     font-size:14px;
-    max-height: 160px;
+    max-height: 183px;
 }
 #detailed-info .content-area div{	
 	padding-bottom:7px;
@@ -661,8 +677,9 @@ textarea:focus{
 #detailed-info .attachment-panel{
 	max-height: 65px;
 	overflow-y:auto;
-	width: 850px;
-	overflow-x: auto;
+	width: 839px;
+	overflow-x: hidden;
+	padding-bottom: 0px!important;
 }
 
 #detailed-info .attachment-section {
@@ -679,9 +696,18 @@ textarea:focus{
 #detailed-info .status-section{
 	font-weight:normal;
 	border:1px solid #CCCCCC;
-	padding:10px;
 	margin-left:0px;
-	}
+}
+
+#detailed-info .status-section .panel-heading{
+    padding: 3px 5px;
+    width: 187px;
+    height: 21px;
+}
+
+#detailed-info .status-section .panel-heading .icon-briefcase{
+  font-size:14px;
+}
 
 #detailed-info .status-section span{
 	display: block;
@@ -698,24 +724,24 @@ textarea:focus{
 	margin-left:80px;
 }
 #detailed-info .recent-activity{
-	border:1px solid #cccccc;
-	padding: 10px 6px 0px 0px;
-	width: 653px;
-	overflow-y: auto;
+	padding: 2px 0px 0px 0px;
+	width: 640px;
 	overflow-x: hidden;
 	margin-left: 13px;
 	border-left: none;
-	max-height: 335px;
-	min-height: 335px;
+	max-height: 326px;
+	overflow-y: hidden;
+	border-top: 1px solid #cccccc;
+	border-right: none;
 }
 
 #detailed-info .recent-activity .title{
 	text-align:center;
 	font-weight:bold;
-	background:#ffffff;
 }
-#detailed-info .recent-activity .icon-comment{
-	margin-right:6px;	
+#detailed-info .recent-activity .icon-comments{
+	margin-right:6px;
+	color:grey;	
 }
 
 #detailed-info .recent-activity .comment-box .icon-chevron-up{
@@ -802,7 +828,9 @@ textarea:focus{
 
 #detailed-info .panel-activity{
 	width: 100%;
+	overflow-y: auto;
 	margin: 0px 0px 0px 0px;
+	max-height: 246px;
 }
 #detailed-info .panel-activity .row-fluid{
     border-top:1px solid #E7E8EA;
