@@ -26,9 +26,10 @@ public class EmailServiceHelper {
 		try {
 			
 			InputStream is =null;
-			is = ClassLoader.getSystemResourceAsStream("smtp.properties");
-			//is = Thread.currentThread().getContextClassLoader().getResourceAsStream("smtp.properies");
-			//is = EmailServiceHelper.class.getResourceAsStream("/smtp.properies");
+			//is = ClassLoader.getSystemResourceAsStream("smtp.properties");
+//			is = Thread.currentThread().getContextClassLoader().
+//					getResourceAsStream("com/duggan/workflow/server/helper/email/smtp.properties");
+			is = EmailServiceHelper.class.getResourceAsStream("/smtp.properties");
 			
 			//ClassLoader.
 			

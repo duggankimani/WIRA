@@ -2,6 +2,7 @@ package com.duggan.workflow.server.db;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -50,6 +51,21 @@ public class DBTrxProvider{
 	
 	Log logger = LogFactory.getLog(DBTrxProvider.class);
 	
+	static Properties dbProperties = new Properties();
+	static Boolean isTomcatEnv = Boolean.TRUE;
+	static{
+		try{
+			InputStream is = DBTrxProvider.class.getResourceAsStream("/db.properties");
+			dbProperties.load(is);
+			String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+			if(path.contains("webapps") || path.toLowerCase().contains("tomcat")){
+				isTomcatEnv = Boolean.TRUE;
+			}else{
+				isTomcatEnv = Boolean.FALSE;
+			}
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
 	private DBTrxProvider(){
 		
 //		Object userTrx = null;
@@ -57,7 +73,7 @@ public class DBTrxProvider{
 //			userTrx = DB.getUserTrx();
 //		}catch(Exception e){}
 		
-		if(true){
+		if(!isTomcatEnv){
 			logger.warn("No Global User Trx Found - Could you be running in development mode?");
 			//non
 			Configuration config = TransactionManagerServices.getConfiguration();
@@ -65,6 +81,8 @@ public class DBTrxProvider{
 			config.setResourceConfigurationFilename(resourceProperties.getPath()+"/db.properties");
 			resourceProperties=null;
 			TransactionManagerServices.getResourceLoader().init();
+		}else{
+			logger.warn("Global User Trx Found - Assuming Tomcat Runtime!!");
 		}
 		
 	}
