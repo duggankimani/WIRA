@@ -6,24 +6,22 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-  <g:HTMLPanel styleName="navbar">
-      <!--Menu Bar viewed mobile-->
-      <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
-      </button>
-     
+  <g:HTMLPanel styleName="navbar" ui:field="divNavbar">
      <div class="navbar-inner">
-        <a class="brand" href="#activities">E-Business Task List | Diaspora Architecture Group</a> 
+        <g:Anchor styleName="brand" ui:field="aBrand">E-Business Task List | Diaspora Architecture Group</g:Anchor>
         
         <ul class="nav pull-right">
               <li class="home">
-               		 <g:Anchor href="#activities" styleName="close-icon hand">
+               		 <g:Anchor href="#activities" ui:field="aHome" styleName="close-icon hand">
 	                        <i class="icon-home"> &nbsp; Home</i>
-                   	  </g:Anchor>  
+                   	  </g:Anchor> 
               </li>
-              <li class="notification-dropdown hidden-phone">
+              <li class="home">
+	                <g:Anchor href="#adminhome" ui:field="aAdmin" styleName="close-icon hand">
+	                    <i class="icon-bar-chart"> &nbsp;Admin</i>
+	                 </g:Anchor>  
+              </li>
+              <li class="notification-dropdown">
                       <g:Anchor ui:field="aNotifications" styleName="close-icon hand">
                         <i class="icon-bell"></i>
                         <span ui:field="lblCount" class="label label-important"></span>

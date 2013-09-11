@@ -171,9 +171,11 @@
 			    <div class="span10"><h3 class="panel-title">Business Process</h3></div>
 			  </div>
 			 <g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>
-			 <g:Anchor ui:field="aShowProcess"  title="View full process" styleName="hand">
-				<strong>View Complete Process</strong>
-			</g:Anchor>
+			  <g:HTMLPanel styleName="panel-footer">
+				  <g:Anchor ui:field="aShowProcess"  title="View full process" styleName="hand">
+					<strong>View Complete Process</strong>
+			     </g:Anchor>
+			  </g:HTMLPanel>
 		</g:HTMLPanel>
 
 

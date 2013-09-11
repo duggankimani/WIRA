@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.header;
 
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -24,6 +26,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	@UiField Anchor aNotifications;
 	@UiField Anchor aLogout;
 	@UiField HTMLPanel notificationsContainer;
+	@UiField HTMLPanel divNavbar;
+	@UiField Anchor aAdmin;
+	@UiField Anchor aHome;
+	@UiField Anchor aBrand;
 	@UiField FocusPanel popupContainer;
 	@UiField SpanElement lblCount;
 	@UiField SpanElement spnUserGroup;
@@ -35,6 +41,26 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		widget = binder.createAndBindUi(this);
 		aNotifications.setTabIndex(3);
 		
+		aAdmin.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				divNavbar.addStyleName("navbar-inverse");
+			}
+		});
+		
+		aHome.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				divNavbar.removeStyleName("navbar-inverse");
+			}
+		});
+		
+		aBrand.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				divNavbar.removeStyleName("navbar-inverse");
+			}
+		});
 	}
 
 	@Override

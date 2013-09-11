@@ -1,0 +1,60 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom' xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true">
+		<g:HTMLPanel>
+	 		<g:HTMLPanel styleName="modal-header">
+					<h5><i class="icon-cogs"></i>New Process Wizard <g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+			 </g:HTMLPanel>
+			 
+		 	<g:HTMLPanel styleName="modal-body">
+		 			<g:HTMLPanel styleName="" ui:field="divProcessDetails">
+						  <div class="form-group">
+						    <label for="ProcessName">Name:</label>
+						    <input type="email" class="form-control" placeholder="Process Name"/>
+						  </div>
+						  <div class="form-group">
+						 	 <label for="ProcessDescription">Description:</label>
+						 	 <textarea class="form-control" rows="3"></textarea>
+						  </div>
+						  <div class="form-group">
+						  	<label for="ProcessName">Document Types:</label>
+							  <div class="checkbox">
+							    <label>
+							       <input type="checkbox"/>LPO
+							    </label>
+							  </div>
+							  <div class="checkbox">
+							    <label>
+							       <input type="checkbox"/>Invoice
+							    </label>
+							  </div>
+							  <div class="checkbox">
+							    <label>
+							       <input type="checkbox"/>Contract
+							    </label>
+							  </div>
+						  </div>
+						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+					</g:HTMLPanel>
+			</g:HTMLPanel>
+			
+			<g:HTMLPanel styleName="hide" ui:field="divUploadDetails">
+				
+				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
+					<up:Uploader ui:field="uploader"></up:Uploader>
+				</g:HTMLPanel>
+				
+				<g:HTMLPanel styleName="modal-footer pull-right">
+					<g:Anchor styleName="btn btn-default" ui:field="aBack"><i class="icon-double-angle-left"></i> &nbsp; Back </g:Anchor>
+					<g:Anchor styleName="btn btn-success" ui:field="aFinish">Finish &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+			 	</g:HTMLPanel>
+			 </g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:PopupPanel>
+</ui:UiBinder>

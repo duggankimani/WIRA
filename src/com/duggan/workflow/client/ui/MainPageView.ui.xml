@@ -17,7 +17,7 @@
 		<g:HTMLPanel>
    			<g:HTMLPanel ui:field="pContainer">
 			 	    
-			</g:HTMLPanel>		    
+			</g:HTMLPanel>	
 			<!-- div class="footer">
 				A product of Anger Enterprises <span class="copyyear"></span>
 			</div -->    

@@ -120,6 +120,9 @@ public class HomePresenter extends
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
+	
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> ADMIN_SLOT = new Type<RevealContentHandler<?>>();
 
 	
 	@Inject DispatchAsync dispatcher;
@@ -437,7 +440,6 @@ public class HomePresenter extends
 	protected void onReset() {
 		super.onReset();
 		setInSlot(FILTER_SLOT, filterPresenter);
-		
 	}
 
 	@Override

@@ -37,11 +37,11 @@ public class ActivitiesPresenter extends
 	protected void revealInParent() {
 		RevealContentEvent.fire(this, HomePresenter.ACTIVITIES_SLOT, this);
 	}
- @Override
-public void prepareFromRequest(PlaceRequest request) {
-	 super.prepareFromRequest(request);
-	 fireEvent(new ActivitiesSelectedEvent());
-}
+	 @Override
+	public void prepareFromRequest(PlaceRequest request) {
+		 super.prepareFromRequest(request);
+		 //fireEvent(new ActivitiesSelectedEvent());
+	}
 	@Override
 	protected void onBind() {
 		super.onBind();
