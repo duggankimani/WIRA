@@ -4,6 +4,7 @@ import static com.duggan.workflow.client.ui.home.HomePresenter.ACTIVITIES_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.DATEGROUP_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.DOCUMENT_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.FILTER_SLOT;
+import static com.duggan.workflow.client.ui.home.HomePresenter.ADMIN_SLOT;
 
 import java.util.HashMap;
 
@@ -62,6 +63,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField Element divDocListing;
 	@UiField Element divDocView;
 	@UiField HTMLPanel wholeContainer;
+	@UiField HTMLPanel mainContainer;
 	@UiField SpanElement loadingtext;
 	@UiField TextBox txtSearch;
 	
@@ -168,19 +170,18 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			if (content != null) {
 				docContainer.add(content);
 			}
-		} else if (slot == FILTER_SLOT) {
+		} else if(slot== ACTIVITIES_SLOT){
+			showActivitiesPanel(true);
+			activityContainer.clear();
+			if(content != null){
+				activityContainer.add(content);
+			}
+		}else if (slot == FILTER_SLOT) {
 			filterDialog.clear();
 			if (content != null) {
 				filterDialog.add(content);
 			}
 			
-		}else if(slot== ACTIVITIES_SLOT){
-			showActivitiesPanel(true);
-			activityContainer.clear();
-			if(content != null){
-				
-				activityContainer.add(content);
-			}
 		}		
 		else {
 			super.setInSlot(slot, content);
@@ -294,12 +295,10 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	public void showActivitiesPanel(boolean show) {
 		if(show){
 			activityContainer.removeStyleName("hide");
-			divDocListing.addClassName("hide");
-			divDocView.addClassName("hide");
+			wholeContainer.addStyleName("hide");
 		}else{
 			activityContainer.addStyleName("hide");
-			divDocListing.removeClassName("hide");
-			divDocView.removeClassName("hide");
+			wholeContainer.removeStyleName("hide");
 		}
 	}
 	

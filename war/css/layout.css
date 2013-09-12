@@ -24,7 +24,7 @@ textarea {
 	margin-bottom: 0px;
 }
 
-textarea:hover{
+#detailed-info textarea:hover{
 	outline:none;
 	border:none;
 }
@@ -84,9 +84,16 @@ textarea:hover{
 
 /* Custom navbar stuff */
 .navbar {
-	background: url("../img/loading.gif")no-repeat #ffffff center;
 	margin-bottom: 5px;
 }
+.navbar-inverse .navbar-inner{
+    background-image:none;
+    background-color: #333333;
+    border-radius: 0px;
+}
+.navbar-inverse .navbar-inner .brand{
+    color: #ffffff;
+} 
 
 .navbar .brand {
 	color: #1B1464;
@@ -112,8 +119,9 @@ textarea:hover{
 	margin-top: 15px;
 }
 
-.navbar .nav>li>a {
-	
+.navbar-inverse .nav>li>a {
+	color:#ffffff;
+    opacity:.7;
 }
 .navbar .home{
 	height: 41px;
@@ -703,6 +711,10 @@ textarea:hover{
     padding: 3px 5px;
     width: 187px;
     height: 21px;
+}
+
+#detailed-info .status-section .panel-heading .panel-title{
+    font-size:14px;
 }
 
 #detailed-info .status-section .panel-heading .icon-briefcase{

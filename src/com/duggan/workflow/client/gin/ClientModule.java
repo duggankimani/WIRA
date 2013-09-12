@@ -55,6 +55,12 @@ import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.filter.FilterView;
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.admin.AdminHomeView;
+import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
+import com.duggan.workflow.client.ui.admin.process.ProcessView;
+import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnPresenter;
+import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -146,5 +152,15 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(FilterPresenter.class,
 				FilterPresenter.MyView.class, FilterView.class);
+
+		bindPresenter(AdminHomePresenter.class,
+				AdminHomePresenter.MyView.class, AdminHomeView.class,
+				AdminHomePresenter.MyProxy.class);
+
+		bindPresenterWidget(ProcessPresenter.class,
+				ProcessPresenter.MyView.class, ProcessView.class);
+
+		bindPresenterWidget(ProcessColumnPresenter.class,
+				ProcessColumnPresenter.MyView.class, ProcessColumnView.class);
 	}
 }

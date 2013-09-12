@@ -7,7 +7,9 @@
 	ui:generateLocales='default'>
  
  <g:HTMLPanel styleName="row-fluid main-container"> 
- 		<span ui:field="loadingtext"  class="span2 hide">Loading ...</span>   
+ 	  <span ui:field="loadingtext"  class="span2 hide">Loading ...</span>   
+     
+    <g:HTMLPanel ui:field="mainContainer">
       <div id="sidebar-nav" class="span2">
         <!--Button Add Document -->
         <div class="add-doc">
@@ -52,12 +54,12 @@
 					<li ui:field="liFlagged"> 
 						<g:Anchor ui:field="aFlagged" styleName="hand" text="Flagged"></g:Anchor> 
 					</li>
-                </ul>
+                </ul>		
             </li>
         </ul>
      </div>
      
-      <g:HTMLPanel ui:field="wholeContainer">
+      <g:HTMLPanel ui:field="wholeContainer" styleName="hide"> 
       		<div id="nav-top">
       		   <i class="icon-tag"></i>
 	    	   <h5 ui:field="hCategory">Completed</h5>
@@ -73,44 +75,23 @@
 	        </div>
 	        
 	      <!--middle navigation-->
-	      <div ui:field="divDocListing" class="span4 hide ">
-	        
+	      <div ui:field="divDocListing" class="span4">
 	        <div class="content-nav row-fluid">
 		        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
 		       	</d:BulletListPanel>
 		       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
 	        </div>
 	      </div>
-	      
-	        
 	      <!--Detailed Panel Description-->
-	      <div ui:field="divDocView" class="span5 hide">            
+	      <div ui:field="divDocView" class="span5">            
 	          <g:HTMLPanel ui:field="docContainer">  
-	                          
 	          </g:HTMLPanel>
-	                  
 	      </div>
-	      
-	      <g:HTMLPanel ui:field="activityContainer">  	
-	      </g:HTMLPanel> 
       </g:HTMLPanel>
-      
-      <!--Footer-->
-      <!--div class="container"> 
-        <hr>
-            <div class="row-fluid">
-              <div class="span12">
-                <div class="span8">
-                  <a href="#">Terms of Service</a>    
-                  <a href="#">Privacy</a>    
-                  <a href="#">Security</a>
-                </div>
-                <div class="span4">
-                  <p class="muted pull-right">© MD-Kimani Inc. All rights reserved</p>
-                </div>
-              </div>
-            </div>
-      </div-->
+      	      
+      <g:HTMLPanel ui:field="activityContainer">  	
+      </g:HTMLPanel> 
+    </g:HTMLPanel>  
     </g:HTMLPanel><!--End of Container-->
     
     	
