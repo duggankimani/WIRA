@@ -33,7 +33,6 @@ import org.jbpm.executor.entities.STATUS;
 import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 
 /**
  *
@@ -44,10 +43,9 @@ public class ExecutorRunnable extends Thread {
 	
     private Logger logger = Logger.getLogger(ExecutorRunnable.class.getCanonicalName());
     
-    
-    
     public ExecutorRunnable(){
     	//setDaemon(true);
+    	logger.setLevel(Level.WARNING);
     }
 
     /**
@@ -64,11 +62,11 @@ public class ExecutorRunnable extends Thread {
     		
     		DB.commitTransaction();
     	}catch(Exception e){
-    		System.err.println("############[1] Error : "+e.getMessage());
+    		logger.severe("############[1] Error : "+e.getMessage());
     		
     		try{
     			DB.rollback();
-    		}catch(Exception f){System.err.println("############ RollbackError : "+f.getMessage());}
+    		}catch(Exception f){logger.severe("############ RollbackError : "+f.getMessage());}
     		//
     	}finally{
     		DB.closeSession();
@@ -78,7 +76,7 @@ public class ExecutorRunnable extends Thread {
     }
 
     private void execute() {
-    	EntityManager em = DB.getEntityManager();//getEntityManagerFactory().createEntityManager();
+    	EntityManager em = DB.getEntityManager();
     	
         logger.log(Level.INFO, " >>> Executor Thread {0} Waking Up!!!", this.toString());
         List<?> resultList = em.createQuery("Select r from RequestInfo as r where r.status ='QUEUED' or r.status = 'RETRYING' ORDER BY r.time DESC").setMaxResults(3).getResultList();
@@ -205,49 +203,19 @@ public class ExecutorRunnable extends Thread {
      * @throws Exception
      */
 	private ExecutionResults runInIndependentTrx(Command cmd, CommandContext ctx) throws Exception{
-//		Transaction transaction = TransactionManagerServices.getTransactionManager().suspend();
-//		assert transaction!=null; //current Transaction not null;
-		
-		
-		try{
-			//DB.beginTransaction();//resource local trx - Not JTA
-			int status = DB.getUserTrx().getStatus();
-			/*STATUS_ACTIVE               0
-			STATUS_COMMITTED            3
-			STATUS_COMMITTING           8
-			STATUS_MARKED_ROLLBACK      1
-			STATUS_NO_TRANSACTION       6
-			STATUS_PREPARED             2
-			STATUS_PREPARING            7
-			STATUS_ROLLEDBACK           4
-			STATUS_ROLLING_BACK         9
-			STATUS_UNKNOWN              5*/
-			
-			System.err.println("############## Transaction Status - "+status);
-			//begin new
-			
-			
-		}catch(Exception e){
-			
-		}finally{
-			
-		}
-		
-		
-		//resume previous trx
-		try{
-			System.err.println("######### Beofre Resume TrxStatus: "+DB.getUserTrx().getStatus());
-			
-			/**
-			 * Support issues from mysql
-			 * http://bugs.mysql.com/bug.php?id=27832
-			 */
-			//TransactionManagerServices.getTransactionManager().resume(transaction);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			System.err.println("######### After Resume TrxStatus: "+DB.getUserTrx().getStatus());
-		}
+
+		//DB.beginTransaction();//resource local trx - Not JTA
+		int status = DB.getUserTrx().getStatus();
+		/*STATUS_ACTIVE               0
+		STATUS_COMMITTED            3
+		STATUS_COMMITTING           8
+		STATUS_MARKED_ROLLBACK      1
+		STATUS_NO_TRANSACTION       6
+		STATUS_PREPARED             2
+		STATUS_PREPARING            7
+		STATUS_ROLLEDBACK           4
+		STATUS_ROLLING_BACK         9
+		STATUS_UNKNOWN              5*/
 		
 		return cmd.execute(ctx);
 	}

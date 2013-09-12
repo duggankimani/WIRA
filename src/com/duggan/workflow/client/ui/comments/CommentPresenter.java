@@ -79,7 +79,6 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 
 	private void bind(Comment comment) {
 		
-		System.err.println("####Display Comemnt :: "+comment.getComment());
 		getView().setComment(comment.getId(), comment.getComment(), comment.getCreatedBy(),
 				comment.getCreated(), comment.getUpdatedBy(), comment.getUpdated(),
 				comment.getDocumentId(), comment.getParentId()!=null);

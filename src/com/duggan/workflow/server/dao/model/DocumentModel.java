@@ -58,6 +58,8 @@ public class DocumentModel extends PO{
 	
 	private Long processInstanceId;
 	
+	private Long sessionId;
+	
 	public DocumentModel(){
 		
 	}
@@ -152,6 +154,14 @@ public class DocumentModel extends PO{
 	@Override
 	public String toString() {
 		return type+" - "+subject+" - "+getCreated()+" - "+getCreatedBy();
+	}
+
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 }

@@ -69,15 +69,16 @@ public class GetTaskListActionHandler extends
 			}else if(action.getProcessInstanceId()!=null || action.getDocumentId()!=null){
 				
 				Long processInstanceId = action.getProcessInstanceId();
-				if(processInstanceId==null){
+				
+				if(processInstanceId==null || processInstanceId==0L){
 					processInstanceId = DocumentDaoHelper.getProcessInstanceIdByDocumentId(action.getDocumentId());
 				}
 								
-				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(action.getProcessInstanceId());
+				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
 				if(doc!=null)
 					summary.add(doc);
 				
-				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, action.getProcessInstanceId());
+				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, processInstanceId);
 				
 				if(tasks!=null){
 					summary.addAll(tasks);

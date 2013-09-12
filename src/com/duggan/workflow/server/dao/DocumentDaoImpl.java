@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +23,6 @@ import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.UserGroup;
-import com.google.gwt.dev.util.collect.HashMap;
 
 /**
  * 

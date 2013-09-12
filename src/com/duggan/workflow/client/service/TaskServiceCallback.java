@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.service;
 
 import com.duggan.workflow.client.ui.events.ErrorEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.gwtplatform.dispatch.shared.Result;
@@ -21,6 +22,7 @@ public abstract class TaskServiceCallback<T extends Result> extends ServiceCallb
 			processResult(result);
 		}else{
 			//throw error
+			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
 			AppContext.getEventBus().fireEvent(new ErrorEvent(baseResult.getErrorMessage(), baseResult.getErrorId()));
 		}
 			

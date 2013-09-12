@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.document;
 
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ACTIVITY_SLOT;
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
-import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.*;
 
 import java.util.Date;
 import java.util.List;
@@ -52,6 +52,8 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnDocType;
 	@UiField
 	SpanElement spnSubject;
+	
+	@UiField SpanElement spnDate;
 
 	@UiField
 	SpanElement spnValue;	
@@ -192,8 +194,9 @@ public class GenericDocumentView extends ViewImpl implements
 		if (subject != null)
 			spnSubject.setInnerText(subject);
 
-		if (docDate != null)
-			//spnDocDate.setInnerText(DATEFORMAT.format(docDate));
+		if (docDate != null){
+			spnDate.setInnerText(DATEFORMAT.format(docDate));
+		}
 
 		if(value!=null){
 			spnValue.setInnerText(value);

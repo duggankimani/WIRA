@@ -140,7 +140,7 @@
 		<div class="row-fluid content-area">
 			<div>
 				<strong>Document Date:</strong>
-				<!-- span ui:field="spnDate" class="subject"></span>-->
+				<span ui:field="spnDate" class="subject"></span>
 			</div>
 			<div>
 				<strong>Value:</strong>

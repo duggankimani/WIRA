@@ -38,7 +38,7 @@ public class TestApprovalRequest {
 		//Document document = DocumentDaoHelper.getDocument(documentId);
 		
 		//HTSummary doc = document.toTask();
-		Document doc = DocumentDaoHelper.getDocument(1L);
+		Document doc = DocumentDaoHelper.getDocument(10L);
 		JBPMHelper.get().createApprovalRequest("calcacuervo",doc);
 		
 		List<HTSummary> lst = JBPMHelper.get().getTasksForUser(userId, TaskType.APPROVALREQUESTNEW);
@@ -51,7 +51,7 @@ public class TestApprovalRequest {
 	
 	@org.junit.After
 	public void destroy() throws IOException{
-		DB.commitTransaction();
+		DB.rollback();
 		LoginHelper.get().close();
 		DB.closeSession();
 	}

@@ -428,7 +428,7 @@ public class GenericDocumentPresenter extends
 	}
 
 	private void bind(final Activity child, boolean isChild) {
-		System.err.println(child.getClass()+" :: "+child.getCreated()+" :: "+child.getCreatedBy());
+		//System.err.println(child.getClass()+" :: "+child.getCreated()+" :: "+child.getCreatedBy());
 				
 		if(child instanceof Comment)
 		commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {

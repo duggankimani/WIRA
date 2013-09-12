@@ -33,7 +33,7 @@ public class GetActivitiesRequestActionHandler extends
 		Long documentId = action.getDocumentId();
 		List<Activity> activities = new ArrayList<>();		
 		activities.addAll(NotificationDaoHelper.getAllNotifications(documentId,
-				NotificationType.TASKCOMPLETED_APPROVERNOTE, NotificationType.APPROVALREQUEST_OWNERNOTE));
+				NotificationType.TASKCOMPLETED_OWNERNOTE, NotificationType.APPROVALREQUEST_OWNERNOTE));
 				
 		activities.addAll(CommentDaoHelper.getAllComments(documentId));		
 		Collections.sort(activities);

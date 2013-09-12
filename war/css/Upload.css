@@ -15,7 +15,7 @@
 	font-size: 12px;
 }
 .GWTUpld .upld-status div.cancel {
-	background: url(img/cancel.gif) no-repeat;
+	background: url(../../img/cancel.gif) no-repeat;
 	width: 12px;
 	height: 12px;
 	cursor: pointer;

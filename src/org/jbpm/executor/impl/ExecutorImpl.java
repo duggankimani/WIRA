@@ -117,8 +117,8 @@ public class ExecutorImpl implements Executor {
         
         
         em.persist(requestInfo);
-        System.out.println("Before Persist.... "+(System.currentTimeMillis()-start)+"ms");
-        System.out.println("After Persist.... "+(System.currentTimeMillis()-start)+"ms");
+//        System.out.println("Before Persist.... "+(System.currentTimeMillis()-start)+"ms");
+//        System.out.println("After Persist.... "+(System.currentTimeMillis()-start)+"ms");
         
         logger.log(Level.INFO, " >>> Scheduling request for Command: {0} - requestId: {1} with {2} retries", new Object[]{commandId, requestInfo.getId(), requestInfo.getRetries()});
         return requestInfo.getId();

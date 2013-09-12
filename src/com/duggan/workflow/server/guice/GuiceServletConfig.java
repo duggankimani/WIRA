@@ -35,7 +35,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		// TODO Auto-generated method stub
 		super.contextDestroyed(servletContextEvent);
 		
-		JBPMHelper.destroy();
+		//JBPMHelper.destroy();
 		DBTrxProvider.close();
 		try{
 			//close ldap connection

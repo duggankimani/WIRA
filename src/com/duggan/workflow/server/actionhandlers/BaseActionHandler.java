@@ -3,11 +3,11 @@ package com.duggan.workflow.server.actionhandlers;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Status;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -30,8 +30,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends BaseResponse>
 		implements ActionHandler<A, B> {
 
-	private static Logger log = LoggerFactory
-			.getLogger(BaseActionHandler.class);
+	private static Logger log = Logger.getLogger(BaseActionHandler.class);
 
 	@Inject	Provider<HttpServletRequest> request;
 	
@@ -39,7 +38,8 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
 		B result = (B) action.createDefaultActionResponse();		
-		log.info("Executing command " + action.getClass().getName());
+		
+		log.info(action.getRequestCode()+": Executing command " + action.getClass().getName());
 
 		if(SessionHelper.getHttpRequest()!=null){
 			//embedded call -- needed when executing multiple commands in one call
@@ -73,9 +73,6 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			SessionHelper.afterRequest();
 		}
 		
-		if(throwable!=null){
-			
-		}
 		postExecute((BaseResponse) result);
 		
 		return result;
@@ -83,7 +80,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	}
 
 	private void logErrors(boolean hasError, Throwable throwable, B result) {
-
+		
 		if(hasError){
 			Long errorId=null;
 			
@@ -135,6 +132,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	 * @param result
 	 */
 	private void postExecute(BaseResponse result) {
-
+		//dispose knowledge sessions
+		JBPMHelper.clearRequestData();
 	}
 }

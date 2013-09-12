@@ -6,6 +6,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -14,13 +16,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.drools.ChangeSet;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
+import org.drools.agent.KnowledgeAgent;
+import org.drools.agent.KnowledgeAgentFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.definition.process.Node;
+import org.drools.io.Resource;
+import org.drools.io.ResourceFactory;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.persistence.jpa.JPAKnowledgeService;
@@ -29,11 +39,16 @@ import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
+import org.drools.runtime.process.WorkflowProcessInstance;
 import org.jbpm.executor.commands.SendMailCommand;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.audit.NodeInstanceLog;
+import org.jbpm.process.audit.ProcessInstanceLog;
 import org.jbpm.process.core.Process;
+import org.jbpm.process.core.context.variable.VariableScope;
+import org.jbpm.process.instance.ContextInstance;
+import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
@@ -98,12 +113,9 @@ import com.duggan.workflow.test.LDAPAuth;
  */
 public class JBPMHelper implements Closeable{
 
-	private LocalTaskService service;
-	
-	private KnowledgeBase kbase;
-	private StatefulKnowledgeSession session;
-	JPAWorkingMemoryDbLogger mlogger;
+	private BPMSessionManager sessionManager;
 	private static JBPMHelper helper;
+	static Logger logger = Logger.getLogger(JBPMHelper.class);
 	
 	private JBPMHelper(){
 		try{
@@ -112,81 +124,11 @@ public class JBPMHelper implements Closeable{
 	        // user/group exists and its permissions are ok.
 	        System.setProperty("jbpm.usergroup.callback",
 	                "org.jbpm.task.identity.LDAPUserGroupCallbackImpl");
-	        
-			session = this.initializeSession();
-			//ConsoleLogger
-			KnowledgeRuntimeLoggerFactory.newConsoleLogger(session);
-			
-			//register work item handlers
-			session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
-			session.getWorkItemManager().registerWorkItemHandler("GenerateSysNotification",new GenerateNotificationWorkItemHandler());
-			session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new SendMailWorkItemHandler());
-			
-			EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
-					EmailServiceHelper.getProperty("mail.smtp.host"),
-					EmailServiceHelper.getProperty("mail.smtp.port"),
-					EmailServiceHelper.getProperty("mail.smtp.user"),
-					EmailServiceHelper.getProperty("mail.smtp.password"));
-			emailHandler.getConnection().setStartTls(true);
-			session.getWorkItemManager().registerWorkItemHandler("Email", emailHandler);
-			
-			GenericHTWorkItemHandler htHandler = this.createTaskHandler(session);
-			session.getWorkItemManager().registerWorkItemHandler("Human Task", htHandler);
-			
+	        sessionManager = new BPMSessionManager();			
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-	
-	
-	private GenericHTWorkItemHandler createTaskHandler(
-			StatefulKnowledgeSession ksession) {
-			
-    	TaskService ts = new TaskService(DB.getEntityManagerFactory(),
-    			SystemEventListenerFactory.getSystemEventListener());
-    	
-    	LocalTaskService taskService = new LocalTaskService(ts);
-    	//taskService.addEventListener(new TaskEventListener)
-    	
-    	LocalHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskService, ksession);//new BPMHTWorkItemHandler(taskService, ksession);
-    	this.service = taskService;
-    	return taskHandler;
-	}
-
-	/**
-	 * Creates a StatefulKnowledgeSession
-	 * 
-	 * @return {@link StatefulKnowledgeSession}
-	 */
-	private StatefulKnowledgeSession initializeSession() {
-		
-		if(session!=null)
-			return (StatefulKnowledgeSession) session;
-		
-		
-    	KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-    	//builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
-    	builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
-    	builder.add(new ClassPathResource("send-email.bpmn"), ResourceType.BPMN2);
-    	builder.add(new ClassPathResource("beforetask-notification.bpmn"), ResourceType.BPMN2);
-    	builder.add(new ClassPathResource("aftertask-notification.bpmn"), ResourceType.BPMN2);
-    	
-    	kbase = builder.newKnowledgeBase();
-    	
-    	//Initializing a stateful session from JPAKnowledgeService    	
-    	Environment env = KnowledgeBaseFactory.newEnvironment();
-    	env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, DB.getEntityManagerFactory());
-    	env.set(EnvironmentName.TRANSACTION_MANAGER, TransactionManagerServices.getTransactionManager());
-    	
-    	//JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, configuration, environment)
-    	session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
-    	    	
-    	//Process Logger - to Provide data for querying process status
-    	//:- How far a particular approval has gone
-    	mlogger = new JPAWorkingMemoryDbLogger(session);
-		
-		return session;
 	}
 	
 	//not thread safe
@@ -199,21 +141,23 @@ public class JBPMHelper implements Closeable{
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() {
+		assert sessionManager!=null;
 		
+		sessionManager.disposeSessions();
 	}
 
 	/**
 	 * This method clears the runtime environment when the application is shutdown
 	 * 
 	 */
-	public static void destroy() {
+	public static void clearRequestData() {
 		JBPMHelper h = JBPMHelper.get();
 		
 		if(h!=null){
 			try {
 				h.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -233,10 +177,10 @@ public class JBPMHelper implements Closeable{
 		initialParams.put("description", summary.getDescription());//Human Tasks need this
 		initialParams.put("documentId", summary.getId().toString());
 		initialParams.put("ownerId", userId);
-		initialParams.put("value", null);
+		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
 		
-		ProcessInstance processInstance = session.startProcess("invoice-approval", initialParams);
+		ProcessInstance processInstance = sessionManager.startProcess("invoice-approval", initialParams,summary);
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
 		summary.setProcessInstanceId(processInstance.getId());
 		DocumentDaoHelper.save(summary);
@@ -355,11 +299,11 @@ public class JBPMHelper implements Closeable{
 		switch (type) {
 		case APPROVALREQUESTDONE:
 			//approvals - show only items I have approved
-			ts = this.service.getTasksOwned(userId, Arrays.asList(Status.Completed), "en-UK");
+			ts = sessionManager.getTaskService().getTasksOwned(userId, Arrays.asList(Status.Completed), "en-UK");
 			
 			break;
 		case APPROVALREQUESTNEW:
-			ts = this.service.getTasksAssignedAsPotentialOwner(userId, "en-UK");
+			ts = sessionManager.getTaskService().getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			break;
 
 		default:
@@ -376,7 +320,7 @@ public class JBPMHelper implements Closeable{
 		for(TaskSummary summary : ts){
 			
 			HTSummary task = new HTSummary(summary.getId());
-			Task master_task = this.service.getTask(summary.getId());
+			Task master_task = sessionManager.getTaskService().getTask(summary.getId());
 			
 			copy(task, master_task);
 			tasks.add(task);
@@ -424,7 +368,7 @@ public class JBPMHelper implements Closeable{
 		//Human Task
 		HTask myTask = new HTask(); 
 		
-		Task task = this.service.getTask(taskId);
+		Task task = sessionManager.getTaskService().getTask(taskId);
 		
 		List<I18NText> descriptions =task.getDescriptions();
 		myTask.setDescription(descriptions.get(0).getText());
@@ -530,6 +474,17 @@ public class JBPMHelper implements Closeable{
 		return myTask;
 	}
 	
+	public static Map<String, Object> getMappedData(Task task){
+
+		Long contentId= task.getTaskData()==null? null : task.getTaskData().getDocumentContentId();
+		
+		return get().getMappedData(contentId);
+	}
+	
+	public static Map<String, Object> getMappedDataByContentId(Long contentId){
+		return get().getMappedData(contentId);
+	}
+	
 	/**
 	 * <p>
 	 * This method returns the Values passed when the task was initiated
@@ -548,11 +503,9 @@ public class JBPMHelper implements Closeable{
 	 * @param task
 	 * @return Parameter-Value Map for a task
 	 */
-	private Map<String, Object> getMappedData(Task task) {
-		
+	private Map<String, Object> getMappedData(Long contentId) {
+
 		Map<String, Object> params = null;
-		
-		Long contentId= task.getTaskData()==null? null : task.getTaskData().getDocumentContentId();
 		
 		if(contentId==null){
 			return params;
@@ -560,7 +513,7 @@ public class JBPMHelper implements Closeable{
 		
 		params = new HashMap<>();
 		
-		byte[] objectinBytes = service.getContent(contentId).getContent();
+		byte[] objectinBytes = sessionManager.getTaskService().getContent(contentId).getContent();
 		
 		assert objectinBytes.length>0;
 		
@@ -585,18 +538,6 @@ public class JBPMHelper implements Closeable{
 		
 		return params;
 	}
-		
-	private boolean complete(long taskId, String userId, Map<String, Object> values){
-		
-		Map<String, Object> content = getMappedData(service.getTask(taskId));
-		content.putAll(values);
-		//completing tasks is a single individuals responsibility
-		//Notifications & Emails sent after task completion must reflect this
-		content.put("ActorId", SessionHelper.getCurrentUser().getId());
-		this.service.completeWithResults(taskId, userId, content);
-		//this.service.complete(taskId, userId, null);
-		return true;
-	}
 	
 
 	/**
@@ -608,45 +549,27 @@ public class JBPMHelper implements Closeable{
 	 */
 	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
 		
-		switch(action){
-		case CLAIM:
-			get().service.claim(taskId, userId);
-			break;
-		case COMPLETE:
-			get().complete(taskId, userId, values);			
-			break;
-		case DELEGATE:
-			//get().service.delegate(taskId, userId, targetUserId);
-			break;
-		case FORWARD:
-			//get().service.forward(taskId, userId, targetEntityId)
-			break;
-		case RESUME:
-			get().service.resume(taskId, userId);
-			break;
-		case REVOKE:
-			//TODO: investigate what revoke actually does
-			get().service.release(taskId, userId);
-			break;
-		case START:
-			get().service.start(taskId, userId);
-			break;
-		case STOP:
-			get().service.stop(taskId, userId);
-			break;
-		case SUSPEND:
-			get().service.suspend(taskId, userId);
-			break;
-		}
-				
+		sessionManager.execute(taskId, userId, action, values);
+					
 	}
 	
 	public List<Node> getProcessDia(long processInstanceId){
 		
 		List<Node> nodes = new ArrayList<>();
 		
-		String processDefId = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId).getProcessId();
-		org.drools.definition.process.Process process = kbase.getProcess(processDefId);
+		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
+		
+		if(log==null){
+			//--
+			logger.warn("Invalid State : ProcessInstanceLog is null; ProcessInstanceId="
+			+processInstanceId+"; Document = "+DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId));
+			return nodes;
+		}
+		
+		String processDefId = log.getProcessId();
+		JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
+		
+		org.drools.definition.process.Process process = sessionManager.getProcess(processDefId);
 				
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl)process;
 			
@@ -712,7 +635,7 @@ public class JBPMHelper implements Closeable{
 		
 		HTSummary summary = new HTSummary(taskId);
 		
-		Task master_task = this.service.getTask(taskId);
+		Task master_task = sessionManager.getTaskService().getTask(taskId);
 		
 		copy(summary, master_task);
 		 
@@ -727,8 +650,7 @@ public class JBPMHelper implements Closeable{
 	 * @param contextInfo
 	 */
 	public void startProcess(String processId, Map<String, Object> contextInfo) {		
-		session.startProcess(processId, contextInfo);
-				
+		sessionManager.startProcess(processId, contextInfo);				
 	}
 		
 	

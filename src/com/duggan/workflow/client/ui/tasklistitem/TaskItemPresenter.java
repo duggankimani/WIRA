@@ -24,6 +24,7 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.ParamValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
@@ -253,7 +254,7 @@ public class TaskItemPresenter extends
 	void completeDocument(boolean approved){
 		Map<String, ParamValue> arguments = new HashMap<String, ParamValue>();	
 		arguments.put("isApproved", new BooleanValue(approved));
-		
+		arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
 		submitRequest(Actions.COMPLETE, arguments);
 	}
 

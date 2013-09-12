@@ -213,7 +213,7 @@ public class LoginHelper implements Closeable {
 
 	public HTUser getUser(String userId) {
 		
-		System.err.println("LDAP Search :uid="+userId);
+		//System.err.println("LDAP Search :uid="+userId);
 		AndFilter filter = new AndFilter().and(
 				new EqualsFilter("objectClass", "person")).and(
 				new EqualsFilter("uid", userId));
@@ -302,7 +302,7 @@ public class LoginHelper implements Closeable {
 				new EqualsFilter("objectClass", "group")).and(
 				new EqualsFilter("cn", groupName));
 
-		System.err.println(filter.toString());
+		//System.err.println(filter.toString());
 		final List userDns = new ArrayList<>();
 
 		ldapTemplate.search("", filter.toString(), new AttributesMapper() {
@@ -329,7 +329,7 @@ public class LoginHelper implements Closeable {
 			dname = dname.substring(0, dname.indexOf(","));
 			dname = dname.substring(dname.indexOf("=")+1, dname.length());
 			
-			System.err.println("############search "+dname);
+			//System.err.println("############search "+dname);
 			
 			users.add(getUser(dname));
 		}
