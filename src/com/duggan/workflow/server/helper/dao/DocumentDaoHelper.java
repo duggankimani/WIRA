@@ -61,6 +61,7 @@ public class DocumentDaoHelper {
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
 			model.setProcessInstanceId(document.getProcessInstanceId());
+			model.setSessionId(document.getSessionId());
 		}
 
 		model = dao.saveDocument(model);
@@ -93,6 +94,7 @@ public class DocumentDaoHelper {
 		doc.setValue(model.getValue());
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
+		doc.setSessionId(model.getSessionId());
 
 		return doc;
 	}
@@ -114,6 +116,7 @@ public class DocumentDaoHelper {
 		model.setCreated(document.getCreated());
 		model.setStatus(document.getStatus());
 		model.setProcessInstanceId(document.getProcessInstanceId());
+		model.setSessionId(document.getSessionId());
 		
 		return model;
 	}

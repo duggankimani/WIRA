@@ -17,19 +17,22 @@
         <level value="FATAL"/>
     </logger>
     <logger name="org.jbpm.executor">
-        <level value="INFO"/>
+        <level value="FATAL"/>
     </logger>
     <logger name="org.apache">
         <level value="FATAL"/>
     </logger>
-    <logger name="com.duggan.workflow.server.db">
+    <logger name="com.duggan.workflow.server">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="com.duggan.workflow.server.helper.jbpm">
         <level value="INFO"/>
     </logger>
     <logger name="bitronix">
-        <level value="INFO"/>
+        <level value="FATAL"/>
     </logger>
     <root> 
-        <priority value ="SEVERE" /> 
+        <priority value ="FATAL" /> 
         <appender-ref ref="console" /> 
     </root> 
 </log4j:configuration>

@@ -178,7 +178,7 @@ public class HomePresenter extends
 		//fireEvent(new ProcessingEvent());
 		SearchFilter filter = new SearchFilter();
 		filter.setSubject(searchTerm);
-		filter.setPhrase(searchTerm);
+		//filter.setPhrase(searchTerm);
 		search(filter);
 	}
 	
@@ -310,6 +310,9 @@ public class HomePresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		clear();		
+		processInstanceId=null;
+		documentId=null;
+		
 		String name = request.getParameter("type", TaskType.DRAFT.getURL());
 		String processInstID = request.getParameter("pid", null);
 		String documentSearchID = request.getParameter("did", null);
@@ -353,6 +356,8 @@ public class HomePresenter extends
 		GetTaskList request = new GetTaskList(userId,currentTaskType);
 		request.setProcessInstanceId(processInstanceId);
 		request.setDocumentId(documentId);
+		
+		System.err.println("###### Search:: did="+documentId+"; PID="+processInstanceId+"; TaskType="+type);
 		
 		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){

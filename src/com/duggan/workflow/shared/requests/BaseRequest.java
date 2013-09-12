@@ -11,10 +11,19 @@ import com.gwtplatform.dispatch.shared.ActionImpl;
  * @param <T>
  */
 public class BaseRequest<T extends BaseResponse> extends ActionImpl<T>{
-	
 
+	protected long requestcode = System.currentTimeMillis();
+	
 	public BaseResponse createDefaultActionResponse(){
 		return new BaseResponse();
+	}
+	
+	public long getRequestCode(){
+		return requestcode;
+	}
+	
+	public void setRequestCode(long requestCode){
+		this.requestcode = requestCode;
 	}
 	
 	@Override

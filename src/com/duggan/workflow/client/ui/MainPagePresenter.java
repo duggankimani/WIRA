@@ -78,7 +78,6 @@ public class MainPagePresenter extends
 	
 	@Override
 	public void onError(final ErrorEvent event) {
-		System.err.println("--====== MPP - Error Occured");
 		errorFactory.get(new ServiceCallback<ErrorPresenter>() {
 			@Override
 			public void processResult(ErrorPresenter result) {
@@ -86,7 +85,6 @@ public class MainPagePresenter extends
 				
 				result.setMessage(message, event.getId());
 				
-				System.err.println("--====== MPP - Error Occured2222");
 				MainPagePresenter.this.addToPopupSlot(result);
 			}
 		});

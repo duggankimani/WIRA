@@ -51,6 +51,8 @@ public class NodeDetail implements Serializable {
 	}
 
 	public void setEndNode(boolean isEndNode) {
+		if(isEndNode)
+			setName("End");
 		this.isEndNode = isEndNode;
 	}
 

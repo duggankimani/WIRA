@@ -8,7 +8,7 @@ import java.util.Date;
  * @author duggan
  *
  */
-public class Document extends DocSummary implements Serializable{
+public class Document extends DocSummary implements Serializable, BusinessKey{
 
 	/**
 	 * 
@@ -40,6 +40,8 @@ public class Document extends DocSummary implements Serializable{
 	private Date dateDue;
 	
 	private Long processInstanceId;
+	
+	private Long sessionId;
 
 	public Document() {
 		//serialization
@@ -169,9 +171,17 @@ public class Document extends DocSummary implements Serializable{
 	}
 	
 	@Override
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	@Override
 	public String toString() {
 	
 		return "DocumentId = "+id+", subject="+subject;
 	}
-
 }

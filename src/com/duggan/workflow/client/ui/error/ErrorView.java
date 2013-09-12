@@ -60,8 +60,7 @@ public class ErrorView extends PopupViewImpl implements ErrorPresenter.MyView {
 
 		spnError.setInnerHTML(message);
 		
-		System.err.println("####### Error");
-		if(id!=null){
+		if(id!=null && id!=0L){
 			lnkError.setTargetHistoryToken(manager.buildHistoryToken(
 					new PlaceRequest(NameTokens.error).with("errorid", id+"")));
 			lnkError.setText("view");

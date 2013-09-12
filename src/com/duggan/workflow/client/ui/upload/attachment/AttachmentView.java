@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.upload.attachment;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter.IAttachmentView;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -35,7 +36,13 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 		aDownload.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Window.open("/"+url, spnName.getInnerText(), "");
+				String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+				if(moduleUrl.endsWith("/")){
+					moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+				}
+				url = url.replace("/", "");
+				moduleUrl =moduleUrl+"/"+url;
+				Window.open(moduleUrl, spnName.getInnerText(), "");
 			}
 		});
 	}

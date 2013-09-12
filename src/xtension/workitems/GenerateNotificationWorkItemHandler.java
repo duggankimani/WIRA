@@ -56,13 +56,13 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		String ownerId = (String) workItem.getParameter("OwnerId");
 		Object isApproved = workItem.getParameter("isApproved");
 		
-//		System.err.println("Class : "+this.getClass());
-//		System.err.println("Subject : "+subject);
-//		System.err.println("NotificationType : "+noteType);
-//		System.err.println("DocumentId : "+documentId);
-//		System.err.println("GroupId : "+groupId);
-//		System.err.println("ActorId : "+actorId);
-//		System.err.println("OwnerId : "+ownerId);		
+		System.err.println("Class : "+this.getClass());
+		System.err.println("Subject : "+subject);
+		System.err.println("NotificationType : "+noteType);
+		System.err.println("DocumentId : "+documentId);
+		System.err.println("GroupId : "+groupId);
+		System.err.println("ActorId : "+actorId);
+		System.err.println("OwnerId : "+ownerId);		
 
 		Notification notification = new Notification();
 		notification.setCreated(new Date());
@@ -89,6 +89,13 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		}
 		
 		List<HTUser> owner = new ArrayList<>();
+		//Testing;;
+		
+		if(ownerId==null){
+			System.err.println("[[[[[###############]]]]]>>>>> OWNERID IS NULL :: "
+		+workItem.getName()+" :: "+workItem.getId());
+			ownerId = "calcacuervo";
+		}
 		owner.add(LoginHelper.get().getUser(ownerId));
 		
 		switch (type) {

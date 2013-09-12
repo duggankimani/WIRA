@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.service;
 
 import com.duggan.workflow.client.ui.events.ErrorEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,12 +19,14 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 			return;
 		}
 		
+		caught.printStackTrace();
+		
 		String message = caught.getMessage();
 		
 		if(caught.getCause()!=null)
 			message = caught.getCause().getMessage();
-		
-		AppContext.getEventBus().fireEvent(new ErrorEvent(message, 0L));
+		AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
+		AppContext.getEventBus().fireEvent(new ErrorEvent("[C500] "+message, 0L));
 	}
 
 	@Override

@@ -19,7 +19,6 @@ public class MultiRequestAction extends BaseRequest<MultiRequestActionResult> {
 		this.requests = requests;
 	}
 
-
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		
@@ -32,6 +31,7 @@ public class MultiRequestAction extends BaseRequest<MultiRequestActionResult> {
 	
 	
 	public void addRequest(BaseRequest request){
+		request.setRequestCode(requestcode);
 		requests.add(request);
 	}
 	
