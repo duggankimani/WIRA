@@ -7,7 +7,6 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="table-row">
-				<g:HTMLPanel styleName="table-row">
 						<g:HTMLPanel styleName="center table-cell">
 							<label>
 								<input type="checkbox"/>
@@ -31,6 +30,5 @@
 									<i class="icon-trash"></i>
 								</g:Anchor>
 						</g:HTMLPanel>
-			    </g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -299,11 +299,11 @@ public class JBPMHelper implements Closeable{
 		switch (type) {
 		case APPROVALREQUESTDONE:
 			//approvals - show only items I have approved
-			ts = sessionManager.getTaskService().getTasksOwned(userId, Arrays.asList(Status.Completed), "en-UK");
+			ts = sessionManager.getTaskClient().getTasksOwned(userId, Arrays.asList(Status.Completed), "en-UK");
 			
 			break;
 		case APPROVALREQUESTNEW:
-			ts = sessionManager.getTaskService().getTasksAssignedAsPotentialOwner(userId, "en-UK");
+			ts = sessionManager.getTaskClient().getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			break;
 
 		default:
@@ -320,7 +320,7 @@ public class JBPMHelper implements Closeable{
 		for(TaskSummary summary : ts){
 			
 			HTSummary task = new HTSummary(summary.getId());
-			Task master_task = sessionManager.getTaskService().getTask(summary.getId());
+			Task master_task = sessionManager.getTaskClient().getTask(summary.getId());
 			
 			copy(task, master_task);
 			tasks.add(task);
@@ -368,7 +368,7 @@ public class JBPMHelper implements Closeable{
 		//Human Task
 		HTask myTask = new HTask(); 
 		
-		Task task = sessionManager.getTaskService().getTask(taskId);
+		Task task = sessionManager.getTaskClient().getTask(taskId);
 		
 		List<I18NText> descriptions =task.getDescriptions();
 		myTask.setDescription(descriptions.get(0).getText());
@@ -513,7 +513,7 @@ public class JBPMHelper implements Closeable{
 		
 		params = new HashMap<>();
 		
-		byte[] objectinBytes = sessionManager.getTaskService().getContent(contentId).getContent();
+		byte[] objectinBytes = sessionManager.getTaskClient().getContent(contentId).getContent();
 		
 		assert objectinBytes.length>0;
 		
@@ -635,7 +635,7 @@ public class JBPMHelper implements Closeable{
 		
 		HTSummary summary = new HTSummary(taskId);
 		
-		Task master_task = sessionManager.getTaskService().getTask(taskId);
+		Task master_task = sessionManager.getTaskClient().getTask(taskId);
 		
 		copy(summary, master_task);
 		 

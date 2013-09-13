@@ -3,7 +3,9 @@ package com.duggan.workflow.client.ui;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
+import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
@@ -15,6 +17,7 @@ import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -90,4 +93,16 @@ public class MainPagePresenter extends
 		});
 	}
 
+	@Override
+	public void setInSlot(Object slot, PresenterWidget<?> content) {
+		super.setInSlot(slot, content);
+		
+		if(slot==CONTENT_SLOT){
+			if(content!=null && content instanceof AdminHomePresenter){
+				fireEvent(new AdminPageLoadEvent(true));
+			}else{
+				fireEvent(new AdminPageLoadEvent(false));
+			}
+		}
+	}
 }

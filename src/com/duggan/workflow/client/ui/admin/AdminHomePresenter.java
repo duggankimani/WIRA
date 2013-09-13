@@ -5,6 +5,7 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnPresenter;
+import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -59,7 +60,6 @@ public class AdminHomePresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		 super.prepareFromRequest(request);
-		 //fireEvent(new ActivitiesSelectedEvent());
 	}
 
 	@Override

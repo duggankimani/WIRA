@@ -493,6 +493,7 @@ public class HomePresenter extends
 		getView().bindAlerts(event.getAlerts());
 		Integer count = event.getAlerts().get(currentTaskType);
 		if(count==null) count=0;
+		if(currentTaskType!=null)
 		Window.setTitle(currentTaskType.getTitle()+ (count==0? "" : " ("+count+")"));
 	}
 

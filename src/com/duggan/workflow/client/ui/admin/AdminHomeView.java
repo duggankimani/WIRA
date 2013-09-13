@@ -29,6 +29,7 @@ public class AdminHomeView extends ViewImpl implements
 	public void setInSlot(Object slot, Widget content) {
 		if(slot == AdminHomePresenter.TABLE_SLOT){
 			tblRow.clear();
+			addHeaders();
 			if(content!=null){
 				tblRow.add(content);
 			}
@@ -37,6 +38,11 @@ public class AdminHomeView extends ViewImpl implements
 		}
 	}
 	
+	private void addHeaders() {
+		
+	}
+
+
 	@Override
 	public void addToSlot(Object slot, Widget content) {
 		if(slot == AdminHomePresenter.TABLE_SLOT){

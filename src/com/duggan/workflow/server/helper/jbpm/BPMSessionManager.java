@@ -55,12 +55,17 @@ import com.duggan.workflow.shared.model.Document;
  */
 class BPMSessionManager{
 		
-	private LocalTaskService service;
+	private TaskService service;
 	
 	private ThreadLocal<Map<Long, StatefulKnowledgeSession>> sessionStore = new ThreadLocal<>();
 	
+	private ThreadLocal<LocalTaskService> ltsStore = new ThreadLocal<>();
+			
 	public BPMSessionManager(){
-		service = getTaskService();
+		
+		service = new TaskService(DB.getEntityManagerFactory(),
+    			SystemEventListenerFactory.getSystemEventListener());
+		
 	}
 	
 	//processId - KnowledgeBase Map
@@ -127,10 +132,10 @@ class BPMSessionManager{
 		emailHandler.getConnection().setStartTls(true);
 		session.getWorkItemManager().registerWorkItemHandler("Email", emailHandler);
 
-		LocalTaskService service = getTaskService();
-		assert service!=null;
+		LocalTaskService taskClient = getTaskClient();
+		assert taskClient!=null;
 		
-		GenericHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(service, session);
+		GenericHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskClient, session);
 		//Only handle events related to the session that started the task being completed
 		taskHandler.setOwningSessionOnly(true);
 		taskHandler.connect();
@@ -139,16 +144,38 @@ class BPMSessionManager{
 		session.getWorkItemManager().registerWorkItemHandler("Human Task", taskHandler);
 	}
 
-	public LocalTaskService getTaskService(){		
-		if(service==null){
-			TaskService ts = new TaskService(DB.getEntityManagerFactory(),
-	    			SystemEventListenerFactory.getSystemEventListener());
-			
-			service = new LocalTaskService(ts);	    	
-			service.addEventListener(new NotificationTaskEventListener());
+	/**
+	 * Assuming each request starts/requires at most 1 KnowlegdeSession;
+	 * a single LocalTaskService Object stored in a thread local should
+	 * suffice;
+	 * <p/>
+	 * The assumption is based on the type of requests made
+	 * <ul>
+	 * <li>Foward for approval (1 doc, 1 process)
+	 * <li>Start, Suspend, Resume, Claim, Complete etc > all these are requests
+	 * related to a single task & therefore document; meaning one process and one session.
+	 * </ul>
+	 * <p/>
+	 * This will only change if other processes (e.g. notification processes) linked
+	 * to independent KnowledgeBases & therefore processes are started in code 
+	 * 
+	 * <p/>
+	 * Also note the relationship between LocalTaskService and the StatefulSession
+	 * <br/>
+	 * StatefulSession > WorkItemHandler > LocalTaskService > TaskService
+	 * 
+	 * @return {@link LocalTaskService}
+	 */
+	public LocalTaskService getTaskClient(){		
+		LocalTaskService lts =ltsStore.get(); 
+		
+		if(lts==null){
+			lts = new LocalTaskService(service);	    	
+			lts.addEventListener(new NotificationTaskEventListener());
+			ltsStore.set(lts);
 		}
 		
-		return service;
+		return lts;
 	}
 	
 	
@@ -250,13 +277,15 @@ class BPMSessionManager{
 		for(Long key: keys){
 			logger.warn(Thread.currentThread().getName()+
 					": Disposing SessionID ["+key+"] : "+sessionz.get(key).toString());
-			//sessionz.get(key).dispose();
+			sessionz.get(key).dispose();
 		}
 		
 		sessionz.clear();
 		
 		assert getSessionStore().size()==0;
 		
+		//clear ltsStore
+		ltsStore.set(null);
 	}
 
 	public ProcessInstance startProcess(String processId,
@@ -299,7 +328,7 @@ class BPMSessionManager{
 	
 	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
 	
-		Map<String, Object> inputValues = JBPMHelper.getMappedData(service.getTask(taskId));
+		Map<String, Object> inputValues = JBPMHelper.getMappedData(getTaskClient().getTask(taskId));
 		String docId = inputValues.get("documentId").toString();
 		Document doc = DocumentDaoHelper.getDocument(Long.parseLong(docId));
 		
@@ -308,32 +337,32 @@ class BPMSessionManager{
 		
 		switch(action){
 		case CLAIM:
-			service.claim(taskId, userId);
+			getTaskClient().claim(taskId, userId);
 			break;
 		case COMPLETE:
 			complete(taskId, userId, values);			
 			break;
 		case DELEGATE:
-			//get().service.delegate(taskId, userId, targetUserId);
+			//get().getTaskClient().delegate(taskId, userId, targetUserId);
 			break;
 		case FORWARD:
-			//get().service.forward(taskId, userId, targetEntityId)
+			//get().getTaskClient().forward(taskId, userId, targetEntityId)
 			break;
 		case RESUME:
-				service.resume(taskId, userId);
+				getTaskClient().resume(taskId, userId);
 			break;
 		case REVOKE:
 			//TODO: investigate what revoke actually does
-			service.release(taskId, userId);
+			getTaskClient().release(taskId, userId);
 			break;
 		case START:
-			service.start(taskId, userId);
+			getTaskClient().start(taskId, userId);
 			break;
 		case STOP:
-			service.stop(taskId, userId);
+			getTaskClient().stop(taskId, userId);
 			break;
 		case SUSPEND:
-			service.suspend(taskId, userId);
+			getTaskClient().suspend(taskId, userId);
 			break;
 		}
 	
@@ -341,13 +370,13 @@ class BPMSessionManager{
 	
 	private boolean complete(long taskId, String userId, Map<String, Object> values){
 		
-		Map<String, Object> content = JBPMHelper.getMappedData(getTaskService().getTask(taskId));
+		Map<String, Object> content = JBPMHelper.getMappedData(getTaskClient().getTask(taskId));
 		content.putAll(values);
 		//completing tasks is a single individuals responsibility
 		//Notifications & Emails sent after task completion must reflect this
 		content.put("ActorId", SessionHelper.getCurrentUser().getId());
 		//sessionManager.getTaskService().completeWithResults(taskId, userId, content);
-		getTaskService().completeWithResults(taskId, userId, content);
+		getTaskClient().completeWithResults(taskId, userId, content);
 		//sessionManager.getTaskService().complete(taskId, userId, null);
 		return true;
 	}
@@ -409,7 +438,7 @@ class BPMSessionManager{
 			//session.startProcess(processId, parameters)
 			String processId = "beforetask-notification";
 			
-			Task task = service.getTask(event.getTaskId());
+			Task task = getTaskClient().getTask(event.getTaskId());
 			
 			Map<String, Object> taskData = JBPMHelper.getMappedData(task);
 			
@@ -474,7 +503,7 @@ class BPMSessionManager{
 			try{
 			String processId = "aftertask-notification";
 			
-			Task task = service.getTask(event.getTaskId());			
+			Task task = getTaskClient().getTask(event.getTaskId());			
 			Long outputId = task.getTaskData().getOutputContentId();
 			
 			Map<String, Object> taskData = JBPMHelper.getMappedDataByContentId(outputId);

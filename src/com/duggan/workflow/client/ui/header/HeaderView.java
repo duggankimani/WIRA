@@ -40,27 +40,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		aNotifications.setTabIndex(3);
-		
-		aAdmin.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				divNavbar.addStyleName("navbar-inverse");
-			}
-		});
-		
-		aHome.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				divNavbar.removeStyleName("navbar-inverse");
-			}
-		});
-		
-		aBrand.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				divNavbar.removeStyleName("navbar-inverse");
-			}
-		});
 	}
 
 	@Override
@@ -134,5 +113,14 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 			notificationsContainer.removeStyleName("loading");
 		}
 		
+	}
+
+	@Override
+	public void setAdminPageLookAndFeel(boolean isAdminPage) {
+		if(isAdminPage){
+			divNavbar.addStyleName("navbar-inverse");
+		}else{
+			divNavbar.removeStyleName("navbar-inverse");
+		}
 	}
 }
