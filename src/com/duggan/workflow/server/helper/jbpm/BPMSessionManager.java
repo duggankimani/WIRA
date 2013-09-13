@@ -60,11 +60,14 @@ class BPMSessionManager{
 	private ThreadLocal<Map<Long, StatefulKnowledgeSession>> sessionStore = new ThreadLocal<>();
 	
 	private ThreadLocal<LocalTaskService> ltsStore = new ThreadLocal<>();
+	private ThreadLocal<GenericHTWorkItemHandler> htHandler = new ThreadLocal<>();
+	private ThreadLocal<NotificationTaskEventListener> eventListener = new ThreadLocal<>();
 			
 	public BPMSessionManager(){
 		
 		service = new TaskService(DB.getEntityManagerFactory(),
     			SystemEventListenerFactory.getSystemEventListener());
+		//service.
 		
 	}
 	
@@ -83,6 +86,7 @@ class BPMSessionManager{
 		StatefulKnowledgeSession session = initializeSession(processId);		
 		
 		logger.warn("GETSESSION RETURNED SESSION: "+session.getId()+session.toString());
+		
 		return session;
 	}
 	
@@ -105,7 +109,7 @@ class BPMSessionManager{
 		StatefulKnowledgeSession session=null;
 		
 		if(getSessionStore().get(sessionId)!=null){
-			logger.warn("Retrieving from Store:  session ["+sessionId+"] for process: ["+processId+"]");
+			logger.warn("Retrieving from STORE:  session ["+sessionId+"] for process: ["+processId+"]");
 			session = getSessionStore().get(sessionId);
 		}else{			
 			session = initializeSession(sessionId, processId);
@@ -133,14 +137,21 @@ class BPMSessionManager{
 		session.getWorkItemManager().registerWorkItemHandler("Email", emailHandler);
 
 		LocalTaskService taskClient = getTaskClient();
+		taskClient.connect();
 		assert taskClient!=null;
 		
 		GenericHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskClient, session);
 		//Only handle events related to the session that started the task being completed
 		taskHandler.setOwningSessionOnly(true);
 		taskHandler.connect();
+		htHandler.set(taskHandler);
 		
-		//GenericHTWorkItemHandler htHandler = this.createTaskHandler(session);
+		logger.info(Thread.currentThread().toString()+
+				"Session: "+session.getId()+" : "+session.toString()+
+				"; REGISTERED NEW TASK HANDLER: "+taskHandler +
+				" with LocalTaskService : "+taskClient
+				);
+		
 		session.getWorkItemManager().registerWorkItemHandler("Human Task", taskHandler);
 	}
 
@@ -166,15 +177,23 @@ class BPMSessionManager{
 	 * 
 	 * @return {@link LocalTaskService}
 	 */
-	public LocalTaskService getTaskClient(){		
+	public LocalTaskService getTaskClient(){	
+	
 		LocalTaskService lts =ltsStore.get(); 
 		
 		if(lts==null){
-			lts = new LocalTaskService(service);	    	
-			lts.addEventListener(new NotificationTaskEventListener());
+			lts = new LocalTaskService(service);
+			NotificationTaskEventListener listener = new NotificationTaskEventListener();
+			lts.addEventListener(listener);
 			ltsStore.set(lts);
+			eventListener.set(listener);
+			
+			logger.info(Thread.currentThread().toString()+
+					"INITIALISED NEW LocalTaskService : "+lts.toString());
 		}
 		
+		logger.info(Thread.currentThread().toString()+
+				"RETRIEVED LocalTaskService : "+lts.toString());
 		return lts;
 	}
 	
@@ -228,23 +247,7 @@ class BPMSessionManager{
 	 * @throws MalformedURLException 
 	 */
 	private StatefulKnowledgeSession initializeSession(String processId) {
-		
-		KnowledgeBase kbase = getKnowledgeBase(processId,false);	
-    	//Initializing a stateful session from JPAKnowledgeService    	
-    	Environment env = getEnvironment();
-    	
-    	//JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, configuration, environment)
-    	StatefulKnowledgeSession session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
-    	registerWorkItemHandlers(session); 
-    	
-    	logger.warn(Thread.currentThread().getName()+":Initializing new session ["+session.getId()+"] for process: ["+processId+"]");
-    	//Process Logger - to Provide data for querying process status
-    	//:- How far a particular approval has gone
-    	JPAWorkingMemoryDbLogger mlogger = new JPAWorkingMemoryDbLogger(session);
-    	
-    	getSessionStore().put(new Long(session.getId()), session);
-    	assert getSessionStore().size()>0;
-		return session;
+		return initializeSession(null, processId);
 	}
 
 	private StatefulKnowledgeSession initializeSession(Long sessionId, String processId) {
@@ -252,10 +255,18 @@ class BPMSessionManager{
     	//Initializing a stateful session from JPAKnowledgeService    	
     	Environment env = getEnvironment();
     	
-    	StatefulKnowledgeSession session = JPAKnowledgeService.loadStatefulKnowledgeSession(sessionId.intValue(), kbase, null, env);
-    	registerWorkItemHandlers(session); 
+    	StatefulKnowledgeSession session = null;
     	
-    	logger.warn(Thread.currentThread().getName()+": Loading previous session ["+session.getId()+"] for process: ["+processId+"]");
+    	if(sessionId==null){    		
+    		session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
+    		logger.warn(Thread.currentThread().getName()+": Created new session ["+session.getId()+"] for process: ["+processId+"]");
+    	}else{    		
+    		logger.warn(Thread.currentThread().getName()+": Loading previous session ["+sessionId+"] for process: ["+processId+"]");
+    		session = JPAKnowledgeService.loadStatefulKnowledgeSession(sessionId.intValue(), kbase, null, env);
+    		
+    	}
+    	
+    	registerWorkItemHandlers(session); 
     	
     	//Process Logger - to Provide data for querying process status
     	//:- How far a particular approval has gone
@@ -266,11 +277,21 @@ class BPMSessionManager{
 		return session;
 	}
 
+	/**
+	 * JBPM - Dispose the session you were utilizing
+	 * <p/>
+	 * In addition to disposing the Knowledge Session,
+	 * You must also dispose the following:
+	 *  <ul>
+	 *  	<li>HumanTask WorkItemHandler {@linkplain GenericHTWorkItemHandler}
+	 *  	<li>{@link LocalTaskService}
+	 *  	<li>De-register all EventListeners registered on the {@link TaskService}
+	 *  </ul>
+	 *    
+	 */
 	public void disposeSessions(){
 		logger.warn(Thread.currentThread().getName()+": Disposing Sessions..............");
 		Map<Long, StatefulKnowledgeSession> sessionz = getSessionStore();
-		
-		assert sessionz!=null;
 		
 		Set<Long> keys = sessionz.keySet();
 		
@@ -280,10 +301,19 @@ class BPMSessionManager{
 			sessionz.get(key).dispose();
 		}
 		
-		sessionz.clear();
+		if(ltsStore.get()!=null){
+			try{
+				htHandler.get().dispose();
+			}catch(Exception e){e.printStackTrace();}		
+			ltsStore.get().dispose();//LocalTaskService
+			service.removeEventListener(eventListener.get());			
+				
+			htHandler.set(null);
+			ltsStore.set(null);
+			eventListener.set(null);			
+		}
 		
-		assert getSessionStore().size()==0;
-		
+		sessionStore.set(null);
 		//clear ltsStore
 		ltsStore.set(null);
 	}
@@ -500,6 +530,12 @@ class BPMSessionManager{
 		@Override
 		public void taskCompleted(TaskUserEvent event) {
 			
+			logger.info(Thread.currentThread()+
+					"############ COMPLETING TASK - event TaskID= "+event.getTaskId()
+					+" :: SessionId= "+event.getSessionId());
+			
+			Long sessionId= new Long(event.getSessionId());
+			
 			try{
 			String processId = "aftertask-notification";
 			
@@ -513,12 +549,7 @@ class BPMSessionManager{
 			Long documentId = Long.parseLong(taskData.get("documentId").toString());
 			Document doc = DocumentDaoHelper.getDocument(documentId);
 			Long processInstanceId = doc.getProcessInstanceId();
-			Long sessionId= doc.getSessionId();
-			
-			if(sessionId==null){
-				throw new IllegalArgumentException("SessionId must not be null!!!");
-			}
-			
+						
 			StatefulKnowledgeSession session = getSession(sessionId,processId);
 			Map<String, Object> values = new HashMap<>();
 			org.jbpm.process.instance.ProcessInstance instance = 
@@ -575,7 +606,6 @@ class BPMSessionManager{
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
-			//session.startProcess("test-variables", newValues);
 		}
 		
 		@Override

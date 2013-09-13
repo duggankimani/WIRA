@@ -370,7 +370,8 @@ public class TaskItemPresenter extends
 		Long ref= summary.getDocumentRef();
 		Long documentId = event.getDocumentId();
 		
-		if(ref==documentId){			
+		if(ref==documentId){
+			System.err.println("#####COMPLETING DOCUMENT :: "+documentId+" : "+event.IsApproved());
 			completeDocument(event.IsApproved());
 		}
 	}
@@ -387,6 +388,7 @@ public class TaskItemPresenter extends
 		Long documentId = event.getDocumentId();
 		
 		if(ref==documentId){			
+			System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);
 			submitRequest(event.getAction());
 		}
 	}

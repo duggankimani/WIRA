@@ -29,8 +29,8 @@ public class SessionHelper{
 				
 		HttpSession session = request.get()==null? null: request.get().getSession(false);
 		if(session==null){
-			//return new HTUser("calcacuervo");
-			return null;
+			return new HTUser("calcacuervo");
+			//return null;
 		}
 		
 		if(session.getAttribute(ServerConstants.USER)==null){

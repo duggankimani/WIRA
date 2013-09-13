@@ -185,6 +185,7 @@ public class HomePresenter extends
 	public void search(SearchFilter filter){
 			
 		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
+		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
 			@Override
 			public void processResult(GetTaskListResult result) {		
@@ -196,7 +197,8 @@ public class HomePresenter extends
 					getView().setHasItems(false);
 				else
 					getView().setHasItems(true);
-				//fireEvent(new ProcessingCompletedEvent());
+				
+				fireEvent(new ProcessingCompletedEvent());
 			}
 		});		
 	}
