@@ -278,16 +278,23 @@ class BPMSessionManager{
 	}
 
 	/**
-	 * JBPM - Dispose the session you were utilizing
+	 * 
+	 * This method disposes the Knowledge session active within
+	 * the current thread.
+	 * 
 	 * <p/>
 	 * In addition to disposing the Knowledge Session,
-	 * You must also dispose the following:
+	 * it also disposes the following objects that rely on the 
+	 * session being disposed:
 	 *  <ul>
 	 *  	<li>HumanTask WorkItemHandler {@linkplain GenericHTWorkItemHandler}
-	 *  	<li>{@link LocalTaskService}
-	 *  	<li>De-register all EventListeners registered on the {@link TaskService}
+	 *  	<li>TaskClient - {@link LocalTaskService}
+	 *  	<li>De-registers all EventListeners registered on the {@link TaskService} 
 	 *  </ul>
-	 *    
+	 *  
+	 *  <p/>
+	 *  The above should be the first items you look out of if you get the dreaded Error: <br/>
+	 *  <b>"IllegalStateException: Illegal method call. This session was previously disposed"</b>
 	 */
 	public void disposeSessions(){
 		logger.warn(Thread.currentThread().getName()+": Disposing Sessions..............");
