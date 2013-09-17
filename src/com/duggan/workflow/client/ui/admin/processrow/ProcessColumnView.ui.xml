@@ -12,7 +12,7 @@
 								<input type="checkbox"/>
 							</label>
 						</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell"><div style="width: 50px" >Invoice</div></g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">Invoice , LPO</g:HTMLPanel>
 						<g:HTMLPanel styleName="table-cell">Invoice_process.bpmn</g:HTMLPanel>
 						<g:HTMLPanel styleName="table-cell">Active</g:HTMLPanel>
 						<g:HTMLPanel styleName="table-cell">22/9/2013</g:HTMLPanel>
@@ -20,15 +20,34 @@
 								<g:Anchor ui:field="aActivate" styleName="btn btn-default" title="Activate Process">
 									<i class="icon-play"></i>
 								</g:Anchor>
-								<g:Anchor ui:field="aDeactivate" styleName="btn btn-default" title="De-activate Process">
+								<g:Anchor ui:field="aDeactivate" styleName="btn btn-default hide" title="De-activate Process">
 									<i class="icon-minus-sign"></i>
 								</g:Anchor>
-								<g:Anchor ui:field="aEdit" styleName="btn btn-default" title="Edit">
-									<i class="icon-edit"></i>
+								
+								<g:Anchor ui:field="aRefresh" styleName="btn btn-default" title="Refresh Process">
+									<i class="icon-undo"></i>
 								</g:Anchor>
-								<g:Anchor ui:field="aDelete" styleName="btn btn-default" title="Delete">
-									<i class="icon-trash"></i>
-								</g:Anchor>
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle"
+										data-toggle="dropdown">
+										<i class="icon-cog"></i>
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li>
+											<g:Anchor ui:field="aEdit">
+												<i class="icon-edit"></i>
+												Edit
+											</g:Anchor>
+										</li>
+										<li>
+											<g:Anchor ui:field="aDelete">
+												<i class="icon-trash"></i>
+												Delete
+											</g:Anchor>
+										</li>
+									</ul>
+								</div>
 						</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

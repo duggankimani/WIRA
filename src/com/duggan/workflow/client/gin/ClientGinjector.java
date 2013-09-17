@@ -17,6 +17,7 @@ import com.duggan.workflow.client.ui.login.LoginPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -43,6 +44,8 @@ public interface ClientGinjector extends Ginjector {
 
 	AsyncProvider<ActivitiesPresenter> getActivitiesPresenter();
 
-	AsyncProvider<AdminHomePresenter> getAdminHomePresenter(); 
+	AsyncProvider<AdminHomePresenter> getAdminHomePresenter();
+
+	AsyncProvider<ProcessPresenter> getProcessPresenter(); 
 	
 }

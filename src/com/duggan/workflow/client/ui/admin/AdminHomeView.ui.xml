@@ -12,32 +12,32 @@
 			<div class="span1">
 				<aside id="side-left">
 					<ul class="sidebar">
-						<li>
-							<g:Anchor styleName="hand" title="dashboard">
+						<li ui:field="liDashboard">
+							<g:Anchor styleName="hand" title="dashboard"  href="#adminhome;page=dashboard">
 								<div class="helper-font-24">
                                        <i class="icon-dashboard"></i>
                                   </div>
 								<span class="sidebar-text">Dashboard</span>
 							</g:Anchor>
 						</li>
-						<li class="active">
-							<g:Anchor styleName="hand" title="dashboard">
+						<li ui:field="liProcesses">
+							<g:Anchor styleName="hand" title="Manage System Processes" href="#adminhome;page=processes">
 								<div class="helper-font-24">
                                        <i class="icon-cogs"></i>
                                   </div>
 								<span class="sidebar-text">Processes</span>
 							</g:Anchor>
 						</li>
-						<li>
-							<g:Anchor styleName="hand" title="dashboard">
+						<li ui:field="liUsers">
+							<g:Anchor styleName="hand" title="Manage System Users amp; Groups" href="#adminhome;page=users">
 									<div class="helper-font-24">
 	                                       <i class="icon-group"></i>
 	                                  </div>
 									<span class="sidebar-text">Users &amp; Roles</span>
 							</g:Anchor>
 						</li>
-						<li>
-							<g:Anchor styleName="hand" title="dashboard">
+						<li ui:field="liReports">
+							<g:Anchor styleName="hand" title="View and Produce System Reports" href="#adminhome;page=reports">
 									<div class="helper-font-24">
 	                                       <i class="icon-bar-chart"></i>
 	                                  </div>
@@ -50,49 +50,26 @@
 			<!-- End Of Sidebar  -->
 			
 			<!-- Main Content  -->
-			<div class="span11">
-				<div id="main-content">
-					<div class="content">
-						<div class="content-header">
-							<h2><i class="icon-cogs"></i>Business Process</h2>
-						</div>
-						<!--BreadCrumb-->
-						<div class="content-breadcrumb">
-								<ul class="breadcrumb">
-                                <li><a href="index.html"><i class="icofont-home"></i> Dashboard</a> <span class="divider">›</span></li>
-                                <li><a href="form.html">Business Processs</a></li>
-                          	    </ul>
-						</div>
-						<div class="content-body">
-							<div class="row-fluid">
-									<div class="action-buttons">
-											<g:Anchor ui:field="aNewProcess" styleName="btn btn-primary"
-												title="Add a New Process">
-												<i class="icon-plus"></i>
-												Add Process
-											</g:Anchor>
-								</div>																			
+				<g:HTMLPanel styleName="span11">
+					<div id="main-content">
+						<div class="content">
+							<!-- Content Header -->
+							<div class="content-header">
+								<h2><span class="icon-group" ui:field="iconTitle"></span><span ui:field="spanTitle">Users &amp; Groups</span></h2>
 							</div>
-							
-							<div class="table">
-							    <div class="table-row">
-									<div class="table-cell">
-										<label><input type="checkbox" class="ace"/></label>
-									</div>
-									<div class="table-cell">DOCUMENT TYPE</div>
-									<div class="table-cell">FILE NAME</div>
-									<div class="table-cell">STATUS</div>
-									<div class="table-cell">LAST MODIFIED</div>
-									<div class="table-cell">ACTIONS</div>									
-								</div>
-								<g:HTMLPanel ui:field="tblRow" styleName="table-row-group">
-								</g:HTMLPanel>
+							<!--BreadCrumb-->
+							<div class="content-breadcrumb">
+									<ul class="breadcrumb">
+	                                <li><a href=""><i class="icofont-home"></i> Dashboard</a> <span class="divider">›</span></li>
+	                                <li><a href="">Users &amp; Groups</a></li>
+	                          	    </ul>
 							</div>
-					
+							<!-- Content Details -->
+							<g:HTMLPanel  ui:field="divContent"></g:HTMLPanel>
 						</div>
-				     </div>
-				</div>
-			 </div>
+					</div>
+				
+				</g:HTMLPanel>
 			<!-- End of Content  -->
 		</div>
 	</g:HTMLPanel>

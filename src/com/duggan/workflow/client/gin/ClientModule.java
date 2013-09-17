@@ -7,6 +7,16 @@ import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.MainPageView;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.admin.AdminHomeView;
+import com.duggan.workflow.client.ui.admin.addprocess.AddProcessPresenter;
+import com.duggan.workflow.client.ui.admin.addprocess.AddProcessView;
+import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
+import com.duggan.workflow.client.ui.admin.processes.ProcessView;
+import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnPresenter;
+import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnView;
+import com.duggan.workflow.client.ui.comments.CommentPresenter;
+import com.duggan.workflow.client.ui.comments.CommentView;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentView;
 import com.duggan.workflow.client.ui.error.ErrorPagePresenter;
@@ -15,6 +25,8 @@ import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.error.ErrorView;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundView;
+import com.duggan.workflow.client.ui.filter.FilterPresenter;
+import com.duggan.workflow.client.ui.filter.FilterView;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.header.HeaderView;
 import com.duggan.workflow.client.ui.home.HomePresenter;
@@ -51,16 +63,12 @@ import com.duggan.workflow.shared.model.CurrentUser;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
-import com.duggan.workflow.client.ui.comments.CommentPresenter;
-import com.duggan.workflow.client.ui.comments.CommentView;
-import com.duggan.workflow.client.ui.filter.FilterPresenter;
-import com.duggan.workflow.client.ui.filter.FilterView;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.AdminHomeView;
-import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
-import com.duggan.workflow.client.ui.admin.process.ProcessView;
-import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnPresenter;
-import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnView;
+import com.duggan.workflow.client.ui.admin.users.UserPresenter;
+import com.duggan.workflow.client.ui.admin.users.UserView;
+import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
+import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
+import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
+import com.duggan.workflow.client.ui.admin.reports.ReportsView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -157,10 +165,22 @@ public class ClientModule extends AbstractPresenterModule {
 				AdminHomePresenter.MyView.class, AdminHomeView.class,
 				AdminHomePresenter.MyProxy.class);
 
-		bindPresenterWidget(ProcessPresenter.class,
-				ProcessPresenter.MyView.class, ProcessView.class);
+		bindPresenterWidget(AddProcessPresenter.class,
+				AddProcessPresenter.MyView.class, AddProcessView.class);
 
 		bindPresenterWidget(ProcessColumnPresenter.class,
 				ProcessColumnPresenter.MyView.class, ProcessColumnView.class);
-	}
+		
+		bindPresenterWidget(ProcessPresenter.class, ProcessPresenter.MyView.class, ProcessView.class);
+
+
+		bindPresenterWidget(UserPresenter.class, UserPresenter.MyView.class,
+				UserView.class);
+
+		bindPresenterWidget(DashboardPresenter.class,
+				DashboardPresenter.MyView.class, DashboardView.class);
+
+		bindPresenterWidget(ReportsPresenter.class,
+				ReportsPresenter.MyView.class, ReportsView.class);
+}
 }

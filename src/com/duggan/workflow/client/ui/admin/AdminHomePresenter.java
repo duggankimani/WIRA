@@ -1,35 +1,35 @@
 package com.duggan.workflow.client.ui.admin;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
-import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnPresenter;
-import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
+import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
+import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
+import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
+import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class AdminHomePresenter extends
 		Presenter<AdminHomePresenter.MyView, AdminHomePresenter.MyProxy> {
 
 	public interface MyView extends View {
-		public Anchor getaNewProcess(); 
+		public void SetDashboardLink(boolean status, ADMINPAGES pages);
+		public void SetProcessLink(boolean status, ADMINPAGES pages);
+		public void SetUsersLink(boolean status, ADMINPAGES pages);
+		public void SetReportLink(boolean status, ADMINPAGES pages);
+		public void clearAllLinks();
 	}
 	
 	
@@ -39,17 +39,32 @@ public class AdminHomePresenter extends
 	public interface MyProxy extends ProxyPlace<AdminHomePresenter> {
 	}
 	
-	public static final Object TABLE_SLOT = new Object();
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> CONTENT_SLOT = new Type<RevealContentHandler<?>>();
 	
-	IndirectProvider<ProcessPresenter> processFactory;
-	IndirectProvider<ProcessColumnPresenter> columnFactory;
+	@Inject ProcessPresenter process;
+	@Inject UserPresenter users;
+	@Inject DashboardPresenter dashboard;
+	@Inject ReportsPresenter reports;
+	
+	enum ADMINPAGES{
+		DASHBOARD("Dashboard"), PROCESSES("Process"), USERS("Users"), REPORTS("Reports");
+		
+		private String displayName;
+		
+		private ADMINPAGES(String displayName){
+			this.displayName = displayName;
+		}
+		
+		public String getDisplayName(){
+			return displayName;
+		}
+	}
 	
 	@Inject
 	public AdminHomePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, Provider<ProcessPresenter> processProvider, Provider<ProcessColumnPresenter> columnProvider) {
+			final MyProxy proxy) {
 		super(eventBus, view, proxy);
-		processFactory = new StandardProvider<ProcessPresenter>(processProvider);
-		columnFactory= new StandardProvider<ProcessColumnPresenter>(columnProvider);
 	}
 
 	@Override
@@ -60,44 +75,64 @@ public class AdminHomePresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		 super.prepareFromRequest(request);
+		 
+		String name = request.getParameter("page", ADMINPAGES.DASHBOARD.toString());
+		 
+		ADMINPAGES pages = ADMINPAGES.valueOf(name.toUpperCase());
+		 
+		switch (pages) {
+		case DASHBOARD:
+			showDashBoard(pages);
+			break;
+
+		case PROCESSES:
+			showProcessPanel(pages);
+			break;
+		
+		case USERS:
+			showUserPanel(pages);
+			break;
+		
+		case REPORTS:
+			showReportPanel(pages);
+			break;
+		}
+		 
 	}
+	
+	private void showDashBoard(ADMINPAGES page) {
+		setInSlot(CONTENT_SLOT, null);
+		setInSlot(CONTENT_SLOT, dashboard);
+		getView().clearAllLinks();
+		getView().SetDashboardLink(true, page);
+	}
+	
+	private void showProcessPanel(ADMINPAGES page) {
+		setInSlot(CONTENT_SLOT, process);
+		 getView().clearAllLinks();
+		 getView().SetProcessLink(true,page);
+	}
+	private void showUserPanel(ADMINPAGES page) {
+		setInSlot(CONTENT_SLOT, users);
+		 getView().clearAllLinks();
+		 getView().SetUsersLink(true,page);
+	}
+	
+	private void showReportPanel(ADMINPAGES page) {
+	   setInSlot(CONTENT_SLOT, reports);
+	   getView().clearAllLinks();
+	   getView().SetReportLink(true,page);
+	}
+
+
 
 	@Override
 	protected void onBind() {
 		super.onBind();
-		
-		getView().getaNewProcess().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				processFactory.get(new ServiceCallback<ProcessPresenter>() {
-					@Override
-					public void processResult(ProcessPresenter result) {
-						addToPopupSlot(result);
-					}
-				});
-				
-			}
-		});
 	}
 	
 	@Override
 	protected void onReset() {
 		super.onReset();
-		
-		setInSlot(TABLE_SLOT, null);
-		for(int i=0; i<=5; i++){
-			columnFactory.get(new AsyncCallback<ProcessColumnPresenter>() {
-			
-			@Override
-			public void onSuccess(ProcessColumnPresenter result) {
-				addToSlot(TABLE_SLOT, result);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				
-			}
-		   });
-		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.admin.process;
+package com.duggan.workflow.client.ui.admin.addprocess;
 
 import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -11,8 +11,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
-public class ProcessView extends PopupViewImpl implements
-		ProcessPresenter.MyView {
+public class AddProcessView extends PopupViewImpl implements
+		AddProcessPresenter.MyView {
 
 	private final Widget widget;
 	@UiField Anchor aNext;
@@ -22,11 +22,11 @@ public class ProcessView extends PopupViewImpl implements
 	@UiField HTMLPanel divProcessDetails;
 	@UiField HTMLPanel divUploadDetails;
 
-	public interface Binder extends UiBinder<Widget, ProcessView> {
+	public interface Binder extends UiBinder<Widget, AddProcessView> {
 	}
 
 	@Inject
-	public ProcessView(final EventBus eventBus, final Binder binder) {
+	public AddProcessView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		

@@ -1,18 +1,17 @@
-package com.duggan.workflow.client.ui.admin.process;
+package com.duggan.workflow.client.ui.admin.addprocess;
 
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.PopupView;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 
-public class ProcessPresenter extends PresenterWidget<ProcessPresenter.MyView> {
+public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyView> {
 
 	public interface MyView extends PopupView {
-		// TODO Put your view methods here
 	}
 
 	@Inject
-	public ProcessPresenter(final EventBus eventBus, final MyView view) {
+	public AddProcessPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
 
