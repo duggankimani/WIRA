@@ -46,11 +46,6 @@
 }
 .sidebar > li > a{
     color: #CDCDCD;
-    background-image: -webkit-linear-gradient(top, rgba(86, 86, 86, 0.2) 0%, rgba(54, 54, 54, 0.2) 100%);
-    background-image: -moz-linear-gradient(top, rgba(86, 86, 86, 0.2) 0%, rgba(54, 54, 54, 0.2) 100%);
-    background-image: -o-linear-gradient(top, rgba(86, 86, 86, 0.2) 0%, rgba(54, 54, 54, 0.2) 100%);
-    background-image: -ms-linear-gradient(top, rgba(86, 86, 86, 0.2) 0%, rgba(54, 54, 54, 0.2) 100%);
-    background-image: linear-gradient(top, rgba(86, 86, 86, 0.2) 0%, rgba(54, 54, 54, 0.2) 100%);
 }
 .sidebar > li:hover, .sidebar a:hover{
     color: #008299;
@@ -276,10 +271,10 @@
 /* end content-breadcrumb */
 
 /* content-body */
-#main-content .content> .content-body{
+#main-content .content .content-body{
     padding: 21px 20px 40px 20px;
     font-size: .9em;
-    background: #FFFFFF url('../img/noise.png');
+    background: #FFFFFF;
     min-height: 540px;
 }
 

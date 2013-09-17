@@ -405,6 +405,7 @@ textarea {
 /*Whole Inside Container*/
 .main-container {
 	background-color: #fafafa;
+	max-width: 100%;
 }
 
 /* Sidebar */
@@ -418,9 +419,8 @@ textarea {
 }
 
 #sidebar-nav {
-	/*border-right: 1pt solid #B3B3B3;*/
-	width: 200px;
-	min-height: 700px;
+	width: 14.65%;
+	min-height: 100%;
 	padding: 10px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
 }
@@ -441,7 +441,7 @@ textarea {
 /*---Middle-Pane--- */
 #nav-top {
     position: absolute;
-    width: 288px;
+    width: 19%;
     background: #ffffff;
     padding-left: 5px;
     top: 53px;
@@ -468,7 +468,7 @@ textarea {
 	margin: 0;
 	border-radius: 2px;
 	top: 29px;
-	width: 259px;
+	width: 235px;
 	display: inline-block;
 }
 #nav-top .search a.icon-caret-down{
@@ -506,7 +506,8 @@ textarea {
     padding: 0px 0px 5px 0px;
 	padding-right: 0px;
 	border: 1px solid #CCCCCC;
-	width: 295px;
+	
+    width: 19.44%;
     margin-top: 52px;
     height: 535px;
 	border-right: none;
@@ -604,7 +605,7 @@ textarea {
 	background-color: #ffffff;
 	margin-left: 0px;
 	border: 1px solid #CCCCCC;
-	width: 870px;
+	width: 65.45%;
 	min-height: 580px;
 	overflow-y: auto;
 	overflow-x: hidden;

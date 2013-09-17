@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.admin.process;
+package com.duggan.workflow.client.ui.admin.addprocess;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
@@ -19,7 +19,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 
-public class ProcessPresenter extends PresenterWidget<ProcessPresenter.MyView> 
+public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyView> 
 	implements UploadStartedHandler, UploadEndedHandler{
 
 	public interface MyView extends PopupView {
@@ -30,6 +30,7 @@ public class ProcessPresenter extends PresenterWidget<ProcessPresenter.MyView>
 		ProcessDef getProcess();
 		void setProcessId(Long id);
 		void enable(boolean enableFinish, boolean Cancel);
+
 	}
 
 	@Inject DispatchAsync requestHelper; 
@@ -37,7 +38,7 @@ public class ProcessPresenter extends PresenterWidget<ProcessPresenter.MyView>
 	ProcessDef process = null;
 	
 	@Inject
-	public ProcessPresenter(final EventBus eventBus, final MyView view) {
+	public AddProcessPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
 
@@ -64,7 +65,7 @@ public class ProcessPresenter extends PresenterWidget<ProcessPresenter.MyView>
 						@Override
 						public void processResult(SaveProcessResponse result) {
 							ProcessDef def = result.getProcessDef();
-							ProcessPresenter.this.process = def;
+							AddProcessPresenter.this.process = def;
 							getView().setProcessId(def.getId());
 						}
 					});

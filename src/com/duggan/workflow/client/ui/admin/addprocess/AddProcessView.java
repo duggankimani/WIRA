@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.admin.process;
+package com.duggan.workflow.client.ui.admin.addprocess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
-public class ProcessView extends PopupViewImpl implements
-		ProcessPresenter.MyView {
+public class AddProcessView extends PopupViewImpl implements
+		AddProcessPresenter.MyView {
 
 	private final Widget widget;
 	@UiField IssuesPanel issues;
@@ -43,11 +43,11 @@ public class ProcessView extends PopupViewImpl implements
 	@UiField Uploader uploader;
 	
 
-	public interface Binder extends UiBinder<Widget, ProcessView> {
+	public interface Binder extends UiBinder<Widget, AddProcessView> {
 	}
 
 	@Inject
-	public ProcessView(final EventBus eventBus, final Binder binder) {
+	public AddProcessView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		

@@ -1,8 +1,10 @@
 package com.duggan.workflow.client.ui.admin;
 
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter.ADMINPAGES;
+import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -13,8 +15,14 @@ public class AdminHomeView extends ViewImpl implements
 
 	private final Widget widget;
 	
-	@UiField Anchor aNewProcess;
-	@UiField HTMLPanel tblRow;
+	@UiField LIElement liDashboard;
+	@UiField LIElement liProcesses;
+	@UiField LIElement liUsers;
+	@UiField LIElement liReports;
+	@UiField SpanElement spanTitle;
+	@UiField SpanElement iconTitle;
+	
+	@UiField HTMLPanel divContent;
 	
 	public interface Binder extends UiBinder<Widget, AdminHomeView> {
 	}
@@ -24,42 +32,70 @@ public class AdminHomeView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 	}
 	
-	
 	@Override
 	public void setInSlot(Object slot, Widget content) {
-		if(slot == AdminHomePresenter.TABLE_SLOT){
-			tblRow.clear();
-			addHeaders();
-			if(content!=null){
-				tblRow.add(content);
-			}
+		if(slot == AdminHomePresenter.CONTENT_SLOT){
+			divContent.clear();
+			if(content!=null)
+			divContent.add(content);
 		}else{
 		super.setInSlot(slot, content);
 		}
 	}
 	
-	private void addHeaders() {
-		
-	}
-
-
-	@Override
-	public void addToSlot(Object slot, Widget content) {
-		if(slot == AdminHomePresenter.TABLE_SLOT){
-			if(content!=null){
-				tblRow.add(content);
-			}
-		}else{
-		super.setInSlot(slot, content);
-		}
-	}
-
-	public Anchor getaNewProcess() {
-		return aNewProcess;
-	}
-
 	@Override
 	public Widget asWidget() {
 		return widget;
+	}
+	
+	public void SetDashboardLink(boolean status, ADMINPAGES page){
+		if(status){
+			liDashboard.setClassName("active");
+			iconTitle.setClassName("icon-dashboard");
+			String output=page.toString();
+			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
+			spanTitle.setInnerHTML(output);
+			}else
+			liDashboard.removeClassName("active");
+	}
+	
+	public void SetProcessLink(boolean status, ADMINPAGES page){
+		if(status){
+			liProcesses.setClassName("active");
+			iconTitle.setClassName("icon-cogs");
+			String output=page.toString();
+			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
+			spanTitle.setInnerHTML(output);
+		}else
+			liProcesses.removeClassName("active");
+	}
+	
+	public void SetUsersLink(boolean status, ADMINPAGES page){
+		if(status){
+			liUsers.setClassName("active");
+			iconTitle.setClassName("icon-group");
+			String output=page.toString();
+			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
+			spanTitle.setInnerHTML(output);
+		}else
+			liUsers.removeClassName("active");
+	}
+	
+	public void SetReportLink(boolean status, ADMINPAGES page){
+		if(status){
+			liReports.setClassName("active");
+			iconTitle.setClassName("icon-bar-chart");
+			String output=page.toString();
+			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
+			spanTitle.setInnerHTML(output);
+		}else
+			liReports.removeClassName("active");
+	}
+	@Override
+	public void clearAllLinks() {
+		liDashboard.removeClassName("active");
+		liProcesses.removeClassName("active");
+		liUsers.removeClassName("active");
+		liReports.removeClassName("active");
 	}
 }
