@@ -18,7 +18,7 @@ public class TestGetApprovalNodes {
 	
 	@Test
 	public void getApprovalNodeStatus(){
-		JBPMHelper.get().getProcessDia(7L);
+		JBPMHelper.get().getWorkflowProcessDia(13L);
 	}
 	
 	@After

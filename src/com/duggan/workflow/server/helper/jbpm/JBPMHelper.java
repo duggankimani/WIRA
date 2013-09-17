@@ -553,9 +553,9 @@ public class JBPMHelper implements Closeable{
 					
 	}
 	
-	public List<Node> getProcessDia(long processInstanceId){
+	public List<NodeDetail> getWorkflowProcessDia(long processInstanceId){
 		
-		List<Node> nodes = new ArrayList<>();
+		List<NodeDetail> details= new ArrayList<>();
 		
 		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
 		
@@ -563,7 +563,7 @@ public class JBPMHelper implements Closeable{
 			//--
 			logger.warn("Invalid State : ProcessInstanceLog is null; ProcessInstanceId="
 			+processInstanceId+"; Document = "+DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId));
-			return nodes;
+			return details;
 		}
 		
 		String processDefId = log.getProcessId();
@@ -578,8 +578,7 @@ public class JBPMHelper implements Closeable{
 			long nodeId = node.getId();
 			List<NodeInstanceLog> nodeLogInstance =
 					JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, new Long(nodeId).toString());
-		
-			String nodeName = node.getName();					
+			
 			if(nodeLogInstance.size() > 0){
 				//Executed nodes only
 				Object x = node.getMetaData().get("x");
@@ -591,44 +590,52 @@ public class JBPMHelper implements Closeable{
 				//Ignore all other nodes - Only work pick human Task Nodes
 				if(node instanceof HumanTaskNode || node instanceof StartNode || node instanceof EndNode){
 					//HumanTaskNode ht = (HumanTaskNode) node;	
-					nodes.add(node);
+					assert nodeLogInstance.size()==2;
+					NodeDetail detail = new NodeDetail();
+					String name = node.getName();
+					detail.setName(name);
+					detail.setStartNode(node instanceof StartNode);
+					detail.setEndNode(node instanceof EndNode);
+					detail.setCurrentNode(nodeLogInstance.size()==1);
+					
+					details.add(detail);
 				}
 			}
 		}
 		
-		return nodes;
-
-	}
-
-
-	public List<NodeDetail> getWorkflowProcessDia(Long processInstanceId) {
-		List<Node> nodes = getProcessDia(processInstanceId);
-		
-		List<NodeDetail> details= new ArrayList<>();
-		
-		boolean hasEndNode=false;
-		for(Node node: nodes){
-			//find status of the node if human node:: approved/ Rejected
-			
-			NodeDetail detail = new NodeDetail();
-			String name = node.getName();
-			detail.setName(name);
-			details.add(detail);
-			detail.setStartNode(node instanceof StartNode);
-			detail.setEndNode(node instanceof EndNode);			
-			//assuming current task is the last task unless its the end node
-			
-			if(node instanceof EndNode){
-				hasEndNode=true;
-			}
-		}
-		
-		if(!hasEndNode && details.size()>0){
-			details.get(details.size()-1).setCurrentNode(true);
-		}
-		
 		return details;
+
 	}
+
+
+//	public List<NodeDetail> getWorkflowProcessDia(Long processInstanceId) {
+//		List<Node> nodes = getProcessDia(processInstanceId);
+//		
+//		List<NodeDetail> details= new ArrayList<>();
+//		
+//		boolean hasEndNode=false;
+//		for(Node node: nodes){
+//			//find status of the node if human node:: approved/ Rejected
+//			
+//			NodeDetail detail = new NodeDetail();
+//			String name = node.getName();
+//			detail.setName(name);
+//			details.add(detail);
+//			detail.setStartNode(node instanceof StartNode);
+//			detail.setEndNode(node instanceof EndNode);			
+//			//assuming current task is the last task unless its the end node
+//			
+//			if(node instanceof EndNode){
+//				hasEndNode=true;
+//			}
+//		}
+//		
+//		if(!hasEndNode && details.size()>0){
+//			details.get(details.size()-1).setCurrentNode(true);
+//		}
+//		
+//		return details;
+//	}
 
 
 	public HTSummary getSummary(Long taskId) {
@@ -651,6 +658,14 @@ public class JBPMHelper implements Closeable{
 	 */
 	public void startProcess(String processId, Map<String, Object> contextInfo) {		
 		sessionManager.startProcess(processId, contextInfo);				
+	}
+
+	public static String getProcessDetails(Long processInstanceId) {
+		
+		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
+		String processId = log.getProcessId();
+		
+		return "[Process "+processId+"; ProcessInstanceId "+processInstanceId+"L]";
 	}
 		
 	

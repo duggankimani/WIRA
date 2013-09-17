@@ -44,6 +44,10 @@ import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestActionHandler;
+import com.duggan.workflow.shared.requests.SaveProcessRequest;
+import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
+import com.duggan.workflow.shared.requests.DeleteProcessRequest;
+import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -110,5 +114,11 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetActivitiesRequest.class,
 				GetActivitiesRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(SaveProcessRequest.class,
+				SaveProcessRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(DeleteProcessRequest.class,
+				DeleteProcessRequestActionHandler.class, SessionValidator.class);
 	}
 }

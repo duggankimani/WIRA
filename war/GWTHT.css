@@ -48,3 +48,20 @@
 .uploader{
 	display:block;
 }
+
+.vld-Summary{
+	color: red;
+	display: none;
+	border: solid 1px red;
+	padding: 5px;
+}
+
+.vld-Summary span{
+	font-size: 12px;
+	font-weight: bold;
+}	
+
+.vld-Summary-show{
+	display: block;
+}	
+

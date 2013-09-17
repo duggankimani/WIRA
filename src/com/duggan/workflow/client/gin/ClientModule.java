@@ -47,7 +47,6 @@ import com.duggan.workflow.client.ui.user.UserSelectionPresenter;
 import com.duggan.workflow.client.ui.user.UserSelectionView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
@@ -116,8 +115,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(LoginPresenter.class, LoginPresenter.ILoginView.class,
 				LoginView.class, LoginPresenter.MyProxy.class);
-		
-		bind(CurrentUser.class).asEagerSingleton();
 		
 		requestStaticInjection(AppContext.class);
 		

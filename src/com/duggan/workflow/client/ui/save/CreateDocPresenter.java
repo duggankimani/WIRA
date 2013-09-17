@@ -4,12 +4,17 @@ import java.util.Date;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Priority;
+import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
+import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -97,7 +102,24 @@ public class CreateDocPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				getView().hide();
+				
+				Document document = getView().getDocument();	
+				document.setStatus(DocStatus.DRAFTED);
+				document.setId(Id);
+				if(getView().isValid()){
+					fireEvent(new ProcessingEvent());
+					requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), document),
+							new TaskServiceCallback<ApprovalRequestResult>(){
+						@Override
+						public void processResult(ApprovalRequestResult result) {
+							
+							fireEvent(new ProcessingCompletedEvent());
+							getView().hide();				
+							fireEvent(new AfterSaveEvent());										
+						}
+					});
+				}
+				
 			}
 		});
 		

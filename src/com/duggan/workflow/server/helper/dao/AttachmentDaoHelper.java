@@ -19,6 +19,10 @@ public class AttachmentDaoHelper{
 		DB.getAttachmentDao().saveOrUpdate(attachment);
 	}
 	
+	public static void save(LocalAttachment attachment){
+		DB.getAttachmentDao().saveOrUpdate(attachment);
+	}
+	
 	public static List<Attachment> getAttachments(Long documentId){
 		List<LocalAttachment> models = DB.getAttachmentDao().getAttachmentsForDocument(documentId);
 		
@@ -30,7 +34,7 @@ public class AttachmentDaoHelper{
 		}
 		return attachments;
 	}
-
+	
 	private static Attachment get(LocalAttachment model) {
 		Attachment attachment = new Attachment();
 		attachment.setArchived(model.isArchived());

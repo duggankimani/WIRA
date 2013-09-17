@@ -8,7 +8,7 @@
 
   <g:HTMLPanel styleName="navbar" ui:field="divNavbar">
      <div class="navbar-inner">
-        <g:Anchor styleName="brand" href="#home" ui:field="aBrand">E-Business Task List | Diaspora Architecture Group</g:Anchor>
+        <g:Anchor styleName="brand" href="#home" ui:field="aBrand">E-Business Task List | Your Organization</g:Anchor>
         
         <ul class="nav pull-right">
               <li class="home">
@@ -17,7 +17,7 @@
                    	  </g:Anchor> 
               </li>
               <li class="home">
-	                <g:Anchor href="#adminhome" ui:field="aAdmin" styleName="close-icon hand">
+	                <g:Anchor href="#adminhome" ui:field="aAdmin" styleName="close-icon hand">	                
 	                    <i class="icon-bar-chart"> &nbsp;Admin</i>
 	                 </g:Anchor>  
               </li>

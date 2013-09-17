@@ -35,7 +35,6 @@ import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
@@ -143,7 +142,6 @@ public class HomePresenter extends
 	
 	private Long documentId=null;
 	
-	final CurrentUser user;
 	
 	@Inject FilterPresenter filterPresenter;
 	Timer timer = new Timer() {
@@ -155,7 +153,6 @@ public class HomePresenter extends
 	};
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
-			final CurrentUser user,
 			final MyProxy proxy,
 			Provider<CreateDocPresenter> docProvider,
 			Provider<GenericDocumentPresenter> docViewProvider,
@@ -165,7 +162,6 @@ public class HomePresenter extends
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
 		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
-		this.user = user;
 	}
 
 	protected void search() {
@@ -353,7 +349,7 @@ public class HomePresenter extends
 		clear();
 		getView().setHeading(type.getTitle());
 		
-		String userId = user.getUserId();
+		String userId = AppContext.getUserId();
 		
 		GetTaskList request = new GetTaskList(userId,currentTaskType);
 		request.setProcessInstanceId(processInstanceId);

@@ -22,6 +22,7 @@ import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
@@ -253,6 +254,10 @@ public class DB{
 
 	public static CommentDaoImpl getCommentDao(){
 		return factory().getCommentDao(getEntityManager());
+	}
+	
+	public static ProcessDaoImpl getProcessDao(){
+		return factory().getProcessDao(getEntityManager());
 	}
 	
 

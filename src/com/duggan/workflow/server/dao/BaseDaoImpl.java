@@ -25,16 +25,6 @@ public class BaseDaoImpl<T extends PO> {
 			model.setUpdatedBy(SessionHelper.getCurrentUser().getId());
 		}
 		
-		/*
-		 * Do not flush - This reflects data in the database immediately and the BTM transaction 
-		 * in my tests so far cannot rollback the flushed data - You can actually query the new values 
-		 * directly from the database even as the transaction is ongoing - Could it be the isolation
-		 * level being used in the db? - 10/08/2013 - No - Look throught the hibernate objects life cycle
-		 * for details
-		 * 
-		 */
-		//em.flush();
-		
 		em.persist(model);
 		
 		return model;

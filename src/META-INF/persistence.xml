@@ -47,7 +47,11 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
     	
         <class>com.duggan.workflow.server.dao.model.DocumentModel</class>
         <class>com.duggan.workflow.server.dao.model.NotificationModel</class>
-        
+        <class>com.duggan.workflow.server.dao.model.ErrorLog</class>
+        <class>com.duggan.workflow.server.dao.model.LocalAttachment</class>
+        <class>com.duggan.workflow.server.dao.model.ProcessDefModel</class>
+        <class>com.duggan.workflow.server.dao.model.ProcessDocModel</class>
+     
         <!-- Async Executor Classes -->
         <class>org.jbpm.executor.entities.RequestInfo</class>
         <class>org.jbpm.executor.entities.ErrorInfo</class>
@@ -58,8 +62,8 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/workflowmgr" />
             <property name="hibernate.connection.username" value="root" />
             <property name="hibernate.connection.password" value="root" />
-            <property name="hibernate.connection.autocommit" value="false" />
             <property name="hibernate.max_fetch_depth" value="3" /-->
+            <property name="hibernate.connection.autocommit" value="false" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.transaction.manager_lookup_class"

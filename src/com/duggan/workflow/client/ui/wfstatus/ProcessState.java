@@ -26,7 +26,8 @@ public class ProcessState extends Composite {
 	
 	STARTNODETEMPLATE startTemplate = GWT.create(STARTNODETEMPLATE.class);
 	APPROVALNODETEMPLATE approvalTemplate = GWT.create(APPROVALNODETEMPLATE.class);
-	APPROVALNOTELAST lastApprovalTemplate = GWT.create(APPROVALNOTELAST.class);
+	APPROVALNODECURRENT currentApprovalNodeTemplate = GWT.create(APPROVALNODECURRENT.class);
+	ENDNODETEMPLATE endTemplate = GWT.create(ENDNODETEMPLATE.class);
 	
 	@UiField InlineLabel container;
 	
@@ -44,8 +45,12 @@ public class ProcessState extends Composite {
 			
 		}
 		
-		if(state.isEndNode() || state.isCurrentNode()){
-			html =  lastApprovalTemplate.display(state.getName());			
+		if(state.isCurrentNode()){
+			html =  currentApprovalNodeTemplate.display(state.getName());			
+		}
+		
+		if(state.isEndNode()){
+			html = endTemplate.display(state.getName());
 		}
 		
 		//default
@@ -75,10 +80,17 @@ public class ProcessState extends Composite {
 	}
 	
 	
-	interface APPROVALNOTELAST extends SafeHtmlTemplates{
+	interface APPROVALNODECURRENT extends SafeHtmlTemplates{
 		@Template("<span class=\"label label-default\">" +
 				"<i class=\"icon-remove-circle\"></i>" +
 						"{0}</span>")
+		public SafeHtml display(String name);
+	}
+	
+	interface ENDNODETEMPLATE extends SafeHtmlTemplates {
+		
+		@Template("<span class=\"label label-success\">" +
+				"<i class=\"icon-ok-circle\"></i>{0}</span>")		
 		public SafeHtml display(String name);
 	}
 	

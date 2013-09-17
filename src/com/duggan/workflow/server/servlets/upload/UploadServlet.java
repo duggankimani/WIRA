@@ -5,24 +5,16 @@ import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 
-import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.dao.AttachmentDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 
 public class UploadServlet extends UploadAction {
@@ -86,72 +78,46 @@ public class UploadServlet extends UploadAction {
 	
 	private String execute(HttpServletRequest request,
 			List<FileItem> sessionFiles) throws UploadActionException{
-				
-		String response = "";
 		
-		Enumeration<String> keys= request.getParameterNames();
 
-		Hashtable<String, Long> receivedFiles = getSessionFiles(request, true);
-//		System.err.println("------------------- Parameters ------------- ");
-//		while(keys.hasMoreElements()){
-//			String key = keys.nextElement();
-//			System.err.println(key+""+request.getParameter(key));
-//		}		
-//		System.err.println("------------------- END Parameters ------------- ");
+		FileExecutor executor = getExecutor(request);
 		
-		int cont = 0;
-		for (FileItem item : sessionFiles) {
-			if (false == item.isFormField()) {
-				cont++;
-				try {					
-					String fieldName = item.getFieldName();
-					String contentType=item.getContentType();					
-					InputStream is = item.getInputStream();
-					String name = item.getName();
-					long size = item.getSize();
-					
-					//save(is, documentId, name, contentType,size);
-					response += "";
-					System.err.format("########### FieldName=%s ; contentType=%s ; IS=%s ; itenName=%s; size=%s",
-							fieldName, contentType, is.toString(), name, size+"").println();
-					
-					
-					LocalAttachment attachment  = new LocalAttachment();
-					attachment.setCreated(new Date());
-					attachment.setArchived(false);
-					attachment.setContentType(contentType);
-					attachment.setId(null);
-					attachment.setName(name);
-					attachment.setSize(size);
-					attachment.setAttachment(item.get());					
-					saveAttachment(attachment, request);
-					
-					receivedFiles.put(fieldName, attachment.getId());
-				} catch (Exception e) {
-					throw new UploadActionException(e);
-				}
-			}else{
-				//handle form fields here 
-			}
-		}
-
+		String response = executor.execute(request, sessionFiles);
+		
 		// / Remove files from session because we have a copy of them
 		removeSessionFileItems(request);
 
 		// / Send your customized message to the client. 
 		return response;
 	}
-
-
-	private void saveAttachment(LocalAttachment attachment,
-			HttpServletRequest request) {
+	
+	public FileExecutor getExecutor(HttpServletRequest request){
+		String action = request.getParameter(UploadContext.ACTION);
 		
-		String id = request.getParameter("documentId");
+		UploadContext.UPLOADACTION uploadAction = UploadContext.UPLOADACTION.valueOf(action);
+		FileExecutor executor = null;
 		
-		if(id!=null){
-			AttachmentDaoHelper.saveDocument(Long.parseLong(id.toString()), attachment);
+		switch (uploadAction) {
+		case ATTACHDOCUMENT:
+			executor = new DocumentAttachmentExecutor();
+			break;
+
+		case UPLOADCHANGESET:
+			executor = new ProcessChangesetsExecutor();
+			break;
+		case UPLOADBPMNPROCESS:
+			executor = new ProcessChangesetsExecutor();
+			break;
 		}
+		
+		if(executor==null){
+			throw new RuntimeException("Could not find executor for action : "+action);
+		}
+		
+		return executor;
+
 	}
+
 
 	/**
 	 * Get the content of an uploaded file.
@@ -177,35 +143,10 @@ public class UploadServlet extends UploadAction {
 	public void removeItem(HttpServletRequest request, String fieldName)
 			throws UploadActionException {
 	
-		Hashtable<String, Long> receivedFiles = getSessionFiles(request, false);
-		Long attachmentId = receivedFiles.get(fieldName);
+		FileExecutor executor = getExecutor(request);
 		
-		if(attachmentId!=null){
-			//System.err.println("#################LOG DElete "+attachmentId);
-			AttachmentDaoHelper.delete(attachmentId);
-		}
-//		File file = receivedFiles.get(fieldName);
-//		receivedFiles.remove(fieldName);
-//		receivedContentTypes.remove(fieldName);
-//		if (file != null) {
-//			file.delete();
-//		}
-	}
-	
-	public Hashtable<String, Long> getSessionFiles(HttpServletRequest request, boolean createNewIfNone){
-
-		Hashtable<String, Long> receivedFiles = new Hashtable<String, Long>();
-		HttpSession session = request.getSession(false);
-		if(session!=null){
-			if(session.getAttribute("RECEIVEDFILES")!=null){
-				receivedFiles = (Hashtable<String, Long>)session.getAttribute("RECEIVEDFILES");
-			}else{
-				session.setAttribute("RECEIVEDFILES", receivedFiles);
-			}
-		}
+		executor.removeItem(request, fieldName);
 		
-		return receivedFiles;
-	}
-	
+	}	
 	
 }

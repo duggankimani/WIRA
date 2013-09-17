@@ -57,11 +57,11 @@ class BPMSessionManager{
 		
 	private TaskService service;
 	
-	private ThreadLocal<Map<Long, StatefulKnowledgeSession>> sessionStore = new ThreadLocal<>();
+	private static final ThreadLocal<Map<Long, StatefulKnowledgeSession>> sessionStore = new ThreadLocal<>();
 	
-	private ThreadLocal<LocalTaskService> ltsStore = new ThreadLocal<>();
-	private ThreadLocal<GenericHTWorkItemHandler> htHandler = new ThreadLocal<>();
-	private ThreadLocal<NotificationTaskEventListener> eventListener = new ThreadLocal<>();
+	private static final ThreadLocal<LocalTaskService> ltsStore = new ThreadLocal<>();
+	private static final ThreadLocal<GenericHTWorkItemHandler> htHandler = new ThreadLocal<>();
+	private static final ThreadLocal<NotificationTaskEventListener> eventListener = new ThreadLocal<>();
 			
 	public BPMSessionManager(){
 		
@@ -93,8 +93,14 @@ class BPMSessionManager{
 	private Map<Long, StatefulKnowledgeSession> getSessionStore(){
 		Map<Long, StatefulKnowledgeSession> sessionMap = sessionStore.get();
 		if(sessionMap==null){
-			sessionMap = new HashMap<>();
-			sessionStore.set(sessionMap);
+			synchronized (BPMSessionManager.class) {
+				if(sessionStore.get()==null){
+					sessionMap = new HashMap<>();
+					sessionStore.set(sessionMap);
+				}else{
+					sessionMap= sessionStore.get();
+				}
+			}
 		}
 		
 		return sessionMap;
@@ -141,12 +147,12 @@ class BPMSessionManager{
 		assert taskClient!=null;
 		
 		GenericHTWorkItemHandler taskHandler = new LocalHTWorkItemHandler(taskClient, session);
+		htHandler.set(taskHandler);
 		//Only handle events related to the session that started the task being completed
 		taskHandler.setOwningSessionOnly(true);
 		taskHandler.connect();
-		htHandler.set(taskHandler);
 		
-		logger.info(Thread.currentThread().toString()+
+		logger.debug(Thread.currentThread().toString()+
 				"Session: "+session.getId()+" : "+session.toString()+
 				"; REGISTERED NEW TASK HANDLER: "+taskHandler +
 				" with LocalTaskService : "+taskClient
@@ -188,11 +194,11 @@ class BPMSessionManager{
 			ltsStore.set(lts);
 			eventListener.set(listener);
 			
-			logger.info(Thread.currentThread().toString()+
+			logger.debug(Thread.currentThread().toString()+
 					"INITIALISED NEW LocalTaskService : "+lts.toString());
 		}
 		
-		logger.info(Thread.currentThread().toString()+
+		logger.debug(Thread.currentThread().toString()+
 				"RETRIEVED LocalTaskService : "+lts.toString());
 		return lts;
 	}
@@ -200,7 +206,7 @@ class BPMSessionManager{
 	
 	private KnowledgeBase getKnowledgeBase(String processId, boolean forceReload){
 
-		logger.info("Loading knowledgebase for process: "+processId+"; forceReload= "+forceReload);
+		logger.debug("Loading knowledgebase for process: "+processId+"; forceReload= "+forceReload);
 		KnowledgeBase kbase= processKnowledgeMap.get(processId);
 		if(kbase!=null && !forceReload){
 			return kbase;
@@ -290,11 +296,14 @@ class BPMSessionManager{
 	 *  	<li>HumanTask WorkItemHandler {@linkplain GenericHTWorkItemHandler}
 	 *  	<li>TaskClient - {@link LocalTaskService}
 	 *  	<li>De-registers all EventListeners registered on the {@link TaskService} 
+	 *  (If not deregistered, multiple event listeners including those linked to
+	 *  disposed sessions will respond to events)
 	 *  </ul>
 	 *  
 	 *  <p/>
 	 *  The above should be the first items you look out of if you get the dreaded Error: <br/>
 	 *  <b>"IllegalStateException: Illegal method call. This session was previously disposed"</b>
+	 *  
 	 */
 	public void disposeSessions(){
 		logger.warn(Thread.currentThread().getName()+": Disposing Sessions..............");
@@ -310,7 +319,8 @@ class BPMSessionManager{
 		
 		if(ltsStore.get()!=null){
 			try{
-				htHandler.get().dispose();
+				if(htHandler.get()!=null)
+					htHandler.get().dispose();
 			}catch(Exception e){e.printStackTrace();}		
 			ltsStore.get().dispose();//LocalTaskService
 			service.removeEventListener(eventListener.get());			
@@ -350,7 +360,7 @@ class BPMSessionManager{
 			Map<String, Object> parameters,
 			Document summary){
 		
-		logger.info(">>> Starting process "+processId+"; Doc="+summary);
+		logger.debug(">>> Starting process "+processId+"; Doc="+summary);
 		if(summary!=null){
 			summary.setSessionId(new Long(session.getId()+""));
 			logger.warn("## Setting SessionId : "+summary.getSessionId());
@@ -537,7 +547,7 @@ class BPMSessionManager{
 		@Override
 		public void taskCompleted(TaskUserEvent event) {
 			
-			logger.info(Thread.currentThread()+
+			logger.debug(Thread.currentThread()+
 					"############ COMPLETING TASK - event TaskID= "+event.getTaskId()
 					+" :: SessionId= "+event.getSessionId());
 			

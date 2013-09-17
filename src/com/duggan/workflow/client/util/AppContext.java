@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.shared.model.CurrentUser;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.event.shared.EventBus;
@@ -24,11 +24,12 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 public class AppContext {
 	
 	@Inject static DispatchAsync dispatcher;
-	@Inject static CurrentUser user;
 	@Inject static EventBus eventBus;
 	@Inject static PlaceManager placeManager;
 
 	static String organizationName;
+	
+	private static final HTUser user = new HTUser();
 	
 	static Timer timer = new Timer() {
 		
@@ -39,8 +40,8 @@ public class AppContext {
 	};
 
 	public static void setSessionValues(String userId, String fullName, String authCookie){
-		user.setFullName(fullName);
-		user.setUserId(userId);
+		user.setName(fullName);
+		user.setId(userId);
 		
 		CookieManager.setCookies(authCookie, new Date().getTime());
 		
@@ -68,7 +69,7 @@ public class AppContext {
 	}
 	
 	private static void checkNeedReloadState() {
-		if(user.getUserId()==null){
+		if(user.getId()==null){
 			reloadContext();
 		}
 	}
@@ -77,8 +78,8 @@ public class AppContext {
 		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
 			@Override
 			public void processResult(GetContextRequestResult result) {
-				user.setUserId(result.getUser().getId());
-				user.setFullName(result.getUser().getName());
+				user.setId(result.getUser().getId());
+				user.setName(result.getUser().getName());
 				user.setGroups(result.getGroups());
 			}
 			
@@ -98,11 +99,11 @@ public class AppContext {
 	}
 	
 	public static String getUserId(){
-		return user.getUserId();
+		return user.getId();
 	}
 	
 	public static String getUserNames(){
-		return user.getFullName();
+		return user.getName();
 	}
 	
 	public static String getUserGroups(){
