@@ -19,15 +19,17 @@
 					</div>
 					
 					<div class="table">
-					    <div class="table-row">
-							<div class="table-cell">
-							  <label><input type="checkbox" class="ace"/></label>
-							</div>
-							<div class="table-cell">DOCUMENT TYPE</div>
-							<div class="table-cell">FILE NAME</div>
-							<div class="table-cell">STATUS</div>
-							<div class="table-cell">LAST MODIFIED</div>
-							<div class="table-cell">ACTIONS</div>									
+					    <div class="thead">
+					    	<div class="tr">
+								<div class="th">
+								  <label><input type="checkbox" class="ace"/></label>
+								</div>
+								<div class="th">DOCUMENT TYPE</div>
+								<div class="th">FILE NAME</div>
+								<div class="th">STATUS</div>
+								<div class="th">LAST MODIFIED</div>
+								<div class="th">ACTIONS</div>	
+							</div>								
 						</div>
 						<g:HTMLPanel ui:field="tblRow" styleName="table-row-group">
 						</g:HTMLPanel>
