@@ -70,6 +70,8 @@ import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsView;
+import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter;
+import com.duggan.workflow.client.ui.admin.adduser.AddUserView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -184,5 +186,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(ProcessAttachmentPresenter.class,
 				ProcessAttachmentPresenter.MyView.class, ProcessAttachmentView.class);
+
+		bindPresenterWidget(AddUserPresenter.class,
+				AddUserPresenter.MyView.class, AddUserView.class);
 }
 }

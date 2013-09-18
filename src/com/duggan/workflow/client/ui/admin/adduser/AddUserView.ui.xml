@@ -1,0 +1,84 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true">
+		<g:HTMLPanel>
+	 		<g:HTMLPanel styleName="modal-header">
+					<h5><i class="icon-cogs"></i>New User<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+			 </g:HTMLPanel>
+			 <d:IssuesPanel ui:field="issues">
+	    	</d:IssuesPanel>
+			 
+		 	<g:HTMLPanel styleName="modal-body">
+		 			<g:HTMLPanel styleName="hide" ui:field="divUserDetails">
+						  <div class="form-group">
+						    <label for="ProcessName">First Name:</label>
+						    <d:TextField ui:field="txtFirstname" type="email" 
+						        class="form-control" placeholder="First Name"/>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label for="ProcessName">Last Name:</label>
+						    <d:TextField ui:field="txtLastname" type="email" 
+						        class="form-control" placeholder="Last Name"/>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label for="ProcessName">Email:</label>
+						    <d:TextField ui:field="txtEmail" type="email" 
+						        class="form-control" placeholder="Email"/>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label for="ProcessName">Group:</label>
+							  <div class="checkbox">
+							    <label>
+							       <g:CheckBox ui:field="chkLPO"/>HOD Development
+							    </label>
+							  </div>
+							  <div class="checkbox">
+							    <label>
+							       <g:CheckBox ui:field="chkInvoice"/>Management
+							    </label>
+							  </div>
+							  <div class="checkbox">
+							    <label>
+							       <g:CheckBox ui:field="chkContract"/>Sales Group
+							    </label>
+							  </div>
+						  </div>
+						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Save&nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+					</g:HTMLPanel>
+			</g:HTMLPanel>
+			
+			<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
+					<g:HTMLPanel styleName="modal-body">
+						  <div class="form-group">
+						    <label for="ProcessName">Group Name:</label>
+						    <d:TextField ui:field="txtGroupname" type="email" 
+						        class="form-control" placeholder="Group Name"/>
+						  </div>
+						  
+						  <div class="form-group">
+						 	 <label for="ProcessDescription">Description:</label>
+						 	 <d:TextArea ui:field="txtDescription" class="form-control" rows="3"></d:TextArea>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label for="ProcessName">Users:</label>
+						    <d:TextField ui:field="txtUsers" type="users" 
+						        class="form-control" placeholder="Email"/>
+						  </div>
+						  
+						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aSaveGroup">Save&nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+					</g:HTMLPanel>
+			 </g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:PopupPanel>
+</ui:UiBinder>

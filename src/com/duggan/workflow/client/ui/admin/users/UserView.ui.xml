@@ -17,16 +17,16 @@
 							Add User
 					</g:Anchor>
 					
-					<g:Anchor ui:field="aDeleteUser" styleName="btn btn-default"
+					<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary"
 						title="Add a New Process">
-						<i class="icon-trash"></i>
-							Delete User
-				   </g:Anchor>
+						<i class="icon-plus"></i>
+							Add Group
+					</g:Anchor>
 				</div>
 				
 					<ul id="mytab" class="nav nav-tabs">
-					  <li class="active"><a href="#user" data-toggle="tab">Users</a></li>
-					  <li><a href="#groups" data-toggle="tab">Groups</a></li>
+					  <li class="active"><g:Anchor href="#user" ui:field="aUserstab">Users</g:Anchor></li>
+					  <li><g:Anchor href="#groups" ui:field="aGroupstab">Groups</g:Anchor></li>
 					</ul>
 					<div id="usercontent" class="tab-content">
 							<!-- User's Information Tab  -->
