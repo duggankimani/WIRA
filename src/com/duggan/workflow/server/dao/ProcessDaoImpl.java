@@ -98,7 +98,15 @@ public class ProcessDaoImpl {
 
 	@SuppressWarnings("unchecked")
 	public List<ProcessDefModel> getProcessesForDocType(DocType type) {
-		return em.createQuery("FROM ProcessDefModel p " +
+		return em.createQuery("select new ProcessDefModel(" +
+				"p.id," +
+				"p.name," +
+				"p.processId," +
+				"p.isArchived," +
+				"p.description " +
+				//"p.processDocuments" +
+				") " +
+				"FROM ProcessDefModel p " +
 				"join p.processDocuments d " +
 				"where d.docType=:docType ")
 				.setParameter("docType", type)

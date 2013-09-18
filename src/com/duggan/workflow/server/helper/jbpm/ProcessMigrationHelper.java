@@ -49,7 +49,12 @@ public class ProcessMigrationHelper {
 
 	
 	public static void stop(Long processDefId){
+		ProcessDefModel model = DB.getProcessDao().getProcessDef(processDefId);
+		String processId = model.getProcessId();
 		
+		if(JBPMHelper.get().isProcessingRunning(model.getProcessId())){
+			JBPMHelper.get().stop(processId);
+		}
 	}
 
 }

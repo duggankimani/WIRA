@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -202,12 +203,17 @@ public class JBPMHelper implements Closeable{
 					"No process definition found for DocType= ["+type+"]");
 		}
 		
-		if(processDefs.size()>0){
+		if(processDefs.size()>1){
 			throw new ProcessInitializationException("Could not start process: More than 1 process definition " +
 					"found for document ["+type+"]");
 		}
 		
-		ProcessDefModel model = processDefs.get(0); 
+		
+		Iterator<ProcessDefModel> iter = processDefs.iterator();
+		ProcessDefModel model =null;
+		while(iter.hasNext()){
+			model =	iter.next(); 
+		}
 		
 		String processId = model.getProcessId();
 		
@@ -701,6 +707,10 @@ public class JBPMHelper implements Closeable{
 
 	public boolean isProcessingRunning(String processId) {
 		return sessionManager.isRunning(processId);
+	}
+
+	public void stop(String processId) {
+		sessionManager.stopProcess(processId);
 	}
 		
 	
