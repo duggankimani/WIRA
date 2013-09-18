@@ -12,10 +12,25 @@
 								<input type="checkbox"/>
 							</label>
 						</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">Invoice , LPO</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">Invoice_process.bpmn</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">Active</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">22/9/2013</g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">
+						    <span ui:field="spnName"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">
+						    <span ui:field="spnDocTypes"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">
+						    <span ui:field="spnFileName"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">
+						    <span ui:field="spnProcessId"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">
+						    <span ui:field="spnStatus"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="table-cell">
+						    <span ui:field="spnLastModified"></span>
+						</g:HTMLPanel>
+						
 						<g:HTMLPanel styleName="table-cell">
 								<g:Anchor ui:field="aActivate" styleName="btn btn-default" title="Activate Process">
 									<i class="icon-play"></i>

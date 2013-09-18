@@ -1,14 +1,20 @@
 package com.duggan.workflow.client.ui.admin.addprocess;
 
+import java.util.List;
+
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent.UploadStartedHandler;
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
+import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
+import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -30,12 +36,15 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 		ProcessDef getProcess();
 		void setProcessId(Long id);
 		void enable(boolean enableFinish, boolean Cancel);
+		void setValues(Long processDefId,String name, String processId,String description, List<DocType> docTypes);
 
 	}
 
 	@Inject DispatchAsync requestHelper; 
 	
 	ProcessDef process = null;
+	
+	Long processDefId = null;
 	
 	@Inject
 	public AddProcessPresenter(final EventBus eventBus, final MyView view) {
@@ -47,6 +56,14 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 		super.onBind();
 		addRegisteredHandler(UploadStartedEvent.TYPE, this);
 		addRegisteredHandler(UploadEndedEvent.TYPE, this);
+		
+		getView().getFinish().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				fireEvent(new LoadProcessesEvent());
+			}
+		});
 		
 		getView().getNext().addClickHandler(new ClickHandler() {
 			
@@ -77,7 +94,9 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if(process!=null){
+				//if processDefId is null, this was a new process
+				//other wise, the we were editing existing info
+				if(process!=null && processDefId==null){
 					DeleteProcessRequest request = new DeleteProcessRequest(process.getId());
 					requestHelper.execute(request, new TaskServiceCallback<DeleteProcessResponse>() {
 						@Override
@@ -85,11 +104,31 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 							getView().hide();
 						}
 					});
+				}else{
+					getView().hide();
 				}
 			}
 		});
 		
 		
+	}
+	
+	private void loadProcess() {
+		if(processDefId==null){
+			return;
+		}
+		
+		GetProcessRequest request = new GetProcessRequest(processDefId);
+		requestHelper.execute(request, new TaskServiceCallback<GetProcessResponse>() {
+			@Override
+			public void processResult(GetProcessResponse result) {
+				process = result.getProcessDef();
+				getView().setValues(process.getId(),
+						process.getName(),process.getProcessId(),
+						process.getDescription(),
+						process.getDocTypes());
+			}
+		});		
 	}
 
 	@Override
@@ -101,4 +140,16 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 	public void onUploadStarted(UploadStartedEvent event) {
 		getView().enable(false, true);
 	}
+
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
+	}
+	
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		loadProcess();
+	}
+
 }

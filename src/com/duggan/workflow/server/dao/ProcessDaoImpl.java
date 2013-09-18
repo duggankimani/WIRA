@@ -6,9 +6,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.ProcessDocModel;
+import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.dao.AttachmentDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocType;
 
@@ -32,10 +35,13 @@ public class ProcessDaoImpl {
 	
 	public void save(ProcessDefModel model){
 		prepare(model);
-		List<ProcessDocModel> docs = model.getProcessDocuments();
+		
+		List<ProcessDocModel> docs = new ArrayList<>();
+		docs.addAll(model.getProcessDocuments());
 		for(ProcessDocModel doc: docs){
 			prepare(doc);
 		}
+		
 		em.persist(model);
 	}
 	
@@ -77,6 +83,26 @@ public class ProcessDaoImpl {
 	}
 
 	public void remove(ProcessDefModel model) {
+		List<LocalAttachment> attachments = DB.getAttachmentDao().getAttachmentsForProcessDef(model);
+		if(attachments!=null){
+			for(LocalAttachment attachment: attachments){
+				DB.getAttachmentDao().delete(attachment);
+			}
+		}
 		em.remove(model);
 	}
+
+	public void remove(ProcessDocModel doc) {
+		em.remove(doc);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProcessDefModel> getProcessesForDocType(DocType type) {
+		return em.createQuery("FROM ProcessDefModel p " +
+				"join p.processDocuments d " +
+				"where d.docType=:docType ")
+				.setParameter("docType", type)
+				.getResultList();
+	}
+	
 }

@@ -48,6 +48,12 @@ import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetProcessesRequest;
+import com.duggan.workflow.server.actionhandlers.GetProcessesRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
+import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
+import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -120,5 +126,15 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(DeleteProcessRequest.class,
 				DeleteProcessRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetProcessesRequest.class,
+				GetProcessesRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetProcessRequest.class,
+				GetProcessRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(ManageKnowledgeBaseRequest.class,
+				ManageKnowledgeBaseResponseHandler.class,
+				SessionValidator.class);
 	}
 }

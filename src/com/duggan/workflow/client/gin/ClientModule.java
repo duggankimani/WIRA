@@ -11,10 +11,12 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomeView;
 import com.duggan.workflow.client.ui.admin.addprocess.AddProcessPresenter;
 import com.duggan.workflow.client.ui.admin.addprocess.AddProcessView;
+import com.duggan.workflow.client.ui.admin.addprocess.ProcessAttachmentPresenter;
+import com.duggan.workflow.client.ui.admin.addprocess.ProcessAttachmentView;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessView;
-import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnPresenter;
-import com.duggan.workflow.client.ui.admin.processrow.ProcessColumnView;
+import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
+import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
@@ -165,8 +167,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(AddProcessPresenter.class,
 				AddProcessPresenter.MyView.class, AddProcessView.class);
 
-		bindPresenterWidget(ProcessColumnPresenter.class,
-				ProcessColumnPresenter.MyView.class, ProcessColumnView.class);
+		bindPresenterWidget(ProcessItemPresenter.class,
+				ProcessItemPresenter.MyView.class, ProcessItemView.class);
 		
 		bindPresenterWidget(ProcessPresenter.class, ProcessPresenter.MyView.class, ProcessView.class);
 
@@ -179,5 +181,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(ReportsPresenter.class,
 				ReportsPresenter.MyView.class, ReportsView.class);
+		
+		bindPresenterWidget(ProcessAttachmentPresenter.class,
+				ProcessAttachmentPresenter.MyView.class, ProcessAttachmentView.class);
 }
 }

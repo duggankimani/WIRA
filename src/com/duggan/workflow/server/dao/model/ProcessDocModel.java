@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.DocType;
 
@@ -30,7 +29,6 @@ public class ProcessDocModel extends PO {
 	
 	@Enumerated(EnumType.STRING)
 	private DocType docType;
-	
 
 	public Long getId() {
 		return id;

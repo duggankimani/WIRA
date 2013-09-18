@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 
 import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 
 public class ProcessChangesetsExecutor extends FileExecutor{
@@ -58,8 +59,22 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 		String id = request.getParameter("processDefId");
 		
 		if(id!=null && id.matches("[0-9]+")){
-			attachment.setProcessDef(DB.getProcessDao().getProcessDef(new Long(id.trim())));
+			ProcessDefModel model = DB.getProcessDao().getProcessDef(new Long(id.trim()));
+			attachment.setProcessDef(model);
+						
+			//Disable existing attachments
+			List<LocalAttachment> attachments = 
+					DB.getAttachmentDao().getAttachmentsForProcessDef(model);			
+			if(attachments!=null){
+				for(LocalAttachment att: attachments){
+					att.setArchived(true);
+					DB.getAttachmentDao().saveOrUpdate(att);
+				}
+			}
+			
 			DB.getAttachmentDao().saveOrUpdate(attachment);
+		}else{
+			throw new IllegalArgumentException("Cannot save attachment for [ProcessDefId= "+id+"]");
 		}
 	}
 

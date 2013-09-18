@@ -63,6 +63,8 @@ class BPMSessionManager{
 	private static final ThreadLocal<GenericHTWorkItemHandler> htHandler = new ThreadLocal<>();
 	private static final ThreadLocal<NotificationTaskEventListener> eventListener = new ThreadLocal<>();
 			
+	Boolean autoLoad = true;
+	
 	public BPMSessionManager(){
 		
 		service = new TaskService(DB.getEntityManagerFactory(),
@@ -160,6 +162,10 @@ class BPMSessionManager{
 		
 		session.getWorkItemManager().registerWorkItemHandler("Human Task", taskHandler);
 	}
+	
+	public boolean isRunning(String processId){
+		return processKnowledgeMap.get(processId)!=null;
+	}
 
 	/**
 	 * Assuming each request starts/requires at most 1 KnowlegdeSession;
@@ -212,18 +218,17 @@ class BPMSessionManager{
 			return kbase;
 		}
 		
-		Resource changeset = ResourceFactory.newClassPathResource("approval-process-changeset.xml");
-		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("approval-agent");
-		kagent.applyChangeSet(changeset);
+    	throw new RuntimeException("Could not find Knowledgebase for process "+processId
+    			+". Kindly report this issue to your administrator.");
+	}
+	
+	public KnowledgeBase loadKnowledge(byte[]bytes, String processName){
 		
-//    	KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-//    	//builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
-//    	builder.add(new ClassPathResource("invoice-approval.bpmn"), ResourceType.BPMN2);
-//    	builder.add(new ClassPathResource("send-email.bpmn"), ResourceType.BPMN2);
-//    	builder.add(new ClassPathResource("beforetask-notification.bpmn"), ResourceType.BPMN2);
-//    	builder.add(new ClassPathResource("aftertask-notification.bpmn"), ResourceType.BPMN2);
-//    	
-//    	kbase = builder.newKnowledgeBase();
+		KnowledgeBase kbase= null;
+		
+		Resource resourceset = ResourceFactory.newByteArrayResource(bytes);
+		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent(processName);
+		kagent.applyChangeSet(resourceset);
 		
 		kbase = kagent.getKnowledgeBase();
     	ResourceFactory.getResourceChangeNotifierService().start();

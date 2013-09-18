@@ -6,6 +6,7 @@ import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
+import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -87,6 +88,7 @@ public class AdminHomePresenter extends
 
 		case PROCESSES:
 			showProcessPanel(pages);
+			fireEvent(new LoadProcessesEvent());
 			break;
 		
 		case USERS:

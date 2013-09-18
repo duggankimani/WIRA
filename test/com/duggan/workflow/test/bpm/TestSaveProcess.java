@@ -6,8 +6,11 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.ProcessDocModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
@@ -25,9 +28,42 @@ public class TestSaveProcess {
 	}
 	
 	@Test
+	public void getProcessDefsForDocType(){
+		List<ProcessDefModel> models = DB.getProcessDao().getProcessesForDocType(DocType.INVOICE);
+		
+		Assert.assertTrue(models.size()==1);
+	}
+	
+	@Ignore
+	public void update(){
+		ProcessDef def = ProcessDefHelper.getProcessDef(7L);
+		def.setDocTypes(Arrays.asList(DocType.CONTRACT));
+		
+		ProcessDefHelper.save(def);
+		
+		def = ProcessDefHelper.getProcessDef(7L);
+		Assert.assertTrue(def.getDocTypes().size()==1);
+	}
+	
+	@Ignore
+	public void delete(){
+		ProcessDefHelper.delete(14L);
+	}
+	
+	@Ignore
+	public void getDocByType(){
+		
+		ProcessDaoImpl dao = DB.getProcessDao();
+	
+		ProcessDocModel model = dao.getProcessDoc(DocType.LPO);
+		
+		Assert.assertNotNull(model);
+	}
+	
+	@Ignore
 	public void create(){
 		ProcessDef processDef = new ProcessDef();
-		processDef.setDocTypes(Arrays.asList(DocType.CONTRACT, DocType.INVOICE));
+		processDef.setDocTypes(Arrays.asList(DocType.CONTRACT, DocType.INVOICE, DocType.LPO));
 		processDef.setName("approval-A");
 		processDef.setProcessId("invoice-approval");
 		processDef = ProcessDefHelper.save(processDef);
