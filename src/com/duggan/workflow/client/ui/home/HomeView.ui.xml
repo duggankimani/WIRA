@@ -9,7 +9,7 @@
  <g:HTMLPanel styleName="row-fluid main-container"> 
  	  <span ui:field="loadingtext"  class="span2 hide">Loading ...</span>   
      
-    <g:HTMLPanel ui:field="mainContainer">
+    <g:HTMLPanel ui:field="mainContainer" styleName="full-page">
       <div id="sidebar-nav" class="span2">
         <!--Button Add Document -->
         <div class="add-doc">
@@ -59,31 +59,32 @@
         </ul>
      </div>
      
-      <g:HTMLPanel ui:field="wholeContainer" styleName="hide"> 
-      		<div id="nav-top">
-      		   <i class="icon-tag"></i>
-	    	   <h5 ui:field="hCategory">Completed</h5>
-	    	   <br/>
-
-	    	  	 <div class="search">
-	         	 	 <g:TextBox styleName="search-box" ui:field="txtSearch"/>
-	         	 	 <g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
-	         	 </div>
-	         
-	          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
-	          <g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
-	        </div>
-	        
-	      <!--middle navigation-->
-	      <div ui:field="divDocListing" class="span4">
-	        <div class="content-nav row-fluid">
-		        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
-		       	</d:BulletListPanel>
-		       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
-	        </div>
+      <g:HTMLPanel ui:field="wholeContainer" styleName="hide content-right span10"> 
+			<!--middle navigation -->      		
+      		<div class="span2" id="middle-box">
+	      		<div id="nav-top">
+	      		   <i class="icon-tag"></i>
+		    	   <h5 ui:field="hCategory">Completed</h5>
+		    	   <br/>
+		    	  	 <div class="search">
+		         	 	 <g:TextBox styleName="search-box" ui:field="txtSearch"/>
+		         	 	 <g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
+		         	 </div>
+			          <g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
+			          <g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
+		        </div>
+		        
+		      <div ui:field="divDocListing">
+		        <div class="content-nav row-fluid">
+			        <d:BulletListPanel ui:field="ulTaskGroups">    	                   	          	
+			       	</d:BulletListPanel>
+			       	<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
+		        </div>
+		      </div>
 	      </div>
-	      <!--Detailed Panel Description-->
-	      <div ui:field="divDocView" class="span5">            
+	     
+	      <!--Detailed Info Description-->
+	      <div ui:field="divDocView" class="span10">            
 	          <g:HTMLPanel ui:field="docContainer">  
 	          </g:HTMLPanel>
 	      </div>

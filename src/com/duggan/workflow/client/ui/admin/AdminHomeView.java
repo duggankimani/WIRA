@@ -52,9 +52,7 @@ public class AdminHomeView extends ViewImpl implements
 		if(status){
 			liDashboard.setClassName("active");
 			iconTitle.setClassName("icon-dashboard");
-			String output=page.toString();
-			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
-			spanTitle.setInnerHTML(output);
+			spanTitle.setInnerHTML(page.getDisplayName());
 			}else
 			liDashboard.removeClassName("active");
 	}
@@ -63,9 +61,7 @@ public class AdminHomeView extends ViewImpl implements
 		if(status){
 			liProcesses.setClassName("active");
 			iconTitle.setClassName("icon-cogs");
-			String output=page.toString();
-			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
-			spanTitle.setInnerHTML(output);
+			spanTitle.setInnerHTML(page.getDisplayName());
 		}else
 			liProcesses.removeClassName("active");
 	}
@@ -74,9 +70,7 @@ public class AdminHomeView extends ViewImpl implements
 		if(status){
 			liUsers.setClassName("active");
 			iconTitle.setClassName("icon-group");
-			String output=page.toString();
-			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
-			spanTitle.setInnerHTML(output);
+			spanTitle.setInnerHTML(page.getDisplayName());
 		}else
 			liUsers.removeClassName("active");
 	}
@@ -85,9 +79,7 @@ public class AdminHomeView extends ViewImpl implements
 		if(status){
 			liReports.setClassName("active");
 			iconTitle.setClassName("icon-bar-chart");
-			String output=page.toString();
-			output= output.substring(0, 1)+(output.substring(1)).toLowerCase();
-			spanTitle.setInnerHTML(output);
+			spanTitle.setInnerHTML(page.getDisplayName());
 		}else
 			liReports.removeClassName("active");
 	}

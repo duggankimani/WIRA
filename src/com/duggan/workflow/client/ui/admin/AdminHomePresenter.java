@@ -60,12 +60,16 @@ public class AdminHomePresenter extends
 		public String getDisplayName(){
 			return displayName;
 		}
+		
 	}
+
+	ADMINPAGES page=null;
 	
 	@Inject
 	public AdminHomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
+		
 	}
 
 	@Override
@@ -73,6 +77,7 @@ public class AdminHomePresenter extends
 		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
 	}
 	
+
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		 super.prepareFromRequest(request);
@@ -81,46 +86,48 @@ public class AdminHomePresenter extends
 		 
 		ADMINPAGES pages = ADMINPAGES.valueOf(name.toUpperCase());
 		 
+		this.page = pages;
+		
 		switch (pages) {
 		case DASHBOARD:
-			showDashBoard(pages);
+			showDashBoard();
 			break;
 
 		case PROCESSES:
-			showProcessPanel(pages);
+			showProcessPanel();
 			fireEvent(new LoadProcessesEvent());
 			break;
 		
 		case USERS:
-			showUserPanel(pages);
+			showUserPanel();
 			break;
 		
 		case REPORTS:
-			showReportPanel(pages);
+			showReportPanel();
 			break;
 		}
 		 
 	}
 	
-	private void showDashBoard(ADMINPAGES page) {
+	private void showDashBoard() {
 		setInSlot(CONTENT_SLOT, null);
 		setInSlot(CONTENT_SLOT, dashboard);
 		getView().clearAllLinks();
 		getView().SetDashboardLink(true, page);
 	}
 	
-	private void showProcessPanel(ADMINPAGES page) {
-		setInSlot(CONTENT_SLOT, process);
+	private void showProcessPanel() {
+		 setInSlot(CONTENT_SLOT, process);
 		 getView().clearAllLinks();
 		 getView().SetProcessLink(true,page);
 	}
-	private void showUserPanel(ADMINPAGES page) {
+	private void showUserPanel() {
 		setInSlot(CONTENT_SLOT, users);
 		 getView().clearAllLinks();
 		 getView().SetUsersLink(true,page);
 	}
 	
-	private void showReportPanel(ADMINPAGES page) {
+	private void showReportPanel() {
 	   setInSlot(CONTENT_SLOT, reports);
 	   getView().clearAllLinks();
 	   getView().SetReportLink(true,page);

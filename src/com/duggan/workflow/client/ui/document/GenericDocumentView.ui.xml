@@ -130,7 +130,7 @@
 				<span ui:field="spnPriority" class="label"></span>
 			</div>
 
-			<div class="span4">
+			<div class="span3">
 				<span>Current Status:</span>
 				<span class="label label-info">
 					<i class="icon-edit"></i>
