@@ -85,12 +85,16 @@ import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTAccessType;
 import com.duggan.workflow.shared.model.HTComment;
@@ -112,7 +116,7 @@ import com.duggan.workflow.test.LDAPAuth;
  *
  */
 public class JBPMHelper implements Closeable{
-
+	
 	private BPMSessionManager sessionManager;
 	private static JBPMHelper helper;
 	static Logger logger = Logger.getLogger(JBPMHelper.class);
@@ -180,7 +184,7 @@ public class JBPMHelper implements Closeable{
 		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
 		
-		ProcessInstance processInstance = sessionManager.startProcess("invoice-approval", initialParams,summary);
+		ProcessInstance processInstance = sessionManager.startProcess(getProcessId(summary.getType()), initialParams,summary);
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
 		summary.setProcessInstanceId(processInstance.getId());
 		DocumentDaoHelper.save(summary);
@@ -189,6 +193,29 @@ public class JBPMHelper implements Closeable{
 		
 	}
 	
+	public String getProcessId(DocType type) {
+
+		List<ProcessDefModel> processDefs = DB.getProcessDao().getProcessesForDocType(type);
+		
+		if(processDefs==null || processDefs.isEmpty()){
+			throw new ProcessInitializationException("Could not start process: " +
+					"No process definition found for DocType= ["+type+"]");
+		}
+		
+		if(processDefs.size()>0){
+			throw new ProcessInitializationException("Could not start process: More than 1 process definition " +
+					"found for document ["+type+"]");
+		}
+		
+		ProcessDefModel model = processDefs.get(0); 
+		
+		String processId = model.getProcessId();
+		
+		ProcessMigrationHelper.start(model, false);
+		
+		return processId;
+	}
+
 	/**
 	 * Count the number of tasks - completed/ or new
 	 * 
@@ -666,6 +693,14 @@ public class JBPMHelper implements Closeable{
 		String processId = log.getProcessId();
 		
 		return "[Process "+processId+"; ProcessInstanceId "+processInstanceId+"L]";
+	}
+
+	public void loadKnowledge(byte[] bytes, String processName) {
+		sessionManager.loadKnowledge(bytes, processName);
+	}
+
+	public boolean isProcessingRunning(String processId) {
+		return sessionManager.isRunning(processId);
 	}
 		
 	

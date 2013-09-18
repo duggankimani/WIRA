@@ -31,7 +31,7 @@
 						  </div>
 						  <div class="form-group">
 						 	 <label for="ProcessDescription">Description:</label>
-						 	 <d:TextArea class="form-control" rows="3"></d:TextArea>
+						 	 <d:TextArea ui:field="txtDescription" class="form-control" rows="3"></d:TextArea>
 						  </div>
 						  <div class="form-group">
 						  	<label for="ProcessName">Document Types:</label>

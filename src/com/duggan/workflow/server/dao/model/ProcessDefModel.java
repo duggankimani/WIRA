@@ -4,14 +4,16 @@ package com.duggan.workflow.server.dao.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
+
+import com.duggan.workflow.shared.model.ProcessDefStatus;
 
 @Entity
 public class ProcessDefModel extends PO {
@@ -31,10 +33,20 @@ public class ProcessDefModel extends PO {
 	
 	private boolean isArchived;
 	
+	@Column(length=2000)
+	private String description;
+	
+	private ProcessDefStatus status;
+	
 	@OneToMany(mappedBy="processDef", cascade={CascadeType.ALL})
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+		org.hibernate.annotations.CascadeType.REMOVE})
 	private List<ProcessDocModel> processDocuments;
 		
+	public ProcessDefModel(){
+		status = ProcessDefStatus.INACTIVE;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -73,6 +85,22 @@ public class ProcessDefModel extends PO {
 
 	public void setProcessDocuments(List<ProcessDocModel> processDocuments) {
 		this.processDocuments = processDocuments;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public ProcessDefStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ProcessDefStatus status) {
+		this.status = status;
 	}
 	
 }

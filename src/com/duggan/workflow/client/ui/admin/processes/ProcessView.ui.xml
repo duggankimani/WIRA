@@ -24,14 +24,17 @@
 								<div class="th">
 								  <label><input type="checkbox" class="ace"/></label>
 								</div>
+								<div class="th">NAME:</div>
 								<div class="th">DOCUMENT TYPE</div>
 								<div class="th">FILE NAME</div>
+								<div class="th">PROCESS ID</div>
 								<div class="th">STATUS</div>
 								<div class="th">LAST MODIFIED</div>
 								<div class="th">ACTIONS</div>	
 							</div>								
+
 						</div>
-						<g:HTMLPanel ui:field="tblRow" styleName="table-row-group">
+						<g:HTMLPanel ui:field="tblRow" styleName="tbody">
 						</g:HTMLPanel>
 					</div>
 				</div>

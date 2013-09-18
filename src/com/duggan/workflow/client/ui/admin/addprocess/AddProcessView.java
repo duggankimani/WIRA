@@ -16,6 +16,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -41,7 +42,7 @@ public class AddProcessView extends PopupViewImpl implements
 	@UiField CheckBox chkInvoice;
 	@UiField CheckBox chkContract;
 	@UiField Uploader uploader;
-	
+	@UiField TextArea txtDescription;
 
 	public interface Binder extends UiBinder<Widget, AddProcessView> {
 	}
@@ -107,11 +108,44 @@ public class AddProcessView extends PopupViewImpl implements
 		return types;
 	}
 	
+	@Override
+	public void setValues(Long processDefId,
+			String name,String processId,String description, List<DocType> docTypes) {
+		txtName.setValue(name);
+		txtProcess.setValue(processId);
+		setProcessId(processDefId);
+		if(description!=null){
+			txtDescription.setValue(description);
+		}
+		
+		if(docTypes!=null){
+			setTypes(docTypes);
+		}
+	}
+	
+	private void setTypes(List<DocType> docTypes) {
+		for(DocType type: docTypes){
+			switch (type) {
+			case CONTRACT:
+				chkContract.setValue(true);
+				break;
+			case INVOICE:
+				chkInvoice.setValue(true);
+				break;
+			case LPO:
+				chkLPO.setValue(true);
+				break;
+			}
+		}
+	}
+
 	public ProcessDef getProcess(){
 		ProcessDef def = new ProcessDef();
 		def.setDocTypes(getTypes());
 		def.setName(txtName.getValue());
 		def.setProcessId(txtProcess.getValue());		
+		def.setDescription(txtDescription.getValue());
+		
 		return def;
 	}
 	
@@ -165,4 +199,5 @@ public class AddProcessView extends PopupViewImpl implements
 		aFinish.setEnabled(enableFinish);
 		aClose.setEnabled(enableCancel);	
 	}
+
 }

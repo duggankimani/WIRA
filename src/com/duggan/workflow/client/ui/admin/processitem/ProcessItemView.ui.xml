@@ -6,17 +6,32 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="table-row">
-						<g:HTMLPanel styleName="center table-cell">
+	<g:HTMLPanel styleName="tr">
+						<g:HTMLPanel styleName="center td">
 							<label>
 								<input type="checkbox"/>
 							</label>
 						</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">Invoice , LPO</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">Invoice_process.bpmn</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">Active</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">22/9/2013</g:HTMLPanel>
-						<g:HTMLPanel styleName="table-cell">
+						<g:HTMLPanel styleName="td">
+						    <span ui:field="spnName"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="td">
+						    <span ui:field="spnDocTypes"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="td">
+						    <span ui:field="spnFileName"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="td">
+						    <span ui:field="spnProcessId"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="td">
+						    <span ui:field="spnStatus"></span>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="td">
+						    <span ui:field="spnLastModified"></span>
+						</g:HTMLPanel>
+						
+						<g:HTMLPanel styleName="td">
 								<g:Anchor ui:field="aActivate" styleName="btn btn-default" title="Activate Process">
 									<i class="icon-play"></i>
 								</g:Anchor>

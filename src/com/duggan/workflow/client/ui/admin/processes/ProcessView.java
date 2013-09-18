@@ -27,17 +27,6 @@ public class ProcessView extends ViewImpl implements ProcessPresenter.MyView {
 	public Widget asWidget() {
 		return widget;
 	}
-	
-	@Override
-	public void addToSlot(Object slot, Widget content) {
-		if(slot == ProcessPresenter.TABLE_SLOT){
-			if(content!=null){
-				tblRow.add(content);
-			}
-		}else{
-		super.setInSlot(slot, content);
-		}
-	}
 
 	public HasClickHandlers getaNewProcess() {
 		return aNewProcess;
@@ -51,7 +40,18 @@ public class ProcessView extends ViewImpl implements ProcessPresenter.MyView {
 				tblRow.add(content);
 			}
 		}else{
-		super.setInSlot(slot, content);
+			super.setInSlot(slot, content);
+		}
+	}
+	
+	@Override
+	public void addToSlot(Object slot, Widget content) {
+		if(slot == ProcessPresenter.TABLE_SLOT){
+			if(content!=null){
+				tblRow.add(content);
+			}
+		}else{
+			super.setInSlot(slot, content);
 		}
 	}
 	

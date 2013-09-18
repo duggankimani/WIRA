@@ -1,0 +1,36 @@
+package com.duggan.workflow.server.actionhandlers;
+
+import java.util.List;
+
+import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
+import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
+import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.requests.GetProcessesRequest;
+import com.duggan.workflow.shared.responses.BaseResponse;
+import com.duggan.workflow.shared.responses.GetProcessesResponse;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.shared.ActionException;
+
+public class GetProcessesRequestActionHandler extends
+		BaseActionHandler<GetProcessesRequest, GetProcessesResponse> {
+
+	@Inject
+	public GetProcessesRequestActionHandler() {
+	}
+
+	@Override
+	public void execute(GetProcessesRequest action, BaseResponse actionResult,
+			ExecutionContext execContext) throws ActionException {
+		
+		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses();
+		GetProcessesResponse response = (GetProcessesResponse)actionResult;
+		
+		response.setProcesses(processes);
+	}
+
+	@Override
+	public Class<GetProcessesRequest> getActionType() {
+		return GetProcessesRequest.class;
+	}
+}

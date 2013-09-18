@@ -7,6 +7,7 @@ import java.util.List;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Attachment;
 
@@ -81,4 +82,5 @@ public class AttachmentDaoHelper{
 		dao.delete(attachmentId);
 		return true;
 	}
+
 }
