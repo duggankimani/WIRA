@@ -2,6 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.List;
 
 public class HTUser implements Serializable {
 
@@ -11,7 +12,8 @@ public class HTUser implements Serializable {
 	private String email;
 	private String surname;
 	private String password;
-
+	private List<UserGroup> groups;
+	
 	public HTUser() {
 	}
 
@@ -65,4 +67,28 @@ public class HTUser implements Serializable {
 		// TODO Auto-generated method stub
 		return id;
 	}
+
+	public List<UserGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<UserGroup> groups) {
+		this.groups = groups;
+	}
+	
+	public String getGroupsAsString(){
+		StringBuffer out = new StringBuffer();
+		if(groups!=null){
+			for(UserGroup group: groups){
+				out.append(group.getName()+",");
+			}
+		}
+		
+		if(out.length()>0){
+			return out.substring(0, out.length()-1);
+		}
+		
+		return "";
+	}
+	
 }

@@ -15,6 +15,7 @@ public class Attachment implements Serializable {
 	private String name;
 	private boolean archived;
 	private Long documentid;
+	private Long processDefId;
 	private Long size;
 	private String sizeStr;
 	private String contentType;
@@ -78,5 +79,11 @@ public class Attachment implements Serializable {
 	}
 	public String getSizeStr() {
 		return sizeStr;
+	}
+	public Long getProcessDefId() {
+		return processDefId;
+	}
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
 	}
 }

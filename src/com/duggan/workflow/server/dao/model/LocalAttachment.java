@@ -34,6 +34,10 @@ public class LocalAttachment extends PO{
 	@JoinColumn(name="documentId",referencedColumnName="id")
 	private DocumentModel document;
 	
+	@ManyToOne
+	@JoinColumn(name="processDefId", referencedColumnName="id")
+	private ProcessDefModel processDef;
+	
 	private long size;
 	
 	private String contentType;
@@ -103,6 +107,14 @@ public class LocalAttachment extends PO{
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	public ProcessDefModel getProcessDef() {
+		return processDef;
+	}
+
+	public void setProcessDef(ProcessDefModel processDef) {
+		this.processDef = processDef;
 	}
 
 }

@@ -24,7 +24,6 @@ import com.duggan.workflow.shared.event.ExecuteWorkflowEvent;
 import com.duggan.workflow.shared.event.ExecuteWorkflowEvent.ExecuteWorkflowHandler;
 import com.duggan.workflow.shared.event.SetStatusEvent;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.requests.GetItemRequest;
@@ -53,13 +52,10 @@ public class PersonalReviewPresenter
 	
 	HTask task;
 	
-	final CurrentUser user;
-	
 	@Inject
 	public PersonalReviewPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, final CurrentUser user) {
+			final MyProxy proxy) {
 		super(eventBus, view, proxy);
-		this.user = user;
 	}
 
 	@Override
@@ -111,7 +107,7 @@ public class PersonalReviewPresenter
 	@Override
 	public void onExecuteWorkflow(ExecuteWorkflowEvent event) {
 		Actions action = event.getAction();
-		ExecuteWorkflow workflowRequest = new ExecuteWorkflow(task.getId(),user.getUserId(), action);
+		ExecuteWorkflow workflowRequest = new ExecuteWorkflow(task.getId(),AppContext.getUserId(), action);
 		submitRequest(workflowRequest);
 	}
 	

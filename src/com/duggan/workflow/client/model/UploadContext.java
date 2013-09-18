@@ -11,17 +11,20 @@ import java.util.Set;
  */
 public class UploadContext {
 
-	private String url=null;
-	private static final String ACTION="ACTION"; 
+	private String url="/upload";
+	public static final String ACTION="ACTION"; 
+	private String acceptsDocTypes=null;
 	
 	private Map<String,String> context = new HashMap<String, String>();
 	
 	public enum UPLOADACTION{
 		ATTACHDOCUMENT,
-		UPLOADBPMNPROCESS
+		UPLOADBPMNPROCESS,
+		UPLOADCHANGESET
 	}
 	
 	public UploadContext(){
+		this.url="upload";
 	}
 	
 	public UploadContext(String url){
@@ -76,4 +79,23 @@ public class UploadContext {
 		}
 		return params.toString();
 	}	
+	
+	/**
+	 * 
+	 * Comma separated Acceptable file extensions 
+	 * 
+	 * @param docTypes
+	 */
+	public void setAccept(String commaSeparatedDocTypes){
+		acceptsDocTypes = commaSeparatedDocTypes;
+	}
+	
+	/**
+	 * Returns Comma separated Acceptable file extensions
+	 * 
+	 * @return Acceptable File Extensions
+	 */
+	public String getAcceptTypes(){
+		return acceptsDocTypes;
+	}
 }

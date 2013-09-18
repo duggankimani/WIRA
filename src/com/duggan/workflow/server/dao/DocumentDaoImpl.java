@@ -60,7 +60,9 @@ public class DocumentDaoImpl {
 		
 		if(document.getId()==null){
 			document.setCreated(new Date());
-			document.setStatus(DocStatus.DRAFTED);
+			if(document.getStatus()==null){
+				document.setStatus(DocStatus.DRAFTED);
+			}
 			document.setCreatedBy(SessionHelper.getCurrentUser().getId());
 		}else{
 			document.setUpdated(new Date());

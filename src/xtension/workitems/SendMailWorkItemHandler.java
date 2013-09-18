@@ -74,7 +74,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		if(actorId!=null && !actorId.trim().isEmpty()){
 			users = new ArrayList<>();
 			users.add(LoginHelper.get().getUser(actorId));
-		}if(groupId!=null && !groupId.trim().isEmpty()){
+		}else if(groupId!=null && !groupId.trim().isEmpty()){
 			users = LoginHelper.get().getUsersForGroup(groupId);
 		}
 		
@@ -99,16 +99,18 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		case APPROVALREQUEST_APPROVERNOTE:
 			subject = subject+" Approval Request -"+approver;
 			body =  "The following document requires your review and approval.";
+			owner = users;
 			break;
 		case TASKCOMPLETED_APPROVERNOTE:
 			String action = (Boolean)isApproved? "Approved": "Denied";
 			subject = subject+" - "+action;
 			body =  "You "+action.toLowerCase()+" Document #"+subject;
+			owner= users;
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
 			String noteaction = (Boolean)isApproved? "Approved": "Denied";			
 			subject = subject+" - "+approver+" "+noteaction;
-			body =  "The following document approved by "+approver;
+			body =  "The following document "+noteaction.toLowerCase()+" by "+approver;
 			break;
 		case PROCESS_COMPLETED:
 			

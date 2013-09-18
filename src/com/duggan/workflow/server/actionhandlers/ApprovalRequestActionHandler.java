@@ -3,6 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.exceptions.IllegalApprovalRequestException;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
@@ -27,6 +28,9 @@ public class ApprovalRequestActionHandler extends
 		doc.setStatus(DocStatus.INPROGRESS);
 		doc = DocumentDaoHelper.save(doc);
 		
+		if(doc.getProcessInstanceId()!=null){
+			throw new IllegalApprovalRequestException(doc);
+		}
 		String userId = action.getUsername();
 		if(userId==null)
 			userId = SessionHelper.getCurrentUser().getId();

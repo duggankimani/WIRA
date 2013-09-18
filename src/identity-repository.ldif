@@ -64,7 +64,7 @@ objectClass: top
 cn: Demian calcaprina
 sn: Calca
 uid: calcacuervo
-mail: mdkimani@gmail.com
+mail: kimani@at.co.ke
 userPassword:: cGFzcw==
 
 dn: cn=mariano,ou=users,o=mojo

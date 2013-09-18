@@ -1,13 +1,9 @@
 package com.duggan.workflow.server.helper.session;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.duggan.workflow.server.ServerConstants;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.model.HTUser;
 
 /**

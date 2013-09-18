@@ -10,7 +10,6 @@ import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.tasklist.tabs.TabsPresenter;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.gwtplatform.common.client.IndirectProvider;

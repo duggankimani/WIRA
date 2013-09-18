@@ -26,6 +26,7 @@ public class IssuesPanel extends Widget {
 
 		setElement(container);
 
+		//setStyleName("alert alert-danger vld-Summary");
 		setStyleName("vld-Summary");
 	}
 

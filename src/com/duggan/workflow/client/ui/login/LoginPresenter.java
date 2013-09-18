@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.login;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.CurrentUser;
 import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -54,14 +53,11 @@ public class LoginPresenter extends
 	@Inject PlaceManager placeManager;
 
 	@Inject LoginGateKeeper gateKeeper;
-	
-	final CurrentUser user;
-	
+		
 	@Inject
 	public LoginPresenter(final EventBus eventBus, final ILoginView view,
-			final MyProxy proxy, final CurrentUser user) {
+			final MyProxy proxy) {
 		super(eventBus, view, proxy);
-		this.user = user;	
 	}
 
 	@Override
