@@ -20,6 +20,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	
 	@UiField HTMLPanel pContainer;
 	
+	
 	@Inject
 	public MainPageView(final Binder binder) {
 		widget = binder.createAndBindUi(this);

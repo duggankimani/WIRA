@@ -9,7 +9,8 @@
 	<g:HTMLPanel>
 		<div class="content-body">
 			<div class="row-fluid">
-				<div class="action-buttons">
+				<!--Action Buttons  -->
+				 <div class="action-buttons">
 					<g:Anchor ui:field="aNewUser" styleName="btn btn-primary"
 						title="Add a New Process">
 						<i class="icon-plus"></i>
@@ -20,9 +21,142 @@
 						title="Add a New Process">
 						<i class="icon-trash"></i>
 							Delete User
-					</g:Anchor>
-				</div>																			
-			</div>
-     	</div>
+				   </g:Anchor>
+				</div>
+				
+					<ul id="mytab" class="nav nav-tabs">
+					  <li class="active"><a href="#user" data-toggle="tab">Users</a></li>
+					  <li><a href="#groups" data-toggle="tab">Groups</a></li>
+					</ul>
+					<div id="usercontent" class="tab-content">
+							<!-- User's Information Tab  -->
+							<div class="tab-pane fade in active" id="user">
+						        <div class="table table-hover table-striped table-bordered">
+								    <div class="thead">
+								    	<div class="tr">
+											<div class="th">
+											  <label><input type="checkbox" class="ace"/></label>
+											</div>
+											<div class="th">First Name</div>
+											<div class="th">Last Name</div>
+											<div class="th">Email</div>		
+											<div class="th">Group</div>
+											<div class="th">Action</div>	
+										</div>						
+									</div>
+								<div class="tbody">
+								<g:HTMLPanel styleName="tr">
+										<g:HTMLPanel styleName="td">
+											<label>
+												<input type="checkbox"/>
+											</label>
+										</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">Tom</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">Kimani</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">tosh0948@gmail.com</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">HOD_Development</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">
+											<div class="action-commands">										
+												<g:Anchor styleName="green">
+													<i class="icon-pencil"></i>
+												</g:Anchor>
+												<g:Anchor styleName="red">
+													<i class="icon-trash"></i>
+												</g:Anchor>
+											</div>
+									</g:HTMLPanel>
+							    </g:HTMLPanel>
+							    
+							    <g:HTMLPanel styleName="tr">
+										<g:HTMLPanel styleName="td">
+											<label>
+												<input type="checkbox"/>
+											</label>
+										</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">Tom</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">Kimani</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">tosh0948@gmail.com</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">HOD_Development</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">
+											<div class="action-commands">										
+												<g:Anchor styleName="green">
+													<i class="icon-pencil"></i>
+												</g:Anchor>
+												<g:Anchor styleName="red">
+													<i class="icon-trash"></i>
+												</g:Anchor>
+											</div>
+									</g:HTMLPanel>
+							    </g:HTMLPanel>
+							    
+							    <g:HTMLPanel styleName="tr">
+										<g:HTMLPanel styleName="td">
+											<label>
+												<input type="checkbox"/>
+											</label>
+										</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">Tom</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">Kimani</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">tosh0948@gmail.com</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">HOD_Development</g:HTMLPanel>
+										<g:HTMLPanel styleName="td">
+											<div class="action-commands">										
+												<g:Anchor styleName="green">
+													<i class="icon-pencil helper-14"></i>
+												</g:Anchor>
+												<g:Anchor styleName="red">
+													<i class="icon-trash"></i>
+												</g:Anchor>
+											</div>
+									</g:HTMLPanel>
+							    </g:HTMLPanel>
+							    	</div><!--End Tbody  -->
+								</div><!--End Table  -->
+								
+								<div class="row-fluid">
+									<div class="span6">
+										<div class="dataTables_info" id="sample-table-2_info">Showing 1 to 10 of 23 entries</div>
+									</div>
+									<div class="span6">
+										<div class="pull-right">
+											<ul class="pagination">
+												<li class="prev disabled">
+													<a href="#">
+														<i class="icon-double-angle-left"></i>
+													</a>
+												</li>
+												<li class="active">
+													<a href="#">1</a>
+												</li>
+												<li>
+													<a href="#">2</a>
+												</li>
+												<li>
+													<a href="#">3</a>
+												</li>
+												<li class="next">
+													<a href="#">
+														<i class="icon-double-angle-right"></i>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+					        </div>
+							
+							<!-- Group's Table  -->
+							<div class="tab-pane fade" id="groups">
+						          <p>Raw denim you probably haven't heard of them jean shorts Austin. 
+						          Nesciunt tofu stumptown aliqua, retro synth master cleanse.
+						          Mustache cliche tempor, williamsburg carles vegan helvetica. 
+						          Reprehenderit butcher retro keffiyeh dreamcatcher synth. 
+						          Cosby sweater eu banh mi, qui irure terry richardson ex squid. 
+						          Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+						          </p>
+					        </div>
+				</div>
+     		</div>
+   		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
