@@ -6,6 +6,8 @@ import java.util.List;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -54,7 +56,7 @@ public class ProcessItemPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-			
+							
 				ManageKnowledgeBaseRequest request = 
 						new ManageKnowledgeBaseRequest(processDef.getId(), 
 								ManageProcessAction.ACTIVATE, 
@@ -112,10 +114,12 @@ public class ProcessItemPresenter extends
 	}
 
 	protected void submit(ManageKnowledgeBaseRequest request) {
+		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request, new TaskServiceCallback<ManageKnowledgeBaseResponse>() {
 			@Override
 			public void processResult(ManageKnowledgeBaseResponse result) {
 				setProcess(result.getProcessDef());
+				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
 	}
