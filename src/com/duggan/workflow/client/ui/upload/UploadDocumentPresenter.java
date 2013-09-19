@@ -2,16 +2,14 @@ package com.duggan.workflow.client.ui.upload;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
-import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
-import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.PopupView;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.PopupView;
+import com.gwtplatform.mvp.client.PresenterWidget;
 
 public class UploadDocumentPresenter extends
 		PresenterWidget<UploadDocumentPresenter.MyView> {

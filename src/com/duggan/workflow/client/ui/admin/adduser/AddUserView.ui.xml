@@ -7,8 +7,8 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true">
-		<g:HTMLPanel>
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="AddUserDialog">
+		<g:HTMLPanel styleName="full-page">
 	 		<g:HTMLPanel styleName="modal-header">
 					<h5><i class="icon-cogs"></i>New User<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
 			 </g:HTMLPanel>
@@ -35,25 +35,51 @@
 						        class="form-control" placeholder="Email"/>
 						  </div>
 						  
-						  <div class="form-group">
-						  	<label for="ProcessName">Group:</label>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkLPO"/>HOD Development
-							    </label>
-							  </div>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkInvoice"/>Management
-							    </label>
-							  </div>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkContract"/>Sales Group
-							    </label>
-							  </div>
-						  </div>
-						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Save&nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+						<div class="control-group">
+							<label class="control-label">Group:</label>
+							<g:FocusPanel ui:field="sltContainer">
+								<g:HTMLPanel>
+								<div class="controls">
+									<div class="select2-container select2-container-multi" ui:field="sltBox">
+										<ul class="select2-choices">
+											<li class="select2-search-choice">
+												<div>HOD_Finance</div>
+												<g:Anchor styleName="select2-search-choice-close" ui:field="aSelectedCancel"></g:Anchor>
+											</li>
+											<li class="select2-search-choice">
+												<div>HOD_Procurement</div>
+												<a href="#" onclick="return false;" class="select2-search-choice-close"
+													tabindex="-1"></a>
+											</li>
+											<li class="select2-search-field">
+												<br/>
+												<input type="text" autocomplete="off" class="select2-input" style="width: 10px;"/>
+											</li>
+										</ul>
+										</div>
+										<input type="hidden" class="input-block-level" name="reseiver"	value="" style="display: none;"/>
+									</div>
+								</g:HTMLPanel>
+							</g:FocusPanel>
+								<div class="select2-drop select2-drop-multi hidden" ui:field="sltDrop" style="width:200px; display:block; top:266px;">
+										<ul class="select2-results" ui:field="ulSelectResults">
+											<g:Anchor styleName="select2-results-dept-0 select2-result select2-result-selectable select2-highlighted" ui:field="liSelectItem">
+												<div class="select2-result-label"><span class="select2"></span>Procurement</div>
+											</g:Anchor>
+											
+											<li class="select2-results-dept-0 select2-result select2-result-selectable">
+												<div class="select2-result-label"><span class="select2-match"></span>Management</div>
+											</li>
+											
+											<li class="select2-results-dept-0 select2-result select2-result-selectable">
+												<div class="select2-result-label"><span class="select2-match"></span>Sales &amp; Marketing</div>
+											</li>
+										</ul>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<g:Anchor styleName="btn btn-success" ui:field="aNext">Save&nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+							</div>
 					</g:HTMLPanel>
 			</g:HTMLPanel>
 			
