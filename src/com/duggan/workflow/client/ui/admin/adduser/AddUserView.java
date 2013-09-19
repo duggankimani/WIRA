@@ -1,11 +1,15 @@
 package com.duggan.workflow.client.ui.admin.adduser;
 
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
+import com.duggan.workflow.client.ui.admin.component.ListItem;
+import com.duggan.workflow.client.ui.admin.component.ListItem.OnCloseHandler;
+import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -50,12 +54,13 @@ public class AddUserView extends PopupViewImpl implements
 	@UiField FocusPanel sltContainer;
 	@UiField Element sltBox;
 	@UiField Element sltDrop;
-	@UiField Anchor aSelectedCancel;
 	@UiField Element ulSelectResults;
 	@UiField Anchor liSelectItem;
 	
 	@UiField Anchor aSaveGroup;
 	@UiField Anchor aSaveUser;
+	
+	@UiField BulletListPanel ulPanel;
 	
 	TYPE type;
 	
@@ -72,6 +77,21 @@ public class AddUserView extends PopupViewImpl implements
 				hide();
 			}
 		});
+		
+		for(int i=0 ; i<20; i++){
+			UserGroup group = new UserGroup("User Group "+i);
+			ListItem<UserGroup> itemWidget = new ListItem<UserGroup>(group);
+			
+			itemWidget.addOnCloseHandler(new OnCloseHandler() {
+				@Override
+				public void onItemClosed(ListItem source, Listable value) {
+					System.out.println(value.getName());
+					ulPanel.remove(source);
+				}
+				
+			});
+			ulPanel.add(itemWidget);
+		}
 		
 		sltContainer.addFocusHandler(new FocusHandler() {
 			@Override

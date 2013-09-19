@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author duggan
  *
  */
-public class UserGroup implements Serializable{
+public class UserGroup implements Serializable, Listable{
 
 	/**
 	 * 
