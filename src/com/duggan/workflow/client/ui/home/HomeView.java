@@ -64,7 +64,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField Element divDocView;
 	@UiField HTMLPanel wholeContainer;
 	@UiField HTMLPanel mainContainer;
-	@UiField SpanElement loadingtext;
 	@UiField TextBox txtSearch;
 	
 	//Filter Dialog Caret
@@ -79,8 +78,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		
 		divDocListing.setId("middle-nav");
 		divDocView.setId("detailed-info");
-		
-		loadingtext.setId("loading-text");
 		
 
 		// InlineLabel l;
@@ -306,10 +303,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		return wholeContainer;
 	}
 	
-	public SpanElement getLoadingtext() {
-		return loadingtext;
-	}
-	
 	public TextBox getSearchBox(){
 		return txtSearch;
 	}
@@ -323,6 +316,15 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@Override
 	public void setSearchBox(String text) {
 		txtSearch.setValue(text);
+	}
+
+	@Override
+	public void showmask(boolean mask) {
+		if(mask){
+			wholeContainer.addStyleName("working-request");
+		}else{
+			wholeContainer.removeStyleName("working-request");
+		}
 	}
 
 }

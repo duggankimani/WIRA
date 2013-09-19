@@ -103,7 +103,7 @@ public class TestNotications {
 		
 		Assert.assertTrue(users.size()>0);
 		
-		Assert.assertEquals("mariano", users.get(0).getId());
+		Assert.assertEquals("mariano", users.get(0).getUserId());
 		Assert.assertEquals("mariano", users.get(0).getName());
 	}
 	

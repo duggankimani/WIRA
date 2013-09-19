@@ -14,22 +14,12 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 
 public class TestLdapAuth {
-
-	@Test
-	public void getUser(){
-		String userId = "calcacuervo";
-		List<String> list= LoginHelper.get().getLdapQuery().groupsForUser("likoko");
-		
-		Assert.assertNotNull(list);
-
-		Assert.assertTrue(list.size()>0);
-	}
 	
 	@Ignore
 	public void saveUser(){
 		HTUser user = new HTUser();
 		user.setEmail("mdkimani@gmail.com");
-		user.setId("dkimani");
+		user.setUserId("dkimani");
 		user.setName("Duggan Kimani");
 		user.setPassword("kimani2012");
 		user.setSurname("Macharia");
@@ -66,7 +56,7 @@ public class TestLdapAuth {
 		List<HTUser> users = LoginHelper.get().retrieveUsers();
 		
 		for(HTUser user: users){
-			System.err.println(user.getId()+" : "+user.getName()+" : "+user.getEmail());
+			System.err.println(user.getUserId()+" : "+user.getName()+" : "+user.getEmail());
 		}
 		Assert.assertTrue(users.size()>0);
 	}

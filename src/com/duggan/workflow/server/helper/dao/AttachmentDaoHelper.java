@@ -17,11 +17,11 @@ public class AttachmentDaoHelper{
 		DocumentModel doc = DB.getDocumentDao().getById(documentId);
 		attachment.setDocument(doc);
 		
-		DB.getAttachmentDao().saveOrUpdate(attachment);
+		DB.getAttachmentDao().save(attachment);
 	}
 	
 	public static void save(LocalAttachment attachment){
-		DB.getAttachmentDao().saveOrUpdate(attachment);
+		DB.getAttachmentDao().save(attachment);
 	}
 	
 	public static List<Attachment> getAttachments(Long documentId){

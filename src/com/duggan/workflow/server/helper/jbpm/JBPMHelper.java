@@ -319,7 +319,7 @@ public class JBPMHelper implements Closeable{
 	 */
 	public List<HTSummary> getTasksForUser(String userId, TaskType type){
 		
-		if(!LoginHelper.get().getLdapQuery().existsUser(userId)){
+		if(!LoginHelper.get().existsUser(userId)){
 			throw new RuntimeException("User "+userId+" Unknown!!");
 		}
 				

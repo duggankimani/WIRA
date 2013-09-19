@@ -1,4 +1,4 @@
-package com.duggan.workflow.server.helper.auth;
+package com.duggan.workflow.server.helper.ldap;
 
 import java.io.File;
 import java.util.ArrayList;

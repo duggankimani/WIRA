@@ -54,6 +54,8 @@ import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
+import com.duggan.workflow.shared.requests.SaveUserRequest;
+import com.duggan.workflow.server.actionhandlers.SaveUserRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -135,6 +137,9 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(ManageKnowledgeBaseRequest.class,
 				ManageKnowledgeBaseResponseHandler.class,
+				SessionValidator.class);
+
+		bindHandler(SaveUserRequest.class, SaveUserRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }

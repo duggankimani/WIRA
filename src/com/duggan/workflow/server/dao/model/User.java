@@ -1,11 +1,14 @@
 package com.duggan.workflow.server.dao.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -36,20 +38,25 @@ public class User extends PO {
 	@Column(nullable=false)
 	private String userId;
 	
+	private String password;
+	
 	@Column(nullable=false)
 	private String lastName;
 	
 	@Column(nullable=false)
 	private String firstName;
+	
+	@Column(length=100)
+	private String email;
+	
 	private boolean isArchived;
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,
-			CascadeType.MERGE,CascadeType.REFRESH})
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinTable(name="UserGroup",
 		joinColumns={@JoinColumn(name="userid")},
 		inverseJoinColumns={@JoinColumn(name="groupid")}
 	)
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
 	private Collection<Group> groups = new HashSet<>();
 	
 	public User(){
@@ -59,14 +66,6 @@ public class User extends PO {
 	@Override
 	public Long getId() {
 		return id;
-	}
-
-	public Collection<Group> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Collection<Group> groups) {
-		this.groups = groups;
 	}
 	
 	public void addGroup(Group group){
@@ -107,6 +106,30 @@ public class User extends PO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Collection<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Collection<Group> groups) {
+		this.groups = groups;
 	}
 
 }

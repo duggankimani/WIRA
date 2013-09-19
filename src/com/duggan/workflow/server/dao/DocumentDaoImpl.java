@@ -42,7 +42,7 @@ public class DocumentDaoImpl {
 		
 		return em.createQuery("FROM DocumentModel d where status=:status and createdBy=:createdBy").
 				setParameter("status", status).
-				setParameter("createdBy", SessionHelper.getCurrentUser().getId()).
+				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).
 				getResultList();
 	}
 	
@@ -63,10 +63,10 @@ public class DocumentDaoImpl {
 			if(document.getStatus()==null){
 				document.setStatus(DocStatus.DRAFTED);
 			}
-			document.setCreatedBy(SessionHelper.getCurrentUser().getId());
+			document.setCreatedBy(SessionHelper.getCurrentUser().getUserId());
 		}else{
 			document.setUpdated(new Date());
-			document.setUpdatedBy(SessionHelper.getCurrentUser().getId());
+			document.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
 		
 		em.persist(document);
@@ -92,7 +92,7 @@ public class DocumentDaoImpl {
 
 		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d where status=:status and createdBy=:createdBy").
 				setParameter("status", status).
-				setParameter("createdBy", SessionHelper.getCurrentUser().getId()).getSingleResult();
+				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).getSingleResult();
 		 
 		 return value.intValue();
 	}
@@ -126,7 +126,7 @@ public class DocumentDaoImpl {
 		List lst = em.createQuery("FROM DocumentModel d where processInstanceId= :processInstanceId " +
 				"and createdBy=:createdBy")
 				.setParameter("processInstanceId", processInstanceId)
-				.setParameter("createdBy", SessionHelper.getCurrentUser().getId())
+				.setParameter("createdBy", SessionHelper.getCurrentUser().getUserId())
 				.getResultList();
 		
 		if(lst.size()>0){
@@ -222,7 +222,7 @@ public class DocumentDaoImpl {
 		{
 			isFirst=false;
 			query.append("createdBy=:createdBy");
-			//params.put("createdBy", SessionHelper.getCurrentUser().getId());
+			//params.put("createdBy", SessionHelper.getCurrentUser().getUserId());
 			params.put("createdBy", userId);
 		}
 		

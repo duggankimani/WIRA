@@ -47,8 +47,8 @@ public class ErrorLogDaoHelper {
 		log.setUpdated(new Date());
 
 		if(SessionHelper.getCurrentUser()!=null){
-			log.setUpdatedBy(SessionHelper.getCurrentUser().getId());
-			log.setCreatedBy(SessionHelper.getCurrentUser().getId());
+			log.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
+			log.setCreatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
 		log.setAgent(agent);
 		log.setRemoteAddress(ip);		

@@ -428,7 +428,7 @@ class BPMSessionManager{
 		content.putAll(values);
 		//completing tasks is a single individuals responsibility
 		//Notifications & Emails sent after task completion must reflect this
-		content.put("ActorId", SessionHelper.getCurrentUser().getId());
+		content.put("ActorId", SessionHelper.getCurrentUser().getUserId());
 		//sessionManager.getTaskService().completeWithResults(taskId, userId, content);
 		getTaskClient().completeWithResults(taskId, userId, content);
 		//sessionManager.getTaskService().complete(taskId, userId, null);
@@ -620,7 +620,7 @@ class BPMSessionManager{
 			Object ownerId = newValues.get("OwnerId");
 			if(ownerId==null){
 				if(doc!=null){	
-					ownerId =doc.getOwner().getId(); 
+					ownerId =doc.getOwner().getUserId(); 
 					newValues.put("OwnerId", ownerId.toString());
 				}
 			}

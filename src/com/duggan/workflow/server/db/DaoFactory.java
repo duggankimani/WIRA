@@ -8,6 +8,7 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 
 class DaoFactory {
@@ -18,6 +19,7 @@ class DaoFactory {
 	AttachmentDaoImpl attachmentDao;
 	CommentDaoImpl commentDaoImpl;
 	ProcessDaoImpl processDao;
+	UserGroupDaoImpl userGroupDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -92,6 +94,18 @@ class DaoFactory {
 		}
 		
 		return processDao;
+	}
+
+	public UserGroupDaoImpl getUserGroupDaoImpl(EntityManager entityManager) {
+		if(userGroupDao==null){
+			synchronized (DaoFactory.class) {
+				if(userGroupDao==null){
+					userGroupDao = new UserGroupDaoImpl(entityManager);
+				}
+			}
+		}
+		
+		return userGroupDao;
 	}
 
 }

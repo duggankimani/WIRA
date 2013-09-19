@@ -132,7 +132,7 @@ public class ProcessDefHelper {
 						model.getProcessDocuments();
 				if(children!=null)
 					for(ProcessDocModel doc: children){
-						dao.remove(doc);
+						dao.delete(doc);
 					}
 			}
 		}

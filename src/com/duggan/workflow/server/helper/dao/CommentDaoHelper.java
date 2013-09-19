@@ -61,11 +61,11 @@ public class CommentDaoHelper {
 			commentTo.setCreated(new Date());
 			
 			if(SessionHelper.getCurrentUser()!=null)
-				commentTo.setCreatedBy(SessionHelper.getCurrentUser().getId());
+				commentTo.setCreatedBy(SessionHelper.getCurrentUser().getUserId());
 		}else{
 			commentTo.setUpdated(new Date());
 			if(SessionHelper.getCurrentUser()!=null)
-				commentTo.setUpdatedBy(SessionHelper.getCurrentUser().getId());
+				commentTo.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
 		
 		commentTo.setDocumentId(modelFrom.getDocumentId());

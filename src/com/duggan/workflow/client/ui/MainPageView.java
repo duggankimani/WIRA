@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui;
 
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -17,13 +18,15 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	}
 
 	@UiField HTMLPanel pHeader;
-	
 	@UiField HTMLPanel pContainer;
+	@UiField SpanElement loadingtext;
 	
 	
 	@Inject
 	public MainPageView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		loadingtext.setId("loading-text");
+		
 	}
 
 	@Override
@@ -49,6 +52,15 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		}
 		else{
 			super.setInSlot(slot, content);
+		}
+	}
+
+	@Override
+	public void showProcessing(boolean processing) {
+		if(processing){
+			loadingtext.removeClassName("hide");
+		}else{
+			loadingtext.addClassName("hide");
 		}
 	}
 }

@@ -12,7 +12,7 @@ import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
-import com.duggan.workflow.server.helper.auth.DBUserGroupCallback;
+import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
 
 public class TestUserGroupCallback {
 
@@ -25,7 +25,7 @@ public class TestUserGroupCallback {
 	
 	@Test
 	public void create(){
-		DBUserGroupCallback callback = new DBUserGroupCallback();
+		DBUserGroupCallbackImpl callback = new DBUserGroupCallbackImpl();
 		Group group = new Group();
 		String groupId ="HOD_DEV"; 
 		group.setName(groupId);
@@ -39,10 +39,10 @@ public class TestUserGroupCallback {
 		user.setLastName("Cuervo");
 		user.addGroup(group);
 		
-		callback.saveUser(user);
+		DB.getUserGroupDao().saveUser(user);
 		Assert.assertNotNull(user.getId());		
 		
-		group = callback.getGroup(groupId);
+		group = DB.getUserGroupDao().getGroup(groupId);
 		
 		Collection<Group> userGroups = user.getGroups();		
 		

@@ -6,6 +6,10 @@ import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -27,9 +31,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPagePresenter extends
-		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> implements ErrorHandler{
+		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> implements ErrorHandler, ProcessingCompletedHandler, ProcessingHandler{
 
 	public interface MyView extends View {
+
+		void showProcessing(boolean processing);
+		
 	}
 
 	@ProxyCodeSplit
@@ -69,6 +76,8 @@ public class MainPagePresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(ErrorEvent.TYPE, this);
+		addRegisteredHandler(ProcessingEvent.TYPE, this);
+		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 	}
 	
 	@Override
@@ -102,5 +111,15 @@ public class MainPagePresenter extends
 				fireEvent(new AdminPageLoadEvent(false));
 			}
 		}
+	}
+
+	@Override
+	public void onProcessing(ProcessingEvent event) {
+		getView().showProcessing(true);
+	}
+
+	@Override
+	public void onProcessingCompleted(ProcessingCompletedEvent event) {
+		getView().showProcessing(false);
 	}
 }
