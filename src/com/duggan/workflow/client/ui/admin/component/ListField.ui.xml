@@ -7,18 +7,19 @@
 	    <g:FocusPanel ui:field="sltContainer">
 			<g:HTMLPanel>
 			<div class="controls">
-				<div class="select2-container select2-container-multi" ui:field="sltBox">
+				<div class="select2-container select2-container-multi " ui:field="sltBox">
 					<d:BulletListPanel ui:field="ulSelected" styleName="select2-choices">		    
 					</d:BulletListPanel>
 				</div>	
 			</div>
 			</g:HTMLPanel>
+			
 		</g:FocusPanel>
 
-	     <div class="select2-drop select2-drop-multi hidden" ui:field="sltDrop" style="width:200px; display:block; top:266px;">
+	     <g:FocusPanel styleName="select2-drop select2-drop-multi select2-drop-active hidden" ui:field="sltDrop">
 	    	<d:BulletListPanel ui:field="ulOthers" styleName="select2-results">		    
 			</d:BulletListPanel>
-		</div>	
+		</g:FocusPanel>	
    </g:HTMLPanel>								
 
 </ui:UiBinder>

@@ -4,12 +4,11 @@
      xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
 	<d:BulletPanel ui:field="bullet">
 	    <g:HTMLPanel>	        
-			<g:Anchor ui:field="aSelect">
+			<g:Anchor ui:field="aSelect" styleName="">
 			    <div ui:field="divName"></div>			    			     	
 			</g:Anchor>
 			
 			<g:Anchor styleName="hide select2-search-choice-close" ui:field="aUnselect">
-			    <i class="icon-close"></i>			  	  
 			 </g:Anchor>
 			 <div ui:field="divUnselectName"></div>	       
 	    </g:HTMLPanel>
