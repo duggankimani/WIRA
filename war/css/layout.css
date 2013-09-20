@@ -427,7 +427,7 @@ textarea {
 /* Sidebar */
 #sidebar-nav .add-doc {
 	padding-bottom: 10px;
-	margin-left: 31px;
+	margin-left: 10%;
 }
 
 #sidebar-nav .add-doc .btn {
@@ -460,6 +460,12 @@ textarea {
     height: 100%;
     position: relative;
 }
+.main-container .content-right #middle-box{
+  width: 22.2%;
+  height: 100%;
+}
+
+
 #nav-top {
     background: #ffffff;
     padding-left: 5px;
@@ -479,14 +485,13 @@ textarea {
 
 #nav-top .search {
 	box-shadow: none;
-	height: 20px;
+	height: 21px;
 	font-size: 13px;
 	padding: 0px;
 	border: 1px solid #d0dde9;
 	margin: 0;
 	border-radius: 2px;
-	top: 29px;
-	width: 235px;
+	width: 90%;
 	display: inline-block;
 }
 #nav-top .search a.icon-caret-down{
@@ -504,7 +509,7 @@ textarea {
 	width: 94%;
 	padding: 0px;
 	position: relative;
-	top : -2px;
+	top: -2px;
 }
 
 #nav-top .search-box:hover, #nav-top .search-box:focus {
@@ -524,7 +529,7 @@ textarea {
     padding: 0px 0px 5px 0px;
 	padding-right: 0px;
 	border: 1px solid #CCCCCC;	
-    max-height: 100%;
+    height: 100%;
 	border-right: none;
     overflow-y:auto;
 }
@@ -622,7 +627,7 @@ textarea {
 	border: 1px solid #CCCCCC;
 	overflow-y: auto;
 	overflow-x: hidden;
-	width: 80.7%;
+	width: 77.7%;
 	height: 100%;
 }
 #detailed-info .upper-content{
@@ -922,7 +927,7 @@ textarea {
 	margin-bottom: 5px;
 	color: rgb(110, 130, 155);
 	outline: 0px;
-	width: 90%;
+	width: 100%;
 }
 
 #dashboard-menu>li {
@@ -971,7 +976,7 @@ textarea {
 }
 
 #dashboard-menu a span {
-	margin-left: 31px;
+	margin-left: 25px;
 	transition: color .1s linear;
 	-moz-transition: color .1s linear;
 	-webkit-transition: color .1s linear;
@@ -992,7 +997,7 @@ textarea {
 	-moz-transition: opacity .1s ease;
 	-webkit-transition: opacity .1s ease;
 	-o-transition: opacity .1s ease;
-	padding: 5px 0px 0px 10px;
+	padding: 5px 0px 0px 5px;
 }
 
 #dashboard-menu a i.icon-chevron-up {
@@ -1002,7 +1007,6 @@ textarea {
 	color: rgb(104, 104, 104);
 	width: initial;
 	height: initial;
-	right: 19px;
 }
 
 #dashboard-menu>li:hover i {
@@ -1223,124 +1227,3 @@ textarea {
 	text-shadow: none;
 }
 
-#pad-wrapper {
-	padding: 0px 25px;
-	margin-top: 55px;
-}
-
-#pad-wrapper h4 {
-	margin: 0 0 0 20px;
-	color: #696d73;
-	font-style: italic;
-}
-
-.content {
-	min-width: 400px;
-	min-height: 620px;
-	margin-bottom: 100px;
-	padding-bottom: 50px;
-	overflow: hidden;
-	position: relative;
-	background: #fff;
-	margin-left: 177px;
-	border-left: 1px solid #dae3e9;
-	border-bottom: 1px solid #dae3e9;
-	box-shadow: -3px 3px 3px -2px #f1f1f3;
-	border-radius: 0px 0px 0px 5px;
-}
-
-.content.wide-content {
-	margin-left: 0;
-	border-radius: 0;
-}
-
-/* starts skins changer */
-.content .skins-nav {
-	opacity: 1;
-	-webkit-transition: right .3s;
-	-moz-transition: right .3s;
-	-ms-transition: right .3s;
-	-o-transition: right .3s;
-	transition: right .3s;
-	position: fixed;
-	right: -85px;
-	top: 135px;
-	font-size: 13px;
-	z-index: 9999;
-}
-
-.content .skins-nav:hover {
-	right: 0;
-}
-
-.content .skins-nav a {
-	display: block;
-	color: #fff;
-	text-decoration: none;
-	padding-left: 10px;
-	height: 37px;
-	-webkit-border-radius: 4px 0 0 4px;
-	-moz-border-radius: 4px 0 0 4px;
-	border-radius: 4px 0 0 4px;
-	margin-bottom: 3px;
-	-webkit-transition: all .5s;
-	-moz-transition: all .5s;
-	-ms-transition: all .5s;
-	-o-transition: all .5s;
-	transition: all .5s;
-}
-
-.content .skins-nav a.first_nav {
-	background: rgba(95, 175, 228, 0.8);
-}
-
-.content .skins-nav a.second_nav {
-	background: rgba(36, 43, 77, 0.8);
-}
-
-.content .skins-nav a.first_nav:hover {
-	background: rgba(95, 175, 228, 1);
-}
-
-.content .skins-nav a.second_nav:hover {
-	background: rgba(36, 43, 77, 1);
-}
-
-.content .skins-nav a .icon {
-	float: left;
-	width: 9px;
-	height: 10px;
-	background: url('../img/skin-nav-bullets.png') 0 0 no-repeat;
-	margin: 15px 15px 0 5px;
-}
-
-.content .skins-nav a.selected .icon {
-	background-position: 0 -9px;
-}
-
-.content .skins-nav a .text {
-	padding-right: 12px;
-	white-space: nowrap;
-	display: block;
-	width: 100px;
-	position: relative;
-	top: 9px;
-	-webkit-transition: width .2s;
-	-moz-transition: width .2s;
-	-ms-transition: width .2s;
-	-o-transition: width .2s;
-	transition: width .2s;
-}
-/* end skin changer*/
-/* responsive */
-@media ( max-width : 1020px) {
-}
-
-@media ( max-width : 600px) {
-}
-
-@media (max-width : 822px) {
-}
-
-@media (max-width : 767px) {
-}
