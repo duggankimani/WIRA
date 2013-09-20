@@ -2,15 +2,15 @@ package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.HTUser;
 
-public class SaveUserRequestResult extends BaseResponse{
+public class SaveUserResponse extends BaseResponse{
 
 	private HTUser user;
 
-	public SaveUserRequestResult() {
+	public SaveUserResponse() {
 		// For serialization only
 	}
 
-	public SaveUserRequestResult(HTUser user) {
+	public SaveUserResponse(HTUser user) {
 		this.user = user;
 	}
 

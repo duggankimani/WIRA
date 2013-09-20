@@ -2,6 +2,8 @@ package com.duggan.workflow.server.helper.jbpm;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
@@ -9,6 +11,28 @@ import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 
 public class ProcessMigrationHelper {
 
+	static boolean autoStart = true;
+	
+	static Logger logger = Logger.getLogger(ProcessMigrationHelper.class);
+	public static void init(){
+		
+		if(autoStart){
+			List<ProcessDefModel> processes = DB.getProcessDao().getAllProcesses();
+			
+			for(ProcessDefModel model: processes){
+				try{
+					long start = System.currentTimeMillis();
+					//logger.info("INITIALIZATION:: Starting Process "+model);
+					start(model, false);
+					long end = System.currentTimeMillis();
+					logger.info("INITIALIZATION:: Started Process "+model +" in "+(end-start)+"ms");
+				}catch(Exception e){
+					logger.warn("INITIALIZATION FAILED:: "+model+" - Error cause: "+e.getMessage());
+				}
+			}
+			
+		}
+	}
 	/**
 	 * This method activates process
 	 * 

@@ -44,73 +44,12 @@
 											<div class="th">Action</div>	
 										</div>						
 									</div>
-								<div class="tbody">
-								<g:HTMLPanel styleName="tr">
-										<g:HTMLPanel styleName="td">
-											<label>
-												<input type="checkbox"/>
-											</label>
-										</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">Tom</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">Kimani</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">tosh0948@gmail.com</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">HOD_Development</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">
-											<div class="action-commands">										
-												<g:Anchor styleName="green">
-													<i class="icon-pencil"></i>
-												</g:Anchor>
-												<g:Anchor styleName="red">
-													<i class="icon-trash"></i>
-												</g:Anchor>
-											</div>
-									</g:HTMLPanel>
-							    </g:HTMLPanel>
-							    
-							    <g:HTMLPanel styleName="tr">
-										<g:HTMLPanel styleName="td">
-											<label>
-												<input type="checkbox"/>
-											</label>
-										</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">Tom</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">Kimani</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">tosh0948@gmail.com</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">HOD_Development</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">
-											<div class="action-commands">										
-												<g:Anchor styleName="green">
-													<i class="icon-pencil"></i>
-												</g:Anchor>
-												<g:Anchor styleName="red">
-													<i class="icon-trash"></i>
-												</g:Anchor>
-											</div>
-									</g:HTMLPanel>
-							    </g:HTMLPanel>
-							    
-							    <g:HTMLPanel styleName="tr">
-										<g:HTMLPanel styleName="td">
-											<label>
-												<input type="checkbox"/>
-											</label>
-										</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">Tom</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">Kimani</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">tosh0948@gmail.com</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">HOD_Development</g:HTMLPanel>
-										<g:HTMLPanel styleName="td">
-											<div class="action-commands">										
-												<g:Anchor styleName="green">
-													<i class="icon-pencil helper-14"></i>
-												</g:Anchor>
-												<g:Anchor styleName="red">
-													<i class="icon-trash"></i>
-												</g:Anchor>
-											</div>
-									</g:HTMLPanel>
-							    </g:HTMLPanel>
-							    	</div><!--End Tbody  -->
+								
+								    
+								<g:HTMLPanel ui:field="panelUsers" styleName="tbody"><!-- div class="tbody"-->
+								    
+								</g:HTMLPanel><!--End Tbody  -->
+
 								</div><!--End Table  -->
 								
 								<div class="row-fluid">

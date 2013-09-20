@@ -113,4 +113,11 @@ public class ProcessDefModel extends PO {
 		this.status = status;
 	}
 	
+	@Override
+	public String toString() {
+		String str = "[Name= "+name +"; "+
+				"ID= "+id+"; " +
+				"Process= "+processId+"]";
+		return str;
+	}
 }

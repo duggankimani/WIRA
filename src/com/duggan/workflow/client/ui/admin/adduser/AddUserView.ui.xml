@@ -3,6 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:c='urn:import:com.duggan.workflow.client.ui.admin.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -54,35 +55,10 @@
 					
 						<div class="control-group">
 							<label class="control-label">Group:</label>
-							<g:FocusPanel ui:field="sltContainer">
-								<g:HTMLPanel>
-								<div class="controls">
-									<div class="select2-container select2-container-multi" ui:field="sltBox">
-										<d:BulletListPanel ui:field="ulPanel" styleName="select2-choices">
-										    
-										</d:BulletListPanel>
-										</div>
-										<input type="hidden" class="input-block-level" name="reseiver"	value="" style="display: none;"/>
-									</div>
-								</g:HTMLPanel>
-							</g:FocusPanel>
-								<div class="select2-drop select2-drop-multi hidden" ui:field="sltDrop" style="width:200px; display:block; top:266px;">
-										<ul class="select2-results" ui:field="ulSelectResults">
-											<g:Anchor styleName="select2-results-dept-0 select2-result select2-result-selectable select2-highlighted" ui:field="liSelectItem">
-												<div class="select2-result-label"><span class="select2"></span>Procurement</div>
-											</g:Anchor>
-											
-											<li class="select2-results-dept-0 select2-result select2-result-selectable">
-												<div class="select2-result-label"><span class="select2-match"></span>Management</div>
-											</li>
-											
-											<li class="select2-results-dept-0 select2-result select2-result-selectable">
-												<div class="select2-result-label"><span class="select2-match"></span>Sales &amp; Marketing</div>
-											</li>
-										</ul>
-								</div>
+								<c:ListField ui:field="lstGroups"/>
 							</div>
 							
+						
 							<div class="modal-footer">
 								<g:Anchor ui:field="aSaveUser" styleName="btn btn-success">
 							  Save&nbsp; 

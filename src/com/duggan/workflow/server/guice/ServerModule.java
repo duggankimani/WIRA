@@ -56,6 +56,12 @@ import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.server.actionhandlers.SaveUserRequestActionHandler;
+import com.duggan.workflow.shared.requests.SaveGroupRequest;
+import com.duggan.workflow.server.actionhandlers.SaveGroupRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.server.actionhandlers.GetUsersRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetGroupsRequest;
+import com.duggan.workflow.server.actionhandlers.GetGroupsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -141,5 +147,14 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(SaveUserRequest.class, SaveUserRequestActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(SaveGroupRequest.class,
+				SaveGroupRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetUsersRequest.class, GetUsersRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(GetGroupsRequest.class,
+				GetGroupsRequestActionHandler.class, SessionValidator.class);
 	}
 }

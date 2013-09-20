@@ -19,8 +19,8 @@ public class LoginHelper implements LoginIntf{
 	LoginIntf impl;
 
 	private LoginHelper() {
-		impl = new LDAPLoginHelper();
-		//impl = new DBLoginHelper();
+		//impl = new LDAPLoginHelper();
+		impl = new DBLoginHelper();
 	}
 
 	/**
@@ -106,5 +106,15 @@ public class LoginHelper implements LoginIntf{
 	@Override
 	public boolean deleteGroup(UserGroup group) {
 		return impl.deleteGroup(group);
+	}
+
+	public List<HTUser> getAllUsers() {
+
+		return impl.getAllUsers();
+	}
+
+	public List<UserGroup> getAllGroups() {
+		
+		return impl.getAllGroups();
 	}
 }

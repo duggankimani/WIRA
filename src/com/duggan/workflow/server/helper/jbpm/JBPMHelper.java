@@ -128,12 +128,13 @@ public class JBPMHelper implements Closeable{
 	        // By Setting the jbpm.usergroup.callback property with the call
 	        // back class full name, task service will use this to validate the
 	        // user/group exists and its permissions are ok.
-	        System.setProperty("jbpm.usergroup.callback",
-	                "org.jbpm.task.identity.LDAPUserGroupCallbackImpl");
+//	        System.setProperty("jbpm.usergroup.callback",
+//	                "org.jbpm.task.identity.LDAPUserGroupCallbackImpl");
 	        
-//			System.setProperty("jbpm.usergroup.callback",
-//					"org.jbpm.task.identity.DBUserGroupCallbackImpl");
-	        sessionManager = new BPMSessionManager();			
+			System.setProperty("jbpm.usergroup.callback",
+					"org.jbpm.task.identity.DBUserGroupCallbackImpl");
+	        sessionManager = new BPMSessionManager();	
+	        
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException(e);

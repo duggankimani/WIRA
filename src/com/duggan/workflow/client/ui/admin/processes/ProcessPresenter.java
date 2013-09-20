@@ -7,8 +7,8 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.addprocess.AddProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
-import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.EditProcessEvent.EditProcessHandler;
+import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent.LoadProcessesHandler;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
@@ -109,7 +109,7 @@ public class ProcessPresenter extends
 	public void onLoadProcesses(LoadProcessesEvent event) {
 		loadProcesses();
 	}
-
+	
 	@Override
 	public void onEditProcess(EditProcessEvent event) {
 		Long processDefId = event.getProcessId();
