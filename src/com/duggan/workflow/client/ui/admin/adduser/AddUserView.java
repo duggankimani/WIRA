@@ -78,7 +78,7 @@ public class AddUserView extends PopupViewImpl implements
 			}
 		});
 		
-		for(int i=0 ; i<20; i++){
+		for(int i=0 ; i<4; i++){
 			UserGroup group = new UserGroup("User Group "+i);
 			ListItem<UserGroup> itemWidget = new ListItem<UserGroup>(group);
 			

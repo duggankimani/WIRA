@@ -13,6 +13,8 @@ import org.junit.Test;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 
@@ -28,6 +30,16 @@ public class TestDBLoginHelper {
 	}
 	
 	@Test
+	public void getGroups(){
+		//List<UserGroup> groups = LoginHelper.get().getGroupsForUser("mariano");
+	
+		//Assert.assertTrue(groups.size()==1);
+		
+		Assert.assertTrue(new DBUserGroupCallbackImpl().
+				getGroupsForUser("mariano", null, null).size()==1);
+	}
+	
+	@Ignore
 	public void getAll(){
 		HTUser user = new HTUser();
 		String email = "mdkimani@gmail.com";
