@@ -22,6 +22,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -54,13 +55,13 @@ public class AddUserView extends PopupViewImpl implements
 	@UiField FocusPanel sltContainer;
 	@UiField Element sltBox;
 	@UiField Element sltDrop;
-	@UiField Element ulSelectResults;
 	@UiField Anchor liSelectItem;
 	
 	@UiField Anchor aSaveGroup;
 	@UiField Anchor aSaveUser;
 	
 	@UiField BulletListPanel ulPanel;
+	@UiField BulletListPanel ulSelectResults;
 	
 	TYPE type;
 	
@@ -115,7 +116,17 @@ public class AddUserView extends PopupViewImpl implements
 			}
 		});
 		
-		//AddUserDialog.setPopupPosition(40,10);
+
+		
+	
+		//----Calculate the Size of Screen; To be Centralized later -----
+		int height = Window.getClientHeight();
+		int width = Window.getClientWidth();
+		
+		double height1=(10.0/100.0)*height;
+		double width1= (40.0/100.0)*width;
+		
+		AddUserDialog.setPopupPosition((int)width1,(int)height1);
 	}
 
 	@Override

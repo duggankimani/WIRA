@@ -49,7 +49,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView> {
 			@Override
 			public void processResult(AddUserPresenter result) {
 				result.setType(type);
-				addToPopupSlot(result);
+				addToPopupSlot(result,false);
 			}
 		});
 			
