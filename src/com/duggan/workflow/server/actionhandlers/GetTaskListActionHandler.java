@@ -36,7 +36,7 @@ public class GetTaskListActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
-		String userId = action.getUserId()==null? SessionHelper.getCurrentUser().getId():
+		String userId = action.getUserId()==null? SessionHelper.getCurrentUser().getUserId():
 			action.getUserId();
 		
 		TaskType type = action.getType();

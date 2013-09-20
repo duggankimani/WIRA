@@ -12,5 +12,6 @@ public class TextArea extends com.google.gwt.user.client.ui.TextArea {
 	
 	public void setClass(String className){
 		setStyleName(className);
+		
 	}
 }

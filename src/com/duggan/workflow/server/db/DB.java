@@ -23,6 +23,7 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
@@ -260,6 +261,9 @@ public class DB{
 		return factory().getProcessDao(getEntityManager());
 	}
 	
+	public static UserGroupDaoImpl getUserGroupDao(){
+		return factory().getUserGroupDaoImpl(getEntityManager());
+	}
 
 	private static void closeFactory() {
 		if(daoFactory.get()==null)

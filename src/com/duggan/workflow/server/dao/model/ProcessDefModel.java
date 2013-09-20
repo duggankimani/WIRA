@@ -47,6 +47,16 @@ public class ProcessDefModel extends PO {
 		status = ProcessDefStatus.INACTIVE;
 	}
 	
+	public ProcessDefModel(Long id, String name, String processId, boolean isArchived,
+			String description){
+		this.id = id;
+		this.name = name;
+		this.processId = processId;
+		this.isArchived = isArchived;
+		this.description = description;
+		//this.processDocuments = processDocuments;
+	}
+	
 	public Long getId() {
 		return id;
 	}

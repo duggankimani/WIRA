@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 
-public class AttachmentDaoImpl extends BaseDaoImpl<LocalAttachment>{
+public class AttachmentDaoImpl extends BaseDaoImpl{
 
 	public AttachmentDaoImpl(EntityManager em) {
 		super(em);
@@ -39,11 +39,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl<LocalAttachment>{
 	
 	public void delete(long attachmentId){
 		LocalAttachment attachment = getAttachmentById(attachmentId);
-		em.remove(attachment);
-	}
-	
-	public void delete(LocalAttachment attachment){
-		em.remove(attachment);
+		delete(attachment);
 	}
 
 	@SuppressWarnings("unchecked")

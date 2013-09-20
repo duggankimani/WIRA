@@ -68,11 +68,11 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 			if(attachments!=null){
 				for(LocalAttachment att: attachments){
 					att.setArchived(true);
-					DB.getAttachmentDao().saveOrUpdate(att);
+					DB.getAttachmentDao().save(att);
 				}
 			}
 			
-			DB.getAttachmentDao().saveOrUpdate(attachment);
+			DB.getAttachmentDao().save(attachment);
 		}else{
 			throw new IllegalArgumentException("Cannot save attachment for [ProcessDefId= "+id+"]");
 		}

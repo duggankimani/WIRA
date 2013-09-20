@@ -43,7 +43,7 @@ public class GetContextRequestActionHandler extends
 		
 		if(result.getIsValid()){
 			result.setUser((HTUser)user);
-			result.setGroups(LoginHelper.get().getGroupsForUser(result.getUser().getId()));
+			result.setGroups(LoginHelper.get().getGroupsForUser(result.getUser().getUserId()));
 		}
 		
 				

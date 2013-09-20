@@ -2,8 +2,10 @@ package com.duggan.workflow.server.helper.jbpm;
 
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -426,7 +428,7 @@ class BPMSessionManager{
 		content.putAll(values);
 		//completing tasks is a single individuals responsibility
 		//Notifications & Emails sent after task completion must reflect this
-		content.put("ActorId", SessionHelper.getCurrentUser().getId());
+		content.put("ActorId", SessionHelper.getCurrentUser().getUserId());
 		//sessionManager.getTaskService().completeWithResults(taskId, userId, content);
 		getTaskClient().completeWithResults(taskId, userId, content);
 		//sessionManager.getTaskService().complete(taskId, userId, null);
@@ -527,7 +529,8 @@ class BPMSessionManager{
 			if(newValues.get("Priority")==null)
 				newValues.put("Priority", values.get("Priority"));
 							
-			startProcess(session,processId, newValues);
+			
+			startProcess(processId, newValues);
 		 
 		} 
 		
@@ -617,7 +620,7 @@ class BPMSessionManager{
 			Object ownerId = newValues.get("OwnerId");
 			if(ownerId==null){
 				if(doc!=null){	
-					ownerId =doc.getOwner().getId(); 
+					ownerId =doc.getOwner().getUserId(); 
 					newValues.put("OwnerId", ownerId.toString());
 				}
 			}
@@ -644,6 +647,31 @@ class BPMSessionManager{
 		}
 		
 		return null;
+	}
+
+	/**
+	 * Close knowledge Base
+	 * 
+	 * @param processId
+	 */
+	public void stopProcess(String processId) {
+		KnowledgeBase kbase = processKnowledgeMap.get(processId);
+		processKnowledgeMap.remove(processId);
+		
+		//other processes loaded with the process are still active and referencing the kbase
+		
+		Set<String> processes = processKnowledgeMap.keySet();
+		
+		List<String> processesToRemove = new ArrayList<>();
+		for(String process: processes){
+			if(kbase.equals(processKnowledgeMap.get(process))){
+				processesToRemove.add(process);
+			}
+		}
+		
+		for(String key: processesToRemove){
+			processKnowledgeMap.remove(key);
+		}
 	}
 
 }

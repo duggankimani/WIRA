@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.jbpm.task.query.TaskSummary;
 import org.junit.After;
@@ -19,10 +18,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.shared.model.DocType;
-import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.google.gwt.editor.client.Editor.Ignore;
 

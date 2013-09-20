@@ -87,8 +87,6 @@ public class HomePresenter extends
 		public void setHasItems(boolean hasItems);
 		void setTaskType(TaskType currentTaskType);
 		void showActivitiesPanel(boolean b);
-		HTMLPanel getWholeContainer();
-		SpanElement getLoadingtext();
 		public Anchor getaDrafts();
 		public Anchor getaProgress();
 		public Anchor getaApproved();
@@ -100,6 +98,7 @@ public class HomePresenter extends
 		TextBox getSearchBox();
 		public void hideFilterDialog();
 		public void setSearchBox(String text);
+		void showmask(boolean b);
 	}
 
 	@ProxyCodeSplit
@@ -242,10 +241,8 @@ public class HomePresenter extends
 		
 		getView().getRefreshButton().addClickHandler(new ClickHandler() {
 			@Override
-			public void onClick(ClickEvent event) {
-				getView().getLoadingtext().removeClassName("hide");
+			public void onClick(ClickEvent event) {				
 				loadTasks();
-				getView().getLoadingtext().addClassName("hide");
 			}
 		});
 		
@@ -432,9 +429,7 @@ public class HomePresenter extends
 					result.setDocumentId(selectedValue);
 				}
 					
-				addToPopupSlot(result, true);	
-				getView().getLoadingtext().addClassName("hide");
-				getView().getWholeContainer().removeStyleName("working-request");
+				addToPopupSlot(result, true);
 			}
 		});
 	}
@@ -447,8 +442,6 @@ public class HomePresenter extends
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
-
-		getView().getWholeContainer().removeStyleName("working-request");
 		loadTasks();
 	}
 
@@ -502,14 +495,13 @@ public class HomePresenter extends
 
 	@Override
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
-		getView().getWholeContainer().removeStyleName("working-request");
-		getView().getLoadingtext().addClassName("hide");
+		getView().showmask(false);
+		
 	}
 
 	@Override
 	public void onProcessing(ProcessingEvent event) {		
-		getView().getWholeContainer().addStyleName("working-request");
-		getView().getLoadingtext().removeClassName("hide");
+		getView().showmask(true);
 	}
 
 	@Override

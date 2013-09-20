@@ -33,7 +33,7 @@ public class ApprovalRequestActionHandler extends
 		}
 		String userId = action.getUsername();
 		if(userId==null)
-			userId = SessionHelper.getCurrentUser().getId();
+			userId = SessionHelper.getCurrentUser().getUserId();
 		
 		JBPMHelper.get().createApprovalRequest(userId, doc);
 		

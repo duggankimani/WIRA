@@ -18,6 +18,11 @@
 		 	<g:HTMLPanel styleName="modal-body">
 		 			<g:HTMLPanel styleName="hide" ui:field="divUserDetails">
 						  <div class="form-group">
+						    <label for="ProcessName">Username:</label>
+						    <d:TextField ui:field="txtUserName" type="email" 
+						        class="form-control" placeholder="First Name"/>
+						  </div>
+						  <div class="form-group">
 						    <label for="ProcessName">First Name:</label>
 						    <d:TextField ui:field="txtFirstname" type="email" 
 						        class="form-control" placeholder="First Name"/>
@@ -35,27 +40,27 @@
 						        class="form-control" placeholder="Email"/>
 						  </div>
 						  
+						  <div class="form-group">
+						    <label for="ProcessName">Password:</label>
+						    <d:PasswordField ui:field="txtPassword" type="password" 
+						         class="form-control" placeholder="Password"/>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label for="ProcessName">Confirm Password:</label>
+						    <d:PasswordField ui:field="txtConfirmPassword" type="password" 
+						        class="form-control" placeholder="Email"/>
+						  </div>
+					
 						<div class="control-group">
 							<label class="control-label">Group:</label>
 							<g:FocusPanel ui:field="sltContainer">
 								<g:HTMLPanel>
 								<div class="controls">
 									<div class="select2-container select2-container-multi" ui:field="sltBox">
-										<ul class="select2-choices">
-											<li class="select2-search-choice">
-												<div>HOD_Finance</div>
-												<g:Anchor styleName="select2-search-choice-close" ui:field="aSelectedCancel"></g:Anchor>
-											</li>
-											<li class="select2-search-choice">
-												<div>HOD_Procurement</div>
-												<a href="#" onclick="return false;" class="select2-search-choice-close"
-													tabindex="-1"></a>
-											</li>
-											<li class="select2-search-field">
-												<br/>
-												<input type="text" autocomplete="off" class="select2-input" style="width: 10px;"/>
-											</li>
-										</ul>
+										<d:BulletListPanel ui:field="ulPanel" styleName="select2-choices">
+										    
+										</d:BulletListPanel>
 										</div>
 										<input type="hidden" class="input-block-level" name="reseiver"	value="" style="display: none;"/>
 									</div>
@@ -77,9 +82,14 @@
 										</ul>
 								</div>
 							</div>
+							
 							<div class="modal-footer">
-								<g:Anchor styleName="btn btn-success" ui:field="aNext">Save&nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+								<g:Anchor ui:field="aSaveUser" styleName="btn btn-success">
+							  Save&nbsp; 
+						      <i class="icon-double-angle-right"></i>						      
+						  	</g:Anchor>
 							</div>
+							
 					</g:HTMLPanel>
 			</g:HTMLPanel>
 			

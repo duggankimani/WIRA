@@ -85,11 +85,11 @@ public class NotificationDaoHelper {
 			notificationTo.setCreated(new Date());
 			
 			if(SessionHelper.getCurrentUser()!=null)
-				notificationTo.setCreatedBy(SessionHelper.getCurrentUser().getId());
+				notificationTo.setCreatedBy(SessionHelper.getCurrentUser().getUserId());
 		}else{
 			notificationTo.setUpdated(new Date());
 			if(SessionHelper.getCurrentUser()!=null)
-				notificationTo.setUpdatedBy(SessionHelper.getCurrentUser().getId());
+				notificationTo.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
 		
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
@@ -150,6 +150,6 @@ public class NotificationDaoHelper {
 	}
 
 	public static void getCounts(HashMap<TaskType, Integer> counts) {
-		counts.put(TaskType.NOTIFICATIONS, getNotificationCount(SessionHelper.getCurrentUser().getId()));
+		counts.put(TaskType.NOTIFICATIONS, getNotificationCount(SessionHelper.getCurrentUser().getUserId()));
 	}
 }

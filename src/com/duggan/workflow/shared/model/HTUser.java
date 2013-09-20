@@ -7,8 +7,9 @@ import java.util.List;
 public class HTUser implements Serializable {
 
 	private static final long serialVersionUID = -5249516544970187459L;
+	private Long id;
 	private String name;
-	private String id;
+	private String userId;
 	private String email;
 	private String surname;
 	private String password;
@@ -18,7 +19,7 @@ public class HTUser implements Serializable {
 	}
 
 	public HTUser(String id) {
-		this.id = id;
+		this.userId = id;
 	}
 	
 	
@@ -26,16 +27,16 @@ public class HTUser implements Serializable {
 		this.name = name;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String id) {
+		this.userId = id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getEmail() {
@@ -65,7 +66,7 @@ public class HTUser implements Serializable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return id;
+		return userId;
 	}
 
 	public List<UserGroup> getGroups() {
@@ -89,6 +90,14 @@ public class HTUser implements Serializable {
 		}
 		
 		return "";
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

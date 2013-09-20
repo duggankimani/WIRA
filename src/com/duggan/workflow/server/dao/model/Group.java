@@ -67,10 +67,6 @@ public class Group extends PO {
 		this.fullName = fullName;
 	}
 
-	public Collection<User> getMembers() {
-		return members;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -81,6 +77,30 @@ public class Group extends PO {
 
 	public void setArchived(boolean isArchived) {
 		this.isArchived = isArchived;
+	}
+
+	public Collection<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(Collection<User> members) {
+		this.members = members;
+	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Group)){
+			return false;
+		}
+		
+		Group other = (Group)obj;
+		
+		return name.equals(other.getName());
 	}
 
 }

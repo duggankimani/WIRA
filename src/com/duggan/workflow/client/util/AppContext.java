@@ -41,7 +41,7 @@ public class AppContext {
 
 	public static void setSessionValues(String userId, String fullName, String authCookie){
 		user.setName(fullName);
-		user.setId(userId);
+		user.setUserId(userId);
 		
 		CookieManager.setCookies(authCookie, new Date().getTime());
 		
@@ -69,7 +69,7 @@ public class AppContext {
 	}
 	
 	private static void checkNeedReloadState() {
-		if(user.getId()==null){
+		if(user.getUserId()==null){
 			reloadContext();
 		}
 	}
@@ -78,7 +78,7 @@ public class AppContext {
 		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
 			@Override
 			public void processResult(GetContextRequestResult result) {
-				user.setId(result.getUser().getId());
+				user.setUserId(result.getUser().getUserId());
 				user.setName(result.getUser().getName());
 				user.setGroups(result.getGroups());
 			}
@@ -99,7 +99,7 @@ public class AppContext {
 	}
 	
 	public static String getUserId(){
-		return user.getId();
+		return user.getUserId();
 	}
 	
 	public static String getUserNames(){

@@ -92,5 +92,17 @@ public class ProcessItemView extends ViewImpl implements
 		
 		spnStatus.setInnerText(status.name());
 		
+		switch (status) {
+		case INACTIVE:
+			aActivate.removeStyleName("hide");
+			aDeactivate.addStyleName("hide");
+			break;
+			
+		case RUNNING:
+			aActivate.addStyleName("hide");
+			aDeactivate.removeStyleName("hide");
+			break;
+		}
+		
 	}
 }

@@ -11,7 +11,6 @@ public class SaveProcessRequest extends BaseRequest<SaveProcessResponse> {
 
 	@SuppressWarnings("unused")
 	private SaveProcessRequest() {
-		//for serialization purposes
 	}
 
 	public SaveProcessRequest(ProcessDef processDef) {

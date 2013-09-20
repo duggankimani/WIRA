@@ -29,10 +29,10 @@ public class CommentDaoImpl {
 	public CommentModel saveOrUpdate(CommentModel comment) {
 		if(comment.getId()==null){
 			comment.setCreated(new Date());
-			comment.setCreatedBy(SessionHelper.getCurrentUser().getId());
+			comment.setCreatedBy(SessionHelper.getCurrentUser().getUserId());
 		}else{
 			comment.setUpdated(new Date());
-			comment.setUpdatedBy(SessionHelper.getCurrentUser().getId());
+			comment.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
 		em.persist(comment);
 		return comment;

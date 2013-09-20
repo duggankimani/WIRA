@@ -137,7 +137,7 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		
 		for(HTUser user: users){
 			Notification note = notification.clone();
-			note.setTargetUserId(user.getId());
+			note.setTargetUserId(user.getUserId());
 			note.setRead(false);
 			
 			if(note.getTargetUserId()==null)
