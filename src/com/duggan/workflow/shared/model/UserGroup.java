@@ -50,4 +50,15 @@ public class UserGroup implements Serializable, Listable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof UserGroup)){
+			return false;
+		}
+		
+		UserGroup other = (UserGroup)obj;
+		
+		return other.name.equals(name);
+	}
 }

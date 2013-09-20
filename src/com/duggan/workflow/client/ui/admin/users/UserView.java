@@ -7,8 +7,11 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
+import static com.duggan.workflow.client.ui.admin.users.UserPresenter.*;
 
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 
@@ -17,7 +20,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	@UiField Anchor aNewGroup;
 	@UiField Anchor aUserstab;
 	@UiField Anchor aGroupstab;
-	
+	@UiField HTMLPanel panelUsers;
 
 	public interface Binder extends UiBinder<Widget, UserView> {
 	}
@@ -44,6 +47,34 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			  aNewGroup.removeStyleName("hide");
 			}
 		});
+	}
+	
+	@Override
+	public void setInSlot(Object slot, Widget content) {
+		if(slot==ITEMSLOT){
+			panelUsers.clear();
+			
+			if(content!=null){
+				panelUsers.add(content);
+			}
+		}else{
+			super.setInSlot(slot, content);
+		}
+		
+	}
+	
+	@Override
+	public void addToSlot(Object slot, Widget content) {
+		
+		if(slot==ITEMSLOT){
+			
+			if(content!=null){
+				panelUsers.add(content);
+			}
+		}else{
+			super.addToSlot(slot, content);
+		}
+		
 	}
 
 	@Override

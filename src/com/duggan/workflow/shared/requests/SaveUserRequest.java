@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.requests.BaseRequest;
-import com.duggan.workflow.shared.responses.SaveUserRequestResult;
+import com.duggan.workflow.shared.responses.BaseResponse;
+import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.duggan.workflow.shared.model.HTUser;
 
 /**
@@ -9,7 +10,7 @@ import com.duggan.workflow.shared.model.HTUser;
  * @author duggan
  *
  */
-public class SaveUserRequest extends BaseRequest<SaveUserRequestResult> {
+public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 
 	private HTUser user;
 
@@ -23,5 +24,11 @@ public class SaveUserRequest extends BaseRequest<SaveUserRequestResult> {
 
 	public HTUser getUser() {
 		return user;
+	}
+	
+	@Override
+	public BaseResponse createDefaultActionResponse() {
+	
+		return new SaveUserResponse();
 	}
 }

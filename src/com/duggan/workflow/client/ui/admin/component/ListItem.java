@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
@@ -23,42 +24,76 @@ public class ListItem<T extends Listable> extends Composite {
 	}
 
 	@UiField DivElement divName;
+	@UiField DivElement divUnselectName;
 	
-	@UiField Anchor aSelectedCancel;
+	@UiField Anchor aUnselect;
+	
+	@UiField Anchor aSelect;
+	
+	@UiField BulletPanel bullet;
 	
 	private final T value;
 	
-	public interface OnCloseHandler{
-		public void onItemClosed(ListItem source, Listable value);
+	public interface OnSelectHandler{
+		public void onItemSelected(ListItem source, Listable value, boolean selected);
 	}
 	
-	List<OnCloseHandler> handlers = new ArrayList<OnCloseHandler>();
+	List<OnSelectHandler> handlers = new ArrayList<OnSelectHandler>();
 	
-	public ListItem(final T value) {
+	public ListItem(final T value, boolean selected) {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		if(selected){
+			//selected
+			aUnselect.removeStyleName("hide");
+			aSelect.addStyleName("hide");			
+			bullet.setStyleName("select2-search-choice");
+			
+		}else{
+			//others
+			aUnselect.addStyleName("hide");
+			aSelect.removeStyleName("hide");
+			divName.addClassName("select2-result-label");
+			bullet.setStyleName("select2-results-dept-0 select2-result select2-result-selectable");
+			divUnselectName.setClassName("hide");
+		}
+		
 		this.value = value; 
 		
 		divName.setInnerText(value.getName());
+		divUnselectName.setInnerText(value.getName());
 		
-		
-		aSelectedCancel.addClickHandler(new ClickHandler() {
+		aSelect.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				for(OnCloseHandler handler: handlers){
-					handler.onItemClosed(ListItem.this, value);
+				for(OnSelectHandler handler: handlers){
+					handler.onItemSelected(ListItem.this, value, true);
 				}
 				ListItem.this.removeFromParent();
 			}
 		});
+		
+		aUnselect.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				for(OnSelectHandler handler: handlers){
+					handler.onItemSelected(ListItem.this, value, false);					
+				}
+				ListItem.this.removeFromParent();
+			}
+		});
+		
 	}	
 	
 	public T getObject(){
 		return value;
 	}
 	
-	public void addOnCloseHandler(OnCloseHandler handler){
+	public void addSelectHandler(OnSelectHandler handler){
 		handlers.add(handler);
 	}
 

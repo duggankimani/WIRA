@@ -12,6 +12,7 @@ import com.duggan.workflow.server.guice.ServerModule;
 import com.duggan.workflow.server.guice.DispatchServletModule;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.test.LDAPAuth;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
@@ -28,6 +29,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		super.contextInitialized(servletContextEvent);
 		DBTrxProvider.init();
 		JBPMHelper.get();
+		ProcessMigrationHelper.init();
 	}
 	
 	@Override

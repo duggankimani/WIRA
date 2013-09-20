@@ -1,30 +1,24 @@
 package com.duggan.workflow.client.ui.admin.adduser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
-import com.duggan.workflow.client.ui.admin.component.ListItem;
-import com.duggan.workflow.client.ui.admin.component.ListItem.OnCloseHandler;
-import com.duggan.workflow.client.ui.component.BulletListPanel;
+import com.duggan.workflow.client.ui.admin.component.ListField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.UserGroup;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -52,16 +46,10 @@ public class AddUserView extends PopupViewImpl implements
 	@UiField TextField txtUsers;
 
 	@UiField PopupPanel AddUserDialog;
-	@UiField FocusPanel sltContainer;
-	@UiField Element sltBox;
-	@UiField Element sltDrop;
-	@UiField Anchor liSelectItem;
-	
 	@UiField Anchor aSaveGroup;
 	@UiField Anchor aSaveUser;
-	
-	@UiField BulletListPanel ulPanel;
-	@UiField BulletListPanel ulSelectResults;
+
+	@UiField ListField<UserGroup> lstGroups;
 	
 	TYPE type;
 	
@@ -79,42 +67,14 @@ public class AddUserView extends PopupViewImpl implements
 			}
 		});
 		
-		for(int i=0 ; i<4; i++){
+		List<UserGroup> groups= new ArrayList<UserGroup>();
+		
+		for(int i=0 ; i<10; i++){
 			UserGroup group = new UserGroup("User Group "+i);
-			ListItem<UserGroup> itemWidget = new ListItem<UserGroup>(group);
-			
-			itemWidget.addOnCloseHandler(new OnCloseHandler() {
-				@Override
-				public void onItemClosed(ListItem source, Listable value) {
-					System.out.println(value.getName());
-					ulPanel.remove(source);
-				}
-				
-			});
-			ulPanel.add(itemWidget);
+			groups.add(group);
 		}
 		
-		sltContainer.addFocusHandler(new FocusHandler() {
-			@Override
-			public void onFocus(FocusEvent event) {
-				sltDrop.removeClassName("hidden");
-				sltBox.addClassName("select2-dropdown-open");
-			}
-		});
-		
-		sltContainer.addBlurHandler(new BlurHandler() {
-			@Override
-			public void onBlur(BlurEvent event) {
-				//sltDrop.addClassName("hidden");
-			}
-		});
-		
-		liSelectItem.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				//ulSelectResults.
-			}
-		});
+		lstGroups.addItems(groups);
 		
 
 		
@@ -171,6 +131,7 @@ public class AddUserView extends PopupViewImpl implements
 		user.setPassword(txtPassword.getValue());
 		user.setSurname(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
+		
 		//user.setGroups();
 		
 		return user;

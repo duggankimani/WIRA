@@ -46,7 +46,7 @@ public class DBLoginHelper implements LoginIntf{
 		HTUser htuser = new HTUser();
 		htuser.setEmail(user.getEmail());
 		htuser.setUserId(user.getUserId());
-		htuser.setName(user.getFirstName()+" "+user.getLastName());
+		htuser.setName(user.getFirstName());
 		htuser.setPassword(user.getPassword());
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
@@ -236,6 +236,29 @@ public class DBLoginHelper implements LoginIntf{
 		}
 		
 		return true;
+	}
+
+	@Override
+	public List<HTUser> getAllUsers() {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		List<User> users = dao.getAllUsers();
+		
+		List<HTUser> htusers = new ArrayList<>();
+		
+		if(users!=null)
+			for(User user: users){
+				htusers.add(get(user));
+			}
+		
+		return htusers;
+	}
+
+	@Override
+	public List<UserGroup> getAllGroups() {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		
+		
+		return getFromDb(dao.getAllGroups());
 	}
 	
 }

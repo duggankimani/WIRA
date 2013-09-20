@@ -280,7 +280,7 @@ public class TaskItemPresenter extends
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
 				//refresh list
-				fireEvent(new ProcessingCompletedEvent());				
+				fireEvent(new ProcessingCompletedEvent());			
 				if(action==Actions.COMPLETE){
 					removeFromParent();
 					fireEvent(new AfterSaveEvent());
@@ -288,6 +288,7 @@ public class TaskItemPresenter extends
 					//fireEvent(new ReloadEvent());
 					reload((HTSummary)result.getDocument());
 				}
+				//	
 			}
 		});
 	}

@@ -349,4 +349,16 @@ public class LDAPLoginHelper implements LoginIntf{
 		return false;
 	}
 
+	@Override
+	public List<HTUser> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<UserGroup> getAllGroups() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

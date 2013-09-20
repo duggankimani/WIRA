@@ -66,6 +66,8 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserView;
+import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
+import com.duggan.workflow.client.ui.admin.users.item.UserItemView;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
@@ -189,5 +191,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(AddUserPresenter.class,
 				AddUserPresenter.MyView.class, AddUserView.class);
+		
+		bindPresenterWidget(UserItemPresenter.class, UserItemPresenter.MyView.class,
+				UserItemView.class);
 }
 }

@@ -382,12 +382,11 @@ class BPMSessionManager{
 	
 	public void execute(long taskId, String userId, Actions action, Map<String, Object> values) {
 	
-		Map<String, Object> inputValues = JBPMHelper.getMappedData(getTaskClient().getTask(taskId));
-		String docId = inputValues.get("documentId").toString();
-		Document doc = DocumentDaoHelper.getDocument(Long.parseLong(docId));
+		Task task = getTaskClient().getTask(taskId);
 		
 		//initialize session - Each HT execution must run within an active StatefulKnowledgeSession
-		getSession(doc.getSessionId(),"aftertask-notification");
+		getSession(new Long(task.getTaskData().getProcessSessionId()),
+				task.getTaskData().getProcessId());
 		
 		switch(action){
 		case CLAIM:
@@ -490,7 +489,6 @@ class BPMSessionManager{
 		@Override
 		public void taskCreated(TaskUserEvent event){
 			//session.startProcess(processId, parameters)
-			String processId = "beforetask-notification";
 			
 			Task task = getTaskClient().getTask(event.getTaskId());
 			
@@ -507,7 +505,8 @@ class BPMSessionManager{
 				throw new IllegalArgumentException("SessionId must not be null!!!");
 			}
 			
-			StatefulKnowledgeSession session = getSession(sessionId, processId);
+			
+			StatefulKnowledgeSession session = getSession(sessionId, task.getTaskData().getProcessId());
 			
 			org.jbpm.process.instance.ProcessInstance instance = 
 					(org.jbpm.process.instance.ProcessInstance)session.getProcessInstance(task.getTaskData().getProcessInstanceId());
@@ -529,6 +528,8 @@ class BPMSessionManager{
 			if(newValues.get("Priority")==null)
 				newValues.put("Priority", values.get("Priority"));
 							
+			
+			String processId = "beforetask-notification";
 			
 			startProcess(processId, newValues);
 		 
@@ -562,7 +563,6 @@ class BPMSessionManager{
 			Long sessionId= new Long(event.getSessionId());
 			
 			try{
-			String processId = "aftertask-notification";
 			
 			Task task = getTaskClient().getTask(event.getTaskId());			
 			Long outputId = task.getTaskData().getOutputContentId();
@@ -574,8 +574,8 @@ class BPMSessionManager{
 			Long documentId = Long.parseLong(taskData.get("documentId").toString());
 			Document doc = DocumentDaoHelper.getDocument(documentId);
 			Long processInstanceId = doc.getProcessInstanceId();
-						
-			StatefulKnowledgeSession session = getSession(sessionId,processId);
+			
+			StatefulKnowledgeSession session = getSession(sessionId,task.getTaskData().getProcessId());
 			Map<String, Object> values = new HashMap<>();
 			org.jbpm.process.instance.ProcessInstance instance = 
 					(org.jbpm.process.instance.ProcessInstance)session.getProcessInstance(processInstanceId);
@@ -625,7 +625,9 @@ class BPMSessionManager{
 				}
 			}
 			
-			startProcess(session,processId, newValues);
+			String processId = "aftertask-notification";
+			
+			startProcess(processId, newValues);
 			
 			}catch(Exception e){
 				e.printStackTrace();
