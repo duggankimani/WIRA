@@ -9,6 +9,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -45,18 +49,19 @@ public class ListItem<T extends Listable> extends Composite {
 		
 		if(selected){
 			//selected
-			aUnselect.removeStyleName("hide");
-			aSelect.addStyleName("hide");			
+			aUnselect.removeStyleName("hidden");
+			aSelect.addStyleName("hidden");			
 			bullet.setStyleName("select2-search-choice");
 			
 		}else{
 			//others
-			aUnselect.addStyleName("hide");
-			aSelect.removeStyleName("hide");
+			aUnselect.addStyleName("hidden");
+			aSelect.removeStyleName("hidden");
 			divName.addClassName("select2-result-label");
 			bullet.setStyleName("select2-results-dept-0 select2-result select2-result-selectable");
 			divUnselectName.setClassName("hide");
 		}
+		
 		
 		this.value = value; 
 		
@@ -75,6 +80,20 @@ public class ListItem<T extends Listable> extends Composite {
 			}
 		});
 		
+		aSelect.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				bullet.addStyleName("select2-highlighted");
+			}
+		});
+		
+		aSelect.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				bullet.removeStyleName("select2-highlighted");	
+			}
+		});
+		
 		aUnselect.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -86,6 +105,8 @@ public class ListItem<T extends Listable> extends Composite {
 				ListItem.this.removeFromParent();
 			}
 		});
+		
+		
 		
 	}	
 	

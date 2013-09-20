@@ -28,7 +28,7 @@ public class ListField<T extends Listable> extends Composite {
 	
 	@UiField BulletListPanel ulSelected;
 	@UiField BulletListPanel ulOthers;
-	@UiField DivElement sltDrop;
+	@UiField FocusPanel sltDrop;
 	@UiField DivElement sltBox;
 	@UiField FocusPanel sltContainer;
 	
@@ -41,17 +41,19 @@ public class ListField<T extends Listable> extends Composite {
 		sltContainer.addFocusHandler(new FocusHandler() {
 			@Override
 			public void onFocus(FocusEvent event) {
-				sltDrop.removeClassName("hidden");
+				sltDrop.removeStyleName("hidden");
 				sltBox.addClassName("select2-dropdown-open");
+				sltDrop.setFocus(true);
 			}
 		});
 		
-		sltContainer.addBlurHandler(new BlurHandler() {
+		sltDrop.addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				//sltDrop.addClassName("hidden");
+				sltDrop.addStyleName("hidden");
 			}
 		});
+		
 	}
 
 	public ListField(List<T> items) {
