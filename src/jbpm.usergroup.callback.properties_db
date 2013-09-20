@@ -1,0 +1,4 @@
+db.ds.jndi.name=jdbc/ebusinessds
+db.user.query= select * from BUser where userId=?
+db.user.roles.query=select u.userId,g.name from BGroup g inner join UserGroup ug on (ug.groupid=g.id) inner join BUser u on (u.id=ug.userid) where u.userId=?
+db.roles.query=select * from BGroup where name=?

@@ -20,7 +20,7 @@ public class LoginHelper implements LoginIntf{
 
 	private LoginHelper() {
 		impl = new LDAPLoginHelper();
-		//impl = new LDAP;
+		//impl = new DBLoginHelper();
 	}
 
 	/**

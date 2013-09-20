@@ -70,6 +70,7 @@ import org.jbpm.task.event.entity.TaskCompletedEvent;
 import org.jbpm.task.event.entity.TaskFailedEvent;
 import org.jbpm.task.event.entity.TaskSkippedEvent;
 import org.jbpm.task.event.entity.TaskUserEvent;
+import org.jbpm.task.identity.LDAPUserGroupCallbackImpl;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
@@ -129,6 +130,9 @@ public class JBPMHelper implements Closeable{
 	        // user/group exists and its permissions are ok.
 	        System.setProperty("jbpm.usergroup.callback",
 	                "org.jbpm.task.identity.LDAPUserGroupCallbackImpl");
+	        
+//			System.setProperty("jbpm.usergroup.callback",
+//					"org.jbpm.task.identity.DBUserGroupCallbackImpl");
 	        sessionManager = new BPMSessionManager();			
 		}catch(Exception e){
 			e.printStackTrace();
