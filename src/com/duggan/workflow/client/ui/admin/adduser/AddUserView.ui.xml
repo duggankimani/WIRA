@@ -17,43 +17,39 @@
 			 
 		 	<g:HTMLPanel styleName="modal-body">
 		 			<g:HTMLPanel styleName="hide" ui:field="divUserDetails">
-						  <div class="form-group">
-						    <label for="ProcessName">Username:</label>
-						    <d:TextField ui:field="txtUserName" type="email" 
-						        class="form-control" placeholder="First Name"/>
-						  </div>
-						  <div class="form-group">
-						    <label for="ProcessName">First Name:</label>
-						    <d:TextField ui:field="txtFirstname" type="email" 
-						        class="form-control" placeholder="First Name"/>
+						  <div class="control-group">
+						  	<div class="controls"> 
+							    <label for="Names"><b>Names:</b></label>
+							    <d:TextField ui:field="txtFirstname" type="text" class="input-medium" placeholder="First Name"/>
+							    <d:TextField ui:field="txtLastname" type="text"  class="input-medium" placeholder="Last Name"/>
+						  	</div>
 						  </div>
 						  
-						  <div class="form-group">
-						    <label for="ProcessName">Last Name:</label>
-						    <d:TextField ui:field="txtLastname" type="email" 
-						        class="form-control" placeholder="Last Name"/>
+						   <div class="control-group">
+							   	<div class="controls">
+								    <label for="Username"><b>Username:</b></label>
+								    <d:TextField ui:field="txtUserName" type="text" class="input-medium" placeholder=""/>
+							    </div>
+						  </div>
+						  <div class="control-group">
+						  		<div class="controls">
+							    <label for="Email"><b>Email:</b></label>
+							    <d:TextField ui:field="txtEmail" type="email" class="input-large" placeholder="Email"/>
+						  		</div>
 						  </div>
 						  
-						  <div class="form-group">
-						    <label for="ProcessName">Email:</label>
-						    <d:TextField ui:field="txtEmail" type="email" 
-						        class="form-control" placeholder="Email"/>
+						  <div class="control-group">
+						    <label for="ProcessName"><b>Password:</b></label>
+						    <d:PasswordField ui:field="txtPassword" type="password" class="form-control" placeholder="Password"/>
 						  </div>
 						  
-						  <div class="form-group">
-						    <label for="ProcessName">Password:</label>
-						    <d:PasswordField ui:field="txtPassword" type="password" 
-						         class="form-control" placeholder="Password"/>
-						  </div>
-						  
-						  <div class="form-group">
-						    <label for="ProcessName">Confirm Password:</label>
-						    <d:PasswordField ui:field="txtConfirmPassword" type="password" 
-						        class="form-control" placeholder="Email"/>
+						  <div class="control-group">
+						    <label class="control-label"><b>Confirm Password:</b></label>
+						    <d:PasswordField ui:field="txtConfirmPassword" type="password" class="form-control" placeholder="Email"/>
 						  </div>
 					
 						<div class="control-group">
-							<label class="control-label">Group:</label>
+							<label class="control-label"><b>User Groups:</b></label>
 							<g:FocusPanel ui:field="sltContainer">
 								<g:HTMLPanel>
 								<div class="controls">
@@ -67,19 +63,11 @@
 								</g:HTMLPanel>
 							</g:FocusPanel>
 								<div class="select2-drop select2-drop-multi hidden" ui:field="sltDrop" style="width:200px; display:block; top:266px;">
-										<ul class="select2-results" ui:field="ulSelectResults">
-											<g:Anchor styleName="select2-results-dept-0 select2-result select2-result-selectable select2-highlighted" ui:field="liSelectItem">
+										<d:BulletListPanel class="select2-results" ui:field="ulSelectResults">
+											<li styleName="select2-results-dept-0 select2-result select2-result-selectable select2-highlighted" ui:field="liSelectItem">
 												<div class="select2-result-label"><span class="select2"></span>Procurement</div>
-											</g:Anchor>
-											
-											<li class="select2-results-dept-0 select2-result select2-result-selectable">
-												<div class="select2-result-label"><span class="select2-match"></span>Management</div>
 											</li>
-											
-											<li class="select2-results-dept-0 select2-result select2-result-selectable">
-												<div class="select2-result-label"><span class="select2-match"></span>Sales &amp; Marketing</div>
-											</li>
-										</ul>
+										</d:BulletListPanel>
 								</div>
 							</div>
 							

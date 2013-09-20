@@ -17,7 +17,7 @@
 							Add User
 					</g:Anchor>
 					
-					<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary"
+					<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary hide"
 						title="Add a New Process">
 						<i class="icon-plus"></i>
 							Add Group

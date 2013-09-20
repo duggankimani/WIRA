@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
      xmlns:g="urn:import:com.google.gwt.user.client.ui"
      xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
-	<d:BulletPanel styleName="select2-search-choice">
+	<d:BulletPanel styleName="select2-search-choice" ui:field="liItem">
 	    <g:HTMLPanel>
 	        <div ui:field="divName"></div>
 			<g:Anchor styleName="select2-search-choice-close" ui:field="aSelectedCancel"></g:Anchor>	        
