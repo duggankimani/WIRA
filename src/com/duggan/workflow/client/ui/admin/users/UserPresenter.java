@@ -8,6 +8,8 @@ import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter;
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
 import com.duggan.workflow.client.ui.events.EditUserEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.EditUserEvent.EditUserHandler;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
@@ -104,11 +106,13 @@ implements EditUserHandler, LoadUsersHandler{
 	
 	private void loadUsers() {
 		GetUsersRequest request = new GetUsersRequest();
+		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request, new TaskServiceCallback<GetUsersResponse>() {
 			@Override
 			public void processResult(GetUsersResponse result) {
 				List<HTUser> users = result.getUsers();
 				loadUsers(users);
+				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
 	}
