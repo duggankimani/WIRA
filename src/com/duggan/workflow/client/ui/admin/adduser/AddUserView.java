@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -45,10 +46,9 @@ public class AddUserView extends PopupViewImpl implements
 	@UiField TextField txtUsers;
 
 	@UiField PopupPanel AddUserDialog;
-	
 	@UiField Anchor aSaveGroup;
 	@UiField Anchor aSaveUser;
-	
+
 	@UiField ListField<UserGroup> lstGroups;
 	
 	TYPE type;
@@ -76,7 +76,17 @@ public class AddUserView extends PopupViewImpl implements
 		
 		lstGroups.addItems(groups);
 		
-		//AddUserDialog.setPopupPosition(40,10);
+
+		
+	
+		//----Calculate the Size of Screen; To be Centralized later -----
+		int height = Window.getClientHeight();
+		int width = Window.getClientWidth();
+		
+		double height1=(10.0/100.0)*height;
+		double width1= (40.0/100.0)*width;
+		
+		AddUserDialog.setPopupPosition((int)width1,(int)height1);
 	}
 
 	@Override
