@@ -6,15 +6,23 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter;
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
+import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
+import com.duggan.workflow.client.ui.events.EditGroupEvent;
 import com.duggan.workflow.client.ui.events.EditUserEvent;
+import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.EditGroupEvent.EditGroupHandler;
 import com.duggan.workflow.client.ui.events.EditUserEvent.EditUserHandler;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
+import com.duggan.workflow.client.ui.events.LoadGroupsEvent.LoadGroupsHandler;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,18 +37,21 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
 public class UserPresenter extends PresenterWidget<UserPresenter.MyView> 
-implements EditUserHandler, LoadUsersHandler{
+implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandler{
 
 	public interface MyView extends View {
 
 		HasClickHandlers getaNewUser();
 		HasClickHandlers getaNewGroup();
+		void setType(TYPE type);
 	}
 	
 	public static final Object ITEMSLOT = new Object();
+	public static final Object GROUPSLOT = new Object();
 	
 	IndirectProvider<AddUserPresenter> userFactory;
 	IndirectProvider<UserItemPresenter> userItemFactory;
+	IndirectProvider<GroupPresenter> groupFactory;
 
 	TYPE type = TYPE.USER;
 
@@ -49,10 +60,12 @@ implements EditUserHandler, LoadUsersHandler{
 	@Inject
 	public UserPresenter(final EventBus eventBus, final MyView view,
 			Provider<AddUserPresenter> addUserProvider,
-			Provider<UserItemPresenter> itemProvider) {
+			Provider<UserItemPresenter> itemProvider,
+			Provider<GroupPresenter> groupProvider) {
 		super(eventBus, view);
 		userFactory = new StandardProvider<AddUserPresenter>(addUserProvider);
 		userItemFactory = new StandardProvider<UserItemPresenter>(itemProvider);
+		groupFactory = new StandardProvider<GroupPresenter>(groupProvider); 
 	}
 	
 	private void showPopup(final AddUserPresenter.TYPE type){
@@ -71,13 +84,14 @@ implements EditUserHandler, LoadUsersHandler{
 		});
 			
 	}
-	
 
 	@Override
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(EditUserEvent.TYPE, this);
 		addRegisteredHandler(LoadUsersEvent.TYPE, this);
+		addRegisteredHandler(LoadGroupsEvent.TYPE, this);
+		addRegisteredHandler(EditGroupEvent.TYPE, this);
 		
 		getView().getaNewUser().addClickHandler(new ClickHandler() {
 			@Override
@@ -98,12 +112,37 @@ implements EditUserHandler, LoadUsersHandler{
 		if(type==TYPE.USER){
 			loadUsers();
 		}else{
-			//load Groups
+			loadGroups();
 		}
 	}
 	
-	
-	
+	private void loadGroups() {
+		GetGroupsRequest request = new GetGroupsRequest();
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(request, new TaskServiceCallback<GetGroupsResponse>() {
+			@Override
+			public void processResult(GetGroupsResponse result) {
+				List<UserGroup> groups = result.getGroups();
+				loadGroups(groups);
+				fireEvent(new ProcessingCompletedEvent());
+			}
+		});
+	}
+
+	protected void loadGroups(List<UserGroup> groups) {
+		setInSlot(GROUPSLOT, null);
+		for(final UserGroup group: groups){
+			groupFactory.get(new ServiceCallback<GroupPresenter>() {
+				@Override
+				public void processResult(GroupPresenter result) {
+					result.setGroup(group);
+					addToSlot(GROUPSLOT, result);
+				}
+			});
+		}
+		
+	}
+
 	private void loadUsers() {
 		GetUsersRequest request = new GetUsersRequest();
 		fireEvent(new ProcessingEvent());
@@ -139,5 +178,20 @@ implements EditUserHandler, LoadUsersHandler{
 	@Override
 	public void onLoadUsers(LoadUsersEvent event) {
 		loadData();
+	}
+	
+	@Override
+	public void onLoadGroups(LoadGroupsEvent event) {
+		loadData();
+	}
+
+	public void setType(TYPE type) {
+		this.type=type;
+		getView().setType(type);
+	}
+
+	@Override
+	public void onEditGroup(EditGroupEvent event) {
+		showPopup(type, event.getGroup());
 	}
 }

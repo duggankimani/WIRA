@@ -25,12 +25,12 @@
 				</div>
 				
 					<ul id="mytab" class="nav nav-tabs">
-					  <li class="active"><g:Anchor href="#user" ui:field="aUserstab">Users</g:Anchor></li>
-					  <li><g:Anchor href="#groups" ui:field="aGroupstab">Groups</g:Anchor></li>
+					  <li class="active" ui:field="liUser"><g:Anchor href="#user" ui:field="aUserstab">Users</g:Anchor></li>
+					  <li ui:field="liGroup"><g:Anchor href="#groups" ui:field="aGroupstab">Groups</g:Anchor></li>
 					</ul>
 					<div id="usercontent" class="tab-content">
 							<!-- User's Information Tab  -->
-							<div class="tab-pane fade in active" id="user">
+							<div ui:field="divUserContent" class="tab-pane fade in active">
 						        <div class="table table-hover table-striped table-bordered">
 								    <div class="thead">
 								    	<div class="tr">
@@ -85,18 +85,16 @@
 					        </div>
 							
 					<!-- Group's Table  -->
-					<div class="tab-pane fade" id="groups">
+					<div ui:field="divGroupContent" class="tab-pane fade">
 				         <div class="table table-hover table-striped table-bordered">
 						    <div class="thead">
 						    	<div class="tr">
 									<div class="th">
 									  <label><input type="checkbox" class="ace"/></label>
 									</div>
-									<div class="th">First Name</div>
-									<div class="th">Last Name</div>
-									<div class="th">Email</div>		
-									<div class="th">Group</div>
-									<div class="th">Action</div>	
+									<div class="th">Code</div>
+									<div class="th">Description</div>	
+									<div class="th">Action</div>
 								</div>						
 							</div>
 						

@@ -1,11 +1,16 @@
 package com.duggan.workflow.client.ui.admin.adduser;
 
+import java.util.List;
+
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
+import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.SaveGroupResponse;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -36,6 +41,8 @@ public class AddUserPresenter extends PresenterWidget<AddUserPresenter.MyView> {
 		UserGroup getGroup();
 
 		void setGroup(UserGroup group);
+
+		void setGroups(List<UserGroup> groups);
 		
 	}
 
@@ -88,11 +95,7 @@ public class AddUserPresenter extends PresenterWidget<AddUserPresenter.MyView> {
 			@Override
 			public void onClick(ClickEvent event) {
 				if(getView().isValid()){
-					UserGroup userGroup = getView().getGroup();
-					
-					if(userGroup!=null){
-						userGroup.setId(group.getId());
-					}					
+					UserGroup userGroup = getView().getGroup();				
 					
 					SaveGroupRequest request = new SaveGroupRequest(userGroup);
 					
@@ -101,9 +104,26 @@ public class AddUserPresenter extends PresenterWidget<AddUserPresenter.MyView> {
 						public void processResult(SaveGroupResponse result) {
 							group = result.getGroup();
 							getView().setGroup(group);
+							fireEvent(new LoadGroupsEvent());
+							getView().hide();
 						}
 					});
 				}
+			}
+		});
+	}
+	
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		
+		GetGroupsRequest request = new GetGroupsRequest();
+		requestHelper.execute(request, new TaskServiceCallback<GetGroupsResponse>() {
+			@Override
+			public void processResult(GetGroupsResponse result) {
+				List<UserGroup> groups = result.getGroups();
+				getView().setGroups(groups);
 			}
 		});
 	}

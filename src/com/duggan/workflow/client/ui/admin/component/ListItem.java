@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -73,10 +74,7 @@ public class ListItem<T extends Listable> extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				for(OnSelectHandler handler: handlers){
-					handler.onItemSelected(ListItem.this, value, true);
-				}
-				ListItem.this.removeFromParent();
+				removeMe(true);
 			}
 		});
 		
@@ -99,17 +97,18 @@ public class ListItem<T extends Listable> extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				for(OnSelectHandler handler: handlers){
-					handler.onItemSelected(ListItem.this, value, false);					
-				}
-				ListItem.this.removeFromParent();
+				removeMe(false);
 			}
 		});
-		
-		
-		
 	}	
 	
+	protected void removeMe(boolean selected) {
+		for(OnSelectHandler handler: handlers){
+			handler.onItemSelected(ListItem.this, value, selected);
+		}
+		ListItem.this.removeFromParent();
+	}
+
 	public T getObject(){
 		return value;
 	}
@@ -117,5 +116,4 @@ public class ListItem<T extends Listable> extends Composite {
 	public void addSelectHandler(OnSelectHandler handler){
 		handlers.add(handler);
 	}
-
 }

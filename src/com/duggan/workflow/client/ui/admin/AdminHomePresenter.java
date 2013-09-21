@@ -2,10 +2,12 @@ package com.duggan.workflow.client.ui.admin;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
+import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
@@ -50,7 +52,8 @@ public class AdminHomePresenter extends
 	@Inject ReportsPresenter reports;
 	
 	enum ADMINPAGES{
-		DASHBOARD("Dashboard"), PROCESSES("Process"), USERS("Users"), REPORTS("Reports");
+		DASHBOARD("Dashboard"), PROCESSES("Process"), USERS("Users"),GROUPS("groups"),
+		REPORTS("Reports");
 		
 		private String displayName;
 		
@@ -103,6 +106,11 @@ public class AdminHomePresenter extends
 			showUserPanel();
 			fireEvent(new LoadUsersEvent());
 			break;
+			
+		case GROUPS:
+			showUserPanel(TYPE.GROUP);
+			fireEvent(new LoadGroupsEvent());
+			break;
 		
 		case REPORTS:
 			showReportPanel();
@@ -123,10 +131,16 @@ public class AdminHomePresenter extends
 		 getView().clearAllLinks();
 		 getView().SetProcessLink(true,page);
 	}
-	private void showUserPanel() {
+	
+	private void showUserPanel(){
+		showUserPanel(TYPE.USER);
+	}
+	
+	private void showUserPanel(TYPE type) {
+		users.setType(type);
 		setInSlot(CONTENT_SLOT, users);
-		 getView().clearAllLinks();
-		 getView().SetUsersLink(true,page);
+		getView().clearAllLinks();
+		getView().SetUsersLink(true,page);
 	}
 	
 	private void showReportPanel() {
