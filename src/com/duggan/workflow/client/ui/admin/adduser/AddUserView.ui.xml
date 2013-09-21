@@ -53,17 +53,17 @@
 							<label class="control-label"><b>Group:</b></label>
 								<c:ListField ui:field="lstGroups"/>
 							</div>
-							
-					</g:HTMLPanel>
+				</g:HTMLPanel>
 			</g:HTMLPanel>
+			
 			<div class="form-actions">
-				<g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
-			  Save&nbsp; 
-		      <i class="icon-double-angle-right"></i>						      
-		  	</g:Anchor>
-			</div>
-
-			<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
+					<g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
+				  Save&nbsp; 
+			      <i class="icon-double-angle-right"></i>						      
+			  	</g:Anchor>
+				</div>
+		
+				<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
 					<g:HTMLPanel styleName="modal-body">
 						  <div class="form-group">
 						    <label for="ProcessName">Group Name:</label>
@@ -81,13 +81,14 @@
 						    <d:TextField ui:field="txtUsers" type="users" 
 						        class="form-control" placeholder="Email"/>
 						  </div>
-						  
-						  <div class="modal-footer well form-action">
-						  <g:Anchor styleName="btn btn-primary" ui:field="aSaveGroup">Save&nbsp;
-						   <i class="icon-double-angle-right"></i></g:Anchor>
-						   </div>
-						   
 					</g:HTMLPanel>
+					
+					<div class="form-actions">
+						<g:Anchor ui:field="aSaveGroup" styleName="btn btn-primary pull-left">
+					  Save&nbsp; 
+				      <i class="icon-double-angle-right"></i>						      
+				  	</g:Anchor>
+					</div>
 			 </g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:PopupPanel>

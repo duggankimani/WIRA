@@ -41,7 +41,7 @@ public class ListField<T extends Listable> extends Composite {
 		sltContainer.addFocusHandler(new FocusHandler() {
 			@Override
 			public void onFocus(FocusEvent event) {
-				sltDrop.removeStyleName("hidden");
+				sltDrop.removeStyleName("hide");
 				sltBox.addClassName("select2-dropdown-open");
 				sltDrop.setFocus(true);
 			}
@@ -50,7 +50,7 @@ public class ListField<T extends Listable> extends Composite {
 		sltDrop.addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				sltDrop.addStyleName("hidden");
+				sltDrop.addStyleName("hide");
 			}
 		});
 		

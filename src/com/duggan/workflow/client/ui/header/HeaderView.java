@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.header;
 
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
@@ -122,5 +124,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}else{
 			divNavbar.removeStyleName("navbar-inverse");
 		}
+	}
+
+	@Override
+	public void changeFocus() {
+		popupContainer.setFocus(true);
 	}
 }

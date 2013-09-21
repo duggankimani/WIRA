@@ -63,8 +63,7 @@ implements EditUserHandler, LoadUsersHandler{
 			@Override
 			public void processResult(AddUserPresenter result) {
 				result.setType(type, obj);
-				
-				addToPopupSlot(result);
+				addToPopupSlot(result,false);
 			}
 		});
 			

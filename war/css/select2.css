@@ -101,10 +101,9 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
 .select2-drop {
     background: #fff;
     color: #000;
-    border: 1px solid #aaa;
     border-top: 0;
     position: absolute;
-    top: 100%;
+    top: 95%;
     -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
     -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
     -o-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
@@ -297,6 +296,15 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
   padding: 3px 7px 4px;
   margin: 0;
   cursor: pointer;
+}
+
+.select2-results a{
+    color:#000;
+    text-decoration:none;
+}
+
+.select2-results a:hover{
+    color:#fff;
 }
 
 .select2-results .select2-highlighted {

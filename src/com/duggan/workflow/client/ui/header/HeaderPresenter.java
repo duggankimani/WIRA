@@ -51,6 +51,7 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 		HasBlurHandlers getpopupContainer();
 		void setLoading(boolean b);
 		void setAdminPageLookAndFeel(boolean isAdminPage);
+		void changeFocus();
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -85,8 +86,8 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 		super.onBind();
 		this.addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		this.addRegisteredHandler(AdminPageLoadEvent.TYPE, this);
+		
 		getView().getLogout().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
 				logout();
@@ -100,13 +101,14 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 				getView().setPopupVisible();
 				setInSlot(NOTIFICATIONS_SLOT, notifications);	
 				onFocus =true;
+				getView().changeFocus();
 			}
 		});
 		
-		getView().getNotificationsButton().addBlurHandler(new BlurHandler() {
+		getView().getpopupContainer().addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				//getView().removePopup();
+				getView().removePopup();
 			}
 		});	
 		

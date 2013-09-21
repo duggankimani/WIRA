@@ -69,7 +69,7 @@ textarea {
 /*Uploader Modal */
 .modal{
 	max-width: 40%; 
-	height: 64%;
+	height: 92%;
 }
 
 .modal .popupContent{
@@ -88,10 +88,13 @@ textarea {
     min-width: 43%;
 }
 
-.modal-admin .modal-body  .select2-drop{
-	width:200px; 
-	display:block;
-	 top:266px;
+.modal-admin .modal-body  .select2-drop{ 
+	width: 200px;
+}
+
+.modal-admin .modal-body  .select2-drop:focus{ 
+border: 1px solid #aaa;
+border-top: 0;
 }
 
 .modal-header{
