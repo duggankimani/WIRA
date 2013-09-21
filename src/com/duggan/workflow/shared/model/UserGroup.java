@@ -61,4 +61,10 @@ public class UserGroup implements Serializable, Listable{
 		
 		return other.name.equals(name);
 	}
+	
+	@Override
+	public String toString() {
+		
+		return name;
+	}
 }

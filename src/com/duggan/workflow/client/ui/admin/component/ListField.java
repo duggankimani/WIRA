@@ -55,12 +55,12 @@ public class ListField<T extends Listable> extends Composite {
 		});
 		
 	}
-
+	
 	public ListField(List<T> items) {
 		this();
 		addItems(items);
 	}
-	
+
 	public void addItem(T item, boolean isSelected){
 		
 		if(isSelected){
@@ -72,24 +72,26 @@ public class ListField<T extends Listable> extends Composite {
 			
 			if(others.contains(item)){
 				others.remove(item);
+				
 			}
 			
 		}else{
-			
-			if(selected.contains(item)){
-				selected.remove(item);
-			}
 			
 			if(!others.contains(item)){
 				others.add(item);	
 				createListItem(item, isSelected);
 			}
+			
+			if(selected.contains(item)){
+				selected.remove(item);				
+			}
+			
 		}
 		
 	}
-	
+
 	private void createListItem(T item, boolean selected) {
-		ListItem<T> listItem = new ListItem<T>(item, selected);		
+		ListItem<T> listItem = new ListItem<T>(item, selected);	
 		listItem.addSelectHandler(new OnSelectHandler() {
 			@Override
 			public void onItemSelected(ListItem source, Listable value,
@@ -105,14 +107,18 @@ public class ListField<T extends Listable> extends Composite {
 		}
 	}
 
-	public void addItems(List<T> items){
+	public void addItems(List<T> items){		
+		items.removeAll(selected);
+		//others
 		for(T item: items){
 			addItem(item, false);
 		}
 	}
 	
-	public void select(List<T> items){
-		for(T item: items){
+	public void select(List<T> items){		
+		others.removeAll(selected);
+		//others
+		for(T item: items){			
 			addItem(item, true);
 		}
 	}

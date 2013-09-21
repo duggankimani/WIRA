@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.admin.adduser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
@@ -66,19 +65,7 @@ public class AddUserView extends PopupViewImpl implements
 				hide();
 			}
 		});
-		
-		List<UserGroup> groups= new ArrayList<UserGroup>();
-		
-		for(int i=0 ; i<10; i++){
-			UserGroup group = new UserGroup("User Group "+i);
-			groups.add(group);
-		}
-		
-		lstGroups.addItems(groups);
-		
-
-		
-	
+				
 		//----Calculate the Size of Screen; To be Centralized later -----
 		int height = Window.getClientHeight();
 		int width = Window.getClientWidth();
@@ -132,12 +119,12 @@ public class AddUserView extends PopupViewImpl implements
 		user.setPassword(txtPassword.getValue());
 		user.setSurname(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
-		
-		//user.setGroups();
+		user.setGroups(lstGroups.getSelectedItems());
 		
 		return user;
 	}
 	
+	HTUser user;
 	public void setUser(HTUser user){
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getName());
@@ -145,6 +132,8 @@ public class AddUserView extends PopupViewImpl implements
 		txtConfirmPassword.setValue(user.getPassword());
 		txtLastname.setValue(user.getSurname());
 		txtUserName.setValue(user.getUserId());
+		lstGroups.select(user.getGroups());
+
 	}
 
 	private boolean isUserValid() {
@@ -215,5 +204,10 @@ public class AddUserView extends PopupViewImpl implements
 			divUserDetails.removeStyleName("hide");
 			divGroupDetails.addStyleName("hide");
 		}
+	}
+
+	@Override
+	public void setGroups(List<UserGroup> groups) {
+		lstGroups.addItems(groups);
 	}
 }

@@ -7,6 +7,8 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.addprocess.AddProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.EditProcessEvent.EditProcessHandler;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent.LoadProcessesHandler;
@@ -80,6 +82,7 @@ public class ProcessPresenter extends
 
 	public void loadProcesses(){
 		
+		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new GetProcessesRequest(),new TaskServiceCallback<GetProcessesResponse>() {
 			@Override
 			public void processResult(GetProcessesResponse result) {
@@ -100,6 +103,8 @@ public class ProcessPresenter extends
 						});
 					}
 				}
+				
+				fireEvent(new ProcessingCompletedEvent());
 				
 			}
 		});
