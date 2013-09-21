@@ -21,9 +21,16 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	public User getUser(String userId){
 		Query query = em.createQuery("from BUser u where u.userId=:userId");
 		query.setParameter("userId", userId);
-		Object user = query.getSingleResult();
+		Object user= null;
+		try{
+			user = query.getSingleResult();
+			return (User)user;
+		}catch(NoResultException e){
+			
+		}
 		
-		return (User)user;
+		
+		return null;
 	}
 	
 	public Group getGroup(String groupId){

@@ -11,8 +11,8 @@ public class ActionLink extends Anchor {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				setStyleName("hidden");
-			}
+				//setStyleName("hidden");
+			}	
 		});
 	}
 }
