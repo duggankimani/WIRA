@@ -276,10 +276,10 @@
 
 /* content-body */
 #main-content .content .content-body{
-    padding: 21px 20px 40px 20px;
+    padding: 10px 20px 40px 20px;
     font-size: .9em;
     background: #FFFFFF;
-    min-height: 540px;
+    min-height: 456px;
 }
 
 .content-body .action-buttons{
@@ -288,6 +288,8 @@
 
 .content-body .tab-content{
     overflow-x:hidden;
+    overflow-y: auto;
+    height: 392px;
 }
 
 .content-body .tab-content .table .action-commands a{

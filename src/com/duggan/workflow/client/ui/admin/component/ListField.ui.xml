@@ -16,7 +16,7 @@
 			
 		</g:FocusPanel>
 
-	     <g:FocusPanel styleName="select2-drop select2-drop-multi select2-drop-active hidden" ui:field="sltDrop">
+	     <g:FocusPanel styleName="select2-drop select2-drop-multi select2-drop-active hide" ui:field="sltDrop">
 	    	<d:BulletListPanel ui:field="ulOthers" styleName="select2-results">		    
 			</d:BulletListPanel>
 		</g:FocusPanel>	
