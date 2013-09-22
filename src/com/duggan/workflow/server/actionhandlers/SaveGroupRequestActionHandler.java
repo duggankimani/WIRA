@@ -19,10 +19,21 @@ public class SaveGroupRequestActionHandler extends
 	@Override
 	public void execute(SaveGroupRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		UserGroup group = LoginHelper.get().createGroup(action.getGroup());
+		UserGroup group = action.getGroup();
 		
-		SaveGroupResponse response = (SaveGroupResponse)actionResult;
-		response.setGroup(group);
+		if(!action.isDelete()){	
+			
+			group = LoginHelper.get().createGroup(group);
+			
+			//save
+			SaveGroupResponse response = (SaveGroupResponse)actionResult;
+			response.setGroup(group);
+			
+		}
+		
+		if(action.isDelete()){
+			LoginHelper.get().deleteGroup(group);
+		}
 	}
 	
 	@Override

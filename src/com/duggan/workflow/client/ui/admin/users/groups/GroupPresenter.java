@@ -1,12 +1,16 @@
 package com.duggan.workflow.client.ui.admin.users.groups;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.EditGroupEvent;
 import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.requests.SaveGroupRequest;
+import com.duggan.workflow.shared.responses.SaveGroupResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
@@ -21,6 +25,8 @@ public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView>{
 	}
 
 	UserGroup group;
+	
+	@Inject DispatchAsync requestHelper;
 	
 	@Inject
 	public GroupPresenter(final EventBus eventBus, final MyView view) {
@@ -43,7 +49,14 @@ public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView>{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				
+				SaveGroupRequest request = new SaveGroupRequest(group);
+				request.setDelete(true);
+				requestHelper.execute(request, new TaskServiceCallback<SaveGroupResponse>() {
+					@Override
+					public void processResult(SaveGroupResponse result) {
+						getView().asWidget().removeFromParent();
+					}
+				});
 			}
 		});
 	}
