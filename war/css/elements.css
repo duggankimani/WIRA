@@ -509,9 +509,9 @@
 }
  .dialog {
 	display: none;
-	position: absolute;
-	right: 4px;
-	top: 55px;
+	position: relative;
+	right: 0;
+	top: 0;
 	z-index: 100;
 }
  .dialog.is-visible {

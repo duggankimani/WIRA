@@ -19,7 +19,7 @@
         <ul id="dashboard-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-book visible-desktop"></i>
+                    <i class="icon-book"></i>
                     <span>My Documents</span>
                     <i class="icon-chevron-up hidden-tablet"></i>
                 </a>
@@ -40,7 +40,7 @@
 
             <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-tasks visible-desktop"></i>
+                    <i class="icon-tasks"></i>
                     <span>Approval Request</span>
                     <i class="icon-chevron-up hidden-tablet"></i>
                 </a>
