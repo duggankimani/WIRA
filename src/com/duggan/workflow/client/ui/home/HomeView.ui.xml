@@ -13,15 +13,15 @@
       <div id="sidebar-nav" class="span2">
         <!--Button Add Document -->
         <div class="add-doc">
-            <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>		            
+            <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>
         </div>
        
         <ul id="dashboard-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-book"></i>
+                    <i class="icon-book visible-desktop"></i>
                     <span>My Documents</span>
-                    <i class="icon-chevron-up"></i>
+                    <i class="icon-chevron-up hidden-tablet"></i>
                 </a>
                 <ul class="submenu">
                     <li ui:field="liDrafts" class="active">
@@ -40,9 +40,9 @@
 
             <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-tasks"></i>
+                    <i class="icon-tasks visible-desktop"></i>
                     <span>Approval Request</span>
-                    <i class="icon-chevron-up"></i>
+                    <i class="icon-chevron-up hidden-tablet"></i>
                 </a>
                 <ul class="submenu second-menu">
                     <li ui:field="liNewReq"> 
