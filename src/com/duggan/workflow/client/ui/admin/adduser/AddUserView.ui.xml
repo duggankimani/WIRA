@@ -56,11 +56,11 @@
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			
-			<div class="form-actions">
-					<g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
-				  Save&nbsp; 
-			      <i class="icon-double-angle-right"></i>						      
-			  	</g:Anchor>
+				<div class="form-actions">
+					  <g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
+					   Save&nbsp; 
+				      <i class="icon-double-angle-right"></i>						      
+				  	</g:Anchor>
 				</div>
 		
 				<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
