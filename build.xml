@@ -47,8 +47,9 @@
 				<exclude name="**/slf4j-jdk14-1.6.4.jar"/>
 	       		<exclude name="**/gwt-dev.jar"/>
 	       		<exclude name="**/gwt-user.jar"/>
+	       		<exclude name="**/javax.ws.rs-api-2.0-m10.jar"/>
 				<include name="resources/**"/>
-				<include name="classes/*"/>
+				<include name="classes/*/**"/>
 				<include name="classes/*.properties"/>
 				<include name="classes/*.html"/>
 				<include name="classes/*.ldif"/>
