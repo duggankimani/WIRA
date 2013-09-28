@@ -37,9 +37,10 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	@Override
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
+		@SuppressWarnings("unchecked")
 		B result = (B) action.createDefaultActionResponse();		
 		
-		log.info(action.getRequestCode()+": Executing command " + action.getClass().getName());
+		log.debug(action.getRequestCode()+": Executing command " + action.getClass().getName());
 
 		if(SessionHelper.getHttpRequest()!=null){
 			//embedded call -- needed when executing multiple commands in one call

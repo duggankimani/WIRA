@@ -38,6 +38,7 @@ import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
 import xtension.workitems.GenerateNotificationWorkItemHandler;
+import xtension.workitems.IntegrationWorkItemHandler;
 import xtension.workitems.SendMailWorkItemHandler;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 
@@ -137,6 +138,7 @@ class BPMSessionManager{
 		session.getWorkItemManager().registerWorkItemHandler("UpdateLocal", new UpdateApprovalStatusWorkItemHandler());
 		session.getWorkItemManager().registerWorkItemHandler("GenerateSysNotification",new GenerateNotificationWorkItemHandler());
 		session.getWorkItemManager().registerWorkItemHandler("ScheduleEmailNotification",new SendMailWorkItemHandler());
+		session.getWorkItemManager().registerWorkItemHandler("Integration",new IntegrationWorkItemHandler());
 		
 		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 				EmailServiceHelper.getProperty("mail.smtp.host"),

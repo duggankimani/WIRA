@@ -50,6 +50,17 @@
 							       <g:CheckBox ui:field="chkContract"/>Contract
 							    </label>
 							  </div>
+							  <div class="checkbox">
+							    <label>
+							       <g:CheckBox ui:field="chkReq"/>Requistion
+							    </label>
+							  </div>
+							  <div class="checkbox">
+							    <label>
+							       <g:CheckBox ui:field="chkLeave"/>Leave Application
+							    </label>
+							  </div>
+							  
 						  </div>
 						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
 					</g:HTMLPanel>
