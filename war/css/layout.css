@@ -69,7 +69,6 @@ textarea {
 /*Uploader Modal */
 .modal{
 	max-width: 40%; 
-	height: 92%;
 }
 
 .modal .popupContent{
@@ -457,14 +456,7 @@ border-top: 0;
 	background: #ffffff;
     opacity:.4; 
 }
-#separator{
-	overflow: hidden;
-	/*background: url("../img/border.png") -0px -0px no-repeat;*/
-	height: 5px;
-	background-size: 100% 8px;
-	position: relative;
-	top: 10px;
-}
+
 
 /*---Middle-Pane--- */
 .main-container .content-right{
@@ -644,7 +636,7 @@ border-top: 0;
 	height: 100%;
 }
 #detailed-info .upper-content{
-    min-height:500px;
+    height: 100%;
 }
 #detailed-info .doc-title{
 	text-transform: uppercase;
@@ -680,7 +672,7 @@ border-top: 0;
 }
 
 #detailed-info .personal_info {
-	padding: 0px 0px 7px 2px;
+	padding: 0px 0px 7px 6px;
 	height: 35px;
 	border-bottom: 1px solid #CCCCCC;
 	margin-left: 0px;
@@ -689,7 +681,6 @@ border-top: 0;
 
 #detailed-info .personal_info .span3{
 	margin-left: 5px;
-	border-right: 1px solid #E2E2E2;
 	height: inherit;
 	padding-top: 5px;
 }
@@ -738,11 +729,12 @@ border-top: 0;
 	font-weight:normal;
 	border:1px solid #CCCCCC;
 	margin-left:0px;
+	margin-right: 10px;
 }
 
 #detailed-info .status-section .panel-heading{
     padding: 3px 5px;
-    width: 187px;
+    width: 95%;
     height: 21px;
 }
 
@@ -774,9 +766,8 @@ border-top: 0;
 	overflow-x: hidden;
 	margin-left: 13px;
 	border-left: none;
-	max-height: 326px;
-	overflow-y: hidden;
-	border-top: 1px solid #cccccc;
+	/* height: 60%; */
+	overflow-y: auto;
 	border-right: none;
 }
 
@@ -872,7 +863,7 @@ border-top: 0;
 
 
 #detailed-info .panel-activity{
-	width: 100%;
+	width: 92%;
 	overflow-y: auto;
 	margin: 0px 0px 0px 0px;
 	max-height: 246px;
@@ -884,7 +875,7 @@ border-top: 0;
 #detailed-info .panel-activity .item{
 	display: block;
 	cursor:default;
-	padding: 10px 0px 7px 49px;
+	padding: 10px 0px 10px 36px;
 	border-top: 1px solid #E7E8EA;
 	color: rgb(54, 54, 54);
 	font-size: 12px;
@@ -902,8 +893,8 @@ border-top: 0;
 #detailed-info .panel-activity .item>i {
 	color: rgb(252, 130, 123);
 	position: absolute;
-	left: 13px;
-	font-size: 20px;
+	left: 6px;
+	font-size: 22px;
 	top: 11px;
 }
 
@@ -1245,15 +1236,14 @@ border-top: 0;
 	
 	/*1.Sidebar*/
 	#dashboard-menu ul.submenu a{
-	padding-left:7px;
+	padding-left: 21px;
 	}
 	#dashboard-menu a span{
-	margin-left: 0px;
+	margin-left: 22px;
 	}
     #dashboard-menu>li i{
-       font-size: 12px;
-       top: 5px
-    }
+       font-size: 13px;
+       top: 5px;}
     #dashboard-menu ul.submenu{
     	margin: 0px 2px;
     }
