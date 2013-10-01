@@ -8,6 +8,7 @@ import com.duggan.workflow.shared.model.UserGroup;
 public class SaveGroupRequest extends BaseRequest<SaveGroupResponse> {
 
 	private UserGroup group;
+	private boolean isDelete=false;
 
 	@SuppressWarnings("unused")
 	private SaveGroupRequest() {
@@ -30,6 +31,14 @@ public class SaveGroupRequest extends BaseRequest<SaveGroupResponse> {
 	public BaseResponse createDefaultActionResponse() {
 		
 		return new SaveGroupResponse();
+	}
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
 	}
 	
 	

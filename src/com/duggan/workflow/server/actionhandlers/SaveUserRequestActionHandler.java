@@ -21,10 +21,17 @@ public class SaveUserRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		HTUser user = action.getUser();
 		
-		user = LoginHelper.get().createUser(user);
+		if(!action.isDelete()){
+			user = LoginHelper.get().createUser(user);
+			SaveUserResponse result = (SaveUserResponse)actionResult;
+			result.setUser(user);
+		}
 		
-		SaveUserResponse result = (SaveUserResponse)actionResult;
-		result.setUser(user);
+		
+		if(action.isDelete()){
+			LoginHelper.get().deleteUser(user);
+		}
+		
 	}
 
 	@Override

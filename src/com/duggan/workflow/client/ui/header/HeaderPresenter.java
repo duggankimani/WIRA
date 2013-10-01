@@ -9,9 +9,12 @@ import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent.AdminPageLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetAlertCountResult;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
@@ -39,7 +42,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> 
-implements AfterSaveHandler, AdminPageLoadHandler{
+implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 
 	public interface MyView extends View {
 		HasClickHandlers getLogout();
@@ -59,6 +62,7 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 	@Inject PlaceManager placeManager;
 	
 	@Inject NotificationsPresenter notifications;
+	
 	boolean onFocus =true;
 	
 	
@@ -86,6 +90,7 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 		super.onBind();
 		this.addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		this.addRegisteredHandler(AdminPageLoadEvent.TYPE, this);
+		this.addRegisteredHandler(ContextLoadedEvent.TYPE, this);
 		
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			@Override
@@ -108,7 +113,7 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 		getView().getpopupContainer().addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				getView().removePopup();
+				//getView().removePopup();
 			}
 		});	
 		
@@ -117,8 +122,9 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 	@Override
 	protected void onReset() {		
 		super.onReset();
+		getView().removePopup();
 		loadAlertCount();
-		getView().setValues(AppContext.getUserNames(), AppContext.getUserGroups());
+		AppContext.reloadContext();
 	}
 	
 	protected void loadAlertCount() {
@@ -167,6 +173,12 @@ implements AfterSaveHandler, AdminPageLoadHandler{
 	@Override
 	public void onAdminPageLoad(AdminPageLoadEvent event) {
 		getView().setAdminPageLookAndFeel(event.isAdminPage());
+	}
+
+	@Override
+	public void onContextLoaded(ContextLoadedEvent event) {
+		HTUser currentUser = event.getCurrentUser();
+		getView().setValues(currentUser.getName(), currentUser.getGroupsAsString());
 	}
 	
 	

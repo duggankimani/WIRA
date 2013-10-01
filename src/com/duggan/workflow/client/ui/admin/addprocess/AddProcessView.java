@@ -41,6 +41,8 @@ public class AddProcessView extends PopupViewImpl implements
 	@UiField CheckBox chkLPO;
 	@UiField CheckBox chkInvoice;
 	@UiField CheckBox chkContract;
+	@UiField CheckBox chkReq;
+	@UiField CheckBox chkLeave;
 	@UiField Uploader uploader;
 	@UiField TextArea txtDescription;
 
@@ -105,6 +107,14 @@ public class AddProcessView extends PopupViewImpl implements
 			types.add(DocType.CONTRACT);
 		}
 		
+		if(chkReq.getValue()){
+			types.add(DocType.REQUISITION);
+		}
+		
+		if(chkLeave.getValue()){
+			types.add(DocType.LEAVE);
+		}
+		
 		return types;
 	}
 	
@@ -134,6 +144,12 @@ public class AddProcessView extends PopupViewImpl implements
 				break;
 			case LPO:
 				chkLPO.setValue(true);
+				break;
+			case LEAVE:
+				chkLPO.setValue(true);
+				break;
+			case REQUISITION:
+				chkReq.setValue(true);
 				break;
 			}
 		}

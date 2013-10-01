@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
@@ -74,19 +75,15 @@ public class AppContext {
 		}
 	}
 
-	private static void reloadContext() {
+	public static void reloadContext() {
 		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
 			@Override
 			public void processResult(GetContextRequestResult result) {
 				user.setUserId(result.getUser().getUserId());
 				user.setName(result.getUser().getName());
 				user.setGroups(result.getGroups());
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				super.onFailure(caught);				
-			}
+				eventBus.fireEvent(new ContextLoadedEvent(result.getUser()));
+			}			
 		});
 	}
 	

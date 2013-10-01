@@ -4,7 +4,9 @@ public enum DocType {
 
 	INVOICE("Invoice"),
 	CONTRACT("Contract"),
-	LPO("LPO");
+	LPO("LPO"),
+	REQUISITION("Requisition"),
+	LEAVE("Leave Application");
 	
 	String displayName;
 	

@@ -13,6 +13,7 @@ import com.duggan.workflow.shared.model.HTUser;
 public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 
 	private HTUser user;
+	private boolean isDelete=false;
 
 	@SuppressWarnings("unused")
 	private SaveUserRequest() {
@@ -30,5 +31,13 @@ public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 	public BaseResponse createDefaultActionResponse() {
 	
 		return new SaveUserResponse();
+	}
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
 	}
 }
