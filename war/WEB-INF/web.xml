@@ -44,6 +44,24 @@
 	</filter-mapping>
 	
 	<servlet>
+	    <servlet-name>RestService</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.rest.servlet.JerseyServletContainer</servlet-class>
+	    <init-param>
+	        <param-name>com.sun.jersey.config.property.packages</param-name>
+	        <param-value>com.duggan.workflow.server.rest</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>RestService</servlet-name>
+	    <url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.UploadServlet</servlet-class>
 	    <servlet-name>uploader</servlet-name>
 	</servlet>
