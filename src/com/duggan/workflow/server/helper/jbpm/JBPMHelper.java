@@ -407,6 +407,7 @@ public class JBPMHelper implements Closeable{
 		HTask myTask = new HTask(); 
 		
 		Task task = sessionManager.getTaskClient().getTask(taskId);
+		//task.get
 		
 		List<I18NText> descriptions =task.getDescriptions();
 		myTask.setDescription(descriptions.get(0).getText());

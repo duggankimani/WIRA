@@ -67,8 +67,8 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 					DB.getAttachmentDao().getAttachmentsForProcessDef(model);			
 			if(attachments!=null){
 				for(LocalAttachment att: attachments){
-					att.setArchived(true);
-					DB.getAttachmentDao().save(att);
+					//delete previous
+					DB.getAttachmentDao().delete(att);
 				}
 			}
 			
