@@ -21,6 +21,7 @@ import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
+import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
@@ -263,6 +264,10 @@ public class DB{
 	
 	public static UserGroupDaoImpl getUserGroupDao(){
 		return factory().getUserGroupDaoImpl(getEntityManager());
+	}
+	
+	public static FormDaoImpl getFormDao(){
+		return factory().getFormDaoImpl(getEntityManager());
 	}
 
 	private static void closeFactory() {

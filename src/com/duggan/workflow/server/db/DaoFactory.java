@@ -6,6 +6,7 @@ import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
+import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
@@ -20,6 +21,7 @@ class DaoFactory {
 	CommentDaoImpl commentDaoImpl;
 	ProcessDaoImpl processDao;
 	UserGroupDaoImpl userGroupDao;
+	FormDaoImpl formDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -106,6 +108,18 @@ class DaoFactory {
 		}
 		
 		return userGroupDao;
+	}
+	
+	public FormDaoImpl getFormDaoImpl(EntityManager entityManager) {
+		if(formDao==null){
+			synchronized (DaoFactory.class) {
+				if(formDao==null){
+					formDao = new FormDaoImpl(entityManager);
+				}
+			}
+		}
+		
+		return formDao;
 	}
 
 }
