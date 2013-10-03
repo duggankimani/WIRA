@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="approval_sub-report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6bb16d8c-683f-4a72-b53e-e8b23c07c483">
+	<property name="ireport.zoom" value="1.3310000000000228"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="created" class="java.util.Date">
+		<fieldDescription><![CDATA[created]]></fieldDescription>
+	</field>
+	<field name="createdBy" class="java.lang.String">
+		<fieldDescription><![CDATA[createdBy]]></fieldDescription>
+	</field>
+	<field name="approverAction" class="com.duggan.workflow.shared.model.ApproverAction">
+		<fieldDescription><![CDATA[approverAction]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="dbfece28-6920-4c24-8489-9e41a4947cdb" x="-19" y="0" width="555" height="20" forecolor="#FFFFFF" backcolor="#E6E6E6"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e99d3293-fb27-4919-b76a-56618460ea1a" x="433" y="0" width="102" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="50d9d658-0e8b-40b9-94da-49def67574ce" x="123" y="0" width="160" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STAFF NAME:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af19b34c-236c-406a-ab22-7a9c144a3c2f" x="-10" y="0" width="121" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIME:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a1fc7ad5-9cec-4ffe-b2bd-b91c3a6b9c41" x="297" y="0" width="133" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ROLE:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7f9e6c4c-20ec-4fdb-bf3d-bd694f6da753" x="-19" y="0" width="555" height="1" forecolor="#999999" backcolor="#E6E6E6"/>
+			</line>
+			<line>
+				<reportElement uuid="48b832fa-4101-4803-984f-c2d3e46ef89f" x="-19" y="19" width="555" height="1" forecolor="#999999" backcolor="#E6E6E6"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="03750f89-a071-4fb8-9fa5-5ba279f5075b" x="433" y="0" width="102" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approverAction}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e26c5fdc-470a-4dbf-9831-caaec8565e4e" x="-10" y="0" width="121" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{created}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="b3dce4e3-ce40-4611-a285-164fdb233a68" x="-19" y="29" width="555" height="1" forecolor="#E6E6E6" backcolor="#E6E6E6"/>
+			</line>
+			<textField>
+				<reportElement uuid="e9b4681b-133e-47ab-9711-ea56be3b3ab9" x="123" y="0" width="160" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdBy}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7b25d115-31cf-4df5-9fac-a934b0faa7e0" x="297" y="0" width="133" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Role X]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
