@@ -3,7 +3,7 @@
 	<classpathentry excluding="main/java/|main/|main/java/" kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="config"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-1.5-post-gwt-2.2.jar" sourcepath="/home/duggan/.m2/repository/com/google/gwt/inject/gin/1.5.0/gin-1.5.0-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtp-all-0.6.jar" sourcepath="/home/duggan/.m2/repository/com/gwtplatform/gwtp-all/0.6/gwtp-all-0.6-sources.jar"/>
@@ -144,5 +144,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-servlet-1.17.jar" sourcepath="/home/duggan/.m2/repository/com/sun/jersey/jersey-servlet/1.17/jersey-servlet-1.17-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jettison-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
