@@ -20,12 +20,12 @@
 		 			<g:HTMLPanel styleName="" ui:field="divProcessDetails">
 						  <div class="form-group">
 						    <label for="ProcessName">Name:</label>
-						    <d:TextField ui:field="txtName" type="email" 
+						    <d:TextField ui:field="txtName" type="text" 
 						        class="form-control" placeholder="Process Name"/>
 						  </div>
 						  <div class="form-group">
 						    <label for="ProcessName">Process Id:</label>
-						    <d:TextField ui:field="txtProcess" type="email" 
+						    <d:TextField ui:field="txtProcess" type="text" 
 						        title="A single process may have multiple processes and subprocesses, this property identifies the main process"
 						        class="form-control" placeholder="Main Process Id"/>
 						  </div>

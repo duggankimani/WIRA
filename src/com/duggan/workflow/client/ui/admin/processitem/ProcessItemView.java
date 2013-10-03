@@ -96,11 +96,13 @@ public class ProcessItemView extends ViewImpl implements
 		case INACTIVE:
 			aActivate.removeStyleName("hide");
 			aDeactivate.addStyleName("hide");
+			spnStatus.setClassName("label label-warning arrowed-in");
 			break;
 			
 		case RUNNING:
 			aActivate.addStyleName("hide");
 			aDeactivate.removeStyleName("hide");
+			spnStatus.setClassName("label label-success arrowed-in");
 			break;
 		}
 		
