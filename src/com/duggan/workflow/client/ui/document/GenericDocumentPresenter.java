@@ -474,15 +474,15 @@ public class GenericDocumentPresenter extends
 		setInSlot(ACTIVITY_SLOT, null);
 		List<Comment> comments = commentsResult.getComments();
 		
-		{
-			Comment comment = new Comment();
-			comment.setComment("I have seen this; need details");
-			comment.setCreatedBy("Tom");
-			comment.setCreated(new Date());
-			comment.setDocumentId(documentId);
-			comments.add(comment);
-		}
-		
+//		{
+//			Comment comment = new Comment();
+//			comment.setComment("I have seen this; need details");
+//			comment.setCreatedBy("Tom");
+//			comment.setCreated(new Date());
+//			comment.setDocumentId(documentId);
+//			comments.add(comment);
+//		}
+//		
 		for(final Comment comment: comments){
 			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
 				@Override

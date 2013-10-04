@@ -23,7 +23,7 @@
         <level value="FATAL"/>
     </logger>
     <logger name="com.duggan.workflow.server">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
     <logger name="com.duggan.workflow.server.helper.jbpm">
         <level value="INFO"/>

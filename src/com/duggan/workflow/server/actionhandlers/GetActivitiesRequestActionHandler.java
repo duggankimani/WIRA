@@ -44,7 +44,7 @@ public class GetActivitiesRequestActionHandler extends
 				activityMap.put(activity, null);
 			}else{
 				Comment comment = (Comment)activity;
-				System.err.println("Adding Comment >>>"+comment.getId()+" :: Parent = "+comment.getParentId());
+				//System.err.println("Adding Comment >>>"+comment.getId()+" :: Parent = "+comment.getParentId());
 				//check if this is a child
 				
 				if(comment.getParentId()==null){
@@ -56,7 +56,7 @@ public class GetActivitiesRequestActionHandler extends
 					List<Activity> children = activityMap.get(parent);
 					
 					if(children==null){
-						System.err.println("#############SERVER IGNORING CHILD.............");						
+						//System.err.println("#############SERVER IGNORING CHILD.............");						
 					}else{
 						children.add(comment);//activity map loaded						
 					}

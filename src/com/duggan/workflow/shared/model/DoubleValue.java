@@ -1,64 +1,48 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
-
-public class BooleanValue implements Value, Serializable{
+public class DoubleValue implements Value {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Boolean value;
+	private Double value;
 	private String key;
 	private Long id;
 	
-	public BooleanValue(){		
+	public DoubleValue(){
 	}
-	
-	public BooleanValue(Long id, String key, Boolean value){
+
+	public DoubleValue(Long id, String key, Double value){
 		this.id=id;
 		this.key=key;
 		this.value=value;
 	}
 	
-	public BooleanValue(Boolean val){
-		setValue(val);
-	}
-
-	@Override
-	public void setValue(Object value) {
-		this.value=(Boolean)value;
-	}
-
-	@Override
-	public Object getValue() {
+	public Double getValue() {
 		return value;
 	}
-
+	public void setValue(Object value) {
+		this.value = (Double)value;
+	}
 	public String getKey() {
 		return key;
 	}
-
 	public void setKey(String key) {
 		this.key = key;
 	}
-
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public void setValue(Boolean value) {
-		this.value = value;
 	}
 	
 	@Override
 	public DataType getDataType() {
-		return DataType.BOOLEAN;
+		
+		return DataType.DOUBLE;
 	}
-
+	
 }

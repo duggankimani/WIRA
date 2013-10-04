@@ -1,64 +1,45 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
+import java.util.Date;
 
-public class BooleanValue implements Value, Serializable{
+public class DateValue implements Value{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Boolean value;
+	private Date value;
 	private String key;
 	private Long id;
 	
-	public BooleanValue(){		
-	}
-	
-	public BooleanValue(Long id, String key, Boolean value){
+	public DateValue(Long id, String key, Date value){
 		this.id=id;
 		this.key=key;
 		this.value=value;
 	}
 	
-	public BooleanValue(Boolean val){
-		setValue(val);
-	}
-
-	@Override
-	public void setValue(Object value) {
-		this.value=(Boolean)value;
-	}
-
-	@Override
-	public Object getValue() {
+	public Date getValue() {
 		return value;
 	}
-
+	public void setValue(Object value) {
+		this.value = (Date)value;
+	}
 	public String getKey() {
 		return key;
 	}
-
 	public void setKey(String key) {
 		this.key = key;
 	}
-
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public void setValue(Boolean value) {
-		this.value = value;
 	}
 	
 	@Override
 	public DataType getDataType() {
-		return DataType.BOOLEAN;
+		return DataType.DATE;
 	}
-
 }

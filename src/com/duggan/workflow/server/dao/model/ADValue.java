@@ -23,18 +23,12 @@ public class ADValue extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length=255)
-	private String name;
-	
-	@Column(length=255)
-	private String caption;
-	
 	@Column(length=2000)
 	private String stringValue;
 	
 	private Boolean booleanValue;
 	
-	private Integer intValue;
+	private Long longValue;
 	
 	private Double doubleValue;
 	
@@ -56,22 +50,6 @@ public class ADValue extends PO{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCaption() {
-		return caption;
-	}
-
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
-
 	public String getStringValue() {
 		return stringValue;
 	}
@@ -86,14 +64,6 @@ public class ADValue extends PO{
 
 	public void setBooleanValue(Boolean booleanValue) {
 		this.booleanValue = booleanValue;
-	}
-
-	public Integer getIntValue() {
-		return intValue;
-	}
-
-	public void setIntValue(Integer intValue) {
-		this.intValue = intValue;
 	}
 
 	public Double getDoubleValue() {
@@ -126,5 +96,13 @@ public class ADValue extends PO{
 
 	public void setDateValue(Date dateValue) {
 		this.dateValue = dateValue;
+	}
+
+	public Long getLongValue() {
+		return longValue;
+	}
+
+	public void setLongValue(Long longValue) {
+		this.longValue = longValue;
 	}
 }

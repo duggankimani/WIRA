@@ -33,6 +33,7 @@ public class ADProperty extends PO{
 	@Column(length=255)
 	private String caption;
 	
+	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	
@@ -125,7 +126,7 @@ public class ADProperty extends PO{
 			}
 
 		//Field
-		if(field==null ^ other.field!=null){
+		if(field==null ^ other.field==null){
 			//XOR
 			//false - true
 			return false;
@@ -169,5 +170,11 @@ public class ADProperty extends PO{
 			return super.hashCode();
 		
 		return hashcode;
+	}
+	
+	@Override
+	public String toString() {
+		
+		return super.toString();
 	}
 }

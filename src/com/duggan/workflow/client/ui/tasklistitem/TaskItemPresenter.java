@@ -25,7 +25,7 @@ import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.LongValue;
-import com.duggan.workflow.shared.model.ParamValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
@@ -252,7 +252,7 @@ public class TaskItemPresenter extends
 	}
 	
 	void completeDocument(boolean approved){
-		Map<String, ParamValue> arguments = new HashMap<String, ParamValue>();	
+		Map<String, Value> arguments = new HashMap<String, Value>();	
 		arguments.put("isApproved", new BooleanValue(approved));
 		arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
 		submitRequest(Actions.COMPLETE, arguments);
@@ -262,7 +262,7 @@ public class TaskItemPresenter extends
 		submitRequest(action, null);
 	}
 	
-	protected void submitRequest(final Actions action, Map<String, ParamValue> values) {
+	protected void submitRequest(final Actions action, Map<String, Value> values) {
 		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
 		//values.put("DocumentURL", new StringValue(docUrl));
 		fireEvent(new ProcessingEvent());
@@ -372,7 +372,7 @@ public class TaskItemPresenter extends
 		Long documentId = event.getDocumentId();
 		
 		if(ref==documentId){
-			System.err.println("#####COMPLETING DOCUMENT :: "+documentId+" : "+event.IsApproved());
+			//System.err.println("#####COMPLETING DOCUMENT :: "+documentId+" : "+event.IsApproved());
 			completeDocument(event.IsApproved());
 		}
 	}
@@ -389,7 +389,7 @@ public class TaskItemPresenter extends
 		Long documentId = event.getDocumentId();
 		
 		if(ref==documentId){			
-			System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);
+			//System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);
 			submitRequest(event.getAction());
 		}
 	}

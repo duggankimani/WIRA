@@ -352,7 +352,7 @@ public class HomePresenter extends
 		request.setProcessInstanceId(processInstanceId);
 		request.setDocumentId(documentId);
 		
-		System.err.println("###### Search:: did="+documentId+"; PID="+processInstanceId+"; TaskType="+type);
+		//System.err.println("###### Search:: did="+documentId+"; PID="+processInstanceId+"; TaskType="+type);
 		
 		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){

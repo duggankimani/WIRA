@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
 import com.duggan.workflow.shared.model.DataType;
 
 @Entity
-public class ADField extends PO {
+public class ADField extends PO implements HasProperties{
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class ADField extends PO {
 	private String caption;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="formid",referencedColumnName="id", nullable=true)
+	@JoinColumn(name="formid",referencedColumnName="id", nullable=false)
 	private ADForm form;
 	
 	@OneToMany(mappedBy="field", cascade=CascadeType.ALL)
@@ -47,6 +47,7 @@ public class ADField extends PO {
 	@OneToOne(mappedBy="field", cascade=CascadeType.ALL)
 	private ADValue value;
 	
+	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	
@@ -97,6 +98,11 @@ public class ADField extends PO {
 
 	public void setForm(ADForm form) {
 		this.form = form;
+	}
+	
+	public void addProperty(ADProperty property){
+		properties.add(property);
+		property.setField(this);
 	}
 	
 	@Override
