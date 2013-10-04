@@ -67,4 +67,10 @@ public class UserGroup implements Serializable, Listable{
 		
 		return name;
 	}
+
+	@Override
+	public String getDisplayName() {
+		
+		return fullName;
+	}
 }

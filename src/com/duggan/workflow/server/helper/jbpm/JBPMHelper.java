@@ -3,11 +3,8 @@ package com.duggan.workflow.server.helper.jbpm;
 import static com.duggan.workflow.server.helper.dao.DocumentDaoHelper.getDocument;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -15,44 +12,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.drools.ChangeSet;
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.SystemEventListenerFactory;
-import org.drools.agent.KnowledgeAgent;
-import org.drools.agent.KnowledgeAgentFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
 import org.drools.definition.process.Node;
-import org.drools.io.Resource;
-import org.drools.io.ResourceFactory;
-import org.drools.io.impl.ClassPathResource;
-import org.drools.logger.KnowledgeRuntimeLoggerFactory;
-import org.drools.persistence.jpa.JPAKnowledgeService;
-import org.drools.runtime.Environment;
-import org.drools.runtime.EnvironmentName;
-import org.drools.runtime.KnowledgeRuntime;
-import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
-import org.drools.runtime.process.WorkflowProcessInstance;
-import org.jbpm.executor.commands.SendMailCommand;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
-import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.audit.NodeInstanceLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
-import org.jbpm.process.core.Process;
-import org.jbpm.process.core.context.variable.VariableScope;
-import org.jbpm.process.instance.ContextInstance;
-import org.jbpm.process.instance.context.variable.VariableScopeInstance;
-import org.jbpm.process.workitem.email.EmailWorkItemHandler;
-import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
-import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.AccessType;
 import org.jbpm.task.Comment;
 import org.jbpm.task.Deadlines;
@@ -64,40 +30,23 @@ import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 import org.jbpm.task.User;
-import org.jbpm.task.event.TaskEventKey;
-import org.jbpm.task.event.TaskEventListener;
-import org.jbpm.task.event.entity.TaskCompletedEvent;
-import org.jbpm.task.event.entity.TaskFailedEvent;
-import org.jbpm.task.event.entity.TaskSkippedEvent;
-import org.jbpm.task.event.entity.TaskUserEvent;
-import org.jbpm.task.identity.LDAPUserGroupCallbackImpl;
 import org.jbpm.task.query.TaskSummary;
-import org.jbpm.task.service.TaskService;
-import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.task.utils.ContentMarshallerHelper;
 import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
 import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 
-import xtension.workitems.GenerateNotificationWorkItemHandler;
-import xtension.workitems.SendMailWorkItemHandler;
-import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
-import bitronix.tm.TransactionManagerServices;
-
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
-import com.duggan.workflow.server.helper.email.EmailServiceHelper;
-import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTAccessType;
 import com.duggan.workflow.shared.model.HTComment;
 import com.duggan.workflow.shared.model.HTData;
@@ -108,7 +57,6 @@ import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.UserGroup;
-import com.duggan.workflow.test.LDAPAuth;
 
 /**
  * This is a Helper Class for all JBPM associated requests.
@@ -190,7 +138,9 @@ public class JBPMHelper implements Closeable{
 		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
 		
-		ProcessInstance processInstance = sessionManager.startProcess(getProcessId(summary.getType()), initialParams,summary);
+		ProcessInstance processInstance = sessionManager.startProcess(
+				getProcessId(summary.getType()), initialParams,summary);
+		
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
 		summary.setProcessInstanceId(processInstance.getId());
 		DocumentDaoHelper.save(summary);
@@ -199,9 +149,11 @@ public class JBPMHelper implements Closeable{
 		
 	}
 	
-	public String getProcessId(DocType type) {
+	public String getProcessId(DocumentType type) {
 
-		List<ProcessDefModel> processDefs = DB.getProcessDao().getProcessesForDocType(type);
+		ADDocType adtype = DocumentDaoHelper.getType(type);
+		List<ProcessDefModel> processDefs = 
+				DB.getProcessDao().getProcessesForDocType(adtype);
 		
 		if(processDefs==null || processDefs.isEmpty()){
 			throw new ProcessInitializationException("Could not start process: " +

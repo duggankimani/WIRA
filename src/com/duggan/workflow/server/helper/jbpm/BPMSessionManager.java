@@ -90,7 +90,7 @@ class BPMSessionManager{
 		
 		StatefulKnowledgeSession session = initializeSession(processId);		
 		
-		logger.warn("GETSESSION RETURNED SESSION: "+session.getId()+session.toString());
+		logger.debug("GETSESSION RETURNED SESSION: "+session.getId()+session.toString());
 		
 		return session;
 	}
@@ -120,13 +120,13 @@ class BPMSessionManager{
 		StatefulKnowledgeSession session=null;
 		
 		if(getSessionStore().get(sessionId)!=null){
-			logger.warn("Retrieving from STORE:  session ["+sessionId+"] for process: ["+processId+"]");
+			logger.debug("Retrieving from STORE:  session ["+sessionId+"] for process: ["+processId+"]");
 			session = getSessionStore().get(sessionId);
 		}else{			
 			session = initializeSession(sessionId, processId);
 		}
 		
-		logger.warn("GETSESSION RETURNED SESSION: "+session.getId()+session.toString());
+		logger.debug("GETSESSION RETURNED SESSION: "+session.getId()+session.toString());
 		return session;
 	}
 
@@ -274,9 +274,9 @@ class BPMSessionManager{
     	
     	if(sessionId==null){    		
     		session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
-    		logger.warn(Thread.currentThread().getName()+": Created new session ["+session.getId()+"] for process: ["+processId+"]");
+    		logger.debug(Thread.currentThread().getName()+": Created new session ["+session.getId()+"] for process: ["+processId+"]");
     	}else{    		
-    		logger.warn(Thread.currentThread().getName()+": Loading previous session ["+sessionId+"] for process: ["+processId+"]");
+    		logger.debug(Thread.currentThread().getName()+": Loading previous session ["+sessionId+"] for process: ["+processId+"]");
     		session = JPAKnowledgeService.loadStatefulKnowledgeSession(sessionId.intValue(), kbase, null, env);
     		
     	}
@@ -315,13 +315,13 @@ class BPMSessionManager{
 	 *  
 	 */
 	public void disposeSessions(){
-		logger.warn(Thread.currentThread().getName()+": Disposing Sessions..............");
+		logger.debug(Thread.currentThread().getName()+": Disposing Sessions..............");
 		Map<Long, StatefulKnowledgeSession> sessionz = getSessionStore();
 		
 		Set<Long> keys = sessionz.keySet();
 		
 		for(Long key: keys){
-			logger.warn(Thread.currentThread().getName()+
+			logger.debug(Thread.currentThread().getName()+
 					": Disposing SessionID ["+key+"] : "+sessionz.get(key).toString());
 			sessionz.get(key).dispose();
 		}
@@ -372,7 +372,7 @@ class BPMSessionManager{
 		logger.debug(">>> Starting process "+processId+"; Doc="+summary);
 		if(summary!=null){
 			summary.setSessionId(new Long(session.getId()+""));
-			logger.warn("## Setting SessionId : "+summary.getSessionId());
+			logger.debug("## Setting SessionId : "+summary.getSessionId());
 			DocumentDaoHelper.save(summary);
 		}
 		

@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.ApproverAction;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.NotificationType;
 
 @Entity

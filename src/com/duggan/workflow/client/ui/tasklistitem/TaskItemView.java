@@ -116,7 +116,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		
 		summaryTask.getId();
 		
-		System.err.println("Priority :: "+summaryTask.getPriority());
+		//System.err.println("Priority :: "+summaryTask.getPriority());
 		
 		Priority priority = Priority.get(summaryTask.getPriority());
 		

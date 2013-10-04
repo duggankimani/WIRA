@@ -11,7 +11,7 @@ import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
@@ -179,7 +179,7 @@ public class GenericDocumentView extends ViewImpl implements
 		return widget;
 	}
 
-	public void setValues(HTUser createdBy, Date created, DocType type, String subject,
+	public void setValues(HTUser createdBy, Date created, DocumentType type, String subject,
 			Date docDate, String value, String partner, String description, Integer priority,DocStatus status) {
 		disableAll();
 		if(createdBy!=null){

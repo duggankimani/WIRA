@@ -5,5 +5,6 @@ public enum DataType {
 	STRING,
 	BOOLEAN,
 	INTEGER,
-	DOUBLE
+	DOUBLE,
+	DATE
 }

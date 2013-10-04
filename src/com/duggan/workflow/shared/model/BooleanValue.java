@@ -2,15 +2,24 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class BooleanValue implements ParamValue, Serializable{
+public class BooleanValue implements Value, Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private Boolean value;
+	private String key;
+	private Long id;
 	
 	public BooleanValue(){		
+	}
+	
+	public BooleanValue(Long id, String key, Boolean value){
+		this.id=id;
+		this.key=key;
+		this.value=value;
 	}
 	
 	public BooleanValue(Boolean val){
@@ -25,6 +34,31 @@ public class BooleanValue implements ParamValue, Serializable{
 	@Override
 	public Object getValue() {
 		return value;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setValue(Boolean value) {
+		this.value = value;
+	}
+	
+	@Override
+	public DataType getDataType() {
+		return DataType.BOOLEAN;
 	}
 
 }

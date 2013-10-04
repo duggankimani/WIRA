@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.shared.model.ParamValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
@@ -26,7 +26,7 @@ public class ExecuteWorkflowActionHandler extends
 		
 		Map<String, Object> vals = new HashMap<>();
 		
-		Map<String, ParamValue> values = action.getValues();
+		Map<String, Value> values = action.getValues();
 		if(values!=null){
 			for(String key: values.keySet()){
 				vals.put(key, values.get(key)==null?null: values.get(key).getValue());

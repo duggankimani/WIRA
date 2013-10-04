@@ -47,7 +47,6 @@ public class TestFormBuilder {
 		field.setName("title");
 		
 		ADValue fieldValue = new ADValue();
-		fieldValue.setName("title");
 		fieldValue.setStringValue("Invoice no/ Unique doc Identifier");
 		field.setValue(fieldValue);
 		

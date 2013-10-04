@@ -8,13 +8,17 @@ import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent.UploadStartedHandler;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
+import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
+import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -36,7 +40,8 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 		ProcessDef getProcess();
 		void setProcessId(Long id);
 		void enable(boolean enableFinish, boolean Cancel);
-		void setValues(Long processDefId,String name, String processId,String description, List<DocType> docTypes);
+		void setValues(Long processDefId,String name, String processId,String description, List<DocumentType> docTypes);
+		void setDocumentTypes(List<DocumentType> documentTypes);
 
 	}
 
@@ -114,19 +119,28 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 	}
 	
 	private void loadProcess() {
-		if(processDefId==null){
-			return;
-		}
 		
-		GetProcessRequest request = new GetProcessRequest(processDefId);
-		requestHelper.execute(request, new TaskServiceCallback<GetProcessResponse>() {
+		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(new GetDocumentTypesRequest());
+		if(processDefId!=null)
+			requests.addRequest( new GetProcessRequest(processDefId));
+		
+		
+		requestHelper.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
-			public void processResult(GetProcessResponse result) {
-				process = result.getProcessDef();
-				getView().setValues(process.getId(),
-						process.getName(),process.getProcessId(),
-						process.getDescription(),
-						process.getDocTypes());
+			public void processResult(MultiRequestActionResult results) {
+				
+				GetDocumentTypesResponse response = (GetDocumentTypesResponse)results.get(0);
+				getView().setDocumentTypes(response.getDocumentTypes());
+				
+				if(processDefId!=null){
+					GetProcessResponse result =  (GetProcessResponse)results.get(1);
+					process = result.getProcessDef();
+					getView().setValues(process.getId(),
+							process.getName(),process.getProcessId(),
+							process.getDescription(),
+							process.getDocTypes());
+				}
 			}
 		});		
 	}

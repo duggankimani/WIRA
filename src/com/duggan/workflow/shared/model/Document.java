@@ -17,7 +17,7 @@ public class Document extends DocSummary implements Serializable, BusinessKey{
 
 	private Long id;
 	
-	private DocType type;
+	private DocumentType type;
 	
 	private HTUser owner;
 	
@@ -48,11 +48,11 @@ public class Document extends DocSummary implements Serializable, BusinessKey{
 		//super();
 	}
 	
-	public DocType getType() {
+	public DocumentType getType() {
 		return type;
 	}
 
-	public void setType(DocType type) {
+	public void setType(DocumentType type) {
 		this.type = type;
 	}
 
@@ -149,7 +149,7 @@ public class Document extends DocSummary implements Serializable, BusinessKey{
 		summary.setDocumentRef(id);
 		summary.setPriority(priority);
 		summary.setSubject(subject);
-		summary.setTaskName(type.displayName+" - "+subject);
+		summary.setTaskName(type.getDisplayName()+" - "+subject);
 		
 		return summary;
 	}

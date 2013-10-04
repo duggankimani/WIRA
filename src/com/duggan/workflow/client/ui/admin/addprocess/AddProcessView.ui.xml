@@ -4,6 +4,7 @@
 	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom' 
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:admin='urn:import:com.duggan.workflow.client.ui.admin.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -35,32 +36,7 @@
 						  </div>
 						  <div class="form-group">
 						  	<label for="ProcessName">Document Types:</label>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkLPO"/>LPO
-							    </label>
-							  </div>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkInvoice"/>Invoice
-							    </label>
-							  </div>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkContract"/>Contract
-							    </label>
-							  </div>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkReq"/>Requistion
-							    </label>
-							  </div>
-							  <div class="checkbox">
-							    <label>
-							       <g:CheckBox ui:field="chkLeave"/>Leave Application
-							    </label>
-							  </div>
-							  
+							  <admin:ListField ui:field="lstDocTypes"></admin:ListField>
 						  </div>
 						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
 					</g:HTMLPanel>

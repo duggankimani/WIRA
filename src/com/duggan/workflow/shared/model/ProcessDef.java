@@ -17,7 +17,7 @@ public class ProcessDef implements Serializable{
 	
 	private String processId;
 	
-	private List<DocType> docTypes;
+	private List<DocumentType> docTypes;
 	
 	private Date lastModified;
 	
@@ -48,11 +48,11 @@ public class ProcessDef implements Serializable{
 		this.processId = processId;
 	}
 
-	public List<DocType> getDocTypes() {
+	public List<DocumentType> getDocTypes() {
 		return docTypes;
 	}
 
-	public void setDocTypes(List<DocType> docTypes) {
+	public void setDocTypes(List<DocumentType> docTypes) {
 		this.docTypes = docTypes;
 	}
 

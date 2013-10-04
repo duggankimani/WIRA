@@ -7,12 +7,14 @@ import java.util.Map;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.SearchFilter;
 
@@ -57,7 +59,7 @@ public class DocumentDaoHelper {
 			model.setPartner(document.getPartner());
 			model.setPriority(document.getPriority());
 			model.setSubject(document.getSubject());
-			model.setType(document.getType());
+			model.setType(getType(document.getType()));
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
 			model.setProcessInstanceId(document.getProcessInstanceId());
@@ -71,12 +73,26 @@ public class DocumentDaoHelper {
 		return doc;
 	}
 
+	public static ADDocType getType(DocumentType type) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		
+		ADDocType adtype = new ADDocType(type.getId(), type.getName(), type.getDisplayName());
+		
+		if(type.getId()!=null){
+			adtype= dao.getDocumentTypeById(type.getId());
+			adtype.setName(type.getName());
+			adtype.setDisplay(type.getDisplayName());			
+		}		
+		
+		return adtype;
+	}
+
 	/**
 	 * 
 	 * @param model
 	 * @return
 	 */
-	private static Document getDoc(DocumentModel model) {
+	public static Document getDoc(DocumentModel model) {
 		if(model==null){
 			return null;
 		}
@@ -87,7 +103,7 @@ public class DocumentDaoHelper {
 		doc.setId(model.getId());
 		doc.setOwner(LoginHelper.get().getUser(model.getCreatedBy()));
 		doc.setSubject(model.getSubject());
-		doc.setType(model.getType());
+		doc.setType(getType(model.getType()));
 		doc.setDocumentDate(model.getDocumentDate());
 		doc.setPartner(model.getPartner());
 		doc.setPriority(model.getPriority());
@@ -99,6 +115,11 @@ public class DocumentDaoHelper {
 		return doc;
 	}
 
+	public static DocumentType getType(ADDocType adtype) {
+		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(), adtype.getDisplay());
+		return type;
+	}
+
 	/**
 	 * 
 	 * @param document
@@ -107,7 +128,7 @@ public class DocumentDaoHelper {
 	private static DocumentModel getDoc(Document document) {
 		DocumentModel model = new DocumentModel(document.getId(),
 				document.getSubject(), document.getDescription(),
-				document.getType());
+				getType(document.getType()));
 
 		model.setDocumentDate(document.getDocumentDate());
 		model.setPartner(document.getPartner());
@@ -237,6 +258,28 @@ public class DocumentDaoHelper {
 		
 		return docs;
 	}
-	
+
+	public static DocumentType getDocumentType(String docTypeName) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		
+		ADDocType adtype = dao.getDocumentTypeByName(docTypeName);
+		
+		return getType(adtype);
+	}
+
+	public static List<DocumentType> getDocumentTypes() {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		
+		List<ADDocType> adtypes = dao.getDocumentTypes();
+		
+		List<DocumentType> types = new ArrayList<>();
+		
+		if(adtypes!=null)
+			for(ADDocType adtype: adtypes){
+				types.add(getType(adtype));
+			}
+		
+		return types;
+	}
 
 }

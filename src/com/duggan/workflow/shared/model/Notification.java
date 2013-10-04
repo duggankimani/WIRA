@@ -14,7 +14,7 @@ public class Notification extends Activity{
 	private Long documentId;
 	private NotificationType notificationType;
 	private String subject;
-	private DocType documentType;
+	private DocumentType documentType;
 	private Boolean isRead;
 	private Date created;
 	private String createdBy;
@@ -42,10 +42,10 @@ public class Notification extends Activity{
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	public DocType getDocumentType() {
+	public DocumentType getDocumentType() {
 		return documentType;
 	}
-	public void setDocumentType(DocType documentType) {
+	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
 	}
 

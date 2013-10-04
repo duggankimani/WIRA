@@ -12,12 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 
 @Entity
 @Table(name="localdocument")
@@ -38,9 +39,9 @@ public class DocumentModel extends PO{
 	@Column(length=350,nullable=false)
 	private String description;
 	
-	@Column(nullable=false)
-	@Enumerated(EnumType.STRING)
-	private DocType type;
+	@ManyToOne
+	@JoinColumn(name="docType", referencedColumnName="id")
+	private ADDocType type;
 	
 	private Date documentDate;
 	
@@ -64,7 +65,7 @@ public class DocumentModel extends PO{
 		
 	}
 	
-	public DocumentModel(Long id, String subject, String description, DocType type){
+	public DocumentModel(Long id, String subject, String description, ADDocType type){
 		this.id=id;
 		this.subject=subject;
 		this.description=description;
@@ -95,11 +96,11 @@ public class DocumentModel extends PO{
 		this.description = description;
 	}
 
-	public DocType getType() {
+	public ADDocType getType() {
 		return type;
 	}
 
-	public void setType(DocType type) {
+	public void setType(ADDocType type) {
 		this.type = type;
 	}
 

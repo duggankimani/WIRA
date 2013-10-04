@@ -15,7 +15,7 @@ public class SearchFilter implements Serializable {
 	private Date endDate;
 	private Integer priority;
 	private Boolean hasAttachment;
-	private DocType docType;
+	private DocumentType DocumentType;
 
 	public SearchFilter() {
 	}
@@ -68,12 +68,12 @@ public class SearchFilter implements Serializable {
 		return hasAttachment;
 	}
 
-	public DocType getDocType() {
-		return docType;
+	public DocumentType getDocType() {
+		return DocumentType;
 	}
 
-	public void setDocType(DocType docType) {
-		this.docType = docType;
+	public void setDocType(DocumentType DocumentType) {
+		this.DocumentType = DocumentType;
 	}
 	
 	public boolean isEmpty(){
@@ -89,7 +89,7 @@ public class SearchFilter implements Serializable {
 			return false;
 		if(hasAttachment!=null)
 			return false;
-		if(docType!=null)
+		if(DocumentType!=null)
 			return false;
 		return  true;
 		

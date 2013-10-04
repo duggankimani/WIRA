@@ -1,12 +1,14 @@
 package com.duggan.workflow.client.ui.save;
 
 import java.util.Date;
+import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Priority;
 import com.gwtplatform.mvp.client.PopupViewImpl;
@@ -49,7 +51,8 @@ public class CreateDocView extends PopupViewImpl implements
 	HasClickHandlers btnCancel;
 
 	@UiField
-	ListBox lstDocumentType;
+	DropDownList<DocumentType> lstDocumentType;
+	
 	@UiField
 	TextBox txtSubject;
 	@UiField
@@ -82,12 +85,6 @@ public class CreateDocView extends PopupViewImpl implements
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		dtDocDate.setFormat(new DateBox.DefaultFormat(DATEFORMAT));
-
-		lstDocumentType.addItem("--Document type--", "");
-		for (DocType type : DocType.values()) {
-			lstDocumentType.addItem(type.getDisplayName(), type.name());
-		}
-
 		ValueChangeHandler<Boolean> changeHandler = new ValueChangeHandler<Boolean>() {
 
 			@Override
@@ -161,14 +158,7 @@ public class CreateDocView extends PopupViewImpl implements
 		doc.setPartner(txtPartner.getValue());
 		doc.setValue(txtValue.getValue());
 		doc.setPriority(getPriority().ordinal());
-
-		DocType type = null;
-		int sel = lstDocumentType.getSelectedIndex();
-		if (sel != 0) {
-			String value = lstDocumentType.getValue(sel);
-			type = DocType.valueOf(value);
-		}
-		doc.setType(type);
+		doc.setType(lstDocumentType.getValue());
 
 		return doc;
 	}
@@ -181,7 +171,7 @@ public class CreateDocView extends PopupViewImpl implements
 
 		issues.clear();
 
-		if (lstDocumentType.getSelectedIndex() == 0) {
+		if (lstDocumentType.getValue() == null) {
 			issues.addError("Please select a document type");
 			isValid = false;
 		}
@@ -204,7 +194,7 @@ public class CreateDocView extends PopupViewImpl implements
 	}
 
 	@Override
-	public void setValues(DocType docType, String subject, Date docDate,
+	public void setValues(DocumentType docType, String subject, Date docDate,
 			String partner, String value, String description, Priority priority, Long documentId) {
 
 		if (docType != null)
@@ -271,16 +261,13 @@ public class CreateDocView extends PopupViewImpl implements
 		return priority;
 	}
 
-	private void setDocumentType(DocType docType) {
-		if (docType != null) {
-			for (int i = 0; i < lstDocumentType.getItemCount(); i++) {
-				String value = lstDocumentType.getValue(i);
-				if (value.equals(docType.name())) {
-					lstDocumentType.setSelectedIndex(i);
-					break;
-				}
-			}
-		}
+	private void setDocumentType(DocumentType docType) {
+		lstDocumentType.setValue(docType);
+	}
+
+	@Override
+	public void setDocTypes(List<DocumentType> types) {
+		lstDocumentType.setItems(types);
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.jbpm.executor.api.CommandContext;
 
 import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
@@ -24,7 +25,6 @@ import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
 import com.duggan.workflow.shared.exceptions.IllegalApprovalRequestException;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.google.inject.Inject;
@@ -37,6 +37,8 @@ public class IncomingRequestImpl implements IncomingRequestService {
 
 	private static final String NEWAPPROVALREQUESTCOMMAND = "NEWAPPROVALREQUESTCOMMAND";
 
+	private static Logger logger = Logger.getLogger(IncomingRequestImpl.class);
+	
 	public IncomingRequestImpl() {
 
 	}
@@ -129,7 +131,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 			doc.setValue(value.toString());
 		
 		doc.setSubject(subject.toString());
-		doc.setType(DocType.valueOf(type.toString()));
+		doc.setType(DocumentDaoHelper.getDocumentType(type.toString()));
 		
 //		doc.setProcessInstanceId(processInstanceId);
 //		doc.setSessionId(sessionId);
@@ -158,7 +160,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		BusinessKey key = new BusinessKey(1L, 100L, 232L, 454L);
 
 		CommandContext ctx = new CommandContext();
-		ctx.setData("docType", DocType.LPO.name());
+		//ctx.setData("docType", DocType.LPO.name());
 		ctx.setData("subject", "LPO/8023/12");
 		ctx.setData("docDate", "20/09/2013");
 		ctx.setData("value", "100,000Ksh");
@@ -180,7 +182,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		
 		assert response.getBusinessKey()!=null;
 
-		System.err.println("Response >>>>> " + response);
+		logger.debug("Response >>>>> " + response);
 	}
 
 	private static void marshalXml(Request request) throws Exception {
@@ -193,7 +195,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 
 		StringWriter writer = new StringWriter();
 		marshaller.marshal(request, writer);
-		System.err.println("Request= " + writer.toString());
+		logger.debug("Request= " + writer.toString());
 	}
 
 	private static void marshalJson(Request request) throws Exception {
@@ -205,7 +207,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 
 		StringWriter writer = new StringWriter();
 		marshaller.marshallToJSON(request, writer);
-		System.err.println("Request= " + writer.toString());
+		logger.debug("Request= " + writer.toString());
 	}
 
 }
