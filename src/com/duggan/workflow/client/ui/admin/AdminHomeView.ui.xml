@@ -28,6 +28,16 @@
 								<span class="sidebar-text">Processes</span>
 							</g:Anchor>
 						</li>
+			
+						<li ui:field="liFormBuilder">
+							<g:Anchor styleName="hand" title="Build Custom Forms" href="#adminhome;page=formbuilder">
+								<div class="helper-font-24">
+                                       <i class="icon-edit"></i>
+                                  </div>
+								<span class="sidebar-text">Form Builder</span>
+							</g:Anchor>
+						</li>
+						
 						<li ui:field="liUsers">
 							<g:Anchor styleName="hand" title="Manage System Users amp; Groups" href="#adminhome;page=users">
 									<div class="helper-font-24">
@@ -55,7 +65,10 @@
 						<div class="content">
 							<!-- Content Header -->
 							<div class="content-header">
-								<h2><span class="icon-group" ui:field="iconTitle"></span><span ui:field="spanTitle">Users &amp; Groups</span></h2>
+								<h2>
+								<span class="icon-group" ui:field="iconTitle"></span>
+								<span ui:field="spanTitle">Users &amp; Groups</span>
+								</h2>
 							</div>
 							<!--BreadCrumb-->
 							<div class="content-breadcrumb">

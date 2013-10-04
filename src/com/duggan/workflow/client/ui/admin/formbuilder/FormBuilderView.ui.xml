@@ -1,0 +1,166 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<div class="content-body">
+			<g:HTMLPanel styleName="palete-panel panel panel-default span2">
+				<div class="panel-heading">
+					<div class="row-fluid">
+						<div class="span10">
+						<h4>Paletes</h4>
+						</div>
+						<div class="span2">
+							<g:Anchor styleName="minimize minimize-left"></g:Anchor>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="container-fluid">
+						  <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">Input Box</span>
+	                      </div>
+	                      
+	                      <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">Date Field</span>
+	                      </div>
+	                      
+	                      <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">Number Field</span>
+	                      </div>
+	                      
+	                      <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">Select Box</span>
+	                      </div>
+	                      
+	                      <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">CheckBox</span>
+	                      </div>
+	                      
+	                      <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">Radio</span>
+	                      </div>
+	                      
+	                      <div class="row-fluid well">	
+								<div class="helper-font-24">
+		                             <i class="icon-cogs"></i>
+		                      	</div>
+		                      	<span class="sidebar-text">Textarea</span>
+	                      </div>
+                      </div>
+					</div>
+			</g:HTMLPanel>
+			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8">
+				<div class="panel-heading">
+					<h4>Form Name</h4>
+				</div>
+				<div class="panel-body">
+					<g:HTMLPanel ui:field="divUserDetails">
+						  <div class="control-group">
+						  	<div class="controls"> 
+							    <label for="Names"><b>Names:</b></label>
+							    <d:TextField ui:field="txtFirstname" type="text" class="input-medium" placeholder="First Name"/>
+							    <d:TextField ui:field="txtLastname" type="text"  class="input-medium" placeholder="Last Name"/>
+						  	</div>
+						  </div>
+						  
+						   <div class="control-group">
+							   	<div class="controls">
+								    <label for="Username"><b>Username:</b></label>
+								    <d:TextField ui:field="txtUserName" type="text" class="input-large" placeholder=""/>
+							    </div>
+						  </div>
+						  <div class="control-group">
+						  		<div class="controls">
+							    <label for="Email"><b>Email:</b></label>
+							    <d:TextField ui:field="txtEmail" type="email" class="input-large" placeholder="Email"/>
+						  		</div>
+						  </div>
+						  
+						  <div class="control-group">
+						    <label for="ProcessName"><b>Password:</b></label>
+						    <d:PasswordField ui:field="txtPassword" type="password" class="form-control" placeholder="Password"/>
+						  </div>
+						  
+						  <div class="control-group">
+						    <label class="control-label"><b>Confirm Password:</b></label>
+						    <d:PasswordField ui:field="txtConfirmPassword" type="password" class="form-control" placeholder="Confirm Password"/>
+						  </div>
+				</g:HTMLPanel>
+				</div>
+			</g:HTMLPanel>
+			
+			<g:HTMLPanel styleName="property-panel panel panel-default span2">
+				<div class="panel-heading">
+					<div class="row-fluid">
+						<div class="span2">
+							<g:Anchor styleName="minimize minimize-right"></g:Anchor>
+						</div>
+						<div class="span10">
+						<h4>Properties</h4>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel-body">
+					<div class="table table-bordered">
+					    <div class="thead">
+					    	<div class="tr">
+								<div class="th"><span class="pull-right">Name:</span></div>
+								<div class="th"><span class="pull-left">Value:</span></div>
+							</div>								
+						</div>
+						 <g:HTMLPanel styleName="tr">
+								<g:HTMLPanel styleName="td">
+								    <span class="pull-right">Width:</span>
+								</g:HTMLPanel>
+								<g:HTMLPanel styleName="td">
+								    <input type="text" class="input-small"></input>
+								</g:HTMLPanel>
+						  </g:HTMLPanel>
+						  
+						   <g:HTMLPanel styleName="tr">
+								<g:HTMLPanel styleName="td">
+								    <span class="pull-right">Width:</span>
+								</g:HTMLPanel>
+								<g:HTMLPanel styleName="td">
+								    <input type="text" class="input-small"></input>
+								</g:HTMLPanel>
+						  </g:HTMLPanel>
+						   <g:HTMLPanel styleName="tr">
+								<g:HTMLPanel styleName="td">
+								    <span class="pull-right">Width:</span>
+								</g:HTMLPanel>
+								<g:HTMLPanel styleName="td">
+								    <input type="text" class="input-small"></input>
+								</g:HTMLPanel>
+						  </g:HTMLPanel>
+					</div>
+				</div>
+			</g:HTMLPanel>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

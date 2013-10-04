@@ -21,6 +21,7 @@ public class AdminHomeView extends ViewImpl implements
 	@UiField LIElement liReports;
 	@UiField SpanElement spanTitle;
 	@UiField SpanElement iconTitle;
+	@UiField LIElement liFormBuilder;
 	
 	@UiField HTMLPanel divContent;
 	
@@ -51,7 +52,7 @@ public class AdminHomeView extends ViewImpl implements
 	public void SetDashboardLink(boolean status, ADMINPAGES page){
 		if(status){
 			liDashboard.setClassName("active");
-			iconTitle.setClassName("icon-dashboard");
+			iconTitle.setClassName(page.getDisplayIcon());
 			spanTitle.setInnerHTML(page.getDisplayName());
 			}else
 			liDashboard.removeClassName("active");
@@ -60,7 +61,7 @@ public class AdminHomeView extends ViewImpl implements
 	public void SetProcessLink(boolean status, ADMINPAGES page){
 		if(status){
 			liProcesses.setClassName("active");
-			iconTitle.setClassName("icon-cogs");
+			iconTitle.setClassName(page.getDisplayIcon());
 			spanTitle.setInnerHTML(page.getDisplayName());
 		}else
 			liProcesses.removeClassName("active");
@@ -69,7 +70,7 @@ public class AdminHomeView extends ViewImpl implements
 	public void SetUsersLink(boolean status, ADMINPAGES page){
 		if(status){
 			liUsers.setClassName("active");
-			iconTitle.setClassName("icon-group");
+			iconTitle.setClassName(page.getDisplayIcon());
 			spanTitle.setInnerHTML(page.getDisplayName());
 		}else
 			liUsers.removeClassName("active");
@@ -78,10 +79,20 @@ public class AdminHomeView extends ViewImpl implements
 	public void SetReportLink(boolean status, ADMINPAGES page){
 		if(status){
 			liReports.setClassName("active");
-			iconTitle.setClassName("icon-bar-chart");
+			iconTitle.setClassName(page.getDisplayIcon());
 			spanTitle.setInnerHTML(page.getDisplayName());
 		}else
 			liReports.removeClassName("active");
+	}
+	
+	@Override
+	public void SetFormBuilderLinks(boolean status, ADMINPAGES page) {
+		if(status){
+			liFormBuilder.setClassName("active");
+			iconTitle.setClassName(page.getDisplayIcon());
+			spanTitle.setInnerHTML(page.getDisplayName());
+		}else
+			liFormBuilder.removeClassName("active");
 	}
 	@Override
 	public void clearAllLinks() {
@@ -89,5 +100,7 @@ public class AdminHomeView extends ViewImpl implements
 		liProcesses.removeClassName("active");
 		liUsers.removeClassName("active");
 		liReports.removeClassName("active");
+		liFormBuilder.removeClassName("active");
 	}
+
 }

@@ -48,5 +48,4 @@ public interface ClientGinjector extends Ginjector {
 
 	AsyncProvider<ProcessPresenter> getProcessPresenter(); 
 	
-	
 }
