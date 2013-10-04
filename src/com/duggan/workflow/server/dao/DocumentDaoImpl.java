@@ -15,12 +15,13 @@ import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.UserGroup;
 
@@ -105,14 +106,6 @@ public class DocumentDaoImpl {
 		return lst;
 	}
 
-	public DocType getDocumentType(Long documentId) {
-		
-		DocType type = (DocType)em.createQuery("select d.type FROM DocumentModel d where d.id=:documentId")
-		.setParameter("documentId", documentId).getSingleResult();
-		
-		return type;
-	}
-
 	public Long getProcessInstanceIdByDocumentId(Long documentId) {
 		Object processInstanceId = em.createQuery("select n.processInstanceId FROM DocumentModel n" +
 				" where n.id=:documentId")
@@ -144,7 +137,7 @@ public class DocumentDaoImpl {
 		Date endDate = filter.getEndDate();
 		Integer priority=filter.getPriority();
 		String phrase=filter.getPhrase();
-		DocType docType=filter.getDocType();
+		DocumentType docType=filter.getDocType();
 		Boolean hasAttachment=filter.hasAttachment();
 
 		Map<String, Object> params = new HashMap<>();
@@ -250,7 +243,7 @@ public class DocumentDaoImpl {
 		Date endDate = filter.getEndDate();
 		Integer priority=filter.getPriority();
 		String phrase=filter.getPhrase();
-		DocType docType=filter.getDocType();
+		DocumentType docType=filter.getDocType();
 		Boolean hasAttachment=filter.hasAttachment();
 		
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
@@ -351,8 +344,8 @@ public class DocumentDaoImpl {
 		
 		if(docType!=null){
 			isFirst=false;
-			query.append("type=?");
-			params.add( docType.name());
+			query.append("d.type.name=?");
+			params.add( docType.getName());
 		}
 		
 		if(!isFirst){
@@ -461,4 +454,43 @@ public class DocumentDaoImpl {
 		return list;
 	}
 
+	/**
+	 * Returns DocType with the provided ID
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ADDocType getDocumentTypeById(Long id) {
+
+		ADDocType docType = (ADDocType)em.createQuery("from ADDocType t where t.id=:id")
+				.setParameter("id", id)
+				.getSingleResult();
+		
+		return docType;
+	}
+
+	public ADDocType getDocumentTypeByName(String docTypeName) {
+
+		ADDocType docType = (ADDocType)em.createQuery("from ADDocType t where t.name=:name")
+				.setParameter("name", docTypeName)
+				.getSingleResult();
+		
+		return docType;
+	}
+
+	public ADDocType getDocumentTypeByDocumentId(Long documentId) {
+		
+		ADDocType type = (ADDocType)em.createQuery("select d.type FROM DocumentModel d where d.id=:documentId")
+		.setParameter("documentId", documentId).getSingleResult();
+		
+		return type;
+	}
+
+	public List<ADDocType> getDocumentTypes() {
+		
+		List docTypes = em.createQuery("from ADDocType t")
+				.getResultList();
+		
+		return docTypes;
+	}
 }

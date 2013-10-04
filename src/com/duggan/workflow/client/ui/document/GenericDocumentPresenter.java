@@ -37,7 +37,7 @@ import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
@@ -76,7 +76,7 @@ public class GenericDocumentPresenter extends
 		implements ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler{
 
 	public interface MyView extends View {
-		void setValues(HTUser createdBy, Date created, DocType type, String subject,
+		void setValues(HTUser createdBy, Date created, DocumentType type, String subject,
 				Date docDate, String value, String partner, String description, Integer priority,DocStatus status);
 		
 		void showForward(boolean show);
@@ -205,14 +205,14 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				Document doc = new Document();
-				doc.setCreated(new Date());
-				doc.setDateDue(new Date());
-				doc.setSubject("CNT/B&C/01/2013");
-				doc.setDescription("Contract for the constrution of Hall6");
-				doc.setPartner("B&C Contactors");
-				doc.setValue("5.5Mil");
-				doc.setType(DocType.CONTRACT);
+//				Document doc = new Document();
+//				doc.setCreated(new Date());
+//				doc.setDateDue(new Date());
+//				doc.setSubject("CNT/B&C/01/2013");
+//				doc.setDescription("Contract for the constrution of Hall6");
+//				doc.setPartner("B&C Contactors");
+//				doc.setValue("5.5Mil");
+//				doc.setType(DocumentType.CONTRACT);
 				
 				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
 					@Override
@@ -500,7 +500,7 @@ public class GenericDocumentPresenter extends
 		doc = document;
 		
 		Date created = document.getCreated();
-		DocType docType = document.getType();	
+		DocumentType docType = document.getType();	
 		String subject = document.getSubject();						
 		Date docDate = document.getDocumentDate();					
 		String partner = document.getPartner();

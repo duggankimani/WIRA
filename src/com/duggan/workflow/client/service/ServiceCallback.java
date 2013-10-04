@@ -19,7 +19,7 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 			return;
 		}
 		
-		//caught.printStackTrace();
+		caught.printStackTrace();
 		
 		String message = caught.getMessage();
 		

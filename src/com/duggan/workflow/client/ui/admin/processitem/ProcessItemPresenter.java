@@ -8,7 +8,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.ProcessDefStatus;
@@ -35,7 +35,7 @@ public class ProcessItemPresenter extends
 		HasClickHandlers getRefreshButton();
 		HasClickHandlers getEditButton();
 		HasClickHandlers getDeleteButton();
-		void setValues(String name, String processId,String description, List<DocType> docTypes,
+		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
 				ProcessDefStatus status);
 	}

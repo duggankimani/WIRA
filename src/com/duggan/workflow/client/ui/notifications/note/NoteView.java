@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.notifications.note;
 
 import com.duggan.workflow.shared.model.ApproverAction;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.core.client.GWT;
@@ -45,7 +45,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	@Override
-	public void setValues(String subject, DocType documentType,
+	public void setValues(String subject, DocumentType documentType,
 			NotificationType notificationType, String owner,
 			String targetUserId, String time, boolean isRead,
 			String createdBy, ApproverAction approverAction,

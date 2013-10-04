@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.admin.component.ListField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -38,13 +39,9 @@ public class AddProcessView extends PopupViewImpl implements
 	@UiField HTMLPanel divUploadDetails;
 	@UiField TextField txtName;
 	@UiField TextField txtProcess;
-	@UiField CheckBox chkLPO;
-	@UiField CheckBox chkInvoice;
-	@UiField CheckBox chkContract;
-	@UiField CheckBox chkReq;
-	@UiField CheckBox chkLeave;
 	@UiField Uploader uploader;
 	@UiField TextArea txtDescription;
+	@UiField ListField<DocumentType> lstDocTypes;
 
 	public interface Binder extends UiBinder<Widget, AddProcessView> {
 	}
@@ -92,35 +89,9 @@ public class AddProcessView extends PopupViewImpl implements
 		return widget;
 	}
 	
-	public List<DocType> getTypes(){
-		
-		List<DocType> types = new ArrayList<DocType>();
-		if(chkLPO.getValue()){
-			types.add(DocType.LPO);
-		}
-		
-		if(chkInvoice.getValue()){
-			types.add(DocType.INVOICE);
-		}
-		
-		if(chkContract.getValue()){
-			types.add(DocType.CONTRACT);
-		}
-		
-		if(chkReq.getValue()){
-			types.add(DocType.REQUISITION);
-		}
-		
-		if(chkLeave.getValue()){
-			types.add(DocType.LEAVE);
-		}
-		
-		return types;
-	}
-	
 	@Override
 	public void setValues(Long processDefId,
-			String name,String processId,String description, List<DocType> docTypes) {
+			String name,String processId,String description, List<DocumentType> docTypes) {
 		txtName.setValue(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
@@ -129,35 +100,13 @@ public class AddProcessView extends PopupViewImpl implements
 		}
 		
 		if(docTypes!=null){
-			setTypes(docTypes);
-		}
-	}
-	
-	private void setTypes(List<DocType> docTypes) {
-		for(DocType type: docTypes){
-			switch (type) {
-			case CONTRACT:
-				chkContract.setValue(true);
-				break;
-			case INVOICE:
-				chkInvoice.setValue(true);
-				break;
-			case LPO:
-				chkLPO.setValue(true);
-				break;
-			case LEAVE:
-				chkLPO.setValue(true);
-				break;
-			case REQUISITION:
-				chkReq.setValue(true);
-				break;
-			}
+			lstDocTypes.select(docTypes);
 		}
 	}
 
 	public ProcessDef getProcess(){
 		ProcessDef def = new ProcessDef();
-		def.setDocTypes(getTypes());
+		def.setDocTypes(lstDocTypes.getSelectedItems());
 		def.setName(txtName.getValue());
 		def.setProcessId(txtProcess.getValue());		
 		def.setDescription(txtDescription.getValue());
@@ -214,6 +163,11 @@ public class AddProcessView extends PopupViewImpl implements
 	public void enable(boolean enableFinish, boolean enableCancel) {
 		aFinish.setEnabled(enableFinish);
 		aClose.setEnabled(enableCancel);	
+	}
+
+	@Override
+	public void setDocumentTypes(List<DocumentType> documentTypes) {
+		lstDocTypes.addItems(documentTypes);
 	}
 
 }

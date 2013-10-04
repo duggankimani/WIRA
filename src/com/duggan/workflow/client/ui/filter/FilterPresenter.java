@@ -1,8 +1,16 @@
 package com.duggan.workflow.client.ui.filter;
 
+import java.util.List;
+
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.home.HomeView;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,6 +19,7 @@ import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
@@ -21,10 +30,13 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		HasClickHandlers getSearchButton();
 		HasBlurHandlers getFilterDialog();
 		SearchFilter getSearchFilter();
+		void setDocTypes(List<DocumentType> documentTypes);
 	}
 	
 	@Inject HomeView homeview;
 	private String subject;
+	
+	@Inject DispatchAsync requestHelper;
 
 	@Inject
 	public FilterPresenter(final EventBus eventBus, final MyView view) {
@@ -64,6 +76,28 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 			public void onBlur(BlurEvent event) {
 				//homeview.hideFilterDialog();
 			}
+		});
+	}
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		
+		loadDocTypes();
+	}
+
+	private void loadDocTypes() {
+		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(new GetDocumentTypesRequest());
+		
+		requestHelper.execute(requests, 
+					new TaskServiceCallback<MultiRequestActionResult>() {
+				
+				public void processResult(MultiRequestActionResult responses) {
+				
+					GetDocumentTypesResponse response = (GetDocumentTypesResponse)responses.get(0);
+					getView().setDocTypes(response.getDocumentTypes());
+				}
 		});
 	}
 }

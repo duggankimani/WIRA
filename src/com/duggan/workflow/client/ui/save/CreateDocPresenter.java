@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.save;
 
 import java.util.Date;
+import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
@@ -8,15 +9,19 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
+import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
+import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -35,25 +40,33 @@ public class CreateDocPresenter extends
 
 	public interface ICreateDocView extends PopupView {
 		HasClickHandlers getSave();
+
 		HasClickHandlers getCancel();
+
 		HasClickHandlers getForward();
+
 		Document getDocument();
+
 		boolean isValid();
-		void setValues(DocType docType, String subject, Date docDate,
+
+		void setDocTypes(List<DocumentType> types);
+
+		void setValues(DocumentType docType, String subject, Date docDate,
 				String partner, String value, String description,
 				Priority priority, Long documentId);
 	}
 
-
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> UPLOAD_SLOT = new Type<RevealContentHandler<?>>();
-	
-	@Inject DispatchAsync requestHelper;
-	
+
+	@Inject
+	DispatchAsync requestHelper;
+
 	private Long Id;
-	
-	@Inject PlaceManager placeManager;
-	
+
+	@Inject
+	PlaceManager placeManager;
+
 	@Inject
 	public CreateDocPresenter(final EventBus eventBus, final ICreateDocView view) {
 		super(eventBus, view);
@@ -62,100 +75,116 @@ public class CreateDocPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		if(Id != null){
-			requestHelper.execute(new GetDocumentRequest(Id), 
-					new TaskServiceCallback<GetDocumentResult>() {
-				
-				public void processResult(GetDocumentResult result) {
-					Document document = result.getDocument();
-					
-					DocType docType = document.getType();	
-					String subject = document.getSubject();						
-					Date docDate = document.getDocumentDate();					
-					String partner = document.getPartner();
-					String value= document.getValue();			
-					String description = document.getDescription();
-					Integer priority = document.getPriority();									
-										
-					getView().setValues(docType, subject, docDate, partner, value, description, 
-							Priority.get(priority), document.getId());
-				}
-			});
-		}
-		
-		//setInSlot(UPLOAD_SLOT, presenter);
+		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(new GetDocumentTypesRequest());
+
+		if (Id != null)
+			requests.addRequest(new GetDocumentRequest(Id));
+
+		requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+
+					public void processResult(MultiRequestActionResult responses) {
+
+						GetDocumentTypesResponse response = (GetDocumentTypesResponse) responses
+								.get(0);
+						getView().setDocTypes(response.getDocumentTypes());
+
+						if (Id != null)
+							showDocument((GetDocumentResult) responses.get(1));
+
+					}
+				});
 	}
-	
+
+	protected void showDocument(GetDocumentResult result) {
+		Document document = result.getDocument();
+
+		DocumentType docType = document.getType();
+		String subject = document.getSubject();
+		Date docDate = document.getDocumentDate();
+		String partner = document.getPartner();
+		String value = document.getValue();
+		String description = document.getDescription();
+		Integer priority = document.getPriority();
+
+		getView().setValues(docType, subject, docDate, partner, value,
+				description, Priority.get(priority), document.getId());
+	}
+
 	@Override
 	protected void onBind() {
 		super.onBind();
-		
+
 		getView().getCancel().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().hide();
 			}
 		});
-		
+
 		getView().getForward().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				Document document = getView().getDocument();	
+
+				Document document = getView().getDocument();
 				document.setStatus(DocStatus.DRAFTED);
 				document.setId(Id);
-				if(getView().isValid()){
+				if (getView().isValid()) {
 					fireEvent(new ProcessingEvent());
-					requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), document),
-							new TaskServiceCallback<ApprovalRequestResult>(){
-						@Override
-						public void processResult(ApprovalRequestResult result) {
-							
-							fireEvent(new ProcessingCompletedEvent());
-							getView().hide();				
-							fireEvent(new AfterSaveEvent());										
-						}
-					});
+					requestHelper.execute(
+							new ApprovalRequest(AppContext.getUserId(),
+									document),
+							new TaskServiceCallback<ApprovalRequestResult>() {
+								@Override
+								public void processResult(
+										ApprovalRequestResult result) {
+
+									fireEvent(new ProcessingCompletedEvent());
+									getView().hide();
+									fireEvent(new AfterSaveEvent());
+								}
+							});
 				}
-				
+
 			}
 		});
-		
+
 		getView().getSave().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				Document document = getView().getDocument();	
+				Document document = getView().getDocument();
 				document.setStatus(DocStatus.DRAFTED);
 				document.setId(Id);
-				
-				//document.setDescription(null);
-				if(getView().isValid()){
-					requestHelper.execute(new CreateDocumentRequest(document), 
+
+				// document.setDescription(null);
+				if (getView().isValid()) {
+					requestHelper.execute(new CreateDocumentRequest(document),
 							new TaskServiceCallback<CreateDocumentResult>() {
 								@Override
 								public void processResult(
 										CreateDocumentResult result) {
-									
+
 									Document saved = result.getDocument();
-									assert saved.getId()!=null;
+									assert saved.getId() != null;
 									fireEvent(new AfterSaveEvent());
-//									PlaceRequest request = new PlaceRequest("home").
-//											with("type", TaskType.DRAFT.getDisplayName());
-//									
-									//placeManager.revealPlace(request);
-									
+									// PlaceRequest request = new
+									// PlaceRequest("home").
+									// with("type",
+									// TaskType.DRAFT.getDisplayName());
+									//
+									// placeManager.revealPlace(request);
+
 									getView().hide();
 								}
-							});				
+							});
 				}
 			}
 		});
 	}
-	
-	
 
 	public void setDocumentId(Long selectedValue) {
 		this.Id = selectedValue;

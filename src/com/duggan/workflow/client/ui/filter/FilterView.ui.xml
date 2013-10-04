@@ -3,6 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -28,8 +29,8 @@
 			                        </div>
 	                               <div class="row-fluid">
 	                               
-		                             <g:ListBox ui:field="lstDocType">
-		                             </g:ListBox>
+		                             <d:DropDownList ui:field="lstDocType">
+		                             </d:DropDownList>
 		                           </div>
 			                         <div class="row-fluid">
 			                              <span>Subject:</span>

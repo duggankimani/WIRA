@@ -24,7 +24,6 @@ import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
@@ -122,7 +121,7 @@ public class TestNotications {
 		doc.setStatus(DocStatus.DRAFTED);
 		//unique - increment by one on every run
 		doc.setSubject("INV/20024/2013");
-		doc.setType(DocType.INVOICE);
+		//doc.setType(DocType.INVOICE);
 		doc.setValue("10,000Ksh");
 	
 		DB.beginTransaction();

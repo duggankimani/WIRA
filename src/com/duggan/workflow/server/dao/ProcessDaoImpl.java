@@ -1,15 +1,13 @@
 package com.duggan.workflow.server.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
-import com.duggan.workflow.server.dao.model.ProcessDocModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.shared.model.DocType;
 
 public class ProcessDaoImpl extends BaseDaoImpl{
 	
@@ -21,32 +19,16 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 	public void save(ProcessDefModel model){
 		prepare(model);
 		
-		List<ProcessDocModel> docs = new ArrayList<>();
-		docs.addAll(model.getProcessDocuments());
-		for(ProcessDocModel doc: docs){
-			prepare(doc);
+		if(model.getId()!=null){
+			em.merge(model);
+		}else{
+			em.persist(model);
 		}
 		
-		em.persist(model);
 	}
 	
 	public ProcessDefModel getProcessDef(Long processDefId){
 		return em.find(ProcessDefModel.class, processDefId);
-	}
-	
-	public ProcessDocModel getProcessDoc(Long processDocId){
-		return em.find(ProcessDocModel.class, processDocId);
-	}
-	
-	public ProcessDocModel getProcessDoc(DocType docType){
-		List lst =  em.createQuery("FROM ProcessDocModel d where d.docType=:docType")
-				.setParameter("docType", docType)
-				.getResultList();
-		
-		if(lst.isEmpty())
-			return null;
-		
-		return (ProcessDocModel)lst.get(0);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -55,13 +37,6 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 				.setParameter("isArchived", false).getResultList();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<ProcessDocModel> getAllProcessesDocs(){
-		return em.createQuery("FROM ProcessDocModel d where p.isArchived=:isArchived")
-				.setParameter("isArchived", false)
-				.getResultList();
-	}
-
 	public void remove(ProcessDefModel model) {
 		List<LocalAttachment> attachments = DB.getAttachmentDao().getAttachmentsForProcessDef(model);
 		if(attachments!=null){
@@ -73,8 +48,10 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ProcessDefModel> getProcessesForDocType(DocType type) {
-		return em.createQuery("select new ProcessDefModel(" +
+	public List<ProcessDefModel> getProcessesForDocType(ADDocType type) {
+		
+		return em.createQuery("" +
+				"select new ProcessDefModel(" +
 				"p.id," +
 				"p.name," +
 				"p.processId," +
@@ -82,11 +59,24 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 				"p.description " +
 				//"p.processDocuments" +
 				") " +
-				"FROM ProcessDefModel p " +
-				"join p.processDocuments d " +
-				"where d.docType=:docType ")
+				"from ProcessDefModel p " +
+				"join p.documentTypes dt " +
+				"where dt=:docType")
 				.setParameter("docType", type)
 				.getResultList();
+		
+//		return em.createQuery("select new ProcessDefModel(" +
+//				"p.id," +
+//				"p.name," +
+//				"p.processId," +
+//				"p.isArchived," +
+//				"p.description " +
+//				//"p.processDocuments" +
+//				") " +
+//				"FROM ProcessDefModel p " +
+//				"where :docType in elements(p.documentTypes)")
+//				.setParameter("docType", type)
+//				.getResultList();
 	}
 	
 }

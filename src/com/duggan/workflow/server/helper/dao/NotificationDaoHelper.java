@@ -1,21 +1,22 @@
 package com.duggan.workflow.server.helper.dao;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
+
+import static com.duggan.workflow.server.helper.dao.DocumentDaoHelper.*;
 
 public class NotificationDaoHelper {
 
@@ -121,8 +122,8 @@ public class NotificationDaoHelper {
 		HTUser user = LoginHelper.get().getUser(createdBy);
 		notificationTo.setCreatedBy(user==null?modelFrom.getCreatedBy(): user.getName());
 		notificationTo.setId(modelFrom.getId());
-		DocType documentType = DB.getDocumentDao().getDocumentType(modelFrom.getDocumentId());
-		notificationTo.setDocumentType(documentType);
+		ADDocType documentType = DB.getDocumentDao().getDocumentTypeByDocumentId(modelFrom.getDocumentId());
+		notificationTo.setDocumentType(getType(documentType));
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
 		notificationTo.setProcessInstanceId(
 				DocumentDaoHelper.getProcessInstanceIdByDocumentId(modelFrom.getDocumentId()));

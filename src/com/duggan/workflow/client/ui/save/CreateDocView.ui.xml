@@ -3,6 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	xmlns:v='urn:import:com.duggan.workflow.client.ui.component'
 	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
@@ -18,7 +19,7 @@
 	        <tr>
 	            <td class="label" ui:field="tdDocType">Document Type</td>
 	            <td>
-	                <g:ListBox ui:field="lstDocumentType" title="Type of document e.g Invoice, Contract etc - mandatory"></g:ListBox>
+	                <d:DropDownList ui:field="lstDocumentType" title="Type of document e.g Invoice, Contract etc - mandatory"></d:DropDownList>
 	                <span class="mandatory" title="Required Field">*</span>
 	            </td>
 	        </tr>

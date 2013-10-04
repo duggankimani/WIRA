@@ -2,37 +2,21 @@ package xtension.workitems;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.drools.runtime.process.ProcessContext;
-import org.drools.runtime.process.ProcessInstance;
+import org.apache.log4j.Logger;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
-import org.jbpm.executor.ExecutorModule;
-import org.jbpm.executor.api.CommandCodes;
-import org.jbpm.executor.api.CommandContext;
-import org.jbpm.executor.commands.SendMailCommand;
-import org.jbpm.executor.impl.ExecutorFactory;
-import org.jbpm.process.core.context.variable.VariableScope;
-import org.jbpm.process.instance.context.variable.VariableScopeInstance;
-import org.jbpm.task.identity.LDAPUserGroupCallbackImpl;
-import org.jbpm.workflow.instance.node.HumanTaskNodeInstance;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
-import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
-import static com.duggan.workflow.shared.model.NotificationType.*;
 
 /**
  * This class is responsible for generating
@@ -45,6 +29,8 @@ import static com.duggan.workflow.shared.model.NotificationType.*;
  */
 public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 
+	private Logger logger = Logger.getLogger(GenerateNotificationWorkItemHandler.class);
+	
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		String subject = (String) workItem.getParameter("Subject");
@@ -56,13 +42,13 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		String ownerId = (String) workItem.getParameter("OwnerId");
 		Object isApproved = workItem.getParameter("isApproved");
 		
-		System.err.println("Class : "+this.getClass());
-		System.err.println("Subject : "+subject);
-		System.err.println("NotificationType : "+noteType);
-		System.err.println("DocumentId : "+documentId);
-		System.err.println("GroupId : "+groupId);
-		System.err.println("ActorId : "+actorId);
-		System.err.println("OwnerId : "+ownerId);		
+		logger.debug("Class : "+this.getClass());
+		logger.debug("Subject : "+subject);
+		logger.debug("NotificationType : "+noteType);
+		logger.debug("DocumentId : "+documentId);
+		logger.debug("GroupId : "+groupId);
+		logger.debug("ActorId : "+actorId);
+		logger.debug("OwnerId : "+ownerId);		
 
 		Notification notification = new Notification();
 		notification.setCreated(new Date());
@@ -92,7 +78,7 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		//Testing;;
 		
 		if(ownerId==null){
-			System.err.println("[[[[[###############]]]]]>>>>> OWNERID IS NULL :: "
+			logger.debug("[[[[[###############]]]]]>>>>> OWNERID IS NULL :: "
 		+workItem.getName()+" :: "+workItem.getId());
 			ownerId = "calcacuervo";
 		}

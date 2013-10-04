@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.dao.model;
 
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -38,10 +40,8 @@ public class ProcessDefModel extends PO {
 	
 	private ProcessDefStatus status;
 	
-	@OneToMany(mappedBy="processDef", cascade={CascadeType.ALL})
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-		org.hibernate.annotations.CascadeType.REMOVE})
-	private List<ProcessDocModel> processDocuments;
+	@OneToMany(mappedBy="processDef")
+	private Collection<ADDocType> documentTypes = new HashSet<>();
 		
 	public ProcessDefModel(){
 		status = ProcessDefStatus.INACTIVE;
@@ -89,14 +89,6 @@ public class ProcessDefModel extends PO {
 		this.isArchived = isArchived;
 	}
 
-	public List<ProcessDocModel> getProcessDocuments() {
-		return processDocuments;
-	}
-
-	public void setProcessDocuments(List<ProcessDocModel> processDocuments) {
-		this.processDocuments = processDocuments;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -119,5 +111,20 @@ public class ProcessDefModel extends PO {
 				"ID= "+id+"; " +
 				"Process= "+processId+"]";
 		return str;
+	}
+
+	public Collection<ADDocType> getDocumentTypes() {
+		return documentTypes;
+	}
+
+	public void addDocType(ADDocType documentType) {
+		documentTypes.add(documentType);
+		documentType.setProcessDef(this);
+	}
+	
+	public void clear(){
+		for(ADDocType t: documentTypes){
+			t.setProcessDef(null);
+		}
 	}
 }

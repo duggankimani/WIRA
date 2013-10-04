@@ -11,7 +11,6 @@ import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
@@ -33,7 +32,7 @@ public class TestNotificationDao {
 		Notification notification = new Notification();
 		notification.setCreated(new Date());
 		notification.setDocumentId(31L);
-		notification.setDocumentType(DocType.INVOICE);
+		//notification.setDocumentType(DocType.INVOICE);
 		notification.setNotificationType(NotificationType.APPROVALREQUEST_APPROVERNOTE);
 		notification.setOwner("calcacuervo");
 		notification.setRead(false);
@@ -52,6 +51,7 @@ public class TestNotificationDao {
 	
 	@After
 	public void destroy(){
+		DB.rollback();
 		DB.closeSession();
 	}
 }
