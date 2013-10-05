@@ -9,8 +9,15 @@ public class Property extends FormModel{
 	private Long fieldId;
 	private Long formId;
 	private Value value;
+	private String caption;
 	
 	public Property(){
+	}
+
+	public Property(String name, String caption, DataType type) {
+		this.name = name;
+		this.caption = name;
+		this.type = type;
 	}
 
 	public DataType getType() {
