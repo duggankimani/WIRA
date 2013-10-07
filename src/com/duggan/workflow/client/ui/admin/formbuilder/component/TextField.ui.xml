@@ -1,0 +1,12 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+    >
+	<g:AbsolutePanel ui:field="container">
+	    <g:HTMLPanel styleName="controls">
+		    <label for="Username"><b>Textbox:</b></label>
+		    <d:TextField ui:field="txtUserName" type="text" class="input-large" placeholder=""/>
+	    </g:HTMLPanel>
+	</g:AbsolutePanel>
+</ui:UiBinder>	

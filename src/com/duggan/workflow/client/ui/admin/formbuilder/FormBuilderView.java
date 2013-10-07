@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
-import com.duggan.workflow.client.ui.component.ext.DragHandlerImpl;
-import com.duggan.workflow.client.ui.component.ext.textfield.TextField;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -28,6 +28,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField VerticalPanel vPanel;
 	
 	@UiField PalettePanel vPalettePanel;
+	@UiField PalettePanel vDatePanel;
 
 	PickupDragController widgetDragController;
 	
@@ -42,8 +43,12 @@ public class FormBuilderView extends ViewImpl implements
 				container, false);		
 		widgetDragController.setBehaviorMultipleSelection(false);
 		widgetDragController.addDragHandler(dragHandler);
+		widgetDragController.setBehaviorBoundaryPanelDrop(true);
+		
 		
 		vPalettePanel.registerDragController(widgetDragController);
+		vDatePanel.registerDragController(widgetDragController);
+		//vPanel.registerDragController(widgetDragController);
 		
 		//vPanel.getElement().getStyle().setBackgroundColor("blue");
 		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(

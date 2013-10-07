@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
-	xmlns:f='urn:import:com.duggan.workflow.client.ui.component.ext.textfield'
+	xmlns:f='urn:import:com.duggan.workflow.client.ui.admin.formbuilder.component'
 	xmlns:fb='urn:import:com.duggan.workflow.client.ui.admin.formbuilder'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
@@ -27,15 +27,15 @@
 					<div class="container-fluid">
 						  <div class="row-fluid well">	
 								<fb:PalettePanel ui:field="vPalettePanel">	
-								    <f:TextField></f:TextField>					    
+								    <f:TextField></f:TextField>	
+								    <f:DateField></f:DateField>				    
 								</fb:PalettePanel>
 	                      </div>
 	                      
 	                      <div class="row-fluid well">	
-								<div class="helper-font-24">
-		                             <i class="icon-cogs"></i>
-		                      	</div>
-		                      	<span class="sidebar-text">Date Field</span>
+								<fb:PalettePanel ui:field="vDatePanel">	
+								    <f:DateField></f:DateField>					    
+								</fb:PalettePanel>
 	                      </div>
 	                      
 	                      <div class="row-fluid well">	

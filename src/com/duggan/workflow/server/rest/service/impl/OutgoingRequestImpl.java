@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.jbpm.executor.api.CommandContext;
 
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.rest.model.Request;
@@ -84,7 +85,32 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 			throw e;
 		}
 
-		return response.getEntity(Response.class);
+		Request req = response.getEntity(Request.class);
+		
+		assert req!=null;
+		
+		assert req.getContext().get("subject") != null;
+		
+//		String resp = response.getEntity(String.class);
+//		
+//		System.out.println("### RESPONSE :: "+resp);		
+		return null;
+		//response.getEntity(Response.class);
+	}
+	
+	
+	public static void main(String[] args) {
+		CommandContext ctx = new CommandContext();
+		//ctx.setData("docType", DocType.LPO.name());
+		ctx.setData("subject", "LPO/8023/12");
+		ctx.setData("approvalStatus", "20/09/2013");
+		
+		Request request = new Request("WORKFLOWCALLOUTCOMMAND", null, ctx.getData());
+
+//		//
+//		 marshalXml(request);
+		//
+		Response response = new OutgoingRequestImpl().executeCall(request);
 	}
 
 }
