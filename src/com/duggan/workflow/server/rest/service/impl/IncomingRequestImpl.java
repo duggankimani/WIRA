@@ -36,6 +36,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
 public class IncomingRequestImpl implements IncomingRequestService {
 
 	private static final String NEWAPPROVALREQUESTCOMMAND = "NEWAPPROVALREQUESTCOMMAND";
+	private static final String WORKFLOWCALLOUTCOMMAND = "WORKFLOWCALLOUTCOMMAND";
 
 	private static Logger logger = Logger.getLogger(IncomingRequestImpl.class);
 	
@@ -170,9 +171,9 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		ctx.setData("priority", new Integer(1));
 		//ctx.setData("id", new Long(3L));
 
-		Request request = new Request("NEWAPPROVALREQUESTCOMMAND1", null, ctx.getData());
+		Request request = new Request(WORKFLOWCALLOUTCOMMAND, null, ctx.getData());
 
-//		 marshalJson(request);
+		 marshalJson(request);
 //		//
 //		 marshalXml(request);
 		//

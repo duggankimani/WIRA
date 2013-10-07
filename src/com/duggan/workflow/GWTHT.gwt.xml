@@ -26,6 +26,8 @@
 	<inherits name='com.gwtplatform.mvp.Mvp'/>
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
 	<!--inherits name="com.github.gwtbootstrap.Bootstrap" / -->
+	
+	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 	 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='com.duggan.workflow.client.GWTHT'/>

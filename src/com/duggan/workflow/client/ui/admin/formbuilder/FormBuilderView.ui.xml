@@ -3,10 +3,13 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:f='urn:import:com.duggan.workflow.client.ui.admin.formbuilder.component'
+	xmlns:fb='urn:import:com.duggan.workflow.client.ui.admin.formbuilder'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
+   	<g:AbsolutePanel ui:field="container">
 	<g:HTMLPanel>
 		<div class="content-body">
 			<g:HTMLPanel styleName="palete-panel panel panel-default span2">
@@ -23,17 +26,16 @@
 				<div class="panel-body">
 					<div class="container-fluid">
 						  <div class="row-fluid well">	
-								<div class="helper-font-24">
-		                             <i class="icon-cogs"></i>
-		                      	</div>
-		                      	<span class="sidebar-text">Input Box</span>
+								<fb:PalettePanel ui:field="vPalettePanel">	
+								    <f:TextField></f:TextField>	
+								    <f:DateField></f:DateField>				    
+								</fb:PalettePanel>
 	                      </div>
 	                      
 	                      <div class="row-fluid well">	
-								<div class="helper-font-24">
-		                             <i class="icon-cogs"></i>
-		                      	</div>
-		                      	<span class="sidebar-text">Date Field</span>
+								<fb:PalettePanel ui:field="vDatePanel">	
+								    <f:DateField></f:DateField>					    
+								</fb:PalettePanel>
 	                      </div>
 	                      
 	                      <div class="row-fluid well">	
@@ -73,7 +75,8 @@
                       </div>
 					</div>
 			</g:HTMLPanel>
-			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8">
+			<g:VerticalPanel ui:field="vPanel" styleName="maincontent-panel panel panel-default span8">			    
+			    <!-- 
 				<div class="panel-heading">
 					<h4>Form Name</h4>
 				</div>
@@ -111,7 +114,8 @@
 						  </div>
 				</g:HTMLPanel>
 				</div>
-			</g:HTMLPanel>
+				-->
+			</g:VerticalPanel>
 			
 			<g:HTMLPanel styleName="property-panel panel panel-default span2">
 				<div class="panel-heading">
@@ -163,4 +167,5 @@
 			</g:HTMLPanel>
 		</div>
 	</g:HTMLPanel>
+	</g:AbsolutePanel>
 </ui:UiBinder>

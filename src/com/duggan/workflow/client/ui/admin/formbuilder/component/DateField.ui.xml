@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:dt="urn:import:com.google.gwt.user.datepicker.client"
+    xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+    >
+	<g:AbsolutePanel ui:field="container">
+	    <g:HTMLPanel styleName="controls">
+		    <label for="Username"><b>Date Box:</b></label>
+		    <dt:DateBox ui:field="txtUserName"/>
+	    </g:HTMLPanel>
+	</g:AbsolutePanel>
+</ui:UiBinder>	

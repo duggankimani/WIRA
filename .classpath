@@ -144,6 +144,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-servlet-1.17.jar" sourcepath="/home/duggan/.m2/repository/com/sun/jersey/jersey-servlet/1.17/jersey-servlet-1.17-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jettison-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="C:/Users/Maggy&apos;s/Documents/Downloads/gwt-dnd-3.2.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
