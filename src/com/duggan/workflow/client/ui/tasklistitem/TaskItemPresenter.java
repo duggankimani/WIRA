@@ -282,8 +282,9 @@ public class TaskItemPresenter extends
 				//refresh list
 				fireEvent(new ProcessingCompletedEvent());			
 				if(action==Actions.COMPLETE){
-					removeFromParent();
-					fireEvent(new AfterSaveEvent());
+					//removeFromParent();
+					//fireEvent(new AfterSaveEvent());
+					reload((HTSummary)result.getDocument());
 				}else{
 					//fireEvent(new ReloadEvent());
 					reload((HTSummary)result.getDocument());

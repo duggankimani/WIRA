@@ -1,5 +1,7 @@
 package xtension.workitems;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.drools.process.instance.WorkItemHandler;
 import org.drools.runtime.process.WorkItem;
@@ -23,16 +25,21 @@ public class IntegrationWorkItemHandler implements WorkItemHandler{
 		if(commandName==null){
 			throw new IllegalArgumentException("Comand name cannot be null");
 		}
-				
-		workItem.getParameters();
+		
+		Map<String, Object> params = workItem.getParameters();
+		
+		assert params.get("document") != null;
+		
+		System.err.println("Document for Integration :: "+params.get("document"));
+		
 		Request request = new Request();
 		request.setContext(workItem.getParameters());
 		request.setCommandName(commandName.toString());
 		
 		OutgoingRequestService service = new OutgoingRequestImpl();
-		Response response = service.executeCall(request);
+		//Response response = service.executeCall(request);
 		
-		manager.completeWorkItem(workItem.getId(), response.getContext());
+		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
 		
 	}
 	
