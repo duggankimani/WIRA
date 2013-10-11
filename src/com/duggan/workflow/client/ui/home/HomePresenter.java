@@ -12,6 +12,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
@@ -42,6 +43,7 @@ import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -125,6 +127,8 @@ public class HomePresenter extends
 
 	
 	@Inject DispatchAsync dispatcher;
+	
+	@Inject PropertyPanelPresenter presenter;
 	
 	@Inject PlaceManager placeManager;
 	
@@ -238,13 +242,16 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//showEditForm(MODE.CREATE);
-				AppManager.showPopUp("Testing", new HTMLPanel("<span>HELLO THERE</span>"), new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						System.err.println(name);
-					}
-				}, "Ok","Cancel", "Ignore","D");
+				
+				assert presenter !=null;
+				AppManager.showPropertyPanel(new ArrayList<Property>());
+//				AppManager.showPopUp("Testing", new HTMLPanel("<span>HELLO THERE</span>"), new OnOptionSelected() {
+//					
+//					@Override
+//					public void onSelect(String name) {
+//						System.err.println(name);
+//					}
+//				}, "Ok","Cancel", "Ignore","D");
 			}
 		});
 		

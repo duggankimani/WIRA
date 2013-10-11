@@ -42,7 +42,7 @@ public class FormBuilderView extends ViewImpl implements
 	
 
 	PickupDragController widgetDragController;
-	
+	@Inject
 	public FormBuilderView(final Binder binder) {
 		
 		widget = binder.createAndBindUi(this);

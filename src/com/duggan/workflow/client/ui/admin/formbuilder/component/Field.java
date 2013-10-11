@@ -6,6 +6,7 @@ import java.util.List;
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyEditor;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Position;
@@ -22,12 +23,14 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 
 	protected List<Property> properties = new ArrayList<Property>();
 	
+	
 	public Field() {
 		shim.addStyleName("demo-PaletteWidget-shim");
 		properties.add(new Property("NAME", "Name", DataType.STRING));
-		properties.add(new Property("CAPTION", "Caption", DataType.STRING));
-		properties.add(new Property("Value", "Value", DataType.STRING));
-		activatePopup();
+		properties.add(new Property("CAPTION", "Label Text", DataType.STRING));
+		properties.add(new Property("HELP", "Help", DataType.STRING));
+		properties.add(new Property("MANDATORY", "Mandatory", DataType.BOOLEAN));
+		properties.add(new Property("READONLY", "Read Only", DataType.BOOLEAN));
 	}
 
 	public abstract Field cloneWidget();
@@ -37,7 +40,6 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				System.err.println("Testing ............. ");
 				
 				OnOptionSelected optionSelected = new OnOptionSelected() {
 					
@@ -51,7 +53,8 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 
 				};
 
-				AppManager.showPopUp("Header", new TextField(), optionSelected, "Save", "Cancel");
+				//AppManager.showPopUp("Property Editor", new PropertyEditor(properties), optionSelected, "Save", "Cancel");
+				AppManager.showPropertyPanel(properties);
 			}
 		});
 	}

@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
+import java.util.List;
+
+import com.duggan.workflow.shared.model.form.Property;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.PopupView;
 import com.google.inject.Inject;
@@ -9,7 +12,8 @@ public class PropertyPanelPresenter extends
 		PresenterWidget<PropertyPanelPresenter.MyView> {
 
 	public interface MyView extends PopupView {
-		// TODO Put your view methods here
+
+		void showProperties(List<Property> properties);
 	}
 
 	@Inject
@@ -20,5 +24,9 @@ public class PropertyPanelPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+	}
+
+	public void setProperties(List<Property> properties) {
+		getView().showProperties(properties);
 	}
 }
