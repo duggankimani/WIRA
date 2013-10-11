@@ -44,7 +44,6 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -153,8 +152,6 @@ public class HomePresenter extends
 		}
 	};
 	
-	@Inject AppManager manager;
-	
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy,
@@ -241,13 +238,13 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//showEditForm(MODE.CREATE);
-				manager.showPopUp("Testing", new TextBox(), new OnOptionSelected() {
+				AppManager.showPopUp("Testing", new HTMLPanel("<span>HELLO THERE</span>"), new OnOptionSelected() {
 					
 					@Override
 					public void onSelect(String name) {
 						System.err.println(name);
 					}
-				}, "Ok");
+				}, "Ok","Cancel", "Ignore","D");
 			}
 		});
 		

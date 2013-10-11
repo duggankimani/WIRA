@@ -11,6 +11,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+/**
+ * Form builder class
+ * 
+ * @author duggan
+ *
+ */
 public class FormBuilderView extends ViewImpl implements
 		FormBuilderPresenter.MyView {
 
@@ -48,12 +54,15 @@ public class FormBuilderView extends ViewImpl implements
 		 *  */
 		
 		widgetDragController = new PickupDragController(
-				container, false);	
+				container, false){
+			@Override
+			protected void restoreSelectedWidgetsLocation() {
+				//do nothing
+			}
+		};
 		
-		widgetDragController.setBehaviorMultipleSelection(false);
-		widgetDragController.addDragHandler(dragHandler);  
-		widgetDragController.setBehaviorBoundaryPanelDrop(false);
-			
+		widgetDragController.setBehaviorDragStartSensitivity(5);
+		widgetDragController.addDragHandler(dragHandler);  			
 		
 		vTextInputPanel.registerDragController(widgetDragController);
 		vDatePanel.registerDragController(widgetDragController);
@@ -69,10 +78,15 @@ public class FormBuilderView extends ViewImpl implements
 		widgetDragController.registerDropController(widgetDropController);
 	}
 	
+	/**
+	 * Hello there
+	 * @return Widget - Returns parent widget
+	 * @author duggan
+	 * 
+	 */
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
-	
-	
+
 }

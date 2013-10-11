@@ -12,15 +12,11 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 public class AppManager {
 
-	@Inject MainPagePresenter mainPagePresenter;
-	@Inject GenericPopupPresenter popupPresenter;
-	//@Inject CreateDocPresenter presenter;
+	@Inject static MainPagePresenter mainPagePresenter;
+	@Inject static GenericPopupPresenter popupPresenter;
+		
 	
-	@Inject
-	public AppManager(EventBus eventBus){	
-	}
-	
-	public void showPopUp(String header, Widget widget,final OnOptionSelected onOptionSelected, String ... buttons){
+	public static void showPopUp(String header, Widget widget,final OnOptionSelected onOptionSelected, String ... buttons){
 		popupPresenter.setHeader(header);
 		popupPresenter.setInSlot(GenericPopupPresenter.BODY_SLOT, null);
 		popupPresenter.setInSlot(GenericPopupPresenter.BUTTON_SLOT, null);
@@ -46,7 +42,7 @@ public class AppManager {
 		
 	}
 	
-	public void showPopUp(String header, PresenterWidget<ViewImpl> presenter, final OnOptionSelected onOptionSelected,
+	public static void showPopUp(String header, PresenterWidget<ViewImpl> presenter, final OnOptionSelected onOptionSelected,
 			String ... buttons){
 		showPopUp(header, presenter.getWidget(), onOptionSelected, buttons);
 	}

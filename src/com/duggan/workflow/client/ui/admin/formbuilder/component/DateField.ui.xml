@@ -3,14 +3,10 @@
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
     >
-	<g:AbsolutePanel ui:field="abscontainer">
-		<g:FocusPanel ui:field="fcsContainer">
 		    <g:HTMLPanel styleName="control-group">
 			    <label for="Username" class="control-label">Date Box:</label>
 			    <div class="controls">
 			  	 	<d:DateInput></d:DateInput>
 			    </div>
 		    </g:HTMLPanel>
-	    </g:FocusPanel>
-	</g:AbsolutePanel>
 </ui:UiBinder>	

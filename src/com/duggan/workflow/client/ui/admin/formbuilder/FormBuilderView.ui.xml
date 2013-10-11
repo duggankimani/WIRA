@@ -31,11 +31,12 @@
 					    </ul>
 				    
 				    	<div id="myTabContent" class="tab-content">
-   						   <div class="tab-pane active in" id="input">
+   						   <div class="tab-pane in" id="input">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vTextInputPanel">	
 									    <f:TextField></f:TextField>	
+									    <f:SingleButton></f:SingleButton>
 									</fb:PalettePanel>
 			                      
 									<fb:PalettePanel ui:field="vDatePanel">	
@@ -74,11 +75,12 @@
 	                      </div><!--End of Select Pane -->
 	                      
 	                      
-	                       <div class="tab-pane in" id="buttons">
+	                       <div class="tab-pane in active" id="buttons">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSingleButtonPanel">	
 									    <f:SingleButton></f:SingleButton>	
+									    <f:DateField></f:DateField>	
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vMultipleButtonPanel">	

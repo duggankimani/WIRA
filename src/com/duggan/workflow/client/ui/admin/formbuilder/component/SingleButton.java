@@ -13,7 +13,6 @@ public class SingleButton extends Field {
 
 	interface SingleButtonUiBinder extends UiBinder<Widget, SingleButton> {
 	}
-	@UiField AbsolutePanel container;
 	
 	private final Widget widget;
 	public SingleButton() {

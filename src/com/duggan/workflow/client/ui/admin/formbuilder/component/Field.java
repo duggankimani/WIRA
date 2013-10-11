@@ -4,28 +4,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 public abstract class Field extends AbsolutePanel implements HasDragHandle{
 
 	private FocusPanel shim = new FocusPanel();
 
-	List<Property> property = new ArrayList<Property>();
-
+	protected List<Property> properties = new ArrayList<Property>();
+	
 	public Field() {
 		shim.addStyleName("demo-PaletteWidget-shim");
-		property.add(new Property("NAME", "Name", DataType.STRING));
-		property.add(new Property("CAPTION", "Caption", DataType.STRING));
-		property.add(new Property("Value", "Value", DataType.STRING));
-
+		properties.add(new Property("NAME", "Name", DataType.STRING));
+		properties.add(new Property("CAPTION", "Caption", DataType.STRING));
+		properties.add(new Property("Value", "Value", DataType.STRING));
+		activatePopup();
 	}
 
 	public abstract Field cloneWidget();
 
+	public void activatePopup(){
+		shim.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				System.err.println("Testing ............. ");
+				
+				OnOptionSelected optionSelected = new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						//determine what to do/show
+						if(name.equals("Save")){
+							saveProperties();
+						}
+					}
+
+				};
+
+				AppManager.showPopUp("Header", new TextField(), optionSelected, "Save", "Cancel");
+			}
+		});
+	}
+	
+
+	private void saveProperties() {
+		
+	}
+	
 	@Override
 	public Widget getDragHandle() {
 		return shim;
@@ -66,6 +101,8 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 	protected void onLoad() {
 		super.onLoad();
 		shim.setPixelSize(getOffsetWidth(), getOffsetHeight());
+		getElement().getStyle().setPosition(Position.RELATIVE);
+	
 		add(shim, 0, 0);
 	}
 
@@ -76,5 +113,9 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 	protected void onUnload() {
 		super.onUnload();
 		shim.removeFromParent();
+	}
+	
+	public List<Property> getProperties(){
+		return properties;
 	}
 }

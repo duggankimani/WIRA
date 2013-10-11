@@ -140,7 +140,7 @@ public class ClientModule extends AbstractPresenterModule {
 				LoginView.class, LoginPresenter.MyProxy.class);
 		
 		requestStaticInjection(AppContext.class);
-		
+		requestStaticInjection(AppManager.class);
 
 		bindPresenterWidget(DateGroupPresenter.class,
 				DateGroupPresenter.MyView.class, DateGroupView.class);
@@ -211,8 +211,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(PropertyPanelPresenter.class,
 				PropertyPanelPresenter.MyView.class, PropertyPanelView.class);
-		
-		bind(AppManager.class);
 		
 		bindPresenterWidget(GenericPopupPresenter.class, GenericPopupPresenter.MyView.class,
 				GenericPopupView.class);
