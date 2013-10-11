@@ -9,7 +9,9 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
@@ -150,6 +152,9 @@ public class HomePresenter extends
 			search();
 		}
 	};
+	
+	@Inject AppManager manager;
+	
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy,
@@ -235,7 +240,14 @@ public class HomePresenter extends
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showEditForm(MODE.CREATE);
+				//showEditForm(MODE.CREATE);
+				manager.showPopUp("Testing", new TextBox(), new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						System.err.println(name);
+					}
+				}, "Ok");
 			}
 		});
 		

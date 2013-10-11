@@ -36,6 +36,7 @@ import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
 import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
+import org.jbpm.workflow.core.node.SubProcessNode;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -137,13 +138,14 @@ public class JBPMHelper implements Closeable{
 		initialParams.put("ownerId", userId);
 		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
+		initialParams.put("document", summary);
 		
 		ProcessInstance processInstance = sessionManager.startProcess(
 				getProcessId(summary.getType()), initialParams,summary);
 		
 		//processInstance.getId(); - Use this to link a document with a process instance + later for history generation
-		summary.setProcessInstanceId(processInstance.getId());
-		DocumentDaoHelper.save(summary);
+//		summary.setProcessInstanceId(processInstance.getId());
+//		DocumentDaoHelper.save(summary);
 		
 		assert (ProcessInstance.STATE_ACTIVE ==processInstance.getState());
 		
@@ -546,7 +548,6 @@ public class JBPMHelper implements Closeable{
 	
 	public List<NodeDetail> getWorkflowProcessDia(long processInstanceId){
 		
-		List<NodeDetail> details= new ArrayList<>();
 		
 		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
 		
@@ -554,11 +555,20 @@ public class JBPMHelper implements Closeable{
 			//--
 			logger.warn("Invalid State : ProcessInstanceLog is null; ProcessInstanceId="
 			+processInstanceId+"; Document = "+DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId));
-			return details;
+			return new ArrayList<>();
 		}
 		
+		return getWorkflowProcessDia(log);
+	}
+		
+	public List<NodeDetail> getWorkflowProcessDia(ProcessInstanceLog log){
+		
+		List<NodeDetail> details= new ArrayList<>();
+		
+		long processInstanceId = log.getProcessInstanceId();
+		
 		String processDefId = log.getProcessId();
-		JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
+		//JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
 		
 		org.drools.definition.process.Process process = sessionManager.getProcess(processDefId);
 				
@@ -577,6 +587,20 @@ public class JBPMHelper implements Closeable{
 				Object width = node.getMetaData().get("width");
 				Object height = node.getMetaData().get("height");
 			
+				if(node instanceof SubProcessNode){
+					SubProcessNode n = (SubProcessNode)node; 
+					List<ProcessInstanceLog> list = JPAProcessInstanceDbLog.findSubProcessInstances(processInstanceId);
+					
+					for(ProcessInstanceLog subprocess : list){
+						//n.get
+						//if(n.getProcessId().equals( subprocess.getProcessId())){
+							Long subprocessId = subprocess.getId();						
+							assert !subprocessId.equals(processInstanceId);
+							
+							details.addAll(getWorkflowProcessDia(subprocess));
+						//}
+					}
+				}
 				//System.err.println(node.getName());
 				//Ignore all other nodes - Only work pick human Task Nodes
 				if(node instanceof HumanTaskNode || node instanceof StartNode || node instanceof EndNode){
@@ -668,7 +692,7 @@ public class JBPMHelper implements Closeable{
 	}
 
 	public void stop(String processId) {
-		sessionManager.stopProcess(processId);
+		sessionManager.unloadKnowledgeBase(processId);
 	}
 		
 	

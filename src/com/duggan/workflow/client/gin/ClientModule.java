@@ -3,6 +3,7 @@ package com.duggan.workflow.client.gin;
 import com.duggan.workflow.client.place.ClientPlaceManager;
 import com.duggan.workflow.client.place.DefaultPlace;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.MainPageView;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
@@ -39,6 +40,8 @@ import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.ui.notifications.NotificationsView;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.notifications.note.NoteView;
+import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
+import com.duggan.workflow.client.ui.popup.GenericPopupView;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocView;
 import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
@@ -208,5 +211,10 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(PropertyPanelPresenter.class,
 				PropertyPanelPresenter.MyView.class, PropertyPanelView.class);
+		
+		bind(AppManager.class);
+		
+		bindPresenterWidget(GenericPopupPresenter.class, GenericPopupPresenter.MyView.class,
+				GenericPopupView.class);
 }
 }

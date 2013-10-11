@@ -8,7 +8,7 @@ import java.util.Date;
  * @author duggan
  *
  */
-public class Document extends DocSummary implements Serializable, BusinessKey{
+public class Document extends DocSummary implements Serializable{
 
 	/**
 	 * 
@@ -170,7 +170,6 @@ public class Document extends DocSummary implements Serializable, BusinessKey{
 		this.processInstanceId = processInstanceId;
 	}
 	
-	@Override
 	public Long getSessionId() {
 		return sessionId;
 	}

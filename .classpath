@@ -145,6 +145,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jettison-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.2.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/invoicing.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="C:/Users/Maggy&apos;s/Documents/Downloads/gwt-dnd-3.2.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>

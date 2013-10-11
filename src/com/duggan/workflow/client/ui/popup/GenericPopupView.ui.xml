@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+    >
+    
+    <g:PopupPanel ui:field="popUpPanel" glassEnabled="true" styleName="modal modal-admin" modal="true">
+        <g:HTMLPanel>
+	 		<g:HTMLPanel styleName="modal-header">
+				<h5><i class="icon-cogs"></i>
+				    <span ui:field="spnHeader"/>
+				<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+			</g:HTMLPanel>
+			<d:IssuesPanel ui:field="issues">
+	    	</d:IssuesPanel>
+			 
+			<g:HTMLPanel ui:field="panelBody" styleName="modal-body">
+			    
+			</g:HTMLPanel>
+			
+			<g:HTMLPanel ui:field="panelButtons" styleName="form-actions">
+			    
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:PopupPanel>
+</ui:UiBinder>
