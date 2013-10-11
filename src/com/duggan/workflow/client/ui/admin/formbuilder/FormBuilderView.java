@@ -3,23 +3,19 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class FormBuilderView extends ViewImpl implements
 		FormBuilderPresenter.MyView {
 
 	private final Widget widget;
+	
 
 	public interface Binder extends UiBinder<Widget, FormBuilderView> {
 	}
@@ -27,8 +23,16 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField AbsolutePanel container;
 	@UiField VerticalPanel vPanel;
 	
-	@UiField PalettePanel vPalettePanel;
+	@UiField PalettePanel vTextInputPanel;
 	@UiField PalettePanel vDatePanel;
+	@UiField PalettePanel vTextAreaPanel;
+	@UiField PalettePanel vInlineRadioPanel;
+	@UiField PalettePanel vInlineCheckBoxPanel;
+	@UiField PalettePanel vSelectBasicPanel;
+	@UiField PalettePanel vSelectMultiplePanel;
+	@UiField PalettePanel vSingleButtonPanel;
+	@UiField PalettePanel vMultipleButtonPanel;
+	
 
 	PickupDragController widgetDragController;
 	
@@ -39,26 +43,36 @@ public class FormBuilderView extends ViewImpl implements
 		
 		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget());
 		
+		/*set up pick-up and move
+		 * parameters: absolutePanel, boolean(whether items can be placed to any location)
+		 *  */
+		
 		widgetDragController = new PickupDragController(
-				container, false);		
+				container, false);	
+		
 		widgetDragController.setBehaviorMultipleSelection(false);
-		widgetDragController.addDragHandler(dragHandler);
-		widgetDragController.setBehaviorBoundaryPanelDrop(true);
+		widgetDragController.addDragHandler(dragHandler);  
+		widgetDragController.setBehaviorBoundaryPanelDrop(false);
+			
 		
-		
-		vPalettePanel.registerDragController(widgetDragController);
+		vTextInputPanel.registerDragController(widgetDragController);
 		vDatePanel.registerDragController(widgetDragController);
-		//vPanel.registerDragController(widgetDragController);
+		vTextAreaPanel.registerDragController(widgetDragController);
+		vInlineRadioPanel.registerDragController(widgetDragController);
+		vInlineCheckBoxPanel.registerDragController(widgetDragController);
+		vSelectBasicPanel.registerDragController(widgetDragController);
+		vSelectMultiplePanel.registerDragController(widgetDragController);
+		vSingleButtonPanel.registerDragController(widgetDragController);
+		vMultipleButtonPanel.registerDragController(widgetDragController);
 		
-		//vPanel.getElement().getStyle().setBackgroundColor("blue");
-		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(
-				vPanel);
+		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(vPanel);
 		widgetDragController.registerDropController(widgetDropController);
-		
 	}
 	
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	
 }

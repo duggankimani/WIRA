@@ -4,9 +4,11 @@
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
     >
 	<g:AbsolutePanel ui:field="container">
-	    <g:HTMLPanel styleName="controls">
-		    <label for="Username"><b>Textbox:</b></label>
-		    <d:TextField ui:field="txtUserName" type="text" class="input-large" placeholder=""/>
-	    </g:HTMLPanel>
+	        <g:HTMLPanel styleName="control-group">
+		       <label for="Username" class="control-label">Text Input:</label>
+			    <div class="controls">
+			    <d:TextField ui:field="txtUserName" type="text" class="input-xlarge" placeholder="placeholder"/>
+		    	</div>
+	       </g:HTMLPanel>
 	</g:AbsolutePanel>
 </ui:UiBinder>	

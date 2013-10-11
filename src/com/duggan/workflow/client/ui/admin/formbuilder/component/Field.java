@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public abstract class Field extends AbsolutePanel implements HasDragHandle {
+public abstract class Field extends AbsolutePanel implements HasDragHandle{
 
 	private FocusPanel shim = new FocusPanel();
 
@@ -20,6 +20,7 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle {
 		shim.addStyleName("demo-PaletteWidget-shim");
 		property.add(new Property("NAME", "Name", DataType.STRING));
 		property.add(new Property("CAPTION", "Caption", DataType.STRING));
+		property.add(new Property("Value", "Value", DataType.STRING));
 
 	}
 

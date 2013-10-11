@@ -4,12 +4,15 @@ import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
-import com.google.gwt.user.client.Window;
+import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
-public class DragHandlerImpl implements DragHandler{
+public class DragHandlerImpl implements DragHandler {
 	
 	private Widget widget;
+	
+	@Inject FormBuilderPresenter formbuilder;
 	
 	public DragHandlerImpl(Widget widget){
 		this.widget = widget;
@@ -17,23 +20,25 @@ public class DragHandlerImpl implements DragHandler{
 
 	@Override
 	public void onDragEnd(DragEndEvent event) {
-//		System.err.println("Drag End");
+		System.err.println("Drag End");
+		System.err.println("DragEnd >>> "+event.getContext().draggable.getClass());
+		
 	}
 
 	@Override
 	public void onDragStart(DragStartEvent event) {
-//		System.err.println("Drag start");
+		System.err.println("Drag start");
 	}
 
 	@Override
 	public void onPreviewDragEnd(DragEndEvent event) throws VetoDragException {
-//		System.err.println("Preview Drag End");
+		System.err.println("Preview Drag End");
 	}
 
 	@Override
 	public void onPreviewDragStart(DragStartEvent event)
 			throws VetoDragException {
-//		System.err.println("Preview Drag Start");
+		System.err.println("Preview Drag Start");
 	}
 
 }

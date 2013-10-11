@@ -62,7 +62,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 			@Override
 			public void onClick(ClickEvent event) {
 				dateInput2.showDatePicker();
-				
 			}
 		});
 	}

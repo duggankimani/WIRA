@@ -53,9 +53,9 @@
 
 								</div><!--End Table  -->
 								
-								<div class="row-fluid">
+								<div class="row-fluid hidden">
 									<div class="span6">
-										<div class="dataTables_info" id="sample-table-2_info">Showing 1 to 10 of 23 entries</div>
+										<div class="dataTables_info hidden" id="sample-table-2_info">Showing 1 to 10 of 23 entries</div>
 									</div>
 									<div class="span6">
 										<div class="pull-right">
@@ -103,38 +103,6 @@
 						<g:HTMLPanel ui:field="panelGroup" styleName="tbody"><!-- div class="tbody"-->
 						</g:HTMLPanel><!--End Tbody  -->
 						</div><!--End Table  -->  
-						
-						
-							<div class="row-fluid">
-									<div class="span6">
-										<div class="dataTables_info" id="sample-table-2_info">Showing 1 to 10 of 23 entries</div>
-									</div>
-									<div class="span6">
-										<div class="pull-right">
-											<ul class="pagination">
-												<li class="prev disabled">
-													<a href="#">
-														<i class="icon-double-angle-left"></i>
-													</a>
-												</li>
-												<li class="active">
-													<a href="#">1</a>
-												</li>
-												<li>
-													<a href="#">2</a>
-												</li>
-												<li>
-													<a href="#">3</a>
-												</li>
-												<li class="next">
-													<a href="#">
-														<i class="icon-double-angle-right"></i>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
 			        </div>
 				</div>
      		</div>

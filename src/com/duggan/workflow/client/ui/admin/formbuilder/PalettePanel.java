@@ -12,9 +12,6 @@ public class PalettePanel extends VerticalPanel {
 
 	public PalettePanel() {
 		
-//		PickupDragController widgetDragController = new PickupDragController(
-//				this.asWidget(), false);
-
 		addStyleName("demo-PalettePanel");
 		setSpacing(2);
 		setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -32,7 +29,7 @@ public class PalettePanel extends VerticalPanel {
 	 * Overloaded method that makes widgets draggable.
 	 * 
 	 * @param w
-	 *            the widget to be added are made draggable
+	 *  the widget to be added are made draggable
 	 */
 	public void add(Field w) {
 		if(dragController!=null){
@@ -53,11 +50,9 @@ public class PalettePanel extends VerticalPanel {
 	 */
 	@Override
 	public boolean remove(Widget w) {
-		System.err.println("Removing widget :: "+w);
 		int index = getWidgetIndex(w);
 		if (index != -1 && w instanceof Field) {
 			Field clone = ((Field) w).cloneWidget();
-			System.err.println("Creating clone widget :: "+w);
 			dragController.makeDraggable(clone);
 			insert(clone, index);
 		}

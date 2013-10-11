@@ -3,10 +3,9 @@ package com.duggan.workflow.client.ui.component;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BulletPanel extends ComplexPanel {
+public class BulletPanel extends ComplexPanel{
 
 	//HTMLPanel p;
 	
