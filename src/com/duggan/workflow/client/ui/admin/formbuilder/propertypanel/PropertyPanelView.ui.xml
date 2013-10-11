@@ -6,43 +6,11 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel styleName="popover">
-		<g:HTMLPanel styleName="property-panel panel panel-default span2">
-				<div class="popover-title">
-						<h4>Properties</h4>
-				</div>
-				
-				<div class="popover-content">
-					<div class="table table-bordered">
-					    <div class="thead">
-					    	<div class="tr">
-								<div class="th"><span class="pull-right">Name:</span></div>
-								<div class="th"><span class="pull-left">Value:</span></div>
-							</div>								
-						</div>
-						 <g:HTMLPanel styleName="tr">
-								<g:HTMLPanel styleName="td">
-								    <span class="pull-right">Width:</span>
-								</g:HTMLPanel>
-								<g:HTMLPanel styleName="td">
-								    <input type="text" class="input-small"></input>
-								</g:HTMLPanel>
-						  </g:HTMLPanel>
-						  
-						   <g:HTMLPanel styleName="tr">
-								<g:HTMLPanel styleName="td">
-								    <span class="pull-right">Width:</span>
-								</g:HTMLPanel>
-								<g:HTMLPanel styleName="td">
-								    <input type="text" class="input-small"></input>
-								</g:HTMLPanel>
-						  </g:HTMLPanel>
-						   <hr/>
-						   
-						  <button id="save" class="btn btn-info">Save</button>
-						  <button id="cancel" class="btn btn-danger">Cancel</button>
-					</div>
-				</div>
-			</g:HTMLPanel>
+	<g:PopupPanel styleName="popover fade right in" ui:field="popUpContainer">
+		<g:HTMLPanel>
+				<div class="arrow"></div>
+				<h4 class="popover-title">Properties</h4>
+				<g:HTMLPanel ui:field="pBody" styleName="popover-content"></g:HTMLPanel>
+		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>

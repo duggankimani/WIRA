@@ -31,7 +31,7 @@
 					    </ul>
 				    
 				    	<div id="myTabContent" class="tab-content">
-   						   <div class="tab-pane in" id="input">
+   						   <div class="tab-pane active in" id="input">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vTextInputPanel">	
@@ -75,7 +75,7 @@
 	                      </div><!--End of Select Pane -->
 	                      
 	                      
-	                       <div class="tab-pane in active" id="buttons">
+	                       <div class="tab-pane in" id="buttons">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSingleButtonPanel">	

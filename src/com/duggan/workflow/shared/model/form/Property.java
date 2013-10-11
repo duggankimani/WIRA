@@ -16,7 +16,7 @@ public class Property extends FormModel{
 
 	public Property(String name, String caption, DataType type) {
 		this.name = name;
-		this.caption = name;
+		this.caption = caption;
 		this.type = type;
 	}
 
@@ -50,6 +50,14 @@ public class Property extends FormModel{
 
 	public void setValue(Value value) {
 		this.value = value;
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
 	}
 	
 	

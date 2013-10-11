@@ -20,25 +20,27 @@ public class DragHandlerImpl implements DragHandler {
 
 	@Override
 	public void onDragEnd(DragEndEvent event) {
-		System.err.println("Drag End");
-		System.err.println("DragEnd >>> "+event.getContext().draggable.getClass());
+		//System.err.println("DragEnd >>> "+event.getContext().draggable.getClass());
+		Widget draggable =event.getContext().draggable;
 		
+		if(draggable instanceof Field)
+			((Field)draggable).activatePopup();
 	}
 
 	@Override
 	public void onDragStart(DragStartEvent event) {
-		System.err.println("Drag start");
+//		System.err.println("Drag start");
 	}
 
 	@Override
 	public void onPreviewDragEnd(DragEndEvent event) throws VetoDragException {
-		System.err.println("Preview Drag End");
+//		System.err.println("Preview Drag End");
 	}
 
 	@Override
 	public void onPreviewDragStart(DragStartEvent event)
 			throws VetoDragException {
-		System.err.println("Preview Drag Start");
+//		System.err.println("Preview Drag Start");
 	}
 
 }
