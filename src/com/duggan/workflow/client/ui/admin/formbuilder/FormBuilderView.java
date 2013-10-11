@@ -39,10 +39,10 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vSingleButtonPanel;
 	@UiField PalettePanel vMultipleButtonPanel;
 	
+	
 
 	PickupDragController widgetDragController;
 	
-	@Inject
 	public FormBuilderView(final Binder binder) {
 		
 		widget = binder.createAndBindUi(this);

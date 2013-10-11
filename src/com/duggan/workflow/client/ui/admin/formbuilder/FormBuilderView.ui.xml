@@ -25,18 +25,17 @@
 				</div>
 				<div class="panel-body">
 						<ul class="nav nav-tabs">
-					      <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
-					      <li><a href="#select" data-toggle="tab">Select</a></li>
-					      <li><a href="#buttons" data-toggle="tab">Buttons</a></li>
+					      <li class="active"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
+					      <li><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
+					      <li><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
 					    </ul>
 				    
 				    	<div id="myTabContent" class="tab-content">
-   						   <div class="tab-pane in" id="input">
+   						   <g:HTMLPanel styleName="tab-pane in active" ui:field="divInput">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vTextInputPanel">	
 									    <f:TextField></f:TextField>	
-									    <f:SingleButton></f:SingleButton>
 									</fb:PalettePanel>
 			                      
 									<fb:PalettePanel ui:field="vDatePanel">	
@@ -57,9 +56,9 @@
 									</fb:PalettePanel>
 			                      </fieldset>
 		                      </div>
-	                      </div><!--End of Input Pane -->
+	                      </g:HTMLPanel><!--End of Input Pane -->
 	                      
-	                      <div class="tab-pane in" id="select">
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divSelect">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSelectBasicPanel">	
@@ -72,10 +71,10 @@
 									
 								</fieldset>
 		                      </div>
-	                      </div><!--End of Select Pane -->
+	                      </g:HTMLPanel><!--End of Select Pane -->
 	                      
 	                      
-	                       <div class="tab-pane in active" id="buttons">
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divButtons">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSingleButtonPanel">	
@@ -89,7 +88,7 @@
 									
 								</fieldset>
 		                      </div>
-	                      </div><!--End of Select Pane -->
+	                     </g:HTMLPanel><!--End of Select Pane -->
 	                      
 	                   </div>
 					</div>
