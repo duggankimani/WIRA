@@ -4,7 +4,7 @@
 		   <g:HTMLPanel styleName="control-group">
 		       <label for="Username" class="control-label">Text Area:</label>
 			    <div class="controls">
-			  	 <textarea id="textarea" name="textarea">default text</textarea>
+			  	 <textarea id="textarea" name="textarea">Some default text</textarea>
 		    	</div>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

@@ -7,7 +7,6 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextField extends FieldWidget {
@@ -28,6 +27,7 @@ public class TextField extends FieldWidget {
 	public TextField() {
 		super();
 		addProperty(new Property("PLACEHOLDER", "Place Holder", DataType.STRING));
+
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 	}
@@ -35,8 +35,8 @@ public class TextField extends FieldWidget {
 	public TextField(Property property) {
 		this();
 		lblEl.setInnerHTML(property.getCaption());
-		txtComponent.setName(property.getName());
-		
+		txtComponent.setName(property.getName());	
+		txtComponent.setClass("input-large"); //Smaller TextField
 	}
 
 	@Override

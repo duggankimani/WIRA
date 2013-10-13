@@ -25,11 +25,13 @@ public class DragHandlerImpl implements DragHandler {
 		
 		if(draggable instanceof FieldWidget)
 			((FieldWidget)draggable).activatePopup();
+
 	}
 
 	@Override
 	public void onDragStart(DragStartEvent event) {
 //		System.err.println("Drag start");
+		
 	}
 
 	@Override

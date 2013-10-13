@@ -5,13 +5,13 @@ import java.util.List;
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.ViewImpl;
 
@@ -52,10 +52,35 @@ public class AppManager {
 		showPopUp(header, presenter.getWidget(), onOptionSelected, buttons);
 	}
 	
-	public static void showPropertyPanel(List<Property> properties){
-		assert propertyPanel!=null;
-		
+	public static void showPropertyPanel(List<Property> properties, int top, int left, int arrowposition){
 		propertyPanel.setProperties(properties);
-		mainPagePresenter.addToPopupSlot(propertyPanel, true);	
+		int[] position= calculatePosition(top, left);
+		propertyPanel.getView().getPopUpContainer().setPopupPosition(position[1], position[0]);
+		propertyPanel.getView().getiArrow().getElement().getStyle().setTop(arrowposition, Unit.PX);
+		
+		System.err.println("Top--"+top+" Left--" + left);
+		mainPagePresenter.addToPopupSlot(propertyPanel, false);	
+	}
+	
+	/**
+	 * Position Modal/Popover in Relative to the browser size
+	 * @param %top, %left
+	 * @return
+	 */
+	public static int[] calculatePosition(int top, int left){
+	
+	int[] positions =new int[2]; 
+	//----Calculate the Size of Screen;
+	int height = Window.getClientHeight();
+	int width = Window.getClientWidth();
+	
+	/*Percentage to the Height and Width*/
+	double percentTop=(top/100.0)*height;
+	double percentLeft= (left/100.0)*width;
+	
+	positions[0]=(int)percentTop;
+	positions[1]=(int)percentLeft;
+	
+	return positions;	
 	}
 }

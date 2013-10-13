@@ -70,11 +70,11 @@ public class AddUserView extends PopupViewImpl implements
 		int height = Window.getClientHeight();
 		int width = Window.getClientWidth();
 		
+		/*Percentage to the Height and Width*/
 		double height1=(5.0/100.0)*height;
 		double width1= (40.0/100.0)*width;
 		
 		AddUserDialog.setPopupPosition((int)width1,(int)height1);
-		System.out.println((int)width1 + " "+(int)height1);
 	}
 
 	@Override

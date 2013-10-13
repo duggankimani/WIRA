@@ -63,8 +63,12 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 
 				};
 
-				//AppManager.showPopUp("Property Editor", new PropertyEditor(properties), optionSelected, "Save", "Cancel");
-				AppManager.showPropertyPanel(getProperties());
+		
+				/*Position of the pop-over*/
+				int top=7;
+				int left=80;
+				int arrowPosition =shim.getAbsoluteTop()-30;
+				AppManager.showPropertyPanel(getProperties(),top,left,arrowPosition);
 			}
 		});
 	}

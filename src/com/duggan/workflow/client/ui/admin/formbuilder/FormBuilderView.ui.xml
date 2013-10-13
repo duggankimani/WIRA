@@ -12,31 +12,31 @@
    	<g:AbsolutePanel ui:field="container">
 	<g:HTMLPanel>
 		<div class="content-body">
-			<g:HTMLPanel styleName="palete-panel panel panel-default span2">
+			<g:HTMLPanel styleName="palete-panel panel panel-default span2" ui:field="divPalettePanel">
 				<div class="panel-heading">
 					<div class="row-fluid">
 						<div class="span10">
-						<h4>Paletes</h4>
+						<h4 ui:field="hPaletetitle">Paletes</h4>
 						</div>
 						<div class="span2">
-							<g:Anchor styleName="minimize minimize-left"></g:Anchor>
+							<g:Anchor styleName="minimize minimize-left" ui:field="aMinimize"></g:Anchor>
 						</div>
 					</div>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" ui:field="divPaletteBody">
 						<ul class="nav nav-tabs">
-					      <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
-					      <li><a href="#select" data-toggle="tab">Select</a></li>
-					      <li><a href="#buttons" data-toggle="tab">Buttons</a></li>
+					      <li class="active"  ui:field="liInput"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
+					      <li ui:field="liSelect"><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
+					      <li ui:field="liButton"><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
 					    </ul>
 				    
 				    	<div id="myTabContent" class="tab-content">
-   						   <div class="tab-pane active in" id="input">
+   						   <g:HTMLPanel styleName="tab-pane in active" ui:field="divInput">
+
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vTextInputPanel">	
 									    <f:TextField></f:TextField>	
-									    <f:SingleButton></f:SingleButton>
 									</fb:PalettePanel>
 			                      
 									<fb:PalettePanel ui:field="vDatePanel">	
@@ -54,12 +54,13 @@
 									
 									<fb:PalettePanel ui:field="vInlineCheckBoxPanel">	
 									 	<f:InlineCheckBox></f:InlineCheckBox>
+									 	<f:SelectBasic></f:SelectBasic>
 									</fb:PalettePanel>
 			                      </fieldset>
 		                      </div>
-	                      </div><!--End of Input Pane -->
+	                      </g:HTMLPanel><!--End of Input Pane -->
 	                      
-	                      <div class="tab-pane in" id="select">
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divSelect">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSelectBasicPanel">	
@@ -72,15 +73,13 @@
 									
 								</fieldset>
 		                      </div>
-	                      </div><!--End of Select Pane -->
+	                      </g:HTMLPanel><!--End of Select Pane -->
 	                      
-	                      
-	                       <div class="tab-pane in" id="buttons">
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divButtons">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSingleButtonPanel">	
 									    <f:SingleButton></f:SingleButton>	
-									    <f:DateField></f:DateField>	
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vMultipleButtonPanel">	
@@ -89,12 +88,12 @@
 									
 								</fieldset>
 		                      </div>
-	                      </div><!--End of Select Pane -->
+	                     </g:HTMLPanel><!--End of Select Pane -->
 	                      
 	                   </div>
 					</div>
 			</g:HTMLPanel>
-			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8">			
+			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8" ui:field="divFormContent">			
 				<g:HTMLPanel styleName="panel-body">
 					<g:HTMLPanel styleName="form-horizontal">
 						<fieldset>

@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -23,7 +22,6 @@ public class InlineCheckBox extends FieldWidget {
 	public InlineCheckBox() {
 		super();
 		widget = uiBinder.createAndBindUi(this);
-		container.getElement().getStyle().setPosition(Position.RELATIVE);
 		add(widget);
 	}
 
