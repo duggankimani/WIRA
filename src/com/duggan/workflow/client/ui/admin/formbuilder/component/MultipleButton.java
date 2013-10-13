@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MultipleButton extends Field {
+public class MultipleButton extends FieldWidget {
 
 	private static MultipleButtonUiBinder uiBinder = GWT
 			.create(MultipleButtonUiBinder.class);
@@ -21,7 +21,7 @@ public class MultipleButton extends Field {
 	}
 
 	@Override
-	public Field cloneWidget() {
+	public FieldWidget cloneWidget() {
 		return new MultipleButton();
 	}
 

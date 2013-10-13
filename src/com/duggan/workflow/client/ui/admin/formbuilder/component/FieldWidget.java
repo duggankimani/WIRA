@@ -1,13 +1,17 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyEditor;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,25 +19,31 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
-public abstract class Field extends AbsolutePanel implements HasDragHandle{
+public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle{
 
 	private FocusPanel shim = new FocusPanel();
-
-	protected List<Property> properties = new ArrayList<Property>();
 	
+	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
 	
-	public Field() {
+	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
-		properties.add(new Property("NAME", "Name", DataType.STRING));
-		properties.add(new Property("CAPTION", "Label Text", DataType.STRING));
-		properties.add(new Property("HELP", "Help", DataType.STRING));
-		properties.add(new Property("MANDATORY", "Mandatory", DataType.BOOLEAN));
-		properties.add(new Property("READONLY", "Read Only", DataType.BOOLEAN));
+		addProperty(new Property("NAME", "Name", DataType.STRING));
+		addProperty(new Property("CAPTION", "Label Text", DataType.STRING));
+		addProperty(new Property("HELP", "Help", DataType.STRING));
+		addProperty(new Property("MANDATORY", "Mandatory", DataType.BOOLEAN));
+		addProperty(new Property("READONLY", "Read Only", DataType.BOOLEAN));
 	}
 
-	public abstract Field cloneWidget();
+	protected void addProperty(Property property) {
+		assert props !=null;
+		assert property!=null;
+		assert property.getName()!=null;
+		
+		props.put(property.getName(), property);
+	}
+
+	public abstract FieldWidget cloneWidget();
 
 	public void activatePopup(){
 		shim.addClickHandler(new ClickHandler() {
@@ -54,7 +64,7 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 				};
 
 				//AppManager.showPopUp("Property Editor", new PropertyEditor(properties), optionSelected, "Save", "Cancel");
-				AppManager.showPropertyPanel(properties);
+				AppManager.showPropertyPanel(getProperties());
 			}
 		});
 	}
@@ -64,6 +74,34 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 		
 	}
 	
+	public Field getField(){
+		Field field = new Field();
+		
+		field.setCaption(getValue("CAPTION"));
+//		field.setFormId(formId);
+//		field.setId(id);
+		field.setName(getValue("NAME"));
+		field.setProperties(getProperties());
+		field.setType(DataType.STRING);
+		field.setValue(null);
+		
+		return field;
+	}
+	
+	private String getValue(String key) {
+		
+		Property property = props.get(key);
+		
+		if(property==null)
+			return null;
+		
+		Value value = property.getValue();
+		if(value==null)
+			return null;
+		
+		return value.getValue()==null? null : value.getValue().toString();
+	}
+
 	@Override
 	public Widget getDragHandle() {
 		return shim;
@@ -119,6 +157,8 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 	}
 	
 	public List<Property> getProperties(){
-		return properties;
+		List<Property> values = new ArrayList<Property>();
+		values.addAll(props.values());
+		return values;
 	}
 }

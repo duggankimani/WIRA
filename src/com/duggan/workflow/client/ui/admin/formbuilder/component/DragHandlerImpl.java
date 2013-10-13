@@ -23,8 +23,8 @@ public class DragHandlerImpl implements DragHandler {
 		//System.err.println("DragEnd >>> "+event.getContext().draggable.getClass());
 		Widget draggable =event.getContext().draggable;
 		
-		if(draggable instanceof Field)
-			((Field)draggable).activatePopup();
+		if(draggable instanceof FieldWidget)
+			((FieldWidget)draggable).activatePopup();
 	}
 
 	@Override

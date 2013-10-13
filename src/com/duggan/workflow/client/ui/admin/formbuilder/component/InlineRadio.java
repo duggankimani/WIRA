@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
 
-public class InlineRadio extends Field {
+public class InlineRadio extends FieldWidget {
 
 	private static InlineRadioUiBinder uiBinder = GWT
 			.create(InlineRadioUiBinder.class);
@@ -22,7 +22,7 @@ public class InlineRadio extends Field {
 	}
 
 	@Override
-	public Field cloneWidget() {
+	public FieldWidget cloneWidget() {
 		return new InlineRadio();
 	}
 

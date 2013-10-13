@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TextField extends Field {
+public class TextField extends FieldWidget {
 
 	private static TextFieldUiBinder uiBinder = GWT
 			.create(TextFieldUiBinder.class);
@@ -27,9 +27,8 @@ public class TextField extends Field {
 	
 	public TextField() {
 		super();
-		properties.add(new Property("PLACEHOLDER", "Place Holder", DataType.STRING));
+		addProperty(new Property("PLACEHOLDER", "Place Holder", DataType.STRING));
 		widget = uiBinder.createAndBindUi(this);
-		//initWidget(uiBinder.createAndBindUi(this));
 		add(widget);
 	}
 	
@@ -41,7 +40,7 @@ public class TextField extends Field {
 	}
 
 	@Override
-	public Field cloneWidget() {
+	public FieldWidget cloneWidget() {
 		return new TextField();
 	}
 	

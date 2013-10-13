@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SingleButton extends Field {
+public class SingleButton extends FieldWidget {
 
 	private static SingleButtonUiBinder uiBinder = GWT
 			.create(SingleButtonUiBinder.class);
@@ -21,7 +21,7 @@ public class SingleButton extends Field {
 		add(widget);
 	}
 	@Override
-	public Field cloneWidget() {
+	public FieldWidget cloneWidget() {
 		return new SingleButton();
 	}
 

@@ -99,6 +99,7 @@
 					<g:HTMLPanel styleName="form-horizontal">
 						<fieldset>
 						 <legend>Form Name:</legend>
+						 <g:Anchor ui:field="aSaveForm" text="Save Form"></g:Anchor>
 						</fieldset>
 						
 						<g:VerticalPanel ui:field="vPanel" styleName="span12">
