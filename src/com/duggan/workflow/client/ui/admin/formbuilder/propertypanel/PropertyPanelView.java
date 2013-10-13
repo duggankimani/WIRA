@@ -6,15 +6,19 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.DateField;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.InlineCheckBox;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.duggan.workflow.shared.model.form.Property;
-import com.gwtplatform.mvp.client.PopupViewImpl;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.PopupViewImpl;
 
 public class PropertyPanelView extends PopupViewImpl implements
 		PropertyPanelPresenter.MyView {
@@ -26,12 +30,26 @@ public class PropertyPanelView extends PopupViewImpl implements
 	
 	@UiField PopupPanel popUpContainer;
 	@UiField HTMLPanel pBody;
+	@UiField Anchor btnSave;
+	@UiField Anchor btnCancel;
+	@UiField HTMLPanel iArrow;
+	
 	
 	@Inject
 	public PropertyPanelView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		popUpContainer.getElement().getStyle().setDisplay(Display.BLOCK);
+		popUpContainer.getElement().getStyle().setOverflow(Overflow.AUTO);
+		
+
+		btnCancel.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				hide();
+			}
+		});
+		
 	}
 
 	@Override
@@ -77,5 +95,13 @@ public class PropertyPanelView extends PopupViewImpl implements
 
 	private void add(Widget widget) {
 		pBody.add(widget);
+	}
+	
+	public PopupPanel getPopUpContainer() {
+		return popUpContainer;
+	}
+	
+	public HTMLPanel getiArrow() {
+		return iArrow;
 	}
 }

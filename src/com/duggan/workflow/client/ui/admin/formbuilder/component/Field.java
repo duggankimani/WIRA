@@ -6,7 +6,6 @@ import java.util.List;
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyEditor;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Position;
@@ -15,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
 public abstract class Field extends AbsolutePanel implements HasDragHandle{
 
@@ -52,9 +50,12 @@ public abstract class Field extends AbsolutePanel implements HasDragHandle{
 					}
 
 				};
-
-				//AppManager.showPopUp("Property Editor", new PropertyEditor(properties), optionSelected, "Save", "Cancel");
-				AppManager.showPropertyPanel(properties);
+				
+				/*Position of the pop-over*/
+				int top=7;
+				int left=80;
+				int arrowPosition =shim.getAbsoluteTop()-30;
+				AppManager.showPropertyPanel(properties,top,left,arrowPosition);
 			}
 		});
 	}

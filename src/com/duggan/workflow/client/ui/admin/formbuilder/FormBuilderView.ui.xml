@@ -12,22 +12,22 @@
    	<g:AbsolutePanel ui:field="container">
 	<g:HTMLPanel>
 		<div class="content-body">
-			<g:HTMLPanel styleName="palete-panel panel panel-default span2">
+			<g:HTMLPanel styleName="palete-panel panel panel-default span2" ui:field="divPalettePanel">
 				<div class="panel-heading">
 					<div class="row-fluid">
 						<div class="span10">
-						<h4>Paletes</h4>
+						<h4 ui:field="hPaletetitle">Paletes</h4>
 						</div>
 						<div class="span2">
-							<g:Anchor styleName="minimize minimize-left"></g:Anchor>
+							<g:Anchor styleName="minimize minimize-left" ui:field="aMinimize"></g:Anchor>
 						</div>
 					</div>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" ui:field="divPaletteBody">
 						<ul class="nav nav-tabs">
-					      <li class="active"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
-					      <li><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
-					      <li><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
+					      <li class="active"  ui:field="liInput"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
+					      <li ui:field="liSelect"><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
+					      <li ui:field="liButton"><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
 					    </ul>
 				    
 				    	<div id="myTabContent" class="tab-content">
@@ -54,6 +54,7 @@
 									
 									<fb:PalettePanel ui:field="vInlineCheckBoxPanel">	
 									 	<f:InlineCheckBox></f:InlineCheckBox>
+									 	<f:SelectBasic></f:SelectBasic>
 									</fb:PalettePanel>
 			                      </fieldset>
 		                      </div>
@@ -79,7 +80,6 @@
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSingleButtonPanel">	
 									    <f:SingleButton></f:SingleButton>	
-									    <f:DateField></f:DateField>	
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vMultipleButtonPanel">	
@@ -93,7 +93,7 @@
 	                   </div>
 					</div>
 			</g:HTMLPanel>
-			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8">			
+			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8" ui:field="divFormContent">			
 				<g:HTMLPanel styleName="panel-body">
 					<g:HTMLPanel styleName="form-horizontal">
 						<fieldset>

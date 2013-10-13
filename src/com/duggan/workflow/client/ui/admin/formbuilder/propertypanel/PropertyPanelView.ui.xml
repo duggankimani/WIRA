@@ -7,10 +7,16 @@
 	ui:generateLocales='default'>
 
 	<g:PopupPanel styleName="popover fade right in" ui:field="popUpContainer">
-		<g:HTMLPanel>
-				<div class="arrow"></div>
+		<g:HTMLPanel styleName="full-page">
+				<g:HTMLPanel styleName="arrow" ui:field="iArrow"></g:HTMLPanel>
 				<h4 class="popover-title">Properties</h4>
-				<g:HTMLPanel ui:field="pBody" styleName="popover-content"></g:HTMLPanel>
+				<div class="popover-content">
+					<g:HTMLPanel ui:field="pBody">
+					</g:HTMLPanel>
+					<hr/>
+					<g:Anchor styleName="btn btn-info" ui:field="btnSave">Save</g:Anchor>
+					<g:Anchor styleName="btn btn-danger" ui:field="btnCancel">Cancel</g:Anchor>
+				</div>
 		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>

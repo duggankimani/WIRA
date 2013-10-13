@@ -1,10 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-		   <g:HTMLPanel styleName="control-group">
-		        <label for="Username" class="control-label">Single Button:</label>
-			   	 <div class="controls">
-				   	<button id="singlebutton" name="singlebutton" class="btn btn-primary">Button</button>
-				  </div>
-	       </g:HTMLPanel>
+	   <g:HTMLPanel styleName="control-group">
+	        <label for="Username" class="control-label">Single Button:</label>
+		   	 <div class="controls">
+			   	<button id="singlebutton" name="singlebutton" class="btn btn-primary">Button</button>
+			  </div>
+       </g:HTMLPanel>
 </ui:UiBinder> 

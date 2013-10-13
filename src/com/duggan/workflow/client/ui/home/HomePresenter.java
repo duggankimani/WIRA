@@ -128,8 +128,6 @@ public class HomePresenter extends
 	
 	@Inject DispatchAsync dispatcher;
 	
-	@Inject PropertyPanelPresenter presenter;
-	
 	@Inject PlaceManager placeManager;
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
@@ -241,17 +239,15 @@ public class HomePresenter extends
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//showEditForm(MODE.CREATE);
+//				showEditForm(MODE.CREATE);
 				
-				assert presenter !=null;
-				AppManager.showPropertyPanel(new ArrayList<Property>());
-//				AppManager.showPopUp("Testing", new HTMLPanel("<span>HELLO THERE</span>"), new OnOptionSelected() {
-//					
-//					@Override
-//					public void onSelect(String name) {
-//						System.err.println(name);
-//					}
-//				}, "Ok","Cancel", "Ignore","D");
+				AppManager.showPopUp("Testing", new HTMLPanel("<span>HELLO THERE</span>"), new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						System.err.println(name);
+					}
+				}, "Ok","Cancel", "Ignore","D");
 			}
 		});
 		
