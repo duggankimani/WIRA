@@ -1,8 +1,14 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
+import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.LIElement;
@@ -14,6 +20,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -40,6 +47,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField LIElement liInput;
 	@UiField LIElement liButton;
 	@UiField Element hPaletetitle;
+	@UiField InlineLabel formLabel;
 	
 	@UiField HTMLPanel divButtons;
 	@UiField HTMLPanel divSelect;
@@ -58,33 +66,43 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vSingleButtonPanel;
 	@UiField PalettePanel vMultipleButtonPanel;
 	
-
 	public interface Binder extends UiBinder<Widget, FormBuilderView> {
 	}
 
 	PickupDragController widgetDragController;
 	boolean IsMinimized;
+	protected List<Property> properties = new ArrayList<Property>();
 	
 	@Inject
 	public FormBuilderView(final Binder binder) {
 		/**
 		 * Switching between the tabs	
 		 */
-		widget = binder.createAndBindUi(this);
-		
-		
+	widget = binder.createAndBindUi(this);
+	
+	setFormProperties();
+	formLabel.addClickHandler(new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event){
+			
+			/*set the position of the pop-up to be displayed in % */
+			int top=7;
+			int left=60;
+			int arrowposition =formLabel.getAbsoluteTop()-30;
+			AppManager.showPropertyPanel(properties, top, left, arrowposition);
+		}
+	});	
 		
 	DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget());
 		
 		/*set up pick-up and move
 		 * parameters: absolutePanel, boolean(whether items can be placed to any location)
 		 *  */
-		
 		widgetDragController = new PickupDragController(
 				container, false){
 			@Override
 			protected void restoreSelectedWidgetsLocation() {
-				//do nothing
+				//do nothing -- Dont drop the widget back to the palette menu if target was missed;
 			}
 		};
 		
@@ -97,7 +115,7 @@ public class FormBuilderView extends ViewImpl implements
 		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(vPanel);
 		widgetDragController.registerDropController(widgetDropController);
 		
-		registerInputDrag();//Register drag controllers for the 1st Taab
+		registerInputDrag();//Register drag controllers for the 1st Tab
 		
 		aMinimize.addClickHandler(new ClickHandler() {
 			@Override
@@ -183,13 +201,19 @@ public class FormBuilderView extends ViewImpl implements
 		return widget;
 	}
 	
-	public void registerInputDrag(){	
+	private void registerInputDrag(){	
 		vTextInputPanel.registerDragController(widgetDragController);
 		vDatePanel.registerDragController(widgetDragController);
 		vTextAreaPanel.registerDragController(widgetDragController);
 		vInlineRadioPanel.registerDragController(widgetDragController);
 		vInlineCheckBoxPanel.registerDragController(widgetDragController);
 		vSelectBasicPanel.registerDragController(widgetDragController);
+	}
+	
+	private void setFormProperties(){
+		properties.add(new Property("ID", "form Id:", DataType.STRING));
+		properties.add(new Property("CAPTION", "Form Name:", DataType.STRING));
+		properties.add(new Property("DOCTYPE", "Document Type:", DataType.STRING));
 	}
 
 }

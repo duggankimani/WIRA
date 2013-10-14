@@ -85,10 +85,6 @@ public class PropertyPanelView extends PopupViewImpl implements
 		}
 	}
 
-//	List<Property> getValues(){
-//		pBody.getWidget(0).getClass();
-//	}
-	
 	private void clear() {
 		pBody.clear();
 	}
