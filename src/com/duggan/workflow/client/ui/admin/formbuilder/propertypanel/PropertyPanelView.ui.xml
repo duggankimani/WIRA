@@ -8,6 +8,8 @@
 
 	<g:PopupPanel styleName="popover fade right in" ui:field="popUpContainer">
 		<g:HTMLPanel styleName="full-page">
+			<g:FocusPanel ui:field="popoverFocus">
+				<g:HTMLPanel>
 				<g:HTMLPanel styleName="arrow" ui:field="iArrow"></g:HTMLPanel>
 				<h4 class="popover-title">Properties</h4>
 				<div class="popover-content">
@@ -17,6 +19,8 @@
 					<g:Anchor styleName="btn btn-info" ui:field="btnSave">Save</g:Anchor>
 					<g:Anchor styleName="btn btn-danger" ui:field="btnCancel">Cancel</g:Anchor>
 				</div>
+				</g:HTMLPanel>
+			</g:FocusPanel>
 		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>

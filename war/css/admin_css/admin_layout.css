@@ -317,7 +317,9 @@
 	min-height: 480px;
 	width: 40%;
 }
-
+.dragdrop-dropTarget .span2{
+    width:8.53%;
+}
 #main-content .content .content-body .palete-panel .tab-content {
 	height: 100%;
 }

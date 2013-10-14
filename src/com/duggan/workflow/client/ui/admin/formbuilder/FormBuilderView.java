@@ -7,7 +7,9 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -38,6 +40,7 @@ public class FormBuilderView extends ViewImpl implements
 	private final Widget widget;
 	@UiField AbsolutePanel container;
 	@UiField VerticalPanel vPanel;
+	@UiField DropDownList<Form> frmDropdown;
 	
 	@UiField Anchor aInputtab;
 	@UiField Anchor aSelecttab;
@@ -72,6 +75,7 @@ public class FormBuilderView extends ViewImpl implements
 	PickupDragController widgetDragController;
 	boolean IsMinimized;
 	protected List<Property> properties = new ArrayList<Property>();
+	protected List<Form> dropDownItems = new ArrayList<Form>();
 	
 	@Inject
 	public FormBuilderView(final Binder binder) {
@@ -79,6 +83,12 @@ public class FormBuilderView extends ViewImpl implements
 		 * Switching between the tabs	
 		 */
 	widget = binder.createAndBindUi(this);
+	
+	dropDownItems.add(new Form(0,"leave-process","Leave Application"));
+	dropDownItems.add(new Form(1,"leave-process","Invoice"));
+	dropDownItems.add(new Form(2,"leave-process","LPO Approval"));
+	
+	frmDropdown.setItems(dropDownItems);
 	
 	setFormProperties();
 	formLabel.addClickHandler(new ClickHandler() {

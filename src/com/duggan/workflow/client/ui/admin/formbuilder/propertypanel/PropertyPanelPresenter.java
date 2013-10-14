@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
@@ -17,6 +18,7 @@ public class PropertyPanelPresenter extends
 	public interface MyView extends PopupView {
 		void showProperties(List<Property> properties);
 		PopupPanel getPopUpContainer();
+		FocusPanel getPopoverFocus();
 		HTMLPanel getiArrow() ;
 	}
 

@@ -54,11 +54,11 @@ public class AppManager {
 	
 	public static void showPropertyPanel(List<Property> properties, int top, int left, int arrowposition){
 		propertyPanel.setProperties(properties);
-		int[] position= calculatePosition(top, left);
+		int[] position =calculatePosition(top, left);
 		propertyPanel.getView().getPopUpContainer().setPopupPosition(position[1], position[0]);
 		propertyPanel.getView().getiArrow().getElement().getStyle().setTop(arrowposition, Unit.PX);
 		
-		System.err.println("Top--"+top+" Left--" + left);
+		propertyPanel.getView().getPopoverFocus().setFocus(true);
 		mainPagePresenter.addToPopupSlot(propertyPanel, false);	
 	}
 	
