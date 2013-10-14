@@ -9,10 +9,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
@@ -43,7 +40,6 @@ import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
-import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -58,7 +54,6 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -239,7 +234,6 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				showEditForm(MODE.CREATE);
-
 			}
 		});
 		

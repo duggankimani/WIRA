@@ -97,8 +97,8 @@
 				<g:HTMLPanel styleName="panel-body">
 					<g:HTMLPanel styleName="form-horizontal">
 						<fieldset>
-						 <legend>Form Name:</legend>
 						 <g:Anchor ui:field="aSaveForm" text="Save Form"></g:Anchor>
+						 <legend><g:InlineLabel ui:field="formLabel">Form Name:</g:InlineLabel></legend>
 						</fieldset>
 						
 						<g:VerticalPanel ui:field="vPanel" styleName="span12">
