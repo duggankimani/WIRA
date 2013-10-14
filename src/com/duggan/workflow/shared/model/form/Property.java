@@ -19,6 +19,13 @@ public class Property extends FormModel{
 		this.caption = caption;
 		this.type = type;
 	}
+	
+	public Property(String name, String caption, DataType type, Long fieldId){
+		this(name, caption, type);
+		this.fieldId = fieldId;
+	}
+	
+	
 
 	public DataType getType() {
 		return type;

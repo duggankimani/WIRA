@@ -9,10 +9,14 @@ import java.util.Map;
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
+import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,19 +24,25 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle{
+public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle, PropertyChangedHandler{
 
 	private FocusPanel shim = new FocusPanel();
 	
+	protected long id  = System.currentTimeMillis();
+	
 	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
+	
+	protected boolean isPropertyField=false;
 	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
-		addProperty(new Property("NAME", "Name", DataType.STRING));
-		addProperty(new Property("CAPTION", "Label Text", DataType.STRING));
-		addProperty(new Property("HELP", "Help", DataType.STRING));
-		addProperty(new Property("MANDATORY", "Mandatory", DataType.BOOLEAN));
-		addProperty(new Property("READONLY", "Read Only", DataType.BOOLEAN));
+		addProperty(new Property("NAME", "Name", DataType.STRING, id));
+		addProperty(new Property("CAPTION", "Label Text", DataType.STRING, id));
+		addProperty(new Property("HELP", "Help", DataType.STRING, id));
+		addProperty(new Property("MANDATORY", "Mandatory", DataType.BOOLEAN, id));
+		addProperty(new Property("READONLY", "Read Only", DataType.BOOLEAN, id));
+		
+		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE,this);
 	}
 
 	protected void addProperty(Property property) {
@@ -68,7 +78,7 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 				int top=7;
 				int left=80;
 				int arrowPosition =shim.getAbsoluteTop()-30;
-				AppManager.showPropertyPanel(getProperties(),top,left,arrowPosition);
+				AppManager.showPropertyPanel(id, getProperties(),top,left,arrowPosition);
 			}
 		});
 	}
@@ -148,6 +158,8 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 		shim.setPixelSize(getOffsetWidth(), getOffsetHeight());
 		getElement().getStyle().setPosition(Position.RELATIVE);
 	
+		//should we do this only if this is not a property field?
+		if(!isPropertyField)
 		add(shim, 0, 0);
 	}
 
@@ -165,4 +177,34 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 		values.addAll(props.values());
 		return values;
 	}
+	
+	@Override
+	public void onPropertyChanged(PropertyChangedEvent event) {
+		
+		//System.err.println("------- Called--------- "+event.getPropertyValue());
+		if (this.id != event.getComponentId()){
+			return;
+		}
+		
+		String property = event.getPropertyName();
+		String value= event.getPropertyValue();
+		
+		if(property.equals("CAPTION"))
+			setCaption(value);
+		
+		if(property.equals("PLACEHOLDER"))
+			setPlaceHolder(value);
+		
+		if(property.equals("HELP"))
+			setHelp(value);
+		
+	}
+	
+	protected void setCaption(String caption){};
+	
+	protected void setPlaceHolder(String placeHolder){}
+	
+	protected void setHelp(String help){}
+	
+	
 }

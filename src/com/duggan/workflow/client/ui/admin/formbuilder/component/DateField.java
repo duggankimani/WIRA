@@ -4,7 +4,9 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DateField extends FieldWidget {
@@ -16,6 +18,8 @@ public class DateField extends FieldWidget {
 	}
 	
 	private final Widget widget;
+	
+	@UiField Element lblEl;
 	
 	public DateField() {
 		super();
@@ -36,6 +40,7 @@ public class DateField extends FieldWidget {
 		String caption = property.getCaption();
 		String name = property.getName();
 		Value val = property.getValue();
+		isPropertyField=true;
 		
 	}
 
@@ -43,5 +48,20 @@ public class DateField extends FieldWidget {
 	public FieldWidget cloneWidget() {
 		return new DateField();
 	}	
+	
+	@Override
+	protected void setCaption(String caption) {
+		lblEl.setInnerHTML(caption);
+	}
+	
+	@Override
+	protected void setPlaceHolder(String placeHolder) {
+		//txtComponent.setPlaceholder(placeHolder);
+	}
+	
+	@Override
+	protected void setHelp(String help) {
+		//txtComponent.setTitle(help);
+	}
 	
 }

@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 		   <g:HTMLPanel styleName="control-group">
-		       <label for="Username" class="control-label">Select Basic:</label>
+		       <label ui:field="lblEl" class="control-label">Select Basic:</label>
 			    <div class="controls">
 				    <select id="selectbasic" name="selectbasic" class="input-xlarge">
 				      <option>Option one</option>

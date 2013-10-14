@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 		   <g:AbsolutePanel ui:field="container">
 			   <g:HTMLPanel styleName="control-group">
-			       <label for="Username" class="control-label">checkbox Buttons:</label>
+			       <label ui:field="lblEl" class="control-label">checkbox Buttons:</label>
 				    <div class="controls">
 					    <label class="checkbox inline" for="checkbox-0">
 					      <input type="checkbox" name="checkbox" id="racheckbox0" value="1" checked="checked"/>

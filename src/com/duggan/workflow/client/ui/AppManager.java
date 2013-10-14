@@ -52,13 +52,13 @@ public class AppManager {
 		showPopUp(header, presenter.getWidget(), onOptionSelected, buttons);
 	}
 	
-	public static void showPropertyPanel(List<Property> properties, int top, int left, int arrowposition){
-		propertyPanel.setProperties(properties);
+	public static void showPropertyPanel(long fieldId, List<Property> properties, int top, int left, int arrowposition){
+		propertyPanel.setProperties(fieldId,properties);
 		int[] position= calculatePosition(top, left);
 		propertyPanel.getView().getPopUpContainer().setPopupPosition(position[1], position[0]);
 		propertyPanel.getView().getiArrow().getElement().getStyle().setTop(arrowposition, Unit.PX);
 		
-		System.err.println("Top--"+top+" Left--" + left);
+		//System.err.println("Top--"+top+" Left--" + left);
 		mainPagePresenter.addToPopupSlot(propertyPanel, false);	
 	}
 	

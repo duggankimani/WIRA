@@ -19,7 +19,9 @@ public class PropertyPanelPresenter extends
 		PopupPanel getPopUpContainer();
 		HTMLPanel getiArrow() ;
 	}
-
+	
+	long fieldId=0L;
+	
 	@Inject
 	public PropertyPanelPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -30,7 +32,8 @@ public class PropertyPanelPresenter extends
 		super.onBind();
 	}
 
-	public void setProperties(List<Property> properties) {
+	public void setProperties(long id, List<Property> properties) {
+		this.fieldId = id;
 		getView().showProperties(properties);
 	}
 }

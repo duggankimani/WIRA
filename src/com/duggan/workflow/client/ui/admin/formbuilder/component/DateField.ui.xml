@@ -4,7 +4,7 @@
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
     >
 		    <g:HTMLPanel styleName="control-group">
-			    <label for="Username" class="control-label">Date Box:</label>
+			    <label ui:field="lblEl" class="control-label">Date Box:</label>
 			    <div class="controls">
 			  	 	<d:DateInput></d:DateInput>
 			    </div>
