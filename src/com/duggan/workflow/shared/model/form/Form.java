@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model.form;
 
 import java.util.List;
 
-public class Form extends FormModel{
+import com.duggan.workflow.shared.model.Listable;
+
+public class Form extends FormModel implements Listable{
 
 	private List<Property> properties;
 	private List<Field> fields;
@@ -10,6 +12,12 @@ public class Form extends FormModel{
 	public Form() {
 	}
 	
+	public Form(long id, String formId, String caption) {
+		setId(id);
+		setName(formId);
+		setCaption(caption);
+	}
+
 	public List<Property> getProperties() {
 		return properties;
 	}
@@ -23,6 +31,11 @@ public class Form extends FormModel{
 
 	public void setFields(List<Field> fields) {
 		this.fields = fields;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return getCaption();
 	}
 	
 	

@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.component;
 
 import java.util.List;
 
-import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;

@@ -8,12 +8,16 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,6 +33,7 @@ public class PropertyPanelView extends PopupViewImpl implements
 	}
 	
 	@UiField PopupPanel popUpContainer;
+	@UiField FocusPanel popoverFocus;
 	@UiField HTMLPanel pBody;
 	@UiField Anchor btnSave;
 	@UiField Anchor btnCancel;
@@ -41,11 +46,18 @@ public class PropertyPanelView extends PopupViewImpl implements
 		widget = binder.createAndBindUi(this);
 		popUpContainer.getElement().getStyle().setDisplay(Display.BLOCK);
 		popUpContainer.getElement().getStyle().setOverflow(Overflow.AUTO);
-		
 
 		btnCancel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				hide();
+			}
+		});
+		
+		popoverFocus.addBlurHandler(new BlurHandler() {
+			@Override
+			public void onBlur(BlurEvent event) {
+				//Window.alert("called Blur");
 				hide();
 			}
 		});
@@ -99,5 +111,9 @@ public class PropertyPanelView extends PopupViewImpl implements
 	
 	public HTMLPanel getiArrow() {
 		return iArrow;
+	}
+	
+	public FocusPanel getPopoverFocus() {
+		return popoverFocus;
 	}
 }
