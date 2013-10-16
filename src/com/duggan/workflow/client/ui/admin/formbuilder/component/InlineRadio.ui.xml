@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 		   <g:HTMLPanel styleName="control-group">
-		       <label for="Username" class="control-label">Radio Buttons:</label>
+		       <label ui:field="lblEl" class="control-label">Radio Buttons:</label>
 			    <div class="controls">
 				    <label class="radio inline" for="radios-0">
 				      <input type="radio" name="radios" id="radios-0" value="1" checked="checked"/>

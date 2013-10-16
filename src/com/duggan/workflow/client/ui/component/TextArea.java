@@ -12,6 +12,14 @@ public class TextArea extends com.google.gwt.user.client.ui.TextArea {
 	
 	public void setClass(String className){
 		setStyleName(className);
-		
 	}
+	
+	public void setPlaceholder(String placeHolderValue){
+		getElement().setAttribute("placeHolder", placeHolderValue);
+	}
+	
+	public void setType(String type){
+		getElement().setAttribute("type", type);
+	}
+
 }

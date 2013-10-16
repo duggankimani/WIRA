@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.Field;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -31,7 +31,7 @@ public class PalettePanel extends VerticalPanel {
 	 * @param w
 	 *  the widget to be added are made draggable
 	 */
-	public void add(Field w) {
+	public void add(FieldWidget w) {
 		if(dragController!=null){
 			dragController.makeDraggable(w.asWidget());
 			System.err.println("Adding widget "+w);
@@ -51,8 +51,8 @@ public class PalettePanel extends VerticalPanel {
 	@Override
 	public boolean remove(Widget w) {
 		int index = getWidgetIndex(w);
-		if (index != -1 && w instanceof Field) {
-			Field clone = ((Field) w).cloneWidget();
+		if (index != -1 && w instanceof FieldWidget) {
+			FieldWidget clone = ((FieldWidget) w).cloneWidget();
 			dragController.makeDraggable(clone);
 			insert(clone, index);
 		}

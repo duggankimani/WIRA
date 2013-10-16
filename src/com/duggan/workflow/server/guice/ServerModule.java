@@ -66,6 +66,12 @@ import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.server.actionhandlers.GetFormModelRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.server.actionhandlers.GetDocumentTypesRequestActionHandler;
+import com.duggan.workflow.shared.requests.CreateFormRequest;
+import com.duggan.workflow.server.actionhandlers.CreateFormRequestActionHandler;
+import com.duggan.workflow.shared.requests.CreateFieldRequest;
+import com.duggan.workflow.server.actionhandlers.CreateFieldRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetFormsRequest;
+import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -166,6 +172,15 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetDocumentTypesRequest.class,
 				GetDocumentTypesRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(CreateFormRequest.class,
+				CreateFormRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(CreateFieldRequest.class,
+				CreateFieldRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetFormsRequest.class, GetFormsRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }

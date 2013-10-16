@@ -2,7 +2,12 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
 import java.util.List;
 
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -20,8 +25,11 @@ public class PropertyPanelPresenter extends
 		PopupPanel getPopUpContainer();
 		FocusPanel getPopoverFocus();
 		HTMLPanel getiArrow() ;
+		HasClickHandlers getSaveButton();
 	}
-
+	
+	FormModel parentModel; //
+	
 	@Inject
 	public PropertyPanelPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -30,9 +38,18 @@ public class PropertyPanelPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		getView().getSaveButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {				
+				fireEvent(new SavePropertiesEvent(parentModel));
+				getView().hide();
+			}
+		});
 	}
 
-	public void setProperties(List<Property> properties) {
+	public void setProperties(FormModel parentModel, List<Property> properties) {
+		this.parentModel = parentModel;
 		getView().showProperties(properties);
 	}
 }

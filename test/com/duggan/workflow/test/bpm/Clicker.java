@@ -3,6 +3,8 @@ package com.duggan.workflow.test.bpm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.jersey.spi.container.servlet.ServletContainer;
+
 public class Clicker {
 
 	static ClickMeHandler handler1 = new ClickMeHandler() {
@@ -10,6 +12,7 @@ public class Clicker {
 		@Override
 		public void OnClick() {
 			System.out.println("Hello there");
+			ServletContainer c;
 		}
 	};
 	

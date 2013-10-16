@@ -5,9 +5,13 @@ import com.duggan.workflow.shared.model.Value;
 
 public class Property extends FormModel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private DataType type;
-	private Long fieldId;
-	private Long formId;
+	private Long fieldId;//field property
+	private Long formId; //form property
 	private Value value;
 	private String caption;
 	
@@ -19,6 +23,13 @@ public class Property extends FormModel{
 		this.caption = caption;
 		this.type = type;
 	}
+	
+	public Property(String name, String caption, DataType type, Long fieldId){
+		this(name, caption, type);
+		this.fieldId = fieldId;
+	}
+	
+	
 
 	public DataType getType() {
 		return type;
@@ -60,5 +71,11 @@ public class Property extends FormModel{
 		this.caption = caption;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		Property other = (Property)obj;
+		
+		return this.name.equals(other.name);
+	}
 	
 }

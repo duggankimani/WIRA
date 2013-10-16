@@ -110,7 +110,6 @@ public class HomePresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
 	
-
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
 	
@@ -235,7 +234,6 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				showEditForm(MODE.CREATE);
-				
 			}
 		});
 		

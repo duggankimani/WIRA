@@ -1,12 +1,14 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import com.duggan.workflow.shared.model.DataType;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class InlineCheckBox extends Field {
+public class InlineCheckBox extends FieldWidget {
 
 	private static InlineCheckBoxUiBinder uiBinder = GWT
 			.create(InlineCheckBoxUiBinder.class);
@@ -17,6 +19,8 @@ public class InlineCheckBox extends Field {
 	
 	@UiField AbsolutePanel container;
 	
+	@UiField Element lblEl;
+	
 	private final Widget widget;
 
 	public InlineCheckBox() {
@@ -26,8 +30,27 @@ public class InlineCheckBox extends Field {
 	}
 
 	@Override
-	public Field cloneWidget() {
+	public FieldWidget cloneWidget() {
 		return new InlineCheckBox();
 	}
+	
+	@Override
+	protected void setCaption(String caption) {
+		lblEl.setInnerHTML(caption);
+	}
+	
+	@Override
+	protected void setPlaceHolder(String placeHolder) {
+		//txtComponent.setPlaceholder(placeHolder);
+	}
+	
+	@Override
+	protected void setHelp(String help) {
+		//txtComponent.setTitle(help);
+	}
 
+	@Override
+	protected DataType getType() {
+		return DataType.CHECKBOX;
+	}
 }

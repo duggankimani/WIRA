@@ -1,11 +1,16 @@
 package com.duggan.workflow.shared.model.form;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.Listable;
 
-public class Form extends FormModel implements Listable{
+public class Form extends FormModel implements Listable, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Property> properties;
 	private List<Field> fields;
 	

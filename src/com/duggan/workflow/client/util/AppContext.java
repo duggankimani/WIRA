@@ -87,6 +87,10 @@ public class AppContext {
 		});
 	}
 	
+	public static DispatchAsync getDispatcher(){
+		return dispatcher;
+	}
+	
 	public static PlaceManager getPlaceManager(){
 		return placeManager;
 	}

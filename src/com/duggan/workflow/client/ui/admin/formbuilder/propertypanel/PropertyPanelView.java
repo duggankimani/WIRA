@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -115,5 +116,9 @@ public class PropertyPanelView extends PopupViewImpl implements
 	
 	public FocusPanel getPopoverFocus() {
 		return popoverFocus;
+	}
+	
+	public HasClickHandlers getSaveButton(){
+		return btnSave;
 	}
 }

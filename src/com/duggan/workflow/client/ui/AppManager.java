@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -52,13 +53,14 @@ public class AppManager {
 		showPopUp(header, presenter.getWidget(), onOptionSelected, buttons);
 	}
 	
-	public static void showPropertyPanel(List<Property> properties, int top, int left, int arrowposition){
-		propertyPanel.setProperties(properties);
+	public static void showPropertyPanel(FormModel parent, List<Property> properties, int top, int left, int arrowposition){
+		propertyPanel.setProperties(parent, properties);
 		int[] position =calculatePosition(top, left);
 		propertyPanel.getView().getPopUpContainer().setPopupPosition(position[1], position[0]);
 		propertyPanel.getView().getiArrow().getElement().getStyle().setTop(arrowposition, Unit.PX);
 		
 		propertyPanel.getView().getPopoverFocus().setFocus(true);
+		//System.err.println("Top--"+top+" Left--" + left);
 		mainPagePresenter.addToPopupSlot(propertyPanel, false);	
 	}
 	

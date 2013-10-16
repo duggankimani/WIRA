@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 		   <g:HTMLPanel styleName="control-group">
-		       <label for="Username" class="control-label">Radio Buttons:</label>
+		       <label ui:field="lblEl" class="control-label">Radio Buttons:</label>
 			    <div class="controls">
 				  <select id="selectmultiple" name="selectmultiple" class="input-xlarge" multiple="multiple">
 				      <option>Option one</option>

@@ -5,10 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LearnJunit {
-	
+	int i;
 	@Before
 	public void Beforeexec(){
-		System.out.println("Called before execution");
+		
+		System.out.println("Called before execution"+ i);
 	}
 	
 	@Test
