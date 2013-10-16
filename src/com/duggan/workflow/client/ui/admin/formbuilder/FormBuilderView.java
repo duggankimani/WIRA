@@ -1,8 +1,11 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.duggan.workflow.client.ui.AppManager;
@@ -14,6 +17,7 @@ import com.duggan.workflow.shared.model.form.Form;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -21,6 +25,9 @@ import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -40,19 +47,18 @@ import com.gwtplatform.mvp.client.ViewImpl;
  *
  */
 public class FormBuilderView extends ViewImpl implements
-		FormBuilderPresenter.MyView {
+		FormBuilderPresenter.IFormBuilderView, HasProperties {
 
 	private final Widget widget;
 
 	public interface Binder extends UiBinder<Widget, FormBuilderView> {
 	}
 	
-	@UiField Anchor aSaveForm;
-
 	@UiField AbsolutePanel container;
 	@UiField VerticalPanel vPanel;
 	@UiField DropDownList<Form> frmDropdown;
 	
+	@UiField Anchor aNewForm;
 	@UiField Anchor aInputtab;
 	@UiField Anchor aSelecttab;
 	@UiField Anchor aButtontab;
@@ -82,36 +88,33 @@ public class FormBuilderView extends ViewImpl implements
 
 	PickupDragController widgetDragController;
 	boolean IsMinimized;
-	protected List<Property> properties = new ArrayList<Property>();
-	protected List<Form> dropDownItems = new ArrayList<Form>();
+	
+	//Form properties
+	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
+	
+	Form form = new Form();
 	
 	@Inject
 	public FormBuilderView(final Binder binder) {
 		/**
 		 * Switching between the tabs	
 		 */
-	widget = binder.createAndBindUi(this);
-	
-	dropDownItems.add(new Form(0,"leave-process","Leave Application"));
-	dropDownItems.add(new Form(1,"leave-process","Invoice"));
-	dropDownItems.add(new Form(2,"leave-process","LPO Approval"));
-	
-	frmDropdown.setItems(dropDownItems);
-	
-	setFormProperties();
-	formLabel.addClickHandler(new ClickHandler() {
-		@Override
-		public void onClick(ClickEvent event){
-			
-			/*set the position of the pop-up to be displayed in % */
-			int top=7;
-			int left=60;
-			int arrowposition =formLabel.getAbsoluteTop()-30;
-			AppManager.showPropertyPanel(0L,properties, top, left, arrowposition);
-		}
-	});	
+		widget = binder.createAndBindUi(this);
+		addProperty(new Property(NAME, "Form ID", DataType.STRING));
+		addProperty(new Property(CAPTION, "Caption", DataType.STRING));
+		addProperty(new Property(HELP, "Help", DataType.STRINGLONG));
 		
-	DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget());
+			
+		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()){
+			@Override
+			public void onDragEnd(DragEndEvent event) {
+				super.onDragEnd(event);
+				FieldWidget draggable = (FieldWidget)event.getContext().draggable;
+				//event.getContext().
+				draggable.setFormId(form.getId());
+				draggable.save();				
+			}
+		};
 		
 		/*set up pick-up and move
 		 * parameters: absolutePanel, boolean(whether items can be placed to any location)
@@ -132,35 +135,27 @@ public class FormBuilderView extends ViewImpl implements
 		//Drop Controller 
 		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(vPanel);
 		widgetDragController.registerDropController(widgetDropController);
-		
-		aSaveForm.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Form form = getForm();
-			}
-		});
-
+	
 		registerInputDrag();//Register drag controllers for the 1st Taab
 		
 		aMinimize.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if(IsMinimized){
-				divPalettePanel.getElement().getStyle().setWidth(40.0, Unit.PCT);
-				divFormContent.getElement().getStyle().setWidth(59.0, Unit.PCT);
-				divPaletteBody.removeClassName("hidden");
-				aMinimize.setStyleName("minimize minimize-left");
-				hPaletetitle.removeClassName("hidden");
-				IsMinimized=false;
+					divPalettePanel.getElement().getStyle().setWidth(40.0, Unit.PCT);
+					divFormContent.getElement().getStyle().setWidth(59.0, Unit.PCT);
+					divPaletteBody.removeClassName("hidden");
+					aMinimize.setStyleName("minimize minimize-left");
+					hPaletetitle.removeClassName("hidden");
+					IsMinimized=false;
 				}else{
-				divPalettePanel.getElement().getStyle().setWidth(10.0, Unit.PCT);
-				divFormContent.getElement().getStyle().setWidth(89.0, Unit.PCT);
-				divPaletteBody.addClassName("hidden");
-				aMinimize.setStyleName("minimize minimize-right");
-				hPaletetitle.addClassName("hidden");
-				IsMinimized=true;
-			}
+					divPalettePanel.getElement().getStyle().setWidth(10.0, Unit.PCT);
+					divFormContent.getElement().getStyle().setWidth(89.0, Unit.PCT);
+					divPaletteBody.addClassName("hidden");
+					aMinimize.setStyleName("minimize minimize-right");
+					hPaletetitle.addClassName("hidden");
+					IsMinimized=true;
+				}
 			}
 		});
 		
@@ -211,6 +206,38 @@ public class FormBuilderView extends ViewImpl implements
 			}
 		});
 			
+		formLabel.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event){
+				
+				/*set the position of the pop-up to be displayed in % */
+				int top=7;
+				int left=60;
+				int arrowposition =formLabel.getAbsoluteTop()-30;
+				AppManager.showPropertyPanel(form,getProperties(), top, left, arrowposition);
+			}
+		});	
+		
+		frmDropdown.addValueChangeHandler(new ValueChangeHandler<Form>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Form> event) {
+				Long previousId = form.getId();
+				Long id = event.getValue().getId();
+				
+				if(previousId!=null && previousId.equals(id)){
+					return;
+				}
+				
+				if(id!=null && (id.equals(previousId))){
+					return;
+				}
+				
+				vPanel.clear();
+				//
+			}
+		});
+
 	}
 	
 	/**
@@ -224,13 +251,22 @@ public class FormBuilderView extends ViewImpl implements
 		return widget;
 	}
 	
-	Form getForm(){
-		Form form = new Form();
-		form.setCaption("default");
-		form.setName("default");
-		//form.setProperties(properties);
+	public Form getForm(){
 		
+		String name = getValue(NAME);
+		if(name==null){
+			name = "Untitled";
+		}
+		String caption = getValue(CAPTION);
+		if(caption==null){
+			caption="Untitled";
+		}
+		
+		form.setName(name);
+		form.setCaption(caption);
+		form.setProperties(getProperties());
 		form.setFields(getFields());
+		form.setId(form.getId());
 		return form;
 	}
 	
@@ -241,12 +277,6 @@ public class FormBuilderView extends ViewImpl implements
 		vInlineRadioPanel.registerDragController(widgetDragController);
 		vInlineCheckBoxPanel.registerDragController(widgetDragController);
 		vSelectBasicPanel.registerDragController(widgetDragController);
-	}
-	
-	private void setFormProperties(){
-		properties.add(new Property("ID", "form Id:", DataType.STRING));
-		properties.add(new Property("CAPTION", "Form Name:", DataType.STRING));
-		properties.add(new Property("DOCTYPE", "Document Type:", DataType.STRING));
 	}
 
 	private List<Field> getFields() {
@@ -262,5 +292,90 @@ public class FormBuilderView extends ViewImpl implements
 		}
 		
 		return fields;
+	}
+	
+	public Anchor getNewButton(){
+		return aNewForm;
+	}
+
+	@Override
+	public void setForm(Form form) {
+		this.form = form;
+		formLabel.setText(form.getCaption());
+		
+		for(Property prop: form.getProperties()){
+			addProperty(prop);
+		}
+		
+		setFields(form.getFields());
+		//frmDropdown.setItems(form.getProperties());
+	}
+	
+	private void setFields(List<Field> fields) {
+		if(vPanel.getWidgetCount()==0){
+			for(Field field: fields){
+				FieldWidget widget = FieldWidget.getWidget(field.getType(),field,true);
+				widgetDragController.makeDraggable(widget);
+				vPanel.add(widget);
+			}
+		}
+	}
+
+	public void addProperty(Property property) {
+		assert props !=null;
+		assert property!=null;
+		assert property.getName()!=null;
+		
+		props.put(property.getName(), property);
+	}
+
+	public List<Property> getProperties(){
+		List<Property> values = new ArrayList<Property>();
+		values.addAll(props.values());
+		return values;
+	}
+	
+	public String getValue(String key) {
+		
+		Property property = props.get(key);
+		
+		if(property==null)
+			return null;
+		
+		Value value = property.getValue();
+		if(value==null)
+			return null;
+		
+		return value.getValue()==null? null : value.getValue().toString();
+	}
+	
+	@Override
+	public InlineLabel getFormLabel() {
+
+		return formLabel;
+	}
+
+	@Override
+	public void setProperty(String property, String value) {
+
+		if(property.equals(CAPTION)){
+			//setCaption(value);
+			formLabel.setText(value);
+			form.setCaption(value);
+		}
+
+		if(property.equals(HELP)){
+			//setHelp(value);
+			formLabel.setText(value);
+		}
+	}
+	
+	public HasValueChangeHandlers<Form> getFormDropDown(){
+		return frmDropdown;
+	}
+
+	@Override
+	public void setForms(List<Form> forms) {
+		frmDropdown.setItems(forms);
 	}
 }

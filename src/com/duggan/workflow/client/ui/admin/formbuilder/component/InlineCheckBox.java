@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import com.duggan.workflow.shared.model.DataType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -48,4 +49,8 @@ public class InlineCheckBox extends FieldWidget {
 		//txtComponent.setTitle(help);
 	}
 
+	@Override
+	protected DataType getType() {
+		return DataType.CHECKBOX;
+	}
 }

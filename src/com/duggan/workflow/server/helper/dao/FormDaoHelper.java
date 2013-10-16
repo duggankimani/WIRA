@@ -94,7 +94,7 @@ public class FormDaoHelper {
 	private static Field getField(ADField adfield) {
 		Field field = new Field();
 		field.setCaption(adfield.getCaption());
-		field.setFormId(adfield.getForm()==null? null : adfield.getId());
+		field.setFormId(adfield.getForm()==null? null : adfield.getForm().getId());
 		field.setId(adfield.getId());
 		field.setName(adfield.getName());
 		field.setProperties(getProperties(adfield.getProperties()));
@@ -255,9 +255,13 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADField adfield = new ADField();
+		if(field.getId()!=null){
+			adfield = dao.getField(field.getId());
+		}
+		
 		adfield.setCaption(field.getCaption());
 		adfield.setName(field.getName());
-		
+	
 		if(field.getFormId()!=null)
 			adfield.setForm(dao.getForm(field.getFormId()));
 		
@@ -267,7 +271,7 @@ public class FormDaoHelper {
 		getADProperties(field.getProperties(), adfield);
 		
 		adfield.setType(field.getType());
-		adfield.setValue(get(field.getValue()));
+		adfield.setValue(getValue(adfield.getValue(),field.getValue()));
 
 		return adfield;
 	}
@@ -308,6 +312,10 @@ public class FormDaoHelper {
 		ADProperty adprop = new ADProperty();
 		adprop.setCaption(property.getCaption());
 		
+		if(property.getId()!=null){
+			adprop = dao.getProperty(property.getId());
+		}
+		
 		if(property.getFieldId()!=null)
 		adprop.setField(dao.getField(property.getFieldId()));
 		
@@ -317,7 +325,8 @@ public class FormDaoHelper {
 		adprop.setId(property.getId());
 		adprop.setName(property.getName());
 		adprop.setType(property.getType());
-		adprop.setValue(get(property.getValue()));
+		
+		adprop.setValue(getValue(adprop.getValue(), property.getValue()));
 		
 		return adprop;
 	}
@@ -326,7 +335,7 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		ADField field = dao.getField(fieldId);
 		
-		ADValue advalue = get(value);
+		ADValue advalue = getValue(field.getValue(),value);
 		field.setValue(advalue);
 				
 		dao.save(advalue);
@@ -337,16 +346,23 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		ADProperty prop = dao.getProperty(propertyId);
 		
-		ADValue advalue = get(value);
+		ADValue advalue = getValue(prop.getValue(), value);
 		advalue.setProperty(prop);
 		
 		dao.save(advalue);
 		return getValue(dao.getValue(advalue.getId()), value.getDataType());
 	}
 
-	private static ADValue get(Value value) {
+	private static ADValue getValue(ADValue previousValue, Value value) {
+		if(value==null)
+			return null;
+		
 		ADValue advalue = new ADValue();
-		advalue.setId(value.getId());
+		if(previousValue!=null){
+			advalue = previousValue;
+		}else{
+			advalue.setId(value.getId());
+		}
 		
 		if(value.getValue()==null)
 			return advalue;

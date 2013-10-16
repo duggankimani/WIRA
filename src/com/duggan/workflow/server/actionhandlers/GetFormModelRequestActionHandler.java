@@ -37,7 +37,7 @@ public class GetFormModelRequestActionHandler extends
 		case FormModel.FORMMODEL:
 			if(id!=null){
 				model = FormDaoHelper.getForm(id, loadChildrenInfo);
-				response.addItem(model);
+				models.add(model);
 			}else{
 				models.addAll(FormDaoHelper.getForms());
 			}
@@ -47,7 +47,7 @@ public class GetFormModelRequestActionHandler extends
 			
 			if(id!=null){
 				model = FormDaoHelper.getField(id);
-				response.addItem(model);
+				models.add(model);
 			}else if(parentId!=null){
 				models.addAll(FormDaoHelper.getFields(parentId,true));
 			}
@@ -55,7 +55,7 @@ public class GetFormModelRequestActionHandler extends
 
 		case FormModel.PROPERTYMODEL:
 			model = FormDaoHelper.getProperty(id);
-			response.addItem(model);
+			models.add(model);
 			break;
 
 		}

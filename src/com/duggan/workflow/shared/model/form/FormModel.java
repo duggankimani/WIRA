@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model.form;
 
-public class FormModel {
+import java.io.Serializable;
+
+public class FormModel implements Serializable {
 
 	public static final String FORMMODEL = "FORMMODEL";
 	public static final String FIELDMODEL = "FIELDMODEL";

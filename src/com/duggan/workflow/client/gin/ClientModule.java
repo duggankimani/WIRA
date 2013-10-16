@@ -207,7 +207,7 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(GroupPresenter.class, GroupPresenter.MyView.class, GroupView.class);
 
 		bindPresenterWidget(FormBuilderPresenter.class,
-				FormBuilderPresenter.MyView.class, FormBuilderView.class);
+				FormBuilderPresenter.IFormBuilderView.class, FormBuilderView.class);
 
 		bindPresenterWidget(PropertyPanelPresenter.class,
 				PropertyPanelPresenter.MyView.class, PropertyPanelView.class);

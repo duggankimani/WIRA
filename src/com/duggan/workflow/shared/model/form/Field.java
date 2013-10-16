@@ -7,6 +7,10 @@ import com.duggan.workflow.shared.model.Value;
 
 public class Field extends FormModel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Property> properties;
 	private Value value;
 	private DataType type;
@@ -38,5 +42,16 @@ public class Field extends FormModel{
 	}
 	public void setFormId(Long formId) {
 		this.formId = formId;
+	}
+	
+	@Override
+	public String toString() {
+		String str = "Id= "+getId()+";" +
+				" FormId = "+getFormId()+";"+
+				" Name = "+getName()+";"+
+				" Caption = "+getCaption()+";"+
+				" Type = "+type+";";
+		
+		return str;
 	}
 }

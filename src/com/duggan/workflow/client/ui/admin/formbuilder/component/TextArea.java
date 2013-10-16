@@ -23,7 +23,7 @@ public class TextArea extends FieldWidget {
 	
 	public TextArea() {
 		super();
-		addProperty(new Property("PLACEHOLDER", "Place Holder", DataType.STRING, id));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		widget= uiBinder.createAndBindUi(this);
 		txtComponent.getElement().setAttribute("id", "textarea");
 		add(widget);
@@ -47,6 +47,11 @@ public class TextArea extends FieldWidget {
 	@Override
 	protected void setHelp(String help) {
 		txtComponent.setTitle(help);
+	}
+	
+	@Override
+	protected DataType getType() {
+		return DataType.STRINGLONG;
 	}
 
 }

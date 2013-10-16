@@ -102,6 +102,8 @@ public class ADProperty extends PO{
 
 	public void setValue(ADValue value) {
 		this.value = value;
+		
+		if(value!=null)
 		value.setProperty(this);
 	}
 
@@ -113,6 +115,12 @@ public class ADProperty extends PO{
 		
 		
 		ADProperty other = (ADProperty)obj;
+		
+		if(!(other.id==null ^ id==null) ){
+			if(id!=null && id.equals(other.id)){
+				return true;
+			}
+		}
 		
 		if(name==null ^ other.name==null){
 			//one has a name, the other doesnt - XOR

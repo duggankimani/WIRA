@@ -64,4 +64,8 @@ public class DateField extends FieldWidget {
 		//txtComponent.setTitle(help);
 	}
 	
+	@Override
+	protected DataType getType() {
+		return DataType.DATE;
+	}
 }

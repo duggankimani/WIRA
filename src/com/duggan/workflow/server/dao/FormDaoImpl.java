@@ -55,6 +55,20 @@ public class FormDaoImpl extends BaseDaoImpl {
 		}
 		else
 			super.save(po);
+		
+
+		if(po instanceof ADForm){
+			ADForm form = (ADForm)po;
+			if(form.getName()==null || form.getName().isEmpty() || form.getName().equals("Untitled")){
+				form.setName("Untitled"+form.getId());
+			}
+			
+			if(form.getCaption()==null || form.getCaption().equals("Untitled")){
+				form.setCaption("Untitled"+form.getId());
+			}
+			
+			em.merge(form);
+		}
 	}
 	
 	public void deleteForm(Long formId){

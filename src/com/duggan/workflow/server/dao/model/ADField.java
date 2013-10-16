@@ -89,6 +89,8 @@ public class ADField extends PO implements HasProperties{
 
 	public void setValue(ADValue value) {
 		this.value = value;
+		
+		if(value!=null)
 		value.setField(this);
 	}
 

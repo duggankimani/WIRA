@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
@@ -29,16 +30,98 @@ public class TestFormBuilderHelper {
 		DB.beginTransaction();
 	}
 	
-
+	public void getProperty(){
+		Property prop = FormDaoHelper.getProperty(73L);
+		
+		Assert.assertNotNull(prop.getId());
+	}
+	
 	@Test
+	public void createProperty(){
+		Form form = FormDaoHelper.getForm(18L, false);
+		
+		List<Property> props = form.getProperties();
+		
+		Property property = props.get(0);
+		property.setValue(new StringValue("Holly Molly!!"));
+		
+		FormDaoHelper.createForm(form, false);
+		
+	}
+	
+	@Ignore
+	public void createField(){
+		Field field = new Field();
+		field.setCaption("Test Field");
+		field.setFormId(9L);
+		field.setId(6L);
+		field.setName("Test");
+		//field.setProperties(getProperties(null, null));
+		field.setType(DataType.DATE);
+		//field.setValue(new DateValue(null, "", new Date()));
+		
+		field = FormDaoHelper.createField(field);
+		
+		Assert.assertNotNull(field.getId());
+		Assert.assertNotNull(field.getCaption());
+		Assert.assertNotNull(field.getFormId());
+		Assert.assertNotNull(field.getType());
+		
+	}
+
+	@Ignore
 	public void createForm(){
 		Form form = new Form();
 		form.setCaption("Caption Test");
-		form.setFields(getFields());
-		form.setProperties(getProperties(null, null));
 		form.setName("Test Form");
+		form.setId(null);
 		
 		form = FormDaoHelper.createForm(form, true);
+		Assert.assertNotNull(form.getId());
+		Assert.assertNotNull(form.getCaption());
+		Assert.assertNotNull(form.getName());
+	
+		
+		//save field
+		
+		Field field = new Field();
+		field.setCaption("Test Field");
+		field.setFormId(form.getId());
+		field.setId(null);
+		field.setName("Test");
+		//field.setProperties(getProperties(null, null));
+		field.setType(DataType.DATE);
+		//field.setValue(new DateValue(null, "", new Date()));
+		
+		field = FormDaoHelper.createField(field);
+		
+		Assert.assertNotNull(field.getId());
+		Assert.assertNotNull(field.getCaption());
+		Assert.assertNotNull(field.getFormId());
+		Assert.assertNotNull(field.getType());
+		
+		Property property = new Property("NAME", "Name", DataType.STRING);
+		
+		//field.setProperties(properties)
+		property.setFieldId(field.getId());
+		
+		property = FormDaoHelper.createProperty(property);
+		
+		Assert.assertNotNull(property.getId());
+		
+	}
+	
+	@Ignore
+	public void createAll(){
+		Form form = new Form();
+		form.setCaption("Caption Test");
+		form.setName("Test Form");
+		form.setId(null);
+		
+		form = FormDaoHelper.createForm(form, true);
+		
+		
+		form.setProperties(getProperties(null, null));
 		
 		Assert.assertNotNull(form.getId());
 		Assert.assertNotNull(form.getCaption());
@@ -150,8 +233,8 @@ public class TestFormBuilderHelper {
 
 	@After
 	public void tearDown() {
-		DB.rollback();
-		//DB.commitTransaction();
+		//DB.rollback();
+		DB.commitTransaction();
 		DBTrxProvider.close();
 	}
 }

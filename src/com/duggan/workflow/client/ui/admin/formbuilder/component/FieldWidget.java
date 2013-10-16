@@ -7,15 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
+import com.duggan.workflow.shared.requests.CreateFieldRequest;
+import com.duggan.workflow.shared.responses.CreateFieldResponse;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,7 +31,8 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle, PropertyChangedHandler{
+public abstract class FieldWidget extends AbsolutePanel 
+implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesHandler{
 
 	private FocusPanel shim = new FocusPanel();
 	
@@ -34,18 +42,31 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 	
 	protected boolean isPropertyField=false;
 	
+	Field field = new Field();
+	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
-		addProperty(new Property("NAME", "Name", DataType.STRING, id));
-		addProperty(new Property("CAPTION", "Label Text", DataType.STRING, id));
-		addProperty(new Property("HELP", "Help", DataType.STRING, id));
-		addProperty(new Property("MANDATORY", "Mandatory", DataType.BOOLEAN, id));
-		addProperty(new Property("READONLY", "Read Only", DataType.BOOLEAN, id));
+		addProperty(new Property(NAME, "Name", DataType.STRING, id));
+		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
+		addProperty(new Property(HELP, "Help", DataType.STRING, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.BOOLEAN, id));
+		addProperty(new Property(READONLY, "Read Only", DataType.BOOLEAN, id));
 		
 		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE,this);
+		AppContext.getEventBus().addHandler(SavePropertiesEvent.TYPE,this);
+		
+		initField();
 	}
 
-	protected void addProperty(Property property) {
+	private void initField() {
+		field.setCaption(getValue(CAPTION));
+		field.setName(getValue(NAME));
+		field.setType(DataType.STRING);
+		field.setValue(null);
+		field.setType(getType());
+	}
+
+	public void addProperty(Property property) {
 		assert props !=null;
 		assert property!=null;
 		assert property.getName()!=null;
@@ -78,7 +99,7 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 				int top=7;
 				int left=80;
 				int arrowPosition =shim.getAbsoluteTop()-30;
-				AppManager.showPropertyPanel(id, getProperties(),top,left,arrowPosition);
+				AppManager.showPropertyPanel(field, getProperties(),top,left,arrowPosition);
 			}
 		});
 	}
@@ -89,20 +110,11 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 	}
 	
 	public Field getField(){
-		Field field = new Field();
-		
-		field.setCaption(getValue("CAPTION"));
-//		field.setFormId(formId);
-//		field.setId(id);
-		field.setName(getValue("NAME"));
-		field.setProperties(getProperties());
-		field.setType(DataType.STRING);
-		field.setValue(null);
-		
+		field.setType(getType());
 		return field;
 	}
 	
-	private String getValue(String key) {
+	public String getValue(String key) {
 		
 		Property property = props.get(key);
 		
@@ -160,7 +172,7 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 	
 		//should we do this only if this is not a property field?
 		if(!isPropertyField)
-		add(shim, 0, 0);
+			add(shim, 0, 0);
 	}
 
 	/**
@@ -180,8 +192,10 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 	
 	@Override
 	public void onPropertyChanged(PropertyChangedEvent event) {
+		if(!event.isForField()){
+			return;
+		}
 		
-		//System.err.println("------- Called--------- "+event.getPropertyValue());
 		if (this.id != event.getComponentId()){
 			return;
 		}
@@ -189,13 +203,13 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 		String property = event.getPropertyName();
 		String value= event.getPropertyValue();
 		
-		if(property.equals("CAPTION"))
+		if(property.equals(CAPTION))
 			setCaption(value);
 		
-		if(property.equals("PLACEHOLDER"))
+		if(property.equals(PLACEHOLDER))
 			setPlaceHolder(value);
 		
-		if(property.equals("HELP"))
+		if(property.equals(HELP))
 			setHelp(value);
 		
 	}
@@ -206,5 +220,126 @@ public abstract class FieldWidget extends AbsolutePanel implements HasDragHandle
 	
 	protected void setHelp(String help){}
 	
+	protected abstract DataType getType();
+
+	public void setFormId(Long formId) {
+		field.setFormId(formId);
+	}
 	
+	private void save(Field model) {
+		assert model.getFormId()!=null;
+		
+		model.setType(getType());
+		model.setProperties(getProperties());
+		
+		model.setName(getValue(NAME));
+		model.setCaption(getValue(CAPTION));
+		
+		AppContext.getDispatcher().execute(new CreateFieldRequest(model), 
+				new TaskServiceCallback<CreateFieldResponse>() {
+			@Override
+			public void processResult(CreateFieldResponse result) {
+				Field field = result.getField();
+				setField(field);
+			}
+		});
+	}
+	
+	public void setField(Field field) {
+		this.field = field;
+		this.id = field.getId();
+		setProperties(field.getProperties());
+		
+		String caption =getValue(CAPTION);
+		if(caption!=null && !caption.isEmpty())
+			setCaption(caption);
+		
+		String placeHolder = getValue(PLACEHOLDER);
+		if(placeHolder!=null && !placeHolder.isEmpty() )
+			setPlaceHolder(placeHolder);
+		
+	}
+
+	private void setProperties(List<Property> properties) {
+		if(properties!=null){
+			for(Property prop: properties){
+				addProperty(prop);
+			}
+		}
+	}
+
+	@Override
+	public void onSaveProperties(SavePropertiesEvent event) {
+		FormModel model = event.getParent();
+		
+		if(model==null){
+			return;
+		}
+		
+		if(model.equals(field)){
+			save((Field)model);
+		}
+	}
+
+	public void save() {
+		save(field);
+	}
+
+	public static FieldWidget getWidget(DataType type, Field fld, boolean activatePopup) {
+		FieldWidget widget=null;
+		
+		switch (type) {
+		case BOOLEAN:
+			widget = new InlineRadio();
+			break;
+
+		case DATE:
+			widget = new DateField();
+			break;
+
+		case DOUBLE:
+			widget = new TextField();
+			break;
+
+		case INTEGER:
+			widget = new TextField();
+			break;
+
+		case STRING:
+			widget = new TextField();
+			break;
+
+		case STRINGLONG:
+			widget = new TextArea();
+			break;
+		
+		case BUTTON:
+			widget = new SingleButton();
+			break;
+		
+		case CHECKBOX:
+			widget = new InlineCheckBox();
+			break;
+		
+		case MULTIBUTTON:
+			widget = new MultipleButton();
+			break;
+		
+		case SELECTBASIC:
+			widget = new SelectBasic();
+			break;
+			
+		case SELECTMULTIPLE:
+			widget = new SelectMultiple();
+			break;
+		
+		}
+	
+		widget.setField(fld);
+		
+		if(activatePopup)
+			widget.activatePopup();
+		
+		return widget;
+	}	
 }

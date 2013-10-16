@@ -29,7 +29,7 @@ public class TextField extends FieldWidget {
 	
 	public TextField() {
 		super();
-		addProperty(new Property("PLACEHOLDER", "Place Holder", DataType.STRING, id));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
@@ -54,11 +54,28 @@ public class TextField extends FieldWidget {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
 				String value  = event.getValue();
-				property.setValue(new StringValue(value));
+				Value previousValue = property.getValue();
+				if(previousValue==null){
+					previousValue = new StringValue();
+				}else{
+					if(event.getValue().equals(previousValue.getValue())){
+						return;
+					}
+				}
 				
-				if(name.equals("CAPTION") || name.equals("PLACEHOLDER") || name.equals("HELP"))
-				AppContext.getEventBus().fireEventFromSource(
-						new PropertyChangedEvent(property.getFieldId(),property.getName(), value), this);
+				
+				previousValue.setValue(value);
+				property.setValue(previousValue);
+				
+				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){
+				
+					boolean isForField = property.getFieldId()!=null;
+					
+					Long componentId = property.getFieldId()!=null? property.getFieldId(): property.getFormId();
+					
+					AppContext.getEventBus().fireEventFromSource(
+							new PropertyChangedEvent(componentId,property.getName(), value, isForField), this);
+				}
 				//AppContext.getEventBus().fireEvent(new );
 				//AppContext.getEventBus().fireEvent(event);
 				
@@ -85,6 +102,11 @@ public class TextField extends FieldWidget {
 	@Override
 	protected void setHelp(String help) {
 		txtComponent.setTitle(help);
+	}
+	
+	@Override
+	protected DataType getType() {
+		return DataType.STRING;
 	}
 	
 }
