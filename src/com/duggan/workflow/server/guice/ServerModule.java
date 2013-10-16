@@ -5,6 +5,7 @@ import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetItemRequest;
@@ -72,6 +73,7 @@ import com.duggan.workflow.shared.requests.CreateFieldRequest;
 import com.duggan.workflow.server.actionhandlers.CreateFieldRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -181,6 +183,10 @@ public class ServerModule extends HandlerModule {
 				CreateFieldRequestActionHandler.class, SessionValidator.class);
 
 		bindHandler(GetFormsRequest.class, GetFormsRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(DeleteFormModelRequest.class,
+				DeleteFormModelRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }

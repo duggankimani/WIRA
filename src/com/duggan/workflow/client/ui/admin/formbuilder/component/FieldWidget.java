@@ -22,7 +22,9 @@ import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.CreateFieldRequest;
+import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.responses.CreateFieldResponse;
+import com.duggan.workflow.shared.responses.DeleteFormModelResponse;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -341,5 +343,16 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 			widget.activatePopup();
 		
 		return widget;
+	}
+
+	public void delete() {
+		if(field.getId()!=null){
+			AppContext.getDispatcher().execute(new DeleteFormModelRequest(field), 
+					new TaskServiceCallback<DeleteFormModelResponse>() {
+				@Override
+				public void processResult(DeleteFormModelResponse result) {
+				}
+			});
+		}
 	}	
 }

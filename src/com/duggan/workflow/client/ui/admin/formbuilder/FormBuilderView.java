@@ -110,9 +110,16 @@ public class FormBuilderView extends ViewImpl implements
 			public void onDragEnd(DragEndEvent event) {
 				super.onDragEnd(event);
 				FieldWidget draggable = (FieldWidget)event.getContext().draggable;
-				//event.getContext().
-				draggable.setFormId(form.getId());
-				draggable.save();				
+				
+				
+				int idx = vPanel.getWidgetIndex(draggable);
+				if(idx==-1){
+					draggable.delete();
+				}else{
+					//event.getContext().
+					draggable.setFormId(form.getId());
+					draggable.save();			
+				}
 			}
 		};
 		
