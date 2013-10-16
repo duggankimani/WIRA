@@ -188,7 +188,7 @@
 			</span>
 
 			<div class="row-fluid comment-box">
-				<i class="icon-chevron-up"></i>
+				<i class="arrow"></i>
 				<g:FocusPanel ui:field="commentPanel">
 				<g:HTMLPanel styleName="comment-container comment-small" ui:field="commentContainer">
 					<g:TextArea ui:field="commentBox" styleName="textarea-box textarea-small"></g:TextArea>
