@@ -107,10 +107,7 @@ public class FormBuilderPresenter extends
 		});
 	}
 
-	@Override
-	protected void onReset() {
-		super.onReset();
-		
+	public void loadFormList(){
 		dispatcher.execute(new GetFormsRequest(), new TaskServiceCallback<GetFormsResponse>() {
 			@Override
 			public void processResult(GetFormsResponse result) {
@@ -120,15 +117,23 @@ public class FormBuilderPresenter extends
 	}
 
 	protected void saveForm(Form form) {
-		
 		assert form.getProperties().size()==3;
 		
 		dispatcher.execute(new CreateFormRequest(form), new TaskServiceCallback<CreateFormResponse>() {
 			@Override
 			public void processResult(CreateFormResponse result) {
 				getView().setForm(result.getForm());
+				
+				loadFormList();
 			}
 		});
+	}
+	
+
+	@Override
+	protected void onReset() {
+		super.onReset();
+		loadFormList();
 	}
 
 	@Override
