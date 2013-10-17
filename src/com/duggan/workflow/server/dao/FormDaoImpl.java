@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -67,6 +68,32 @@ public class FormDaoImpl extends BaseDaoImpl {
 				form.setCaption("Untitled"+form.getId());
 			}
 			
+			Collection<ADProperty> props = form.getProperties();
+			if(props!=null)
+				for(ADProperty prop: props){
+					if(prop.getName().equals("NAME")){
+						if(prop.getValue()==null){
+							ADValue value = new ADValue();
+							value.setStringValue(form.getName());
+							prop.setValue(value);
+						}
+					}
+					if(prop.getName().equals("CAPTION")){
+						if(prop.getValue()==null){
+							ADValue value = new ADValue();
+							value.setStringValue(form.getName());
+							prop.setValue(value);
+						}
+					}
+					
+					if(prop.getName().equals("DESCRIPTION")){
+						if(prop.getValue()==null){
+							ADValue value = new ADValue();
+							value.setStringValue(form.getName());
+							prop.setValue(value);
+						}
+					}
+				}
 			em.merge(form);
 		}
 	}
