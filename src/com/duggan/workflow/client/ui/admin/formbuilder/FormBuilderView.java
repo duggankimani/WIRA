@@ -17,6 +17,7 @@ import com.duggan.workflow.shared.model.form.Form;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.DivElement;
@@ -103,7 +104,6 @@ public class FormBuilderView extends ViewImpl implements
 		addProperty(new Property(NAME, "Form ID", DataType.STRING));
 		addProperty(new Property(CAPTION, "Caption", DataType.STRING));
 		addProperty(new Property(HELP, "Help", DataType.STRINGLONG));
-		
 			
 		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()){
 			@Override
@@ -240,7 +240,7 @@ public class FormBuilderView extends ViewImpl implements
 					return;
 				}
 				
-				vPanel.clear();
+				clear();
 				//
 			}
 		});
@@ -308,12 +308,35 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public void setForm(Form form) {
 		this.form = form;
-		formLabel.setText(form.getCaption());
 		
 		for(Property prop: form.getProperties()){
 			addProperty(prop);
 		}
+
+		String caption = getValue(CAPTION);
 		
+		Property captionProperty = props.get(CAPTION);
+		if(caption==null && captionProperty!=null){
+			Value val = captionProperty.getValue();
+			if(val==null){
+				captionProperty.setValue(new StringValue(form.getCaption()));
+			}else{
+				captionProperty.getValue().setValue(form.getCaption());
+			}
+		}
+		
+		String name = getValue(NAME);
+		Property nameProperty = props.get(NAME);
+		if(name==null && nameProperty!=null){
+			Value val = nameProperty.getValue();
+			if(val==null){
+				nameProperty.setValue(new StringValue(form.getName()));
+			}else{
+				nameProperty.getValue().setValue(form.getName());
+			}
+		}
+		
+		formLabel.setText(caption);
 		setFields(form.getFields());
 		//frmDropdown.setItems(form.getProperties());
 	}
@@ -384,5 +407,17 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public void setForms(List<Form> forms) {
 		frmDropdown.setItems(forms);
+	}
+
+	@Override
+	public void clear() {
+		formLabel.setText("");
+		List<Property> properties = getProperties();
+		for(Property prop: properties){
+			prop.setValue(null);
+			prop.setId(null);
+		}
+		
+		vPanel.clear();
 	}
 }
