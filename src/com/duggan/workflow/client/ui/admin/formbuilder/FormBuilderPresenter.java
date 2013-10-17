@@ -46,6 +46,8 @@ public class FormBuilderPresenter extends
 		
 		HasValueChangeHandlers<Form> getFormDropDown();
 
+		void clear();
+
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -81,7 +83,11 @@ public class FormBuilderPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				getView().clear();
+				
 				Form form = getView().getForm();
+				form.setCaption(null);
+				form.setName(null);
 				form.setId(null);
 				saveForm(form);
 			}
@@ -114,6 +120,9 @@ public class FormBuilderPresenter extends
 	}
 
 	protected void saveForm(Form form) {
+		
+		assert form.getProperties().size()==3;
+		
 		dispatcher.execute(new CreateFormRequest(form), new TaskServiceCallback<CreateFormResponse>() {
 			@Override
 			public void processResult(CreateFormResponse result) {

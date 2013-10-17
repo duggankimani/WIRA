@@ -11,6 +11,7 @@ import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.HasProperties;
+import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
@@ -391,6 +392,26 @@ public class FormDaoHelper {
 		}
 		
 		return advalue;
+	}
+
+	public static void delete(FormModel model) {
+		FormDaoImpl dao = DB.getFormDao();
+		PO po=null;
+		if(model instanceof Form){
+			po = dao.getForm(model.getId());
+		}
+		
+		if(model instanceof Field){
+			po = dao.getField(model.getId());
+			
+		}
+		
+		if(model instanceof Property){
+			po = dao.getProperty(model.getId());
+		}
+		
+		if(po!=null)
+			dao.delete(po);
 	}
 
 		
