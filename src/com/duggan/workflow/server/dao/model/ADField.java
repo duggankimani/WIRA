@@ -51,6 +51,8 @@ public class ADField extends PO implements HasProperties{
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	
+	private Integer position;
+	
 	public Long getId() {
 		return id;
 	}
@@ -163,6 +165,14 @@ public class ADField extends PO implements HasProperties{
 
 	public void setType(DataType type) {
 		this.type = type;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 
 }

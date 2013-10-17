@@ -1,9 +1,12 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.server.helper.dao.FormDaoHelper;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -51,6 +54,7 @@ public class GetFormModelRequestActionHandler extends
 			}else if(parentId!=null){
 				models.addAll(FormDaoHelper.getFields(parentId,true));
 			}
+			
 			break;
 
 		case FormModel.PROPERTYMODEL:

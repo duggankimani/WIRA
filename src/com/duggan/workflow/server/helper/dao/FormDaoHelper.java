@@ -101,6 +101,7 @@ public class FormDaoHelper {
 		field.setProperties(getProperties(adfield.getProperties()));
 		field.setType(adfield.getType());
 		field.setValue(getValue(adfield.getValue(), adfield.getType()));
+		field.setPosition(adfield.getPosition()==null? 0: adfield.getPosition().intValue());
 		
 		return field;
 	}
@@ -256,8 +257,11 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADField adfield = new ADField();
+		int previous=-1;
+		
 		if(field.getId()!=null){
 			adfield = dao.getField(field.getId());
+			previous = adfield.getPosition()==null? -1 : adfield.getPosition();
 		}
 		
 		adfield.setCaption(field.getCaption());
@@ -273,7 +277,9 @@ public class FormDaoHelper {
 		
 		adfield.setType(field.getType());
 		adfield.setValue(getValue(adfield.getValue(),field.getValue()));
-
+		
+		dao.setPosition(adfield, previous, field.getPosition());
+		
 		return adfield;
 	}
 

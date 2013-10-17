@@ -6,7 +6,9 @@ import java.util.List;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
+import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.client.ui.events.SaveFormDesignEvent.SaveFormDesignHandler;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
@@ -29,7 +31,8 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
 public class FormBuilderPresenter extends
-		PresenterWidget<FormBuilderPresenter.IFormBuilderView> implements SavePropertiesHandler, PropertyChangedHandler{
+		PresenterWidget<FormBuilderPresenter.IFormBuilderView> implements SavePropertiesHandler,
+		PropertyChangedHandler, SaveFormDesignHandler{
 
 	public interface IFormBuilderView extends View {
 		Anchor getNewButton();
@@ -62,7 +65,7 @@ public class FormBuilderPresenter extends
 		super.onBind();
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
 		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
-		
+		addRegisteredHandler(SaveFormDesignEvent.TYPE, this);
 		getView().getFormDropDown().addValueChangeHandler(new ValueChangeHandler<Form>() {
 			
 			@Override
@@ -117,7 +120,6 @@ public class FormBuilderPresenter extends
 	}
 
 	protected void saveForm(Form form) {
-		assert form.getProperties().size()==3;
 		
 		dispatcher.execute(new CreateFormRequest(form), new TaskServiceCallback<CreateFormResponse>() {
 			@Override
@@ -154,4 +156,10 @@ public class FormBuilderPresenter extends
 		getView().setProperty(property, value);
 		saveForm(getView().getForm());
 	}
+	
+	@Override
+	public void onSaveFormDesign(SaveFormDesignEvent event) {
+		saveForm(getView().getForm());
+	}
+	
 }
