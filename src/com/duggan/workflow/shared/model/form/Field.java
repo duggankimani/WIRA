@@ -12,6 +12,7 @@ public class Field extends FormModel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<Property> properties;
+	private List<KeyValuePair> selectionValues;
 	private Value value;
 	private DataType type;
 	private Long formId=-1L;
@@ -63,5 +64,13 @@ public class Field extends FormModel{
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+
+	public List<KeyValuePair> getSelectionValues() {
+		return selectionValues;
+	}
+
+	public void setSelectionValues(List<KeyValuePair> selectionValues) {
+		this.selectionValues = selectionValues;
 	}
 }

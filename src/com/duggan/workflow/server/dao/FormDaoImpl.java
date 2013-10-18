@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
+import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.PO;
@@ -149,9 +150,9 @@ public class FormDaoImpl extends BaseDaoImpl {
 		
 		hql = hql.concat(" order by position");
 		
-		System.err.println("PrevPos = "+previousPos);
-		System.err.println("NewPos = "+newPos);
-		System.err.println(hql);
+//		System.err.println("PrevPos = "+previousPos);
+//		System.err.println("NewPos = "+newPos);
+//		System.err.println(hql);
 		fields = em.createQuery(hql)
 				.setParameter("id", fld.getForm().getId())
 				.setParameter("newPos", newPos)
@@ -163,7 +164,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 		int count=0;
 		for(ADField field: fields){
 			++count;
-			String previousStr = field.getPosition()+""; 
+		//	String previousStr = field.getPosition()+""; 
 			if(reducing){
 				field.setPosition(newPos-(size-count+1));
 			}else{
@@ -171,10 +172,19 @@ public class FormDaoImpl extends BaseDaoImpl {
 				field.setPosition(newPos+count);
 			}
 			
-			System.err.println(">>Field :: Id = "+field.getId()+"; Previous = "+previousStr+
-					" Pos - "+field.getPosition());
+//			System.err.println(">>Field :: Id = "+field.getId()+"; Previous = "+previousStr+
+//					" Pos - "+field.getPosition());
 		}		
 		
 		fld.setPosition(newPos);
+	}
+
+	public List<ADKeyValuePair> getKeyValuePairs(String type) {
+		
+		@SuppressWarnings("unchecked")
+		List<ADKeyValuePair> pairs = em.createQuery("FROM ADKeyValuePair p where p.displayValue=:type")
+		.setParameter("type", type).getResultList();
+		
+		return pairs;
 	}
 }

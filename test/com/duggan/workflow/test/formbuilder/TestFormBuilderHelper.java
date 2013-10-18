@@ -32,6 +32,11 @@ public class TestFormBuilderHelper {
 	}
 	
 	@Test
+	public void getDDValues(){
+		FormDaoHelper.getDropdownValues("departments");
+	}
+	
+	@Ignore
 	public void setPosition2(){
 		Field field = FormDaoHelper.getField(45L);
 		field.setPosition(0);

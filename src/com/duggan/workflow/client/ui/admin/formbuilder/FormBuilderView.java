@@ -118,22 +118,13 @@ public class FormBuilderView extends ViewImpl implements
 				FieldWidget draggable = (FieldWidget)event.getContext().draggable;
 				
 				int idx = vPanel.getWidgetIndex(draggable);
-				
-//				ResetFormPositionEvent evt = new ResetFormPositionEvent(idx);
-//				AppContext.getEventBus().fireEvent(evt);
-				
 				if(idx==-1){
 					draggable.delete();
 				}else{
-					//event.getContext().					
 					draggable.setFormId(form.getId());		
 					draggable.getField().setPosition(idx);
-					//System.err.println("########### "+evt.getCount()+" Fields affected "+draggable.getField());
 					draggable.save();			
-//					if(evt.getCount()>0){
-//						System.err.println("########### "+evt.getCount()+" Fields affected "+draggable.getField());
-//						AppContext.getEventBus().fireEvent(new SaveFormDesignEvent());
-//					}
+
 				}
 			}
 		};

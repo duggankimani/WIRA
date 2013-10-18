@@ -32,6 +32,8 @@ public class ADDocType extends PO {
 	
 	private String display;
 	
+	private String className;
+	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
 	private Collection<DocumentModel> documents = new HashSet<>();
 	
