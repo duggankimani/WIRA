@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.FormDaoHelper;
@@ -30,13 +31,34 @@ public class TestFormBuilderHelper {
 		DB.beginTransaction();
 	}
 	
+	@Test
+	public void getDDValues(){
+		FormDaoHelper.getDropdownValues("departments");
+	}
+	
+	@Ignore
+	public void setPosition2(){
+		Field field = FormDaoHelper.getField(45L);
+		field.setPosition(0);
+		
+		FormDaoHelper.createField(field);
+	}
+	
+	@Ignore
+	public void setPosition(){
+		int positionToGo =2; 
+		ADField field = DB.getFormDao().getField(33L);
+		DB.getFormDao().setPosition(field, field.getPosition(),positionToGo);
+	}
+	
+	@Ignore
 	public void getProperty(){
 		Property prop = FormDaoHelper.getProperty(73L);
 		
 		Assert.assertNotNull(prop.getId());
 	}
 	
-	@Test
+	@Ignore
 	public void createProperty(){
 		Form form = FormDaoHelper.getForm(18L, false);
 		

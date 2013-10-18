@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
+import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.PO;
@@ -121,5 +123,68 @@ public class FormDaoImpl extends BaseDaoImpl {
 				.setParameter("id", parentId).getResultList();
 		
 		return fields;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setPosition(ADField fld, int previousPos, int newPos){
+		
+		if(previousPos==-1){
+			previousPos=1000; // new field - reset all fields with position> newPos
+		}
+		List<ADField> fields = null;
+		
+		String hql = "FROM ADField fld where fld.form.id=:id ";
+		boolean reducing=false;
+		
+		if(previousPos==newPos){
+			fld.setPosition(newPos);
+			return; //no change
+		}
+		
+		if(previousPos>newPos){
+			hql = hql.concat(" and ((fld.position>=:newPos and fld.position<:prevPos) or fld.position is null) ");
+		}else{
+			reducing=true;
+			hql = hql.concat(" and ((fld.position<=:newPos and fld.position>:prevPos) or fld.position is null) ");
+		}
+		
+		hql = hql.concat(" order by position");
+		
+//		System.err.println("PrevPos = "+previousPos);
+//		System.err.println("NewPos = "+newPos);
+//		System.err.println(hql);
+		fields = em.createQuery(hql)
+				.setParameter("id", fld.getForm().getId())
+				.setParameter("newPos", newPos)
+				.setParameter("prevPos", previousPos)				
+				.getResultList();
+		
+		int size = fields.size();
+		
+		int count=0;
+		for(ADField field: fields){
+			++count;
+		//	String previousStr = field.getPosition()+""; 
+			if(reducing){
+				field.setPosition(newPos-(size-count+1));
+			}else{
+				
+				field.setPosition(newPos+count);
+			}
+			
+//			System.err.println(">>Field :: Id = "+field.getId()+"; Previous = "+previousStr+
+//					" Pos - "+field.getPosition());
+		}		
+		
+		fld.setPosition(newPos);
+	}
+
+	public List<ADKeyValuePair> getKeyValuePairs(String type) {
+		
+		@SuppressWarnings("unchecked")
+		List<ADKeyValuePair> pairs = em.createQuery("FROM ADKeyValuePair p where p.displayValue=:type")
+		.setParameter("type", type).getResultList();
+		
+		return pairs;
 	}
 }

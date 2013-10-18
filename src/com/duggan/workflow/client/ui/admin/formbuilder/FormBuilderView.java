@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +16,12 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.model.form.FormModel;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
+import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -111,14 +117,14 @@ public class FormBuilderView extends ViewImpl implements
 				super.onDragEnd(event);
 				FieldWidget draggable = (FieldWidget)event.getContext().draggable;
 				
-				
 				int idx = vPanel.getWidgetIndex(draggable);
 				if(idx==-1){
 					draggable.delete();
 				}else{
-					//event.getContext().
-					draggable.setFormId(form.getId());
+					draggable.setFormId(form.getId());		
+					draggable.getField().setPosition(idx);
 					draggable.save();			
+
 				}
 			}
 		};
@@ -357,6 +363,22 @@ public class FormBuilderView extends ViewImpl implements
 	
 	private void setFields(List<Field> fields) {
 		if(vPanel.getWidgetCount()==0){
+			
+			
+			Collections.sort(fields, new Comparator<FormModel>() {
+				public int compare(FormModel o1, FormModel o2) {
+					Field field1 = (Field)o1;
+					Field field2 = (Field)o2;
+					
+					Integer pos1 = field1.getPosition();
+					Integer pos2 = field2.getPosition();
+					
+					return pos1.compareTo(pos2);
+				};
+				
+			});
+			
+			
 			for(Field field: fields){
 				FieldWidget widget = FieldWidget.getWidget(field.getType(),field,true);
 				widgetDragController.makeDraggable(widget);

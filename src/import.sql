@@ -26,3 +26,9 @@ insert into UserGroup(userid,groupid) values(7,4);
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Requisition', 'REQUISITION');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-silver-dark','LPO', 'LPO');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-teal','Leave Application', 'LEAVEAPP');
+
+ 
+ insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'HR', 'Human Resources');
+ insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'FIN', 'Finance');
+ insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'PROC', 'Procurement');
+ insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'CONSTR', 'Construction'); 

@@ -10,5 +10,11 @@ public enum DataType {
 	DATE,
 	CHECKBOX,
 	MULTIBUTTON,
-	SELECTBASIC, SELECTMULTIPLE, BUTTON
+	SELECTBASIC,
+	SELECTMULTIPLE,
+	BUTTON;
+	
+	public boolean isDropdown(){
+		return this.equals(SELECTBASIC);
+	}
 }

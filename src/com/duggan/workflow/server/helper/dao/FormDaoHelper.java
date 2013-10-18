@@ -8,6 +8,7 @@ import java.util.List;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
+import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.HasProperties;
@@ -23,6 +24,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 
 public class FormDaoHelper {
@@ -101,7 +103,21 @@ public class FormDaoHelper {
 		field.setProperties(getProperties(adfield.getProperties()));
 		field.setType(adfield.getType());
 		field.setValue(getValue(adfield.getValue(), adfield.getType()));
+		field.setPosition(adfield.getPosition()==null? 0: adfield.getPosition().intValue());
 		
+		if(field.getType().isDropdown()){
+			String type = null;
+			
+			for(Property prop: field.getProperties()){
+				if(prop.getName().equals("SELECTIONTYPE")){
+					Object value = prop.getValue()==null? null : prop.getValue().getValue();
+					type = value==null? null : value.toString();
+				}
+			}
+			
+			if(type!=null)
+				field.setSelectionValues(getDropdownValues(type));
+		}
 		return field;
 	}
 	
@@ -256,8 +272,11 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADField adfield = new ADField();
+		int previous=-1;
+		
 		if(field.getId()!=null){
 			adfield = dao.getField(field.getId());
+			previous = adfield.getPosition()==null? -1 : adfield.getPosition();
 		}
 		
 		adfield.setCaption(field.getCaption());
@@ -273,7 +292,9 @@ public class FormDaoHelper {
 		
 		adfield.setType(field.getType());
 		adfield.setValue(getValue(adfield.getValue(),field.getValue()));
-
+		
+		dao.setPosition(adfield, previous, field.getPosition());
+		
 		return adfield;
 	}
 
@@ -395,6 +416,7 @@ public class FormDaoHelper {
 	}
 
 	public static void delete(FormModel model) {
+		
 		FormDaoImpl dao = DB.getFormDao();
 		PO po=null;
 		if(model instanceof Form){
@@ -412,6 +434,22 @@ public class FormDaoHelper {
 		
 		if(po!=null)
 			dao.delete(po);
+	}
+	
+	public static List<KeyValuePair> getDropdownValues(String type){
+		FormDaoImpl dao = DB.getFormDao();
+		List<ADKeyValuePair> adkeyvaluepairs = dao.getKeyValuePairs(type);
+		
+		List<KeyValuePair> keyvaluepairs = new ArrayList<>();
+		for(ADKeyValuePair adpair: adkeyvaluepairs){
+			KeyValuePair kvp = new KeyValuePair();
+			kvp.setKey(adpair.getName());
+			kvp.setValue(adpair.getDisplayValue());
+			
+			keyvaluepairs.add(kvp);
+		}
+		
+		return keyvaluepairs;
 	}
 
 		

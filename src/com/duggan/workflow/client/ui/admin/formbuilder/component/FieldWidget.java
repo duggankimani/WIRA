@@ -13,7 +13,9 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
+import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.client.ui.events.ResetFormPositionEvent.ResetFormPositionHandler;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
@@ -31,10 +33,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public abstract class FieldWidget extends AbsolutePanel 
-implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesHandler{
+implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesHandler, ResetFormPositionHandler{
 
 	private FocusPanel shim = new FocusPanel();
 	
@@ -45,6 +48,8 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	protected boolean isPropertyField=false;
 	
 	Field field = new Field();
+	
+	private boolean popUpActivated=false;
 	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
@@ -79,6 +84,14 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	public abstract FieldWidget cloneWidget();
 
 	public void activatePopup(){
+		if(popUpActivated){
+			//System.err.println("Already Activated for: "+field);
+			return;
+		}
+		
+		popUpActivated=true;
+		AppContext.getEventBus().addHandler(ResetFormPositionEvent.TYPE, this);	
+		
 		shim.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -231,6 +244,7 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	private void save(Field model) {
 		assert model.getFormId()!=null;
 		
+		System.err.println("SAVE >> "+field);
 		model.setType(getType());
 		model.setProperties(getProperties());
 		
@@ -355,4 +369,31 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 			});
 		}
 	}	
+	
+	@Override
+	public void onResetFormPosition(ResetFormPositionEvent event) {
+		if(event.getInsertPosition()>=field.getPosition()){
+			if(getParent()!=null && getParent() instanceof VerticalPanel){
+				VerticalPanel panel = (VerticalPanel)getParent();
+				int idx = panel.getWidgetIndex(this);
+				System.err.println(">>>Field:: "+field+" :: idx "+idx);
+				
+				if(idx==-1){
+					return;
+				}else{
+					
+					int previousPosition = field.getPosition();
+//					System.err.println("B4 :: "+field +"[Idx="+idx+"]," +
+//							" [ Previous Pos="+previousPosition+"])");
+//					
+					if(idx==previousPosition){
+						return;
+					}
+					
+					field.setPosition(idx);		
+					event.addCount();
+				}			
+			}
+		}
+	}
 }

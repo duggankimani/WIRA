@@ -50,6 +50,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
         <class>com.duggan.workflow.server.dao.model.ErrorLog</class>
         <class>com.duggan.workflow.server.dao.model.LocalAttachment</class>
         <class>com.duggan.workflow.server.dao.model.ProcessDefModel</class>
+        <class>com.duggan.workflow.server.dao.model.ADKeyValuePair</class>
      
         <!-- Async Executor Classes -->
         <class>org.jbpm.executor.entities.RequestInfo</class>
