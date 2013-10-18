@@ -83,6 +83,10 @@ import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderView;
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelView;
+import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
+import com.duggan.workflow.client.ui.addDoc.DocumentPopupView;
+import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
+import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -214,5 +218,11 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(GenericPopupPresenter.class, GenericPopupPresenter.MyView.class,
 				GenericPopupView.class);
+
+		bindPresenterWidget(DocumentPopupPresenter.class,
+				DocumentPopupPresenter.MyView.class, DocumentPopupView.class);
+
+		bindPresenterWidget(DocTypeItemPresenter.class,
+				DocTypeItemPresenter.MyView.class, DocTypeItemView.class);
 }
 }

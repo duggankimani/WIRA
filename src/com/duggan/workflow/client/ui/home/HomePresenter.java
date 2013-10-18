@@ -10,6 +10,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
@@ -17,7 +18,9 @@ import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
+import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
+import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -75,7 +78,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements AfterSaveHandler,
 		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler,
-		ProcessingHandler, ProcessingCompletedHandler, SearchHandler{
+		ProcessingHandler, ProcessingCompletedHandler, SearchHandler,CreateDocumentHandler{
 
 	public interface MyView extends View {
 		HasClickHandlers getAddButton();	
@@ -97,6 +100,7 @@ public class HomePresenter extends
 		public void hideFilterDialog();
 		public void setSearchBox(String text);
 		void showmask(boolean b);
+		void setDocPopupVisible();
 	}
 
 	@ProxyCodeSplit
@@ -106,6 +110,10 @@ public class HomePresenter extends
 	}
 
 	public static final Object DATEGROUP_SLOT = new Object();
+	
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
+
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
@@ -123,6 +131,8 @@ public class HomePresenter extends
 	@Inject DispatchAsync dispatcher;
 	
 	@Inject PlaceManager placeManager;
+	
+	@Inject DocumentPopupPresenter docPopup;
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	
@@ -214,6 +224,7 @@ public class HomePresenter extends
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(SearchEvent.TYPE, this);
+		addRegisteredHandler(CreateDocumentEvent.TYPE, this);
 		
 		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
 			
@@ -233,8 +244,11 @@ public class HomePresenter extends
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showEditForm(MODE.CREATE);
-			}
+				//showEditForm(MODE.CREATE);
+			
+				setInSlot(DOCPOPUP_SLOT, docPopup);
+				getView().setDocPopupVisible();
+;				}
 		});
 		
 		getView().getRefreshButton().addClickHandler(new ClickHandler() {
@@ -427,7 +441,7 @@ public class HomePresenter extends
 					result.setDocumentId(selectedValue);
 				}
 					
-				addToPopupSlot(result, true);
+				addToPopupSlot(result, false);
 			}
 		});
 	}
@@ -506,5 +520,10 @@ public class HomePresenter extends
 	public void onSearch(SearchEvent event) {
 		SearchFilter filter= event.getFilter();
 		search(filter);
+	}
+
+	@Override
+	public void onCreateDocument(CreateDocumentEvent event) {
+		System.out.println(event.getDocType());
 	}
 }

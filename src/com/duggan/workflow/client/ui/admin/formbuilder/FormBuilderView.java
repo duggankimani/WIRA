@@ -142,8 +142,8 @@ public class FormBuilderView extends ViewImpl implements
 		//Drop Controller 
 		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(vPanel);
 		widgetDragController.registerDropController(widgetDropController);
-	
-		registerInputDrag();//Register drag controllers for the 1st Taab
+		
+		DeactivatePalete();
 		
 		aMinimize.addClickHandler(new ClickHandler() {
 			@Override
@@ -166,6 +166,87 @@ public class FormBuilderView extends ViewImpl implements
 			}
 		});
 		
+			
+		formLabel.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event){
+				/*set the position of the pop-up to be displayed in % */
+				int top=7;
+				int left=60;
+				int arrowposition =formLabel.getAbsoluteTop()-30;
+				AppManager.showPropertyPanel(form,getProperties(), top, left, arrowposition);
+			}
+		});	
+		
+		frmDropdown.addValueChangeHandler(new ValueChangeHandler<Form>() {		
+			@Override
+			public void onValueChange(ValueChangeEvent<Form> event) {
+				Long previousId = form.getId();
+				Long id = event.getValue().getId();
+				
+				if(previousId!=null && previousId.equals(id)){
+					return;
+				}
+				
+				if(id!=null && (id.equals(previousId))){
+					return;
+				}
+				
+				clear();
+				//
+			}
+		});
+
+	}
+
+	/**
+	 * Hello there
+	 * @return Widget - Returns parent widget
+	 * @author duggan
+	 * 
+	 */
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+	
+	public Form getForm(){
+		
+		String name = getValue(NAME);
+		if(name==null){
+			name = "Untitled";
+		}
+		String caption = getValue(CAPTION);
+		if(caption==null){
+			caption="Untitled";
+		}
+		
+		form.setName(name);
+		form.setCaption(caption);
+		form.setProperties(getProperties());
+		form.setFields(getFields());
+		form.setId(form.getId());
+		return form;
+	}
+	
+	/**
+	 * Registers Default Items in the palette panel;
+	 */
+	public void registerInputDrag(){	
+		vTextInputPanel.registerDragController(widgetDragController);
+		vDatePanel.registerDragController(widgetDragController);
+		vTextAreaPanel.registerDragController(widgetDragController);
+		vInlineRadioPanel.registerDragController(widgetDragController);
+		vInlineCheckBoxPanel.registerDragController(widgetDragController);
+		vSelectBasicPanel.registerDragController(widgetDragController);
+	}
+	
+	/**
+	 * Activates the palette to be usable. Removes the grey background and activates the drag & drop mechanism
+	 */
+	public void activatePalette(){
+		divPaletteBody.removeClassName("working-request");
+		
 		aInputtab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -174,8 +255,7 @@ public class FormBuilderView extends ViewImpl implements
 				divButtons.removeStyleName("active");
 				liInput.addClassName("active");
 				liSelect.removeClassName("active");
-				liButton.removeClassName("active");
-				
+				liButton.removeClassName("active");			
 				registerInputDrag();
 			}
 		});
@@ -212,78 +292,12 @@ public class FormBuilderView extends ViewImpl implements
 				vMultipleButtonPanel.registerDragController(widgetDragController);
 			}
 		});
-			
-		formLabel.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event){
-				
-				/*set the position of the pop-up to be displayed in % */
-				int top=7;
-				int left=60;
-				int arrowposition =formLabel.getAbsoluteTop()-30;
-				AppManager.showPropertyPanel(form,getProperties(), top, left, arrowposition);
-			}
-		});	
-		
-		frmDropdown.addValueChangeHandler(new ValueChangeHandler<Form>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<Form> event) {
-				Long previousId = form.getId();
-				Long id = event.getValue().getId();
-				
-				if(previousId!=null && previousId.equals(id)){
-					return;
-				}
-				
-				if(id!=null && (id.equals(previousId))){
-					return;
-				}
-				
-				clear();
-				//
-			}
-		});
-
 	}
 	
-	/**
-	 * Hello there
-	 * @return Widget - Returns parent widget
-	 * @author duggan
-	 * 
-	 */
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
-	
-	public Form getForm(){
+	private void DeactivatePalete() {
+		divPaletteBody.addClassName("working-request");
 		
-		String name = getValue(NAME);
-		if(name==null){
-			name = "Untitled";
-		}
-		String caption = getValue(CAPTION);
-		if(caption==null){
-			caption="Untitled";
-		}
-		
-		form.setName(name);
-		form.setCaption(caption);
-		form.setProperties(getProperties());
-		form.setFields(getFields());
-		form.setId(form.getId());
-		return form;
-	}
-	
-	public void registerInputDrag(){	
-		vTextInputPanel.registerDragController(widgetDragController);
-		vDatePanel.registerDragController(widgetDragController);
-		vTextAreaPanel.registerDragController(widgetDragController);
-		vInlineRadioPanel.registerDragController(widgetDragController);
-		vInlineCheckBoxPanel.registerDragController(widgetDragController);
-		vSelectBasicPanel.registerDragController(widgetDragController);
+		//De-register the Drag-Controllers
 	}
 
 	private List<Field> getFields() {

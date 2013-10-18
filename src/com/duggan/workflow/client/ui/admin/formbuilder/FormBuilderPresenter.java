@@ -44,6 +44,9 @@ public class FormBuilderPresenter extends
 
 		void setForms(List<Form> forms);
 		
+		void activatePalette();
+		void registerInputDrag();
+		
 		HasValueChangeHandlers<Form> getFormDropDown();
 
 		void clear();
@@ -67,7 +70,9 @@ public class FormBuilderPresenter extends
 			
 			@Override
 			public void onValueChange(ValueChangeEvent<Form> event) {
-								
+				getView().registerInputDrag();
+				getView().activatePalette();
+				
 				Form form = event.getValue();
 				
 				if(form.getId()==null){
@@ -75,7 +80,6 @@ public class FormBuilderPresenter extends
 				}
 
 				loadForm(form.getId());
-				
 			}
 		});
 		
@@ -84,6 +88,8 @@ public class FormBuilderPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().clear();
+				getView().registerInputDrag();
+				getView().activatePalette();
 				
 				Form form = getView().getForm();
 				form.setCaption(null);
