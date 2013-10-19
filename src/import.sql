@@ -5,6 +5,7 @@ insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastN
 insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Esteban', false, 'Ti','esteban','mdkimani@gmail.com','pass');
 insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Salaboy', false, 'Sb','salaboy','mdkimani@gmail.com','pass');
 insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Gatheru', false, 'Joseph','gatheru','mdkimani@gmail.com','pass');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'TomKim', false, 'Tom','Kimani','tosh0948@gmail.com','pass');
 
 insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','User', false, 'USER');
 insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','HOD Development', false, 'HOD_DEV');
@@ -20,11 +21,12 @@ insert into UserGroup(userid,groupid) values(5,3);
 insert into UserGroup(userid,groupid) values(6,1);
 insert into UserGroup(userid,groupid) values(7,4);
 
- insert into ADDocType(created, createdBy, updated, updatedBy, display, name) values (now(),'Administrator',null,null,'Invoice', 'INVOICE');
- insert into ADDocType(created, createdBy, updated, updatedBy, display, name) values (now(),'Administrator',null,null,'Contract', 'CONTRACT');
- insert into ADDocType(created, createdBy, updated, updatedBy, display, name) values (now(),'Administrator',null,null,'Requisition', 'REQUISITION');
- insert into ADDocType(created, createdBy, updated, updatedBy, display, name) values (now(),'Administrator',null,null,'LPO', 'LPO');
- insert into ADDocType(created, createdBy, updated, updatedBy, display, name) values (now(),'Administrator',null,null,'Leave Application', 'LEAVEAPP');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-green','Invoice', 'INVOICE');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-blue','Contract', 'CONTRACT');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Requisition', 'REQUISITION');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-silver-dark','LPO', 'LPO');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-teal','Leave Application', 'LEAVEAPP');
+
  
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'HR', 'Human Resources');
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'FIN', 'Finance');

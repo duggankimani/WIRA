@@ -9,7 +9,7 @@
 	ui:generateLocales='default'>
 
 	<g:FocusPanel ui:field="filterDialog">
-		<g:HTMLPanel styleName="dialog is-visible">
+		<g:HTMLPanel styleName="dialog dialog-filter is-visible">
 				<g:HTMLPanel>
 	                      <div class="pointer">
 	                          <div class="arrow"></div>

@@ -3,7 +3,6 @@ package com.duggan.workflow.server.dao.model;
 import java.util.Collection;
 import java.util.HashSet;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class ADDocType extends PO {
@@ -73,6 +71,17 @@ public class ADDocType extends PO {
 	}
 	public void setDisplay(String display) {
 		this.display = display;
+	}
+	
+	public String getClassName() {
+		return className;
+	}
+	/**
+	 * Sets the classNames for a particular Document Type. The icon to be displayed;
+	 * @param className
+	 */
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 	public ProcessDefModel getProcessDef() {

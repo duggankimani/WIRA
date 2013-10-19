@@ -92,7 +92,6 @@ public class CreateDocPresenter extends
 
 						if (Id != null)
 							showDocument((GetDocumentResult) responses.get(1));
-
 					}
 				});
 	}

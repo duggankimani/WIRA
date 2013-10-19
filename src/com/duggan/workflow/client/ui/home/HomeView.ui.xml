@@ -15,7 +15,9 @@
         <div class="add-doc">
             <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>
         </div>
-       
+      	 <!-- Document Pop-up  -->
+         <g:HTMLPanel ui:field="divDocPopup"></g:HTMLPanel>
+          
         <ul id="dashboard-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">
@@ -58,7 +60,6 @@
             </li>
         </ul>
      </div>
-     
       <g:HTMLPanel ui:field="wholeContainer" styleName="hide content-right span10"> 
 			<!--middle navigation -->      		
       		<div class="span2" id="middle-box">

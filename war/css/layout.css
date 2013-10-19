@@ -233,7 +233,8 @@ border-top: 0;
 	width: 330px;
 	margin: 0px 0px 0px 0px;
 	max-height: 500px;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .navbar  .pop-dialog .notifications h3 {
@@ -245,26 +246,25 @@ border-top: 0;
 	margin-bottom: 2px;
 }
 
-.navbar  .pop-dialog .notifications .item {
-	display: block;
-	padding: 1px 0px 7px 42px;
-	border-top: 1px solid #E7E8EA;
-	color: rgb(54, 54, 54);
-	font-size: 11px;
-	text-decoration: none;
-	position: relative;
-	transition: all .25s linear;
-	-moz-transition: all .25s linear;
-	-webkit-transition: all .25s linear;
-	-o-transition: all .25s linear;
+.navbar .pop-dialog .notifications .item {
+    display: block;
+    padding: 5px 0px 5px 42px;
+    border-top: 1px solid rgb(231, 232, 234);
+    color: rgb(54, 54, 54);
+    font-size: 11px;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.25s linear 0s;
+    min-height: 30px;
+    background: #f5f5f5;
 }
 
 .navbar  .pop-dialog .notifications .unread {
-	background: #f4f6f9;
+	background: #ffffff;
 }
 
 .navbar  .pop-dialog .notifications .item:hover {
-	background: #f4f6f9;
+	/*background: #f4f6f9;*/
 }
 
 .navbar  .pop-dialog .notifications .item .bluename {
@@ -437,19 +437,26 @@ border-top: 0;
 }
 
 /* Sidebar */
-#sidebar-nav .add-doc {
-	padding-bottom: 10px;
-	margin: 0px 12%;
-}
 
-#sidebar-nav .add-doc .btn {
-	
-}
 #sidebar-nav {
 	width: 12%;
 	min-height: 100%;
 	padding: 10px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
+	position: relative;
+}
+#sidebar-nav .add-doc {
+	padding-bottom: 1px;
+	margin: 0px 12%;
+}
+#sidebar-nav .document-dialog .body{
+    width: 265px;
+    margin-left: 20px;
+    border-radius: 1px;
+}
+
+#sidebar-nav .document-dialog .row-fluid{
+	min-height:40px;
 }
 
 .working-request{
@@ -467,7 +474,7 @@ border-top: 0;
 }
 .main-container .content-right #middle-box{
   width: 22.2%;
-  height: 100%;
+  height: 84%;
 }
 
 
@@ -633,7 +640,7 @@ border-top: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
 	width: 77.7%;
-	height: 100%;
+	height: 92%;
 }
 #detailed-info .upper-content{
     height: 100%;
@@ -829,7 +836,6 @@ border-top: 0;
 #detailed-info .recent-activity .comment-container{
 	border:1px solid #b4bbcd;
 	position: relative;
-	top: -14px;
 	z-index: 0;
 	width: 570px;
 }
@@ -921,6 +927,8 @@ border-top: 0;
 	padding-left: 0px;
 	margin-bottom: 0;
 	margin-left: 0px;
+	position: absolute;
+	top: 50px;
 }
 
 #dashboard-menu>li>a {
@@ -1231,9 +1239,8 @@ border-top: 0;
 	text-shadow: none;
 }
 
-/*---Tablet Appearance---*/
+/*---Tablet Layouting---*/
 @media (min-width: 768px) and (max-width: 1280px){ 
-	
 	/*1.Sidebar*/
 	#dashboard-menu ul.submenu a{
 	padding-left: 21px;

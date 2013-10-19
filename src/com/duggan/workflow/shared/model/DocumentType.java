@@ -11,15 +11,25 @@ public class DocumentType implements Listable, Serializable{
 	private Long id;
 	private String name;
 	private String display;
+	private String className;
 	
 	public DocumentType(){
 		
 	}
 	
-	public DocumentType(Long id, String name, String display){
+	public DocumentType(Long id, String name, String display, String className){
 		this.id = id;
 		this.name = name;
 		this.display = display;
+		this.className=className;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 	public String getName() {

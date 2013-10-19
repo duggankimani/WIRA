@@ -116,7 +116,7 @@ public class DocumentDaoHelper {
 	}
 
 	public static DocumentType getType(ADDocType adtype) {
-		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(), adtype.getDisplay());
+		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(), adtype.getDisplay(), adtype.getClassName());
 		return type;
 	}
 

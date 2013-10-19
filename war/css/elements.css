@@ -560,11 +560,18 @@
 	font-size: 13px;
 	color: grey;
 }
- .dialog .body span {
+ .dialog-filter .body span{
      color:grey;
      font-size: 12px;   
- } 
- .dialog .body span.input-group-addon {
+ }
+
+.dialog .body span.doctitle { 
+	margin-left: 6px;
+	vertical-align: top;
+	line-height: 30px;
+}
+
+.dialog .body span.input-group-addon {
      color:#000000;
  }
  .dialog .body .form { }

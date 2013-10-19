@@ -2,9 +2,9 @@ package com.duggan.workflow.client.ui.home;
 
 import static com.duggan.workflow.client.ui.home.HomePresenter.ACTIVITIES_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.DATEGROUP_SLOT;
+import static com.duggan.workflow.client.ui.home.HomePresenter.DOCPOPUP_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.DOCUMENT_SLOT;
 import static com.duggan.workflow.client.ui.home.HomePresenter.FILTER_SLOT;
-import static com.duggan.workflow.client.ui.home.HomePresenter.ADMIN_SLOT;
 
 import java.util.HashMap;
 
@@ -12,7 +12,6 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -60,6 +59,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@UiField HTMLPanel filterDialog;
 	@UiField InlineLabel spnNoItems;
 	@UiField HTMLPanel activityContainer;
+	@UiField HTMLPanel divDocPopup;
 	@UiField Element divDocListing;
 	@UiField Element divDocView;
 	@UiField HTMLPanel wholeContainer;
@@ -68,6 +68,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	
 	//Filter Dialog Caret
 	boolean isNotDisplayed=true;
+	boolean isDocPopupDisplayed=false;
 	
 	@Inject
 	public HomeView(final Binder binder) {
@@ -177,6 +178,13 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			filterDialog.clear();
 			if (content != null) {
 				filterDialog.add(content);
+			}
+			
+		}	
+		else if (slot == DOCPOPUP_SLOT) {
+			divDocPopup.clear();
+			if (content != null) {
+				divDocPopup.add(content);
 			}
 			
 		}		
@@ -324,6 +332,17 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			wholeContainer.addStyleName("working-request");
 		}else{
 			wholeContainer.removeStyleName("working-request");
+		}
+	}
+
+	@Override
+	public void setDocPopupVisible() {
+		if(isDocPopupDisplayed){
+			divDocPopup.removeStyleName("hidden");
+			isDocPopupDisplayed=false;
+		}else{			
+			divDocPopup.addStyleName("hidden");
+			isDocPopupDisplayed=true;
 		}
 	}
 
