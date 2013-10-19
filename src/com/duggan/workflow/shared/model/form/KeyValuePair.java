@@ -3,7 +3,9 @@ package com.duggan.workflow.shared.model.form;
 import java.io.Serializable;
 import java.lang.String;
 
-public class KeyValuePair implements Serializable {
+import com.duggan.workflow.shared.model.Listable;
+
+public class KeyValuePair implements Serializable, Listable {
 
 	private static final long serialVersionUID = -5161552354221706835L;
 	private String key;
@@ -25,6 +27,16 @@ public class KeyValuePair implements Serializable {
 	}
 
 	public String getValue() {
+		return value;
+	}
+
+	@Override
+	public String getName() {
+		return key;
+	}
+
+	@Override
+	public String getDisplayName() {
 		return value;
 	}
 }

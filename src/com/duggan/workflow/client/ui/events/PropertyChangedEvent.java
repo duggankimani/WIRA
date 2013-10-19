@@ -11,14 +11,14 @@ public class PropertyChangedEvent extends
 	public static Type<PropertyChangedHandler> TYPE = new Type<PropertyChangedHandler>();
 	private Long componentId;
 	private String propertyName;
-	private String propertyValue;
+	private Object propertyValue;
 	private boolean isForField;
 
 	public interface PropertyChangedHandler extends EventHandler {
 		void onPropertyChanged(PropertyChangedEvent event);
 	}
 
-	public PropertyChangedEvent(Long componentId,String propertyName, String propertyValue, boolean isForField ) {
+	public PropertyChangedEvent(Long componentId,String propertyName, Object propertyValue, boolean isForField ) {
 		this.componentId = componentId;
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;
@@ -47,7 +47,7 @@ public class PropertyChangedEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long componentId,String propertyName, String propertyValue, boolean isForField) {
+	public static void fire(HasHandlers source, Long componentId,String propertyName, Object propertyValue, boolean isForField) {
 		source.fireEvent(new PropertyChangedEvent(componentId,propertyName, propertyValue, isForField));
 	}
 
@@ -55,7 +55,7 @@ public class PropertyChangedEvent extends
 		return propertyName;
 	}
 
-	public String getPropertyValue() {
+	public Object getPropertyValue() {
 		return propertyValue;
 	}
 }

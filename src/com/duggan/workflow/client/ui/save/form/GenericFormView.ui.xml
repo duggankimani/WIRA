@@ -1,0 +1,44 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:v='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:DialogBox text="Add Document" modal="true" glassEnabled="true" ui:field="diaBox">
+	    <g:HTMLPanel>
+	    <v:IssuesPanel ui:field="issues">
+	    </v:IssuesPanel>
+	    
+	    <g:VerticalPanel ui:field="panelFields"></g:VerticalPanel>
+	    
+	    <table class="edittable">
+	        <tr>
+	            <td class="label">Priority</td>
+	            <td>
+	                <div class="priority-group">
+		                <g:CheckBox ui:field="chkNormal" text="Normal"/>
+		                <g:CheckBox ui:field="chkHigh" text="High"/>
+		                <g:CheckBox ui:field="chkCritical" text="Urgent"/>
+	                </div>
+	            </td>
+	        </tr>
+	        
+	        <tr>
+				<td colspan="2">
+					<g:FlowPanel styleName="button-group reportbutton">
+					    <g:Button ui:field="btnSave">Save</g:Button>
+					    <g:Button ui:field="btnApproval">Forward For Approval</g:Button>
+					    <g:Button ui:field="btnCancel">Cancel</g:Button>					    
+					</g:FlowPanel>
+				</td>
+			</tr>
+	    </table>
+	  </g:HTMLPanel>
+	</g:DialogBox>
+</ui:UiBinder>

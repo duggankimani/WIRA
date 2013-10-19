@@ -151,7 +151,7 @@ public class FormBuilderPresenter extends
 			return;
 		
 		String property = event.getPropertyName();
-		String value= event.getPropertyValue();
+		String value= event.getPropertyValue().toString();
 		
 		getView().setProperty(property, value);
 		saveForm(getView().getForm());

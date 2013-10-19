@@ -1,7 +1,5 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
-import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -45,7 +43,7 @@ public class TextField extends FieldWidget {
 		
 		txtComponent.setText(text);
 		txtComponent.setClass("input-large"); //Smaller TextField
-		isPropertyField=true;
+		showShim=true;
 		
 		final String name = property.getName();
 		
@@ -67,14 +65,14 @@ public class TextField extends FieldWidget {
 				previousValue.setValue(value);
 				property.setValue(previousValue);
 				
-				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){
-				
-					boolean isForField = property.getFieldId()!=null;
-					
-					Long componentId = property.getFieldId()!=null? property.getFieldId(): property.getFormId();
-					
-					AppContext.getEventBus().fireEventFromSource(
-							new PropertyChangedEvent(componentId,property.getName(), value, isForField), this);
+				/**
+				 * This allows visual properties including Caption, Place Holder, help to be 
+				 * Sysnched with the form field, so that the changes are observed immediately
+				 * 
+				 * All other Properties need not be synched this way 
+				 */
+				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
+					firePropertyChanged(property, value);
 				}
 				//AppContext.getEventBus().fireEvent(new );
 				//AppContext.getEventBus().fireEvent(event);

@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DateField;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.InlineCheckBox;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.duggan.workflow.shared.model.form.Property;
@@ -74,27 +75,9 @@ public class PropertyPanelView extends PopupViewImpl implements
 	public void showProperties(List<Property> properties) {
 		clear();
 		for(Property property: properties){
-			switch (property.getType()) {
-			case BOOLEAN:
-				add(new InlineCheckBox());
-				break;
-				
-			case DATE:
-				add(new DateField(property));
-				break;
-
-			case DOUBLE:
-				add(new TextField(property));
-				break;
-
-			case INTEGER:
-				add(new TextField(property));
-				break;
-
-			case STRING:
-				add(new TextField(property));
-				break;
-			}
+			assert property!=null;
+			
+			add(FieldWidget.getWidget(property));
 		}
 	}
 

@@ -1,6 +1,11 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.List;
+
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -17,6 +22,8 @@ public class SelectBasic extends FieldWidget {
 
 	@UiField Element lblEl;
 	
+	@UiField DropDownList<KeyValuePair> lstItems;
+	
 	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
 	}
 
@@ -30,6 +37,17 @@ public class SelectBasic extends FieldWidget {
 	@Override
 	public FieldWidget cloneWidget() {
 		return new SelectBasic();
+	}
+	
+	@Override
+	public void setField(Field field) {
+		super.setField(field);
+		
+		List<KeyValuePair> lst = field.getSelectionValues();
+		System.err.println(lst);
+		if(lst!=null){
+			lstItems.setItems(lst);
+		}
 	}
 	
 	@Override

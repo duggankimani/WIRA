@@ -45,7 +45,7 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	
 	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
 	
-	protected boolean isPropertyField=false;
+	protected boolean showShim=true;
 	
 	Field field = new Field();
 	
@@ -56,8 +56,7 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		addProperty(new Property(NAME, "Name", DataType.STRING, id));
 		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
 		addProperty(new Property(HELP, "Help", DataType.STRING, id));
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.BOOLEAN, id));
-		addProperty(new Property(READONLY, "Read Only", DataType.BOOLEAN, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		
 		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE,this);
 		AppContext.getEventBus().addHandler(SavePropertiesEvent.TYPE,this);
@@ -186,7 +185,7 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		getElement().getStyle().setPosition(Position.RELATIVE);
 	
 		//should we do this only if this is not a property field?
-		if(!isPropertyField)
+		if(showShim)
 			add(shim, 0, 0);
 	}
 
@@ -201,7 +200,10 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	
 	public List<Property> getProperties(){
 		List<Property> values = new ArrayList<Property>();
-		values.addAll(props.values());
+		for(Property prop: props.values()){
+			values.add(prop);
+		}
+		
 		return values;
 	}
 	
@@ -216,16 +218,17 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		}
 		
 		String property = event.getPropertyName();
-		String value= event.getPropertyValue();
+		Object value= event.getPropertyValue();
 		
 		if(property.equals(CAPTION))
-			setCaption(value);
+			setCaption(value==null? null: value.toString());
 		
 		if(property.equals(PLACEHOLDER))
-			setPlaceHolder(value);
+			setPlaceHolder(value==null? null: value.toString());
 		
 		if(property.equals(HELP))
-			setHelp(value);
+			setHelp(value==null? null: value.toString());
+		
 		
 	}
 	
@@ -236,6 +239,10 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	protected void setHelp(String help){}
 	
 	protected abstract DataType getType();
+	
+	public void setValue(Object value){
+		
+	}
 
 	public void setFormId(Long formId) {
 		field.setFormId(formId);
@@ -244,11 +251,12 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	private void save(Field model) {
 		assert model.getFormId()!=null;
 		
-		System.err.println("SAVE >> "+field);
 		model.setType(getType());
+		
 		model.setProperties(getProperties());
 		
 		model.setName(getValue(NAME));
+		
 		model.setCaption(getValue(CAPTION));
 		
 		AppContext.getDispatcher().execute(new CreateFieldRequest(model), 
@@ -274,6 +282,10 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		if(placeHolder!=null && !placeHolder.isEmpty() )
 			setPlaceHolder(placeHolder);
 		
+		Value value = field.getValue();
+		if(value!=null){
+			setValue(value.getValue());
+		}
 	}
 
 	private void setProperties(List<Property> properties) {
@@ -299,6 +311,24 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 
 	public void save() {
 		save(field);
+	}
+	
+	/**
+	 * This allows visual properties including Caption, Place Holder, help to be 
+	 * Synched with the form field, so that the changes are observed immediately
+	 * 
+	 * All other Properties need not be synched this way 
+	 * 
+	 * @param property
+	 * @param value Boolean, Double 
+	 */
+	protected void firePropertyChanged(Property property, Object value){
+		boolean isForField = property.getFieldId()!=null;
+		
+		Long componentId = property.getFieldId()!=null? property.getFieldId(): property.getFormId();
+		
+		AppContext.getEventBus().fireEventFromSource(
+				new PropertyChangedEvent(componentId,property.getName(), value, isForField), this);
 	}
 
 	public static FieldWidget getWidget(DataType type, Field fld, boolean activatePopup) {
@@ -353,8 +383,11 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	
 		widget.setField(fld);
 		
-		if(activatePopup)
+		if(activatePopup){
 			widget.activatePopup();
+		}else{
+			widget.showShim=false;
+		}
 		
 		return widget;
 	}
@@ -395,5 +428,49 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 				}			
 			}
 		}
+	}
+
+	public static Widget getWidget(Property property) {
+
+		FieldWidget widget = null;
+		switch (property.getType()) {
+		case BOOLEAN:
+			widget = new InlineCheckBox();
+			break;
+			
+		case DATE:
+			widget = new DateField(property);
+			break;
+
+		case DOUBLE:
+			widget = new TextField(property);
+			break;
+
+		case INTEGER:
+			widget = new TextField(property);
+			break;
+
+		case STRING:
+			widget = new TextField(property);
+			break;
+		
+		case STRINGLONG:
+			widget = new TextField(property);
+			break;
+			
+		case CHECKBOX:
+			widget = new InlineCheckBox(property);
+			break;
+		}
+		
+		//System.err.println(">>>"+property.getType()+" :: "+property.getCaption());
+		
+		assert widget!=null;
+		
+		if(widget!=null){
+			widget.showShim=false;
+		}
+
+		return widget;
 	}
 }

@@ -31,6 +31,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
+import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
@@ -126,6 +127,9 @@ public class HomePresenter extends
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	
+	private IndirectProvider<GenericFormPresenter> genericFormProvider;
+	
+	
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
 	
 	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
@@ -152,6 +156,7 @@ public class HomePresenter extends
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy,
 			Provider<CreateDocPresenter> docProvider,
+			Provider<GenericFormPresenter> formProvider,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy);
@@ -159,6 +164,7 @@ public class HomePresenter extends
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
 		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
+		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);
 	}
 
 	protected void search() {
@@ -233,7 +239,8 @@ public class HomePresenter extends
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showEditForm(MODE.CREATE);
+				//showEditForm(MODE.CREATE);
+				showEditForm();
 			}
 		});
 		
@@ -427,6 +434,15 @@ public class HomePresenter extends
 					result.setDocumentId(selectedValue);
 				}
 					
+				addToPopupSlot(result, true);
+			}
+		});
+	}
+	
+	protected void showEditForm(){
+		genericFormProvider.get(new ServiceCallback<GenericFormPresenter>() {
+			@Override
+			public void processResult(GenericFormPresenter result) {
 				addToPopupSlot(result, true);
 			}
 		});

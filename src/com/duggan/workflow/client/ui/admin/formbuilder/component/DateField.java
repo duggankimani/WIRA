@@ -40,7 +40,7 @@ public class DateField extends FieldWidget {
 		String caption = property.getCaption();
 		String name = property.getName();
 		Value val = property.getValue();
-		isPropertyField=true;
+		showShim=false;
 		
 	}
 

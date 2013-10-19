@@ -44,6 +44,8 @@ import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupView;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocView;
+import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
+import com.duggan.workflow.client.ui.save.form.GenericFormView;
 import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
 import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewView;
 import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewPresenter;
@@ -214,5 +216,9 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(GenericPopupPresenter.class, GenericPopupPresenter.MyView.class,
 				GenericPopupView.class);
+		
+		bindPresenterWidget(GenericFormPresenter.class, GenericFormPresenter.ICreateDocView.class,
+				GenericFormView.class);
+		
 }
 }

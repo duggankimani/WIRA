@@ -171,13 +171,6 @@ public class CreateDocPresenter extends
 									Document saved = result.getDocument();
 									assert saved.getId() != null;
 									fireEvent(new AfterSaveEvent());
-									// PlaceRequest request = new
-									// PlaceRequest("home").
-									// with("type",
-									// TaskType.DRAFT.getDisplayName());
-									//
-									// placeManager.revealPlace(request);
-
 									getView().hide();
 								}
 							});

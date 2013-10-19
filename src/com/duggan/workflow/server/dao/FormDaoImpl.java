@@ -182,7 +182,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	public List<ADKeyValuePair> getKeyValuePairs(String type) {
 		
 		@SuppressWarnings("unchecked")
-		List<ADKeyValuePair> pairs = em.createQuery("FROM ADKeyValuePair p where p.displayValue=:type")
+		List<ADKeyValuePair> pairs = em.createQuery("FROM ADKeyValuePair p where p.referenceType=:type")
 		.setParameter("type", type).getResultList();
 		
 		return pairs;

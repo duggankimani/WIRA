@@ -5,22 +5,7 @@
 			   <g:HTMLPanel styleName="control-group">
 			       <label ui:field="lblEl" class="control-label">checkbox Buttons:</label>
 				    <div class="controls">
-					    <label class="checkbox inline" for="checkbox-0">
-					      <input type="checkbox" name="checkbox" id="racheckbox0" value="1" checked="checked"/>
-					      1
-					    </label>
-					    <label class="checkbox inline" for="checkboxs-1">
-					      <input type="checkbox" name="checkboxs" id="checkboxs-1" value="2"/>
-					      2
-					    </label>
-					    <label class="checkbox inline" for="checkboxs-2">
-					      <input type="checkbox" name="checkboxs" id="checkboxs-2" value="3"/>
-					      3
-					    </label>
-					    <label class="checkbox inline" for="checkboxs-3">
-					      <input type="checkbox" name="checkboxs" id="checkboxs-3" value="4"/>
-					      4
-					    </label>
+					    <g:CheckBox ui:field="component"></g:CheckBox>
 					  </div>
 		       </g:HTMLPanel>
 	       </g:AbsolutePanel>

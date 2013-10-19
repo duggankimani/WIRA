@@ -225,7 +225,30 @@ public class FormDaoHelper {
 		case STRING:
 			value = new StringValue(id, key, advalue.getStringValue());
 			break;
+
+		case CHECKBOX:
+			value = new BooleanValue(id, key, advalue.getBooleanValue());
+			break;
+
 			
+		case MULTIBUTTON:
+			value = new StringValue(id, key, advalue.getStringValue());
+			break;
+
+			
+		case SELECTBASIC:
+			value = new StringValue(id, key, advalue.getStringValue());
+			break;
+
+			
+		case SELECTMULTIPLE:
+			value = new StringValue(id, key, advalue.getStringValue());
+			break;
+
+			
+		case STRINGLONG:
+			value = new StringValue(id, key, advalue.getStringValue());
+			break;
 		}
 		
 		
@@ -410,6 +433,25 @@ public class FormDaoHelper {
 			advalue.setStringValue((String)value.getValue());			
 			break;
 			
+		case STRINGLONG:
+			advalue.setStringValue((String)value.getValue());			
+			break;
+			
+		case CHECKBOX:
+			advalue.setBooleanValue((Boolean)value.getValue());			
+			break;
+			
+		case MULTIBUTTON:
+			advalue.setStringValue((String)value.getValue());			
+			break;
+			
+		case SELECTBASIC:
+			advalue.setStringValue((String)value.getValue());			
+			break;
+			
+		case SELECTMULTIPLE:
+			advalue.setStringValue((String)value.getValue());			
+			break;
 		}
 		
 		return advalue;
