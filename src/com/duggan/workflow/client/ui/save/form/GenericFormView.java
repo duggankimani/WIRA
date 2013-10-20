@@ -7,8 +7,12 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.IntValue;
 import com.duggan.workflow.shared.model.Priority;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
@@ -111,18 +115,100 @@ public class GenericFormView extends PopupViewImpl implements
 		Document doc = new Document();
 		doc.setDocumentDate(new Date());
 		doc.setId(null);
+		doc.setType(new DocumentType(3L,"REQUISITION","Requisition","color-win8"));
 		doc.setPriority(getPriority().ordinal());
+		doc.setValue("priority", new IntValue(doc.getPriority()));
 
+		int fields = panelFields.getWidgetCount();
+		
+		for(int i=0; i<fields; i++){
+			Widget widget = panelFields.getWidget(i);
+			if(!(widget instanceof FieldWidget)){
+				continue;
+			}
+			
+			FieldWidget fieldWidget = (FieldWidget)widget;
+			Field field = fieldWidget.getField();
+			
+			Value fieldValue = fieldWidget.getFieldValue();
+			if(field.getType()==DataType.STRING ||
+					field.getType()==DataType.STRINGLONG
+					|| field.getType()==DataType.DATE) {
+				
+				doc.setValue(field.getName(), fieldValue);
+				
+			}
+			
+			Object val = null;
+			
+			if(fieldValue!=null){
+				val = fieldValue.getValue();
+			}
+			
+			if(field.getName().equals("description"))
+				doc.setDescription(val==null? null : val.toString());
+			
+			if(field.getName().equals("dueDate"))
+				doc.setDateDue(val==null? null : (Date)val);
+			
+			if(field.getName().equals("docDate"))
+				doc.setDocumentDate(val==null? null : (Date)val);
+			
+			if(field.getName().equals("partner"))
+				doc.setPartner(val==null? null : val.toString());
+			
+			if(field.getName().equals("subject"))
+				doc.setSubject(val==null? null : val.toString());
+			
+			if(field.getName().equals("docType"))
+				doc.setType(val==null? null : (DocumentType)val);
+			
+			if(field.getName().equals("value"))
+				doc.setValue(val==null? null : val.toString());
+		}
+		
 		return doc;
 	}
 
 	@Override
 	public boolean isValid() {
 		// txtDescription.getValue();
-
 		boolean isValid = true;
-
 		issues.clear();
+		
+		int fields = panelFields.getWidgetCount();
+		
+		for(int i=0; i<fields; i++){
+			Widget widget = panelFields.getWidget(i);
+			
+			if(!(widget instanceof FieldWidget)){
+				continue;
+			}
+			
+			FieldWidget fieldWidget = (FieldWidget)widget;
+			Field field = fieldWidget.getField();
+			
+			Object obj = fieldWidget.getValue(FieldWidget.MANDATORY);
+			if(obj==null){
+				continue;
+			}
+			
+			Boolean mandatory = (Boolean)obj;
+			if(mandatory){
+				Value fieldValue = fieldWidget.getFieldValue();
+				Object val = null;
+				
+				if(fieldValue!=null){
+					val = fieldValue.getValue();
+				}
+				
+				if(val==null){
+					isValid=false;
+					issues.addError("'"+field.getCaption()+"' is Mandatory");
+				}
+				
+			}
+		}
 		
 		return isValid;
 	}

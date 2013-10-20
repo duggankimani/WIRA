@@ -1,6 +1,10 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.Date;
+
+import com.duggan.workflow.client.ui.component.DateInput;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -20,6 +24,7 @@ public class DateField extends FieldWidget {
 	private final Widget widget;
 	
 	@UiField Element lblEl;
+	@UiField DateInput dateBox;
 	
 	public DateField() {
 		super();
@@ -67,5 +72,16 @@ public class DateField extends FieldWidget {
 	@Override
 	protected DataType getType() {
 		return DataType.DATE;
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		Date dt = dateBox.getDate();
+		
+		if(dt==null){
+			return null;
+		}
+		
+		return new DateValue(field.getId(), field.getName(), dt);
 	}
 }

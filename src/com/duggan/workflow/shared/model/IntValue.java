@@ -1,48 +1,59 @@
 package com.duggan.workflow.shared.model;
 
-import java.util.Date;
-
-public class DateValue implements Value{
+public class IntValue implements Value{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private Date value;
+	private Integer value;
 	private String key;
 	private Long id;
 	
-	public DateValue(){	
+	public IntValue() {
 	}
 	
-	public DateValue(Long id, String key, Date value){
+	public IntValue(Integer value){
+		this();
+		this.value = value;
+	}
+	
+	public IntValue(Long id, String key, Integer value){
 		this.id=id;
 		this.key=key;
 		this.value=value;
 	}
 	
-	public Date getValue() {
+	@Override
+	public void setValue(Object value) {
+		this.value = (Integer)value;
+	}
+
+	@Override
+	public Object getValue() {
+		
 		return value;
 	}
-	public void setValue(Object value) {
-		this.value = (Date)value;
-	}
+
 	public String getKey() {
 		return key;
 	}
+
 	public void setKey(String key) {
 		this.key = key;
 	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	@Override
 	public DataType getDataType() {
-		return DataType.DATE;
+		return DataType.INTEGER;
 	}
+
 }

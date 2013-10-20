@@ -3,9 +3,13 @@ package com.duggan.workflow.client.ui.save.form;
 import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
+import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -64,6 +68,32 @@ public class GenericFormPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().hide();
+			}
+		});
+		
+		getView().getSave().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				Document document = getView().getDocument();
+				document.setStatus(DocStatus.DRAFTED);
+				document.setId(Id);
+
+				// document.setDescription(null);
+				if (getView().isValid()) {
+					requestHelper.execute(new CreateDocumentRequest(document),
+							new TaskServiceCallback<CreateDocumentResult>() {
+								@Override
+								public void processResult(
+										CreateDocumentResult result) {
+
+									Document saved = result.getDocument();
+									assert saved.getId() != null;
+									fireEvent(new AfterSaveEvent());
+									getView().hide();
+								}
+							});
+				}
 			}
 		});
 	}

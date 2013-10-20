@@ -218,11 +218,11 @@ public class FormBuilderView extends ViewImpl implements
 	
 	public Form getForm(){
 		
-		String name = getValue(NAME);
+		String name = getPropertyValue(NAME);
 		if(name==null){
 			name = "Untitled";
 		}
-		String caption = getValue(CAPTION);
+		String caption = getPropertyValue(CAPTION);
 		if(caption==null){
 			caption="Untitled";
 		}
@@ -333,7 +333,7 @@ public class FormBuilderView extends ViewImpl implements
 			addProperty(prop);
 		}
 
-		String caption = getValue(CAPTION);
+		String caption = getPropertyValue(CAPTION);
 		
 		Property captionProperty = props.get(CAPTION);
 		if(caption==null && captionProperty!=null){
@@ -345,7 +345,7 @@ public class FormBuilderView extends ViewImpl implements
 			}
 		}
 		
-		String name = getValue(NAME);
+		String name = getPropertyValue(NAME);
 		Property nameProperty = props.get(NAME);
 		if(name==null && nameProperty!=null){
 			Value val = nameProperty.getValue();
@@ -401,7 +401,7 @@ public class FormBuilderView extends ViewImpl implements
 		return values;
 	}
 	
-	public String getValue(String key) {
+	public String getPropertyValue(String key) {
 		
 		Property property = props.get(key);
 		
@@ -455,5 +455,25 @@ public class FormBuilderView extends ViewImpl implements
 		}
 		
 		vPanel.clear();
+	}
+
+	@Override
+	public Object getValue(String propertyName) {
+	
+		Property property = props.get(propertyName);
+		
+		if(property==null)
+			return null;
+		
+		Value value = property.getValue();
+		if(value==null)
+			return null;
+		
+		return value.getValue();
+	}
+
+	@Override
+	public Value getFieldValue() {
+		return null;
 	}
 }

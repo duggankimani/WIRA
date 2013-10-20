@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import java.util.List;
 
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 
 public interface HasProperties {
@@ -16,7 +17,11 @@ public interface HasProperties {
 	
 	void addProperty(Property property);
 	
-	String getValue(String key);
+	String getPropertyValue(String propertyName);
+	
+	Object getValue(String propertyName);
+	
+	Value getFieldValue();
 	
 	List<Property> getProperties();
 }

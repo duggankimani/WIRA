@@ -11,13 +11,33 @@
      
     <g:HTMLPanel ui:field="mainContainer" styleName="full-page">
       <div id="sidebar-nav" class="span2">
-        <!--Button Add Document -->
+        
+      <!-- g:HTMLPanel styleName="navbar" ui:field="divNavbar">
+       <div class="navbar-inner">
+        <ul class="nav pull-right">
+        <li class="dropdown">
+           <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+               <g:Button styleName="btn-danger btn-large">Add Document</g:Button>
+           </a>
+           <ul class="dropdown-menu">
+               <div>This is what am looking for</div>
+           </ul>
+ 		</li>
+        </ul>
+        </div>
+       </g:HTMLPanel -->
+       
+      	 <!--Button Add Document -->
         <div class="add-doc">
             <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>
         </div>
+       
       	 <!-- Document Pop-up  -->
-         <g:HTMLPanel ui:field="divDocPopup"></g:HTMLPanel>
-          
+      	 <g:Anchor ui:field="popParent"></g:Anchor>
+         <g:HTMLPanel ui:field="divDocPopup">
+             
+         </g:HTMLPanel>
+        <!-- d:Popup ui:field="docPopup"></d:Popup -->
         <ul id="dashboard-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">

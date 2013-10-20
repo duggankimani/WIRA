@@ -251,11 +251,10 @@ public class HomePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//showEditForm(MODE.CREATE);
-				showEditForm();
+				//showEditForm();
 				
-//				setInSlot(DOCPOPUP_SLOT, docPopup);
-//				getView().setDocPopupVisible();
-
+				setInSlot(DOCPOPUP_SLOT, docPopup);
+				getView().setDocPopupVisible();
 			}
 			
 		});
@@ -542,6 +541,7 @@ public class HomePresenter extends
 
 	@Override
 	public void onCreateDocument(CreateDocumentEvent event) {
-		System.out.println(event.getDocType());
+		//System.out.println(event.getDocType());
+		showEditForm();
 	}
 }

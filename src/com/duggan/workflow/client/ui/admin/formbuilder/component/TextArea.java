@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -54,4 +56,14 @@ public class TextArea extends FieldWidget {
 		return DataType.STRINGLONG;
 	}
 
+	@Override
+	public Value getFieldValue() {
+		
+		String value = txtComponent.getValue();
+		
+		if(value==null || value.isEmpty())
+			return null;
+		
+		return new StringValue(value);
+	}
 }

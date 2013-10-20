@@ -4,7 +4,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 	     <div class="input-group">
-		  	  <dt:DateBox ui:field="txtUserName"/>
+		  	  <dt:DateBox ui:field="dtInput"/>
 		  	  <g:InlineLabel styleName="input-group-addon" ui:field="spnCalendar1"></g:InlineLabel>
 		  	  </div>
 	</g:HTMLPanel>

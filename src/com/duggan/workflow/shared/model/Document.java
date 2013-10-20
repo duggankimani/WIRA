@@ -2,6 +2,8 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * DTO for {@link com.duggan.workflow.server.dao.model.DocumentModel}
@@ -43,6 +45,8 @@ public class Document extends DocSummary implements Serializable{
 	
 	private Long sessionId;
 
+	private Map<String, Value> values = new HashMap<String, Value>();
+	
 	public Document() {
 		//serialization
 		//super();
@@ -183,4 +187,10 @@ public class Document extends DocSummary implements Serializable{
 	
 		return "DocumentId = "+id+", subject="+subject;
 	}
+	
+	public void setValue(String name, Value value){
+		values.put(name, value);
+	}
+	
+	//public Map<String, Value> 
 }

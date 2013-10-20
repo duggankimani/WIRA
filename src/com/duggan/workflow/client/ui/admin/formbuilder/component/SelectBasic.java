@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
@@ -44,7 +46,6 @@ public class SelectBasic extends FieldWidget {
 		super.setField(field);
 		
 		List<KeyValuePair> lst = field.getSelectionValues();
-		System.err.println(lst);
 		if(lst!=null){
 			lstItems.setItems(lst);
 		}
@@ -63,6 +64,23 @@ public class SelectBasic extends FieldWidget {
 	@Override
 	protected void setHelp(String help) {
 		//txtComponent.setTitle(help);
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		KeyValuePair kvp = lstItems.getValue();
+		
+		String value = null;
+		
+		if(kvp!=null){
+			value = kvp.getValue();
+		}
+		
+		if(value!=null){
+			return new StringValue(value);
+		}
+		
+		return null;
 	}
 	
 	@Override

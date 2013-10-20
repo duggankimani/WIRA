@@ -65,8 +65,8 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 	}
 
 	private void initField() {
-		field.setCaption(getValue(CAPTION));
-		field.setName(getValue(NAME));
+		field.setCaption(getPropertyValue(CAPTION));
+		field.setName(getPropertyValue(NAME));
 		field.setType(DataType.STRING);
 		field.setValue(null);
 		field.setType(getType());
@@ -128,7 +128,7 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		return field;
 	}
 	
-	public String getValue(String key) {
+	public String getPropertyValue(String key) {
 		
 		Property property = props.get(key);
 		
@@ -141,6 +141,28 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		
 		return value.getValue()==null? null : value.getValue().toString();
 	}
+	
+
+	@Override
+	public Object getValue(String propertyName) {
+		Property property = props.get(propertyName);
+		
+		if(property==null)
+			return null;
+		
+		Value value = property.getValue();
+		if(value==null)
+			return null;
+		
+		return value.getValue();
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		
+		return null;
+	}
+	
 
 	@Override
 	public Widget getDragHandle() {
@@ -255,9 +277,9 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		
 		model.setProperties(getProperties());
 		
-		model.setName(getValue(NAME));
+		model.setName(getPropertyValue(NAME));
 		
-		model.setCaption(getValue(CAPTION));
+		model.setCaption(getPropertyValue(CAPTION));
 		
 		AppContext.getDispatcher().execute(new CreateFieldRequest(model), 
 				new TaskServiceCallback<CreateFieldResponse>() {
@@ -274,11 +296,11 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		this.id = field.getId();
 		setProperties(field.getProperties());
 		
-		String caption =getValue(CAPTION);
+		String caption =getPropertyValue(CAPTION);
 		if(caption!=null && !caption.isEmpty())
 			setCaption(caption);
 		
-		String placeHolder = getValue(PLACEHOLDER);
+		String placeHolder = getPropertyValue(PLACEHOLDER);
 		if(placeHolder!=null && !placeHolder.isEmpty() )
 			setPlaceHolder(placeHolder);
 		

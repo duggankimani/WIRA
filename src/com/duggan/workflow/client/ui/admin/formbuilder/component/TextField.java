@@ -107,4 +107,14 @@ public class TextField extends FieldWidget {
 		return DataType.STRING;
 	}
 	
+	@Override
+	public Value getFieldValue() {
+		String value = txtComponent.getValue();
+		
+		if(value==null || value.isEmpty())
+			return null;
+		
+		
+		return new StringValue(value);
+	}
 }
