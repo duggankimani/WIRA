@@ -252,7 +252,6 @@ public class GenericFormView extends PopupViewImpl implements
 	public void setForm(Form form) {
 		//paint the elements
 		diaBox.setText(form.getCaption());
-		
 		setFields(form.getFields());
 	}
 

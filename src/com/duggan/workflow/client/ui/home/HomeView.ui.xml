@@ -29,15 +29,14 @@
        
       	 <!--Button Add Document -->
         <div class="add-doc">
-            <g:Button ui:field="btnAdd" styleName="btn-danger btn-large">Add Document</g:Button>
+          <g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">Add Document</g:Anchor>
+        	
+          <!-- Document Pop-up  -->
+         <g:HTMLPanel ui:field="divDocPopup" styleName="dropdown-menu document-drop">
+         </g:HTMLPanel>
+        
         </div>
        
-      	 <!-- Document Pop-up  -->
-      	 <g:Anchor ui:field="popParent"></g:Anchor>
-         <g:HTMLPanel ui:field="divDocPopup">
-             
-         </g:HTMLPanel>
-        <!-- d:Popup ui:field="docPopup"></d:Popup -->
         <ul id="dashboard-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">

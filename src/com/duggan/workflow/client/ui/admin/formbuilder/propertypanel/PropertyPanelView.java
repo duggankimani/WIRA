@@ -2,10 +2,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
 import java.util.List;
 
-import com.duggan.workflow.client.ui.admin.formbuilder.component.DateField;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.InlineCheckBox;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -17,7 +14,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -60,7 +56,7 @@ public class PropertyPanelView extends PopupViewImpl implements
 			@Override
 			public void onBlur(BlurEvent event) {
 				//Window.alert("called Blur");
-				hide();
+				//hide();
 			}
 		});
 		

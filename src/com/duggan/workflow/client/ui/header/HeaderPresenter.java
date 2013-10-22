@@ -49,7 +49,6 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 		void setValues(String userNames, String userGroups);
 		Anchor getNotificationsButton();
 		void setPopupVisible();
-		void removePopup();
 		void setCount(Integer count);
 		HasBlurHandlers getpopupContainer();
 		void setLoading(boolean b);
@@ -100,11 +99,11 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 		});
 		
 		
-		getView().getNotificationsButton().addClickHandler(new ClickHandler() {
+		/*
+		 getView().getNotificationsButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().setPopupVisible();
-				setInSlot(NOTIFICATIONS_SLOT, notifications);	
 				onFocus =true;
 				getView().changeFocus();
 			}
@@ -117,12 +116,14 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 			}
 		});	
 		
+		*/
+		
 	}
 
 	@Override
 	protected void onReset() {		
 		super.onReset();
-		getView().removePopup();
+		setInSlot(NOTIFICATIONS_SLOT, notifications);	
 		loadAlertCount();
 		AppContext.reloadContext();
 	}

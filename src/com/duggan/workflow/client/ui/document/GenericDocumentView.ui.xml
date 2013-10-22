@@ -16,8 +16,8 @@
 				<span ui:field="spnSubject"></span>
 			</div>
 			<div class="action-buttons pull-right">
-				<d:ActionLink ui:field="aClaim" styleName="btn btn-default hidden"
-					title="Reserve this task. Other users with the same role cannot work on this task if claimed">
+				<d:ActionLink ui:field="aClaim" styleName="btn btn-default hidden" dataToggle="tooltip" title ="Test"
+							dataOriginalTitle="Reserve this task. Other users with the same role cannot work on this task if claimed">
 					<i class="icon-arrow-down"></i>
 					Claim
 				</d:ActionLink>

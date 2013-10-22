@@ -22,26 +22,21 @@
 	                 </g:Anchor>  
               </li>
               <li class="notification-dropdown">
-                      <g:Anchor ui:field="aNotifications" styleName="close-icon hand">
+                      <g:Anchor ui:field="aNotifications" styleName="close-icon hand dropdown-toggle">
                         <i class="icon-bell"></i>
                         <span ui:field="lblCount" class="label label-important"></span>
                    	  </g:Anchor>    
 
-	                     <g:FocusPanel ui:field="popupContainer" styleName="pop-dialog">     
-	                     	<g:HTMLPanel>                 
-		                        <g:HTMLPanel styleName="pointer right">
-		                            <div class="arrow"></div>
-		                            <div class="arrow_border"></div>
-		                        </g:HTMLPanel>
-		                     
-		                    	<g:HTMLPanel ui:field="notificationsContainer">
-		                    	</g:HTMLPanel>
-	                    	</g:HTMLPanel> 
-	                    </g:FocusPanel>
+                     <g:FocusPanel ui:field="popupContainer" styleName="notification-dialog dropdown-menu">     
+                     	<g:HTMLPanel>                 
+	                    	<g:HTMLPanel ui:field="notificationsContainer">
+	                    	</g:HTMLPanel>
+                    	</g:HTMLPanel> 
+                    </g:FocusPanel>
                                        
              </li>
 
-             <li class="dropdown">
+             <li class="user-dropdown dropdown">
                   <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
                       <span ui:field="spnUser"></span>
                       <img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/>
@@ -52,9 +47,6 @@
                         <div class="user-details row-fluid">
                         	<div class="span1">
   				          	<img class="" data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="70px" height="90px"/>                      
-                         	<!--span id="changephoto" class="gbxo">
-                         		<span class="gbxv">Change photo</span>
-                         	</span  -->
                          	</div>
 	                         <div class="span2">
 		                          <span class="text" ui:field="spnUserPull"></span>

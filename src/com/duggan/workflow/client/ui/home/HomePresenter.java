@@ -247,17 +247,17 @@ public class HomePresenter extends
 			}
 		});
 		
-		getView().getAddButton().addClickHandler(new ClickHandler() {
+		/*getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				//showEditForm(MODE.CREATE);
 				//showEditForm();
 				
-				setInSlot(DOCPOPUP_SLOT, docPopup);
+				
 				getView().setDocPopupVisible();
 			}
 			
-		});
+		});*/
 		
 		getView().getRefreshButton().addClickHandler(new ClickHandler() {
 			@Override
@@ -467,6 +467,7 @@ public class HomePresenter extends
 	protected void onReset() {
 		super.onReset();
 		setInSlot(FILTER_SLOT, filterPresenter);
+		setInSlot(DOCPOPUP_SLOT, docPopup);
 	}
 
 	@Override

@@ -194,28 +194,20 @@ border-top: 0;
 }
 
 /* navbar popup dialog */
-.navbar .pop-dialog {
-	position: absolute;
-	right: -10px;
-	top: 55px;
-	display: none;
-}
-
-.navbar .pop-dialog.is-visible {
-	display: block;
+.navbar .notification-dialog {	
 	-webkit-animation: reveal .2s ease-out;
 	-moz-animation: reveal .2s ease-out;
 	animation: reveal .2s ease-out;
-}
+	padding:0px;
+	}
 
-.navbar .pop-dialog .body {
-	box-shadow: 0px 1px 9px 1px #c2c2c2;
+.navbar .notification-dialog .body {
+	/*box-shadow: 0px 1px 9px 1px #c2c2c2;*/
 	overflow: hidden;
 }
 
-.navbar  .pop-dialog .footer {
+.navbar .notification-dialog .footer {
 	border-top: 1px solid #e6e8e9;
-	/* background-color: #eff4f7; */
 	margin: 0px 0px 0px 0px;
 	border-radius: 0px 0px 5px 5px;
 	padding: 3px 20px;
@@ -223,13 +215,13 @@ border-top: 0;
 	color: #3b5998;
 }
 
-.navbar  .pop-dialog .footer a {
+.navbar  .notification-dialog .footer a {
 	font-weight: 600;
 	color: #7d91a8;
 }
 
 /* navbar popup dialog for notifications */
-.navbar  .pop-dialog .notifications {
+.navbar  .notification-dialog .notifications {
 	width: 330px;
 	margin: 0px 0px 0px 0px;
 	max-height: 500px;
@@ -237,7 +229,7 @@ border-top: 0;
 	overflow-x: hidden;
 }
 
-.navbar  .pop-dialog .notifications h3 {
+.navbar  .notification-dialog .notifications h3 {
 	font-size: 11px;
 	color: #404951;
 	font-weight: bold;
@@ -246,7 +238,7 @@ border-top: 0;
 	margin-bottom: 2px;
 }
 
-.navbar .pop-dialog .notifications .item {
+.navbar .notification-dialog .notifications .item {
     display: block;
     padding: 5px 0px 5px 42px;
     border-top: 1px solid rgb(231, 232, 234);
@@ -259,19 +251,19 @@ border-top: 0;
     background: #f5f5f5;
 }
 
-.navbar  .pop-dialog .notifications .unread {
+.navbar  .notification-dialog .notifications .unread {
 	background: #ffffff;
 }
 
-.navbar  .pop-dialog .notifications .item:hover {
+.navbar  .notification-dialog .notifications .item:hover {
 	/*background: #f4f6f9;*/
 }
 
-.navbar  .pop-dialog .notifications .item .bluename {
+.navbar  .notification-dialog .notifications .item .bluename {
 	font-weight: bold;
 }
 
-.navbar  .pop-dialog .notifications .item>i {
+.navbar  .notification-dialog .notifications .item>i {
 	color: rgb(252, 130, 123);
 	position: absolute;
 	left: 13px;
@@ -279,11 +271,11 @@ border-top: 0;
 	top: 11px;
 }
 
-.navbar  .pop-dialog .notifications .item>i.icon-user {
+.navbar  .notification-dialog .notifications .item>i.icon-user {
 	left: 18px;
 }
 
-.navbar  .pop-dialog .notifications .item .time {
+.navbar  .notification-dialog .notifications .item .time {
 	color: #228BEB;
 	font-style: italic;
 	font-weight: 600;
@@ -292,19 +284,19 @@ border-top: 0;
 	margin-left: 5px;
 }
 
-.navbar  .pop-dialog .notifications .item .time i {
+.navbar  .notification-dialog .notifications .item .time i {
 	font-size: 11px;
 	color: #999;
 	margin-right: 1px;
 }
 
 /* navbar popup dialog for messages */
-.navbar .pop-dialog .messages {
+.navbar .notification-dialog .messages {
 	width: 330px;
 	margin: 10px -10px 0px -10px;
 }
 
-.navbar  .pop-dialog .messages .item {
+.navbar  .notification-dialog .messages .item {
 	display: block;
 	padding: 10px 20px 15px 20px;
 	height: 54px;
@@ -318,27 +310,27 @@ border-top: 0;
 	-o-transition: all .25s linear;
 }
 
-.navbar  .pop-dialog .messages .item.last {
+.navbar  .notification-dialog .messages .item.last {
 	border-bottom: 0px;
 }
 
-.navbar  .pop-dialog .messages .item:hover {
+.navbar  .notification-dialog .messages .item:hover {
 	background: rgb(240, 246, 255);
 }
 
-.navbar  .pop-dialog .messages .item .display {
+.navbar  .notification-dialog .messages .item .display {
 	float: left;
 	border-radius: 50px;
 	margin-right: 15px;
 }
 
-.navbar  .pop-dialog .messages .item .name {
+.navbar  .notification-dialog .messages .item .name {
 	font-size: 12px;
 	color: #404951;
 	font-weight: bold;
 }
 
-.navbar  .pop-dialog .messages .item .msg {
+.navbar  .notification-dialog .messages .item .msg {
 	font-size: 11px;
 	color: rgb(117, 118, 119);
 	font-weight: 600;
@@ -347,7 +339,7 @@ border-top: 0;
 	top: -1px;
 }
 
-.navbar  .pop-dialog .messages .item .time {
+.navbar  .notification-dialog .messages .item .time {
 	position: absolute;
 	right: 0px;
 	bottom: 6px;
@@ -359,17 +351,17 @@ border-top: 0;
 	margin-right: 5px;
 }
 
-.navbar  .pop-dialog .messages .item .time i {
+.navbar  .notification-dialog .messages .item .time i {
 	font-size: 13px;
 	color: #cfcfcf;
 	margin-right: 1px;
 }
 
-.navbar  .pop-dialog .messages .footer {
+.navbar  .notification-dialog .messages .footer {
 	margin-top: 6px;
 }
 /*User-Account*/
-.navbar .dropdown-menu {
+.navbar .user-dropdown .dropdown-menu {
 	background: #f5f5f5;
 	margin: 0px;
 	padding: 0px;
@@ -449,9 +441,12 @@ border-top: 0;
 	padding-bottom: 1px;
 	margin: 0px 12%;
 }
+#sidebar-nav .document-drop{
+	position: relative;
+}
 #sidebar-nav .document-dialog .body{
     width: 265px;
-    margin-left: 20px;
+   /* margin-left: 20px;*/
     border-radius: 1px;
 }
 

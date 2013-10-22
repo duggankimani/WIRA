@@ -12,19 +12,14 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
-
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
-import com.duggan.workflow.shared.model.form.Field;
-import com.duggan.workflow.shared.model.form.Form;
-import com.duggan.workflow.shared.model.form.FormModel;
-
 import com.duggan.workflow.client.ui.component.DropDownList;
-import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
-import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -39,7 +34,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
-
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
