@@ -146,7 +146,7 @@ public class FormBuilderPresenter extends
 
 	@Override
 	public void onSaveProperties(SavePropertiesEvent event) {
-		if(event.getParent()!=null && event.getParent().equals(this)){
+		if(event.getParent()!=null && event.getParent().equals(getView().getForm())){
 			saveForm(getView().getForm());
 		}
 	}

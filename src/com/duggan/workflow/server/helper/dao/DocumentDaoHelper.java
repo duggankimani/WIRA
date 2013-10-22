@@ -116,7 +116,9 @@ public class DocumentDaoHelper {
 	}
 
 	public static DocumentType getType(ADDocType adtype) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(), adtype.getDisplay(), adtype.getClassName());
+		type.setFormId(dao.getFormId(adtype.getId()));
 		return type;
 	}
 

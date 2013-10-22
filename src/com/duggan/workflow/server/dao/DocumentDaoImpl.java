@@ -493,4 +493,28 @@ public class DocumentDaoImpl {
 		
 		return docTypes;
 	}
+
+	/**
+	 * Return form ID for a document type
+	 * - The document type to form id is matched using the form name and process name 
+	 * 
+	 * @param documentTypeId
+	 * @return
+	 */
+	public Long getFormId(Long documentTypeId) {
+		String query = "select f.id from ADForm f " +
+				"inner join ProcessDefModel p on (f.name=p.processid) " +
+				"inner join ADDocType t on t.processDefId=p.id " +
+				"where t.id=:id";
+		Long value = null;
+		
+		try{
+			BigInteger bint = (BigInteger)em.createNativeQuery(query).setParameter("id", documentTypeId).getSingleResult();
+			value = bint.longValue();
+		}catch(Exception e){
+			//e.printStackTrace();
+		}
+
+		return value;
+	}
 }

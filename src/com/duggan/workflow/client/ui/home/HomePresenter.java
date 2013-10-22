@@ -42,6 +42,7 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetTaskList;
@@ -454,10 +455,11 @@ public class HomePresenter extends
 		});
 	}
 	
-	protected void showEditForm(){
+	protected void showEditForm(final Long formId){
 		genericFormProvider.get(new ServiceCallback<GenericFormPresenter>() {
 			@Override
 			public void processResult(GenericFormPresenter result) {
+				result.setFormId(formId);
 				addToPopupSlot(result, true);
 			}
 		});
@@ -542,7 +544,11 @@ public class HomePresenter extends
 
 	@Override
 	public void onCreateDocument(CreateDocumentEvent event) {
-		//System.out.println(event.getDocType());
-		showEditForm();
+		DocumentType type = event.getDocType();	
+		
+		if(type.getFormId()!=null)
+			showEditForm(type.getFormId());
+		else
+			showEditForm(MODE.CREATE);
 	}
 }
