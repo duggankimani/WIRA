@@ -1,13 +1,9 @@
 package xtension.workitems;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +12,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpRequest;
+import org.apache.log4j.Logger;
 import org.drools.process.instance.WorkItemHandler;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
@@ -24,15 +20,11 @@ import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 
-import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
 /**
@@ -43,6 +35,9 @@ import com.duggan.workflow.shared.model.NotificationType;
  */
 public class SendMailWorkItemHandler implements WorkItemHandler {
 
+
+	private static Logger log = Logger.getLogger(SendMailWorkItemHandler.class);
+	
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		String subject = (String) workItem.getParameter("Subject");
@@ -59,13 +54,13 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
 		}catch(Exception e){}
 		
-		System.err.println("Class : "+this.getClass());
-		System.err.println("Subject : "+subject);
-		System.err.println("NotificationType : "+noteType);
-		System.err.println("DocumentId : "+documentId);
-		System.err.println("GroupId : "+groupId);
-		System.err.println("ActorId : "+actorId);
-		System.err.println("OwnerId : "+ownerId);	
+		log.debug("Class : "+this.getClass());
+		log.debug("Subject : "+subject);
+		log.debug("NotificationType : "+noteType);
+		log.debug("DocumentId : "+documentId);
+		log.debug("GroupId : "+groupId);
+		log.debug("ActorId : "+actorId);
+		log.debug("OwnerId : "+ownerId);	
 
 		Map<String, Object> params = workItem.getParameters();
 		

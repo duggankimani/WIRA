@@ -101,7 +101,8 @@ public class GenericFormPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		loadForm(14L);
+		if(Id!=null)
+			loadForm(Id);
 	}
 	
 	protected void loadForm(Long id) {
@@ -116,6 +117,10 @@ public class GenericFormPresenter extends
 				getView().center();
 			}
 		});
+	}
+
+	public void setFormId(Long formId) {
+		this.Id = formId;
 	}
 
 }

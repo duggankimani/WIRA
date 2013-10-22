@@ -12,6 +12,7 @@ public class DocumentType implements Listable, Serializable{
 	private String name;
 	private String display;
 	private String className;
+	private Long formId;//start-up form for this process
 	
 	public DocumentType(){
 		
@@ -59,5 +60,13 @@ public class DocumentType implements Listable, Serializable{
 	@Override
 	public String toString() {
 		return "["+display+"]";
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
 	}
 }
