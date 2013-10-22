@@ -12,8 +12,8 @@
 					<input type="checkbox"/>
 				</label>
 			</g:HTMLPanel>
-			<g:HTMLPanel ui:field="panelFirstName" styleName="td">HOD_Dev</g:HTMLPanel>
-			<g:HTMLPanel ui:field="panelLastName" styleName="td">Head of Department</g:HTMLPanel>
+			<g:HTMLPanel ui:field="panelFirstName" styleName="td"></g:HTMLPanel>
+			<g:HTMLPanel ui:field="panelLastName" styleName="td"></g:HTMLPanel>
 			<g:HTMLPanel styleName="td">
 				<div class="action-commands">										
 					<g:Anchor styleName="green" ui:field="aEdit">

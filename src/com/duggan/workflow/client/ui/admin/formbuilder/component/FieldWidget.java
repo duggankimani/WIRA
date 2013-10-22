@@ -304,6 +304,10 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		if(placeHolder!=null && !placeHolder.isEmpty() )
 			setPlaceHolder(placeHolder);
 		
+		String help = getPropertyValue(HELP);
+		if(help!=null){
+			setHelp(help);
+		}
 		Value value = field.getValue();
 		if(value!=null){
 			setValue(value.getValue());

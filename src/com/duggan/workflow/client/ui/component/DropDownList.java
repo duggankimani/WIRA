@@ -90,4 +90,8 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 		
 	}
 
+	@Override
+	public void setTitle(String title) {
+		listBox.setTitle(title);
+	}
 }

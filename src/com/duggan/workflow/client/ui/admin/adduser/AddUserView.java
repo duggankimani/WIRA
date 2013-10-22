@@ -10,6 +10,8 @@ import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -42,12 +44,16 @@ public class AddUserView extends PopupViewImpl implements
 	
 	@UiField TextField txtGroupname;
 	@UiField TextArea txtDescription;
-	@UiField TextField txtUsers;
+	//@UiField TextField txtUsers;
 
 	@UiField PopupPanel AddUserDialog;
 	@UiField Anchor aSaveGroup;
 	@UiField Anchor aSaveUser;
 
+	@UiField SpanElement header;
+	
+	@UiField DivElement divUserSave;
+	
 	@UiField ListField<UserGroup> lstGroups;
 	
 	TYPE type;
@@ -200,9 +206,13 @@ public class AddUserView extends PopupViewImpl implements
 		if(type==TYPE.GROUP){
 			divGroupDetails.removeStyleName("hide");
 			divUserDetails.addStyleName("hide");
+			divUserSave.addClassName("hide");
+			header.setInnerText("New Group");
 		}else{
 			divUserDetails.removeStyleName("hide");
 			divGroupDetails.addStyleName("hide");
+			divUserSave.removeClassName("hide");
+			header.setInnerText("New User");
 		}
 	}
 

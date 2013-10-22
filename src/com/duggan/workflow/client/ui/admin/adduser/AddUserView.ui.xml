@@ -11,7 +11,9 @@
 	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="AddUserDialog">
 		<g:HTMLPanel styleName="full-page">
 	 		<g:HTMLPanel styleName="modal-header">
-					<h5><i class="icon-cogs"></i>New User<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+					<h5><i class="icon-cogs"></i>
+					    <span ui:field="header">New User</span>
+					    <g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
 			 </g:HTMLPanel>
 			 <d:IssuesPanel ui:field="issues">
 	    	</d:IssuesPanel>
@@ -56,7 +58,7 @@
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			
-				<div class="form-actions">
+				<div class="form-actions" ui:field="divUserSave">
 					  <g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
 					   Save&nbsp; 
 				      <i class="icon-double-angle-right"></i>						      
@@ -67,7 +69,7 @@
 					<g:HTMLPanel styleName="modal-body">
 						  <div class="form-group">
 						    <label for="ProcessName">Group Name:</label>
-						    <d:TextField ui:field="txtGroupname" type="email" 
+						    <d:TextField ui:field="txtGroupname"  
 						        class="form-control" placeholder="Group Name"/>
 						  </div>
 						  
@@ -76,11 +78,11 @@
 						 	 <d:TextArea ui:field="txtDescription" class="form-control" rows="3"></d:TextArea>
 						  </div>
 						  
-						  <div class="form-group">
+						  <!-- div class="form-group">
 						    <label for="ProcessName">Users:</label>
 						    <d:TextField ui:field="txtUsers" type="users" 
 						        class="form-control" placeholder="Email"/>
-						  </div>
+						  </div-->
 					</g:HTMLPanel>
 					
 					<div class="form-actions">
