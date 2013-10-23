@@ -99,12 +99,11 @@ public class GenericFormPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		if(Id!=null)
-			loadForm(1L);
+			loadForm(Id);
 	}
 	
 	protected void loadForm(Long id) {
 		GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL, id, true);
-		
 		requestHelper.execute(request, new TaskServiceCallback<GetFormModelResponse>() {
 			@Override
 			public void processResult(GetFormModelResponse result) {
