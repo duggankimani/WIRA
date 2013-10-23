@@ -8,7 +8,8 @@
 
 	<g:HTMLPanel styleName="dialog document-dialog is-visible">
 		<g:HTMLPanel styleName="body" ui:field="panelDocTypes">
-			<g:HTMLPanel ui:field="divDocItem"></g:HTMLPanel>
+			<g:HTMLPanel ui:field="divDocItem" styleName="row-fluid">
+			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

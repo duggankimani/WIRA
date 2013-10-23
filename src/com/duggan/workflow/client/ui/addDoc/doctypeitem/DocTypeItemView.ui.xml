@@ -6,8 +6,8 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="row-fluid">
-		<g:Anchor styleName="span6" ui:field="aDocAnchor">
+	<g:HTMLPanel styleName="span6" >
+		<g:Anchor ui:field="aDocAnchor">
 		    <span class="icon-file-alt helper-font-24" ui:field="docIcon"></span>
 			<span class="helper-font-14 doctitle" ui:field="spnIcon"></span>					
 		</g:Anchor>

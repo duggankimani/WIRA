@@ -96,7 +96,7 @@ border: 1px solid #aaa;
 border-top: 0;
 }
 
-.modal-header{
+.modal-header, .dialogTopCenterInner{
      background:#EDEDED;  
      padding: 5px;
 }
@@ -106,6 +106,36 @@ border-top: 0;
 }
 .modal-footer{
     padding: 5px 6px 5px 0px;
+}
+
+/*Document Modal */
+.dialogTopCenterInner{
+	font-size:14px;
+  	font-family: inherit;
+  	font-weight: bold;
+  	line-height: 20px;
+	ine-height: inherit;
+	color: #29323d;
+ 	text-rendering: optimizelegibility;
+	cursor: move;
+}
+
+body .gwt-PopupPanelGlass {
+  background-color: #FFF;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  z-index: 100;
+}
+.modal-document .dialogMiddleCenter{
+	width:100%;
+}
+.modal-document .gwt-CheckBox{
+	display: inline-block;
+	width: 49px;
+}
+
+.modal-document .form-actions{
+	margin-bottom:0px;
 }
 
 /* Custom navbar stuff */
@@ -188,7 +218,6 @@ border-top: 0;
 	border-radius: 30px;
 	color: #fff;
 	line-height: 16px;
-	z-index: 9999;
 	text-align: center;
 	font-size: 11px;
 }
@@ -248,11 +277,11 @@ border-top: 0;
     position: relative;
     transition: all 0.25s linear 0s;
     min-height: 30px;
-    background: #f5f5f5;
+    background: #ffffff;
 }
 
 .navbar  .notification-dialog .notifications .unread {
-	background: #ffffff;
+	background: #f5f5f5;	
 }
 
 .navbar  .notification-dialog .notifications .item:hover {
@@ -439,19 +468,36 @@ border-top: 0;
 }
 #sidebar-nav .add-doc {
 	padding-bottom: 1px;
-	margin: 0px 12%;
+	margin: 4% 11%;
 }
 #sidebar-nav .document-drop{
 	position: relative;
+	top:7.2px;
+	padding-bottom: 10px;
+	border: 1px solid #ccc;
 }
 #sidebar-nav .document-dialog .body{
-    width: 265px;
-   /* margin-left: 20px;*/
+    width: 270px;
+    border: none;
     border-radius: 1px;
+    box-shadow: none;
+	padding:0px;
 }
 
-#sidebar-nav .document-dialog .row-fluid{
+#sidebar-nav .document-dialog .span6{
 	min-height:40px;
+	margin-left: 0px;
+	padding: 5px 16px;
+}
+
+#sidebar-nav .document-dialog .span6 a{
+	font-size:12px;
+	color:#000;
+}
+
+#sidebar-nav .document-dialog .span6:hover{
+	background: #f0f0f0;
+	cursor:pointer;
 }
 
 .working-request{
@@ -1233,6 +1279,7 @@ border-top: 0;
 	font-weight: bold;
 	text-shadow: none;
 }
+
 
 /*---Tablet Layouting---*/
 @media (min-width: 768px) and (max-width: 1280px){ 

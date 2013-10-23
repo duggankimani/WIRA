@@ -10,35 +10,35 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:DialogBox text="Add Document" modal="true" glassEnabled="true" ui:field="diaBox">
+	<g:DialogBox styleName="modal modal-document" modal="true" glassEnabled="true" ui:field="diaBox" text="add">
 	    <g:HTMLPanel>
+	   
 	    <v:IssuesPanel ui:field="issues">
 	    </v:IssuesPanel>
 	    
-	    <g:VerticalPanel ui:field="panelFields"></g:VerticalPanel>
 	    
-	    <table class="edittable">
-	        <tr>
-	            <td class="label">Priority</td>
-	            <td>
-	                <div class="priority-group">
-		                <g:CheckBox ui:field="chkNormal" text="Normal"/>
-		                <g:CheckBox ui:field="chkHigh" text="High"/>
-		                <g:CheckBox ui:field="chkCritical" text="Urgent"/>
-	                </div>
-	            </td>
-	        </tr>
-	        
-	        <tr>
-				<td colspan="2">
-					<g:FlowPanel styleName="button-group reportbutton">
-					    <g:Button ui:field="btnSave">Save</g:Button>
-					    <g:Button ui:field="btnApproval">Forward For Approval</g:Button>
-					    <g:Button ui:field="btnCancel">Cancel</g:Button>					    
-					</g:FlowPanel>
-				</td>
-			</tr>
-	    </table>
+	    
+	    <g:HTMLPanel ui:field="panelBody" styleName="modal-body">
+			<fieldset>
+			<g:HTMLPanel ui:field="panelFields" styleName="form-horizontal">
+			
+				<div class="control-group">
+					 <div class="control-label">Priority</div>
+		             <div class="controls">
+			              <g:CheckBox ui:field="chkNormal" text="Normal"/>
+			              <g:CheckBox ui:field="chkHigh" text="High"/>
+			              <g:CheckBox ui:field="chkCritical" text="Urgent"/>
+		             </div>  
+	            </div>  
+			</g:HTMLPanel>	
+			</fieldset>
+		</g:HTMLPanel>
+		
+		<g:HTMLPanel ui:field="panelButtons" styleName="form-actions">
+			 <g:Button ui:field="btnCancel" styleName ="btn btn-default">Cancel</g:Button>
+		     <g:Button ui:field="btnSave" styleName ="btn btn-success pull-right">Save As Draft</g:Button>
+		    <g:Button ui:field="btnApproval" styleName="btn btn-primary pull-right">Forward For Approval</g:Button>
+		</g:HTMLPanel>
 	  </g:HTMLPanel>
 	</g:DialogBox>
 </ui:UiBinder>

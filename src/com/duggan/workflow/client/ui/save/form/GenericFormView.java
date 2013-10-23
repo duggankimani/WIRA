@@ -25,7 +25,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
@@ -40,7 +39,7 @@ public class GenericFormView extends PopupViewImpl implements
 
 	@UiField DialogBox diaBox;
 	
-	@UiField VerticalPanel panelFields;
+	@UiField HTMLPanel panelFields;
 	
 	@UiField
 	HasClickHandlers btnSave;
@@ -83,6 +82,9 @@ public class GenericFormView extends PopupViewImpl implements
 		chkCritical.addValueChangeHandler(changeHandler);
 		chkHigh.addValueChangeHandler(changeHandler);
 		chkNormal.addValueChangeHandler(changeHandler);
+		
+		
+		diaBox.setPopupPosition(20, 100);
 
 	}
 
@@ -100,7 +102,6 @@ public class GenericFormView extends PopupViewImpl implements
 
 	@Override
 	public HasClickHandlers getCancel() {
-
 		return btnCancel;
 	}
 
