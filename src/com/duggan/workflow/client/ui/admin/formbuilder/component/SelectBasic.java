@@ -63,7 +63,7 @@ public class SelectBasic extends FieldWidget {
 	
 	@Override
 	protected void setHelp(String help) {
-		//txtComponent.setTitle(help);
+		lstItems.setTitle(help);
 	}
 	
 	@Override

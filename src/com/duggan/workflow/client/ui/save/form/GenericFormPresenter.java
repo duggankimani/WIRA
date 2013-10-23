@@ -4,6 +4,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
@@ -46,7 +47,8 @@ public class GenericFormPresenter extends
 	@Inject
 	DispatchAsync requestHelper;
 
-	private Long Id;
+	private Long documentId;
+	private DocumentType documentType;
 
 	@Inject
 	PlaceManager placeManager;
@@ -74,7 +76,8 @@ public class GenericFormPresenter extends
 			public void onClick(ClickEvent event) {
 				Document document = getView().getDocument();
 				document.setStatus(DocStatus.DRAFTED);
-				document.setId(Id);
+				document.setId(documentId);
+				document.setType(documentType);
 
 				// document.setDescription(null);
 				if (getView().isValid()) {
@@ -98,16 +101,17 @@ public class GenericFormPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		if(Id!=null)
-			loadForm(1L);
+		if(documentType.getFormId()!=null)
+			loadForm(documentType.getFormId());
 	}
 	
-	protected void loadForm(Long id) {
-		GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL, id, true);
-		
+	protected void loadForm(Long formid) {
+		GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL, formid, true);
 		requestHelper.execute(request, new TaskServiceCallback<GetFormModelResponse>() {
 			@Override
 			public void processResult(GetFormModelResponse result) {
+				assert result.getFormModel().size()==1;
+				
 				Form form = (Form)result.getFormModel().get(0);
 				getView().setForm(form);
 				
@@ -116,8 +120,8 @@ public class GenericFormPresenter extends
 		});
 	}
 
-	public void setFormId(Long formId) {
-		this.Id = formId;
+	public void setDocumentType(DocumentType type) {
+		this.documentType = type;
 	}
 
 }

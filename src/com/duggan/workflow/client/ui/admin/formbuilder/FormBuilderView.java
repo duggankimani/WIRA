@@ -60,6 +60,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField DropDownList<Form> frmDropdown;
 	
 	@UiField Anchor aNewForm;
+	@UiField Anchor aDeleteForm;
 	@UiField Anchor aInputtab;
 	@UiField Anchor aSelecttab;
 	@UiField Anchor aButtontab;
@@ -170,11 +171,14 @@ public class FormBuilderView extends ViewImpl implements
 		formLabel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event){
-				/*set the position of the pop-up to be displayed in % */
-				int top=7;
-				int left=60;
-				int arrowposition =formLabel.getAbsoluteTop()-30;
-				AppManager.showPropertyPanel(form,getProperties(), top, left, arrowposition);
+				
+				if(form.getId()!=null){
+					/*set the position of the pop-up to be displayed in % */
+					int top=7;
+					int left=60;
+					int arrowposition =formLabel.getAbsoluteTop()-30;
+					AppManager.showPropertyPanel(form,getProperties(), top, left, arrowposition);
+				}
 			}
 		});	
 		
@@ -196,7 +200,9 @@ public class FormBuilderView extends ViewImpl implements
 				//
 			}
 		});
-
+		
+		aDeleteForm.setVisible(false);
+		
 	}
 
 	/**
@@ -318,10 +324,23 @@ public class FormBuilderView extends ViewImpl implements
 	public Anchor getNewButton(){
 		return aNewForm;
 	}
+	
+	public Anchor getDeleteButton(){
+		return aDeleteForm;
+	}
 
 	@Override
 	public void setForm(Form form) {
 		this.form = form;
+		if(form==null || form.getId()==null){
+			aDeleteForm.setVisible(false);
+		}else{
+			aDeleteForm.setVisible(true);
+		}
+		
+		if(form==null){
+			return;
+		}
 		
 		for(Property prop: form.getProperties()){
 			addProperty(prop);
@@ -437,6 +456,9 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public void setForms(List<Form> forms) {
 		frmDropdown.setItems(forms);
+		if(form.getId()!=null){
+			frmDropdown.setValue(form);
+		}
 	}
 
 	@Override

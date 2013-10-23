@@ -66,7 +66,7 @@ public class DateField extends FieldWidget {
 	
 	@Override
 	protected void setHelp(String help) {
-		//txtComponent.setTitle(help);
+		dateBox.setTitle(help);
 	}
 	
 	@Override

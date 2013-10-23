@@ -92,7 +92,7 @@ public class InlineCheckBox extends FieldWidget {
 	
 	@Override
 	protected void setHelp(String help) {
-		//txtComponent.setTitle(help);
+		component.setTitle(help);
 	}
 
 	@Override
