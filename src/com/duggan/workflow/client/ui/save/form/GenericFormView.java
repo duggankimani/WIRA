@@ -115,7 +115,6 @@ public class GenericFormView extends PopupViewImpl implements
 		Document doc = new Document();
 		doc.setDocumentDate(new Date());
 		doc.setId(null);
-		doc.setType(new DocumentType(3L,"REQUISITION","Requisition","color-win8"));
 		doc.setPriority(getPriority().ordinal());
 		doc.setValue("priority", new IntValue(doc.getPriority()));
 

@@ -455,11 +455,11 @@ public class HomePresenter extends
 		});
 	}
 	
-	protected void showEditForm(final Long formId){
+	protected void showEditForm(final DocumentType type){
 		genericFormProvider.get(new ServiceCallback<GenericFormPresenter>() {
 			@Override
 			public void processResult(GenericFormPresenter result) {
-				result.setFormId(formId);
+				result.setDocumentType(type);
 				addToPopupSlot(result, true);
 			}
 		});
@@ -547,7 +547,7 @@ public class HomePresenter extends
 		DocumentType type = event.getDocType();	
 		
 		if(type.getFormId()!=null)
-			showEditForm(type.getFormId());
+			showEditForm(type);
 		else
 			showEditForm(MODE.CREATE);
 	}
