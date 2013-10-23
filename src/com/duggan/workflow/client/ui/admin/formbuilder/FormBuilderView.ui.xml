@@ -42,7 +42,7 @@
 				<div class="panel-heading">
 					<div class="row-fluid">
 						<div class="span10">
-						<h4 ui:field="hPaletetitle">Paletes</h4>
+						<h4 ui:field="hPaletetitle">Palette</h4>
 						</div>
 						<div class="span2">
 							<g:Anchor styleName="minimize minimize-left hidden" ui:field="aMinimize"></g:Anchor>

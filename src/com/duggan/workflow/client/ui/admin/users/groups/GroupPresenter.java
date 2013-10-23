@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.users.groups;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.EditGroupEvent;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
@@ -9,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -49,18 +52,35 @@ public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView>{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				SaveGroupRequest request = new SaveGroupRequest(group);
-				request.setDelete(true);
-				requestHelper.execute(request, new TaskServiceCallback<SaveGroupResponse>() {
-					@Override
-					public void processResult(SaveGroupResponse result) {
-						getView().asWidget().removeFromParent();
-					}
-				});
+				
+				AppManager.showPopUp("Confirm Delete",new HTMLPanel("Do you want to delete group \""
+						+group.getName()+"\""), new OnOptionSelected() {
+							
+							@Override
+							public void onSelect(String name) {
+								if(name.equals("Ok")){
+									delete(group);
+								}
+							}
+
+						},"Cancel","Ok");
+				
+				
 			}
 		});
 	}
 	
+	protected void delete(UserGroup group) {
+		SaveGroupRequest request = new SaveGroupRequest(group);
+		request.setDelete(true);
+		requestHelper.execute(request, new TaskServiceCallback<SaveGroupResponse>() {
+			@Override
+			public void processResult(SaveGroupResponse result) {
+				getView().asWidget().removeFromParent();
+			}
+		});
+	}
+
 	public void setGroup(UserGroup group){
 		this.group = group;
 		getView().setValues(group.getName(), group.getFullName());
