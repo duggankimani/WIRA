@@ -1,10 +1,6 @@
 package com.duggan.workflow.client.ui.header;
 
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -42,6 +38,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		aNotifications.setTabIndex(3);
+		aNotifications.getElement().setAttribute("data-toggle", "dropdown");
 	}
 
 	@Override

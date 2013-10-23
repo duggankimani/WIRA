@@ -15,4 +15,16 @@ public class ActionLink extends Anchor {
 			}	
 		});
 	}
+	
+	public void setDataToggle(String data){
+		getElement().setAttribute("data-toggle", data);
+	}
+	
+	public void setDataOriginalTitle(String data){
+		getElement().setAttribute("data-original-title", data);
+	}
+	
+	public void setDataPlacement(String data){
+		getElement().setAttribute("data-placement", data);
+	}
 }

@@ -20,7 +20,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -36,7 +35,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	public interface Binder extends UiBinder<Widget, HomeView> {
 	}
 
-	@UiField Button btnAdd;
+	@UiField Anchor btnAdd;
 	@UiField HTMLPanel docContainer;
 	@UiField BulletListPanel ulTaskGroups;
 	@UiField HeadingElement hCategory;
@@ -74,8 +73,9 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		ulTaskGroups.setId("navigation-menu");
+		
+		btnAdd.getElement().setAttribute("data-toggle", "dropdown");
 
-		btnAdd.getElement().setAttribute("type", "button");
 		
 		divDocListing.setId("middle-nav");
 		divDocView.setId("detailed-info");

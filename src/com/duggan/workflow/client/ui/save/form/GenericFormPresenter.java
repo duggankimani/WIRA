@@ -102,7 +102,7 @@ public class GenericFormPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		if(Id!=null)
-			loadForm(Id);
+			loadForm(1L);
 	}
 	
 	protected void loadForm(Long id) {
