@@ -343,9 +343,17 @@ public class JBPMHelper implements Closeable{
 		task.setDocumentRef(doc.getId());
 		//task.setTaskName(summary.getName());		//TODO: LOOK INTO JBPM TASKSUMMARY / TASK USAGES
 		//task.setTaskName(master_task.getNames().);
-		task.setTaskName(doc.getSubject());
+		
 		Status status = master_task.getTaskData().getStatus();
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
+		
+		List<I18NText> names = master_task.getNames();
+		
+		if(names.size()>0){
+			task.setTaskName(names.get(0).getText());	
+		}
+		
+		
 	}
 
 
@@ -614,6 +622,8 @@ public class JBPMHelper implements Closeable{
 					detail.setCurrentNode(nodeLogInstance.size()==1);
 					
 					details.add(detail);
+					
+					//((HumanTaskNode)node).ge
 				}
 			}
 		}
