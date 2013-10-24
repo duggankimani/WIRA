@@ -66,6 +66,12 @@ textarea {
 	height: 20px;
 }
 
+.alert{
+	position: absolute;
+	right: 648px;
+	top: 0px;
+}
+
 /*Uploader Modal */
 .modal{
 	max-width: 40%; 
@@ -126,6 +132,12 @@ body .gwt-PopupPanelGlass {
   filter: alpha(opacity=75);
   z-index: 100;
 }
+body .gwt-DialogBox{
+	z-index:250;
+}
+body .dateBoxPopup{
+    z-index:1060;
+}
 .modal-document .dialogMiddleCenter{
 	width:100%;
 }
@@ -137,7 +149,9 @@ body .gwt-PopupPanelGlass {
 .modal-document .form-actions{
 	margin-bottom:0px;
 }
-
+.modal-document .form-actions .forward{
+	margin-right:10px;
+}
 /* Custom navbar stuff */
 .navbar {
 	margin-bottom: 1px;
@@ -231,7 +245,7 @@ body .gwt-PopupPanelGlass {
 	}
 
 .navbar .notification-dialog .body {
-	/*box-shadow: 0px 1px 9px 1px #c2c2c2;*/
+	box-shadow: 0px 1px 9px 1px #c2c2c2;
 	overflow: hidden;
 }
 
@@ -468,11 +482,11 @@ body .gwt-PopupPanelGlass {
 }
 #sidebar-nav .add-doc {
 	padding-bottom: 1px;
-	margin: 4% 11%;
+	margin: 0% 11%;
 }
 #sidebar-nav .document-drop{
 	position: relative;
-	top:7.2px;
+	top: 0px;
 	padding-bottom: 10px;
 	border: 1px solid #ccc;
 }
@@ -490,7 +504,7 @@ body .gwt-PopupPanelGlass {
 	padding: 5px 16px;
 }
 
-#sidebar-nav .document-dialog .span6 a{
+#sidebar-nav .document-dialog .span6{
 	font-size:12px;
 	color:#000;
 }
@@ -617,6 +631,7 @@ body .gwt-PopupPanelGlass {
 	border-bottom: 1px solid #dae1e8;
 	cursor: pointer;
 	background-color: #fafafa;
+	margin-bottom: 3px;
 }
 
 #middle-nav .message-container .inside-container{

@@ -8,7 +8,6 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
@@ -17,6 +16,7 @@ import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent.ExecTaskHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
@@ -26,12 +26,10 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -262,7 +260,7 @@ public class TaskItemPresenter extends
 		submitRequest(action, null);
 	}
 	
-	protected void submitRequest(final Actions action, Map<String, Value> values) {
+	protected void submitRequest(final Actions action, final Map<String, Value> values) {
 		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
 		//values.put("DocumentURL", new StringValue(docUrl));
 		fireEvent(new ProcessingEvent());
@@ -279,12 +277,26 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
+				DocSummary doc = result.getDocument();
+				
 				//refresh list
 				fireEvent(new ProcessingCompletedEvent());			
 				if(action==Actions.COMPLETE){
+					Boolean isApproved = null;
+					if(values!=null){
+						Value value = values.get("isApproved");
+						if(value!=null){
+							isApproved= value.getValue()==null? null : (Boolean)(value.getValue());
+						}
+					}
+					
+					String out = isApproved==null? doc.getSubject() + " review completed":
+							isApproved? doc.getSubject()+ " Approved":
+								doc.getSubject()+" Rejected";
 					//removeFromParent();
 					//fireEvent(new AfterSaveEvent());
 					reload((HTSummary)result.getDocument());
+					fireEvent(new WorkflowProcessEvent(out,doc));
 				}else{
 					//fireEvent(new ReloadEvent());
 					reload((HTSummary)result.getDocument());

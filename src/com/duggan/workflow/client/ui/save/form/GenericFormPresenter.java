@@ -115,7 +115,7 @@ public class GenericFormPresenter extends
 				Form form = (Form)result.getFormModel().get(0);
 				getView().setForm(form);
 				
-				getView().center();
+				//getView().center();
 			}
 		});
 	}

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.shared.model.DataType;
@@ -16,6 +17,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -25,6 +27,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
@@ -83,9 +86,9 @@ public class GenericFormView extends PopupViewImpl implements
 		chkHigh.addValueChangeHandler(changeHandler);
 		chkNormal.addValueChangeHandler(changeHandler);
 		
-		
-		diaBox.setPopupPosition(20, 100);
-
+		int[] position=AppManager.calculatePosition(5, 50);
+		diaBox.setPopupPosition(position[1],position[0]);
+		diaBox.getElement().getStyle().setTop(5, Unit.PCT);
 	}
 
 	@Override

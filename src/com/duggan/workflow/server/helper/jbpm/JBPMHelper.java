@@ -346,14 +346,14 @@ public class JBPMHelper implements Closeable{
 		
 		Status status = master_task.getTaskData().getStatus();
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
-		
+
 		List<I18NText> names = master_task.getNames();
 		
 		if(names.size()>0){
 			task.setTaskName(names.get(0).getText());	
 		}
 		
-		
+		task.setProcessInstanceId(master_task.getTaskData().getProcessInstanceId());
 	}
 
 

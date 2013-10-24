@@ -335,6 +335,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		}
 	}
 
+	/*
 	@Override
 	public void setDocPopupVisible() {
 		if(isDocPopupDisplayed){
@@ -345,5 +346,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			isDocPopupDisplayed=true;
 		}
 	}
-
+	*/
+	
 }

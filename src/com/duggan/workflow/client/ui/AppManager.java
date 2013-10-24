@@ -44,7 +44,7 @@ public class AppManager {
 			popupPresenter.getView().addToSlot(GenericPopupPresenter.BUTTON_SLOT, aLnk);
 		}
 		
-		mainPagePresenter.addToPopupSlot(popupPresenter, true);		
+		mainPagePresenter.addToPopupSlot(popupPresenter, false);		
 		popupPresenter.getView().center();
 	}
 	
@@ -60,14 +60,13 @@ public class AppManager {
 		propertyPanel.getView().getiArrow().getElement().getStyle().setTop(arrowposition, Unit.PX);
 		
 		propertyPanel.getView().getPopoverFocus().setFocus(true);
-		//System.err.println("Top--"+top+" Left--" + left);
 		mainPagePresenter.addToPopupSlot(propertyPanel, false);	
 	}
 	
 	/**
-	 * Position Modal/Popover in Relative to the browser size
+	 * Returns positions of the modal/popover in Relative to the browser size
 	 * @param %top, %left
-	 * @return
+	 * @return top(px),left(px)
 	 */
 	public static int[] calculatePosition(int top, int left){
 	

@@ -10,7 +10,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:DialogBox styleName="modal modal-document" modal="true" glassEnabled="true" ui:field="diaBox" text="add">
+	<g:DialogBox styleName="modal modal-document" modal="true" glassEnabled="true" ui:field="diaBox">
 	    <g:HTMLPanel>
 	   
 	    <v:IssuesPanel ui:field="issues">
@@ -20,8 +20,8 @@
 	    
 	    <g:HTMLPanel ui:field="panelBody" styleName="modal-body">
 			<fieldset>
-			<g:HTMLPanel ui:field="panelFields" styleName="form-horizontal">
-			
+			<g:HTMLPanel styleName="form-horizontal">
+				<g:HTMLPanel ui:field="panelFields"></g:HTMLPanel>
 				<div class="control-group">
 					 <div class="control-label">Priority</div>
 		             <div class="controls">
@@ -35,9 +35,9 @@
 		</g:HTMLPanel>
 		
 		<g:HTMLPanel ui:field="panelButtons" styleName="form-actions">
-			 <g:Button ui:field="btnCancel" styleName ="btn btn-default">Cancel</g:Button>
+			 <g:Button ui:field="btnCancel" styleName ="btn btn-default pull-left">Cancel</g:Button>
 		     <g:Button ui:field="btnSave" styleName ="btn btn-success pull-right">Save As Draft</g:Button>
-		    <g:Button ui:field="btnApproval" styleName="btn btn-primary pull-right">Forward For Approval</g:Button>
+		    <g:Button ui:field="btnApproval" styleName="btn btn-primary pull-right forward">Forward For Approval</g:Button>
 		</g:HTMLPanel>
 	  </g:HTMLPanel>
 	</g:DialogBox>
