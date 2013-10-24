@@ -5,12 +5,17 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent.WorkflowProcessHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
+import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -31,12 +36,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPagePresenter extends
-		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> implements ErrorHandler, ProcessingCompletedHandler, ProcessingHandler{
+		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> implements ErrorHandler, ProcessingCompletedHandler, ProcessingHandler ,WorkflowProcessHandler{
 
 	public interface MyView extends View {
 
 		void showProcessing(boolean processing);
-		
+		void setAlertVisible(String action, String url);
 	}
 
 	@ProxyCodeSplit
@@ -78,6 +83,7 @@ public class MainPagePresenter extends
 		addRegisteredHandler(ErrorEvent.TYPE, this);
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
+		addRegisteredHandler(WorkflowProcessEvent.TYPE, this);
 	}
 	
 	@Override
@@ -121,5 +127,18 @@ public class MainPagePresenter extends
 	@Override
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
 		getView().showProcessing(false);
+	}
+	@Override
+	public void onWorkflowProcess(WorkflowProcessEvent event) {
+		DocSummary summary = event.getDocument();
+		String url = "";
+		if(summary instanceof Document){
+			url = "#home;type=search;did="+summary.getId();
+		}else{
+			long processInstanceId = ((HTSummary)summary).getProcessInstanceId();
+			url = "#home;type=search;pid="+processInstanceId;
+		}
+		
+		getView().setAlertVisible(event.getAction(),url);
 	}
 }

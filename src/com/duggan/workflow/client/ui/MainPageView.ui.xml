@@ -8,6 +8,12 @@
 	
 	<g:HTMLPanel>
 	    <span ui:field="loadingtext" class="span2 hide">Loading ...</span>
+	      <div class="alert alert-success hidden" ui:field="divAlert">
+	            <button type="button" class="close" data-dismiss="alert">×</button>
+	            <strong></strong><span ui:field="spnAlertContent"></span>
+	            <g:Anchor styleName="hand" ui:field="aView">View</g:Anchor>
+	     </div>  
+	        
 	 	<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
 	    <!-- g:HTMLPanel ui:field="pContainer"/-->
   		

@@ -23,9 +23,10 @@ import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
-import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
+import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
@@ -37,8 +38,9 @@ import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Notification;
@@ -176,6 +178,7 @@ public class GenericDocumentPresenter extends
 						fireEvent(new ProcessingCompletedEvent());
 						//clear selected document
 						fireEvent(new AfterSaveEvent());
+						fireEvent(new WorkflowProcessEvent(doc.getSubject() +" has been forwarded for Approval",doc));
 					}
 				});
 				

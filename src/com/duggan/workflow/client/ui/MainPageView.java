@@ -1,14 +1,14 @@
 package com.duggan.workflow.client.ui;
 
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.MainPagePresenter.*;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 
@@ -20,6 +20,9 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@UiField HTMLPanel pHeader;
 	@UiField HTMLPanel pContainer;
 	@UiField SpanElement loadingtext;
+	@UiField DivElement divAlert;
+	@UiField SpanElement spnAlertContent;
+	@UiField Anchor aView;
 	
 	
 	@Inject
@@ -63,4 +66,12 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 			loadingtext.addClassName("hide");
 		}
 	}
+	
+	@Override
+	public void setAlertVisible(String statement,String url){
+		divAlert.removeClassName("hidden");
+		spnAlertContent.setInnerText(statement);
+		aView.setHref(url);
+	}
+
 }

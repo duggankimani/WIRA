@@ -39,24 +39,24 @@
 
 				<d:ActionLink ui:field="aSuspend" styleName="btn btn-default hidden"
 					title="Suspend this task">
-					<i class="icon-ok"></i>
+					<i class="icon-pause"></i>
 					Suspend
 				</d:ActionLink>
 
 				<d:ActionLink ui:field="aDelegate" styleName="btn btn-default hidden"
 					title="Delegate this task">
-					<i class="icon-ok"></i>
+					<i class="icon-group"></i>
 					Delegate
 				</d:ActionLink>
 
 				<d:ActionLink ui:field="aRevoke" styleName="btn btn-default hidden"
 					title="Revoke this task so that its re-assignable to other users in your group">
-					<i class="icon-ok"></i>
+					<i class="icon-minus"></i>
 					Revoke
 				</d:ActionLink>
 
 				<d:ActionLink ui:field="aStop" styleName="btn btn-default hidden">
-					<i class="icon-ok"></i>
+					<i class="icon-stop"></i>
 					Stop
 				</d:ActionLink>
 

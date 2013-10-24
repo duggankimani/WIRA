@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.addDoc.doctypeitem;
 
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -45,6 +44,5 @@ public class DocTypeItemPresenter extends
 	public void setDocumentTypes(DocumentType type) {
 		this.type=type;
 		getView().setValues(type.getDisplayName(), type.getClassName());
-		
 	}
 }

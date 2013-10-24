@@ -17,7 +17,16 @@ public class HTSummary extends DocSummary implements Serializable{
 	private Integer priority;
 	private String description;
 	private Long documentRef;
+	private Long processInstanceId;
 	
+	public Long getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
 	public HTSummary() {
 	}
 

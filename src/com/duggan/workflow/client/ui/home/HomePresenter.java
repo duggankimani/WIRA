@@ -19,8 +19,8 @@ import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -102,7 +102,6 @@ public class HomePresenter extends
 		public void hideFilterDialog();
 		public void setSearchBox(String text);
 		void showmask(boolean b);
-		void setDocPopupVisible();
 	}
 
 	@ProxyCodeSplit
@@ -460,7 +459,7 @@ public class HomePresenter extends
 			@Override
 			public void processResult(GenericFormPresenter result) {
 				result.setDocumentType(type);
-				addToPopupSlot(result, true);
+				addToPopupSlot(result, false);
 			}
 		});
 	}
@@ -551,4 +550,5 @@ public class HomePresenter extends
 		else
 			showEditForm(MODE.CREATE);
 	}
+
 }

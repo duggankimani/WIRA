@@ -1,36 +1,36 @@
 package com.duggan.workflow.client.ui.save;
 
+import static com.duggan.workflow.client.ui.save.CreateDocPresenter.UPLOAD_SLOT;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+
 import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Priority;
-import com.gwtplatform.mvp.client.PopupViewImpl;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.dom.client.TableCellElement;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
-import static com.duggan.workflow.client.ui.save.CreateDocPresenter.*;
+import com.gwtplatform.mvp.client.PopupViewImpl;
 
 public class CreateDocView extends PopupViewImpl implements
 		CreateDocPresenter.ICreateDocView {
@@ -39,10 +39,9 @@ public class CreateDocView extends PopupViewImpl implements
 
 	public interface Binder extends UiBinder<Widget, CreateDocView> {
 	}
-
 	@UiField
-	TableCellElement tdDocType;
-
+	DialogBox popupView;
+	
 	@UiField
 	HasClickHandlers btnSave;
 	@UiField
@@ -105,7 +104,10 @@ public class CreateDocView extends PopupViewImpl implements
 		chkCritical.addValueChangeHandler(changeHandler);
 		chkHigh.addValueChangeHandler(changeHandler);
 		chkNormal.addValueChangeHandler(changeHandler);
-
+		
+		int[] position=AppManager.calculatePosition(5, 50);
+		popupView.setPopupPosition(position[1],position[0]);
+		
 		UIObject.setVisible(uploadPanel.getElement(), false);
 	}
 
