@@ -7,6 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+
+import com.duggan.workflow.server.helper.session.SessionHelper;
 
 @MappedSuperclass
 public abstract class PO implements Serializable{
@@ -71,5 +75,17 @@ public abstract class PO implements Serializable{
 	}
 	
 	public abstract Long getId();
+	
+	@PrePersist
+	public void onPrePersist(){
+		this.created=new Date();
+		this.createdBy = SessionHelper.getCurrentUser()==null? null : SessionHelper.getCurrentUser().getUserId();
+	}
+	
+	@PreUpdate
+	public void onPreUpdate(){
+		this.updated=new Date();
+		this.updatedBy = SessionHelper.getCurrentUser()==null? null : SessionHelper.getCurrentUser().getUserId();
+	}
 		
 }

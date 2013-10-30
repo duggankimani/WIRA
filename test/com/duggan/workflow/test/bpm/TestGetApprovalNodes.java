@@ -10,13 +10,15 @@ import org.junit.Test;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
+import com.duggan.workflow.shared.model.NodeDetail;
 
 public class TestGetApprovalNodes {
 
 	@Before
 	public void setup(){
 		DBTrxProvider.init();
-		LoginHelper.get();
+		ProcessMigrationHelper.init();
 	}
 	
 	@Test
@@ -30,13 +32,14 @@ public class TestGetApprovalNodes {
 		 *Approach 2 - Get all completed Human Task nodes 
 		 */
 		//long processInstanceId =  118L;
-		long processInstanceId =  1L;
+		long processInstanceId =  133L;
 //		List<Node> nodes = JBPMHelper.get().getProcessDia(processInstanceId);
 //		
 //		for(Node node: nodes){
 //			System.err.println("############ "+node.getName());
 //		}
-		JBPMHelper.get().getWorkflowProcessDia(processInstanceId);
+		List<NodeDetail> nodes = JBPMHelper.get().getWorkflowProcessDia(processInstanceId);
+		System.err.println(nodes);
 	}
 
 	@After

@@ -531,6 +531,7 @@ public class GenericDocumentPresenter extends
 		Long processInstanceId = document.getProcessInstanceId();
 		
 		if(processInstanceId!=null){
+			System.err.println("Loading activities for ProcessInstanceId = "+processInstanceId);
 			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
 					new TaskServiceCallback<GetProcessStatusRequestResult>() {
 				@Override
