@@ -69,7 +69,6 @@ public class InlineCheckBox extends FieldWidget {
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 				Value value = property.getValue();
 				value.setValue(event.getValue());
-				
 			}
 		});
 		//prop

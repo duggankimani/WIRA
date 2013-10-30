@@ -5,12 +5,12 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
-import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent.WorkflowProcessHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.shared.model.DocSummary;
@@ -18,8 +18,6 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -41,7 +39,7 @@ public class MainPagePresenter extends
 	public interface MyView extends View {
 
 		void showProcessing(boolean processing);
-		void setAlertVisible(String action, String url);
+		void setAlertVisible(String subject, String action, String url);
 	}
 
 	@ProxyCodeSplit
@@ -61,9 +59,7 @@ public class MainPagePresenter extends
 	@Inject DispatchAsync dispatcher;
 	
 	@Inject PlaceManager placeManager;
-	
-	LayoutPanel l;
-	HTMLPanel p;
+
 	
 	@Inject
 	public MainPagePresenter(final EventBus eventBus, final MyView view,
@@ -139,6 +135,6 @@ public class MainPagePresenter extends
 			url = "#home;type=search;pid="+processInstanceId;
 		}
 		
-		getView().setAlertVisible(event.getAction(),url);
+		getView().setAlertVisible(event.getSubject(), event.getAction(),url);
 	}
 }

@@ -27,7 +27,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
@@ -276,6 +275,11 @@ public class GenericFormView extends PopupViewImpl implements
 			FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field, false);
 			panelFields.add(fieldWidget);
 		}
+	}
+
+	@Override
+	public HasClickHandlers getForwardForApproval() {
+		return btnApproval;
 	}
 
 }

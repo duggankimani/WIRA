@@ -1,7 +1,9 @@
 package com.duggan.workflow.client.ui.upload;
 
 import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
+import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent.CloseAttatchmentHandler;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,7 +14,7 @@ import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
 
 public class UploadDocumentPresenter extends
-		PresenterWidget<UploadDocumentPresenter.MyView> {
+		PresenterWidget<UploadDocumentPresenter.MyView> implements CloseAttatchmentHandler{
 
 	public interface MyView extends PopupView {
 		Uploader getUploader();
@@ -29,6 +31,7 @@ public class UploadDocumentPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		addRegisteredHandler(CloseAttatchmentEvent.TYPE, this);
 		getView().getDoneButton().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -41,5 +44,10 @@ public class UploadDocumentPresenter extends
 	public void setContext(UploadContext context) {
 		this.ctx = context;
 		getView().getUploader().setContext(context);
+	}
+
+	@Override
+	public void onCloseAttatchment(CloseAttatchmentEvent event) {
+		getView().hide();
 	}
 }

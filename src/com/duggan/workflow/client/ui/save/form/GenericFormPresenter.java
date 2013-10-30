@@ -1,13 +1,20 @@
 package com.duggan.workflow.client.ui.save.form;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
+import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -38,6 +45,8 @@ public class GenericFormPresenter extends
 		boolean isValid();
 
 		void setForm(Form form);
+
+		HasClickHandlers getForwardForApproval();
 				
 	}
 
@@ -71,7 +80,6 @@ public class GenericFormPresenter extends
 		});
 		
 		getView().getSave().addClickHandler(new ClickHandler() {
-
 			@Override
 			public void onClick(ClickEvent event) {
 				Document document = getView().getDocument();
@@ -96,6 +104,42 @@ public class GenericFormPresenter extends
 				}
 			}
 		});
+		
+		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
+			
+
+			@Override
+			public void onClick(ClickEvent event) {
+
+				final Document document = getView().getDocument();
+				document.setStatus(DocStatus.DRAFTED);
+				document.setId(documentId);
+				document.setType(documentType);
+				
+				if (getView().isValid()) {
+					fireEvent(new ProcessingEvent());
+					requestHelper.execute(
+							new ApprovalRequest(AppContext.getUserId(),document),
+							new TaskServiceCallback<ApprovalRequestResult>() {
+								@Override
+								public void processResult(
+										ApprovalRequestResult result) {
+
+									fireEvent(new ProcessingCompletedEvent());
+									getView().hide();
+									fireEvent(new AfterSaveEvent());
+									fireEvent(new WorkflowProcessEvent(document.getSubject(),"You have forwarded for approval - "
+											 ,document));
+									getView().hide();
+								}
+							});
+				}
+
+			}
+
+		});
+		
+		
 	}
 
 	@Override

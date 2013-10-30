@@ -29,7 +29,7 @@ public class NotePresenter extends
 		void setValues(String subject, DocumentType documentType,
 				NotificationType notificationType, String owner,
 				String targetUserId, String time, boolean isRead, 
-				String createdBy,ApproverAction approverAction, Long processInstanceId);
+				String createdBy,ApproverAction approverAction, Long processInstanceId, boolean isNotification);
 	}
 
 	private Notification note;
@@ -38,6 +38,8 @@ public class NotePresenter extends
 	
 	@Inject DispatchAsync dispatcher;
 		
+	boolean isNotification = false;
+	
 	@Inject
 	public NotePresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -65,7 +67,7 @@ public class NotePresenter extends
 									notification.IsRead()==null? false: notification.IsRead(),
 											notification.getCreatedBy(),
 											notification.getApproverAction(),
-											notification.getProcessInstanceId());
+											notification.getProcessInstanceId(), isNotification);
 //							
 //							PlaceRequest request = new PlaceRequest("home")
 //							.with("type", TaskType.SEARCH.getURL())
@@ -80,7 +82,8 @@ public class NotePresenter extends
 		});
 	}
 	
-	public void setNotification(Notification notification){
+	public void setNotification(Notification notification, boolean isNotification){
+		this.isNotification=isNotification;
 		this.note = notification;
 		String time=getTimeDifferenceAsString(notification.getCreated());
 		getView().setValues(notification.getSubject(),
@@ -90,7 +93,7 @@ public class NotePresenter extends
 				notification.getTargetUserId(),time,
 				notification.IsRead()==null? false: notification.IsRead(),
 						notification.getCreatedBy(),
-						notification.getApproverAction(),notification.getProcessInstanceId());
+						notification.getApproverAction(),notification.getProcessInstanceId(), isNotification);
 	}
 	
 }

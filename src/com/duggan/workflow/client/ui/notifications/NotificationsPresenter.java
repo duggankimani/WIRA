@@ -62,7 +62,7 @@ public class NotificationsPresenter extends
 			notesFactory.get(new ServiceCallback<NotePresenter>() {
 				@Override
 				public void processResult(NotePresenter result) {
-					result.setNotification(note);
+					result.setNotification(note,true);
 					NotificationsPresenter.this.addToSlot(NOTE_SLOT, result);
 				}
 			});

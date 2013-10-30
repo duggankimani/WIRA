@@ -10,6 +10,7 @@ public class WorkflowProcessEvent extends
 		GwtEvent<WorkflowProcessEvent.WorkflowProcessHandler> {
 
 	public static Type<WorkflowProcessHandler> TYPE = new Type<WorkflowProcessHandler>();
+	private String subject;
 	private String action;
 	private DocSummary Document;
 
@@ -17,7 +18,8 @@ public class WorkflowProcessEvent extends
 		void onWorkflowProcess(WorkflowProcessEvent event);
 	}
 
-	public WorkflowProcessEvent(String action, DocSummary doc) {
+	public WorkflowProcessEvent(String subject, String action, DocSummary doc) {
+		this.subject=subject;
 		this.action = action;
 		this.Document=doc;
 	}
@@ -28,6 +30,10 @@ public class WorkflowProcessEvent extends
 
 	public DocSummary getDocument() {
 		return Document;
+	}
+	
+	public String getSubject() {
+		return subject;
 	}
 
 	@Override
@@ -44,7 +50,7 @@ public class WorkflowProcessEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, String action, DocSummary Document) {
-		source.fireEvent(new WorkflowProcessEvent(action, Document));
+	public static void fire(HasHandlers source,String subject, String action, DocSummary Document) {
+		source.fireEvent(new WorkflowProcessEvent(subject,action, Document));
 	}
 }
