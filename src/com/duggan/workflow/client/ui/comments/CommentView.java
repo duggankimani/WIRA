@@ -5,6 +5,7 @@ import static com.duggan.workflow.client.ui.util.DateUtils.*;
 import java.util.Date;
 
 import com.duggan.workflow.client.model.MODE;
+import com.duggan.workflow.client.ui.component.CommentBox;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,9 +33,8 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 	@UiField SpanElement spnCreated;
 	@UiField SpanElement spnMessage;
 	
-	@UiField Anchor lnkSaveComment;
 	@UiField Anchor aReply;
-	@UiField TextArea txtCommentBox;
+	@UiField CommentBox txtCommentBox;
 	@UiField DivElement divSave;
 	
 	@UiField SpanElement spnTime;
@@ -58,7 +58,6 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 		aReply.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
-				
 				if(mode==MODE.VIEW){
 					setMode(MODE.EDIT);		
 				}
@@ -111,28 +110,24 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			((Widget)aReply).setTitle("Edit");
 			divSave.removeClassName(HIDDEN);
 			txtCommentBox.removeStyleName(HIDDEN);
+			divSave.addClassName("reply");
 			
-			//spnMessage.addClassName(HIDDEN);
+			txtCommentBox.getSpnArrow().addClassName("reply");
 			aReply.addStyleName(HIDDEN);
-			spnTime.setClassName(HIDDEN);
 		}else{
-
 			((Widget)aReply).setTitle("Cancel");
+			
 			divSave.addClassName(HIDDEN);
 			txtCommentBox.addStyleName(HIDDEN);
-
-			//spnMessage.removeClassName(HIDDEN);
-			aReply.removeStyleName(HIDDEN);
-			spnTime.removeClassName(HIDDEN);
 		}
 	}
 	
 	public TextArea getCommentBox(){
-		return txtCommentBox;
+		return txtCommentBox.getCommentBox();
 	}
 	
 	public HasClickHandlers getSaveCommentsLink(){
-		return lnkSaveComment;
+		return txtCommentBox.getaSaveComment();
 	}
 
 }

@@ -38,7 +38,6 @@ import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocSummary;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
@@ -59,6 +58,8 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -104,11 +105,17 @@ public class GenericDocumentPresenter extends
 		Uploader getUploader();
 		void setComment(String string);
 		HasClickHandlers getUploadLink();
+		SpanElement getSpnAttachmentNo();
+		SpanElement getSpnActivityNo();
+		DivElement getDivAttachment();
 	}
-
+//	boolean isDisplayed=false; //Attachment closer
+	
 	Long documentId;
 	
 	Document doc;
+	
+	private Integer activities=0;
 	
 	@Inject DispatchAsync requestHelper;
 	
@@ -147,10 +154,12 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
-				
+//				if(isDisplayed){
+//					fireEvent(new CloseAttatchmentEvent());
+//					isDisplayed=false;
+//				}else{
 				uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
 					@Override
 					public void processResult(UploadDocumentPresenter result) {
@@ -159,11 +168,12 @@ public class GenericDocumentPresenter extends
 						context.setContext("documentId", doc.getId()+"");
 						context.setContext("userid", AppContext.getUserId());
 						result.setContext(context);
-						addToPopupSlot(result,false);						
+						addToPopupSlot(result,false);
+						//isDisplayed=true;
 					}
 				});
-				
-			}
+			  }
+// }
 		});
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			
@@ -178,7 +188,7 @@ public class GenericDocumentPresenter extends
 						fireEvent(new ProcessingCompletedEvent());
 						//clear selected document
 						fireEvent(new AfterSaveEvent());
-						fireEvent(new WorkflowProcessEvent(doc.getSubject() +" has been forwarded for Approval",doc));
+						fireEvent(new WorkflowProcessEvent(doc.getSubject(), "You have forwarded for Approval",doc));
 					}
 				});
 				
@@ -418,16 +428,15 @@ public class GenericDocumentPresenter extends
 		Collections.reverse(activities);
 		
 		for(Activity activity: activities){
-			
 			bind(activity,false);			
-			List<Activity> children = activitiesMap.get(activity);			
+			List<Activity> children = activitiesMap.get(activity);	
 			if(children!=null){
 				for(Activity child: children){
 					bind(child, true);
 				}
 			}
 		}		
-		
+		this.activities +=activitiesMap.size();
 	}
 
 	private void bind(final Activity child, boolean isChild) {
@@ -448,7 +457,7 @@ public class GenericDocumentPresenter extends
 			notePresenterFactory.get(new ServiceCallback<NotePresenter>() {				
 				@Override
 				public void processResult(NotePresenter result) {
-					result.setNotification((Notification)child);
+					result.setNotification((Notification)child, false);
 					addToSlot(ACTIVITY_SLOT, result);
 				}
 			});
@@ -458,6 +467,11 @@ public class GenericDocumentPresenter extends
 
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
 		List<Attachment> attachments = attachmentsresponse.getAttachments();
+		
+		if(attachments.size()>0){
+		getView().getDivAttachment().removeClassName("hidden");
+		getView().getSpnAttachmentNo().setInnerText(attachments.size() + " attachments");
+		}
 		
 		setInSlot(ATTACHMENTS_SLOT, null);//clear
 		for(final Attachment attachment: attachments){
@@ -477,15 +491,9 @@ public class GenericDocumentPresenter extends
 		setInSlot(ACTIVITY_SLOT, null);
 		List<Comment> comments = commentsResult.getComments();
 		
-//		{
-//			Comment comment = new Comment();
-//			comment.setComment("I have seen this; need details");
-//			comment.setCreatedBy("Tom");
-//			comment.setCreated(new Date());
-//			comment.setDocumentId(documentId);
-//			comments.add(comment);
-//		}
-//		
+		this.activities += comments.size();
+		
+		getView().getSpnActivityNo().setInnerText("Activity("+this.activities+")");
 		for(final Comment comment: comments){
 			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
 				@Override
@@ -581,7 +589,6 @@ public class GenericDocumentPresenter extends
 				new TaskServiceCallback<GetAttachmentsResponse>() {
 			@Override
 			public void processResult(GetAttachmentsResponse result) {
-				
 				bindAttachments(result);
 			}
 		});

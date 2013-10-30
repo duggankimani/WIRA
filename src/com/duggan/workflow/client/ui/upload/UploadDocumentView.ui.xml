@@ -6,16 +6,20 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:DialogBox styleName="modal" modal="true" width="100%" ui:field="uploaderDialog">
+	<g:PopupPanel styleName="popover left in fade popoverAttachment" modal="true" ui:field="uploaderDialog">
 		<g:HTMLPanel>
-			<g:HTMLPanel styleName="modal-header">
-					<h5><i class="icon-arrow-up"></i>Upload Documents</h5>
+			<g:HTMLPanel styleName="arrow" ui:field="iArrow"></g:HTMLPanel>
+			<g:HTMLPanel styleName="popover-title">
+					<h5><i class="icon-cloud-upload"></i>  Upload Documents</h5>
 			 </g:HTMLPanel>
 				
+			<div class="popover-content">
 				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
 					<up:Uploader ui:field="uploader"></up:Uploader>
 				</g:HTMLPanel>
-	
+				<span class="muted">Click "Choose File" to upload</span>
+			</div>
+			
 			<g:HTMLPanel styleName="modal-footer">
 				<g:Button styleName="btn btn-primary pull-right" ui:field="btnDone"
 					text="DONE" />
@@ -23,5 +27,5 @@
 					text="CANCEL" />
 			</g:HTMLPanel>
 		</g:HTMLPanel>
-	</g:DialogBox>
+	</g:PopupPanel>
 </ui:UiBinder>

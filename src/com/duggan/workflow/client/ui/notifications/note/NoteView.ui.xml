@@ -7,11 +7,10 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-	    <g:Anchor ui:field="aDocument" href="#home;type=search;pid=108" styleName="item unread hand">
-            <i class="icon-signin"></i> 
-            <span class="bluename" ui:field="spnActor"></span>
-             <span class="bluename" ui:field="spnSubject"></span>
-            <span class="time" ui:field="spnTime"><i class="icon-time"></i></span>
+	    <g:Anchor ui:field="aDocument" styleName="item unread hand hidden">
         </g:Anchor>  
+        
+    	<g:HTMLPanel ui:field="divActivity" styleName="feed-item hidden">
+        </g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -63,7 +63,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
 		insidecontainer.setStyleName("inside-container");
-		//wfactions.setStyleName("wfactions hidden");
 		
 		aClaim.getElement().setAttribute("data-toggle", "tooltip");
 		aClaim.getElement().setAttribute("title", "Claim");

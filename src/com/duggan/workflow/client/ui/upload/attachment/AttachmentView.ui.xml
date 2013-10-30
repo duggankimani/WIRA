@@ -7,13 +7,16 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 	
-    <g:HTMLPanel styleName="attachment-section row-fluid span6">
-		<img src="img/pdf.gif"></img>
-        <span ui:field="spnName"></span>
-        <br/>
-        <div class="row-fluid attachment-links span5">
-           <span ui:field="spnSize"></span>
-           <g:Anchor ui:field="aDownload" text="Download" styleName="hand"/>
-     	</div>
+    <g:HTMLPanel styleName="attachment-links span6">
+		<div class="span1 icon"><img src="img/pdf.gif"></img></div>
+		<div class="span11 attachment-info">
+	        <b><span ui:field="spnName"></span></b>
+	        <br/>
+	        <div class="row">
+		      	<span ui:field="spnSize" class="attachment-size"></span>
+		        <g:Anchor ui:field="aDownload" text="Download" styleName="hand"/>
+	        </div>
+        </div>
     </g:HTMLPanel>
+    
 </ui:UiBinder>

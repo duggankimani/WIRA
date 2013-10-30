@@ -74,7 +74,7 @@ public class ProcessPresenter extends
 			@Override
 			public void processResult(AddProcessPresenter result) {
 				result.setProcessDefId(processDefId);
-				addToPopupSlot(result);
+				addToPopupSlot(result,false);
 			}
 		});
 			

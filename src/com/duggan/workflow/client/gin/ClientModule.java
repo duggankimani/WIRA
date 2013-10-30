@@ -89,6 +89,8 @@ import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
 import com.duggan.workflow.client.ui.addDoc.DocumentPopupView;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
+import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
+import com.duggan.workflow.client.ui.docActivity.DocumentActivityView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -229,5 +231,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(DocTypeItemPresenter.class,
 				DocTypeItemPresenter.MyView.class, DocTypeItemView.class);
+
+		bindPresenterWidget(DocumentActivityPresenter.class,
+				DocumentActivityPresenter.MyView.class,
+				DocumentActivityView.class);
 }
 }

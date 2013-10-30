@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.upload;
 
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -8,7 +9,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
@@ -24,7 +25,7 @@ public class UploadDocumentView extends PopupViewImpl implements
 	@UiField Uploader uploader;
 	@UiField Button btnDone;
 	@UiField Button btnCancel;
-	@UiField DialogBox uploaderDialog;
+	@UiField PopupPanel uploaderDialog;
 	
 	@Inject
 	public UploadDocumentView(final EventBus eventBus, final Binder binder) {
@@ -45,8 +46,9 @@ public class UploadDocumentView extends PopupViewImpl implements
 				hide();
 			}
 		});
-
-		uploaderDialog.setPopupPosition(1019,35);
+		
+		int[] positions=AppManager.calculatePosition(2, 62);
+		uploaderDialog.setPopupPosition(positions[1],positions[0]);
 		
 	}
 

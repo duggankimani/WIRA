@@ -290,13 +290,12 @@ public class TaskItemPresenter extends
 						}
 					}
 					
-					String out = isApproved==null? doc.getSubject() + " review completed":
-							isApproved? doc.getSubject()+ " Approved":
-								doc.getSubject()+" Rejected";
+					String out = isApproved==null? "Review completed for ":
+							isApproved? " You have Approved ": "You have Rejected ";
 					//removeFromParent();
 					//fireEvent(new AfterSaveEvent());
 					reload((HTSummary)result.getDocument());
-					fireEvent(new WorkflowProcessEvent(out,doc));
+					fireEvent(new WorkflowProcessEvent(doc.getSubject(),out,doc));
 				}else{
 					//fireEvent(new ReloadEvent());
 					reload((HTSummary)result.getDocument());

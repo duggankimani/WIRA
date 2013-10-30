@@ -1,36 +1,36 @@
 package com.duggan.workflow.client.ui.admin.addprocess;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.component.ListField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
-import com.gwtplatform.mvp.client.PopupViewImpl;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.PopupViewImpl;
 
 public class AddProcessView extends PopupViewImpl implements
 		AddProcessPresenter.MyView {
 
 	private final Widget widget;
 	@UiField IssuesPanel issues;
-	
+	@UiField PopupPanel divPopUp;
 	@UiField Anchor aNext;
 	@UiField Anchor aClose;
 	@UiField Anchor aBack;
@@ -82,6 +82,9 @@ public class AddProcessView extends PopupViewImpl implements
 				hide();
 			}
 		});
+		
+		int[] position = AppManager.calculatePosition(5, 50);
+		divPopUp.setPopupPosition(position[1], position[0]);
 	}
 
 	@Override

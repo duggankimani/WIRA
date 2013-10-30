@@ -3,17 +3,17 @@ package com.duggan.workflow.client.ui.notifications.note;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.NotificationType;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
@@ -24,7 +24,10 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 	@UiField
 	Anchor aDocument;
-
+	
+	@UiField
+	HTMLPanel divActivity;
+	
 	APPROVALREQUEST_APPROVERNOTE_TEMPLATE Template1 = GWT
 			.create(APPROVALREQUEST_APPROVERNOTE_TEMPLATE.class);
 	APPROVALREQUEST_OWNERNOTE_TEMPATE Template2 = GWT
@@ -33,7 +36,11 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			.create(TASKCOMPLETED_APPROVERNOTE_TEMPLATE.class);
 	TASKCOMPLETED_OWNERNOTE_TEMPLATE Template4 = GWT
 			.create(TASKCOMPLETED_OWNERNOTE_TEMPLATE.class);
-
+	TASKCOMPLETED_OWNERNOTE_ACTIVITY_TEMPLATE Template5 = GWT
+			.create(TASKCOMPLETED_OWNERNOTE_ACTIVITY_TEMPLATE.class);
+	APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE Template6 = GWT
+			.create(APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE.class);
+	
 	@Inject
 	public NoteView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -49,7 +56,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			NotificationType notificationType, String owner,
 			String targetUserId, String time, boolean isRead,
 			String createdBy, ApproverAction approverAction,
-			 Long processInstanceId) {
+			 Long processInstanceId, boolean isNotification) {
 		
 		String prefix = documentType == null ? "Document" : documentType
 				.getDisplayName();
@@ -72,13 +79,18 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		String approver = createdBy;
 		
 		SafeHtml safeHtml = null;
+		SafeHtml safeHtml2 = null;
 		switch (notificationType) {
 		case APPROVALREQUEST_APPROVERNOTE:
 			safeHtml = Template1.render(subject, owner, time);
 			break;
 
 		case APPROVALREQUEST_OWNERNOTE:
+			if(isNotification)
 			safeHtml = Template2.render(subject, time);
+			else
+			safeHtml2= Template6.render(subject, time);
+			
 			break;
 
 		case TASKCOMPLETED_APPROVERNOTE:
@@ -86,8 +98,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
+			if(isNotification)
 			safeHtml = Template4.render(subject, approver, time, action, 
 					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
+			else
+			safeHtml2 =Template5.render(subject, approver, time, 
+					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign",action);
 			break;
 		default:
 			//safeHtml= "<p>You have no new notification</p>";
@@ -96,6 +112,13 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		
 		if(safeHtml!=null){
 			aDocument.setHTML(safeHtml);
+			aDocument.removeStyleName("hidden");
+		}
+		
+		if(safeHtml2!=null){
+			divActivity.getElement().setInnerSafeHtml(safeHtml2);	
+			divActivity.removeStyleName("hidden");
+			aDocument.addStyleName("hidden");
 		}
 		
 		if(processInstanceId!=null){
@@ -119,12 +142,26 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		// eg Request for approval - Invoice INV/001/2013 from Calcacuervo. (2
 		// mins ago)
 	}
-
+	
 	interface APPROVALREQUEST_OWNERNOTE_TEMPATE extends SafeHtmlTemplates {
 		@Template("<i class=\"icon-signin\"></i>"+
 				"<span class=\"bluename\">{0}</span>"+
 				" succesfully submitted for approval "
 				+ " <span class=\"time\"><i class=\"icon-time\">{1}</i></span>")
+		public SafeHtml render(String subject, String time);
+
+		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
+		// (10 seconds ago)
+	}
+	
+	interface APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE extends SafeHtmlTemplates {
+		@Template("<div class=\"feed-icon\"><i class=\"icon-signin\"></i></div>"+
+				"<div class=\"feed-subject\"><a><span>You</span></a>" +
+				" succesfully submitted <a><span>{0}</span></a>" +
+				" for approval</div>"+
+				"<div class=\"feed-actions\">" +
+				"<span class=\"time\"><i class=\"icon-time\">{1}</span>" +
+				"</div>")
 		public SafeHtml render(String subject, String time);
 
 		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
@@ -148,9 +185,23 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		@Template("<i class=\"{4}\"></i>"+
 				"<span class=\"bluename\">{0}</span>"
 				+ " {3} by <span class=\"bluename\">{1}</span>"
-				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
+				+ " <span class=\"time\"><i class=\"icon-time\">{2}</i></span>")
 		public SafeHtml render(String subject, String approver, String time,
 				String action, String style);
+
+		// e.g Your Invoice INV/001/2013 was approved/Denied by HOD (1hr ago)
+	}
+
+	interface TASKCOMPLETED_OWNERNOTE_ACTIVITY_TEMPLATE extends SafeHtmlTemplates {
+
+		@Template("<div class=\"feed-icon\"><i class=\"{3}\"></i>"+"</div>"+
+				"<div class=\"feed-subject\"><a>{1}</a>"+
+				" {4} "+"<a>{0}</a></div>"+
+				"<div class=\"feed-actions\">" +
+				"<span class=\"time\"><i class=\"icon-time\">{2}</i></span>" +
+				"</div>"
+				)
+		public SafeHtml render(String subject, String approver, String time, String style ,String action);
 
 		// e.g Your Invoice INV/001/2013 was approved/Denied by HOD (1hr ago)
 	}

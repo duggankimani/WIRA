@@ -2,11 +2,13 @@ package com.duggan.workflow.client.ui.document;
 
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ACTIVITY_SLOT;
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
 
 import java.util.Date;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
@@ -16,23 +18,18 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -78,16 +75,16 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel statusContainer;
 	@UiField Element eOwner;
 	@UiField SpanElement spnPriority;
+	@UiField SpanElement spnAttachmentNo;
+	@UiField SpanElement spnActivityNo;
+	@UiField DivElement divAttachment;
 	@UiField SpanElement spnStatus;
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
-	@UiField Anchor aSaveComment;
-	@UiField HTMLPanel commentContainer;
-	@UiField TextArea commentBox;
-	@UiField FocusPanel commentPanel;
 	@UiField Anchor aAttach;
 	@UiField Anchor aShowProcess;
+	@UiField CommentBox commentPanel;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -101,53 +98,10 @@ public class GenericDocumentView extends ViewImpl implements
 		aForward.getElement().setAttribute("type", "button");
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
-		commentBox.getElement().setAttribute("placeholder","Make comments, ask for clarifications ...");
-		commentPanel.getElement().removeAttribute("tabindex");
-		
-		/*Comment Box Effect
-		 * --OnFocus
-		 * */
-		FocusHandler handler = new FocusHandler() {
-			@Override
-			public void onFocus(FocusEvent event) {
-				commentContainer.addStyleName("comment-big");
-				commentContainer.removeStyleName("comment-small");
-				commentBox.addStyleName("textarea-big");
-				commentBox.removeStyleName("textarea-small");
-				aSaveComment.removeStyleName("hidden");
-			}
-		};
 		
 		
-		BlurHandler blurHandler = new BlurHandler() {
-			@Override
-			public void onBlur(BlurEvent event) {
-				
-				if(commentBox.getValue().trim().isEmpty()){
-					commentContainer.addStyleName("comment-small");
-					commentContainer.removeStyleName("comment-big");
-					commentBox.addStyleName("textarea-small");
-					commentBox.removeStyleName("textarea-big");
-					aSaveComment.addStyleName("hidden");
-				}
-			}
-		};
+		disableAll();//Hide all buttons
 		
-		aSaveComment.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				commentContainer.addStyleName("comment-small");
-				commentContainer.removeStyleName("comment-big");
-				commentBox.addStyleName("textarea-small");
-				commentBox.removeStyleName("textarea-big");
-				aSaveComment.addStyleName("hidden");
-			}
-		});
-		commentBox.addFocusHandler(handler);
-		commentBox.addBlurHandler(blurHandler);		
-		
-		disableAll();
 		aShowProcess.removeStyleName("gwt-Anchor");
 		aShowProcess.addClickHandler(new ClickHandler() {
 			
@@ -389,7 +343,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 	
 	public Anchor getSaveCommentButton(){
-		return aSaveComment;
+		return commentPanel.getaSaveComment();
 	}
 	
 	@Override
@@ -397,13 +351,11 @@ public class GenericDocumentView extends ViewImpl implements
 
 		if(slot==ACTIVITY_SLOT){
 			panelActivity.clear();
-			
 			if(content!=null){
 				panelActivity.add(content);
 			}
 		}if(slot==ATTACHMENTS_SLOT){
-			panelAttachments.clear();
-			
+			panelAttachments.clear();	
 			if(content!=null){
 				panelAttachments.add(content);
 			}
@@ -421,7 +373,6 @@ public class GenericDocumentView extends ViewImpl implements
 				panelActivity.add(content);
 			}
 		}if(slot==ATTACHMENTS_SLOT){
-			
 			if(content!=null){
 				panelAttachments.add(content);
 			}
@@ -439,16 +390,27 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public String getComment() {
 		
-		return commentBox.getValue();
+		return commentPanel.getCommentBox().getValue();
 	}
 
 	@Override
 	public void setComment(String string) {
-		commentBox.setText("");
+		commentPanel.getCommentBox().setText("");
 	}
 	
 	public HasClickHandlers getUploadLink(){
 		return aAttach;
 	}
 	
+	public SpanElement getSpnAttachmentNo() {
+		return spnAttachmentNo;
+	}
+	
+	public SpanElement getSpnActivityNo() {
+		return spnActivityNo;
+	}
+	
+	public DivElement getDivAttachment() {
+		return divAttachment;
+	}
 }

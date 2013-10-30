@@ -2,33 +2,36 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
-	<g:HTMLPanel ui:field="root" styleName="row-fluid">
-		<div class="span1">
-			<img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px"
-				height="50px" />
+	<g:HTMLPanel ui:field="root" styleName="feed-item feed-item-comment">
+		
+	    <div class="span1 image feed-image">
+				<img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="70px"/>
 		</div>
-		<div class="span8">
-			<span class="name">
-				<span ui:field="spnCreatedBy"></span>
+		<div class="feed-subject">
+			<a><span ui:field="spnCreatedBy"></span></a>
+			
+			<span ui:field="spnTime" class="">
+				<span class="time comment" ui:field="spnCreated"></span>
 			</span>
-			<span ui:field="spnMessage" class="message" />
-			<br />
-			<g:Anchor ui:field="aReply" styleName="hidden">Reply</g:Anchor>
-			<g:Anchor styleName="hidden">Edit</g:Anchor>
-			<span ui:field="spnTime" class="hidden">
-				<i class="icon-time">
-					<span ui:field="spnCreated"></span>
-				</i>
-			</span>
-
-			<g:TextArea ui:field="txtCommentBox" styleName="mmadministrationcommenttextarea" />
-			<div ui:field="divSave" class="button small-button hand">
-				<g:Anchor ui:field="lnkSaveComment">
-					<Strong>Save</Strong>
-				</g:Anchor>
-			</div>
+		</div>
+		
+		<div class="feed-content">
+			<ul class="icons-list">
+				<li>
+				<span ui:field="spnMessage" class="message" />
+				</li>
+			</ul>
+		</div>
+		
+		<div class="feed-actions">
+			<g:Anchor ui:field="aReply" styleName="pull-left">Reply</g:Anchor>
+		
+		</div>
+		<div class="hidden row-fluid comment-box" ui:field="divSave">
+			<d:CommentBox ui:field="txtCommentBox"></d:CommentBox>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

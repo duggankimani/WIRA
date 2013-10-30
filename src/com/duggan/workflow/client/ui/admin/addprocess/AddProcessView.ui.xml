@@ -9,7 +9,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true">
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="divPopUp">
 		<g:HTMLPanel>
 	 		<g:HTMLPanel styleName="modal-header">
 					<h5><i class="icon-cogs"></i>New Process Wizard <g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
@@ -17,8 +17,9 @@
 			 <d:IssuesPanel ui:field="issues">
 	    	</d:IssuesPanel>
 			 
+			 <g:HTMLPanel ui:field="divProcessDetails">
 		 	<g:HTMLPanel styleName="modal-body">
-		 			<g:HTMLPanel styleName="" ui:field="divProcessDetails">
+		 			<g:HTMLPanel styleName="" >
 						  <div class="form-group">
 						    <label for="ProcessName">Name:</label>
 						    <d:TextField ui:field="txtName" type="text" 
@@ -38,21 +39,27 @@
 						  	<label for="ProcessName">Document Types:</label>
 							  <admin:ListField ui:field="lstDocTypes"></admin:ListField>
 						  </div>
-						  <g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
 					</g:HTMLPanel>
 			</g:HTMLPanel>
+			  <div class="form-actions">
+					<g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+			  </div>
+			  </g:HTMLPanel>
 			
 			<g:HTMLPanel styleName="hide" ui:field="divUploadDetails">
-				
-				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
-					<up:Uploader ui:field="uploader"></up:Uploader>
-				</g:HTMLPanel>
-				
-				<g:HTMLPanel styleName="modal-footer pull-right">
-					<g:Anchor styleName="btn btn-default" ui:field="aBack"><i class="icon-double-angle-left"></i> &nbsp; Back </g:Anchor>
-					<g:Anchor styleName="btn btn-success" ui:field="aFinish">Finish &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
-			 	</g:HTMLPanel>
+				<g:HTMLPanel styleName="modal-body">
+					<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
+						<up:Uploader ui:field="uploader"></up:Uploader>
+					</g:HTMLPanel>
+				 </g:HTMLPanel>
+				 <g:HTMLPanel styleName="form-actions">
+						<div class="pull-right">
+						<g:Anchor styleName="btn btn-default" ui:field="aBack"><i class="icon-double-angle-left"></i> &nbsp; Back </g:Anchor>
+						<g:Anchor styleName="btn btn-success" ui:field="aFinish">Finish &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+				 		</div>
+				 </g:HTMLPanel>
 			 </g:HTMLPanel>
+			 
 		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>

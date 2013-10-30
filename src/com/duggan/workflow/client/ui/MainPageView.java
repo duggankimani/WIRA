@@ -1,9 +1,11 @@
 package com.duggan.workflow.client.ui;
 
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,6 +25,16 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@UiField DivElement divAlert;
 	@UiField SpanElement spnAlertContent;
 	@UiField Anchor aView;
+	@UiField Element spnSubject;
+	
+	Timer timer = new Timer() {
+		
+		@Override
+		public void run() {
+			hideAlert();
+		}
+ };
+
 	
 	
 	@Inject
@@ -68,10 +80,17 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	}
 	
 	@Override
-	public void setAlertVisible(String statement,String url){
+	public void setAlertVisible(String subject, String statement,String url){
 		divAlert.removeClassName("hidden");
 		spnAlertContent.setInnerText(statement);
+		spnSubject.setInnerText(subject);
 		aView.setHref(url);
+		timer.cancel();
+		timer.schedule(10000);
+	}
+	
+	public void hideAlert(){
+		divAlert.addClassName("hidden");
 	}
 
 }

@@ -27,7 +27,7 @@
        
       	 <!--Button Add Document -->
         <div class="add-doc">
-          <g:Anchor ui:field="btnAdd" styleName="btn btn-danger btn-large dropdown-toggle">Add Document</g:Anchor>
+          <g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">Add Document</g:Anchor>
         	
           <!-- Document Pop-up  -->
          <g:HTMLPanel ui:field="divDocPopup" styleName="dropdown-menu document-drop">
