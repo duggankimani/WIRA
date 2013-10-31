@@ -149,8 +149,8 @@
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/jettison-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/javax.ws.rs-api-2.0-m10.jar"/>
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/stax-api-1.0-2.jar"/>
-	<classpathentry kind="lib" path="/Platinum-5-maintenance/war/WEB-INF/lib/geronimo-jpa_3.0_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-9.2-1003.jdbc4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jpa_3.0_spec-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

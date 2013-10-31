@@ -137,7 +137,13 @@ public class DocumentDaoImpl {
 		Date endDate = filter.getEndDate();
 		Integer priority=filter.getPriority();
 		String phrase=filter.getPhrase();
-		DocumentType docType=filter.getDocType();
+		DocumentType docTypeIn=filter.getDocType();
+		
+		ADDocType docType = null;
+		if(docTypeIn!=null){
+			docType = getDocumentTypeById(docTypeIn.getId());
+		}
+		
 		Boolean hasAttachment=filter.hasAttachment();
 
 		Map<String, Object> params = new HashMap<>();
@@ -243,7 +249,13 @@ public class DocumentDaoImpl {
 		Date endDate = filter.getEndDate();
 		Integer priority=filter.getPriority();
 		String phrase=filter.getPhrase();
-		DocumentType docType=filter.getDocType();
+		DocumentType docTypeIn=filter.getDocType();
+		
+		ADDocType docType = null;
+		if(docTypeIn!=null){
+			docType = getDocumentTypeById(docTypeIn.getId());
+		}
+		
 		Boolean hasAttachment=filter.hasAttachment();
 		
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
@@ -344,8 +356,8 @@ public class DocumentDaoImpl {
 		
 		if(docType!=null){
 			isFirst=false;
-			query.append("d.type.name=?");
-			params.add( docType.getName());
+			query.append("d.docType=?");
+			params.add( docType);
 		}
 		
 		if(!isFirst){
