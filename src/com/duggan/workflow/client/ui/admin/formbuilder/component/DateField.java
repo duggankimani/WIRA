@@ -82,6 +82,6 @@ public class DateField extends FieldWidget {
 			return null;
 		}
 		
-		return new DateValue(field.getId(), field.getName(), dt);
+		return new DateValue(null, field.getName(), dt);
 	}
 }

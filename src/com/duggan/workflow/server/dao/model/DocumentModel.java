@@ -1,8 +1,11 @@
 package com.duggan.workflow.server.dao.model;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -60,6 +63,9 @@ public class DocumentModel extends PO{
 	private Long processInstanceId;
 	
 	private Long sessionId;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="document",cascade=CascadeType.ALL)
+	private Collection<ADValue> values = new HashSet<>(); 
 	
 	public DocumentModel(){
 		
@@ -164,5 +170,17 @@ public class DocumentModel extends PO{
 	public void setSessionId(Long sessionId) {
 		this.sessionId = sessionId;
 	}
+
+	public Collection<ADValue> getValues() {
+		return values;
+	}
+
 	
+	public void addValue(ADValue value){
+		if(value!=null){
+			value.setDocument(this);
+		}
+		
+		values.add(value);
+	}
 }

@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,6 +59,7 @@ import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.model.Value;
 
 /**
  * This is a Helper Class for all JBPM associated requests.
@@ -139,6 +141,11 @@ public class JBPMHelper implements Closeable{
 		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
 		initialParams.put("document", summary);
+		Map<String, Value> vals = summary.getValues();		
+		Collection<Value> values = vals.values();
+		for(Value val: values){
+			initialParams.put(val.getKey(), val.getValue());
+		}
 		
 		ProcessInstance processInstance = sessionManager.startProcess(
 				getProcessId(summary.getType()), initialParams,summary);
