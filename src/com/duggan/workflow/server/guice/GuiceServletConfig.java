@@ -7,6 +7,7 @@ import org.jbpm.executor.ExecutorModule;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.Injector;
 import com.google.inject.Guice;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.guice.ServerModule;
 import com.duggan.workflow.server.guice.DispatchServletModule;
@@ -29,7 +30,17 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		super.contextInitialized(servletContextEvent);
 		DBTrxProvider.init();
 		JBPMHelper.get();
-		ProcessMigrationHelper.init();
+		
+		try{		
+			DB.beginTransaction();
+			ProcessMigrationHelper.init();
+			DB.commitTransaction();			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			DB.closeSession();
+		}
+		
 	}
 	
 	@Override
