@@ -83,10 +83,10 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 		
 		if(isChild){
 			root.addStyleName("well");
+			aReply.addStyleName("hidden");
 		}
 						
 		setComment(comment);
-		
 	}
 
 	public void setComment(String comments) {
@@ -115,8 +115,9 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			txtCommentBox.getSpnArrow().addClassName("reply");
 			aReply.addStyleName(HIDDEN);
 		}else{
+			aReply.removeStyleName(HIDDEN);
 			((Widget)aReply).setTitle("Cancel");
-			
+			aReply.setText("Cancel");
 			divSave.addClassName(HIDDEN);
 			txtCommentBox.addStyleName(HIDDEN);
 		}

@@ -10,7 +10,7 @@
 	    <g:Anchor ui:field="aDocument" styleName="item unread hand hidden">
         </g:Anchor>  
         
-    	<g:HTMLPanel ui:field="divActivity" styleName="feed-item hidden">
+    	<g:HTMLPanel ui:field="divActivity" styleName="feed-item activity hidden">
         </g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

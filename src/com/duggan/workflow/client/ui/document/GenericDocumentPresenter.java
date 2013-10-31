@@ -156,10 +156,6 @@ public class GenericDocumentPresenter extends
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-//				if(isDisplayed){
-//					fireEvent(new CloseAttatchmentEvent());
-//					isDisplayed=false;
-//				}else{
 				uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
 					@Override
 					public void processResult(UploadDocumentPresenter result) {
@@ -169,15 +165,11 @@ public class GenericDocumentPresenter extends
 						context.setContext("userid", AppContext.getUserId());
 						result.setContext(context);
 						addToPopupSlot(result,false);
-						//isDisplayed=true;
 					}
 				});
 			  }
-// }
 		});
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
-			
-			
 			@Override
 			public void onClick(ClickEvent event) {
 				fireEvent(new ProcessingEvent());
@@ -470,7 +462,7 @@ public class GenericDocumentPresenter extends
 		
 		if(attachments.size()>0){
 		getView().getDivAttachment().removeClassName("hidden");
-		getView().getSpnAttachmentNo().setInnerText(attachments.size() + " attachments");
+		getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
 		}
 		
 		setInSlot(ATTACHMENTS_SLOT, null);//clear
@@ -480,7 +472,6 @@ public class GenericDocumentPresenter extends
 				public void processResult(AttachmentPresenter result) {
 					result.setAttachment(attachment);
 					addToSlot(ATTACHMENTS_SLOT, result);
-				
 				}
 			});
 		}
