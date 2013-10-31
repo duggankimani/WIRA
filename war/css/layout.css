@@ -68,7 +68,7 @@ textarea {
 	height: 20px;
 }
 
-.alert{
+.main-body .alert{
 	position: absolute;
 	right: 38%;
 	top: 1%;
@@ -881,8 +881,8 @@ body .dateBoxPopup{
 }
 
 #detailed-info .recent-activity .comment-box .arrow.reply{
-	top: 56px;
-	left: 108px;
+	top: 59px;
+	left: 111px;
 }
 #detailed-info .recent-activity .comment-box .image{
 	width: 8.6%;
@@ -944,7 +944,7 @@ body .dateBoxPopup{
 
 #detailed-info .recent-activity .span1{
 	padding-top: 4px;
-	width: 63px;
+	width: 52px;
 	height: 50px;
 }
 #detailed-info .recent-activity .span8{
@@ -957,10 +957,10 @@ body .dateBoxPopup{
 }
 
 #detailed-info .panel-activity .feed-item.well{
-	margin-left: 53px;
+	margin-left: 58px;
 	margin-top: 2px;
 	padding-top: 0px;
-	padding-left:65px;
+	padding-left: 63px;
 	background: none;
 	border: none;
 }
@@ -968,6 +968,9 @@ body .dateBoxPopup{
 	  position: absolute;
 	  top: 3px;
 	  left: 5px;
+}
+#detailed-info .panel-activity .feed-item.activity {
+	padding-top: 4px;
 }
 
 #detailed-info .panel-activity .feed-item {
@@ -977,11 +980,12 @@ body .dateBoxPopup{
   padding-top: 10px;
   font-size:13px;
   padding-bottom: 0px;
-  padding-left: 60px;
+  padding-left: 63px;
  /* border-left: 2px solid #DDD;*/
  border-bottom: 1px dotted #CCCCCC;
   font-family: 'Open Sans', 'trebuchet ms', arial, sans-serif;
 }
+
 #detailed-info .panel-activity .feed-item .time {
   color: #999;
   font-size: 11px;
@@ -993,7 +997,7 @@ body .dateBoxPopup{
  margin-left: 6px;
 }
 #detailed-info .panel-activity .feed-item:last-child {
-  padding-bottom: 15px;
+  padding-bottom: 4px;
 }
 #detailed-info .panel-activity .feed-item .feed-subject {
   margin-bottom: 0px;
@@ -1048,14 +1052,14 @@ margin-top: 11px;
 }
 #detailed-info .panel-activity .feed-item .feed-icon {
   position: absolute;
-  top: 8px;
-  left: 0px;
-  width: 45px;
-  height: 45px;
+  top: 3px;
+  left: 14px;
+  width: 30px;
+  height: 30px;
   color: #FFF;
   text-align: center;
-  font-size: 21px;
-  line-height: 46px;
+  font-size: 16px;
+  line-height: 32px;
   background-color: #888888;
   border: 3px solid #FFF;
   border-top-right-radius: 100px;
@@ -1091,7 +1095,7 @@ ul.icons-list {
   padding: 0;
   margin: 0px;
   list-style: none;
-  margin-top: -5px;
+  margin-top: -2px;
 }
 ul.icons-list > li {
   position: relative;
