@@ -6,7 +6,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 	
-	<g:HTMLPanel>
+	<g:HTMLPanel styleName="main-body">
 	    <span ui:field="loadingtext" class="span2 hide">Loading ...</span>
 	      <div class="alert alert-success hidden" ui:field="divAlert">
 	            <span ui:field="spnAlertContent"></span><strong ui:field="spnSubject"></strong>

@@ -54,7 +54,14 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 
 	@Override
 	public void setValues(long id,String name, String size) {
-		spnName.setInnerText(name);
+		String shortName;
+		if(name.length()>24){
+			shortName = name.substring(0, 24) + " ...";
+		}else{
+			shortName=name;
+		}
+		spnName.setInnerText(shortName);
+		spnName.setTitle(name);
 		spnSize.setInnerText(""+size);
 		
 		UploadContext context = new UploadContext("getreport");
