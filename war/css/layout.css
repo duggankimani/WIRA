@@ -11,7 +11,6 @@ h1,h2,h3,h4,h5 {
 	color: #29323d;
 }
 
-
 a{
     color: grey;
     cursor:pointer;
@@ -482,7 +481,6 @@ body .dateBoxPopup{
 }
 
 /* Sidebar */
-
 #sidebar-nav {
 	width: 12%;
 	min-height: 100%;
@@ -511,7 +509,7 @@ body .dateBoxPopup{
 #sidebar-nav .document-dialog .span6{
 	min-height:40px;
 	margin-left: 0px;
-	padding: 5px 16px;
+	padding: 5px 16px; 
 }
 
 #sidebar-nav .document-dialog .span6{
