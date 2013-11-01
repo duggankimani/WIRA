@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.helper.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -17,6 +19,9 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.Value;
+
+import static com.duggan.workflow.server.helper.dao.FormDaoHelper.*;
 
 /**
  * This class is Dao Helper for persisting all document related entities.
@@ -63,13 +68,31 @@ public class DocumentDaoHelper {
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
 			model.setProcessInstanceId(document.getProcessInstanceId());
-			model.setSessionId(document.getSessionId());
+			model.setSessionId(document.getSessionId());											
+		}
+		
+		model.getValues().clear();
+		Map<String, Value> vals = document.getValues();
+		Collection<Value> values = vals.values(); 
+		for(Value val: values){			
+			ADValue previousValue = new ADValue();
+			if(val.getId()!=null){
+				previousValue = DB.getFormDao().getValue(val.getId());
+			}
+			
+			ADValue adValue = getValue(previousValue, val);
+			assert adValue!=null;
+			model.addValue(adValue);				
 		}
 
+		assert model.getValues().size()==3;
+		
 		model = dao.saveDocument(model);
 
 		Document doc = getDoc(model);
-
+		
+		//values---
+		
 		return doc;
 	}
 

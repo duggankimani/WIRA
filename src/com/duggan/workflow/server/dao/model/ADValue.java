@@ -2,6 +2,7 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -34,6 +36,8 @@ public class ADValue extends PO{
 	
 	private Date dateValue;
 	
+	private String fieldName;
+	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fieldid",referencedColumnName="id")
 	private ADField field;
@@ -41,6 +45,10 @@ public class ADValue extends PO{
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="propertyid", referencedColumnName="id")
 	private ADProperty property;
+	
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="documentid", referencedColumnName="id")
+	private DocumentModel document;
 	
 	public Long getId() {
 		return id;
@@ -104,5 +112,103 @@ public class ADValue extends PO{
 
 	public void setLongValue(Long longValue) {
 		this.longValue = longValue;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		ADValue other = (ADValue)obj;
+		
+		if(id==null ^ other.id==null){
+			return false;
+		}
+		
+		if(field==null ^ other.field==null){
+			return false;
+		}
+		
+		if(property==null ^ other.property==null){
+			return false;
+		}
+		
+		if(fieldName==null ^ other.fieldName==null){
+			return false;
+		}
+		
+		if(document==null ^ other.document==null){
+			return false;
+		}
+		
+		if(field!=null && !field.equals(other.field)){
+			return false;
+		}
+		
+		if(property!=null && !property.equals(other.property)){
+			return false;
+		}
+		
+		if(document!=null && !document.equals(other.document)){
+			return false;
+		}
+		
+		if(fieldName!=null && !fieldName.equals(other.fieldName)){
+			return false;
+		}
+		
+		if(fieldName==null){
+			return false;
+		}
+		
+		System.err.println(">>>>>>>> "+fieldName+" -- Same");
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hashcode=7;
+		if(id!=null){
+			hashcode+=hashcode*17+id.hashCode();
+		}
+		
+		if(field!=null){
+			hashcode+=hashcode*13+field.hashCode();
+		}
+		
+		if(document!=null){
+			hashcode+=hashcode*13+document.hashCode();
+		}
+		
+		if(property!=null){
+			hashcode+=hashcode*13+property.hashCode();
+		}
+		
+		if(document!=null){
+			hashcode+=hashcode*13+document.hashCode();
+		}
+		
+		if(fieldName!=null){
+			hashcode+= hashcode*31+fieldName.hashCode();
+		}
+		
+		if(hashcode==7)
+			return super.hashCode();
+		
+		return hashcode;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
+	public DocumentModel getDocument() {
+		return document;
+	}
+
+	public void setDocument(DocumentModel document) {
+		this.document = document;
 	}
 }

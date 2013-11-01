@@ -56,15 +56,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		
 		user.setGroups(null);
 		save(user);
-		
-		if(groups!=null){
-			
-			for(Group group: groups){
-				prepare(group);
-				//em.merge(group);
-			}
-		}
-		
+				
 		user.setGroups(groups);
 		em.merge(user);		
 	}

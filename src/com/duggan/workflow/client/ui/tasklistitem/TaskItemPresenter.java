@@ -8,6 +8,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
@@ -293,8 +294,8 @@ public class TaskItemPresenter extends
 					String out = isApproved==null? "Review completed for ":
 							isApproved? " You have Approved ": "You have Rejected ";
 					//removeFromParent();
-					//fireEvent(new AfterSaveEvent());
-					reload((HTSummary)result.getDocument());
+					fireEvent(new AfterSaveEvent());
+					//reload((HTSummary)result.getDocument());
 					fireEvent(new WorkflowProcessEvent(doc.getSubject(),out,doc));
 				}else{
 					//fireEvent(new ReloadEvent());

@@ -189,7 +189,18 @@ public class Document extends DocSummary implements Serializable{
 	}
 	
 	public void setValue(String name, Value value){
+		if(value!=null){
+			value.setKey(name);
+		}
 		values.put(name, value);
+	}
+
+	public Map<String, Value> getValues() {
+		return values;
+	}
+
+	public void setValues(Map<String, Value> values) {
+		this.values = values;
 	}
 	
 	//public Map<String, Value> 

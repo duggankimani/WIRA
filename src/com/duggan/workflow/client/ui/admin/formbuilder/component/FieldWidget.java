@@ -155,9 +155,11 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		return value.getValue();
 	}
 	
+	/**
+	 * Overriden by children to provide value
+	 */
 	@Override
 	public Value getFieldValue() {
-		
 		return null;
 	}
 	

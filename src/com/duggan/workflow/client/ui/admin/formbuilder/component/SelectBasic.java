@@ -73,7 +73,7 @@ public class SelectBasic extends FieldWidget {
 		String value = null;
 		
 		if(kvp!=null){
-			value = kvp.getValue();
+			value = kvp.getKey();
 		}
 		
 		if(value!=null){

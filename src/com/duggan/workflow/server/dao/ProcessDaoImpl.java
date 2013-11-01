@@ -17,7 +17,6 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 	
 	
 	public void save(ProcessDefModel model){
-		prepare(model);
 		
 		if(model.getId()!=null){
 			em.merge(model);

@@ -193,7 +193,7 @@ public class FormDaoHelper {
 		return props;
 	}
 
-	private static Value getValue(ADValue advalue, DataType type) {
+	public static Value getValue(ADValue advalue, DataType type) {
 		if(advalue==null)
 			return null;
 		
@@ -203,7 +203,7 @@ public class FormDaoHelper {
 		Value value = null;
 		
 		Long id = advalue.getId();
-		String key = null;
+		String key = advalue.getFieldName();
 		
 		switch (type) {
 		case BOOLEAN:
@@ -398,7 +398,7 @@ public class FormDaoHelper {
 		return getValue(dao.getValue(advalue.getId()), value.getDataType());
 	}
 
-	private static ADValue getValue(ADValue previousValue, Value value) {
+	public static ADValue getValue(ADValue previousValue, Value value) {
 		if(value==null)
 			return null;
 		
@@ -409,6 +409,7 @@ public class FormDaoHelper {
 			advalue.setId(value.getId());
 		}
 		
+		advalue.setFieldName(value.getKey());
 		if(value.getValue()==null)
 			return advalue;
 		
@@ -426,7 +427,12 @@ public class FormDaoHelper {
 			break;
 			
 		case INTEGER:
-			advalue.setLongValue((Long)value.getValue());
+			if(value.getValue() instanceof Integer){
+				advalue.setLongValue(new Long((Integer)value.getValue()));
+			}else{
+				advalue.setLongValue((Long)value.getValue());
+			}
+			
 			break;
 			
 		case STRING:
@@ -494,5 +500,4 @@ public class FormDaoHelper {
 		return keyvaluepairs;
 	}
 
-		
 }

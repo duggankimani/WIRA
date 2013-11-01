@@ -90,6 +90,7 @@ public class TestDocumentDaoImpl {
 		
 		Document doc = new Document();
 		doc.setCreated(new Date());
+		doc.setType(DocumentDaoHelper.getType(DB.getDocumentDao().getDocumentTypeById(1L)));
 		doc.setDescription("test");
 		doc.setDocumentDate(new Date());
 		//doc.setType(DocumentType.INVOICE);

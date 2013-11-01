@@ -119,7 +119,7 @@ public class GenericFormView extends PopupViewImpl implements
 		doc.setDocumentDate(new Date());
 		doc.setId(null);
 		doc.setPriority(getPriority().ordinal());
-		doc.setValue("priority", new IntValue(doc.getPriority()));
+		doc.setValue("priority", new IntValue(null,"priority",doc.getPriority()));
 
 		int fields = panelFields.getWidgetCount();
 		
@@ -133,10 +133,12 @@ public class GenericFormView extends PopupViewImpl implements
 			Field field = fieldWidget.getField();
 			
 			Value fieldValue = fieldWidget.getFieldValue();
-			if(field.getType()==DataType.STRING ||
-					field.getType()==DataType.STRINGLONG
-					|| field.getType()==DataType.DATE) {
-				
+			if(fieldValue!=null) {
+//				field.getType()==DataType.STRING ||
+//						field.getType()==DataType.STRINGLONG
+//						|| field.getType()==DataType.DATE
+				assert field.getName()!=null;
+				assert !field.getName().isEmpty();
 				doc.setValue(field.getName(), fieldValue);
 				
 			}

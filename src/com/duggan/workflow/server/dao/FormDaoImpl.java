@@ -53,7 +53,6 @@ public class FormDaoImpl extends BaseDaoImpl {
 	public void save(PO po) {
 		
 		if(po.getId()!=null){
-			prepare(po);
 			em.merge(po);
 		}
 		else

@@ -14,19 +14,8 @@ public class BaseDaoImpl {
 	public BaseDaoImpl(EntityManager em){
 		this.em = em;
 	}
-	
-	protected void prepare(PO model){
-		if(model.getId()==null){
-			model.setCreated(new Date());
-			model.setCreatedBy(SessionHelper.getCurrentUser().getUserId());
-		}else{
-			model.setUpdated(new Date());
-			model.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
-		}
-	}
-	
+		
 	public void save(PO po){
-		prepare(po);
 		em.persist(po);
 	}
 	
