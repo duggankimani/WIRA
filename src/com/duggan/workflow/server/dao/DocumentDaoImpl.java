@@ -500,7 +500,7 @@ public class DocumentDaoImpl {
 
 	public List<ADDocType> getDocumentTypes() {
 		
-		List docTypes = em.createQuery("from ADDocType t")
+		List docTypes = em.createQuery("from ADDocType t order by t.display")
 				.getResultList();
 		
 		return docTypes;

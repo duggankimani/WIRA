@@ -32,7 +32,7 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 	
 	@SuppressWarnings("unchecked")
 	public List<ProcessDefModel> getAllProcesses(){
-		return em.createQuery("FROM ProcessDefModel p where p.isArchived=:isArchived")
+		return em.createQuery("FROM ProcessDefModel p where p.isArchived=:isArchived order by p.name")
 				.setParameter("isArchived", false).getResultList();
 	}
 	

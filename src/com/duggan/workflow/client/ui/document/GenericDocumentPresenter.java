@@ -80,7 +80,7 @@ public class GenericDocumentPresenter extends
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, DocumentType type, String subject,
-				Date docDate, String value, String partner, String description, Integer priority,DocStatus status);
+				Date docDate, String value, String partner, String description, Integer priority,DocStatus status, Long id);
 		
 		void showForward(boolean show);
 		void setValidTaskActions(List<Actions> actions);
@@ -351,6 +351,18 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void showEditForm(final MODE mode) {
+		
+//		if(doc!=null){
+//			if(doc.getType()!=null){
+//				if(doc.getType().getFormId()!=null){
+//					
+//					
+//					
+//					return;
+//				}
+//			}
+//		}
+		
 		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
 			@Override
 			public void processResult(CreateDocPresenter result) {
@@ -512,7 +524,7 @@ public class GenericDocumentPresenter extends
 		DocStatus status = document.getStatus();
 		
 		getView().setValues(doc.getOwner(),created,
-				docType, subject, docDate,  value, partner, description, priority,status);
+				docType, subject, docDate,  value, partner, description, priority,status, document.getId());
 		
 		if(status==DocStatus.DRAFTED){
 			getView().showEdit(true);

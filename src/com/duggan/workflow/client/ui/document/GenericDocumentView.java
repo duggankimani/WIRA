@@ -86,6 +86,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aShowProcess;
 	@UiField CommentBox commentPanel;
 	
+	String url=null;
+	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -98,6 +100,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aForward.getElement().setAttribute("type", "button");
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
+		aShowProcess.setVisible(false);
 		
 		
 		disableAll();//Hide all buttons
@@ -107,7 +110,8 @@ public class GenericDocumentView extends ViewImpl implements
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				Window.open(GWT.getModuleBaseURL()+"/invoice-approval.png", "Business Process", null);
+				if(url!=null)
+				Window.open(url, "Business Process", null);
 			}
 		});
 		
@@ -134,7 +138,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	public void setValues(HTUser createdBy, Date created, DocumentType type, String subject,
-			Date docDate, String value, String partner, String description, Integer priority,DocStatus status) {
+			Date docDate, String value, String partner, String description, Integer priority,DocStatus status, Long id) {
 		disableAll();
 		if(createdBy!=null){
 			eOwner.setInnerText(createdBy.getName());
@@ -192,6 +196,15 @@ public class GenericDocumentView extends ViewImpl implements
 				spnPriority.addClassName("hide");
 				break;
 			}
+		}
+		
+		this.url=null;
+		if(id!=null){
+			
+			String root = GWT.getModuleBaseURL();
+			root = root.replaceAll("/gwtht", "");
+			this.url = root+"getreport?did="+id+"&ACTION=GETDOCUMENTPROCESS";
+			aShowProcess.setVisible(true);
 		}
 		
 	}

@@ -158,7 +158,7 @@ public class AddProcessView extends PopupViewImpl implements
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADCHANGESET);
 		context.setContext("processDefId", id+"");
-		context.setAccept("xml");
+		context.setAccept("xml,png");
 		uploader.setContext(context);
 	}
 

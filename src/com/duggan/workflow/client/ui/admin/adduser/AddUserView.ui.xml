@@ -23,8 +23,8 @@
 						  <div class="control-group">
 						  	<div class="controls"> 
 							    <label for="Names"><b>Names:</b></label>
-							    <d:TextField ui:field="txtFirstname" type="text" class="input-medium" placeholder="First Name"/>
 							    <d:TextField ui:field="txtLastname" type="text"  class="input-medium" placeholder="Last Name"/>
+							    <d:TextField ui:field="txtFirstname" type="text" class="input-medium" placeholder="First Name"/>							   
 						  	</div>
 						  </div>
 						  

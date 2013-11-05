@@ -27,6 +27,7 @@
 								<div class="th">NAME:</div>
 								<div class="th">DOCUMENT TYPE</div>
 								<div class="th">FILE NAME</div>
+								<div class="th">IMAGE</div>
 								<div class="th">PROCESS ID</div>
 								<div class="th">STATUS</div>
 								<div class="th">LAST MODIFIED</div>

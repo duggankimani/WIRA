@@ -27,7 +27,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<ADForm> getAllForms(){
 		
-		List lst = em.createQuery("from ADForm f").getResultList();
+		List lst = em.createQuery("from ADForm f order by f.caption").getResultList();
 		return lst;
 	}
 	
