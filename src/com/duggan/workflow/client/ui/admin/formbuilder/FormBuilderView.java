@@ -342,6 +342,7 @@ public class FormBuilderView extends ViewImpl implements
 			return;
 		}
 		
+		if(form.getProperties()!=null)
 		for(Property prop: form.getProperties()){
 			addProperty(prop);
 		}
@@ -375,6 +376,9 @@ public class FormBuilderView extends ViewImpl implements
 	}
 	
 	private void setFields(List<Field> fields) {
+		if(fields==null || fields.size()==0)
+			return;
+		
 		if(vPanel.getWidgetCount()==0){
 			
 			
