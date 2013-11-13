@@ -74,7 +74,7 @@ public class PersonalReviewPresenter
 	
 	protected void setTask(HTask task2) {
 		task = task2;
-		getEventBus().fireEvent(new SetStatusEvent(task.getData().getStatus()));
+		//getEventBus().fireEvent(new SetStatusEvent(task.getData().getStatus()));
 	}
 
 	@Override

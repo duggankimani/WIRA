@@ -87,5 +87,4 @@ public class SelectBasic extends FieldWidget {
 	protected DataType getType() {
 		return DataType.SELECTBASIC;
 	}
-
 }

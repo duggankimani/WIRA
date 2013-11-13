@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
@@ -94,7 +94,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	}
 
 	@Override
-	public void bind(DocSummary summaryTask) {
+	public void bind(Doc summaryTask) {
 		//spnTaskName.setText(summaryTask.getTaskName());
 		//spnTaskName.setText("Contract Approval");
 		//spnDateDue.setText(format(summaryTask.getDateDue()));

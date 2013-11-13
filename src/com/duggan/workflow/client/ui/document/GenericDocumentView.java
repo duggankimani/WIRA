@@ -7,8 +7,12 @@ import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.component.CommentBox;
+import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
@@ -17,6 +21,11 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -86,8 +95,17 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aShowProcess;
 	@UiField CommentBox commentPanel;
 	
-	String url=null;
+	@UiField DivElement divDate;
+	@UiField DivElement divDesc;
+	@UiField DivElement divPartner;
+	@UiField DivElement divValue;
 	
+	@UiField HTMLPanel fldForm;
+	
+	FormPanel panel;
+	
+	String url=null;
+		
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -136,18 +154,36 @@ public class GenericDocumentView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	public void setForm(Form form){
+		if(form==null || form.getFields()==null)
+			return;
+		
+		//hide static fields		
+		UIObject.setVisible(divDate, false);
+		UIObject.setVisible(divDesc, false);
+		UIObject.setVisible(divPartner, false);
+		UIObject.setVisible(divValue, false);
+		
+		panel = new FormPanel(form);
+		fldForm.add(panel);
+	}
 
-	public void setValues(HTUser createdBy, Date created, DocumentType type, String subject,
+	public void setValues(HTUser createdBy, Date created, String type, String subject,
 			Date docDate, String value, String partner, String description, Integer priority,DocStatus status, Long id) {
 		disableAll();
 		if(createdBy!=null){
-			eOwner.setInnerText(createdBy.getName());
+			if(createdBy.getName()!=null)
+				eOwner.setInnerText(createdBy.getName());
+			else
+				eOwner.setInnerText(createdBy.getUserId());
+			
 		}
 		if (created != null)
 			spnCreated.setInnerText(CREATEDFORMAT.format(created));
 
 		if (type != null)
-			spnDocType.setInnerText(type.getDisplayName());
+			spnDocType.setInnerText(type);
 
 		if (subject != null)
 			spnSubject.setInnerText(subject);
@@ -169,7 +205,7 @@ public class GenericDocumentView extends ViewImpl implements
 		if (description != null)
 			spnDescription.setInnerText(description);
 		
-		if(status==null || status==DocStatus.DRAFTED){
+		if(status==DocStatus.DRAFTED){
 			showForward(true);
 		}else{
 			showForward(false);
@@ -200,7 +236,6 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		this.url=null;
 		if(id!=null){
-			
 			String root = GWT.getModuleBaseURL();
 			root = root.replaceAll("/gwtht", "");
 			this.url = root+"getreport?did="+id+"&ACTION=GETDOCUMENTPROCESS";
@@ -426,4 +461,22 @@ public class GenericDocumentView extends ViewImpl implements
 	public DivElement getDivAttachment() {
 		return divAttachment;
 	}
+
+	@Override
+	public boolean isValid() {
+		if(panel==null){
+			return true;
+		}
+		return panel.isValid();
+	}
+
+	@Override
+	public Map<String, Value> getValues() {
+		if(panel==null){
+			return null;
+		}
+		
+		return panel.getValues();
+	}
+	
 }

@@ -1,28 +1,32 @@
 package com.duggan.workflow.client.ui.events;
 
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
 import java.lang.Long;
+import java.util.Map;
+
 import com.google.gwt.event.shared.HasHandlers;
 
 public class ExecTaskEvent extends GwtEvent<ExecTaskEvent.ExecTaskHandler> {
 
 	public static Type<ExecTaskHandler> TYPE = new Type<ExecTaskHandler>();
-	private Long documentId;
+	private Long taskId;
 	private Actions action;
+	private Map<String, Value> values;
 	
 	public interface ExecTaskHandler extends EventHandler {
 		void onExecTask(ExecTaskEvent event);
 	}
 
-	public ExecTaskEvent(Long documentId, Actions action) {
-		this.documentId = documentId;
+	public ExecTaskEvent(Long taskId, Actions action) {
+		this.taskId = taskId;
 		this.action = action;
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public Long getTaskId() {
+		return taskId;
 	}
 	
 	public Actions getAction(){
@@ -43,7 +47,15 @@ public class ExecTaskEvent extends GwtEvent<ExecTaskEvent.ExecTaskHandler> {
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId, Actions action) {
-		source.fireEvent(new ExecTaskEvent(documentId, action));
+	public static void fire(HasHandlers source, Long taskId, Actions action) {
+		source.fireEvent(new ExecTaskEvent(taskId, action));
+	}
+
+	public Map<String, Value> getValues() {
+		return values;
+	}
+
+	public void setValues(Map<String, Value> values) {
+		this.values = values;
 	}
 }

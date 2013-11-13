@@ -65,7 +65,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
             <property name="hibernate.connection.username" value="root" />
             <property name="hibernate.connection.password" value="root" />
             <property name="hibernate.max_fetch_depth" value="3" /-->
-            <property name="hibernate.connection.autocommit" value="false" />
+            <property name="hibernate.connection.autocommit" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.transaction.manager_lookup_class"

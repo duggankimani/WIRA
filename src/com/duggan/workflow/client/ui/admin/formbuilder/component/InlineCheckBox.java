@@ -106,4 +106,9 @@ public class InlineCheckBox extends FieldWidget {
 		Value value = field.getValue();
 		
 	}
+	
+	@Override
+	protected void setReadOnly(boolean readOnly) {
+		component.setEnabled(false);
+	}
 }

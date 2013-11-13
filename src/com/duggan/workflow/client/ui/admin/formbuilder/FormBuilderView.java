@@ -87,7 +87,9 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vSelectMultiplePanel;
 	@UiField PalettePanel vSingleButtonPanel;
 	@UiField PalettePanel vMultipleButtonPanel;
+	@UiField PalettePanel vLabelPanel;
 
+	@UiField InlineLabel fldHelp;
 	PickupDragController widgetDragController;
 	boolean IsMinimized;
 	
@@ -245,6 +247,7 @@ public class FormBuilderView extends ViewImpl implements
 		vInlineRadioPanel.registerDragController(widgetDragController);
 		vInlineCheckBoxPanel.registerDragController(widgetDragController);
 		vSelectBasicPanel.registerDragController(widgetDragController);
+		vLabelPanel.registerDragController(widgetDragController);
 	}
 	
 	/**
@@ -345,6 +348,12 @@ public class FormBuilderView extends ViewImpl implements
 		if(form.getProperties()!=null)
 		for(Property prop: form.getProperties()){
 			addProperty(prop);
+			
+			Value val = prop.getValue();
+			if(val!=null){
+				setProperty(prop.getName(), ((StringValue)val).getValue());
+			}
+			
 		}
 
 		String caption = getPropertyValue(CAPTION);
@@ -371,6 +380,7 @@ public class FormBuilderView extends ViewImpl implements
 		}
 		
 		formLabel.setText(caption);
+		
 		setFields(form.getFields());
 		//frmDropdown.setItems(form.getProperties());
 	}
@@ -449,7 +459,7 @@ public class FormBuilderView extends ViewImpl implements
 
 		if(property.equals(HELP)){
 			//setHelp(value);
-			formLabel.setText(value);
+			fldHelp.setText(value);
 		}
 	}
 	

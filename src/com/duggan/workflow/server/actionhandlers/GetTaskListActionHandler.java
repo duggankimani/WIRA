@@ -9,7 +9,7 @@ import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.requests.GetTaskList;
@@ -41,7 +41,7 @@ public class GetTaskListActionHandler extends
 		
 		TaskType type = action.getType();
 
-		List<DocSummary> summary = new ArrayList<>();
+		List<Doc> summary = new ArrayList<>();
 		DocStatus status = null;
 		
 		switch (type) {
@@ -100,7 +100,7 @@ public class GetTaskListActionHandler extends
 
 	}
 
-	private List<DocSummary> getPendingApprovals(String userId, TaskType type) {
+	private List<Doc> getPendingApprovals(String userId, TaskType type) {
 
 		List<HTSummary> tasks = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class GetTaskListActionHandler extends
 			e.printStackTrace();
 		}
 
-		List<DocSummary> summary = new ArrayList<>();
+		List<Doc> summary = new ArrayList<>();
 		for (HTSummary s : tasks) {
 			summary.add(s);
 		}

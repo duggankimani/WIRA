@@ -6,7 +6,7 @@ public enum TaskType {
 	INPROGRESS("inprog", "In Progress"),
 	APPROVED("approved", "Approved"),
 	REJECTED("rejected", "Rejected"),
-	APPROVALREQUESTNEW("appreqnew", "New Requests"),
+	APPROVALREQUESTNEW("appreqnew", "New Tasks"),
 	APPROVALREQUESTDONE("appredone", "Completed"),
 	FLAGGED("flagged", "Flagged"),
 	NOTIFICATIONS("notifications", "Notifications"),

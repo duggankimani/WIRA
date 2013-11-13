@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.String;
 import java.util.Date;
 
-public class HTSummary extends DocSummary implements Serializable{
+public class HTSummary extends Doc implements Serializable{
 
 	private static final long serialVersionUID = -3021583190508951117L;
 	private long id;
@@ -18,6 +18,9 @@ public class HTSummary extends DocSummary implements Serializable{
 	private String description;
 	private Long documentRef;
 	private Long processInstanceId;
+	private HTUser owner;
+	private Date documentDate;
+	private DocStatus docStatus;
 	
 	public Long getProcessInstanceId() {
 		return processInstanceId;
@@ -119,6 +122,27 @@ public class HTSummary extends DocSummary implements Serializable{
 	@Override
 	public Date getDocumentDate() {
 		
-		return null;
+		return documentDate;
+	}
+	
+	@Override
+	public HTUser getOwner() {	
+		return owner;
+	}
+
+	public void setOwner(HTUser owner) {
+		this.owner = owner;
+	}
+
+	public void setDocumentDate(Date documentDate) {
+		this.documentDate = documentDate;
+	}
+
+	public DocStatus getDocStatus() {
+		return docStatus;
+	}
+
+	public void setDocStatus(DocStatus docStatus) {
+		this.docStatus = docStatus;
 	}
 }

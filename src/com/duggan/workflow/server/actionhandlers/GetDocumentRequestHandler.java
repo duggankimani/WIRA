@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -26,10 +28,17 @@ public class GetDocumentRequestHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		Document document = DocumentDaoHelper.getDocument(action.getId());
+		Doc doc = null;
+		if(action.getTaskId()==null){
+			doc = DocumentDaoHelper.getDocument(action.getDocumentId());
+		}else{
+			doc = JBPMHelper.get().getTask(action.getTaskId());
+		}
+		
 		
 		GetDocumentResult result = (GetDocumentResult)actionResult;
-		result.setDocument(document);		
+		
+		result.setDoc(doc);		
 		
 	}
 

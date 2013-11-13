@@ -14,14 +14,16 @@ public class DocumentSelectionEvent extends
 
 	public static Type<DocumentSelectionHandler> TYPE = new Type<DocumentSelectionHandler>();
 	private Long documentId;
+	private Long taskId;
 	private DocMode mode;
 
 	public interface DocumentSelectionHandler extends EventHandler {
 		void onDocumentSelection(DocumentSelectionEvent event);
 	}
 
-	public DocumentSelectionEvent(Long documentId, DocMode docMode) {
+	public DocumentSelectionEvent(Long documentId, Long taskId, DocMode docMode) {
 		this.documentId = documentId;
+		this.taskId = taskId;
 	}
 
 	public Long getDocumentId() {
@@ -46,7 +48,11 @@ public class DocumentSelectionEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId, DocMode docMode) {
-		source.fireEvent(new DocumentSelectionEvent(documentId, docMode));
+	public static void fire(HasHandlers source, Long documentId, Long taskId, DocMode docMode) {
+		source.fireEvent(new DocumentSelectionEvent(documentId, taskId, docMode));
+	}
+
+	public Long getTaskId() {
+		return taskId;
 	}
 }

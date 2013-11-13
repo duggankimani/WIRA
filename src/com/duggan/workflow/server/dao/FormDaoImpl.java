@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
@@ -185,5 +186,23 @@ public class FormDaoImpl extends BaseDaoImpl {
 		.setParameter("type", type).getResultList();
 		
 		return pairs;
+	}
+
+	public Long getFormByName(String formName) {
+		String sql = "select id from adform where name=:formName";
+		
+		BigInteger val = null;
+		
+		try{
+			val = (BigInteger)em.createNativeQuery(sql)
+					.setParameter("formName", formName)
+					.getSingleResult();
+			
+			return val.longValue();
+		}catch(Exception e){
+		}
+		
+		
+		return null;
 	}
 }

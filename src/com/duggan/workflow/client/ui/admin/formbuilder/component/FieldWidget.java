@@ -254,6 +254,10 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		
 	}
 	
+	protected void setReadOnly(boolean readOnly) {
+		
+	}
+	
 	protected void setCaption(String caption){};
 	
 	protected void setPlaceHolder(String placeHolder){}
@@ -312,6 +316,14 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		if(value!=null){
 			setValue(value.getValue());
 		}
+		
+		boolean readOnly = false;
+		Object val = getValue(READONLY);
+		if(val!=null && val instanceof Boolean){
+			readOnly = (Boolean)val;
+		}
+		
+		setReadOnly(readOnly);
 	}
 
 	private void setProperties(List<Property> properties) {
@@ -404,6 +416,10 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		case SELECTMULTIPLE:
 			widget = new SelectMultiple();
 			break;
+			
+		case LABEL:
+			widget = new LabelField();
+			break;
 		
 		}
 	
@@ -481,11 +497,15 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 			break;
 		
 		case STRINGLONG:
-			widget = new TextField(property);
+			widget = new TextArea(property);
 			break;
 			
 		case CHECKBOX:
 			widget = new InlineCheckBox(property);
+			break;
+			
+		case LABEL:
+			widget = new LabelField();
 			break;
 		}
 		

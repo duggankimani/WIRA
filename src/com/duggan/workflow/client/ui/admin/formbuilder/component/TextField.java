@@ -28,6 +28,7 @@ public class TextField extends FieldWidget {
 	public TextField() {
 		super();
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
@@ -116,5 +117,11 @@ public class TextField extends FieldWidget {
 		
 		
 		return new StringValue(value);
+	}
+	
+	@Override
+	public void setValue(Object value) {
+		if(value!=null)
+			txtComponent.setValue((String)value);
 	}
 }

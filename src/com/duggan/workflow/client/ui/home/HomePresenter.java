@@ -39,8 +39,9 @@ import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTSummary;
@@ -146,10 +147,19 @@ public class HomePresenter extends
 	
 	private TaskType currentTaskType;
 	
-	private Long selectedValue;
+	/**
+	 * on select documentId
+	 */
+	private Long selectedDocumentId;
 	
+	/**
+	 * Url processInstanceId (pid) - required incase the use hits refresh
+	 */
 	private Long processInstanceId=null;
 	
+	/**
+	 * Url documentId (did) - required incase the use hits refresh
+	 */
 	private Long documentId=null;
 	
 	
@@ -200,7 +210,7 @@ public class HomePresenter extends
 			public void processResult(GetTaskListResult result) {		
 				
 				GetTaskListResult rst = (GetTaskListResult)result;
-				List<DocSummary> tasks = rst.getTasks();
+				List<Doc> tasks = rst.getTasks();
 				loadLines(tasks);
 				if(tasks.isEmpty())
 					getView().setHasItems(false);
@@ -380,13 +390,13 @@ public class HomePresenter extends
 			public void processResult(GetTaskListResult result) {		
 				
 				GetTaskListResult rst = (GetTaskListResult)result;
-				List<DocSummary> tasks = rst.getTasks();
+				List<Doc> tasks = rst.getTasks();
 				loadLines(tasks);
 				
 				if(tasks.size()>0){
 					getView().setHasItems(true);
 					
-					DocSummary doc = tasks.get(0);
+					Doc doc = tasks.get(0);
 					Long docId=null;
 					DocMode docMode = DocMode.READ;
 					
@@ -395,11 +405,16 @@ public class HomePresenter extends
 						if(((Document)doc).getStatus()==DocStatus.DRAFTED){
 							docMode = DocMode.READWRITE;
 						}
+						//Load document
+						fireEvent(new DocumentSelectionEvent(docId,null,docMode));
 					}else{
 						docId = ((HTSummary)doc).getDocumentRef();
+						long taskId = ((HTSummary)doc).getId(); 
+						//Load Task
+						fireEvent(new DocumentSelectionEvent(docId,taskId,docMode));
 					}
 					
-					fireEvent(new DocumentSelectionEvent(docId,docMode));
+					
 					
 				}else{
 					getView().setHasItems(false);
@@ -415,13 +430,13 @@ public class HomePresenter extends
 	 * 
 	 * @param tasks
 	 */
-	protected void loadLines(final List<DocSummary> tasks) {
+	protected void loadLines(final List<Doc> tasks) {
 		setInSlot(DATEGROUP_SLOT, null);
 		final List<String> dates=new ArrayList<String>();
 		
 		for(int i=0; i< tasks.size(); i++){
 			final String dt = DateUtils.DATEFORMAT.format(tasks.get(i).getCreated());
-			final DocSummary doc = tasks.get(i);
+			final Doc doc = tasks.get(i);
 			
 			if(dates.contains(dt)){
 				fireEvent(new PresentTaskEvent(doc));
@@ -445,8 +460,8 @@ public class HomePresenter extends
 		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
 			@Override
 			public void processResult(CreateDocPresenter result) {
-				if(mode.equals(MODE.EDIT) && selectedValue!=null){
-					result.setDocumentId(selectedValue);
+				if(mode.equals(MODE.EDIT) && selectedDocumentId!=null){
+					result.setDocumentId(selectedDocumentId);
 				}
 					
 				addToPopupSlot(result, false);
@@ -478,14 +493,13 @@ public class HomePresenter extends
 
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
-		Long id = event.getDocumentId();
-		this.selectedValue=id;
+		this.selectedDocumentId=event.getDocumentId();
 		
-		displayDocument();
+		displayDocument(event.getDocumentId(), event.getTaskId());
 	}
 	
-	private void displayDocument() {
-		if(selectedValue==null){
+	private void displayDocument(final Long documentId, final Long taskId) {
+		if(documentId==null && taskId==null){
 			setInSlot(DOCUMENT_SLOT, null);
 			return;
 		}
@@ -493,7 +507,7 @@ public class HomePresenter extends
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
-				result.setDocumentId(selectedValue);
+				result.setDocId(documentId, taskId);
 				setInSlot(DOCUMENT_SLOT, result);
 			}
 		});

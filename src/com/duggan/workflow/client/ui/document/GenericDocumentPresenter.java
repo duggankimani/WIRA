@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.document;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,18 +37,29 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.HTask;
+import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
+import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
@@ -56,6 +68,7 @@ import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
+import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
@@ -79,7 +92,7 @@ public class GenericDocumentPresenter extends
 		implements ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler{
 
 	public interface MyView extends View {
-		void setValues(HTUser createdBy, Date created, DocumentType type, String subject,
+		void setValues(HTUser createdBy, Date created, String type, String subject,
 				Date docDate, String value, String partner, String description, Integer priority,DocStatus status, Long id);
 		
 		void showForward(boolean show);
@@ -108,12 +121,17 @@ public class GenericDocumentPresenter extends
 		SpanElement getSpnAttachmentNo();
 		SpanElement getSpnActivityNo();
 		DivElement getDivAttachment();
+		void setForm(Form form);
+		boolean isValid();
+		Map<String,Value> getValues(); //Task Data
 	}
 //	boolean isDisplayed=false; //Attachment closer
 	
+	Long taskId;
+	
 	Long documentId;
 	
-	Document doc;
+	Doc doc;
 	
 	private Integer activities=0;
 	
@@ -159,9 +177,10 @@ public class GenericDocumentPresenter extends
 				uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
 					@Override
 					public void processResult(UploadDocumentPresenter result) {
+						
 						UploadContext context = new UploadContext();
 						context.setAction(UPLOADACTION.ATTACHDOCUMENT);
-						context.setContext("documentId", doc.getId()+"");
+						context.setContext("documentId", documentId+"");
 						context.setContext("userid", AppContext.getUserId());
 						result.setContext(context);
 						addToPopupSlot(result,false);
@@ -173,7 +192,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				fireEvent(new ProcessingEvent());
-				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
+				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc), new TaskServiceCallback<ApprovalRequestResult>(){
 					@Override
 					public void processResult(ApprovalRequestResult result) {
 						GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
@@ -191,7 +210,9 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if(doc.getStatus()==DocStatus.DRAFTED)
+				
+				if(doc instanceof Document)
+				if(((Document)doc).getStatus()==DocStatus.DRAFTED)
 					showEditForm(MODE.EDIT);
 				}
 		});
@@ -219,7 +240,7 @@ public class GenericDocumentPresenter extends
 //				doc.setValue("5.5Mil");
 //				doc.setType(DocumentType.CONTRACT);
 				
-				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), doc), new TaskServiceCallback<ApprovalRequestResult>(){
+				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc), new TaskServiceCallback<ApprovalRequestResult>(){
 					@Override
 					public void processResult(ApprovalRequestResult result) {						
 						PlaceRequest request = new PlaceRequest("home").
@@ -237,7 +258,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//submitRequest(Actions.CLAIM);
-				fireEvent(new ExecTaskEvent(documentId, Actions.CLAIM));
+				fireEvent(new ExecTaskEvent(taskId, Actions.CLAIM));
 			}
 		});
 		
@@ -246,8 +267,8 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//submitRequest(Actions.START);
-				assert documentId!=null;
-				fireEvent(new ExecTaskEvent(documentId, Actions.START));
+				assert taskId!=null;
+				fireEvent(new ExecTaskEvent(taskId, Actions.START));
 			}
 		});
 		
@@ -256,7 +277,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//submitRequest(Actions.SUSPEND);
-				fireEvent(new ExecTaskEvent(documentId, Actions.SUSPEND));
+				fireEvent(new ExecTaskEvent(taskId, Actions.SUSPEND));
 			}
 		});
 		
@@ -265,7 +286,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//submitRequest(Actions.RESUME);
-				fireEvent(new ExecTaskEvent(documentId, Actions.RESUME));
+				fireEvent(new ExecTaskEvent(taskId, Actions.RESUME));
 			}
 		});
 		
@@ -273,8 +294,15 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//submitRequest(Actions.COMPLETE);
-				fireEvent(new ExecTaskEvent(documentId, Actions.COMPLETE));
+				if(getView().isValid()){
+					
+					Map<String, Value> values = getView().getValues();
+					if(values==null){
+						values = new HashMap<String, Value>();
+					}
+					fireEvent(new CompleteDocumentEvent(taskId, values));
+				}
+				fireEvent(new ExecTaskEvent(taskId, Actions.COMPLETE));
 			}
 		});
 		
@@ -283,7 +311,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				//submitRequest(Actions.DELEGATE);
-				fireEvent(new ExecTaskEvent(documentId, Actions.DELEGATE));
+				fireEvent(new ExecTaskEvent(taskId, Actions.DELEGATE));
 			}
 		});
 		
@@ -293,7 +321,7 @@ public class GenericDocumentPresenter extends
 			public void onClick(ClickEvent event) {
 				
 				//submitRequest(Actions.REVOKE);
-				fireEvent(new ExecTaskEvent(documentId, Actions.REVOKE));
+				fireEvent(new ExecTaskEvent(taskId, Actions.REVOKE));
 			}
 		});
 		
@@ -301,7 +329,7 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new ExecTaskEvent(documentId, Actions.STOP));				
+				fireEvent(new ExecTaskEvent(taskId, Actions.STOP));				
 			}
 		});
 		
@@ -309,7 +337,17 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new CompleteDocumentEvent(documentId, true));
+				
+				if(getView().isValid()){
+					
+					Map<String, Value> values = getView().getValues();
+					if(values==null){
+							values = new HashMap<String, Value>();
+					}
+					values.put("isApproved", new BooleanValue(true));
+					fireEvent(new CompleteDocumentEvent(taskId, values));
+				}
+				
 			}
 		});
 		
@@ -317,7 +355,15 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new CompleteDocumentEvent(documentId, false));
+				if(getView().isValid()){
+					
+					Map<String, Value> values = getView().getValues();
+					if(values==null){
+							values = new HashMap<String, Value>();
+					}
+					values.put("isApproved", new BooleanValue(false));
+					fireEvent(new CompleteDocumentEvent(taskId, values));
+				}
 			}
 		});
 		
@@ -352,17 +398,6 @@ public class GenericDocumentPresenter extends
 
 	protected void showEditForm(final MODE mode) {
 		
-//		if(doc!=null){
-//			if(doc.getType()!=null){
-//				if(doc.getType().getFormId()!=null){
-//					
-//					
-//					
-//					return;
-//				}
-//			}
-//		}
-		
 		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
 			@Override
 			public void processResult(CreateDocPresenter result) {
@@ -388,10 +423,11 @@ public class GenericDocumentPresenter extends
 	
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
-		requests.addRequest(new GetDocumentRequest(documentId));
+		requests.addRequest(new GetDocumentRequest(documentId, taskId));
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
 		requests.addRequest(new GetActivitiesRequest(documentId));
+		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, taskId));
 		
 		fireEvent(new ProcessingEvent());
 		if(documentId != null){
@@ -411,10 +447,44 @@ public class GenericDocumentPresenter extends
 					
 					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(3);
 					bindActivities(getActivities);
+					
+					GetFormModelResponse response = (GetFormModelResponse)results.get(4);					
+					if(!response.getFormModel().isEmpty()){
+						bindForm((Form)response.getFormModel().get(0), result.getDoc());
+						
+					}
+					
 					fireEvent(new ProcessingCompletedEvent());
+					
 				}	
 			});
 		}
+	}
+
+	protected void bindForm(Form form, Doc doc) {
+		this.doc = doc;
+		if(form.getFields()==null){
+			return;
+		}
+			
+		Map<String, Value> values = doc.getValues();
+		
+		for(Field field: form.getFields()){
+			String name = field.getName();
+			if(name==null || name.isEmpty()){
+				continue;
+			}
+			
+			Value value = values.get(name);
+			field.setValue(value);
+			
+			if(value==null){
+				value = new StringValue();
+			}
+				
+			System.err.println(name+" :: "+value.getValue());
+		}
+		getView().setForm(form);
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
@@ -432,19 +502,19 @@ public class GenericDocumentPresenter extends
 		Collections.reverse(activities);
 		
 		for(Activity activity: activities){
-			bind(activity,false);			
+			bind(activity,false);	
 			List<Activity> children = activitiesMap.get(activity);	
 			if(children!=null){
 				for(Activity child: children){
 					bind(child, true);
 				}
+				
 			}
 		}		
 		this.activities +=activitiesMap.size();
 	}
 
 	private void bind(final Activity child, boolean isChild) {
-		//System.err.println(child.getClass()+" :: "+child.getCreated()+" :: "+child.getCreatedBy());
 				
 		if(child instanceof Comment)
 		commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
@@ -510,36 +580,79 @@ public class GenericDocumentPresenter extends
 
 	protected void bindDocumentResult(GetDocumentResult result) {
 
-		Document document = result.getDocument();
-		doc = document;
+		this.doc = result.getDoc();
+		Map<String, Value> vals= doc.getValues();
 		
-		Date created = document.getCreated();
-		DocumentType docType = document.getType();	
-		String subject = document.getSubject();						
-		Date docDate = document.getDocumentDate();					
-		String partner = document.getPartner();
-		String value= document.getValue();			
-		String description = document.getDescription();
-		Integer priority = document.getPriority();									
-		DocStatus status = document.getStatus();
+		long docId=0l;
+		
+		if(doc instanceof Document){
+			docId = (Long)doc.getId();
+			
+		}else{
+			docId = ((HTSummary)doc).getDocumentRef();
+			this.taskId = ((HTSummary)doc).getId();
+		}
+		
+		this.documentId = docId;
+		
+		Date created = doc.getCreated();
+		String subject = doc.getSubject();						
+		Date docDate = doc.getDocumentDate();					
+		String description = doc.getDescription();
+		Integer priority = doc.getPriority();	
+		
+		String partner = null;
+		String value= null;
+		DocumentType docType = null;
+		DocStatus status = null;
+		
+		String type=null;
+		
+		if(doc instanceof Document){
+			Document d = (Document)doc;
+			value = d.getValue();
+			partner = d.getPartner();
+			docType= d.getType();
+			type = docType.getDisplayName();
+			
+			status = d.getStatus();
+		}else{
+			HTask task = (HTask)doc;
+			type = task.getName();	
+			status = task.getDocStatus();
+		}
+		
+		if(value==null){
+			Value val = vals.get("value");
+			if(val!=null)
+				value = ((StringValue)val).getValue();
+		}
+		
+		if(partner==null){
+			Value val = vals.get("partner");
+			if(val!=null)
+				value = ((StringValue)val).getValue();
+		}
+		
 		
 		getView().setValues(doc.getOwner(),created,
-				docType, subject, docDate,  value, partner, description, priority,status, document.getId());
+				type, subject, docDate,  value, partner, description, priority,status, documentId);
 		
 		if(status==DocStatus.DRAFTED){
 			getView().showEdit(true);
 		}else{
+			getView().showEdit(false);
 			clear();
 		}
 		
 		//get document actions - if any
-		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId);
+		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId, taskId);
 		fireEvent(e);		
 		if(e.getValidActions()!=null){
 			getView().setValidTaskActions(e.getValidActions());
 		}	
 		
-		Long processInstanceId = document.getProcessInstanceId();
+		Long processInstanceId = doc.getProcessInstanceId();
 		
 		if(processInstanceId!=null){
 			//System.err.println("Loading activities for ProcessInstanceId = "+processInstanceId);
@@ -552,17 +665,16 @@ public class GenericDocumentPresenter extends
 					setProcessState(details);
 				}
 			});
-						
 		}
-		
 	}
 
 	public void setProcessState(List<NodeDetail> states){
 		getView().setStates(states);
 	}
 
-	public void setDocumentId(Long selectedValue) {
-		this.documentId=selectedValue;
+	public void setDocId(Long documentId, Long taskId) {
+		this.documentId=documentId;
+		this.taskId = taskId;
 	}
 	
 	@Override

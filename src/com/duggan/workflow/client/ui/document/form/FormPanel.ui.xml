@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+     xmlns:g="urn:import:com.google.gwt.user.client.ui"
+     xmlns:v='urn:import:com.duggan.workflow.client.ui.component'>
+	<g:HTMLPanel>
+	    <v:IssuesPanel ui:field="issues">
+	    </v:IssuesPanel>
+	    <div class="row-fluid item" ui:field="divFormCaption">
+		</div>
+		<div class="row-fluid item" ui:field="divFormHelp">
+		</div>
+		<g:HTMLPanel ui:field="panelFields">
+		    
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

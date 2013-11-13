@@ -13,6 +13,7 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 	private String type;
 	private Long id;
 	private Long parentId;
+	private Long taskId;
 	private Boolean loadChildrenToo;
 
 	@SuppressWarnings("unused")
@@ -23,6 +24,11 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 		this.type = type;
 		this.id = id;
 		this.loadChildrenToo = loadChildrenToo;
+	}
+	
+	public GetFormModelRequest(String type, Long taskId){
+		this.type = type;
+		this.taskId = taskId;
 	}
 
 	public String getType() {
@@ -49,5 +55,13 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
+	}
+
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
 	}
 }

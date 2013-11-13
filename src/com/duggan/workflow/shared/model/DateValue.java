@@ -16,6 +16,10 @@ public class DateValue implements Value{
 	public DateValue(){	
 	}
 	
+	public DateValue(Date date){
+		this.value = date;
+	}
+	
 	public DateValue(Long id, String key, Date value){
 		this.id=id;
 		this.key=key;

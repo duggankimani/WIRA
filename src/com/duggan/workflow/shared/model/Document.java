@@ -10,7 +10,7 @@ import java.util.Map;
  * @author duggan
  *
  */
-public class Document extends DocSummary implements Serializable{
+public class Document extends Doc implements Serializable{
 
 	/**
 	 * 
@@ -44,8 +44,6 @@ public class Document extends DocSummary implements Serializable{
 	private Long processInstanceId;
 	
 	private Long sessionId;
-
-	private Map<String, Value> values = new HashMap<String, Value>();
 	
 	public Document() {
 		//serialization
@@ -181,6 +179,41 @@ public class Document extends DocSummary implements Serializable{
 	public void setSessionId(Long sessionId) {
 		this.sessionId = sessionId;
 	}
+	
+	@Override
+	public void setValues(Map<String, Value> values) {
+		for(String key: values.keySet()){
+			Object val = null;
+			
+			Value fieldValue  = values.get(key);
+			
+			if(fieldValue!=null){
+				val = fieldValue.getValue();
+			}
+			if(key.equals("description"))
+				setDescription(val==null? null : val.toString());
+			
+			if(key.equals("dueDate"))
+				setDateDue(val==null? null : (Date)val);
+			
+			if(key.equals("docDate"))
+				setDocumentDate(val==null? null : (Date)val);
+			
+			if(key.equals("partner"))
+				setPartner(val==null? null : val.toString());
+			
+			if(key.equals("subject"))
+				setSubject(val==null? null : val.toString());
+			
+			if(key.equals("docType"))
+				setType(val==null? null : (DocumentType)val);
+			
+			if(key.equals("value"))
+				setValue(val==null? null : val.toString());
+		
+		}
+		super.setValues(values);
+	}
 
 	@Override
 	public String toString() {
@@ -188,20 +221,6 @@ public class Document extends DocSummary implements Serializable{
 		return "DocumentId = "+id+", subject="+subject;
 	}
 	
-	public void setValue(String name, Value value){
-		if(value!=null){
-			value.setKey(name);
-		}
-		values.put(name, value);
-	}
 
-	public Map<String, Value> getValues() {
-		return values;
-	}
-
-	public void setValues(Map<String, Value> values) {
-		this.values = values;
-	}
-	
 	//public Map<String, Value> 
 }
