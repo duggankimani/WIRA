@@ -11,7 +11,6 @@ public class GetUsersRequest extends BaseRequest<GetUsersResponse> {
 	
 	@Override
 	public BaseResponse createDefaultActionResponse() {
-		// TODO Auto-generated method stub
 		return new GetUsersResponse();
 	}
 }

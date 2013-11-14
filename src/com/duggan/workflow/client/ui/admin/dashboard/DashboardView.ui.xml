@@ -4,11 +4,12 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:p="urn:import:com.googlecode.gflot.client"
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-			<div class="content-body">
-				Content Coming Soon.
+			<div class="content-body">	
+			    <p:SimplePlot ui:field="plot" width="600px" height="300px"/>
 			</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

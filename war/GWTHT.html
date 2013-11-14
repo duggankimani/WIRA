@@ -51,9 +51,11 @@
 		<!-- be added before this line.                -->
 		<!--                                           -->
 		<script type="text/javascript" src="js/jquery/jquery-latest.js"></script>
+		<script type="text/javascript" src="js/jquery.flot.js"></script>
+		<!--[if lte IE 8]>
+			<script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script>
+		<![endif]-->
 		<script type="text/javascript" src="js/bootstrap.js"></script>
-		<script type="text/javascript" src="js/jquery/jquery-ui-1.10.2.custom.min.js"></script>
-		<script type="text/javascript" src="js/theme.js"></script>
 		<script type="text/javascript" language="javascript" src="gwtht/gwtht.nocache.js"></script>		
 	</head>
 
@@ -62,8 +64,8 @@
 	<!-- you can leave the body empty if you want  -->
 	<!-- to create a completely dynamic UI.        -->
 	<!--                                           -->
+	
 	<body>
-
 		<!-- OPTIONAL: include this if you want history support -->
 		<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position: absolute; width: 0;height: 0; border: 0;"></iframe>
 
@@ -75,4 +77,10 @@
 			</div>
 		</noscript>
 	</body>
+	
+	<script type="text/javascript">
+		var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
+		$.plot("#placeholder",[d2]);
+		
+		</script>
 </html>

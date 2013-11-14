@@ -10,7 +10,6 @@ import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
-import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 
 class DaoFactory {
 
