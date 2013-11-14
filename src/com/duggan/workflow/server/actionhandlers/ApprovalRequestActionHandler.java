@@ -39,7 +39,8 @@ public class ApprovalRequestActionHandler extends
 		
 		ApprovalRequestResult result = (ApprovalRequestResult)actionResult;
 		result.setSuccessfulSubmit(true);
-		
+		result.setDocument(doc);
+				
 	}
 	
 

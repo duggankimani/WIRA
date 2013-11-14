@@ -79,7 +79,7 @@ public class CreateDocPresenter extends
 		requests.addRequest(new GetDocumentTypesRequest());
 
 		if (Id != null)
-			requests.addRequest(new GetDocumentRequest(Id));
+			requests.addRequest(new GetDocumentRequest(Id,null));
 
 		requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -97,7 +97,7 @@ public class CreateDocPresenter extends
 	}
 
 	protected void showDocument(GetDocumentResult result) {
-		Document document = result.getDocument();
+		Document document = (Document)result.getDoc();
 
 		DocumentType docType = document.getType();
 		String subject = document.getSubject();

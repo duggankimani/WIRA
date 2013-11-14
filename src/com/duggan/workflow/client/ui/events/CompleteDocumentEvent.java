@@ -1,29 +1,29 @@
 package com.duggan.workflow.client.ui.events;
 
+import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
 import java.lang.Boolean;
+import java.util.Map;
+
 import com.google.gwt.event.shared.HasHandlers;
 
 public class CompleteDocumentEvent extends
 		GwtEvent<CompleteDocumentEvent.CompleteDocumentHandler> {
 
 	public static Type<CompleteDocumentHandler> TYPE = new Type<CompleteDocumentHandler>();
-	private Boolean isApproved;
-	private Long documentId;
+	private Long taskId;
+	Map<String, Value> results;
 
 	public interface CompleteDocumentHandler extends EventHandler {
 		void onCompleteDocument(CompleteDocumentEvent event);
 	}
 
-	public CompleteDocumentEvent(Long docId, Boolean isApproved) {
-		this.isApproved = isApproved;
-		this.documentId = docId;
+	public CompleteDocumentEvent(Long taskId, Map<String, Value> results) {
+		this.taskId = taskId;
+		this.results = results;
 	}
 
-	public Boolean IsApproved() {
-		return isApproved;
-	}
 
 	@Override
 	protected void dispatch(CompleteDocumentHandler handler) {
@@ -39,11 +39,16 @@ public class CompleteDocumentEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Boolean isApproved, Long documentId) {
-		source.fireEvent(new CompleteDocumentEvent(documentId, isApproved));
+	public static void fire(HasHandlers source, Long taskId, Map<String, Value> results) {
+		source.fireEvent(new CompleteDocumentEvent(taskId, results));
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public Long getTaskId() {
+		return taskId;
+	}
+
+
+	public Map<String, Value> getResults() {
+		return results;
 	}
 }

@@ -86,6 +86,9 @@
 									    <f:SelectBasic></f:SelectBasic>	
 									</fb:PalettePanel>
 									
+									<fb:PalettePanel ui:field="vLabelPanel">	
+									    <f:LabelField></f:LabelField>	
+									</fb:PalettePanel>
 			                      </fieldset>
 		                      </div>
 	                      </g:HTMLPanel><!--End of Input Pane -->
@@ -124,6 +127,9 @@
 					<g:HTMLPanel styleName="form-horizontal">
 						<fieldset>
 						 <legend><g:InlineLabel ui:field="formLabel">Form Name:</g:InlineLabel></legend>
+						</fieldset>
+						<fieldset>
+							<g:InlineLabel ui:field="fldHelp"></g:InlineLabel>    
 						</fieldset>
 						
 						<g:VerticalPanel ui:field="vPanel" styleName="span12">

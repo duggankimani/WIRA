@@ -42,12 +42,22 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		delete(attachment);
 	}
 
+	public List<LocalAttachment> getAttachmentsForProcessDef(ProcessDefModel model){
+		return getAttachmentsForProcessDef(model,false);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public List<LocalAttachment> getAttachmentsForProcessDef(ProcessDefModel model) {
-		List<LocalAttachment> attachments = 
-				em.createQuery("FROM LocalAttachment t where t.processDef=:processDef")
-		.setParameter("processDef", model)
-		.getResultList();
+	public List<LocalAttachment> getAttachmentsForProcessDef(ProcessDefModel model,  boolean isImage) {
+		
+		String sql= "FROM LocalAttachment t where t.processDef=:processDef";
+		
+		if(isImage){
+			sql= "FROM LocalAttachment t where t.processDefImage=:processDef";
+		}
+		
+		List<LocalAttachment> attachments = em.createQuery(sql)
+			.setParameter("processDef", model)
+			.getResultList();
 		
 		return attachments;
 	}

@@ -12,6 +12,7 @@ public enum DataType {
 	MULTIBUTTON,
 	SELECTBASIC,
 	SELECTMULTIPLE,
+	LABEL,
 	BUTTON;
 	
 	public boolean isDropdown(){

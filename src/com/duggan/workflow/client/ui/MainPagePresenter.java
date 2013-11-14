@@ -13,7 +13,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent.WorkflowProcessHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.google.gwt.event.shared.EventBus;
@@ -126,7 +126,7 @@ public class MainPagePresenter extends
 	}
 	@Override
 	public void onWorkflowProcess(WorkflowProcessEvent event) {
-		DocSummary summary = event.getDocument();
+		Doc summary = event.getDocument();
 		String url = "";
 		if(summary instanceof Document){
 			url = "#home;type=search;did="+summary.getId();

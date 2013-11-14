@@ -60,12 +60,12 @@
             <li class="active">
                 <a class="dropdown-toggle" href="#">
                     <i class="icon-tasks"></i>
-                    <span>Approval Request</span>
+                    <span>My Tasks</span>
                     <i class="icon-chevron-up hidden-tablet"></i>
                 </a>
                 <ul class="submenu second-menu">
                     <li ui:field="liNewReq"> 
-						<g:Anchor ui:field="aNewReq" styleName="hand" text="New Requests"></g:Anchor>
+						<g:Anchor ui:field="aNewReq" styleName="hand" text="New Tasks"></g:Anchor>
 					</li>					
 					<li ui:field="liRecentApprovals"> 
 						<g:Anchor ui:field="aRecentApprovals" styleName="hand" text="Completed"></g:Anchor> 

@@ -95,6 +95,17 @@ public class ProcessDefHelper {
 			def.setFileName(attachment.getName());
 			def.setFileId(attachment.getId());
 		}
+		
+		
+		List<LocalAttachment> image = DB.getAttachmentDao()
+				.getAttachmentsForProcessDef(model,true);
+
+		if(image!=null && !image.isEmpty()){
+			def.setImageId(image.get(0).getId());
+			
+			def.setImageName(image.get(0).getName());
+		}
+			
 
 		List<DocumentType> docTypes = new ArrayList<>();
 

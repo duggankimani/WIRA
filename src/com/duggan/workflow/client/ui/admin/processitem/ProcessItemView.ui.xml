@@ -22,6 +22,9 @@
 						    <span ui:field="spnFileName"></span>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">
+						    <g:Anchor ui:field="aImageName"></g:Anchor>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="td">
 						    <span ui:field="spnProcessId"></span>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">

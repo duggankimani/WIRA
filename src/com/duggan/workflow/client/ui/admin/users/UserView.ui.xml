@@ -37,8 +37,8 @@
 											<div class="th">
 											  <label><input type="checkbox" class="ace"/></label>
 											</div>
-											<div class="th">First Name</div>
 											<div class="th">Last Name</div>
+											<div class="th">First Name</div>											
 											<div class="th">Username</div>
 											<div class="th">Email</div>		
 											<div class="th">Group</div>

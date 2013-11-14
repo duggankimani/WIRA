@@ -37,7 +37,7 @@ public class ProcessItemPresenter extends
 		HasClickHandlers getDeleteButton();
 		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
-				ProcessDefStatus status);
+				ProcessDefStatus status,  String imageName, Long imageId);
 	}
 	
 	@Inject DispatchAsync requestHelper;
@@ -128,6 +128,6 @@ public class ProcessItemPresenter extends
 		this.processDef = def;
 		getView().setValues(def.getName(), def.getProcessId(), def.getDescription(),
 				def.getDocTypes(), def.getLastModified(),
-				def.getFileId(), def.getFileName(), def.getStatus());
+				def.getFileId(), def.getFileName(), def.getStatus(), def.getImageName(), def.getImageId());
 	}
 }

@@ -1,25 +1,25 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.Doc;
 
 public class GetDocumentResult extends BaseResponse {
 
-	private Document document;
+	private Doc doc;
 
 	@SuppressWarnings("unused")
 	public GetDocumentResult() {
 		// For serialization only
 	}
 
-	public GetDocumentResult(Document document) {
-		this.document = document;
+	public GetDocumentResult(Doc doc) {
+		this.doc = doc;
 	}
 
-	public Document getDocument() {
-		return document;
+	public Doc getDoc() {
+		return doc;
 	}
 
-	public void setDocument(Document document) {
-		this.document = document;
+	public void setDoc(Doc doc) {
+		this.doc = doc;
 	}
 }

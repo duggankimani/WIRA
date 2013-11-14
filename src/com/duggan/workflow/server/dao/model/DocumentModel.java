@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
+
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocumentType;
 
@@ -36,6 +38,7 @@ public class DocumentModel extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Index(name="idx_subject")
 	@Column(length=200,nullable=false, unique=true)
 	private String subject;
 	
@@ -46,6 +49,7 @@ public class DocumentModel extends PO{
 	@JoinColumn(name="docType", referencedColumnName="id")
 	private ADDocType type;
 	
+	@Index(name="idx_docdate")
 	private Date documentDate;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="document")

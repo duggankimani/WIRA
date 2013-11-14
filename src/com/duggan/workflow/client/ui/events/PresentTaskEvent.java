@@ -2,24 +2,24 @@ package com.duggan.workflow.client.ui.events;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class PresentTaskEvent extends
 		GwtEvent<PresentTaskEvent.PresentTaskHandler> {
 
 	public static Type<PresentTaskHandler> TYPE = new Type<PresentTaskHandler>();
-	private DocSummary doc;
+	private Doc doc;
 
 	public interface PresentTaskHandler extends EventHandler {
 		void onPresentTask(PresentTaskEvent event);
 	}
 
-	public PresentTaskEvent(DocSummary doc) {
+	public PresentTaskEvent(Doc doc) {
 		this.doc = doc;
 	}
 
-	public DocSummary getDoc() {
+	public Doc getDoc() {
 		return doc;
 	}
 
@@ -37,7 +37,7 @@ public class PresentTaskEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, DocSummary doc) {
+	public static void fire(HasHandlers source, Doc doc) {
 		source.fireEvent(new PresentTaskEvent(doc));
 	}
 }

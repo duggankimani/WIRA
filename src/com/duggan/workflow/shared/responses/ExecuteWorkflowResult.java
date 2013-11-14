@@ -1,19 +1,19 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 
 public class ExecuteWorkflowResult extends BaseResponse {
 
-	DocSummary document;
+	Doc document;
 	
 	public ExecuteWorkflowResult() {
 	}
 
-	public DocSummary getDocument() {
+	public Doc getDocument() {
 		return document;
 	}
 
-	public void setDocument(DocSummary document) {
+	public void setDocument(Doc document) {
 		this.document = document;
 	}
 	

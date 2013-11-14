@@ -128,8 +128,11 @@ public class GenericFormPresenter extends
 									fireEvent(new ProcessingCompletedEvent());
 									getView().hide();
 									fireEvent(new AfterSaveEvent());
-									fireEvent(new WorkflowProcessEvent(document.getSubject(),"You have forwarded for approval - "
-											 ,document));
+									
+									Document doc = result.getDocument();
+											
+									fireEvent(new WorkflowProcessEvent(doc.getSubject(),"You have forwarded for approval - "
+											 ,doc));
 									getView().hide();
 								}
 							});

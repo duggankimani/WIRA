@@ -151,6 +151,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-9.2-1003.jdbc4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jpa_3.0_spec-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/Maggy&apos;s/Documents/Downloads/gflot-3.2.0.jar"/>
+=======
+	<classpathentry kind="lib" path="/home/duggan/installations/jbpm-installer/runtime/jbpm-test-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-test/5.4.0.Final/jbpm-test-5.4.0.Final-sources.jar"/>
+>>>>>>> cb52c6ce1a3a51d3d4adc1530ee95619599a1014
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -13,14 +13,16 @@ public class AfterDocumentLoadEvent extends
 
 	public static Type<AfterDocumentLoadHandler> TYPE = new Type<AfterDocumentLoadHandler>();
 	private Long documentId;
+	private Long taskId;
 	private List<Actions> validActions;
 	
 	public interface AfterDocumentLoadHandler extends EventHandler {
 		void onAfterDocumentLoad(AfterDocumentLoadEvent event);
 	}
 
-	public AfterDocumentLoadEvent(Long documentId) {
+	public AfterDocumentLoadEvent(Long documentId, Long taskId) {
 		this.documentId = documentId;
+		this.taskId = taskId;
 	}
 
 	public Long getDocumentId() {
@@ -41,8 +43,8 @@ public class AfterDocumentLoadEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId) {
-		source.fireEvent(new AfterDocumentLoadEvent(documentId));
+	public static void fire(HasHandlers source, Long documentId,Long taskId) {
+		source.fireEvent(new AfterDocumentLoadEvent(documentId, taskId));
 	}
 
 	public List<Actions> getValidActions() {
@@ -51,5 +53,9 @@ public class AfterDocumentLoadEvent extends
 
 	public void setValidActions(List<Actions> validActions) {
 		this.validActions = validActions;
+	}
+
+	public Long getTaskId() {
+		return taskId;
 	}
 }

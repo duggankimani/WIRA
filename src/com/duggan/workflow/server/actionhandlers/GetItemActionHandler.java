@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.requests.GetItemRequest;
@@ -24,7 +24,7 @@ public class GetItemActionHandler extends
 	public void execute(GetItemRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 
-		DocSummary doc=null;
+		Doc doc=null;
 		if(action.isTask()){
 			HTSummary summary = JBPMHelper.get().getSummary(action.getItemId());
 		}else{

@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.events;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
 import java.lang.String;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class WorkflowProcessEvent extends
@@ -12,13 +12,13 @@ public class WorkflowProcessEvent extends
 	public static Type<WorkflowProcessHandler> TYPE = new Type<WorkflowProcessHandler>();
 	private String subject;
 	private String action;
-	private DocSummary Document;
+	private Doc Document;
 
 	public interface WorkflowProcessHandler extends EventHandler {
 		void onWorkflowProcess(WorkflowProcessEvent event);
 	}
 
-	public WorkflowProcessEvent(String subject, String action, DocSummary doc) {
+	public WorkflowProcessEvent(String subject, String action, Doc doc) {
 		this.subject=subject;
 		this.action = action;
 		this.Document=doc;
@@ -28,7 +28,7 @@ public class WorkflowProcessEvent extends
 		return action;
 	}
 
-	public DocSummary getDocument() {
+	public Doc getDocument() {
 		return Document;
 	}
 	
@@ -50,7 +50,7 @@ public class WorkflowProcessEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source,String subject, String action, DocSummary Document) {
+	public static void fire(HasHandlers source,String subject, String action, Doc Document) {
 		source.fireEvent(new WorkflowProcessEvent(subject,action, Document));
 	}
 }

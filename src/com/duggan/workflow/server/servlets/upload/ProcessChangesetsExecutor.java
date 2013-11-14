@@ -60,11 +60,20 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 		
 		if(id!=null && id.matches("[0-9]+")){
 			ProcessDefModel model = DB.getProcessDao().getProcessDef(new Long(id.trim()));
-			attachment.setProcessDef(model);
+			
+			String name = attachment.getName();
+			boolean isImage= name.endsWith("xml") || name.endsWith("png") ||
+					name.endsWith("svg") || name.endsWith("pdf");
+			
+			if(!isImage){
+				attachment.setProcessDef(model);
+			}else{
+				attachment.setProcessDefImage(model);
+			}
 						
 			//Disable existing attachments
 			List<LocalAttachment> attachments = 
-					DB.getAttachmentDao().getAttachmentsForProcessDef(model);			
+					DB.getAttachmentDao().getAttachmentsForProcessDef(model, isImage);			
 			if(attachments!=null){
 				for(LocalAttachment att: attachments){
 					//delete previous

@@ -500,4 +500,16 @@ public class FormDaoHelper {
 		return keyvaluepairs;
 	}
 
+	public static FormModel getFormByName(String formName) {
+		if(formName==null){
+			return null;
+		}
+		Long formId = DB.getFormDao().getFormByName(formName);
+		
+		if(formId==null){
+			return null;
+		}		
+		return getForm(formId, true);
+	}
+
 }

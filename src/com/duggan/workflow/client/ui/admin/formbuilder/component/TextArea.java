@@ -6,6 +6,8 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,10 +28,61 @@ public class TextArea extends FieldWidget {
 	public TextArea() {
 		super();
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		widget= uiBinder.createAndBindUi(this);
 		txtComponent.getElement().setAttribute("id", "textarea");
 		add(widget);
 	}
+	
+	public TextArea(final Property property) {
+		this();
+		lblEl.setInnerHTML(property.getCaption());
+		txtComponent.setName(property.getName());
+		
+		Value textValue = property.getValue();
+		String text = textValue==null? "": textValue.getValue().toString();
+		
+		txtComponent.setText(text);
+		txtComponent.setClass("input-large"); //Smaller TextField
+		showShim=true;
+		
+		final String name = property.getName();
+		
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				String value  = event.getValue();
+				Value previousValue = property.getValue();
+				if(previousValue==null){
+					previousValue = new StringValue();
+				}else{
+					if(event.getValue().equals(previousValue.getValue())){
+						return;
+					}
+				}
+				
+				
+				previousValue.setValue(value);
+				property.setValue(previousValue);
+				
+				/**
+				 * This allows visual properties including Caption, Place Holder, help to be 
+				 * Sysnched with the form field, so that the changes are observed immediately
+				 * 
+				 * All other Properties need not be synched this way 
+				 */
+				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
+					firePropertyChanged(property, value);
+				}
+				//AppContext.getEventBus().fireEvent(new );
+				//AppContext.getEventBus().fireEvent(event);
+				
+			}
+		});
+		//initPropertyWidget();
+	}
+
 
 	@Override
 	public FieldWidget cloneWidget() {

@@ -48,6 +48,7 @@
 	       		<exclude name="**/gwt-dev.jar"/>
 	       		<exclude name="**/gwt-user.jar"/>
 	       		<exclude name="**/javax.ws.rs-api-2.0-m10.jar"/>
+	       		<exclude name="**/geronimo-jpa_3.0_spec-1.1.1.jar"/>
 				<include name="resources/**"/>
 				<include name="classes/*/**"/>
 				<include name="classes/*.properties"/>

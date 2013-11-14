@@ -63,13 +63,13 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers() {
-		Query query = em.createQuery("FROM BUser");		
+		Query query = em.createQuery("FROM BUser u order by u.lastName, u.firstName");		
 		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Group> getAllGroups() {
-		Query query = em.createQuery("FROM BGroup");		
+		Query query = em.createQuery("FROM BGroup b order by b.fullName");		
 		return query.getResultList();
 	}
 

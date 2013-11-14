@@ -22,7 +22,7 @@ import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.BooleanValue;
-import com.duggan.workflow.shared.model.DocSummary;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.LongValue;
@@ -58,7 +58,7 @@ public class TaskItemPresenter extends
 	implements DocumentSelectionHandler, AfterDocumentLoadHandler, CompleteDocumentHandler, ExecTaskHandler{
 
 	public interface MyView extends View {
-		void bind(DocSummary summaryTask);
+		void bind(Doc summaryTask);
 		
 		HasClickHandlers getClaimLink();
 		HasClickHandlers getStartLink();
@@ -82,7 +82,7 @@ public class TaskItemPresenter extends
 		
 	}
 
-	DocSummary task;
+	Doc task;
 	
 	@Inject DispatchAsync dispatcher;
 	
@@ -110,9 +110,11 @@ public class TaskItemPresenter extends
 			public void onClick(ClickEvent event) {
 				if(task instanceof Document){
 					Document doc = (Document)task;
-					fireEvent(new DocumentSelectionEvent(doc.getId(), DocMode.READWRITE));
+					fireEvent(new DocumentSelectionEvent(doc.getId(),null, DocMode.READWRITE));
 				}else{
-					fireEvent(new DocumentSelectionEvent(((HTSummary)task).getDocumentRef(), DocMode.READ));
+					Long taskId = ((HTSummary)task).getId();
+					Long docId = ((HTSummary)task).getDocumentRef();
+					fireEvent(new DocumentSelectionEvent(docId, taskId, DocMode.READ));
 				}
 			}
 		});		
@@ -278,7 +280,7 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void processResult(ExecuteWorkflowResult result) {
-				DocSummary doc = result.getDocument();
+				Doc doc = result.getDocument();
 				
 				//refresh list
 				fireEvent(new ProcessingCompletedEvent());			
@@ -310,9 +312,10 @@ public class TaskItemPresenter extends
 		setDocSummary(summary);
 		if(task instanceof Document){
 			Document doc = (Document)task;
-			fireEvent(new DocumentSelectionEvent(doc.getId(), DocMode.READWRITE));
+			fireEvent(new DocumentSelectionEvent(doc.getId(), null, DocMode.READWRITE));
 		}else{
-			fireEvent(new DocumentSelectionEvent(((HTSummary)task).getDocumentRef(), DocMode.READ));
+			Long taskId = ((HTSummary)task).getId();
+			fireEvent(new DocumentSelectionEvent((Long)task.getId(), taskId, DocMode.READ));
 		}
 		
 	}
@@ -322,7 +325,7 @@ public class TaskItemPresenter extends
 		this.getView().asWidget().removeFromParent();
 	}
 
-	public void setDocSummary(DocSummary summaryTask) {
+	public void setDocSummary(Doc summaryTask) {
 		this.task = summaryTask;
 		if(summaryTask!=null){
 			getView().bind(summaryTask);
@@ -339,6 +342,8 @@ public class TaskItemPresenter extends
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
 		Long documentId = event.getDocumentId();
+		Long taskId = event.getTaskId();
+		
 		if(task instanceof  Document){
 			Document doc = (Document)task;
 			if(doc.getId()!=documentId){
@@ -347,9 +352,9 @@ public class TaskItemPresenter extends
 				getView().setSelected(true);
 			}
 		}else if(task instanceof HTSummary){
-			Long docRef= ((HTSummary) task).getDocumentRef();
+			Long tId = (Long)task.getId();
 			
-			if(docRef==null || docRef!=documentId){
+			if(taskId==null || !taskId.equals(tId)){
 				getView().setSelected(false);
 			}else{
 				getView().setSelected(true);
@@ -360,6 +365,9 @@ public class TaskItemPresenter extends
 		}
 	}
 
+	/**
+	 * TODO: Review use of documentId here
+	 */
 	@Override
 	public void onAfterDocumentLoad(AfterDocumentLoadEvent event) {
 		if(task instanceof Document){
@@ -368,9 +376,13 @@ public class TaskItemPresenter extends
 		
 		HTSummary summary = (HTSummary)task;
 		
-		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
+		if(summary.getId().equals(event.getTaskId())){
 			event.setValidActions(summary.getStatus().getValidActions());
 		}
+		
+//		if(summary.getDocumentRef()!=null && summary.getDocumentRef()==event.getDocumentId()){
+//			event.setValidActions(summary.getStatus().getValidActions());
+//		}
 	}
 
 	@Override
@@ -379,14 +391,10 @@ public class TaskItemPresenter extends
 			return;
 		}
 		
-		HTSummary summary = (HTSummary)task;
-		
-		Long ref= summary.getDocumentRef();
-		Long documentId = event.getDocumentId();
-		
-		if(ref==documentId){
-			//System.err.println("#####COMPLETING DOCUMENT :: "+documentId+" : "+event.IsApproved());
-			completeDocument(event.IsApproved());
+		if(task.getId().equals(event.getTaskId())){
+			Map<String, Value> arguments = event.getResults();
+			arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
+			submitRequest(Actions.COMPLETE, arguments);
 		}
 	}
 	
@@ -396,12 +404,7 @@ public class TaskItemPresenter extends
 			return;
 		}
 		
-		HTSummary summary = (HTSummary)task;
-		
-		Long ref= summary.getDocumentRef();
-		Long documentId = event.getDocumentId();
-		
-		if(ref==documentId){			
+		if(task.getId().equals(event.getTaskId())){			
 			//System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);
 			submitRequest(event.getAction());
 		}

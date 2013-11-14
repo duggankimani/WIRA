@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.servlets.upload;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -8,8 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
+import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.ProcessDef;
 
 public class GetReport extends HttpServlet {
 
@@ -48,6 +55,38 @@ public class GetReport extends HttpServlet {
 			action = "none";
 		}
 
+		if(action.equals("GETDOCUMENTPROCESS")){
+			String docId = req.getParameter("did");
+			if(docId==null){
+				throw new IllegalStateException("DocumentId must not be null for action "+action);
+			}
+			Long documentId = new Long(docId);
+			
+			DocumentModel model = DB.getDocumentDao().getById(documentId);
+			assert model!=null;
+			
+			ADDocType type = model.getType();
+			
+			if(type==null){
+				return ;
+			}
+			
+			ProcessDefModel processDefnition = type.getProcessDef();
+			
+			if(processDefnition==null)
+				return;
+			
+			assert processDefnition!=null;
+			
+			List<LocalAttachment> attachments = DB.getAttachmentDao().getAttachmentsForProcessDef(processDefnition, true);
+			
+			if(attachments.size()==0){
+				return;
+			}
+			
+			processAttachmentRequest(resp, attachments.get(0));
+		}
+		
 		if (action.equals("GETATTACHMENT")) {
 			processAttachmentRequest(req, resp);
 		}
@@ -62,13 +101,28 @@ public class GetReport extends HttpServlet {
 
 		LocalAttachment attachment = DB.getAttachmentDao().getAttachmentById(
 				Long.parseLong(id));
+		
+		processAttachmentRequest(resp, attachment);
+	}
+	
+
+	private void processAttachmentRequest(HttpServletResponse resp, LocalAttachment attachment) {
 
 		resp.setContentType(attachment.getContentType());
-		resp.setHeader("Content-disposition", "attachment;filename=\""
-				+ attachment.getName());
+		if(attachment.getName().endsWith("png")){
+			//displayed automatically
+			resp.setHeader("Content-disposition", "inline;filename=\""
+					+ attachment.getName());
+		}else{
+			resp.setHeader("Content-disposition", "attachment;filename=\""
+					+ attachment.getName());
+		}
+			
+		
 		resp.setContentLength(new Long(attachment.getSize()).intValue());
 		
 		writeOut(resp, attachment);
+
 	}
 
 	private void writeOut(HttpServletResponse resp,

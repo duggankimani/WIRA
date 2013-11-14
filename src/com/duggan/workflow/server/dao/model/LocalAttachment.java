@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,10 @@ public class LocalAttachment extends PO{
 	@ManyToOne
 	@JoinColumn(name="processDefId", referencedColumnName="id")
 	private ProcessDefModel processDef;
+	
+	@ManyToOne
+	@JoinColumn(name="processDefIdImage", referencedColumnName="id")
+	private ProcessDefModel processDefImage;
 	
 	private long size;
 	
@@ -115,6 +120,14 @@ public class LocalAttachment extends PO{
 
 	public void setProcessDef(ProcessDefModel processDef) {
 		this.processDef = processDef;
+	}
+
+	public ProcessDefModel getProcessDefImage() {
+		return processDefImage;
+	}
+
+	public void setProcessDefImage(ProcessDefModel processDefImage) {
+		this.processDefImage = processDefImage;
 	}
 
 }
