@@ -5,8 +5,10 @@
 		   <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" class="control-label">Text Area:</label>
 			    <div class="controls">
-			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->
-			  	 <d:TextArea ui:field="txtComponent"></d:TextArea>
+			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
+			  	 <div class="comment-container hidden" ui:field="commentContainer">
+			  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
+		    	 </div>
 		    	</div>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

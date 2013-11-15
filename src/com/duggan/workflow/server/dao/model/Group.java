@@ -17,8 +17,7 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.Cascade;
 
 @Entity(name="BGroup")
-@Table(
-		uniqueConstraints={@UniqueConstraint(columnNames="name")})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames="name")})
 public class Group extends PO {
 
 	/**
@@ -37,6 +36,7 @@ public class Group extends PO {
 	
 	@ManyToMany(mappedBy="groups", fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,
 			CascadeType.MERGE,CascadeType.REFRESH})
+	
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private Collection<User> members = new HashSet<>();
 	

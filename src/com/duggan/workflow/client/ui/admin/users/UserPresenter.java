@@ -73,7 +73,6 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	}
 	
 	private void showPopup(final AddUserPresenter.TYPE type, final Object obj) {
-		
 		userFactory.get(new ServiceCallback<AddUserPresenter>() {
 			@Override
 			public void processResult(AddUserPresenter result) {

@@ -71,12 +71,12 @@
 								</h2>
 							</div>
 							<!--BreadCrumb-->
-							<div class="content-breadcrumb">
+							<!--div class="content-breadcrumb">
 									<ul class="breadcrumb">
 	                                <li><a href=""><i class="icofont-home"></i> Dashboard</a> <span class="divider">›</span></li>
 	                                <li><a href="">Users &amp; Groups</a></li>
 	                          	    </ul>
-							</div>
+							</div -->
 							<!-- Content Details -->
 							<g:HTMLPanel  ui:field="divContent"></g:HTMLPanel>
 						</div>

@@ -130,4 +130,9 @@ public class TextField extends FieldWidget {
 	public void setReadOnly(boolean readOnly) {
 		txtComponent.setReadOnly(readOnly);
 	}
+
+	public Widget getComponent() {
+		// TODO Auto-generated method stub
+		return txtComponent;
+	}
 }

@@ -91,4 +91,9 @@ public class DateField extends FieldWidget {
 	public void setReadOnly(boolean readOnly) {
 		
 	}
+	
+	@Override
+	public Widget getComponent() {
+		return dateBox;
+	}
 }

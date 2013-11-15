@@ -5,6 +5,7 @@ import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -24,6 +25,7 @@ public class TextArea extends FieldWidget {
 
 	@UiField Element lblEl;
 	@UiField com.duggan.workflow.client.ui.component.TextArea txtComponent;
+	@UiField DivElement commentContainer;
 	
 	public TextArea() {
 		super();
@@ -105,6 +107,10 @@ public class TextArea extends FieldWidget {
 		txtComponent.setTitle(help);
 	}
 	
+	public DivElement getCommentContainer() {
+		return commentContainer;
+	}
+	
 	@Override
 	protected DataType getType() {
 		return DataType.STRINGLONG;
@@ -120,7 +126,7 @@ public class TextArea extends FieldWidget {
 		
 		return new StringValue(value);
 	}
-	
+
 	@Override
 	public void setValue(Object value) {
 		if(value!=null)
@@ -130,5 +136,11 @@ public class TextArea extends FieldWidget {
 	@Override
 	public void setReadOnly(boolean readOnly) {
 		txtComponent.setReadOnly(readOnly);
+
+	}
+	
+	@Override
+	public Widget getComponent() {
+		return txtComponent;
 	}
 }

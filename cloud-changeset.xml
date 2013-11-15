@@ -2,7 +2,7 @@
     xmlns:xs='http://www.w3.org/2001/XMLSchema-instance'
     xs:schemaLocation='http://drools.org/drools-5.0/change-set http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd' >
     <add>
-         <resource source='http://ebusiness-duggansit.rhcloud.com/drools-guvnor/org.drools.guvnor.Guvnor/package/workflow/LATEST' type='PKG'
+         <resource source='http://ec2-23-21-32-12.compute-1.amazonaws.com/drools-guvnor/org.drools.guvnor.Guvnor/package/workflow/LATEST' type='PKG'
 basicAuthentication="enabled" username="admin" password="admin" />
     </add>
 </change-set>

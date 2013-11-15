@@ -40,16 +40,14 @@
 			<div class="row-fluid">
 			<g:HTMLPanel styleName="palete-panel panel panel-default span2" ui:field="divPalettePanel">
 				<div class="panel-heading">
-					<div class="row-fluid">
 						<div class="span10">
-						<h4 ui:field="hPaletetitle">Palette</h4>
+						<h4 ui:field="hPaletetitle">Form Components</h4>
 						</div>
 						<div class="span2">
 							<g:Anchor styleName="minimize minimize-left hidden" ui:field="aMinimize"></g:Anchor>
 						</div>
-					</div>
 				</div>
-				<div class="panel-body" ui:field="divPaletteBody">
+				<div class="panel-body overflow-y" ui:field="divPaletteBody">
 						<ul class="nav nav-tabs hidden">
 					      <li class="active"  ui:field="liInput"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
 					      <li ui:field="liSelect"><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
@@ -122,7 +120,7 @@
 	                   </div>
 					</div>
 			</g:HTMLPanel>
-			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8" ui:field="divFormContent">			
+			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8 overflow-y" ui:field="divFormContent">			
 				<g:HTMLPanel styleName="panel-body">
 					<g:HTMLPanel styleName="form-horizontal">
 						<fieldset>

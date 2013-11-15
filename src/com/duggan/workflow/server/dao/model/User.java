@@ -1,14 +1,11 @@
 package com.duggan.workflow.server.dao.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -131,5 +128,4 @@ public class User extends PO {
 	public void setGroups(Collection<Group> groups) {
 		this.groups = groups;
 	}
-
 }

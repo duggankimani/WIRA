@@ -1,13 +1,10 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.shared.model.DataType;
-import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -23,7 +20,7 @@ public class LabelField extends FieldWidget {
 
 
 	@UiField Element lblEl;
-	@UiField SpanElement lblComponent;
+	@UiField InlineLabel lblComponent;
 	
 	public LabelField() {
 		super();
@@ -31,7 +28,7 @@ public class LabelField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		
-		lblComponent.setAttribute("type","text");
+		lblComponent.getElement().setAttribute("type","text");
 	}
 
 	@Override
@@ -52,7 +49,7 @@ public class LabelField extends FieldWidget {
 	@Override
 	public void setValue(Object value) {
 		if(value!=null && value instanceof String){
-			lblComponent.setInnerText(value.toString());
+			lblComponent.setText(value.toString());
 		}
 	}
 	
@@ -72,4 +69,7 @@ public class LabelField extends FieldWidget {
 		return true;
 	}
 	
+	public Widget getComponent() {
+		return lblComponent;
+	}
 }

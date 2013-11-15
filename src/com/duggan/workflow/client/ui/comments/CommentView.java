@@ -110,6 +110,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			((Widget)aReply).setTitle("Edit");
 			divSave.removeClassName(HIDDEN);
 			txtCommentBox.removeStyleName(HIDDEN);
+			aReply.setText("Cancel");
 			divSave.addClassName("reply");
 			
 			txtCommentBox.getSpnArrow().addClassName("reply");
@@ -117,7 +118,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 		}else{
 			aReply.removeStyleName(HIDDEN);
 			((Widget)aReply).setTitle("Cancel");
-			aReply.setText("Cancel");
+			aReply.setText("Reply");
 			divSave.addClassName(HIDDEN);
 			txtCommentBox.addStyleName(HIDDEN);
 		}
