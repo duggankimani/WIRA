@@ -519,4 +519,8 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 
 		return widget;
 	}
+
+	public Widget getComponent() {
+		return null;
+	}
 }

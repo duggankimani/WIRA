@@ -109,6 +109,7 @@ public class FormDelegate {
 		for(Field field: fields){
 			FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field, false);
 			panelFields.add(fieldWidget);
+			
 		}
 	}
 

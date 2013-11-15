@@ -5,9 +5,8 @@
 	        <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" class="control-label">Label:</label>
 			    <div class="controls">
-			    <span ui:field="lblComponent" class="input-xlarge" text="Label value">
-			        Sample value
-			    </span>
+			    <g:InlineLabel ui:field="lblComponent" text="Label value">
+			    </g:InlineLabel>
 		    	</div>
 	       </g:HTMLPanel>
 	</g:AbsolutePanel>

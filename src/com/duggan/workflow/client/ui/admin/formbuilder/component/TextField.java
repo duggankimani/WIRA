@@ -124,4 +124,10 @@ public class TextField extends FieldWidget {
 		if(value!=null)
 			txtComponent.setValue((String)value);
 	}
+	
+	@Override
+	public Widget getComponent() {
+		// TODO Auto-generated method stub
+		return txtComponent;
+	}
 }

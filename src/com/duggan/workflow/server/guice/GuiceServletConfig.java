@@ -2,7 +2,6 @@ package com.duggan.workflow.server.guice;
 
 import javax.servlet.ServletContextEvent;
 
-import org.jbpm.executor.ExecutorModule;
 
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.Injector;
@@ -14,7 +13,6 @@ import com.duggan.workflow.server.guice.DispatchServletModule;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
-import com.duggan.workflow.test.LDAPAuth;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 

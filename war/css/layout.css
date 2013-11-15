@@ -19,20 +19,8 @@ a, a:visited, a:hover{
     text-decoration:none;
     color: #cccccc;
 }
-
-textarea {
-	width: 98%;
-	height: 70px;
-	margin-bottom: 0px;
-}
-
 .full-page{
     height:100%;
-}
-
-#detailed-info textarea:hover{
-	outline:none;
-	border:none;
 }
 
 *:focus{
@@ -726,7 +714,6 @@ body .dateBoxPopup{
     left:-45px; 
     min-width:100px;
 }
-
 #detailed-info .action-area {
 	display:inline-block;
 	padding: 0px 0px 2px 13px;
@@ -768,6 +755,7 @@ body .dateBoxPopup{
 #detailed-info .personal_info strong{
      margin-top: 5px;   
 }
+
 #detailed-info .content-area{
     padding: 6px 7px 0 0px;
     font-size:14px;
@@ -775,6 +763,19 @@ body .dateBoxPopup{
 }
 #detailed-info .content-area .item{	
 	padding-bottom: 3px;
+}
+#detailed-info .form-horizontal .control-group{
+	margin-bottom: 2px;
+}
+#detailed-info .form-horizontal .control-label{
+	width: auto;
+	font-weight: 600;
+	padding-top: 1px;
+	text-align: left;
+}
+#detailed-info .form-horizontal .controls{
+	margin-left: 17%;
+	padding-top: 1px;
 }
 
 #detailed-info .title h4{
@@ -826,6 +827,7 @@ body .dateBoxPopup{
 	border:1px solid #CCCCCC;
 	margin-top: 11px;
 	margin-right: 10px;
+	margin-left: 0px;
 }
 
 #detailed-info .status-section .panel-heading{
@@ -868,37 +870,37 @@ body .dateBoxPopup{
 	margin-bottom:10px;
 }
 
-#detailed-info .recent-activity .comment-box .arrow{
+#detailed-info .comment-box .arrow{
 	position: absolute;
-	left: 54px;
-	top: 45px;
+	left: 61px;
+	top: 46px;
 	height: 0;
 	border: 5px solid transparent;
 	border-left-width: 0;
 	border-right-color: #b9b9b9;
 }
 
-#detailed-info .recent-activity .comment-box .arrow.reply{
+#detailed-info .comment-box .arrow.reply{
 	top: 59px;
 	left: 111px;
 }
-#detailed-info .recent-activity .comment-box .image{
+#detailed-info .comment-box .image{
 	width: 8.6%;
 	}
-#detailed-info .recent-activity .comment-box .textbox{
+#detailed-info .comment-box .textbox{
 	margin-left: 7px;
 	margin-top: 0px;
 	width: 89.905983%;
 }
 
-#detailed-info .recent-activity .comment-box .button-post{
+#detailed-info .comment-box .button-post{
 	min-height: 20px;
 	padding: 1px 8px;
 	font-size: 11px;
 	margin-right: 7px;
 	margin-top: 5px;
 }
-#detailed-info .recent-activity .comment-box .textarea-box{
+#detailed-info .textarea-box{
 	margin: 0px;
 	border: 0;
 	resize: none;
@@ -915,17 +917,13 @@ body .dateBoxPopup{
     height: 64px;	
 }
 
-#detailed-info .recent-activity .comment-box .textarea-box:focus{
+#detailed-info .textarea-box:focus{
    	 outline: none;
    	 box-shadow:none;
   	 border-color: #1b7fcc;
 }
 
-#detailed-info .recent-activity .comment-container{
-   /* background-color:#f1f1f1; */
-}
-
-#detailed-info .recent-activity .comment-container{
+#detailed-info .comment-container{
 	border:1px solid #b4bbcd;
 	position: relative;
 	z-index: 0;

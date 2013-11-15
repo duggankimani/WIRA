@@ -1,8 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.Widget;
@@ -18,6 +16,7 @@ import com.googlecode.gflot.client.options.GridOptions;
 import com.googlecode.gflot.client.options.LegendOptions;
 import com.googlecode.gflot.client.options.LegendOptions.LegendPosition;
 import com.googlecode.gflot.client.options.PlotOptions;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class DashboardView extends ViewImpl implements
 		DashboardPresenter.MyView {

@@ -137,7 +137,7 @@
 }
 /* content-header */
 #main-content .content>.content-header {
-	padding: 10px 20px 10px 20px;
+	padding: 10px 20px 10px 29px;
 	border-bottom: 1px solid #CDCDCD;
 	color: #626262;
 }
@@ -319,8 +319,12 @@
 	text-align: center;
 }
 #main-content .content .content-body .palete-panel {
-	min-height: 480px;
+	height: 463px;
 	width: 40%;
+}
+
+#main-content .content .content-body .palete-panel .panel-body{
+	height:460px;
 }
 .dragdrop-dropTarget .span2{
     width:8.53%;
@@ -341,12 +345,12 @@
 /*--content-body||Form Builder||MainContent Panel--*/
 #main-content .content .content-body .maincontent-panel {
 	margin-left: 1%;
-	min-height: 480px;
+	height: 463px;
 	width: 59%;
 }
 
 #main-content .maincontent-panel .dragdrop-dropTarget {
-	min-height: 385px;
+    min-height: 350px;
 }
 
 .dragdrop-movable-panel { /*Dragging Styles*/
@@ -686,7 +690,7 @@ overflow-y:auto;
 }
 
 .panel .panel-heading {
-	height: auto;
+	height: 28px;
 	padding: 0;
 	position: relative;
 	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -733,7 +737,10 @@ overflow-y:auto;
 	font-weight: 700;
 	color: #777777;
 	display: inline-block;
-	padding: 11px 0 11px 20px;
+	padding: 4px 0 11px 20px;
+	font-size: 13px;
+	text-align: center;
+	width: 100%;
 }
 
 .panel.plain .panel-heading h4 {
