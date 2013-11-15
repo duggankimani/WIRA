@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.duggan.workflow.shared.model.DataType;
+
 @Entity
 public class ADValue extends PO{
 

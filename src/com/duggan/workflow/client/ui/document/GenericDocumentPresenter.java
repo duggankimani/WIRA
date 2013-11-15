@@ -468,6 +468,9 @@ public class GenericDocumentPresenter extends
 		}
 			
 		Map<String, Value> values = doc.getValues();
+		for(Value value:values.values()){
+			System.err.println(value.getKey()+" :: "+value.getValue());
+		}
 		
 		for(Field field: form.getFields()){
 			String name = field.getName();
@@ -482,7 +485,6 @@ public class GenericDocumentPresenter extends
 				value = new StringValue();
 			}
 				
-			System.err.println(name+" :: "+value.getValue());
 		}
 		getView().setForm(form);
 	}

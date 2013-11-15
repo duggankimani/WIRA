@@ -13,6 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,6 +37,7 @@ public class FormPanel extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		form.getCaption();
+		divFormHelp.setInnerText("");
 		if(form.getProperties()!=null)
 		for(Property prop: form.getProperties()){
 			if(prop.getName()!=null){
@@ -67,5 +69,9 @@ public class FormPanel extends Composite {
 	
 	public Map<String, Value> getValues(){
 		return formDelegate.getValues(panelFields);		
+	}
+	
+	public void setReadOnly(boolean readOnly){
+		formDelegate.setReadOnly(readOnly, (ComplexPanel)panelFields);
 	}
 }

@@ -31,6 +31,7 @@ public class SelectBasic extends FieldWidget {
 
 	public SelectBasic() {
 		super();
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property("SELECTIONTYPE", "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
@@ -86,5 +87,10 @@ public class SelectBasic extends FieldWidget {
 	@Override
 	protected DataType getType() {
 		return DataType.SELECTBASIC;
+	}
+	
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		lstItems.setReadOnly(readOnly);
 	}
 }

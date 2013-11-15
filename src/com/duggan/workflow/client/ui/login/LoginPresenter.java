@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.TextBox;
@@ -54,6 +55,8 @@ public class LoginPresenter extends
 
 	@Inject LoginGateKeeper gateKeeper;
 		
+	String redirect=null;
+	
 	@Inject
 	public LoginPresenter(final EventBus eventBus, final ILoginView view,
 			final MyProxy proxy) {
@@ -68,7 +71,11 @@ public class LoginPresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
+		redirect = request.getParameter("redirect", null);
+		System.err.println("Login Redirect = "+redirect);
+		
 		if(AppContext.isValid()){
+			
 			placeManager.revealDefaultPlace();
 			return;
 		}
@@ -116,7 +123,14 @@ public class LoginPresenter extends
 								AppContext.setSessionValues(
 									result.getUser().getUserId(), result.getUser().getName(), result.getSessionId());
 									//placeManager.revealDefaultPlace();
-									placeManager.navigateBack();
+									
+									System.err.println(">>>>Redirect: "+redirect);
+									if(redirect!=null){
+										History.newItem(redirect);
+									}else{
+										placeManager.revealDefaultPlace();
+									}
+									
 							}else{
 								getView().clearLoginProgress();
 								getView().getPasswordBox().setText("");
@@ -128,7 +142,7 @@ public class LoginPresenter extends
 						public void onFailure(Throwable caught) {
 							getView().clearLoginProgress();
 							super.onFailure(caught);
-							getView().setError("Could authenticate user.");
+							getView().setError("Could authenticate user. Please report this to your administrator");
 						}
 					});
 		}

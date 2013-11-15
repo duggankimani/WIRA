@@ -102,10 +102,12 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	@UiField HTMLPanel fldForm;
 	
-	FormPanel panel;
+	FormPanel formPanel;
 	
 	String url=null;
-		
+	
+	List<Actions> validActions = null;
+	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -165,8 +167,16 @@ public class GenericDocumentView extends ViewImpl implements
 		UIObject.setVisible(divPartner, false);
 		UIObject.setVisible(divValue, false);
 		
-		panel = new FormPanel(form);
-		fldForm.add(panel);
+		formPanel = new FormPanel(form);
+		
+		if(validActions!=null){
+			if(validActions.contains(Actions.COMPLETE)){
+				formPanel.setReadOnly(false);
+			}else{
+				formPanel.setReadOnly(true);
+			}
+		}
+		fldForm.add(formPanel);
 	}
 
 	public void setValues(HTUser createdBy, Date created, String type, String subject,
@@ -245,7 +255,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 		
 	public void setValidTaskActions(List<Actions> actions){
-		
+		this.validActions = actions;
 		if(actions!=null)
 		for(Actions action : actions){		
 			Anchor target=null;
@@ -464,19 +474,19 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@Override
 	public boolean isValid() {
-		if(panel==null){
+		if(formPanel==null){
 			return true;
 		}
-		return panel.isValid();
+		return formPanel.isValid();
 	}
 
 	@Override
 	public Map<String, Value> getValues() {
-		if(panel==null){
+		if(formPanel==null){
 			return null;
 		}
 		
-		return panel.getValues();
+		return formPanel.getValues();
 	}
 	
 }

@@ -62,13 +62,12 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 			ProcessDefModel model = DB.getProcessDao().getProcessDef(new Long(id.trim()));
 			
 			String name = attachment.getName();
-			boolean isImage= name.endsWith("xml") || name.endsWith("png") ||
-					name.endsWith("svg") || name.endsWith("pdf");
+			boolean isImage= !(name.endsWith("xml") || name.endsWith("bpmn2") || name.endsWith("drl"));
 			
-			if(!isImage){
-				attachment.setProcessDef(model);
-			}else{
+			if(isImage){
 				attachment.setProcessDefImage(model);
+			}else{
+				attachment.setProcessDef(model);
 			}
 						
 			//Disable existing attachments

@@ -2,6 +2,7 @@ package com.duggan.workflow.server.helper.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
@@ -134,7 +136,37 @@ public class DocumentDaoHelper {
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
 		doc.setSessionId(model.getSessionId());
-
+		
+		Collection<ADValue> values = model.getValues();
+		if(values!=null){
+			for(ADValue val: values){
+				//val.
+				
+				DataType type = null;
+				
+				if(val.getBooleanValue()!=null){
+					type = DataType.BOOLEAN;
+				}
+				
+				if(val.getLongValue()!=null){
+					type = DataType.INTEGER;
+				}
+				
+				if(val.getDateValue()!=null){
+					type = DataType.DATE;
+				}
+				
+				if(val.getDoubleValue()!=null){
+					type = DataType.DOUBLE;
+				}
+				
+				if(val.getStringValue()!=null){
+					type = DataType.STRING;
+				}
+				
+				doc.setValue(val.getFieldName(), getValue(val, type));
+			}
+		}
 		return doc;
 	}
 

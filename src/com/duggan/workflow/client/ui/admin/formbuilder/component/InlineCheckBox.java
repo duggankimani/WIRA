@@ -34,6 +34,7 @@ public class InlineCheckBox extends FieldWidget {
 
 	public InlineCheckBox() {
 		super();
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 	}
@@ -108,7 +109,7 @@ public class InlineCheckBox extends FieldWidget {
 	}
 	
 	@Override
-	protected void setReadOnly(boolean readOnly) {
-		component.setEnabled(false);
+	public void setReadOnly(boolean readOnly) {
+		component.setEnabled(readOnly);
 	}
 }

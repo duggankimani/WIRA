@@ -27,6 +27,7 @@ public class TextArea extends FieldWidget {
 	
 	public TextArea() {
 		super();
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		widget= uiBinder.createAndBindUi(this);
@@ -118,5 +119,16 @@ public class TextArea extends FieldWidget {
 			return null;
 		
 		return new StringValue(value);
+	}
+	
+	@Override
+	public void setValue(Object value) {
+		if(value!=null)
+			txtComponent.setValue((String)value);
+	}
+	
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		txtComponent.setReadOnly(readOnly);
 	}
 }

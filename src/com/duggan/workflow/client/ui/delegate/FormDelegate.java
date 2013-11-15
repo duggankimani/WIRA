@@ -79,12 +79,15 @@ public class FormDelegate {
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
 			Field field = fieldWidget.getField();
+			if(fieldWidget.isReadOnly()){
+				continue;
+			}
 			
 			Value fieldValue = fieldWidget.getFieldValue();
 			if(fieldValue!=null) {
 				assert field.getName()!=null;
 				assert !field.getName().isEmpty();
-				
+				fieldValue.setKey(field.getName());
 			}			
 			values.put(field.getName(), fieldValue);
 		}
@@ -114,6 +117,21 @@ public class FormDelegate {
 
 	boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;
+	}
+
+
+	public void setReadOnly(boolean isReadOnly, ComplexPanel panelFields) {
+		int fields = panelFields.getWidgetCount();
+		
+		for(int i=0; i<fields; i++){
+			Widget widget = panelFields.getWidget(i);
+			if(!(widget instanceof FieldWidget)){
+				continue;
+			}
+			
+			FieldWidget fieldWidget = (FieldWidget)widget;
+			fieldWidget.setReadOnly(isReadOnly);
+		}	
 	}
 
 }

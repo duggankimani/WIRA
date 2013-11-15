@@ -157,7 +157,6 @@ public class JBPMHelper implements Closeable {
 		
 		for (Value val : values) {
 			initialParams.put(val.getKey(), val.getValue());
-			System.err.println("#### "+val.getValue());
 		}
 
 		ProcessInstance processInstance = sessionManager.startProcess(
@@ -293,6 +292,30 @@ public class JBPMHelper implements Closeable {
 		return translateSummaries(tasks);
 	}
 
+	public Collection<String> getProcessData(String processId, String taskName){
+		org.drools.definition.process.Process process = sessionManager.getProcess(processId);
+		
+		WorkflowProcessImpl workflow = (WorkflowProcessImpl)process;
+		
+		Node [] nodes = workflow.getNodes();
+		
+		for(Node node: nodes){
+			
+			if(node instanceof HumanTaskNode){
+				HumanTaskNode htnode = (HumanTaskNode)node;
+				Object name = htnode.getWork().getParameter("TaskName");
+				
+				if(name!=null && name.equals(taskName)){					
+					Collection<String> vals = htnode.getInMappings().values();
+					return vals;
+				}
+					
+					
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * 
 	 * This method retrieves all tasks assigned to a user.

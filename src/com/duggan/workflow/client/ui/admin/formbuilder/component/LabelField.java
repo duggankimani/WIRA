@@ -62,4 +62,14 @@ public class LabelField extends FieldWidget {
 			lblEl.setTitle(title);
 	}
 	
+	@Override
+	public boolean isMandatory() {
+		return false;
+	}
+	
+	@Override
+	public boolean isReadOnly() {
+		return true;
+	}
+	
 }

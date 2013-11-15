@@ -31,6 +31,10 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 	
 	@Override
 	public void revealUnauthorizedPlace(String unauthorizedHistoryToken) {
-		revealPlace(new PlaceRequest("login"));
+		PlaceRequest place = new PlaceRequest("login").with("redirect", unauthorizedHistoryToken);
+		
+		System.err.println("Unauthorised token :: "+unauthorizedHistoryToken);
+		
+		revealPlace(place,true);
 	}
 }

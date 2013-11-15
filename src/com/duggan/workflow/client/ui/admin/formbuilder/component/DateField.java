@@ -28,6 +28,7 @@ public class DateField extends FieldWidget {
 	
 	public DateField() {
 		super();
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		widget = uiBinder.createAndBindUi(this);	
@@ -87,7 +88,7 @@ public class DateField extends FieldWidget {
 	}
 	
 	@Override
-	protected void setReadOnly(boolean readOnly) {
+	public void setReadOnly(boolean readOnly) {
 		
 	}
 }

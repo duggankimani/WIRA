@@ -15,6 +15,7 @@ import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.History;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -108,7 +109,13 @@ public class AdminHomePresenter extends
 		String name = request.getParameter("page",
 				ADMINPAGES.DASHBOARD.toString());
 
-		ADMINPAGES pages = ADMINPAGES.valueOf(name.toUpperCase());
+		ADMINPAGES pages = null;
+		
+		try{
+			pages = ADMINPAGES.valueOf(name.toUpperCase());
+		}catch(Exception e){
+			History.newItem(NameTokens.adminhome);
+		}
 
 		this.page = pages;
 

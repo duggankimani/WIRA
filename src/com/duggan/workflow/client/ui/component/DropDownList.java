@@ -94,4 +94,10 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 	public void setTitle(String title) {
 		listBox.setTitle(title);
 	}
+
+	public void setReadOnly(boolean readOnly) {
+		if(readOnly){
+			listBox.setEnabled(false);
+		}
+	}
 }

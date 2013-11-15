@@ -27,6 +27,7 @@ public class TextField extends FieldWidget {
 	
 	public TextField() {
 		super();
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 
@@ -123,5 +124,10 @@ public class TextField extends FieldWidget {
 	public void setValue(Object value) {
 		if(value!=null)
 			txtComponent.setValue((String)value);
+	}
+	
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		txtComponent.setReadOnly(readOnly);
 	}
 }

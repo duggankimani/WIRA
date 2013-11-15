@@ -54,7 +54,6 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		addProperty(new Property(NAME, "Name", DataType.STRING, id));
 		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
 		addProperty(new Property(HELP, "Help", DataType.STRING, id));
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		
 		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE,this);
 		AppContext.getEventBus().addHandler(SavePropertiesEvent.TYPE,this);
@@ -254,7 +253,7 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		
 	}
 	
-	protected void setReadOnly(boolean readOnly) {
+	public void setReadOnly(boolean readOnly) {
 		
 	}
 	
@@ -518,5 +517,25 @@ implements HasDragHandle, PropertyChangedHandler, HasProperties, SavePropertiesH
 		}
 
 		return widget;
+	}
+
+	public boolean isReadOnly() {
+		
+		Object readOnly = getValue(READONLY);
+		
+		if(readOnly==null)
+			return false;
+		
+		return (Boolean)readOnly;
+	}
+	
+	
+	public boolean isMandatory(){
+		Object isMandatory = getValue(MANDATORY);
+		
+		if(isMandatory==null)
+			return false;
+		
+		return (Boolean)isMandatory;
 	}
 }
