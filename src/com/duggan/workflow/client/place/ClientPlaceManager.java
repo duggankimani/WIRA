@@ -33,8 +33,6 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 	public void revealUnauthorizedPlace(String unauthorizedHistoryToken) {
 		PlaceRequest place = new PlaceRequest("login").with("redirect", unauthorizedHistoryToken);
 		
-		System.err.println("Unauthorised token :: "+unauthorizedHistoryToken);
-		
 		revealPlace(place,true);
 	}
 }

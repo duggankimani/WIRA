@@ -116,7 +116,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		aShowProcess.setVisible(false);
 		
-		
+		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
 		aShowProcess.removeStyleName("gwt-Anchor");
@@ -156,10 +156,7 @@ public class GenericDocumentView extends ViewImpl implements
 			return;
 		
 		//hide static fields		
-		UIObject.setVisible(divDate, false);
-		UIObject.setVisible(divDesc, false);
-		UIObject.setVisible(divPartner, false);
-		UIObject.setVisible(divValue, false);
+		showDefaultFields(false);
 		
 		formPanel = new FormPanel(form);
 		
@@ -171,6 +168,13 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 		}
 		fldForm.add(formPanel);
+	}
+
+	public void showDefaultFields(boolean show) {
+		UIObject.setVisible(divDate, show);
+		UIObject.setVisible(divDesc, show);
+		UIObject.setVisible(divPartner, show);
+		UIObject.setVisible(divValue, show);
 	}
 
 	public void setValues(HTUser createdBy, Date created, String type, String subject,

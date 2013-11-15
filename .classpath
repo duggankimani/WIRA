@@ -154,7 +154,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xstream-1.4.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mgwt-1.2.0-20130228.213923-25.jar"/>
-	<classpathentry kind="lib" path="C:/Java_projects/JBPMHT/war/WEB-INF/lib/gflot-3.2.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gflot-3.2.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -124,6 +124,8 @@ public class GenericDocumentPresenter extends
 		void setForm(Form form);
 		boolean isValid();
 		Map<String,Value> getValues(); //Task Data
+
+		void showDefaultFields(boolean b);
 	}
 //	boolean isDisplayed=false; //Attachment closer
 	
@@ -449,6 +451,8 @@ public class GenericDocumentPresenter extends
 					if(!response.getFormModel().isEmpty()){
 						bindForm((Form)response.getFormModel().get(0), result.getDoc());
 						
+					}else{
+						getView().showDefaultFields(true);
 					}
 					
 					fireEvent(new ProcessingCompletedEvent());
@@ -461,6 +465,7 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
 		if(form.getFields()==null){
+			getView().showDefaultFields(true);
 			return;
 		}
 			

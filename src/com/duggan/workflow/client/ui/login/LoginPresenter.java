@@ -72,7 +72,6 @@ public class LoginPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		redirect = request.getParameter("redirect", null);
-		System.err.println("Login Redirect = "+redirect);
 		
 		if(AppContext.isValid()){
 			
