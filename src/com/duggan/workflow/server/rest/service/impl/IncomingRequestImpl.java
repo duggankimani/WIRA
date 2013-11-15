@@ -1,37 +1,28 @@
 package com.duggan.workflow.server.rest.service.impl;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.jbpm.executor.api.CommandContext;
 
-import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.server.rest.exception.CommandNotFoundException;
 import com.duggan.workflow.server.rest.model.BusinessKey;
 import com.duggan.workflow.server.rest.model.Data;
 import com.duggan.workflow.server.rest.model.KeyValuePair;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
-import com.duggan.workflow.shared.exceptions.IllegalApprovalRequestException;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.responses.ApprovalRequestResult;
-import com.google.inject.Inject;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
 import com.sun.jersey.api.json.JSONMarshaller;
-import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 public class IncomingRequestImpl implements IncomingRequestService {
 

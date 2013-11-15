@@ -30,16 +30,15 @@ public class IntegrationWorkItemHandler implements WorkItemHandler{
 		
 		assert params.get("document") != null;
 		
-		System.err.println("Document for Integration :: "+params.get("document"));
-		
 		Request request = new Request();
 		request.setContext(workItem.getParameters());
 		request.setCommandName(commandName.toString());
+		//request.setBusinessKey(businessKey); -- Async Services will need this
 		
 		OutgoingRequestService service = new OutgoingRequestImpl();
-		//Response response = service.executeCall(request);
+		Response response = service.executeCall(request);
 		
-		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
+		manager.completeWorkItem(workItem.getId(), response.getContext());
 		
 	}
 	

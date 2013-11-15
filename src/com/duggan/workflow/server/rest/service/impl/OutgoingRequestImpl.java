@@ -19,7 +19,9 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class OutgoingRequestImpl implements OutgoingRequestService{
 
-	static String erpUrl = "http://127.0.0.1:8888/rest";
+	static String serviceUri = null;
+	
+	static String propfile = "/general.properties";
 	
 	//String erpUrl = "http://ebusiness-duggansit.rhcloud.com/ebusiness/rest";
 	
@@ -29,17 +31,17 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 	
 	static{
 		try{
-			InputStream is = OutgoingRequestImpl.class.getResourceAsStream("/general.properties");
+			InputStream is = OutgoingRequestImpl.class.getResourceAsStream(propfile);
 			properties.load(is);
-			String prop = properties.getProperty("erpUrl");
+			String prop = properties.getProperty("ServiceUri");
 			if(prop!=null){
-				erpUrl = prop;
+				serviceUri = prop;
 			}else{
-				logger.warn("Property [erpUrl] not found, using default value ["+erpUrl+"]");
+				logger.warn("Property [ServiceUri] not found, using default value ["+serviceUri+"]");
 			}
 		}catch(Exception e){
-			logger.warn("Error Loading [erpUrl], using default value ["+erpUrl+"] :: Cause "+e.getMessage());
-			e.printStackTrace();
+//			logger.warn("Error Loading [erpUrl], using default value ["+erpUrl+"] :: Cause "+e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 	
@@ -51,6 +53,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 	public OutgoingRequestImpl(){
 		DefaultClientConfig config = new DefaultClientConfig(JAXBProviderImpl.class);
 		jclient = Client.create(config);
+		jclient.setConnectTimeout(15000);
 
 	}
 	
@@ -59,7 +62,26 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 		
 		logger.info("Submitting Request : "+request);
 
-		String uri = erpUrl + "/request/approval";
+		String uri = null;
+		
+		Object URI = request.getContext("ServiceUri");
+		if(URI!=null && !URI.toString().isEmpty()){
+			uri =URI.toString();
+		}
+		
+		if(uri==null){			
+			String log = "Trying ServiceUri Property from classpath:"+propfile+".. ";
+			if(serviceUri==null){
+				logger.info(log+" - NO VALUE FOUND");
+			}else{
+				uri=serviceUri;
+				logger.info(log+" - "+uri);
+			}
+		}
+
+		if(uri==null || uri.isEmpty()){
+			throw new IllegalArgumentException("REST URI cannot be null for rest service");
+		}
 
 		WebResource resource = jclient.resource(uri);
 
@@ -77,8 +99,8 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 			throw new RuntimeException(e);
 		}
 
-		if (response.getClientResponseStatus().equals(
-				ClientResponse.Status.INTERNAL_SERVER_ERROR)) {
+		if (!response.getClientResponseStatus().equals(
+				ClientResponse.Status.OK)) {
 
 			RuntimeException e = new RuntimeException(response.getEntity(String.class));
 			

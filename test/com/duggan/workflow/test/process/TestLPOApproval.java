@@ -20,7 +20,7 @@ public class TestLPOApproval {
 		DBTrxProvider.init();
 		DB.beginTransaction();
 		ProcessMigrationHelper.init();
-		doc = DocumentDaoHelper.getDocument(32L);
+		doc = DocumentDaoHelper.getDocument(47L);
 	}
 	
 	@Test

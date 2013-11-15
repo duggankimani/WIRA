@@ -22,7 +22,7 @@ public class ErrorLog extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length=500)
+	@Column(length=2000)
 	private String msg;
 	
 	@Column(length=5000)
