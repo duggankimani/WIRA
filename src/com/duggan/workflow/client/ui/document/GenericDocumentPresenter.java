@@ -354,16 +354,13 @@ public class GenericDocumentPresenter extends
 		getView().getRejectLink().addClickHandler(new ClickHandler() {
 			
 			@Override
-			public void onClick(ClickEvent event) {
-				if(getView().isValid()){
-					
-					Map<String, Value> values = getView().getValues();
-					if(values==null){
-							values = new HashMap<String, Value>();
-					}
-					values.put("isApproved", new BooleanValue(false));
-					fireEvent(new CompleteDocumentEvent(taskId, values));
+			public void onClick(ClickEvent event) {				
+				Map<String, Value> values = getView().getValues();
+				if(values==null){
+						values = new HashMap<String, Value>();
 				}
+				values.put("isApproved", new BooleanValue(false));
+				fireEvent(new CompleteDocumentEvent(taskId, values));
 			}
 		});
 		

@@ -124,7 +124,6 @@ public class LoginPresenter extends
 									result.getUser().getUserId(), result.getUser().getName(), result.getSessionId());
 									//placeManager.revealDefaultPlace();
 									
-									System.err.println(">>>>Redirect: "+redirect);
 									if(redirect!=null){
 										History.newItem(redirect);
 									}else{

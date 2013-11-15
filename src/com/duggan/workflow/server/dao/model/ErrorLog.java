@@ -54,17 +54,17 @@ public class ErrorLog extends PO{
 		return stackTrace;
 	}
 
-	public void setStackTrace(String stackTrace) {
-		this.stackTrace = stackTrace;
-	}
+//	public void setStackTrace(String stackTrace) {
+//		this.stackTrace = stackTrace;
+//	}
 
 	public String getMsg() {
 		return msg;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
+//	public void setMsg(String msg) {
+//		this.msg = msg;
+//	}
 
 	public String getAgent() {
 		return agent;
