@@ -15,7 +15,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SelectBasic extends FieldWidget {
+public class SelectBasic extends FieldWidget implements IsSelectionField{
 
 	private static SelectBasicUiBinder uiBinder = GWT
 			.create(SelectBasicUiBinder.class);
@@ -92,5 +92,16 @@ public class SelectBasic extends FieldWidget {
 	@Override
 	public void setReadOnly(boolean readOnly) {
 		lstItems.setReadOnly(readOnly);
+	}
+
+	@Override
+	public void setSelectionValues(List<KeyValuePair> values) {
+		
+	}
+
+	@Override
+	public List<KeyValuePair> getValues() {
+
+		return null;
 	}
 }

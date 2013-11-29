@@ -13,9 +13,14 @@ public enum DataType {
 	SELECTBASIC,
 	SELECTMULTIPLE,
 	LABEL,
-	BUTTON;
+	BUTTON,
+	LAYOUTHR;
 	
 	public boolean isDropdown(){
 		return this.equals(SELECTBASIC);
+	}
+	
+	public boolean isLookup(){
+		return this.equals(SELECTBASIC) || this.equals(SELECTMULTIPLE);
 	}
 }

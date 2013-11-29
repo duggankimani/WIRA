@@ -174,5 +174,4 @@ public class ADField extends PO implements HasProperties{
 	public void setPosition(Integer position) {
 		this.position = position;
 	}
-
 }

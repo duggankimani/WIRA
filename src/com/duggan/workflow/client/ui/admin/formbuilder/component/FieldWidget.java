@@ -200,14 +200,42 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		shim.setPixelSize(getOffsetWidth(), getOffsetHeight());
+		
+		if (!showShim){
+			return;
+		}
+		
+		int offSetWidth = getOffsetWidth();
+		int offSetHeight = getOffsetHeight();
+		
+		/**
+		 * Non-visible or detached elements have no offsetParent<br/>
+		 * AbsolutePanel.class - Line 265<br/>
+		 *   if (child.getElement().getOffsetParent() == null) {
+		 *     return;
+		 *   }
+		 *   
+		 *   The code below forces the shim to be displayed, even for components
+		 *   that may not have been visible during initialization
+		 */
+		if(offSetWidth==0){
+			offSetWidth = 433;
+		}
+		
+		if(offSetHeight==0){
+			offSetHeight = 50;
+		}
+		 
+		
+		shim.setPixelSize(offSetWidth, offSetHeight);
+		
 		getElement().getStyle().setPosition(Position.RELATIVE);
 
 		// should we do this only if this is not a property field?
-		if (showShim)
-			add(shim, 0, 0);
+		
+		add(shim, 0, 0);
 	}
-
+	
 	/**
 	 * Remove the shim to allow the widget to size itself when reattached.
 	 */
@@ -423,6 +451,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case LABEL:
 			widget = new LabelField();
 			break;
+			
+		case LAYOUTHR:
+			widget= new HR();
+			break;
 
 		}
 
@@ -476,7 +508,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 	}
 
-	public static Widget getWidget(Property property) {
+	/**
+	 * Get Property Field
+	 * @param property
+	 * @return
+	 */
+	public static FieldWidget getWidget(Property property) {
 
 		FieldWidget widget = null;
 		switch (property.getType()) {

@@ -6,7 +6,7 @@
 		       <label ui:field="lblEl" class="control-label">Text Area:</label>
 			    <div class="controls">
 			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
-			  	 <div class="comment-container hidden" ui:field="commentContainer">
+			  	 <div class="comment-container" ui:field="commentContainer">
 			  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
 		    	 </div>
 		    	</div>

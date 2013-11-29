@@ -10,6 +10,7 @@ import java.util.Map;
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
+import com.allen_sauer.gwt.dnd.client.util.DragClientBundle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
@@ -64,10 +65,12 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField Anchor aInputtab;
 	@UiField Anchor aSelecttab;
 	@UiField Anchor aButtontab;
+	@UiField Anchor aLayouttab;
 	@UiField Anchor aMinimize;
 	@UiField LIElement liSelect;
 	@UiField LIElement liInput;
 	@UiField LIElement liButton;
+	@UiField LIElement liLayout;
 	@UiField Element hPaletetitle;
 	@UiField InlineLabel formLabel;
 	
@@ -76,6 +79,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField HTMLPanel divInput;
 	@UiField HTMLPanel divPalettePanel;
 	@UiField HTMLPanel divFormContent;
+	@UiField HTMLPanel divLayoutComponents;
 	@UiField DivElement divPaletteBody;
 	
 	@UiField PalettePanel vTextInputPanel;
@@ -88,6 +92,8 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vSingleButtonPanel;
 	@UiField PalettePanel vMultipleButtonPanel;
 	@UiField PalettePanel vLabelPanel;
+	
+	@UiField PalettePanel vHRPanel;
 
 	@UiField InlineLabel fldHelp;
 	PickupDragController widgetDragController;
@@ -244,10 +250,21 @@ public class FormBuilderView extends ViewImpl implements
 		vTextInputPanel.registerDragController(widgetDragController);
 		vDatePanel.registerDragController(widgetDragController);
 		vTextAreaPanel.registerDragController(widgetDragController);
-		vInlineRadioPanel.registerDragController(widgetDragController);
 		vInlineCheckBoxPanel.registerDragController(widgetDragController);
 		vSelectBasicPanel.registerDragController(widgetDragController);
 		vLabelPanel.registerDragController(widgetDragController);
+		
+		//select
+		vInlineRadioPanel.registerDragController(widgetDragController);
+		vInlineRadioPanel.getWidget(0).addStyleName(DragClientBundle.INSTANCE.css().draggable());
+		vSelectMultiplePanel.registerDragController(widgetDragController);
+		
+		//Buttons
+		vSingleButtonPanel.registerDragController(widgetDragController);
+		vMultipleButtonPanel.registerDragController(widgetDragController);
+		
+		//layout
+		vHRPanel.registerDragController(widgetDragController);
 	}
 	
 	/**
@@ -259,29 +276,18 @@ public class FormBuilderView extends ViewImpl implements
 		aInputtab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				disableTabs();
 				divInput.addStyleName("active");
-				divSelect.removeStyleName("active");
-				divButtons.removeStyleName("active");
-				liInput.addClassName("active");
-				liSelect.removeClassName("active");
-				liButton.removeClassName("active");			
-				registerInputDrag();
+				liInput.addClassName("active");			
 			}
 		});
 		
 		aSelecttab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				disableTabs();
 				divSelect.addStyleName("active");
-				divInput.removeStyleName("active");
-				divButtons.removeStyleName("active");
-				
-				liInput.removeClassName("active");
 				liSelect.addClassName("active");
-				liButton.removeClassName("active");
-				
-				vSelectBasicPanel.registerDragController(widgetDragController);
-				vSelectMultiplePanel.registerDragController(widgetDragController);
 			}
 		});
 		
@@ -289,24 +295,36 @@ public class FormBuilderView extends ViewImpl implements
 		aButtontab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				disableTabs();
 				divButtons.addStyleName("active");
-				divSelect.removeStyleName("active");
-				divInput.removeStyleName("active");
-				
-				liInput.removeClassName("active");
-				liSelect.removeClassName("active");
 				liButton.addClassName("active");
-				
-				vSingleButtonPanel.registerDragController(widgetDragController);
-				vMultipleButtonPanel.registerDragController(widgetDragController);
+			}
+		});
+		
+		aLayouttab.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				disableTabs();
+				divLayoutComponents.addStyleName("active");
+				liLayout.addClassName("active");
 			}
 		});
 	}
 	
-	private void DeactivatePalete() {
-		divPaletteBody.addClassName("working-request");
+	protected void disableTabs() {
+		divSelect.removeStyleName("active");
+		divButtons.removeStyleName("active");
+		divInput.removeStyleName("active");
+		divLayoutComponents.removeStyleName("active");
 		
-		//De-register the Drag-Controllers
+		liInput.removeClassName("active");
+		liSelect.removeClassName("active");
+		liButton.removeClassName("active");
+		liLayout.removeClassName("active");
+	}
+
+	private void DeactivatePalete() {
+		divPaletteBody.addClassName("working-request");		
 	}
 
 	private List<Field> getFields() {
@@ -352,6 +370,8 @@ public class FormBuilderView extends ViewImpl implements
 			Value val = prop.getValue();
 			if(val!=null){
 				setProperty(prop.getName(), ((StringValue)val).getValue());
+			}else{
+				setProperty(prop.getName(), null);
 			}
 			
 		}

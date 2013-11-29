@@ -115,12 +115,13 @@ public class FormDaoHelper {
 				}
 			}
 			
-			if(type!=null)
+			if(type!=null){
 				field.setSelectionValues(getDropdownValues(type));
+			}
 		}
+		
 		return field;
 	}
-	
 
 	public static Collection<? extends FormModel> getFields(Long parentId,
 			boolean loadDetailsToo) {
@@ -512,4 +513,22 @@ public class FormDaoHelper {
 		return getForm(formId, true);
 	}
 
+	public void save(String selectionKey,List<KeyValuePair> keyValuePairs){
+		FormDaoImpl dao = DB.getFormDao();
+		List<ADKeyValuePair> adkeyvaluepairs = dao.getKeyValuePairs(selectionKey);//previous set
+		
+		if(adkeyvaluepairs!=null)
+		for(ADKeyValuePair kvp : adkeyvaluepairs){
+			dao.delete(kvp);
+		}
+		
+		if(keyValuePairs!=null)
+		for(KeyValuePair keyValuePair: keyValuePairs){
+			ADKeyValuePair pair = new ADKeyValuePair();
+			pair.setReferenceType(selectionKey);
+			pair.setDisplayValue(keyValuePair.getDisplayName());
+			pair.setName(keyValuePair.getName());
+			dao.save(pair);
+		}
+	}
 }

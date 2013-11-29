@@ -162,7 +162,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		ctx.setData("priority", new Integer(1));
 		//ctx.setData("id", new Long(3L));
 
-		Request request = new Request(WORKFLOWCALLOUTCOMMAND, null, ctx.getData());
+		Request request = new Request(WORKFLOWCALLOUTCOMMAND, key, ctx.getData());
 
 		 marshalJson(request);
 //		//

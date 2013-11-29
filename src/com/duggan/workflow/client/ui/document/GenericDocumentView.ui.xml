@@ -132,7 +132,7 @@
 
 			<div class="span3">
 				<span>Current Status:</span>
-				<span class="label label-info">
+				<span class="label label-info" ui:field="spnStatusBody">
 					<i class="icon-edit"></i>
 					<span ui:field="spnStatus"></span>
 				</span>

@@ -35,7 +35,7 @@ public class FormPanel extends Composite {
 	}
 
 	@UiField HTMLPanel panelFields;
-	@UiField InlineLabel panelLabel;
+	//@UiField InlineLabel panelLabel;
 	@UiField HTMLPanel panelItem;
 	@UiField DivElement divFormCaption;
 	@UiField DivElement divFormHelp;

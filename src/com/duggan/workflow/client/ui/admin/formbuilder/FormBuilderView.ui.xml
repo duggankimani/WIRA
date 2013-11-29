@@ -48,10 +48,11 @@
 						</div>
 				</div>
 				<div class="panel-body overflow-y" ui:field="divPaletteBody">
-						<ul class="nav nav-tabs hidden">
+						<ul class="nav nav-tabs">
 					      <li class="active"  ui:field="liInput"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
 					      <li ui:field="liSelect"><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
-					      <li ui:field="liButton" class="hidden"><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
+					      <li ui:field="liButton"><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
+					      <li ui:field="liLayout"><g:Anchor ui:field="aLayouttab">Layout</g:Anchor></li>
 					    </ul>
 				    
 				    	<div id="myTabContent" class="tab-content">
@@ -71,11 +72,6 @@
 									 	<f:TextArea></f:TextArea>
 									</fb:PalettePanel>
 									
-									<fb:PalettePanel ui:field="vInlineRadioPanel">	
-									 	<f:InlineRadio></f:InlineRadio>
-									</fb:PalettePanel>
-									
-									
 									<fb:PalettePanel ui:field="vInlineCheckBoxPanel">	
 									 	<f:InlineCheckBox></f:InlineCheckBox>
 									</fb:PalettePanel>
@@ -91,9 +87,13 @@
 		                      </div>
 	                      </g:HTMLPanel><!--End of Input Pane -->
 	                      
-	                      <g:HTMLPanel styleName="tab-pane in hidden" ui:field="divSelect">
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divSelect">
 							 <div class="form-horizontal">
 								 <fieldset>
+								     <fb:PalettePanel ui:field="vInlineRadioPanel">	
+									 	<f:InlineRadio></f:InlineRadio>
+									</fb:PalettePanel>
+									
 									<fb:PalettePanel ui:field="vSelectMultiplePanel">	
 									    <f:SelectMultiple></f:SelectMultiple>	
 									</fb:PalettePanel>
@@ -102,7 +102,7 @@
 		                      </div>
 	                      </g:HTMLPanel><!--End of Select Pane -->
 	                      
-	                      <g:HTMLPanel styleName="tab-pane in hidden" ui:field="divButtons">
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divButtons">
 							 <div class="form-horizontal">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vSingleButtonPanel">	
@@ -117,6 +117,15 @@
 		                      </div>
 	                     </g:HTMLPanel><!--End of Select Pane -->
 	                      
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divLayoutComponents">
+							 <div class="form-horizontal">
+								 <fieldset>
+									<fb:PalettePanel ui:field="vHRPanel">
+									    <f:HR></f:HR>	
+									</fb:PalettePanel>									
+								</fieldset>
+		                      </div>
+	                     </g:HTMLPanel><!--End of Select Pane -->
 	                   </div>
 					</div>
 			</g:HTMLPanel>

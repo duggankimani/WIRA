@@ -34,7 +34,6 @@ public class PalettePanel extends VerticalPanel {
 	public void add(FieldWidget w) {
 		if(dragController!=null){
 			dragController.makeDraggable(w.asWidget());
-			System.err.println("Adding widget "+w);
 		}
 		
 		super.add(w);

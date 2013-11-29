@@ -82,6 +82,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField SpanElement spnActivityNo;
 	@UiField DivElement divAttachment;
 	@UiField SpanElement spnStatus;
+	@UiField SpanElement spnStatusBody;
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
@@ -219,8 +220,17 @@ public class GenericDocumentView extends ViewImpl implements
 			showForward(false);
 		}
 		
-		if(status!=null)
+		if(status!=null){
 			spnStatus.setInnerText(status.name());
+			if(status==DocStatus.APPROVED){
+				spnStatusBody.setClassName("label label-success");
+			}
+			
+			if(status==DocStatus.REJECTED){
+				spnStatusBody.setClassName("label label-inverse");
+			}
+			
+		}
 		
 		if(priority!=null){
 			Priority prty = Priority.get(priority);

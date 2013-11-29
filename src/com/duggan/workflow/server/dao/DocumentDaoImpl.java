@@ -300,7 +300,10 @@ public class DocumentDaoImpl {
 		
 		if(subject!=null){
 			isFirst=false;
-			query.append("d.subject like ?");
+			/**
+			 * TODO:Necessary Table index has to be added; otherwise full table scan will be used 
+			 */
+			query.append("LOWER(d.subject) like ?");
 			params.add( "%"+subject+"%");
 		}
 		
@@ -319,10 +322,16 @@ public class DocumentDaoImpl {
 			params.add( endDate);
 		}else if(startDate!=null){
 			isFirst=false;
+			/**
+			 * TODO:This needs to be changed - It will force full table scan 
+			 */
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
 			params.add( startDate);
 		}else if(endDate!=null){
 			isFirst=false;
+			/**
+			 * TODO:This needs to be changed - It will force full table scan 
+			 */
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
 			params.add( endDate);
 		}

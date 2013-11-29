@@ -213,4 +213,5 @@ public class ADValue extends PO{
 	public void setDocument(DocumentModel document) {
 		this.document = document;
 	}
+
 }

@@ -47,6 +47,7 @@ public class TextArea extends FieldWidget {
 		
 		txtComponent.setText(text);
 		txtComponent.setClass("input-large"); //Smaller TextField
+		
 		showShim=true;
 		
 		final String name = property.getName();

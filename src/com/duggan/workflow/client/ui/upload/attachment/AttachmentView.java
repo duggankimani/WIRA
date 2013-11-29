@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -45,6 +46,7 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 				Window.open(moduleUrl, spnName.getInnerText(), "");
 			}
 		});
+		
 	}
 	
 	@Override
@@ -68,6 +70,10 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 		context.setContext("attachmentId", id+"");
 		context.setContext("ACTION", "GETATTACHMENT");
 		url = context.toUrl();
+	}
+	
+	public HasClickHandlers getDownloadLink(){
+		return aDownload;				
 	}
 
 }

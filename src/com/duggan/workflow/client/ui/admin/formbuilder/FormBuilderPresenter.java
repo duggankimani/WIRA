@@ -27,6 +27,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -67,6 +68,8 @@ public class FormBuilderPresenter extends
 	@Inject
 	DispatchAsync dispatcher;
 
+	Long formId=null;
+	
 	@Inject
 	public FormBuilderPresenter(final EventBus eventBus,
 			final IFormBuilderView view) {
@@ -92,8 +95,9 @@ public class FormBuilderPresenter extends
 						if (form.getId() == null) {
 							return;
 						}
-
-						loadForm(form.getId());
+						
+						History.newItem("adminhome;page=formbuilder;formid="+form.getId(), false);
+						loadForm(form.getId());						
 					}
 				});
 
@@ -192,19 +196,33 @@ public class FormBuilderPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		loadFormList();
+		loadForms();
 	}
 	
-	private void loadFormList() {
-		dispatcher.execute(new GetFormsRequest(),
-				new TaskServiceCallback<GetFormsResponse>() {
-					@Override
-					public void processResult(GetFormsResponse result) {
-						getView().setForms(result.getForms());
-					}
-				});
+	private void loadForms() {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetFormsRequest());
+		
+		if(formId!=null){
+			GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL,
+					formId, true);
+			action.addRequest(request);
+		}
+		
+		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult results) {
+				getView().setForms(((GetFormsResponse)results.get(0)).getForms());
+				
+				if(results.getReponses().size()>1){
+					GetFormModelResponse response = (GetFormModelResponse)results.get(1);
+					Form form = (Form) response.getFormModel().get(0);
+					getView().setForm(form);
+				}
+			}
+		});
 	}
-
+	
 	@Override
 	public void onSaveProperties(SavePropertiesEvent event) {
 		if (event.getParent() != null
@@ -228,6 +246,10 @@ public class FormBuilderPresenter extends
 	@Override
 	public void onSaveFormDesign(SaveFormDesignEvent event) {
 		saveForm(getView().getForm());
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
 	}
 
 }

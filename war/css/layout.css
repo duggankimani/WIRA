@@ -759,7 +759,7 @@ body .dateBoxPopup{
 #detailed-info .content-area{
     padding: 6px 7px 0 0px;
     font-size:12px;
-    margin-left: 13px;
+    margin-left: 10px;
 }
 #detailed-info .content-area .item{	
 	padding-bottom: 3px;
@@ -1469,7 +1469,7 @@ ul.icons-list.text-xl {
        font-size: 13px;
        top: 5px;}
     #dashboard-menu ul.submenu{
-    	margin: 0px 2px;
+    	margin: 0px 2px
     }
   	.btn-large{  
     padding: 10px 14px;
@@ -1484,4 +1484,3 @@ ul.icons-list.text-xl {
   	width: 90%;
   	}
 }
-

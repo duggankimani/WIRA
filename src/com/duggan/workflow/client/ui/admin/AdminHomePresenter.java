@@ -66,9 +66,9 @@ public class AdminHomePresenter extends
 	FormBuilderPresenter formbuilder;
 
 	enum ADMINPAGES {
-		DASHBOARD("Dashboard", "icon-dashboard"), PROCESSES("Process", "icon-cogs"),
+		DASHBOARD("Dashboard", "icon-dashboard"), PROCESSES("Processes", "icon-cogs"),
 		USERS("Users","icon-group"),GROUPS("Groups","icon-group"), REPORTS("Reports","icon-bar-chart"), 
-		FORMBUILDER("formbuilder","icon-edit");
+		FORMBUILDER("Form Builder","icon-edit");
 
 		private String displayName;
 		private String displayIcon;
@@ -135,7 +135,15 @@ public class AdminHomePresenter extends
 			break;
 
 		case FORMBUILDER:
-			showFormBuilderPanel();
+			String value = request.getParameter("formid", "");
+			
+			Long formId=null;
+			
+			if(!value.isEmpty() && value.matches("[0-9]+")){
+				formId = new Long(value);
+			}
+			
+			showFormBuilderPanel(formId);
 			//fireEvent(new LoadFormBuilderEvent());
 			break;
 
@@ -175,7 +183,8 @@ public class AdminHomePresenter extends
 		getView().SetUsersLink(true, page);
 	}
 	
-	private void showFormBuilderPanel() {
+	private void showFormBuilderPanel(Long formId) {
+		formbuilder.setFormId(formId);
 		setInSlot(CONTENT_SLOT, formbuilder);
 		getView().clearAllLinks();
 		getView().SetFormBuilderLinks(true, page);

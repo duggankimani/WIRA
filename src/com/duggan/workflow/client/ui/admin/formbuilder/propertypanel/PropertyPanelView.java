@@ -73,7 +73,8 @@ public class PropertyPanelView extends PopupViewImpl implements
 		for(Property property: properties){
 			assert property!=null;
 			
-			add(FieldWidget.getWidget(property));
+			FieldWidget fw = FieldWidget.getWidget(property);
+			add(fw);
 		}
 	}
 

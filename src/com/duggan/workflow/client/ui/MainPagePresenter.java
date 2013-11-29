@@ -13,6 +13,9 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent.WorkflowProcessHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
+import com.duggan.workflow.client.ui.upload.attachment.ShowIframeEvent;
+import com.duggan.workflow.client.ui.upload.attachment.ShowIframeEvent.ShowIframeHandler;
+import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
@@ -34,7 +37,9 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPagePresenter extends
-		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> implements ErrorHandler, ProcessingCompletedHandler, ProcessingHandler ,WorkflowProcessHandler{
+		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
+implements ErrorHandler, ProcessingCompletedHandler, 
+ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 
 	public interface MyView extends View {
 
@@ -60,6 +65,7 @@ public class MainPagePresenter extends
 	
 	@Inject PlaceManager placeManager;
 
+	@Inject IFrameDataPresenter presenter;
 	
 	@Inject
 	public MainPagePresenter(final EventBus eventBus, final MyView view,
@@ -80,6 +86,7 @@ public class MainPagePresenter extends
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(WorkflowProcessEvent.TYPE, this);
+		addRegisteredHandler(ShowIframeEvent.TYPE, this);
 	}
 	
 	@Override
@@ -124,6 +131,7 @@ public class MainPagePresenter extends
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
 		getView().showProcessing(false);
 	}
+	
 	@Override
 	public void onWorkflowProcess(WorkflowProcessEvent event) {
 		Doc summary = event.getDocument();
@@ -136,5 +144,10 @@ public class MainPagePresenter extends
 		}
 		
 		getView().setAlertVisible(event.getSubject(), event.getAction(),url);
+	}
+	
+	@Override
+	public void onShowIframe(ShowIframeEvent event) {
+		addToPopupSlot(presenter, true);
 	}
 }

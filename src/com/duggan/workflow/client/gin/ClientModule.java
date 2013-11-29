@@ -62,6 +62,8 @@ import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentView;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentView;
+import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
+import com.duggan.workflow.client.ui.upload.href.IFrameDataView;
 import com.duggan.workflow.client.ui.user.UserSelectionPresenter;
 import com.duggan.workflow.client.ui.user.UserSelectionView;
 import com.duggan.workflow.client.util.AppContext;
@@ -235,5 +237,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(DocumentActivityPresenter.class,
 				DocumentActivityPresenter.MyView.class,
 				DocumentActivityView.class);
+		
+		bindPresenterWidget(IFrameDataPresenter.class,
+				IFrameDataPresenter.IFrameView.class, IFrameDataView.class);
 }
 }
