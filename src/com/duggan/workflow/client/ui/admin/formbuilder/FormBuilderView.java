@@ -9,11 +9,14 @@ import java.util.Map;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.dnd.client.drop.HorizontalPanelDropController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.allen_sauer.gwt.dnd.client.util.DragClientBundle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.GridField;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.InputSelection;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
@@ -36,6 +39,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -92,10 +96,12 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vSingleButtonPanel;
 	@UiField PalettePanel vMultipleButtonPanel;
 	@UiField PalettePanel vLabelPanel;
+	@UiField PalettePanel vGridPanel;
 	
 	@UiField PalettePanel vHRPanel;
 
 	@UiField InlineLabel fldHelp;
+		
 	PickupDragController widgetDragController;
 	boolean IsMinimized;
 	
@@ -151,6 +157,14 @@ public class FormBuilderView extends ViewImpl implements
 		//Drop Controller 
 		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(vPanel);
 		widgetDragController.registerDropController(widgetDropController);
+		
+		//Grid Drop controller
+		GridField field = (GridField)vGridPanel.getWidget(0);
+		HorizontalPanel columnPanel = field.getColumnPanel(); 
+		HorizontalPanelDropController gridDropController = new HorizontalPanelDropController(columnPanel);
+		widgetDragController.registerDropController(gridDropController);
+		
+		
 		
 		DeactivatePalete();
 		
@@ -210,7 +224,7 @@ public class FormBuilderView extends ViewImpl implements
 		});
 		
 		aDeleteForm.setVisible(false);
-		
+	
 	}
 
 	/**
@@ -265,6 +279,7 @@ public class FormBuilderView extends ViewImpl implements
 		
 		//layout
 		vHRPanel.registerDragController(widgetDragController);
+		vGridPanel.registerDragController(widgetDragController);
 	}
 	
 	/**
@@ -353,6 +368,11 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public void setForm(Form form) {
 		this.form = form;
+		frmDropdown.setValue(form);
+		
+		registerInputDrag();
+		activatePalette();
+		
 		if(form==null || form.getId()==null){
 			aDeleteForm.setVisible(false);
 		}else{

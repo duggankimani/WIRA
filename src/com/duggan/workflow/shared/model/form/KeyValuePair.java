@@ -13,6 +13,11 @@ public class KeyValuePair implements Serializable, Listable {
 
 	public KeyValuePair() {
 	}
+	
+	public KeyValuePair(String key, String value){
+		this.key = key;
+		this.value=  value;
+	}
 
 	public void setKey(String key) {
 		this.key = key;
@@ -38,5 +43,11 @@ public class KeyValuePair implements Serializable, Listable {
 	@Override
 	public String getDisplayName() {
 		return value;
+	}
+	
+	@Override
+	public String toString() {
+		
+		return " [\"Key\"= "+key+",\"Value\"= "+value+"]";
 	}
 }

@@ -2,7 +2,12 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
 import java.util.List;
 
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.InputSelection;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.IsSelectionField;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -18,6 +23,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
@@ -68,14 +74,29 @@ public class PropertyPanelView extends PopupViewImpl implements
 	}
 
 	@Override
-	public void showProperties(List<Property> properties) {
+	public void showProperties(List<Property> properties,FormModel model) {
 		clear();
 		for(Property property: properties){
 			assert property!=null;
 			
 			FieldWidget fw = FieldWidget.getWidget(property);
 			add(fw);
+			
+			if(property.getName().equals(SELECTIONTYPE)){
+				
+				property.setFieldId(model.getId());
+				UIObject.setVisible(fw.getComponent().getElement(), false);
+				
+				assert property.getFieldId()!=null;
+				addSelection((Field)model,property);
+			}
 		}
+	}
+
+	private void addSelection(Field field, Property property) {
+		InputSelection selection = new InputSelection(property);
+		selection.setValues(field.getSelectionValues());
+		add(selection);
 	}
 
 	private void clear() {

@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
@@ -7,8 +8,12 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.i18n.shared.DirectionEstimator;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class InlineRadio extends FieldWidget implements IsSelectionField{
@@ -22,12 +27,19 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	private final Widget widget;
 	
 	@UiField Element lblEl;
+	@UiField HTMLPanel vPanel;
 	
 	public InlineRadio() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		
+//		List<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
+//		pairs.add(new KeyValuePair("","A"));
+//		pairs.add(new KeyValuePair("","B"));
+//		pairs.add(new KeyValuePair("","C"));
+//		setSelectionValues(pairs);
 		add(widget);
 	}
 
@@ -58,12 +70,47 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 
 	@Override
 	public void setSelectionValues(List<KeyValuePair> values) {
+		vPanel.clear();
+		if(values==null){
+			return;
+		}
 		
+		for(KeyValuePair pair: values){
+			vPanel.add((RadioButton)getRadio(pair));
+		}
+		field.setSelectionValues(values);
+	}
+
+	private RadioButton getRadio(KeyValuePair pair) {
+		RadioButton button = new RadioButton(getPropertyValue(SELECTIONTYPE));
+		button.getElement().setId("radiobtns");
+		button.setDirectionEstimator(true);
+		button.setText(pair.getValue());
+		button.setFormValue(pair.getKey());	
+		return button;
 	}
 
 	@Override
 	public List<KeyValuePair> getValues() {
-		return null;
+		int count = vPanel.getWidgetCount();
+		List<KeyValuePair> list = new ArrayList<KeyValuePair>();
+		
+		for(int i=0; i<count; i++){
+			TextBox txtBox= (TextBox)vPanel.getWidget(i);
+			String name = txtBox.getName();
+			String val = txtBox.getValue();
+			
+			if(val.isEmpty()){
+				continue;
+			}
+			
+			KeyValuePair pair = new KeyValuePair();
+			pair.setKey(name);
+			pair.setValue(val);
+			list.add(pair);
+		}
+		
+		return list;
 	}
 
 }

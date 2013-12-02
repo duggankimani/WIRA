@@ -6,7 +6,6 @@ import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -32,7 +31,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	public SelectBasic() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
-		addProperty(new Property("SELECTIONTYPE", "Reference", DataType.STRING));
+		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
 	}
@@ -40,16 +39,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	@Override
 	public FieldWidget cloneWidget() {
 		return new SelectBasic();
-	}
-	
-	@Override
-	public void setField(Field field) {
-		super.setField(field);
-		
-		List<KeyValuePair> lst = field.getSelectionValues();
-		if(lst!=null){
-			lstItems.setItems(lst);
-		}
 	}
 	
 	@Override
@@ -91,17 +80,21 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	
 	@Override
 	public void setReadOnly(boolean readOnly) {
-		lstItems.setReadOnly(readOnly);
+		//lstItems.setReadOnly(readOnly);
 	}
 
 	@Override
 	public void setSelectionValues(List<KeyValuePair> values) {
 		
+		if(values!=null){
+			lstItems.setItems(values);
+		}
+		
+		field.setSelectionValues(values);
 	}
 
 	@Override
 	public List<KeyValuePair> getValues() {
-
-		return null;
+		return lstItems.values();
 	}
 }

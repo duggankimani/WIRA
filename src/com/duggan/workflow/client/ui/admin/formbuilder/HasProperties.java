@@ -12,6 +12,7 @@ public interface HasProperties {
 	public static final String CAPTION="CAPTION";
 	public static final String HELP="HELP";
 	public static final String MANDATORY="MANDATORY";
+	public static final String SELECTIONTYPE="SELECTIONTYPE";
 	public static final String READONLY="READONLY";
 	public static final String PLACEHOLDER="PLACEHOLDER";
 	

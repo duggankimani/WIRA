@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.model.ADField;
@@ -105,7 +106,7 @@ public class FormDaoHelper {
 		field.setValue(getValue(adfield.getValue(), adfield.getType()));
 		field.setPosition(adfield.getPosition()==null? 0: adfield.getPosition().intValue());
 		
-		if(field.getType().isDropdown()){
+		if(field.getType().isLookup()){
 			String type = null;
 			
 			for(Property prop: field.getProperties()){
@@ -323,11 +324,36 @@ public class FormDaoHelper {
 	}
 
 	public static Field createField(Field field){
+		//List<KeyValuePair> pairs = field.getSelectionValues();
+		String selectionKey=null;
+		
+		for(Property prop: field.getProperties()){
+			if(prop.getName().equals(com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE)){
+				Value value = prop.getValue();
+				if(value!=null){
+					selectionKey = value.getValue()==null? null : value.getValue().toString();
+				}
+				
+				if(selectionKey==null || selectionKey.trim().isEmpty()){
+					selectionKey = UUID.randomUUID().toString();
+					prop.setValue(new StringValue(null, 
+							com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE,
+							selectionKey));
+				}
+				break;
+				
+			}
+		}
+		
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADField adfield = getField(field);
 		
 		dao.save(adfield);
+		
+		if(selectionKey!=null && !selectionKey.trim().isEmpty()){
+			save(selectionKey, field.getSelectionValues());
+		}
 		
 		return getField(adfield);
 	}
@@ -513,7 +539,7 @@ public class FormDaoHelper {
 		return getForm(formId, true);
 	}
 
-	public void save(String selectionKey,List<KeyValuePair> keyValuePairs){
+	public static void save(String selectionKey,List<KeyValuePair> keyValuePairs){
 		FormDaoImpl dao = DB.getFormDao();
 		List<ADKeyValuePair> adkeyvaluepairs = dao.getKeyValuePairs(selectionKey);//previous set
 		
@@ -527,7 +553,13 @@ public class FormDaoHelper {
 			ADKeyValuePair pair = new ADKeyValuePair();
 			pair.setReferenceType(selectionKey);
 			pair.setDisplayValue(keyValuePair.getDisplayName());
-			pair.setName(keyValuePair.getName());
+	
+			if(keyValuePair.getName()==null || keyValuePair.getName().trim().isEmpty()){
+				pair.setName(UUID.randomUUID().toString());
+			}else{
+				pair.setName(keyValuePair.getName());
+			}
+			
 			dao.save(pair);
 		}
 	}

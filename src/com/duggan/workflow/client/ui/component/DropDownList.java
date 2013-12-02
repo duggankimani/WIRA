@@ -100,4 +100,8 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 			listBox.setEnabled(false);
 		}
 	}
+	
+	public List<T> values(){
+		return items;
+	}
 }
