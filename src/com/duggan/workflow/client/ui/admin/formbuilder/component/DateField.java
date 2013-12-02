@@ -88,6 +88,13 @@ public class DateField extends FieldWidget {
 	}
 	
 	@Override
+	public void setValue(Object value) {
+		if(value!=null){
+			dateBox.setValue((Date)value);
+		}
+	}
+	
+	@Override
 	public void setReadOnly(boolean readOnly) {
 		
 	}

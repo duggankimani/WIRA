@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.Date;
+
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DataType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -50,7 +53,12 @@ public class LabelField extends FieldWidget {
 	public void setValue(Object value) {
 		if(value!=null && value instanceof String){
 			lblComponent.setText(value.toString());
+		}else if(value instanceof Date){
+			lblComponent.setText(DateUtils.DATEFORMAT.format((Date)value));
+		}else{
+			lblComponent.setText(value.toString());
 		}
+		
 	}
 	
 	@Override

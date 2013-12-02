@@ -33,4 +33,7 @@ public class DateInput extends Composite {
 		return dtInput.getValue();
 	}
 
+	public void setValue(Date date){
+		dtInput.setValue(date);
+	}
 }

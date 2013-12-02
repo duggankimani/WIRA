@@ -559,10 +559,11 @@ public class HomePresenter extends
 	public void onCreateDocument(CreateDocumentEvent event) {
 		DocumentType type = event.getDocType();	
 		
-		if(type.getFormId()!=null)
+		if(type.getFormId()!=null){
 			showEditForm(type);
-		else
+		}else{
 			showEditForm(MODE.CREATE);
+		}
 	}
 
 }

@@ -426,7 +426,7 @@ public class GenericDocumentPresenter extends
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
 		requests.addRequest(new GetActivitiesRequest(documentId));
-		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, taskId));
+		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
 		
 		fireEvent(new ProcessingEvent());
 		if(documentId != null){
@@ -470,9 +470,6 @@ public class GenericDocumentPresenter extends
 		}
 			
 		Map<String, Value> values = doc.getValues();
-		for(Value value:values.values()){
-			System.err.println(value.getKey()+" :: "+value.getValue());
-		}
 		
 		for(Field field: form.getFields()){
 			String name = field.getName();
