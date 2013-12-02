@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.shared.DirectionEstimator;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -28,6 +32,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	
 	@UiField Element lblEl;
 	@UiField HTMLPanel vPanel;
+	Value fieldValue=null;
 	
 	public InlineRadio() {
 		super();
@@ -86,8 +91,24 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 		button.getElement().setId("radiobtns");
 		button.setDirectionEstimator(true);
 		button.setText(pair.getValue());
-		button.setFormValue(pair.getKey());	
+		button.setFormValue(pair.getKey());
+		button.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				RadioButton src  = (RadioButton)event.getSource();
+				valueChange(src,event.getValue());
+			}
+		});
 		return button;
+	}
+
+	protected void valueChange(RadioButton source, boolean value) {
+		if(value){
+			fieldValue = new StringValue(null, source.getName(), source.getFormValue());
+		}else{
+			fieldValue=null;
+		}
 	}
 
 	@Override
@@ -96,9 +117,9 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 		List<KeyValuePair> list = new ArrayList<KeyValuePair>();
 		
 		for(int i=0; i<count; i++){
-			TextBox txtBox= (TextBox)vPanel.getWidget(i);
+			RadioButton txtBox= (RadioButton)vPanel.getWidget(i);
 			String name = txtBox.getName();
-			String val = txtBox.getValue();
+			String val = txtBox.getFormValue();
 			
 			if(val.isEmpty()){
 				continue;
@@ -113,4 +134,23 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 		return list;
 	}
 
+	@Override
+	public void setValue(Object value) {
+		String val = value==null? null: value.toString();
+		int count = vPanel.getWidgetCount();
+		for(int i=0; i<count; i++){
+			RadioButton txtBox= (RadioButton)vPanel.getWidget(i);
+			String key = txtBox.getFormValue();
+			
+			if(val.equals(key)){
+				txtBox.setValue(true);
+				return;
+			}
+		}
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		return fieldValue;
+	}
 }
