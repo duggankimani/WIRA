@@ -21,6 +21,7 @@ import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.NodeInstanceLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
+import org.jbpm.process.core.Process;
 import org.jbpm.task.AccessType;
 import org.jbpm.task.Comment;
 import org.jbpm.task.Deadlines;
@@ -65,6 +66,7 @@ import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.ProcessMappings;
 
 /**
  * This is a Helper Class for all JBPM associated requests. It provides utility
@@ -775,35 +777,6 @@ public class JBPMHelper implements Closeable {
 
 	}
 
-	// public List<NodeDetail> getWorkflowProcessDia(Long processInstanceId) {
-	// List<Node> nodes = getProcessDia(processInstanceId);
-	//
-	// List<NodeDetail> details= new ArrayList<>();
-	//
-	// boolean hasEndNode=false;
-	// for(Node node: nodes){
-	// //find status of the node if human node:: approved/ Rejected
-	//
-	// NodeDetail detail = new NodeDetail();
-	// String name = node.getName();
-	// detail.setName(name);
-	// details.add(detail);
-	// detail.setStartNode(node instanceof StartNode);
-	// detail.setEndNode(node instanceof EndNode);
-	// //assuming current task is the last task unless its the end node
-	//
-	// if(node instanceof EndNode){
-	// hasEndNode=true;
-	// }
-	// }
-	//
-	// if(!hasEndNode && details.size()>0){
-	// details.get(details.size()-1).setCurrentNode(true);
-	// }
-	//
-	// return details;
-	// }
-
 	public HTSummary getSummary(Long taskId) {
 
 		HTSummary summary = new HTSummary(taskId);
@@ -858,6 +831,31 @@ public class JBPMHelper implements Closeable {
 			name = task.getNames().get(0).getText();
 
 		return name;
+	}
+	
+	public ProcessMappings getProcessDataMappings(String processId, String taskName){
+		ProcessMappings processData = new ProcessMappings();
+		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
+		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
+
+	//	System.err.println("Globals:: "+wfprocess.get);
+		
+		for (Node node : wfprocess.getNodes()) {
+			
+			if(node instanceof HumanTaskNode){
+				HumanTaskNode htnode = (HumanTaskNode) node;
+				Object nodeTaskName = htnode.getWork().getParameter("TaskName");
+				
+				if(nodeTaskName!=null)
+				if(nodeTaskName.equals(taskName)){
+					processData.setInputMappings(htnode.getInMappings());
+					processData.setOutMappings(htnode.getOutMappings());					
+				}
+				
+			}
+		}
+	
+		return processData;
 	}
 
 }

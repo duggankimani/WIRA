@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui;
 
+import java.util.List;
+
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
@@ -87,6 +89,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(WorkflowProcessEvent.TYPE, this);
 		addRegisteredHandler(ShowIframeEvent.TYPE, this);
+		
 	}
 	
 	@Override
