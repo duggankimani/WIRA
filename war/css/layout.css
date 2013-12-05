@@ -769,7 +769,7 @@ body .dateBoxPopup{
 }
 #detailed-info .form-horizontal .control-label{
 	width: auto;
-	font-weight: 600;
+	font-weight: bold;
 	padding-top: 1px;
 	text-align: left;
 }
