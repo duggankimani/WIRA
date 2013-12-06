@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
@@ -23,7 +24,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	private final Widget widget;
 
 	@UiField Element lblEl;
-	
 	@UiField DropDownList<KeyValuePair> lstItems;
 	
 	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
@@ -35,6 +35,11 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		addProperty(new Property("SELECTIONTYPE", "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
+	}
+	
+	public SelectBasic(Property property){
+		this();
+		lblEl.setInnerText(property.getCaption());
 	}
 
 	@Override

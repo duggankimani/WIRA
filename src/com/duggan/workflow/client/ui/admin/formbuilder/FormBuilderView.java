@@ -94,6 +94,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vLabelPanel;
 	
 	@UiField PalettePanel vHRPanel;
+	@UiField PalettePanel vGridPanel;
 
 	@UiField InlineLabel fldHelp;
 	PickupDragController widgetDragController;
@@ -244,7 +245,7 @@ public class FormBuilderView extends ViewImpl implements
 	}
 	
 	/**
-	 * Registers Default Items in the palette panel;
+	 * Registers Default Items in the palette panel for dragging;
 	 */
 	public void registerInputDrag(){	
 		vTextInputPanel.registerDragController(widgetDragController);
@@ -265,6 +266,7 @@ public class FormBuilderView extends ViewImpl implements
 		
 		//layout
 		vHRPanel.registerDragController(widgetDragController);
+		vGridPanel.registerDragController(widgetDragController);
 	}
 	
 	/**

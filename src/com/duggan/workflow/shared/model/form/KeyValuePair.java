@@ -13,7 +13,13 @@ public class KeyValuePair implements Serializable, Listable {
 
 	public KeyValuePair() {
 	}
-
+	
+	public KeyValuePair(String key, String value) {
+		this.key =key;
+		this.value =value;
+	}  
+	
+	
 	public void setKey(String key) {
 		this.key = key;
 	}

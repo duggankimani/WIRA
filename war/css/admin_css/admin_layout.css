@@ -380,8 +380,57 @@
 
 /*--content-body||Form Builder||Property Panel--*/
 .popover{
-max-height:90%;
+	max-height:90%;
 }
+
+.popover-admin{
+	max-width: 50%;
+}
+
+.popover-admin .column-property {
+	margin-left: 30px;
+	margin-right: 30px;
+}
+.popover-admin .column-property .control-group {
+	margin-bottom: 8px;
+}
+
+.popover-admin .drag-handler{
+	background: url("../../img/freebird_sprite8.png") -152px -185px;
+	height: 10px;
+	width: 18px;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	position: absolute;
+	top: 34px;
+}
+
+.popover-admin .icon{
+	position: absolute;
+	top: 34px;
+	right:0px;
+	color: grey;
+}
+
+.popover-admin .form-horizontal .input-large{
+	width:130px;
+}
+
+.popover-admin select{
+	width:149px;
+	border-radius:0;
+}
+.popover-admin .form-horizontal .control-label{
+	width: 92px;
+}
+
+.popover-admin .form-horizontal .controls{
+	margin-left: 100px;
+}
+
+.popover .form-horizontal .controls
 .popover .popupContent{
     height:100%;
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:k="urn:import:com.duggan.workflow.client.ui.admin.formbuilder.component">
+	
+		<g:HTMLPanel>
+			<div class="drag-handler">
+			</div>
+		
+			<g:HTMLPanel styleName="column-property">
+				<k:TextField ui:field="txtField"></k:TextField>
+				<k:SelectBasic ui:field="slctField"></k:SelectBasic>
+			</g:HTMLPanel>
+			
+			<g:Anchor styleName="icon icon-remove"></g:Anchor>
+			
+		</g:HTMLPanel>
+</ui:UiBinder> 

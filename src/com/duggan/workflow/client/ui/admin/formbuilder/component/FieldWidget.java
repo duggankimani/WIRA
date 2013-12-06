@@ -52,14 +52,17 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
-		addProperty(new Property(NAME, "Name", DataType.STRING, id));
-		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
-		addProperty(new Property(HELP, "Help", DataType.STRING, id));
-
+		defaultProperties();
 		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE, this);
 		AppContext.getEventBus().addHandler(SavePropertiesEvent.TYPE, this);
 
 		initField();
+	}
+	
+	public void defaultProperties(){
+		addProperty(new Property(NAME, "Name", DataType.STRING, id));
+		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
+		addProperty(new Property(HELP, "Help", DataType.STRING, id));
 	}
 
 	private void initField() {
@@ -82,19 +85,22 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void activatePopup() {
 		if (popUpActivated) {
-			// System.err.println("Already Activated for: "+field);
 			return;
 		}
 
 		popUpActivated = true;
 		AppContext.getEventBus().addHandler(ResetFormPositionEvent.TYPE, this);
 
+		activateShimHandler();
+	}
+	
+	public void activateShimHandler(){
 		shim.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 
-				OnOptionSelected optionSelected = new OnOptionSelected() {
+				/*OnOptionSelected optionSelected = new OnOptionSelected() {
 
 					@Override
 					public void onSelect(String name) {
@@ -104,20 +110,18 @@ public abstract class FieldWidget extends AbsolutePanel implements
 						}
 					}
 
-				};
+				};*/
 
-				/* Position of the pop-over */
+				/* 
+				 * Position of the pop-over 
+				 */
 				int top = 7;
-				int left = 80;
+				int left = 75;
 				int arrowPosition = shim.getAbsoluteTop() - 30;
 				AppManager.showPropertyPanel(field, getProperties(), top, left,
 						arrowPosition);
 			}
 		});
-	}
-
-	private void saveProperties() {
-
 	}
 
 	public Field getField() {
@@ -455,6 +459,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case LAYOUTHR:
 			widget= new HR();
 			break;
+			
+		case GRID:
+			widget = new GridLayout();
+			break;
 
 		}
 
@@ -516,6 +524,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public static FieldWidget getWidget(Property property) {
 
 		FieldWidget widget = null;
+		
 		switch (property.getType()) {
 		case BOOLEAN:
 			widget = new InlineCheckBox();
@@ -548,7 +557,16 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case LABEL:
 			widget = new LabelField();
 			break;
+			
+		case SELECTBASIC:
+			widget = new SelectBasic(property);
+			break;
+			
+		case COLUMNPROPERTY:
+			widget = new ColumnProperty(property);
 		}
+		
+		
 
 		// System.err.println(">>>"+property.getType()+" :: "+property.getCaption());
 
@@ -579,7 +597,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		return (Boolean) isMandatory;
 	}
-
+	
+	public FocusPanel getShim() {
+		return shim;
+	}
+	
 	public Widget getComponent() {
 		return null;
 	}

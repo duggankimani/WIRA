@@ -83,10 +83,13 @@
 									<fb:PalettePanel ui:field="vLabelPanel">	
 									    <f:LabelField></f:LabelField>	
 									</fb:PalettePanel>
+									
 			                      </fieldset>
 		                      </div>
-	                      </g:HTMLPanel><!--End of Input Pane -->
+	                      </g:HTMLPanel>
+	                      <!--End of Input Pane -->
 	                      
+	                      <!--Second Panel -->
 	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divSelect">
 							 <div class="form-horizontal">
 								 <fieldset>
@@ -100,7 +103,8 @@
 									
 								</fieldset>
 		                      </div>
-	                      </g:HTMLPanel><!--End of Select Pane -->
+	                      </g:HTMLPanel>
+	                      <!--End of Select Pane -->
 	                      
 	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divButtons">
 							 <div class="form-horizontal">
@@ -122,7 +126,11 @@
 								 <fieldset>
 									<fb:PalettePanel ui:field="vHRPanel">
 									    <f:HR></f:HR>	
-									</fb:PalettePanel>									
+									</fb:PalettePanel>	
+									<fb:PalettePanel ui:field="vGridPanel">	
+									    <f:GridLayout></f:GridLayout>
+									</fb:PalettePanel>
+																	
 								</fieldset>
 		                      </div>
 	                     </g:HTMLPanel><!--End of Select Pane -->

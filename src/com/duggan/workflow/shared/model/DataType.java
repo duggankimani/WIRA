@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.model;
 
 public enum DataType {
-
 	STRING,
 	STRINGLONG,
 	BOOLEAN,
@@ -14,7 +13,9 @@ public enum DataType {
 	SELECTMULTIPLE,
 	LABEL,
 	BUTTON,
-	LAYOUTHR;
+	LAYOUTHR,
+	GRID,
+	COLUMNPROPERTY;
 	
 	public boolean isDropdown(){
 		return this.equals(SELECTBASIC);

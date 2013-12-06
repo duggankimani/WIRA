@@ -15,6 +15,11 @@ public interface HasProperties {
 	public static final String READONLY="READONLY";
 	public static final String PLACEHOLDER="PLACEHOLDER";
 	
+	public static final String COLUMNLABEL="COLUMNLABEL";
+	public static final String COLUMNTYPE="COLUMNTYPE";
+	
+	public static final String COLUMNPROPERTY="COLUMNPROPERTY";
+	
 	void addProperty(Property property);
 	
 	String getPropertyValue(String propertyName);
