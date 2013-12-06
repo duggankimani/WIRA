@@ -3,8 +3,13 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.dao.FormDaoHelper;
+import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -43,8 +48,16 @@ public class GetFormModelRequestActionHandler extends
 				model = FormDaoHelper.getFormByName(JBPMHelper.get().getTaskName(action.getTaskId()));
 				if(model!=null)
 					models.add(model);
-			}
-			else{
+			}else if(action.getDocumentId()!=null){
+				Document doc = DocumentDaoHelper.getDocument(action.getDocumentId());
+				DocumentType type = doc.getType();
+				Long formId = type.getFormId();
+				if(formId!=null){
+					model = FormDaoHelper.getForm(formId, true);
+					models.add(model);
+				}
+								
+			}else{
 				models.addAll(FormDaoHelper.getForms());
 			}
 			break;

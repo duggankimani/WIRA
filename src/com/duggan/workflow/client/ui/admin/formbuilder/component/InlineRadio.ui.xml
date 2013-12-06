@@ -3,23 +3,8 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 		   <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" class="control-label">Radio Buttons:</label>
-			    <div class="controls">
-				    <label class="radio inline" for="radios-0">
-				      <input type="radio" name="radios" id="radios-0" value="1" checked="checked"/>
-				      1
-				    </label>
-				    <label class="radio inline" for="radios-1">
-				      <input type="radio" name="radios" id="radios-1" value="2"/>
-				      2
-				    </label>
-				    <label class="radio inline" for="radios-2">
-				      <input type="radio" name="radios" id="radios-2" value="3"/>
-				      3
-				    </label>
-				    <label class="radio inline" for="radios-3">
-				      <input type="radio" name="radios" id="radios-3" value="4"/>
-				      4
-				    </label>
-				  </div>
+			    <g:HTMLPanel ui:field="vPanel" styleName="controls">
+				    
+				  </g:HTMLPanel>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

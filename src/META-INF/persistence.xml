@@ -7,7 +7,11 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 
     <persistence-unit name="org.jbpm.persistence.jpa" transaction-type="JTA">
         <!-- provider>org.hibernate.ejb.HibernatePersistence</provider -->        
+<<<<<<< HEAD
   		<!-- <jta-data-source>java:comp/env/jdbc/ebusinessds</jta-data-source> -->
+=======
+  		<!-- jta-data-source>java:comp/env/jdbc/ebusinessds</jta-data-source -->
+>>>>>>> 79d751e25006e26b578a0b0cd6f8fe282886b419
   		<jta-data-source>jdbc/ebusinessds</jta-data-source>        
         <mapping-file>META-INF/Taskorm.xml</mapping-file>
         <mapping-file>META-INF/ProcessInstanceInfo.hbm.xml</mapping-file>

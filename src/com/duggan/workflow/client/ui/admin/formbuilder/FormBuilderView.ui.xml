@@ -116,7 +116,7 @@
 									<fb:PalettePanel ui:field="vMultipleButtonPanel">	
 									    <f:MultipleButton></f:MultipleButton>	
 									</fb:PalettePanel>
-									
+																		
 								</fieldset>
 		                      </div>
 	                     </g:HTMLPanel><!--End of Select Pane -->
@@ -126,11 +126,16 @@
 								 <fieldset>
 									<fb:PalettePanel ui:field="vHRPanel">
 									    <f:HR></f:HR>	
+
 									</fb:PalettePanel>	
 									<fb:PalettePanel ui:field="vGridPanel">	
 									    <f:GridLayout></f:GridLayout>
 									</fb:PalettePanel>
 																	
+									<!-- </fb:PalettePanel>
+									<fb:PalettePanel ui:field="vGridPanel">	
+									    <f:GridField></f:GridField>	
+									</fb:PalettePanel>	 -->								
 								</fieldset>
 		                      </div>
 	                     </g:HTMLPanel><!--End of Select Pane -->
@@ -149,6 +154,7 @@
 						
 						<g:VerticalPanel ui:field="vPanel" styleName="span12">
 						</g:VerticalPanel>
+						
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 			</g:HTMLPanel>

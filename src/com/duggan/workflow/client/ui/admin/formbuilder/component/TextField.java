@@ -81,7 +81,8 @@ public class TextField extends FieldWidget {
 				
 			}
 		});
-		//initPropertyWidget();
+		
+		//name.equals()
 	}
 
 	@Override

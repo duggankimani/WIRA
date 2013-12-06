@@ -21,7 +21,7 @@ public class PropertyPanelPresenter extends
 
 
 	public interface MyView extends PopupView {
-		void showProperties(List<Property> properties);
+		void showProperties(List<Property> properties, FormModel model);
 		PopupPanel getPopUpContainer();
 		FocusPanel getPopoverFocus();
 		HTMLPanel getiArrow() ;
@@ -50,6 +50,6 @@ public class PropertyPanelPresenter extends
 
 	public void setProperties(FormModel parentModel, List<Property> properties) {
 		this.parentModel = parentModel;
-		getView().showProperties(properties);
+		getView().showProperties(properties, parentModel);
 	}
 }

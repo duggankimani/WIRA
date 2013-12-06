@@ -8,7 +8,7 @@
 	ui:generateLocales='default'>
 	
     <g:HTMLPanel styleName="attachment-links span6">
-		<div class="span1 icon"><img src="img/pdf.gif"></img></div>
+		<g:HTMLPanel styleName="span1 icon" ui:field="panelImg"></g:HTMLPanel>
 		<div class="span11 attachment-info">
 	        <b><span ui:field="spnName"></span></b>
 	        <br/>

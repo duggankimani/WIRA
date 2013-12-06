@@ -20,8 +20,9 @@ public enum DataType {
 	public boolean isDropdown(){
 		return this.equals(SELECTBASIC);
 	}
+	//GRID;
 	
 	public boolean isLookup(){
-		return this.equals(SELECTBASIC) || this.equals(SELECTMULTIPLE);
+		return this.equals(SELECTBASIC) || this.equals(SELECTMULTIPLE) || this.equals(BOOLEAN);
 	}
 }

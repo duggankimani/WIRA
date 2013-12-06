@@ -65,3 +65,16 @@
 	display: block;
 }	
 
+#radiobtns{
+	display:block;
+}
+
+#radiobtns label{
+	display:inline-block !important;
+	padding:0 10px 0px 3px;
+	vertical-align: text-top;
+}
+
+.popover .popover-content{
+	max-height:570px;
+}

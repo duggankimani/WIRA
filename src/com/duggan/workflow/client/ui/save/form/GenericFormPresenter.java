@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.save.form;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
@@ -35,19 +34,12 @@ public class GenericFormPresenter extends
 
 	public interface ICreateDocView extends PopupView {
 		HasClickHandlers getSave();
-
 		HasClickHandlers getCancel();
-
 		HasClickHandlers getForward();
-
 		Document getDocument();
-
 		boolean isValid();
-
 		void setForm(Form form);
-
 		HasClickHandlers getForwardForApproval();
-				
 	}
 
 	@ContentSlot
@@ -57,6 +49,7 @@ public class GenericFormPresenter extends
 	DispatchAsync requestHelper;
 
 	private Long documentId;
+	
 	private DocumentType documentType;
 
 	@Inject
@@ -106,8 +99,6 @@ public class GenericFormPresenter extends
 		});
 		
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
-			
-
 			@Override
 			public void onClick(ClickEvent event) {
 
@@ -158,11 +149,8 @@ public class GenericFormPresenter extends
 			@Override
 			public void processResult(GetFormModelResponse result) {
 				assert result.getFormModel().size()==1;
-				
 				Form form = (Form)result.getFormModel().get(0);
 				getView().setForm(form);
-				
-				//getView().center();
 			}
 		});
 	}

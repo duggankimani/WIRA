@@ -21,6 +21,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.CreateFieldRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
@@ -31,6 +32,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -264,6 +266,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			return;
 		}
 
+		assert event.getComponentId()!=null;
 		if (this.id != event.getComponentId()) {
 			return;
 		}
@@ -279,6 +282,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		if (property.equals(HELP))
 			setHelp(value == null ? null : value.toString());
+		
+		if(property.equals(SELECTIONTYPE) && (this instanceof IsSelectionField)){
+			
+			IsSelectionField fld = (IsSelectionField)this;
+			fld.setSelectionValues((List<KeyValuePair>)event.getPropertyValue());
+		}
 
 	}
 
@@ -315,7 +324,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		model.setName(getPropertyValue(NAME));
 
 		model.setCaption(getPropertyValue(CAPTION));
-
+	
 		AppContext.getDispatcher().execute(new CreateFieldRequest(model),
 				new TaskServiceCallback<CreateFieldResponse>() {
 					@Override
@@ -355,6 +364,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 
 		setReadOnly(readOnly);
+		
+		if(this instanceof IsSelectionField){
+			((IsSelectionField)this).setSelectionValues(field.getSelectionValues());
+		}
 	}
 
 	private void setProperties(List<Property> properties) {
@@ -461,7 +474,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 			
 		case GRID:
+			
 			widget = new GridLayout();
+			/*widget = new GridField();*/
 			break;
 
 		}
@@ -495,7 +510,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			if (getParent() != null && getParent() instanceof VerticalPanel) {
 				VerticalPanel panel = (VerticalPanel) getParent();
 				int idx = panel.getWidgetIndex(this);
-				System.err.println(">>>Field:: " + field + " :: idx " + idx);
 
 				if (idx == -1) {
 					return;

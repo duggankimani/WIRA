@@ -1,5 +1,7 @@
 package com.duggan.workflow.test.formbuilder;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +16,10 @@ import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.dao.FormDaoHelper;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 
 public class TestFormBuilder {
 
@@ -28,6 +33,19 @@ public class TestFormBuilder {
 	}
 	
 	@Test
+	public void getField(){
+		Field field = FormDaoHelper.getField(108L);
+		
+		List<KeyValuePair> pairs = field.getSelectionValues(); 
+		
+		Assert.assertNotNull(pairs);
+		
+		Assert.assertEquals(pairs.size(),3);
+		
+		System.err.println("Values = "+pairs);
+	}
+	
+	@Ignore
 	public void getForm(){
 		Long value = DB.getDocumentDao().getFormId(3L);
 		Assert.assertNotNull(value);
