@@ -1,9 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" >
-	<g:VerticalPanel styleName="control-group">
+	
+	<g:HorizontalPanel styleName="control-group">
 	    <g:cell>
-	        <g:HorizontalPanel>
+	        <g:HorizontalPanel styleName="hidden">
 	            <g:cell>
 					<g:Label ui:field="lblEl" text="Grid Layout"></g:Label>
 				</g:cell>
@@ -45,5 +46,5 @@
 			</g:HTMLPanel><!--End Table  -->
 	   </g:HTMLPanel>
 	   </g:cell>
-	</g:VerticalPanel>
+	</g:HorizontalPanel>
 </ui:UiBinder> 

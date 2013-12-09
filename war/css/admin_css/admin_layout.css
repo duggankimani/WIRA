@@ -342,6 +342,12 @@
 	margin-left: 145px;
 }
 
+#main-content .btn-group{
+    float: right;
+    margin-left: 5px;
+    margin-top: 0px;
+}
+
 /*--content-body||Form Builder||MainContent Panel--*/
 #main-content .content .content-body .maincontent-panel {
 	margin-left: 1%;

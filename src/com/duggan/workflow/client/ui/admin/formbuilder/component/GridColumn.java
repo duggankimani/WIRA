@@ -13,7 +13,7 @@ public class GridColumn extends Label {
 	
 	public GridColumn(Field field){
 		this.field = field;
-		addStyleName("thead th td");
+		addStyleName("tr th td");
 		setText(field.getCaption());
 		
 		this.fieldWidget = FieldWidget.getWidget(DataType.STRING, field, true);

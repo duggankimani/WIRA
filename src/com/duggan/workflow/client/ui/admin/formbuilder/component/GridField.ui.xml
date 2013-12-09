@@ -8,6 +8,7 @@
 		        <g:HorizontalPanel ui:field="columnPanel">
 		            
 		        </g:HorizontalPanel>
+			    
 			    <fb:DataGrid ui:field="grid">
 			    </fb:DataGrid>
 	    	</div>
