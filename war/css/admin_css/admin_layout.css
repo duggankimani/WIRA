@@ -350,7 +350,11 @@
 }
 
 #main-content .maincontent-panel .dragdrop-dropTarget {
-    min-height: 350px;
+  /*  min-height: 350px;*/
+}
+
+#main-content .maincontent-panel .mainform {
+	min-height: 350px;
 }
 
 .dragdrop-movable-panel { /*Dragging Styles*/

@@ -152,7 +152,7 @@
 							<g:InlineLabel ui:field="fldHelp"></g:InlineLabel>    
 						</fieldset>
 						
-						<g:VerticalPanel ui:field="vPanel" styleName="span12">
+						<g:VerticalPanel ui:field="vPanel" styleName="mainform span12">
 						</g:VerticalPanel>
 						
 					</g:HTMLPanel>

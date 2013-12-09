@@ -8,7 +8,6 @@ import java.util.Map;
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
@@ -32,7 +31,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -50,7 +48,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	Field field = new Field();
 
-	private boolean popUpActivated = false;
+	protected boolean popUpActivated = false;
 
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
@@ -113,17 +111,21 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					}
 
 				};*/
-
-				/* 
-				 * Position of the pop-over 
-				 */
-				int top = 7;
-				int left = 75;
 				int arrowPosition = shim.getAbsoluteTop() - 30;
-				AppManager.showPropertyPanel(field, getProperties(), top, left,
-						arrowPosition);
+				showProperties(arrowPosition);
 			}
 		});
+	}
+
+	public void showProperties(int arrowPosition) {
+
+		/* 
+		 * Position of the pop-over 
+		 */
+		int top = 7;
+		int left = 75;
+		AppManager.showPropertyPanel(field, getProperties(), top, left,
+				arrowPosition);
 	}
 
 	public Field getField() {
@@ -239,7 +241,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		// should we do this only if this is not a property field?
 		
-		add(shim, 0, 0);
+		addShim(0,0,offSetWidth, offSetHeight);
+	}
+	
+	public void addShim(int left, int top, int offSetWidth, int offSetHeight){
+		add(shim, left, top);
 	}
 	
 	/**
@@ -337,7 +343,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void setField(Field field) {
 		this.field = field;
-		this.id = field.getId();
+		
+		if(field.getId()!=null)
+			this.id = field.getId();
+		
 		setProperties(field.getProperties());
 
 		String caption = getPropertyValue(CAPTION);
@@ -578,6 +587,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			
 		case COLUMNPROPERTY:
 			widget = new ColumnProperty(property);
+			break;
 		}
 		
 		

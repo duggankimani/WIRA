@@ -160,11 +160,12 @@ public class FormBuilderView extends ViewImpl implements
 		widgetDragController.registerDropController(widgetDropController);
 		
 		//Grid Drop controller
-		GridField field = (GridField)vGridPanel.getWidget(0);
-		HorizontalPanel columnPanel = field.getColumnPanel(); 
-		HorizontalPanelDropController gridDropController = new HorizontalPanelDropController(columnPanel);
-		widgetDragController.registerDropController(gridDropController);
-		
+//		com.duggan.workflow.client.ui.admin.formbuilder.component.GridLayout field =
+//				(com.duggan.workflow.client.ui.admin.formbuilder.component.GridLayout)vGridPanel.getWidget(0);
+//		//HorizontalPanel columnPanel = field.getColumnPanel(); 
+//		HorizontalPanelDropController gridDropController = new HorizontalPanelDropController(columnPanel);
+//		widgetDragController.registerDropController(gridDropController);
+//		
 		
 		
 		DeactivatePalete();

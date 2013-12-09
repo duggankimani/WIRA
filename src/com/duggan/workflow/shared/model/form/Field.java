@@ -1,5 +1,6 @@
 package com.duggan.workflow.shared.model.form;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
@@ -11,8 +12,8 @@ public class Field extends FormModel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<Property> properties;
-	private List<KeyValuePair> selectionValues;
+	private List<Property> properties = new ArrayList<Property>();
+	private List<KeyValuePair> selectionValues = new ArrayList<KeyValuePair>();
 	private Value value;
 	private DataType type;
 	private Long formId=-1L;
