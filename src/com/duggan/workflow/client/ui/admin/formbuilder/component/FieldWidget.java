@@ -489,7 +489,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 			
 		case GRID:
-			
 			widget = new GridLayout();
 			/*widget = new GridField();*/
 			break;

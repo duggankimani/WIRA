@@ -5,6 +5,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -47,6 +48,7 @@ public class GridLayout extends FieldWidget {
 				addColumn();
 			}
 		});
+
 	}
 
 	@Override
@@ -63,6 +65,63 @@ public class GridLayout extends FieldWidget {
 		grid= new GridDnD(field.getFields());
 		divControls.add(grid);		
 		this.getElement().getStyle().setPaddingBottom(20, Unit.PX);
+		this.getElement().getStyle().setOverflow(Overflow.VISIBLE);
+		
+		
+		grid.getAtxtField().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn();
+				grid.repaint(field.getFields());
+			}
+		});
+		
+		grid.getAlblField().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn();
+				grid.repaint(field.getFields());
+			}
+		});
+		
+		grid.getAchckBox().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn();
+				grid.repaint(field.getFields());
+			}
+		});	
+		
+		
+		grid.getAdateBox().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn();
+				grid.repaint(field.getFields());
+			}
+		});
+		
+		grid.getaRadioField().addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						addColumn();
+						grid.repaint(field.getFields());
+					}
+				});
+		grid.getSlctField().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn();
+				grid.repaint(field.getFields());
+			}
+		});
+		
 	}
 	
 	@Override

@@ -718,29 +718,6 @@ h1,h2,h3,h4,h5,h6{
 /** /helper util **/
 
 
-/** dropdown list font-size **/
-.dropdown-menu a{
-    font-size: 11px;
-}
-/** dropdown list hover **/
-.dropdown-menu li > a:hover,
-.dropdown-menu li > a:focus,
-.dropdown-submenu:hover > a,
-.dropdown-menu .active > a,
-.dropdown-menu .active > a:hover{
-    color: #FFFFFF;
-    text-decoration: none;
-    background-color: #00a0b1;
-    background-image: -moz-linear-gradient(top, #00a0b1, #008299);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00a0b1), to(#008299));
-    background-image: -webkit-linear-gradient(top, #00a0b1, #008299);
-    background-image: -o-linear-gradient(top, #00a0b1, #008299);
-    background-image: linear-gradient(to bottom, #00a0b1, #008299);
-    background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff00a0b1', endColorstr='#ff008299', GradientType=0);
-}
-
-
 
 
 /** form element focus **/

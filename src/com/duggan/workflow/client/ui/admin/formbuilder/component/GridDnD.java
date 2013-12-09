@@ -6,8 +6,10 @@ import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.HorizontalPanelDropController;
+import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -25,11 +27,18 @@ public class GridDnD extends AbsolutePanel {
 
 	@UiField HorizontalPanel hPanel;
 	private DragHandler handler;
-
+	@UiField ActionLink atxtField;
+	@UiField ActionLink aRadioField;
+	@UiField ActionLink alblField;
+	@UiField ActionLink adateBox;
+	@UiField ActionLink achckBox;
+	@UiField ActionLink slctField;
+	
 	private PickupDragController columnDragController;
 	private HorizontalPanelDropController columnDropController;
 	
 	public GridDnD(final List<Field> columns) {
+		this.getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		this.add(uiBinder.createAndBindUi(this));
 		
 		handler = new DragHandlerImpl(this){
@@ -69,7 +78,9 @@ public class GridDnD extends AbsolutePanel {
 				// TODO Auto-generated method stub
 				//super.restoreSelectedWidgetsLocation();
 			}
+
 		};
+		
 		columnDragController.setBehaviorMultipleSelection(false);
 		columnDragController.addDragHandler(handler);
 		columnDragController.setBehaviorDragStartSensitivity(5);
@@ -88,18 +99,23 @@ public class GridDnD extends AbsolutePanel {
 
 	private void createColumns(List<Field> columns) {
 		for (Field col : columns) {
+			
 			// initialize a vertical panel to hold the heading and a second vertical
 		      // panel
 		      VerticalPanel columnCompositePanel = new VerticalPanel();
-		      columnCompositePanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_COLUMN_COMPOSITE);
+		    
+		      //columnCompositePanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_COLUMN_COMPOSITE);
 		      
-		   // initialize inner vertical panel to hold individual widgets
+		   //initialize inner vertical panel to hold individual widgets
 		      VerticalPanel verticalPanel = new VerticalPanel();
-		      verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
+		      
+		      //verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
+		      
 		      verticalPanel.setSpacing(SPACING);
+		     
 		      hPanel.add(columnCompositePanel);
 				      
-		      // Put together the column pieces
+		      //Put together the column pieces
 		      GridColumn heading = new GridColumn(col);
 		      
 		      columnCompositePanel.add(heading);
@@ -111,7 +127,8 @@ public class GridDnD extends AbsolutePanel {
 		      
 		      for (int row = 1; row <= ROWS; row++) {
 		          // initialize a widget
-		          HTML widget = new HTML("Draggable&nbsp;#" + ++count);
+		          HTML widget = new HTML("Row " + ++count);
+		          widget.addStyleName("td");
 		          verticalPanel.add(widget);
 		        }
 		}
@@ -125,16 +142,42 @@ public class GridDnD extends AbsolutePanel {
 		clearCols();
 		createColumns(fields);
 	}
+	
 
 	int count = 0;
 	
 
 	private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_COLUMN_COMPOSITE = "demo-InsertPanelExample-column-composite";
 
-	private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER = "demo-InsertPanelExample-container";
+	private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER = "tbody tr";
 
 	private static final int ROWS = 3;
 
 	private static final int SPACING = 0;
+
+	
+	public ActionLink getAtxtField() {
+		return atxtField;
+	}
+
+	public ActionLink getaRadioField() {
+		return aRadioField;
+	}
+
+	public ActionLink getAlblField() {
+		return alblField;
+	}
+
+	public ActionLink getAdateBox() {
+		return adateBox;
+	}
+
+	public ActionLink getAchckBox() {
+		return achckBox;
+	}
+
+	public ActionLink getSlctField() {
+		return slctField;
+	}
 
 }
