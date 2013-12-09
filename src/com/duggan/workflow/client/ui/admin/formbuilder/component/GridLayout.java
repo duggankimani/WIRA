@@ -1,8 +1,5 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
@@ -33,7 +30,6 @@ public class GridLayout extends FieldWidget {
 	
 	GridDnD grid = null;
 	
-	private List<Field> fields = new ArrayList<Field>();
 	private final Widget widget;
 	
 	public GridLayout() {
@@ -49,7 +45,6 @@ public class GridLayout extends FieldWidget {
 			@Override
 			public void onClick(ClickEvent event) {
 				addColumn();
-				grid.repaint();
 			}
 		});
 	}
@@ -64,13 +59,9 @@ public class GridLayout extends FieldWidget {
 		super.activatePopup();
 		
 		divControls.clear();
-		if(fields.size()==0)
-		for(int i=1;i<=5;i++){
-			addColumn();
-		}
-	
-		grid= new GridDnD(fields);
-		divControls.add(grid);
+		
+		grid= new GridDnD(field.getFields());
+		divControls.add(grid);		
 		this.getElement().getStyle().setPaddingBottom(20, Unit.PX);
 	}
 	
@@ -83,6 +74,7 @@ public class GridLayout extends FieldWidget {
 		}
 		super.addShim(left, top,offSetWidth, offSetHeight);
 	}
+	
 	@Override
 	public void activateShimHandler() {
 		getShim().addClickHandler(new ClickHandler() {
@@ -102,26 +94,36 @@ public class GridLayout extends FieldWidget {
 	@Override
 	public FieldWidget cloneWidget() {
 		GridLayout layout = new GridLayout();
-		layout.setData(fields);
+		//layout.setField(field);
 		return layout;
 	}
 
-	private void setData(List<Field> fieldz) {
-		this.fields = fieldz;
-	}
 
 	@Override
 	protected DataType getType() {
 		return DataType.GRID;
 	}
-
 	
 	protected void addColumn() {
-		Field field = new Field();
-		field.setId(System.currentTimeMillis());
-		field.setType(DataType.SELECTBASIC);
-		field.setCaption("Column "+(fields.size()+1));
-		fields.add(field);
+		
+		System.err.println("Adding col........");
+		Field child = new Field();		
+		child.setType(DataType.LABEL);		
+		//child.setParentId(field.getId());	
+		int pos = field.getFields().size();
+		child.setPosition(pos);
+		child.setCaption("Column "+(pos));
+		
+		field.addField(child);		
+		System.err.println(field.getFields());
+		save();
 	}
-
+	
+	@Override
+	public void onAfterSave() {
+		System.err.println("Repaint........ "+field.getFields().size());
+		grid.repaint(field.getFields());
+		
+	}
+	
 }

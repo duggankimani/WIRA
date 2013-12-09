@@ -337,8 +337,14 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					public void processResult(CreateFieldResponse result) {
 						Field field = result.getField();
 						setField(field);
+						
+						onAfterSave();
 					}
 				});
+	}
+	
+	public void onAfterSave() {
+		
 	}
 
 	public void setField(Field field) {
@@ -629,4 +635,5 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public Widget getComponent() {
 		return null;
 	}
+	
 }

@@ -21,8 +21,6 @@ public class CreateFieldRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		Field field = action.getField();
 		
-		assert field.getFormId()!=null;
-		
 		field = FormDaoHelper.createField(field);
 		CreateFieldResponse response = (CreateFieldResponse)actionResult;
 		

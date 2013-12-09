@@ -11,10 +11,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -26,29 +24,30 @@ public class GridDnD extends AbsolutePanel {
 	}
 
 	@UiField HorizontalPanel hPanel;
-	DragHandler handler;
+	private DragHandler handler;
 
-	PickupDragController columnDragController;
-	HorizontalPanelDropController columnDropController;
-	
-	private List<Field> fields;
+	private PickupDragController columnDragController;
+	private HorizontalPanelDropController columnDropController;
 	
 	public GridDnD(final List<Field> columns) {
 		this.add(uiBinder.createAndBindUi(this));
-		this.fields = columns;
 		
 		handler = new DragHandlerImpl(this){
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				super.onDragEnd(event);
-								
-				VerticalPanel parentPanel = (VerticalPanel)event.getContext().draggable;
-				HorizontalPanel parent = (HorizontalPanel)parentPanel.getParent();
+				Widget parent = event.getContext().draggable.getParent();
+				if(!parent.equals(hPanel)){
+					//removed
+					VerticalPanel panel = (VerticalPanel)event.getContext().draggable;
+					GridColumn col = (GridColumn)panel.getWidget(0);
+					col.delete();
+				}
 				
 				columns.clear();
-				int count = parent.getWidgetCount();
+				int count = hPanel.getWidgetCount();
 				for(int i=0; i<count; i++){
-					Widget w = ((VerticalPanel)parent.getWidget(i)).getWidget(0);
+					Widget w = ((VerticalPanel)hPanel.getWidget(i)).getWidget(0);
 					
 					if(w instanceof GridColumn){
 						GridColumn col = (GridColumn)w;
@@ -65,11 +64,11 @@ public class GridDnD extends AbsolutePanel {
 		
 		columnDragController = new PickupDragController(
 				this, false){
-//			@Override
-//			protected void restoreSelectedWidgetsLocation() {
-//				// TODO Auto-generated method stub
-//				//super.restoreSelectedWidgetsLocation();
-//			}
+			@Override
+			protected void restoreSelectedWidgetsLocation() {
+				// TODO Auto-generated method stub
+				//super.restoreSelectedWidgetsLocation();
+			}
 		};
 		columnDragController.setBehaviorMultipleSelection(false);
 		columnDragController.addDragHandler(handler);
@@ -122,8 +121,7 @@ public class GridDnD extends AbsolutePanel {
 		hPanel.clear();
 	}
 	
-
-	public void repaint() {
+	public void repaint(List<Field> fields) {
 		clearCols();
 		createColumns(fields);
 	}
