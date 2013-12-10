@@ -100,7 +100,12 @@ public class DateField extends FieldWidget {
 	}
 	
 	@Override
-	public Widget getComponent() {
+	public Widget getComponent(boolean small) {
+		
+		if(small){
+			dateBox.setStyle("input-large");
+		}
+		
 		return dateBox;
 	}
 }

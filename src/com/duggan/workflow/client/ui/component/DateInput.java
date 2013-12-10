@@ -36,4 +36,8 @@ public class DateInput extends Composite {
 	public void setValue(Date date){
 		dtInput.setValue(date);
 	}
+	
+	public void setStyle(String styleName){
+		dtInput.setStyleName(styleName);
+	}
 }
