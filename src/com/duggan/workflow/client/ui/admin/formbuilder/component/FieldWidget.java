@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
@@ -321,7 +324,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	private void save(Field model) {
-		assert model.getFormId() != null;
 
 		model.setType(getType());
 
@@ -335,9 +337,29 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				new TaskServiceCallback<CreateFieldResponse>() {
 					@Override
 					public void processResult(CreateFieldResponse result) {
-						Field field = result.getField();
-						setField(field);
+						Field savedfield = result.getField();
+						List<Field> children = savedfield.getFields();
 						
+						if(children!=null && children.size()>1){
+							//Grid Field order Fields
+							Collections.sort(children, new Comparator<Field>() {
+								@Override
+								public int compare(Field o1, Field o2) {
+									int i = o1.getPosition();
+									int j = o2.getPosition();
+									if(i<j)
+										return -1;
+									
+									if(i==j)
+										return 0;
+									
+									return 1;
+									
+								}
+								
+							});
+						}
+						setField(savedfield);
 						onAfterSave();
 					}
 				});
@@ -353,15 +375,29 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		if(field.getId()!=null)
 			this.id = field.getId();
 		
+		//reset all fieldids in previous properties
+		for(Property prop: props.values()){
+			prop.setFieldId(id);
+		}
+		
 		setProperties(field.getProperties());
 
 		String caption = getPropertyValue(CAPTION);
-		if (caption != null && !caption.isEmpty())
+		if (caption != null && !caption.isEmpty()){
 			setCaption(caption);
-
+		}else{
+		
+			//field widgets created from FieldModels - see GridColumn
+			Property prop = props.get(CAPTION);
+			if(prop!=null){
+				prop.setValue(new StringValue(field.getCaption()));
+			}
+		}
+		
 		String placeHolder = getPropertyValue(PLACEHOLDER);
-		if (placeHolder != null && !placeHolder.isEmpty())
+		if (placeHolder != null && !placeHolder.isEmpty()){
 			setPlaceHolder(placeHolder);
+		}
 
 		String help = getPropertyValue(HELP);
 		if (help != null) {

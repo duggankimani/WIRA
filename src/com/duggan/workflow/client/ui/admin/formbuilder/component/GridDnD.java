@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
@@ -7,6 +8,8 @@ import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.HorizontalPanelDropController;
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -38,8 +41,9 @@ public class GridDnD extends AbsolutePanel {
 	private HorizontalPanelDropController columnDropController;
 	
 	public GridDnD(final List<Field> columns) {
-		this.getElement().getStyle().setOverflow(Overflow.VISIBLE);
-		this.add(uiBinder.createAndBindUi(this));
+		getElement().getStyle().setOverflow(Overflow.VISIBLE);
+		add(uiBinder.createAndBindUi(this));
+		
 		
 		handler = new DragHandlerImpl(this){
 			@Override
@@ -53,8 +57,9 @@ public class GridDnD extends AbsolutePanel {
 					col.delete();
 				}
 				
+				List<Field> lst = new ArrayList<Field>();
 				columns.clear();
-				int count = hPanel.getWidgetCount();
+				int count = hPanel.getWidgetCount();				
 				for(int i=0; i<count; i++){
 					Widget w = ((VerticalPanel)hPanel.getWidget(i)).getWidget(0);
 					
@@ -63,10 +68,12 @@ public class GridDnD extends AbsolutePanel {
 						
 						Field fld = col.getField();
 						fld.setPosition(i);
-						columns.add(fld);
+						columns.add(fld);		
+						lst.add(fld);
 					}
 				}
 				
+				save(lst);
 			}
 			
 		};
@@ -81,8 +88,8 @@ public class GridDnD extends AbsolutePanel {
 
 		};
 		
-		columnDragController.setBehaviorMultipleSelection(false);
 		columnDragController.addDragHandler(handler);
+		columnDragController.setBehaviorMultipleSelection(false);
 		columnDragController.setBehaviorDragStartSensitivity(5);
 
 		hPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
@@ -97,9 +104,13 @@ public class GridDnD extends AbsolutePanel {
 		createColumns(columns);
 	}
 
+	protected void save(List<Field> lst) {
+		
+	}
+
 	private void createColumns(List<Field> columns) {
+		
 		for (Field col : columns) {
-			
 			// initialize a vertical panel to hold the heading and a second vertical
 		      // panel
 		      VerticalPanel columnCompositePanel = new VerticalPanel();
@@ -122,7 +133,7 @@ public class GridDnD extends AbsolutePanel {
 		      columnCompositePanel.add(verticalPanel);
 
 		      // make the column draggable by its heading
-		      columnDragController.makeDraggable(columnCompositePanel, heading);
+		      columnDragController.makeDraggable(columnCompositePanel, heading.getDragComponent());
 
 		      
 		      for (int row = 1; row <= ROWS; row++) {
@@ -146,9 +157,6 @@ public class GridDnD extends AbsolutePanel {
 
 	int count = 0;
 	
-
-	private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_COLUMN_COMPOSITE = "demo-InsertPanelExample-column-composite";
-
 	private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER = "tbody tr";
 
 	private static final int ROWS = 3;

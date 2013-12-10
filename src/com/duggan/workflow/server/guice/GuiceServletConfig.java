@@ -29,15 +29,15 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		DBTrxProvider.init();
 		JBPMHelper.get();
 		
-		try{		
-			DB.beginTransaction();
-			ProcessMigrationHelper.init();
-			DB.commitTransaction();			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			DB.closeSession();
-		}
+//		try{		
+//			DB.beginTransaction();
+//			ProcessMigrationHelper.init();
+//			DB.commitTransaction();			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}finally{
+//			DB.closeSession();
+//		}
 		
 	}
 	

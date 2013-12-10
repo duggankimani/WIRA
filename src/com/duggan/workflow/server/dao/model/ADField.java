@@ -55,7 +55,7 @@ public class ADField extends PO implements HasProperties{
 	
 	private Integer position;
 	
-	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL, optional=true)
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
 	@JoinColumn(name="parentid",referencedColumnName="id")
 	private ADField parentField;
 	
@@ -125,6 +125,16 @@ public class ADField extends PO implements HasProperties{
 		
 		ADField field = (ADField)obj;
 		
+		if(id==null ^ field.getId()==null){
+			return false;
+		}
+		
+		if(id!=null){
+			if(id.equals(field.getId())){
+				return true;
+			}
+		}
+		
 		if(name==null ^ field.name==null){
 			return false;
 		}
@@ -166,11 +176,20 @@ public class ADField extends PO implements HasProperties{
 		
 		int hashcode = 7;
 		
+		if(id !=null){
+			hashcode+=hashcode*id.hashCode();
+			return hashcode;
+		}
+		
 		if(name!=null)
-			hashcode += hashcode*name.hashCode();
+			hashcode += 13*name.hashCode();
 		
 		if(form!=null)
-			hashcode += hashcode*form.hashCode();
+			hashcode += 17*form.hashCode();
+		
+		if (parentField!=null) {
+			hashcode+=19*parentField.hashCode();
+		}
 		
 		if(hashcode==7)
 			return super.hashCode();

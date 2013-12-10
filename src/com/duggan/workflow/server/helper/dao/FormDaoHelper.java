@@ -124,13 +124,13 @@ public class FormDaoHelper {
 		if(adfield.getFields()!=null){
 			
 			Collection<ADField> flds= adfield.getFields();
-			if(flds.size()>0)
-				System.err.println("\n\n#Retrieving Parent = "+field+" ChildrenNo = "+field.getFields().size());
 			
 			for(ADField fld: flds){			
 				Field retrieved = getField(fld); 
-				field.addField(retrieved);
-				System.err.println("#Retrieving Child = "+retrieved);
+				if(!field.contains(retrieved)){
+					field.addField(retrieved);
+				}
+				
 			}
 		}
 		
@@ -325,15 +325,14 @@ public class FormDaoHelper {
 		
 		adfield.setId(field.getId());
 		
+		
 		//for a grid - Grid Columns
+		adfield.getFields().clear();
 		if(field.getFields()!=null){
 			List<Field> children = field.getFields();
-			if(children.size()>0)
-				System.err.println("#Saving Parent = "+field+" [ChildrenNo = "+field.getFields().size()+"]");
 			
 			for(Field childField:children){
-				System.err.println("#Saving child = "+childField);
-				ADField child = getField(childField);
+				ADField child = getField(childField);				
 				adfield.addField(child);
 			}
 		}

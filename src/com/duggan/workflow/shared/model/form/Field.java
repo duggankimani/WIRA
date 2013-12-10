@@ -103,4 +103,27 @@ public class Field extends FormModel{
 		fields.add(field);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (!(obj instanceof Field)) {
+			return false;
+		}
+		
+		
+		if(Id!=null){
+			return Id.equals(((Field)obj).Id);
+		}
+		
+		return super.equals(obj);
+	}
+
+	public boolean contains(Field retrieved) {
+
+		return fields.contains(retrieved);
+	}
+
+	public void setFields(List<Field> fieldList) {
+		this.fields = fieldList;
+	}
 }

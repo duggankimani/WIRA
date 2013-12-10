@@ -5,10 +5,12 @@ import java.util.Date;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
@@ -117,5 +119,9 @@ public class AppContext {
 	
 	public static String getLastRequestUrl(){
 		return Cookies.getCookie(Definitions.PENDINGREQUESTURL);
+	}
+
+	public static void fireEvent(GwtEvent event) {
+		eventBus.fireEvent(event);
 	}
 }

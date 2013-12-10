@@ -1,7 +1,10 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.List;
+
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -62,7 +65,13 @@ public class GridLayout extends FieldWidget {
 		
 		divControls.clear();
 		
-		grid= new GridDnD(field.getFields());
+		grid= new GridDnD(field.getFields()){
+			@Override
+			protected void save(List<Field> fields) {
+				field.setFields(fields);
+				GridLayout.this.save();
+			}
+		};
 		divControls.add(grid);		
 		this.getElement().getStyle().setPaddingBottom(20, Unit.PX);
 		this.getElement().getStyle().setOverflow(Overflow.VISIBLE);
@@ -73,7 +82,6 @@ public class GridLayout extends FieldWidget {
 			@Override
 			public void onClick(ClickEvent event) {
 				addColumn();
-				grid.repaint(field.getFields());
 			}
 		});
 		
@@ -82,7 +90,6 @@ public class GridLayout extends FieldWidget {
 			@Override
 			public void onClick(ClickEvent event) {
 				addColumn();
-				grid.repaint(field.getFields());
 			}
 		});
 		
@@ -91,7 +98,6 @@ public class GridLayout extends FieldWidget {
 			@Override
 			public void onClick(ClickEvent event) {
 				addColumn();
-				grid.repaint(field.getFields());
 			}
 		});	
 		
@@ -101,7 +107,6 @@ public class GridLayout extends FieldWidget {
 			@Override
 			public void onClick(ClickEvent event) {
 				addColumn();
-				grid.repaint(field.getFields());
 			}
 		});
 		
@@ -110,7 +115,6 @@ public class GridLayout extends FieldWidget {
 					@Override
 					public void onClick(ClickEvent event) {
 						addColumn();
-						grid.repaint(field.getFields());
 					}
 				});
 		grid.getSlctField().addClickHandler(new ClickHandler() {
@@ -118,7 +122,6 @@ public class GridLayout extends FieldWidget {
 			@Override
 			public void onClick(ClickEvent event) {
 				addColumn();
-				grid.repaint(field.getFields());
 			}
 		});
 		
@@ -165,24 +168,22 @@ public class GridLayout extends FieldWidget {
 	
 	protected void addColumn() {
 		
-		System.err.println("Adding col........");
 		Field child = new Field();		
 		child.setType(DataType.LABEL);		
-		//child.setParentId(field.getId());	
+		child.setParentId(field.getId());	
 		int pos = field.getFields().size();
-		child.setPosition(pos);
+		child.setPosition(pos);				
 		child.setCaption("Column "+(pos));
+		Property prop = new Property(CAPTION, "Label Text", DataType.STRING, id);
+		prop.setValue(new StringValue(child.getCaption()));
 		
 		field.addField(child);		
-		System.err.println(field.getFields());
 		save();
 	}
 	
 	@Override
 	public void onAfterSave() {
-		System.err.println("Repaint........ "+field.getFields().size());
-		grid.repaint(field.getFields());
-		
+		grid.repaint(field.getFields());		
 	}
 	
 }
