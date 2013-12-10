@@ -1,11 +1,11 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE;
+
 import java.util.List;
 
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.InputSelection;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.IsSelectionField;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;

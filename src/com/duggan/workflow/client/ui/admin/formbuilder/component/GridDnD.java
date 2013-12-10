@@ -79,7 +79,7 @@ public class GridDnD extends AbsolutePanel {
 		columnDragController.addDragHandler(handler);
 		columnDragController.setBehaviorDragStartSensitivity(5);
 
-		hPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
+		//hPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
 		hPanel.setSpacing(10);
 		this.add(hPanel);
 

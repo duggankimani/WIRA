@@ -4,16 +4,19 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 
 public class GridColumn extends Label {
 
 	private Field field;
 	FieldWidget fieldWidget;
+	Anchor anchor;
 	
 	public GridColumn(Field field){
 		this.field = field;
-		addStyleName("tr th td");
+		addStyleName("thead tr th td ");
+		
 		setText(field.getCaption());
 		
 		this.fieldWidget = FieldWidget.getWidget(DataType.STRING, field, true);
@@ -28,6 +31,7 @@ public class GridColumn extends Label {
 				fieldWidget.showProperties(arrowPosition);
 			}
 		});
+		
 	}
 	
 	public Field getField(){

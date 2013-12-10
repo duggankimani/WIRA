@@ -47,7 +47,7 @@
 							<g:Anchor styleName="minimize minimize-left hidden" ui:field="aMinimize"></g:Anchor>
 						</div>
 				</div>
-				<div class="panel-body overflow-y" ui:field="divPaletteBody">
+				<div class="panel-body" ui:field="divPaletteBody">
 						<ul class="nav nav-tabs">
 					      <li class="active"  ui:field="liInput"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
 					      <li ui:field="liSelect"><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>

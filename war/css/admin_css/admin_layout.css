@@ -2,6 +2,14 @@
 	margin-top: -5px;
 }
 
+.overflow-y{
+	overflow-y:auto;
+}
+
+.overflow-x{
+	overflow-x:auto;
+}
+
 #side-left {
 	position: absolute;
 	display: block;
