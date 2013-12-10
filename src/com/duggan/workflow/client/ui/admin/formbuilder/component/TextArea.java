@@ -141,7 +141,12 @@ public class TextArea extends FieldWidget {
 	}
 	
 	@Override
-	public Widget getComponent() {
+	public Widget getComponent(boolean small){
+		
+		if(small){
+			txtComponent.setClass("input-large");
+		}
+		
 		return txtComponent;
 	}
 }

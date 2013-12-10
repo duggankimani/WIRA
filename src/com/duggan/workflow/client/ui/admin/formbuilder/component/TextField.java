@@ -41,7 +41,8 @@ public class TextField extends FieldWidget {
 		txtComponent.setName(property.getName());
 		
 		Value textValue = property.getValue();
-		String text = textValue==null? "": textValue.getValue().toString();
+		String text = textValue==null? "": 
+			textValue.getValue()==null? "": textValue.getValue().toString();
 		
 		txtComponent.setText(text);
 		txtComponent.setClass("input-large"); //Smaller TextField
@@ -132,8 +133,11 @@ public class TextField extends FieldWidget {
 		txtComponent.setReadOnly(readOnly);
 	}
 
-	public Widget getComponent() {
-		// TODO Auto-generated method stub
+	@Override
+	public Widget getComponent(boolean small) {
+		if(small){
+			txtComponent.setClass("input-medium");
+		}
 		return txtComponent;
 	}
 }

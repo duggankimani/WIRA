@@ -119,7 +119,6 @@ public class GridDnD extends AbsolutePanel {
 		      
 		   //initialize inner vertical panel to hold individual widgets
 		      VerticalPanel verticalPanel = new VerticalPanel();
-		      
 		      //verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
 		      
 		      verticalPanel.setSpacing(SPACING);
@@ -137,10 +136,16 @@ public class GridDnD extends AbsolutePanel {
 
 		      
 		      for (int row = 1; row <= ROWS; row++) {
-		          // initialize a widget
-		          HTML widget = new HTML("Row " + ++count);
-		          widget.addStyleName("td");
-		          verticalPanel.add(widget);
+//		          // initialize a widget
+//		          HTML widget = new HTML("Row " + ++count);
+//		          widget.addStyleName("td");
+		    	  if(heading.getInputComponent()!=null){
+		    		  verticalPanel.add(new HTML("Data"));
+		    	  }else{
+		    		  HTML widget = new HTML(" No Component ");
+		    		  verticalPanel.add(widget);
+		    	  }
+		          
 		        }
 		}
 	}

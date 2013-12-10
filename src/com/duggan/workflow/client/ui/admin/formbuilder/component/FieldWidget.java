@@ -56,6 +56,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
 		defaultProperties();
+	
 		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE, this);
 		AppContext.getEventBus().addHandler(SavePropertiesEvent.TYPE, this);
 
@@ -93,7 +94,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		popUpActivated = true;
 		AppContext.getEventBus().addHandler(ResetFormPositionEvent.TYPE, this);
-
 		activateShimHandler();
 	}
 	
@@ -102,18 +102,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 			@Override
 			public void onClick(ClickEvent event) {
-
-				/*OnOptionSelected optionSelected = new OnOptionSelected() {
-
-					@Override
-					public void onSelect(String name) {
-						// determine what to do/show
-						if (name.equals("Save")) {
-							saveProperties();
-						}
-					}
-
-				};*/
 				int arrowPosition = shim.getAbsoluteTop() - 30;
 				showProperties(arrowPosition);
 			}
@@ -122,11 +110,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void showProperties(int arrowPosition) {
 
+		System.err.println("Show Props>>>> "+field);
 		/* 
 		 * Position of the pop-over 
 		 */
 		int top = 7;
 		int left = 75;
+		System.err.println("Field ="+field+"\n Properties = "+getProperties());
 		AppManager.showPropertyPanel(field, getProperties(), top, left,
 				arrowPosition);
 	}
@@ -667,7 +657,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		return shim;
 	}
 	
-	public Widget getComponent() {
+	public Widget getComponent(boolean small) {
 		return null;
 	}
 	

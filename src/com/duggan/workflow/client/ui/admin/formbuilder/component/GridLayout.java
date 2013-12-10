@@ -81,7 +81,7 @@ public class GridLayout extends FieldWidget {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addColumn();
+				addColumn(DataType.STRING);
 			}
 		});
 		
@@ -126,7 +126,7 @@ public class GridLayout extends FieldWidget {
 		});
 		
 	}
-	
+
 	@Override
 	public void addShim(int left, int top, int offSetWidth, int offSetHeight) {
 		offSetHeight= 125;
@@ -167,9 +167,12 @@ public class GridLayout extends FieldWidget {
 	}
 	
 	protected void addColumn() {
-		
+		addColumn(DataType.LABEL);
+	}
+	
+	protected void addColumn(DataType type) {
 		Field child = new Field();		
-		child.setType(DataType.LABEL);		
+		child.setType(type);		
 		child.setParentId(field.getId());	
 		int pos = field.getFields().size();
 		child.setPosition(pos);				

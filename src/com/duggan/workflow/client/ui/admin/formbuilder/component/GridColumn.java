@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 public class GridColumn extends Composite implements
 PropertyChangedHandler{
@@ -22,6 +23,7 @@ PropertyChangedHandler{
 		
 		HTMLPanel panel = new HTMLPanel("");
 		initWidget(panel);
+		panel.setWidth("100%");
 		
 		label = new Label();
 		panel.add(label);
@@ -65,6 +67,10 @@ PropertyChangedHandler{
 		return label;
 	}
 
+	public Widget getInputComponent(){
+		//create a copy of 
+		return fieldWidget.getComponent(true);
+	}
 	
 	@Override
 	public void onPropertyChanged(PropertyChangedEvent event) {
