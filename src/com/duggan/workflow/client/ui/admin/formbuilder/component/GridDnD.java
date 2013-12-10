@@ -8,18 +8,23 @@ import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.HorizontalPanelDropController;
 import com.duggan.workflow.client.ui.component.ActionLink;
-import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.Style.HorizontalAlignment;
+import com.sencha.gxt.core.client.Style.VerticalAlignment;
 
 public class GridDnD extends AbsolutePanel {
 
@@ -29,6 +34,7 @@ public class GridDnD extends AbsolutePanel {
 	}
 
 	@UiField HorizontalPanel hPanel;
+	@UiField HTMLPanel btnGroup;
 	private DragHandler handler;
 	@UiField ActionLink atxtField;
 	@UiField ActionLink aRadioField;
@@ -44,6 +50,8 @@ public class GridDnD extends AbsolutePanel {
 		getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		add(uiBinder.createAndBindUi(this));
 		
+		//Temporary Fix for Floating Issue
+		btnGroup.getParent().getElement().getStyle().setWidth(109, Unit.PCT);
 		
 		handler = new DragHandlerImpl(this){
 			@Override
@@ -109,6 +117,7 @@ public class GridDnD extends AbsolutePanel {
 	}
 
 	private void createColumns(List<Field> columns) {
+		hPanel.getElement().getStyle().setWidth(100, Unit.PCT);
 		
 		for (Field col : columns) {
 			// initialize a vertical panel to hold the heading and a second vertical
@@ -117,12 +126,12 @@ public class GridDnD extends AbsolutePanel {
 		    
 		      //columnCompositePanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_COLUMN_COMPOSITE);
 		      
-		   //initialize inner vertical panel to hold individual widgets
+		      //initialize inner vertical panel to hold individual widgets
 		      VerticalPanel verticalPanel = new VerticalPanel();
 		      //verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
 		      
 		      verticalPanel.setSpacing(SPACING);
-		     
+		      
 		      hPanel.add(columnCompositePanel);
 				      
 		      //Put together the column pieces
@@ -130,22 +139,15 @@ public class GridDnD extends AbsolutePanel {
 		      
 		      columnCompositePanel.add(heading);
 		      columnCompositePanel.add(verticalPanel);
+		      
+		      columnCompositePanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 		      // make the column draggable by its heading
 		      columnDragController.makeDraggable(columnCompositePanel, heading.getDragComponent());
 
 		      
 		      for (int row = 1; row <= ROWS; row++) {
-//		          // initialize a widget
-//		          HTML widget = new HTML("Row " + ++count);
-//		          widget.addStyleName("td");
-		    	  if(heading.getInputComponent()!=null){
-		    		  verticalPanel.add(new HTML("Data"));
-		    	  }else{
-		    		  HTML widget = new HTML(" No Component ");
-		    		  verticalPanel.add(widget);
-		    	  }
-		          
+		    		verticalPanel.add(new HTML("Data"));
 		        }
 		}
 	}
@@ -166,7 +168,7 @@ public class GridDnD extends AbsolutePanel {
 
 	private static final int ROWS = 3;
 
-	private static final int SPACING = 0;
+	private static final int SPACING = 4;
 
 	
 	public ActionLink getAtxtField() {
