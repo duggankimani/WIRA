@@ -21,12 +21,11 @@ public class CreateFieldRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		Field field = action.getField();
 		
-		assert field.getFormId()!=null;
+		Field rtnfield = FormDaoHelper.createField(field);
 		
-		field = FormDaoHelper.createField(field);
 		CreateFieldResponse response = (CreateFieldResponse)actionResult;
 		
-		response.setField(field);
+		response.setField(rtnfield);
 	}
 
 	@Override

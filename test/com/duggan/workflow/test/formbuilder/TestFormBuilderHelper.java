@@ -32,6 +32,22 @@ public class TestFormBuilderHelper {
 	}
 	
 	@Test
+	public void createDetailField(){
+		Field field = FormDaoHelper.getField(261L);
+		
+		Field child = new Field();		
+		child.setType(DataType.LABEL);		
+		child.setParentId(field.getId());	
+		
+		int pos = field.getFields().size();
+		child.setPosition(pos);
+		child.setCaption("Column "+(pos));
+		field.addField(child);		
+		
+		Field fld = FormDaoHelper.createField(field);
+	}
+	
+	@Ignore
 	public void getDDValues(){
 		FormDaoHelper.getDropdownValues("departments");
 	}

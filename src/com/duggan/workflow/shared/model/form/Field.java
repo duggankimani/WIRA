@@ -6,6 +6,12 @@ import java.util.List;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 
+/**
+ * Represents A Form Field
+ * 
+ * @author duggan
+ *
+ */
 public class Field extends FormModel{
 
 	/**
@@ -18,6 +24,8 @@ public class Field extends FormModel{
 	private DataType type;
 	private Long formId=-1L;
 	private int position;
+	private Long parentId;
+	private List<Field> fields = new ArrayList<Field>();
 	
 	public Field() {
 	}
@@ -73,5 +81,49 @@ public class Field extends FormModel{
 
 	public void setSelectionValues(List<KeyValuePair> selectionValues) {
 		this.selectionValues = selectionValues;
+	}
+
+	public List<Field> getFields() {
+		return fields;
+	}
+
+	public boolean isDetailField() {
+		return type == DataType.GRID;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public void addField(Field field) {
+		fields.add(field);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (!(obj instanceof Field)) {
+			return false;
+		}
+		
+		
+		if(Id!=null){
+			return Id.equals(((Field)obj).Id);
+		}
+		
+		return super.equals(obj);
+	}
+
+	public boolean contains(Field retrieved) {
+
+		return fields.contains(retrieved);
+	}
+
+	public void setFields(List<Field> fieldList) {
+		this.fields = fieldList;
 	}
 }

@@ -69,7 +69,7 @@ public class TextField extends FieldWidget {
 				
 				/**
 				 * This allows visual properties including Caption, Place Holder, help to be 
-				 * Sysnched with the form field, so that the changes are observed immediately
+				 * Synchronised with the form field, so that the changes are observed immediately
 				 * 
 				 * All other Properties need not be synched this way 
 				 */

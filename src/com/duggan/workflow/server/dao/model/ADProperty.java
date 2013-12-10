@@ -116,6 +116,10 @@ public class ADProperty extends PO{
 		
 		ADProperty other = (ADProperty)obj;
 		
+		if(this==other){
+			return true;
+		}
+		
 		if(!(other.id==null ^ id==null) ){
 			if(id!=null && id.equals(other.id)){
 				return true;

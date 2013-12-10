@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.engine.Cascade;
+
 import com.duggan.workflow.shared.model.DataType;
 
 @Entity
@@ -38,7 +40,7 @@ public class ADField extends PO implements HasProperties{
 	private String caption;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="formid",referencedColumnName="id", nullable=false)
+	@JoinColumn(name="formid",referencedColumnName="id")
 	private ADForm form;
 	
 	@OneToMany(mappedBy="field", cascade=CascadeType.ALL)
@@ -52,6 +54,13 @@ public class ADField extends PO implements HasProperties{
 	private DataType type;
 	
 	private Integer position;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
+	@JoinColumn(name="parentid",referencedColumnName="id")
+	private ADField parentField;
+	
+	@OneToMany(mappedBy="parentField", cascade=CascadeType.ALL)
+	private Collection<ADField> fields = new HashSet<>();
 	
 	public Long getId() {
 		return id;
@@ -116,6 +125,16 @@ public class ADField extends PO implements HasProperties{
 		
 		ADField field = (ADField)obj;
 		
+		if(id==null ^ field.getId()==null){
+			return false;
+		}
+		
+		if(id!=null){
+			if(id.equals(field.getId())){
+				return true;
+			}
+		}
+		
 		if(name==null ^ field.name==null){
 			return false;
 		}
@@ -135,6 +154,16 @@ public class ADField extends PO implements HasProperties{
 				return false;
 			}
 		
+		if(parentField==null ^ field.parentField==null){
+			return false;
+		}
+		
+		if(parentField!=null){
+			if(!parentField.equals(field.parentField)){
+				return false;
+			}
+		}
+		
 		if(name==null && form==null){
 			return false;
 		}
@@ -147,11 +176,20 @@ public class ADField extends PO implements HasProperties{
 		
 		int hashcode = 7;
 		
+		if(id !=null){
+			hashcode+=hashcode*id.hashCode();
+			return hashcode;
+		}
+		
 		if(name!=null)
-			hashcode += hashcode*name.hashCode();
+			hashcode += 13*name.hashCode();
 		
 		if(form!=null)
-			hashcode += hashcode*form.hashCode();
+			hashcode += 17*form.hashCode();
+		
+		if (parentField!=null) {
+			hashcode+=19*parentField.hashCode();
+		}
 		
 		if(hashcode==7)
 			return super.hashCode();
@@ -174,4 +212,26 @@ public class ADField extends PO implements HasProperties{
 	public void setPosition(Integer position) {
 		this.position = position;
 	}
+
+	public Collection<ADField> getFields() {
+		return fields;
+	}
+
+	public void setFields(Collection<ADField> fields) {
+		this.fields = fields;
+	}
+
+	public ADField getParentField() {
+		return parentField;
+	}
+
+	public void setParentField(ADField parentField) {
+		this.parentField = parentField;
+	}
+
+	public void addField(ADField adfield) {
+		adfield.setParentField(this);
+		fields.add(adfield);
+	}
+	
 }

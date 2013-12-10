@@ -121,6 +121,19 @@ public class FormDaoHelper {
 			}
 		}
 		
+		if(adfield.getFields()!=null){
+			
+			Collection<ADField> flds= adfield.getFields();
+			
+			for(ADField fld: flds){			
+				Field retrieved = getField(fld); 
+				if(!field.contains(retrieved)){
+					field.addField(retrieved);
+				}
+				
+			}
+		}
+		
 		return field;
 	}
 
@@ -312,13 +325,31 @@ public class FormDaoHelper {
 		
 		adfield.setId(field.getId());
 		
+		
+		//for a grid - Grid Columns
+		adfield.getFields().clear();
+		if(field.getFields()!=null){
+			List<Field> children = field.getFields();
+			
+			for(Field childField:children){
+				ADField child = getField(childField);				
+				adfield.addField(child);
+			}
+		}
+		
 		//copy
 		getADProperties(field.getProperties(), adfield);
 		
 		adfield.setType(field.getType());
 		adfield.setValue(getValue(adfield.getValue(),field.getValue()));
 		
-		dao.setPosition(adfield, previous, field.getPosition());
+		//call this only if field is a direct child of form
+		//Field may be a child of a grid - which resets positions automatically
+		if(adfield.getForm()!=null){
+			dao.setPosition(adfield, previous, field.getPosition());
+		}else{
+			adfield.setPosition(field.getPosition());
+		}
 		
 		return adfield;
 	}

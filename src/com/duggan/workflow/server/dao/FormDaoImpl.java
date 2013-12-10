@@ -52,14 +52,8 @@ public class FormDaoImpl extends BaseDaoImpl {
 	
 	@Override
 	public void save(PO po) {
+		super.save(po);
 		
-		if(po.getId()!=null){
-			em.merge(po);
-		}
-		else
-			super.save(po);
-		
-
 		if(po instanceof ADForm){
 			ADForm form = (ADForm)po;
 			if(form.getName()==null || form.getName().isEmpty() || form.getName().equals("Untitled")){
