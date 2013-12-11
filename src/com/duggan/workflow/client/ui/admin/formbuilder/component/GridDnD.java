@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -130,7 +131,8 @@ public class GridDnD extends AbsolutePanel {
 		      VerticalPanel verticalPanel = new VerticalPanel();
 		      //verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
 		      
-		      verticalPanel.setSpacing(SPACING);
+		      verticalPanel.setSpacing(10);
+		      verticalPanel.getElement().setAttribute("cellpadding", "4");
 		      
 		      hPanel.add(columnCompositePanel);
 				      
@@ -140,7 +142,7 @@ public class GridDnD extends AbsolutePanel {
 		      columnCompositePanel.add(heading);
 		      columnCompositePanel.add(verticalPanel);
 		      
-		      columnCompositePanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		      columnCompositePanel.setCellHorizontalAlignment(verticalPanel,HasHorizontalAlignment.ALIGN_CENTER);
 
 		      // make the column draggable by its heading
 		      columnDragController.makeDraggable(columnCompositePanel, heading.getDragComponent());

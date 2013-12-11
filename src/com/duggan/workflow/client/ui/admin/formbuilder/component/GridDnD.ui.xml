@@ -58,7 +58,7 @@
 			</div>
 	  </g:HTMLPanel>
 		<div>
-			<g:HorizontalPanel ui:field="hPanel" verticalAlignment="MIDDLE" horizontalAlignment="center">
+			<g:HorizontalPanel ui:field="hPanel" horizontalAlignment="center">
 			</g:HorizontalPanel>			
 		</div>
 	</g:HTMLPanel>

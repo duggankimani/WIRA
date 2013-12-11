@@ -371,7 +371,9 @@
 	min-height: 350px;
 }
 
-.dragdrop-movable-panel { /*Dragging Styles*/
+
+/*Dragging Styles*/
+.dragdrop-movable-panel { 
 	width: 100%;
 	height: 100%;
 	padding: 10px 10px;
