@@ -18,14 +18,9 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.core.client.Style.HorizontalAlignment;
-import com.sencha.gxt.core.client.Style.VerticalAlignment;
 
 public class GridDnD extends AbsolutePanel {
 
@@ -49,10 +44,13 @@ public class GridDnD extends AbsolutePanel {
 	
 	public GridDnD(final List<Field> columns) {
 		getElement().getStyle().setOverflow(Overflow.VISIBLE);
+		this.addStyleName("grid-layout");
+		
+		
 		add(uiBinder.createAndBindUi(this));
 		
 		//Temporary Fix for Floating Issue
-		btnGroup.getParent().getElement().getStyle().setWidth(109, Unit.PCT);
+		//btnGroup.getParent().getElement().getStyle().setWidth(109, Unit.PCT);
 		
 		handler = new DragHandlerImpl(this){
 			@Override
@@ -103,7 +101,6 @@ public class GridDnD extends AbsolutePanel {
 
 		//hPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
 		hPanel.setSpacing(10);
-		this.add(hPanel);
 
 		// initialize our column drop controller
 		columnDropController = new HorizontalPanelDropController(
@@ -131,8 +128,7 @@ public class GridDnD extends AbsolutePanel {
 		      VerticalPanel verticalPanel = new VerticalPanel();
 		      //verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
 		      
-		      verticalPanel.setSpacing(10);
-		      verticalPanel.getElement().setAttribute("cellpadding", "4");
+		      verticalPanel.addStyleName("inner");
 		      
 		      hPanel.add(columnCompositePanel);
 				      

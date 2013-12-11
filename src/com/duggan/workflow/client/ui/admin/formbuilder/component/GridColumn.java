@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,7 +22,6 @@ PropertyChangedHandler{
 	public GridColumn(Field field){
 		HTMLPanel panel = new HTMLPanel("");
 		initWidget(panel);
-		panel.setWidth("100%");
 		
 		label = new Label();
 		panel.add(label);
