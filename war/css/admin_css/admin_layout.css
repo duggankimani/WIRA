@@ -600,9 +600,8 @@ overflow-y:auto;
 }
 
 .td {
-	display: block;
-	padding: 5px;
-	/* line-height: 34px; */
+	display: table-cell;
+ 	padding: 8px;
 	text-align: left;
 	vertical-align: top;
 }
