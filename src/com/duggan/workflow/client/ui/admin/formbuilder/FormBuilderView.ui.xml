@@ -12,8 +12,8 @@
    	<g:AbsolutePanel ui:field="container">
 	<g:HTMLPanel>
 		<div class="content-body">
-		    <div class="row-fluid">
-				<div class="action-buttons span2">
+		    <div class="row-fluid action-buttons">
+				<div class="span2">
 					<g:Anchor ui:field="aNewForm" styleName="btn btn-primary"
 						title="New Form">
 						<i class="icon-plus"></i>
@@ -152,7 +152,7 @@
 							<g:InlineLabel ui:field="fldHelp"></g:InlineLabel>    
 						</fieldset>
 						
-						<g:VerticalPanel ui:field="vPanel" styleName="mainform span12">
+						<g:VerticalPanel ui:field="vPanel" styleName="mainform">
 						</g:VerticalPanel>
 						
 					</g:HTMLPanel>

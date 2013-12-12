@@ -334,7 +334,7 @@
 #main-content .content .content-body .palete-panel .panel-body{
 	height:460px;
 }
-.dragdrop-dropTarget .span2{
+.dragdrop-dropTarget  .action-buttons .span2{
     width:8.53%;
     margin-left: 5px;
 }
@@ -369,6 +369,9 @@
 
 #main-content .maincontent-panel .mainform {
 	min-height: 350px;
+}
+#main-content .maincontent-panel .mainform td{
+	padding-bottom: 0px;
 }
 
 
@@ -536,6 +539,23 @@ overflow-y:auto;
 	border: none;
 }
 
+
+/*Grid Layout */
+.grid-layout table{
+	width:100%;
+}
+
+.grid-layout .thead{
+	display: block;
+	padding: 5px;
+	width: 99%;
+}
+.grid-layout .inner td{
+	padding:8px;
+	border-bottom: 1px solid #dddddd;
+	padding-bottom:0px;
+}
+
 /*Table styles*/
 .table {
 	width: 100%;
@@ -581,8 +601,7 @@ overflow-y:auto;
 
 .td {
 	display: table-cell;
-	padding: 8px;
-	/* line-height: 34px; */
+ 	padding: 8px;
 	text-align: left;
 	vertical-align: top;
 }

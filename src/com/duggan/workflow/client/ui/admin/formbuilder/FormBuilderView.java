@@ -116,6 +116,11 @@ public class FormBuilderView extends ViewImpl implements
 		addProperty(new Property(NAME, "Form ID", DataType.STRING));
 		addProperty(new Property(CAPTION, "Caption", DataType.STRING));
 		addProperty(new Property(HELP, "Help", DataType.STRINGLONG));
+		
+		
+		//Vertical Panel Display
+		vPanel.getElement().getStyle().setWidth(100, Unit.PCT);
+		
 			
 		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()){
 			@Override
@@ -222,6 +227,9 @@ public class FormBuilderView extends ViewImpl implements
 		});
 		
 		aDeleteForm.setVisible(false);
+		
+		
+		
 	
 	}
 
