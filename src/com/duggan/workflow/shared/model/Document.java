@@ -1,8 +1,10 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +46,8 @@ public class Document extends Doc implements Serializable{
 	private Long processInstanceId;
 	
 	private Long sessionId;
+	
+	private Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
 	
 	public Document() {
 		//serialization
@@ -220,7 +224,26 @@ public class Document extends Doc implements Serializable{
 	
 		return "DocumentId = "+id+", subject="+subject;
 	}
+
+	public Map<String, List<DocumentLine>> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Map<String, List<DocumentLine>> details) {
+		this.details = details;
+	}
 	
+	public void addDetail(DocumentLine line){
+		String name = line.getName();
+		
+		List<DocumentLine> lines = details.get(name);
+		if(lines==null){
+			lines = new ArrayList<DocumentLine>();
+			details.put(name, lines);
+		}
+		
+		lines.add(line);
+	}
 
 	//public Map<String, Value> 
 }

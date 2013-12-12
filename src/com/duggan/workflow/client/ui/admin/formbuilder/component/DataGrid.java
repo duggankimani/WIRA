@@ -1,8 +1,9 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.Collection;
 import java.util.List;
 
-import com.duggan.workflow.shared.model.DocDetail;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -19,7 +20,7 @@ public class DataGrid extends Composite {
 	FlexTable table = new FlexTable();
 	
 	private List<FieldWidget> fields;
-	private List<DocDetail> values;
+	private List<DocumentLine> values;
 	int row=0;
 		
 	public DataGrid(){
@@ -50,15 +51,14 @@ public class DataGrid extends Composite {
 		
 	}
 	
-	public List<DocDetail> getValues() {
+	public List<DocumentLine> getValues() {
 		return values;
 	}
 
-	public void setValues(List<DocDetail> details) {
-		for(DocDetail detail: details){
-			List<Value> values = detail.getValues();
-			++row;
-			
+	public void setValues(List<DocumentLine> details) {
+		for(DocumentLine detail: details){
+			Collection<Value> values = detail.getValues().values();
+			++row;			
 		}
 	}
 	

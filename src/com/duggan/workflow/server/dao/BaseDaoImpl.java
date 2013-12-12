@@ -1,11 +1,8 @@
 package com.duggan.workflow.server.dao;
 
-import java.util.Date;
-
 import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.model.PO;
-import com.duggan.workflow.server.helper.session.SessionHelper;
 
 public class BaseDaoImpl {
 

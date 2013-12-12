@@ -1,25 +1,27 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  
  * @author duggan
- *
+ *  Represents document lines/details (e.g invoice details)
  */
-public class DocDetail implements Serializable {
+public class DocumentLine implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Long id;
 	private Long documentId;
-	private Long docDetailId;
 	private String name;
-	private List<Value> values;
+	private Map<String, Value> values = new HashMap<String, Value>();
 	
-	public DocDetail(){}
+	public DocumentLine(){}
 
 	public Long getDocumentId() {
 		return documentId;
@@ -27,14 +29,6 @@ public class DocDetail implements Serializable {
 
 	public void setDocumentId(Long documentId) {
 		this.documentId = documentId;
-	}
-
-	public Long getDocDetailId() {
-		return docDetailId;
-	}
-
-	public void setDocDetailId(Long docDetailId) {
-		this.docDetailId = docDetailId;
 	}
 
 	public String getName() {
@@ -45,12 +39,24 @@ public class DocDetail implements Serializable {
 		this.name = name;
 	}
 
-	public List<Value> getValues() {
+	public Map<String, Value> getValues() {
 		return values;
 	}
 
-	public void setValues(List<Value> values) {
+	public void setValues(Map<String, Value> values) {
 		this.values = values;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public void addValue(String name,Value value){
+		values.put(name, value);
 	}
 
 }

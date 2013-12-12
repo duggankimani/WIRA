@@ -16,6 +16,7 @@ import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -30,12 +31,10 @@ import com.duggan.workflow.shared.model.UserGroup;
  * @author duggan
  *
  */
-public class DocumentDaoImpl {
-
-	EntityManager em;
+public class DocumentDaoImpl extends BaseDaoImpl{
 	
 	public DocumentDaoImpl(EntityManager em){
-		this.em = em;
+		super(em);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -538,4 +537,9 @@ public class DocumentDaoImpl {
 
 		return value;
 	}
+	
+	public DetailModel getDetailById(Long detailId){
+		return (DetailModel)em.createQuery("FROM DetailModel d where id=:id").getSingleResult();	
+	}
+	
 }

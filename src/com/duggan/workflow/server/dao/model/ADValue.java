@@ -48,9 +48,13 @@ public class ADValue extends PO{
 	@JoinColumn(name="propertyid", referencedColumnName="id")
 	private ADProperty property;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="documentid", referencedColumnName="id")
 	private DocumentModel document;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="detailid", referencedColumnName="id")
+	private DetailModel detail;
 	
 	public Long getId() {
 		return id;
@@ -212,6 +216,14 @@ public class ADValue extends PO{
 
 	public void setDocument(DocumentModel document) {
 		this.document = document;
+	}
+
+	public DetailModel getDetail() {
+		return detail;
+	}
+
+	public void setDetail(DetailModel detail) {
+		this.detail = detail;
 	}
 
 }

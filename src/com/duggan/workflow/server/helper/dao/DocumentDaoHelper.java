@@ -11,6 +11,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADValue;
+import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -18,6 +19,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.SearchFilter;
@@ -70,7 +72,7 @@ public class DocumentDaoHelper {
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
 			model.setProcessInstanceId(document.getProcessInstanceId());
-			model.setSessionId(document.getSessionId());											
+			model.setSessionId(document.getSessionId());		
 		}
 		
 		model.getValues().clear();
@@ -87,8 +89,10 @@ public class DocumentDaoHelper {
 			model.addValue(adValue);				
 		}
 
-		assert model.getValues().size()==3;
+		//setDetails
+		setDetails(model, document.getDetails());
 		
+		//save
 		model = dao.saveDocument(model);
 
 		Document doc = getDoc(model);
@@ -96,6 +100,50 @@ public class DocumentDaoHelper {
 		//values---
 		
 		return doc;
+	}
+
+	private static void setDetails(DocumentModel model,
+			Map<String, List<DocumentLine>> details) {
+		
+		if(details.isEmpty())
+			return;
+		
+		for(String key: details.keySet()){
+			List<DocumentLine> docs = details.get(key);
+			for(DocumentLine line: docs){
+				line.setName(key);
+				setDetails(model, line);
+			}
+		}
+	}
+
+	private static void setDetails(DocumentModel docModel,
+			DocumentLine line) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		
+		DetailModel detail = new DetailModel();
+		if(line.getId()!=null){
+			detail = dao.getDetailById(line.getId());
+		}
+		
+		detail.setName(line.getName());
+		
+		detail.getValues().clear();
+		Map<String, Value> vals = line.getValues();
+		Collection<Value> values = vals.values(); 
+		for(Value val: values){			
+			ADValue previousValue = new ADValue();
+			if(val.getId()!=null){
+				previousValue = DB.getFormDao().getValue(val.getId());
+			}
+			
+			ADValue adValue = getValue(previousValue, val);
+			assert adValue!=null;
+			detail.addValue(adValue);				
+		}
+		
+		docModel.addDetail(detail);
+		
 	}
 
 	public static ADDocType getType(DocumentType type) {
@@ -141,33 +189,72 @@ public class DocumentDaoHelper {
 		if(values!=null){
 			for(ADValue val: values){
 				//val.
-				
-				DataType type = null;
-				
-				if(val.getBooleanValue()!=null){
-					type = DataType.BOOLEAN;
-				}
-				
-				if(val.getLongValue()!=null){
-					type = DataType.INTEGER;
-				}
-				
-				if(val.getDateValue()!=null){
-					type = DataType.DATE;
-				}
-				
-				if(val.getDoubleValue()!=null){
-					type = DataType.DOUBLE;
-				}
-				
-				if(val.getStringValue()!=null){
-					type = DataType.STRING;
-				}
+				DataType type = getDataType(val);
 				
 				doc.setValue(val.getFieldName(), getValue(val, type));
 			}
 		}
+		
+		doc.setDetails(getDetails(model.getDetails()));
+		
 		return doc;
+	}
+
+	private static DataType getDataType(ADValue val) {
+		DataType type =null;
+		
+		if(val.getBooleanValue()!=null){
+			type = DataType.BOOLEAN;
+		}
+		
+		if(val.getLongValue()!=null){
+			type = DataType.INTEGER;
+		}
+		
+		if(val.getDateValue()!=null){
+			type = DataType.DATE;
+		}
+		
+		if(val.getDoubleValue()!=null){
+			type = DataType.DOUBLE;
+		}
+		
+		if(val.getStringValue()!=null){
+			type = DataType.STRING;
+		}
+		
+		return type;
+		
+	}
+
+	private static Map<String, List<DocumentLine>> getDetails(
+			Collection<DetailModel> details) {
+		Map<String, List<DocumentLine>> lines = new HashMap<>();
+		
+		
+		for(DetailModel lineModel: details){
+			DocumentLine line = new DocumentLine();
+			line.setDocumentId(lineModel.getDocument().getId());
+			line.setId(lineModel.getId());
+			line.setName(lineModel.getName());
+			
+			for(ADValue value:lineModel.getValues()){
+				Value val =getValue(value, getDataType(value));
+				line.addValue(value.getFieldName(), val);
+			}
+			
+			List<DocumentLine> detailz = new ArrayList<>();
+			if(lines.get(line.getName())!=null){
+				detailz = lines.get(line.getName()); 
+			}else{
+				lines.put(line.getName(), detailz);
+			}
+			
+			detailz.add(line);
+			
+		}
+		
+		return lines;
 	}
 
 	public static DocumentType getType(ADDocType adtype) {

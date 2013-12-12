@@ -71,6 +71,9 @@ public class DocumentModel extends PO{
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="document",cascade=CascadeType.ALL)
 	private Collection<ADValue> values = new HashSet<>(); 
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="document", cascade=CascadeType.ALL)
+	private Collection<DetailModel> details = new HashSet<>();
+	
 	public DocumentModel(){
 		
 	}
@@ -186,5 +189,14 @@ public class DocumentModel extends PO{
 		}
 		
 		values.add(value);
+	}
+
+	public Collection<DetailModel> getDetails() {
+		return details;
+	}
+	
+	public void addDetail(DetailModel model){
+		model.setDocument(this);
+		details.add(model);
 	}
 }
