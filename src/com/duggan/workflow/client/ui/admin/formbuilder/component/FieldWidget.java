@@ -76,6 +76,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		field.setValue(null);
 		field.setType(getType());
 	}
+	
+
+	protected void afterInit() {
+		
+	}
 
 	public void addProperty(Property property) {
 		assert props != null;
@@ -349,6 +354,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 								
 							});
 						}
+						savedfield.setFields(children);
 						setField(savedfield);
 						onAfterSave();
 					}
@@ -521,14 +527,19 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		}
 
-		widget.setField(fld);
-
 		if (activatePopup) {
-			widget.activatePopup();
+			widget.showShim = true;
 		} else {
 			widget.showShim = false;
 		}
 
+		widget.setField(fld);
+		
+		if(activatePopup)
+			widget.activatePopup();
+		
+		widget.afterInit();
+		
 		return widget;
 	}
 

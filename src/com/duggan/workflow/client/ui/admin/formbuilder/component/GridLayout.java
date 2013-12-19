@@ -1,9 +1,13 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.admin.formbuilder.grid.GridView;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
@@ -38,8 +42,8 @@ public class GridLayout extends FieldWidget {
 	
 	public GridLayout() {
 		super();
-		addProperty(new Property(COLUMNPROPERTY, "Column Property", DataType.COLUMNPROPERTY, id));
-		addProperty(new Property(COLUMNPROPERTY, "Column Property", DataType.COLUMNPROPERTY, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
@@ -51,27 +55,35 @@ public class GridLayout extends FieldWidget {
 				addColumn();
 			}
 		});
-
-	}
-
-	@Override
-	public void defaultProperties() {
-		//Does not have Any default Properties
+		
 	}
 	
 	@Override
-	public void activatePopup() {
-		super.activatePopup();
-		
+	protected void afterInit() {
+		if(showShim){
+			showDesignGrid();
+		}else{
+			showRuntimeGrid();			
+		}
+	}
+	
+	/**
+	 * Design Grid	
+	 */
+	private void showDesignGrid() {
 		divControls.clear();
 		
 		grid= new GridDnD(field.getFields()){
 			@Override
 			protected void save(List<Field> fields) {
+				for(Field fld: fields){
+					System.err.println(field.getId()+">> "+fld.getPosition()+"::"+fld.getCaption());
+				}
 				field.setFields(fields);
 				GridLayout.this.save();
 			}
 		};
+		
 		divControls.add(grid);		
 		this.getElement().getStyle().setPaddingBottom(20, Unit.PX);
 		this.getElement().getStyle().setOverflow(Overflow.VISIBLE);
@@ -124,8 +136,27 @@ public class GridLayout extends FieldWidget {
 				addColumn();
 			}
 		});
-		
+
 	}
+
+	/**
+	 * Runtime View
+	 */
+	private void showRuntimeGrid() {
+		divControls.clear();
+		
+		GridView view = new GridView(field.getFields());
+		
+		Collection<DocumentLine> lines=new ArrayList<DocumentLine>();		
+		lines.add(new DocumentLine());
+		lines.add(new DocumentLine());
+		lines.add(new DocumentLine());
+		view.setData(lines);
+		
+		//Draw fields	
+		divControls.add(view);
+	}
+
 
 	@Override
 	public void addShim(int left, int top, int offSetWidth, int offSetHeight) {

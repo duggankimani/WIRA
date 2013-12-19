@@ -3,9 +3,9 @@
     xmlns:dt="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
-	     <div class="input-group">
+	     <div class="input-group" style="margin-bottom:0px;">
 		  	  <dt:DateBox ui:field="dtInput"/>
 		  	  <g:InlineLabel styleName="input-group-addon" ui:field="spnCalendar1"></g:InlineLabel>
-		  	  </div>
+		 </div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -16,35 +16,32 @@
 		
 	    <g:cell>
 		<g:HTMLPanel ui:field="divControls">
-		     <g:HTMLPanel styleName="table table-hover table-striped table-bordered">
+		    <g:HTMLPanel styleName="table table-hover table-striped table-bordered">					     
 			    <div class="thead">
-			    	<div class="tr">
+			    	<g:HTMLPanel styleName="tr" ui:field="header">
 						<div class="th">Column 1</div>
-						<div class="th">Column 2</div>											
-						<div class="th">Column 3</div>
-					</div>						
+						<div class="th">Column 1</div>											
+						<div class="th">Column 1</div>
+						<div class="th">Column 1</div>		
+					</g:HTMLPanel>
+					<g:HTMLPanel styleName="tr">
+						<div class="td"></div>
+						<div class="td"></div>		
+						<div class="td"></div>
+						<div class="td"></div>	
+					</g:HTMLPanel>
+					<g:HTMLPanel styleName="tr">
+						<div class="td"></div>											
+						<div class="td"></div>
+						<div class="td"></div>		
+						<div class="td"></div>	
+					</g:HTMLPanel>						
 				</div>
-				<g:HTMLPanel ui:field="panelUsers" styleName="tbody">
-				    	<g:HTMLPanel styleName="tr">
-				    		<g:HTMLPanel styleName="td">Row 1</g:HTMLPanel>
-				    		<g:HTMLPanel styleName="td">Data</g:HTMLPanel>
-				    		<g:HTMLPanel styleName="td">Data</g:HTMLPanel>
-				    	</g:HTMLPanel>
-				    	
-				    	<g:HTMLPanel styleName="tr">
-				    		<g:HTMLPanel styleName="td">Row 2</g:HTMLPanel>
-				    		<g:HTMLPanel styleName="td">Data</g:HTMLPanel>
-				    		<g:HTMLPanel styleName="td">Data</g:HTMLPanel>
-				    	</g:HTMLPanel>
-				    	
-				    	<g:HTMLPanel styleName="tr">
-				    		<g:HTMLPanel styleName="td">Row 3</g:HTMLPanel>
-				    		<g:HTMLPanel styleName="td">Data</g:HTMLPanel>
-				    		<g:HTMLPanel styleName="td">Data</g:HTMLPanel>
-				    	</g:HTMLPanel>
-				</g:HTMLPanel><!--End Tbody  -->
-			</g:HTMLPanel><!--End Table  -->
-	   </g:HTMLPanel>
+				<g:HTMLPanel ui:field="panelLines" styleName="tbody"><!-- div class="tbody"-->
+				    
+				</g:HTMLPanel>
+	   		</g:HTMLPanel>
+	   	</g:HTMLPanel>
 	   </g:cell>
 	</g:HorizontalPanel>
 </ui:UiBinder> 

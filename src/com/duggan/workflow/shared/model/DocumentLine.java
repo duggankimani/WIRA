@@ -58,5 +58,9 @@ public class DocumentLine implements Serializable {
 	public void addValue(String name,Value value){
 		values.put(name, value);
 	}
+	
+	public Value getValue(String name){
+		return values.get(name);
+	}
 
 }

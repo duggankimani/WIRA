@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel styleName="tr" ui:field="panelRow">
+		 <g:HTMLPanel styleName="td hidden" ui:field="actionPanel">
+			<div class="action-commands">										
+				<g:Anchor styleName="green" ui:field="aEdit">
+					<i class="icon-pencil helper-14"></i>
+				</g:Anchor>
+				<g:Anchor styleName="red" ui:field="aDelete">
+					<i class="icon-trash"></i>
+				</g:Anchor>
+			</div>
+		</g:HTMLPanel>	
+    </g:HTMLPanel>
+   
+</ui:UiBinder>
