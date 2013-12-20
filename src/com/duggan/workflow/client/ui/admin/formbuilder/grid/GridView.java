@@ -6,6 +6,10 @@ import java.util.Collection;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,6 +27,8 @@ public class GridView extends Composite {
 	
 	@UiField HTMLPanel header;
 	@UiField HTMLPanel panelLines;
+	@UiField HasClickHandlers aNewRecord;
+	@UiField SpanElement spnNewRecordHandlerText;
 	
 	Collection<Field> columnConfigs = new ArrayList<Field>();
 	
@@ -30,16 +36,38 @@ public class GridView extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		columnConfigs = columns;
 		
+		init();
+		
 		for(Field field:columns){
 			header.add(createHeader(field));
 		}
+		
+	}
+	
+	private void init() {
+		aNewRecord.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				DocumentLine line = new DocumentLine();
+				createLine(line);
+			}
+		});
+	}
+
+	public void setNewRecordHandlerText(String text){
+		spnNewRecordHandlerText.setInnerText(text);
 	}
 	
 	public void setData(Collection<DocumentLine> lines){
 		for(DocumentLine line: lines){
-			GridRow row = new GridRow(columnConfigs, line);
-			panelLines.add(row);
+			createLine(line);
 		}
+	}
+
+	private void createLine(DocumentLine line) {
+		GridRow row = new GridRow(columnConfigs, line);
+		panelLines.add(row);
 	}
 
 	Widget createHeader(Field field){

@@ -76,15 +76,12 @@ public class GridLayout extends FieldWidget {
 		grid= new GridDnD(field.getFields()){
 			@Override
 			protected void save(List<Field> fields) {
-				for(Field fld: fields){
-					System.err.println(field.getId()+">> "+fld.getPosition()+"::"+fld.getCaption());
-				}
 				field.setFields(fields);
 				GridLayout.this.save();
 			}
 		};
 		
-		divControls.add(grid);		
+		divControls.add(grid);
 		this.getElement().getStyle().setPaddingBottom(20, Unit.PX);
 		this.getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		
@@ -146,10 +143,9 @@ public class GridLayout extends FieldWidget {
 		divControls.clear();
 		
 		GridView view = new GridView(field.getFields());
+		view.setNewRecordHandlerText("Add Row");
 		
 		Collection<DocumentLine> lines=new ArrayList<DocumentLine>();		
-		lines.add(new DocumentLine());
-		lines.add(new DocumentLine());
 		lines.add(new DocumentLine());
 		view.setData(lines);
 		

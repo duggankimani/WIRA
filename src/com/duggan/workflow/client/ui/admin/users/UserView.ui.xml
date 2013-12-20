@@ -12,13 +12,13 @@
 				<!--Action Buttons  -->
 				 <div class="action-buttons">
 					<g:Anchor ui:field="aNewUser" styleName="btn btn-primary"
-						title="Add a New Process">
+						title="Add a New User">
 						<i class="icon-plus"></i>
 							Add User
 					</g:Anchor>
 					
 					<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary hide"
-						title="Add a New Process">
+						title="Add a New Group">
 						<i class="icon-plus"></i>
 							Add Group
 					</g:Anchor>

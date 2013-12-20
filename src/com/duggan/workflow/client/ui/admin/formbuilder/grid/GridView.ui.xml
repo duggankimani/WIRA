@@ -4,16 +4,24 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-	    
-		<g:HTMLPanel styleName="table table-hover table-striped table-bordered">					     
-		    <div class="thead">
-		    	<g:HTMLPanel styleName="tr" ui:field="header">
-					
-				</g:HTMLPanel>						
+	    <div class="row-fluid">
+			<!--Action Buttons  -->
+			 <div class="action-buttons">
+				<g:Anchor ui:field="aNewRecord" styleName="btn btn-primary"
+					title="Add a New User">
+					<i class="icon-plus"></i>
+						<span ui:field="spnNewRecordHandlerText"></span>
+				</g:Anchor>
 			</div>
-			<g:HTMLPanel ui:field="panelLines" styleName="tbody"><!-- div class="tbody"-->
-			    
-			</g:HTMLPanel><!--End Tbody  -->
-		</g:HTMLPanel>
+			<g:HTMLPanel styleName="table table-hover table-striped table-bordered">					     
+			    <div class="thead">
+			    	<g:HTMLPanel styleName="tr" ui:field="header">
+											</g:HTMLPanel>						
+				</div>
+				<g:HTMLPanel ui:field="panelLines" styleName="tbody"><!-- div class="tbody"-->
+				    
+				</g:HTMLPanel><!--End Tbody  -->
+			</g:HTMLPanel>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
