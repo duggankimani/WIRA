@@ -601,7 +601,7 @@ overflow-y:auto;
 
 .td {
 	display: table-cell;
- 	padding: 8px;
+ 	/*padding: 8px;*/
 	text-align: left;
 	vertical-align: top;
 }

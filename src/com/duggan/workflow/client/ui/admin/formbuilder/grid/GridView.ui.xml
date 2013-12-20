@@ -7,8 +7,8 @@
 	    <div class="row-fluid">
 			<!--Action Buttons  -->
 			 <div class="action-buttons">
-				<g:Anchor ui:field="aNewRecord" styleName="btn btn-primary"
-					title="Add a New User">
+				<g:Anchor ui:field="aNewRecord" styleName="btn btn-primary btn-small"
+					title="Add a New Record">
 					<i class="icon-plus"></i>
 						<span ui:field="spnNewRecordHandlerText"></span>
 				</g:Anchor>

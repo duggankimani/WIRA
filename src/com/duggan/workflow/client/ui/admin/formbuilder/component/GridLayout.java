@@ -5,10 +5,18 @@ import java.util.Collection;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.grid.GridView;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.EditLineEvent;
+import com.duggan.workflow.client.ui.events.EditLineEvent.EditLineHandler;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -18,12 +26,15 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class GridLayout extends FieldWidget {
+public class GridLayout extends FieldWidget
+implements EditLineHandler, DeleteLineHandler{
 	
 	private static GridLayoutUiBinder uiBinder = GWT
 			.create(GridLayoutUiBinder.class);
@@ -56,6 +67,8 @@ public class GridLayout extends FieldWidget {
 			}
 		});
 		
+		AppContext.getEventBus().addHandler(EditLineEvent.TYPE, this);
+		AppContext.getEventBus().addHandler(DeleteLineEvent.TYPE, this);
 	}
 	
 	@Override
@@ -214,6 +227,59 @@ public class GridLayout extends FieldWidget {
 	@Override
 	public void onAfterSave() {
 		grid.repaint(field.getFields());		
+	}
+
+	/**
+	 * Runtime - Delete Row
+	 * -Enable save/ edit mode
+	 */
+	@Override
+	public void onDeleteLine(DeleteLineEvent event) {
+		
+	}
+
+	/**
+	 * Runtime - Edit line
+	 */
+	@Override
+	public void onEditLine(EditLineEvent event) {
+		DocumentLine line = event.getLine();
+		HTMLPanel panel = new HTMLPanel("");
+		for(String key: line.getValues().keySet()){
+			
+			Value val = line.getValue(key);
+			
+			panel.add(new HTML(key+" : "+(val==null? "":val.getValue())));
+		}
+		
+		AppManager.showPopUp("Values", panel, new OnOptionSelected() {
+			
+			@Override
+			public void onSelect(String name) {
+								
+			}
+		}, "OK");
+	}
+	
+	public Collection<DocumentLine> getDocumentLines(){
+		Widget child = divControls.getWidget(0);
+		if(!(child instanceof GridView)){
+			return new ArrayList<DocumentLine>(); 
+		}
+		GridView gridView = (GridView)child;
+		Collection<DocumentLine> documentLines = gridView.getRecords();
+		
+		return documentLines;
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		
+		GridValue value = new GridValue();
+		value.setKey(field.getName());
+		value.setValue(getDocumentLines());
+		
+		return value;
 	}
 	
 }

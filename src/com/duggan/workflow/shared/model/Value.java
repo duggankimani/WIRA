@@ -11,7 +11,9 @@ public interface Value extends Serializable{
 	void setValue(Object value);
 	
 	Object getValue();
+	
 	String getKey();
+	
 	Long getId();
 	
 	DataType getDataType();

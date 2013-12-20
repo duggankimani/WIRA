@@ -64,6 +64,19 @@ public class GridView extends Composite {
 			createLine(line);
 		}
 	}
+	
+	public Collection<DocumentLine> getRecords(){
+		Collection<DocumentLine> lines = new ArrayList<DocumentLine>();
+		int count = panelLines.getWidgetCount();
+		
+		for(int i=0; i<count; i++){
+			GridRow gridRow = (GridRow)panelLines.getWidget(i);
+			DocumentLine line=gridRow.getRecord();
+			lines.add(line);
+		}
+		
+		return lines;
+	}
 
 	private void createLine(DocumentLine line) {
 		GridRow row = new GridRow(columnConfigs, line);
