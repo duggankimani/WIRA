@@ -71,10 +71,14 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	}
 
 	@Override
-	public void showProcessing(boolean processing) {
+	public void showProcessing(boolean processing,String message) {
 		if(processing){
+			if(message!=null){
+				loadingtext.setInnerText(message);
+			}
 			loadingtext.removeClassName("hide");
 		}else{
+			loadingtext.setInnerText("Loading ...");
 			loadingtext.addClassName("hide");
 		}
 	}

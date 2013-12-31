@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.grid.GridView;
@@ -11,6 +12,8 @@ import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.EditLineEvent;
 import com.duggan.workflow.client.ui.events.EditLineEvent.EditLineHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
@@ -19,6 +22,8 @@ import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
+import com.duggan.workflow.shared.requests.DeleteLineRequest;
+import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Unit;
@@ -34,7 +39,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 public class GridLayout extends FieldWidget
-implements EditLineHandler, DeleteLineHandler{
+implements EditLineHandler{
 	
 	private static GridLayoutUiBinder uiBinder = GWT
 			.create(GridLayoutUiBinder.class);
@@ -68,7 +73,6 @@ implements EditLineHandler, DeleteLineHandler{
 		});
 		
 		AppContext.getEventBus().addHandler(EditLineEvent.TYPE, this);
-		AppContext.getEventBus().addHandler(DeleteLineEvent.TYPE, this);
 	}
 	
 	@Override
@@ -153,19 +157,23 @@ implements EditLineHandler, DeleteLineHandler{
 	 * Runtime View
 	 */
 	private void showRuntimeGrid() {
-		divControls.clear();
-		
-		GridView view = new GridView(field.getFields());
-		view.setNewRecordHandlerText("Add Row");
-		
-		Collection<DocumentLine> lines=new ArrayList<DocumentLine>();		
-		lines.add(new DocumentLine());
-		view.setData(lines);
-		
-		//Draw fields	
-		divControls.add(view);
+		//Collection<DocumentLine> lines=new ArrayList<DocumentLine>();
+		//lines.add(new DocumentLine());		
+		//setLines(lines);
+		//Draw fields
 	}
 
+
+	private void setLines(Collection<DocumentLine> doclines) {
+		divControls.clear();
+		
+		assert field!=null;
+		assert field.getFields()!=null;
+		
+		GridView view = new GridView(field.getFields());
+		view.setData(doclines);
+		divControls.add(view);
+	}
 
 	@Override
 	public void addShim(int left, int top, int offSetWidth, int offSetHeight) {
@@ -230,15 +238,6 @@ implements EditLineHandler, DeleteLineHandler{
 	}
 
 	/**
-	 * Runtime - Delete Row
-	 * -Enable save/ edit mode
-	 */
-	@Override
-	public void onDeleteLine(DeleteLineEvent event) {
-		
-	}
-
-	/**
 	 * Runtime - Edit line
 	 */
 	@Override
@@ -273,6 +272,20 @@ implements EditLineHandler, DeleteLineHandler{
 	}
 	
 	@Override
+	public void setValue(Object value) {
+		if(value!=null){
+			//System.err.println("lines");
+			@SuppressWarnings("unchecked")
+			Collection<DocumentLine> lines = (Collection<DocumentLine>)value;
+			setLines(lines);
+		}else{
+			Collection<DocumentLine> lines=new ArrayList<DocumentLine>();
+			lines.add(new DocumentLine());		
+			setLines(lines);
+		}
+	}
+	
+	@Override
 	public Value getFieldValue() {
 		
 		GridValue value = new GridValue();
@@ -282,4 +295,8 @@ implements EditLineHandler, DeleteLineHandler{
 		return value;
 	}
 	
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+	}
 }

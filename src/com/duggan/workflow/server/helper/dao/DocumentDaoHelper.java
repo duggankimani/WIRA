@@ -21,6 +21,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.Value;
@@ -78,7 +79,12 @@ public class DocumentDaoHelper {
 		model.getValues().clear();
 		Map<String, Value> vals = document.getValues();
 		Collection<Value> values = vals.values(); 
-		for(Value val: values){			
+		for(Value val: values){		
+			if(val==null || (val instanceof GridValue)){
+				//Ignore
+				continue;
+			}
+			
 			ADValue previousValue = new ADValue();
 			if(val.getId()!=null){
 				previousValue = DB.getFormDao().getValue(val.getId());
@@ -96,8 +102,6 @@ public class DocumentDaoHelper {
 		model = dao.saveDocument(model);
 
 		Document doc = getDoc(model);
-		
-		//values---
 		
 		return doc;
 	}
@@ -250,7 +254,8 @@ public class DocumentDaoHelper {
 				lines.put(line.getName(), detailz);
 			}
 			
-			detailz.add(line);
+			if(!detailz.contains(line))
+				detailz.add(line);
 			
 		}
 		
@@ -424,6 +429,12 @@ public class DocumentDaoHelper {
 			}
 		
 		return types;
+	}
+
+	public static void delete(DocumentLine line) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		DetailModel model = dao.getDetailById(line.getId());
+		dao.delete(model);				
 	}
 
 }

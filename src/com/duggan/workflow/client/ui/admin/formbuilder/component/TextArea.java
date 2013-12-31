@@ -11,6 +11,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextArea extends FieldWidget {
@@ -25,7 +26,7 @@ public class TextArea extends FieldWidget {
 
 	@UiField Element lblEl;
 	@UiField com.duggan.workflow.client.ui.component.TextArea txtComponent;
-	@UiField DivElement commentContainer;
+	@UiField HTMLPanel panelControls;
 	
 	public TextArea() {
 		super();
@@ -108,8 +109,8 @@ public class TextArea extends FieldWidget {
 		txtComponent.setTitle(help);
 	}
 	
-	public DivElement getCommentContainer() {
-		return commentContainer;
+	public HTMLPanel getContainer() {
+		return panelControls;
 	}
 	
 	@Override
@@ -130,13 +131,19 @@ public class TextArea extends FieldWidget {
 
 	@Override
 	public void setValue(Object value) {
-		if(value!=null)
+		if(value!=null){
 			txtComponent.setValue((String)value);
+			lblComponent.setText((String)value);
+			
+		}
 	}
 	
 	@Override
 	public void setReadOnly(boolean readOnly) {
-		txtComponent.setReadOnly(readOnly);
+		if(readOnly){
+			txtComponent.removeFromParent();
+			panelControls.add(lblComponent);
+		}
 
 	}
 	

@@ -34,6 +34,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -52,6 +53,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	Field field = new Field();
 
 	protected boolean popUpActivated = false;
+	
+	protected InlineLabel lblComponent = new InlineLabel();
 
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
@@ -87,6 +90,15 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		assert property != null;
 		assert property.getName() != null;
 
+		
+		if(property.getType().isDropdown()){
+			Property previous=props.get(property.getName());
+			//need to copy lookup values
+			if(previous!=null){
+				property.setSelectionValues(previous.getSelectionValues());
+			}
+		}
+		
 		props.put(property.getName(), property);
 	}
 
@@ -115,7 +127,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void showProperties(int arrowPosition) {
 
-		System.err.println("Show Props>>>> "+field);
 		/* 
 		 * Position of the pop-over 
 		 */
@@ -323,6 +334,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		model.setType(getType());
 
 		model.setProperties(getProperties());
+		
+		System.err.println("Save Props>>>> "+model.getProperties());
 
 		model.setName(getPropertyValue(NAME));
 
@@ -390,31 +403,47 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 		}
 		
+		//set place holder
 		String placeHolder = getPropertyValue(PLACEHOLDER);
 		if (placeHolder != null && !placeHolder.isEmpty()){
 			setPlaceHolder(placeHolder);
 		}
 
+		//set help
 		String help = getPropertyValue(HELP);
 		if (help != null) {
 			setHelp(help);
 		}
-		Value value = field.getValue();
-		if (value != null) {
-			setValue(value.getValue());
-		}
 
+		//Set Read only
 		boolean readOnly = false;
 		Object val = getValue(READONLY);
 		if (val != null && val instanceof Boolean) {
 			readOnly = (Boolean) val;
 		}
-
 		setReadOnly(readOnly);
-		
+
+		String alignment = getPropertyValue(ALIGNMENT);
+		if(alignment!=null){
+			setAlignment(alignment);
+		}
+		//set dropdown choices
 		if(this instanceof IsSelectionField){
 			((IsSelectionField)this).setSelectionValues(field.getSelectionValues());
 		}
+
+		//Set Value
+		Value value = field.getValue();
+		if (value != null) {
+			setValue(value.getValue());
+		}else{
+			setValue(null);
+		}
+
+	}
+
+	protected void setAlignment(String alignment) {
+		
 	}
 
 	private void setProperties(List<Property> properties) {
@@ -627,9 +656,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			widget = new SelectBasic(property);
 			break;
 			
-		case COLUMNPROPERTY:
-			widget = new ColumnProperty(property);
-			break;
 		}
 		
 		

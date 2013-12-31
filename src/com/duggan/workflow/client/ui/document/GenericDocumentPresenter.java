@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.document;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,12 +15,15 @@ import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.GridLayout;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
@@ -39,10 +43,13 @@ import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
@@ -55,6 +62,8 @@ import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.CreateDocumentRequest;
+import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
@@ -64,6 +73,8 @@ import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
+import com.duggan.workflow.shared.responses.CreateDocumentResult;
+import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
@@ -89,7 +100,8 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> 
-		implements ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler{
+		implements ReloadDocumentHandler, ActivitiesLoadHandler,
+		ReloadAttachmentsHandler,DeleteLineHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type, String subject,
@@ -135,6 +147,8 @@ public class GenericDocumentPresenter extends
 	
 	Doc doc;
 	
+	Form form;
+	
 	private Integer activities=0;
 	
 	@Inject DispatchAsync requestHelper;
@@ -172,7 +186,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
-		
+		addRegisteredHandler(DeleteLineEvent.TYPE, this);
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -214,9 +228,11 @@ public class GenericDocumentPresenter extends
 			public void onClick(ClickEvent event) {
 				
 				if(doc instanceof Document)
-				if(((Document)doc).getStatus()==DocStatus.DRAFTED)
-					showEditForm(MODE.EDIT);
+				if(((Document)doc).getStatus()==DocStatus.DRAFTED){
+					//showEditForm(MODE.EDIT);
+					save((Document)doc);
 				}
+			}
 		});
 		
 		getView().getSaveCommentButton().addClickHandler(new ClickHandler() {
@@ -368,6 +384,41 @@ public class GenericDocumentPresenter extends
 		
 	}
 
+	protected void save(Document document) {
+		document.setValues(getView().getValues());
+		document.getDetails().clear();
+		for(Value val: document.getValues().values()){
+			if(val instanceof GridValue){
+				GridValue gridVal = (GridValue)val;
+				Collection<DocumentLine> lines = gridVal.getValue();
+				for(DocumentLine line: lines){
+					line.setName(gridVal.getKey());
+					document.addDetail(line);
+				}				
+			}
+		}
+		
+//		List<DocumentLine> lnes=document.getDetails().get("lines");
+//		for(DocumentLine l: lnes){
+//			System.err.println(l);
+//		}
+		
+		if (getView().isValid()) {
+			requestHelper.execute(new CreateDocumentRequest(document),
+					new TaskServiceCallback<CreateDocumentResult>() {
+						@Override
+						public void processResult(
+								CreateDocumentResult result) {
+
+							Document saved = result.getDocument();
+							assert saved.getId() != null;
+							bindForm(form, saved);
+						}
+					});
+		}
+
+	}
+
 	protected void save(String commenttxt) {
 		if(commenttxt==null || commenttxt.trim().isEmpty())
 			return;
@@ -464,16 +515,29 @@ public class GenericDocumentPresenter extends
 
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
+		this.form = form;
 		if(form.getFields()==null){
 			getView().showDefaultFields(true);
 			return;
 		}
 			
 		Map<String, Value> values = doc.getValues();
-		
+		//System.err.println("Details >>>>> "+doc.getDetails().size());
 		for(Field field: form.getFields()){
 			String name = field.getName();
 			if(name==null || name.isEmpty()){
+				continue;
+			}
+			
+			if(field.getType()==DataType.GRID){
+				List<DocumentLine> lines=doc.getDetails().get(field.getName());
+				if(lines!=null){
+					GridValue value = new GridValue();
+					value.setKey(field.getName());
+					value.setCollectionValue(lines);
+					//System.err.println(">>"+lines.size());
+					field.setValue(value);
+				}
 				continue;
 			}
 			
@@ -711,4 +775,23 @@ public class GenericDocumentPresenter extends
 		});
 	}
 	
+	/**
+	 * Runtime - Delete Row
+	 * -Enable save/ edit mode
+	 */
+	@Override
+	public void onDeleteLine(DeleteLineEvent event) {
+		DocumentLine line = event.getLine();
+		if(line.getId()==null){
+			return;
+		}
+		AppContext.fireEvent(new ProcessingEvent("Deleting ..."));
+		requestHelper.execute(new DeleteLineRequest(line), 
+				new TaskServiceCallback<DeleteLineResponse>() {
+			@Override
+			public void processResult(DeleteLineResponse result) {
+				AppContext.fireEvent(new ProcessingCompletedEvent());
+			}
+		});
+	}
 }

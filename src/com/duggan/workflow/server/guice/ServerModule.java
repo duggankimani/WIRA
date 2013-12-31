@@ -74,6 +74,8 @@ import com.duggan.workflow.server.actionhandlers.CreateFieldRequestActionHandler
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestActionHandler;
+import com.duggan.workflow.shared.requests.DeleteLineRequest;
+import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -188,5 +190,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(DeleteFormModelRequest.class,
 				DeleteFormModelRequestActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(DeleteLineRequest.class,
+				DeleteLineRequestActionHandler.class, SessionValidator.class);
 	}
 }

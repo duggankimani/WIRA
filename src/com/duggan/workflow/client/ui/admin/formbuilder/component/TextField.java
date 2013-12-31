@@ -3,13 +3,16 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextField extends FieldWidget {
@@ -22,6 +25,7 @@ public class TextField extends FieldWidget {
 
 	@UiField Element lblEl;
 	@UiField com.duggan.workflow.client.ui.component.TextField txtComponent;
+	@UiField HTMLPanel panelControls;
 	
 	private final Widget widget;
 	
@@ -30,6 +34,10 @@ public class TextField extends FieldWidget {
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
+				new KeyValuePair("left", "Left"),
+				new KeyValuePair("center", "Center"),
+				new KeyValuePair("right", "Right")));
 
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
@@ -77,8 +85,6 @@ public class TextField extends FieldWidget {
 				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
 					firePropertyChanged(property, value);
 				}
-				//AppContext.getEventBus().fireEvent(new );
-				//AppContext.getEventBus().fireEvent(event);
 				
 			}
 		});
@@ -124,13 +130,18 @@ public class TextField extends FieldWidget {
 	
 	@Override
 	public void setValue(Object value) {
-		if(value!=null)
+		if(value!=null){
 			txtComponent.setValue((String)value);
+			lblComponent.setText((String)value);
+		}
 	}
 	
 	@Override
 	public void setReadOnly(boolean readOnly) {
-		txtComponent.setReadOnly(readOnly);
+		if(readOnly){
+			txtComponent.removeFromParent();
+			panelControls.add(lblComponent);
+		}
 	}
 
 	@Override
@@ -139,5 +150,10 @@ public class TextField extends FieldWidget {
 			txtComponent.setClass("input-medium");
 		}
 		return txtComponent;
+	}
+	
+	@Override
+	protected void setAlignment(String alignment) {		
+		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
 	}
 }

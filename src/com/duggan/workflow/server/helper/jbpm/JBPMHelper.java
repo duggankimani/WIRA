@@ -158,9 +158,11 @@ public class JBPMHelper implements Closeable {
 		Collection<Value> values = vals.values();
 		
 		for (Value val : values) {
-			initialParams.put(val.getKey(), val.getValue());
+			if(val!=null){
+				initialParams.put(val.getKey(), val.getValue());
+			}
 		}
-
+		
 		ProcessInstance processInstance = sessionManager.startProcess(
 				getProcessId(summary.getType()), initialParams, summary);
 

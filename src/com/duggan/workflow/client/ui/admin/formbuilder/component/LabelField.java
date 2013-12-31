@@ -51,7 +51,12 @@ public class LabelField extends FieldWidget {
 	
 	@Override
 	public void setValue(Object value) {
-		if(value!=null && value instanceof String){
+		if(value==null){
+			lblComponent.setText("");
+			return;
+		}
+		
+		if(value instanceof String){
 			lblComponent.setText(value.toString());
 		}else if(value instanceof Date){
 			lblComponent.setText(DateUtils.DATEFORMAT.format((Date)value));

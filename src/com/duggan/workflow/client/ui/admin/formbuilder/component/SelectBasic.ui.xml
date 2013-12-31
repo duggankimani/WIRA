@@ -4,8 +4,8 @@
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
 		   <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" class="control-label">Select Basic:</label>
-		       <div class="controls">
+		       <g:HTMLPanel styleName="controls" ui:field="panelControls">
 		       	<d:DropDownList ui:field="lstItems" title=""></d:DropDownList>
-		       </div>
+		       </g:HTMLPanel>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

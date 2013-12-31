@@ -11,12 +11,11 @@
 	ui:generateLocales='default'>
 
 	<g:DialogBox styleName="modal modal-document" modal="true" glassEnabled="true" ui:field="diaBox">
+	<!-- g:DialogBox modal="true" glassEnabled="true" ui:field="diaBox"-->
 	    <g:HTMLPanel>
 	   
 	    <v:IssuesPanel ui:field="issues">
 	    </v:IssuesPanel>
-	    
-	    
 	    
 	    <g:HTMLPanel ui:field="panelBody" styleName="modal-body">
 			<fieldset>

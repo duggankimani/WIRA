@@ -45,7 +45,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 
 	public interface MyView extends View {
 
-		void showProcessing(boolean processing);
+		void showProcessing(boolean processing,String message);
 		void setAlertVisible(String subject, String action, String url);
 	}
 
@@ -127,12 +127,12 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 
 	@Override
 	public void onProcessing(ProcessingEvent event) {
-		getView().showProcessing(true);
+		getView().showProcessing(true,event.getMessage());
 	}
 
 	@Override
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
-		getView().showProcessing(false);
+		getView().showProcessing(false, null);
 	}
 	
 	@Override

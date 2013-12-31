@@ -47,8 +47,6 @@ public class Document extends Doc implements Serializable{
 	
 	private Long sessionId;
 	
-	private Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
-	
 	public Document() {
 		//serialization
 		//super();
@@ -223,26 +221,6 @@ public class Document extends Doc implements Serializable{
 	public String toString() {
 	
 		return "DocumentId = "+id+", subject="+subject;
-	}
-
-	public Map<String, List<DocumentLine>> getDetails() {
-		return details;
-	}
-
-	public void setDetails(Map<String, List<DocumentLine>> details) {
-		this.details = details;
-	}
-	
-	public void addDetail(DocumentLine line){
-		String name = line.getName();
-		
-		List<DocumentLine> lines = details.get(name);
-		if(lines==null){
-			lines = new ArrayList<DocumentLine>();
-			details.put(name, lines);
-		}
-		
-		lines.add(line);
 	}
 
 	//public Map<String, Value> 

@@ -5,8 +5,8 @@
     >
 		    <g:HTMLPanel styleName="control-group">
 			    <label ui:field="lblEl" class="control-label">Date Box:</label>
-			    <div class="controls">
+			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 			  	 	<d:DateInput ui:field="dateBox"></d:DateInput>
-			    </div>
+			    </g:HTMLPanel>
 		    </g:HTMLPanel>
 </ui:UiBinder>	

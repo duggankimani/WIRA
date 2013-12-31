@@ -13,9 +13,19 @@ public class ProcessingEvent extends
 		void onProcessing(ProcessingEvent event);
 	}
 
+	String message=null;
+	
 	public ProcessingEvent() {
 	}
+	
+	public ProcessingEvent(String message){
+		this.message = message;
+	}
 
+	public String getMessage(){
+		return message;
+	}
+	
 	@Override
 	protected void dispatch(ProcessingHandler handler) {
 		handler.onProcessing(this);
@@ -32,5 +42,9 @@ public class ProcessingEvent extends
 
 	public static void fire(HasHandlers source) {
 		source.fireEvent(new ProcessingEvent());
+	}
+	
+	public static void fire(HasHandlers source, String message) {
+		source.fireEvent(new ProcessingEvent(message));
 	}
 }

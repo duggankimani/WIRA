@@ -11,6 +11,7 @@ import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.EditLineEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -84,7 +85,11 @@ public class GridRow extends Composite {
 		HTMLPanel cell = new HTMLPanel("");
 		cell.setStyleName("td");
 		
-		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);
+		Value value=line.getValue(field.getName());
+		field.setValue(value);
+		//System.err.println(field.getName()+">>> "+(value==null? "": value.getValue()));
+		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);		
+		
 		cell.add(fw.getComponent(true));
 		widgets.add(fw);
 		
@@ -98,8 +103,34 @@ public class GridRow extends Composite {
 	
 	public DocumentLine getRecord(){
 		for(FieldWidget widget: widgets){
-			line.addValue(widget.getField().getName(), widget.getFieldValue());
+			Value val = widget.getFieldValue();
+			
+			Field field=widget.getField();
+			if(field==null){
+				continue;
+			}
+			
+			String name =field.getName();
+			Value previous = line.getValue(name);
+			
+			//clear field value
+			if(val==null){
+				val = previous;
+				if(val!=null){
+					val.setValue(null);
+				}else{
+					continue;
+				}
+			}
+			
+			val.setKey(name);
+			if(previous!=null){
+				val.setId(previous.getId());
+			}	
+			
+			line.addValue(name, val);
 		}
+		
 		return line;
 	}
 

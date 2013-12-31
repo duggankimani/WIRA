@@ -89,6 +89,17 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 		}
 		
 	}
+	
+	public void setValueByKey(String key){
+		for(int i=0; i<listBox.getItemCount(); i++){
+			
+			if(listBox.getValue(i).equals(key)){
+				listBox.setSelectedIndex(i);
+				value =  items.get(i-1);
+			}
+			
+		}
+	}
 
 	@Override
 	public void setTitle(String title) {

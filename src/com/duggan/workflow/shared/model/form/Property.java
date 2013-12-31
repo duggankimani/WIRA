@@ -1,5 +1,8 @@
 package com.duggan.workflow.shared.model.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 
@@ -14,6 +17,7 @@ public class Property extends FormModel{
 	private Long formId; //form property
 	private Value value;
 	private String caption;
+	private List<KeyValuePair> kvp= new ArrayList<KeyValuePair>();
 	
 	public Property(){
 	}
@@ -22,6 +26,16 @@ public class Property extends FormModel{
 		this.name = name;
 		this.caption = caption;
 		this.type = type;
+	}
+	
+	public Property(String name, String caption, DataType type,KeyValuePair... pairs) {
+		this.name = name;
+		this.caption = caption;
+		this.type = type;
+		
+		for(KeyValuePair p: pairs){
+			this.kvp.add(p);
+		}
 	}
 	
 	public Property(String name, String caption, DataType type, Long fieldId){
@@ -76,6 +90,26 @@ public class Property extends FormModel{
 		Property other = (Property)obj;
 		
 		return this.name.equals(other.name);
+	}
+	
+	public void setSelectionValues(List<KeyValuePair> pairs){
+		if(pairs!=null){
+			kvp.clear();
+			kvp.addAll(pairs);
+		}
+	}
+	
+	public List<KeyValuePair> getSelectionValues(){
+		return kvp;
+	}
+	
+	@Override
+	public String toString() {
+		return "{id="+getId()+
+				";Name="+getName()+
+				";Value="+(getValue()==null? null: getValue().getValue())+
+				"}"
+				;
 	}
 	
 }

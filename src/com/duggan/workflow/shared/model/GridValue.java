@@ -28,7 +28,7 @@ public class GridValue implements Value {
 	}
 
 
-	public void setValue(Collection<DocumentLine> value) {
+	public void setCollectionValue(Collection<DocumentLine> value) {
 		this.value = value;
 	}
 
@@ -52,8 +52,10 @@ public class GridValue implements Value {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setValue(Object value) {
-		System.err.println(">>>>>> Grid :: "+value);
+		if(value!=null)
+			setCollectionValue((Collection<DocumentLine>)value);
 	}
 }

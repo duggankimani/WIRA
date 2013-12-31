@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextArea;
@@ -23,7 +24,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class FormPanel extends Composite {
@@ -41,11 +41,16 @@ public class FormPanel extends Composite {
 	@UiField DivElement divFormHelp;
 	@UiField IssuesPanel issues;
 	
-	
 	FormDelegate formDelegate = new FormDelegate();
+	MODE mode = MODE.VIEW;
 	
-	public FormPanel(Form form) {
+	public FormPanel(Form form){		
+		this(form, MODE.VIEW);
+	}
+	
+	public FormPanel(Form form,MODE mode) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.mode = mode;
 		
 		form.getCaption();
 		divFormHelp.setInnerText("");
@@ -86,9 +91,13 @@ public class FormPanel extends Composite {
 		
 		for(Field field: fields){
 			FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field, false);
+			if(mode==MODE.VIEW){
+				//set read only 
+				fieldWidget.setReadOnly(true);
+			}
 			
 			if(fieldWidget instanceof TextArea){
-				((TextArea) fieldWidget).getCommentContainer().removeClassName("hidden");
+				((TextArea) fieldWidget).getContainer().removeStyleName("hidden");
 			}
 			
 			panelFields.add(fieldWidget);

@@ -1,13 +1,19 @@
 package com.duggan.workflow.client.ui.save.form;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.delegate.FormDelegate;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.IntValue;
 import com.duggan.workflow.shared.model.Priority;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Form;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -115,8 +121,20 @@ public class GenericFormView extends PopupViewImpl implements
 		doc.setPriority(getPriority().ordinal());
 		doc.setValue("priority", new IntValue(null,"priority",doc.getPriority()));
 
-		doc.setValues(formDelegate.getValues(panelFields));
+		Map<String,Value> values = formDelegate.getValues(panelFields);
+		doc.setValues(values);
 		
+		for(Value val: values.values()){
+			if(val instanceof GridValue){
+				GridValue gridVal = (GridValue)val;
+				Collection<DocumentLine> lines = gridVal.getValue();
+				for(DocumentLine line: lines){
+					line.setName(gridVal.getKey());
+					doc.addDetail(line);
+				}
+				
+			}
+		}
 		return doc;
 	}
 

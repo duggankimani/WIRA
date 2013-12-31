@@ -539,7 +539,9 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	public DetailModel getDetailById(Long detailId){
-		return (DetailModel)em.createQuery("FROM DetailModel d where id=:id").getSingleResult();	
+		return (DetailModel)em.createQuery("FROM DetailModel d where id=:id")
+				.setParameter("id", detailId).
+				getSingleResult();	
 	}
 	
 }

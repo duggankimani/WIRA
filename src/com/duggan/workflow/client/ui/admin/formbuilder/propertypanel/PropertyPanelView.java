@@ -81,6 +81,15 @@ public class PropertyPanelView extends PopupViewImpl implements
 			FieldWidget fw = FieldWidget.getWidget(property);
 			add(fw);
 			
+			/**
+			 * This is an input component for providing
+			 * possible values/answers for choice boxes
+			 * and comboboxes
+			 * <p>
+			 * A single key is assigned to all possible
+			 * choices
+			 * 
+			 */
 			if(property.getName().equals(SELECTIONTYPE)){
 				
 				property.setFieldId(model.getId());

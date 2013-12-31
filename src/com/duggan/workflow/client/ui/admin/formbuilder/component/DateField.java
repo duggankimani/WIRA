@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import java.util.Date;
 
 import com.duggan.workflow.client.ui.component.DateInput;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Value;
@@ -11,6 +12,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DateField extends FieldWidget {
@@ -25,6 +27,7 @@ public class DateField extends FieldWidget {
 	
 	@UiField Element lblEl;
 	@UiField DateInput dateBox;
+	@UiField HTMLPanel panelControls;
 	
 	public DateField() {
 		super();
@@ -91,11 +94,16 @@ public class DateField extends FieldWidget {
 	public void setValue(Object value) {
 		if(value!=null){
 			dateBox.setValue((Date)value);
+			lblComponent.setText(DateUtils.DATEFORMAT.format((Date)value));
 		}
 	}
 	
 	@Override
 	public void setReadOnly(boolean readOnly) {
+		if(readOnly){
+			dateBox.removeFromParent();
+			panelControls.add(lblComponent);
+		}
 		
 	}
 	

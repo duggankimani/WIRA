@@ -40,9 +40,10 @@ public class TestDocumentDaoImpl {
 		Assert.assertNotNull(type);
 	}
 	
-	@Ignore
+	@Test
 	public void search(){
-		Document model = DocumentDaoHelper.getDocument(3L);
+		Document model = DocumentDaoHelper.getDocument(60L);
+		System.err.println(">>>>>>>> "+model.getDetails().size());
 	}
 	
 	@Ignore
@@ -55,7 +56,7 @@ public class TestDocumentDaoImpl {
 		}
 	}
 	
-	@Test
+	@Ignore
 	public void getEM(){
 		 List<DocumentModel> models = dao.getAllDocuments(DocStatus.DRAFTED);
 		 dao.getAllDocuments(DocStatus.APPROVED);

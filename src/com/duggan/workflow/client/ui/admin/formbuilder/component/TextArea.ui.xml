@@ -6,9 +6,9 @@
 		       <label ui:field="lblEl" class="control-label">Text Area:</label>
 			    <div class="controls">
 			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
-			  	 <div class="comment-container" ui:field="commentContainer">
+			  	<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
 			  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
-		    	 </div>
+		    	</g:HTMLPanel>
 		    	</div>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

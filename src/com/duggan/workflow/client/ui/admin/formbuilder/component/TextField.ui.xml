@@ -6,9 +6,9 @@
 	<g:AbsolutePanel ui:field="container">
 	        <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" for="Username" class="control-label">Text Input:</label>
-			    <div class="controls">
-			    <d:TextField ui:field="txtComponent" type="text" class="input-xlarge" placeholder="placeholder"/>
-		    	</div>
+			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
+			    <d:TextField ui:field="txtComponent" type="text" class="input-xlarge"/>
+		    	</g:HTMLPanel>
 	       </g:HTMLPanel>
 	</g:AbsolutePanel>
 </ui:UiBinder>	

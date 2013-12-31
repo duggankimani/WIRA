@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
+
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
@@ -30,6 +32,8 @@ import com.duggan.workflow.shared.model.form.Property;
 
 public class FormDaoHelper {
 
+	static final Logger logger= Logger.getLogger(FormDaoHelper.class);
+	
 	/**
 	 * 
 	 * @return Forms in the detabase (Only general form details are included - no fields & Form properties are included)
@@ -212,8 +216,11 @@ public class FormDaoHelper {
 		if(advalue==null)
 			return null;
 		
-		if(type==null)
-			throw new IllegalArgumentException("FormDaoHelper.GetValue: Datatype must be provided");
+		if(type==null){
+			logger.warn("FormDaoHelper.GetValue: [Field="+advalue.getFieldName()+"] Datatype must be provided");
+			return null;
+		}
+			
 		
 		Value value = null;
 		
@@ -280,9 +287,11 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADForm adform = new ADForm();
+		if(form.getId()!=null){
+			adform = dao.getForm(form.getId());
+		}
 		adform.setCaption(form.getCaption());		
 		getADFields(form.getFields(), adform);
-		adform.setId(form.getId());
 		adform.setName(form.getName());		
 		getADProperties(form.getProperties(), adform);
 		//adform.setProperties(properties);

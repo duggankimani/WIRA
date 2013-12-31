@@ -29,7 +29,7 @@ public class StringValue implements Value{
 	}
 
 	public void setValue(Object value) {
-		this.value = value.toString();
+		this.value = (value==null? "": value.toString());
 	}
 
 	public String getKey() {

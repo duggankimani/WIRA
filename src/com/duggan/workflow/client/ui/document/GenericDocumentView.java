@@ -153,6 +153,8 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 	
 	public void setForm(Form form){
+		fldForm.clear();
+		
 		if(form==null || form.getFields()==null)
 			return;
 		

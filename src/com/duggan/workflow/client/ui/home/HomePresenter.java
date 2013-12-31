@@ -474,7 +474,7 @@ public class HomePresenter extends
 			@Override
 			public void processResult(GenericFormPresenter result) {
 				result.setDocumentType(type);
-				addToPopupSlot(result, false);
+				addToPopupSlot(result, true);
 			}
 		});
 	}

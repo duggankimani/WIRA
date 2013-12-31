@@ -32,15 +32,18 @@ public class GridView extends Composite {
 	
 	Collection<Field> columnConfigs = new ArrayList<Field>();
 	
-	public GridView(Collection<Field> columns) {
+	public GridView(Collection<Field> columns) {	
 		initWidget(uiBinder.createAndBindUi(this));
-		columnConfigs = columns;
+		setNewRecordHandlerText("Add Row");	
 		
-		init();
-		
-		for(Field field:columns){
-			header.add(createHeader(field));
+		if(columns!=null){
+			columnConfigs = columns;		
+			for(Field field:columns){
+				header.add(createHeader(field));
+			}
 		}
+		
+		init();		
 		
 	}
 	
@@ -61,6 +64,7 @@ public class GridView extends Composite {
 	
 	public void setData(Collection<DocumentLine> lines){
 		for(DocumentLine line: lines){
+			//System.err.println(line);
 			createLine(line);
 		}
 	}
@@ -79,7 +83,7 @@ public class GridView extends Composite {
 	}
 
 	private void createLine(DocumentLine line) {
-		GridRow row = new GridRow(columnConfigs, line);
+		GridRow row = new GridRow(columnConfigs, line);	
 		panelLines.add(row);
 	}
 

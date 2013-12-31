@@ -151,6 +151,7 @@ public class GenericFormPresenter extends
 				assert result.getFormModel().size()==1;
 				Form form = (Form)result.getFormModel().get(0);
 				getView().setForm(form);
+				getView().center();
 			}
 		});
 	}

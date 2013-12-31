@@ -44,7 +44,7 @@ public class AppManager {
 			popupPresenter.getView().addToSlot(GenericPopupPresenter.BUTTON_SLOT, aLnk);
 		}
 		
-		mainPagePresenter.addToPopupSlot(popupPresenter, false);		
+		mainPagePresenter.addToPopupSlot(popupPresenter, true);		
 		popupPresenter.getView().center();
 	}
 	

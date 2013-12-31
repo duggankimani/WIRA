@@ -1,10 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel styleName= "control-group">
-		<label class="control-label">Horizontal Line:</label>
-		<div class="controls">
+		<!-- label class="control-label">Horizontal Line:</label-->
+		<!-- div class="controls" -->
+		<div>
 		    <label ui:field="lblTitle">Sample Text</label>
-		    <hr width="99%" style="margin:-2px 0 15px;"></hr>
+		    <hr width="99%" style="margin:-2px 0 0px;"></hr>
 	    </div>
 	</g:HTMLPanel>
 </ui:UiBinder>

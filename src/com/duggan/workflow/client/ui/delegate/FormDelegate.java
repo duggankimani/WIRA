@@ -65,7 +65,12 @@ public class FormDelegate {
 		return isValid;
 	}
 	
-	
+	/**
+	 * Read field values
+	 * 
+	 * @param panelFields
+	 * @return
+	 */
 	public Map<String, Value> getValues(ComplexPanel panelFields){
 		Map<String,Value> values = new HashMap<String, Value>();
 		
@@ -96,6 +101,12 @@ public class FormDelegate {
 		
 	}
 	
+	/**
+	 * Set form fields
+	 * 
+	 * @param fields
+	 * @param panelFields
+	 */
 	public void setFields(List<Field> fields, ComplexPanel panelFields) {
 		Collections.sort(fields, new Comparator<FormModel>() {
 			public int compare(FormModel o1, FormModel o2) {

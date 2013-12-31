@@ -1,8 +1,10 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Doc implements Serializable,Comparable<Doc>{
@@ -26,6 +28,8 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	public abstract Object getId();
 	
 	private Map<String, Value> values = new HashMap<String, Value>();
+	
+	private Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
 	
 	/**
 	 * Sorts document/task elements in descending order
@@ -55,5 +59,25 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	public abstract HTUser getOwner();
 	
 	public abstract Long getProcessInstanceId();
+	
+	public Map<String, List<DocumentLine>> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Map<String, List<DocumentLine>> details) {
+		this.details = details;
+	}
+	
+	public void addDetail(DocumentLine line){
+		String name = line.getName();
+		
+		List<DocumentLine> lines = details.get(name);
+		if(lines==null){
+			lines = new ArrayList<DocumentLine>();
+			details.put(name, lines);
+		}
+		
+		lines.add(line);
+	}
 
 }

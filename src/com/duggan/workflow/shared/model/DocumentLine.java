@@ -56,11 +56,37 @@ public class DocumentLine implements Serializable {
 	}
 	
 	public void addValue(String name,Value value){
+		value.setKey(name);
 		values.put(name, value);
 	}
 	
 	public Value getValue(String name){
 		return values.get(name);
+	}
+	
+	@Override
+	public String toString() {
+		String s="";
+		for(Value v: values.values()){
+			s=s.concat(getName()+"|"+
+					getId()+" | "+v.getId()+"|"+v.getKey()+" :: "+v.getValue()+"\n");
+		}
+		return s;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		DocumentLine other = (DocumentLine)obj;
+		
+		if(id!=null){
+			return id.equals(other.id);
+		}
+		
+		if(other.id!=null){
+			return other.id.equals(id);
+		}
+		
+		return super.equals(obj);
 	}
 
 }

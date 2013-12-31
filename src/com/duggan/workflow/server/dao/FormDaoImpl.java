@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADKeyValuePair;
@@ -21,6 +23,8 @@ import com.duggan.workflow.server.dao.model.PO;
  */
 public class FormDaoImpl extends BaseDaoImpl {
 
+	static final Logger logger= Logger.getLogger(FormDaoImpl.class);
+	
 	public FormDaoImpl(EntityManager em) {
 		super(em);
 	}
