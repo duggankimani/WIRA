@@ -3,7 +3,7 @@
 	<ui:style>
 		
 	</ui:style>
-	<g:HTMLPanel styleName="tr" ui:field="panelRow">
+	<g:HTMLPanel styleName="tr generic-row" ui:field="panelRow">
 		 <g:HTMLPanel styleName="td hidden" ui:field="actionPanel">
 			<div class="action-commands">										
 				<g:Anchor styleName="green" ui:field="aEdit">

@@ -75,6 +75,11 @@
 	vertical-align: text-top;
 }
 
-.popover .popover-content{
-	max-height:570px;
+.generic-row .td input{
+	padding:1px 8px;
+	font-size:12px;
+}
+
+.tr .th{
+	text-align:center;
 }
