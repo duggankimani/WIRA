@@ -89,7 +89,7 @@ public class GridView extends Composite {
 
 	Widget createHeader(Field field){
 		HTMLPanel panel = new HTMLPanel("");
-		panel.setStyleName("th");
+		panel.setStyleName("th generic-header");
 		panel.add(new HTML(field.getCaption()));
 		return panel;
 	}

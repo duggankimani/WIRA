@@ -222,6 +222,34 @@ public class Document extends Doc implements Serializable{
 	
 		return "DocumentId = "+id+", subject="+subject;
 	}
-
+	
+	public Document clone(){
+	
+		Document document = new Document();
+		document.setCreated(created);
+		document.setDateDue(dateDue);
+		document.setDescription(description);
+		document.setDocumentDate(documentDate);
+		document.setOwner(owner);
+		document.setPartner(partner);
+		document.setPriority(priority);
+		document.setProcessInstanceId(processInstanceId);
+		document.setSessionId(sessionId);
+		document.setStatus(status);
+		document.setType(type);
+		document.setValue(value);
+		
+		Map<String,Value> vals = new HashMap<String,Value>();
+		
+		Map<String, Value> pv = getValues();
+		for(String key: pv.keySet()){
+			Value v = pv.get(key);	
+			if(v!=null)
+				vals.put(key, v.clone());
+		}
+		document.setValues(vals);
+		
+		return document;
+	}
 	//public Map<String, Value> 
 }

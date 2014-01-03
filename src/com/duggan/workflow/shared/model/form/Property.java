@@ -112,4 +112,15 @@ public class Property extends FormModel{
 				;
 	}
 	
+	public Property clone(){
+		Property prop = new Property(name, caption, type);
+		prop.setSelectionValues(getSelectionValues());
+		prop.setType(type);
+		
+		if(value!=null)
+			prop.setValue(value.clone());
+		
+		return prop;
+	}
+	
 }

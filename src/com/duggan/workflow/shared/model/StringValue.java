@@ -52,4 +52,9 @@ public class StringValue implements Value{
 	public DataType getDataType() {
 		return DataType.STRING;
 	}
+	
+	public StringValue clone(){
+		StringValue svalue = new StringValue(null, key, value);
+		return svalue;
+	}
 }

@@ -126,4 +126,31 @@ public class Field extends FormModel{
 	public void setFields(List<Field> fieldList) {
 		this.fields = fieldList;
 	}
+	
+	public Field clone(){
+		Field field = new Field();
+		field.setCaption(caption);
+		field.setName(name);
+		field.setPosition(position);
+		field.setType(type);
+		
+		if(value!=null)
+			field.setValue(value.clone());
+		
+		field.setSelectionValues(getSelectionValues());
+		
+		for(Field fld: fields){
+			field.addField(fld.clone());
+		}
+		
+		for(Property p: properties){
+			field.addProperty(p.clone());
+		}
+		
+		return field;
+	}
+
+	private void addProperty(Property prop) {
+		properties.add(prop);
+	}
 }

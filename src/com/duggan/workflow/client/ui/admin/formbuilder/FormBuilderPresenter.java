@@ -23,6 +23,7 @@ import com.duggan.workflow.shared.responses.GetFormsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -41,9 +42,11 @@ public class FormBuilderPresenter extends
 		SavePropertiesHandler, PropertyChangedHandler, SaveFormDesignHandler {
 
 	public interface IFormBuilderView extends View {
-		Anchor getNewButton();
+		HasClickHandlers getNewButton();
 
-		Anchor getDeleteButton();
+		HasClickHandlers getDeleteButton();
+		
+		HasClickHandlers getCloneButton();
 
 		InlineLabel getFormLabel();
 
@@ -135,6 +138,18 @@ public class FormBuilderPresenter extends
 							}
 
 						}, "Cancel", "Ok");
+			}
+		});
+		
+		getView().getCloneButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				final Form form = getView().getForm();
+				
+				Form clone = form.clone();
+				saveForm(clone);
 			}
 		});
 	}

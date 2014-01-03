@@ -49,4 +49,9 @@ public class DateValue implements Value{
 	public DataType getDataType() {
 		return DataType.DATE;
 	}
+	
+	public DateValue clone(){
+		DateValue dvalue = new DateValue(null, key, value);
+		return dvalue;
+	}
 }

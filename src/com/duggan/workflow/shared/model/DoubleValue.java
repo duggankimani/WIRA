@@ -45,4 +45,8 @@ public class DoubleValue implements Value {
 		return DataType.DOUBLE;
 	}
 	
+	public DoubleValue clone(){
+		DoubleValue dvalue = new DoubleValue(null, key, value);
+		return dvalue;
+	}
 }

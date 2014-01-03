@@ -17,4 +17,6 @@ public interface Value extends Serializable{
 	Long getId();
 	
 	DataType getDataType();
+
+	Value clone();
 }

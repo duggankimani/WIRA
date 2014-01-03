@@ -58,4 +58,18 @@ public class GridValue implements Value {
 		if(value!=null)
 			setCollectionValue((Collection<DocumentLine>)value);
 	}
+	
+	public GridValue clone(){
+		GridValue gvalue = new GridValue();
+		//gvalue.setId(id);
+		gvalue.setKey(key);
+		Collection<DocumentLine> linez = new ArrayList<DocumentLine>();
+		
+		for(DocumentLine line: value){
+			linez.add(line.clone());
+		}		
+		gvalue.setCollectionValue(linez);
+		
+		return gvalue;				
+	}
 }

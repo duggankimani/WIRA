@@ -56,4 +56,8 @@ public class IntValue implements Value{
 		return DataType.INTEGER;
 	}
 
+	public IntValue clone(){
+		IntValue ivalue = new IntValue(null, key, value);
+		return ivalue;
+	}
 }

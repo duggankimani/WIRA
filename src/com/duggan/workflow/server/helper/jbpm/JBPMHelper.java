@@ -153,7 +153,7 @@ public class JBPMHelper implements Closeable {
 		initialParams.put("ownerId", userId);
 		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
-		initialParams.put("document", summary);
+		initialParams.put("document", summary.clone());
 		Map<String, Value> vals = summary.getValues();
 		Collection<Value> values = vals.values();
 		
@@ -296,6 +296,12 @@ public class JBPMHelper implements Closeable {
 		return translateSummaries(tasks);
 	}
 
+	/**
+	 * 
+	 * @param processId
+	 * @param taskName
+	 * @return Input/Output parameter mappings for tasks
+	 */
 	public Collection<String> getProcessData(String processId, String taskName){
 		org.drools.definition.process.Process process = sessionManager.getProcess(processId);
 		

@@ -1,8 +1,10 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.shared.model.Listable;
 
 public class Form extends FormModel implements Listable, Serializable{
@@ -17,7 +19,7 @@ public class Form extends FormModel implements Listable, Serializable{
 	public Form() {
 	}
 	
-	public Form(long id, String formId, String caption) {
+	public Form(Long id, String formId, String caption) {
 		setId(id);
 		setName(formId);
 		setCaption(caption);
@@ -41,6 +43,39 @@ public class Form extends FormModel implements Listable, Serializable{
 	@Override
 	public String getDisplayName() {
 		return getCaption();
+	}
+	
+	public Form clone(){
+		Form form = new Form(null, null, null);
+		
+		if(properties!=null)
+		for(Property prop: properties){
+			Property clone = prop.clone();
+			clone.setValue(null);
+			form.addProperty(clone);
+		}
+		
+		if(fields!=null)
+		for(Field field: fields){
+			form.addField(field.clone());
+		}
+		
+		return form;
+	}
+
+	private void addField(Field field) {
+		if(fields==null)
+			fields = new ArrayList<Field>();
+		
+		fields.add(field);
+	}
+
+	private void addProperty(Property prop) {
+		if(properties==null){
+			properties = new ArrayList<Property>();
+		}
+		
+		properties.add(prop);
 	}
 	
 	

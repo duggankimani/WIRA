@@ -77,9 +77,9 @@
 
 .generic-row .td input{
 	padding:1px 8px;
-	font-size:12px;
+	font-size:12px !important;
 }
 
-.tr .th{
+.tr .generic-header{
 	text-align:center;
 }

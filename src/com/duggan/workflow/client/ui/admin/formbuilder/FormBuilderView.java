@@ -61,6 +61,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField DropDownList<Form> frmDropdown;
 	
 	@UiField Anchor aNewForm;
+	@UiField Anchor aCloneForm;
 	@UiField Anchor aDeleteForm;
 	@UiField Anchor aInputtab;
 	@UiField Anchor aSelecttab;
@@ -227,8 +228,7 @@ public class FormBuilderView extends ViewImpl implements
 		});
 		
 		aDeleteForm.setVisible(false);
-		
-		
+		aCloneForm.setVisible(false);		
 		
 	
 	}
@@ -367,6 +367,10 @@ public class FormBuilderView extends ViewImpl implements
 		return aNewForm;
 	}
 	
+	public Anchor getCloneButton(){
+		return aCloneForm;
+	}
+	
 	public Anchor getDeleteButton(){
 		return aDeleteForm;
 	}
@@ -381,11 +385,14 @@ public class FormBuilderView extends ViewImpl implements
 		
 		if(form==null || form.getId()==null){
 			aDeleteForm.setVisible(false);
+			aCloneForm.setVisible(false);
 		}else{
 			aDeleteForm.setVisible(true);
+			aCloneForm.setVisible(true);
 		}
 		
 		if(form==null){
+			formLabel.setText("");
 			return;
 		}
 		
