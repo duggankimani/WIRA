@@ -324,6 +324,11 @@ public class DocumentDaoHelper {
 	 */
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
+		
+		if(content.get("document")!=null){
+			doc = (Document)content.get("document");
+		}
+		
 		Object idStr = content.get("documentId");
 		if (idStr == null || idStr.equals("null")) {
 			idStr = null;

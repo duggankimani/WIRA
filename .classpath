@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aspectjrt-1.6.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aspectjweaver-1.6.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/btm-2.1.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/businessmodels.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-codec-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.0.jar"/>
@@ -47,7 +46,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-compiler-5.5.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-core-5.5.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/drools-persistence-jpa-5.5.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/ebusinessmodels.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.5.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ejb3-persistence-1.0.2.GA.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-javamail_1.4_spec-1.7.1.jar"/>

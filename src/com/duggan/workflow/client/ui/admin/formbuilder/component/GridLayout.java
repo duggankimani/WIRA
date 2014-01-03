@@ -165,6 +165,11 @@ implements EditLineHandler{
 
 
 	private void setLines(Collection<DocumentLine> doclines) {
+		if(showShim){
+			//design mode
+			return;
+		}
+		
 		divControls.clear();
 		
 		assert field!=null;
@@ -234,6 +239,9 @@ implements EditLineHandler{
 	
 	@Override
 	public void onAfterSave() {
+		assert field!=null;
+		assert grid!=null;
+		
 		grid.repaint(field.getFields());		
 	}
 

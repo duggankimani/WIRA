@@ -393,20 +393,17 @@ public class JBPMHelper implements Closeable {
 	private void copy(HTSummary task, Task master_task) {
 
 		Map<String, Object> content = getMappedData(master_task);
-		// System.err.println("Content Map :: "+content.toString());
-		// System.err.println("Content Keys :: "+content.keySet());
-		// System.err.println("Content Values :: "+content.values());
 		Document doc = getDocument(content);
 
 		assert doc != null;
 
-		// System.err.println("############## Document : "+doc.getSubject());
 		task.setCreated(master_task.getTaskData().getCreatedOn());
 		task.setDateDue(master_task.getTaskData().getCreatedOn());
 		task.setSubject(doc.getSubject());
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
+		task.setDetails(doc.getDetails());
 		// task.setTaskName(summary.getName()); //TODO: LOOK INTO JBPM
 		// TASKSUMMARY / TASK USAGES
 		// task.setTaskName(master_task.getNames().);

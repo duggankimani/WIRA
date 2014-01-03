@@ -132,7 +132,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		 */
 		int top = 7;
 		int left = 75;
-		System.err.println("Field ="+field+"\n Properties = "+getProperties());
+		//System.err.println("Field ="+field+"\n Properties = "+getProperties());
 		AppManager.showPropertyPanel(field, getProperties(), top, left,
 				arrowPosition);
 	}
@@ -335,7 +335,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		model.setProperties(getProperties());
 		
-		System.err.println("Save Props>>>> "+model.getProperties());
+		//System.err.println("Save Props>>>> "+model.getProperties());
 
 		model.setName(getPropertyValue(NAME));
 
@@ -556,12 +556,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		}
 
-		if (activatePopup) {
-			widget.showShim = true;
-		} else {
-			widget.showShim = false;
-		}
-
+		widget.showShim = activatePopup;
 		widget.setField(fld);
 		
 		if(activatePopup)

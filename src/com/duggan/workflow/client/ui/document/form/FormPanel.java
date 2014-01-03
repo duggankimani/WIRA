@@ -26,6 +26,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Runtime form
+ * 
+ * @author duggan
+ *
+ */
 public class FormPanel extends Composite {
 
 	private static FormPanelUiBinder uiBinder = GWT
