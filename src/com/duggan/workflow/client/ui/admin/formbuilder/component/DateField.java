@@ -100,6 +100,7 @@ public class DateField extends FieldWidget {
 	
 	@Override
 	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
 		if(readOnly){
 			dateBox.removeFromParent();
 			panelControls.add(lblComponent);
@@ -109,6 +110,9 @@ public class DateField extends FieldWidget {
 	
 	@Override
 	public Widget getComponent(boolean small) {
+		
+		if(readOnly)
+			return lblComponent;
 		
 		if(small){
 			dateBox.setStyle("input-large");

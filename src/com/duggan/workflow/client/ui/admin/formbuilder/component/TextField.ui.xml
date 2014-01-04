@@ -7,7 +7,8 @@
 	        <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" for="Username" class="control-label">Text Input:</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
-			    <d:TextField ui:field="txtComponent" type="text" class="input-xlarge"/>
+				    <d:TextField ui:field="txtComponent" type="text" class="input-xlarge"/>
+				    <g:InlineLabel ui:field="lblReadOnly"></g:InlineLabel>
 		    	</g:HTMLPanel>
 	       </g:HTMLPanel>
 	</g:AbsolutePanel>

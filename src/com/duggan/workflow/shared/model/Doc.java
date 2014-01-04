@@ -27,9 +27,9 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 
 	public abstract Object getId();
 	
-	private Map<String, Value> values = new HashMap<String, Value>();
+	protected Map<String, Value> values = new HashMap<String, Value>();
 	
-	private Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
+	protected Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
 	
 	/**
 	 * Sorts document/task elements in descending order

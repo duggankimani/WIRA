@@ -13,6 +13,8 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextField extends FieldWidget {
@@ -25,6 +27,7 @@ public class TextField extends FieldWidget {
 
 	@UiField Element lblEl;
 	@UiField com.duggan.workflow.client.ui.component.TextField txtComponent;
+	@UiField InlineLabel lblReadOnly;
 	@UiField HTMLPanel panelControls;
 	
 	private final Widget widget;
@@ -132,28 +135,33 @@ public class TextField extends FieldWidget {
 	public void setValue(Object value) {
 		if(value!=null){
 			txtComponent.setValue((String)value);
-			lblComponent.setText((String)value);
+			lblReadOnly.setText((String)value);
 		}
 	}
 	
 	@Override
-	public void setReadOnly(boolean readOnly) {
-		if(readOnly){
-			txtComponent.removeFromParent();
-			panelControls.add(lblComponent);
-		}
+	public void setReadOnly(boolean isReadOnly) {
+		this.readOnly = isReadOnly;
+		
+		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
+		UIObject.setVisible(lblReadOnly.getElement(), isReadOnly);
 	}
 
 	@Override
 	public Widget getComponent(boolean small) {
+				
+		if(!readOnly)
 		if(small){
 			txtComponent.setClass("input-medium");
 		}
-		return txtComponent;
+		return panelControls;
 	}
 	
 	@Override
 	protected void setAlignment(String alignment) {		
-		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
+		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));		
+		panelControls.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
+		
 	}
+	
 }

@@ -32,7 +32,7 @@ import static com.duggan.workflow.server.helper.dao.FormDaoHelper.*;
  * This class is Dao Helper for persisting all document related entities.
  * 
  * @author duggan
- *
+ * 
  */
 public class DocumentDaoHelper {
 
@@ -73,94 +73,94 @@ public class DocumentDaoHelper {
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
 			model.setProcessInstanceId(document.getProcessInstanceId());
-			model.setSessionId(document.getSessionId());		
-		}
-		
-		model.getValues().clear();
-		Map<String, Value> vals = document.getValues();
-		Collection<Value> values = vals.values(); 
-		for(Value val: values){		
-			if(val==null || (val instanceof GridValue)){
-				//Ignore
-				continue;
-			}
-			
-			ADValue previousValue = new ADValue();
-			if(val.getId()!=null){
-				previousValue = DB.getFormDao().getValue(val.getId());
-			}
-			
-			ADValue adValue = getValue(previousValue, val);
-			assert adValue!=null;
-			model.addValue(adValue);				
+			model.setSessionId(document.getSessionId());
 		}
 
-		//setDetails
+		model.getValues().clear();
+		Map<String, Value> vals = document.getValues();
+		Collection<Value> values = vals.values();
+		for (Value val : values) {
+			if (val == null || (val instanceof GridValue)) {
+				// Ignore
+				continue;
+			}
+
+			ADValue previousValue = new ADValue();
+			if (val.getId() != null) {
+				previousValue = DB.getFormDao().getValue(val.getId());
+			}
+
+			ADValue adValue = getValue(previousValue, val);
+			assert adValue != null;
+			model.addValue(adValue);
+		}
+
+		// setDetails
 		setDetails(model, document.getDetails());
-		
-		//save
+
+		// save
 		model = dao.saveDocument(model);
 
 		Document doc = getDoc(model);
-		
+
 		return doc;
 	}
 
 	private static void setDetails(DocumentModel model,
 			Map<String, List<DocumentLine>> details) {
-		
-		if(details.isEmpty())
+
+		if (details.isEmpty())
 			return;
-		
-		for(String key: details.keySet()){
+
+		for (String key : details.keySet()) {
 			List<DocumentLine> docs = details.get(key);
-			for(DocumentLine line: docs){
+			for (DocumentLine line : docs) {
 				line.setName(key);
 				setDetails(model, line);
 			}
 		}
 	}
 
-	private static void setDetails(DocumentModel docModel,
-			DocumentLine line) {
+	private static void setDetails(DocumentModel docModel, DocumentLine line) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		
+
 		DetailModel detail = new DetailModel();
-		if(line.getId()!=null){
+		if (line.getId() != null) {
 			detail = dao.getDetailById(line.getId());
 		}
-		
+
 		detail.setName(line.getName());
-		
+
 		detail.getValues().clear();
 		Map<String, Value> vals = line.getValues();
-		Collection<Value> values = vals.values(); 
-		for(Value val: values){			
+		Collection<Value> values = vals.values();
+		for (Value val : values) {
 			ADValue previousValue = new ADValue();
-			if(val.getId()!=null){
+			if (val.getId() != null) {
 				previousValue = DB.getFormDao().getValue(val.getId());
 			}
-			
+
 			ADValue adValue = getValue(previousValue, val);
-			assert adValue!=null;
-			detail.addValue(adValue);				
+			assert adValue != null;
+			detail.addValue(adValue);
 		}
-		
+
 		docModel.addDetail(detail);
-		
+
 	}
 
 	public static ADDocType getType(DocumentType type) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		
-		ADDocType adtype = new ADDocType(type.getId(), type.getName(), type.getDisplayName());
-		
-		if(type.getId()!=null){
-			adtype= dao.getDocumentTypeById(type.getId());
+
+		ADDocType adtype = new ADDocType(type.getId(), type.getName(),
+				type.getDisplayName());
+
+		if (type.getId() != null) {
+			adtype = dao.getDocumentTypeById(type.getId());
 			adtype.setName(type.getName());
-			adtype.setDisplay(type.getDisplayName());			
-		}		
-		
+			adtype.setDisplay(type.getDisplayName());
+		}
+
 		return adtype;
 	}
 
@@ -170,7 +170,7 @@ public class DocumentDaoHelper {
 	 * @return
 	 */
 	public static Document getDoc(DocumentModel model) {
-		if(model==null){
+		if (model == null) {
 			return null;
 		}
 		Document doc = new Document();
@@ -188,83 +188,83 @@ public class DocumentDaoHelper {
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
 		doc.setSessionId(model.getSessionId());
-		
+
 		Collection<ADValue> values = model.getValues();
-		if(values!=null){
-			for(ADValue val: values){
-				//val.
+		if (values != null) {
+			for (ADValue val : values) {
+				// val.
 				DataType type = getDataType(val);
-				
+
 				doc.setValue(val.getFieldName(), getValue(val, type));
 			}
 		}
-		
+
 		doc.setDetails(getDetails(model.getDetails()));
-		
+
 		return doc;
 	}
 
 	private static DataType getDataType(ADValue val) {
-		DataType type =null;
-		
-		if(val.getBooleanValue()!=null){
+		DataType type = null;
+
+		if (val.getBooleanValue() != null) {
 			type = DataType.BOOLEAN;
 		}
-		
-		if(val.getLongValue()!=null){
+
+		if (val.getLongValue() != null) {
 			type = DataType.INTEGER;
 		}
-		
-		if(val.getDateValue()!=null){
+
+		if (val.getDateValue() != null) {
 			type = DataType.DATE;
 		}
-		
-		if(val.getDoubleValue()!=null){
+
+		if (val.getDoubleValue() != null) {
 			type = DataType.DOUBLE;
 		}
-		
-		if(val.getStringValue()!=null){
+
+		if (val.getStringValue() != null) {
 			type = DataType.STRING;
 		}
-		
+
 		return type;
-		
+
 	}
 
 	private static Map<String, List<DocumentLine>> getDetails(
 			Collection<DetailModel> details) {
 		Map<String, List<DocumentLine>> lines = new HashMap<>();
-		
-		
-		for(DetailModel lineModel: details){
+
+		for (DetailModel lineModel : details) {
 			DocumentLine line = new DocumentLine();
 			line.setDocumentId(lineModel.getDocument().getId());
 			line.setId(lineModel.getId());
 			line.setName(lineModel.getName());
-			
-			for(ADValue value:lineModel.getValues()){
-				Value val =getValue(value, getDataType(value));
+
+			for (ADValue value : lineModel.getValues()) {
+				Value val = getValue(value, getDataType(value));
 				line.addValue(value.getFieldName(), val);
 			}
-			
+
 			List<DocumentLine> detailz = new ArrayList<>();
-			if(lines.get(line.getName())!=null){
-				detailz = lines.get(line.getName()); 
-			}else{
+			if (lines.get(line.getName()) != null) {
+				detailz = lines.get(line.getName());
+			} else {
 				lines.put(line.getName(), detailz);
 			}
-			
-			if(!detailz.contains(line))
+
+			if (!detailz.contains(line))
 				detailz.add(line);
-			
+
 		}
-		
+
 		return lines;
 	}
 
 	public static DocumentType getType(ADDocType adtype) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(), adtype.getDisplay(), adtype.getClassName());
+		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(),
+				adtype.getDisplay(), adtype.getClassName());
 		type.setFormId(dao.getFormId(adtype.getId()));
 		return type;
 	}
@@ -287,7 +287,7 @@ public class DocumentDaoHelper {
 		model.setStatus(document.getStatus());
 		model.setProcessInstanceId(document.getProcessInstanceId());
 		model.setSessionId(document.getSessionId());
-		
+
 		return model;
 	}
 
@@ -303,7 +303,7 @@ public class DocumentDaoHelper {
 
 		return getDoc(model);
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -312,7 +312,8 @@ public class DocumentDaoHelper {
 	public static Document getDocumentByProcessInstance(Long processInstanceId) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		DocumentModel model = dao.getDocumentByProcessInstanceId(processInstanceId);
+		DocumentModel model = dao
+				.getDocumentByProcessInstanceId(processInstanceId);
 
 		return getDoc(model);
 	}
@@ -324,35 +325,40 @@ public class DocumentDaoHelper {
 	 */
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
-		
-		if(content.get("document")!=null){
-			doc = (Document)content.get("document");
+
+		for (String key : content.keySet()) {
+			System.err.println(key + " :: " + content.get(key));
+		}
+
+		if (content.get("document") != null) {
+			doc = (Document) content.get("document");
+		} else {
+
+			String description = content.get("description") == null ? null
+					: (String) content.get("description");
+
+			String subject = content.get("subject") == null ? null
+					: (String) content.get("subject");
+
+			String value = content.get("value") == null ? null
+					: (String) content.get("value");
+
+			Integer priority = content.get("priority") == null ? null
+					: (Integer) content.get("priority");
+
+			doc.setDescription(description);
+			doc.setSubject(subject);
+			doc.setValue(value);
+			doc.setPriority(priority);
 		}
 		
 		Object idStr = content.get("documentId");
 		if (idStr == null || idStr.equals("null")) {
 			idStr = null;
 		}
-
 		Long id = idStr == null ? null : new Long(idStr.toString());
-
-		String description = content.get("description") == null ? null
-				: (String) content.get("description");
-		
-		String subject = content.get("subject") == null ? null
-				: (String) content.get("subject");
-		
-		String value = content.get("value") == null ? null : (String) content
-				.get("value");
-		
-		Integer priority = content.get("priority")==null? null:
-					(Integer)content.get("priority");
-
-		doc.setDescription(description);
-		doc.setSubject(subject);
 		doc.setId(id);
-		doc.setValue(value);
-		doc.setPriority(priority);
+		
 		return doc;
 	}
 
@@ -361,85 +367,85 @@ public class DocumentDaoHelper {
 	 * @param docId
 	 * @param isApproved
 	 */
-	public static void saveApproval(Long docId,
-			Boolean isApproved) {
+	public static void saveApproval(Long docId, Boolean isApproved) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentModel model = dao.getById(docId);
-		if(model==null){
-			throw new IllegalArgumentException("Cannot Approve/Reject document: Unknown Model");
+		if (model == null) {
+			throw new IllegalArgumentException(
+					"Cannot Approve/Reject document: Unknown Model");
 		}
-		
-		model.setStatus(isApproved? DocStatus.APPROVED: DocStatus.REJECTED);
-		
+
+		model.setStatus(isApproved ? DocStatus.APPROVED : DocStatus.REJECTED);
+
 		dao.saveDocument(model);
 	}
 
 	public static void getCounts(HashMap<TaskType, Integer> counts) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		
+
 		counts.put(TaskType.DRAFT, dao.count(DocStatus.DRAFTED));
 		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
 		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
 		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
-		//counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
+		// counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 
 	public static List<Document> search(String subject) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		List<DocumentModel> models = dao.search(subject);
-		
+
 		List<Document> docs = new ArrayList<>();
-		for(DocumentModel doc: models){
+		for (DocumentModel doc : models) {
 			docs.add(getDoc(doc));
 		}
-		
+
 		return docs;
 	}
 
 	public static Long getProcessInstanceIdByDocumentId(Long documentId) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		
+
 		return dao.getProcessInstanceIdByDocumentId(documentId);
 	}
 
-	public static List<Document> search(String userId,SearchFilter filter) {
+	public static List<Document> search(String userId, SearchFilter filter) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		List<DocumentModel> models = dao.search(userId, filter);
 		List<Document> docs = new ArrayList<>();
-		for(DocumentModel doc: models){
+		for (DocumentModel doc : models) {
 			docs.add(getDoc(doc));
 		}
-		
+
 		return docs;
 	}
 
 	public static DocumentType getDocumentType(String docTypeName) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		
+
 		ADDocType adtype = dao.getDocumentTypeByName(docTypeName);
-		
+
 		return getType(adtype);
 	}
 
 	public static List<DocumentType> getDocumentTypes() {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		
+
 		List<ADDocType> adtypes = dao.getDocumentTypes();
-		
+
 		List<DocumentType> types = new ArrayList<>();
-		
-		if(adtypes!=null)
-			for(ADDocType adtype: adtypes){
+
+		if (adtypes != null)
+			for (ADDocType adtype : adtypes) {
 				types.add(getType(adtype));
 			}
-		
+
 		return types;
 	}
 
 	public static void delete(DocumentLine line) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DetailModel model = dao.getDetailById(line.getId());
-		dao.delete(model);				
+		dao.delete(model);
 	}
 
 }

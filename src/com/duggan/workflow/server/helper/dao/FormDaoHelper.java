@@ -43,7 +43,6 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();		
 		List<ADForm> adforms = dao.getAllForms();
 		
-		
 		List<Form> forms = new ArrayList<>();
 		for(ADForm adform: adforms){
 			forms.add(getForm(adform, false));
@@ -353,7 +352,7 @@ public class FormDaoHelper {
 		adfield.setValue(getValue(adfield.getValue(),field.getValue()));
 		
 		//call this only if field is a direct child of form
-		//Field may be a child of a grid - which resets positions automatically
+		//Field may be a child of a grid - which resets positions automatically from the front end
 		if(adfield.getForm()!=null){
 			dao.setPosition(adfield, previous, field.getPosition());
 		}else{
@@ -499,29 +498,16 @@ public class FormDaoHelper {
 			}else{
 				advalue.setLongValue((Long)value.getValue());
 			}
-			
 			break;
-			
-		case STRING:
-			advalue.setStringValue((String)value.getValue());			
-			break;
-			
-		case STRINGLONG:
-			advalue.setStringValue((String)value.getValue());			
-			break;
-			
+
 		case CHECKBOX:
 			advalue.setBooleanValue((Boolean)value.getValue());			
 			break;
 			
+		case STRING:
+		case STRINGLONG:
 		case MULTIBUTTON:
-			advalue.setStringValue((String)value.getValue());			
-			break;
-			
 		case SELECTBASIC:
-			advalue.setStringValue((String)value.getValue());			
-			break;
-			
 		case SELECTMULTIPLE:
 			advalue.setStringValue((String)value.getValue());			
 			break;

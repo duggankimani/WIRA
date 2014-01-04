@@ -117,7 +117,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	public List<ADField> getFields(Long parentId) {
 		
 		@SuppressWarnings("unchecked")
-		List<ADField> fields = em.createQuery("FROM ADField fld where fld.form.id=:id")
+		List<ADField> fields = em.createQuery("FROM ADField fld where fld.form.id=:id order by fld.position")
 				.setParameter("id", parentId).getResultList();
 		
 		return fields;

@@ -249,6 +249,15 @@ public class Document extends Doc implements Serializable{
 		}
 		document.setValues(vals);
 		
+		for(String key: details.keySet()){
+			List<DocumentLine> linez = details.get(key);
+			for(DocumentLine line: linez){
+				DocumentLine clone = line.clone();
+				clone.setName(key);
+				document.addDetail(clone);
+			}
+		}
+		
 		return document;
 	}
 	//public Map<String, Value> 

@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
@@ -57,12 +59,12 @@ public class Field extends FormModel{
 	
 	@Override
 	public String toString() {
-		String str = "Id= "+getId()+";" +
+		String str = "[Id= "+getId()+";" +
 				" FormId = "+getFormId()+";"+
 				" Name = "+getName()+";"+
 				" Caption = "+getCaption()+";"+
 				" Type = "+type+";" +
-				" Position = "+position+";";
+				" Position = "+position+"]";
 		
 		return str;
 	}
@@ -152,5 +154,27 @@ public class Field extends FormModel{
 
 	private void addProperty(Property prop) {
 		properties.add(prop);
+	}
+	
+	public void sortFields(){
+		if(fields!=null && fields.size()>1){
+			//Grid Field order Fields
+			Collections.sort(fields, new Comparator<Field>() {
+				@Override
+				public int compare(Field o1, Field o2) {
+					int i = o1.getPosition();
+					int j = o2.getPosition();
+					if(i<j)
+						return -1;
+					
+					if(i==j)
+						return 0;
+					
+					return 1;
+					
+				}
+				
+			});
+		}
 	}
 }

@@ -79,8 +79,6 @@ implements EditLineHandler{
 	protected void afterInit() {
 		if(showShim){
 			showDesignGrid();
-		}else{
-			showRuntimeGrid();			
 		}
 	}
 	
@@ -89,7 +87,7 @@ implements EditLineHandler{
 	 */
 	private void showDesignGrid() {
 		divControls.clear();
-		
+		field.sortFields();
 		grid= new GridDnD(field.getFields()){
 			@Override
 			protected void save(List<Field> fields) {
@@ -153,17 +151,6 @@ implements EditLineHandler{
 
 	}
 
-	/**
-	 * Runtime View
-	 */
-	private void showRuntimeGrid() {
-		//Collection<DocumentLine> lines=new ArrayList<DocumentLine>();
-		//lines.add(new DocumentLine());		
-		//setLines(lines);
-		//Draw fields
-	}
-
-
 	private void setLines(Collection<DocumentLine> doclines) {
 		if(showShim){
 			//design mode
@@ -175,18 +162,21 @@ implements EditLineHandler{
 		assert field!=null;
 		assert field.getFields()!=null;
 		
+		field.sortFields();
 		GridView view = new GridView(field.getFields());
 		view.setData(doclines);
 		divControls.add(view);
+		view.setReadOnly(isReadOnly());
 	}
 
 	@Override
 	public void addShim(int left, int top, int offSetWidth, int offSetHeight) {
 		offSetHeight= 125;
-		if(popUpActivated){
-			top = 60;
+		//if(showShim){
+			top = 30;
 			getShim().setPixelSize(offSetWidth, offSetHeight-top);
-		}
+		//}
+		//System.err.println("####### top="+top);
 		super.addShim(left, top,offSetWidth, offSetHeight);
 	}
 	
@@ -306,5 +296,19 @@ implements EditLineHandler{
 	@Override
 	protected void onUnload() {
 		super.onUnload();
+	}
+	
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		if(!showShim){
+			//not design mode
+			
+			Widget child = divControls.getWidget(0);
+			
+			if(child instanceof GridView){
+				GridView view = (GridView)child;
+				view.setReadOnly(readOnly);
+			}
+		}
 	}
 }

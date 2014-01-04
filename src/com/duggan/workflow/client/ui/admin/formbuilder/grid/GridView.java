@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -27,7 +28,7 @@ public class GridView extends Composite {
 	
 	@UiField HTMLPanel header;
 	@UiField HTMLPanel panelLines;
-	@UiField HasClickHandlers aNewRecord;
+	@UiField Anchor aNewRecord;
 	@UiField SpanElement spnNewRecordHandlerText;
 	
 	Collection<Field> columnConfigs = new ArrayList<Field>();
@@ -92,5 +93,14 @@ public class GridView extends Composite {
 		panel.setStyleName("th generic-header");
 		panel.add(new HTML(field.getCaption()));
 		return panel;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		aNewRecord.setVisible(!readOnly);
+		int widgetCount = panelLines.getWidgetCount();
+		for(int i=0; i<widgetCount; i++){
+			GridRow row = (GridRow)panelLines.getWidget(i);
+			row.setReadOnly(readOnly);
+		}
 	}
 }

@@ -64,6 +64,8 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@UiField Anchor aSimulate;	
 	@UiField Anchor aEdit;	
+	@UiField Anchor aSave;
+	@UiField Anchor aDelete;
 	@UiField Anchor aClaim;
 	@UiField Anchor aStart;
 	@UiField Anchor aSuspend;
@@ -130,6 +132,26 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 		});
 		
+		aEdit.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				formPanel.setReadOnly(false);
+				UIObject.setVisible(aEdit.getElement(), false);
+				UIObject.setVisible(aSave.getElement(), true);
+			}
+		});
+		
+		aSave.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				UIObject.setVisible(aEdit.getElement(), true);
+				UIObject.setVisible(aSave.getElement(), false);
+			}
+		});
+		
+		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
 
@@ -326,13 +348,14 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 	
 	
-	public HasClickHandlers getEditButton(){
-		return aEdit;
+	public HasClickHandlers getSaveButton(){
+		return aSave;
 	}
 
 	@Override
 	public void showEdit(boolean displayed) {
 		UIObject.setVisible(aEdit.getElement(), displayed);
+		UIObject.setVisible(aDelete.getElement(), displayed);
 	}
 
 	@Override

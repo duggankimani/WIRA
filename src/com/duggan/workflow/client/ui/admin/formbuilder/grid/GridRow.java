@@ -90,7 +90,10 @@ public class GridRow extends Composite {
 		//System.err.println(field.getName()+">>> "+(value==null? "": value.getValue()));
 		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);		
 		
-		cell.add(fw.getComponent(true));
+		Widget widget = fw.getComponent(true);
+		assert widget!=null;
+		cell.add(widget);
+		
 		widgets.add(fw);
 		
 		return cell;
@@ -132,6 +135,13 @@ public class GridRow extends Composite {
 		}
 		
 		return line;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		for(FieldWidget widget : widgets){
+			//Readonly fields are never changed
+			widget.setReadOnly(readOnly);
+		}
 	}
 
 }

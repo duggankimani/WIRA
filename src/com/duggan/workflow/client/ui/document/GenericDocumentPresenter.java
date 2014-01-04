@@ -113,7 +113,7 @@ public class GenericDocumentPresenter extends
 		void showEdit(boolean displayed);
 		void setStates(List<NodeDetail> states);
 		HasClickHandlers getSimulationBtn();
-		HasClickHandlers getEditButton();
+		HasClickHandlers getSaveButton();
 		HasClickHandlers getForwardForApproval();		
 		HasClickHandlers getClaimLink();
 		HasClickHandlers getStartLink();
@@ -139,7 +139,6 @@ public class GenericDocumentPresenter extends
 
 		void showDefaultFields(boolean b);
 	}
-//	boolean isDisplayed=false; //Attachment closer
 	
 	Long taskId;
 	
@@ -222,7 +221,7 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
-		getView().getEditButton().addClickHandler(new ClickHandler() {
+		getView().getSaveButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {

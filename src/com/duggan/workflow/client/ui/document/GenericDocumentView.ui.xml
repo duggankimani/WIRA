@@ -102,6 +102,12 @@
 							</d:ActionLink>
 						</li>
 						<li>
+							<d:ActionLink ui:field="aSave">
+								<i class="icon-edit"></i>
+								Save
+							</d:ActionLink>
+						</li>
+						<li>
 							<d:ActionLink ui:field="aDelete">
 								<i class="icon-trash"></i>
 								Delete

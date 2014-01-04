@@ -153,7 +153,10 @@ public class JBPMHelper implements Closeable {
 		initialParams.put("ownerId", userId);
 		initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
-		initialParams.put("document", summary.clone());
+		
+		Document clone = summary.clone();
+		initialParams.put("document", clone);
+		System.err.println("[Document lines = "+summary.getDetails()+"]");
 		Map<String, Value> vals = summary.getValues();
 		Collection<Value> values = vals.values();
 		
@@ -463,6 +466,11 @@ public class JBPMHelper implements Closeable {
 		if (val instanceof Date) {
 			value = new DateValue((Date)val);
 		}
+		
+		if(val instanceof Value){
+			value=(Value)val;
+		}
+		
 		return value;
 	}
 

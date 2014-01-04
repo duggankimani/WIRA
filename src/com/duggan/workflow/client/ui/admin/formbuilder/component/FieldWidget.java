@@ -32,6 +32,10 @@ import com.duggan.workflow.shared.responses.DeleteFormModelResponse;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -56,13 +60,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	
 	protected InlineLabel lblComponent = new InlineLabel();
 
+	protected boolean readOnly=false;
+	
+	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
 		defaultProperties();
-	
-		AppContext.getEventBus().addHandler(PropertyChangedEvent.TYPE, this);
-		AppContext.getEventBus().addHandler(SavePropertiesEvent.TYPE, this);
-
 		initField();
 	}
 	
@@ -105,13 +109,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public abstract FieldWidget cloneWidget();
 
 	public void activatePopup() {
-		if (popUpActivated) {
-			return;
-		}
 
-		popUpActivated = true;
-		AppContext.getEventBus().addHandler(ResetFormPositionEvent.TYPE, this);
-		activateShimHandler();
 	}
 	
 	public void activateShimHandler(){
@@ -217,7 +215,51 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	@Override
 	protected void onLoad() {
 		super.onLoad();
+		initShim();	
+		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
 		
+		if (!popUpActivated) {
+			popUpActivated = true;
+			addRegisteredHandler(ResetFormPositionEvent.TYPE, this);
+			activateShimHandler();
+		}
+		//register default events
+		
+	}
+	
+	/**
+	 * Remove the shim to allow the widget to size itself when reattached.
+	 */
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+		shim.removeFromParent();		
+		cleanUpEvents();
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 * @param handler
+	 */
+	public void addRegisteredHandler(Type<? extends EventHandler> type, FieldWidget handler){
+		@SuppressWarnings("unchecked")
+		HandlerRegistration hr = AppContext.getEventBus().addHandler(
+				(GwtEvent.Type<EventHandler>)type, handler);
+		handlers.add(hr);
+	}
+	
+	/**
+	 * 
+	 */
+	private void cleanUpEvents() {
+		for(HandlerRegistration hr: handlers){
+			hr.removeHandler();
+		}
+		handlers.clear();
+	}
+	
+	private void initShim() {
 		if (!showShim){
 			return;
 		}
@@ -251,19 +293,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		// should we do this only if this is not a property field?
 		
 		addShim(0,0,offSetWidth, offSetHeight);
+
 	}
-	
+
 	public void addShim(int left, int top, int offSetWidth, int offSetHeight){
 		add(shim, left, top);
-	}
-	
-	/**
-	 * Remove the shim to allow the widget to size itself when reattached.
-	 */
-	@Override
-	protected void onUnload() {
-		super.onUnload();
-		shim.removeFromParent();
 	}
 
 	public List<Property> getProperties() {
@@ -332,13 +366,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	private void save(Field model) {
 
 		model.setType(getType());
-
 		model.setProperties(getProperties());
 		
-		//System.err.println("Save Props>>>> "+model.getProperties());
+		System.err.println("Save Props>>>> "+model+" :: "+model.getProperties()
+				+" \n Fields = "+model.getFields());
 
 		model.setName(getPropertyValue(NAME));
-
 		model.setCaption(getPropertyValue(CAPTION));
 	
 		AppContext.getDispatcher().execute(new CreateFieldRequest(model),
@@ -346,28 +379,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					@Override
 					public void processResult(CreateFieldResponse result) {
 						Field savedfield = result.getField();
-						List<Field> children = savedfield.getFields();
-						
-						if(children!=null && children.size()>1){
-							//Grid Field order Fields
-							Collections.sort(children, new Comparator<Field>() {
-								@Override
-								public int compare(Field o1, Field o2) {
-									int i = o1.getPosition();
-									int j = o2.getPosition();
-									if(i<j)
-										return -1;
-									
-									if(i==j)
-										return 0;
-									
-									return 1;
-									
-								}
-								
-							});
-						}
-						savedfield.setFields(children);
+						savedfield.sortFields();
 						setField(savedfield);
 						onAfterSave();
 					}
@@ -692,5 +704,4 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public Widget getComponent(boolean small) {
 		return null;
 	}
-	
 }

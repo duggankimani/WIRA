@@ -162,11 +162,11 @@ public class GridDnD extends AbsolutePanel {
 
 	int count = 0;
 	
-	private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER = "tbody tr";
+	//private static final String CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER = "tbody tr";
 
 	private static final int ROWS = 3;
 
-	private static final int SPACING = 4;
+	//private static final int SPACING = 4;
 
 	
 	public ActionLink getAtxtField() {

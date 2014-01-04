@@ -104,6 +104,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	
 	@Override
 	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
 		if(readOnly){
 			lstItems.removeFromParent();
 			panelControls.add(lblComponent);
