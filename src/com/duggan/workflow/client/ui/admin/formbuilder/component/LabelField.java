@@ -51,6 +51,7 @@ public class LabelField extends FieldWidget {
 	
 	@Override
 	public void setValue(Object value) {
+		//System.err.println(">>>>>>"+field.getName()+" : "+field.getCaption()+" :: "+value);
 		if(value==null){
 			lblComponent.setText("");
 			return;

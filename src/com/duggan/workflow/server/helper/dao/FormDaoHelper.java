@@ -73,8 +73,13 @@ public class FormDaoHelper {
 		Form form = new Form();
 		form.setCaption(adform.getCaption());
 		
-		if(loadFields)
-			form.setFields(getFields(adform.getFields()));
+		if(loadFields){
+			Collection<ADField> fields = adform.getFields();
+			for(ADField fld: fields){
+				form.addField(getField(fld));
+			}
+			//form.setFields(getFields());
+		}
 		
 		form.setId(adform.getId());
 		form.setName(adform.getName());
@@ -290,8 +295,8 @@ public class FormDaoHelper {
 			adform = dao.getForm(form.getId());
 		}
 		adform.setCaption(form.getCaption());		
-		getADFields(form.getFields(), adform);
-		adform.setName(form.getName());		
+		adform.setName(form.getName());
+		getADFields(form.getFields(), adform);				
 		getADProperties(form.getProperties(), adform);
 		//adform.setProperties(properties);
 		dao.save(adform);
@@ -533,8 +538,9 @@ public class FormDaoHelper {
 			po = dao.getProperty(model.getId());
 		}
 		
-		if(po!=null)
+		if(po!=null){
 			dao.delete(po);
+		}
 	}
 	
 	public static List<KeyValuePair> getDropdownValues(String type){

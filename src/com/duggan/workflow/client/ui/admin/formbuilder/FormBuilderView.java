@@ -442,29 +442,29 @@ public class FormBuilderView extends ViewImpl implements
 		if(fields==null || fields.size()==0)
 			return;
 		
-		if(vPanel.getWidgetCount()==0){
-			
-			
-			Collections.sort(fields, new Comparator<FormModel>() {
-				public int compare(FormModel o1, FormModel o2) {
-					Field field1 = (Field)o1;
-					Field field2 = (Field)o2;
-					
-					Integer pos1 = field1.getPosition();
-					Integer pos2 = field2.getPosition();
-					
-					return pos1.compareTo(pos2);
-				};
+		vPanel.clear();
+		
+		Collections.sort(fields, new Comparator<FormModel>() {
+			public int compare(FormModel o1, FormModel o2) {
+				Field field1 = (Field)o1;
+				Field field2 = (Field)o2;
 				
-			});
+				Integer pos1 = field1.getPosition();
+				Integer pos2 = field2.getPosition();
+				
+				return pos1.compareTo(pos2);
+			};
 			
-			
-			for(Field field: fields){
-				FieldWidget widget = FieldWidget.getWidget(field.getType(),field,true);
-				widgetDragController.makeDraggable(widget);
-				vPanel.add(widget);
-			}
+		});
+		
+		
+		for(Field field: fields){
+			System.err.println(field.getCaption());
+			FieldWidget widget = FieldWidget.getWidget(field.getType(),field,true);
+			widgetDragController.makeDraggable(widget);
+			vPanel.add(widget);
 		}
+	
 	}
 
 	public void addProperty(Property property) {
@@ -530,6 +530,7 @@ public class FormBuilderView extends ViewImpl implements
 
 	@Override
 	public void clear() {
+		this.form=null;
 		formLabel.setText("");
 		List<Property> properties = getProperties();
 		for(Property prop: properties){

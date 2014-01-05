@@ -44,7 +44,7 @@ public class ADValue extends PO{
 	@JoinColumn(name="fieldid",referencedColumnName="id")
 	private ADField field;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="propertyid", referencedColumnName="id")
 	private ADProperty property;
 	

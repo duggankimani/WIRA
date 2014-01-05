@@ -112,7 +112,6 @@ public class Field extends FormModel{
 			return false;
 		}
 		
-		
 		if(Id!=null){
 			return Id.equals(((Field)obj).Id);
 		}
@@ -135,9 +134,12 @@ public class Field extends FormModel{
 		field.setName(name);
 		field.setPosition(position);
 		field.setType(type);
-		
-		if(value!=null)
+		field.setFormId(null);
+		field.setId(null);
+	
+		if(value!=null){
 			field.setValue(value.clone());
+		}
 		
 		field.setSelectionValues(getSelectionValues());
 		

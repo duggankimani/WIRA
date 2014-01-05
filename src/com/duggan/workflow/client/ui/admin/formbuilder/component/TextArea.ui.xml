@@ -8,6 +8,7 @@
 			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
 			  	<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
 			  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
+			  	 <g:InlineLabel ui:field="lblComponent"></g:InlineLabel>
 		    	</g:HTMLPanel>
 		    	</div>
 	       </g:HTMLPanel>

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.shared.model.Listable;
 
 public class Form extends FormModel implements Listable, Serializable{
@@ -63,9 +62,13 @@ public class Form extends FormModel implements Listable, Serializable{
 		return form;
 	}
 
-	private void addField(Field field) {
+	public void addField(Field field) {
 		if(fields==null)
 			fields = new ArrayList<Field>();
+		
+		if(fields.contains(field)){
+			fields.remove(field);
+		}
 		
 		fields.add(field);
 	}
@@ -76,6 +79,13 @@ public class Form extends FormModel implements Listable, Serializable{
 		}
 		
 		properties.add(prop);
+	}
+	
+	@Override
+	public String toString() {
+		return "[Form Id="+Id
+				+",Name="+name
+				+",caption="+caption+"]";
 	}
 	
 	

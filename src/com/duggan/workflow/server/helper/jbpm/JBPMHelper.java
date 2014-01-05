@@ -144,14 +144,14 @@ public class JBPMHelper implements Closeable {
 
 		Map<String, Object> initialParams = new HashMap<String, Object>();
 		// initialParams.put("user_self_evaluation", "calcacuervo");
-		initialParams.put("subject", summary.getSubject());// Human Tasks need
-															// this
-		initialParams.put("description", summary.getDescription());// Human
+//		initialParams.put("subject", summary.getSubject());// Human Tasks need
+//															// this
+//		initialParams.put("description", summary.getDescription());// Human
 																	// Tasks
 																	// need this
 		initialParams.put("documentId", summary.getId().toString());
 		initialParams.put("ownerId", userId);
-		initialParams.put("value", summary.getValue());
+		//initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
 		
 		Document clone = summary.clone();
@@ -407,6 +407,7 @@ public class JBPMHelper implements Closeable {
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
 		task.setDetails(doc.getDetails());
+		task.setValues(doc.getValues());
 		// task.setTaskName(summary.getName()); //TODO: LOOK INTO JBPM
 		// TASKSUMMARY / TASK USAGES
 		// task.setTaskName(master_task.getNames().);
@@ -424,21 +425,19 @@ public class JBPMHelper implements Closeable {
 				.getProcessInstanceId());
 
 		if (task instanceof HTask) {
-			Set<String> keys = content.keySet();
-
-			for (String key : keys) {
-				Value val = getValue(content.get(key));
-				if(val!=null)
-					task.setValue(key, val);
-			}
+//			Set<String> keys = content.keySet();
+//
+//			for (String key : keys) {
+//				Value val = getValue(content.get(key));
+//				if(val!=null)
+//					task.setValue(key, val);
+//			}
 			
-			Document document = DocumentDaoHelper.getDocument(doc.getId());
-			
-			task.setPriority(document.getPriority());
-			task.setDocumentDate(document.getDocumentDate());
-			task.setDocStatus(document.getStatus());
+			task.setPriority(doc.getPriority());
+			task.setDocumentDate(doc.getDocumentDate());
+			task.setDocStatus(doc.getStatus());
 			//task.setDocumentType(document.getType());
-			task.setOwner(document.getOwner());
+			task.setOwner(doc.getOwner());
 		
 		}
 	}
@@ -496,8 +495,10 @@ public class JBPMHelper implements Closeable {
 		myTask.setDescription(descriptions.get(0).getText());
 
 		List<I18NText> names = task.getNames();
-		String taskName = names.get(0).getText();
-		myTask.setName(taskName);
+		if(names.size()>0){
+			String taskName = names.get(0).getText();
+			myTask.setName(taskName);
+		}
 
 		List<I18NText> subjects = task.getSubjects();// translations
 		if(myTask.getSubject()==null)

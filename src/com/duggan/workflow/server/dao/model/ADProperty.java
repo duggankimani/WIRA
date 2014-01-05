@@ -1,5 +1,8 @@
 package com.duggan.workflow.server.dao.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 
+import org.hibernate.annotations.Cascade;
+
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DataType;
 
 @Entity
@@ -45,8 +53,8 @@ public class ADProperty extends PO{
 	@JoinColumn(name="formid", referencedColumnName="id", nullable=true)
 	private ADForm form;
 	
-	@OneToOne(mappedBy="property", cascade = CascadeType.ALL)
-	private ADValue value;
+	@OneToMany(mappedBy="property", cascade=CascadeType.ALL)
+	private List<ADValue> value = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -97,14 +105,18 @@ public class ADProperty extends PO{
 	}
 
 	public ADValue getValue() {
-		return value;
+		for(ADValue v : value){
+			return v;
+		}
+		return null;
 	}
 
 	public void setValue(ADValue value) {
-		this.value = value;
+		this.value.clear();
+		this.value.add(value);
 		
 		if(value!=null)
-		value.setProperty(this);
+			value.setProperty(this);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PreRemove;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
@@ -33,6 +34,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	public List<ADForm> getAllForms(){
 		
 		List lst = em.createQuery("from ADForm f order by f.caption").getResultList();
+		
 		return lst;
 	}
 	
@@ -199,7 +201,6 @@ public class FormDaoImpl extends BaseDaoImpl {
 			return val.longValue();
 		}catch(Exception e){
 		}
-		
 		
 		return null;
 	}

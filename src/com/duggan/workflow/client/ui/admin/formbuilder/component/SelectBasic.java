@@ -15,6 +15,8 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SelectBasic extends FieldWidget implements IsSelectionField{
@@ -27,6 +29,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	@UiField Element lblEl;
 	@UiField DropDownList<KeyValuePair> lstItems;
 	@UiField HTMLPanel panelControls;
+	@UiField InlineLabel lblComponent;
 	
 	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
 	}
@@ -103,12 +106,10 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	}
 	
 	@Override
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-		if(readOnly){
-			lstItems.removeFromParent();
-			panelControls.add(lblComponent);
-		}
+	public void setReadOnly(boolean isReadOnly) {
+		this.readOnly = isReadOnly;
+		UIObject.setVisible(lstItems.getElement(),!isReadOnly);
+		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
 	}
 
 	@Override
@@ -135,9 +136,21 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		
 		String key = (String)value;
 		lstItems.setValueByKey(key);
-		KeyValuePair keyValuePair = lstItems.getValue();
 		
-		if(keyValuePair!=null)
+		KeyValuePair keyValuePair = lstItems.getValue();		
+		if(keyValuePair!=null){
 			lblComponent.setText(keyValuePair.getValue());
+		}else{
+			lblComponent.setText(value.toString());
+		}
+	}
+	
+	@Override
+	public Widget getComponent(boolean small) {
+				
+//		if(!readOnly){
+//			return lstItems;
+//		}
+		return panelControls;
 	}
 }

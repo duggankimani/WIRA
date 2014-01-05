@@ -13,6 +13,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DateField extends FieldWidget {
@@ -28,6 +30,7 @@ public class DateField extends FieldWidget {
 	@UiField Element lblEl;
 	@UiField DateInput dateBox;
 	@UiField HTMLPanel panelControls;
+	@UiField InlineLabel lblComponent;
 	
 	public DateField() {
 		super();
@@ -99,13 +102,10 @@ public class DateField extends FieldWidget {
 	}
 	
 	@Override
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-		if(readOnly){
-			dateBox.removeFromParent();
-			panelControls.add(lblComponent);
-		}
-		
+	public void setReadOnly(boolean isReadOnly) {
+		this.readOnly = isReadOnly;
+		UIObject.setVisible(dateBox.getElement(),!isReadOnly);
+		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
 	}
 	
 	@Override

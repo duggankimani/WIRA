@@ -5,7 +5,8 @@
 		   <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" class="control-label">Select Basic:</label>
 		       <g:HTMLPanel styleName="controls" ui:field="panelControls">
-		       	<d:DropDownList ui:field="lstItems" title=""></d:DropDownList>
+			       	<d:DropDownList ui:field="lstItems" title=""></d:DropDownList>
+			       	<g:InlineLabel ui:field="lblComponent"></g:InlineLabel>
 		       </g:HTMLPanel>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

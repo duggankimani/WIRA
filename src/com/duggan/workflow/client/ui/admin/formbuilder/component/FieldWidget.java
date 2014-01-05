@@ -47,21 +47,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		SavePropertiesHandler, ResetFormPositionHandler {
 
 	private FocusPanel shim = new FocusPanel();
-
 	protected long id = System.currentTimeMillis();
-
 	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
-
-	protected boolean showShim = true;
-
+	
 	Field field = new Field();
-
-	protected boolean popUpActivated = false;
-	
-	protected InlineLabel lblComponent = new InlineLabel();
-
+	protected boolean showShim = true;
 	protected boolean readOnly=false;
-	
+	protected boolean popUpActivated = false;
 	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 	
 	public FieldWidget() {
@@ -109,7 +101,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public abstract FieldWidget cloneWidget();
 
 	public void activatePopup() {
-
 	}
 	
 	public void activateShimHandler(){

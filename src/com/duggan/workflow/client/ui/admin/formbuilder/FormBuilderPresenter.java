@@ -43,29 +43,17 @@ public class FormBuilderPresenter extends
 
 	public interface IFormBuilderView extends View {
 		HasClickHandlers getNewButton();
-
 		HasClickHandlers getDeleteButton();
-		
 		HasClickHandlers getCloneButton();
-
 		InlineLabel getFormLabel();
-
-		void setForm(Form form);
-
 		Form getForm();
-
-		void setProperty(String property, String value);
-
-		void setForms(List<Form> forms);
-
-		void activatePalette();
-
-		void registerInputDrag();
-
 		HasValueChangeHandlers<Form> getFormDropDown();
-
+		void setForm(Form form);
+		void setProperty(String property, String value);
+		void setForms(List<Form> forms);
+		void activatePalette();
+		void registerInputDrag();
 		void clear();
-
 	}
 
 	@Inject
@@ -146,9 +134,9 @@ public class FormBuilderPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				final Form form = getView().getForm();
-				
+				final Form form = getView().getForm();				
 				Form clone = form.clone();
+				System.err.println(">>>>> :: "+clone+" \n["+clone.getFields()+"] \n"+clone.getProperties());
 				saveForm(clone);
 			}
 		});
@@ -190,6 +178,7 @@ public class FormBuilderPresenter extends
 	}
 
 	protected void saveForm(Form form) {
+		this.formId=null;
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new CreateFormRequest(form));
 		
@@ -200,7 +189,9 @@ public class FormBuilderPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult result) {
 						CreateFormResponse createResp = (CreateFormResponse)result.get(0);
-						getView().setForm(createResp.getForm());
+						Form form=createResp.getForm();
+						setFormId(form.getId());
+						getView().setForm(form);
 						
 						GetFormsResponse response = (GetFormsResponse)result.get(1);
 						getView().setForms(response.getForms());
@@ -255,7 +246,7 @@ public class FormBuilderPresenter extends
 		String value = event.getPropertyValue().toString();
 
 		getView().setProperty(property, value);
-		saveForm(getView().getForm());
+		//saveForm(getView().getForm());
 	}
 
 	@Override

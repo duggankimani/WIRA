@@ -5,13 +5,14 @@ import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextArea extends FieldWidget {
@@ -27,6 +28,7 @@ public class TextArea extends FieldWidget {
 	@UiField Element lblEl;
 	@UiField com.duggan.workflow.client.ui.component.TextArea txtComponent;
 	@UiField HTMLPanel panelControls;
+	@UiField InlineLabel lblComponent;
 	
 	public TextArea() {
 		super();
@@ -139,21 +141,14 @@ public class TextArea extends FieldWidget {
 	}
 	
 	@Override
-	public void setReadOnly(boolean readOnly) {
-		if(readOnly){
-			txtComponent.removeFromParent();
-			panelControls.add(lblComponent);
-		}
-
+	public void setReadOnly(boolean isReadOnly) {
+		this.readOnly = isReadOnly;
+		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
+		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
 	}
 	
 	@Override
-	public Widget getComponent(boolean small){
-		
-		if(small){
-			txtComponent.setClass("input-large");
-		}
-		
-		return txtComponent;
+	public Widget getComponent(boolean small){		
+		return panelControls;
 	}
 }
