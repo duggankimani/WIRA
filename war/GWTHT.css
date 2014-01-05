@@ -83,6 +83,11 @@
 #detailed-info .form-horizontal .generic-row .controls {
     margin-left:0px;
 }
+
+.form-horizontal .generic-row .controls {
+    margin-left:0px;
+}
+
 #detailed-info .form-horizontal .generic-row .gwt-InlineLabel {
     padding: 1px 8px 1px 4px;
 }

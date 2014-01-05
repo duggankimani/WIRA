@@ -156,7 +156,7 @@ public class JBPMHelper implements Closeable {
 		
 		Document clone = summary.clone();
 		initialParams.put("document", clone);
-		System.err.println("[Document lines = "+summary.getDetails()+"]");
+		//System.err.println("[Document lines = "+summary.getDetails()+"]");
 		Map<String, Value> vals = summary.getValues();
 		Collection<Value> values = vals.values();
 		

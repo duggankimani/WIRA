@@ -359,8 +359,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		model.setType(getType());
 		model.setProperties(getProperties());
 		
-		System.err.println("Save Props>>>> "+model+" :: "+model.getProperties()
-				+" \n Fields = "+model.getFields());
+//		System.err.println("Save Props>>>> "+model+" :: "+model.getProperties()
+//				+" \n Fields = "+model.getFields());
 
 		model.setName(getPropertyValue(NAME));
 		model.setCaption(getPropertyValue(CAPTION));
