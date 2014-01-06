@@ -106,8 +106,8 @@ public class FormPanel extends Composite {
 				((TextArea) fieldWidget).getContainer().removeStyleName("hidden");
 			}
 			
-			System.err.println("||| "+field.getCaption()+" :: "+
-			(field.getValue()==null? "null" : field.getValue().getValue()));
+			//System.err.println("||| "+field.getCaption()+" :: "+
+			//(field.getValue()==null? "null" : field.getValue().getValue()));
 			panelFields.add(fieldWidget);
 		}
 		

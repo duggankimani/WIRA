@@ -8,7 +8,8 @@ public class HTSummary extends Doc implements Serializable{
 
 	private static final long serialVersionUID = -3021583190508951117L;
 	private long id;
-	private String taskName;
+	private String name;//Display Name
+	private String taskName;//Code used for mapping to FormBuilder forms
 	private Date dateDue;
 	private Date lastUpdate;
 	private HTStatus status;
@@ -144,5 +145,13 @@ public class HTSummary extends Doc implements Serializable{
 
 	public void setDocStatus(DocStatus docStatus) {
 		this.docStatus = docStatus;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

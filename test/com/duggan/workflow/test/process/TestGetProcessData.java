@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.task.Task;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Value;
 
@@ -21,10 +24,18 @@ public class TestGetProcessData {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		//ProcessMigrationHelper.init();
+		ProcessMigrationHelper.start(1L);
 	}
 	
 	@Test
+	public void getTaskParameters(){
+		Long taskId = 461L;
+		String name= JBPMHelper.get().getDisplayName(taskId);
+		
+		System.out.println("Name ="+name);
+	}
+	
+	@Ignore
 	public void getParameters(){
 		Long taskId = 461L;
 		HTSummary summary = JBPMHelper.get().getSummary(taskId);

@@ -6,9 +6,9 @@
 	<g:HTMLPanel styleName="generic-row tr" ui:field="panelRow">
 		 <g:HTMLPanel styleName="td hidden" ui:field="actionPanel">
 			<div class="action-commands">										
-				<g:Anchor styleName="green" ui:field="aEdit">
+				<!-- g:Anchor styleName="green" ui:field="aEdit">
 					<i class="icon-pencil helper-14"></i>
-				</g:Anchor>
+				</g:Anchor -->
 				<g:Anchor styleName="red" ui:field="aDelete">
 					<i class="icon-trash"></i>
 				</g:Anchor>

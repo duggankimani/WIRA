@@ -105,7 +105,8 @@ public class GenericDocumentPresenter extends
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type, String subject,
-				Date docDate, String value, String partner, String description, Integer priority,DocStatus status, Long id);
+				Date docDate, String value, String partner, String description, 
+				Integer priority,DocStatus status, Long id, String taskDisplayName);
 		
 		void showForward(boolean show);
 		void setValidTaskActions(List<Actions> actions);
@@ -649,18 +650,24 @@ public class GenericDocumentPresenter extends
 		
 		long docId=0l;
 		
+		String taskDisplayName="";
 		if(doc instanceof Document){
 			docId = (Long)doc.getId();
 			
 		}else{
-			docId = ((HTSummary)doc).getDocumentRef();
-			this.taskId = ((HTSummary)doc).getId();
+			HTSummary task = ((HTSummary)doc); 
+			docId = task.getDocumentRef();
+			this.taskId = task.getId();
+			
+			if(task.getName()!=null)
+				taskDisplayName = task.getName();
 		}
 		
 		this.documentId = docId;
 		
 		Date created = doc.getCreated();
-		String subject = doc.getSubject();						
+		String subject = doc.getSubject();
+		
 		Date docDate = doc.getDocumentDate();					
 		String description = doc.getDescription();
 		Integer priority = doc.getPriority();	
@@ -700,7 +707,8 @@ public class GenericDocumentPresenter extends
 		
 		
 		getView().setValues(doc.getOwner(),created,
-				type, subject, docDate,  value, partner, description, priority,status, documentId);
+				type, subject, docDate,  value, partner, description, priority,status, documentId,
+				taskDisplayName);
 		
 		if(status==DocStatus.DRAFTED){
 			getView().showEdit(true);

@@ -19,8 +19,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class GridRow extends Composite {
@@ -32,8 +34,8 @@ public class GridRow extends Composite {
 
 	@UiField HTMLPanel panelRow;
 	@UiField HTMLPanel actionPanel;
-	@UiField HasClickHandlers aEdit;
-	@UiField HasClickHandlers aDelete;
+	//@UiField Anchor aEdit;
+	@UiField Anchor aDelete;
 	
 	DocumentLine line;
 	
@@ -50,13 +52,13 @@ public class GridRow extends Composite {
 	}
 
 	private void initRow() {
-		aEdit.addClickHandler(new ClickHandler() {
+		/*aEdit.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				AppContext.fireEvent(new EditLineEvent(getRecord()));
 			}
-		});
+		});*/
 		
 		aDelete.addClickHandler(new ClickHandler() {
 			
@@ -138,6 +140,8 @@ public class GridRow extends Composite {
 	}
 
 	public void setReadOnly(boolean readOnly) {
+		UIObject.setVisible(aDelete.getElement(), !readOnly);
+		
 		for(FieldWidget widget : widgets){
 			//Readonly fields are never changed
 			widget.setReadOnly(readOnly);

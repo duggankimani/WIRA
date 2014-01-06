@@ -364,11 +364,13 @@
 }
 
 #main-content .maincontent-panel .dragdrop-dropTarget {
-  /*  min-height: 350px;*/
+   /*min-height: 350px;*/
 }
 
 #main-content .maincontent-panel .mainform {
-	min-height: 350px;
+	height:0px;
+	min-height:100px;	
+	/*min-height: 350px;*/
 }
 #main-content .maincontent-panel .mainform td{
 	padding-bottom: 0px;

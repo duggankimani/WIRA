@@ -203,7 +203,8 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	public void setValues(HTUser createdBy, Date created, String type, String subject,
-			Date docDate, String value, String partner, String description, Integer priority,DocStatus status, Long id) {
+			Date docDate, String value, String partner, String description, 
+			Integer priority,DocStatus status, Long id, String taskDisplayName) {
 		disableAll();
 		if(createdBy!=null){
 			if(createdBy.getName()!=null)
@@ -215,11 +216,15 @@ public class GenericDocumentView extends ViewImpl implements
 		if (created != null)
 			spnCreated.setInnerText(CREATEDFORMAT.format(created));
 
-		if (type != null)
+		if(!(taskDisplayName==null || taskDisplayName.equals(""))){
+			spnDocType.setInnerText(taskDisplayName);
+		}else if (type != null){
 			spnDocType.setInnerText(type);
+		}
 
-		if (subject != null)
+		if (subject != null){
 			spnSubject.setInnerText(subject);
+		}
 
 		if (docDate != null){
 			spnDate.setInnerText(DATEFORMAT.format(docDate));

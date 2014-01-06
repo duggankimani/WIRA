@@ -10,7 +10,7 @@
 
 	<g:HTMLPanel styleName="upper-content">
 		<div class="action-area row-fluid">
-			<div class="doc-title span5">
+			<div class="generic-doc-title span5">
 				<span ui:field="spnDocType"></span>
 				-&nbsp;
 				<span ui:field="spnSubject"></span>

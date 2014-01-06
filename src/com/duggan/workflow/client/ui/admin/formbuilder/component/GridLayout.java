@@ -74,7 +74,7 @@ implements EditLineHandler{
 		
 		AppContext.getEventBus().addHandler(EditLineEvent.TYPE, this);
 	}
-	
+		
 	@Override
 	protected void afterInit() {
 		if(showShim){
@@ -230,6 +230,10 @@ implements EditLineHandler{
 	@Override
 	public void onAfterSave() {
 		assert field!=null;
+		
+		if(grid==null){
+			showDesignGrid();
+		}
 		assert grid!=null;
 		
 		grid.repaint(field.getFields());		

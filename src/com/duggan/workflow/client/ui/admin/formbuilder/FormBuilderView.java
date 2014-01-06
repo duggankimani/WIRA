@@ -245,6 +245,10 @@ public class FormBuilderView extends ViewImpl implements
 	}
 	
 	public Form getForm(){
+		if(form==null){
+			//hit new
+			form = new Form();
+		}
 		
 		String name = getPropertyValue(NAME);
 		if(name==null){

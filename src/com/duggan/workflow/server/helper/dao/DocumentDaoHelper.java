@@ -326,10 +326,6 @@ public class DocumentDaoHelper {
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
 
-		for (String key : content.keySet()) {
-			System.err.println(key + " :: " + content.get(key));
-		}
-
 		if (content.get("document") != null) {
 			doc = (Document) content.get("document");
 		} else {

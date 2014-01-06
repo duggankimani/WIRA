@@ -209,6 +209,10 @@ public class JBPMHelper implements Closeable {
 
 		return processId;
 	}
+	
+	public Task getSysTask(Long taskId){
+		return sessionManager.getTaskClient().getTask(taskId);
+	}
 
 	/**
 	 * Count the number of tasks - completed/ or new
@@ -420,6 +424,11 @@ public class JBPMHelper implements Closeable {
 		if (names.size() > 0) {
 			task.setTaskName(names.get(0).getText());
 		}
+		
+		try{
+			//Exception thrown if process not started
+			task.setName(getDisplayName(master_task));
+		}catch(Exception e){}
 
 		task.setProcessInstanceId(master_task.getTaskData()
 				.getProcessInstanceId());
@@ -497,7 +506,7 @@ public class JBPMHelper implements Closeable {
 		List<I18NText> names = task.getNames();
 		if(names.size()>0){
 			String taskName = names.get(0).getText();
-			myTask.setName(taskName);
+			myTask.setTaskName(taskName);
 		}
 
 		List<I18NText> subjects = task.getSubjects();// translations
@@ -835,6 +844,12 @@ public class JBPMHelper implements Closeable {
 		sessionManager.unloadKnowledgeBase(processId);
 	}
 
+	/**
+	 * Returns the 'Task Name' Property value
+	 * 
+	 * @param taskId
+	 * @return
+	 */
 	public String getTaskName(Long taskId) {
 
 		Task task = sessionManager.getTaskClient().getTask(taskId);
@@ -845,6 +860,45 @@ public class JBPMHelper implements Closeable {
 			name = task.getNames().get(0).getText();
 
 		return name;
+	}
+	
+	public String getDisplayName(Long taskId){
+		Task task = sessionManager.getTaskClient().getTask(taskId);
+		return getDisplayName(task);
+	}
+	/**
+	 * Returns the 'Name' property of a task (Node Name)
+	 * <p>
+	 * This process is inefficient - Needs improving
+	 * <p>
+	 * @param taskId
+	 * @return
+	 */
+	public String getDisplayName(Task task){
+		//
+		String processId=task.getTaskData().getProcessId();
+		String taskName = getTaskName(task.getId());
+		
+		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
+		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
+	//	System.err.println("Globals:: "+wfprocess.get);
+		
+		for (Node node : wfprocess.getNodes()) {
+			
+			if(node instanceof HumanTaskNode){
+				HumanTaskNode htnode = (HumanTaskNode) node;
+				Object nodeTaskName = htnode.getWork().getParameter("TaskName");
+				
+				if(nodeTaskName!=null)
+				if(nodeTaskName.equals(taskName)){
+					return htnode.getName();					
+				}
+				
+			}
+		}
+		
+		return null;
+		
 	}
 	
 	public ProcessMappings getProcessDataMappings(String processId, String taskName){
