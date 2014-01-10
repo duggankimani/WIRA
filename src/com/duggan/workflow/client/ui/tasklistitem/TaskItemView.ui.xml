@@ -27,7 +27,8 @@
 	            <g:InlineLabel ui:field="spnDocIcon" styleName="hidden"></g:InlineLabel>
 	           <d:ParaPanel>
 		           <g:InlineLabel styleName="label" ui:field="spnPriority">Urgent</g:InlineLabel>                       	
-		           <g:InlineLabel ui:field="spnSubject" styleName="bluename"></g:InlineLabel>     
+		           <g:InlineLabel ui:field="spnSubject" styleName="bluename"></g:InlineLabel> 
+					<g:InlineLabel ui:field="spnTime" styleName="bluename"></g:InlineLabel>
 		           <d:Break/>
 		           <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
 	           </d:ParaPanel>

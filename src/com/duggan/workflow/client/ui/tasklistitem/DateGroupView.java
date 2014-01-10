@@ -1,7 +1,10 @@
 package com.duggan.workflow.client.ui.tasklistitem;
 
 
+import java.util.Date;
+
 import com.duggan.workflow.client.ui.component.BulletListPanel;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -59,8 +62,9 @@ public class DateGroupView extends ViewImpl implements
 		}		
 	}
 	
-	public void setDate(String date){
-		spnDate.setInnerText(date);
+	public void setDate(Date date){
+		String dt = DateUtils.FULLDATEFORMAT.format(date);
+		spnDate.setInnerText(dt);
 	}
 	
 }

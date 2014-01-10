@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.home;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -432,22 +433,24 @@ public class HomePresenter extends
 	 */
 	protected void loadLines(final List<Doc> tasks) {
 		setInSlot(DATEGROUP_SLOT, null);
-		final List<String> dates=new ArrayList<String>();
+		final List<Date> dates=new ArrayList<Date>();
 		
 		for(int i=0; i< tasks.size(); i++){
-			final String dt = DateUtils.DATEFORMAT.format(tasks.get(i).getCreated());
+			//final String dt = DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
 			final Doc doc = tasks.get(i);
+			final String dt = DateUtils.DATEFORMAT.format(doc.getCreated());
+			final Date date = DateUtils.DATEFORMAT.parse(dt);
 			
-			if(dates.contains(dt)){
+			if(dates.contains(date)){
 				fireEvent(new PresentTaskEvent(doc));
 			}else{
 				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
 					@Override
 					public void processResult(DateGroupPresenter result) {
-						result.setDate(dt);
+						result.setDate(doc.getCreated());
 						HomePresenter.this.addToSlot(DATEGROUP_SLOT, result);						
 						fireEvent(new PresentTaskEvent(doc));						
-						dates.add(dt);
+						dates.add(date);
 					}
 				});
 				

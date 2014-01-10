@@ -2,6 +2,7 @@
 
 import java.util.List;
 
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Doc;
@@ -29,6 +30,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	}
 
 	@UiField InlineLabel spnSubject;
+	@UiField InlineLabel spnTime;
 	@UiField InlineLabel spnDescription;
 	@UiField InlineLabel spnPriority;
 	@UiField Anchor aClaim;
@@ -62,6 +64,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		spnPriority.removeStyleName("gwt-InlineLabel");
 		spnSubject.removeStyleName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
+		spnTime.removeStyleName("gwt-InlineLabel");
 		insidecontainer.setStyleName("inside-container");
 		
 		aClaim.getElement().setAttribute("data-toggle", "tooltip");
@@ -101,6 +104,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		
 		disable();
 		
+		spnTime.setText(" :: "+DateUtils.TIMEFORMAT12HR.format(summaryTask.getCreated()));
+		
 		spnSubject.setText(summaryTask.getSubject());
 		
 		if(summaryTask.getDescription()!=null)
@@ -108,7 +113,11 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		//spnPriority.setText(summaryTask.getPriority()==null? "": summaryTask.getPriority().toString());
 		
 		if(summaryTask instanceof HTSummary){
-			setTaskAction(((HTSummary)summaryTask).getStatus().getValidActions());
+			HTSummary summ =(HTSummary)summaryTask; 
+			spnSubject.setText(summ.getName()+" :: "+summ.getStatus());
+			String desc =summ.getSubject()+" - "+ (summ.getDescription()==null? "": summ.getDescription());
+			spnDescription.setText(desc);
+			setTaskAction(summ.getStatus().getValidActions());
 		}else{
 			setDocumentActions(((Document)summaryTask).getStatus());
 		}

@@ -1,11 +1,14 @@
 package com.duggan.workflow.client.ui.tasklistitem;
 
 
+import java.util.Date;
+
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent.PresentTaskHandler;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -17,14 +20,14 @@ public class DateGroupPresenter extends
 		PresenterWidget<DateGroupPresenter.MyView> implements PresentTaskHandler{
 
 	public interface MyView extends View {
-		void setDate(String date);
+		void setDate(Date date);
 	}
 
 	public static final Object ITEM_SLOT = new Object();
 	
 	private IndirectProvider<TaskItemPresenter> presenterProvider;
 	
-	String date;
+	Date date;
 	
 	@Inject
 	public DateGroupPresenter(final EventBus eventBus, final MyView view, Provider<TaskItemPresenter> provider) {
@@ -38,16 +41,16 @@ public class DateGroupPresenter extends
 		addRegisteredHandler(PresentTaskEvent.TYPE, this);
 	}
 	
-	public void setDate(String dt){
+	public void setDate(Date dt){
 		this.date = dt;
 		getView().setDate(dt);
 	}
 	
 	@Override
 	public void onPresentTask(final PresentTaskEvent event) {
-		String dateFormatted = DateUtils.DATEFORMAT.format(event.getDoc().getCreated());
+		Date docDate = event.getDoc().getCreated();
 		
-		if(!dateFormatted.equals(date)){
+		if(!CalendarUtil.isSameDate(date, docDate)){
 			return;
 		}
 				
