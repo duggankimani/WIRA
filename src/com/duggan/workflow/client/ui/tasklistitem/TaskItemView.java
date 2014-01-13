@@ -7,8 +7,10 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -29,10 +31,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, TaskItemView> {
 	}
 
-	@UiField InlineLabel spnSubject;
+	@UiField DivElement spnSubject;
 	@UiField InlineLabel spnTime;
 	@UiField InlineLabel spnDescription;
-	@UiField InlineLabel spnPriority;
+	@UiField HTMLPanel spnPriority;
 	@UiField Anchor aClaim;
 	@UiField Anchor aStart;
 	@UiField Anchor aSuspend;
@@ -56,16 +58,16 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	
 	@UiField HTMLPanel wfactions;
 	
-	@UiField InlineLabel spnDocIcon;
+	@UiField HTMLPanel spnDocIcon;
 		
 	@Inject
 	public TaskItemView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		spnPriority.removeStyleName("gwt-InlineLabel");
-		spnSubject.removeStyleName("gwt-InlineLabel");
+		//spnSubject.removeCName("gwt-InlineLabel");
 		spnDescription.removeStyleName("gwt-InlineLabel");
 		spnTime.removeStyleName("gwt-InlineLabel");
-		insidecontainer.setStyleName("inside-container");
+		insidecontainer.addStyleName("inside-container");
 		
 		aClaim.getElement().setAttribute("data-toggle", "tooltip");
 		aClaim.getElement().setAttribute("title", "Claim");
@@ -97,46 +99,60 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	}
 
 	@Override
-	public void bind(Doc summaryTask) {
+	public void bind(Doc aDoc) {
 		//spnTaskName.setText(summaryTask.getTaskName());
 		//spnTaskName.setText("Contract Approval");
 		//spnDateDue.setText(format(summaryTask.getDateDue()));
 		
 		disable();
 		
-		spnTime.setText(" :: "+DateUtils.TIMEFORMAT12HR.format(summaryTask.getCreated()));
+		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(aDoc.getCreated()));
 		
-		spnSubject.setText(summaryTask.getSubject());
+		spnSubject.setInnerText(aDoc.getSubject());
 		
-		if(summaryTask.getDescription()!=null)
-			spnDescription.setText(summaryTask.getDescription());
+		if(aDoc.getDescription()!=null)
+			spnDescription.setText(aDoc.getDescription());
 		//spnPriority.setText(summaryTask.getPriority()==null? "": summaryTask.getPriority().toString());
 		
-		if(summaryTask instanceof HTSummary){
-			HTSummary summ =(HTSummary)summaryTask; 
-			spnSubject.setText(summ.getName()+" :: "+summ.getStatus());
+		if(aDoc instanceof HTSummary){
+			HTSummary summ =(HTSummary)aDoc; 
+			HTStatus status = summ.getStatus();
+			
+			if(status.equals(HTStatus.COMPLETED)){
+				spnDocIcon.addStyleName("icon-ok");
+			}
+			else if(status.equals(HTStatus.SUSPENDED)){
+				spnDocIcon.addStyleName("icon-pause");
+			}
+			else {
+				spnDocIcon.addStyleName("icon-play");
+			}
+			
+			spnSubject.setInnerText(summ.getName());
 			String desc =summ.getSubject()+" - "+ (summ.getDescription()==null? "": summ.getDescription());
 			spnDescription.setText(desc);
 			setTaskAction(summ.getStatus().getValidActions());
 		}else{
-			setDocumentActions(((Document)summaryTask).getStatus());
+			Document doc =(Document)aDoc;
+			setDocumentActions(doc.getStatus());
+			
 		}
 		
-		summaryTask.getId();
+		
+		
+		aDoc.getId();
 		
 		//System.err.println("Priority :: "+summaryTask.getPriority());
 		
-		Priority priority = Priority.get(summaryTask.getPriority());
+		Priority priority = Priority.get(aDoc.getPriority());
 		
 		switch (priority) {
 		case CRITICAL:
 			spnPriority.addStyleName("label-important");
-			spnPriority.setText("Urgent");
 			break;
 
 		case HIGH:
 			spnPriority.addStyleName("label-warning"); //
-			spnPriority.setText("Important");
 			break;
 
 		default:
@@ -292,8 +308,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 
 	@Override
 	public void setTask(boolean isTask) {
-		/*if(isTask)
-		spnDocIcon.setStyleName("icon-tasks");*/
+		if(isTask)
+		spnDocIcon.addStyleName("icon-ok");
 	}
 
 }

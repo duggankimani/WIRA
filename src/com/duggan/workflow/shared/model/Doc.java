@@ -14,6 +14,15 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	 */
 	protected static final long serialVersionUID = 1L;
 
+	private boolean hasAttachment=true;
+
+	public boolean hasAttachment() {
+		return hasAttachment;
+	}
+
+	public void setHasAttachment(boolean hasAttachment) {
+		this.hasAttachment = hasAttachment;
+	}
 
 	public abstract String getSubject();
 

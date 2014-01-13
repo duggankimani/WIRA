@@ -22,16 +22,17 @@
 	
 	<g:HTMLPanel styleName="message-container">
          <g:FocusPanel styleName="read" ui:field="container">
-           <g:HTMLPanel ui:field="insidecontainer">
-
-	            <g:InlineLabel ui:field="spnDocIcon" styleName="hidden"></g:InlineLabel>
-	           <d:ParaPanel>
-		           <g:InlineLabel styleName="label" ui:field="spnPriority">Urgent</g:InlineLabel>                       	
-		           <g:InlineLabel ui:field="spnSubject" styleName="bluename"></g:InlineLabel> 
-					<g:InlineLabel ui:field="spnTime" styleName="bluename"></g:InlineLabel>
-		           <d:Break/>
-		           <g:InlineLabel ui:field="spnDescription"></g:InlineLabel>            	
-	           </d:ParaPanel>
+           <g:HTMLPanel styleName="row-fluid">
+				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel> 
+	           
+	            <g:HTMLPanel ui:field="spnDocIcon" styleName="span1 doc-status"></g:HTMLPanel>
+	            
+	            <g:HTMLPanel ui:field="insidecontainer" styleName="span10">
+		       	    <div ui:field="spnSubject" class="bluename ellipsis"></div> 
+				    <g:InlineLabel ui:field="spnTime" styleName="spnTime"></g:InlineLabel>
+		            <d:Break/>
+		            <g:InlineLabel ui:field="spnDescription" styleName="spnDescription ellipsis"></g:InlineLabel>            	
+	           </g:HTMLPanel>
 	           
 	            <g:HTMLPanel ui:field="wfactions" styleName="hidden">
 				    <g:Anchor ui:field="aClaim" styleName="icon-arrow-down hidden"></g:Anchor>

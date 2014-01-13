@@ -271,7 +271,7 @@ public class TaskItemPresenter extends
 		workflow.setValues(values);
 				
 		if(task instanceof Document){
-			//workflow.setTaskId(new Long((Integer)task.getId()));
+			workflow.setTaskId(new Long((Integer)task.getId()));
 		}			
 		else
 			workflow.setTaskId((Long)task.getId());

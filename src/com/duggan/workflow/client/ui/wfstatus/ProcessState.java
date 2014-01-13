@@ -66,14 +66,14 @@ public class ProcessState extends Composite {
 
 	interface STARTNODETEMPLATE extends SafeHtmlTemplates {
 		
-		@Template("<span class=\"label label-success\">" +
+		@Template("<span class=\"label label-success ellipsis\" title=\"{0}\">" +
 				"<i class=\"icon-ok-circle\"></i>{0}</span>" +
 						"<i class=\"icon-arrow-down pull-right\"></i>")		
 		public SafeHtml display(String name);
 	}
 
 	interface APPROVALNODETEMPLATE extends SafeHtmlTemplates {
-		@Template("<span class=\"label label-success\">" +
+		@Template("<span class=\"label label-success ellipsis\" title=\"{0}\">" +
 				"<i class=\"icon-ok-circle\"></i>" +
 						"{0}</span><i class=\"icon-arrow-down pull-right\"></i>")
 		public SafeHtml display(String name);
@@ -81,7 +81,7 @@ public class ProcessState extends Composite {
 	
 	
 	interface APPROVALNODECURRENT extends SafeHtmlTemplates{
-		@Template("<span class=\"label label-default\">" +
+		@Template("<span class=\"label label-default ellipsis\" title=\"{0}\">" +
 				"<i class=\"icon-remove-circle\"></i>" +
 						"{0}</span>")
 		public SafeHtml display(String name);
@@ -89,7 +89,7 @@ public class ProcessState extends Composite {
 	
 	interface ENDNODETEMPLATE extends SafeHtmlTemplates {
 		
-		@Template("<span class=\"label label-success\">" +
+		@Template("<span class=\"label label-success ellipsis\" title=\"{0}\">" +
 				"<i class=\"icon-ok-circle\"></i>{0}</span>")		
 		public SafeHtml display(String name);
 	}

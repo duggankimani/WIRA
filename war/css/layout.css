@@ -55,6 +55,12 @@ a, a:visited, a:hover{
 	height: 20px;
 }
 
+.ellipsis{
+	overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
 .main-body .alert{
 	position: absolute;
 	right: 38%;
@@ -524,7 +530,7 @@ body .dateBoxPopup{
     position: relative;
 }
 .main-container .content-right #middle-box{
-  width: 22.2%;
+  width: 25%;
   height: 92.6%;
 }
 
@@ -630,24 +636,41 @@ body .dateBoxPopup{
 	margin-bottom: 3px;
 }
 
+#middle-nav .message-container .spnTime{
+    float: right;
+    margin-right: 0px;
+    font-size: 12px;
+    color: #808080;
+}
+
+#middle-nav .message-container .spnDescription{
+	font-size:11px;
+	width: 90%;
+}
+
 #middle-nav .message-container .inside-container{
-	display: inline-table;
+    width: 86%;
 }
 
 #middle-nav .message-container:hover {
 	background-color: #fafafa;
 }
 
-#middle-nav .message-container .label {
-	float: right;
-	margin-right: 20px;
-	margin-left: 10px;
-	font-weight: normal;
-	margin-top: 3px;
+#middle-nav .message-container .priority{
+	width: 3px;
+	height: 45px;
 }
+
+#middle-nav .message-container .doc-status{
+	height: 45px;
+	padding-top:15px;
+	color: cornflowerblue;
+}
+
 #middle-nav .message-container .bluename {
     font-weight:bold;
-    font-size:12px;
+    font-size: 12px;
+    width: 75%;
 }
 #middle-nav .message-container .wfactions {
     float:right;
@@ -659,10 +682,7 @@ body .dateBoxPopup{
 }
 
 #middle-nav p {
-	margin: 0 0 2px;
-	padding-left: 7px;
-	padding-bottom: 8px;
-	display: inline-block;
+	
 }
 
 #middle-nav .icon-book{
@@ -691,7 +711,7 @@ body .dateBoxPopup{
 	border: 1px solid #CCCCCC;
 	overflow-y: auto;
 	overflow-x: hidden;
-	width: 77.7%;
+	width: 74.8%;
 	height: 92%;
 }
 #detailed-info .upper-content{
@@ -845,8 +865,9 @@ body .dateBoxPopup{
 }
 
 #detailed-info .status-section span{
-	display: block;
+	/* display: block; */
 	margin-bottom: 10px;
+	width: 100%;
 }
 #detailed-info .status-section i {
 	text-align:center;
@@ -1366,7 +1387,7 @@ ul.icons-list.text-xl {
 }
 
 #navigation-menu .pointer .arrow,#navigation-menu .pointer .arrow_border
-	{
+{
 	border-color: transparent #fff transparent transparent;
 	border-width: 11px;
 	border-style: solid;
