@@ -90,4 +90,5 @@ PropertyChangedHandler{
 			label.setText(value == null ? null : value.toString());
 
 	}
+	
 }
