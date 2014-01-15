@@ -155,6 +155,13 @@ body .dateBoxPopup{
 .modal-document .form-actions .forward{
 	margin-right:10px;
 }
+
+.modal-document{
+	width:inherit;
+	max-width: -moz-max-content;
+	max-width: intrinsic;
+}
+
 /* Custom navbar stuff */
 .navbar {
 	margin-bottom: 1px;

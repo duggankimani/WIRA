@@ -135,7 +135,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		}else{
 			Document doc =(Document)aDoc;
 			setDocumentActions(doc.getStatus());
-			
+			spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
 		}
 		
 		

@@ -207,6 +207,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	protected void onLoad() {
 		super.onLoad();
 		initShim();	
+		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
 		
 		if (!popUpActivated) {
@@ -359,6 +360,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		model.setType(getType());
 		model.setProperties(getProperties());
 		
+//		System.err.println("Select values: "+field.getSelectionValues());
 //		System.err.println("Save Props>>>> "+model+" :: "+model.getProperties()
 //				+" \n Fields = "+model.getFields());
 
