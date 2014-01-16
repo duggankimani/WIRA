@@ -511,7 +511,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 
 		case DOUBLE:
-			widget = new TextField();
+			if(fld.getProperty(HasProperties.CURRENCY)!=null){
+				widget = new CurrencyField();
+			}else{
+				widget = new NumberField();
+			}			
 			break;
 
 		case INTEGER:

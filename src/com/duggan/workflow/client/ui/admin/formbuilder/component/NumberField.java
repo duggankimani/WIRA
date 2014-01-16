@@ -1,14 +1,19 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -16,53 +21,59 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TextArea extends FieldWidget {
-
-	private static TextAreaUiBinder uiBinder = GWT
-			.create(TextAreaUiBinder.class);
+public class NumberField extends FieldWidget{
 	
-	private final Widget widget;
+	private static NumberFieldUiBinder uiBinder = GWT
+			.create(NumberFieldUiBinder.class);
 
-	interface TextAreaUiBinder extends UiBinder<Widget, TextArea> {
+	interface NumberFieldUiBinder extends UiBinder<Widget, NumberField> {
 	}
 
 	@UiField Element lblEl;
-	@UiField com.duggan.workflow.client.ui.component.TextArea txtComponent;
+	@UiField DoubleField txtComponent;
+	@UiField InlineLabel lblReadOnly;
 	@UiField HTMLPanel panelControls;
-	@UiField InlineLabel lblComponent;
 	@UiField SpanElement spnMandatory;
 	
-	public TextArea() {
+	private final Widget widget;
+	
+	
+	public NumberField(){
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		widget= uiBinder.createAndBindUi(this);
-		txtComponent.getElement().setAttribute("id", "textarea");
+		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
+				new KeyValuePair("left", "Left"),
+				new KeyValuePair("center", "Center"),
+				new KeyValuePair("right", "Right")));
+
+		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+
 	}
 	
-	public TextArea(final Property property) {
+	public NumberField(final Property property){
 		this();
 		lblEl.setInnerHTML(property.getCaption());
 		txtComponent.setName(property.getName());
 		
 		Value textValue = property.getValue();
-		String text = textValue==null? "": textValue.getValue().toString();
+		String text = textValue==null? "": 
+			textValue.getValue()==null? "": textValue.getValue().toString();
 		
 		txtComponent.setText(text);
 		txtComponent.setClass("input-large"); //Smaller TextField
-		
 		showShim=true;
 		
 		final String name = property.getName();
 		
-		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
 			
 			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				String value  = event.getValue();
+			public void onValueChange(ValueChangeEvent<Double> event) {
+				Double value  = event.getValue();
 				Value previousValue = property.getValue();
 				if(previousValue==null){
 					previousValue = new StringValue();
@@ -78,25 +89,24 @@ public class TextArea extends FieldWidget {
 				
 				/**
 				 * This allows visual properties including Caption, Place Holder, help to be 
-				 * Sysnched with the form field, so that the changes are observed immediately
+				 * Synchronised with the form field, so that the changes are observed immediately
 				 * 
 				 * All other Properties need not be synched this way 
 				 */
 				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
 					firePropertyChanged(property, value);
 				}
-				//AppContext.getEventBus().fireEvent(new );
-				//AppContext.getEventBus().fireEvent(event);
 				
 			}
 		});
-		//initPropertyWidget();
+		
+		//name.equals()
+
 	}
-
-
+	
 	@Override
 	public FieldWidget cloneWidget() {
-		return new TextArea();
+		return new TextField();
 	}
 	
 	@Override
@@ -114,45 +124,62 @@ public class TextArea extends FieldWidget {
 		txtComponent.setTitle(help);
 	}
 	
-	public HTMLPanel getContainer() {
-		return panelControls;
-	}
-	
-	@Override
-	protected DataType getType() {
-		return DataType.STRINGLONG;
-	}
-
-	@Override
-	public Value getFieldValue() {
-		
-		String value = txtComponent.getValue();
-		
-		if(value==null || value.isEmpty())
-			return null;
-		
-		return new StringValue(value);
-	}
-
-	@Override
-	public void setValue(Object value) {
-		if(value!=null){
-			txtComponent.setValue((String)value);
-			lblComponent.setText((String)value);
-			
-		}
-	}
-	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly;
+		
 		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
-		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
+		UIObject.setVisible(lblReadOnly.getElement(), isReadOnly);
+		
 		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
+	}
+
+	@Override
+	public Widget getComponent(boolean small) {
+				
+		if(!readOnly)
+		if(small){
+			txtComponent.setClass("input-medium");
+		}
+		return panelControls;
 	}
 	
 	@Override
-	public Widget getComponent(boolean small){		
-		return panelControls;
+	protected void setAlignment(String alignment) {		
+		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));		
+		panelControls.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
+		
 	}
+
+	
+	@Override
+	protected DataType getType() {
+		return DataType.DOUBLE;
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		Double value = txtComponent.getValue();
+		
+		if(value==null)
+			return null;
+		
+		
+		return new DoubleValue(value);
+	}
+	
+	@Override
+	public void setValue(Object value) {
+		if(value!=null){
+			txtComponent.setValue((Double)value);
+			
+			NumberFormat fmt = NumberFormat.getDecimalFormat();
+		    String formatted = fmt.format((Double)value);
+			lblReadOnly.setText(formatted);
+		}
+
+	}
+	
+	
+	
 }

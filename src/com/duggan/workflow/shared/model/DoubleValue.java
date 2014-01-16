@@ -14,6 +14,10 @@ public class DoubleValue implements Value {
 	public DoubleValue(){
 	}
 
+	public DoubleValue(Double val){
+		value=val;
+	}
+	
 	public DoubleValue(Long id, String key, Double value){
 		this.id=id;
 		this.key=key;

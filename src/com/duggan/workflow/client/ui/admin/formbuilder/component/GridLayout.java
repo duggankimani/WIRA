@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -113,7 +114,7 @@ implements EditLineHandler{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addColumn();
+				addColumn(DataType.LABEL);
 			}
 		});
 		
@@ -121,7 +122,7 @@ implements EditLineHandler{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addColumn();
+				addColumn(DataType.BOOLEAN);
 			}
 		});	
 		
@@ -130,7 +131,7 @@ implements EditLineHandler{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addColumn();
+				addColumn(DataType.DATE);
 			}
 		});
 		
@@ -148,6 +149,27 @@ implements EditLineHandler{
 				addColumn();
 			}
 		});
+		
+		grid.getNumField().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn(DataType.DOUBLE);
+			}
+		});
+		
+		grid.getCurrField().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Field field = new Field();
+				field.setType(DataType.DOUBLE);
+				field.setProperties(
+						Arrays.asList(new Property(CURRENCY, "Currency", DataType.SELECTBASIC)));
+				addColumn(field);
+			}
+		});
+		
 
 	}
 
@@ -215,18 +237,24 @@ implements EditLineHandler{
 	
 	protected void addColumn(DataType type) {
 		Field child = new Field();		
-		child.setType(type);		
+		child.setType(type);	
+		
+		addColumn(child);
+		
+	}
+	
+	private void addColumn(Field child) {
 		child.setParentId(field.getId());	
 		int pos = field.getFields().size();
 		child.setPosition(pos);				
 		child.setCaption("Column "+(pos));
-		Property prop = new Property(CAPTION, "Label Text", DataType.STRING, id);
-		prop.setValue(new StringValue(child.getCaption()));
+//		Property prop = new Property(CAPTION, "Label Text", DataType.STRING, id);
+//		prop.setValue(new StringValue(child.getCaption()));
 		
 		field.addField(child);		
 		save();
 	}
-	
+
 	@Override
 	public void onAfterSave() {
 		assert field!=null;

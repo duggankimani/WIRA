@@ -159,7 +159,7 @@ body .dateBoxPopup{
 .modal-document{
 	width:inherit;
 	max-width: -moz-max-content;
-	max-width: intrinsic;
+	display:inline-table;
 }
 
 /* Custom navbar stuff */

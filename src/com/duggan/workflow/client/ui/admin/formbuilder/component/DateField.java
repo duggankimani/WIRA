@@ -10,6 +10,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -31,6 +32,7 @@ public class DateField extends FieldWidget {
 	@UiField DateInput dateBox;
 	@UiField HTMLPanel panelControls;
 	@UiField InlineLabel lblComponent;
+	@UiField SpanElement spnMandatory;
 	
 	public DateField() {
 		super();
@@ -39,6 +41,7 @@ public class DateField extends FieldWidget {
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		widget = uiBinder.createAndBindUi(this);	
 		add(widget);
+		UIObject.setVisible(spnMandatory, false);
 	}
 	
 	/**
@@ -106,6 +109,7 @@ public class DateField extends FieldWidget {
 		this.readOnly = isReadOnly;
 		UIObject.setVisible(dateBox.getElement(),!isReadOnly);
 		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
+		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
 	}
 	
 	@Override

@@ -26,6 +26,20 @@
 						</li>
 						
 						<li>
+							<d:ActionLink ui:field="aNumField">
+								<i class="icon-edit"></i>
+								Number Field
+							</d:ActionLink>
+						</li>
+						
+						<li>
+							<d:ActionLink ui:field="aCurrField">
+								<i class="icon-edit"></i>
+								Currency Field
+							</d:ActionLink>
+						</li>
+						
+						<li>
 							<d:ActionLink ui:field="aRadioField">
 								<i class="icon-edit"></i>
 								Radio

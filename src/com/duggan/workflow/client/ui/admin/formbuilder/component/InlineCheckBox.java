@@ -7,12 +7,14 @@ import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class InlineCheckBox extends FieldWidget {
@@ -29,6 +31,7 @@ public class InlineCheckBox extends FieldWidget {
 	@UiField Element lblEl;
 	
 	@UiField CheckBox component;
+	@UiField SpanElement spnMandatory;
 	
 	private final Widget widget;
 
@@ -37,6 +40,7 @@ public class InlineCheckBox extends FieldWidget {
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
+		UIObject.setVisible(spnMandatory, false);
 	}
 	
 	/**

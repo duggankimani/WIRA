@@ -7,6 +7,7 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -29,6 +30,7 @@ public class TextField extends FieldWidget {
 	@UiField com.duggan.workflow.client.ui.component.TextField txtComponent;
 	@UiField InlineLabel lblReadOnly;
 	@UiField HTMLPanel panelControls;
+	@UiField SpanElement spnMandatory;
 	
 	private final Widget widget;
 	
@@ -44,6 +46,7 @@ public class TextField extends FieldWidget {
 
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
+		UIObject.setVisible(spnMandatory, false);
 	}
 	
 	public TextField(final Property property) {
@@ -145,6 +148,8 @@ public class TextField extends FieldWidget {
 		
 		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
 		UIObject.setVisible(lblReadOnly.getElement(), isReadOnly);
+		
+		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
 	}
 
 	@Override

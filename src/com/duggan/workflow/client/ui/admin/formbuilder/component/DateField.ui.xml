@@ -8,6 +8,7 @@
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 			  	 	<d:DateInput ui:field="dateBox"></d:DateInput>
 			  	 	<g:InlineLabel ui:field="lblComponent"></g:InlineLabel>
+			  	 	<span ui:field="spnMandatory" style="color:red">*</span>
 			    </g:HTMLPanel>
 		    </g:HTMLPanel>
 </ui:UiBinder>	

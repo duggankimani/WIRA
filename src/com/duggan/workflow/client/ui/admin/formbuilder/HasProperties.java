@@ -16,6 +16,7 @@ public interface HasProperties {
 	public static final String READONLY="READONLY";
 	public static final String PLACEHOLDER="PLACEHOLDER";
 	public static final String ALIGNMENT="ALIGNMENT";
+	public static final String CURRENCY="CURRENCY";
 	
 	public static final String COLUMNLABEL="COLUMNLABEL";
 	public static final String COLUMNTYPE="COLUMNTYPE";

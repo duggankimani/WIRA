@@ -106,3 +106,18 @@
 	font-family: arial,sans-serif;
 	/*width: 300px;*/
 }
+
+.dateinput, .compositeinput{
+	display:inline-block;
+}
+
+.dateinput .input-group .input-group-addon{
+	display:inline;
+	display:-moz-compact;	
+}
+
+.control-group .controls .comment-container{
+	display:inline-block;
+	width:95%;
+	max-width:95%;
+}

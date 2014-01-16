@@ -179,4 +179,18 @@ public class Field extends FormModel{
 			});
 		}
 	}
+
+	public Property getProperty(String propertyName) {
+		
+		Property property=null;
+		for(Property prop: properties){
+			if(prop.getName()!=null)
+			if(prop.getName().equals(propertyName)){
+				property = prop;
+				break;
+			}
+		}
+		
+		return property;
+	}
 }
