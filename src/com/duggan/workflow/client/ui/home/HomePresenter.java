@@ -42,7 +42,6 @@ import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTSummary;
@@ -477,7 +476,7 @@ public class HomePresenter extends
 			@Override
 			public void processResult(GenericFormPresenter result) {
 				result.setDocumentType(type);
-				addToPopupSlot(result, true);
+				addToPopupSlot(result, false);
 			}
 		});
 	}

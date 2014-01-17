@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.save.form;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import com.duggan.workflow.client.ui.AppManager;
@@ -87,7 +86,7 @@ public class GenericFormView extends PopupViewImpl implements
 		
 		int[] position=AppManager.calculatePosition(5, 50);
 		diaBox.setPopupPosition(position[1],position[0]);
-		diaBox.getElement().getStyle().setTop(5, Unit.PCT);
+		//diaBox.getElement().getStyle().setLeft(position[0], Unit.PX);
 	}
 
 	@Override
