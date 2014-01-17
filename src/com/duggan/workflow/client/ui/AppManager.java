@@ -44,8 +44,8 @@ public class AppManager {
 			popupPresenter.getView().addToSlot(GenericPopupPresenter.BUTTON_SLOT, aLnk);
 		}
 		
-		mainPagePresenter.addToPopupSlot(popupPresenter, true);		
-		popupPresenter.getView().center();
+		mainPagePresenter.addToPopupSlot(popupPresenter, false);		
+		//popupPresenter.getView().center();
 	}
 	
 	public static void showPopUp(String header, PresenterWidget<ViewImpl> presenter, final OnOptionSelected onOptionSelected,
