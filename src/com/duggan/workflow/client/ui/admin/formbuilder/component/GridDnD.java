@@ -38,6 +38,8 @@ public class GridDnD extends AbsolutePanel {
 	@UiField ActionLink adateBox;
 	@UiField ActionLink achckBox;
 	@UiField ActionLink slctField;
+	@UiField ActionLink aNumField;
+	@UiField ActionLink aCurrField;
 	
 	private PickupDragController columnDragController;
 	private HorizontalPanelDropController columnDropController;
@@ -191,6 +193,14 @@ public class GridDnD extends AbsolutePanel {
 
 	public ActionLink getSlctField() {
 		return slctField;
+	}
+
+	public ActionLink getNumField() {
+		return aNumField;
+	}
+
+	public ActionLink getCurrField() {
+		return aCurrField;
 	}
 
 }

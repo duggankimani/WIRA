@@ -72,6 +72,14 @@
 									    <f:TextField></f:TextField>	
 									</fb:PalettePanel>
 			                      
+									<fb:PalettePanel ui:field="vNumberInputPanel">	
+									 	<f:NumberField></f:NumberField>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vCurrencyInputPanel">	
+									 	<f:CurrencyField></f:CurrencyField>
+									</fb:PalettePanel>
+									
 									<fb:PalettePanel ui:field="vDatePanel">	
 									    <f:DateField></f:DateField>					  	  
 									</fb:PalettePanel>

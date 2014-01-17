@@ -6,6 +6,7 @@
 			       <label ui:field="lblEl" class="control-label">checkbox Buttons:</label>
 				    <div class="controls">
 					    <g:CheckBox ui:field="component"></g:CheckBox>
+					    <span ui:field="spnMandatory" style="color:red">*</span>
 					  </div>
 		       </g:HTMLPanel>
 	       </g:AbsolutePanel>

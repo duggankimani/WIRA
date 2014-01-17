@@ -84,6 +84,8 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField DivElement divPaletteBody;
 	
 	@UiField PalettePanel vTextInputPanel;
+	@UiField PalettePanel vNumberInputPanel;
+	@UiField PalettePanel vCurrencyInputPanel;
 	@UiField PalettePanel vDatePanel;
 	@UiField PalettePanel vTextAreaPanel;
 	@UiField PalettePanel vInlineRadioPanel;
@@ -272,6 +274,8 @@ public class FormBuilderView extends ViewImpl implements
 	 */
 	public void registerInputDrag(){	
 		vTextInputPanel.registerDragController(widgetDragController);
+		vNumberInputPanel.registerDragController(widgetDragController);
+		vCurrencyInputPanel.registerDragController(widgetDragController);
 		vDatePanel.registerDragController(widgetDragController);
 		vTextAreaPanel.registerDragController(widgetDragController);
 		vInlineCheckBoxPanel.registerDragController(widgetDragController);

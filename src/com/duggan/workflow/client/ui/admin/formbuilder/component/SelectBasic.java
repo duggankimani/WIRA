@@ -10,6 +10,7 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -30,6 +31,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	@UiField DropDownList<KeyValuePair> lstItems;
 	@UiField HTMLPanel panelControls;
 	@UiField InlineLabel lblComponent;
+	@UiField SpanElement spnMandatory;
 	
 	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
 	}
@@ -40,6 +42,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
+		UIObject.setVisible(spnMandatory, false);
 	}
 	
 	public SelectBasic(final Property property){
@@ -110,6 +113,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		this.readOnly = isReadOnly;
 		UIObject.setVisible(lstItems.getElement(),!isReadOnly);
 		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
+		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
 	}
 
 	@Override

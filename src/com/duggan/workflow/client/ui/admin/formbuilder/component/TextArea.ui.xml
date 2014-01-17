@@ -6,10 +6,11 @@
 		       <label ui:field="lblEl" class="control-label">Text Area:</label>
 			    <div class="controls">
 			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
-			  	<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
-			  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
-			  	 <g:InlineLabel ui:field="lblComponent"></g:InlineLabel>
-		    	</g:HTMLPanel>
+				  	<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
+				  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
+				  	 <g:InlineLabel ui:field="lblComponent"></g:InlineLabel>			  	 
+			    	</g:HTMLPanel>
+			    	<span ui:field="spnMandatory" style="color:red">*</span>
 		    	</div>
 	       </g:HTMLPanel>
 </ui:UiBinder> 

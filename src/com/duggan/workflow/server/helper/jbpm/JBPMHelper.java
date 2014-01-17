@@ -444,7 +444,7 @@ public class JBPMHelper implements Closeable {
 			
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
-			task.setDocStatus(doc.getStatus());
+			task.setDocStatus(DB.getDocumentDao().getById(doc.getId()).getStatus());
 			//task.setDocumentType(document.getType());
 			task.setOwner(doc.getOwner());
 		

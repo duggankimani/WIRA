@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
@@ -36,6 +38,10 @@ public class Property extends FormModel{
 		for(KeyValuePair p: pairs){
 			this.kvp.add(p);
 		}
+	}
+	
+	public void addSelectionItem(KeyValuePair pair){
+		this.kvp.add(pair);
 	}
 	
 	public Property(String name, String caption, DataType type, Long fieldId){
@@ -110,6 +116,17 @@ public class Property extends FormModel{
 				";Value="+(getValue()==null? null: getValue().getValue())+
 				"}"
 				;
+	}
+	
+	public void sort(){
+		Collections.sort(kvp, new Comparator<KeyValuePair>() {
+			public int compare(KeyValuePair o1, KeyValuePair o2) {
+				String a = o1.getValue();
+				String b = o2.getValue();
+				
+				return a.compareTo(b);
+			};
+		});
 	}
 	
 	public Property clone(){
