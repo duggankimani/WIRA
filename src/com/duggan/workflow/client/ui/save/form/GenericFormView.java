@@ -14,7 +14,6 @@ import com.duggan.workflow.shared.model.IntValue;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Form;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -86,7 +85,6 @@ public class GenericFormView extends PopupViewImpl implements
 		
 		int[] position=AppManager.calculatePosition(5, 50);
 		diaBox.setPopupPosition(position[1],position[0]);
-		//diaBox.getElement().getStyle().setLeft(position[0], Unit.PX);
 	}
 
 	@Override

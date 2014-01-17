@@ -335,7 +335,7 @@
 	height:460px;
 }
 .dragdrop-dropTarget  .action-buttons .span2{
-    width:8.53%;
+    width: 9.2%;
     margin-left: 5px;
 }
 #main-content .content .content-body .palete-panel .tab-content {
@@ -603,9 +603,11 @@ overflow-y:auto;
 
 .td {
 	display: table-cell;
- 	/*padding: 8px;*/
+ 	
+	padding: 0px;
 	text-align: left;
-	vertical-align: top;
+	vertical-align: middle;
+	padding-left: 8px;
 }
 
 }
@@ -1030,6 +1032,4 @@ overflow-y:auto;
 	display: block;
 }
 
-.panel .panel-body.slideUp {
-	display: none;
-}
+.

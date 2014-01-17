@@ -18,8 +18,9 @@
 			    
 			</g:HTMLPanel>
 			
-			<g:HTMLPanel ui:field="panelButtons" styleName="form-actions">
-			    
+			<g:HTMLPanel styleName="form-actions">
+			    <g:HTMLPanel ui:field="panelButtons" styleName="row-fluid">
+			    </g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:PopupPanel>
