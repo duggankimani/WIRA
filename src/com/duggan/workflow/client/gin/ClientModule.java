@@ -93,6 +93,8 @@ import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
 import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
 import com.duggan.workflow.client.ui.docActivity.DocumentActivityView;
+import com.duggan.workflow.client.ui.delegate.DelegationPresenter;
+import com.duggan.workflow.client.ui.delegate.DelegationView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -240,5 +242,9 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(IFrameDataPresenter.class,
 				IFrameDataPresenter.IFrameView.class, IFrameDataView.class);
+
+		bindPresenter(DelegationPresenter.class,
+				DelegationPresenter.MyView.class, DelegationView.class,
+				DelegationPresenter.MyProxy.class);
 }
 }
