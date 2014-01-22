@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -20,7 +21,7 @@ public class SaveCommentRequestActionHandler extends
 	public void execute(SaveCommentRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		Comment comment = action.getComment();
-		
+		comment.setCreatedBy(SessionHelper.getCurrentUser());
 		comment = CommentDaoHelper.saveComment(comment);
 		
 		SaveCommentResponse response = (SaveCommentResponse)actionResult;

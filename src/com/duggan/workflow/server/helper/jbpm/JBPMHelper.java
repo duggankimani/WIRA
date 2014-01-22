@@ -24,6 +24,7 @@ import org.jbpm.process.audit.ProcessInstanceLog;
 import org.jbpm.process.core.Process;
 import org.jbpm.task.AccessType;
 import org.jbpm.task.Comment;
+import org.jbpm.task.Deadline;
 import org.jbpm.task.Deadlines;
 import org.jbpm.task.Delegation;
 import org.jbpm.task.I18NText;
@@ -405,7 +406,6 @@ public class JBPMHelper implements Closeable {
 		assert doc != null;
 
 		task.setCreated(master_task.getTaskData().getCreatedOn());
-		task.setDateDue(master_task.getTaskData().getCreatedOn());
 		task.setSubject(doc.getSubject());
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
@@ -537,6 +537,25 @@ public class JBPMHelper implements Closeable {
 		// myTask.setVersion(version);
 
 		Deadlines deadlines = task.getDeadlines();
+		if(deadlines!=null){
+			List<Deadline> startDeadlines = deadlines.getStartDeadlines();
+			if(startDeadlines!=null)
+			if(startDeadlines.size()>0){
+				Deadline deadline = startDeadlines.get(0);
+				Date date = deadline.getDate();
+				myTask.setStartDateDue(date);
+			}
+			
+			List<Deadline> endDeadlines = deadlines.getEndDeadlines();
+			if(endDeadlines!=null)
+			if(endDeadlines.size()>0){
+				Deadline deadline = startDeadlines.get(0);
+				Date date = deadline.getDate();
+				myTask.setEndDateDue(date);
+			}
+			
+		}
+		
 		// deadlines.getEndDeadlines();
 		Delegation delegation = task.getDelegation();
 

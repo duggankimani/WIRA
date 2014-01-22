@@ -148,7 +148,7 @@ public class Document extends Doc implements Serializable{
 	public HTSummary toTask(){
 		HTSummary summary = new HTSummary();
 		summary.setCreated(new Date());
-		summary.setDateDue(dateDue);
+		//summary.setStartDateDue(dateDue);
 		summary.setDescription(description);
 		summary.setDocumentRef(id);
 		summary.setPriority(priority);

@@ -34,7 +34,7 @@ public class TestSaveComment {
 		Comment comment = new Comment();
 		comment.setComment("Comment xyz .......... ");
 		comment.setCreated(new Date());
-		comment.setCreatedBy("mariano");
+		comment.setCreatedBy(LoginHelper.get().getUser("mariano"));
 		comment.setDocumentId(2L);
 		comment.setId(null);
 		comment.setUserId("mariano");

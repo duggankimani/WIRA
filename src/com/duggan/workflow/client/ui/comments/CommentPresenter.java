@@ -7,6 +7,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
@@ -27,7 +28,7 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 	public interface ICommentView extends View {
 		TextArea getCommentBox();
 
-		void setComment(Long commentId, String comment, String createdBy,
+		void setComment(Long commentId, String comment, HTUser createdBy,
 				Date created, String updatedby, Date updated, long documentId, boolean isChild);
 
 		HasClickHandlers getSaveCommentsLink();
@@ -99,7 +100,7 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 		}
 		
 		commentToSave.setComment(commentTxt);
-		commentToSave.setCreatedBy(AppContext.getUserId());
+		//commentToSave.setCreatedBy(AppContext.getUserId());
 
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCommentRequest(commentToSave));

@@ -8,11 +8,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
+public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView {
 
 	private final Widget widget;
 
@@ -39,6 +40,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		widget = binder.createAndBindUi(this);
 		aNotifications.setTabIndex(3);
 		aNotifications.getElement().setAttribute("data-toggle", "dropdown");
+		UIObject.setVisible(aAdmin.getElement(),false);
 	}
 
 	@Override
@@ -126,5 +128,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	@Override
 	public void changeFocus() {
 		popupContainer.setFocus(true);
+	}
+
+	@Override
+	public void showAdminLink(boolean isAdmin) {
+		UIObject.setVisible(aAdmin.getElement(),isAdmin);
 	}
 }

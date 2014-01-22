@@ -427,7 +427,7 @@ public class GenericDocumentPresenter extends
 		comment.setDocumentId(documentId);
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
-		comment.setCreatedBy(AppContext.getUserId());
+		//comment.setCreatedBy(AppContext.getUserId());
 		
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCommentRequest(comment));

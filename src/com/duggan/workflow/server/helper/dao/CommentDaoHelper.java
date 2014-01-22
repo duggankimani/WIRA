@@ -83,9 +83,8 @@ public class CommentDaoHelper {
 		
 		String owner = modelFrom.getCreatedBy();
 		HTUser createdBy = LoginHelper.get().getUser(owner);
-		commentTo.setCreatedByUser(createdBy);
 		commentTo.setCreated(modelFrom.getCreated());
-		commentTo.setCreatedBy(owner);
+		commentTo.setCreatedBy(createdBy);
 		commentTo.setDocumentId(modelFrom.getDocumentId());
 		commentTo.setId(modelFrom.getId());
 		commentTo.setUpdated(modelFrom.getUpdated());

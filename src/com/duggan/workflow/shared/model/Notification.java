@@ -9,7 +9,7 @@ public class Notification extends Activity{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private String owner;
+	private HTUser owner;
 	private String targetUserId;
 	private Long documentId;
 	private NotificationType notificationType;
@@ -17,7 +17,7 @@ public class Notification extends Activity{
 	private DocumentType documentType;
 	private Boolean isRead;
 	private Date created;
-	private String createdBy;
+	private HTUser createdBy;
 	private ApproverAction approverAction;
 	private Long processInstanceId;
 	
@@ -63,14 +63,6 @@ public class Notification extends Activity{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
 	}
 
 	public String getTargetUserId() {
@@ -127,14 +119,6 @@ public class Notification extends Activity{
 		
 		return null;
 	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -153,5 +137,21 @@ public class Notification extends Activity{
 		}
 		
 		return super.hashCode();
+	}
+
+	public HTUser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(HTUser owner) {
+		this.owner = owner;
+	}
+
+	public HTUser getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(HTUser createdBy) {
+		this.createdBy = createdBy;
 	}
 }

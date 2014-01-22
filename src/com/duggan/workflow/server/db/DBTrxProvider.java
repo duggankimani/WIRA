@@ -101,7 +101,10 @@ public class DBTrxProvider{
 	}
 
 	public static void close() {
-		TransactionManagerServices.getTransactionManager().shutdown();
+		if(!isTomcatEnv){
+			TransactionManagerServices.getTransactionManager().shutdown();
+		}
+		
 	}
 	
 }

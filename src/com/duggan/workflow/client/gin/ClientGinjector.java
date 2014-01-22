@@ -39,7 +39,7 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<LoginPresenter> getLoginPresenter();
 	
 	LoginGateKeeper getLoggedInGateKeeper();
-
+	
 	AsyncProvider<NotfoundPresenter> getNotfoundPresenter();
 
 	AsyncProvider<ActivitiesPresenter> getActivitiesPresenter();

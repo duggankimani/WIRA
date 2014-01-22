@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -34,7 +35,7 @@ public class TestNotificationDao {
 		notification.setDocumentId(31L);
 		//notification.setDocumentType(DocType.INVOICE);
 		notification.setNotificationType(NotificationType.APPROVALREQUEST_APPROVERNOTE);
-		notification.setOwner("calcacuervo");
+		notification.setOwner(LoginHelper.get().getUser("calcacuervo"));
 		notification.setRead(false);
 		notification.setSubject("Inv/001/01");
 		notification.setTargetUserId("mariano");

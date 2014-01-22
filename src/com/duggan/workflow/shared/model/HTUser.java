@@ -99,5 +99,20 @@ public class HTUser implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public boolean hasGroup(String groupName) {
+		
+		for(UserGroup group:groups){
+			if(group.getName().equals(groupName)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isAdmin() {
+
+		return hasGroup("ADMIN");
+	}
 	
 }

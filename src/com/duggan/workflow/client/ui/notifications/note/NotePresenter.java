@@ -5,6 +5,7 @@ import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsSt
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
@@ -27,9 +28,9 @@ public class NotePresenter extends
 		HasClickHandlers getDocumentBtn();
 
 		void setValues(String subject, DocumentType documentType,
-				NotificationType notificationType, String owner,
+				NotificationType notificationType, HTUser owner,
 				String targetUserId, String time, boolean isRead, 
-				String createdBy,ApproverAction approverAction, Long processInstanceId, boolean isNotification);
+				HTUser createdBy,ApproverAction approverAction, Long processInstanceId, boolean isNotification);
 	}
 
 	private Notification note;

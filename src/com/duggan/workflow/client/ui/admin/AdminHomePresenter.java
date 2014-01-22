@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
@@ -8,15 +9,20 @@ import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
-import com.duggan.workflow.client.ui.events.LoadFormBuilderEvent;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.requests.GetContextRequest;
+import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.History;
 import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
@@ -65,6 +71,8 @@ public class AdminHomePresenter extends
 	@Inject
 	FormBuilderPresenter formbuilder;
 
+	@Inject DispatchAsync dispatcher;
+	
 	enum ADMINPAGES {
 		DASHBOARD("Dashboard", "icon-dashboard"), PROCESSES("Processes", "icon-cogs"),
 		USERS("Users","icon-group"),GROUPS("Groups","icon-group"), REPORTS("Reports","icon-bar-chart"), 
@@ -99,7 +107,27 @@ public class AdminHomePresenter extends
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
+		if(AppContext.getContextUser()==null || AppContext.getContextUser().getGroups()==null){
+			dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
+				@Override
+				public void processResult(GetContextRequestResult result) {
+					HTUser user = result.getUser();
+					revealMeToUser(user);
+				}			
+			});
+		}else{
+			revealMeToUser(AppContext.getContextUser());
+		}
+		
+	}
+
+	protected void revealMeToUser(HTUser user) {
+		if(AppContext.isCurrentUserAdmin()){
+			RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
+		}else{
+			//redirect
+			History.newItem("#home");
+		}
 	}
 
 	@Override

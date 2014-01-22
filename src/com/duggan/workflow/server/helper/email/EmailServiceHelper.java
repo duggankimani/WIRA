@@ -78,6 +78,10 @@ public class EmailServiceHelper {
 
 		Transport.send(message);
 	}
+	
+	public static Properties getProperties(){
+		return props;
+	}
 
 	public static void main(String[] args) throws Exception{
 		sendEmail("Hello world", "Test 1", "mdkimani@gmail.com");

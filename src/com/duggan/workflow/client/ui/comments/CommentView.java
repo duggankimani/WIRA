@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.ui.component.CommentBox;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -72,13 +74,19 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 	}
 
 	@Override
-	public void setComment(Long commentId, String comment, String createdBy,
+	public void setComment(Long commentId, String comment, HTUser createdBy,
 			Date created, String updatedby, Date updated, long documentId, boolean isChild) {
 		
 		this.commentid=commentId;
 		if(createdBy!=null){
 			spnCreated.setInnerText(getTimeDifferenceAsString(created));
-			spnCreatedBy.setInnerText(createdBy);
+			
+			if(AppContext.isCurrentUser(createdBy.getUserId())){
+				spnCreatedBy.setInnerText("You");
+			}else{
+				spnCreatedBy.setInnerText(createdBy.getName());
+			}
+			
 		}
 		
 		if(isChild){

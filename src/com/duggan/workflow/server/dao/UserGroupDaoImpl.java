@@ -1,8 +1,10 @@
 package com.duggan.workflow.server.dao;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -10,9 +12,11 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
+import com.duggan.workflow.server.db.DBTrxProvider;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
 
+	Properties dbProperties = new Properties();
 	
 	public UserGroupDaoImpl(EntityManager em){
 		super(em);

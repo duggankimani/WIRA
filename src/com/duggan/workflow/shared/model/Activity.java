@@ -10,7 +10,7 @@ public abstract class Activity implements Serializable, Comparable<Activity> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public abstract String getCreatedBy();
+	public abstract HTUser getCreatedBy();
 	public abstract Date getCreated();
 	public abstract String getTargetUserId();
 	public abstract String getStatement();

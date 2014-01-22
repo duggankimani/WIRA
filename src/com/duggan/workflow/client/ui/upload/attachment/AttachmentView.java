@@ -63,7 +63,7 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 	@Override
 	public void setValues(long id,String name, String size) {
 		String shortName;
-		if(name.length()>24){
+		if(name.length()>28){
 			shortName = name.substring(0, 28) + "...";
 		}else{
 			shortName=name;

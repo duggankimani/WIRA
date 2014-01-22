@@ -33,6 +33,7 @@ import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.Task;
 import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
+import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
@@ -70,7 +71,8 @@ class BPMSessionManager {
 	public BPMSessionManager() {
 
 		service = new TaskService(DB.getEntityManagerFactory(),
-				SystemEventListenerFactory.getSystemEventListener());
+				SystemEventListenerFactory.getSystemEventListener(),
+				new DefaultEscalatedDeadlineHandler(EmailServiceHelper.getProperties()));
 		// service.
 
 	}

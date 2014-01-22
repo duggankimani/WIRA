@@ -10,7 +10,8 @@ public class HTSummary extends Doc implements Serializable{
 	private long id;
 	private String name;//Display Name
 	private String taskName;//Code used for mapping to FormBuilder forms
-	private Date dateDue;
+	private Date startDateDue;
+	private Date endDateDue;
 	private Date lastUpdate;
 	private HTStatus status;
 	private Date created;
@@ -42,20 +43,12 @@ public class HTSummary extends Doc implements Serializable{
 		this.taskName = taskName;
 	}
 
-	public void setDateDue(Date dateDue) {
-		this.dateDue = dateDue;
-	}
-
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
 	public String getTaskName() {
 		return taskName;
-	}
-
-	public Date getDateDue() {
-		return dateDue;
 	}
 
 	public Date getLastUpdate() {
@@ -153,5 +146,21 @@ public class HTSummary extends Doc implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Date getStartDateDue() {
+		return startDateDue;
+	}
+
+	public void setStartDateDue(Date startDateDue) {
+		this.startDateDue = startDateDue;
+	}
+
+	public Date getEndDateDue() {
+		return endDateDue;
+	}
+
+	public void setEndDateDue(Date endDateDue) {
+		this.endDateDue = endDateDue;
 	}
 }

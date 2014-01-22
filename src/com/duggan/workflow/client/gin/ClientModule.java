@@ -115,7 +115,7 @@ public class ClientModule extends AbstractPresenterModule {
 				TaskItemPresenter.MyView.class, TaskItemView.class);
 
 		bindPresenterWidget(HeaderPresenter.class,
-				HeaderPresenter.MyView.class, HeaderView.class);
+				HeaderPresenter.IHeaderView.class, HeaderView.class);
 
 		bindPresenterWidget(TabsPresenter.class, TabsPresenter.MyView.class,
 				TabsView.class);

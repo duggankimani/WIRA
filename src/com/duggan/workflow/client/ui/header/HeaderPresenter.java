@@ -41,10 +41,10 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class HeaderPresenter extends PresenterWidget<HeaderPresenter.MyView> 
+public class HeaderPresenter extends PresenterWidget<HeaderPresenter.IHeaderView> 
 implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 
-	public interface MyView extends View {
+	public interface IHeaderView extends View {
 		HasClickHandlers getLogout();
 		void setValues(String userNames, String userGroups);
 		Anchor getNotificationsButton();
@@ -54,6 +54,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 		void setLoading(boolean b);
 		void setAdminPageLookAndFeel(boolean isAdminPage);
 		void changeFocus();
+		void showAdminLink(boolean admin);
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -70,7 +71,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 
 	
 	@Inject
-	public HeaderPresenter(final EventBus eventBus, final MyView view) {
+	public HeaderPresenter(final EventBus eventBus, final IHeaderView view) {
 		super(eventBus, view);
 	}
 
@@ -179,6 +180,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
 		HTUser currentUser = event.getCurrentUser();
+		getView().showAdminLink(currentUser.isAdmin());
 		getView().setValues(currentUser.getName(), currentUser.getGroupsAsString());
 	}
 	

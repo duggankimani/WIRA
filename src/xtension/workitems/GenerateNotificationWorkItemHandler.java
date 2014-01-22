@@ -54,7 +54,7 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		notification.setCreated(new Date());
 		notification.setDocumentId(new Long(documentId));
 		notification.setNotificationType(type);
-		notification.setOwner(ownerId);
+		notification.setOwner(LoginHelper.get().getUser(ownerId));
 		notification.setRead(false);
 		notification.setSubject(subject);
 		Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());

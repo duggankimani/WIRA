@@ -1,7 +1,9 @@
 package com.duggan.workflow.client.ui.notifications.note;
 
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -53,9 +55,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 	@Override
 	public void setValues(String subject, DocumentType documentType,
-			NotificationType notificationType, String owner,
+			NotificationType notificationType, HTUser ownerObj,
 			String targetUserId, String time, boolean isRead,
-			String createdBy, ApproverAction approverAction,
+			HTUser createdBy, ApproverAction approverAction,
 			 Long processInstanceId, boolean isNotification) {
 		
 		String prefix = documentType == null ? "Document" : documentType
@@ -76,7 +78,15 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			action = approverAction.getAction();
 		}
 		
-		String approver = createdBy;
+		String owner = ownerObj.getName();
+		if(AppContext.isCurrentUser(ownerObj.getUserId())){
+			owner = "You";
+		}
+		
+		String approver = createdBy.getName();
+		if(AppContext.isCurrentUser(createdBy.getUserId())){
+			approver="You";
+		}
 		
 		SafeHtml safeHtml = null;
 		SafeHtml safeHtml2 = null;
@@ -88,9 +98,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		case APPROVALREQUEST_OWNERNOTE:
 			if(isNotification)
 			safeHtml = Template2.render(subject, time);
-			else
-			safeHtml2= Template6.render(subject, time);
-			
+			else{
+				safeHtml2= Template6.render(owner,subject, time);
+			}
 			break;
 
 		case TASKCOMPLETED_APPROVERNOTE:
@@ -156,13 +166,13 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	
 	interface APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE extends SafeHtmlTemplates {
 		@Template("<div class=\"feed-icon\"><i class=\"icon-signin\"></i></div>"+
-				"<div class=\"feed-subject\"><a><span>You</span></a>" +
-				" succesfully submitted <a><span>{0}</span></a>" +
+				"<div class=\"feed-subject\"><a><span>{0}</span></a>" +
+				" succesfully submitted <a><span>{1}</span></a>" +
 				" for approval</div>"+
 				"<div class=\"feed-actions\">" +
-				"<span class=\"time\"><i class=\"icon-time\">{1}</span>" +
+				"<span class=\"time\"><i class=\"icon-time\">{2}</span>" +
 				"</div>")
-		public SafeHtml render(String subject, String time);
+		public SafeHtml render(String owner,String subject, String time);
 
 		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
 		// (10 seconds ago)

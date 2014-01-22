@@ -124,4 +124,25 @@ public class AppContext {
 	public static void fireEvent(GwtEvent event) {
 		eventBus.fireEvent(event);
 	}
+	
+	public static HTUser getContextUser(){
+		return user;
+	}
+
+	public static boolean isCurrentUserAdmin() {
+		if(getContextUser().getGroups()==null)
+			return false;
+
+		return getContextUser().isAdmin();
+	}
+
+
+	public static boolean isCurrentUser(String userId) {
+		
+		if(getContextUser()==null){	
+			return false;
+		}
+		
+		return getContextUser().getUserId().equals(userId);
+	}
 }

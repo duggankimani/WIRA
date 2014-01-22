@@ -7,13 +7,12 @@ public class Comment extends Activity {
 	private static final long serialVersionUID = 6882858941033696924L;
 	private String comment;
 	private Long id;
-	private String createdBy;
+	private HTUser createdBy;
 	private Date created;
 	private String updatedBy;
 	private Date updated;
 	private String userId;
 	private Long documentId;
-	private HTUser createdByUser;
 	private Long parentId;
 	
 	public String getComment() {
@@ -48,11 +47,8 @@ public class Comment extends Activity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getCreatedBy() {
+	public HTUser getCreatedBy() {
 		return createdBy;
-	}
-	public void setCreatedBy(String createdby) {
-		this.createdBy = createdby;
 	}
 	public String getUpdatedBy() {
 		return updatedBy;
@@ -65,12 +61,6 @@ public class Comment extends Activity {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-	public HTUser getCreatedByUser() {
-		return createdByUser;
-	}
-	public void setCreatedByUser(HTUser createdByUser) {
-		this.createdByUser = createdByUser;
 	}
 	
 	@Override
@@ -112,5 +102,8 @@ public class Comment extends Activity {
 		}
 		
 		return super.equals(obj);
+	}
+	public void setCreatedBy(HTUser createdBy) {
+		this.createdBy = createdBy;
 	}
 }

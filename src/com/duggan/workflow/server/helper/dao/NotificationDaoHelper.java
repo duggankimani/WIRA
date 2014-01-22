@@ -33,7 +33,7 @@ public class NotificationDaoHelper {
 		
 		//avoid repetitions of successful submission
 		if(notification.getNotificationType()==NotificationType.APPROVALREQUEST_OWNERNOTE){
-			List items = dao.getNotification(notification.getDocumentId(), notification.getOwner());
+			List items = dao.getNotification(notification.getDocumentId(), notification.getOwner().getUserId());
 			if(items.size()>0){
 				copyData(notification,(NotificationModel)items.get(0));
 				return notification; 
@@ -94,7 +94,7 @@ public class NotificationDaoHelper {
 		}
 		
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
-		notificationTo.setOwner(modelFrom.getOwner());
+		notificationTo.setOwner(modelFrom.getOwner().getUserId());
 		notificationTo.setTargetUserId(modelFrom.getTargetUserId());
 		notificationTo.setNotificationType(modelFrom.getNotificationType());
 		notificationTo.setRead(modelFrom.IsRead());	
@@ -110,7 +110,7 @@ public class NotificationDaoHelper {
 		
 		String owner = modelFrom.getOwner();
 		HTUser htOwner = LoginHelper.get().getUser(owner);
-		notificationTo.setOwner(htOwner==null? owner: htOwner.getName());
+		notificationTo.setOwner(htOwner);
 		notificationTo.setNotificationType(modelFrom.getNotificationType());
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setSubject(modelFrom.getSubject());
@@ -120,7 +120,7 @@ public class NotificationDaoHelper {
 		
 		String createdBy = modelFrom.getCreatedBy();
 		HTUser user = LoginHelper.get().getUser(createdBy);
-		notificationTo.setCreatedBy(user==null?modelFrom.getCreatedBy(): user.getName());
+		notificationTo.setCreatedBy(user);
 		notificationTo.setId(modelFrom.getId());
 		ADDocType documentType = DB.getDocumentDao().getDocumentTypeByDocumentId(modelFrom.getDocumentId());
 		notificationTo.setDocumentType(getType(documentType));
