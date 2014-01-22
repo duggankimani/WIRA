@@ -15,7 +15,10 @@ import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
+import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
@@ -32,6 +35,7 @@ import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
+import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
@@ -68,6 +72,7 @@ import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
+import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
@@ -79,6 +84,7 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
+import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
@@ -158,6 +164,9 @@ public class GenericDocumentPresenter extends
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
 	private IndirectProvider<UploadDocumentPresenter> uploaderFactory;
+	
+	//@Inject static MainPagePresenter mainPagePresenter;
+	@Inject static GenericPopupPresenter popupPresenter;
 	
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
@@ -326,8 +335,17 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				
 				//submitRequest(Actions.DELEGATE);
-				fireEvent(new ExecTaskEvent(taskId, Actions.DELEGATE));
+				//fireEvent(new ExecTaskEvent(taskId, Actions.DELEGATE));
+				requestHelper.execute(new GetUsersRequest(), new TaskServiceCallback<GetUsersResponse>() {
+					@Override
+					public void processResult(GetUsersResponse result) {
+						showDelegatePopup(result.getUsers());
+					}
+				});
+				
+				//mainPagePresenter.addToPopupSlot(popupPresenter, false);
 			}
 		});
 		
@@ -382,6 +400,32 @@ public class GenericDocumentPresenter extends
 		
 	}
 
+
+	private void showDelegatePopup(List<HTUser> users) {
+		final DelegateTaskView view = new DelegateTaskView(users);
+		AppManager.showPopUp("Delegate Task", view,
+				new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Ok")){
+							HTUser user = view.getSelectedUser();
+							if(user!=null && user.getUserId()!=null){
+								ExecTaskEvent event = new ExecTaskEvent(taskId, Actions.DELEGATE);
+								
+								Map<String, Value> values = new HashMap<String, Value>();
+								
+								StringValue userValue = new StringValue(null, "targetUserId",user.getUserId());
+								values.put(userValue.getKey(), userValue);
+								event.setValues(values);
+								
+								fireEvent(event);
+							}
+						}
+					}
+				}, "Ok", "Cancel");
+	}
+	
 	protected void save(Document document) {
 		document.setValues(getView().getValues());
 		document.getDetails().clear();

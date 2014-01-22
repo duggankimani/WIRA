@@ -433,7 +433,7 @@ class BPMSessionManager {
 			complete(taskId, userId, values);
 			break;
 		case DELEGATE:
-			// get().getTaskClient().delegate(taskId, userId, targetUserId);
+			getTaskClient().delegate(taskId, userId, (String)values.get("targetUserId"));
 			break;
 		case FORWARD:
 			// get().getTaskClient().forward(taskId, userId, targetEntityId)

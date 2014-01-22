@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<div class="accordion"  ui:field="divContainer">
+		  <div class="accordion-group">
+				<div class="accordion-heading">
+					<g:Anchor ui:field="aAccordion" styleName="collapsed accordion-toggle"></g:Anchor>
+				</div>
+				<div class="accordion-body collapse" ui:field="divAccordion">
+					<div class="accordion-inner">
+						<g:HTMLPanel ui:field="divNames"></g:HTMLPanel>
+					</div>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 
