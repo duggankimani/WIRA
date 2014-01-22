@@ -8,18 +8,40 @@ import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.MainPageView;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
+import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
+import com.duggan.workflow.client.ui.addDoc.DocumentPopupView;
+import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
+import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomeView;
 import com.duggan.workflow.client.ui.admin.addprocess.AddProcessPresenter;
 import com.duggan.workflow.client.ui.admin.addprocess.AddProcessView;
 import com.duggan.workflow.client.ui.admin.addprocess.ProcessAttachmentPresenter;
 import com.duggan.workflow.client.ui.admin.addprocess.ProcessAttachmentView;
+import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter;
+import com.duggan.workflow.client.ui.admin.adduser.AddUserView;
+import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
+import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
+import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
+import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderView;
+import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
+import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelView;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
+import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
+import com.duggan.workflow.client.ui.admin.reports.ReportsView;
+import com.duggan.workflow.client.ui.admin.users.UserPresenter;
+import com.duggan.workflow.client.ui.admin.users.UserView;
+import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
+import com.duggan.workflow.client.ui.admin.users.groups.GroupView;
+import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
+import com.duggan.workflow.client.ui.admin.users.item.UserItemView;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
+import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
+import com.duggan.workflow.client.ui.docActivity.DocumentActivityView;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentView;
 import com.duggan.workflow.client.ui.error.ErrorPagePresenter;
@@ -71,30 +93,6 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
-import com.duggan.workflow.client.ui.admin.users.UserPresenter;
-import com.duggan.workflow.client.ui.admin.users.UserView;
-import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
-import com.duggan.workflow.client.ui.admin.users.groups.GroupView;
-import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
-import com.duggan.workflow.client.ui.admin.users.item.UserItemView;
-import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
-import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
-import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
-import com.duggan.workflow.client.ui.admin.reports.ReportsView;
-import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter;
-import com.duggan.workflow.client.ui.admin.adduser.AddUserView;
-import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
-import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderView;
-import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
-import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelView;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupView;
-import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
-import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
-import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
-import com.duggan.workflow.client.ui.docActivity.DocumentActivityView;
-import com.duggan.workflow.client.ui.delegate.DelegationPresenter;
-import com.duggan.workflow.client.ui.delegate.DelegationView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -243,8 +241,5 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(IFrameDataPresenter.class,
 				IFrameDataPresenter.IFrameView.class, IFrameDataView.class);
 
-		bindPresenter(DelegationPresenter.class,
-				DelegationPresenter.MyView.class, DelegationView.class,
-				DelegationPresenter.MyProxy.class);
-}
+	}
 }

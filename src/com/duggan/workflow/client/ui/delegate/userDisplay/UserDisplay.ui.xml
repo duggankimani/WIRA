@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+		<g:HTMLPanel>
+				<div class="row-fluid">
+					<div class="span1">
+						<label>
+							<input type="checkbox" class="ace" />
+						</label>
+					</div>
+
+					<div class="span2">
+						<img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg"
+							width="50px" height="70px" />
+					</div>
+
+					<div class="span4">
+							<span ui:field="spnNames"></span>
+							
+					</div>
+				 </div>
+		</g:HTMLPanel>
+</ui:UiBinder> 
