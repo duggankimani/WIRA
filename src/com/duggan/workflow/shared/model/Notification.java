@@ -9,6 +9,9 @@ public class Notification extends Activity{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
+	/**
+	 * Original Document Owner
+	 */
 	private HTUser owner;
 	private String targetUserId;
 	private Long documentId;

@@ -109,10 +109,23 @@ public class DelegationGroupView extends Composite implements PresentUserHandler
 		if(event.getGroup().equals(group)){
 			//add user here
 			HTUser user = event.getUser();
-			UserDisplay display = new UserDisplay();
-			display.setSpnNames(user.getName() + " " + user.getSurname() );
+			UserDisplay display = new UserDisplay(user);	
 			divNames.add(display);
 		}
+	}
+
+
+	public HTUser getSelectedUser() {
+		int count = divNames.getWidgetCount();
+		for(int i=0; i<count; i++){
+			UserDisplay view = (UserDisplay)divNames.getWidget(i);
+			HTUser user = view.getSelectedUser();
+			if(user!=null){
+				return user;
+			}
+		}
+		
+		return null;
 	}
 	
 }

@@ -4,32 +4,28 @@ import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.SaveNotificationRequestResult;
+import com.duggan.workflow.shared.responses.SaveNotificationResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveNotificationRequestActionHandler extends
-		BaseActionHandler<SaveNotificationRequest, SaveNotificationRequestResult> {
+		BaseActionHandler<SaveNotificationRequest, SaveNotificationResponse> {
 
 	@Inject
 	public SaveNotificationRequestActionHandler() {
 	}
-	
+
 	@Override
 	public void execute(SaveNotificationRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		Long noteId = action.getNotificationId();
-		Boolean isRead = action.getRead();
+		Notification note = action.getNotification();
+		note = NotificationDaoHelper.saveNotification(note);
 		
-		NotificationDaoHelper.updateNotification(noteId, isRead);
-		
-		Notification notification = NotificationDaoHelper.getNotification(noteId);
-		SaveNotificationRequestResult result = (SaveNotificationRequestResult) actionResult;
-		result.setNotification(notification);
-				
+		SaveNotificationResponse response = (SaveNotificationResponse)actionResult;
+		response.setNotification(note);
 	}
 
 	@Override

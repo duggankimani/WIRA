@@ -30,6 +30,9 @@ public class NotificationModel extends PO {
 	
 	private String subject;
 	
+	/**
+	 * Document Owner
+	 */
 	private String owner;
 	
 	@Enumerated(EnumType.STRING)

@@ -10,6 +10,7 @@ import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
+import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
@@ -33,8 +34,8 @@ import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
 import com.duggan.workflow.shared.requests.SearchDocumentRequest;
 import com.duggan.workflow.server.actionhandlers.SearchDocumentRequestActionHandler;
-import com.duggan.workflow.shared.requests.SaveNotificationRequest;
-import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
+import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
+import com.duggan.workflow.server.actionhandlers.UpdateNotificationRequestActionHandler;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -76,6 +77,7 @@ import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestActionHandler;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -119,8 +121,8 @@ public class ServerModule extends HandlerModule {
 				SearchDocumentRequestActionHandler.class,
 				SessionValidator.class);
 
-		bindHandler(SaveNotificationRequest.class,
-				SaveNotificationRequestActionHandler.class,
+		bindHandler(UpdateNotificationRequest.class,
+				UpdateNotificationRequestActionHandler.class,
 				SessionValidator.class);
 
 		bindHandler(SaveCommentRequest.class,
@@ -193,5 +195,9 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(DeleteLineRequest.class,
 				DeleteLineRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(SaveNotificationRequest.class,
+				SaveNotificationRequestActionHandler.class,
+				SessionValidator.class);
 	}
 }

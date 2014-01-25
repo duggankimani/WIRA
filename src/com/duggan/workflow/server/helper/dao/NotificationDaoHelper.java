@@ -12,6 +12,9 @@ import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -38,6 +41,13 @@ public class NotificationDaoHelper {
 				copyData(notification,(NotificationModel)items.get(0));
 				return notification; 
 			}
+		}
+		
+		if(notification.getNotificationType()==NotificationType.TASKDELEGATED){
+			Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
+			DocumentType type = doc.getType();
+			notification.setDocumentType(type);
+			notification.setOwner(doc.getOwner());
 		}
 		
 		if(notification.getId()!=null){

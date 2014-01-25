@@ -5,6 +5,7 @@ public enum ApproverAction {
 	APPROVED("approved"),
 	REJECTED("rejected"),
 	RETURNED("returned"),
+	DELEGATE("delegated"),
 	REVIEWED("reviewed");
 	
 	String action;

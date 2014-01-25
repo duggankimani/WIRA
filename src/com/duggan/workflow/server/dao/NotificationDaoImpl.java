@@ -36,8 +36,11 @@ public class NotificationDaoImpl {
 	@SuppressWarnings("unchecked")
 	public List<NotificationModel> getAllNotifications(String userId) {
 
-		return em.createQuery("FROM NotificationModel n where n.targetUserId=:userId order by created desc")
+		return em.createQuery("FROM NotificationModel n where " +
+				"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType)) "+
+				"order by created desc")
 				.setParameter("userId", userId)
+				.setParameter("notificationType", NotificationType.TASKDELEGATED)
 				.getResultList();
 	}
 
@@ -58,9 +61,12 @@ public class NotificationDaoImpl {
 	 */
 	public Integer getAlertCount(String userId) {
 		
-		Long count = (Long)em.createQuery("select count(n) from NotificationModel n where n.targetUserId=:userId and n.isRead=:isRead")
-				.setParameter("userId", userId).
-				setParameter("isRead",false)
+		Long count = (Long)em.createQuery("select count(n) from NotificationModel n where " +
+				"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType))  " +
+				"and n.isRead=:isRead")
+				.setParameter("userId", userId)
+				.setParameter("notificationType", NotificationType.TASKDELEGATED)
+				.setParameter("isRead",false)				
 				.getSingleResult();
 		
 		return count.intValue();

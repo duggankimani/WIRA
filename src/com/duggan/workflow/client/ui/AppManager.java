@@ -34,16 +34,16 @@ public class AppManager {
 				aLnk.setHTML("&nbsp;<i class=\"icon-remove\"></i>"+text);
 				aLnk.setStyleName("btn btn-danger pull-left");
 			}else{
-			aLnk.setHTML(text+"&nbsp;<i class=\"icon-double-angle-right\"></i>");
-			aLnk.setStyleName("btn btn-primary pull-right");
+				aLnk.setHTML(text+"&nbsp;<i class=\"icon-double-angle-right\"></i>");
+				aLnk.setStyleName("btn btn-primary pull-right");
 			}
 			
 			aLnk.addClickHandler(new ClickHandler() {
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					onOptionSelected.onSelect(text);
 					popupPresenter.getView().hide();
+					onOptionSelected.onSelect(text);	
 				}
 			});
 			popupPresenter.getView().addToSlot(GenericPopupPresenter.BUTTON_SLOT, aLnk);

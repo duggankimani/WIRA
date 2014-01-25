@@ -21,16 +21,23 @@ import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.LongValue;
+import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.duggan.workflow.shared.responses.SaveNotificationResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -276,6 +283,11 @@ public class TaskItemPresenter extends
 		else
 			workflow.setTaskId((Long)task.getId());
 		
+		if(action==Actions.DELEGATE){
+			delegate(workflow,action, values);
+			return;
+		}			
+			
 		dispatcher.execute(workflow, new TaskServiceCallback<ExecuteWorkflowResult>() {
 			
 			@Override
@@ -306,6 +318,46 @@ public class TaskItemPresenter extends
 				//	
 			}
 		});
+	}
+
+	private void delegate(ExecuteWorkflow execWorkflow,Actions action, Map<String, Value> values) {
+		Notification notification = new Notification();
+		notification.setApproverAction(ApproverAction.DELEGATE);
+		HTSummary summary = (HTSummary)task;
+		notification.setDocumentId(summary.getDocumentRef());
+		//notification.setDocumentType(summary.getDocStatus());
+		//notification.setOwner(summary.getOwner());
+		notification.setProcessInstanceId(summary.getProcessInstanceId());
+		notification.setNotificationType(NotificationType.TASKDELEGATED);
+		notification.setRead(false);
+		notification.setSubject(summary.getSubject());
+		notification.setTargetUserId((String)values.get("targetUserId").getValue());
+		//Delegation Recipient Notification
+		SaveNotificationRequest saveNoteRequest = new SaveNotificationRequest(notification);
+		
+//		Notification delegatorNote = notification.clone();
+//		delegatorNote.setTargetUserId(AppContext.getContextUser().getUserId());
+//		SaveNotificationRequest saveNoteRequest2 = new SaveNotificationRequest(delegatorNote);
+		
+		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(execWorkflow);
+		requests.addRequest(saveNoteRequest);
+		//requests.addRequest(saveNoteRequest2);
+		
+		dispatcher.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
+			
+			@Override
+			public void processResult(MultiRequestActionResult results) {
+				//refresh list
+				fireEvent(new ProcessingCompletedEvent());			
+				
+				ExecuteWorkflowResult result = (ExecuteWorkflowResult)results.get(0);
+				//fireEvent(new ReloadEvent());
+				reload((HTSummary)result.getDocument());
+				
+			}
+		});
+		
 	}
 
 	protected void reload(HTSummary summary) {
@@ -406,7 +458,7 @@ public class TaskItemPresenter extends
 		
 		if(task.getId().equals(event.getTaskId())){			
 			//System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);
-			submitRequest(event.getAction());
+			submitRequest(event.getAction(), event.getValues());
 		}
 	}
 	

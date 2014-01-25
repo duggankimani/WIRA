@@ -19,6 +19,7 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
+import com.duggan.workflow.client.ui.delegate.msg.DelegationMessageView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
@@ -92,6 +93,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -401,31 +403,53 @@ public class GenericDocumentPresenter extends
 	}
 
 
-	private void showDelegatePopup(List<HTUser> users) {
+	private void showDelegatePopup(final List<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
+		showDelegatePopup(view);
+		
+	}
+	
+	private void showDelegatePopup(final DelegateTaskView view) {
 		AppManager.showPopUp("Delegate Task", view,
 				new OnOptionSelected() {
 					
 					@Override
 					public void onSelect(String name) {
 						if(name.equals("Ok")){
-							HTUser user = view.getSelectedUser();
+							final HTUser user = view.getSelectedUser();
 							if(user!=null && user.getUserId()!=null){
-								ExecTaskEvent event = new ExecTaskEvent(taskId, Actions.DELEGATE);
 								
-								Map<String, Value> values = new HashMap<String, Value>();
+								DelegationMessageView msgView = new DelegationMessageView(user, doc.getSubject());
 								
-								StringValue userValue = new StringValue(null, "targetUserId",user.getUserId());
-								values.put(userValue.getKey(), userValue);
-								event.setValues(values);
+								AppManager.showPopUp("Delegation Message",
+										msgView,
+										new OnOptionSelected() {
+											
+											@Override
+											public void onSelect(String name) {
+												
+												if(name.equals("Back")){
+													showDelegatePopup(view);
+												}else{
+													ExecTaskEvent event = new ExecTaskEvent(taskId, Actions.DELEGATE);
+													
+													Map<String, Value> values = new HashMap<String, Value>();
+													
+													StringValue userValue = new StringValue(null, "targetUserId",user.getUserId());
+													values.put(userValue.getKey(), userValue);
+													event.setValues(values);
+													//fireEvent(event);
+												}
+												
+											}
+										}, "Back", "Done");
 								
-								fireEvent(event);
 							}
 						}
 					}
 				}, "Ok", "Cancel");
 	}
-	
+
 	protected void save(Document document) {
 		document.setValues(getView().getValues());
 		document.getDetails().clear();

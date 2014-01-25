@@ -5,7 +5,7 @@
 				<div class="row-fluid">
 					<div class="span1">
 						<label>
-							<input type="checkbox" class="ace" />
+							<g:CheckBox ui:field="chkSelect" styleName="ace"/>
 						</label>
 					</div>
 

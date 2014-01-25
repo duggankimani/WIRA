@@ -63,6 +63,10 @@ public class HTUser implements Serializable {
 		this.password = password;
 	}
 	
+	public String getFullName(){
+		return surname+" "+name;
+	}
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

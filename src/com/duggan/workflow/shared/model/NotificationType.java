@@ -18,7 +18,8 @@ public enum NotificationType {
 	TASKCOMPLETED_OWNERNOTE("Invoice INV/001/2013 - Denied by mariano (1hr ago)"),//for owner
 	COMMENT("INV/001/2013 - Andrew commented on this document  (5 hrs ago)"),
 	TASK_REMINDER("Reminder re: Document INV/001/2013"),
-	PROCESS_COMPLETED("Invoice INV/001/2013 approval process completed (3 mins ago)");
+	PROCESS_COMPLETED("Invoice INV/001/2013 approval process completed (3 mins ago)"),
+	TASKDELEGATED("Japheth Delegated INVOICE INV/001/13 to Njenga");
 	
 	String notificationTemplate;//example template - To be removed later
 	

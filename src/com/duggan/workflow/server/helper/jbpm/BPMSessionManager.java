@@ -30,10 +30,14 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
+import org.jbpm.task.Content;
 import org.jbpm.task.Task;
 import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
+import org.jbpm.task.service.TaskClient;
+import org.jbpm.task.service.TaskClientHandler;
+import org.jbpm.task.service.TaskClientHandler.TaskOperationResponseHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
@@ -45,11 +49,16 @@ import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.NotificationType;
 
 /**
  * 
@@ -228,6 +237,8 @@ class BPMSessionManager {
 
 		logger.debug(Thread.currentThread().toString()
 				+ "RETRIEVED LocalTaskService : " + lts.toString());
+		
+		TaskClient c;
 		return lts;
 	}
 
@@ -433,7 +444,7 @@ class BPMSessionManager {
 			complete(taskId, userId, values);
 			break;
 		case DELEGATE:
-			getTaskClient().delegate(taskId, userId, (String)values.get("targetUserId"));
+			delegate(taskId, userId, (String)values.get("targetUserId"));
 			break;
 		case FORWARD:
 			// get().getTaskClient().forward(taskId, userId, targetEntityId)
@@ -454,8 +465,13 @@ class BPMSessionManager {
 		case SUSPEND:
 			getTaskClient().suspend(taskId, userId);
 			break;
+		
 		}
 
+	}
+
+	private void delegate(long taskId, String userId, String targetUserId) {
+		getTaskClient().delegate(taskId, userId, targetUserId);
 	}
 
 	private boolean complete(long taskId, String userId,
@@ -641,8 +657,8 @@ class BPMSessionManager {
 								+ key.substring(1);
 
 					newValues.put(key, value);
-					System.err.println("###>>>>Task Data Key :: " + key + " = "
-							+ value);
+//					System.err.println("###>>>>Task Data Key :: " + key + " = "
+//							+ value);
 				}
 
 				ContextInstance ctxInstance = null;
@@ -668,8 +684,8 @@ class BPMSessionManager {
 
 					if (newValues.get(key) == null) {
 						newValues.put(key, value);
-						System.err.println("###>>>>Process Variable Key :: "
-								+ key + " = " + value);
+//						System.err.println("###>>>>Process Variable Key :: "
+//								+ key + " = " + value);
 					}
 				}
 

@@ -124,9 +124,19 @@ public class LoginPresenter extends
 									//placeManager.revealDefaultPlace();
 									
 									if(redirect!=null){
-										History.newItem(redirect);
+										if(result.getUser().isAdmin() && redirect.equals("home")){
+											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
+										}else{
+											History.newItem(redirect);
+										}
+										
 									}else{
-										placeManager.revealDefaultPlace();
+										if(result.getUser().isAdmin()){
+											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
+										}else{
+											placeManager.revealDefaultPlace();
+										}
+										
 									}
 									
 							}else{

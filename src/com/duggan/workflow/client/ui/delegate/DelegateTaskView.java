@@ -32,6 +32,11 @@ public class DelegateTaskView extends Composite {
 		int i=1;
 		
 		for(HTUser user:users){
+			if(AppContext.isCurrentUser(user.getUserId())){
+				//cannot delegate to yourself
+				continue;
+			}
+			
 			List<UserGroup> usergroups = user.getGroups();
 			if(usergroups==null){
 				continue;
@@ -51,8 +56,15 @@ public class DelegateTaskView extends Composite {
 	}	
 
 	public HTUser getSelectedUser() {
-		
-		return new HTUser();
+		int count = container.getWidgetCount();
+		for(int i=0; i<count; i++){
+			DelegationGroupView view = (DelegationGroupView)container.getWidget(i);
+			HTUser user = view.getSelectedUser();
+			if(user!=null){
+				return user;
+			}
+		}
+		return null;
 	}
 
 }

@@ -43,6 +43,14 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE Template6 = GWT
 			.create(APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE.class);
 	
+	APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE Template7 = GWT
+			.create(APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE.class);
+	
+	TASKDELEGATED_TEMPATE Template8= GWT
+			.create(TASKDELEGATED_TEMPATE.class);
+	
+	TASKDELEGATED_APPROVERNOTE_TEMPLATE Template9 = GWT.create(TASKDELEGATED_APPROVERNOTE_TEMPLATE.class);
+	
 	@Inject
 	public NoteView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -88,6 +96,10 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			approver="You";
 		}
 		
+		if(AppContext.isCurrentUser(targetUserId)){
+			targetUserId="You";
+		}
+		
 		SafeHtml safeHtml = null;
 		SafeHtml safeHtml2 = null;
 		switch (notificationType) {
@@ -114,6 +126,16 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			else
 			safeHtml2 =Template5.render(subject, approver, time, 
 					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign",action);
+			break;
+		case TASKDELEGATED:
+			
+			if(isNotification){
+				safeHtml = Template9.render(subject, owner, targetUserId, time, action,"icon-signin");
+			}else{
+				safeHtml2 = Template8.render(approver,subject, targetUserId, time);
+			}
+			
+			
 			break;
 		default:
 			//safeHtml= "<p>You have no new notification</p>";
@@ -215,6 +237,37 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 		// e.g Your Invoice INV/001/2013 was approved/Denied by HOD (1hr ago)
 	}
+
+	interface TASKDELEGATED_TEMPATE extends SafeHtmlTemplates {
+		@Template("<div class=\"feed-icon\"><i class=\"icon-signin\"></i></div>"+
+				"<div class=\"feed-subject\"><a><span>{0}</span></a>" +
+				" delegated <a><span>{1}</span></a>" +
+				" to <a><span>{2}</span></a></div>"+
+				"<div class=\"feed-actions\">" +
+				"<span class=\"time\"><i class=\"icon-time\">{3}</span>" +
+				"</div>")
+		public SafeHtml render(String approver, String subject,
+				String targetUser, String time);
+
+		// e.g You have delegated task '' to Salaboy
+		// Mariano delegated Invoice/xxy/33 to Salaboy
+	}
+	
+	interface TASKDELEGATED_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
+		@Template("<i class=\"{5}\"></i>"+
+				"<span class=\"bluename\">{0}</span>"+
+				" {4}  "+
+				" to <span class=\"bluename\">{2}</span> " +
+				" by <span class=\"bluename\">{1}</span>."
+				+ " <span class=\"time\"><i class=\"icon-time\"> {3}</i></span>")
+		public SafeHtml render(String subject, String targetUser, String createdBy,  String time,
+				String action, String styleName);
+		// e.g You approved/denied Invoice INV/001/2013 from calcacuervo (20mins
+		// ago)
+	}
+
+
+	
 
 	// others later
 

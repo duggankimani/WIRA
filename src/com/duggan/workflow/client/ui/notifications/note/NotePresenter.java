@@ -8,8 +8,8 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
-import com.duggan.workflow.shared.requests.SaveNotificationRequest;
-import com.duggan.workflow.shared.responses.SaveNotificationRequestResult;
+import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
+import com.duggan.workflow.shared.responses.UpdateNotificationRequestResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -55,9 +55,9 @@ public class NotePresenter extends
 			public void onClick(ClickEvent event) {
 				//save read		
 				if(!note.IsRead()){
-					SaveNotificationRequest request = new SaveNotificationRequest(note.getId(), true);
-					dispatcher.execute(request, new TaskServiceCallback<SaveNotificationRequestResult>() {
-						public void processResult(SaveNotificationRequestResult result) {
+					UpdateNotificationRequest request = new UpdateNotificationRequest(note.getId(), true);
+					dispatcher.execute(request, new TaskServiceCallback<UpdateNotificationRequestResult>() {
+						public void processResult(UpdateNotificationRequestResult result) {
 							Notification notification = result.getNotification();
 							String time=getTimeDifferenceAsString(notification.getCreated());
 							getView().setValues(notification.getSubject(),

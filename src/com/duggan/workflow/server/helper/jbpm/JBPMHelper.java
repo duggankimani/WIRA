@@ -35,6 +35,8 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 import org.jbpm.task.User;
 import org.jbpm.task.query.TaskSummary;
+import org.jbpm.task.service.TaskClient;
+import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.task.utils.ContentMarshallerHelper;
 import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
 import org.jbpm.workflow.core.node.EndNode;
@@ -117,6 +119,10 @@ public class JBPMHelper implements Closeable {
 		sessionManager.disposeSessions();
 	}
 
+	public LocalTaskService getTaskClient(){
+		return sessionManager.getTaskClient();
+	}
+	
 	/**
 	 * This method clears the runtime environment when the application is
 	 * shutdown
@@ -496,6 +502,7 @@ public class JBPMHelper implements Closeable {
 		HTask myTask = new HTask();
 
 		Task task = sessionManager.getTaskClient().getTask(taskId);
+		
 		copy(myTask, task);
 		// task.get
 

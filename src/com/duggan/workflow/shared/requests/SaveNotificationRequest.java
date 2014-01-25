@@ -1,38 +1,30 @@
 package com.duggan.workflow.shared.requests;
 
+import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.SaveNotificationRequestResult;
+import com.duggan.workflow.shared.responses.SaveCommentResponse;
+import com.duggan.workflow.shared.responses.SaveNotificationResponse;
 
-import java.lang.Long;
-import java.lang.Boolean;
+public class SaveNotificationRequest extends BaseRequest<SaveNotificationResponse> {
 
-public class SaveNotificationRequest extends
-		BaseRequest<SaveNotificationRequestResult> {
-
-	private Long notificationId;
-	private Boolean read;
+	private Notification notification;
 
 	@SuppressWarnings("unused")
 	private SaveNotificationRequest() {
 		// For serialization only
 	}
 
-	public SaveNotificationRequest(Long notificationId, Boolean read) {
-		this.notificationId = notificationId;
-		this.read = read;
+	public SaveNotificationRequest(Notification notification) {
+		this.notification = notification;
 	}
 
 	@Override
 	public BaseResponse createDefaultActionResponse() {
-		return new SaveNotificationRequestResult();
-	}
-	
-	public Long getNotificationId() {
-		return notificationId;
+		return new SaveNotificationResponse();
 	}
 
-	public Boolean getRead() {
-		return read;
+	public Notification getNotification() {
+		return notification;
 	}
 }
