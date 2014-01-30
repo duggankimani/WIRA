@@ -24,6 +24,7 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 
 import static com.duggan.workflow.server.helper.dao.FormDaoHelper.*;
@@ -58,9 +59,35 @@ public class DocumentDaoHelper {
 	 * @return Document
 	 */
 	public static Document save(Document document) {
-		DocumentModel model = getDoc(document);
 
 		DocumentDaoImpl dao = DB.getDocumentDao();
+
+		// save
+		if(document.getId()==null){
+			if(document.getSubject()==null){
+				ADDocType type = dao.getDocumentTypeByName(document.getType().getName());
+				document.setSubject(dao.generateDocumentSubject(type));
+				
+				Value value = document.getValues().get("subject");
+				if(value==null){
+					value = new StringValue(null, "subject", "");
+				}
+				value.setValue(document.getSubject());
+				document.getValues().put("subject", value);
+			}
+	
+			if(document.getDescription()==null){
+				document.setDescription(document.getSubject());
+				Value value = document.getValues().get("description");
+				if(value==null){
+					value = new StringValue(null, "description", "");					
+				}
+				value.setValue(document.getSubject());
+				document.getValues().put("description", value);
+			}
+		
+		}
+		DocumentModel model = getDoc(document);
 
 		if (document.getId() != null) {
 			model = dao.getById(document.getId());
@@ -98,19 +125,6 @@ public class DocumentDaoHelper {
 		// setDetails
 		setDetails(model, document.getDetails());
 
-		// save
-		if(model.getId()==null){
-			if(model.getSubject()==null){
-				model.setSubject(dao.generateDocumentSubject(model.getType()));
-				//model.addValue(value);
-			}
-	
-			if(model.getDescription()==null){
-				model.setDescription(model.getSubject());
-			}
-		
-		}
-		
 		model = dao.saveDocument(model);
 
 		Document doc = getDoc(model);
