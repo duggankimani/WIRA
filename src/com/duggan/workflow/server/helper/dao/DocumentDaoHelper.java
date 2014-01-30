@@ -102,7 +102,7 @@ public class DocumentDaoHelper {
 		if(model.getId()==null){
 			if(model.getSubject()==null){
 				model.setSubject(dao.generateDocumentSubject(model.getType()));
-				model.addValue(value);
+				//model.addValue(value);
 			}
 	
 			if(model.getDescription()==null){
