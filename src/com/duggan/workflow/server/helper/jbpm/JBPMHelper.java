@@ -44,6 +44,7 @@ import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
+import org.jbpm.workflow.instance.node.HumanTaskNodeInstance;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -441,12 +442,29 @@ public class JBPMHelper implements Closeable {
 
 		task.setProcessInstanceId(master_task.getTaskData()
 				.getProcessInstanceId());
+		Deadlines deadlines = master_task.getDeadlines();
+		if(deadlines!=null){
+			
+			/*{
+				List<Deadline> startDeadlinelst = deadlines.getStartDeadlines();
+				//if(startDeadlinelst!=null && "startDeadlinelst.isEmpty())
+				Deadline deadline = startDeadlinelst.get(0);
+				deadline.getDate();
+			}
+			
+			{
+				List<Deadline> endDeadlineLst = deadlines.getEndDeadlines();
+				Deadline deadline = endDeadlineLst.get(0);
+				deadline.getDate();
+			}*/
+		}
 
 		if (task instanceof HTask) {
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
 			task.setDocStatus(DB.getDocumentDao().getById(doc.getId()).getStatus());
 			task.setOwner(doc.getOwner());
+			task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 		
 			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
 			
@@ -817,9 +835,21 @@ public class JBPMHelper implements Closeable {
 					detail.setStartNode(node instanceof StartNode);
 					detail.setEndNode(node instanceof EndNode);
 					detail.setCurrentNode(nodeLogInstance.size() == 1);
-
+					detail.setNodeId(node.getId());
 					details.add(detail);
-
+					
+					
+					if(node instanceof HumanTaskNode){
+						HumanTaskNode htn = (HumanTaskNode)node;
+						Object groups = htn.getWork().getParameter("GroupId");
+						Object actors = htn.getWork().getParameter("ActorId");
+						
+						detail.setActors(actors==null? null : actors.toString());
+						detail.setGroups(groups==null? null: groups.toString());
+					
+					}
+					
+					
 					//((HumanTaskNode)node).getOutMappings().get("isApproved");
 				}
 			}
@@ -827,6 +857,22 @@ public class JBPMHelper implements Closeable {
 
 		return details;
 
+	}
+	
+	public Object getActors(Long processInstanceId, String nodeId){
+		//
+		List<NodeInstanceLog> log = JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, nodeId); 
+		
+		
+		System.err.println("Logs:: "+log);
+		if(log!=null && !log.isEmpty()){
+			NodeInstanceLog nil = log.get(0);
+			
+			System.err.println("Class >> "+nil.getClass());			
+		}
+		
+		return null;
+		
 	}
 
 	public HTSummary getSummary(Long taskId) {

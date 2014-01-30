@@ -42,10 +42,8 @@ public class AppContext {
 		}
 	};
 
-	public static void setSessionValues(String userId, String fullName, String authCookie){
-		user.setName(fullName);
-		user.setUserId(userId);
-		
+	public static void setSessionValues(HTUser htuser, String authCookie){
+		setUserValues(htuser);
 		CookieManager.setCookies(authCookie, new Date().getTime());
 		
 	}
@@ -81,14 +79,22 @@ public class AppContext {
 		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
 			@Override
 			public void processResult(GetContextRequestResult result) {
-				user.setUserId(result.getUser().getUserId());
-				user.setName(result.getUser().getName());
-				user.setGroups(result.getGroups());
+				setUserValues(result.getUser());
 				eventBus.fireEvent(new ContextLoadedEvent(result.getUser()));
 			}			
 		});
 	}
 	
+	protected static void setUserValues(HTUser htuser) {
+		user.setName(htuser.getName());
+		user.setUserId(htuser.getUserId());
+		user.setGroups(htuser.getGroups());
+		user.setEmail(htuser.getEmail());
+		user.setSurname(htuser.getSurname());
+		user.setId(htuser.getId());
+	}
+
+
 	public static DispatchAsync getDispatcher(){
 		return dispatcher;
 	}
@@ -98,7 +104,8 @@ public class AppContext {
 	}
 
 	public static void destroy(){
-		CookieManager.clear();
+		setSessionValues(new HTUser(), null);
+		CookieManager.clear();		
 	}
 	
 	public static String getUserId(){

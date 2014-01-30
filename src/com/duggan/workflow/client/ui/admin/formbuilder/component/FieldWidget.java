@@ -662,9 +662,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			
 		}
 		
-		
-
-		// System.err.println(">>>"+property.getType()+" :: "+property.getCaption());
+		//System.err.println(">>>"+property.getType()+" :: "+property.getCaption());
 
 		assert widget != null;
 

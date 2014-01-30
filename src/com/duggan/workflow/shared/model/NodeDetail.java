@@ -12,7 +12,10 @@ public class NodeDetail implements Serializable {
 	private boolean isStartNode;
 	private boolean isEndNode;
 	private boolean isCurrentNode;
-
+	private Long nodeId;
+	private String actors; //Comma separated list of actor ids
+	private String groups; //Comma Separated list of group ids
+	
 	public NodeDetail() {
 	}
 
@@ -63,4 +66,30 @@ public class NodeDetail implements Serializable {
 	public void setCurrentNode(boolean isCurrentNode) {
 		this.isCurrentNode = isCurrentNode;
 	}
+
+	public Long getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(Long nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	public String getActors() {
+		return actors;
+	}
+
+	public void setActors(String actors) {
+		this.actors = actors;
+	}
+
+	public String getGroups() {
+		return groups;
+	}
+
+	public void setGroups(String groups) {
+		this.groups = groups;
+	}
+
+	
 }

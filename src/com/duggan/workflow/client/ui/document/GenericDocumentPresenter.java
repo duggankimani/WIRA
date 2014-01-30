@@ -48,6 +48,7 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -614,7 +615,18 @@ public class GenericDocumentPresenter extends
 			field.setValue(value);
 			
 			if(value==null){
-				value = new StringValue();
+				if(name.equals("subject")){
+					value = new StringValue(doc.getSubject());
+				}
+				
+				if(name.equals("description")){
+					value = new StringValue(doc.getDescription());
+				}
+				
+				if(name.equals("docDate")){
+					value = new DateValue(doc.getCreated());
+				}
+				field.setValue(value);
 			}
 				
 		}

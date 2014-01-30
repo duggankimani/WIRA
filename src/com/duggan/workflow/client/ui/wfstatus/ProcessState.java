@@ -38,6 +38,17 @@ public class ProcessState extends Composite {
 	public ProcessState(NodeDetail state) {
 		this();
 		
+		String actors = "";
+		if(state.getActors()!=null){
+			actors = actors.concat(state.getActors());
+		}
+		
+		if(state.getGroups()!=null){
+			actors = actors.concat(state.getGroups());
+		}
+		
+		//state.setName(state.getName()+ " - "+actors);
+		
 		SafeHtml html = null;
 		
 		if(state.isStartNode()){

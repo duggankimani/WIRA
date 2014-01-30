@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
@@ -20,22 +21,14 @@ public class BTMTrxTest {
 	
 	@Test
 	public void persist(){
-		Document doc = DocumentDaoHelper.getDocument(31L);
-		String desc = "#####try - 4";
-		doc.setDescription(desc);
-		DocumentDaoHelper.save(doc);
-		DB.rollback();
-		
-		//new transaction
-		DB.beginTransaction();
-		Document saved = DocumentDaoHelper.getDocument(31L);
-		Assert.assertNotSame(desc, saved.getDescription());
-		DB.commitTransaction();
+		ADDocType docType = DB.getDocumentDao().getDocumentTypeById(1L);
+		String subject = DB.getDocumentDao().generateDocumentSubject(docType);
+		System.out.println(subject);
 	}
 	
 	@After
 	public void destroy(){
-		
+		DB.rollback();
 		DBTrxProvider.close();
 	}
 }

@@ -99,6 +99,18 @@ public class DocumentDaoHelper {
 		setDetails(model, document.getDetails());
 
 		// save
+		if(model.getId()==null){
+			if(model.getSubject()==null){
+				model.setSubject(dao.generateDocumentSubject(model.getType()));
+				model.addValue(value);
+			}
+	
+			if(model.getDescription()==null){
+				model.setDescription(model.getSubject());
+			}
+		
+		}
+		
 		model = dao.saveDocument(model);
 
 		Document doc = getDoc(model);
@@ -188,7 +200,7 @@ public class DocumentDaoHelper {
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
 		doc.setSessionId(model.getSessionId());
-
+		doc.setHasAttachment(DB.getAttachmentDao().getHasAttachment(model.getId()));
 		Collection<ADValue> values = model.getValues();
 		if (values != null) {
 			for (ADValue val : values) {

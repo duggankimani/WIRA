@@ -1,22 +1,30 @@
 package com.duggan.workflow.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainClassTest {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		FinalTest testing1 = new FinalTest("Tom", "Kimani");
-		FinalTest testing2 = new FinalTest("Duggan", "Njoroge");
-		FinalTest testing3 = new FinalTest("Paul", "wakana");
+		String format= "Request/{No}/{MM}/{YYYY}";
 		
 		
-		System.out.printf("%s",FinalTest.getMembers());
+		SimpleDateFormat formatter = new SimpleDateFormat("YY");
+		String yy = formatter.format(new Date());
 		
-		/*for(int i=0; i<=5;i++){
-			testing1.sum();
-			System.out.printf("%s",testing1);
-		}*/
+		formatter = new SimpleDateFormat("yyyy");
+		String yyyy = formatter.format(new Date());
+		
+		formatter = new SimpleDateFormat("MM");
+		String mm = formatter.format(new Date());
+		
+		System.err.println(format.replaceAll("\\{No\\}", "909")
+				.replaceAll("\\{YY\\}",yy)
+				.replaceAll("\\{YYYY\\}",yyyy)
+				.replaceAll("\\{MM\\}",mm));
 		
 	}
 }

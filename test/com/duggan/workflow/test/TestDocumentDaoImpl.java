@@ -34,13 +34,19 @@ public class TestDocumentDaoImpl {
 		dao = DB.getDocumentDao();
 	}
 	
+	@Test
+	public void getAttachments(){
+		long documentId = 81L;
+		DB.getAttachmentDao().getHasAttachment(documentId);
+	}
+	
 	@Ignore
 	public void getDocType(){
 		ADDocType type = dao.getDocumentTypeById(2L);
 		Assert.assertNotNull(type);
 	}
 	
-	@Test
+	@Ignore
 	public void search(){
 		Document model = DocumentDaoHelper.getDocument(60L);
 		System.err.println(">>>>>>>> "+model.getDetails().size());

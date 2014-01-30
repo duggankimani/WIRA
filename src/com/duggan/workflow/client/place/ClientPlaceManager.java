@@ -3,6 +3,7 @@ package com.duggan.workflow.client.place;
 import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.duggan.workflow.client.place.DefaultPlace;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
@@ -21,7 +22,12 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 
 	@Override
 	public void revealDefaultPlace() {
-		revealPlace(defaultPlaceRequest, true);
+		if(AppContext.isCurrentUserAdmin()){
+			revealPlace(new PlaceRequest(NameTokens.adminhome), true);
+		}else{
+			revealPlace(defaultPlaceRequest, true);
+		}
+		
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -553,6 +554,52 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		}catch(Exception e){}
 		
 		return null;
+	}
+	
+	/**
+	 * Request/{No}/{YY} - Request/0001/14 <br/>
+	 * Request/{No}/{MM}/{YY} - Request/0001/01/14 <br/> 
+	 * Request/{No}/{YYYY} - Request/0001/2014 <br/>
+	 * 
+	 * @param type
+	 * @return String generated subject
+	 */
+	public String generateDocumentSubject(ADDocType type){
+		String format = "Request/+"+type.getId()+"+/{No}/{YY}";
+				
+		Integer no = type.getLastNum();
+		if(no==null || no==0){
+			no=0;
+		}
+		++no;
+		
+		type.setLastNum(no);
+		
+		String subjectFormat = type.getSubjectFormat();
+		
+		if(subjectFormat!=null){
+			format = subjectFormat;
+		}
+
+		String num = (no<10)? "000"+no :
+			(no<100)? "00"+no :
+				(no<1000)? "0"+no :no+"";
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("YY");
+		String yy = formatter.format(new Date());
+		
+		formatter = new SimpleDateFormat("yyyy");
+		String yyyy = formatter.format(new Date());
+		
+		formatter = new SimpleDateFormat("MM");
+		String mm = formatter.format(new Date());
+		
+		format = format.replaceAll("\\{No\\}", num)
+				.replaceAll("\\{YY\\}",yy)
+				.replaceAll("\\{YYYY\\}",yyyy)
+				.replaceAll("\\{MM\\}",mm);
+		
+		return format;
 	}
 	
 }

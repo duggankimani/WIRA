@@ -30,13 +30,13 @@ insert into UserGroup(userid,groupid) values(8,6);
 insert into UserGroup(userid,groupid) values(9,7);
 insert into UserGroup(userid,groupid) values(10,8);
 
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-green','Invoice', 'INVOICE');
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-blue','Contract', 'CONTRACT');
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Requisition', 'REQUISITION');
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-silver-dark','LPO', 'LPO');
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-teal','Leave Application', 'LEAVEAPP');
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-silver-dark','RFQ', 'RFQ');
- insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-blue','Form8', 'FORM8');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-green','Invoice', 'INVOICE',0,'INV/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-blue','Contract', 'CONTRACT',0,'CNT/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Requisition', 'REQUISITION',0,'REQ/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-silver-dark','LPO', 'LPO',0,'LPO/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-teal','Leave Application',0, 'LEAVEAPP','Leave/{No}/{MM}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-silver-dark','RFQ', 'RFQ',0,'RFQ/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-blue','Form8', 'FORM8',0,'REG/FRM8/{No}/{YY}');
 
  
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'HR', 'Human Resources');
@@ -46,3 +46,10 @@ insert into UserGroup(userid,groupid) values(10,8);
  
  create index on localdocument (lower(subject)); 
 alter table adfield alter column formid drop not null;
+
+update addoctype set subjectformat='INV/{No}/{YY}' where id=(select id from addoctype where name='INVOICE');
+update addoctype set subjectformat='CNT/{No}/{YY}' where id=(select id from addoctype where name='CONTRACT');
+update addoctype set subjectformat='REQ/{No}/{YY}' where id=(select id from addoctype where name='REQUISITION');
+update addoctype set subjectformat='LPO/{No}/{YY}' where id=(select id from addoctype where name='LPO');
+update addoctype set subjectformat='Leave/{No}/{MM}/{YY}' where id=(select id from addoctype where name='LEAVEAPP');
+update addoctype set subjectformat='RFQ/{No}/{YY}' where id=(select id from addoctype where name='RFQ');

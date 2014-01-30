@@ -79,5 +79,15 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		return attachments;
 		
 	}
+
+	public boolean getHasAttachment(Long documentId) {
+		
+		Long count = (Long)em.createQuery("Select count(l) FROM LocalAttachment l " +
+				"where documentId= :documentId")
+		.setParameter("documentId", documentId)
+		.getSingleResult();
+		
+		return count>0;
+	}
 	
 }

@@ -124,8 +124,7 @@ public class LoginPresenter extends
 						public void processResult(LoginRequestResult result) {
 							boolean isValid = result.isValid();
 							if(isValid){
-								AppContext.setSessionValues(
-									result.getUser().getUserId(), result.getUser().getName(), result.getSessionId());
+								AppContext.setSessionValues(result.getUser(), result.getSessionId());
 									//placeManager.revealDefaultPlace();
 									
 								

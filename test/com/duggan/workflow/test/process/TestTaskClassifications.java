@@ -27,11 +27,17 @@ public class TestTaskClassifications {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-//		ProcessMigrationHelper.start(1L);
+		ProcessMigrationHelper.start(1L);
 //		ProcessMigrationHelper.start(4L);
 	}
 	
 	@Test
+	public void getActors(){
+		long processInstanceId = 508L;
+		JBPMHelper.get().getWorkflowProcessDia(processInstanceId);
+	}
+	
+	@Ignore
 	public void getDelegatedTask(){
 		
 		String userId="mariano";

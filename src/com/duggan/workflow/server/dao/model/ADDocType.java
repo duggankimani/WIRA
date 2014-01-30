@@ -39,6 +39,12 @@ public class ADDocType extends PO {
 	@JoinColumn(name="processDefId", referencedColumnName="id")
 	private ProcessDefModel processDef;
 	
+	//last assigned number
+	//add 1 to this to get the next num
+	private Integer lastNum;
+	
+	private String subjectFormat;
+	
 	public ADDocType() {
 	}
 	
@@ -137,5 +143,21 @@ public class ADDocType extends PO {
 		}
 		
 		return super.hashCode();
+	}
+
+	public Integer getLastNum() {
+		return lastNum;
+	}
+
+	public void setLastNum(Integer lastNum) {
+		this.lastNum = lastNum;
+	}
+
+	public String getSubjectFormat() {
+		return subjectFormat;
+	}
+
+	public void setSubjectFormat(String subjectFormat) {
+		this.subjectFormat = subjectFormat;
 	}
 }
