@@ -15,6 +15,11 @@
 								<i class="icon-plus"></i>
 								Add Process
 							</g:Anchor>
+							<g:Anchor ui:field="aStartProcesses" styleName="btn btn-success"
+								title="Start All Processes">
+								<i class="icon-ok"></i>
+								Start All Processes
+							</g:Anchor>
 					   </div>																			
 					</div>
 					

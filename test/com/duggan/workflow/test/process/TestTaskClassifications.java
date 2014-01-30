@@ -3,6 +3,9 @@ package com.duggan.workflow.test.process;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.task.Deadlines;
+import org.jbpm.task.Delegation;
+import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
@@ -28,26 +31,33 @@ public class TestTaskClassifications {
 //		ProcessMigrationHelper.start(4L);
 	}
 	
-	@Ignore
+	@Test
 	public void getDelegatedTask(){
 		
-		String userId="calcacuervo";
+		String userId="mariano";
 		String language="en-UK";
 		LocalTaskService client = JBPMHelper.get().getTaskClient();
 		
-		Task task =client.getTask(423L);
+		Task task =client.getTask(534L);
 		
 		Long docContentId = task.getTaskData().getDocumentContentId();
 		Long outContentId = task.getTaskData().getOutputContentId();
 		
-		System.out.println("#docContentId "+docContentId+" :: "+" #outContentId = "+docContentId);
-		Map<String,Object> data = JBPMHelper.getMappedDataByContentId(outContentId);
-		for(String key: data.keySet()){
-			System.err.println(key+" - "+data.get(key));
-		}
+		System.out.println("#docContentId "+docContentId+" :: "+" #outContentId = "+outContentId);
+		Delegation delegation = task.getDelegation();
+		List<OrganizationalEntity> entities = delegation.getDelegates();
+		assert entities!=null;
+		assert entities.size()>0;
+		
+		//OrganizationalEntity entity = entities.get(0);
+		System.err.println(" >> :: "+entities.size());
+//		Map<String,Object> data = JBPMHelper.getMappedDataByContentId(outContentId);
+//		for(String key: data.keySet()){
+//			System.err.println(key+" - "+data.get(key));
+//		}
 	}
 	
-	@Test
+	@Ignore
 	public void getTaskCategories(){
 		String userId="gatheru";
 		String language="en-UK";

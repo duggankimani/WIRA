@@ -36,11 +36,15 @@ public class AttachmentDaoHelper{
 		return attachments;
 	}
 	
-	private static Attachment get(LocalAttachment model) {
+	public static Attachment get(LocalAttachment model) {
 		Attachment attachment = new Attachment();
 		attachment.setArchived(model.isArchived());
 		attachment.setContentType(model.getContentType());
-		attachment.setDocumentid(model.getDocument().getId());
+		if(model.getDocument()!=null)
+			attachment.setDocumentid(model.getDocument().getId());
+		if(model.getProcessDef()!=null)
+			attachment.setProcessDefId(model.getProcessDef().getId());
+		
 		attachment.setId(model.getId());
 		attachment.setName(model.getName());
 		attachment.setSize(model.getSize());

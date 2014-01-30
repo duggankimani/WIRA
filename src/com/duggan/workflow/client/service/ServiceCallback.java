@@ -30,10 +30,10 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 	}
 
 	@Override
-	public void onSuccess(T result) {
-		processResult(result);
+	public void onSuccess(T aResponse) {
+		processResult(aResponse);
 	}
 	
-	public abstract void processResult(T result);
+	public abstract void processResult(T aResponse);
 	
 }

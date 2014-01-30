@@ -125,6 +125,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 				spnDocIcon.addStyleName("icon-pause");
 			}
 			else {
+				//spnDocIcon.addStyleName("icon-pause");
 				spnDocIcon.addStyleName("icon-play");
 			}
 			

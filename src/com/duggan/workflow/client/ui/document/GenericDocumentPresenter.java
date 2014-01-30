@@ -48,6 +48,7 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
@@ -145,6 +146,8 @@ public class GenericDocumentPresenter extends
 		Map<String,Value> getValues(); //Task Data
 
 		void showDefaultFields(boolean b);
+
+		void setDelegate(Delegate delegate);
 	}
 	
 	Long taskId;
@@ -438,7 +441,7 @@ public class GenericDocumentPresenter extends
 													StringValue userValue = new StringValue(null, "targetUserId",user.getUserId());
 													values.put(userValue.getKey(), userValue);
 													event.setValues(values);
-													//fireEvent(event);
+													fireEvent(event);
 												}
 												
 											}
@@ -727,6 +730,12 @@ public class GenericDocumentPresenter extends
 			
 			if(task.getName()!=null)
 				taskDisplayName = task.getName();
+			
+			HTask humantask = (HTask)task;
+			Delegate delegate = humantask.getDelegate();
+			if(delegate!=null){
+				getView().setDelegate(delegate);
+			}
 		}
 		
 		this.documentId = docId;

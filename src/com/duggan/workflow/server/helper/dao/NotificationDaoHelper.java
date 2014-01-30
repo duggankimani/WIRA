@@ -105,7 +105,7 @@ public class NotificationDaoHelper {
 		
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
 		notificationTo.setOwner(modelFrom.getOwner().getUserId());
-		notificationTo.setTargetUserId(modelFrom.getTargetUserId());
+		notificationTo.setTargetUserId(modelFrom.getTargetUserId().getUserId());
 		notificationTo.setNotificationType(modelFrom.getNotificationType());
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setRead(modelFrom.IsRead());
@@ -125,7 +125,7 @@ public class NotificationDaoHelper {
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setSubject(modelFrom.getSubject());
 		notificationTo.setCreated(modelFrom.getCreated());
-		notificationTo.setTargetUserId(modelFrom.getTargetUserId());
+		notificationTo.setTargetUserId(LoginHelper.get().getUser(modelFrom.getTargetUserId()));
 		notificationTo.setRead(modelFrom.IsRead());
 		
 		String createdBy = modelFrom.getCreatedBy();

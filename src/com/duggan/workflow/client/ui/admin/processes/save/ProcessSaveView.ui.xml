@@ -48,6 +48,14 @@
 			
 			<g:HTMLPanel styleName="hide" ui:field="divUploadDetails">
 				<g:HTMLPanel styleName="modal-body">
+				    <g:HTMLPanel styleName="uploadPanel">
+				        <g:InlineLabel ui:field="lblWarning" styleName="text-warning">
+				            Mixing Guvnor changesets with other files may cause difficult to debug errors.				            
+				        </g:InlineLabel>
+				        <g:VerticalPanel styleName="upld-multiple" ui:field="currentAttachmentsPanel">
+				            
+				        </g:VerticalPanel>
+				    </g:HTMLPanel>
 					<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
 						<up:Uploader ui:field="uploader"></up:Uploader>
 					</g:HTMLPanel>

@@ -14,6 +14,10 @@ import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
 import org.drools.agent.KnowledgeAgent;
 import org.drools.agent.KnowledgeAgentFactory;
+import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderError;
+import org.drools.builder.KnowledgeBuilderFactory;
+import org.drools.builder.ResourceType;
 import org.drools.definition.process.Process;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
@@ -48,6 +52,8 @@ import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 
 import bitronix.tm.TransactionManagerServices;
 
+import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
@@ -256,6 +262,48 @@ class BPMSessionManager {
 				+ ". Kindly report this issue to your administrator.");
 	}
 
+	/**
+	 * Loads multiple process resource files (BPMN, DRL etc)
+	 * within a single KnowledgeBase - and StatefulSession
+	 * <p>
+	 * At the moment we do not mix guvnor changesets and manual config files upload
+	 * <p> 
+	 * <p>
+	 * @param files
+	 * @param types
+	 * @param rootProcess
+	 */
+	public KnowledgeBase loadKnowledge(List<byte[]> files, List<ResourceType> types,
+			String rootProcess) {
+		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+		int i=0;
+		for(byte[] file: files){
+			Resource resource = ResourceFactory.newByteArrayResource(file);
+			kbuilder.add(resource, types.get(i));
+			++i;
+		}
+		
+		if(kbuilder.hasErrors()){
+			StringBuffer errors = new StringBuffer();
+			for(KnowledgeBuilderError error: kbuilder.getErrors()){
+				errors.append(error.getMessage()+"\n");
+			}
+			if(errors.length()>0){
+				throw new RuntimeException(errors.toString());
+			}
+		}
+		
+		KnowledgeBase kbase = kbuilder.newKnowledgeBase();
+		Collection<org.drools.definition.process.Process> processes = kbase
+				.getProcesses();
+
+		for (Process process : processes) {
+			processKnowledgeMap.put(process.getId(), kbase);
+		}
+		
+		return kbase;
+	}
+	
 	public KnowledgeBase loadKnowledge(byte[] bytes, String processName) {
 
 		KnowledgeBase kbase = null;
@@ -266,6 +314,7 @@ class BPMSessionManager {
 		kagent.applyChangeSet(resourceset);
 
 		kbase = kagent.getKnowledgeBase();
+		
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
 
@@ -472,6 +521,9 @@ class BPMSessionManager {
 
 	private void delegate(long taskId, String userId, String targetUserId) {
 		getTaskClient().delegate(taskId, userId, targetUserId);
+		TaskDelegation delegation = new TaskDelegation(null, taskId, userId, targetUserId);
+		DB.getDocumentDao().save(delegation);
+		
 	}
 
 	private boolean complete(long taskId, String userId,

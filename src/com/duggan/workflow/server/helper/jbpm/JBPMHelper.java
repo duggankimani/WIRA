@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.drools.builder.ResourceType;
 import org.drools.definition.process.Node;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
@@ -47,6 +48,7 @@ import org.jbpm.workflow.core.node.SubProcessNode;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
@@ -54,6 +56,7 @@ import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DateValue;
+import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTAccessType;
@@ -440,20 +443,20 @@ public class JBPMHelper implements Closeable {
 				.getProcessInstanceId());
 
 		if (task instanceof HTask) {
-//			Set<String> keys = content.keySet();
-//
-//			for (String key : keys) {
-//				Value val = getValue(content.get(key));
-//				if(val!=null)
-//					task.setValue(key, val);
-//			}
-			
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
 			task.setDocStatus(DB.getDocumentDao().getById(doc.getId()).getStatus());
-			//task.setDocumentType(document.getType());
 			task.setOwner(doc.getOwner());
 		
+			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
+			
+			if(taskdelegation!=null){
+				Delegate delegate = new Delegate(taskdelegation.getId(), 
+						taskdelegation.getTaskId(), taskdelegation.getUserId(),
+						taskdelegation.getDelegateTo());
+				((HTask)task).setDelegate(delegate);
+			}
+			
 		}
 	}
 
@@ -861,6 +864,12 @@ public class JBPMHelper implements Closeable {
 	public void loadKnowledge(byte[] bytes, String processName) {
 		sessionManager.loadKnowledge(bytes, processName);
 	}
+
+	public void loadKnowledge(List<byte[]> files, List<ResourceType> types,
+			String rootProcess) {
+		sessionManager.loadKnowledge(files, types,rootProcess);
+	}
+
 
 	public boolean isProcessingRunning(String processId) {
 		return sessionManager.isRunning(processId);

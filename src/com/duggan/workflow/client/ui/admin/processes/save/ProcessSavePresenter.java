@@ -1,20 +1,25 @@
-package com.duggan.workflow.client.ui.admin.addprocess;
+package com.duggan.workflow.client.ui.admin.processes.save;
 
 import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
+import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent.UploadStartedHandler;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
+import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
@@ -29,10 +34,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 
-public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyView> 
-	implements UploadStartedHandler, UploadEndedHandler{
+public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.IProcessSaveView> 
+	implements UploadStartedHandler, UploadEndedHandler, DeleteAttachmentHandler{
 
-	public interface MyView extends PopupView {
+	public interface IProcessSaveView extends PopupView {
 		HasClickHandlers getNext();
 		HasClickHandlers getFinish();
 		HasClickHandlers getCancel();
@@ -40,8 +45,11 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 		ProcessDef getProcess();
 		void setProcessId(Long id);
 		void enable(boolean enableFinish, boolean Cancel);
-		void setValues(Long processDefId,String name, String processId,String description, List<DocumentType> docTypes);
+		void setValues(Long processDefId,String name, String processId,String description, List<DocumentType> docTypes, List<Attachment> list);
 		void setDocumentTypes(List<DocumentType> documentTypes);
+		void setAttachments(List<Attachment> attachments);
+//		void setValues(Long processDefId, String name, String processId,
+//				String description, List<DocumentType> docTypes);
 
 	}
 
@@ -52,7 +60,7 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 	Long processDefId = null;
 	
 	@Inject
-	public AddProcessPresenter(final EventBus eventBus, final MyView view) {
+	public ProcessSavePresenter(final EventBus eventBus, final IProcessSaveView view) {
 		super(eventBus, view);
 	}
 
@@ -61,6 +69,7 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 		super.onBind();
 		addRegisteredHandler(UploadStartedEvent.TYPE, this);
 		addRegisteredHandler(UploadEndedEvent.TYPE, this);
+		addRegisteredHandler(DeleteAttachmentEvent.TYPE, this);
 		
 		getView().getFinish().addClickHandler(new ClickHandler() {
 			
@@ -87,7 +96,7 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 						@Override
 						public void processResult(SaveProcessResponse result) {
 							ProcessDef def = result.getProcessDef();
-							AddProcessPresenter.this.process = def;
+							ProcessSavePresenter.this.process = def;
 							getView().setProcessId(def.getId());
 						}
 					});
@@ -139,7 +148,7 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 					getView().setValues(process.getId(),
 							process.getName(),process.getProcessId(),
 							process.getDescription(),
-							process.getDocTypes());
+							process.getDocTypes(), process.getFiles());
 				}
 			}
 		});		
@@ -164,6 +173,18 @@ public class AddProcessPresenter extends PresenterWidget<AddProcessPresenter.MyV
 	protected void onReveal() {
 		super.onReveal();
 		loadProcess();
+	}
+
+	@Override
+	public void onDeleteAttachment(DeleteAttachmentEvent event) {
+		Attachment attachment = event.getAttachment();
+		requestHelper.execute(new DeleteAttachmentRequest(attachment.getId()),
+				new TaskServiceCallback<DeleteAttachmentResponse>() {
+					@Override
+					public void processResult(DeleteAttachmentResponse result) {
+						
+					}
+				});
 	}
 
 }

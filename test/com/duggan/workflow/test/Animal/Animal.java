@@ -42,4 +42,11 @@ public class Animal {
 		public void setFlyType(Flys newFlyType){
 			this.flyingType=newFlyType;
 		}
+		
+		public static void main(String[] args) {
+			String name="gigi.bpmn";
+			int idx = name.lastIndexOf('.');
+			String xtension= name.substring(idx+1, name.length());
+			System.out.println(xtension);
+		}
 }

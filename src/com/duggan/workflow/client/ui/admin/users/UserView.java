@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.users;
 
-import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
+import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;

@@ -1,9 +1,9 @@
-package com.duggan.workflow.client.ui.admin.adduser;
+package com.duggan.workflow.client.ui.admin.users.save;
 
 import java.util.List;
 
-import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
 import com.duggan.workflow.client.ui.admin.component.ListField;
+import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextArea;
@@ -26,8 +26,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
 
-public class AddUserView extends PopupViewImpl implements
-		AddUserPresenter.MyView {
+public class UserSaveView extends PopupViewImpl implements
+		UserSavePresenter.IUserSaveView {
 
 	private final Widget widget;
 	@UiField HTMLPanel divUserDetails;
@@ -58,11 +58,11 @@ public class AddUserView extends PopupViewImpl implements
 	
 	TYPE type;
 	
-	public interface Binder extends UiBinder<Widget, AddUserView> {
+	public interface Binder extends UiBinder<Widget, UserSaveView> {
 	}
 
 	@Inject
-	public AddUserView(final EventBus eventBus, final Binder binder) {
+	public UserSaveView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		aClose.addClickHandler(new ClickHandler() {

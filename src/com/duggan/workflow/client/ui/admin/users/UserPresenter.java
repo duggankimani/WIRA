@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter;
-import com.duggan.workflow.client.ui.admin.adduser.AddUserPresenter.TYPE;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
+import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter;
+import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.duggan.workflow.client.ui.events.EditGroupEvent;
 import com.duggan.workflow.client.ui.events.EditUserEvent;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
@@ -49,7 +49,7 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	public static final Object ITEMSLOT = new Object();
 	public static final Object GROUPSLOT = new Object();
 	
-	IndirectProvider<AddUserPresenter> userFactory;
+	IndirectProvider<UserSavePresenter> userFactory;
 	IndirectProvider<UserItemPresenter> userItemFactory;
 	IndirectProvider<GroupPresenter> groupFactory;
 
@@ -59,23 +59,23 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	
 	@Inject
 	public UserPresenter(final EventBus eventBus, final MyView view,
-			Provider<AddUserPresenter> addUserProvider,
+			Provider<UserSavePresenter> addUserProvider,
 			Provider<UserItemPresenter> itemProvider,
 			Provider<GroupPresenter> groupProvider) {
 		super(eventBus, view);
-		userFactory = new StandardProvider<AddUserPresenter>(addUserProvider);
+		userFactory = new StandardProvider<UserSavePresenter>(addUserProvider);
 		userItemFactory = new StandardProvider<UserItemPresenter>(itemProvider);
 		groupFactory = new StandardProvider<GroupPresenter>(groupProvider); 
 	}
 	
-	private void showPopup(final AddUserPresenter.TYPE type){
+	private void showPopup(final UserSavePresenter.TYPE type){
 		showPopup(type, null);
 	}
 	
-	private void showPopup(final AddUserPresenter.TYPE type, final Object obj) {
-		userFactory.get(new ServiceCallback<AddUserPresenter>() {
+	private void showPopup(final UserSavePresenter.TYPE type, final Object obj) {
+		userFactory.get(new ServiceCallback<UserSavePresenter>() {
 			@Override
-			public void processResult(AddUserPresenter result) {
+			public void processResult(UserSavePresenter result) {
 				result.setType(type, obj);
 				addToPopupSlot(result,false);
 			}
@@ -101,7 +101,7 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 		getView().getaNewGroup().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showPopup(AddUserPresenter.TYPE.GROUP);
+				showPopup(UserSavePresenter.TYPE.GROUP);
 			}
 		});
 	}

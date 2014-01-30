@@ -75,7 +75,12 @@ public class LoginPresenter extends
 		
 		if(AppContext.isValid()){
 			
-			placeManager.revealDefaultPlace();
+			if(AppContext.isCurrentUserAdmin()){
+				History.newItem(NameTokens.adminhome);
+			}else{
+				placeManager.revealDefaultPlace();
+			}
+			
 			return;
 		}
 	}
@@ -123,14 +128,21 @@ public class LoginPresenter extends
 									result.getUser().getUserId(), result.getUser().getName(), result.getSessionId());
 									//placeManager.revealDefaultPlace();
 									
+								
 									if(redirect!=null){
-										if(result.getUser().isAdmin() && redirect.equals("home")){
-											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
+										boolean isAdmin = result.getUser().isAdmin();
+										System.err.println("Redirect= "+redirect+
+												" :: IsUserAdmin = "+isAdmin+
+												" :: "+result.getUser().getGroupsAsString());
+										
+										if(isAdmin && redirect.equals("home")){
+											History.newItem(NameTokens.adminhome);
 										}else{
 											History.newItem(redirect);
 										}
 										
 									}else{
+										System.err.println("No Redirect");
 										if(result.getUser().isAdmin()){
 											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
 										}else{

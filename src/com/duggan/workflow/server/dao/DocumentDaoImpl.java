@@ -18,6 +18,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -542,6 +543,16 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		return (DetailModel)em.createQuery("FROM DetailModel d where id=:id")
 				.setParameter("id", detailId).
 				getSingleResult();	
+	}
+
+	public TaskDelegation getTaskDelegationByTaskId(Long taskId) {
+		try{
+		return (TaskDelegation)em.createQuery("FROM TaskDelegation d where d.taskId=:taskId")
+				.setParameter("taskId", taskId).
+				getSingleResult();
+		}catch(Exception e){}
+		
+		return null;
 	}
 	
 }

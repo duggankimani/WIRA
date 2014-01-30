@@ -29,7 +29,7 @@ public class NotePresenter extends
 
 		void setValues(String subject, DocumentType documentType,
 				NotificationType notificationType, HTUser owner,
-				String targetUserId, String time, boolean isRead, 
+				HTUser targetUserId, String time, boolean isRead, 
 				HTUser createdBy,ApproverAction approverAction, Long processInstanceId, boolean isNotification);
 	}
 

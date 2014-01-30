@@ -64,7 +64,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	@Override
 	public void setValues(String subject, DocumentType documentType,
 			NotificationType notificationType, HTUser ownerObj,
-			String targetUserId, String time, boolean isRead,
+			HTUser targetUser, String time, boolean isRead,
 			HTUser createdBy, ApproverAction approverAction,
 			 Long processInstanceId, boolean isNotification) {
 		
@@ -96,8 +96,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			approver="You";
 		}
 		
-		if(AppContext.isCurrentUser(targetUserId)){
-			targetUserId="You";
+		String target = targetUser.getSurname();
+		if(AppContext.isCurrentUser(targetUser.getUserId())){
+			target="You";
 		}
 		
 		SafeHtml safeHtml = null;
@@ -130,9 +131,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		case TASKDELEGATED:
 			
 			if(isNotification){
-				safeHtml = Template9.render(subject, owner, targetUserId, time, action,"icon-signin");
+				safeHtml = Template9.render(subject, owner, target, time, action,"icon-signin");
 			}else{
-				safeHtml2 = Template8.render(approver,subject, targetUserId, time);
+				safeHtml2 = Template8.render(approver,subject, target, time);
 			}
 			
 			

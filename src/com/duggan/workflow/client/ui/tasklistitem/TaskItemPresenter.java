@@ -26,6 +26,7 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -331,7 +332,9 @@ public class TaskItemPresenter extends
 		notification.setNotificationType(NotificationType.TASKDELEGATED);
 		notification.setRead(false);
 		notification.setSubject(summary.getSubject());
-		notification.setTargetUserId((String)values.get("targetUserId").getValue());
+		
+		HTUser user = new HTUser((String)values.get("targetUserId").getValue());
+		notification.setTargetUserId(user);
 		//Delegation Recipient Notification
 		SaveNotificationRequest saveNoteRequest = new SaveNotificationRequest(notification);
 		

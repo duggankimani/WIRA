@@ -53,17 +53,20 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 		return errorMessage;
 	}
 	
-	private void saveAttachment(LocalAttachment attachment,
+	private String saveAttachment(LocalAttachment attachment,
 			HttpServletRequest request) {
 		
 		String id = request.getParameter("processDefId");
 		
+		String message = null;
 		if(id!=null && id.matches("[0-9]+")){
 			ProcessDefModel model = DB.getProcessDao().getProcessDef(new Long(id.trim()));
 			
 			String name = attachment.getName();
-			boolean isImage= !(name.endsWith("xml") || name.endsWith("bpmn2") || name.endsWith("drl"));
-			
+			String xtension = name.substring(name.lastIndexOf('.')+1, name.length()).toLowerCase();
+			boolean isImage = xtension.equals("png") || xtension.equals("jpg") || xtension.equals("jpeg") ||
+					xtension.equals("gif");
+					
 			if(isImage){
 				attachment.setProcessDefImage(model);
 			}else{
@@ -72,7 +75,8 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 						
 			//Disable existing attachments
 			List<LocalAttachment> attachments = 
-					DB.getAttachmentDao().getAttachmentsForProcessDef(model, isImage);			
+					DB.getAttachmentDao().getAttachmentsForProcessDef(model,attachment.getName(), isImage);	
+			//Manual Delete
 			if(attachments!=null){
 				for(LocalAttachment att: attachments){
 					//delete previous
@@ -81,9 +85,19 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 			}
 			
 			DB.getAttachmentDao().save(attachment);
+			
+			if(!isImage && xtension.endsWith("xml")){
+				List<LocalAttachment> list= DB.getAttachmentDao().getAttachmentsForProcessDef(model,attachment.getName(), isImage);
+				if(list.size()>1){
+					message = "Uploading a guvnor changeset ["+name+"] " +
+							"with other resource files for a single process is not supported";
+				}
+			}
 		}else{
 			throw new IllegalArgumentException("Cannot save attachment for [ProcessDefId= "+id+"]");
 		}
+		
+		return message;
 	}
 
 }

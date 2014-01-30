@@ -69,7 +69,7 @@ public class Comment extends Activity {
 		return comment;
 	}
 	@Override
-	public String getTargetUserId() {
+	public HTUser getTargetUserId() {
 		return null;
 	}
 	public Long getParentId() {

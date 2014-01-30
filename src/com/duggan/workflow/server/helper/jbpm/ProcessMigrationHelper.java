@@ -1,8 +1,10 @@
 package com.duggan.workflow.server.helper.jbpm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.drools.builder.ResourceType;
 
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
@@ -61,16 +63,74 @@ public class ProcessMigrationHelper {
 					"]- No Process Definition Attachment Found. Please confirm you have attached the necessary process files");
 		}
 		
-		if(attachments.size()>1){
-			throw new ProcessInitializationException("Cannot start process ["+model+"]- More than one Process Definition Attachment Found");
+//		if(attachments.size()>1){
+//			throw new ProcessInitializationException("Cannot start process ["+model+"]- More than one Process Definition Attachment Found");
+//		}		
+
+		//All these go to a single session
+		List<byte[]> files = new ArrayList<>();		
+		List<ResourceType> types = new ArrayList<>();
+		
+		if(attachments!=null){
+			for(LocalAttachment attachment: attachments){
+				ResourceType resourceType = getResourceType(attachment.getName());
+				assert resourceType!=null;
+				
+				if(resourceType==ResourceType.CHANGE_SET){
+					JBPMHelper.get().loadKnowledge(attachment.getAttachment(), model.getName());
+					//break here - We cannot mix Guvnor repositories with manually uploaded files
+					return;
+				}
+				
+				files.add(attachment.getAttachment());
+				types.add(resourceType);
+			}
 		}
 		
-		LocalAttachment attachment = attachments.get(0);
+		if(!files.isEmpty()){
+			JBPMHelper.get().loadKnowledge(files, types, model.getName());
+		}
 		
-		JBPMHelper.get().loadKnowledge(attachment.getAttachment(), model.getName());
+		//JBPMHelper.get().loadKnowledge(attachment.getAttachment(), model.getName());
 		
 	}
 
+	
+	private static ResourceType getResourceType(String name) {
+		int idx = name.lastIndexOf('.');
+		String xtension= name.substring(idx+1, name.length());
+		ResourceType type = null;
+		
+		switch(xtension.toLowerCase()){
+		case "xml":
+			type = ResourceType.CHANGE_SET;
+			break;
+		case "bpmn":
+		case "bpmn2":
+			type = ResourceType.BPMN2;
+			break;
+		case "drl":
+			type = ResourceType.DRL;
+			break;
+		case "pkg":
+			type=ResourceType.PKG;
+			break;
+		case "brl":
+			type=ResourceType.BRL;
+			break;
+		case "dsl":
+			type=ResourceType.DSL;
+			break;
+		case "dtable":
+			type=ResourceType.DTABLE;
+			break;
+		case "dslr":
+			type=ResourceType.DSLR;
+			break;
+		}
+		
+		return type;
+	}
 	
 	public static void stop(Long processDefId){
 		ProcessDefModel model = DB.getProcessDao().getProcessDef(processDefId);

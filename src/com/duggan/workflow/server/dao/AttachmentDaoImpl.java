@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
@@ -39,6 +40,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	
 	public void delete(long attachmentId){
 		LocalAttachment attachment = getAttachmentById(attachmentId);
+		
 		delete(attachment);
 	}
 
@@ -46,20 +48,36 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		return getAttachmentsForProcessDef(model,false);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<LocalAttachment> getAttachmentsForProcessDef(ProcessDefModel model,  boolean isImage) {
 		
+		return getAttachmentsForProcessDef( model,null, isImage); 
+	}
+
+	public List<LocalAttachment> getAttachmentsForProcessDef(ProcessDefModel model,String name, boolean isImage) {
+
 		String sql= "FROM LocalAttachment t where t.processDef=:processDef";
 		
 		if(isImage){
 			sql= "FROM LocalAttachment t where t.processDefImage=:processDef";
 		}
 		
-		List<LocalAttachment> attachments = em.createQuery(sql)
-			.setParameter("processDef", model)
-			.getResultList();
+		if(name!=null && !isImage){
+			sql = sql.concat(" and t.name=:attachmentName");
+		}
+		
+		
+		Query query = em.createQuery(sql)
+			.setParameter("processDef", model);
+			
+		if(name!=null){
+			query.setParameter("attachmentName", name);
+		}
+			
+		@SuppressWarnings("unchecked")
+		List<LocalAttachment> attachments  = query.getResultList();
 		
 		return attachments;
+		
 	}
 	
 }

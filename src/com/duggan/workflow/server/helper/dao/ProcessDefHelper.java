@@ -88,12 +88,15 @@ public class ProcessDefHelper {
 		List<LocalAttachment> attachments = DB.getAttachmentDao()
 				.getAttachmentsForProcessDef(model);
 
-		LocalAttachment attachment = (attachments == null || attachments.size() == 0) ? null
-				: attachments.get(0);
+//		LocalAttachment attachment = (attachments == null || attachments.size() == 0) ? null
+//				: attachments.get(0);
 
-		if (attachment != null) {
-			def.setFileName(attachment.getName());
-			def.setFileId(attachment.getId());
+		if (attachments != null) {
+			for(LocalAttachment attach: attachments){
+				def.addFile(AttachmentDaoHelper.get(attach));
+			}			
+//			def.setFileName(attachment.getName());
+//			def.setFileId(attachment.getId());
 		}
 		
 		

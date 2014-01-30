@@ -78,6 +78,10 @@ import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestActionHan
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
+import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
+import com.duggan.workflow.server.actionhandlers.DeleteAttachmentRequestHandler;
+import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
+import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -198,6 +202,14 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(SaveNotificationRequest.class,
 				SaveNotificationRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(DeleteAttachmentRequest.class,
+				DeleteAttachmentRequestHandler.class,
+				SessionValidator.class);
+
+		bindHandler(StartAllProcessesRequest.class,
+				StartAllProcessesRequestActionHandler.class,
 				SessionValidator.class);
 	}
 }

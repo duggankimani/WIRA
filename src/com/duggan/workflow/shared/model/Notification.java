@@ -13,7 +13,7 @@ public class Notification extends Activity{
 	 * Original Document Owner
 	 */
 	private HTUser owner;
-	private String targetUserId;
+	private HTUser targetUserId;
 	private Long documentId;
 	private NotificationType notificationType;
 	private String subject;
@@ -68,11 +68,11 @@ public class Notification extends Activity{
 		this.id = id;
 	}
 
-	public String getTargetUserId() {
+	public HTUser getTargetUserId() {
 		return targetUserId;
 	}
 
-	public void setTargetUserId(String targetUserId) {
+	public void setTargetUserId(HTUser targetUserId) {
 		this.targetUserId = targetUserId;
 	}
 

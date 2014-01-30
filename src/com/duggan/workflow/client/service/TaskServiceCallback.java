@@ -15,11 +15,11 @@ import com.gwtplatform.dispatch.shared.Result;
 public abstract class TaskServiceCallback<T extends Result> extends ServiceCallback<T> {
 
 	@Override
-	public void onSuccess(T result) {
-		BaseResponse baseResult = (BaseResponse)result;
+	public void onSuccess(T aResponse) {
+		BaseResponse baseResult = (BaseResponse)aResponse;
 		
 		if(baseResult.getErrorCode()==0){
-			processResult(result);
+			processResult(aResponse);
 		}else{
 			//throw error
 			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());

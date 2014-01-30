@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.admin.addprocess;
+package com.duggan.workflow.client.ui.admin.processes.save;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import com.duggan.workflow.client.ui.admin.component.ListField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,14 +20,17 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.UIObject;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
 
-public class AddProcessView extends PopupViewImpl implements
-		AddProcessPresenter.MyView {
+public class ProcessSaveView extends PopupViewImpl implements
+		ProcessSavePresenter.IProcessSaveView {
 
 	private final Widget widget;
 	@UiField IssuesPanel issues;
@@ -42,12 +46,14 @@ public class AddProcessView extends PopupViewImpl implements
 	@UiField Uploader uploader;
 	@UiField TextArea txtDescription;
 	@UiField ListField<DocumentType> lstDocTypes;
+	@UiField VerticalPanel currentAttachmentsPanel;
+	@UiField InlineLabel lblWarning;
 
-	public interface Binder extends UiBinder<Widget, AddProcessView> {
+	public interface Binder extends UiBinder<Widget, ProcessSaveView> {
 	}
 
 	@Inject
-	public AddProcessView(final EventBus eventBus, final Binder binder) {
+	public ProcessSaveView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		
@@ -85,6 +91,8 @@ public class AddProcessView extends PopupViewImpl implements
 		
 		int[] position = AppManager.calculatePosition(5, 50);
 		divPopUp.setPopupPosition(position[1], position[0]);
+		
+		UIObject.setVisible(lblWarning.getElement(), false);
 	}
 
 	@Override
@@ -94,7 +102,7 @@ public class AddProcessView extends PopupViewImpl implements
 	
 	@Override
 	public void setValues(Long processDefId,
-			String name,String processId,String description, List<DocumentType> docTypes) {
+			String name,String processId,String description, List<DocumentType> docTypes,List<Attachment> attachments) {
 		txtName.setValue(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
@@ -104,6 +112,10 @@ public class AddProcessView extends PopupViewImpl implements
 		
 		if(docTypes!=null){
 			lstDocTypes.select(docTypes);
+		}
+		
+		if(attachments!=null){
+			setAttachments(attachments);
 		}
 	}
 
@@ -158,8 +170,23 @@ public class AddProcessView extends PopupViewImpl implements
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADCHANGESET);
 		context.setContext("processDefId", id+"");
-		context.setAccept("xml,png");
+		context.setAccept("xml,bpmn,bpmn2,drl,png,jpeg,jpg,gif");
 		uploader.setContext(context);
+	}
+	
+	@Override
+	public void setAttachments(List<Attachment> attachments){
+		currentAttachmentsPanel.clear();
+		if(attachments!=null){
+			for(Attachment attachment: attachments){
+				if(attachment.getName().endsWith("xml") && attachments.size()>1){
+					//possible changeset
+					UIObject.setVisible(lblWarning.getElement(),true);
+				}
+				ProcessAttachment panel = new ProcessAttachment(attachment);
+				currentAttachmentsPanel.add(panel);
+			}
+		}
 	}
 
 	@Override

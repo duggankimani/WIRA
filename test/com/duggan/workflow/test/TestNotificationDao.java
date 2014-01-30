@@ -12,6 +12,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
@@ -38,7 +39,7 @@ public class TestNotificationDao {
 		notification.setOwner(LoginHelper.get().getUser("calcacuervo"));
 		notification.setRead(false);
 		notification.setSubject("Inv/001/01");
-		notification.setTargetUserId("mariano");
+		notification.setTargetUserId(new HTUser("mariano"));
 		notification = NotificationDaoHelper.saveNotification(notification);		
 		DB.commitTransaction();
 		Assert.assertNotNull(notification.getId());

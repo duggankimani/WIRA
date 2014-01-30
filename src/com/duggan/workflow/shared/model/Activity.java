@@ -12,7 +12,7 @@ public abstract class Activity implements Serializable, Comparable<Activity> {
 
 	public abstract HTUser getCreatedBy();
 	public abstract Date getCreated();
-	public abstract String getTargetUserId();
+	public abstract HTUser getTargetUserId();
 	public abstract String getStatement();
 	
 	@Override

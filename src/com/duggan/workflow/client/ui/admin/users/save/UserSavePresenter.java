@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.admin.adduser;
+package com.duggan.workflow.client.ui.admin.users.save;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 
-public class AddUserPresenter extends PresenterWidget<AddUserPresenter.MyView> {
+public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSaveView> {
 
-	public interface MyView extends PopupView {
+	public interface IUserSaveView extends PopupView {
 
 		void setType(TYPE type);
 		
@@ -59,7 +59,7 @@ public class AddUserPresenter extends PresenterWidget<AddUserPresenter.MyView> {
 	@Inject DispatchAsync requestHelper;
 	
 	@Inject
-	public AddUserPresenter(final EventBus eventBus, final MyView view) {
+	public UserSavePresenter(final EventBus eventBus, final IUserSaveView view) {
 		super(eventBus, view);
 	}
 

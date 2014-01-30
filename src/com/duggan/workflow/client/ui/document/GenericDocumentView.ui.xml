@@ -126,6 +126,12 @@
 				<br />
 			</div>
 
+			<!-- div class="span3">
+				<i class="icon-user icon-large delegate"></i>
+				<span ui:field="eDelegate"></span>
+				<br />
+			</div-->
+			
 			<div class="span3">
 				<i class="icon-calendar icon-large"></i>
 				<span ui:field="spnCreated"></span>

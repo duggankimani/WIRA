@@ -14,6 +14,7 @@ import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
@@ -79,6 +80,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aReject;
 	@UiField HTMLPanel statusContainer;
 	@UiField Element eOwner;
+	//@UiField Element eDelegate;
 	@UiField SpanElement spnPriority;
 	@UiField SpanElement spnAttachmentNo;
 	@UiField SpanElement spnActivityNo;
@@ -525,6 +527,14 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 		
 		return formPanel.getValues();
+	}
+
+	@Override
+	public void setDelegate(Delegate delegate) {
+		delegate.getCreated();
+		delegate.getDelegateTo();
+		delegate.getUserId();
+		//eDelegate.setInnerText(delegate.getDelegateTo());
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class ProcessDef implements Serializable{
 	private Long imageId;
 	
 	private String imageName;
+	
+	private List<Attachment> files = new ArrayList<Attachment>();
 
 	public ProcessDef() {
 	}
@@ -85,10 +88,20 @@ public class ProcessDef implements Serializable{
 	}
 
 	public String getFileName() {
+		if(this.fileName==null && !files.isEmpty()){
+		  String names = "";
+		  for(Attachment att: files){
+			  names = names.concat(att.getName()+",");
+			  
+		  }
+		  
+		  fileName = names.substring(0, names.lastIndexOf(','));
+		}
+		
 		return fileName;
 	}
 
-	public void setFileName(String fileName) {
+	public void setFileName(String fileName) {		
 		this.fileName = fileName;
 	}
 
@@ -122,6 +135,18 @@ public class ProcessDef implements Serializable{
 
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
+	}
+
+	public List<Attachment> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<Attachment> files) {
+		this.files = files;
+	}
+
+	public void addFile(Attachment attachment) {
+		files.add(attachment);
 	}
 	
 }

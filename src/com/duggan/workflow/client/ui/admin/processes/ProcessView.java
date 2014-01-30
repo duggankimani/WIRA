@@ -9,12 +9,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class ProcessView extends ViewImpl implements ProcessPresenter.MyView {
+public class ProcessView extends ViewImpl implements ProcessPresenter.IProcessView {
 
 	private final Widget widget;
 	@UiField Anchor aNewProcess;
 	@UiField HTMLPanel tblRow;
-
+	@UiField Anchor aStartProcesses;
+	
 	public interface Binder extends UiBinder<Widget, ProcessView> {
 	}
 
@@ -53,6 +54,11 @@ public class ProcessView extends ViewImpl implements ProcessPresenter.MyView {
 		}else{
 			super.setInSlot(slot, content);
 		}
+	}
+	
+	@Override
+	public HasClickHandlers getStartAllProcesses(){
+		return aStartProcesses;
 	}
 	
 }
