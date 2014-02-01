@@ -6,7 +6,9 @@ import java.util.Map;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
+import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
@@ -61,12 +63,12 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
  *
  */
 public class TaskItemPresenter extends
-		PresenterWidget<TaskItemPresenter.MyView> 
-	implements DocumentSelectionHandler, AfterDocumentLoadHandler, CompleteDocumentHandler, ExecTaskHandler{
+		PresenterWidget<TaskItemPresenter.ITaskItemView> 
+	implements DocumentSelectionHandler, AfterDocumentLoadHandler, 
+	CompleteDocumentHandler, ExecTaskHandler, AfterAttachmentReloadedHandler{
 
-	public interface MyView extends View {
+	public interface ITaskItemView extends View {
 		void bind(Doc summaryTask);
-		
 		HasClickHandlers getClaimLink();
 		HasClickHandlers getStartLink();
 		HasClickHandlers getSuspendLink();
@@ -81,11 +83,10 @@ public class TaskItemPresenter extends
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
 		FocusPanel getFocusContainer();
-
 		void setSelected(boolean selected);
 		void setMiniDocumentActions(boolean status);
-
 		void setTask(boolean isTask);
+		void showAttachmentIcon(boolean hasAttachment);
 
 	}
 
@@ -98,7 +99,7 @@ public class TaskItemPresenter extends
 	ExecuteWorkflow workflow;
 	
 	@Inject
-	public TaskItemPresenter(final EventBus eventBus, final MyView view) {
+	public TaskItemPresenter(final EventBus eventBus, final ITaskItemView view) {
 		super(eventBus, view);
 	}
 
@@ -109,6 +110,7 @@ public class TaskItemPresenter extends
 		addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ExecTaskEvent.TYPE, this);
+		addRegisteredHandler(AfterAttachmentReloadedEvent.TYPE, this);
 //		
 		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		 
@@ -474,6 +476,23 @@ public class TaskItemPresenter extends
 	protected void onHide() {
 		super.onHide();
 		this.unbind();
+	}
+
+	@Override
+	public void onAfterAttachmentReloaded(AfterAttachmentReloadedEvent event) {
+		Long documentId = event.getDocumentId();
+		if((task instanceof  Document)){
+			Document doc = (Document)task;
+			if(doc.getId().equals(documentId)){
+				getView().showAttachmentIcon(true);
+			}
+			
+		}else if(task instanceof HTSummary){
+			HTSummary doc= (HTSummary)task;
+			if(doc.getDocumentRef().equals(documentId)){
+				getView().showAttachmentIcon(true);
+			}
+		}
 	}
 	
 }

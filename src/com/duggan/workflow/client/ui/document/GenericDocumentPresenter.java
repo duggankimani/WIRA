@@ -22,6 +22,7 @@ import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
 import com.duggan.workflow.client.ui.delegate.msg.DelegationMessageView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
+import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
@@ -727,11 +728,13 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
+		
 		List<Attachment> attachments = attachmentsresponse.getAttachments();
 		
 		if(attachments.size()>0){
 			getView().getDivAttachment().removeClassName("hidden");
 			getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
+			fireEvent(new AfterAttachmentReloadedEvent(documentId));
 		}
 		
 		setInSlot(ATTACHMENTS_SLOT, null);//clear

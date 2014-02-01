@@ -110,7 +110,7 @@ public class ClientModule extends AbstractPresenterModule {
 				HomePresenter.MyProxy.class);
 
 		bindPresenterWidget(TaskItemPresenter.class,
-				TaskItemPresenter.MyView.class, TaskItemView.class);
+				TaskItemPresenter.ITaskItemView.class, TaskItemView.class);
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);

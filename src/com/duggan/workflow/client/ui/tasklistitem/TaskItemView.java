@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 
-public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
+public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskItemView {
 
 	private final Widget widget;
 	
@@ -314,6 +314,16 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	public void setTask(boolean isTask) {
 		if(isTask)
 		spnDocIcon.addStyleName("icon-ok");
+	}
+
+	@Override
+	public void showAttachmentIcon(boolean hasAttachment) {
+		if(hasAttachment){
+			spnAttach.removeStyleName("hidden");	
+		}else{
+			spnAttach.addStyleName("hidden");
+		}
+		
 	}
 	
 }
