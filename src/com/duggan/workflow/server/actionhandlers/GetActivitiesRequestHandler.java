@@ -20,11 +20,11 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetActivitiesRequestActionHandler extends
+public class GetActivitiesRequestHandler extends
 		BaseActionHandler<GetActivitiesRequest, GetActivitiesResponse> {
 
 	@Inject
-	public GetActivitiesRequestActionHandler() {
+	public GetActivitiesRequestHandler() {
 	}
 
 	@Override

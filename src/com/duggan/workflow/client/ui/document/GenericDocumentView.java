@@ -258,7 +258,7 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 			
 			if(status==DocStatus.REJECTED){
-				spnStatusBody.setClassName("label label-inverse");
+				spnStatusBody.setClassName("label label-danger");
 			}
 			
 		}
@@ -359,6 +359,10 @@ public class GenericDocumentView extends ViewImpl implements
 		return aSave;
 	}
 
+	public HasClickHandlers getDeleteButton(){
+		return aDelete;
+	}
+	
 	@Override
 	public void showEdit(boolean displayed) {
 		UIObject.setVisible(aEdit.getElement(), displayed);

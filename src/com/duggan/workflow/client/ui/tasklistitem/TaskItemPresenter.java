@@ -399,7 +399,7 @@ public class TaskItemPresenter extends
 		Long documentId = event.getDocumentId();
 		Long taskId = event.getTaskId();
 		
-		if(task instanceof  Document){
+		if((task instanceof  Document) && taskId==null){
 			Document doc = (Document)task;
 			if(doc.getId()!=documentId){
 				getView().setSelected(false);

@@ -86,12 +86,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			action = approverAction.getAction();
 		}
 		
-		String owner = ownerObj.getName();
+		String owner = ownerObj.getSurname();
 		if(AppContext.isCurrentUser(ownerObj.getUserId())){
 			owner = "You";
 		}
 		
-		String approver = createdBy.getName();
+		String approver = createdBy.getSurname();
 		if(AppContext.isCurrentUser(createdBy.getUserId())){
 			approver="You";
 		}
@@ -110,7 +110,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 		case APPROVALREQUEST_OWNERNOTE:
 			if(isNotification)
-			safeHtml = Template2.render(subject, time);
+			safeHtml = Template2.render(owner, subject, time);
 			else{
 				safeHtml2= Template6.render(owner,subject, time);
 			}
@@ -178,10 +178,10 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	
 	interface APPROVALREQUEST_OWNERNOTE_TEMPATE extends SafeHtmlTemplates {
 		@Template("<i class=\"icon-signin\"></i>"+
-				"<span class=\"bluename\">{0}</span>"+
-				" succesfully submitted for approval "
-				+ " <span class=\"time\"><i class=\"icon-time\">{1}</i></span>")
-		public SafeHtml render(String subject, String time);
+				"<span class=\"bluename\">{1}</span>"+
+				" submitted for approval by <span class=\"bluename\">{0}</span>"
+				+ " <span class=\"time\"><i class=\"icon-time\">{2}</i></span>")
+		public SafeHtml render(String owner, String subject, String time);
 
 		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
 		// (10 seconds ago)
@@ -190,7 +190,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	interface APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE extends SafeHtmlTemplates {
 		@Template("<div class=\"feed-icon\"><i class=\"icon-signin\"></i></div>"+
 				"<div class=\"feed-subject\"><a><span>{0}</span></a>" +
-				" succesfully submitted <a><span>{1}</span></a>" +
+				" submitted <a><span>{1}</span></a>" +
 				" for approval</div>"+
 				"<div class=\"feed-actions\">" +
 				"<span class=\"time\"><i class=\"icon-time\">{2}</span>" +

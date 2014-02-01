@@ -29,6 +29,9 @@ public abstract class PO implements Serializable{
 	
 	@Column
 	private Date updated;
+	
+	@Column(columnDefinition="int default 1")
+	private int isActive=1;
 
 	public void init(){
 		if(this.getId()==null){
@@ -85,5 +88,12 @@ public abstract class PO implements Serializable{
 		this.updated=new Date();
 		this.updatedBy = SessionHelper.getCurrentUser()==null? null : SessionHelper.getCurrentUser().getUserId();
 	}
-		
+
+	public int getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}		
 }

@@ -144,7 +144,12 @@ public class TextField extends FieldWidget {
 	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
-		this.readOnly = isReadOnly;
+		Boolean isComponentReadOnly = getValue(READONLY)==null? false : (Boolean)getValue(READONLY);
+		if(isComponentReadOnly==null){
+			isComponentReadOnly=false;
+		}
+		
+		this.readOnly = isReadOnly && !isComponentReadOnly;
 		
 		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
 		UIObject.setVisible(lblReadOnly.getElement(), isReadOnly);

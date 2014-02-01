@@ -34,6 +34,7 @@ import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
+import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
@@ -68,6 +69,7 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
+import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
@@ -80,6 +82,7 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
+import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
@@ -96,6 +99,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -123,6 +127,7 @@ public class GenericDocumentPresenter extends
 		void setStates(List<NodeDetail> states);
 		HasClickHandlers getSimulationBtn();
 		HasClickHandlers getSaveButton();
+		HasClickHandlers getDeleteButton();
 		HasClickHandlers getForwardForApproval();		
 		HasClickHandlers getClaimLink();
 		HasClickHandlers getStartLink();
@@ -245,6 +250,18 @@ public class GenericDocumentPresenter extends
 					//showEditForm(MODE.EDIT);
 					save((Document)doc);
 				}
+			}
+		});
+		
+		getView().getDeleteButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(doc instanceof Document)
+					if(((Document)doc).getStatus()==DocStatus.DRAFTED){
+						//showEditForm(MODE.EDIT);
+						delete((Document)doc);
+					}
 			}
 		});
 		
@@ -406,6 +423,30 @@ public class GenericDocumentPresenter extends
 		
 	}
 
+
+	protected void delete(Document document) {
+		AppManager.showPopUp("Confirm Delete", 
+				new InlineLabel("Do you want to delete document '"+document.getSubject()+"'"),
+				new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Yes")){
+							requestHelper.execute(new DeleteDocumentRequest(documentId),
+									new TaskServiceCallback<DeleteDocumentResponse>() {
+										@Override
+										public void processResult(
+												DeleteDocumentResponse aResponse) {
+											if(aResponse.isDelete()){
+												fireEvent(new ReloadEvent());
+											}
+											
+										}
+									});
+						}
+					}
+				}, "Yes","Cancel");
+	}
 
 	private void showDelegatePopup(final List<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
@@ -689,8 +730,8 @@ public class GenericDocumentPresenter extends
 		List<Attachment> attachments = attachmentsresponse.getAttachments();
 		
 		if(attachments.size()>0){
-		getView().getDivAttachment().removeClassName("hidden");
-		getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
+			getView().getDivAttachment().removeClassName("hidden");
+			getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
 		}
 		
 		setInSlot(ATTACHMENTS_SLOT, null);//clear

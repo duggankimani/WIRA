@@ -42,9 +42,10 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	@SuppressWarnings("unchecked")
 	public List<DocumentModel> getAllDocuments(DocStatus status){
 		
-		return em.createQuery("FROM DocumentModel d where status=:status and createdBy=:createdBy").
+		return em.createQuery("FROM DocumentModel d where status=:status and createdBy=:createdBy and isActive=:isActive").
 				setParameter("status", status).
 				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).
+				setParameter("isActive", 1).
 				getResultList();
 	}
 	
@@ -92,16 +93,19 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 
 	public Integer count(DocStatus status) {
 
-		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d where status=:status and createdBy=:createdBy").
+		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d where status=:status and createdBy=:createdBy  and isActive=:isActive").
 				setParameter("status", status).
-				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).getSingleResult();
+				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId())
+				.setParameter("isActive", 1)
+				.getSingleResult();
 		 
 		 return value.intValue();
 	}
 
 	public List<DocumentModel> search(String subject) {
-		List lst = em.createQuery("FROM DocumentModel d where subject like :subject")
+		List lst = em.createQuery("FROM DocumentModel d where subject like :subject  and isActive=:isActive")
 				.setParameter("subject", "%"+subject+"%")
+				.setParameter("isActive", 1)
 				.getResultList();
 				
 		return lst;
@@ -118,9 +122,10 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	
 	public DocumentModel getDocumentByProcessInstanceId(Long processInstanceId){
 		List lst = em.createQuery("FROM DocumentModel d where processInstanceId= :processInstanceId " +
-				"and createdBy=:createdBy")
+				"and createdBy=:createdBy  and isActive=:isActive")
 				.setParameter("processInstanceId", processInstanceId)
 				.setParameter("createdBy", SessionHelper.getCurrentUser().getUserId())
+				.setParameter("isActive", 1)
 				.getResultList();
 		
 		if(lst.size()>0){
@@ -226,6 +231,19 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			params.put("createdBy", userId);
 		}
 		
+		if(!isFirst){
+			query.append(" AND ");
+			isFirst=true;//so that we dont add another AND
+		}
+		
+		{
+			isFirst=false;
+			query.append("isActive=:isActive");
+			//params.put("createdBy", SessionHelper.getCurrentUser().getUserId());
+			params.put("isActive", 1);
+		}
+		 
+				 
 		if(isFirst){
 			//we ended up with an and at the end
 			query = new StringBuffer(query.subSequence(0, query.length()-5).toString());
@@ -565,7 +583,7 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	 * @return String generated subject
 	 */
 	public String generateDocumentSubject(ADDocType type){
-		String format = "Request/+"+type.getId()+"+/{No}/{YY}";
+		String format = "Request/"+type.getId()+"/{No}/{YY}";
 				
 		Integer no = type.getLastNum();
 		if(no==null || no==0){
@@ -600,6 +618,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 				.replaceAll("\\{MM\\}",mm);
 		
 		return format;
+	}
+
+	public boolean deleteDocument(Long documentId) {
+		DocumentModel document = getById(documentId);
+		
+		document.setIsActive(0);
+		save(document);
+		
+		return true;
 	}
 	
 }

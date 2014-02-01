@@ -5993,6 +5993,10 @@ a.badge:focus {
   cursor: pointer;
 }
 
+.label-danger {
+	background-color: #d9534f;
+}
+
 .label-important,
 .badge-important {
   background-color: #b94a48;

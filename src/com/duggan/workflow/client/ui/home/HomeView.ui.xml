@@ -58,7 +58,7 @@
             </li>
 
             <li class="active">
-                <a class="dropdown-toggle" href="#">
+                <a class="dropdown-toggle" href="#home;type=appreqnew">
                     <i class="icon-tasks"></i>
                     <span>My Tasks</span>
                     <i class="icon-chevron-up hidden-tablet"></i>

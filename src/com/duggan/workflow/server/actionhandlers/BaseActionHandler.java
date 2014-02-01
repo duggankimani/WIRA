@@ -1,9 +1,12 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Status;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
@@ -109,10 +112,19 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			baseResult.setErrorCode(1);
 			baseResult.setErrorId(errorId);
 			
-			if(throwable.getMessage()==null)
-				baseResult.setErrorMessage("An error occured during processing of your request");
-			else
-				baseResult.setErrorMessage(throwable.getMessage());
+			if(throwable.getMessage()==null){
+				baseResult.setErrorMessage("An error occurred during processing of your request");
+			}else{
+				log.debug("Throwable : "+throwable.getClass());
+				if(throwable instanceof ConstraintViolationException){
+					baseResult.setErrorMessage("[400] A database error occurred");
+				}else if(throwable instanceof PersistenceException){
+					baseResult.setErrorMessage("[500] A database error occurred and has been logged");
+				}else{
+					baseResult.setErrorMessage("[600] "+throwable.getMessage());
+				}
+				
+			}
 		}
 
 	}

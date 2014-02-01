@@ -181,7 +181,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 	public void onContextLoaded(ContextLoadedEvent event) {
 		HTUser currentUser = event.getCurrentUser();
 		getView().showAdminLink(currentUser.isAdmin());
-		getView().setValues(currentUser.getName(), currentUser.getGroupsAsString());
+		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString());
 	}
 	
 	

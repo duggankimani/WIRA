@@ -8,11 +8,11 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class DeleteFormModelRequestActionHandler extends
+public class DeleteFormModelRequestHandler extends
 		BaseActionHandler<DeleteFormModelRequest, DeleteFormModelResponse> {
 
 	@Inject
-	public DeleteFormModelRequestActionHandler() {
+	public DeleteFormModelRequestHandler() {
 	}
 
 	@Override

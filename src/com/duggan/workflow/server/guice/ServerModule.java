@@ -5,6 +5,7 @@ import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
@@ -45,11 +46,11 @@ import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHa
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
-import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
-import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestHandler;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.server.actionhandlers.GetProcessesRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
@@ -74,7 +75,7 @@ import com.duggan.workflow.shared.requests.CreateFieldRequest;
 import com.duggan.workflow.server.actionhandlers.CreateFieldRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
-import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestHandler;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
@@ -82,6 +83,7 @@ import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.server.actionhandlers.DeleteAttachmentRequestHandler;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -147,13 +149,13 @@ public class ServerModule extends HandlerModule {
 				SessionValidator.class);
 
 		bindHandler(GetActivitiesRequest.class,
-				GetActivitiesRequestActionHandler.class, SessionValidator.class);
+				GetActivitiesRequestHandler.class, SessionValidator.class);
 
 		bindHandler(SaveProcessRequest.class,
 				SaveProcessRequestActionHandler.class, SessionValidator.class);
 
 		bindHandler(DeleteProcessRequest.class,
-				DeleteProcessRequestActionHandler.class, SessionValidator.class);
+				DeleteProcessRequestHandler.class, SessionValidator.class);
 
 		bindHandler(GetProcessesRequest.class,
 				GetProcessesRequestActionHandler.class, SessionValidator.class);
@@ -194,7 +196,7 @@ public class ServerModule extends HandlerModule {
 				SessionValidator.class);
 
 		bindHandler(DeleteFormModelRequest.class,
-				DeleteFormModelRequestActionHandler.class,
+				DeleteFormModelRequestHandler.class,
 				SessionValidator.class);
 
 		bindHandler(DeleteLineRequest.class,
@@ -210,6 +212,10 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(StartAllProcessesRequest.class,
 				StartAllProcessesRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(DeleteDocumentRequest.class,
+				DeleteDocumentRequestHandler.class,
 				SessionValidator.class);
 	}
 }
