@@ -656,7 +656,8 @@ body .dateBoxPopup{
 }
 
 #middle-nav .message-container .inside-container{
-    width: 86%;
+    width: 89%;
+    margin-left: 1%;
 }
 
 #middle-nav .message-container:hover {
@@ -673,12 +674,17 @@ body .dateBoxPopup{
 	padding-top:15px;
 	color: cornflowerblue;
 }
-
 #middle-nav .message-container .bluename {
     font-weight:bold;
     font-size: 12px;
-    width: 75%;
+    width: 70%;
 }
+#middle-nav .message-container .clip{
+	margin-bottom: 5px;
+	color: #808080;
+	vertical-align: super;
+}
+
 #middle-nav .message-container .wfactions {
     float:right;
     display: inline;

@@ -34,6 +34,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 	@UiField DivElement spnSubject;
 	@UiField InlineLabel spnTime;
 	@UiField InlineLabel spnDescription;
+	@UiField InlineLabel spnAttach;
 	@UiField HTMLPanel spnPriority;
 	@UiField Anchor aClaim;
 	@UiField Anchor aStart;
@@ -110,6 +111,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		
 		spnSubject.setInnerText(aDoc.getSubject());
 		
+		if(aDoc.hasAttachment()){
+			spnAttach.removeStyleName("hidden");
+		}
+		
 		if(aDoc.getDescription()!=null)
 			spnDescription.setText(aDoc.getDescription());
 		//spnPriority.setText(summaryTask.getPriority()==null? "": summaryTask.getPriority().toString());
@@ -125,7 +130,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 				spnDocIcon.addStyleName("icon-pause");
 			}
 			else {
-				//spnDocIcon.addStyleName("icon-pause");
 				spnDocIcon.addStyleName("icon-play");
 			}
 			
@@ -240,7 +244,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 			target.removeStyleName("hidden");
 		}
 		UIObject.setVisible(target.getElement(), isvisible);
-		
 	}
 	
 	public HasClickHandlers getClaimLink(){
@@ -312,5 +315,5 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.MyView {
 		if(isTask)
 		spnDocIcon.addStyleName("icon-ok");
 	}
-
+	
 }
