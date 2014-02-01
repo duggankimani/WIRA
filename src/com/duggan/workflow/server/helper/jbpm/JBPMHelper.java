@@ -422,6 +422,7 @@ public class JBPMHelper implements Closeable {
 		task.setDocumentRef(doc.getId());
 		task.setDetails(doc.getDetails());
 		task.setValues(doc.getValues());
+		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 		// task.setTaskName(summary.getName()); //TODO: LOOK INTO JBPM
 		// TASKSUMMARY / TASK USAGES
 		// task.setTaskName(master_task.getNames().);
