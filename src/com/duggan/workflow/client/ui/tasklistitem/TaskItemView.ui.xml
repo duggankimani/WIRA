@@ -29,6 +29,7 @@
 	            
 	            <g:HTMLPanel ui:field="insidecontainer" styleName="span10">
 		       	    <div ui:field="spnSubject" class="bluename ellipsis"></div> 
+		       	    <g:InlineLabel ui:field="spnAttach" styleName="icon-paper-clip clip hidden"></g:InlineLabel>
 				    <g:InlineLabel ui:field="spnTime" styleName="spnTime"></g:InlineLabel>
 		            <d:Break/>
 		            <g:InlineLabel ui:field="spnDescription" styleName="spnDescription ellipsis"></g:InlineLabel>            	

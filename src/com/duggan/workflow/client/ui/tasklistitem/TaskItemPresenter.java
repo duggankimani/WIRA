@@ -38,7 +38,6 @@ import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.duggan.workflow.shared.responses.SaveNotificationResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -87,7 +86,7 @@ public class TaskItemPresenter extends
 		void setMiniDocumentActions(boolean status);
 
 		void setTask(boolean isTask);
-		
+
 	}
 
 	Doc task;
@@ -384,7 +383,6 @@ public class TaskItemPresenter extends
 		this.task = summaryTask;
 		if(summaryTask!=null){
 			getView().bind(summaryTask);
-			
 		}
 		
 		if(task instanceof HTSummary){
