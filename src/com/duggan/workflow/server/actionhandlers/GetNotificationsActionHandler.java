@@ -2,7 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.List;
 
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
+import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.responses.BaseResponse;

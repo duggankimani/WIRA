@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
+import com.duggan.workflow.server.dao.DSConfigDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
@@ -21,6 +22,7 @@ class DaoFactory {
 	ProcessDaoImpl processDao;
 	UserGroupDaoImpl userGroupDao;
 	FormDaoImpl formDao;
+	DSConfigDaoImpl dsDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -119,6 +121,18 @@ class DaoFactory {
 		}
 		
 		return formDao;
+	}
+
+	public DSConfigDaoImpl getDSConfigDaoImpl(EntityManager entityManager) {
+		if(dsDao==null){
+			synchronized (DaoFactory.class) {
+				if(dsDao==null){
+					dsDao = new DSConfigDaoImpl(entityManager);
+				}
+			}
+		}
+		
+		return dsDao;
 	}
 
 }

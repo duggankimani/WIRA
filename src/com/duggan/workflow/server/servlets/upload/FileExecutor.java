@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 
-import com.duggan.workflow.server.helper.dao.AttachmentDaoHelper;
+import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 
 public abstract class FileExecutor {
 

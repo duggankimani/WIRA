@@ -19,13 +19,14 @@ import org.slf4j.LoggerFactory;
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
+import com.duggan.workflow.server.dao.DSConfigDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
-import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
+import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 /**
@@ -299,5 +300,10 @@ public class DB{
 	public static AttachmentDaoImpl getAttachmentDao() {
 
 		return factory().getAttachmentDaoImpl(getEntityManager());
+	}
+
+	public static DSConfigDaoImpl getDSConfigDao() {
+		
+		return factory().getDSConfigDaoImpl(getEntityManager());		
 	}
 }

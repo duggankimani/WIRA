@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.helper.jbpm;
 
-import static com.duggan.workflow.server.helper.dao.DocumentDaoHelper.getDocument;
+import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getDocument;
 
 import java.io.Closeable;
 import java.io.ObjectInputStream;
@@ -47,12 +47,12 @@ import org.jbpm.workflow.core.node.SubProcessNode;
 import org.jbpm.workflow.instance.node.HumanTaskNodeInstance;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.BooleanValue;

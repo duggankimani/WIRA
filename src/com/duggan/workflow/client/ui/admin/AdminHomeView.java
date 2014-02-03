@@ -19,6 +19,7 @@ public class AdminHomeView extends ViewImpl implements
 	@UiField LIElement liProcesses;
 	@UiField LIElement liUsers;
 	@UiField LIElement liReports;
+	@UiField LIElement liDS;
 	@UiField SpanElement spanTitle;
 	@UiField SpanElement iconTitle;
 	@UiField LIElement liFormBuilder;
@@ -85,6 +86,16 @@ public class AdminHomeView extends ViewImpl implements
 			liReports.removeClassName("active");
 	}
 	
+	public void SetDSLink(boolean status, ADMINPAGES page){
+		if(status){
+			liDS.setClassName("active");
+			iconTitle.setClassName(page.getDisplayIcon());
+			spanTitle.setInnerHTML(page.getDisplayName());
+		}else
+			liDS.removeClassName("active");
+	}
+	
+	
 	@Override
 	public void SetFormBuilderLinks(boolean status, ADMINPAGES page) {
 		if(status){
@@ -101,6 +112,7 @@ public class AdminHomeView extends ViewImpl implements
 		liUsers.removeClassName("active");
 		liReports.removeClassName("active");
 		liFormBuilder.removeClassName("active");
+		liDS.removeClassName("active");
 	}
 
 }

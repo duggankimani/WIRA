@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.List;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;

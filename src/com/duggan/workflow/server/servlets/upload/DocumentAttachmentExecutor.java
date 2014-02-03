@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
-import com.duggan.workflow.server.helper.dao.AttachmentDaoHelper;
 
 public class DocumentAttachmentExecutor extends FileExecutor{
 

@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.model;
 
-public enum ProcessDefStatus {
+public enum Status {
 	RUNNING,
 	INACTIVE
 }

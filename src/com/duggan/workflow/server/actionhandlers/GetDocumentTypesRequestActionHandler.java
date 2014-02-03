@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;

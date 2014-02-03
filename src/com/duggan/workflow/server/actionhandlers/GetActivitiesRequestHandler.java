@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
+import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
+import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;

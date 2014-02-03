@@ -4,6 +4,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
+import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
@@ -46,6 +47,8 @@ public class AdminHomePresenter extends
 
 		public void SetReportLink(boolean status, ADMINPAGES pages);
 
+		public void SetDSLink(boolean status, ADMINPAGES pages);
+		
 		public void clearAllLinks();
 
 		public void SetFormBuilderLinks(boolean b, ADMINPAGES page);
@@ -60,23 +63,19 @@ public class AdminHomePresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> CONTENT_SLOT = new Type<RevealContentHandler<?>>();
 
-	@Inject
-	ProcessPresenter process;
-	@Inject
-	UserPresenter users;
-	@Inject
-	DashboardPresenter dashboard;
-	@Inject
-	ReportsPresenter reports;
-	@Inject
-	FormBuilderPresenter formbuilder;
-
+	@Inject	ProcessPresenter process;
+	@Inject	UserPresenter users;
+	@Inject	DashboardPresenter dashboard;
+	@Inject	ReportsPresenter reports;
+	@Inject	FormBuilderPresenter formbuilder;
+	@Inject DataSourcePresenter datasources;
 	@Inject DispatchAsync dispatcher;
 	
 	enum ADMINPAGES {
 		DASHBOARD("Dashboard", "icon-dashboard"), PROCESSES("Processes", "icon-cogs"),
 		USERS("Users","icon-group"),GROUPS("Groups","icon-group"), REPORTS("Reports","icon-bar-chart"), 
-		FORMBUILDER("Form Builder","icon-edit");
+		FORMBUILDER("Form Builder","icon-edit"),
+		DATASOURCES("Data Sources","icon-cogs");
 
 		private String displayName;
 		private String displayIcon;
@@ -183,8 +182,19 @@ public class AdminHomePresenter extends
 		case REPORTS:
 			showReportPanel();
 			break;
+			
+		case DATASOURCES:
+			showDSPanel();
+			break;
 		}
 
+	}
+
+	private void showDSPanel() {
+		setInSlot(CONTENT_SLOT, null);
+		setInSlot(CONTENT_SLOT, datasources);
+		getView().clearAllLinks();
+		getView().SetDSLink(true, page);
 	}
 
 	private void showDashBoard() {

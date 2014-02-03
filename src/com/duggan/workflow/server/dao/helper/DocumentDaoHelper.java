@@ -1,4 +1,4 @@
-package com.duggan.workflow.server.helper.dao;
+package com.duggan.workflow.server.dao.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 
-import static com.duggan.workflow.server.helper.dao.FormDaoHelper.*;
+import static com.duggan.workflow.server.dao.helper.FormDaoHelper.*;
 
 /**
  * This class is Dao Helper for persisting all document related entities.

@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;

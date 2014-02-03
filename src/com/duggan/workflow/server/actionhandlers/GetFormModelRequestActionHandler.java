@@ -3,9 +3,9 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;

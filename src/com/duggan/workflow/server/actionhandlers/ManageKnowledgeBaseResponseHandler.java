@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessDef;

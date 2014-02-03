@@ -7,11 +7,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
+import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.NotificationType;
 

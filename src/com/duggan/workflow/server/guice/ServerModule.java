@@ -84,6 +84,12 @@ import com.duggan.workflow.server.actionhandlers.DeleteAttachmentRequestHandler;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
+import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
+import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
+import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
+import com.duggan.workflow.server.actionhandlers.GetDSConfigurationsRequestHandler;
+import com.duggan.workflow.shared.requests.DeleteDSConfigurationEvent;
+import com.duggan.workflow.server.actionhandlers.DeleteDSConfigurationEventActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -216,6 +222,17 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(DeleteDocumentRequest.class,
 				DeleteDocumentRequestHandler.class,
+				SessionValidator.class);
+
+		bindHandler(SaveDSConfigRequest.class,
+				SaveDSConfigRequestHandler.class, SessionValidator.class);
+
+		bindHandler(GetDSConfigurationsRequest.class,
+				GetDSConfigurationsRequestHandler.class,
+				SessionValidator.class);
+
+		bindHandler(DeleteDSConfigurationEvent.class,
+				DeleteDSConfigurationEventActionHandler.class,
 				SessionValidator.class);
 	}
 }

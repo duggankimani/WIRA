@@ -9,9 +9,9 @@ import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
 
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;

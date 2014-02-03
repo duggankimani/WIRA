@@ -1,4 +1,4 @@
-package com.duggan.workflow.server.helper.dao;
+package com.duggan.workflow.server.dao.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,12 +9,13 @@ import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
-import com.duggan.workflow.shared.model.ProcessDefStatus;
+import com.duggan.workflow.shared.model.Status;
 
-import static com.duggan.workflow.server.helper.dao.DocumentDaoHelper.*;
+import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.*;
 
 public class ProcessDefHelper {
 
@@ -77,8 +78,8 @@ public class ProcessDefHelper {
 
 		boolean running = JBPMHelper.get().isProcessingRunning(
 				model.getProcessId());
-		def.setStatus(running ? ProcessDefStatus.RUNNING
-				: ProcessDefStatus.INACTIVE);
+		def.setStatus(running ? Status.RUNNING
+				: Status.INACTIVE);
 
 		def.setDescription(model.getDescription());
 

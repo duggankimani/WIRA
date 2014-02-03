@@ -1,4 +1,4 @@
-package com.duggan.workflow.server.helper.dao;
+package com.duggan.workflow.server.dao.helper;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

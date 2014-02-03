@@ -1,7 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;

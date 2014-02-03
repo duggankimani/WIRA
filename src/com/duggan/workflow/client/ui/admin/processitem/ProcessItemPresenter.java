@@ -11,7 +11,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessDef;
-import com.duggan.workflow.shared.model.ProcessDefStatus;
+import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
@@ -37,7 +37,7 @@ public class ProcessItemPresenter extends
 		HasClickHandlers getDeleteButton();
 		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
-				ProcessDefStatus status,  String imageName, Long imageId);
+				Status status,  String imageName, Long imageId);
 	}
 	
 	@Inject DispatchAsync requestHelper;
