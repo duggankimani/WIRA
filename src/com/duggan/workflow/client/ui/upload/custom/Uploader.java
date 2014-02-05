@@ -15,6 +15,7 @@ import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -68,7 +69,7 @@ public class Uploader extends Composite {
 		
 		@Override
 		public void onStart(IUploader uploader) {
-			fireEvent(new UploadStartedEvent());
+			AppContext.fireEvent(new UploadStartedEvent());
 		}
 	};
 	
@@ -77,7 +78,7 @@ public class Uploader extends Composite {
 
 		@Override
 		public void onFinish(IUploader uploader) {
-			fireEvent(new UploadEndedEvent());
+			AppContext.fireEvent(new UploadEndedEvent());
 			if (uploader.getStatus() == Status.SUCCESS) {
 
 				new PreloadedImage(uploader.fileUrl(), showImage);
