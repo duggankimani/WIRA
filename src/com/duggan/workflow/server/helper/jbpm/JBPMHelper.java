@@ -845,9 +845,13 @@ public class JBPMHelper implements Closeable {
 						Object groups = htn.getWork().getParameter("GroupId");
 						Object actors = htn.getWork().getParameter("ActorId");
 						
-						detail.setActors(actors==null? null : actors.toString());
-						detail.setGroups(groups==null? null: groups.toString());
-					
+						if(groups!=null){
+							loadGroups(groups.toString(), detail);
+						}
+						
+						if(actors!=null){
+							loadActors(actors.toString(), detail);
+						}
 					}
 					
 					
@@ -860,6 +864,34 @@ public class JBPMHelper implements Closeable {
 
 	}
 	
+	/**
+	 * Comma separated List of actors
+	 * @param actors
+	 * @param detail
+	 */
+	private void loadActors(String actors, NodeDetail detail) {
+		String[] actorIds = actors.split(",");
+		for(String userId: actorIds){
+			HTUser user = LoginHelper.get().getUser(userId.trim());
+			detail.addUser(user);
+		}
+	}
+
+	/**
+	 * Comma separated list of groups
+	 * @param groups
+	 * @param detail
+	 */
+	private void loadGroups(String groups, NodeDetail detail) {
+		String [] groupIds = groups.split(",");
+		for(String groupId: groupIds){
+			UserGroup group = LoginHelper.get().getGroupById(groupId);
+			List<HTUser> lst = LoginHelper.get().getUsersForGroup(groupId);
+			detail.addAllUsers(lst);
+			detail.addGroup(group);
+		}
+	}
+
 	public Object getActors(Long processInstanceId, String nodeId){
 		//
 		List<NodeInstanceLog> log = JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, nodeId); 

@@ -361,4 +361,10 @@ public class LDAPLoginHelper implements LoginIntf{
 		return null;
 	}
 
+	@Override
+	public UserGroup getGroupById(String groupId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
