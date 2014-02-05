@@ -32,7 +32,7 @@ public class TestFormBuilder {
 		dao = DB.getFormDao();
 	}
 	
-	@Test
+	@Ignore
 	public void getField(){
 		Field field = FormDaoHelper.getField(108L);
 		
@@ -45,10 +45,9 @@ public class TestFormBuilder {
 		System.err.println("Values = "+pairs);
 	}
 	
-	@Ignore
+	@Test
 	public void getForm(){
-		Long value = DB.getDocumentDao().getFormId(3L);
-		Assert.assertNotNull(value);
+		FormDaoHelper.getForm(1L, true);
 	}
 	
 	@Ignore

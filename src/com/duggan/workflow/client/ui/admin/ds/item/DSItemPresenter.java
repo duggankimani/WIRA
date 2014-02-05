@@ -76,7 +76,7 @@ public class DSItemPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				AppManager.showPopUp("Confirm Delete", 
-						new InlineLabel("Do you want to delete config \""+configuration.getName()+"\"?"),
+						"Do you want to delete config \""+configuration.getName()+"\"?",
 						new OnOptionSelected() {
 							@Override
 							public void onSelect(String name) {

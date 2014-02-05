@@ -8,6 +8,7 @@ import com.duggan.workflow.server.dao.model.DataSourceConfig;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.Status;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 
 public class DSConfigHelper {
 
@@ -82,5 +83,12 @@ public class DSConfigHelper {
 		dao.delete(dao.getConfiguration(configurationId));
 		
 		return true;
+	}
+	
+	public static List<KeyValuePair> getKeyValuePairs(){
+		DSConfigDaoImpl dao = DB.getDSConfigDao();
+		List<KeyValuePair> lst = dao.getKeyValuePairs();
+		
+		return lst;
 	}
 }

@@ -76,7 +76,9 @@
 		 	
 		 	  <div class="form-actions">
 				<g:Anchor styleName="btn btn-success pull-right" ui:field="aSave">Save &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
-				<g:Anchor styleName="btn btn-success pull-right" ui:field="aCancel">Cancel &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+				<g:Anchor styleName="btn btn-danger pull-left" ui:field="aCancel">
+				    &nbsp; <i class="icon-remove"></i>Cancel 
+				    </g:Anchor>
 			  </div>
 		  </g:HTMLPanel>
  

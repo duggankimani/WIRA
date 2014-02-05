@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.DataSourceConfig;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 
 public class DSConfigDaoImpl extends BaseDaoImpl{
 
@@ -42,6 +43,21 @@ public class DSConfigDaoImpl extends BaseDaoImpl{
 		
 		return new ArrayList<>();
 		
+	}
+
+	public List<KeyValuePair> getKeyValuePairs() {
+		
+		Query query = em.createQuery("select new " +
+				"com.duggan.workflow.shared.model.form.KeyValuePair(ds.configName,ds.configName) " +
+				"FROM DataSourceConfig ds WHERE ds.isActive=:isActive")
+				.setParameter("isActive", 1);
+		try{
+			return query.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ArrayList<>();
 	}
 	
 	

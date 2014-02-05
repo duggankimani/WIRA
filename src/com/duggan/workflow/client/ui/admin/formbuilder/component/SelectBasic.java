@@ -1,13 +1,19 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
+import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
+import com.duggan.workflow.shared.responses.GetDSConfigurationsResponse;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
@@ -39,7 +45,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	public SelectBasic() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
-		//addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
+		addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
 		addProperty(new Property(SQLSELECT, "Sql", DataType.STRINGLONG));
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));		
 		widget= uiBinder.createAndBindUi(this);

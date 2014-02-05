@@ -201,6 +201,12 @@ public class FormDaoHelper {
 		
 		property.setValue(getValue(adproperty.getValue(), adproperty.getType()));
 		
+		if(property.getType().isDropdown()){
+			if( property.getName()!=null && property.getName().equals("SQLDS")){
+				property.setSelectionValues(DSConfigHelper.getKeyValuePairs());
+			}
+		}
+		
 		return property;
 	}
 	

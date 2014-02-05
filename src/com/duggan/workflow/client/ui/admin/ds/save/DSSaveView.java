@@ -160,11 +160,11 @@ public class DSSaveView extends PopupViewImpl implements
 		
 		if(lstRDBMS.getValue()==null){
 			issues.addError("Please select an RDBMS");
-			return false;
+			isValid=false;
 		}
 		
 		if(isNullOrEmpty(txtConfig.getValue())){
-			issues.addError("Please specify name");
+			issues.addError("Please specify config name");
 			isValid=false;
 		}
 		

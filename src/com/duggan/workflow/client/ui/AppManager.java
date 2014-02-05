@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -21,6 +22,10 @@ public class AppManager {
 	@Inject static MainPagePresenter mainPagePresenter;
 	@Inject static GenericPopupPresenter popupPresenter;
 	@Inject static PropertyPanelPresenter propertyPanel;
+	
+	public static void showPopUp(String header, String content,final OnOptionSelected onOptionSelected, String ... buttons){
+		showPopUp(header, new InlineLabel(content), onOptionSelected, buttons);
+	}
 	
 	public static void showPopUp(String header, Widget widget,final OnOptionSelected onOptionSelected, String ... buttons){
 		popupPresenter.setHeader(header);

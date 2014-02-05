@@ -86,16 +86,24 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		assert property != null;
 		assert property.getName() != null;
 
-		
 		if(property.getType().isDropdown()){
 			Property previous=props.get(property.getName());
-			//need to copy lookup values
-			if(previous!=null){
+
+
+			if(property.getType().isDropdown()){
+				//no need - It will overwrite server values with local
+				
+			}else if(previous!=null){
+				//need to copy lookup values
 				property.setSelectionValues(previous.getSelectionValues());
 			}
 		}
 		
+		//overwrite previous value with current
 		props.put(property.getName(), property);
+		if(property.getType().isDropdown()){
+			
+		}
 	}
 
 	public abstract FieldWidget cloneWidget();
