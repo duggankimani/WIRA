@@ -130,9 +130,9 @@ public class LoginPresenter extends
 								
 									if(redirect!=null){
 										boolean isAdmin = result.getUser().isAdmin();
-										System.err.println("Redirect= "+redirect+
-												" :: IsUserAdmin = "+isAdmin+
-												" :: "+result.getUser().getGroupsAsString());
+//										System.err.println("Redirect= "+redirect+
+//												" :: IsUserAdmin = "+isAdmin+
+//												" :: "+result.getUser().getGroupsAsString());
 										
 										if(isAdmin && redirect.equals("home")){
 											History.newItem(NameTokens.adminhome);
@@ -141,7 +141,7 @@ public class LoginPresenter extends
 										}
 										
 									}else{
-										System.err.println("No Redirect");
+										//System.err.println("No Redirect");
 										if(result.getUser().isAdmin()){
 											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
 										}else{

@@ -65,4 +65,9 @@ public class UploadDocumentView extends PopupViewImpl implements
 	public Uploader getUploader() {
 		return uploader;
 	}
+
+	@Override
+	public void showCompletedButton(boolean show) {
+		btnDone.setVisible(show);
+	}
 }
