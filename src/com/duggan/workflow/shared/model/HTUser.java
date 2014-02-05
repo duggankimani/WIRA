@@ -13,7 +13,7 @@ public class HTUser implements Serializable {
 	private String email;
 	private String surname;
 	private String password;
-	private List<UserGroup> groups;
+	private List<UserGroup> groups ;
 	
 	public HTUser() {
 	}
@@ -119,4 +119,18 @@ public class HTUser implements Serializable {
 		return hasGroup("admin");
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj==null || !(obj instanceof HTUser)){
+			return false;
+		}
+		
+		HTUser other =  (HTUser)obj;
+		
+		if(name==null){
+			return false;
+		}
+		
+		return name.equals(other.name);
+	}
 }

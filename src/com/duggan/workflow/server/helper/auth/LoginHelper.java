@@ -117,4 +117,9 @@ public class LoginHelper implements LoginIntf{
 		
 		return impl.getAllGroups();
 	}
+
+	@Override
+	public UserGroup getGroupById(String groupId) {
+		return impl.getGroupById(groupId);
+	}
 }
