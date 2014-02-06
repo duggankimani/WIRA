@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE;
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
 
 import java.util.List;
 
@@ -76,6 +76,8 @@ public class PropertyPanelView extends PopupViewImpl implements
 	@Override
 	public void showProperties(List<Property> properties,FormModel model) {
 		clear();
+		boolean isDSAvailable=false;
+		boolean isSQLAvailable=false;
 		for(Property property: properties){
 			assert property!=null;
 			FieldWidget fw = FieldWidget.getWidget(property);
@@ -90,7 +92,19 @@ public class PropertyPanelView extends PopupViewImpl implements
 			 * choices
 			 * 
 			 */
-			if(property.getName().equals(SELECTIONTYPE)){
+			if(property.getName().equals(SQLDS)){
+				if(property.getValue()!=null && property.getValue().getValue()!=null){
+					isDSAvailable=true;
+				}
+			}
+			
+			if(property.getName().equals(SQLSELECT)){
+				if(property.getValue()!=null && property.getValue().getValue()!=null){
+					isSQLAvailable=true;
+				}
+			}
+			
+			if(property.getName().equals(SELECTIONTYPE) && !(isDSAvailable&&isSQLAvailable)){
 				
 				property.setFieldId(model.getId());
 				UIObject.setVisible(fw.getComponent(false).getElement(), false);

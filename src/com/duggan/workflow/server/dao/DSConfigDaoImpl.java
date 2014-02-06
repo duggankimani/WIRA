@@ -59,6 +59,25 @@ public class DSConfigDaoImpl extends BaseDaoImpl{
 		
 		return new ArrayList<>();
 	}
+
+	/**
+	 * Get DS by ConfigName
+	 * @param configName
+	 * @return
+	 */
+	public DataSourceConfig getConfigurationByName(String configName) {
+		System.err.println("configName = "+configName);
+		Query query = em.createQuery("FROM DataSourceConfig ds WHERE ds.configName=:configName")
+				.setParameter("configName", configName);
+		
+		try{
+			return (DataSourceConfig)query.getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}		
+		
+		return null;
+	}
 	
 	
 

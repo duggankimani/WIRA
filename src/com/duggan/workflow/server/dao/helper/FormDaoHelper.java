@@ -17,6 +17,8 @@ import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.HasProperties;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.db.LookupLoader;
+import com.duggan.workflow.server.db.LookupLoaderImpl;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
@@ -116,17 +118,42 @@ public class FormDaoHelper {
 		
 		if(field.getType().isLookup()){
 			String type = null;
+			String sqlDS=null;
+			String sqlSelect=null;
 			
 			for(Property prop: field.getProperties()){
 				if(prop.getName().equals("SELECTIONTYPE")){
 					Object value = prop.getValue()==null? null : prop.getValue().getValue();
 					type = value==null? null : value.toString();
 				}
+				
+				if(prop.getName().equals("SQLSELECT")){
+					Object value = prop.getValue()==null? null : prop.getValue().getValue();
+					sqlSelect = value==null? null : value.toString();
+				}
+				
+				if(prop.getName().equals("SQLDS")){
+					Object value = prop.getValue()==null? null : prop.getValue().getValue();
+					sqlDS = value==null? null : value.toString();					
+				}
+				
 			}
 			
-			if(type!=null){
+
+			if(sqlDS!=null && !sqlDS.isEmpty()){
+				if(sqlSelect!=null && !sqlSelect.isEmpty()){
+					//Takes Precedence
+					try{
+						LookupLoader loader = new LookupLoaderImpl();
+						field.setSelectionValues(loader.getValuesByDataSourceName(sqlDS, sqlSelect));
+					}catch(Exception e){e.printStackTrace();}
+				}
+								
+			}else if(type!=null){
+				
 				field.setSelectionValues(getDropdownValues(type));
 			}
+			
 		}
 		
 		if(adfield.getFields()!=null){

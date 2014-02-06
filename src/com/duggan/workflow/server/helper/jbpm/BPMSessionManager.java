@@ -244,7 +244,6 @@ class BPMSessionManager {
 		logger.debug(Thread.currentThread().toString()
 				+ "RETRIEVED LocalTaskService : " + lts.toString());
 		
-		TaskClient c;
 		return lts;
 	}
 

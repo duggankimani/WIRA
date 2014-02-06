@@ -467,7 +467,7 @@ public class FormBuilderView extends ViewImpl implements
 		
 		
 		for(Field field: fields){
-			System.err.println(field.getCaption());
+			//System.err.println(field.getCaption());
 			FieldWidget widget = FieldWidget.getWidget(field.getType(),field,true);
 			widgetDragController.makeDraggable(widget);
 			vPanel.add(widget);

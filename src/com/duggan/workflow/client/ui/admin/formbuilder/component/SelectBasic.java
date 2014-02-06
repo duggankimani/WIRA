@@ -1,19 +1,17 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLDS;
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLSELECT;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.component.DropDownList;
-import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
-import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
-import com.duggan.workflow.shared.responses.GetDSConfigurationsResponse;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
@@ -66,9 +64,13 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 			@Override
 			public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
 				KeyValuePair p = event.getValue();
+				if(p==null){
+					property.setValue(null);
+				}else{
+					Value value = new StringValue(null,property.getName(),p==null? null: p.getKey());
+					property.setValue(value);
+				}
 				
-				Value value = new StringValue(null,property.getName(),p==null? null: p.getKey());
-				property.setValue(value);
 			}
 		});
 		
@@ -126,13 +128,32 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 
 	@Override
 	public void setSelectionValues(List<KeyValuePair> values) {
+		if(getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null){
+			if(popUpActivated){
+				//design mode
+				field.setSelectionValues(new ArrayList<KeyValuePair>());
+			}
+			
+			//design mode; and loaded from a different system/subsystem
+			//the user doesnt see these loaded values i.e the drop down cant show the values
+			//loaded in design mode
+			
+			//we need to disable this capability so that in case the user changes from db loading
+			//to manual listing, the web browser does not sending data loaded from another subsystem
+			// as new data provided manually
+			return;
+		}
 		
 		if(values!=null){
 			lstItems.setItems(values);
 		}
 		
 		//design mode values set here before save is called
+		//iff these we manually entered/ not referenced from another ds
+		
+		
 		field.setSelectionValues(values);
+		
 	}
 
 	@Override

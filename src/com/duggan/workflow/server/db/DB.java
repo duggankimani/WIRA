@@ -1,11 +1,14 @@
 package com.duggan.workflow.server.db;
 
+import java.sql.Connection;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.sql.DataSource;
 import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
@@ -62,6 +65,8 @@ public class DB{
     private static final ThreadLocal<EntityManager> entityManagers = new ThreadLocal<EntityManager>();
 
 	private static ThreadLocal<DaoFactory> daoFactory = new ThreadLocal<>();
+	
+	private static ThreadLocal<JDBCConnection> jdbcConnectionBot = new ThreadLocal<>();
     
     private DB(){}
     
@@ -112,6 +117,14 @@ public class DB{
 
 
 	public static void closeSession(){
+		try{
+			getJDBCBot().dispose();
+			jdbcConnectionBot.set(null);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+//		
 		try{
 			
 			EntityManager em = (EntityManager) entityManagers.get();
@@ -305,5 +318,30 @@ public class DB{
 	public static DSConfigDaoImpl getDSConfigDao() {
 		
 		return factory().getDSConfigDaoImpl(getEntityManager());		
+	}
+
+	public static Connection getConnection(String connectionName) {
+		
+		JDBCConnection bot = getJDBCBot();
+		Connection conn = bot.getConnection(connectionName);
+		assert conn!=null;
+		
+		return conn;
+		
+	}
+
+	private static JDBCConnection getJDBCBot() {
+		
+		JDBCConnection connection =jdbcConnectionBot.get();
+		
+		if(connection==null){
+			synchronized (jdbcConnectionBot) {
+				if((connection=jdbcConnectionBot.get())==null){
+					connection = new JDBCConnection();
+					jdbcConnectionBot.set(connection);
+				}
+			}
+		}
+		return connection;
 	}
 }
