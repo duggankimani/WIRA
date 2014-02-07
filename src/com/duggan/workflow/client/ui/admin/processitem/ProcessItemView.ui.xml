@@ -18,14 +18,14 @@
 						<g:HTMLPanel styleName="td">
 						    <span ui:field="spnDocTypes"></span>
 						</g:HTMLPanel>
-						<g:HTMLPanel styleName="td">
-						    <span ui:field="spnFileName"></span>
+						<g:HTMLPanel styleName="td hide">
+						    <span ui:field="spnFileName" class="ellipsis" style="width:61%"></span>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">
 						    <g:Anchor ui:field="aImageName"></g:Anchor>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">
-						    <span ui:field="spnProcessId"></span>
+						    <span ui:field="spnProcessId" class="ellipsis" style="width:71%"></span>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">
 						    <span ui:field="spnStatus"></span>
@@ -35,37 +35,22 @@
 						</g:HTMLPanel>
 						
 						<g:HTMLPanel styleName="td">
-								<g:Anchor ui:field="aActivate" styleName="btn btn-default" title="Activate Process">
-									<i class="icon-play"></i>
-								</g:Anchor>
-								<g:Anchor ui:field="aDeactivate" styleName="btn btn-default hide" title="De-activate Process">
-									<i class="icon-minus-sign"></i>
-								</g:Anchor>
+									<g:Anchor ui:field="aActivate" styleName="btn btn-success" title="Activate Process">
+										<i class="icon-play"></i>
+									</g:Anchor>
+									<g:Anchor ui:field="aDeactivate" styleName="btn btn-inverse" title="De-activate Process">
+										<i class="icon-minus-sign"></i>
+									</g:Anchor>
 								
-								<g:Anchor ui:field="aRefresh" styleName="btn btn-default" title="Refresh Process">
-									<i class="icon-undo"></i>
-								</g:Anchor>
-								<div class="btn-group">
-									<button type="button" class="btn btn-default dropdown-toggle"
-										data-toggle="dropdown">
-										<i class="icon-cog"></i>
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li>
-											<g:Anchor ui:field="aEdit">
-												<i class="icon-edit"></i>
-												Edit
-											</g:Anchor>
-										</li>
-										<li>
-											<g:Anchor ui:field="aDelete">
-												<i class="icon-trash"></i>
-												Delete
-											</g:Anchor>
-										</li>
-									</ul>
-								</div>
+									<g:Anchor ui:field="aRefresh" styleName="btn btn-info" title="Refresh Process">
+										<i class="icon-undo"></i>
+									</g:Anchor>
+									<g:Anchor styleName="btn btn-warning" ui:field="aEdit">
+										<i class="icon-pencil helper-14"></i>
+									</g:Anchor>
+									<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
+										<i class="icon-trash"></i>
+									</g:Anchor>
 						</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

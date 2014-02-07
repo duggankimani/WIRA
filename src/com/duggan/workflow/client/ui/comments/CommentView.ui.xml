@@ -8,7 +8,7 @@
 	<g:HTMLPanel ui:field="root" styleName="feed-item feed-item-comment">
 		
 	    <div class="span1 image feed-image">
-				<img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="70px"/>
+				<img src="img/blueman.png" data-src="img/blueman.png" width="40px" height="70px"/>
 		</div>
 		<div class="feed-subject">
 			<a><span ui:field="spnCreatedBy"></span></a>

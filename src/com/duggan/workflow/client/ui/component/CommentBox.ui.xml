@@ -4,7 +4,7 @@
 			 xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 		    <div class="span2 image">
-					<img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="70px"/>
+					<img src="img/blueman.png" data-src="img/blueman.png" width="45px"/>
 			</div>
 				
 			<span ui:field="spnArrow" class="arrow"></span>

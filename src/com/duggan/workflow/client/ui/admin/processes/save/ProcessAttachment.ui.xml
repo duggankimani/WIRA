@@ -5,11 +5,6 @@
 	</ui:style>	
        <g:HorizontalPanel>
            <g:cell>
-               <g:Anchor ui:field="aDelete" title="Delete">
-                   &nbsp;<i class="icon-remove"></i>
-               </g:Anchor> 
-           </g:cell>
-           <g:cell>
                <g:InlineLabel ui:field="lblFileName">Changeset.xml</g:InlineLabel> 
            </g:cell>
            <g:cell>
@@ -17,6 +12,11 @@
            </g:cell>
            <g:cell>
                <g:InlineLabel ui:field="lblCreated">10/01/2014</g:InlineLabel>
+           </g:cell>
+            <g:cell>
+               <g:Anchor ui:field="aDelete" title="Delete">
+                   &nbsp;<i class="icon-remove"></i>
+               </g:Anchor> 
            </g:cell>
        </g:HorizontalPanel>
 </ui:UiBinder>
