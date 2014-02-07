@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
@@ -16,14 +18,15 @@ import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
 import com.duggan.workflow.shared.responses.ManageKnowledgeBaseResponse;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
 
 public class ProcessItemPresenter extends
 		PresenterWidget<ProcessItemPresenter.MyView> {
@@ -101,14 +104,25 @@ public class ProcessItemPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				DeleteProcessRequest request = new DeleteProcessRequest(processDef.getId());
-			
-				requestHelper.execute(request, new ServiceCallback<DeleteProcessResponse>() {
-					@Override
-					public void processResult(DeleteProcessResponse result) {
-						getView().asWidget().removeFromParent();
-					}
-				});
+				AppManager.showPopUp("Confirm Delete", 
+						new InlineLabel("Do you want to delete process '"+processDef.getName()+"'"),
+						new OnOptionSelected() {
+							
+							@Override
+							public void onSelect(String name) {
+								if(name.equals("Yes")){
+
+									DeleteProcessRequest request = new DeleteProcessRequest(processDef.getId());
+								
+									requestHelper.execute(request, new ServiceCallback<DeleteProcessResponse>() {
+										@Override
+										public void processResult(DeleteProcessResponse result) {
+											getView().asWidget().removeFromParent();
+										}
+									});
+								}
+							}
+						}, "Yes", "Cancel");
 			}				
 		});
 	}

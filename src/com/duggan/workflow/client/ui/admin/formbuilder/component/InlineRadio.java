@@ -142,6 +142,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 			RadioButton txtBox= (RadioButton)vPanel.getWidget(i);
 			String key = txtBox.getFormValue();
 			
+			if(val!=null)
 			if(val.equals(key)){
 				txtBox.setValue(true);
 				return;
