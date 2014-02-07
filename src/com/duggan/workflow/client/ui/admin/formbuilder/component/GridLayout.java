@@ -120,9 +120,9 @@ implements EditLineHandler{
 		
 		grid.getAchckBox().addClickHandler(new ClickHandler() {
 			
-			@Override
+			@Override	
 			public void onClick(ClickEvent event) {
-				addColumn(DataType.BOOLEAN);
+				addColumn(DataType.CHECKBOX);
 			}
 		});	
 		
@@ -139,14 +139,14 @@ implements EditLineHandler{
 					
 					@Override
 					public void onClick(ClickEvent event) {
-						addColumn();
+						addColumn(DataType.BOOLEAN);
 					}
 				});
 		grid.getSlctField().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				addColumn();
+				addColumn(DataType.SELECTBASIC);
 			}
 		});
 		

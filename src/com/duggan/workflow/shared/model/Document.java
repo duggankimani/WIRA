@@ -185,6 +185,9 @@ public class Document extends Doc implements Serializable{
 	@Override
 	public void setValues(Map<String, Value> values) {
 		for(String key: values.keySet()){
+			if(key==null){
+				continue;
+			}
 			Object val = null;
 			
 			Value fieldValue  = values.get(key);
