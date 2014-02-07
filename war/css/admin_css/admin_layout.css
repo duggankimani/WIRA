@@ -305,7 +305,9 @@
 	margin-bottom: 15px;
 }
 /*--content-body||Process--*/
-
+.content-body .table-process .td{
+	max-width:184px;
+}
 
 /*--content-body||Users and Groups--*/
 .content-body .tab-content {
@@ -605,12 +607,10 @@ overflow-y:auto;
 
 .td {
 	display: table-cell;
- 	
 	padding: 5px;
 	text-align: left;
 	vertical-align: middle;
 	padding-left: 8px;
-	max-width: 184px;
 }
 
 }
