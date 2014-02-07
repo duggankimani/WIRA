@@ -154,4 +154,9 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	public Value getFieldValue() {
 		return fieldValue;
 	}
+	
+	@Override
+	public Widget getComponent(boolean small) {
+		return vPanel;
+	}
 }

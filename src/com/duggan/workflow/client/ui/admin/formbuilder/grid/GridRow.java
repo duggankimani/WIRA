@@ -91,9 +91,10 @@ public class GridRow extends Composite {
 		field.setValue(value);
 		//System.err.println(field.getName()+">>> "+(value==null? "": value.getValue()));
 		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);		
-		
+	
 		Widget widget = fw.getComponent(true);
 		assert widget!=null;
+		
 		cell.add(widget);
 		
 		widgets.add(fw);
