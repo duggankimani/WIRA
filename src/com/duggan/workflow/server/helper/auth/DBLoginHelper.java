@@ -257,8 +257,14 @@ public class DBLoginHelper implements LoginIntf{
 	public List<UserGroup> getAllGroups() {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		
-		
 		return getFromDb(dao.getAllGroups());
+	}
+
+	@Override
+	public UserGroup getGroupById(String groupId) {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		
+		return get(dao.getGroup(groupId));
 	}
 	
 }

@@ -6,6 +6,17 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:InlineLabel ui:field="container">	    
-	</g:InlineLabel>
+	    <g:HTMLPanel>
+	        <div ui:field="popOverDiv" class="popover fade top in" style="display: block;">
+		        <div class="arrow"></div>
+		        <h3 class="popover-title" ui:field="hTitle">HOD Development</h3>
+		        <div ui:field="divActors" class="popover-content">		           
+		        </div>
+		    </div>
+		    <g:FocusPanel ui:field="parentContainer">
+			    <g:HTML ui:field="htmlContainer">	  
+				</g:HTML>
+			</g:FocusPanel>
+	    </g:HTMLPanel>
+	
 </ui:UiBinder>
