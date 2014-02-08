@@ -38,6 +38,7 @@ insert into UserGroup(userid,groupid) values(10,8);
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-silver-dark','RFQ', 'RFQ',0,'RFQ/{No}/{YY}');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-blue','Form8', 'FORM8',0,'REG/FRM8/{No}/{YY}');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Loan Application', 'FACILITYAPPLICATIONFORM',0,'L51/CBLC/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Account Application', 'AccountApplication',0,'ACC/CBLC/{No}/{YY}');
 
  
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'HR', 'Human Resources');
