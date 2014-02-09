@@ -30,6 +30,7 @@ import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
 public class FormDaoHelper {
 
 	static final Logger logger= Logger.getLogger(FormDaoHelper.class);
@@ -371,8 +372,27 @@ public class FormDaoHelper {
 		//List<KeyValuePair> pairs = field.getSelectionValues();
 		String selectionKey=null;
 		
+		if(field.getType().equals(DataType.GRID)){
+			if(field.getName()==null || field.getName().isEmpty()){
+				field.setName(UUID.randomUUID().toString());
+			}
+		}
+		
 		for(Property prop: field.getProperties()){
-			if(prop.getName().equals(com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE)){
+			if(field.getType()==DataType.GRID && prop.getName().equals(NAME)){
+				//mostly for grids
+				Value value = prop.getValue();
+				String name=null;
+				if(value!=null){
+					name = value.getValue()==null? null : value.getValue().toString();
+				}
+				
+				if(name==null || name.isEmpty()){
+					prop.setValue(new StringValue(null, NAME, field.getName()));
+				}
+			}
+			
+			if(prop.getName().equals(SELECTIONTYPE)){
 				Value value = prop.getValue();
 				if(value!=null){
 					selectionKey = value.getValue()==null? null : value.getValue().toString();
