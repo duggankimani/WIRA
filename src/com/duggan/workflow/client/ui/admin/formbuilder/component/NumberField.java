@@ -106,7 +106,7 @@ public class NumberField extends FieldWidget{
 	
 	@Override
 	public FieldWidget cloneWidget() {
-		return new TextField();
+		return new NumberField();
 	}
 	
 	@Override

@@ -80,18 +80,27 @@
 	font-size:12px;
 }
 
+#detailed-info .form-horizontal .generic-row .td .gwt-InlineLabel{
+	padding:1px 8px;
+	font-size:12px;
+}
+
 #detailed-info .form-horizontal .generic-row .controls {
     margin-left:0px;
+}
+
+#detailed-info .form-horizontal .controls .comment-container{
+ 	border:0px;	
 }
 
 .form-horizontal .generic-row .controls {
     margin-left:0px;
 }
 
-#detailed-info .form-horizontal .generic-row .gwt-InlineLabel {
-    padding: 1px 8px 1px 4px;
+.generic-row .td{
+	padding:0px;
+	padding-left:1px;
 }
-
 
 .tr .generic-header{
 	text-align:center;
