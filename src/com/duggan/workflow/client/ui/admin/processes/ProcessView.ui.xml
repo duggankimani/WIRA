@@ -7,7 +7,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-				<div class="content-body">
+				<div class="content-body overflow-y">
 					<div class="row-fluid">
 						<div class="action-buttons">
 							<g:Anchor ui:field="aNewProcess" styleName="btn btn-primary"

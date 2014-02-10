@@ -18,7 +18,7 @@
 						<g:HTMLPanel styleName="td">
 						    <span ui:field="spnDocTypes"></span>
 						</g:HTMLPanel>
-						<g:HTMLPanel styleName="td hide">
+						<g:HTMLPanel styleName="td">
 						    <span ui:field="spnFileName" class="ellipsis" style="width:61%"></span>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">

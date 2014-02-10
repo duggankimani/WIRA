@@ -49,6 +49,7 @@ public class ProcessItemView extends ViewImpl implements
 	@Inject
 	public ProcessItemView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		
 		aImageName.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -58,6 +59,8 @@ public class ProcessItemView extends ViewImpl implements
 				}
 			}
 		});
+		
+		aImageName.setWidth("71%");
 	}
 
 	@Override

@@ -3,12 +3,12 @@
 }
 
 .overflow-y{
-	overflow-y:scroll;
+	overflow-y:auto;
 	overflow-x:hidden;
 }
 
 .overflow-x{
-	overflow-x:scroll;
+	overflow-x:auto;
 	overflow-y:hidden;
 }
 
