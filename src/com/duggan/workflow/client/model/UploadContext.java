@@ -20,7 +20,8 @@ public class UploadContext {
 	public enum UPLOADACTION{
 		ATTACHDOCUMENT,
 		UPLOADBPMNPROCESS,
-		UPLOADCHANGESET
+		UPLOADCHANGESET,
+		EXPORTFORM
 	}
 	
 	public UploadContext(){
@@ -45,12 +46,14 @@ public class UploadContext {
 		return url.trim();
 	}
 	
-	public void setContext(String key, String value){
+	public UploadContext setContext(String key, String value){
 		context.put(key, value);
+		return this;
 	}
 	
-	public void setAction(UPLOADACTION action){
+	public UploadContext setAction(UPLOADACTION action){
 		context.put(ACTION, action.name());
+		return this;
 	}
 	
 	public UPLOADACTION getAction(){

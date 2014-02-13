@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -68,6 +69,8 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField Anchor aButtontab;
 	@UiField Anchor aLayouttab;
 	@UiField Anchor aMinimize;
+	@UiField Anchor aExportForm;
+	@UiField Anchor aImportForm;
 	@UiField LIElement liSelect;
 	@UiField LIElement liInput;
 	@UiField LIElement liButton;
@@ -231,7 +234,7 @@ public class FormBuilderView extends ViewImpl implements
 		
 		aDeleteForm.setVisible(false);
 		aCloneForm.setVisible(false);		
-		
+		aExportForm.setVisible(false);
 	
 	}
 
@@ -383,6 +386,14 @@ public class FormBuilderView extends ViewImpl implements
 		return aDeleteForm;
 	}
 
+	public Anchor getExportButton(){
+		return aExportForm;
+	}
+	
+	public Anchor getImportButton(){
+		return aImportForm;
+	}
+	
 	@Override
 	public void setForm(Form form) {
 		this.form = form;
@@ -397,6 +408,7 @@ public class FormBuilderView extends ViewImpl implements
 		}else{
 			aDeleteForm.setVisible(true);
 			aCloneForm.setVisible(true);
+			aExportForm.setVisible(true);
 		}
 		
 		if(form==null){
@@ -566,5 +578,14 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public Value getFieldValue() {
 		return null;
+	}
+
+	@Override
+	public String getFormName() {
+		
+		if(form!=null)
+			return form.getCaption();
+		
+		return "Untitled";
 	}
 }

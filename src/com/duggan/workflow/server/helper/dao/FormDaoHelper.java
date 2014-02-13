@@ -1,10 +1,16 @@
 package com.duggan.workflow.server.helper.dao;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 
@@ -621,5 +627,58 @@ public class FormDaoHelper {
 			
 			dao.save(pair);
 		}
+	}
+	
+	/**
+	 * Converts Form into an XML representation
+	 * 
+	 * @param formId
+	 * @return
+	 */
+	public static String exportForm(Long formId){
+		FormDaoImpl dao = DB.getFormDao();
+		ADForm form = dao.getForm(formId);
+		
+		return exportForm(form);
+	}
+	
+	public static String exportForm(ADForm form){
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		String out = null;
+		try{
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			StringWriter writer = new StringWriter();
+			marshaller.marshal(form, writer);
+
+			out = writer.toString();
+			writer.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return out;
+	}
+	
+	
+	public static void importForm(String xml){
+		FormDaoImpl dao = DB.getFormDao();
+		ADForm form = null;
+		
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		
+		try{
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			
+			Object obj = unmarshaller.unmarshal(new StringReader(xml));
+			
+			form = (ADForm)obj;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		assert form!=null;
 	}
 }

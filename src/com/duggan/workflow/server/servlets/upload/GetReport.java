@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.dao.FormDaoHelper;
 import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -90,7 +92,36 @@ public class GetReport extends HttpServlet {
 		if (action.equals("GETATTACHMENT")) {
 			processAttachmentRequest(req, resp);
 		}
+		
+		if(action.equals("EXPORTFORM")){
+			processExportFormRequest(req , resp);
+		}
 
+	}
+
+	private void processExportFormRequest(HttpServletRequest req,
+			HttpServletResponse resp) {
+		String param1 = req.getParameter("formId");
+		assert param1!=null;
+		
+		Long formId  = Long.parseLong(param1);
+		ADForm form = DB.getFormDao().getForm(formId);
+		
+		String name = form.getCaption();
+		if(name==null){
+			name=form.getName();
+		}
+		
+		if(name==null){
+			name="Untitled"+formId;
+		}
+		
+		name=name+".xml";
+		
+		String xml = FormDaoHelper.exportForm(form);
+		
+		processAttachmentRequest(resp,xml.getBytes() , name);
+		
 	}
 
 	private void processAttachmentRequest(HttpServletRequest req,
@@ -109,28 +140,32 @@ public class GetReport extends HttpServlet {
 	private void processAttachmentRequest(HttpServletResponse resp, LocalAttachment attachment) {
 
 		resp.setContentType(attachment.getContentType());
-		if(attachment.getName().endsWith("png")){
+		processAttachmentRequest(resp, attachment.getAttachment(), attachment.getName());
+	}
+	
+	private void processAttachmentRequest(HttpServletResponse resp, byte[] data, String name ){
+		if(name.endsWith("png")){
 			//displayed automatically
 			resp.setHeader("Content-disposition", "inline;filename=\""
-					+ attachment.getName());
+					+ name);
 		}else{
 			resp.setHeader("Content-disposition", "attachment;filename=\""
-					+ attachment.getName());
+					+ name);
 		}
 			
 		
-		resp.setContentLength(new Long(attachment.getSize()).intValue());
+		resp.setContentLength(data.length);
 		
-		writeOut(resp, attachment);
+		writeOut(resp, data);
 
 	}
 
 	private void writeOut(HttpServletResponse resp,
-			LocalAttachment attachment) {
+			byte[] data) {
 		ServletOutputStream out = null;
 		try{
 			out = resp.getOutputStream();
-			out.write(attachment.getAttachment());
+			out.write(data);
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

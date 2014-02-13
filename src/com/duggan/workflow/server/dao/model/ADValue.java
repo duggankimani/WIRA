@@ -2,7 +2,6 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,9 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
-import com.duggan.workflow.shared.model.DataType;
-
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADValue extends PO{
 
@@ -23,6 +26,7 @@ public class ADValue extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -40,18 +44,22 @@ public class ADValue extends PO{
 	
 	private String fieldName;
 	
+	@XmlTransient
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fieldid",referencedColumnName="id")
 	private ADField field;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="propertyid", referencedColumnName="id")
 	private ADProperty property;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="documentid", referencedColumnName="id")
 	private DocumentModel document;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="detailid", referencedColumnName="id")
 	private DetailModel detail;

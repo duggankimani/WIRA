@@ -17,12 +17,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DataType;
 
+
+@XmlRootElement(name="property")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADProperty extends PO{
 
@@ -31,6 +39,7 @@ public class ADProperty extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -45,10 +54,12 @@ public class ADProperty extends PO{
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fieldid",referencedColumnName="id", nullable=true)
 	private ADField field;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="formid", referencedColumnName="id", nullable=true)
 	private ADForm form;
