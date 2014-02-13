@@ -125,13 +125,12 @@ public class ADField extends PO implements HasProperties{
 		
 		ADField field = (ADField)obj;
 		
-		if(id==null ^ field.getId()==null){
-			return false;
-		}
-		
-		if(id!=null){
-			if(id.equals(field.getId())){
-				return true;
+		if(!(id==null ^ field.getId()==null)){
+				
+			if(id!=null){
+				if(id.equals(field.getId())){
+					return true;
+				}
 			}
 		}
 		
@@ -140,8 +139,8 @@ public class ADField extends PO implements HasProperties{
 		}
 		
 		if(name!=null){
-			if(!name.equals(field.name)){
-				return false;
+			if(name.equals(field.name)){
+				return true;
 			}
 		}
 		

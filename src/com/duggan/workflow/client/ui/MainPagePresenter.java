@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui;
 
-import java.util.List;
 
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
@@ -96,6 +95,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 	protected void onReset() {
 		super.onReset();
 		setInSlot(HEADER_content, headerPresenter);	
+		//System.err.println("Main Page - Reset called......");
 	}
 	
 	@Override
@@ -152,5 +152,11 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 	@Override
 	public void onShowIframe(ShowIframeEvent event) {
 		addToPopupSlot(presenter, true);
+	}
+	
+	@Override
+	protected void onUnbind() {
+		super.onUnbind();
+		headerPresenter.unbind();
 	}
 }

@@ -11,6 +11,8 @@ import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent.LoadAlertsHandler;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
@@ -42,7 +44,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class HeaderPresenter extends PresenterWidget<HeaderPresenter.IHeaderView> 
-implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
+implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAlertsHandler{
 
 	public interface IHeaderView extends View {
 		HasClickHandlers getLogout();
@@ -73,6 +75,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 	@Inject
 	public HeaderPresenter(final EventBus eventBus, final IHeaderView view) {
 		super(eventBus, view);
+		alertTimer.scheduleRepeating(alertReloadInterval);
 	}
 
 	
@@ -91,7 +94,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 		this.addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		this.addRegisteredHandler(AdminPageLoadEvent.TYPE, this);
 		this.addRegisteredHandler(ContextLoadedEvent.TYPE, this);
-		
+		this.addRegisteredHandler(LoadAlertsEvent.TYPE, this);
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -121,12 +124,18 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 		
 	}
 
+	/**
+	 * Called too many times - reloading context/ alert counts from here
+	 * slows the application down.
+	 * 
+	 * TODO: Find Out why
+	 */
 	@Override
 	protected void onReset() {		
 		super.onReset();
-		setInSlot(NOTIFICATIONS_SLOT, notifications);	
-		loadAlertCount();
-		AppContext.reloadContext();
+		setInSlot(NOTIFICATIONS_SLOT, notifications);
+//		loadAlertCount();
+//		AppContext.reloadContext();
 	}
 	
 	protected void loadAlertCount() {
@@ -182,6 +191,11 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler{
 		HTUser currentUser = event.getCurrentUser();
 		getView().showAdminLink(currentUser.isAdmin());
 		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString());
+	}
+
+	@Override
+	public void onLoadAlerts(LoadAlertsEvent event) {
+		loadAlertCount();
 	}
 	
 	
