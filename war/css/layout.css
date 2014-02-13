@@ -1297,10 +1297,8 @@ ul.icons-list.text-xl {
 	list-style-type: none;
 	margin-top: 5px;
 	margin-bottom: 10px;
-	margin-right: 0px;
 	margin: 0px 10px;
 	padding-left: 1px;
-	border-bottom: 1px solid #dae1e8;
 	box-shadow: 0 2px 1px -1px #FFFFFF;
 	padding-bottom:0px;
 }
@@ -1322,7 +1320,8 @@ ul.icons-list.text-xl {
 	text-decoration: none;
 	display: block;
 	margin-bottom: 0;
-	padding-left: 30px;
+	padding-left: 20px;
+	padding-right: 15px;
 }
 
 #dashboard-menu .submenu li{
@@ -1373,7 +1372,6 @@ ul.icons-list.text-xl {
 }
 
 #navigation-menu>li.active a {
-    /* color:#6b7983; */
     height: 24px;
     font-weight:bold;
     
