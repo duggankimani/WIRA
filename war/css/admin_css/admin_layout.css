@@ -4,10 +4,12 @@
 
 .overflow-y{
 	overflow-y:auto;
+	overflow-x:hidden;
 }
 
 .overflow-x{
 	overflow-x:auto;
+	overflow-y:hidden;
 }
 
 #side-left {
@@ -298,7 +300,7 @@
 	padding: 10px 20px 40px 20px;
 	font-size: .9em;
 	background: #FFFFFF;
-	min-height: 505px;
+	height: 505px;
 }
 
 .content-body .action-buttons {
@@ -306,7 +308,7 @@
 }
 /*--content-body||Process--*/
 .content-body .table-process .td{
-	max-width:184px;
+	max-width:160px;
 }
 
 /*--content-body||Users and Groups--*/
@@ -568,6 +570,7 @@ overflow-y:auto;
 	display: table;
 	background-color: transparent;
 	margin-bottom: 0px;
+	/* table-layout: auto; */
 }
 
 #usercontent .row-fluid:last-child {
@@ -590,6 +593,7 @@ overflow-y:auto;
 
 .tbody {
 	display: table-row-group;
+	height: 400px;
 }
 
 .th {
@@ -1034,5 +1038,3 @@ overflow-y:auto;
 .panel .panel-body.slideDown {
 	display: block;
 }
-
-.

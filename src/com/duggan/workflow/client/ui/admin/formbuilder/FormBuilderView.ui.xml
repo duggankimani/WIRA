@@ -46,7 +46,7 @@
 			</div>
 			
 			<div class="row-fluid">
-			<g:HTMLPanel styleName="palete-panel panel panel-default span2" ui:field="divPalettePanel">
+			<g:HTMLPanel styleName="palete-panel panel panel-default span2 overflow-y" ui:field="divPalettePanel">
 				<div class="panel-heading">
 						<div class="span10">
 						<h4 ui:field="hPaletetitle">Form Components</h4>
