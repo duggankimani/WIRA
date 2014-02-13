@@ -201,4 +201,16 @@ public class ADProperty extends PO{
 		
 		return super.toString();
 	}
+	
+	public static void main(String[] args) {
+		ADProperty property= new ADProperty();
+		property.setId(1L);
+		property.setName("");
+		
+		ADProperty prop2= new ADProperty();
+		//prop2.setId(1L);
+		prop2.setName("Name");
+		
+		System.err.println(prop2.equals(property));
+	}
 }

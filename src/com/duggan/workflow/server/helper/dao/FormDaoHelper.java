@@ -352,6 +352,7 @@ public class FormDaoHelper {
 		}
 		
 		//copy
+		adfield.getProperties().size();//force load?
 		getADProperties(field.getProperties(), adfield);
 		
 		adfield.setType(field.getType());
@@ -446,7 +447,6 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADProperty adprop = new ADProperty();
-		adprop.setCaption(property.getCaption());
 		
 		if(property.getId()!=null){
 			adprop = dao.getProperty(property.getId());
@@ -458,6 +458,7 @@ public class FormDaoHelper {
 		if(property.getFormId()!=null)
 			adprop.setForm(dao.getForm(property.getFormId()));
 		
+		adprop.setCaption(property.getCaption());
 		adprop.setId(property.getId());
 		adprop.setName(property.getName());
 		adprop.setType(property.getType());

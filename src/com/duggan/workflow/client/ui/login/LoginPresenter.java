@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.login;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
@@ -149,6 +150,8 @@ public class LoginPresenter extends
 										}
 										
 									}
+									AppContext.reloadContext();
+									fireEvent(new LoadAlertsEvent());
 									
 							}else{
 								getView().clearLoginProgress();

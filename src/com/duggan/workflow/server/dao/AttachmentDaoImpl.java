@@ -69,7 +69,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		Query query = em.createQuery(sql)
 			.setParameter("processDef", model);
 			
-		if(name!=null){
+		if(name!=null && !isImage){
 			query.setParameter("attachmentName", name);
 		}
 			

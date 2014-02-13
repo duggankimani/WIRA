@@ -23,6 +23,7 @@ import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
@@ -334,6 +335,9 @@ public class HomePresenter extends
 	 */
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		
+		fireEvent(new LoadAlertsEvent());
 		clear();		
 		processInstanceId=null;
 		documentId=null;
@@ -414,8 +418,6 @@ public class HomePresenter extends
 						fireEvent(new DocumentSelectionEvent(docId,taskId,docMode));
 					}
 					
-					
-					
 				}else{
 					getView().setHasItems(false);
 				}
@@ -484,6 +486,7 @@ public class HomePresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		//System.err.println("HomePresenter - OnReset :: "+this);
 		setInSlot(FILTER_SLOT, filterPresenter);
 		setInSlot(DOCPOPUP_SLOT, docPopup);
 	}
@@ -514,12 +517,7 @@ public class HomePresenter extends
 			}
 		});
 	}
-
-	@Override
-	protected void onReveal() {
-		super.onReveal();
-	}
-
+	
 	@Override
 	public void onReload(ReloadEvent event) {
 		loadTasks();
