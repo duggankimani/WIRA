@@ -355,7 +355,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		field.setFormId(formId);
 	}
 
-	private void save(Field model) {
+	protected void save(Field model) {
 
 		model.setType(getType());
 		model.setProperties(getProperties());

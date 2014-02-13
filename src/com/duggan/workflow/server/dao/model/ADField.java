@@ -90,10 +90,6 @@ public class ADField extends PO implements HasProperties{
 		return properties;
 	}
 
-	public void setProperties(Collection<ADProperty> properties) {
-		this.properties = properties;
-	}
-
 	public ADValue getValue() {
 		return value;
 	}
@@ -118,25 +114,15 @@ public class ADField extends PO implements HasProperties{
 		property.setField(this);
 	}
 	
+	/**
+	 * Two properties sharing the same name are equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj==null)
 			return false;
 		
 		ADField field = (ADField)obj;
-		
-		if(!(id==null ^ field.getId()==null)){
-				
-			if(id!=null){
-				if(id.equals(field.getId())){
-					return true;
-				}
-			}
-		}
-		
-		if(name==null ^ field.name==null){
-			return false;
-		}
 		
 		if(name!=null){
 			if(name.equals(field.name)){

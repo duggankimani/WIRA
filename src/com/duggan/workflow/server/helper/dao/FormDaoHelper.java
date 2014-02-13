@@ -428,7 +428,11 @@ public class FormDaoHelper {
 
 		if(propertiesFrom!=null){
 			for(Property prop: propertiesFrom){
-				formComponent.addProperty(get(prop));
+				
+				ADProperty property = get(prop);
+				//System.err.println("Save: "+property);
+				
+				formComponent.addProperty(property);
 			}
 		}
 	}
@@ -452,11 +456,13 @@ public class FormDaoHelper {
 			adprop = dao.getProperty(property.getId());
 		}
 		
-		if(property.getFieldId()!=null)
-		adprop.setField(dao.getField(property.getFieldId()));
-		
-		if(property.getFormId()!=null)
+		if(property.getFormId()!=null){
 			adprop.setForm(dao.getForm(property.getFormId()));
+		}
+		
+		if(property.getFieldId()!=null){
+			adprop.setField(dao.getField(property.getFieldId()));
+		}
 		
 		adprop.setCaption(property.getCaption());
 		adprop.setId(property.getId());

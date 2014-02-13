@@ -66,23 +66,8 @@ public class GridDnD extends AbsolutePanel {
 					col.delete();
 				}
 				
-				List<Field> lst = new ArrayList<Field>();
-				columns.clear();
-				int count = hPanel.getWidgetCount();				
-				for(int i=0; i<count; i++){
-					Widget w = ((VerticalPanel)hPanel.getWidget(i)).getWidget(0);
-					
-					if(w instanceof GridColumn){
-						GridColumn col = (GridColumn)w;
-						
-						Field fld = col.getField();
-						fld.setPosition(i);
-						columns.add(fld);		
-						lst.add(fld);
-					}
-				}
-				
-				save(lst);
+				System.err.println("GridDnD Dragged............");
+				save();
 			}
 			
 		};
@@ -112,6 +97,37 @@ public class GridDnD extends AbsolutePanel {
 		createColumns(columns);
 	}
 
+	/**
+	 * Save mechanism
+	 */
+	private void save(){
+		List<Field> lst = getFields();
+		save(lst);
+	}
+	
+	public List<Field> getFields() {
+		
+		List<Field> lst = new ArrayList<Field>();
+		int count = hPanel.getWidgetCount();				
+		for(int i=0; i<count; i++){
+			Widget w = ((VerticalPanel)hPanel.getWidget(i)).getWidget(0);
+			
+			if(w instanceof GridColumn){
+				GridColumn col = (GridColumn)w;
+				
+				Field fld = col.getField();
+				fld.setPosition(i);		
+				lst.add(fld);
+			}
+		}
+		
+		return lst;
+	}
+
+	/**
+	 * {@link GridLayout#showDesignGrid}
+	 * @param lst
+	 */
 	protected void save(List<Field> lst) {
 		
 	}
@@ -202,5 +218,4 @@ public class GridDnD extends AbsolutePanel {
 	public ActionLink getCurrField() {
 		return aCurrField;
 	}
-
 }

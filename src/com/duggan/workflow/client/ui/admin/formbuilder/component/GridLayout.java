@@ -93,7 +93,7 @@ implements EditLineHandler{
 			@Override
 			protected void save(List<Field> fields) {
 				field.setFields(fields);
-				GridLayout.this.save();
+				GridLayout.this.save(field);
 			}
 		};
 		
@@ -248,11 +248,9 @@ implements EditLineHandler{
 		int pos = field.getFields().size();
 		child.setPosition(pos);				
 		child.setCaption("Column "+(pos));
-//		Property prop = new Property(CAPTION, "Label Text", DataType.STRING, id);
-//		prop.setValue(new StringValue(child.getCaption()));
-		
-		field.addField(child);		
-		save();
+
+		field.addField(child); //child has not properties		
+		save(field);
 	}
 
 	@Override
@@ -343,4 +341,18 @@ implements EditLineHandler{
 			}
 		}
 	}
+	
+	/**
+	 * Synchronization of the actual column Field values
+	 * with the list of fields in this Grid's field model.
+	 */
+	@Override
+	public void save() {
+		if(grid!=null){
+			//design mode
+			field.setFields(grid.getFields());
+		}
+		super.save();
+	}
+	
 }
