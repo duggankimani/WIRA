@@ -74,13 +74,17 @@ public class FormDaoImpl extends BaseDaoImpl {
 			if(props!=null)
 				for(ADProperty prop: props){
 					if(prop.getName().equals("NAME")){
-						if(prop.getValue()==null || !prop.getValue().equals(form.getName())){
+						if(prop.getValue()==null || 
+								(prop.getValue().getStringValue()==null || 
+								!prop.getValue().getStringValue().equals(form.getName()))){
 							ADValue value = new ADValue();
 							value.setStringValue(form.getName());
 							prop.setValue(value);
 						}
 					}
-					if(prop.getName().equals("CAPTION") || !prop.getValue().equals(form.getCaption())){
+					if(prop.getName().equals("CAPTION") ||
+							(prop.getValue().getStringValue()==null ||
+							!prop.getValue().equals(form.getCaption()))){
 						if(prop.getValue()==null){
 							ADValue value = new ADValue();
 							value.setStringValue(form.getName());
