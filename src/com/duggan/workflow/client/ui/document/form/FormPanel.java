@@ -19,8 +19,11 @@ import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.LegendElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -43,8 +46,8 @@ public class FormPanel extends Composite {
 	@UiField HTMLPanel panelFields;
 	//@UiField InlineLabel panelLabel;
 	@UiField HTMLPanel panelItem;
-	@UiField DivElement divFormCaption;
-	@UiField DivElement divFormHelp;
+	@UiField LegendElement divFormCaption;
+	@UiField SpanElement divFormHelp;
 	@UiField IssuesPanel issues;
 	
 	FormDelegate formDelegate = new FormDelegate();

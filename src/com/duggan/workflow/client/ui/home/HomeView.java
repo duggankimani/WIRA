@@ -75,7 +75,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		ulTaskGroups.setId("navigation-menu");
 		
 		btnAdd.getElement().setAttribute("data-toggle", "dropdown");
-
+		txtSearch.getElement().setAttribute("placeholder", "Search");
 		
 		divDocListing.setId("middle-nav");
 		divDocView.setId("detailed-info");

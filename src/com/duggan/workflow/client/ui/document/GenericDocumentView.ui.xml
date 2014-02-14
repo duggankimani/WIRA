@@ -1,8 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
-	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
@@ -10,14 +9,19 @@
 
 	<g:HTMLPanel styleName="upper-content">
 		<div class="action-area row-fluid">
-			<div class="generic-doc-title span5">
+			<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel>
+			<div class="generic-doc-title span7">
 				<span ui:field="spnDocType"></span>
 				-&nbsp;
 				<span ui:field="spnSubject"></span>
+
+				<span class="label label-default" ui:field="spnStatusBody">
+				</span>
 			</div>
 			<div class="action-buttons pull-right">
-				<d:ActionLink ui:field="aClaim" styleName="btn btn-default hidden" dataToggle="tooltip" title ="Test"
-							dataOriginalTitle="Reserve this task. Other users with the same role cannot work on this task if claimed">
+				<d:ActionLink ui:field="aClaim" styleName="btn btn-default hidden"
+					dataToggle="tooltip" title="Test"
+					dataOriginalTitle="Reserve this task. Other users with the same role cannot work on this task if claimed">
 					<i class="icon-arrow-down"></i>
 					Claim
 				</d:ActionLink>
@@ -64,6 +68,10 @@
 					<i class="icon-share-alt"></i>
 					Forward for Approval
 				</d:ActionLink>
+				<d:ActionLink ui:field="aSave" styleName="btn btn-success">
+					<i class="icon-save"></i>
+					Save
+				</d:ActionLink>
 
 				<d:ActionLink ui:field="aApprove" styleName="btn btn-success"
 					title="Approve document">
@@ -81,32 +89,29 @@
 					<i class="icon-play"></i>
 					Simulate
 				</d:ActionLink>
-				
-				<d:ActionLink ui:field="aAttach" styleName="btn btn-default" 
-				    title="Attach word, pdf, scanned documents etc">
-					<i class="icon-upload-alt"></i>
-					Attach
-				</d:ActionLink>
 
-				<div class="btn-group">
+				<div class="btn-group" ui:field="btnGroup">
 					<button type="button" class="btn btn-default dropdown-toggle"
 						data-toggle="dropdown">
-						<i class="icon-cog"></i>
+						<!-- <i class="icon-cog"></i> -->
+						More
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
 						<li>
-							<d:ActionLink ui:field="aEdit">
-								<i class="icon-edit"></i>
-								Edit
+							<d:ActionLink ui:field="aAttach"
+								title="Attach word, pdf, scanned documents etc">
+								<i class="icon-upload-alt"></i>
+								Attach
 							</d:ActionLink>
 						</li>
 						<li>
-							<d:ActionLink ui:field="aSave">
-								<i class="icon-edit"></i>
-								Save
+							<d:ActionLink ui:field="aEdit">
+								<i class="icon-pencil"></i>
+								Edit
 							</d:ActionLink>
 						</li>
+
 						<li>
 							<d:ActionLink ui:field="aDelete">
 								<i class="icon-trash"></i>
@@ -120,38 +125,34 @@
 
 
 		<div class="personal_info row-fluid span12">
-			<div class="span3">
-				<i class="icon-user icon-large"></i>
-				<span ui:field="eOwner"></span>
+			<div class="span9">
+				<div class="span2 image">
+					<img src="img/blueman.png" data-src="img/blueman.png" width="32px" />
+				</div>
+				<strong>
+					<span ui:field="eOwner"></span>
+				</strong>
 				<br />
 			</div>
 
-			<!-- div class="span3">
-				<i class="icon-user icon-large delegate"></i>
-				<span ui:field="eDelegate"></span>
-				<br />
-			</div-->
-			
-			<div class="span3">
-				<i class="icon-calendar icon-large"></i>
-				<span ui:field="spnCreated"></span>
-			</div>
+			<!-- div class="span3"> <i class="icon-user icon-large delegate"></i> 
+				<span ui:field="eDelegate"></span> <br /> </div -->
 
 			<div class="span3">
-				<span>Priority:</span>
-				<span ui:field="spnPriority" class="label"></span>
+				<!-- <i class="icon-calendar icon-large"></i> -->
+				<span ui:field="spnCreated" styleName="text-right"></span>
 			</div>
 
-			<div class="span3">
-				<span>Current Status:</span>
-				<span class="label label-info" ui:field="spnStatusBody">
-					<i class="icon-edit"></i>
-					<span ui:field="spnStatus"></span>
-				</span>
-			</div>
+			<!-- <div class="span3"> <span>Priority:</span> <span ui:field="spnPriority" 
+				class="label"></span> </div> -->
+
+			<!-- <div class="span3"> <span>Current Status:</span> <span class="label 
+				label-info" ui:field="spnStatusBody"> <i class="icon-edit"></i> <span ui:field="spnStatus"></span> 
+				</span> </div> -->
+
 		</div>
 
-		<div class="row-fluid content-area span9">
+		<div class="row-fluid content-area span12">
 			<div class="row-fluid item" ui:field="divDate">
 				<strong>Document Date:</strong>
 				<span ui:field="spnDate" class="subject"></span>
@@ -168,51 +169,56 @@
 				<strong>Description:</strong>
 				<span ui:field="spnDescription"></span>
 			</div>
-	
+
 			<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
-			    
+
 			</g:HTMLPanel>
-			
+
 			<div class="title attachment hidden" ui:field="divAttachment">
-				<h4><span ui:field="spnAttachmentNo"></span></h4> 
+				<h4>
+					<span ui:field="spnAttachmentNo"></span>
+				</h4>
 				<g:Anchor styleName="hand hidden">- Download All</g:Anchor>
 			</div>
-			
+
 			<g:HTMLPanel ui:field="panelAttachments" styleName="attachment-panel row-fluid">
 			</g:HTMLPanel>
 
 			<div class="uploader hidden">
 				<up:Uploader ui:field="uploader"></up:Uploader>
 			</div>
-			
+
 			<g:HTMLPanel styleName="row-fluid recent-activity">
-			
-			<div class="title">
-				<h4><span ui:field="spnActivityNo"></span></h4>
-			</div>
 
-			<div class="row-fluid comment-box">
-				<d:CommentBox ui:field="commentPanel"></d:CommentBox>
-			</div>
+				<div class="title">
+					<h4>
+						<span ui:field="spnActivityNo"></span>
+					</h4>
+				</div>
 
-			 <g:HTMLPanel ui:field="panelActivity" styleName="panel-activity">
-			 </g:HTMLPanel>
-			 
-		</g:HTMLPanel>
+				<div class="row-fluid comment-box">
+					<d:CommentBox ui:field="commentPanel"></d:CommentBox>
+				</div>
+
+				<g:HTMLPanel ui:field="panelActivity" styleName="panel-activity">
+				</g:HTMLPanel>
+
+			</g:HTMLPanel>
 		</div>
 
-		<g:HTMLPanel styleName="status-section span3 pull-right row-fluid well">
-			 <div class="row-fluid">
-				 <h5>Business Process</h5>
-			 </div>
-			 <g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>
-			
-			  <g:HTMLPanel styleName="">
-				  <d:ActionLink ui:field="aShowProcess"  title="View full process" styleName="hand">
+		<g:HTMLPanel styleName="status-section span3 pull-right row-fluid well hidden">
+			<div class="row-fluid">
+				<h5>Business Process</h5>
+			</div>
+			<g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>
+
+			<g:HTMLPanel styleName="">
+				<d:ActionLink ui:field="aShowProcess" title="View full process"
+					styleName="hand">
 					<strong>View Complete Process</strong>
-			     </d:ActionLink>
-			  </g:HTMLPanel>
-			  
+				</d:ActionLink>
+			</g:HTMLPanel>
+
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.document;
 
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ACTIVITY_SLOT;
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
-import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
 import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.TIMEFORMAT12HR;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.Map;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
@@ -81,11 +82,10 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel statusContainer;
 	@UiField Element eOwner;
 	//@UiField Element eDelegate;
-	@UiField SpanElement spnPriority;
+	@UiField HTMLPanel spnPriority;
 	@UiField SpanElement spnAttachmentNo;
 	@UiField SpanElement spnActivityNo;
 	@UiField DivElement divAttachment;
-	@UiField SpanElement spnStatus;
 	@UiField SpanElement spnStatusBody;
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
@@ -94,6 +94,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aShowProcess;
 	@UiField CommentBox commentPanel;
 	
+	@UiField DivElement btnGroup;
 	@UiField DivElement divDate;
 	@UiField DivElement divDesc;
 	@UiField DivElement divPartner;
@@ -106,12 +107,14 @@ public class GenericDocumentView extends ViewImpl implements
 	String url=null;
 	
 	List<Actions> validActions = null;
+	private String timeDiff;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		UIObject.setVisible(aEdit.getElement(), false);
 		aEdit.getElement().setAttribute("type","button");
+		aEdit.getElement().setAttribute("data-toggle","tooltip");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
 		aApprove.getElement().setAttribute("type", "button");
@@ -124,10 +127,12 @@ public class GenericDocumentView extends ViewImpl implements
 		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
+		//showTooltip();
+		
 		aShowProcess.removeStyleName("gwt-Anchor");
+		
 		aShowProcess.addClickHandler(new ClickHandler() {
-			
-			@Override
+		@Override
 			public void onClick(ClickEvent event) {
 				if(url!=null)
 				Window.open(url, "Business Process", null);
@@ -139,8 +144,11 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				formPanel.setReadOnly(false);
+				UIObject.setVisible(btnGroup, false);
+				UIObject.setVisible(aForward.getElement(), false);
 				UIObject.setVisible(aEdit.getElement(), false);
 				UIObject.setVisible(aSave.getElement(), true);
+				
 			}
 		});
 		
@@ -148,6 +156,9 @@ public class GenericDocumentView extends ViewImpl implements
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				UIObject.setVisible(btnGroup, true);
+				
+				UIObject.setVisible(aForward.getElement(),true);
 				UIObject.setVisible(aEdit.getElement(), true);
 				UIObject.setVisible(aSave.getElement(), false);
 			}
@@ -216,7 +227,9 @@ public class GenericDocumentView extends ViewImpl implements
 			
 		}
 		if (created != null)
-			spnCreated.setInnerText(CREATEDFORMAT.format(created));
+			timeDiff =  DateUtils.getTimeDifferenceAsString(created);
+			if(timeDiff != null)
+			spnCreated.setInnerText(TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
 
 		if(!(taskDisplayName==null || taskDisplayName.equals(""))){
 			spnDocType.setInnerText(taskDisplayName);
@@ -252,7 +265,7 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 		
 		if(status!=null){
-			spnStatus.setInnerText(status.name());
+			spnStatusBody.setInnerText(status.name());
 			if(status==DocStatus.APPROVED){
 				spnStatusBody.setClassName("label label-success");
 			}
@@ -268,17 +281,17 @@ public class GenericDocumentView extends ViewImpl implements
 			
 			switch (prty) {
 			case CRITICAL:
-				spnPriority.addClassName("label-important");
-				spnPriority.setInnerText("Urgent");
+				spnPriority.addStyleName("label-important");
+				//spnPriority.setInnerText("Urgent");
 				break;
 
 			case HIGH:
-				spnPriority.addClassName("label-warning"); //
-				spnPriority.setInnerText("Important");
+				spnPriority.addStyleName("label-warning"); //
+				//spnPriority.setInnerText("Important");
 				break;
 
 			default:
-				spnPriority.addClassName("hide");
+				spnPriority.addStyleName("hide");
 				break;
 			}
 		}
@@ -358,7 +371,7 @@ public class GenericDocumentView extends ViewImpl implements
 	public HasClickHandlers getSaveButton(){
 		return aSave;
 	}
-
+	
 	public HasClickHandlers getDeleteButton(){
 		return aDelete;
 	}
@@ -540,5 +553,9 @@ public class GenericDocumentView extends ViewImpl implements
 		delegate.getUserId();
 		//eDelegate.setInnerText(delegate.getDelegateTo());
 	}
+	
+	/*public native void showTooltip()--{
+		$('.btn').tooltip(options)
+	}--;*/
 	
 }
