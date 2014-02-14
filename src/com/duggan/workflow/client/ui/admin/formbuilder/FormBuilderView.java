@@ -68,6 +68,8 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField Anchor aButtontab;
 	@UiField Anchor aLayouttab;
 	@UiField Anchor aMinimize;
+	@UiField Anchor aExportForm;
+	@UiField Anchor aImportForm;
 	@UiField LIElement liSelect;
 	@UiField LIElement liInput;
 	@UiField LIElement liButton;
@@ -231,7 +233,7 @@ public class FormBuilderView extends ViewImpl implements
 		
 		aDeleteForm.setVisible(false);
 		aCloneForm.setVisible(false);		
-		
+		aExportForm.setVisible(false);
 	
 	}
 
@@ -383,6 +385,14 @@ public class FormBuilderView extends ViewImpl implements
 		return aDeleteForm;
 	}
 
+	public Anchor getExportButton(){
+		return aExportForm;
+	}
+	
+	public Anchor getImportButton(){
+		return aImportForm;
+	}
+	
 	@Override
 	public void setForm(Form form) {
 		this.form = form;
@@ -394,9 +404,11 @@ public class FormBuilderView extends ViewImpl implements
 		if(form==null || form.getId()==null){
 			aDeleteForm.setVisible(false);
 			aCloneForm.setVisible(false);
+			aExportForm.setVisible(false);
 		}else{
 			aDeleteForm.setVisible(true);
 			aCloneForm.setVisible(true);
+			aExportForm.setVisible(true);
 		}
 		
 		if(form==null){
@@ -566,5 +578,14 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public Value getFieldValue() {
 		return null;
+	}
+
+	@Override
+	public String getFormName() {
+		
+		if(form!=null)
+			return form.getCaption();
+		
+		return "Untitled";
 	}
 }

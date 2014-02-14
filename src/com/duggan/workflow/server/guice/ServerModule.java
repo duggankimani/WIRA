@@ -84,6 +84,8 @@ import com.duggan.workflow.server.actionhandlers.DeleteAttachmentRequestHandler;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
+import com.duggan.workflow.shared.requests.ExportFormRequest;
+import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -217,5 +219,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(DeleteDocumentRequest.class,
 				DeleteDocumentRequestHandler.class,
 				SessionValidator.class);
+
+		bindHandler(ExportFormRequest.class,
+				ExportFormRequestHandler.class, SessionValidator.class);
 	}
 }

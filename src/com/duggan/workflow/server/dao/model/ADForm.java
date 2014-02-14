@@ -10,7 +10,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.annotations.Cascade;
+
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADForm extends PO implements HasProperties{
 
@@ -19,6 +32,7 @@ public class ADForm extends PO implements HasProperties{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -29,9 +43,13 @@ public class ADForm extends PO implements HasProperties{
 	@Column(length=255)
 	private String caption;
 	
+	@XmlElementWrapper(name="properties")
+	@XmlElement(name="property")
 	@OneToMany(mappedBy="form", cascade=CascadeType.ALL)
 	private Collection<ADProperty> properties = new HashSet<>();
 	
+	@XmlElementWrapper(name="fields")
+	@XmlElement(name="field")
 	@OneToMany(mappedBy="form", cascade=CascadeType.ALL)
 	private Collection<ADField> fields = new HashSet<>();
 	

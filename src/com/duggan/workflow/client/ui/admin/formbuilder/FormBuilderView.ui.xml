@@ -22,10 +22,26 @@
 			   </div>
 			   
 				<div class="span2">
+					<g:Anchor ui:field="aImportForm" styleName="btn btn-primary"
+						title="Clone Form">
+						<i class=""></i>
+						Import Form
+					</g:Anchor>
+			   </div>
+			   
+				<div class="span2">
 					<g:Anchor ui:field="aCloneForm" styleName="btn btn-primary"
 						title="Clone Form">
 						<i class="icon-plus"></i>
 						Clone Form
+					</g:Anchor>
+			   </div>
+			   
+				<div class="span2">
+					<g:Anchor ui:field="aExportForm" styleName="btn btn-primary"
+						title="Clone Form">
+						<i class="icon-upload-alt"></i>
+						Export Form
 					</g:Anchor>
 			   </div>
 			   

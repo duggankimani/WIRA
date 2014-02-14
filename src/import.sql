@@ -57,10 +57,11 @@ update addoctype set subjectformat='LPO/{No}/{YY}' where id=(select id from addo
 update addoctype set subjectformat='Leave/{No}/{MM}/{YY}' where id=(select id from addoctype where name='LEAVEAPP');
 update addoctype set subjectformat='RFQ/{No}/{YY}' where id=(select id from addoctype where name='RFQ');
 
- create index idx_propertyid on advalue(propertyid);
- create index idx_documentid on advalue(documentid);
+/*A fix for ADProperties Bug - Multiple Repeated properties for a single Field specifically grid columns - Repeated as the grid is moved around*/
+delete from advalue where propertyid is not null and propertyid in(select id from adproperty where fieldid is not null and id not in (select max(id) from adproperty where fieldid is not null group by fieldid,name order by fieldid));
+delete from adproperty where fieldid is not null and id in(select id from adproperty where fieldid is not null and id not in (select max(id) from adproperty where fieldid is not null group by fieldid,name order by fieldid));
+
+create index idx_propertyid on advalue(propertyid);
+create index idx_documentid on advalue(documentid);
  
 
-/*A fix for ADProperties Bug - Multiple Repeated properties for a single Field specifically grid columns - Repeated as the grid is moved around*/
-delete from advalue where propertyid is not null and propertyid not in(select max(id) from adproperty where fieldid is not null group by fieldid,name order by fieldid);
-delete from adproperty where fieldid is not null and id not in(select max(id) from adproperty where fieldid is not null group by fieldid,name order by fieldid);

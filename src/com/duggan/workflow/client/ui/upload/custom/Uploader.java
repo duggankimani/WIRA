@@ -54,6 +54,11 @@ public class Uploader extends Composite {
 		uploader.addOnStartUploadHandler(uploadStarted);
 	}
 	
+	public Uploader(UploadContext ctx){
+		this();
+		setContext(ctx);
+	}
+	
 	public void setContext(UploadContext context){
 		this.context = context;
 		

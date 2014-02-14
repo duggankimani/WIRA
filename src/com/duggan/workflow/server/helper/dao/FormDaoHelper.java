@@ -1,10 +1,16 @@
 package com.duggan.workflow.server.helper.dao;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 
@@ -428,7 +434,11 @@ public class FormDaoHelper {
 
 		if(propertiesFrom!=null){
 			for(Property prop: propertiesFrom){
-				formComponent.addProperty(get(prop));
+				
+				ADProperty property = get(prop);
+				//System.err.println("Save: "+property);
+				
+				formComponent.addProperty(property);
 			}
 		}
 	}
@@ -452,11 +462,13 @@ public class FormDaoHelper {
 			adprop = dao.getProperty(property.getId());
 		}
 		
-		if(property.getFieldId()!=null)
-		adprop.setField(dao.getField(property.getFieldId()));
-		
-		if(property.getFormId()!=null)
+		if(property.getFormId()!=null){
 			adprop.setForm(dao.getForm(property.getFormId()));
+		}
+		
+		if(property.getFieldId()!=null){
+			adprop.setField(dao.getField(property.getFieldId()));
+		}
 		
 		adprop.setCaption(property.getCaption());
 		adprop.setId(property.getId());
@@ -615,5 +627,107 @@ public class FormDaoHelper {
 			
 			dao.save(pair);
 		}
+	}
+	
+	/**
+	 * Converts Form into an XML representation
+	 * 
+	 * @param formId
+	 * @return
+	 */
+	public static String exportForm(Long formId){
+		FormDaoImpl dao = DB.getFormDao();
+		ADForm form = dao.getForm(formId);
+		
+		return exportForm(form);
+	}
+	
+	public static String exportForm(ADForm form){
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		String out = null;
+		try{
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			StringWriter writer = new StringWriter();
+			marshaller.marshal(form, writer);
+
+			out = writer.toString();
+			writer.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return out;
+	}
+	
+	
+	public static Long importForm(String xml){
+		FormDaoImpl dao = DB.getFormDao();
+		ADForm form = transform(xml);
+
+		assert form!=null;
+		
+		String name = form.getName();
+		if(dao.exists(form.getName())){
+			form.setName(name+"00000");
+		}
+		
+		Collection<ADProperty> properties = form.getProperties();
+		for(ADProperty prop: properties){
+			prop.setForm(form);
+			
+			if(prop.getValue()!=null){
+				prop.getValue().setProperty(prop);
+			}
+		}
+		
+		for(ADField field: form.getFields()){
+			field.setForm(form);
+			
+			if(field.getProperties()!=null)
+			for(ADProperty prop: field.getProperties()){
+				prop.setField(field);
+				if(prop.getValue()!=null){
+					prop.getValue().setProperty(prop);
+				}
+			}
+			
+			if(field.getFields()!=null)
+			for(ADField child: field.getFields()){
+				child.setParentField(field);
+			}
+			
+			if(field.getValue()!=null){
+				field.getValue().setField(field);
+			}
+		}
+		
+		dao.save(form);
+		name = name+form.getId();
+		form.setName(name);
+		form.setCaption(form.getCaption()+" "+form.getId());
+		
+		return form.getId();
+	}
+	
+	public static ADForm transform(String xml){
+
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		
+		ADForm form=null;
+		
+		try{
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			
+			Object obj = unmarshaller.unmarshal(new StringReader(xml));
+			
+			form = (ADForm)obj;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return form;
 	}
 }
