@@ -157,13 +157,18 @@ public class FormBuilderPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				FormImportView view = new FormImportView();
+				final FormImportView view = new FormImportView();
+				view.setAvoidRepeatFiles(false);
 				AppManager.showPopUp("Import Form", view, 
 						new OnOptionSelected() {
 							
 							@Override
 							public void onSelect(String name) {
-								
+								if(name.equals("Save")){
+									loadForms();
+								}else{
+									view.cancelImport();
+								}
 							}
 						}, "Save", "Cancel");
 			}

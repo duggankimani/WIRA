@@ -74,6 +74,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 			if(props!=null)
 				for(ADProperty prop: props){
 					if(prop.getName().equals("NAME")){
+						
 						if(prop.getValue()==null || 
 								(prop.getValue().getStringValue()==null || 
 								!prop.getValue().getStringValue().equals(form.getName()))){
@@ -82,12 +83,19 @@ public class FormDaoImpl extends BaseDaoImpl {
 							prop.setValue(value);
 						}
 					}
-					if(prop.getName().equals("CAPTION") ||
-							(prop.getValue().getStringValue()==null ||
-							!prop.getValue().equals(form.getCaption()))){
-						if(prop.getValue()==null){
+					
+					if(prop.getName().equals("CAPTION")){
+						
+						if(prop.getValue()==null || (prop.getValue().getStringValue()==null ||
+								!prop.getValue().getStringValue().equals(form.getCaption()))){
+							
 							ADValue value = new ADValue();
-							value.setStringValue(form.getName());
+							if(form.getCaption()!=null){
+								value.setStringValue(form.getCaption());
+							}else{
+								value.setStringValue(form.getName());
+							}
+							
 							prop.setValue(value);
 						}
 					}

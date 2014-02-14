@@ -669,8 +669,12 @@ public class FormDaoHelper {
 		assert form!=null;
 		
 		String name = form.getName();
+		String caption = form.getCaption();
+		boolean exists = false;
 		if(dao.exists(form.getName())){
+			exists = true;
 			form.setName(name+"00000");
+			form.setCaption(caption+"0000");
 		}
 		
 		Collection<ADProperty> properties = form.getProperties();
@@ -704,9 +708,13 @@ public class FormDaoHelper {
 		}
 		
 		dao.save(form);
-		name = name+form.getId();
-		form.setName(name);
-		form.setCaption(form.getCaption()+" "+form.getId());
+		
+		if(exists){
+			//update
+			form.setName(name+"-"+form.getId());
+			form.setCaption(caption+"-"+form.getId());
+			dao.save(form);
+		}
 		
 		return form.getId();
 	}
