@@ -1,9 +1,16 @@
 package com.duggan.workflow.test.formbuilder;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.model.ADField;
+import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.dao.FormDaoHelper;
@@ -32,6 +40,25 @@ public class TestFormBuilderHelper {
 	}
 	
 	@Test
+	public void importInvoice() throws Exception{
+		String path = "/home/duggan/Projects/JBPMHT/APInvoiceForm.xml";
+		String str= FileUtils.readFileToString(new File(path));		
+		
+		ADForm form = FormDaoHelper.transform(str);
+		assert form.getProperties()!=null && form.getProperties().size()>0;
+		assert form.getFields()!=null && form.getFields().size()>0;
+		
+		Long id = FormDaoHelper.importForm(str);
+		System.err.println("id = "+id);
+	}
+	
+	
+	@Ignore
+	public void exists(){
+		System.out.println(DB.getFormDao().exists("invoice-approval"));
+	}
+	
+	@Ignore
 	public void createDetailField(){
 		Field field = FormDaoHelper.getField(261L);
 		

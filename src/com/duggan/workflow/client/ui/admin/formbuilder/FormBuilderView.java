@@ -37,7 +37,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -405,6 +404,7 @@ public class FormBuilderView extends ViewImpl implements
 		if(form==null || form.getId()==null){
 			aDeleteForm.setVisible(false);
 			aCloneForm.setVisible(false);
+			aExportForm.setVisible(false);
 		}else{
 			aDeleteForm.setVisible(true);
 			aCloneForm.setVisible(true);

@@ -21,7 +21,7 @@ public class UploadContext {
 		ATTACHDOCUMENT,
 		UPLOADBPMNPROCESS,
 		UPLOADCHANGESET,
-		EXPORTFORM
+		IMPORTFORM
 	}
 	
 	public UploadContext(){

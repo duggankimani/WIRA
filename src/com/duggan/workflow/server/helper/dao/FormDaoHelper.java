@@ -662,11 +662,60 @@ public class FormDaoHelper {
 	}
 	
 	
-	public static void importForm(String xml){
+	public static Long importForm(String xml){
 		FormDaoImpl dao = DB.getFormDao();
-		ADForm form = null;
+		ADForm form = transform(xml);
+
+		assert form!=null;
 		
+		String name = form.getName();
+		if(dao.exists(form.getName())){
+			form.setName(name+"00000");
+		}
+		
+		Collection<ADProperty> properties = form.getProperties();
+		for(ADProperty prop: properties){
+			prop.setForm(form);
+			
+			if(prop.getValue()!=null){
+				prop.getValue().setProperty(prop);
+			}
+		}
+		
+		for(ADField field: form.getFields()){
+			field.setForm(form);
+			
+			if(field.getProperties()!=null)
+			for(ADProperty prop: field.getProperties()){
+				prop.setField(field);
+				if(prop.getValue()!=null){
+					prop.getValue().setProperty(prop);
+				}
+			}
+			
+			if(field.getFields()!=null)
+			for(ADField child: field.getFields()){
+				child.setParentField(field);
+			}
+			
+			if(field.getValue()!=null){
+				field.getValue().setField(field);
+			}
+		}
+		
+		dao.save(form);
+		name = name+form.getId();
+		form.setName(name);
+		form.setCaption(form.getCaption()+" "+form.getId());
+		
+		return form.getId();
+	}
+	
+	public static ADForm transform(String xml){
+
 		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		
+		ADForm form=null;
 		
 		try{
 			Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -679,6 +728,6 @@ public class FormDaoHelper {
 			e.printStackTrace();
 		}
 		
-		assert form!=null;
+		return form;
 	}
 }

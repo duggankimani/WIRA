@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.annotations.Cascade;
+
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -45,7 +47,6 @@ public class ADForm extends PO implements HasProperties{
 	@XmlElement(name="property")
 	@OneToMany(mappedBy="form", cascade=CascadeType.ALL)
 	private Collection<ADProperty> properties = new HashSet<>();
-	
 	
 	@XmlElementWrapper(name="fields")
 	@XmlElement(name="field")

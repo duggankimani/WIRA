@@ -108,6 +108,9 @@ public class UploadServlet extends UploadAction {
 		case UPLOADBPMNPROCESS:
 			executor = new ProcessChangesetsExecutor();
 			break;
+		case IMPORTFORM:
+			executor = new ImportFileExecutor();
+			break;
 		}
 		
 		if(executor==null){

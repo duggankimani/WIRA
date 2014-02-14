@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
+	
+	<g:HTMLPanel>   
+	   <span>This will auto import the form, if the form already exists(check based on form name),
+	       the form will be renamed to {formName+formId}</span>   
+       <g:HTMLPanel styleName="control-group">
+		    <g:HTMLPanel styleName="controls" ui:field="panelUpload">
+			    
+	    	</g:HTMLPanel>
+       </g:HTMLPanel>
+       
+	</g:HTMLPanel>
+</ui:UiBinder>

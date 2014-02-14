@@ -6,6 +6,7 @@ import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.formbuilder.upload.FormImportView;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
@@ -152,6 +153,22 @@ public class FormBuilderPresenter extends
 			}
 		});
 		
+		getView().getImportButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				FormImportView view = new FormImportView();
+				AppManager.showPopUp("Import Form", view, 
+						new OnOptionSelected() {
+							
+							@Override
+							public void onSelect(String name) {
+								
+							}
+						}, "Save", "Cancel");
+			}
+		});
+		
 		getView().getExportButton().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -167,7 +184,7 @@ public class FormBuilderPresenter extends
 								
 								InlineLabel area = new InlineLabel(xml);
 								
-								AppManager.showPopUp("Export Form", 
+								AppManager.showPopUp("Export '"+getView().getFormName()+"'", 
 										area,
 										new OnOptionSelected() {
 											
