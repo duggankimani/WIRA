@@ -12,6 +12,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
 import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.google.inject.Inject;
@@ -115,13 +116,17 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			if(throwable.getMessage()==null){
 				baseResult.setErrorMessage("An error occurred during processing of your request");
 			}else{
-				log.debug("Throwable : "+throwable.getClass());
+				log.error("Throwable : "+throwable.getMessage());
 				if(throwable instanceof ConstraintViolationException){
 					baseResult.setErrorMessage("[400] A database error occurred");
 				}else if(throwable instanceof PersistenceException){
 					baseResult.setErrorMessage("[500] A database error occurred and has been logged");
+				}else if (throwable instanceof InvalidSubjectExeption){
+					InvalidSubjectExeption e = (InvalidSubjectExeption)throwable;
+					baseResult.setErrorMessage(e.getMessage());
 				}else{
-					baseResult.setErrorMessage("[600] "+throwable.getMessage());
+					throwable.printStackTrace();
+					//baseResult.setErrorMessage("[600] "+throwable.getMessage());
 				}
 				
 			}
