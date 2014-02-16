@@ -24,12 +24,14 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 			return;
 		}
 		
-		caught.printStackTrace();
+		//caught.printStackTrace();
 		
 		String message = caught.getMessage();
 		
-		if(caught.getCause()!=null)
+		if(caught.getCause()!=null){
 			message = caught.getCause().getMessage();
+		}
+		
 		AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
 		AppContext.getEventBus().fireEvent(new ErrorEvent(message, 0L));
 	}
