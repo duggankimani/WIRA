@@ -147,6 +147,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 			versionDate = DateUtils.CREATEDFORMAT.format(created);
 		}
 		
-		spnVersion.setInnerHTML("Version "+version+".1.3.4, <span title=\"Build Date\">"+versionDate+"</span>");
+		spnVersion.setInnerHTML("Version "+version+", <span title=\"Build Date\">"+versionDate+"</span>");
 	}
 }
