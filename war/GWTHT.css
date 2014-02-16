@@ -130,3 +130,8 @@
 	width:95%;
 	max-width:95%;
 }
+
+.action-area .version{
+	font-size: 10px;
+    font-style: oblique;
+}

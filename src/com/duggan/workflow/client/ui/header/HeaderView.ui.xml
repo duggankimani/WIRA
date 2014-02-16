@@ -52,8 +52,10 @@
 		                          <span class="text" ui:field="spnUserPull"></span>
 		                          <br/><span ui:field="spnUserGroup"></span>
 	                         </div>
+	                         
                         </div>
                         <div class="action-area">
+                            <div class="version" ui:field="spnVersion"></div>
 		                      <button class="btn btn-primary" type="button">View Profile</button> 
 		                      <g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
                       	</div>
