@@ -17,6 +17,7 @@ import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
+import com.duggan.workflow.client.ui.events.AfterSearchEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
@@ -202,7 +203,7 @@ public class HomePresenter extends
 		search(filter);
 	}
 	
-	public void search(SearchFilter filter){
+	public void search(final SearchFilter filter){
 			
 		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
 		fireEvent(new ProcessingEvent());
@@ -218,6 +219,7 @@ public class HomePresenter extends
 				else
 					getView().setHasItems(true);
 				
+				fireEvent(new AfterSearchEvent(filter.getSubject(), filter.getPhrase()));
 				fireEvent(new ProcessingCompletedEvent());
 			}
 		});		

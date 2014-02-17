@@ -159,8 +159,14 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		boolean isFirst=true;
 		if(subject!=null){
 			isFirst=false;
-			query.append("subject like :subject");
-			params.put("subject", "%"+subject+"%");
+			query.append("(Lower(subject) like :subject");
+			params.put("subject", "%"+subject.toLowerCase()+"%");
+			
+			if(phrase==null){
+				query.append(" or Lower(description) like :phrase");
+				params.put("phrase", "%"+subject.toLowerCase()+"%");
+			}
+			query.append(")");
 		}
 		
 		if(!isFirst){
@@ -178,12 +184,16 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			params.put("endDate", endDate);
 		}else if(startDate!=null){
 			isFirst=false;
+			//mysql functions - They wont work on postgres
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=:startDate");
 			params.put("startDate", startDate);
+			
 		}else if(endDate!=null){
 			isFirst=false;
+			//mysql functions - They wont work on postgres
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=:endDate");
 			params.put("endDate", endDate);
+			
 		}
 		
 		if(!isFirst){
@@ -204,8 +214,8 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		if(phrase!=null){
 			isFirst=false;
-			query.append("description like :phrase");
-			params.put("phrase", "%"+phrase+"%");
+			query.append("Lower(description) like :phrase");
+			params.put("phrase", "%"+phrase.toLowerCase()+"%");
 		}
 		
 		if(!isFirst){
@@ -322,8 +332,14 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			/**
 			 * TODO:Necessary Table index has to be added; otherwise full table scan will be used 
 			 */
-			query.append("LOWER(d.subject) like ?");
-			params.add( "%"+subject+"%");
+			query.append("(LOWER(d.subject) like ?");
+			params.add( "%"+subject.toLowerCase()+"%");
+			
+			if(phrase==null){
+				query.append(" or Lower(d.description) like ?");
+				params.add("%"+subject.toLowerCase()+"%");
+			}
+			query.append(")");
 		}
 		
 		if(!isFirst){
@@ -343,6 +359,7 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			isFirst=false;
 			/**
 			 * TODO:This needs to be changed - It will force full table scan 
+			 * -- further these functions only work on Mysql/ Fail on postgres
 			 */
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
 			params.add( startDate);
@@ -373,8 +390,8 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		if(phrase!=null){
 			isFirst=false;
-			query.append("d.description like ?");
-			params.add("%"+phrase+"%");
+			query.append("Lower(d.description) like ?");
+			params.add("%"+phrase.toLowerCase()+"%");
 		}
 		
 		if(!isFirst){

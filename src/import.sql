@@ -47,7 +47,8 @@ insert into UserGroup(userid,groupid) values(10,8);
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'PROC', 'Procurement');
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'CONSTR', 'Construction');
  
- create index on localdocument (lower(subject)); 
+create index on localdocument (lower(subject)); 
+ create index on localdocument (lower(description));
 alter table adfield alter column formid drop not null;
 
 update addoctype set subjectformat='INV/{No}/{YY}' where id=(select id from addoctype where name='INVOICE');
