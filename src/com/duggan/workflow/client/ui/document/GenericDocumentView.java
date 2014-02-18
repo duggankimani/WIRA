@@ -81,6 +81,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aReject;
 	@UiField HTMLPanel statusContainer;
 	@UiField Element eOwner;
+	@UiField Element eTitle;
 	//@UiField Element eDelegate;
 	@UiField HTMLPanel spnPriority;
 	@UiField SpanElement spnAttachmentNo;
@@ -224,9 +225,9 @@ public class GenericDocumentView extends ViewImpl implements
 				eOwner.setInnerText(createdBy.getName());
 			else
 				eOwner.setInnerText(createdBy.getUserId());
-			
 		}
-		if (created != null)
+		
+		if (created!= null)
 			timeDiff =  DateUtils.getTimeDifferenceAsString(created);
 			if(timeDiff != null)
 			spnCreated.setInnerText(TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");

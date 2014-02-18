@@ -1,6 +1,6 @@
 package snippet;
 
 public class Snippet {
-	Customer-initiated mini-statement
+	//Customer-initiated mini-statement
 }
 

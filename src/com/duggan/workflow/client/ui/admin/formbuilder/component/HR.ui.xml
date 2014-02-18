@@ -5,7 +5,7 @@
 		<!-- div class="controls" -->
 		<div>
 		    <label ui:field="lblTitle" class="lead">Sample Text</label>
-		    <hr width="99%" style="margin:-2px 0 0px;"></hr>
+			<!--<hr width="99%" style="margin:-2px 0 0px;"></hr> -->
 	    </div>
 	</g:HTMLPanel>
 </ui:UiBinder>

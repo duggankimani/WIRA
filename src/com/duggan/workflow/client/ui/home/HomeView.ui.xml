@@ -103,7 +103,7 @@
 	     
 	      <!--Detailed Info Description-->
 	      <div ui:field="divDocView" class="span10">
-	          <g:HTMLPanel ui:field="docContainer">  
+	          <g:HTMLPanel ui:field="docContainer" styleName="full-page">  
 	          </g:HTMLPanel>
 	      </div>
       </g:HTMLPanel>

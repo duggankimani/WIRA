@@ -23,7 +23,7 @@ a, a:visited, a:hover{
     height:100%;
 }
 
-*:focus{
+input:focus{
 	outline:none;
 	border:none;
 	box-shadow:none;
@@ -694,10 +694,6 @@ body .dateBoxPopup{
     text-decoration:none;
 }
 
-#middle-nav p {
-	
-}
-
 #middle-nav .icon-book{
     font-size: 12px;
     
@@ -722,13 +718,12 @@ body .dateBoxPopup{
 	background-color: #ffffff;
 	margin-left: 0px;
 	border: 1px solid #CCCCCC;
-	overflow-y: auto;
-	overflow-x: hidden;
 	width: 74.8%;
 	height: 92%;
 }
 #detailed-info .upper-content{
     height: 40px;
+    border-bottom: 1px solid #CCCCCC;
 }
 #detailed-info .doc-title{
 	text-transform: uppercase;
@@ -744,7 +739,7 @@ body .dateBoxPopup{
     padding-right: 20px;
 }
 #detailed-info .action-buttons .dropdown-menu{
-    left: -50px; 
+    left: -71px; 
     min-width: 132px;
 }
 #detailed-info .action-area {
@@ -754,7 +749,7 @@ body .dateBoxPopup{
 }
 
 #detailed-info .action-area i{
-    margin-right:5px;
+    /* margin-right:5px; */
     top: 7px;
 }
 
@@ -779,7 +774,6 @@ body .dateBoxPopup{
 	height: 40px;
 	/* border-bottom: 1px solid #CCCCCC; */
 	margin-left: 0px;
-	border-top: 1px solid #CCCCCC;
 }
 
 #detailed-info .personal_info .image{
@@ -803,24 +797,24 @@ body .dateBoxPopup{
 	padding-bottom: 3px;
 }
 #detailed-info .form-horizontal legend{
-    font-size: 19px;
-	
-    margin-bottom: 11px;
+    font-size: 16px;
+	font-weight: bold;
+    margin-bottom: 4px;
 }
 #detailed-info .form-horizontal .control-group{
 	margin-bottom: 2px;
 }
 #detailed-info .form-horizontal .control-label{
-	font-weight: bold;
 	padding-top: 1px;
 }
 #detailed-info .form-horizontal .controls{
 	padding-top: 1px;
 }
 #detailed-info .lead, .form-horizontal .lead{
-	font-size: 15px;
+	font-size: 13px;
 	margin-bottom: 1px;
-	/* font-family: "Georgia"; */
+	font-weight: bold;
+	border-bottom: 1px solid #e5e5e5;
 }
 
 #detailed-info .title h4{
