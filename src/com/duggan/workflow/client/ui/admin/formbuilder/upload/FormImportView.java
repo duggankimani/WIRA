@@ -32,5 +32,13 @@ public class FormImportView extends Composite {
 		panelUpload.add(uploader);
 		
 	}
+	
+	public void setAvoidRepeatFiles(boolean allow){
+		uploader.setAvoidRepeatFiles(allow);
+	}
+
+	public void cancelImport() {
+		uploader.cancel();
+	}
 
 }
