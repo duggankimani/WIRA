@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao;
 
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -361,15 +362,23 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			 * TODO:This needs to be changed - It will force full table scan 
 			 * -- further these functions only work on Mysql/ Fail on postgres
 			 */
-			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
-			params.add( startDate);
+			//query.append(" ?<=created and (? + interval '1 day')>created ");
+			//query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
+						
+//			params.add(startDate);
+//			params.add(startDate);
+			
 		}else if(endDate!=null){
 			isFirst=false;
 			/**
 			 * TODO:This needs to be changed - It will force full table scan 
 			 */
-			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
-			params.add( endDate);
+			//same day
+			query.append(" ?>=created and (? + interval '1 day')>created ");
+			//query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
+			
+//			params.add(endDate);
+//			params.add(endDate);
 		}
 		
 		if(!isFirst){
@@ -595,7 +604,12 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	 * Request/{No}/{YY} - Request/0001/14 <br/>
 	 * Request/{No}/{MM}/{YY} - Request/0001/01/14 <br/> 
 	 * Request/{No}/{YYYY} - Request/0001/2014 <br/>
+	 * <p>
+	 * TODO: check the impact of locking this record to performance
+	 * This record will be locked to the current transaction every time
+	 * a number is requested: Using a sequence might offer better performance?
 	 * 
+	 * <p>
 	 * @param type
 	 * @return String generated subject
 	 */
