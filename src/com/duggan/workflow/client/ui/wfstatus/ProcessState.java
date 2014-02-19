@@ -119,25 +119,24 @@ public class ProcessState extends Composite {
 		super.onLoad();
 		if(node.isStartNode() || node.isEndNode()){
 			return;
-		}
-
-		int top = getElement().getAbsoluteTop();
-		int left= getElement().getAbsoluteLeft();
-	
-		int textLength = actors.length();
-		if(textLength>30){
-			popOverDiv.getStyle().setTop(top-145, Unit.PX);	 //if
-			popOverDiv.getStyle().setLeft(left-276, Unit.PX);
-		}else{
-			popOverDiv.getStyle().setTop(top-127, Unit.PX);	 //if			
-			popOverDiv.getStyle().setLeft(left-230, Unit.PX);
-		}
-		
+		}		
 		
 		parentContainer.addMouseOverHandler(new MouseOverHandler() {
 			
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
+				int top = getElement().getAbsoluteTop();
+				int left= getElement().getAbsoluteLeft();
+			
+				int textLength = actors.length();
+				if(textLength>30){
+					popOverDiv.getStyle().setTop(top-145, Unit.PX);	 //if
+					popOverDiv.getStyle().setLeft(left-276, Unit.PX);
+				}else{
+					popOverDiv.getStyle().setTop(top-127, Unit.PX);	 //if			
+					popOverDiv.getStyle().setLeft(left-230, Unit.PX);
+				}
+
 				UIObject.setVisible(popOverDiv, true);
 				popOverDiv.getStyle().setDisplay(Display.BLOCK);
 			}
