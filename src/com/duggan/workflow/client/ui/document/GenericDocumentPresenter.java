@@ -99,7 +99,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -155,6 +154,8 @@ public class GenericDocumentPresenter extends
 		void showDefaultFields(boolean b);
 
 		void setDelegate(Delegate delegate);
+
+		HasClickHandlers getUploadLink2();
 	}
 	
 	Long taskId;
@@ -209,20 +210,17 @@ public class GenericDocumentPresenter extends
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
-					@Override
-					public void processResult(UploadDocumentPresenter result) {
-						
-						UploadContext context = new UploadContext();
-						context.setAction(UPLOADACTION.ATTACHDOCUMENT);
-						context.setContext("documentId", documentId+"");
-						context.setContext("userid", AppContext.getUserId());
-						result.setContext(context);
-						addToPopupSlot(result,false);
-					}
-				});
+				showUpload();
 			  }
 		});
+		
+		getView().getUploadLink2().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showUpload();
+			  }
+		});
+		
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -249,6 +247,7 @@ public class GenericDocumentPresenter extends
 				if(doc instanceof Document)
 				if(((Document)doc).getStatus()==DocStatus.DRAFTED){
 					//showEditForm(MODE.EDIT);
+					fireEvent(new ProcessingEvent());
 					save((Document)doc);
 				}
 			}
@@ -425,6 +424,22 @@ public class GenericDocumentPresenter extends
 	}
 
 
+	protected void showUpload() {
+		uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
+			@Override
+			public void processResult(UploadDocumentPresenter result) {
+				
+				UploadContext context = new UploadContext();
+				context.setAction(UPLOADACTION.ATTACHDOCUMENT);
+				context.setContext("documentId", documentId+"");
+				context.setContext("userid", AppContext.getUserId());
+				result.setContext(context);
+				addToPopupSlot(result,false);
+			}
+		});
+		
+	}
+
 	protected void delete(Document document) {
 		AppManager.showPopUp("Confirm Delete", 
 				new InlineLabel("Do you want to delete document '"+document.getSubject()+"'"),
@@ -519,16 +534,15 @@ public class GenericDocumentPresenter extends
 			requestHelper.execute(new CreateDocumentRequest(document),
 					new TaskServiceCallback<CreateDocumentResult>() {
 						@Override
-						public void processResult(
-								CreateDocumentResult result) {
-
+						public void processResult(CreateDocumentResult result) {
+							fireEvent(new ProcessingCompletedEvent());
 							Document saved = result.getDocument();
 							assert saved.getId() != null;
 							bindForm(form, saved);
 						}
 					});
 		}
-
+		
 	}
 
 	protected void save(String commenttxt) {
@@ -611,6 +625,7 @@ public class GenericDocumentPresenter extends
 					bindActivities(getActivities);
 					
 					GetFormModelResponse response = (GetFormModelResponse)results.get(4);					
+					
 					if(!response.getFormModel().isEmpty()){
 						bindForm((Form)response.getFormModel().get(0), result.getDoc());
 						

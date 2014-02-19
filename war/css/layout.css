@@ -23,7 +23,7 @@ a, a:visited, a:hover{
     height:100%;
 }
 
-*:focus{
+input:focus{
 	outline:none;
 	border:none;
 	box-shadow:none;
@@ -694,10 +694,6 @@ body .dateBoxPopup{
     text-decoration:none;
 }
 
-#middle-nav p {
-	
-}
-
 #middle-nav .icon-book{
     font-size: 12px;
     
@@ -722,13 +718,12 @@ body .dateBoxPopup{
 	background-color: #ffffff;
 	margin-left: 0px;
 	border: 1px solid #CCCCCC;
-	overflow-y: auto;
-	overflow-x: hidden;
 	width: 74.8%;
 	height: 92%;
 }
 #detailed-info .upper-content{
-    height: 100%;
+    height: 40px;
+    border-bottom: 1px solid #CCCCCC;
 }
 #detailed-info .doc-title{
 	text-transform: uppercase;
@@ -744,18 +739,30 @@ body .dateBoxPopup{
     padding-right: 20px;
 }
 #detailed-info .action-buttons .dropdown-menu{
-    left:-45px; 
-    min-width:100px;
+    left: -71px; 
+    min-width: 132px;
 }
 #detailed-info .action-area {
 	display:inline-block;
-	padding: 0px 0px 2px 13px;
+	padding: 0px 0px 0px 0px;
 	/* width: 858px; */
 }
 
 #detailed-info .action-area i{
-    margin-right:5px;
+    /* margin-right:5px; */
+    top: 7px;
 }
+
+#detailed-info .action-area .label{
+	border-radius:0px;
+	margin-left: 10px;	
+	min-width: 11%;
+}
+
+#detailed-info .action-area .priority{
+	width: 4px;
+	height: 40px;}
+
 
 #detailed-info .action-area a:hover {
 	text-decoration: none;
@@ -763,23 +770,14 @@ body .dateBoxPopup{
 }
 
 #detailed-info .personal_info {
-	padding: 0px 0px 7px 8px;
-	height: 35px;
-	border-bottom: 1px solid #CCCCCC;
+	padding: 5px 0px 0px 15px;
+	height: 40px;
+	/* border-bottom: 1px solid #CCCCCC; */
 	margin-left: 0px;
-	border-top: 1px solid #CCCCCC;
 }
 
-#detailed-info .personal_info .span3{
-	margin-left: 5px;
-	height: inherit;
-	padding-top: 5px;
-}
-#detailed-info .personal_info .span4{
-    width: 220px;
-    padding-top: 5px;
-}
-
+#detailed-info .personal_info .image{
+  width: 40px;}
 #detailed-info .personal_info .icon-large{
     /* opacity:.7; */
     color: #928E8E;
@@ -790,25 +788,33 @@ body .dateBoxPopup{
 }
 
 #detailed-info .content-area{
-    padding: 6px 7px 0 0px;
+    padding: 6px 25px 0 0px;
     font-size:12px;
-    margin-left: 10px;
+    margin-left: 15px;
+    /* margin-right: 73px; */
 }
 #detailed-info .content-area .item{	
 	padding-bottom: 3px;
+}
+#detailed-info .form-horizontal legend{
+    font-size: 16px;
+	font-weight: bold;
+    margin-bottom: 4px;
 }
 #detailed-info .form-horizontal .control-group{
 	margin-bottom: 2px;
 }
 #detailed-info .form-horizontal .control-label{
-	width: auto;
-	font-weight: bold;
 	padding-top: 1px;
-	text-align: left;
 }
 #detailed-info .form-horizontal .controls{
-	margin-left: 17%;
 	padding-top: 1px;
+}
+#detailed-info .lead, .form-horizontal .lead{
+	font-size: 13px;
+	margin-bottom: 1px;
+	font-weight: bold;
+	border-bottom: 1px solid #e5e5e5;
 }
 
 #detailed-info .title h4{
@@ -859,7 +865,7 @@ body .dateBoxPopup{
 	font-weight:normal;
 	border:1px solid #CCCCCC;
 	margin-top: 11px;
-	margin-right: 10px;
+	margin-right: 7px;
 	margin-left: 0px;
 }
 
@@ -919,10 +925,10 @@ body .dateBoxPopup{
 	left: 111px;
 }
 #detailed-info .comment-box .image{
-	width: 7.6%;
+	width: 6.6%;
 	}
 #detailed-info .comment-box .textbox{
-	margin-left: 7px;
+	margin-left: 0px;
 	margin-top: 7px;
 	width: 89.905983%;
 }
@@ -1297,10 +1303,8 @@ ul.icons-list.text-xl {
 	list-style-type: none;
 	margin-top: 5px;
 	margin-bottom: 10px;
-	margin-right: 0px;
 	margin: 0px 10px;
 	padding-left: 1px;
-	border-bottom: 1px solid #dae1e8;
 	box-shadow: 0 2px 1px -1px #FFFFFF;
 	padding-bottom:0px;
 }
@@ -1322,7 +1326,8 @@ ul.icons-list.text-xl {
 	text-decoration: none;
 	display: block;
 	margin-bottom: 0;
-	padding-left: 30px;
+	padding-left: 20px;
+	padding-right: 15px;
 }
 
 #dashboard-menu .submenu li{
@@ -1373,7 +1378,6 @@ ul.icons-list.text-xl {
 }
 
 #navigation-menu>li.active a {
-    /* color:#6b7983; */
     height: 24px;
     font-weight:bold;
     

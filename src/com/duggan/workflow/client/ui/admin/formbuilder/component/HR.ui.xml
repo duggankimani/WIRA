@@ -4,8 +4,8 @@
 		<!-- label class="control-label">Horizontal Line:</label-->
 		<!-- div class="controls" -->
 		<div>
-		    <label ui:field="lblTitle">Sample Text</label>
-		    <hr width="99%" style="margin:-2px 0 0px;"></hr>
+		    <label ui:field="lblTitle" class="lead">Sample Text</label>
+			<!--<hr width="99%" style="margin:-2px 0 0px;"></hr> -->
 	    </div>
 	</g:HTMLPanel>
 </ui:UiBinder>

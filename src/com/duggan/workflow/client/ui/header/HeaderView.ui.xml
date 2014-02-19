@@ -50,7 +50,8 @@
                          	</div>
 	                         <div class="span2">
 		                          <span class="text" ui:field="spnUserPull"></span>
-		                          <br/><span ui:field="spnUserGroup"></span>
+		                          <br/>
+		                          <span class="ellipsis" style="width: 90%;" ui:field="spnUserGroup"></span>
 	                         </div>
                         </div>
                         <div class="action-area">
