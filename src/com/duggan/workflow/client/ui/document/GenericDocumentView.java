@@ -297,8 +297,13 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		if(status!=null){
 			spnStatusBody.setInnerText(status.name());
+			
 			if(status==DocStatus.APPROVED){
 				spnStatusBody.setClassName("label label-success");
+			}
+			
+			if(status==DocStatus.INPROGRESS){
+				spnStatusBody.setClassName("label label-info");
 			}
 			
 			if(status==DocStatus.REJECTED){

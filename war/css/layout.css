@@ -756,7 +756,10 @@ body .dateBoxPopup{
 #detailed-info .action-area .label{
 	border-radius:0px;
 	margin-left: 10px;	
-	min-width: 11%;
+	min-width: 13%;
+	font-weight: normal;
+	font-size: 11px;
+	text-align: center;
 }
 
 #detailed-info .action-area .priority{
