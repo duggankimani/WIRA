@@ -130,7 +130,17 @@
 	width:95%;
 	max-width:95%;
 }
-
 .control-group .controls .gwt-RadioButton-disabled{
 	color: #000000;
 }
+
+.control-group .controls .radiobtns{
+	display:block;
+}
+
+.control-group .controls .radiobtns label{
+	display:inline-block !important;
+	padding:0 10px 0px 3px;
+	vertical-align: text-top;
+}
+
