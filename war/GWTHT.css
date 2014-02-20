@@ -130,3 +130,7 @@
 	width:95%;
 	max-width:95%;
 }
+
+.control-group .controls .gwt-RadioButton-disabled{
+	color: #000000;
+}
