@@ -13,12 +13,16 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 public class DateUtils {
 	static String datepattern="dd/MM/yyyy";
 	static String createdpattern="dd/MM/yyyy HH:mm";
-	static String fullPattern = "EEE, MMM d, yyyy";
+	static String fullPattern = "EEE,MMM d,yyyy";
+	static String halfPattern = "EEEE, MMM d";
+	static String monthDayPattern = "MMM d";
 	static String Time = "hh:mm a";
 			
 	public static final DateTimeFormat CREATEDFORMAT = DateTimeFormat.getFormat(createdpattern);
 	public static final DateTimeFormat DATEFORMAT = DateTimeFormat.getFormat(datepattern);
+	public static final DateTimeFormat HALFDATEFORMAT = DateTimeFormat.getFormat(halfPattern);
 	public static final DateTimeFormat FULLDATEFORMAT = DateTimeFormat.getFormat(fullPattern);
+	public static final DateTimeFormat MONTHDAYFORMAT = DateTimeFormat.getFormat(monthDayPattern);
 	public static final DateTimeFormat TIMEFORMAT12HR = DateTimeFormat.getFormat(Time);
 	
 	public static String getTimeDifferenceAsString(Date createdDate){

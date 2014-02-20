@@ -110,10 +110,10 @@
 	text-transform: uppercase;
 	font-size: 115%;
 	font-weight: bold;
-	padding: 14px 0px 0px 0px;
+	padding: 10px 0px 0px 0px;
 	color: #222;
 	font-family: arial,sans-serif;
-	/*width: 300px;*/
+	margin-left: 11px;
 }
 
 .dateinput, .compositeinput{
@@ -138,4 +138,18 @@
 
 .highlight {
     background-color: yellow;
+}
+
+.control-group .controls .gwt-RadioButton-disabled{
+	color: #000000;
+}
+
+.control-group .controls .radiobtns{
+	display:block;
+}
+
+.control-group .controls .radiobtns label{
+	display:inline-block !important;
+	padding:0 10px 0px 3px;
+	vertical-align: text-top;
 }

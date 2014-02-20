@@ -22,7 +22,7 @@
 						    <span ui:field="spnFileName" class="ellipsis" style="width:61%"></span>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">
-						    <g:Anchor ui:field="aImageName"></g:Anchor>
+						    <g:Anchor ui:field="aImageName" styleName="ellipsis"></g:Anchor>
 						</g:HTMLPanel>
 						<g:HTMLPanel styleName="td">
 						    <span ui:field="spnProcessId" class="ellipsis" style="width:71%"></span>
@@ -35,22 +35,23 @@
 						</g:HTMLPanel>
 						
 						<g:HTMLPanel styleName="td">
-									<g:Anchor ui:field="aActivate" styleName="btn btn-success" title="Activate Process">
-										<i class="icon-play"></i>
-									</g:Anchor>
-									<g:Anchor ui:field="aDeactivate" styleName="btn btn-inverse" title="De-activate Process">
-										<i class="icon-minus-sign"></i>
-									</g:Anchor>
-								
-									<g:Anchor ui:field="aRefresh" styleName="btn btn-info" title="Refresh Process">
-										<i class="icon-undo"></i>
-									</g:Anchor>
-									<g:Anchor styleName="btn btn-warning" ui:field="aEdit">
-										<i class="icon-pencil helper-14"></i>
-									</g:Anchor>
-									<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
-										<i class="icon-trash"></i>
-									</g:Anchor>
+							<g:Anchor ui:field="aActivate" styleName="btn btn-success" title="Activate Process">
+								<i class="icon-play"></i>
+							</g:Anchor>
+							
+							<g:Anchor ui:field="aDeactivate" styleName="btn btn-inverse" title="De-activate Process">
+								<i class="icon-minus-sign"></i>
+							</g:Anchor>
+						
+							<g:Anchor ui:field="aRefresh" styleName="btn btn-info" title="Refresh Process">
+								<i class="icon-undo"></i>
+							</g:Anchor>
+							<g:Anchor styleName="btn btn-warning" ui:field="aEdit">
+								<i class="icon-pencil helper-14"></i>
+							</g:Anchor>
+							<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
+								<i class="icon-trash"></i>
+							</g:Anchor>
 						</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.document;
 
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ACTIVITY_SLOT;
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
-import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
 import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.TIMEFORMAT12HR;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.Map;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
@@ -75,29 +76,34 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aDelegate;
 	@UiField Anchor aRevoke;
 	@UiField Anchor aStop;
-	@UiField Anchor aForward;	
+	@UiField Anchor aForward;
+	@UiField Anchor aProcess;
 	@UiField Anchor aApprove;	
 	@UiField Anchor aReject;
 	@UiField HTMLPanel statusContainer;
+	@UiField HTMLPanel divProcess;
 	@UiField Element eOwner;
+	@UiField Element eTitle;
 	//@UiField Element eDelegate;
-	@UiField SpanElement spnPriority;
+	@UiField HTMLPanel spnPriority;
 	@UiField SpanElement spnAttachmentNo;
 	@UiField SpanElement spnActivityNo;
 	@UiField DivElement divAttachment;
-	@UiField SpanElement spnStatus;
 	@UiField SpanElement spnStatusBody;
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
-	@UiField Anchor aAttach;
+	//@UiField Anchor aAttach1;
+	@UiField Anchor aAttach2;
 	@UiField Anchor aShowProcess;
 	@UiField CommentBox commentPanel;
 	
+	@UiField DivElement btnGroup;
 	@UiField DivElement divDate;
 	@UiField DivElement divDesc;
 	@UiField DivElement divPartner;
 	@UiField DivElement divValue;
+	@UiField DivElement divContent;
 	
 	@UiField HTMLPanel fldForm;
 	
@@ -106,12 +112,14 @@ public class GenericDocumentView extends ViewImpl implements
 	String url=null;
 	
 	List<Actions> validActions = null;
+	private String timeDiff;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		UIObject.setVisible(aEdit.getElement(), false);
 		aEdit.getElement().setAttribute("type","button");
+		aEdit.getElement().setAttribute("data-toggle","tooltip");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
 		aApprove.getElement().setAttribute("type", "button");
@@ -124,10 +132,13 @@ public class GenericDocumentView extends ViewImpl implements
 		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
+		showOneButton();
+		
+		
 		aShowProcess.removeStyleName("gwt-Anchor");
+		
 		aShowProcess.addClickHandler(new ClickHandler() {
-			
-			@Override
+		@Override
 			public void onClick(ClickEvent event) {
 				if(url!=null)
 				Window.open(url, "Business Process", null);
@@ -139,15 +150,41 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				formPanel.setReadOnly(false);
+				UIObject.setVisible(btnGroup, false);
+				UIObject.setVisible(aForward.getElement(), false);
 				UIObject.setVisible(aEdit.getElement(), false);
 				UIObject.setVisible(aSave.getElement(), true);
+				
 			}
 		});
 		
+		aProcess.addClickHandler(new ClickHandler() {
+			private boolean isClicked=true;
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(isClicked){
+					aProcess.addStyleName("disabled");
+					divProcess.removeStyleName("hidden");
+					divContent.removeClassName("span12");
+					divContent.addClassName("span9");
+					isClicked=false;
+				}else{
+					aProcess.removeStyleName("disabled");
+					divProcess.addStyleName("hidden");
+					divContent.removeClassName("span9");
+					divContent.addClassName("span12");
+					isClicked=true;
+				}
+			}
+		});
+	
 		aSave.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				UIObject.setVisible(btnGroup, true);
+				UIObject.setVisible(aForward.getElement(),true);
 				UIObject.setVisible(aEdit.getElement(), true);
 				UIObject.setVisible(aSave.getElement(), false);
 			}
@@ -155,6 +192,10 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
+	}
+
+	private void showOneButton() {
+
 	}
 
 	private void disableAll() {
@@ -213,10 +254,12 @@ public class GenericDocumentView extends ViewImpl implements
 				eOwner.setInnerText(createdBy.getName());
 			else
 				eOwner.setInnerText(createdBy.getUserId());
-			
 		}
-		if (created != null)
-			spnCreated.setInnerText(CREATEDFORMAT.format(created));
+		
+		if (created!= null)
+			timeDiff =  DateUtils.getTimeDifferenceAsString(created);
+			if(timeDiff != null)
+			spnCreated.setInnerText(TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
 
 		if(!(taskDisplayName==null || taskDisplayName.equals(""))){
 			spnDocType.setInnerText(taskDisplayName);
@@ -252,9 +295,14 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 		
 		if(status!=null){
-			spnStatus.setInnerText(status.name());
+			spnStatusBody.setInnerText(status.name());
+			
 			if(status==DocStatus.APPROVED){
 				spnStatusBody.setClassName("label label-success");
+			}
+			
+			if(status==DocStatus.INPROGRESS){
+				spnStatusBody.setClassName("label label-info");
 			}
 			
 			if(status==DocStatus.REJECTED){
@@ -268,17 +316,17 @@ public class GenericDocumentView extends ViewImpl implements
 			
 			switch (prty) {
 			case CRITICAL:
-				spnPriority.addClassName("label-important");
-				spnPriority.setInnerText("Urgent");
+				spnPriority.addStyleName("label-important");
+				//spnPriority.setInnerText("Urgent");
 				break;
 
 			case HIGH:
-				spnPriority.addClassName("label-warning"); //
-				spnPriority.setInnerText("Important");
+				spnPriority.addStyleName("label-warning"); //
+				//spnPriority.setInnerText("Important");
 				break;
 
 			default:
-				spnPriority.addClassName("hide");
+				spnPriority.addStyleName("hide");
 				break;
 			}
 		}
@@ -358,7 +406,7 @@ public class GenericDocumentView extends ViewImpl implements
 	public HasClickHandlers getSaveButton(){
 		return aSave;
 	}
-
+	
 	public HasClickHandlers getDeleteButton(){
 		return aDelete;
 	}
@@ -500,8 +548,8 @@ public class GenericDocumentView extends ViewImpl implements
 		commentPanel.getCommentBox().setText("");
 	}
 	
-	public HasClickHandlers getUploadLink(){
-		return aAttach;
+	public HasClickHandlers getUploadLink2(){
+		return aAttach2;
 	}
 	
 	public SpanElement getSpnAttachmentNo() {
@@ -540,5 +588,4 @@ public class GenericDocumentView extends ViewImpl implements
 		delegate.getUserId();
 		//eDelegate.setInnerText(delegate.getDelegateTo());
 	}
-	
 }

@@ -47,7 +47,7 @@ public class UploadDocumentView extends PopupViewImpl implements
 			}
 		});
 		
-		int[] positions=AppManager.calculatePosition(2, 62);
+		int[] positions=AppManager.calculatePosition(2, 70);
 		uploaderDialog.setPopupPosition(positions[1],positions[0]);
 		
 	}
