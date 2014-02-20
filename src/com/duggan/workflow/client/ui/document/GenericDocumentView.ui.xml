@@ -25,7 +25,12 @@
 						<i class="icon-info"></i>
 						<!-- Process -->
 					</d:ActionLink>
-					
+
+					<d:ActionLink ui:field="aAttach2" styleName="btn btn-default"
+						title="Attach word, pdf, scanned documents etc">
+						<i class="icon-upload-alt color-black"></i>
+					</d:ActionLink>
+
 					<d:ActionLink ui:field="aStart" styleName="btn btn-success hidden"
 						title="Start working on the task">
 						<i class="icon-play"></i>
@@ -74,35 +79,26 @@
 					</d:ActionLink>
 
 					<div class="btn-group" ui:field="btnGroup">
-							
-							<d:ActionLink ui:field="aEdit" styleName="btn btn-default" title="Attach word, pdf, scanned documents etc">
-								<i class="icon-pencil color-black"></i>
-							</d:ActionLink>
 
-							<d:ActionLink ui:field="aAttach1"
-								title="Attach word, pdf, scanned documents etc" styleName="hidden">
-								<i class="icon-upload-alt color-black"></i>
-							</d:ActionLink>
-							
-							<d:ActionLink ui:field="aSuspend" styleName="btn btn-default"
-									title="Suspend this task">
-									<i class="icon-pause color-black"></i>
-							</d:ActionLink>
+						<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
+							title="Edit">
+							<i class="icon-pencil color-black"></i>
+						</d:ActionLink>
 
-							<button class="btn dropdown-toggle" data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-						
+						<!-- <d:ActionLink ui:field="aAttach1" title="Attach word, pdf, scanned 
+							documents etc" styleName="hidden"> <i class="icon-upload-alt color-black"></i> 
+							</d:ActionLink> -->
+
+						<d:ActionLink ui:field="aClaim" styleName="btn btn-default"
+							title="Reserve this task. Other users with the same role cannot work on this task if claimed">
+							<i class="icon-arrow-down color-black"></i>
+						</d:ActionLink>
+
+						<button class="btn dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+
 						<ul class="dropdown-menu" role="menu">
-							<li>
-								<d:ActionLink ui:field="aClaim" styleName="hidden"
-									dataToggle="tooltip" title="Test"
-									dataOriginalTitle="Reserve this task. Other users with the same role cannot work on this task if claimed">
-									<i class="icon-arrow-down"></i>
-									Claim
-								</d:ActionLink>
-							</li>
-
 							<li>
 								<d:ActionLink ui:field="aRevoke" styleName="btn hidden"
 									title="Revoke this task so that its re-assignable to other users in your group">
@@ -112,10 +108,9 @@
 							</li>
 
 							<li>
-								<d:ActionLink ui:field="aAttach2"
-									title="Attach word, pdf, scanned documents etc">
-									<i class="icon-upload-alt color-black"></i>
-									Attach
+								<d:ActionLink ui:field="aSuspend" title="Suspend this task">
+									<i class="icon-pause color-black"></i>
+									Suspend
 								</d:ActionLink>
 							</li>
 
@@ -126,6 +121,7 @@
 									Delegate
 								</d:ActionLink>
 							</li>
+
 							<li>
 								<d:ActionLink ui:field="aDelete">
 									<i class="icon-trash"></i>

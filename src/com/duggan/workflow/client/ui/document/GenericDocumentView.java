@@ -93,7 +93,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
-	@UiField Anchor aAttach1;
+	//@UiField Anchor aAttach1;
 	@UiField Anchor aAttach2;
 	@UiField Anchor aShowProcess;
 	@UiField CommentBox commentPanel;
@@ -210,7 +210,6 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
-		show(aAttach1, false);
 	}
 
 	@Override
@@ -547,10 +546,6 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public void setComment(String string) {
 		commentPanel.getCommentBox().setText("");
-	}
-	
-	public HasClickHandlers getUploadLink(){
-		return aAttach1;
 	}
 	
 	public HasClickHandlers getUploadLink2(){
