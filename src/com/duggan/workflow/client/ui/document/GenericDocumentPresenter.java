@@ -207,6 +207,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		addRegisteredHandler(DeleteLineEvent.TYPE, this);
+		
 		getView().getUploadLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
