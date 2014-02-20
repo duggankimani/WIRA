@@ -118,7 +118,12 @@ public class FormPanel extends Composite {
 	}
 
 	public boolean isValid(){
-		return formDelegate.isValid(issues, panelFields);
+		boolean isValid = formDelegate.isValid(issues, panelFields);;
+		
+		if(!isValid){
+			issues.getElement().scrollIntoView();
+		}
+		return isValid;
 	}
 	
 	public Map<String, Value> getValues(){
