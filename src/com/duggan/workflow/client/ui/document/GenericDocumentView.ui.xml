@@ -20,7 +20,12 @@
 					</span>
 				</div>
 				<div class="action-buttons pull-right">
-
+					<d:ActionLink ui:field="aProcess" styleName="btn btn-default"
+						title="Show Business Process">
+						<i class="icon-info"></i>
+						<!-- Process -->
+					</d:ActionLink>
+					
 					<d:ActionLink ui:field="aStart" styleName="btn btn-success hidden"
 						title="Start working on the task">
 						<i class="icon-play"></i>
@@ -35,12 +40,6 @@
 					<d:ActionLink ui:field="aComplete" styleName="btn btn-success hidden">
 						<i class="icon-ok"></i>
 						Complete
-					</d:ActionLink>
-
-					<d:ActionLink ui:field="aProcess" styleName="btn btn-default"
-						title="Show Business Process">
-						<i class="icon-info"></i>
-						<!-- Process -->
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aStop" styleName="btn btn-default hidden">
@@ -75,20 +74,25 @@
 					</d:ActionLink>
 
 					<div class="btn-group" ui:field="btnGroup">
-						<button type="button" class="btn btn-default">
-							<d:ActionLink ui:field="aEdit">
+							
+							<d:ActionLink ui:field="aEdit" styleName="btn btn-default" title="Attach word, pdf, scanned documents etc">
 								<i class="icon-pencil color-black"></i>
 							</d:ActionLink>
 
 							<d:ActionLink ui:field="aAttach1"
-								title="Attach word, pdf, scanned documents etc">
+								title="Attach word, pdf, scanned documents etc" styleName="hidden">
 								<i class="icon-upload-alt color-black"></i>
+							</d:ActionLink>
+							
+							<d:ActionLink ui:field="aSuspend" styleName="btn btn-default"
+									title="Suspend this task">
+									<i class="icon-pause color-black"></i>
 							</d:ActionLink>
 
 							<button class="btn dropdown-toggle" data-toggle="dropdown">
 								<span class="caret"></span>
 							</button>
-						</button>
+						
 						<ul class="dropdown-menu" role="menu">
 							<li>
 								<d:ActionLink ui:field="aClaim" styleName="hidden"
@@ -111,18 +115,10 @@
 								<d:ActionLink ui:field="aAttach2"
 									title="Attach word, pdf, scanned documents etc">
 									<i class="icon-upload-alt color-black"></i>
-									Attatch
+									Attach
 								</d:ActionLink>
 							</li>
 
-							<li>
-								<d:ActionLink ui:field="aSuspend" styleName="hidden"
-									title="Suspend this task">
-									<i class="icon-pause"></i>
-									Suspend
-								</d:ActionLink>
-
-							</li>
 							<li>
 								<d:ActionLink ui:field="aDelegate" styleName="hidden"
 									title="Delegate this task">

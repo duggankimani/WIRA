@@ -132,7 +132,8 @@ public class GenericDocumentView extends ViewImpl implements
 		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
-		//showTooltip();
+		showOneButton();
+		
 		
 		aShowProcess.removeStyleName("gwt-Anchor");
 		
@@ -193,6 +194,10 @@ public class GenericDocumentView extends ViewImpl implements
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
 
+	private void showOneButton() {
+
+	}
+
 	private void disableAll() {
 		show(aClaim, false);
 		show(aStart, false);
@@ -205,6 +210,7 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
+		show(aAttach1, false);
 	}
 
 	@Override
