@@ -240,7 +240,6 @@ public class GenericDocumentPresenter extends
 				if(doc instanceof Document)
 				if(((Document)doc).getStatus()==DocStatus.DRAFTED){
 					//showEditForm(MODE.EDIT);
-					fireEvent(new ProcessingEvent());
 					save((Document)doc);
 				}
 			}
@@ -524,6 +523,7 @@ public class GenericDocumentPresenter extends
 //		}
 		
 		if (getView().isValid()) {
+			fireEvent(new ProcessingEvent());
 			requestHelper.execute(new CreateDocumentRequest(document),
 					new TaskServiceCallback<CreateDocumentResult>() {
 						@Override
