@@ -91,13 +91,13 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	private RadioButton getRadio(KeyValuePair pair) {
 		RadioButton button = new RadioButton(getPropertyValue(SELECTIONTYPE));
 		
+		String name = pair.getName();
+		if(name==null){
+			name="radiobtns";
+		}
 		
-//		String name = pair.getName();
-//		if(name==null){
-//			name="radiobtns"+Random.nextInt(1000);
-//		}
-		
-		button.getElement().setId("radiobtns");
+		button.addStyleName("radiobtns");
+		button.getElement().setId(name);
 		button.setDirectionEstimator(true);
 		button.setText(pair.getValue());
 		button.setFormValue(pair.getKey());
