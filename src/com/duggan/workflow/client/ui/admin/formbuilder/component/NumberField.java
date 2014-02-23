@@ -165,7 +165,7 @@ public class NumberField extends FieldWidget{
 			return null;
 		
 		
-		return new DoubleValue(value);
+		return new DoubleValue(field.getLastValueId(), field.getName(),value);
 	}
 	
 	@Override

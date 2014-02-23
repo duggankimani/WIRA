@@ -98,7 +98,7 @@
 							<span class="caret"></span>
 						</button>
 
-						<ul class="dropdown-menu" role="menu">
+						<ul class="dropdown-menu" role="menu" ui:field="ulMenu">
 							<li>
 								<d:ActionLink ui:field="aRevoke" styleName="btn hidden"
 									title="Revoke this task so that its re-assignable to other users in your group">

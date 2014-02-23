@@ -183,10 +183,12 @@ public class GenericDocumentView extends ViewImpl implements
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				UIObject.setVisible(btnGroup, true);
-				UIObject.setVisible(aForward.getElement(),true);
-				UIObject.setVisible(aEdit.getElement(), true);
-				UIObject.setVisible(aSave.getElement(), false);
+				if(isValid()){
+					UIObject.setVisible(btnGroup, true);
+					UIObject.setVisible(aForward.getElement(),true);
+					UIObject.setVisible(aEdit.getElement(), true);
+					UIObject.setVisible(aSave.getElement(), false);
+				}
 			}
 		});
 		

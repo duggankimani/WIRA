@@ -502,14 +502,13 @@ public class FormDaoHelper {
 		return getValue(dao.getValue(advalue.getId()), value.getDataType());
 	}
 
-	public static ADValue getValue(ADValue previousValue, Value value) {
+	public static ADValue getValue(ADValue advalue, Value value) {
 		if(value==null)
 			return null;
 		
-		ADValue advalue = new ADValue();
-		if(previousValue!=null){
-			advalue = previousValue;
-		}else{
+		if(advalue==null){
+			advalue = new ADValue();
+		}else if(advalue.getId()==null && value.getId()!=null){
 			advalue.setId(value.getId());
 		}
 		
@@ -547,6 +546,7 @@ public class FormDaoHelper {
 		case MULTIBUTTON:
 		case SELECTBASIC:
 		case SELECTMULTIPLE:
+			System.err.println("Save Value >> "+value.getValue());
 			advalue.setStringValue((String)value.getValue());			
 			break;
 		}

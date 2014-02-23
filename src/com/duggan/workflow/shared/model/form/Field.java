@@ -193,4 +193,12 @@ public class Field extends FormModel{
 		
 		return property;
 	}
+	
+	public Long getLastValueId(){
+		if(value!=null){
+			return value.getId();
+		}
+		
+		return null;
+	}
 }
