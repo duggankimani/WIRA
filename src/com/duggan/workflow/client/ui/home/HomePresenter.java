@@ -17,12 +17,14 @@ import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
+import com.duggan.workflow.client.ui.events.AfterSearchEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
@@ -201,7 +203,7 @@ public class HomePresenter extends
 		search(filter);
 	}
 	
-	public void search(SearchFilter filter){
+	public void search(final SearchFilter filter){
 			
 		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
 		fireEvent(new ProcessingEvent());
@@ -217,6 +219,7 @@ public class HomePresenter extends
 				else
 					getView().setHasItems(true);
 				
+				fireEvent(new AfterSearchEvent(filter.getSubject(), filter.getPhrase()));
 				fireEvent(new ProcessingCompletedEvent());
 			}
 		});		
@@ -334,6 +337,9 @@ public class HomePresenter extends
 	 */
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		
+		fireEvent(new LoadAlertsEvent());
 		clear();		
 		processInstanceId=null;
 		documentId=null;
@@ -414,8 +420,6 @@ public class HomePresenter extends
 						fireEvent(new DocumentSelectionEvent(docId,taskId,docMode));
 					}
 					
-					
-					
 				}else{
 					getView().setHasItems(false);
 				}
@@ -484,6 +488,7 @@ public class HomePresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		//System.err.println("HomePresenter - OnReset :: "+this);
 		setInSlot(FILTER_SLOT, filterPresenter);
 		setInSlot(DOCPOPUP_SLOT, docPopup);
 	}
@@ -514,12 +519,7 @@ public class HomePresenter extends
 			}
 		});
 	}
-
-	@Override
-	protected void onReveal() {
-		super.onReveal();
-	}
-
+	
 	@Override
 	public void onReload(ReloadEvent event) {
 		loadTasks();

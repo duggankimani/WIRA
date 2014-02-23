@@ -105,15 +105,14 @@ public class InlineCheckBox extends FieldWidget {
 	}
 	
 	@Override
-	public void setField(Field field) {
-		super.setField(field);
-		
-		Value value = field.getValue();
-		
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly=readOnly;
+		component.setEnabled(!readOnly);
 	}
 	
 	@Override
-	public void setReadOnly(boolean readOnly) {
-		component.setEnabled(readOnly);
+	public Widget getComponent(boolean small) {
+		return component;
 	}
+
 }

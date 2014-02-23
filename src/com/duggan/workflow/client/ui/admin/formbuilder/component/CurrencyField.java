@@ -49,4 +49,10 @@ public class CurrencyField extends NumberField{
 
 	}
 	
+	
+	@Override
+	public FieldWidget cloneWidget() {
+		return new CurrencyField();
+	}
+	
 }

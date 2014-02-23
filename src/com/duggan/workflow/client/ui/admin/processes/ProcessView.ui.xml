@@ -7,7 +7,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-				<div class="content-body">
+				<div class="content-body overflow-y">
 					<div class="row-fluid">
 						<div class="action-buttons">
 							<g:Anchor ui:field="aNewProcess" styleName="btn btn-primary"
@@ -23,20 +23,20 @@
 					   </div>																			
 					</div>
 					
-					<div class="table table-striped table-hover">
+					<div class="table table-striped table-hover table-bordered table-process">
 					    <div class="thead">
 					    	<div class="tr">
 								<div class="th">
 								  <label><input type="checkbox" class="ace"/></label>
 								</div>
-								<div class="th">NAME:</div>
-								<div class="th">DOCUMENT TYPE</div>
-								<div class="th">FILE NAME</div>
-								<div class="th">IMAGE</div>
-								<div class="th">PROCESS ID</div>
-								<div class="th">STATUS</div>
-								<div class="th">LAST MODIFIED</div>
-								<div class="th">ACTIONS</div>	
+								<div class="th" style="width:14%">NAME:</div>
+								<div class="th" style="width:16%">DOCUMENT TYPE</div>
+								<div class="th" style="width:5%">FILE NAME</div>
+								<div class="th" style="width:10%">IMAGE</div>
+								<div class="th" style="width:5%">PROCESS ID</div>
+								<div class="th" style="width:5%">STATUS</div>
+								<div class="th" style="width:15%">LAST MODIFIED</div>
+								<div class="th" style="width:30%">ACTIONS</div>	
 							</div>								
 
 						</div>

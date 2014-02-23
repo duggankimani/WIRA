@@ -4,10 +4,13 @@
 
 .overflow-y{
 	overflow-y:auto;
+	overflow-x:hidden;
+	max-height: 90%;
 }
 
 .overflow-x{
 	overflow-x:auto;
+	overflow-y:hidden;
 }
 
 #side-left {
@@ -298,11 +301,15 @@
 	padding: 10px 20px 40px 20px;
 	font-size: .9em;
 	background: #FFFFFF;
-	min-height: 456px;
+	height: 505px;
 }
 
 .content-body .action-buttons {
 	margin-bottom: 15px;
+}
+/*--content-body||Process--*/
+.content-body .table-process .td{
+	max-width:160px;
 }
 
 /*--content-body||Users and Groups--*/
@@ -312,7 +319,7 @@
 	height: 392px;
 }
 
-.content-body .tab-content .table .action-commands a {
+.content-body .table .action-commands a {
 	margin: 0 3px;
 	display: inline-block;
 	opacity: .85;
@@ -564,6 +571,7 @@ overflow-y:auto;
 	display: table;
 	background-color: transparent;
 	margin-bottom: 0px;
+	/* table-layout: auto; */
 }
 
 #usercontent .row-fluid:last-child {
@@ -586,15 +594,16 @@ overflow-y:auto;
 
 .tbody {
 	display: table-row-group;
+	/*height: 400px;*/
 }
 
 .th {
 	display: table-cell;
 	vertical-align: bottom;
-	border-bottom: 2px solid #dddddd;
+	/* border-bottom: 2px solid #dddddd; */
 	text-align: left;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .tr {
@@ -603,8 +612,7 @@ overflow-y:auto;
 
 .td {
 	display: table-cell;
- 	
-	padding: 0px;
+	padding: 5px;
 	text-align: left;
 	vertical-align: middle;
 	padding-left: 8px;
@@ -624,11 +632,11 @@ overflow-y:auto;
 }
 
 .table .thead>.tr>.th {
-	padding: 4px;
+	padding: 5px;
 	line-height: 1.428571429;
 	vertical-align: top;
 	vertical-align: bottom;
-	border-bottom: 2px solid #dddddd;
+	/* border-bottom: 2px solid #dddddd; */
 }
 
 .table caption+.thead .tr:first-child .th,.table colgroup+.thead .tr:first-child .th,.table .thead:first-child .tr:first-child .th,.table caption+.thead .tr:first-child .td,.table colgroup+.thead .tr:first-child .td,.table .thead:first-child .tr:first-child .td
@@ -1031,5 +1039,3 @@ overflow-y:auto;
 .panel .panel-body.slideDown {
 	display: block;
 }
-
-.

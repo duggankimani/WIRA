@@ -39,21 +39,24 @@
              <li class="user-dropdown dropdown">
                   <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
                       <span ui:field="spnUser"></span>
-                      <img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg" width="50px" height="50px"/>
+                      <img src="img/blueman(small).png" width="30px" height="50px"/>
                       <b class="caret"></b>
                   </a>
                   
                   <ul class="dropdown-menu">
                         <div class="user-details row-fluid">
                         	<div class="span1">
-  				          	<img class="" data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="70px" height="90px"/>                      
+  				          	<img class="" data-src="img/blueman.png" src="img/blueman.png" width="70px" height="90px"/>                      
                          	</div>
 	                         <div class="span2">
 		                          <span class="text" ui:field="spnUserPull"></span>
-		                          <br/><span ui:field="spnUserGroup"></span>
+		                          <br/>
+		                          <span class="ellipsis" style="width: 90%;" ui:field="spnUserGroup"></span>
 	                         </div>
+	                         
                         </div>
                         <div class="action-area">
+                            <div class="version" ui:field="spnVersion"></div>
 		                      <button class="btn btn-primary" type="button">View Profile</button> 
 		                      <g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
                       	</div>

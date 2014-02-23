@@ -5,8 +5,8 @@ import java.util.Date;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
-import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.event.shared.EventBus;
@@ -29,6 +29,7 @@ public class AppContext {
 	@Inject static DispatchAsync dispatcher;
 	@Inject static EventBus eventBus;
 	@Inject static PlaceManager placeManager;
+	static Version version;
 
 	static String organizationName;
 	
@@ -80,7 +81,8 @@ public class AppContext {
 			@Override
 			public void processResult(GetContextRequestResult result) {
 				setUserValues(result.getUser());
-				eventBus.fireEvent(new ContextLoadedEvent(result.getUser()));
+				version = result.getVersion();
+				eventBus.fireEvent(new ContextLoadedEvent(result.getUser(), version));
 			}			
 		});
 	}

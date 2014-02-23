@@ -49,6 +49,7 @@ public class ProcessItemView extends ViewImpl implements
 	@Inject
 	public ProcessItemView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		
 		aImageName.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -58,6 +59,8 @@ public class ProcessItemView extends ViewImpl implements
 				}
 			}
 		});
+		
+		aImageName.setWidth("71%");
 	}
 
 	@Override
@@ -93,6 +96,8 @@ public class ProcessItemView extends ViewImpl implements
 		spnName.setInnerText(name);
 		spnName.setTitle(description);
 		spnProcessId.setInnerText(processId);
+		spnProcessId.setTitle(processId);
+		
 		
 		if(docTypes!=null && !docTypes.isEmpty()){
 			StringBuffer docs = new StringBuffer();
@@ -105,6 +110,7 @@ public class ProcessItemView extends ViewImpl implements
 		
 		if(fileName!=null)
 			spnFileName.setInnerText(fileName);
+			spnFileName.setTitle(fileName);
 		
 		if(lastModified!=null)
 			spnLastModified.setInnerText(DateUtils.CREATEDFORMAT.format(lastModified));
@@ -127,7 +133,7 @@ public class ProcessItemView extends ViewImpl implements
 		case INACTIVE:
 			aActivate.removeStyleName("hide");
 			aDeactivate.addStyleName("hide");
-			spnStatus.setClassName("label label-warning arrowed-in");
+			spnStatus.setClassName("label label-default arrowed-in");
 			break;
 			
 		case RUNNING:

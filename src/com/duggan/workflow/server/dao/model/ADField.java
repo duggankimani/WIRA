@@ -16,11 +16,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.hibernate.engine.Cascade;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import com.duggan.workflow.shared.model.DataType;
 
+
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADField extends PO implements HasProperties{
 
@@ -29,6 +36,7 @@ public class ADField extends PO implements HasProperties{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -39,10 +47,13 @@ public class ADField extends PO implements HasProperties{
 	@Column(length=255)
 	private String caption;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="formid",referencedColumnName="id")
 	private ADForm form;
 	
+	@XmlElementWrapper(name="properties")
+	@XmlElement(name="property")
 	@OneToMany(mappedBy="field", cascade=CascadeType.ALL)
 	private Collection<ADProperty> properties = new HashSet<>();
 	
@@ -55,10 +66,13 @@ public class ADField extends PO implements HasProperties{
 	
 	private Integer position;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY, optional=true)
 	@JoinColumn(name="parentid",referencedColumnName="id")
 	private ADField parentField;
 	
+	@XmlElementWrapper(name="grid-columns")
+	@XmlElement(name="field")
 	@OneToMany(mappedBy="parentField", cascade=CascadeType.ALL)
 	private Collection<ADField> fields = new HashSet<>();
 	
@@ -90,10 +104,6 @@ public class ADField extends PO implements HasProperties{
 		return properties;
 	}
 
-	public void setProperties(Collection<ADProperty> properties) {
-		this.properties = properties;
-	}
-
 	public ADValue getValue() {
 		return value;
 	}
@@ -118,6 +128,46 @@ public class ADField extends PO implements HasProperties{
 		property.setField(this);
 	}
 	
+	public DataType getType() {
+		return type;
+	}
+
+	public void setType(DataType type) {
+		this.type = type;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public Collection<ADField> getFields() {
+		return fields;
+	}
+
+	public void setFields(Collection<ADField> fields) {
+		this.fields = fields;
+	}
+
+	public ADField getParentField() {
+		return parentField;
+	}
+
+	public void setParentField(ADField parentField) {
+		this.parentField = parentField;
+	}
+
+	public void addField(ADField adfield) {
+		adfield.setParentField(this);
+		fields.add(adfield);
+	}
+	
+	/**
+	 * Two properties sharing the same name are equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj==null)
@@ -125,23 +175,9 @@ public class ADField extends PO implements HasProperties{
 		
 		ADField field = (ADField)obj;
 		
-		if(id==null ^ field.getId()==null){
-			return false;
-		}
-		
-		if(id!=null){
-			if(id.equals(field.getId())){
-				return true;
-			}
-		}
-		
-		if(name==null ^ field.name==null){
-			return false;
-		}
-		
 		if(name!=null){
-			if(!name.equals(field.name)){
-				return false;
+			if(name.equals(field.name)){
+				return true;
 			}
 		}
 		
@@ -197,41 +233,5 @@ public class ADField extends PO implements HasProperties{
 		return hashcode;
 	}
 
-	public DataType getType() {
-		return type;
-	}
-
-	public void setType(DataType type) {
-		this.type = type;
-	}
-
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
-
-	public Collection<ADField> getFields() {
-		return fields;
-	}
-
-	public void setFields(Collection<ADField> fields) {
-		this.fields = fields;
-	}
-
-	public ADField getParentField() {
-		return parentField;
-	}
-
-	public void setParentField(ADField parentField) {
-		this.parentField = parentField;
-	}
-
-	public void addField(ADField adfield) {
-		adfield.setParentField(this);
-		fields.add(adfield);
-	}
 	
 }

@@ -2,9 +2,12 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import java.util.List;
 
+import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.formbuilder.upload.FormImportView;
+import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
@@ -14,13 +17,16 @@ import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHa
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
+import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.CreateFormResponse;
+import com.duggan.workflow.shared.responses.ExportFormResponse;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetFormsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -28,8 +34,11 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
@@ -45,6 +54,8 @@ public class FormBuilderPresenter extends
 		HasClickHandlers getNewButton();
 		HasClickHandlers getDeleteButton();
 		HasClickHandlers getCloneButton();
+		HasClickHandlers getExportButton();
+		HasClickHandlers getImportButton();
 		InlineLabel getFormLabel();
 		Form getForm();
 		HasValueChangeHandlers<Form> getFormDropDown();
@@ -54,6 +65,7 @@ public class FormBuilderPresenter extends
 		void activatePalette();
 		void registerInputDrag();
 		void clear();
+		String getFormName();
 	}
 
 	@Inject
@@ -136,8 +148,72 @@ public class FormBuilderPresenter extends
 				
 				final Form form = getView().getForm();				
 				Form clone = form.clone();
-				System.err.println(">>>>> :: "+clone+" \n["+clone.getFields()+"] \n"+clone.getProperties());
+				//System.err.println(">>>>> :: "+clone+" \n["+clone.getFields()+"] \n"+clone.getProperties());
 				saveForm(clone);
+			}
+		});
+		
+		getView().getImportButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				final FormImportView view = new FormImportView();
+				view.setAvoidRepeatFiles(false);
+				AppManager.showPopUp("Import Form", view, 
+						new OnOptionSelected() {
+							
+							@Override
+							public void onSelect(String name) {
+								if(name.equals("Save")){
+									loadForms();
+								}else{
+									view.cancelImport();
+								}
+							}
+						}, "Save", "Cancel");
+			}
+		});
+		
+		getView().getExportButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				assert formId!=null;
+				dispatcher.execute(new ExportFormRequest(formId), 
+						new TaskServiceCallback<ExportFormResponse>() {
+							@Override
+							public void processResult(
+									ExportFormResponse aResponse) {
+								
+								String xml = aResponse.getXml();
+								
+								InlineLabel area = new InlineLabel(xml);
+								
+								AppManager.showPopUp("Export '"+getView().getFormName()+"'", 
+										area,
+										new OnOptionSelected() {
+											
+											@Override
+											public void onSelect(String name) {
+												if(name.equals("Save To File")){
+													UploadContext context = new UploadContext("getreport");
+													context.setContext("formId", formId+"");
+													context.setContext("ACTION", "EXPORTFORM");
+													String url = context.toUrl();
+													
+													String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+													if(moduleUrl.endsWith("/")){
+														moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+													}
+													url = url.replace("/", "");
+													moduleUrl =moduleUrl+"/"+url;
+													Window.open(moduleUrl, getView().getFormName(), "");
+												}
+											}
+										}, "Save To File", "Done");
+							}
+						});
+				
 			}
 		});
 	}
@@ -166,7 +242,7 @@ public class FormBuilderPresenter extends
 	protected void loadForm(Long id) {
 		GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL,
 				id, true);
-
+		setFormId(id);
 		dispatcher.execute(request,
 				new TaskServiceCallback<GetFormModelResponse>() {
 					@Override

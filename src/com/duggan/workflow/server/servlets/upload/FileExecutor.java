@@ -31,6 +31,10 @@ public abstract class FileExecutor {
 		
 		return receivedFiles;
 	}
+	
+	void registerFile(HttpServletRequest req, String fieldName, Long id){
+		getSessionFiles(req, true).put(fieldName, id);
+	}
 
 	public void removeItem(HttpServletRequest request, String fieldName) {
 		Hashtable<String, Long> receivedFiles = getSessionFiles(request, false);

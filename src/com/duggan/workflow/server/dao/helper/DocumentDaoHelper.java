@@ -15,6 +15,7 @@ import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Doc;
@@ -57,13 +58,20 @@ public class DocumentDaoHelper {
 	 * @param document
 	 * 
 	 * @return Document
+	 * @throws InvalidSubjectExeption 
 	 */
-	public static Document save(Document document) {
+	public static Document save(Document document) throws InvalidSubjectExeption {
 
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		// save
 		if(document.getId()==null){
+			if(exists(document.getSubject())){
+				throw new InvalidSubjectExeption("Document '"+
+						document.getSubject()+"' already exists, this number cannot be reused");
+				
+			}
+			
 			if(document.getSubject()==null){
 				ADDocType type = dao.getDocumentTypeByName(document.getType().getName());
 				document.setSubject(dao.generateDocumentSubject(type));
@@ -468,6 +476,11 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DetailModel model = dao.getDetailById(line.getId());
 		dao.delete(model);
+	}
+	
+	public static boolean exists(String subject){
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		return dao.exists(subject);
 	}
 
 }

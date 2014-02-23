@@ -17,12 +17,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DataType;
 
+
+@XmlRootElement(name="property")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADProperty extends PO{
 
@@ -31,6 +39,7 @@ public class ADProperty extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -45,10 +54,12 @@ public class ADProperty extends PO{
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fieldid",referencedColumnName="id", nullable=true)
 	private ADField field;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="formid", referencedColumnName="id", nullable=true)
 	private ADForm form;
@@ -125,20 +136,9 @@ public class ADProperty extends PO{
 		if(obj==null)
 			return false;
 		
-		
 		ADProperty other = (ADProperty)obj;
 		
-		if(this==other){
-			return true;
-		}
-		
-		if(!(other.id==null ^ id==null) ){
-			if(id!=null && id.equals(other.id)){
-				return true;
-			}
-		}
-		
-		if(name==null ^ other.name==null){
+		if(name==null || other.name==null){
 			//one has a name, the other doesnt - XOR
 			return false;
 		}
@@ -185,10 +185,10 @@ public class ADProperty extends PO{
 		int hashcode = 7;
 		
 		if(name!=null)
-			hashcode += hashcode*name.hashCode();
+			hashcode += 7*name.hashCode();
 		
-		if(field!=null)
-			hashcode += hashcode*field.hashCode();
+		if(id!=null)
+			hashcode += 7*id.hashCode();
 		
 		if(hashcode==7)
 			return super.hashCode();
@@ -199,6 +199,13 @@ public class ADProperty extends PO{
 	@Override
 	public String toString() {
 		
-		return super.toString();
+		String str = "id = "+id+
+				"; name= "+name+
+				((value==null || value.isEmpty()||value.get(0)==null)?"": "; value= "+value.get(0).getStringValue())+
+				(field==null? "": "; fieldid=["+field.getId()+" : "+field.getName()+"]")+
+				(form==null? "": "; formid=["+form.getId()+" : "+form.getName()+"]");
+		
+		return str;
 	}
+
 }

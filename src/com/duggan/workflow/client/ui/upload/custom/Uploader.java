@@ -52,6 +52,16 @@ public class Uploader extends Composite {
 		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
 		uploader.addOnStartUploadHandler(uploadStarted);
+		
+	}
+	
+	public Uploader(UploadContext ctx){
+		this();
+		setContext(ctx);
+	}
+	
+	public void setAvoidRepeatFiles(boolean allow){
+		uploader.setAvoidRepeatFiles(allow);
 	}
 	
 	public void setContext(UploadContext context){

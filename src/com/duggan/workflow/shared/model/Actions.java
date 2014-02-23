@@ -8,7 +8,6 @@ package com.duggan.workflow.shared.model;
  * 
  */
 public enum Actions {
-
 	CLAIM,
 	START,
 	SUSPEND,		

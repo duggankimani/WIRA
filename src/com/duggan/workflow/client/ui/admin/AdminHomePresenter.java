@@ -11,6 +11,7 @@ import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
@@ -132,7 +133,7 @@ public class AdminHomePresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-
+		
 		String name = request.getParameter("page",
 				ADMINPAGES.DASHBOARD.toString());
 
@@ -142,8 +143,12 @@ public class AdminHomePresenter extends
 			pages = ADMINPAGES.valueOf(name.toUpperCase());
 		}catch(Exception e){
 			History.newItem(NameTokens.adminhome);
+			return;
 		}
 
+		//reload alerts
+		fireEvent(new LoadAlertsEvent());
+		
 		this.page = pages;
 
 		switch (pages) {

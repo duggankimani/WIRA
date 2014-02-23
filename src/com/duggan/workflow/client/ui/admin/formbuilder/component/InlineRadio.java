@@ -15,9 +15,11 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.shared.DirectionEstimator;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class InlineRadio extends FieldWidget implements IsSelectionField{
@@ -88,7 +90,14 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 
 	private RadioButton getRadio(KeyValuePair pair) {
 		RadioButton button = new RadioButton(getPropertyValue(SELECTIONTYPE));
-		button.getElement().setId("radiobtns");
+		
+		String name = pair.getName();
+		if(name==null){
+			name="radiobtns";
+		}
+		
+		button.addStyleName("radiobtns");
+		button.getElement().setId(name);
 		button.setDirectionEstimator(true);
 		button.setText(pair.getValue());
 		button.setFormValue(pair.getKey());
@@ -105,7 +114,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 
 	protected void valueChange(RadioButton source, boolean value) {
 		if(value){
-			fieldValue = new StringValue(null, source.getName(), source.getFormValue());
+			fieldValue = new StringValue(field.getLastValueId(), source.getName(), source.getFormValue());
 		}else{
 			fieldValue=null;
 		}
@@ -142,6 +151,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 			RadioButton txtBox= (RadioButton)vPanel.getWidget(i);
 			String key = txtBox.getFormValue();
 			
+			if(val!=null)
 			if(val.equals(key)){
 				txtBox.setValue(true);
 				return;
@@ -152,5 +162,26 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	@Override
 	public Value getFieldValue() {
 		return fieldValue;
+	}
+	
+	@Override
+	public Widget getComponent(boolean small) {
+		return vPanel;
+	}
+	
+	@Override
+	public void setReadOnly(boolean isReadOnly) {
+		Boolean isComponentReadOnly = getValue(READONLY)==null? false : (Boolean)getValue(READONLY);
+		if(isComponentReadOnly==null){
+			isComponentReadOnly=false;
+		}
+		
+		this.readOnly = isReadOnly && !isComponentReadOnly;
+		int count = vPanel.getWidgetCount();
+		for(int i=0; i<count; i++){
+			RadioButton btn = (RadioButton)vPanel.getWidget(i);
+			btn.setEnabled(!readOnly);
+			//btn.set
+		}
 	}
 }

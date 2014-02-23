@@ -107,7 +107,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		}
 		
 		if(value!=null){
-			return new StringValue(value);
+			return new StringValue(field.getLastValueId(), field.getName(), value);
 		}
 		
 		return null;

@@ -93,7 +93,7 @@ public class DateField extends FieldWidget {
 			return null;
 		}
 		
-		return new DateValue(null, field.getName(), dt);
+		return new DateValue(field.getLastValueId(), field.getName(), dt);
 	}
 	
 	@Override

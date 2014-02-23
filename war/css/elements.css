@@ -78,7 +78,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#f7f7f7',GradientType=0 );	
 }
 .btn-group .dropdown-menu > li > a {
-	font-size: 12px;
+	font-size: 14px;
 }
 
 
@@ -569,6 +569,7 @@
 	margin-left: 6px;
 	vertical-align: top;
 	line-height: 30px;
+	width: 84%;
 }
 
 .dialog .body span.input-group-addon {

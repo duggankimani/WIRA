@@ -131,7 +131,7 @@ public class TextField extends FieldWidget {
 			return null;
 		
 		
-		return new StringValue(value);
+		return new StringValue(field.getLastValueId(),field.getName(),value);
 	}
 	
 	@Override

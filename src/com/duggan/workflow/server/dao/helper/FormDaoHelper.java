@@ -1,10 +1,16 @@
 package com.duggan.workflow.server.dao.helper;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +25,7 @@ import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.LookupLoader;
 import com.duggan.workflow.server.db.LookupLoaderImpl;
+import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
@@ -32,6 +39,7 @@ import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
 public class FormDaoHelper {
 
 	static final Logger logger= Logger.getLogger(FormDaoHelper.class);
@@ -384,6 +392,7 @@ public class FormDaoHelper {
 		}
 		
 		//copy
+		adfield.getProperties().size();//force load?
 		getADProperties(field.getProperties(), adfield);
 		
 		adfield.setType(field.getType());
@@ -404,8 +413,27 @@ public class FormDaoHelper {
 		//List<KeyValuePair> pairs = field.getSelectionValues();
 		String selectionKey=null;
 		
+		if(field.getType().equals(DataType.GRID)){
+			if(field.getName()==null || field.getName().isEmpty()){
+				field.setName(UUID.randomUUID().toString());
+			}
+		}
+		
 		for(Property prop: field.getProperties()){
-			if(prop.getName().equals(com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE)){
+			if(field.getType()==DataType.GRID && prop.getName().equals(NAME)){
+				//mostly for grids
+				Value value = prop.getValue();
+				String name=null;
+				if(value!=null){
+					name = value.getValue()==null? null : value.getValue().toString();
+				}
+				
+				if(name==null || name.isEmpty()){
+					prop.setValue(new StringValue(null, NAME, field.getName()));
+				}
+			}
+			
+			if(prop.getName().equals(SELECTIONTYPE)){
 				Value value = prop.getValue();
 				if(value!=null){
 					selectionKey = value.getValue()==null? null : value.getValue().toString();
@@ -440,7 +468,11 @@ public class FormDaoHelper {
 
 		if(propertiesFrom!=null){
 			for(Property prop: propertiesFrom){
-				formComponent.addProperty(get(prop));
+				
+				ADProperty property = get(prop);
+				//System.err.println("Save: "+property);
+				
+				formComponent.addProperty(property);
 			}
 		}
 	}
@@ -459,18 +491,20 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		
 		ADProperty adprop = new ADProperty();
-		adprop.setCaption(property.getCaption());
 		
 		if(property.getId()!=null){
 			adprop = dao.getProperty(property.getId());
 		}
 		
-		if(property.getFieldId()!=null)
-		adprop.setField(dao.getField(property.getFieldId()));
-		
-		if(property.getFormId()!=null)
+		if(property.getFormId()!=null){
 			adprop.setForm(dao.getForm(property.getFormId()));
+		}
 		
+		if(property.getFieldId()!=null){
+			adprop.setField(dao.getField(property.getFieldId()));
+		}
+		
+		adprop.setCaption(property.getCaption());
 		adprop.setId(property.getId());
 		adprop.setName(property.getName());
 		adprop.setType(property.getType());
@@ -502,14 +536,13 @@ public class FormDaoHelper {
 		return getValue(dao.getValue(advalue.getId()), value.getDataType());
 	}
 
-	public static ADValue getValue(ADValue previousValue, Value value) {
+	public static ADValue getValue(ADValue advalue, Value value) {
 		if(value==null)
 			return null;
 		
-		ADValue advalue = new ADValue();
-		if(previousValue!=null){
-			advalue = previousValue;
-		}else{
+		if(advalue==null){
+			advalue = new ADValue();
+		}else if(advalue.getId()==null && value.getId()!=null){
 			advalue.setId(value.getId());
 		}
 		
@@ -547,6 +580,7 @@ public class FormDaoHelper {
 		case MULTIBUTTON:
 		case SELECTBASIC:
 		case SELECTMULTIPLE:
+			//System.err.println("Save Value >> "+value.getValue());
 			advalue.setStringValue((String)value.getValue());			
 			break;
 		}
@@ -627,5 +661,115 @@ public class FormDaoHelper {
 			
 			dao.save(pair);
 		}
+	}
+	
+	/**
+	 * Converts Form into an XML representation
+	 * 
+	 * @param formId
+	 * @return
+	 */
+	public static String exportForm(Long formId){
+		FormDaoImpl dao = DB.getFormDao();
+		ADForm form = dao.getForm(formId);
+		
+		return exportForm(form);
+	}
+	
+	public static String exportForm(ADForm form){
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		String out = null;
+		try{
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			StringWriter writer = new StringWriter();
+			marshaller.marshal(form, writer);
+
+			out = writer.toString();
+			writer.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return out;
+	}
+	
+	
+	public static Long importForm(String xml){
+		FormDaoImpl dao = DB.getFormDao();
+		ADForm form = transform(xml);
+
+		assert form!=null;
+		
+		String name = form.getName();
+		String caption = form.getCaption();
+		boolean exists = false;
+		if(dao.exists(form.getName())){
+			exists = true;
+			form.setName(name+"00000");
+			form.setCaption(caption+"0000");
+		}
+		
+		Collection<ADProperty> properties = form.getProperties();
+		for(ADProperty prop: properties){
+			prop.setForm(form);
+			
+			if(prop.getValue()!=null){
+				prop.getValue().setProperty(prop);
+			}
+		}
+		
+		for(ADField field: form.getFields()){
+			field.setForm(form);
+			
+			if(field.getProperties()!=null)
+			for(ADProperty prop: field.getProperties()){
+				prop.setField(field);
+				if(prop.getValue()!=null){
+					prop.getValue().setProperty(prop);
+				}
+			}
+			
+			if(field.getFields()!=null)
+			for(ADField child: field.getFields()){
+				child.setParentField(field);
+			}
+			
+			if(field.getValue()!=null){
+				field.getValue().setField(field);
+			}
+		}
+		
+		dao.save(form);
+		
+		if(exists){
+			//update
+			form.setName(name+"-"+form.getId());
+			form.setCaption(caption+"-"+form.getId());
+			dao.save(form);
+		}
+		
+		return form.getId();
+	}
+	
+	public static ADForm transform(String xml){
+
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		
+		ADForm form=null;
+		
+		try{
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			
+			Object obj = unmarshaller.unmarshal(new StringReader(xml));
+			
+			form = (ADForm)obj;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return form;
 	}
 }

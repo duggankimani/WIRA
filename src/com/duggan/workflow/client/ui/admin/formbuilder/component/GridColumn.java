@@ -42,7 +42,7 @@ PropertyChangedHandler{
 		
 		this.fieldWidget = FieldWidget.getWidget(field.getType(), field, true);
 		fieldWidget.setHeight("1px");
-		fieldWidget.setWidth("1px");
+		fieldWidget.setWidth("1px");//attached but not visible : So it listens to events
 		panel.add(fieldWidget);
 		
 	}

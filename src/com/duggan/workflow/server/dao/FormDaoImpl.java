@@ -74,16 +74,28 @@ public class FormDaoImpl extends BaseDaoImpl {
 			if(props!=null)
 				for(ADProperty prop: props){
 					if(prop.getName().equals("NAME")){
-						if(prop.getValue()==null){
+						
+						if(prop.getValue()==null || 
+								(prop.getValue().getStringValue()==null || 
+								!prop.getValue().getStringValue().equals(form.getName()))){
 							ADValue value = new ADValue();
 							value.setStringValue(form.getName());
 							prop.setValue(value);
 						}
 					}
+					
 					if(prop.getName().equals("CAPTION")){
-						if(prop.getValue()==null){
+						
+						if(prop.getValue()==null || (prop.getValue().getStringValue()==null ||
+								!prop.getValue().getStringValue().equals(form.getCaption()))){
+							
 							ADValue value = new ADValue();
-							value.setStringValue(form.getName());
+							if(form.getCaption()!=null){
+								value.setStringValue(form.getCaption());
+							}else{
+								value.setStringValue(form.getName());
+							}
+							
 							prop.setValue(value);
 						}
 					}
@@ -203,5 +215,14 @@ public class FormDaoImpl extends BaseDaoImpl {
 		}
 		
 		return null;
+	}
+
+	public boolean exists(String name) {
+		String sql = "select count(id) from ADForm f where f.name=:formName";
+		Query query = em.createQuery(sql).setParameter("formName", name);
+		
+		Long result = (Long)query.getSingleResult();
+		
+		return result>0;
 	}
 }
