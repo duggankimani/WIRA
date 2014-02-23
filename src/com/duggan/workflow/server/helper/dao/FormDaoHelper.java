@@ -546,7 +546,7 @@ public class FormDaoHelper {
 		case MULTIBUTTON:
 		case SELECTBASIC:
 		case SELECTMULTIPLE:
-			System.err.println("Save Value >> "+value.getValue());
+			//System.err.println("Save Value >> "+value.getValue());
 			advalue.setStringValue((String)value.getValue());			
 			break;
 		}
