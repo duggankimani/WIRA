@@ -61,7 +61,10 @@ public class LookupLoaderImpl implements LookupLoader{
 			}
 		}; 
 		
-		return exec.executeDbCall();
+		List<KeyValuePair> pair = exec.executeDbCall();
+		logger.warn("Loading SQL KeyValuePairs using DS: "+dataSourceName+" :: "+pair);
+		
+		return pair;
 	}
 
 	

@@ -1,8 +1,5 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLDS;
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLSELECT;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,12 +125,10 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 
 	@Override
 	public void setSelectionValues(List<KeyValuePair> values) {
-		if(getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null){
-			if(popUpActivated){
-				//design mode
-				field.setSelectionValues(new ArrayList<KeyValuePair>());
-			}
-			
+		if(showShim && (getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null)){
+			//design mode
+			values =new ArrayList<KeyValuePair>();
+			 
 			//design mode; and loaded from a different system/subsystem
 			//the user doesnt see these loaded values i.e the drop down cant show the values
 			//loaded in design mode
@@ -141,7 +136,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 			//we need to disable this capability so that in case the user changes from db loading
 			//to manual listing, the web browser does not sending data loaded from another subsystem
 			// as new data provided manually
-			return;
 		}
 		
 		if(values!=null){
@@ -150,7 +144,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		
 		//design mode values set here before save is called
 		//iff these we manually entered/ not referenced from another ds
-		
 		
 		field.setSelectionValues(values);
 		
