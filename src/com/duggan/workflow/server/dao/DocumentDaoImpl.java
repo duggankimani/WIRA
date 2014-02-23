@@ -659,5 +659,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		return true;
 	}
+
+	public boolean exists(String subject) {
+
+		String sql = "select count(id) from DocumentModel d where d.subject=:subject";
+		Query query = em.createQuery(sql).setParameter("subject", subject);
+		
+		Long result = (Long)query.getSingleResult();
+		
+		return result>0;
+	}
 	
 }
