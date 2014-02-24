@@ -1,16 +1,17 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+//import java.util.StringTokenizer;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.events.OperandChangedEvent;
+import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
@@ -18,6 +19,7 @@ import com.duggan.workflow.client.ui.events.ResetFormPositionEvent.ResetFormPosi
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -38,23 +40,29 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public abstract class FieldWidget extends AbsolutePanel implements
 		HasDragHandle, PropertyChangedHandler, HasProperties,
-		SavePropertiesHandler, ResetFormPositionHandler {
+		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler{
 
 	private FocusPanel shim = new FocusPanel();
 	protected long id = System.currentTimeMillis();
 	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
 	
 	Field field = new Field();
+	//Design Mode Properties
 	protected boolean showShim = true;
 	protected boolean readOnly=false;
 	protected boolean popUpActivated = false;
 	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	
+	//Formula handling properties
+	List<String> dependentFields = new ArrayList<String>();
+	boolean isObserver = false;
+	boolean isObservable=false;
+	Long detailId=null;
 	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
@@ -217,15 +225,34 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		initShim();	
 		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
+
+		if(isObserver){
+			//System.err.println("Registering observer.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
+			addRegisteredHandler(OperandChangedEvent.TYPE, this);
+		}
 		
 		if (!popUpActivated) {
 			popUpActivated = true;
 			addRegisteredHandler(ResetFormPositionEvent.TYPE, this);
 			activateShimHandler();
 		}
+		
+		if(!showShim){
+			//runtime
+			//Check if this fields value is relied upon by other fields
+			
+			isObservable = ENV.containsObservable(field.getName(),field.getParentId());
+			if(isObservable){
+				//System.err.println("Registering observable.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
+				registerValueChangeHandler();
+			}
+			
+		}
 		//register default events
 		
 	}
+	
+	protected void registerValueChangeHandler(){}
 	
 	/**
 	 * Remove the shim to allow the widget to size itself when reattached.
@@ -452,6 +479,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}else{
 			setValue(null);
 		}
+		
+		String formula = getPropertyValue(FORMULA);
+		if(formula!=null){
+			setFormula(formula);
+		}
 
 	}
 
@@ -583,7 +615,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		return widget;
 	}
-
+	
 	public void delete() {
 		if (field.getId() != null) {
 			AppContext.getDispatcher().execute(
@@ -707,4 +739,60 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public Widget getComponent(boolean small) {
 		return null;
 	}
+	
+	protected void setFormula(String formula){
+		
+		if(formula==null || formula.isEmpty()){
+			return;
+		}
+		
+		isObserver=true;
+		//System.err.println(formula);
+		String regex = "[(\\+)+|(\\*)+|(\\/)+|(\\-)+|(\\=)+|(\\s)+]";
+		String [] tokens= formula.split(regex);
+		for(String token: tokens){
+			if(token!=null && !token.isEmpty()){
+				dependentFields.add(token);
+			}
+		}
+		
+		ENV.registerObservable(dependentFields);
+	}
+	
+	public List<String> getDependentFields(){
+		return dependentFields;
+	}
+	
+	@Override
+	public void onOperandChanged(OperandChangedEvent event) {
+		String fieldName = event.getSourceField();
+		if(!dependentFields.contains(fieldName)){
+			return;
+		}
+		//System.err.println(ENV.getValues());
+		
+		if(ENV.isParent(fieldName, field.getParentId())){
+			Long detailId = event.getDetailId();
+			Long fieldDetailId = field.getDetailId();
+			
+			if(detailId!=null && fieldDetailId!=null){
+				if(!detailId.equals(fieldDetailId)){
+					//two different rows
+					return;
+				}
+			}
+		}
+		
+
+		//System.err.println(field.getName()+" -Received Event Change from> "+fieldName);
+	}
+
+	public void manualLoad() {
+		onLoad();
+	}
+
+	public void manualUnload() {
+		onUnload();
+	}
+
 }

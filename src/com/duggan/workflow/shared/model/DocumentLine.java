@@ -89,7 +89,7 @@ public class DocumentLine implements Serializable {
 		return super.equals(obj);
 	}
 
-	public DocumentLine clone(){
+	public DocumentLine clone(boolean fullClone){
 		DocumentLine line = new DocumentLine();
 		line.setDocumentId(documentId);
 		line.setName(name);
@@ -98,7 +98,7 @@ public class DocumentLine implements Serializable {
 		for(String key:values.keySet()){
 			Value val = values.get(key);
 			if(val!=null)
-				vals.put(key, val.clone());
+				vals.put(key, val.clone(fullClone));
 		}
 		line.setValues(vals);
 		

@@ -45,11 +45,15 @@ public class Form extends FormModel implements Listable, Serializable{
 	}
 	
 	public Form clone(){
+		return clone(false);
+	}
+	
+	public Form clone(boolean fullClone){
 		Form form = new Form(null, null, null);
-		
+				
 		if(properties!=null)
 		for(Property prop: properties){
-			Property clone = prop.clone();
+			Property clone = prop.clone(fullClone);
 			clone.setValue(null);
 			form.addProperty(clone);
 		}

@@ -18,5 +18,6 @@ public interface Value extends Serializable{
 	
 	DataType getDataType();
 
-	Value clone();
+	Value clone(boolean clone);
+
 }

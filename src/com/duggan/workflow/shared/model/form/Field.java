@@ -28,6 +28,8 @@ public class Field extends FormModel{
 	private int position;
 	private Long parentId;
 	private List<Field> fields = new ArrayList<Field>();
+	private transient String qualifiedName= null;
+	private transient Long detailId = null;
 	
 	public Field() {
 	}
@@ -129,6 +131,10 @@ public class Field extends FormModel{
 	}
 	
 	public Field clone(){
+		return clone(false);
+	}
+	
+	public Field clone(boolean fullClone){
 		Field field = new Field();
 		field.setCaption(caption);
 		field.setName(name);
@@ -136,9 +142,15 @@ public class Field extends FormModel{
 		field.setType(type);
 		field.setFormId(null);
 		field.setId(null);
+		
+		if(fullClone){
+			field.setFormId(formId);
+			field.setId(Id);
+			field.setParentId(parentId);
+		}
 	
 		if(value!=null){
-			field.setValue(value.clone());
+			field.setValue(value.clone(fullClone));
 		}
 		
 		field.setSelectionValues(getSelectionValues());
@@ -148,7 +160,7 @@ public class Field extends FormModel{
 		}
 		
 		for(Property p: properties){
-			field.addProperty(p.clone());
+			field.addProperty(p.clone(fullClone));
 		}
 		
 		return field;
@@ -201,4 +213,24 @@ public class Field extends FormModel{
 		
 		return null;
 	}
+
+	public String getQualifiedName() {
+		if(qualifiedName==null){
+			return name;
+		}
+		return qualifiedName;
+	}
+
+	public void setQualifiedName(String qualifiedName) {
+		this.qualifiedName = qualifiedName;
+	}
+
+	public Long getDetailId() {
+		return detailId;
+	}
+
+	public void setDetailId(Long detailId) {
+		this.detailId = detailId;
+	}
+
 }

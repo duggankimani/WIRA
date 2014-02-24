@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.client.ui.component.DoubleField;
+import com.duggan.workflow.client.ui.events.OperandChangedEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
@@ -43,6 +45,7 @@ public class NumberField extends FieldWidget{
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(FORMULA, "Formula", DataType.STRING));
 		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
 				new KeyValuePair("left", "Left"),
 				new KeyValuePair("center", "Center"),
@@ -102,6 +105,20 @@ public class NumberField extends FieldWidget{
 		
 		//name.equals()
 
+	}
+
+	
+	protected void registerValueChangeHandler(){
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Double> event) {
+				Double value = event.getValue();
+				//System.err.println("Change event fired -> "+value);
+				AppContext.fireEvent(new OperandChangedEvent(field.getName(), value, field.getDetailId()));
+			}
+			
+		});
 	}
 	
 	@Override

@@ -56,8 +56,12 @@ public class LongValue implements Value{
 		return DataType.INTEGER;
 	}
 
-	public LongValue clone(){
-		LongValue lvalue = new LongValue(id, key, value);
+	public LongValue clone(boolean fullClone){
+		Long identify=null;
+		if(fullClone){
+			identify = id;
+		}
+		LongValue lvalue = new LongValue(identify, key, value);
 		return lvalue;
 	}
 }

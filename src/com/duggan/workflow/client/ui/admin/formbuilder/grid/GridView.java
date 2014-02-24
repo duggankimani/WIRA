@@ -33,13 +33,14 @@ public class GridView extends Composite {
 	
 	Collection<Field> columnConfigs = new ArrayList<Field>();
 	
-	public GridView(Collection<Field> columns) {	
+	public GridView(Collection<Field> columns, Long parentId) {	
 		initWidget(uiBinder.createAndBindUi(this));
 		setNewRecordHandlerText("Add Row");	
 		
 		if(columns!=null){
 			columnConfigs = columns;		
 			for(Field field:columns){
+				field.setParentId(parentId);
 				header.add(createHeader(field));
 			}
 		}
