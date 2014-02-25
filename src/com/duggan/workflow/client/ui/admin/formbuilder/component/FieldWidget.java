@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.matheclipse.parser.client.Parser;
+import org.matheclipse.parser.client.ast.ASTNode;
+import org.matheclipse.parser.client.eval.ComplexEvaluator;
+import org.matheclipse.parser.client.eval.ComplexVariable;
+import org.matheclipse.parser.client.eval.DoubleEvaluator;
+import org.matheclipse.parser.client.eval.DoubleVariable;
+import org.matheclipse.parser.client.eval.IDoubleValue;
+import org.matheclipse.parser.client.math.Complex;
 //import java.util.StringTokenizer;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
@@ -21,6 +30,7 @@ import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHa
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -383,7 +393,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	protected abstract DataType getType();
 
 	public void setValue(Object value) {
-
+		
 	}
 
 	public void setFormId(Long formId) {
@@ -748,10 +758,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		isObserver=true;
 		//System.err.println(formula);
-		String regex = "[(\\+)+|(\\*)+|(\\/)+|(\\-)+|(\\=)+|(\\s)+]";
+		String regex = "[(\\+)+|(\\*)+|(\\/)+|(\\-)+|(\\=)+|(\\s)+(\\[)+|(\\])+|(,)+]";
 		String [] tokens= formula.split(regex);
+		
+		String digitsOnlyRegex = "[-+]?[0-9]*\\.?[0-9]+";//isNot a number
 		for(String token: tokens){
-			if(token!=null && !token.isEmpty()){
+			if(token!=null && !token.isEmpty() && !token.matches(digitsOnlyRegex)){
 				dependentFields.add(token);
 			}
 		}
@@ -763,18 +775,27 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		return dependentFields;
 	}
 	
+	/**
+	 * Fired whenever a formula operand(a field used in the formular)
+	 * changes its value
+	 */
 	@Override
 	public void onOperandChanged(OperandChangedEvent event) {
-		String fieldName = event.getSourceField();
+		String fieldName = event.getSourceField(); //Raw fieldName without detailid
+		
 		if(!dependentFields.contains(fieldName)){
 			return;
 		}
-		//System.err.println(ENV.getValues());
 		
+		/*
+		 * check if the source and target are grid fields
+		 * to ensure row wise updates
+		 */
 		if(ENV.isParent(fieldName, field.getParentId())){
+			//Same ParentId = Same Detail Grid 
 			Long detailId = event.getDetailId();
 			Long fieldDetailId = field.getDetailId();
-			
+				
 			if(detailId!=null && fieldDetailId!=null){
 				if(!detailId.equals(fieldDetailId)){
 					//two different rows
@@ -783,8 +804,98 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 		}
 		
+		/*
+		 * Aggregate Functions - operand Substitution
+		 */
+		List<String> paramFields = new ArrayList<String>();
+		paramFields.addAll(dependentFields);
+		
+		String formular = parseAggregate(paramFields,getPropertyValue(FORMULA));
+		         
+		/*
+		 * Value substitution into the evaluating engine
+		 */
+        ComplexEvaluator engine = new ComplexEvaluator();
+        for(String fld: paramFields){
+        	Object val = ENV.getValue(fld);
+        	
+        	if(field.getParentId()!=null && val==null){
+        		//fieldName|DetailId
+        		val=ENV.getValue(fld+Field.getSeparator()+field.getDetailId());
+        	}
+        	
+        	if(val!=null && (val instanceof Double)){
+        		System.out.println(fld+" = "+val);
+        		
+	        	ComplexVariable dv = new ComplexVariable((Double)val);
+	        	engine.defineVariable(fld, dv);	        	
+        	}
+        }
+        
+        if(formular.startsWith("=")){
+        	formular = formular.substring(1, formular.length());
+        }
+        
+        Double result=null;
+        try{
+        	System.err.println("Calculating> "+field.getName()+" = "+formular);
+        	Complex x = engine.evaluate(formular);
+        	result = x.abs();
+	        setValue(result);
+        }catch(Exception e){
+        	e.printStackTrace();
+        	setValue(result=new Double(0.0));
+        }finally{
+        	boolean contained = ENV.containsObservable(field.getName());
+	        if(contained){
+	        	//potential for an endless loop
+	        	AppContext.fireEvent(new OperandChangedEvent(field.getName(), result, field.getDetailId()));
+	        }
+        }
+	}
 
-		//System.err.println(field.getName()+" -Received Event Change from> "+fieldName);
+	/**
+	 * Replace all aggregate fields with comma separated 
+	 * actuals<br>
+	 * i.e =Plus[total] becomes =Plus[1|total,2|total,3|total,....,RowN|Total]
+	 * 
+	 * @param formular
+	 * @return
+	 */
+	private String parseAggregate(List<String> paramFields,String formular) {
+		//One of the dependent is a grid detail field - A column in a grid row
+		//eg formular =Plus[row_total]; where row_total is a column in invoice particulars
+		
+		if(!field.isAggregate()){
+			//Target/ result field is not an aggregate/grid field
+			
+			for(String fld:dependentFields){
+				if(ENV.isAggregate(fld)){
+					//This is a grid field
+					List<String> names = ENV.getQualifiedNames(fld);
+					System.err.println(fld+" : Aggregated: "+names);
+										
+					String nameList="";
+					if(names!=null){						
+						for(String n:names){
+							nameList=nameList.concat(n+",");
+						}
+					}
+					
+					if(!nameList.isEmpty()){
+						paramFields.remove(fld);
+						paramFields.addAll(names);
+						nameList = nameList.substring(0, nameList.length()-1);
+						
+						//String regex="/^"+fld+"$/";
+						String regex=fld;
+						formular=formular.replaceAll(regex, nameList);
+						System.err.println("formular>> "+formular);
+					}
+				}
+			}
+		}
+		return formular;
 	}
 
 	public void manualLoad() {

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.duggan.workflow.shared.model.form.Field;
+
 /**
  * Assumptions - All fields have unique names
  * 
@@ -13,7 +15,9 @@ import java.util.Map;
  */
 public class ENV {
 
-	private static Map<String, Long> observableFields= new HashMap<String,Long>();
+	private static Map<String, Long> observableFields= new HashMap<String,Long>(); //Observable Registration
+	private static Map<String, Object> values = new HashMap<String,Object>(); //Field Values
+	private static Map<String, List<String>> nameToQualifieldNameMap = new HashMap<String, List<String>>();
 	
 	public static void registerObservable(String fieldName){
 		if(observableFields.keySet().contains(fieldName)){
@@ -30,27 +34,23 @@ public class ENV {
 	
 	public static void clear(){
 		observableFields.clear();
+		values.clear();
+		nameToQualifieldNameMap.clear();
 	}
 
-	public static boolean containsObservable(String name, Long fieldId) {
+	public static boolean containsObservable(String name){
+		boolean contained = observableFields.keySet().contains(name);
+		return contained;
+	}
+	
+	public static boolean containsObservable(String name, Long parentId) {
 		boolean contained = observableFields.keySet().contains(name);
 		if(contained){
-			observableFields.put(name, fieldId);
+			observableFields.put(name, parentId);
 		}
 		return contained;
 	}
 
-	public static boolean isSameParent(String field1, String field2) {
-		
-		Long id1 =observableFields.get(field1);
-		Long id2 = observableFields.get(field2);
-		
-		if(id1!=null && id2!=null){
-			return id1.equals(id2);
-		}
-		return false;
-	}
-	
 	public static boolean isParent(String fieldName, Long parentId) {
 		
 		Long id1 = observableFields.get(fieldName);
@@ -63,6 +63,49 @@ public class ENV {
 	
 	public static Map<String, Long> getValues(){
 		return observableFields;
+	}
+	
+	/**
+	 * Values are store using their fully qualified fieldNames
+	 * @param qualifiedFieldName
+	 * @param value
+	 */
+	public static void setContext(String fieldName,String qualifiedFieldName, Object value){
+		//int idx = qualifiedFieldName.indexOf(Field.getSeparator());
+		int idx = fieldName.equals(qualifiedFieldName)? -1:1;
+		//String fieldName = qualifiedFieldName;
+		
+		if(idx!=-1){
+			//fieldName = qualifiedFieldName.substring(0,idx);
+			List<String> fields = nameToQualifieldNameMap.get(fieldName);
+			if(fields==null){
+				fields = new ArrayList<String>();
+			}
+			if(!fields.contains(qualifiedFieldName)){
+				fields.add(qualifiedFieldName);
+			}
+			
+			nameToQualifieldNameMap.put(fieldName, fields);
+		}
+		
+		values.put(qualifiedFieldName, value);
+	}
+	
+	public static List<String> getQualifiedNames(String fieldName){
+		return nameToQualifieldNameMap.get(fieldName);
+	}
+
+	public static void removeContext(String qualifiedFieldName){
+		values.remove(qualifiedFieldName);
+	}
+	
+	public static Object getValue(String key) {
+		return values.get(key);
+	}
+
+	public static boolean isAggregate(String fld) {
+		
+		return observableFields.get(fld)!=null;
 	}
 
 }

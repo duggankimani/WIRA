@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
@@ -114,7 +115,9 @@ public class NumberField extends FieldWidget{
 			@Override
 			public void onValueChange(ValueChangeEvent<Double> event) {
 				Double value = event.getValue();
+				ENV.setContext(field.getName(),field.getQualifiedName(), value);
 				//System.err.println("Change event fired -> "+value);
+				//fire based on actual name-- other fields are aware of actuals
 				AppContext.fireEvent(new OperandChangedEvent(field.getName(), value, field.getDetailId()));
 			}
 			
@@ -188,6 +191,7 @@ public class NumberField extends FieldWidget{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
+			ENV.setContext(field.getName(),field.getQualifiedName(), (Double)value);
 			txtComponent.setValue((Double)value);
 			
 			NumberFormat fmt = NumberFormat.getDecimalFormat();

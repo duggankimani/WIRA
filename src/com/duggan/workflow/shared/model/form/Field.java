@@ -28,7 +28,6 @@ public class Field extends FormModel{
 	private int position;
 	private Long parentId;
 	private List<Field> fields = new ArrayList<Field>();
-	private transient String qualifiedName= null;
 	private transient Long detailId = null;
 	
 	public Field() {
@@ -215,22 +214,32 @@ public class Field extends FormModel{
 	}
 
 	public String getQualifiedName() {
-		if(qualifiedName==null){
-			return name;
+		if(detailId!=null){
+			return name+getSeparator()+detailId;
 		}
-		return qualifiedName;
+		return name;
 	}
-
-	public void setQualifiedName(String qualifiedName) {
-		this.qualifiedName = qualifiedName;
-	}
-
+	
 	public Long getDetailId() {
 		return detailId;
 	}
 
 	public void setDetailId(Long detailId) {
 		this.detailId = detailId;
+	}
+	
+	/**
+	 * Aggregatable field
+	 * 
+	 * @return
+	 */
+	public boolean isAggregate(){
+		return this.parentId!=null;
+	}
+
+	public static String getSeparator() {
+		
+		return "";
 	}
 
 }

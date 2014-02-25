@@ -98,7 +98,8 @@ public class GridRow extends Composite {
 		
 		Value value=line.getValue(field.getName());
 		field.setValue(value);
-		//System.err.println(field.getName()+">>> "+(value==null? "": value.getValue()));
+		
+		//System.err.println(field.getQualifiedName()+"="+field.getValue()+" : detail- "+detailId);
 		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);		
 		
 		Widget widget = fw.getComponent(true);
@@ -167,6 +168,7 @@ public class GridRow extends Composite {
 	}
 	
 	protected void onDetach() {
+		super.onDetach();
 		for(FieldWidget widget : widgets){
 			widget.manualUnload();
 		}
