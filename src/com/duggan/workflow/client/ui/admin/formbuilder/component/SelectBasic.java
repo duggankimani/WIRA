@@ -51,6 +51,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	public SelectBasic(final Property property){
 		this();
 		lblEl.setInnerText(property.getCaption());
+		
 		setSelectionValues(property.getSelectionValues());
 		Value val = property.getValue();
 		if(val!=null)

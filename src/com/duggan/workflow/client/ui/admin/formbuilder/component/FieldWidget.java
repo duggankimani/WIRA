@@ -103,10 +103,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		if(property.getType().isDropdown()){
 			Property previous=props.get(property.getName());
 
-
 			if(property.getType().isDropdown()){
 				//no need - It will overwrite server values with local
 				
+				if(property.getSelectionValues().isEmpty() && previous!=null){
+					//probably frontend
+					property.setSelectionValues(previous.getSelectionValues());
+				}
 			}else if(previous!=null){
 				//need to copy lookup values
 				property.setSelectionValues(previous.getSelectionValues());
@@ -114,9 +117,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 		
 		//overwrite previous value with current
+		
 		props.put(property.getName(), property);
-		if(property.getType().isDropdown()){
-			
+		
+		if(!property.getType().isDropdown()){
 		}
 	}
 
