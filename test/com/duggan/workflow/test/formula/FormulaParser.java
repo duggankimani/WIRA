@@ -13,6 +13,11 @@ import org.matheclipse.parser.client.eval.ComplexVariable;
 public class FormulaParser {
 
 	public static void main(String[] args) {
+		String sum="ThisA23";
+		System.out.println(sum.substring(0,sum.indexOf("23")));
+	}
+	
+	public static void main3(String[] args) {
 		String sum = "Plus[A$12,34,566,C]";
 		sum = sum.replaceAll("C", "C:weed");
 		System.err.println("sum="+sum);

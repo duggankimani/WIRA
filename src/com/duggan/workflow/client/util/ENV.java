@@ -39,7 +39,9 @@ public class ENV {
 	}
 
 	public static boolean containsObservable(String name){
+		
 		boolean contained = observableFields.keySet().contains(name);
+		//System.err.println("Contains : "+name+" : "+contained);
 		return contained;
 	}
 	
@@ -70,7 +72,11 @@ public class ENV {
 	 * @param qualifiedFieldName
 	 * @param value
 	 */
-	public static void setContext(String fieldName,String qualifiedFieldName, Object value){
+	public static void setContext(Field field, Object value){
+		
+		String fieldName=field.getDocSpecificName();
+		String qualifiedFieldName=field.getQualifiedName();
+		
 		//int idx = qualifiedFieldName.indexOf(Field.getSeparator());
 		int idx = fieldName.equals(qualifiedFieldName)? -1:1;
 		//String fieldName = qualifiedFieldName;
@@ -89,6 +95,14 @@ public class ENV {
 		}
 		
 		values.put(qualifiedFieldName, value);
+	}
+	
+	public static void removeContext(Field field){
+		String fieldName=field.getDocSpecificName();
+		nameToQualifieldNameMap.remove(fieldName);
+		
+		String qualifiedFieldName=field.getQualifiedName();
+		values.remove(qualifiedFieldName);
 	}
 	
 	public static List<String> getQualifiedNames(String fieldName){

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
+import com.google.gwt.user.client.Random;
 
 /**
  * Represents A Form Field
@@ -29,8 +30,10 @@ public class Field extends FormModel{
 	private Long parentId;
 	private List<Field> fields = new ArrayList<Field>();
 	private transient Long detailId = null;
+	private transient String docId="";
 	
 	public Field() {
+		docId="TempD";
 	}
 	
 	public List<Property> getProperties() {
@@ -146,6 +149,7 @@ public class Field extends FormModel{
 			field.setFormId(formId);
 			field.setId(Id);
 			field.setParentId(parentId);
+			field.setDocId(docId);
 		}
 	
 		if(value!=null){
@@ -213,9 +217,13 @@ public class Field extends FormModel{
 		return null;
 	}
 
+	public String getDocSpecificName(){
+		return name+docId+"D";//Delimited with a D
+	}
+	
 	public String getQualifiedName() {
 		if(detailId!=null){
-			return name+getSeparator()+detailId;
+			return getDocSpecificName()+getSeparator()+detailId;
 		}
 		return name;
 	}
@@ -240,6 +248,20 @@ public class Field extends FormModel{
 	public static String getSeparator() {
 		
 		return "";
+	}
+
+	public String getDocId() {
+		return docId;
+	}
+
+	public void setDocId(String docId) {
+		this.docId = docId;
+		
+		if(fields!=null){
+			for(Field field: fields){
+				field.setDocId(docId);
+			}
+		}
 	}
 
 }

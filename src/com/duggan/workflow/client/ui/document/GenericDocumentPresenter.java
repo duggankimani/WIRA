@@ -645,6 +645,8 @@ public class GenericDocumentPresenter extends
 		//System.err.println("Details >>>>> "+doc.getDetails().size());
 		for(Field field: form.getFields()){
 			String name = field.getName();
+			field.setDocId(doc.getId()+""); //Add DocId to all field
+			
 			if(name==null || name.isEmpty()){
 				continue;
 			}

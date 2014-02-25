@@ -47,6 +47,7 @@ public class GridRow extends Composite {
 		
 		if(detailId==null){
 			detailId = System.currentTimeMillis();
+			line.setTempId(detailId);
 		}
 		
 		initRow();

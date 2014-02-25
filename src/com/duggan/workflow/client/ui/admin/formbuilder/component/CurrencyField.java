@@ -33,7 +33,7 @@ public class CurrencyField extends NumberField{
 	public void setValue(Object value) {
 		if(value!=null){
 			txtComponent.setValue((Double)value);
-			ENV.setContext(field.getName(),field.getQualifiedName(), (Double)value);
+			ENV.setContext(field, (Double)value);
 			
 			String currencyCode = getPropertyValue(CURRENCY);
 			

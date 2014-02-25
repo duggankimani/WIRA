@@ -23,8 +23,8 @@ public class OperandChangedEvent extends
 		this.newValue = newValue;
 	}
 	
-	public OperandChangedEvent(String sourceField, Object newValue, Long detailId) {
-		this.sourceField = sourceField;
+	public OperandChangedEvent(String documentSpecificFieldName, Object newValue, Long detailId) {
+		this.sourceField = documentSpecificFieldName;
 		this.newValue = newValue;
 		this.detailId = detailId;
 	}

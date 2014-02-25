@@ -5,21 +5,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.matheclipse.parser.client.Parser;
-import org.matheclipse.parser.client.ast.ASTNode;
 import org.matheclipse.parser.client.eval.ComplexEvaluator;
 import org.matheclipse.parser.client.eval.ComplexVariable;
-import org.matheclipse.parser.client.eval.DoubleEvaluator;
-import org.matheclipse.parser.client.eval.DoubleVariable;
-import org.matheclipse.parser.client.eval.IDoubleValue;
 import org.matheclipse.parser.client.math.Complex;
-//import java.util.StringTokenizer;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
@@ -30,7 +26,6 @@ import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHa
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
-import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -52,10 +47,11 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+//import java.util.StringTokenizer;
 
 public abstract class FieldWidget extends AbsolutePanel implements
 		HasDragHandle, PropertyChangedHandler, HasProperties,
-		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler{
+		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler, DeleteLineHandler{
 
 	private FocusPanel shim = new FocusPanel();
 	protected long id = System.currentTimeMillis();
@@ -70,8 +66,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	
 	//Formula handling properties
 	List<String> dependentFields = new ArrayList<String>();
-	boolean isObserver = false;
-	boolean isObservable=false;
+	boolean isObserver = false;//depends on other fields - registered for OperandChangeEvent
+	boolean isObservable=false;//its value is depended upon by other fields - fires an event
 	Long detailId=null;
 	
 	public FieldWidget() {
@@ -251,10 +247,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			//runtime
 			//Check if this fields value is relied upon by other fields
 			
-			isObservable = ENV.containsObservable(field.getName(),field.getParentId());
+			//isObservable = ENV.containsObservable(field.getName(),field.getParentId());
+			isObservable = ENV.containsObservable(field.getDocSpecificName(),field.getParentId());
 			if(isObservable){
 				//System.err.println("Registering observable.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
 				registerValueChangeHandler();
+				addRegisteredHandler(DeleteLineEvent.TYPE, this);
 			}
 			
 		}
@@ -764,7 +762,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		String digitsOnlyRegex = "[-+]?[0-9]*\\.?[0-9]+";//isNot a number
 		for(String token: tokens){
 			if(token!=null && !token.isEmpty() && !token.matches(digitsOnlyRegex)){
-				dependentFields.add(token);
+				dependentFields.add(token+field.getDocId()+"D");
 			}
 		}
 		
@@ -811,24 +809,37 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		paramFields.addAll(dependentFields);
 		
 		String formular = parseAggregate(paramFields,getPropertyValue(FORMULA));
-		         
+		//System.out.println("Formular >> "+formular);         
 		/*
 		 * Value substitution into the evaluating engine
 		 */
         ComplexEvaluator engine = new ComplexEvaluator();
         for(String fld: paramFields){
-        	Object val = ENV.getValue(fld);
         	
+        	Object val = ENV.getValue(fld);
+        	String formularFieldName="";
         	if(field.getParentId()!=null && val==null){
         		//fieldName|DetailId
-        		val=ENV.getValue(fld+Field.getSeparator()+field.getDetailId());
+        		val=ENV.getValue(formularFieldName=fld+Field.getSeparator()+field.getDetailId());
         	}
         	
         	if(val!=null && (val instanceof Double)){
-        		System.out.println(fld+" = "+val);
+        		//System.out.println(fld+" = "+val);
+        		
+        		/*
+        		 * Dependent Fields== fieldName-DocId-D
+        		 * Event Source FieldName== FieldName-DocId-D
+        		 * 
+        		 * >
+        		 * 
+        		 */
+        		formularFieldName = fld.substring(0, fld.indexOf(field.getDocId()));
+        		if(!fld.endsWith("D")){        			
+        			formularFieldName = fld;
+        		}
         		
 	        	ComplexVariable dv = new ComplexVariable((Double)val);
-	        	engine.defineVariable(fld, dv);	        	
+	        	engine.defineVariable(formularFieldName, dv);	        	
         	}
         }
         
@@ -838,18 +849,18 @@ public abstract class FieldWidget extends AbsolutePanel implements
         
         Double result=null;
         try{
-        	System.err.println("Calculating> "+field.getName()+" = "+formular);
+        	//System.err.println("Calculating> "+field.getName()+" = "+formular);
         	Complex x = engine.evaluate(formular);
         	result = x.abs();
 	        setValue(result);
         }catch(Exception e){
-        	e.printStackTrace();
+        	//e.printStackTrace();
         	setValue(result=new Double(0.0));
         }finally{
-        	boolean contained = ENV.containsObservable(field.getName());
+        	boolean contained = ENV.containsObservable(field.getDocSpecificName());
 	        if(contained){
 	        	//potential for an endless loop
-	        	AppContext.fireEvent(new OperandChangedEvent(field.getName(), result, field.getDetailId()));
+	        	AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), result, field.getDetailId()));
 	        }
         }
 	}
@@ -873,7 +884,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				if(ENV.isAggregate(fld)){
 					//This is a grid field
 					List<String> names = ENV.getQualifiedNames(fld);
-					System.err.println(fld+" : Aggregated: "+names);
+//					/System.err.println(fld+" : Aggregated: "+names);
 										
 					String nameList="";
 					if(names!=null){						
@@ -886,18 +897,37 @@ public abstract class FieldWidget extends AbsolutePanel implements
 						paramFields.remove(fld);
 						paramFields.addAll(names);
 						nameList = nameList.substring(0, nameList.length()-1);
+
+						//Formula is Document independent
+						//make it dependent on doc
+						String rootName = fld.substring(0, fld.indexOf(field.getDocId()));
 						
 						//String regex="/^"+fld+"$/";
-						String regex=fld;
-						formular=formular.replaceAll(regex, nameList);
-						System.err.println("formular>> "+formular);
-					}
+						//System.out.println("["+rootName+"] >> ["+nameList+"]");
+						formular=formular.replaceAll(rootName, nameList);
+						//System.err.println("formular>> "+formular);
+					}	
 				}
 			}
 		}
 		return formular;
 	}
 
+	@Override
+	public void onDeleteLine(DeleteLineEvent event) {
+		if(isObservable && field.getDetailId()!=null){
+			Long sourceDetailId = event.getLine().getId();
+			if(sourceDetailId==null){
+				sourceDetailId = event.getLine().getTempId();
+			}
+			if(!field.getDetailId().equals(sourceDetailId)){
+				return;
+			}
+			ENV.setContext(field, new Double(0.0));
+			AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), new Double(0.0), field.getDetailId()));
+		}
+	}
+	
 	public void manualLoad() {
 		onLoad();
 	}

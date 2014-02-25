@@ -104,4 +104,14 @@ public class DocumentLine implements Serializable {
 		
 		return line;
 	}
+
+	//frontend Id
+	private transient Long tempId=null;
+	public void setTempId(Long detailId) {
+		this.tempId = detailId;
+	}
+	
+	public Long getTempId(){
+		return tempId;
+	}
 }

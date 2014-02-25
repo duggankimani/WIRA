@@ -115,10 +115,11 @@ public class NumberField extends FieldWidget{
 			@Override
 			public void onValueChange(ValueChangeEvent<Double> event) {
 				Double value = event.getValue();
-				ENV.setContext(field.getName(),field.getQualifiedName(), value);
+				//ENV.setContext(field.getName(),field.getQualifiedName(), value);
+				ENV.setContext(field, value);
 				//System.err.println("Change event fired -> "+value);
 				//fire based on actual name-- other fields are aware of actuals
-				AppContext.fireEvent(new OperandChangedEvent(field.getName(), value, field.getDetailId()));
+				AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), value, field.getDetailId()));
 			}
 			
 		});
@@ -191,7 +192,7 @@ public class NumberField extends FieldWidget{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
-			ENV.setContext(field.getName(),field.getQualifiedName(), (Double)value);
+			ENV.setContext(field, (Double)value);
 			txtComponent.setValue((Double)value);
 			
 			NumberFormat fmt = NumberFormat.getDecimalFormat();
