@@ -91,4 +91,11 @@ public class DSConfigHelper {
 		
 		return lst;
 	}
+
+	public static DSConfiguration getConfigurationByName(String configName) {
+		DSConfigDaoImpl dao = DB.getDSConfigDao();
+		DSConfiguration config = get(dao.getConfigurationByName(configName));
+		
+		return config;
+	}
 }

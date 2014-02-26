@@ -66,7 +66,45 @@ public class LookupLoaderImpl implements LookupLoader{
 		
 		return pair;
 	}
+	
+	public boolean testDatasourceName(String dataSourceName){
+		
+		DBExecute<Boolean> exec = new DBExecute<Boolean>(dataSourceName){
 
+			@Override
+			protected String getQueryString() {
+				
+				return "Select 1";
+			}
+
+			@Override
+			protected void setParameters() throws SQLException {
+				
+			}
+
+			@Override
+			protected Boolean processResults(PreparedStatement pStmt,
+					boolean hasResults) throws SQLException {
+				
+				if(!hasResults)
+					return false;
+				
+				ResultSet rs = getResultSet();
+				if(rs.next()){
+					return rs.getInt(1)==1;
+				}
+				
+				return false;
+			}
+
+		};
+		
+		try{
+			return exec.executeDbCall();
+		}catch(Exception e){
+			return false;
+		}
+	}
 	
 
 }

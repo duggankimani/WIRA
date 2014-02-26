@@ -94,6 +94,8 @@ import com.duggan.workflow.server.actionhandlers.DeleteDSConfigurationEventActio
 
 import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
+import com.duggan.workflow.shared.requests.GetDSStatusRequest;
+import com.duggan.workflow.server.actionhandlers.GetDSStatusRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -242,5 +244,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(ExportFormRequest.class,
 				ExportFormRequestHandler.class, SessionValidator.class);
 
+
+		bindHandler(GetDSStatusRequest.class,
+				GetDSStatusRequestActionHandler.class, SessionValidator.class);
 	}
 }

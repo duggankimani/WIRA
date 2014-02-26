@@ -10,7 +10,6 @@ public class GetDSConfigurationsRequest extends
 	public GetDSConfigurationsRequest() {
 	}
 	
-	
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		return new GetDSConfigurationsResponse();

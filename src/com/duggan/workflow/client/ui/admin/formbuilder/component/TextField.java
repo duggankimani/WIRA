@@ -137,8 +137,15 @@ public class TextField extends FieldWidget {
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
+			if(!(value instanceof String)){
+				value = value.toString();
+			}
+				
 			txtComponent.setValue((String)value);
 			lblReadOnly.setText((String)value);
+		}else{
+			txtComponent.setValue(null);
+			lblReadOnly.setText(null);
 		}
 	}
 	

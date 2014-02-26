@@ -29,7 +29,7 @@ public class DataSourceView extends ViewImpl implements DataSourcePresenter.IDat
 		return widget;
 	}
 
-	public HasClickHandlers getaNewProcess() {
+	public HasClickHandlers getNewDatasourceButton() {
 		return aNewProcess;
 	}
 	
@@ -57,7 +57,7 @@ public class DataSourceView extends ViewImpl implements DataSourcePresenter.IDat
 	}
 	
 	@Override
-	public HasClickHandlers getStartAllProcesses(){
+	public HasClickHandlers getTestAllDatasources(){
 		return aStartProcesses;
 	}
 	

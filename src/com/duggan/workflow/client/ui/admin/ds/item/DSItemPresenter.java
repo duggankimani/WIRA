@@ -2,27 +2,23 @@ package com.duggan.workflow.client.ui.admin.ds.item;
 
 import java.util.Date;
 
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.EditDSConfigEvent;
-import com.duggan.workflow.client.ui.events.EditProcessEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DSConfiguration;
-import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.RDBMSType;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.requests.DeleteDSConfigurationEvent;
-import com.duggan.workflow.shared.requests.DeleteProcessRequest;
-import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
+import com.duggan.workflow.shared.requests.GetDSStatusRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.DeleteProcessResponse;
+import com.duggan.workflow.shared.responses.GetDSStatusResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -57,7 +53,17 @@ public class DSItemPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//requestHelper.execute(action, callback)	
+				fireEvent(new ProcessingEvent("Starting processes"));
+				requestHelper.execute(new GetDSStatusRequest(configuration.getName()), 
+						new TaskServiceCallback<GetDSStatusResponse>() {
+					@Override
+					public void processResult(
+							GetDSStatusResponse aResponse) {
+						setConfiguration(aResponse.getConfigs().get(0));
+						fireEvent(new ProcessingCompletedEvent());
+					}
+
+				});
 			}
 		});
 		
