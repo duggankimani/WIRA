@@ -32,8 +32,14 @@ public class CurrencyField extends NumberField{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
+			if(!(value instanceof Double)){
+				try{
+					value = new Double(value.toString());
+				}catch(Exception e){return;}
+			}
+			
+			ENV.setContext(field, (Double)value);			
 			txtComponent.setValue((Double)value);
-			ENV.setContext(field, (Double)value);
 			
 			String currencyCode = getPropertyValue(CURRENCY);
 			

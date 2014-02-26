@@ -225,7 +225,7 @@ public class Field extends FormModel{
 		if(detailId!=null){
 			return getDocSpecificName()+getSeparator()+detailId;
 		}
-		return name;
+		return getDocSpecificName();
 	}
 	
 	public Long getDetailId() {

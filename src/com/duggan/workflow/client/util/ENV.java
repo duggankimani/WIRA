@@ -68,7 +68,7 @@ public class ENV {
 	}
 	
 	/**
-	 * Values are store using their fully qualified fieldNames
+	 * Values are stored using their fully qualified fieldNames
 	 * @param qualifiedFieldName
 	 * @param value
 	 */
@@ -77,12 +77,8 @@ public class ENV {
 		String fieldName=field.getDocSpecificName();
 		String qualifiedFieldName=field.getQualifiedName();
 		
-		//int idx = qualifiedFieldName.indexOf(Field.getSeparator());
-		int idx = fieldName.equals(qualifiedFieldName)? -1:1;
-		//String fieldName = qualifiedFieldName;
-		
-		if(idx!=-1){
-			//fieldName = qualifiedFieldName.substring(0,idx);
+		if(!fieldName.equals(qualifiedFieldName)){
+			//For detail values - GridRow col Values
 			List<String> fields = nameToQualifieldNameMap.get(fieldName);
 			if(fields==null){
 				fields = new ArrayList<String>();
@@ -93,6 +89,7 @@ public class ENV {
 			
 			nameToQualifieldNameMap.put(fieldName, fields);
 		}
+		
 		
 		values.put(qualifiedFieldName, value);
 	}

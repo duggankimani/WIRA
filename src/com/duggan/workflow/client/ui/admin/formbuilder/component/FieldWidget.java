@@ -773,6 +773,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		ENV.registerObservable(dependentFields);
 	}
 	
+	/**
+	 * Document qualified fieldname > concat(fieldName, docId);
+	 * 
+	 * @return
+	 */
 	public List<String> getDependentFields(){
 		return dependentFields;
 	}
@@ -819,16 +824,17 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		 */
         ComplexEvaluator engine = new ComplexEvaluator();
         for(String fld: paramFields){
-        	
+        	//fld already qualified
         	Object val = ENV.getValue(fld);
         	String formularFieldName="";
+        	
         	if(field.getParentId()!=null && val==null){
-        		//fieldName|DetailId
+        		//Current Field is a detail field, and no value was found for dependent field
         		val=ENV.getValue(formularFieldName=fld+Field.getSeparator()+field.getDetailId());
         	}
         	
+        	//System.err.println(fld+" == "+val);
         	if(val!=null && (val instanceof Double)){
-        		//System.out.println(fld+" = "+val);
         		
         		/*
         		 * Dependent Fields== fieldName-DocId-D
@@ -841,6 +847,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
         		if(!fld.endsWith("D")){        			
         			formularFieldName = fld;
         		}
+        		
+        		//System.out.println(formularFieldName+" = "+val);
         		
 	        	ComplexVariable dv = new ComplexVariable((Double)val);
 	        	engine.defineVariable(formularFieldName, dv);	        	
@@ -858,10 +866,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
         	result = x.abs();
 	        setValue(result);
         }catch(Exception e){
-        	//e.printStackTrace();
+        	e.printStackTrace();
         	setValue(result=new Double(0.0));
         }finally{
         	boolean contained = ENV.containsObservable(field.getDocSpecificName());
+        	
 	        if(contained){
 	        	//potential for an endless loop
 	        	AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), result, field.getDetailId()));
