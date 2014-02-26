@@ -1,6 +1,11 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.List;
+
 import com.duggan.workflow.server.dao.helper.DSConfigHelper;
+import com.duggan.workflow.server.db.LookupLoaderImpl;
+import com.duggan.workflow.shared.model.DSConfiguration;
+import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDSConfigurationsResponse;
@@ -22,7 +27,15 @@ public class GetDSConfigurationsRequestHandler
 			throws ActionException {
 		GetDSConfigurationsResponse response = (GetDSConfigurationsResponse)actionResult;
 		
-		response.setConfigurations(DSConfigHelper.getConfigurations());
+		List<DSConfiguration> configs =  DSConfigHelper.getConfigurations();
+		if(configs!=null){
+			LookupLoaderImpl impl = new LookupLoaderImpl();
+			for(DSConfiguration config: configs){
+				boolean isActive = impl.testDatasourceName(config.getName());	
+				config.setStatus(isActive?Status.RUNNING:Status.INACTIVE);
+			}
+		}
+		response.setConfigurations(configs);
 	}
 	
 	@Override
