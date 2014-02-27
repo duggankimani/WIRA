@@ -8,11 +8,11 @@
 
   <g:HTMLPanel styleName="navbar" ui:field="divNavbar">
      <div class="navbar-inner">
-        <g:Anchor styleName="brand" href="#activities" ui:field="aBrand">Wira BPM | Your Organization</g:Anchor>
+        <g:Anchor styleName="brand" href="#home" ui:field="aBrand">Wira BPM | Your Organization</g:Anchor>
         
         <ul class="nav pull-right">
               <li class="home">
-               		 <g:Anchor href="#activities" ui:field="aHome" styleName="close-icon hand">
+               		 <g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand">
 	                        <i class="icon-home"> &nbsp; Home</i>
                    	  </g:Anchor> 
               </li>

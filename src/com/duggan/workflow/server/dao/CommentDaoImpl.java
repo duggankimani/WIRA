@@ -116,6 +116,10 @@ public class CommentDaoImpl {
 			ids.add(id.longValue());
 		}
 		
+		if(ids==null || ids.isEmpty()){
+			return new ArrayList<>();
+		}
+		
 		@SuppressWarnings("unchecked")
 		List<CommentModel> comments = em.createQuery("FROM CommentModel where id in (:ids)")
 			.setParameter("ids", ids).getResultList();

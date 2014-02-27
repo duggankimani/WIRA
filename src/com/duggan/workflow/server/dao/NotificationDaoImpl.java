@@ -168,6 +168,10 @@ public class NotificationDaoImpl {
 		for(BigInteger id: commentIds){
 			ids.add(id.longValue());
 		}
+
+		if(ids==null || ids.isEmpty()){
+			return new ArrayList<>();
+		}
 		
 		return em.createQuery("FROM NotificationModel n " +
 				"where n.id in (:ids) "+		
