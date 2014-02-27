@@ -10,7 +10,7 @@
     <g:HTMLPanel styleName="login-bg">
 	<g:HTMLPanel styleName="row-fluid login-wrapper">
         <a href="#">
-        <a class="brand" href="#">E-Business Task List | Your Organisation</a> 
+        <a class="brand" href="#">Wira BPM|Your Organisation</a> 
         </a>
         <g:HTMLPanel styleName="span4 box" ui:field="loadingbox">
             <div class="content-wrap">
@@ -20,10 +20,10 @@
 	    		</v:IssuesPanel>
                 <g:TextBox ui:field="username" styleName="span12"></g:TextBox>
                 <g:PasswordTextBox ui:field="password" styleName="span12"></g:PasswordTextBox>
-                <a href="#" class="forgot">Forgot password?</a>
+                <a href="#" class="forgot hidden">Forgot password?</a>
                 <div class="remember">
                     <input id="remember-me" type="checkbox"></input>
-                    <label for="remember-me">Remember me</label>
+                    <label for="remember-me">Keep me Signed In</label>
                 </div>
                 <g:Anchor ui:field="aLogin" styleName="btn-glow primary login">Log in</g:Anchor>
             </div>

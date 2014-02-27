@@ -6,19 +6,18 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="content-right span10 overflow-y">
-		<div class="bootcamp js-notice">
+		<div class="bootcamp js-notice hide">
 			<h1>
 				Welcome to Wira BPM
 				<span>Here is a Walk-through to get you started</span>
-				<a href="" class="js-notice-dismiss dismiss-bootcamp dismiss tooltipped tooltipped-w"
-					aria-label="Hide this notice forever">
-					<span class="icon-remove pull-right"></span>
+				<a href="" class="">
+					<span class="icon-remove-sign pull-right"></span>
 				</a>
 			</h1>
 			<div class="bootcamp-body">
 				<ul>
 					<li class="setup">
-						<a href="" >
+						<a href="">
 							<div class="image">
 								<span class='icon-file'></span>
 							</div>
@@ -30,7 +29,7 @@
 						</a>
 					</li>
 					<li class="create-a-repo">
-						<a href="" >
+						<a href="" target="_blank">
 							<div class="image">
 								<span class='icon-eye-open'></span>
 							</div>
@@ -42,7 +41,7 @@
 						</a>
 					</li>
 					<li class="fork-a-repo">
-						<a href="" >
+						<a href="" target="_blank">
 							<div class="image">
 								<span class='icon-arrow-down'></span>
 							</div>
@@ -54,7 +53,7 @@
 						</a>
 					</li>
 					<li class="be-social">
-						<a href="" >
+						<a href="" target="_blank">
 							<div class="image">
 								<span class='icon-ok-circle'></span>
 							</div>
@@ -69,7 +68,107 @@
 				</ul>
 			</div> <!-- /bootcamp-body -->
 		</div>
-		
-		
+
+
+		<div class="news-feed row-fluid">
+			<h4>NewsFeed</h4>
+			<ul class="chat-box timeline">
+
+				<li class="arrow-box-left gray">
+					<div class="avatar">
+						<img class="avatar-small" src="img/blueman.png"/>
+					</div>
+					<div class="info">
+						<span class="name">
+							<span class="label label-green">COMMENT</span>
+							<strong class="indent">Alex</strong>
+							posted a comment on this task:
+							<strong>Core Admin</strong>
+						</span>
+						<span class="time">
+							<i class="icon-time"></i>
+							3 minutes ago
+						</span>
+					</div>
+					<div class="content">
+						<blockquote>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+							enim ad minim veniam, quis nostrud exercitation ullamco laboris
+							nisi ut aliquip ex ea commodo consequat.
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+							enim ad minim veniam, quis nostrud exercitation ullamco laboris
+							nisi ut aliquip ex ea commodo consequat.
+						</blockquote>
+						<div>
+							<a href="#">
+								<i class="icon-paper-clip"></i>
+								<b>project_news.docx</b>
+							</a>
+						</div>
+					</div>
+				</li>
+
+				<li class="arrow-box-left gray">
+					<div class="avatar">
+						<img class="avatar-small" src="img/blueman.png"/>
+					</div>
+					<div class="info">
+						<span class="name">
+							<span class="label label-blue">TASK</span>
+							<strong class="indent">Michael</strong>
+							completed this task:
+							<strong class="strikethrough">Core Admin</strong>
+						</span>
+						<span class="time">
+							<i class="icon-time"></i>
+							6 minutes ago
+						</span>
+					</div>
+				</li>
+
+				<li class="arrow-box-left gray">
+					<div class="avatar">
+						<img class="avatar-small" src="img/blueman.png"/>
+					</div>
+					<div class="info">
+						<span class="name">
+							<span class="label label-purple">FILE</span>
+							<strong class="indent">Alex</strong>
+							added 3 new files in project:
+							<strong>Core Admin</strong>
+						</span>
+						<span class="time">
+							<i class="icon-time"></i>
+							12 minutes ago
+						</span>
+					</div>
+					<div class="content">
+						<ul class="thumbnails padded">
+
+							<li class="col-md-3">
+								<a href="#" class="thumbnail">
+									<img src="img/blueman.png" alt=""/>
+								</a>
+							</li>
+
+							<li class="col-md-3">
+								<a href="#" class="thumbnail">
+									<img src="img/blueman.png" alt=""/>
+								</a>
+							</li>
+
+							<li class="col-md-3">
+								<a href="#" class="thumbnail">
+									<img src="img/blueman.png" alt=""/>
+								</a>
+							</li>
+
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
