@@ -1,19 +1,18 @@
 package com.duggan.workflow.client.ui.activityfeed;
 
+import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.duggan.workflow.client.place.NameTokens;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
-import com.duggan.workflow.client.ui.home.HomePresenter;
 
 public class ActivitiesPresenter extends
 		Presenter<ActivitiesPresenter.MyView, ActivitiesPresenter.MyProxy> {

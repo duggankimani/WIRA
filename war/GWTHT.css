@@ -1,146 +1,284 @@
 /* Add css rules here for your application. */
-
-.dummycontainer{
-	display:none;
+.bootcamp {
+	background-color: #ffffff;
+	margin-left: 0px;
+	border: 1px solid #CCCCCC;
+	height: 100%;
+	padding: 10px;
 }
 
-.hidden{
-	display:none;
+.bootcamp h1 {
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: #405a6a;
+	background-image: -moz-linear-gradient(#829aa8, #405a6a);
+	background-image: -webkit-linear-gradient(#829aa8, #405a6a);
+	background-image: linear-gradient(#829aa8, #405a6a);
+	background-repeat: repeat-x;
+	border: 1px solid #677c89;
+	border-bottom-color: #6b808d;
+	border-radius: 5px 5px 0 0;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.7);
+	margin: 0;
+	padding: 8px 10px;
+	position: relative;
 }
 
-#navigation-menu ul.submenu .wfactions a{
-	display:inline;
+.bootcamp h1 span {
+	color: #e9f1f4;
+	font-size: 70%;
+	font-weight: normal;
+	text-shadow: none;
 }
 
-.button-group{
-	text-align:center;
+.bootcamp .bootcamp-body {
+	padding: 10px 1%;
+	background-color: #e9f1f4;
+	overflow: hidden;
+	border-style: solid;
+	border-width: 1px 1px 2px;
+	border-color: #e9f1f4 #d8dee2 #d8dee2;
+	border-radius: 0 0 5px 5px;
 }
 
-.button-group button{
-	margin-right:3px;
+.bootcamp ul{
+	margin:0px;
+}
+
+.bootcamp ul li {
+	color: #666666;
+	font-size: 13px;
+	font-weight: normal;
+	background-color: #f5f3b4;
+	background-image: -moz-linear-gradient(#fffff5, #f5f3b4);
+	background-image: -webkit-linear-gradient(#fffff5, #f5f3b4);
+	background-image: linear-gradient(#fffff5, #f5f3b4);
+	background-repeat: repeat-x;
+	border: 1px solid #dfddb5;
+	border-radius: 5px 5px 5px 5px;
+	display: block;
+	width: 23.25%;
+	height: 215px;
+	float: left;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0px 1px 0px #fff;
+	margin: 0 1.5% 0 0;
+}
+
+.bootcamp ul li a {
+	color: #666666;
+}
+
+.bootcamp ul li:hover {
+	background-color: #f1eea3;
+	background-image: -moz-linear-gradient(#fcfce9, #f1eea3);
+	background-image: -webkit-linear-gradient(#fcfce9, #f1eea3);
+	background-image: linear-gradient(#fcfce9, #f1eea3);
+	background-repeat: repeat-x;
+	border: 1px solid #d6d4ad;
+}
+
+.bootcamp .step-number {
+	background-repeat: no-repeat;
+	display: block;
+	width: 60px;
+	height: 120px;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	z-index: 0;
+	font-size: 120px;
+	color: #e4e1a8;
+	font-weight: bold;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+	opacity: .75;
+}
+
+.bootcamp .desc h2 {
+	margin: 0px;
+	padding: 0px;
+	font-size: 15px;
+	color: #393939;
+}
+
+.bootcamp .desc p {
+	margin: 0px;
+	padding: 0px;
+	line-height: 1.2em;
+}
+
+.bootcamp .desc {
+	padding: 15px;
+	display: block;
+	overflow: hidden;
+	border-top: 1px solid #fff;
+	background-repeat: no-repeat;
+	position: relative;
+	z-index: 2;
+}
+
+.bootcamp .image {
+	display: block;
+	position: relative;
+	height: 133px;
+	border-bottom: 1px solid #f1efaf;
+	/* background-repeat: no-repeat; */
+	/* background-position: center center; */
+	font-size: 80px;
+	top: 30px;
+	left: 36%;
+}
+
+.bootcamp .image {
+	/* background-image:
+		url("https://github.com/images/modules/dashboard/bootcamp/octocat_setup.png?152282f8");
+	background-size: 129px 96px; */
+}
+
+.dummycontainer {
+	display: none;
+}
+
+.hidden {
+	display: none;
+}
+
+#navigation-menu ul.submenu .wfactions a {
+	display: inline;
 }
 
 .button-group {
-	background: url("images/gradient-t-b.png") repeat-x scroll 0 0 transparent;
+	text-align: center;
+}
+
+.button-group button {
+	margin-right: 3px;
+}
+
+.button-group {
+	background: url("images/gradient-t-b.png") repeat-x scroll 0 0
+		transparent;
 	border-top: 1px solid #D5D7DB;
 	padding: 10px;
 	text-align: center;
 }
 
-.mandatory{
-	color:red
+.mandatory {
+	color: red
 }
 
-.priority-group{
-	display:inline;
+.priority-group {
+	display: inline;
 }
 
-.priority-group input, .priority-group label{
-	display:inline;
-	margin-right:5px;
+.priority-group input,.priority-group label {
+	display: inline;
+	margin-right: 5px;
 }
 
-.hand:hover{
-	cursor:pointer;
-	cursor:hand;
+.hand:hover {
+	cursor: pointer;
+	cursor: hand;
 }
 
-.uploader{
-	display:block;
+.uploader {
+	display: block;
 }
 
-.vld-Summary{
+.vld-Summary {
 	color: red;
 	display: none;
 	border: solid 1px red;
 	padding: 5px;
 }
 
-.vld-Summary span{
+.vld-Summary span {
 	font-size: 12px;
 	font-weight: bold;
-}	
-
-.vld-Summary-show{
-	display: block;
-}	
-
-#radiobtns{
-	display:block;
 }
 
-#radiobtns label{
-	display:inline-block !important;
-	padding:0 10px 0px 3px;
+.vld-Summary-show {
+	display: block;
+}
+
+#radiobtns {
+	display: block;
+}
+
+#radiobtns label {
+	display: inline-block !important;
+	padding: 0 10px 0px 3px;
 	vertical-align: text-top;
 }
 
-#detailed-info .form-horizontal .generic-row .td input{
-	padding:1px 8px;
-	font-size:12px;
+#detailed-info .form-horizontal .generic-row .td input {
+	padding: 1px 8px;
+	font-size: 12px;
 }
 
-#detailed-info .form-horizontal .generic-row .td .gwt-InlineLabel{
-	padding:1px 8px;
-	font-size:12px;
+#detailed-info .form-horizontal .generic-row .td .gwt-InlineLabel {
+	padding: 1px 8px;
+	font-size: 12px;
 }
 
 #detailed-info .form-horizontal .generic-row .controls {
-    margin-left:0px;
+	margin-left: 0px;
 }
 
-#detailed-info .form-horizontal .controls .comment-container{
- 	border:0px;	
+#detailed-info .form-horizontal .controls .comment-container {
+	border: 0px;
 }
 
 .form-horizontal .generic-row .controls {
-    margin-left:0px;
+	margin-left: 0px;
 }
 
-.generic-row .td{
-	padding:0px;
-	padding-left:1px;
+.generic-row .td {
+	padding: 0px;
+	padding-left: 1px;
 }
 
-.tr .generic-header{
-	text-align:center;
+.tr .generic-header {
+	text-align: center;
 }
 
-#detailed-info .generic-doc-title{
+#detailed-info .generic-doc-title {
 	text-transform: uppercase;
 	font-size: 115%;
 	font-weight: bold;
 	padding: 10px 0px 0px 0px;
 	color: #222;
-	font-family: arial,sans-serif;
+	font-family: arial, sans-serif;
 	margin-left: 11px;
 }
 
-.dateinput, .compositeinput{
-	display:inline-block;
+.dateinput,.compositeinput {
+	display: inline-block;
 }
 
-.dateinput .input-group .input-group-addon{
-	display:inline;
-	display:-moz-compact;	
+.dateinput .input-group .input-group-addon {
+	display: inline;
+	display: -moz-compact;
 }
 
-.control-group .controls .comment-container{
-	display:inline-block;
-	width:95%;
-	max-width:95%;
+.control-group .controls .comment-container {
+	display: inline-block;
+	width: 95%;
+	max-width: 95%;
 }
-.control-group .controls .gwt-RadioButton-disabled{
+
+.control-group .controls .gwt-RadioButton-disabled {
 	color: #000000;
 }
 
-.control-group .controls .radiobtns{
-	display:block;
+.control-group .controls .radiobtns {
+	display: block;
 }
 
-.control-group .controls .radiobtns label{
-	display:inline-block !important;
-	padding:0 10px 0px 3px;
+.control-group .controls .radiobtns label {
+	display: inline-block !important;
+	padding: 0 10px 0px 3px;
 	vertical-align: text-top;
 }
-

@@ -108,7 +108,7 @@
 	      </div>
       </g:HTMLPanel>
       	      
-      <g:HTMLPanel ui:field="activityContainer">  	
+      <g:HTMLPanel ui:field="activityContainer" styleName="full-page">  	
       </g:HTMLPanel> 
     </g:HTMLPanel>  
     </g:HTMLPanel><!--End of Container-->

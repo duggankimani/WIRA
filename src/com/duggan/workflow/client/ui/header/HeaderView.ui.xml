@@ -8,7 +8,7 @@
 
   <g:HTMLPanel styleName="navbar" ui:field="divNavbar">
      <div class="navbar-inner">
-        <g:Anchor styleName="brand" href="#home" ui:field="aBrand">E-Business Task List | Your Organization</g:Anchor>
+        <g:Anchor styleName="brand" href="#home" ui:field="aBrand">Wira BPM | Your Organization</g:Anchor>
         
         <ul class="nav pull-right">
               <li class="home">

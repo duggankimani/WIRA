@@ -120,6 +120,7 @@ public class GenericDocumentView extends ViewImpl implements
 		UIObject.setVisible(aEdit.getElement(), false);
 		aEdit.getElement().setAttribute("type","button");
 		aEdit.getElement().setAttribute("data-toggle","tooltip");
+		aProcess.getElement().setAttribute("data-toggle","button");
 		aSimulate.getElement().setAttribute("type","button");
 		UIObject.setVisible(aForward.getElement(), false);
 		aApprove.getElement().setAttribute("type", "button");
@@ -164,13 +165,13 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				if(isClicked){
-					aProcess.addStyleName("disabled");
+					//aProcess.addStyleName("disabled");
 					divProcess.removeStyleName("hidden");
 					divContent.removeClassName("span12");
 					divContent.addClassName("span9");
 					isClicked=false;
 				}else{
-					aProcess.removeStyleName("disabled");
+					//aProcess.removeStyleName("disabled");
 					divProcess.addStyleName("hidden");
 					divContent.removeClassName("span9");
 					divContent.addClassName("span12");

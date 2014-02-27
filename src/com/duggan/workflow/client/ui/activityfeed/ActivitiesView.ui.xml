@@ -1,12 +1,75 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-		This is Activities Panel
+	<g:HTMLPanel styleName="content-right span10 overflow-y">
+		<div class="bootcamp js-notice">
+			<h1>
+				Welcome to Wira BPM
+				<span>Here is a Walk-through to get you started</span>
+				<a href="" class="js-notice-dismiss dismiss-bootcamp dismiss tooltipped tooltipped-w"
+					aria-label="Hide this notice forever">
+					<span class="icon-remove pull-right"></span>
+				</a>
+			</h1>
+			<div class="bootcamp-body">
+				<ul>
+					<li class="setup">
+						<a href="" >
+							<div class="image">
+								<span class='icon-file'></span>
+							</div>
+							<div class="desc">
+								<h2>Create Request</h2>
+								<p>Add new documents and submit them for Approval.</p>
+							</div>
+							<span class="step-number one">1</span>
+						</a>
+					</li>
+					<li class="create-a-repo">
+						<a href="" >
+							<div class="image">
+								<span class='icon-eye-open'></span>
+							</div>
+							<div class="desc">
+								<h2>Follow-Up Requests</h2>
+								<p>Get in-time reports on the status of your request</p>
+							</div>
+							<span class="step-number two">2</span>
+						</a>
+					</li>
+					<li class="fork-a-repo">
+						<a href="" >
+							<div class="image">
+								<span class='icon-arrow-down'></span>
+							</div>
+							<div class="desc">
+								<h2>Receive Tasks</h2>
+								<p>Get Alerted on requests forwarded to you.</p>
+							</div>
+							<span class="step-number three">3</span>
+						</a>
+					</li>
+					<li class="be-social">
+						<a href="" >
+							<div class="image">
+								<span class='icon-ok-circle'></span>
+							</div>
+							<div class="desc">
+								<h2>Review Tasks</h2>
+								<p>Look at the Information on the request, and make a decision
+									on the Request</p>
+							</div>
+							<span class="step-number four">4</span>
+						</a>
+					</li>
+				</ul>
+			</div> <!-- /bootcamp-body -->
+		</div>
+		
+		
 	</g:HTMLPanel>
 </ui:UiBinder>
