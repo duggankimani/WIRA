@@ -90,7 +90,7 @@
 							</d:ActionLink> -->
 
 						<d:ActionLink ui:field="aClaim" styleName="btn btn-default"
-							title="Reserve this task. Other users with the same role cannot work on this task if claimed">
+							title="Claim this task. Other users in your group cannot work on this task if claimed">
 							<i class="icon-arrow-down color-black"></i>
 						</d:ActionLink>
 

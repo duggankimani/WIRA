@@ -1,18 +1,21 @@
 package com.duggan.workflow.test.bpm;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
 import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
 public class TestSaveComment {
@@ -24,9 +27,16 @@ public class TestSaveComment {
 		DB.beginTransaction();
 	}
 
+	@Ignore
+	public void getAllComments(){
+		List<CommentModel> list = DB.getCommentDao().getAllComments();
+		System.err.println(">> "+list.size());
+	}
+	
 	@Test
 	public void getActivities(){
-		NotificationDaoHelper.getAllNotifications(10L, NotificationType.TASKCOMPLETED_APPROVERNOTE);
+		List<Notification> notes = NotificationDaoHelper.getAllNotifications(null, NotificationType.APPROVALREQUEST_OWNERNOTE);
+		System.err.println("Notes:: "+notes.size());		
 	}
 	
 	@Ignore
