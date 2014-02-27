@@ -162,9 +162,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(NotePresenter.class,
 				NotePresenter.MyView.class, NoteView.class);
 
-		bindPresenter(ActivitiesPresenter.class,
-				ActivitiesPresenter.MyView.class, ActivitiesView.class,
-				ActivitiesPresenter.MyProxy.class);
+		bindPresenterWidget(ActivitiesPresenter.class,
+				ActivitiesPresenter.MyView.class, ActivitiesView.class);
 
 		bindPresenterWidget(CommentPresenter.class,
 				CommentPresenter.ICommentView.class, CommentView.class);

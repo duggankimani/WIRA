@@ -27,8 +27,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@UiField HTMLPanel notificationsContainer;
 	@UiField HTMLPanel divNavbar;
 	@UiField Anchor aAdmin;
-	@UiField Anchor aHome;
-	@UiField Anchor aBrand;
+	//@UiField Anchor aHome;
+	//@UiField Anchor aBrand;
 	@UiField FocusPanel popupContainer;
 	@UiField SpanElement lblCount;
 	@UiField SpanElement spnUserGroup;

@@ -298,6 +298,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@Override
 	public void showActivitiesPanel(boolean show) {
+		System.err.println(">>>>> ActivitiesPanel show = "+show);
 		if(show){
 			activityContainer.removeStyleName("hide");
 			wholeContainer.addStyleName("hide");

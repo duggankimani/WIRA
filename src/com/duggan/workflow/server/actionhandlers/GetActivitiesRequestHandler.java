@@ -37,12 +37,13 @@ public class GetActivitiesRequestHandler extends
 				NotificationType.APPROVALREQUEST_OWNERNOTE,
 				NotificationType.TASKDELEGATED));
 				
-		activities.addAll(CommentDaoHelper.getAllComments(documentId));		
+		activities.addAll(CommentDaoHelper.getAllCommentsByDocumentId(documentId));		
 		Collections.sort(activities);
 				
 		Map<Activity, List<Activity>> activityMap = new LinkedHashMap<>();
+		
 		for(Activity activity: activities){
-			if(activity instanceof Notification){
+			if(activity instanceof Notification || !action.isCategorized()){
 				activityMap.put(activity, null);
 			}else{
 				Comment comment = (Comment)activity;

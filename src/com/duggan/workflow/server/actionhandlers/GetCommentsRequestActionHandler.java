@@ -21,7 +21,7 @@ public class GetCommentsRequestActionHandler extends
 	@Override
 	public void execute(GetCommentsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		List<Comment> comments = CommentDaoHelper.getAllComments(action.getDocumentId());
+		List<Comment> comments = CommentDaoHelper.getAllCommentsByDocumentId(action.getDocumentId());
 		
 		((GetCommentsResponse)actionResult).setComments(comments);
 	}

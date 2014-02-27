@@ -99,7 +99,7 @@ public class CommentDaoHelper {
 		dao.delete(id);
 	}
 
-	public static List<Comment> getAllComments(Long documentId) {
+	public static List<Comment> getAllCommentsByDocumentId(Long documentId) {
 		CommentDaoImpl dao = DB.getCommentDao();
 		List<CommentModel> comments = dao.getAllComments(documentId);
 		

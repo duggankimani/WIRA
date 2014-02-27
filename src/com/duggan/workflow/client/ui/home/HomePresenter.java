@@ -11,6 +11,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
@@ -113,38 +114,26 @@ public class HomePresenter extends
 	}
 
 	public static final Object DATEGROUP_SLOT = new Object();
-	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
-
-	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
-	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
-	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
-	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> ADMIN_SLOT = new Type<RevealContentHandler<?>>();
-
 	
 	@Inject DispatchAsync dispatcher;
-	
 	@Inject PlaceManager placeManager;
-	
 	@Inject DocumentPopupPresenter docPopup;
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
-	
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
-	
-	
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
-	
 	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
+	private IndirectProvider<ActivitiesPresenter> activitiesFactory;
 	
 	private TaskType currentTaskType;
 	
@@ -179,13 +168,15 @@ public class HomePresenter extends
 			Provider<CreateDocPresenter> docProvider,
 			Provider<GenericFormPresenter> formProvider,
 			Provider<GenericDocumentPresenter> docViewProvider,
-			Provider<DateGroupPresenter> dateGroupProvider) {
+			Provider<DateGroupPresenter> dateGroupProvider,
+			Provider<ActivitiesPresenter> activitiesProvider) {
 		super(eventBus, view, proxy);
 		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
 		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
 		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);
+		activitiesFactory = new StandardProvider<ActivitiesPresenter>(activitiesProvider);
 	}
 
 	protected void search() {
@@ -342,7 +333,8 @@ public class HomePresenter extends
 		processInstanceId=null;
 		documentId=null;
 		
-		String name = request.getParameter("type", TaskType.DRAFT.getURL());
+		//String name = request.getParameter("type", TaskType.DRAFT.getURL());
+		String name = request.getParameter("type", null);
 		String processInstID = request.getParameter("pid", null);
 		String documentSearchID = request.getParameter("did", null);
 		if(processInstID!=null){
@@ -353,12 +345,25 @@ public class HomePresenter extends
 			documentId = Long.parseLong(documentSearchID);
 		}
 		
-		TaskType type = TaskType.getTaskType(name);
-		this.currentTaskType=type;
-		
-		getView().setTaskType(currentTaskType);
+		if(name==null){
+			System.err.println("[1]>> Name = "+name);
+			activitiesFactory.get(new ServiceCallback<ActivitiesPresenter>() {
+				@Override
+				public void processResult(ActivitiesPresenter presenter) {
 
-		loadTasks(type);			
+					setInSlot(ACTIVITIES_SLOT, presenter);
+					presenter.loadActivities();
+				}
+			});
+		}else{
+			System.err.println("[2]>> Name = "+name);
+			TaskType type = TaskType.getTaskType(name);
+			this.currentTaskType=type;
+			
+			getView().setTaskType(currentTaskType);
+			loadTasks(type);
+		}
+					
 		
 	}	
 
@@ -487,8 +492,8 @@ public class HomePresenter extends
 	protected void onReset() {
 		super.onReset();
 		//System.err.println("HomePresenter - OnReset :: "+this);
-		setInSlot(FILTER_SLOT, filterPresenter);
-		setInSlot(DOCPOPUP_SLOT, docPopup);
+//		setInSlot(FILTER_SLOT, filterPresenter);
+//		setInSlot(DOCPOPUP_SLOT, docPopup);
 	}
 
 	@Override
