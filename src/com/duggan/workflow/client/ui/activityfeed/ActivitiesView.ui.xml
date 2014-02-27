@@ -72,7 +72,7 @@
 
 
 		<div class="news-feed row-fluid">
-			<h4>NewsFeed</h4>
+			<h4>News Feed</h4>
 			<d:BulletListPanel ui:field="panelActivity"
 				styleName="chat-box timeline">
 				<!-- <li class="arrow-box-left gray"> <div class="avatar"> <img class="avatar-small" 

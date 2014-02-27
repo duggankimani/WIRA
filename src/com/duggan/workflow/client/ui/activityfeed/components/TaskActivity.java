@@ -36,6 +36,7 @@ public class TaskActivity extends Composite {
 		
 		String subject=notification.getSubject();
 		DocumentType documentType=notification.getDocumentType();
+		
 		NotificationType notificationType=notification.getNotificationType();
 		HTUser ownerObj=notification.getOwner();
 		HTUser targetUser=notification.getTargetUserId();
@@ -68,13 +69,10 @@ public class TaskActivity extends Composite {
 			target="You";
 		}
 		
-		SafeHtml safeHtml = null;
-		SafeHtml safeHtml2 = null;
-		
-		spnUser.setInnerText(owner);
 		switch (notificationType) {
 		case APPROVALREQUEST_APPROVERNOTE:
 			//safeHtml = Template1.render(subject, owner, time);
+			spnUser.setInnerText(owner);
 			text = "submitted for approval ";
 			break;
 
@@ -84,6 +82,7 @@ public class TaskActivity extends Composite {
 //			else{
 //				safeHtml2= Template6.render(owner,subject, time);
 //			}
+			spnUser.setInnerText(owner);
 			text = "forwarded for approval ";
 			break;
 
@@ -91,6 +90,7 @@ public class TaskActivity extends Composite {
 //			safeHtml = Template3.render(subject, owner, time, action, 
 //					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
 			
+			spnUser.setInnerText(owner);
 			text =action +" ";
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
@@ -100,6 +100,7 @@ public class TaskActivity extends Composite {
 //			else
 //			safeHtml2 =Template5.render(subject, approver, time, 
 //					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign",action)
+			spnUser.setInnerText(approver);
 			text =action+" ";
 			break;
 		case TASKDELEGATED:
@@ -110,6 +111,7 @@ public class TaskActivity extends Composite {
 //				safeHtml2 = Template8.render(approver,subject, target, time);
 //			}
 		
+			spnUser.setInnerText(approver);
 			text = "delegated to "+target+" "; 
 			
 			break;
@@ -134,7 +136,7 @@ public class TaskActivity extends Composite {
 //		}
 
 		spnAction.setInnerText(text);
-		spnSubject.setInnerText(notification.getSubject());
+		spnSubject.setInnerText(subject);
 		spnTime.setInnerText(time);
 	}
 

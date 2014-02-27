@@ -346,7 +346,7 @@ public class HomePresenter extends
 		}
 		
 		if(name==null){
-			System.err.println("[1]>> Name = "+name);
+			getView().setTaskType(null);
 			activitiesFactory.get(new ServiceCallback<ActivitiesPresenter>() {
 				@Override
 				public void processResult(ActivitiesPresenter presenter) {
@@ -356,7 +356,6 @@ public class HomePresenter extends
 				}
 			});
 		}else{
-			System.err.println("[2]>> Name = "+name);
 			TaskType type = TaskType.getTaskType(name);
 			this.currentTaskType=type;
 			

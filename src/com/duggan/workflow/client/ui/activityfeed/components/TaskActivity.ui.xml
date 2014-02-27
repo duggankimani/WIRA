@@ -7,7 +7,7 @@
 			<div class="avatar">
 				<img class="avatar-small" src="img/blueman.png" />
 			</div>
-			<div class="info">
+			<div class="info" id="activity">
 				<span class="name">
 					<span class="label label-blue">TASK</span>
 					<strong class="indent">

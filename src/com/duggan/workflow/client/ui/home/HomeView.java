@@ -265,6 +265,9 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		liRecentApprovals.removeClassName("active");
 		liProgress.removeClassName("active");
 
+		if(currentTaskType==null)
+			return;
+		
 		switch (currentTaskType) {
 		case APPROVALREQUESTDONE:
 			liRecentApprovals.addClassName("active");
@@ -298,7 +301,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@Override
 	public void showActivitiesPanel(boolean show) {
-		System.err.println(">>>>> ActivitiesPanel show = "+show);
 		if(show){
 			activityContainer.removeStyleName("hide");
 			wholeContainer.addStyleName("hide");
