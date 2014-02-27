@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
@@ -72,103 +73,20 @@
 
 		<div class="news-feed row-fluid">
 			<h4>NewsFeed</h4>
-			<ul class="chat-box timeline">
-
-				<li class="arrow-box-left gray">
-					<div class="avatar">
-						<img class="avatar-small" src="img/blueman.png"/>
-					</div>
-					<div class="info">
-						<span class="name">
-							<span class="label label-green">COMMENT</span>
-							<strong class="indent">Alex</strong>
-							posted a comment on this task:
-							<strong>Core Admin</strong>
-						</span>
-						<span class="time">
-							<i class="icon-time"></i>
-							3 minutes ago
-						</span>
-					</div>
-					<div class="content">
-						<blockquote>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat.
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat.
-						</blockquote>
-						<div>
-							<a href="#">
-								<i class="icon-paper-clip"></i>
-								<b>project_news.docx</b>
-							</a>
-						</div>
-					</div>
-				</li>
-
-				<li class="arrow-box-left gray">
-					<div class="avatar">
-						<img class="avatar-small" src="img/blueman.png"/>
-					</div>
-					<div class="info">
-						<span class="name">
-							<span class="label label-blue">TASK</span>
-							<strong class="indent">Michael</strong>
-							completed this task:
-							<strong class="strikethrough">Core Admin</strong>
-						</span>
-						<span class="time">
-							<i class="icon-time"></i>
-							6 minutes ago
-						</span>
-					</div>
-				</li>
-
-				<li class="arrow-box-left gray">
-					<div class="avatar">
-						<img class="avatar-small" src="img/blueman.png"/>
-					</div>
-					<div class="info">
-						<span class="name">
-							<span class="label label-purple">FILE</span>
-							<strong class="indent">Alex</strong>
-							added 3 new files in project:
-							<strong>Core Admin</strong>
-						</span>
-						<span class="time">
-							<i class="icon-time"></i>
-							12 minutes ago
-						</span>
-					</div>
-					<div class="content">
-						<ul class="thumbnails padded">
-
-							<li class="col-md-3">
-								<a href="#" class="thumbnail">
-									<img src="img/blueman.png" alt=""/>
-								</a>
-							</li>
-
-							<li class="col-md-3">
-								<a href="#" class="thumbnail">
-									<img src="img/blueman.png" alt=""/>
-								</a>
-							</li>
-
-							<li class="col-md-3">
-								<a href="#" class="thumbnail">
-									<img src="img/blueman.png" alt=""/>
-								</a>
-							</li>
-
-						</ul>
-					</div>
-				</li>
-			</ul>
+			<d:BulletListPanel ui:field="panelActivity"
+				styleName="chat-box timeline">
+				<!-- <li class="arrow-box-left gray"> <div class="avatar"> <img class="avatar-small" 
+					src="img/blueman.png"/> </div> <div class="info"> <span class="name"> <span 
+					class="label label-purple">FILE</span> <strong class="indent">Alex</strong> 
+					added 3 new files in project: <strong>Core Admin</strong> </span> <span class="time"> 
+					<i class="icon-time"></i> 12 minutes ago </span> </div> <div class="content"> 
+					<ul class="thumbnails padded"> <li class="col-md-3"> <a href="#" class="thumbnail"> 
+					<img src="img/blueman.png" alt=""/> </a> </li> <li class="col-md-3"> <a href="#" 
+					class="thumbnail"> <img src="img/blueman.png" alt=""/> </a> </li> <li class="col-md-3"> 
+					<a href="#" class="thumbnail"> <img src="img/blueman.png" alt=""/> </a> </li> 
+					</ul> </div> </li> -->
+					
+			</d:BulletListPanel>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

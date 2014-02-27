@@ -10,7 +10,7 @@
     <g:HTMLPanel styleName="login-bg">
 	<g:HTMLPanel styleName="row-fluid login-wrapper">
         <a href="#">
-        <a class="brand" href="#">Wira BPM|Your Organisation</a> 
+        <a class="brand" href="#">Wira BPM | Your Organisation</a> 
         </a>
         <g:HTMLPanel styleName="span4 box" ui:field="loadingbox">
             <div class="content-wrap">

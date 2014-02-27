@@ -2,6 +2,9 @@ package com.duggan.workflow.client.ui.activityfeed;
 
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -13,6 +16,8 @@ public class ActivitiesView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, ActivitiesView> {
 	}
 
+	@UiField ComplexPanel panelActivity;
+	
 	@Inject
 	public ActivitiesView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -21,5 +26,10 @@ public class ActivitiesView extends ViewImpl implements
 	@Override
 	public Widget asWidget() {
 		return widget;
+	}
+	
+	@Override
+	public HasWidgets getPanelActivity(){
+		return panelActivity;
 	}
 }
