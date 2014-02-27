@@ -6,6 +6,8 @@ public class Comment extends Activity {
 
 	private static final long serialVersionUID = 6882858941033696924L;
 	private String comment;
+	private String subject;
+	private String docType;
 	private Long id;
 	private HTUser createdBy;
 	private Date created;
@@ -106,4 +108,17 @@ public class Comment extends Activity {
 	public void setCreatedBy(HTUser createdBy) {
 		this.createdBy = createdBy;
 	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getDocType() {
+		return docType;
+	}
+	public void setDocType(String docType) {
+		this.docType = docType;
+	}
+	
 }

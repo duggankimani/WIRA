@@ -13,6 +13,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -25,7 +26,9 @@ public class TaskActivity extends Composite {
 	}
 	
 	@UiField SpanElement spnAction;
-	@UiField SpanElement spnSubject;
+	//@UiField SpanElement spnSubject;
+	@UiField Anchor aDocument;
+	
 	@UiField SpanElement spnTime;
 	@UiField SpanElement spnUser;
 
@@ -131,12 +134,13 @@ public class TaskActivity extends Composite {
 //			aDocument.addStyleName("hidden");
 //		}
 //		
-//		if(processInstanceId!=null){
-//			aDocument.setHref("#home;type=search;pid="+processInstanceId);
-//		}
+		aDocument.setText(subject);
+		if(processInstanceId!=null){
+			aDocument.setHref("#home;type=search;pid="+processInstanceId);
+		}
 
 		spnAction.setInnerText(text);
-		spnSubject.setInnerText(subject);
+		//spnSubject.setInnerText(subject);
 		spnTime.setInnerText(time);
 	}
 

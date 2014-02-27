@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.CommentDaoImpl;
+import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.DocType;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Comment;
 
@@ -92,6 +95,13 @@ public class CommentDaoHelper {
 		commentTo.setUserId(commentTo.getUserId());
 		commentTo.setComment(modelFrom.getComment());
 		commentTo.setParentId(modelFrom.getParentId());
+		
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		String name = dao.getDocumentTypeByDocumentId(modelFrom.getDocumentId()).getDisplay();
+		commentTo.setDocType(name);
+		
+		String subject = dao.getDocumentSubject(modelFrom.getDocumentId());
+		commentTo.setSubject(subject);
 	}
 
 	public static void delete(Long id) {

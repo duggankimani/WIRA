@@ -15,7 +15,9 @@
 					</strong>
 					<span ui:field="spnAction">completed this task:</span>
 					<strong>
-						<span ui:field="spnSubject">Core Admin</span>
+					    <g:Anchor ui:field="aDocument" styleName="item unread hand">
+        				</g:Anchor>  
+						<!-- span ui:field="spnSubject">Core Admin</span -->
 					</strong>
 				</span>
 				<span class="time">

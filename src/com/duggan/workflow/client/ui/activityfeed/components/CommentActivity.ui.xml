@@ -12,7 +12,9 @@
 					<strong class="indent" ui:field="spnUser">Alex</strong>
 					<span ui:field="spnAction">posted a comment on this task:</span>
 					<strong>
-						<span ui:field="spnSubject">Core Admin</span>
+						<!-- span ui:field="spnSubject">Core Admin</span-->
+						<g:Anchor ui:field="aDocument" styleName="item unread hand">
+        				</g:Anchor> 
 					</strong>
 				</span>
 				<span class="time">

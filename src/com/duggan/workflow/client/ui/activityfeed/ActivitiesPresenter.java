@@ -65,7 +65,7 @@ public class ActivitiesPresenter extends
 		//Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
 		//setInSlot(ACTIVITY_SLOT, null);
 		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
-		System.out.println(activitiesMap.size());
+		//System.out.println(activitiesMap.size());
 		Set<Activity> keyset = activitiesMap.keySet();
 		List<Activity> activities= new ArrayList<Activity>();
 		

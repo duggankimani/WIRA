@@ -12,6 +12,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,7 +25,8 @@ public class CommentActivity extends Composite {
 	}
 	
 	@UiField SpanElement spnAction;
-	@UiField SpanElement spnSubject;
+	@UiField Anchor aDocument;
+	//@UiField SpanElement spnSubject;
 	@UiField SpanElement spnTime;
 	@UiField Element spnUser;
 	@UiField SpanElement commentText;
@@ -37,16 +39,17 @@ public class CommentActivity extends Composite {
 	
 	void bind(Comment comment) {
 		
-		setComment(comment.getId(), comment.getComment(), comment.getCreatedBy(),
+		setComment(comment.getId(),comment.getDocType(), comment.getSubject(),
+				comment.getComment(), comment.getCreatedBy(),
 				comment.getCreated(), comment.getUpdatedBy(), comment.getUpdated(),
 				comment.getDocumentId(), comment.getParentId()!=null);
 	}
 
 
-	public void setComment(Long commentId, String comment, HTUser createdBy,
+	public void setComment(Long commentId, 
+			String docType, String subject,
+			String comment, HTUser createdBy,
 			Date created, String updatedby, Date updated, long documentId, boolean isChild) {
-		
-		spnSubject.setInnerText("Invoice ABC");
 		
 		this.commentid=commentId;
 		if(createdBy!=null){
@@ -60,17 +63,13 @@ public class CommentActivity extends Composite {
 			
 		}
 		
+		aDocument.setText(docType+" "+subject);
+		aDocument.setHref("#home;type=search;did="+documentId);
 		setComment(comment);
 	}
 
 	public void setComment(String comments) {
 		commentText.setInnerText(comments);
 	}
-
-
-	public CommentActivity(String firstName) {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
-
 
 }

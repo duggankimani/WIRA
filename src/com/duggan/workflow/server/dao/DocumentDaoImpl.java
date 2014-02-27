@@ -628,5 +628,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		return true;
 	}
+
+	public String getDocumentSubject(Long documentId) {
+		
+		String sql = "select subject from localdocument where id=?";
+		String value =(String) em.createNativeQuery(sql)
+				.setParameter(1, documentId)
+				.getSingleResult();
+		
+		return value;
+	}
 	
 }
