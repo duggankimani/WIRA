@@ -11,6 +11,7 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextArea;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.delegate.FormDelegate;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -60,6 +61,7 @@ public class FormPanel extends Composite {
 	public FormPanel(Form form,MODE mode) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.mode = mode;
+		ENV.clear();
 		
 		form.getCaption();
 		divFormHelp.setInnerText("");
@@ -114,11 +116,15 @@ public class FormPanel extends Composite {
 			panelFields.add(fieldWidget);
 		}
 		
-		//formDelegate.setFields(form.getFields(), panelFields);
 	}
 
 	public boolean isValid(){
-		return formDelegate.isValid(issues, panelFields);
+		boolean isValid = formDelegate.isValid(issues, panelFields);;
+		
+		if(!isValid){
+			issues.getElement().scrollIntoView();
+		}
+		return isValid;
 	}
 	
 	public Map<String, Value> getValues(){

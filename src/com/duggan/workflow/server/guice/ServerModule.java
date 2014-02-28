@@ -84,8 +84,18 @@ import com.duggan.workflow.server.actionhandlers.DeleteAttachmentRequestHandler;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
+
+import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
+import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
+import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
+import com.duggan.workflow.server.actionhandlers.GetDSConfigurationsRequestHandler;
+import com.duggan.workflow.shared.requests.DeleteDSConfigurationEvent;
+import com.duggan.workflow.server.actionhandlers.DeleteDSConfigurationEventActionHandler;
+
 import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
+import com.duggan.workflow.shared.requests.GetDSStatusRequest;
+import com.duggan.workflow.server.actionhandlers.GetDSStatusRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -220,7 +230,22 @@ public class ServerModule extends HandlerModule {
 				DeleteDocumentRequestHandler.class,
 				SessionValidator.class);
 
+		bindHandler(SaveDSConfigRequest.class,
+				SaveDSConfigRequestHandler.class, SessionValidator.class);
+
+		bindHandler(GetDSConfigurationsRequest.class,
+				GetDSConfigurationsRequestHandler.class,
+				SessionValidator.class);
+
+		bindHandler(DeleteDSConfigurationEvent.class,
+				DeleteDSConfigurationEventActionHandler.class,
+				SessionValidator.class);
+
 		bindHandler(ExportFormRequest.class,
 				ExportFormRequestHandler.class, SessionValidator.class);
+
+
+		bindHandler(GetDSStatusRequest.class,
+				GetDSStatusRequestActionHandler.class, SessionValidator.class);
 	}
 }

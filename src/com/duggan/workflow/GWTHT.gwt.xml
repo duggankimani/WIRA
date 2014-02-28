@@ -29,6 +29,8 @@
 	
 	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 	<inherits name='com.googlecode.gflot.GFlot'/>
+	
+	<inherits name="org.matheclipse.parser.Parser"/>
 	 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='com.duggan.workflow.client.GWTHT'/>

@@ -20,8 +20,8 @@ import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;

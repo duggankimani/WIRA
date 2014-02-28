@@ -114,7 +114,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 
 	protected void valueChange(RadioButton source, boolean value) {
 		if(value){
-			fieldValue = new StringValue(null, source.getName(), source.getFormValue());
+			fieldValue = new StringValue(field.getLastValueId(), source.getName(), source.getFormValue());
 		}else{
 			fieldValue=null;
 		}

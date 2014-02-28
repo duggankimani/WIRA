@@ -225,8 +225,11 @@ public class Document extends Doc implements Serializable{
 	
 		return "DocumentId = "+id+", subject="+subject;
 	}
-	
 	public Document clone(){
+		return clone(false);
+	}
+	
+	public Document clone(boolean fullClone){
 	
 		Document document = new Document();
 		document.setCreated(created);
@@ -248,14 +251,14 @@ public class Document extends Doc implements Serializable{
 		for(String key: pv.keySet()){
 			Value v = pv.get(key);	
 			if(v!=null)
-				vals.put(key, v.clone());
+				vals.put(key, v.clone(fullClone));
 		}
 		document.setValues(vals);
 		
 		for(String key: details.keySet()){
 			List<DocumentLine> linez = details.get(key);
 			for(DocumentLine line: linez){
-				DocumentLine clone = line.clone();
+				DocumentLine clone = line.clone(fullClone);
 				clone.setName(key);
 				document.addDetail(clone);
 			}

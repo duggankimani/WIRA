@@ -2,7 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.List;
 
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;

@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.Iterator;
 
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
@@ -31,6 +32,13 @@ public class CurrencyField extends NumberField{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
+			if(!(value instanceof Double)){
+				try{
+					value = new Double(value.toString());
+				}catch(Exception e){return;}
+			}
+			
+			ENV.setContext(field, (Double)value);			
 			txtComponent.setValue((Double)value);
 			
 			String currencyCode = getPropertyValue(CURRENCY);
@@ -46,7 +54,6 @@ public class CurrencyField extends NumberField{
 				lblReadOnly.setText(value.toString());	
 			}
 		}
-
 	}
 	
 	

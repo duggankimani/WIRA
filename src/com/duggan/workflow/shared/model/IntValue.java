@@ -56,8 +56,12 @@ public class IntValue implements Value{
 		return DataType.INTEGER;
 	}
 
-	public IntValue clone(){
-		IntValue ivalue = new IntValue(null, key, value);
+	public IntValue clone(boolean fullClone){
+		Long identify=null;
+		if(fullClone){
+			identify = id;
+		}
+		IntValue ivalue = new IntValue(identify, key, value);
 		return ivalue;
 	}
 }

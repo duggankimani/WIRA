@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.header;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
@@ -17,6 +18,7 @@ import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetAlertCountResult;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
@@ -25,8 +27,6 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetNotificationsActionResult;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
@@ -57,6 +57,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 		void setAdminPageLookAndFeel(boolean isAdminPage);
 		void changeFocus();
 		void showAdminLink(boolean admin);
+		void setVersionInfo(Date created, String date, String version);
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -191,6 +192,9 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 		HTUser currentUser = event.getCurrentUser();
 		getView().showAdminLink(currentUser.isAdmin());
 		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString());
+		
+		Version version = event.getVersion();
+		getView().setVersionInfo(version.getCreated(), version.getDate(), version.getVersion());
 	}
 
 	@Override

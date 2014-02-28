@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -46,6 +47,7 @@ public class GetContextRequestActionHandler extends
 			result.setGroups(LoginHelper.get().getGroupsForUser(result.getUser().getUserId()));
 		}
 		
+		result.setVersion(VersionManager.getVersion());
 				
 	}
 

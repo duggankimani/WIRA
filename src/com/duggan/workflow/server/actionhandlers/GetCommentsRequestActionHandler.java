@@ -2,7 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.List;
 
-import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
+import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;

@@ -53,8 +53,14 @@ public class StringValue implements Value{
 		return DataType.STRING;
 	}
 	
-	public StringValue clone(){
-		StringValue svalue = new StringValue(null, key, value);
+	public StringValue clone(boolean fullClone){
+		
+		Long identify=null;
+		if(fullClone){
+			identify = id;
+		}
+		StringValue svalue = new StringValue(identify, key, value);
+		
 		return svalue;
 	}
 }

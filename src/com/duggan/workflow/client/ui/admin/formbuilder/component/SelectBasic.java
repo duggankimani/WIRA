@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
@@ -39,7 +40,9 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	public SelectBasic() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
-		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
+		addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
+		addProperty(new Property(SQLSELECT, "Sql", DataType.STRINGLONG));
+		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));		
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
@@ -48,6 +51,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	public SelectBasic(final Property property){
 		this();
 		lblEl.setInnerText(property.getCaption());
+		
 		setSelectionValues(property.getSelectionValues());
 		Value val = property.getValue();
 		if(val!=null)
@@ -58,9 +62,13 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 			@Override
 			public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
 				KeyValuePair p = event.getValue();
+				if(p==null){
+					property.setValue(null);
+				}else{
+					Value value = new StringValue(null,property.getName(),p==null? null: p.getKey());
+					property.setValue(value);
+				}
 				
-				Value value = new StringValue(null,property.getName(),p==null? null: p.getKey());
-				property.setValue(value);
 			}
 		});
 		
@@ -97,7 +105,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		}
 		
 		if(value!=null){
-			return new StringValue(value);
+			return new StringValue(field.getLastValueId(), field.getName(), value);
 		}
 		
 		return null;
@@ -118,13 +126,28 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 
 	@Override
 	public void setSelectionValues(List<KeyValuePair> values) {
+		if(showShim && (getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null)){
+			//design mode
+			values =new ArrayList<KeyValuePair>();
+			 
+			//design mode; and loaded from a different system/subsystem
+			//the user doesnt see these loaded values i.e the drop down cant show the values
+			//loaded in design mode
+			
+			//we need to disable this capability so that in case the user changes from db loading
+			//to manual listing, the web browser does not sending data loaded from another subsystem
+			// as new data provided manually
+		}
 		
 		if(values!=null){
 			lstItems.setItems(values);
 		}
 		
 		//design mode values set here before save is called
+		//iff these we manually entered/ not referenced from another ds
+		
 		field.setSelectionValues(values);
+		
 	}
 
 	@Override

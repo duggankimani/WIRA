@@ -16,6 +16,12 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomeView;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
+import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
+import com.duggan.workflow.client.ui.admin.ds.DataSourceView;
+import com.duggan.workflow.client.ui.admin.ds.item.DSItemPresenter;
+import com.duggan.workflow.client.ui.admin.ds.item.DSItemView;
+import com.duggan.workflow.client.ui.admin.ds.save.DSSavePresenter;
+import com.duggan.workflow.client.ui.admin.ds.save.DSSaveView;
 import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderView;
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
@@ -235,5 +241,16 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(IFrameDataPresenter.class,
 				IFrameDataPresenter.IFrameView.class, IFrameDataView.class);
 
+		bindPresenterWidget(DataSourcePresenter.class,
+				DataSourcePresenter.IDataSourceView.class,
+				DataSourceView.class);
+		
+		bindPresenterWidget(DSItemPresenter.class,
+				DSItemPresenter.MyView.class,
+				DSItemView.class);
+		
+		bindPresenterWidget(DSSavePresenter.class,
+				DSSavePresenter.IDSSaveView.class,
+				DSSaveView.class);
 	}
 }

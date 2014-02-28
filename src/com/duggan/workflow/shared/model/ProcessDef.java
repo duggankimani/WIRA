@@ -28,7 +28,7 @@ public class ProcessDef implements Serializable{
 	
 	private String description;
 	
-	private ProcessDefStatus status;
+	private Status status;
 	
 	private Long imageId;
 	
@@ -113,11 +113,11 @@ public class ProcessDef implements Serializable{
 		this.description = description;
 	}
 
-	public ProcessDefStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(ProcessDefStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

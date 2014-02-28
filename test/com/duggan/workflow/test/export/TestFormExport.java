@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 
 public class TestFormExport {
 

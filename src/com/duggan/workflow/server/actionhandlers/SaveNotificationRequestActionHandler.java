@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
+import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;

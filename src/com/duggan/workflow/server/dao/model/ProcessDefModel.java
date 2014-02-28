@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
 
-import com.duggan.workflow.shared.model.ProcessDefStatus;
+import com.duggan.workflow.shared.model.Status;
 
 @Entity
 public class ProcessDefModel extends PO {
@@ -38,13 +38,13 @@ public class ProcessDefModel extends PO {
 	@Column(length=2000)
 	private String description;
 	
-	private ProcessDefStatus status;
+	private Status status;
 	
 	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
 	private Collection<ADDocType> documentTypes = new HashSet<>();
 		
 	public ProcessDefModel(){
-		status = ProcessDefStatus.INACTIVE;
+		status = Status.INACTIVE;
 	}
 	
 	public ProcessDefModel(Long id, String name, String processId, boolean isArchived,
@@ -97,11 +97,11 @@ public class ProcessDefModel extends PO {
 		this.description = description;
 	}
 
-	public ProcessDefStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(ProcessDefStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	

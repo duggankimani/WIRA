@@ -45,10 +45,11 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 				String code = listBox.getValue(selectedIndex);
 				value = null;
 				if(code.isEmpty()){
-					return;
+					//setting null
+					value=null;
+				}else{
+					value =  items.get(selectedIndex-1);
 				}
-				
-				value =  items.get(selectedIndex-1);
 				
 				ValueChangeEvent.fire(DropDownList.this,value);
 			}

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.ProcessDefStatus;
+import com.duggan.workflow.shared.model.Status;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -91,7 +91,7 @@ public class ProcessItemView extends ViewImpl implements
 	@Override
 	public void setValues(String name, String processId,String description,
 			List<DocumentType> docTypes, Date lastModified, Long fileId,
-			String fileName, ProcessDefStatus status, String imageName, Long imageId) {
+			String fileName, Status status, String imageName, Long imageId) {
 		
 		spnName.setInnerText(name);
 		spnName.setTitle(description);

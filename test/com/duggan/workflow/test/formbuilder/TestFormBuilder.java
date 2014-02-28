@@ -9,14 +9,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.FormDaoImpl;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
@@ -32,7 +32,7 @@ public class TestFormBuilder {
 		dao = DB.getFormDao();
 	}
 	
-	@Test
+	@Ignore
 	public void getField(){
 		Field field = FormDaoHelper.getField(108L);
 		
@@ -45,10 +45,9 @@ public class TestFormBuilder {
 		System.err.println("Values = "+pairs);
 	}
 	
-	@Ignore
+	@Test
 	public void getForm(){
-		Long value = DB.getDocumentDao().getFormId(3L);
-		Assert.assertNotNull(value);
+		FormDaoHelper.getForm(1L, true);
 	}
 	
 	@Ignore

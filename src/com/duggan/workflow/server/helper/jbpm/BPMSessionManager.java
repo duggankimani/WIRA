@@ -53,11 +53,11 @@ import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.dao.NotificationDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
@@ -244,7 +244,6 @@ class BPMSessionManager {
 		logger.debug(Thread.currentThread().toString()
 				+ "RETRIEVED LocalTaskService : " + lts.toString());
 		
-		TaskClient c;
 		return lts;
 	}
 

@@ -50,8 +50,12 @@ public class DateValue implements Value{
 		return DataType.DATE;
 	}
 	
-	public DateValue clone(){
-		DateValue dvalue = new DateValue(null, key, value);
+	public DateValue clone(boolean fullClone){
+		Long identify=null;
+		if(fullClone){
+			identify = id;
+		}
+		DateValue dvalue = new DateValue(identify, key, value);
 		return dvalue;
 	}
 }

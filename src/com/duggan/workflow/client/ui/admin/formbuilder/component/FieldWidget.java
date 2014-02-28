@@ -1,16 +1,22 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.matheclipse.parser.client.eval.ComplexEvaluator;
+import org.matheclipse.parser.client.eval.ComplexVariable;
+import org.matheclipse.parser.client.math.Complex;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent;
+import com.duggan.workflow.client.ui.events.OperandChangedEvent;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
@@ -18,6 +24,7 @@ import com.duggan.workflow.client.ui.events.ResetFormPositionEvent.ResetFormPosi
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -38,23 +45,30 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+//import java.util.StringTokenizer;
 
 public abstract class FieldWidget extends AbsolutePanel implements
 		HasDragHandle, PropertyChangedHandler, HasProperties,
-		SavePropertiesHandler, ResetFormPositionHandler {
+		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler, DeleteLineHandler{
 
 	private FocusPanel shim = new FocusPanel();
 	protected long id = System.currentTimeMillis();
 	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
 	
 	Field field = new Field();
+	//Design Mode Properties
 	protected boolean showShim = true;
 	protected boolean readOnly=false;
 	protected boolean popUpActivated = false;
 	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	
+	//Formula handling properties
+	List<String> dependentFields = new ArrayList<String>();
+	boolean isObserver = false;//depends on other fields - registered for OperandChangeEvent
+	boolean isObservable=false;//its value is depended upon by other fields - fires an event
+	Long detailId=null;
 	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
@@ -86,16 +100,28 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		assert property != null;
 		assert property.getName() != null;
 
-		
 		if(property.getType().isDropdown()){
 			Property previous=props.get(property.getName());
-			//need to copy lookup values
-			if(previous!=null){
+
+			if(property.getType().isDropdown()){
+				//no need - It will overwrite server values with local
+				
+				if(property.getSelectionValues().isEmpty() && previous!=null){
+					//probably frontend
+					property.setSelectionValues(previous.getSelectionValues());
+				}
+			}else if(previous!=null){
+				//need to copy lookup values
 				property.setSelectionValues(previous.getSelectionValues());
 			}
 		}
 		
+		//overwrite previous value with current
+		
 		props.put(property.getName(), property);
+		
+		if(!property.getType().isDropdown()){
+		}
 	}
 
 	public abstract FieldWidget cloneWidget();
@@ -209,15 +235,36 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		initShim();	
 		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
+
+		if(isObserver){
+			//System.err.println("Registering observer.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
+			addRegisteredHandler(OperandChangedEvent.TYPE, this);
+		}
 		
 		if (!popUpActivated) {
 			popUpActivated = true;
 			addRegisteredHandler(ResetFormPositionEvent.TYPE, this);
 			activateShimHandler();
 		}
+		
+		if(!showShim){
+			//runtime
+			//Check if this fields value is relied upon by other fields
+			
+			//isObservable = ENV.containsObservable(field.getName(),field.getParentId());
+			isObservable = ENV.containsObservable(field.getDocSpecificName(),field.getParentId());
+			if(isObservable){
+				//System.err.println("Registering observable.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
+				registerValueChangeHandler();
+				addRegisteredHandler(DeleteLineEvent.TYPE, this);
+			}
+			
+		}
 		//register default events
 		
 	}
+	
+	protected void registerValueChangeHandler(){}
 	
 	/**
 	 * Remove the shim to allow the widget to size itself when reattached.
@@ -348,7 +395,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	protected abstract DataType getType();
 
 	public void setValue(Object value) {
-
+		
 	}
 
 	public void setFormId(Long formId) {
@@ -443,6 +490,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			setValue(value.getValue());
 		}else{
 			setValue(null);
+		}
+		
+		String formula = getPropertyValue(FORMULA);
+		if(formula!=null){
+			setFormula(formula);
 		}
 
 	}
@@ -575,7 +627,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		return widget;
 	}
-
+	
 	public void delete() {
 		if (field.getId() != null) {
 			AppContext.getDispatcher().execute(
@@ -699,4 +751,202 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public Widget getComponent(boolean small) {
 		return null;
 	}
+	
+	protected void setFormula(String formula){
+		
+		if(formula==null || formula.isEmpty()){
+			return;
+		}
+		
+		isObserver=true;
+		//System.err.println(formula);
+		String regex = "[(\\+)+|(\\*)+|(\\/)+|(\\-)+|(\\=)+|(\\s)+(\\[)+|(\\])+|(,)+]";
+		String [] tokens= formula.split(regex);
+		
+		String digitsOnlyRegex = "[-+]?[0-9]*\\.?[0-9]+";//isNot a number
+		for(String token: tokens){
+			if(token!=null && !token.isEmpty() && !token.matches(digitsOnlyRegex)){
+				dependentFields.add(token+field.getDocId()+"D");
+			}
+		}
+		
+		ENV.registerObservable(dependentFields);
+	}
+	
+	/**
+	 * Document qualified fieldname > concat(fieldName, docId);
+	 * 
+	 * @return
+	 */
+	public List<String> getDependentFields(){
+		return dependentFields;
+	}
+	
+	/**
+	 * Fired whenever a formula operand(a field used in the formular)
+	 * changes its value
+	 */
+	@Override
+	public void onOperandChanged(OperandChangedEvent event) {
+		String fieldName = event.getSourceField(); //Raw fieldName without detailid
+		
+		if(!dependentFields.contains(fieldName)){
+			return;
+		}
+		
+		/*
+		 * check if the source and target are grid fields
+		 * to ensure row wise updates
+		 */
+		if(ENV.isParent(fieldName, field.getParentId())){
+			//Same ParentId = Same Detail Grid 
+			Long detailId = event.getDetailId();
+			Long fieldDetailId = field.getDetailId();
+				
+			if(detailId!=null && fieldDetailId!=null){
+				if(!detailId.equals(fieldDetailId)){
+					//two different rows
+					return;
+				}
+			}
+		}
+		
+		/*
+		 * Aggregate Functions - operand Substitution
+		 */
+		List<String> paramFields = new ArrayList<String>();
+		paramFields.addAll(dependentFields);
+		
+		String formular = parseAggregate(paramFields,getPropertyValue(FORMULA));
+		//System.out.println("Formular >> "+formular);         
+		/*
+		 * Value substitution into the evaluating engine
+		 */
+        ComplexEvaluator engine = new ComplexEvaluator();
+        for(String fld: paramFields){
+        	//fld already qualified
+        	Object val = ENV.getValue(fld);
+        	String formularFieldName="";
+        	
+        	if(field.getParentId()!=null && val==null){
+        		//Current Field is a detail field, and no value was found for dependent field
+        		val=ENV.getValue(formularFieldName=fld+Field.getSeparator()+field.getDetailId());
+        	}
+        	
+        	//System.err.println(fld+" == "+val);
+        	if(val!=null && (val instanceof Double)){
+        		
+        		/*
+        		 * Dependent Fields== fieldName-DocId-D
+        		 * Event Source FieldName== FieldName-DocId-D
+        		 * 
+        		 * >
+        		 * 
+        		 */
+        		formularFieldName = fld.substring(0, fld.indexOf(field.getDocId()));
+        		if(!fld.endsWith("D")){        			
+        			formularFieldName = fld;
+        		}
+        		
+        		//System.out.println(formularFieldName+" = "+val);
+        		
+	        	ComplexVariable dv = new ComplexVariable((Double)val);
+	        	engine.defineVariable(formularFieldName, dv);	        	
+        	}
+        }
+        
+        if(formular.startsWith("=")){
+        	formular = formular.substring(1, formular.length());
+        }
+        
+        Double result=null;
+        try{
+        	//System.err.println("Calculating> "+field.getName()+" = "+formular);
+        	Complex x = engine.evaluate(formular);
+        	result = x.abs();
+	        setValue(result);
+        }catch(Exception e){
+        	e.printStackTrace();
+        	setValue(result=new Double(0.0));
+        }finally{
+        	boolean contained = ENV.containsObservable(field.getDocSpecificName());
+        	
+	        if(contained){
+	        	//potential for an endless loop
+	        	AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), result, field.getDetailId()));
+	        }
+        }
+	}
+
+	/**
+	 * Replace all aggregate fields with comma separated 
+	 * actuals<br>
+	 * i.e =Plus[total] becomes =Plus[1|total,2|total,3|total,....,RowN|Total]
+	 * 
+	 * @param formular
+	 * @return
+	 */
+	private String parseAggregate(List<String> paramFields,String formular) {
+		//One of the dependent is a grid detail field - A column in a grid row
+		//eg formular =Plus[row_total]; where row_total is a column in invoice particulars
+		
+		if(!field.isAggregate()){
+			//Target/ result field is not an aggregate/grid field
+			
+			for(String fld:dependentFields){
+				if(ENV.isAggregate(fld)){
+					//This is a grid field
+					List<String> names = ENV.getQualifiedNames(fld);
+//					/System.err.println(fld+" : Aggregated: "+names);
+										
+					String nameList="";
+					if(names!=null){						
+						for(String n:names){
+							nameList=nameList.concat(n+",");
+						}
+					}
+					
+					if(!nameList.isEmpty()){
+						paramFields.remove(fld);
+						paramFields.addAll(names);
+						nameList = nameList.substring(0, nameList.length()-1);
+
+						//Formula is Document independent
+						//make it dependent on doc
+						String rootName = fld.substring(0, fld.indexOf(field.getDocId()));
+						
+						//String regex="/^"+fld+"$/";
+						//System.out.println("["+rootName+"] >> ["+nameList+"]");
+						formular=formular.replaceAll(rootName, nameList);
+						//System.err.println("formular>> "+formular);
+					}	
+				}
+			}
+		}
+		return formular;
+	}
+
+	@Override
+	public void onDeleteLine(DeleteLineEvent event) {
+		if(isObservable && field.getDetailId()!=null){
+			Long sourceDetailId = event.getLine().getId();
+			if(sourceDetailId==null){
+				sourceDetailId = event.getLine().getTempId();
+			}
+			if(!field.getDetailId().equals(sourceDetailId)){
+				return;
+			}
+			ENV.setContext(field, new Double(0.0));
+			AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), new Double(0.0), field.getDetailId()));
+		}
+	}
+	
+	public void manualLoad() {
+		onLoad();
+	}
+
+	public void manualUnload() {
+		onUnload();
+	}
+
 }

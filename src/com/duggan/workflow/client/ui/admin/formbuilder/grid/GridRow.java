@@ -38,15 +38,25 @@ public class GridRow extends Composite {
 	@UiField Anchor aDelete;
 	
 	DocumentLine line;
+	Long detailId=null;
 	
 	public GridRow(Collection<Field> columns, DocumentLine line) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.line = line;
+		detailId = line.getId();
+		
+		if(detailId==null){
+			detailId = System.currentTimeMillis();
+			line.setTempId(detailId);
+		}
 		
 		initRow();
 		
 		for(Field col: columns){
-			panelRow.add(createCell(col));
+			Field clone = col.clone(true);
+			clone.setDetailId(detailId);
+			//System.err.println(clone.getId()+" : "+clone.getParentId()+" : "+clone.getDetailId());
+			panelRow.add(createCell(clone));
 		}
 		panelRow.add(getActions());
 	}
@@ -89,9 +99,10 @@ public class GridRow extends Composite {
 		
 		Value value=line.getValue(field.getName());
 		field.setValue(value);
-		//System.err.println(field.getName()+">>> "+(value==null? "": value.getValue()));
+		
+		//System.err.println(field.getQualifiedName()+"="+field.getValue()+" : detail- "+detailId);
 		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);		
-	
+		
 		Widget widget = fw.getComponent(true);
 		assert widget!=null;
 		
@@ -148,5 +159,20 @@ public class GridRow extends Composite {
 			widget.setReadOnly(readOnly);
 		}
 	}
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		for(FieldWidget widget : widgets){
+			widget.manualLoad();
+		}
+	}
+	
+	protected void onDetach() {
+		super.onDetach();
+		for(FieldWidget widget : widgets){
+			widget.manualUnload();
+		}
+	};
 
 }

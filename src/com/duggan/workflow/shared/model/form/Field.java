@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
+import com.google.gwt.user.client.Random;
 
 /**
  * Represents A Form Field
@@ -28,8 +29,11 @@ public class Field extends FormModel{
 	private int position;
 	private Long parentId;
 	private List<Field> fields = new ArrayList<Field>();
+	private transient Long detailId = null;
+	private transient String docId="";
 	
 	public Field() {
+		docId="TempD";
 	}
 	
 	public List<Property> getProperties() {
@@ -129,6 +133,10 @@ public class Field extends FormModel{
 	}
 	
 	public Field clone(){
+		return clone(false);
+	}
+	
+	public Field clone(boolean fullClone){
 		Field field = new Field();
 		field.setCaption(caption);
 		field.setName(name);
@@ -136,9 +144,16 @@ public class Field extends FormModel{
 		field.setType(type);
 		field.setFormId(null);
 		field.setId(null);
+		
+		if(fullClone){
+			field.setFormId(formId);
+			field.setId(Id);
+			field.setParentId(parentId);
+			field.setDocId(docId);
+		}
 	
 		if(value!=null){
-			field.setValue(value.clone());
+			field.setValue(value.clone(fullClone));
 		}
 		
 		field.setSelectionValues(getSelectionValues());
@@ -148,7 +163,7 @@ public class Field extends FormModel{
 		}
 		
 		for(Property p: properties){
-			field.addProperty(p.clone());
+			field.addProperty(p.clone(fullClone));
 		}
 		
 		return field;
@@ -193,4 +208,60 @@ public class Field extends FormModel{
 		
 		return property;
 	}
+	
+	public Long getLastValueId(){
+		if(value!=null){
+			return value.getId();
+		}
+		
+		return null;
+	}
+
+	public String getDocSpecificName(){
+		return name+docId+"D";//Delimited with a D
+	}
+	
+	public String getQualifiedName() {
+		if(detailId!=null){
+			return getDocSpecificName()+getSeparator()+detailId;
+		}
+		return getDocSpecificName();
+	}
+	
+	public Long getDetailId() {
+		return detailId;
+	}
+
+	public void setDetailId(Long detailId) {
+		this.detailId = detailId;
+	}
+	
+	/**
+	 * Aggregatable field
+	 * 
+	 * @return
+	 */
+	public boolean isAggregate(){
+		return this.parentId!=null;
+	}
+
+	public static String getSeparator() {
+		
+		return "";
+	}
+
+	public String getDocId() {
+		return docId;
+	}
+
+	public void setDocId(String docId) {
+		this.docId = docId;
+		
+		if(fields!=null){
+			for(Field field: fields){
+				field.setDocId(docId);
+			}
+		}
+	}
+
 }

@@ -6,7 +6,7 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
-
+	
 	<g:HTMLPanel styleName="full-page">
 		<g:HTMLPanel styleName="upper-content">
 			<div class="action-area row-fluid">
@@ -98,7 +98,7 @@
 							<span class="caret"></span>
 						</button>
 
-						<ul class="dropdown-menu" role="menu">
+						<ul class="dropdown-menu" role="menu" ui:field="ulMenu">
 							<li>
 								<d:ActionLink ui:field="aRevoke" styleName="btn hidden"
 									title="Revoke this task so that its re-assignable to other users in your group">

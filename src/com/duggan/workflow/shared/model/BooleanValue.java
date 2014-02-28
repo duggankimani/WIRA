@@ -61,8 +61,12 @@ public class BooleanValue implements Value, Serializable{
 		return DataType.BOOLEAN;
 	}
 	
-	public BooleanValue clone(){
-		BooleanValue bvalue = new BooleanValue(null, key, value);
+	public BooleanValue clone(boolean fullClone){
+		Long identify=null;
+		if(fullClone){
+			identify = id;
+		}
+		BooleanValue bvalue = new BooleanValue(identify, key, value);
 		return bvalue;
 	}
 

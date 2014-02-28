@@ -131,7 +131,7 @@ public class TextArea extends FieldWidget {
 		if(value==null || value.isEmpty())
 			return null;
 		
-		return new StringValue(value);
+		return new StringValue(field.getLastValueId(),field.getName(),value);
 	}
 
 	@Override

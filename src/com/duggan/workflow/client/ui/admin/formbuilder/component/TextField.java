@@ -131,14 +131,21 @@ public class TextField extends FieldWidget {
 			return null;
 		
 		
-		return new StringValue(value);
+		return new StringValue(field.getLastValueId(),field.getName(),value);
 	}
 	
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
+			if(!(value instanceof String)){
+				value = value.toString();
+			}
+				
 			txtComponent.setValue((String)value);
 			lblReadOnly.setText((String)value);
+		}else{
+			txtComponent.setValue(null);
+			lblReadOnly.setText(null);
 		}
 	}
 	

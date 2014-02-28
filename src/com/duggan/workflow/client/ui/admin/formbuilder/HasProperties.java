@@ -17,12 +17,9 @@ public interface HasProperties {
 	public static final String PLACEHOLDER="PLACEHOLDER";
 	public static final String ALIGNMENT="ALIGNMENT";
 	public static final String CURRENCY="CURRENCY";
-	
-	public static final String COLUMNLABEL="COLUMNLABEL";
-	public static final String COLUMNTYPE="COLUMNTYPE";
-	
-	public static final String COLUMNPROPERTY="COLUMNPROPERTY";
-	
+	public static final String SQLDS="SQLDS";
+	public static final String SQLSELECT="SQLSELECT";
+	public static final String FORMULA="FORMULA";
 	void addProperty(Property property);
 	
 	String getPropertyValue(String propertyName);

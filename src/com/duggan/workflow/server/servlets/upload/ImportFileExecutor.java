@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 
 public class ImportFileExecutor extends FileExecutor {
 

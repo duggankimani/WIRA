@@ -4,7 +4,7 @@ import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
 
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 
 /**
  * This work item handler updates the approval status

@@ -185,7 +185,7 @@ implements EditLineHandler{
 		assert field.getFields()!=null;
 		
 		field.sortFields();
-		GridView view = new GridView(field.getFields());
+		GridView view = new GridView(field.getFields(),field.getId());
 		view.setData(doclines);
 		divControls.add(view);
 		view.setReadOnly(isReadOnly());
@@ -355,4 +355,8 @@ implements EditLineHandler{
 		super.save();
 	}
 	
+	@Override
+	protected void setFormula(String formula) {
+		super.setFormula(formula);
+	}
 }

@@ -9,16 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.dao.FormDaoHelper;
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
-import com.duggan.workflow.shared.model.Attachment;
-import com.duggan.workflow.shared.model.ProcessDef;
 
 public class GetReport extends HttpServlet {
 

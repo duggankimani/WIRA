@@ -1,5 +1,9 @@
 package com.duggan.workflow.client.ui.header;
 
+import java.util.Date;
+
+import com.duggan.workflow.client.ui.util.DateUtils;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -32,6 +36,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@UiField FocusPanel popupContainer;
 	@UiField SpanElement lblCount;
 	@UiField SpanElement spnUserGroup;
+	@UiField DivElement spnVersion;
 	
 	boolean isSelected=false;
 	
@@ -133,5 +138,15 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@Override
 	public void showAdminLink(boolean isAdmin) {
 		UIObject.setVisible(aAdmin.getElement(),isAdmin);
+	}
+
+	@Override
+	public void setVersionInfo(Date created, String date, String version) {
+		String versionDate = date;
+		if(created!=null){
+			versionDate = DateUtils.CREATEDFORMAT.format(created);
+		}
+		
+		spnVersion.setInnerHTML("Version "+version+", <span title=\"Build Date\">"+versionDate+"</span>");
 	}
 }

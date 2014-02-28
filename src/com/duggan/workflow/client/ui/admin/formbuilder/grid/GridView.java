@@ -9,7 +9,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -33,13 +32,14 @@ public class GridView extends Composite {
 	
 	Collection<Field> columnConfigs = new ArrayList<Field>();
 	
-	public GridView(Collection<Field> columns) {	
+	public GridView(Collection<Field> columns, Long parentId) {	
 		initWidget(uiBinder.createAndBindUi(this));
 		setNewRecordHandlerText("Add Row");	
 		
 		if(columns!=null){
 			columnConfigs = columns;		
 			for(Field field:columns){
+				field.setParentId(parentId);
 				header.add(createHeader(field));
 			}
 		}

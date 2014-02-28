@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.dao.CommentDaoHelper;
+import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;

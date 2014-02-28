@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao;
 
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,8 +160,14 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		boolean isFirst=true;
 		if(subject!=null){
 			isFirst=false;
-			query.append("subject like :subject");
-			params.put("subject", "%"+subject+"%");
+			query.append("(Lower(subject) like :subject");
+			params.put("subject", "%"+subject.toLowerCase()+"%");
+			
+			if(phrase==null){
+				query.append(" or Lower(description) like :phrase");
+				params.put("phrase", "%"+subject.toLowerCase()+"%");
+			}
+			query.append(")");
 		}
 		
 		if(!isFirst){
@@ -178,12 +185,16 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			params.put("endDate", endDate);
 		}else if(startDate!=null){
 			isFirst=false;
+			//mysql functions - They wont work on postgres
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=:startDate");
 			params.put("startDate", startDate);
+			
 		}else if(endDate!=null){
 			isFirst=false;
+			//mysql functions - They wont work on postgres
 			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=:endDate");
 			params.put("endDate", endDate);
+			
 		}
 		
 		if(!isFirst){
@@ -204,8 +215,8 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		if(phrase!=null){
 			isFirst=false;
-			query.append("description like :phrase");
-			params.put("phrase", "%"+phrase+"%");
+			query.append("Lower(description) like :phrase");
+			params.put("phrase", "%"+phrase.toLowerCase()+"%");
 		}
 		
 		if(!isFirst){
@@ -322,8 +333,14 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			/**
 			 * TODO:Necessary Table index has to be added; otherwise full table scan will be used 
 			 */
-			query.append("LOWER(d.subject) like ?");
-			params.add( "%"+subject+"%");
+			query.append("(LOWER(d.subject) like ?");
+			params.add( "%"+subject.toLowerCase()+"%");
+			
+			if(phrase==null){
+				query.append(" or Lower(d.description) like ?");
+				params.add("%"+subject.toLowerCase()+"%");
+			}
+			query.append(")");
 		}
 		
 		if(!isFirst){
@@ -343,16 +360,25 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 			isFirst=false;
 			/**
 			 * TODO:This needs to be changed - It will force full table scan 
+			 * -- further these functions only work on Mysql/ Fail on postgres
 			 */
-			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
-			params.add( startDate);
+			//query.append(" ?<=created and (? + interval '1 day')>created ");
+			//query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
+						
+//			params.add(startDate);
+//			params.add(startDate);
+			
 		}else if(endDate!=null){
 			isFirst=false;
 			/**
 			 * TODO:This needs to be changed - It will force full table scan 
 			 */
-			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
-			params.add( endDate);
+			//same day
+			query.append(" ?>=created and (? + interval '1 day')>created ");
+			//query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
+			
+//			params.add(endDate);
+//			params.add(endDate);
 		}
 		
 		if(!isFirst){
@@ -373,8 +399,8 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		if(phrase!=null){
 			isFirst=false;
-			query.append("d.description like ?");
-			params.add("%"+phrase+"%");
+			query.append("Lower(d.description) like ?");
+			params.add("%"+phrase.toLowerCase()+"%");
 		}
 		
 		if(!isFirst){
@@ -578,7 +604,12 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	 * Request/{No}/{YY} - Request/0001/14 <br/>
 	 * Request/{No}/{MM}/{YY} - Request/0001/01/14 <br/> 
 	 * Request/{No}/{YYYY} - Request/0001/2014 <br/>
+	 * <p>
+	 * TODO: check the impact of locking this record to performance
+	 * This record will be locked to the current transaction every time
+	 * a number is requested: Using a sequence might offer better performance?
 	 * 
+	 * <p>
 	 * @param type
 	 * @return String generated subject
 	 */
@@ -637,6 +668,16 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 				.getSingleResult();
 		
 		return value;
+	}
+
+	public boolean exists(String subject) {
+
+		String sql = "select count(id) from DocumentModel d where d.subject=:subject";
+		Query query = em.createQuery(sql).setParameter("subject", subject);
+		
+		Long result = (Long)query.getSingleResult();
+		
+		return result>0;
 	}
 	
 }

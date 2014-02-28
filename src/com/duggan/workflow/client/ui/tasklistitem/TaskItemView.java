@@ -12,6 +12,8 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.regexp.shared.RegExp;
+//import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -74,7 +76,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		aClaim.getElement().setAttribute("title", "Claim");
 		aClaim.getElement().setId("example");
 		disable();
-		
+	
 	}
 	
 	private void disable() {
@@ -164,6 +166,9 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			spnPriority.addStyleName("hide");
 			break;
 		}
+		//String id = container.getElement().getId();
+		//System.err.println("ElID = "+id);
+		
 	}
 	
 	private void setDocumentActions(DocStatus status) {
@@ -312,8 +317,9 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 
 	@Override
 	public void setTask(boolean isTask) {
-		if(isTask)
-		spnDocIcon.addStyleName("icon-ok");
+		if(isTask){
+			spnDocIcon.addStyleName("icon-ok");
+		}
 	}
 
 	@Override
@@ -322,6 +328,29 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			spnAttach.removeStyleName("hidden");	
 		}else{
 			spnAttach.addStyleName("hidden");
+		}
+	}
+	
+	public void highlight(String txt){
+		
+		String html=spnSubject.getInnerHTML();
+		String highlighted = RegExp.compile(txt, "i")
+				.replace(html, "<span class=\"highlight\">$&</span>");
+		spnSubject.setInnerHTML(highlighted);
+		
+		html = spnDescription.getElement().getInnerHTML();
+		highlighted = RegExp.compile(txt, "i")
+				.replace(html, "<span class=\"highlight\">$&</span>");
+		spnDescription.getElement().setInnerHTML(highlighted);
+		
+	}
+	
+	@Override
+	public void highlight(String subject, String description) {
+		if(subject!=null){
+			highlight(subject);
+		}else if(description!=null){
+			highlight(description);
 		}
 		
 	}

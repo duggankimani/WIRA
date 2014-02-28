@@ -11,6 +11,8 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.AfterSearchEvent;
+import com.duggan.workflow.client.ui.events.AfterSearchEvent.AfterSearchHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent.CompleteDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
@@ -65,7 +67,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 public class TaskItemPresenter extends
 		PresenterWidget<TaskItemPresenter.ITaskItemView> 
 	implements DocumentSelectionHandler, AfterDocumentLoadHandler, 
-	CompleteDocumentHandler, ExecTaskHandler, AfterAttachmentReloadedHandler{
+	CompleteDocumentHandler, ExecTaskHandler, AfterAttachmentReloadedHandler, AfterSearchHandler{
 
 	public interface ITaskItemView extends View {
 		void bind(Doc summaryTask);
@@ -87,6 +89,8 @@ public class TaskItemPresenter extends
 		void setMiniDocumentActions(boolean status);
 		void setTask(boolean isTask);
 		void showAttachmentIcon(boolean hasAttachment);
+		void highlight(String txt);
+		void highlight(String subject, String description);
 
 	}
 
@@ -111,6 +115,7 @@ public class TaskItemPresenter extends
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ExecTaskEvent.TYPE, this);
 		addRegisteredHandler(AfterAttachmentReloadedEvent.TYPE, this);
+		addRegisteredHandler(AfterSearchEvent.TYPE, this);
 //		
 		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		 
@@ -493,6 +498,11 @@ public class TaskItemPresenter extends
 				getView().showAttachmentIcon(true);
 			}
 		}
+	}
+
+	@Override
+	public void onAfterSearch(AfterSearchEvent event) {
+		getView().highlight(event.getSubject(), event.getDescription());
 	}
 	
 }

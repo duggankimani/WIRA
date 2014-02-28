@@ -269,7 +269,16 @@
 	max-width: 95%;
 }
 
-.control-group .controls .gwt-RadioButton-disabled {
+.action-area .version{
+	font-size: 10px;
+    font-style: oblique;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+.control-group .controls .gwt-RadioButton-disabled{
 	color: #000000;
 }
 

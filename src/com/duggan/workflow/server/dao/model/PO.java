@@ -106,4 +106,12 @@ public abstract class PO implements Serializable{
 	public void setIsActive(int isActive) {
 		this.isActive = isActive;
 	}		
+	
+	public Date getLastModified(){
+		if(updated!=null){
+			return updated;
+		}
+		
+		return created;
+	}
 }

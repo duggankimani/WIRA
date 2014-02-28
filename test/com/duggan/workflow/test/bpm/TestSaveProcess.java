@@ -10,11 +10,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.ProcessDefHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 
 public class TestSaveProcess {
