@@ -493,8 +493,8 @@ public class HomePresenter extends
 	protected void onReset() {
 		super.onReset();
 		//System.err.println("HomePresenter - OnReset :: "+this);
-//		setInSlot(FILTER_SLOT, filterPresenter);
-//		setInSlot(DOCPOPUP_SLOT, docPopup);
+		setInSlot(FILTER_SLOT, filterPresenter);
+		setInSlot(DOCPOPUP_SLOT, docPopup);
 	}
 
 	@Override
