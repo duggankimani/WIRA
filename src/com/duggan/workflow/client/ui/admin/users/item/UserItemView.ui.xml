@@ -19,10 +19,10 @@
 			<g:HTMLPanel ui:field="panelGroups" styleName="td">HOD_Development</g:HTMLPanel>
 			<g:HTMLPanel styleName="td">
 				<div class="action-commands">										
-					<g:Anchor styleName="green" ui:field="aEdit">
+					<g:Anchor styleName="btn btn-success" ui:field="aEdit">
 						<i class="icon-pencil helper-14"></i>
 					</g:Anchor>
-					<g:Anchor styleName="red" ui:field="aDelete">
+					<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
 						<i class="icon-trash"></i>
 					</g:Anchor>
 				</div>
