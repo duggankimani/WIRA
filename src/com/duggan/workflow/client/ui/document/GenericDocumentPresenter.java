@@ -715,20 +715,20 @@ public class GenericDocumentPresenter extends
 
 	private void bind(final Activity child, boolean isChild) {
 				
-		if(child instanceof Comment)
-		commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
-			@Override
-			public void processResult(CommentPresenter result) {
-				result.setComment((Comment)child);
-				
-				addToSlot(ACTIVITY_SLOT,result);
-			}
-		});
-		
-		
-		if(child instanceof Notification)
-			if(((Notification)child).getNotificationType()==NotificationType.FILE_UPLOADED)
+		if(child instanceof Comment){
+			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
+				@Override
+				public void processResult(CommentPresenter result) {
+					result.setComment((Comment)child);
+					
+					addToSlot(ACTIVITY_SLOT,result);
+				}
+			});
+			
+		}else if(child instanceof Notification){
+			if(((Notification)child).getNotificationType()==NotificationType.FILE_UPLOADED){
 				return;
+			}
 		
 			notePresenterFactory.get(new ServiceCallback<NotePresenter>() {				
 				@Override
@@ -737,7 +737,7 @@ public class GenericDocumentPresenter extends
 					addToSlot(ACTIVITY_SLOT, result);
 				}
 			});
-			
+		}
 		
 	}
 
@@ -840,8 +840,9 @@ public class GenericDocumentPresenter extends
 		
 		if(value==null){
 			Value val = vals.get("value");
-			if(val!=null)
-				value = ((StringValue)val).getValue();
+			if(val!=null){
+				value = val.getValue()==null? null: val.getValue().toString();
+			}
 		}
 		
 		if(partner==null){
