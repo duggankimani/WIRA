@@ -63,6 +63,7 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -724,6 +725,9 @@ public class GenericDocumentPresenter extends
 		
 		
 		if(child instanceof Notification)
+			if(((Notification)child).getNotificationType()==NotificationType.FILE_UPLOADED)
+				return;
+		
 			notePresenterFactory.get(new ServiceCallback<NotePresenter>() {				
 				@Override
 				public void processResult(NotePresenter result) {

@@ -105,12 +105,15 @@ public class NotificationDaoHelper {
 		
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
 		notificationTo.setOwner(modelFrom.getOwner().getUserId());
-		notificationTo.setTargetUserId(modelFrom.getTargetUserId().getUserId());
+		if(modelFrom.getTargetUserId()!=null)
+			notificationTo.setTargetUserId(modelFrom.getTargetUserId().getUserId());
+		
 		notificationTo.setNotificationType(modelFrom.getNotificationType());
 		notificationTo.setRead(modelFrom.IsRead());	
-		notificationTo.setRead(modelFrom.IsRead());
 		notificationTo.setSubject(modelFrom.getSubject());
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
+		notificationTo.setFileId(modelFrom.getFileId());
+		notificationTo.setFileName(modelFrom.getFileName());
 	}
 	
 	private static void copyData(Notification notificationTo,
@@ -125,7 +128,8 @@ public class NotificationDaoHelper {
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setSubject(modelFrom.getSubject());
 		notificationTo.setCreated(modelFrom.getCreated());
-		notificationTo.setTargetUserId(LoginHelper.get().getUser(modelFrom.getTargetUserId()));
+		if(modelFrom.getTargetUserId()!=null)
+			notificationTo.setTargetUserId(LoginHelper.get().getUser(modelFrom.getTargetUserId()));
 		notificationTo.setRead(modelFrom.IsRead());
 		
 		String createdBy = modelFrom.getCreatedBy();
@@ -137,6 +141,8 @@ public class NotificationDaoHelper {
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
 		notificationTo.setProcessInstanceId(
 				DocumentDaoHelper.getProcessInstanceIdByDocumentId(modelFrom.getDocumentId()));
+		notificationTo.setFileId(modelFrom.getFileId());
+		notificationTo.setFileName(modelFrom.getFileName());
 		
 	}
 

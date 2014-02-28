@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.activityfeed.components;
 
 import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsString;
 
+import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -10,9 +11,12 @@ import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,11 +30,16 @@ public class TaskActivity extends Composite {
 	}
 	
 	@UiField SpanElement spnAction;
+	@UiField SpanElement spnTask;
 	//@UiField SpanElement spnSubject;
+	@UiField Anchor aFile;
+	@UiField SpanElement spnTo;
 	@UiField Anchor aDocument;
 	
 	@UiField SpanElement spnTime;
 	@UiField SpanElement spnUser;
+	
+	String url;
 
 	public TaskActivity(Notification notification) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -67,9 +76,13 @@ public class TaskActivity extends Composite {
 			approver="You";
 		}
 		
-		String target = targetUser.getSurname();
-		if(AppContext.isCurrentUser(targetUser.getUserId())){
-			target="You";
+		String target = null;
+		
+		if(targetUser!=null){
+			target =targetUser.getSurname();
+			if(AppContext.isCurrentUser(targetUser.getUserId())){
+				target="You";
+			}
 		}
 		
 		switch (notificationType) {
@@ -116,6 +129,34 @@ public class TaskActivity extends Composite {
 		
 			spnUser.setInnerText(approver);
 			text = "delegated to "+target+" "; 
+			
+			break;
+		case FILE_UPLOADED:
+			spnUser.setInnerText(owner);
+			spnTask.setInnerText("File");
+			spnTask.addClassName("label-purple");
+			spnTask.removeClassName("label-blue");
+			text = "uploaded file ";
+			aFile.removeStyleName("hide");
+			spnTo.removeClassName("hide");
+			aFile.setText(notification.getFileName());
+			UploadContext context = new UploadContext("getreport");
+			context.setContext("attachmentId", notification.getFileId()+"");
+			context.setContext("ACTION", "GETATTACHMENT");
+			url = context.toUrl();
+			
+			aFile.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+					if(moduleUrl.endsWith("/")){
+						moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+					}
+					url = url.replace("/", "");
+					moduleUrl =moduleUrl+"/"+url;
+					Window.open(moduleUrl, aFile.getText(), "");
+				}
+			});
 			
 			break;
 		default:

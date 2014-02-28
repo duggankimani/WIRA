@@ -43,6 +43,10 @@ public class NotificationModel extends PO {
 	@Enumerated(EnumType.STRING)
 	private ApproverAction approverAction;
 	
+	private String fileName;
+	
+	private Long fileId;
+	
 	public NotificationModel() {
 		isRead=true;
 	}
@@ -109,6 +113,22 @@ public class NotificationModel extends PO {
 
 	public void setApproverAction(ApproverAction approverAction) {
 		this.approverAction = approverAction;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public Long getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
 	}
 
 }

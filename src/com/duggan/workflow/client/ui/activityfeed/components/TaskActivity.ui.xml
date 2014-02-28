@@ -9,12 +9,15 @@
 			</div>
 			<div class="info" id="activity">
 				<span class="name">
-					<span class="label label-blue">TASK</span>
+					<span class="label label-blue" ui:field="spnTask">TASK</span>
 					<strong class="indent">
 						<span ui:field="spnUser">Michael</span>
 					</strong>
 					<span ui:field="spnAction">completed this task:</span>
 					<strong>
+					    <g:Anchor ui:field="aFile" styleName="item unread hand hide">
+        				</g:Anchor>
+        				<span ui:field="spnTo" class="hide">&nbsp;to&nbsp;</span>
 					    <g:Anchor ui:field="aDocument" styleName="item unread hand">
         				</g:Anchor>  
 						<!-- span ui:field="spnSubject">Core Admin</span -->

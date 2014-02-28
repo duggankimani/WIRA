@@ -139,8 +139,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			
 			break;
 		default:
+			return;
 			//safeHtml= "<p>You have no new notification</p>";
-			break;
+			//break;
 		}
 		
 		if(safeHtml!=null){

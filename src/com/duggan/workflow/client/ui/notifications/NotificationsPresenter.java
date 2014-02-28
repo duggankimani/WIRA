@@ -9,6 +9,7 @@ import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent.BeforeN
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent.NotificationsLoadHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.NotificationType;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -59,6 +60,9 @@ public class NotificationsPresenter extends
 		
 		if(notes!=null)
 		for (final Notification note : notes) {
+			if(note.getNotificationType()==NotificationType.FILE_UPLOADED)
+				continue;
+			
 			notesFactory.get(new ServiceCallback<NotePresenter>() {
 				@Override
 				public void processResult(NotePresenter result) {

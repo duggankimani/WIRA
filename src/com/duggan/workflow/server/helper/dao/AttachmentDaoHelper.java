@@ -2,6 +2,7 @@ package com.duggan.workflow.server.helper.dao;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
@@ -9,7 +10,13 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.NotificationType;
 
 public class AttachmentDaoHelper{
 
@@ -17,11 +24,28 @@ public class AttachmentDaoHelper{
 		DocumentModel doc = DB.getDocumentDao().getById(documentId);
 		attachment.setDocument(doc);
 		
-		DB.getAttachmentDao().save(attachment);
+		save(attachment);
 	}
 	
 	public static void save(LocalAttachment attachment){
+		
 		DB.getAttachmentDao().save(attachment);
+		//upload to a task only
+		if(attachment.getDocument()!=null && attachment.getDocument().getProcessInstanceId()!=null){
+			DocumentModel doc = attachment.getDocument();
+			Notification notification = new Notification();
+			notification.setDocumentId(attachment.getDocument().getId());
+			notification.setDocumentType(DocumentDaoHelper.getType(doc.getType()));
+			notification.setNotificationType(NotificationType.FILE_UPLOADED);
+			notification.setApproverAction(ApproverAction.UPLOADFILE);
+			notification.setOwner(SessionHelper.getCurrentUser());
+			notification.setRead(false);
+			notification.setSubject(doc.getSubject());
+			notification.setFileName(attachment.getName());
+			notification.setFileId(attachment.getId());
+			//notificatin
+			NotificationDaoHelper.saveNotification(notification);
+		}
 	}
 	
 	public static List<Attachment> getAttachments(Long documentId){
@@ -40,8 +64,9 @@ public class AttachmentDaoHelper{
 		Attachment attachment = new Attachment();
 		attachment.setArchived(model.isArchived());
 		attachment.setContentType(model.getContentType());
-		if(model.getDocument()!=null)
-			attachment.setDocumentid(model.getDocument().getId());
+		if(model.getDocument()!=null){
+			attachment.setDocumentid(model.getDocument().getId());			
+		}
 		if(model.getProcessDef()!=null)
 			attachment.setProcessDefId(model.getProcessDef().getId());
 		

@@ -23,6 +23,8 @@ public class Notification extends Activity{
 	private HTUser createdBy;
 	private ApproverAction approverAction;
 	private Long processInstanceId;
+	private String fileName;
+	private Long fileId;
 	
 	public Notification() {
 	}
@@ -156,5 +158,21 @@ public class Notification extends Activity{
 
 	public void setCreatedBy(HTUser createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public Long getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
 	}
 }

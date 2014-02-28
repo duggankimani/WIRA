@@ -35,7 +35,7 @@ public class GetActivitiesRequestHandler extends
 		activities.addAll(NotificationDaoHelper.getAllNotifications(documentId,
 				NotificationType.TASKCOMPLETED_OWNERNOTE,
 				NotificationType.APPROVALREQUEST_OWNERNOTE,
-				NotificationType.TASKDELEGATED));
+				NotificationType.TASKDELEGATED, NotificationType.FILE_UPLOADED));
 				
 		activities.addAll(CommentDaoHelper.getAllCommentsByDocumentId(documentId));		
 		Collections.sort(activities);
