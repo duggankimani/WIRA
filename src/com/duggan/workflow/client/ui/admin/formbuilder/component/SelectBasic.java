@@ -117,11 +117,12 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	}
 	
 	@Override
-	public void setReadOnly(boolean isReadOnly) {
-		this.readOnly = isReadOnly;
-		UIObject.setVisible(lstItems.getElement(),!isReadOnly);
-		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
-		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
+	public void setReadOnly(boolean isReadOnly) {		
+		this.readOnly = isReadOnly || isComponentReadOnly();
+		
+		UIObject.setVisible(lstItems.getElement(),!this.readOnly);
+		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
+		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override

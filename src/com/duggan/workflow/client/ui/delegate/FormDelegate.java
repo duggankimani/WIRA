@@ -84,7 +84,7 @@ public class FormDelegate {
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
 			Field field = fieldWidget.getField();
-			if(fieldWidget.isReadOnly()){
+			if(fieldWidget.isReadOnly() && !fieldWidget.isFormularField()){
 				continue;
 			}
 			

@@ -329,15 +329,16 @@ implements EditLineHandler{
 	}
 	
 	@Override
-	public void setReadOnly(boolean readOnly) {
+	public void setReadOnly(boolean isReadOnly) {
 		if(!showShim){
 			//not design mode
+			this.readOnly = isReadOnly || isComponentReadOnly();
 			
 			Widget child = divControls.getWidget(0);
 			
 			if(child instanceof GridView){
 				GridView view = (GridView)child;
-				view.setReadOnly(readOnly);
+				view.setReadOnly(this.readOnly);
 			}
 		}
 	}

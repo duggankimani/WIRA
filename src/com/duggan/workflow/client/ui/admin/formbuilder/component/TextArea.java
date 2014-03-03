@@ -145,10 +145,10 @@ public class TextArea extends FieldWidget {
 	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
-		this.readOnly = isReadOnly;
-		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
-		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
-		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
+		this.readOnly = isReadOnly || isComponentReadOnly();
+		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
+		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
+		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 	
 	@Override

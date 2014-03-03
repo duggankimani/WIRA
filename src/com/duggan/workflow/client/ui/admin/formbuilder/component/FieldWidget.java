@@ -379,6 +379,15 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	}
 
+	public boolean isComponentReadOnly(){
+		Boolean isComponentReadOnly = getValue(READONLY)==null? false : (Boolean)getValue(READONLY);
+		if(isComponentReadOnly==null){
+			isComponentReadOnly=false;
+		}
+	
+		return isComponentReadOnly;
+	}
+	
 	public void setReadOnly(boolean readOnly) {
 
 	}
@@ -947,6 +956,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void manualUnload() {
 		onUnload();
+	}
+
+	public boolean isFormularField() {
+		
+		String formular = getPropertyValue(FORMULA); 
+		return formular!=null && !formular.isEmpty();
 	}
 
 }

@@ -147,12 +147,12 @@ public class NumberField extends FieldWidget{
 	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
-		this.readOnly = isReadOnly;
+		this.readOnly = isReadOnly || isComponentReadOnly();
 		
-		UIObject.setVisible(txtComponent.getElement(),!isReadOnly);
-		UIObject.setVisible(lblReadOnly.getElement(), isReadOnly);
+		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
+		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
 		
-		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
+		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override

@@ -171,16 +171,12 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
-		Boolean isComponentReadOnly = getValue(READONLY)==null? false : (Boolean)getValue(READONLY);
-		if(isComponentReadOnly==null){
-			isComponentReadOnly=false;
-		}
+		this.readOnly = isReadOnly || isComponentReadOnly();
 		
-		this.readOnly = isReadOnly && !isComponentReadOnly;
 		int count = vPanel.getWidgetCount();
 		for(int i=0; i<count; i++){
 			RadioButton btn = (RadioButton)vPanel.getWidget(i);
-			btn.setEnabled(!readOnly);
+			btn.setEnabled(!this.readOnly);
 			//btn.set
 		}
 	}

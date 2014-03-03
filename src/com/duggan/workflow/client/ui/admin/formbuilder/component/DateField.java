@@ -106,10 +106,10 @@ public class DateField extends FieldWidget {
 	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
-		this.readOnly = isReadOnly;
-		UIObject.setVisible(dateBox.getElement(),!isReadOnly);
-		UIObject.setVisible(lblComponent.getElement(), isReadOnly);
-		UIObject.setVisible(spnMandatory, (!isReadOnly && isMandatory()));
+		this.readOnly = isReadOnly || isComponentReadOnly();
+		UIObject.setVisible(dateBox.getElement(),!this.readOnly);
+		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
+		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 	
 	@Override
