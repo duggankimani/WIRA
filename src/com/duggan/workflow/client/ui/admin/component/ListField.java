@@ -117,7 +117,9 @@ public class ListField<T extends Listable> extends Composite {
 	
 	public void select(List<T> items){		
 		others.removeAll(selected);
+		
 		//others
+		if(items!=null)
 		for(T item: items){			
 			addItem(item, true);
 		}

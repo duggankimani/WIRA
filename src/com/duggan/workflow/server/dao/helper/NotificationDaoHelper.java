@@ -140,8 +140,11 @@ public class NotificationDaoHelper {
 		ADDocType documentType = DB.getDocumentDao().getDocumentTypeByDocumentId(modelFrom.getDocumentId());
 		notificationTo.setDocumentType(getType(documentType));
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
+		
+		if(modelFrom.getDocumentId()==null)
 		notificationTo.setProcessInstanceId(
 				DocumentDaoHelper.getProcessInstanceIdByDocumentId(modelFrom.getDocumentId()));
+		
 		notificationTo.setFileId(modelFrom.getFileId());
 		notificationTo.setFileName(modelFrom.getFileName());
 		

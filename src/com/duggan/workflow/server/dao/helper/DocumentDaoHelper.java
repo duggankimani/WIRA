@@ -294,12 +294,20 @@ public class DocumentDaoHelper {
 
 		return lines;
 	}
+	
+	
+	public static DocumentType getType(ADDocType adtype){
+		return getType(adtype, false);
+	}
 
-	public static DocumentType getType(ADDocType adtype) {
+	public static DocumentType getType(ADDocType adtype, boolean loadDetails) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(),
 				adtype.getDisplay(), adtype.getClassName());
-		type.setFormId(dao.getFormId(adtype.getId()));
+		
+		if(loadDetails){
+			type.setFormId(dao.getFormId(adtype.getId()));
+		}
 		return type;
 	}
 
@@ -466,7 +474,7 @@ public class DocumentDaoHelper {
 
 		if (adtypes != null)
 			for (ADDocType adtype : adtypes) {
-				types.add(getType(adtype));
+				types.add(getType(adtype,true));
 			}
 
 		return types;

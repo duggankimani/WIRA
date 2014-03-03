@@ -65,8 +65,13 @@ public class LoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public HTUser getUser(String userId) {
-		return impl.getUser(userId);
+	public HTUser getUser(String userId){
+		return getUser(userId, false);
+	}
+	
+	@Override
+	public HTUser getUser(String userId, boolean loadGroups) {
+		return impl.getUser(userId,loadGroups);
 	}
 
 	@Override

@@ -42,7 +42,11 @@ public class DBLoginHelper implements LoginIntf{
 		return ht_users;
 	}
 
-	private HTUser get(User user) {
+	private HTUser get(User user){
+		return get(user, false);
+	}
+	
+	private HTUser get(User user, boolean loadGroups) {
 		HTUser htuser = new HTUser();
 		htuser.setEmail(user.getEmail());
 		htuser.setUserId(user.getUserId());
@@ -50,7 +54,9 @@ public class DBLoginHelper implements LoginIntf{
 		htuser.setPassword(user.getPassword());
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
-		htuser.setGroups(getFromDb(user.getGroups()));	
+		
+		if(loadGroups)
+			htuser.setGroups(getFromDb(user.getGroups()));	
 		
 		return htuser;
 	}
@@ -67,11 +73,16 @@ public class DBLoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public HTUser getUser(String userId) {
+	public HTUser getUser(String userId){
+		return getUser(userId, false);
+	}
+	
+	@Override
+	public HTUser getUser(String userId, boolean loadGroups) {
 		User user = DB.getUserGroupDao().getUser(userId);
 		
 		if(user!=null){
-			return get(user);
+			return get(user, loadGroups);
 		}
 		
 		return null;
@@ -247,7 +258,7 @@ public class DBLoginHelper implements LoginIntf{
 		
 		if(users!=null)
 			for(User user: users){
-				htusers.add(get(user));
+				htusers.add(get(user,true));
 			}
 		
 		return htusers;

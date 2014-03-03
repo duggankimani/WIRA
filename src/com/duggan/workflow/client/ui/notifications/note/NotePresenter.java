@@ -30,7 +30,8 @@ public class NotePresenter extends
 		void setValues(String subject, DocumentType documentType,
 				NotificationType notificationType, HTUser owner,
 				HTUser targetUserId, String time, boolean isRead, 
-				HTUser createdBy,ApproverAction approverAction, Long processInstanceId, boolean isNotification);
+				HTUser createdBy,ApproverAction approverAction, Long processInstanceId,
+				Long documentId,boolean isNotification);
 	}
 
 	private Notification note;
@@ -68,7 +69,9 @@ public class NotePresenter extends
 									notification.IsRead()==null? false: notification.IsRead(),
 											notification.getCreatedBy(),
 											notification.getApproverAction(),
-											notification.getProcessInstanceId(), isNotification);
+											notification.getProcessInstanceId(),
+											notification.getDocumentId(),
+											isNotification);
 //							
 //							PlaceRequest request = new PlaceRequest("home")
 //							.with("type", TaskType.SEARCH.getURL())
@@ -94,7 +97,9 @@ public class NotePresenter extends
 				notification.getTargetUserId(),time,
 				notification.IsRead()==null? false: notification.IsRead(),
 						notification.getCreatedBy(),
-						notification.getApproverAction(),notification.getProcessInstanceId(), isNotification);
+						notification.getApproverAction(),notification.getProcessInstanceId(),
+						notification.getDocumentId(),
+						isNotification);
 	}
 	
 }

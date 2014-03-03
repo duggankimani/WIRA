@@ -42,7 +42,7 @@ public class LoginRequestActionHandler extends
 			String sessionId = UUID.randomUUID().toString();
 			session.setAttribute(ServerConstants.AUTHENTICATIONCOOKIE, sessionId);
 			
-			HTUser user = LoginHelper.get().getUser(userId);
+			HTUser user = LoginHelper.get().getUser(userId,true);
 			session.setAttribute(ServerConstants.USER, user);				
 			result.setUser(user);
 			result.setValid(true);

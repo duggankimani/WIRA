@@ -35,7 +35,7 @@ public class ADDocType extends PO {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
 	private Collection<DocumentModel> documents = new HashSet<>();
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="processDefId", referencedColumnName="id")
 	private ProcessDefModel processDef;
 	
@@ -55,6 +55,11 @@ public class ADDocType extends PO {
 		
 		this.name = name;
 		this.display= display;
+	}
+	
+	public ADDocType(Long id, String name, String display, String className){
+		this(id,name,display);
+		this.className = className;
 	}
 	
 	public Long getId() {

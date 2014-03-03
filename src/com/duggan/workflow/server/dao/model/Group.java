@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -18,6 +19,7 @@ import org.hibernate.annotations.Cascade;
 
 @Entity(name="BGroup")
 @Table(uniqueConstraints={@UniqueConstraint(columnNames="name")})
+@NamedQuery(name="Group.getGroupByGroupId", query="from BGroup p where p.name=:name")
 public class Group extends PO {
 
 	/**

@@ -6,6 +6,8 @@ import java.util.List;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -49,9 +51,13 @@ public class GetFormModelRequestActionHandler extends
 				if(model!=null)
 					models.add(model);
 			}else if(action.getDocumentId()!=null){
-				Document doc = DocumentDaoHelper.getDocument(action.getDocumentId());
-				DocumentType type = doc.getType();
-				Long formId = type.getFormId();
+				
+				ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
+				Long formId=null;
+				
+				if(type!=null)
+					formId = DB.getDocumentDao().getFormId(type.getId());
+				
 				if(formId!=null){
 					model = FormDaoHelper.getForm(formId, true);
 					models.add(model);

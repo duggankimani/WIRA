@@ -1,6 +1,5 @@
 package com.duggan.workflow.server.dao;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +11,6 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
-import com.duggan.workflow.server.db.DBTrxProvider;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
 
@@ -23,7 +21,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	}
 	
 	public User getUser(String userId){
-		Query query = em.createQuery("from BUser u where u.userId=:userId");
+		Query query = em.createNamedQuery("User.getUserByUserId");
 		query.setParameter("userId", userId);
 		Object user= null;
 		try{
@@ -38,7 +36,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	}
 	
 	public Group getGroup(String groupId){
-		Query query = em.createQuery("from BGroup p where p.name=:name");
+		Query query = em.createNamedQuery("Group.getGroupByGroupId");
 		query.setParameter("name", groupId);
 		
 		Object group =null;

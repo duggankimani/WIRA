@@ -36,7 +36,7 @@ public class GetContextRequestActionHandler extends
 		HttpSession session = httpRequest.get().getSession(false);
 		
 		
-		Object sessionid=session.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
+		//Object sessionid=session.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
 		Object user = session.getAttribute(ServerConstants.USER);
 
 		GetContextRequestResult result = (GetContextRequestResult)actionResult;

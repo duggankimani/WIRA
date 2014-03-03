@@ -171,6 +171,10 @@ public class LDAPLoginHelper implements LoginIntf{
 	}
 
 	public HTUser getUser(String userId) {
+		return getUser(userId, false);
+	}
+	
+	public HTUser getUser(String userId, boolean loadGroups){
 		
 		//System.err.println("LDAP Search :uid="+userId);
 		AndFilter filter = new AndFilter().and(
@@ -178,8 +182,18 @@ public class LDAPLoginHelper implements LoginIntf{
 				new EqualsFilter("uid", userId));
 		List lst = ldapTemplate.search("", filter.toString(),
 				userAttributesMapper);
-
-		return (HTUser) lst.get(0);
+		
+		if(lst.isEmpty()){
+			return null;
+		}
+		
+		HTUser user = (HTUser) lst.get(0);
+		
+		if(loadGroups){
+			user.setGroups(getGroupsForUser(user.getUserId()));
+		}
+		
+		return user; 
 	}
 
 	/**

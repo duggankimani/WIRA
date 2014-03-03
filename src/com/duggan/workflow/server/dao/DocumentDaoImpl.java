@@ -546,8 +546,21 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 
 	public ADDocType getDocumentTypeByDocumentId(Long documentId) {
 		
-		ADDocType type = (ADDocType)em.createQuery("select d.type FROM DocumentModel d where d.id=:documentId")
-		.setParameter("documentId", documentId).getSingleResult();
+//		ADDocType type = (ADDocType)em.createQuery("select d.type FROM DocumentModel d where d.id=:documentId")
+//		.setParameter("documentId", documentId).getSingleResult();
+		
+		String sql = "select d.* from ADDocType d " +
+				"where id=(select doctype from localdocument where id=?)";
+		
+		Query query = em.createNativeQuery(sql, ADDocType.class).setParameter(1, documentId);
+		
+		ADDocType type = null;
+		
+		try{
+			type = (ADDocType)query.getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		return type;
 	}

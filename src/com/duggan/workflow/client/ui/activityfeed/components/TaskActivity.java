@@ -176,7 +176,10 @@ public class TaskActivity extends Composite {
 //		}
 //		
 		aDocument.setText(subject);
-		if(processInstanceId!=null){
+		
+		if(notification.getDocumentId()!=null){
+			aDocument.setHref("#home;type=search;did="+notification.getDocumentId());
+		}else if(processInstanceId!=null){
 			aDocument.setHref("#home;type=search;pid="+processInstanceId);
 		}
 
