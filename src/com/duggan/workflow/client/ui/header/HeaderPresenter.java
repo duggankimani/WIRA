@@ -81,6 +81,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 
 	
 	static int alertReloadInterval = 60 * 1000 * 5; //5 mins
+	static long lastLoad=0;
     private Timer alertTimer = new Timer() {
 
         @Override
@@ -107,6 +108,14 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				//Clicks must be atleast 5 min apart
+				long currentTime = System.currentTimeMillis();
+				if((currentTime-lastLoad)> alertReloadInterval){
+					lastLoad=currentTime;
+				}else{
+					return;
+				}
+				
 				loadAlerts();
 			}
 		});
