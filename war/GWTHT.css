@@ -295,3 +295,8 @@
 #activity .indent strong{
 	margin-right: 0;
 }
+
+span.serverdisconnected{
+	background: #db4439;
+	color: white;
+}

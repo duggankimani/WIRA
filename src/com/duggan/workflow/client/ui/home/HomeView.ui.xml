@@ -37,7 +37,7 @@
        
         <ul id="dashboard-menu">
            <li class="active">
-                <a class="dropdown-toggle" href="#">
+                <a class="dropdown-toggle" href="#home;type=drafts">
                     <i class="icon-book"></i>
                     <span>My Documents</span>
                     <i class="icon-chevron-up hidden-tablet"></i>
