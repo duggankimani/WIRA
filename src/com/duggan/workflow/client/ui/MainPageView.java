@@ -27,6 +27,8 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@UiField Anchor aView;
 	@UiField Element spnSubject;
 	
+	@UiField Element disconnectionText;
+	
 	Timer timer = new Timer() {
 		
 		@Override
@@ -95,6 +97,20 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	
 	public void hideAlert(){
 		divAlert.addClassName("hidden");
+	}
+
+	@Override
+	public void showDisconnectionMessage(String message) {
+		if(message==null){
+			message = "Cannot connect to server....";
+		}
+		disconnectionText.setInnerText(message);
+		disconnectionText.removeClassName("hide");
+	}
+
+	@Override
+	public void clearDisconnectionMsg() {
+		disconnectionText.addClassName("hide");
 	}
 
 }

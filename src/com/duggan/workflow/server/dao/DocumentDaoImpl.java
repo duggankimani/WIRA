@@ -564,6 +564,23 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		return type;
 	}
+	
+	public String getDocumentTypeDisplayNameByDocumentId(Long documentId){
+		String sql = "select display from ADDocType d " +
+				"where id=(select doctype from localdocument where id=?)";
+		
+		Query query = em.createNativeQuery(sql).setParameter(1, documentId);
+		
+		String type = null;
+		
+		try{
+			type = (String)query.getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return type;
+	}
 
 	public List<ADDocType> getDocumentTypes() {
 		

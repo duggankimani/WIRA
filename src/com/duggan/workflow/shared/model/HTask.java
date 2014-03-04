@@ -8,6 +8,14 @@ public class HTask extends HTSummary {
 	private Long taskFormId;
 	private Delegate delegate;
 
+	public HTask(){
+		
+	}
+	
+	public HTask(Long taskId) {
+		super(taskId);
+	}
+
 	public String getName() {
 		return name;
 	}

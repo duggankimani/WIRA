@@ -420,13 +420,12 @@ public class JBPMHelper implements Closeable {
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
-		task.setDetails(doc.getDetails());
-		task.setValues(doc.getValues());
+		
 		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
-		// task.setTaskName(summary.getName()); //TODO: LOOK INTO JBPM
-		// TASKSUMMARY / TASK USAGES
-		// task.setTaskName(master_task.getNames().);
 
+		task.setProcessInstanceId(master_task.getTaskData()
+				.getProcessInstanceId());
+	
 		Status status = master_task.getTaskData().getStatus();
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
 
@@ -441,8 +440,6 @@ public class JBPMHelper implements Closeable {
 			task.setName(getDisplayName(master_task));
 		}catch(Exception e){}
 
-		task.setProcessInstanceId(master_task.getTaskData()
-				.getProcessInstanceId());
 		Deadlines deadlines = master_task.getDeadlines();
 		if(deadlines!=null){
 			
@@ -461,6 +458,8 @@ public class JBPMHelper implements Closeable {
 		}
 
 		if (task instanceof HTask) {
+			task.setDetails(doc.getDetails());
+			task.setValues(doc.getValues());
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
 			task.setDocStatus(DB.getDocumentDao().getById(doc.getId()).getStatus());
@@ -521,7 +520,7 @@ public class JBPMHelper implements Closeable {
 	public HTask getTask(long taskId) {
 
 		// Human Task
-		HTask myTask = new HTask();
+		HTask myTask = new HTask(taskId);
 
 		Task task = sessionManager.getTaskClient().getTask(taskId);
 		
@@ -910,7 +909,7 @@ public class JBPMHelper implements Closeable {
 
 	public HTSummary getSummary(Long taskId) {
 
-		HTSummary summary = new HTSummary(taskId);
+		HTSummary summary = new HTask(taskId);
 
 		Task master_task = sessionManager.getTaskClient().getTask(taskId);
 
@@ -983,7 +982,7 @@ public class JBPMHelper implements Closeable {
 	/**
 	 * Returns the 'Name' property of a task (Node Name)
 	 * <p>
-	 * This process is inefficient - Needs improving
+	 * This process is inefficient - TODO: Find a better way to do this
 	 * <p>
 	 * @param taskId
 	 * @return
@@ -992,7 +991,7 @@ public class JBPMHelper implements Closeable {
 		//
 		String processId=task.getTaskData().getProcessId();
 		String taskName = getTaskName(task.getId());
-		
+				
 		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 	//	System.err.println("Globals:: "+wfprocess.get);

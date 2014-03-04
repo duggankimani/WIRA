@@ -1,10 +1,14 @@
 package com.duggan.workflow.client.service;
 
+import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
+import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.InvocationException;
 import com.gwtplatform.dispatch.shared.ServiceException;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
@@ -13,7 +17,6 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 
 	@Override
 	public void onFailure(Throwable caught) {	
-		
 		if(caught instanceof InvalidSessionException){
 			AppContext.destroy();
 			AppContext.getPlaceManager().revealPlace(new PlaceRequest("login"));
@@ -22,6 +25,18 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 		
 		if(caught instanceof ServiceException){
 			return;
+		}
+		
+		if(caught instanceof InvocationException){
+			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
+			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent("Cannot connect to server..."));
+			return;
+		}
+		
+		if(caught instanceof RequestTimeoutException){
+			//HTTP Request Timeout
+			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
+			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent("Cannot connect to server..."));
 		}
 		
 		//caught.printStackTrace();

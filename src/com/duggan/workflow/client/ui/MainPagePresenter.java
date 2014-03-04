@@ -5,6 +5,8 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
+import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
+import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent.ClientDisconnectionHandler;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent.ErrorHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -40,12 +42,14 @@ import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 public class MainPagePresenter extends
 		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
 implements ErrorHandler, ProcessingCompletedHandler, 
-ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
+ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler, ClientDisconnectionHandler{
 
 	public interface MyView extends View {
 
 		void showProcessing(boolean processing,String message);
 		void setAlertVisible(String subject, String action, String url);
+		void showDisconnectionMessage(String message);
+		void clearDisconnectionMsg();
 	}
 
 	@ProxyCodeSplit
@@ -88,18 +92,20 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(WorkflowProcessEvent.TYPE, this);
 		addRegisteredHandler(ShowIframeEvent.TYPE, this);
-		
+		addRegisteredHandler(ClientDisconnectionEvent.TYPE, this);
 	}
 	
 	@Override
 	protected void onReset() {
 		super.onReset();
 		setInSlot(HEADER_content, headerPresenter);	
+		getView().clearDisconnectionMsg();
 		//System.err.println("Main Page - Reset called......");
 	}
 	
 	@Override
 	public void onError(final ErrorEvent event) {
+		addToPopupSlot(null);
 		errorFactory.get(new ServiceCallback<ErrorPresenter>() {
 			@Override
 			public void processResult(ErrorPresenter result) {
@@ -108,6 +114,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 				result.setMessage(message, event.getId());
 				
 				MainPagePresenter.this.addToPopupSlot(result);
+				
 			}
 		});
 	}
@@ -159,4 +166,10 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler{
 		super.onUnbind();
 		headerPresenter.unbind();
 	}
+
+	@Override
+	public void onClientDisconnection(ClientDisconnectionEvent event) {
+		getView().showDisconnectionMessage(event.getMessage());
+	}
+
 }

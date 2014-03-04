@@ -119,7 +119,8 @@ public class NotificationDaoHelper {
 	
 	private static void copyData(Notification notificationTo,
 			NotificationModel modelFrom) {
-				
+	
+		Long documentId = modelFrom.getDocumentId();
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
 		
 		String owner = modelFrom.getOwner();
@@ -137,13 +138,18 @@ public class NotificationDaoHelper {
 		HTUser user = LoginHelper.get().getUser(createdBy);
 		notificationTo.setCreatedBy(user);
 		notificationTo.setId(modelFrom.getId());
-		ADDocType documentType = DB.getDocumentDao().getDocumentTypeByDocumentId(modelFrom.getDocumentId());
-		notificationTo.setDocumentType(getType(documentType));
+		
+//		ADDocType documentType = DB.getDocumentDao().getDocumentTypeByDocumentId(modelFrom.getDocumentId());
+//		notificationTo.setDocumentType(getType(documentType));
+		
+		DocumentType type = new DocumentType();
+		type.setDisplayName(DB.getDocumentDao().getDocumentTypeDisplayNameByDocumentId(documentId));
+		notificationTo.setDocumentType(type);
+		
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
 		
-		if(modelFrom.getDocumentId()==null)
-		notificationTo.setProcessInstanceId(
-				DocumentDaoHelper.getProcessInstanceIdByDocumentId(modelFrom.getDocumentId()));
+//		notificationTo.setProcessInstanceId(
+//				DocumentDaoHelper.getProcessInstanceIdByDocumentId(modelFrom.getDocumentId()));
 		
 		notificationTo.setFileId(modelFrom.getFileId());
 		notificationTo.setFileName(modelFrom.getFileName());

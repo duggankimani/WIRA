@@ -103,26 +103,29 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 			}
 		});
 		
-		
-		/*
-		 getView().getNotificationsButton().addClickHandler(new ClickHandler() {
+		getView().getNotificationsButton().addClickHandler(new ClickHandler() {
+			
 			@Override
 			public void onClick(ClickEvent event) {
-				getView().setPopupVisible();
-				onFocus =true;
-				getView().changeFocus();
+				loadAlerts();
 			}
 		});
+	}
+
+	protected void loadAlerts() {
 		
-		getView().getpopupContainer().addBlurHandler(new BlurHandler() {
+		dispatcher.execute(new GetNotificationsAction(AppContext.getUserId()),
+				new TaskServiceCallback<GetNotificationsActionResult>() {
+				
 			@Override
-			public void onBlur(BlurEvent event) {
-				//getView().removePopup();
+			public void processResult(
+					GetNotificationsActionResult notificationsResult) {
+
+				assert notificationsResult!=null;
+				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
+				getView().setLoading(false);
 			}
-		});	
-		
-		*/
-		
+		});
 	}
 
 	/**
@@ -144,7 +147,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 		getView().setLoading(true);
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetAlertCount());
-		action.addRequest(new GetNotificationsAction(AppContext.getUserId()));
+		//action.addRequest(new GetNotificationsAction(AppContext.getUserId()));
 		
 		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
@@ -156,10 +159,10 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));				
 				fireEvent(new AlertLoadEvent(alerts));				
 				
-				GetNotificationsActionResult notificationsResult = (GetNotificationsActionResult)results.get(1);
-				assert notificationsResult!=null;
-				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
-				getView().setLoading(false);
+//				GetNotificationsActionResult notificationsResult = (GetNotificationsActionResult)results.get(1);
+//				assert notificationsResult!=null;
+//				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
+//				getView().setLoading(false);
 				
 				alertTimer.schedule(alertReloadInterval);
 			}
