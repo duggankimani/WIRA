@@ -7,18 +7,18 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="content-right span10 overflow-y">
-		<div class="bootcamp js-notice hide">
+		<div class="bootcamp js-notice" ui:field="divTutorial">
 			<h1>
 				Welcome to Wira BPM
 				<span>Here is a Walk-through to get you started</span>
-				<a href="" class="">
+				<g:Anchor ui:field="aClose">
 					<span class="icon-remove-sign pull-right"></span>
-				</a>
+				</g:Anchor>
 			</h1>
 			<div class="bootcamp-body">
 				<ul>
-					<li class="setup">
-						<a href="">
+					<li ui:field="liCreate">
+						<g:Anchor ui:field="aCreate">
 							<div class="image">
 								<span class='icon-file'></span>
 							</div>
@@ -27,10 +27,10 @@
 								<p>Add new documents and submit them for Approval.</p>
 							</div>
 							<span class="step-number one">1</span>
-						</a>
+						</g:Anchor>
 					</li>
-					<li class="create-a-repo">
-						<a href="" target="_blank">
+					<li ui:field="liFollowUp">
+						<g:Anchor ui:field="aFollowUp">
 							<div class="image">
 								<span class='icon-eye-open'></span>
 							</div>
@@ -39,32 +39,31 @@
 								<p>Get in-time reports on the status of your request</p>
 							</div>
 							<span class="step-number two">2</span>
-						</a>
+						</g:Anchor>
 					</li>
-					<li class="fork-a-repo">
-						<a href="" target="_blank">
+					<li ui:field="liReceive">
+						<g:Anchor ui:field="aReceive">
 							<div class="image">
 								<span class='icon-arrow-down'></span>
 							</div>
 							<div class="desc">
 								<h2>Receive Tasks</h2>
-								<p>Get Alerted on requests forwarded to you.</p>
+								<p>Get Alerted on new request to your desk</p>
 							</div>
 							<span class="step-number three">3</span>
-						</a>
+						</g:Anchor>
 					</li>
-					<li class="be-social">
-						<a href="" target="_blank">
+					<li ui:field="liReview">
+						<g:Anchor ui:field="aReview">
 							<div class="image">
 								<span class='icon-ok-circle'></span>
 							</div>
 							<div class="desc">
 								<h2>Review Tasks</h2>
-								<p>Look at the Information on the request, and make a decision
-									on the Request</p>
+								<p>Evaluate information on a request, and make a decisive action</p>
 							</div>
 							<span class="step-number four">4</span>
-						</a>
+						</g:Anchor>
 					</li>
 				</ul>
 			</div> <!-- /bootcamp-body -->
@@ -75,17 +74,6 @@
 			<h4>News Feed</h4>
 			<d:BulletListPanel ui:field="panelActivity"
 				styleName="chat-box timeline">
-				<!-- <li class="arrow-box-left gray"> <div class="avatar"> <img class="avatar-small" 
-					src="img/blueman.png"/> </div> <div class="info"> <span class="name"> <span 
-					class="label label-purple">FILE</span> <strong class="indent">Alex</strong> 
-					added 3 new files in project: <strong>Core Admin</strong> </span> <span class="time"> 
-					<i class="icon-time"></i> 12 minutes ago </span> </div> <div class="content"> 
-					<ul class="thumbnails padded"> <li class="col-md-3"> <a href="#" class="thumbnail"> 
-					<img src="img/blueman.png" alt=""/> </a> </li> <li class="col-md-3"> <a href="#" 
-					class="thumbnail"> <img src="img/blueman.png" alt=""/> </a> </li> <li class="col-md-3"> 
-					<a href="#" class="thumbnail"> <img src="img/blueman.png" alt=""/> </a> </li> 
-					</ul> </div> </li> -->
-					
 			</d:BulletListPanel>
 		</div>
 	</g:HTMLPanel>

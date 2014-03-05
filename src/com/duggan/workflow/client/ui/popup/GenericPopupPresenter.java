@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.popup;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
@@ -15,6 +16,8 @@ public class GenericPopupPresenter extends
 	public interface MyView extends PopupView {
 
 		void setHeader(String header);
+
+		PopupPanel getPopUpPanel();
 	}
 
 	@Inject
@@ -28,6 +31,7 @@ public class GenericPopupPresenter extends
 	@Inject
 	public GenericPopupPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
+		
 	}
 
 	@Override

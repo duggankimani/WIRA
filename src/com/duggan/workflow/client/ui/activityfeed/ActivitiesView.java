@@ -1,12 +1,23 @@
 package com.duggan.workflow.client.ui.activityfeed;
 
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.activityfeed.components.CarouselPopup;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class ActivitiesView extends ViewImpl implements
 		ActivitiesPresenter.MyView {
@@ -17,10 +28,73 @@ public class ActivitiesView extends ViewImpl implements
 	}
 
 	@UiField ComplexPanel panelActivity;
+	@UiField Anchor aCreate;
+	@UiField Anchor aFollowUp;
+	@UiField Anchor aReceive;
+	@UiField Anchor aReview;
+	@UiField Anchor aClose;
+	@UiField DivElement divTutorial;
+	@UiField LIElement liCreate;
+	@UiField LIElement liFollowUp;
+	@UiField LIElement liReceive;
+	@UiField LIElement liReview;
+	protected boolean hasFocused=true;
 	
 	@Inject
 	public ActivitiesView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		
+		final CarouselPopup popUp1 = new CarouselPopup();
+		
+		aCreate.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				AppManager.showCarouselPanel(popUp1,40,liCreate.getAbsoluteRight());
+			}
+		});
+		
+		aFollowUp.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				AppManager.showCarouselPanel(popUp1,40,liFollowUp.getAbsoluteRight());
+			}
+		});
+		
+		aReview.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				AppManager.showCarouselPanel(popUp1,40,liReview.getAbsoluteRight());
+			}
+		});
+		
+		aReceive.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				AppManager.showCarouselPanel(popUp1,40,liReceive.getAbsoluteRight());
+			}
+		});
+		
+		popUp1.getPanelContainer().addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				hasFocused=true;
+			}
+		});
+		
+		aCreate.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				if(!hasFocused){
+					AppManager.hideCarousel();
+				}
+			}
+		});
+		aClose.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				divTutorial.addClassName("hidden");
+			}
+		});
 	}
 
 	@Override

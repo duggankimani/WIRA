@@ -9,6 +9,7 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.InputSelection;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -43,7 +44,8 @@ public class PropertyPanelView extends PopupViewImpl implements
 	@UiField Anchor btnCancel;
 	@UiField HTMLPanel iArrow;
 	
-	
+	@UiField DivElement divBottom;
+	@UiField DivElement divHeader;
 	@Inject
 	public PropertyPanelView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
@@ -119,6 +121,18 @@ public class PropertyPanelView extends PopupViewImpl implements
 		InputSelection selection = new InputSelection(property);
 		selection.setValues(field.getSelectionValues());
 		add(selection);
+	}
+	
+	@Override
+	public void showBody(boolean status, Widget w){
+		if(status){
+			divHeader.addClassName("hidden");
+			divBottom.addClassName("hidden");
+			add(w);
+		}else{
+			divHeader.removeClassName("hidden");
+			divBottom.removeClassName("hidden");
+		}
 	}
 
 	private void clear() {

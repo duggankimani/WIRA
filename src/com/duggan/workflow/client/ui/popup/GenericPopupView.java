@@ -42,6 +42,7 @@ public class GenericPopupView extends PopupViewImpl implements
 		
 		int[] position=AppManager.calculatePosition(10, 50);
 		popUpPanel.setPopupPosition(position[1],position[0]);
+		
 	}
 
 	@Override
@@ -52,6 +53,11 @@ public class GenericPopupView extends PopupViewImpl implements
 	@Override
 	public void setHeader(String header) {
 		spnHeader.setInnerHTML(header);
+	}
+	
+	
+	public PopupPanel getPopUpPanel() {
+		return popUpPanel;
 	}
 	
 	
