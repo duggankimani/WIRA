@@ -4,6 +4,8 @@ import javax.ws.rs.ext.ContextResolver;
 
 import org.jbpm.executor.api.CommandContext;
 
+import com.duggan.workflow.server.rest.exception.ExTrace;
+import com.duggan.workflow.server.rest.exception.WiraExceptionModel;
 import com.duggan.workflow.server.rest.model.BusinessKey;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
@@ -16,9 +18,11 @@ public class JAXBProviderImpl implements ContextResolver<JSONJAXBContext> {
 	@Override
 	public JSONJAXBContext getContext(Class<?> arg0) {
 
+
 		if (!(arg0.equals(BusinessKey.class)
-				|| arg0.equals(CommandContext.class)
-				|| arg0.equals(Request.class) || arg0.equals(Response.class))) {
+				|| arg0.equals(Request.class) || arg0.equals(Response.class)
+				|| arg0.equals(ExTrace.class) || arg0.equals(WiraExceptionModel.class)
+				)) {
 			return null;
 		}
 

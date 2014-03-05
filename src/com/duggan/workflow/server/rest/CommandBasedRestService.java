@@ -15,6 +15,8 @@ import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.server.rest.exception.WiraExceptionModel;
+import com.duggan.workflow.server.rest.exception.WiraServiceException;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
@@ -54,31 +56,18 @@ public class CommandBasedRestService{
 			
 			service.executeClientRequest(request, response);
 			
-			if(response.getErrorCode()==null){
-				DB.commitTransaction();
-			}else{
-				javax.ws.rs.core.Response.status(Status.INTERNAL_SERVER_ERROR);
-				DB.rollback();
-			}
-			
+			DB.commitTransaction();			
 		}catch(Exception e){
-			response.setErrorCode("412");
-			response.setErrorMessage(e.getMessage());
-			e.printStackTrace();	
-			
-			javax.ws.rs.core.Response.status(Status.PRECONDITION_FAILED);
-			
 			DB.rollback();
+			throw new WiraServiceException(WiraExceptionModel.getExceptionModel(e));
 			
-			throw new WebApplicationException(e);//, javax.ws.rs.core.Response.Status.EXPECTATION_FAILED);
-			//save error, handle exception
 		}finally{
+			
 			DB.closeSession();
 			SessionHelper.setHttpRequest(null);
-		}
-		
-		System.err.println("Error :"+response.getErrorCode()+" : "+response.getErrorMessage());
-		JBPMHelper.clearRequestData();
+			JBPMHelper.clearRequestData();
+			
+		}		
 		
 		return response;
 	}

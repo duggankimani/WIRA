@@ -285,7 +285,7 @@ public class GenericDocumentPresenter extends
 					@Override
 					public void processResult(ApprovalRequestResult result) {						
 						PlaceRequest request = new PlaceRequest("home").
-								with("type", TaskType.APPROVALREQUESTNEW.getURL());
+								with("type", TaskType.DRAFT.getURL());
 						
 						placeManager.revealPlace(request);
 						

@@ -40,6 +40,7 @@ public class GenericFormPresenter extends
 		boolean isValid();
 		void setForm(Form form);
 		HasClickHandlers getForwardForApproval();
+		void showButtons(boolean b);
 	}
 
 	@ContentSlot
@@ -82,17 +83,20 @@ public class GenericFormPresenter extends
 
 				// document.setDescription(null);
 				if (getView().isValid()) {
+					getView().showButtons(false);
+					
 					requestHelper.execute(new CreateDocumentRequest(document),
 							new TaskServiceCallback<CreateDocumentResult>() {
 								@Override
 								public void processResult(
 										CreateDocumentResult result) {
-
+									getView().showButtons(true);
 									Document saved = result.getDocument();
 									assert saved.getId() != null;
-									fireEvent(new AfterSaveEvent());
+									AppContext.fireEvent(new AfterSaveEvent());
 									getView().hide();
 								}
+								
 							});
 				}
 			}
@@ -108,6 +112,7 @@ public class GenericFormPresenter extends
 				document.setType(documentType);
 				
 				if (getView().isValid()) {
+					getView().showButtons(false);
 					fireEvent(new ProcessingEvent());
 					requestHelper.execute(
 							new ApprovalRequest(AppContext.getUserId(),document),
@@ -115,7 +120,7 @@ public class GenericFormPresenter extends
 								@Override
 								public void processResult(
 										ApprovalRequestResult result) {
-
+									getView().showButtons(true);
 									fireEvent(new ProcessingCompletedEvent());
 									getView().hide();
 									fireEvent(new AfterSaveEvent());

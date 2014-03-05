@@ -20,6 +20,8 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -40,11 +42,11 @@ public class GenericFormView extends PopupViewImpl implements
 	@UiField HTMLPanel panelFields;
 	
 	@UiField
-	HasClickHandlers btnSave;
+	Button btnSave;
 	@UiField
-	HasClickHandlers btnApproval;
+	Button btnApproval;
 	@UiField
-	HasClickHandlers btnCancel;
+	Button btnCancel;
 
 	@UiField
 	CheckBox chkNormal;
@@ -166,6 +168,13 @@ public class GenericFormView extends PopupViewImpl implements
 	@Override
 	public HasClickHandlers getForwardForApproval() {
 		return btnApproval;
+	}
+	
+	@Override
+	public void showButtons(boolean show) {
+		btnApproval.setVisible(show);
+		btnCancel.setVisible(show);
+		btnSave.setVisible(show);
 	}
 
 }

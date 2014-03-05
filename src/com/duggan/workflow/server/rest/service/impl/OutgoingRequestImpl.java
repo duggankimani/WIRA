@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.jbpm.executor.api.CommandContext;
 
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.rest.exception.WiraExceptionModel;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.OutgoingRequestService;
@@ -85,10 +85,10 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 
 		WebResource resource = jclient.resource(uri);
 
-		ClientResponse response = null;
+		ClientResponse clientResponse = null;
 
 		try {
-			response = resource.type(MediaType.APPLICATION_JSON)
+			clientResponse = resource.type(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON)
 					.post(ClientResponse.class, request);
 			
@@ -99,25 +99,18 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 			throw new RuntimeException(e);
 		}
 
-		if (!response.getClientResponseStatus().equals(
+		if (!clientResponse.getClientResponseStatus().equals(
 				ClientResponse.Status.OK)) {
 
-			RuntimeException e = new RuntimeException(response.getEntity(String.class));
+			WiraExceptionModel model = clientResponse.getEntity(WiraExceptionModel.class);
 			
-			throw e;
+			throw new RuntimeException(model.getCause());
 		}
 
-		Request req = response.getEntity(Request.class);
+		Response response = clientResponse.getEntity(Response.class);
 		
-		assert req!=null;
-		
-		assert req.getContext().get("subject") != null;
-		
-//		String resp = response.getEntity(String.class);
-//		
-//		System.out.println("### RESPONSE :: "+resp);		
-		return null;
-		//response.getEntity(Response.class);
+		return response;
+
 	}
 	
 	
@@ -133,6 +126,8 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 //		 marshalXml(request);
 		//
 		Response response = new OutgoingRequestImpl().executeCall(request);
+		
+		assert request!=null;
 	}
 
 }

@@ -173,7 +173,7 @@ public class ADValue extends PO{
 			return false;
 		}
 		
-		System.err.println(">>>>>>>> "+fieldName+" -- Same");
+		//System.err.println(">>>>>>>> "+fieldName+" -- Same");
 		return true;
 	}
 	

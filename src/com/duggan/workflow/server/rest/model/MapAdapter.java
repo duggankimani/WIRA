@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.rest.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,7 +35,7 @@ public class MapAdapter extends XmlAdapter<Data, Map<String,Object>>{
 		
 		if(v!=null)
 			for(Entry<String, Object> e: v.entrySet()){
-				data.keyValues.add(new KeyValuePair(e.getKey(), e.getValue()));
+				data.keyValues.add(new KeyValuePair(e.getKey(), (Serializable)e.getValue()));
 			}
 		
 		return data;

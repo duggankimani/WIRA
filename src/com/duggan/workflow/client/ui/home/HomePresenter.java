@@ -384,6 +384,11 @@ public class HomePresenter extends
 	 */
 	private void loadTasks(final TaskType type) {
 		clear();
+		if(type==null){
+			History.newItem("home;type=drafts");
+			return;
+		}
+		
 		getView().setHeading(type.getTitle());
 		
 		String userId = AppContext.getUserId();
