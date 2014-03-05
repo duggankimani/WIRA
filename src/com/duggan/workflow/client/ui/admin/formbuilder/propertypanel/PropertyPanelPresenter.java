@@ -5,6 +5,7 @@ import java.util.List;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -12,6 +13,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -26,9 +28,11 @@ public class PropertyPanelPresenter extends
 		FocusPanel getPopoverFocus();
 		HTMLPanel getiArrow() ;
 		HasClickHandlers getSaveButton();
+		void showBody(boolean status, Widget w);
 	}
 	
 	FormModel parentModel; //
+
 	
 	@Inject
 	public PropertyPanelPresenter(final EventBus eventBus, final MyView view) {
@@ -52,4 +56,5 @@ public class PropertyPanelPresenter extends
 		this.parentModel = parentModel;
 		getView().showProperties(properties, parentModel);
 	}
+	
 }

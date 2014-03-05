@@ -28,6 +28,9 @@ input:focus{
 	border:none;
 	box-shadow:none;
 }
+*:focus{
+	outline:none;
+}
 .header {
 	margin-bottom: 60px;
 }

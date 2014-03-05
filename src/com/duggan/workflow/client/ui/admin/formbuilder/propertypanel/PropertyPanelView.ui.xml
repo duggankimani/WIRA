@@ -1,24 +1,26 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel styleName="popover fade right in popover-admin" ui:field="popUpContainer">
+	<g:PopupPanel styleName="popover fade right in popover-admin"
+		ui:field="popUpContainer">
 		<g:HTMLPanel styleName="full-page form-horizontal">
 			<g:FocusPanel ui:field="popoverFocus">
 				<g:HTMLPanel>
-				<g:HTMLPanel styleName="arrow" ui:field="iArrow"></g:HTMLPanel>
-				<h4 class="popover-title">Properties</h4>
-				<div class="popover-content">
-					<g:HTMLPanel ui:field="pBody">
-					</g:HTMLPanel>
-					<hr/>
-					<g:Anchor styleName="btn btn-info" ui:field="btnSave">Save</g:Anchor>
-					<g:Anchor styleName="btn btn-danger" ui:field="btnCancel">Cancel</g:Anchor>
-				</div>
+					<g:HTMLPanel styleName="arrow" ui:field="iArrow"></g:HTMLPanel>
+					<div ui:field="divHeader"><h4 class="popover-title">Properties</h4></div>
+					<div class="popover-content">
+						<g:HTMLPanel ui:field="pBody">
+						</g:HTMLPanel>
+						<div ui:field="divBottom">
+						<hr />
+						<g:Anchor styleName="btn btn-info" ui:field="btnSave">Save</g:Anchor>
+						<g:Anchor styleName="btn btn-danger" ui:field="btnCancel">Cancel</g:Anchor>
+						</div>
+					</div>
 				</g:HTMLPanel>
 			</g:FocusPanel>
 		</g:HTMLPanel>
