@@ -11,10 +11,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CommentActivity extends Composite {
@@ -25,7 +28,7 @@ public class CommentActivity extends Composite {
 	interface CommentActivityUiBinder extends UiBinder<Widget, CommentActivity> {
 	}
 	
-	@UiField ImageElement img;
+	@UiField Image img;
 	@UiField SpanElement spnAction;
 	@UiField Anchor aDocument;
 	//@UiField SpanElement spnSubject;
@@ -37,6 +40,13 @@ public class CommentActivity extends Composite {
 	public CommentActivity(Comment comment) {
 		initWidget(uiBinder.createAndBindUi(this));
 		bind(comment);
+		img.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				img.setUrl("img/blueman.png");
+			}
+		});
 	}
 	
 	void bind(Comment comment) {
@@ -74,7 +84,7 @@ public class CommentActivity extends Composite {
 		}
 		String url = moduleUrl.replace("/", "");
 		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+createdBy.getUserId();
-		img.setSrc(moduleUrl);
+		img.setUrl(moduleUrl);
 		
 		setComment(comment);
 	}

@@ -101,8 +101,10 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		Object obj = null;
 		
 		try{
-			obj = em.createQuery("FROM LocalAttachment d where imageUserId= :userId")
-					.setParameter("userId", userId).getSingleResult();
+			obj = em.createQuery("FROM LocalAttachment d where imageUserId= :userId and isActive=:isActive")
+					.setParameter("userId", userId)
+					.setParameter("isActive", 1)
+					.getSingleResult();
 		}catch(Exception e){			
 		}
 		

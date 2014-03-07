@@ -5,7 +5,7 @@
 	<d:BulletPanel styleName="arrow-box-left gray">
 		<g:HTMLPanel>
 			<div class="avatar">
-				<img class="avatar-small" ui:field="img"/>
+				<g:Image styleName="avatar-small" ui:field="img"/>
 			</div>
 			<div class="info" id="activity">
 				<span class="name">

@@ -14,12 +14,15 @@ import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TaskActivity extends Composite {
@@ -30,7 +33,7 @@ public class TaskActivity extends Composite {
 	interface TaskActivityUiBinder extends UiBinder<Widget, TaskActivity> {
 	}
 	
-	@UiField ImageElement img;
+	@UiField Image img;
 	@UiField SpanElement spnAction;
 	@UiField SpanElement spnTask;
 	//@UiField SpanElement spnSubject;
@@ -46,8 +49,14 @@ public class TaskActivity extends Composite {
 	public TaskActivity(Notification notification) {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		setImage(notification.getOwner());
-		
+		img.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				img.setUrl("img/blueman.png");
+			}
+		});
+
 		String text = "";
 		
 		String subject=notification.getSubject();
@@ -95,6 +104,9 @@ public class TaskActivity extends Composite {
 			//safeHtml = Template1.render(subject, owner, time);
 			spnUser.setInnerText(owner);
 			text = "submitted for approval ";
+
+			setImage(ownerObj);
+			
 			break;
 
 		case APPROVALREQUEST_OWNERNOTE:
@@ -105,6 +117,9 @@ public class TaskActivity extends Composite {
 //			}
 			spnUser.setInnerText(owner);
 			text = "forwarded for approval ";
+
+			setImage(ownerObj);
+			
 			break;
 
 		case TASKCOMPLETED_APPROVERNOTE:
@@ -113,6 +128,9 @@ public class TaskActivity extends Composite {
 			
 			spnUser.setInnerText(owner);
 			text =action +" ";
+
+			setImage(notification.getOwner());
+			
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
 //			if(isNotification)
@@ -123,6 +141,9 @@ public class TaskActivity extends Composite {
 //					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign",action)
 			spnUser.setInnerText(approver);
 			text =action+" ";
+
+			setImage(notification.getCreatedBy());
+			
 			break;
 		case TASKDELEGATED:
 			
@@ -134,10 +155,11 @@ public class TaskActivity extends Composite {
 		
 			spnUser.setInnerText(approver);
 			text = "delegated to "+target+" "; 
-			
+			setImage(notification.getCreatedBy());
 			break;
 		case FILE_UPLOADED:
 			spnUser.setInnerText(owner);
+			setImage(ownerObj);
 			spnTask.setInnerText("File");
 			spnTask.addClassName("label-purple");
 			spnTask.removeClassName("label-blue");
@@ -199,7 +221,7 @@ public class TaskActivity extends Composite {
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
 		}
 		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+user.getUserId();
-		img.setSrc(moduleUrl);
+		img.setUrl(moduleUrl);
 	}
 
 }
