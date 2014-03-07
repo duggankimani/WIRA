@@ -78,20 +78,35 @@ public class AppManager {
 		int[] position = calculatePosition(top, left);
 		propertyPanel.getView().getPopUpContainer()
 				.setPopupPosition(position[1], position[0]);
+
 		propertyPanel.getView().getiArrow().getElement().getStyle()
 				.setTop(arrowposition, Unit.PX);
 
 		propertyPanel.getView().getPopoverFocus().setFocus(true);
 		mainPagePresenter.addToPopupSlot(propertyPanel, false);
 	}
-	
-	public static void showCarouselPanel(Widget widget,int top, int left){
-		propertyPanel.getView().showBody(true,widget);
-		int[] position = calculatePosition(top, left);
-		propertyPanel.getView().getPopUpContainer()
-				.setPopupPosition(left, top);
-				mainPagePresenter.addToPopupSlot(propertyPanel, false);
+
+	public static void showCarouselPanel(Widget widget, int[] position,
+			boolean isLeft) {
+		//propertyPanel.getView().getPopUpContainer().clear();
+		propertyPanel.getView().showBody(true, widget);
 		
+		if (isLeft) {
+			propertyPanel.getView().getPopUpContainer()
+					.removeStyleName("right");
+			propertyPanel.getView().getPopUpContainer().addStyleName("left");
+		} else {
+			propertyPanel.getView().getPopUpContainer()
+					.removeStyleName("left");
+			propertyPanel.getView().getPopUpContainer().addStyleName("right");
+		}
+		
+		propertyPanel.getView().getPopUpContainer()
+				.setPopupPosition(position[1], position[0]);
+		mainPagePresenter.addToPopupSlot(propertyPanel, false);
+
+		// propertyPanel.getView().getPopUpContainer().setModal(true);
+
 	}
 
 	/**
@@ -116,7 +131,7 @@ public class AppManager {
 
 		return positions;
 	}
-	
+
 	/*
 	 * Hide the Carousel Output
 	 */

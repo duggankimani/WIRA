@@ -45,32 +45,46 @@ public class ActivitiesView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 		
 		final CarouselPopup popUp1 = new CarouselPopup();
+		final int[] position = new int[2];
+		position[0]=40;
 		
 		aCreate.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				AppManager.showCarouselPanel(popUp1,40,liCreate.getAbsoluteRight());
+				position[1]=liCreate.getAbsoluteRight();
+				popUp1.showCreate();
+				AppManager.showCarouselPanel(popUp1,position,false);
+				System.out.println("Li Create:"+ position[1]);
 			}
 		});
 		
 		aFollowUp.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				AppManager.showCarouselPanel(popUp1,40,liFollowUp.getAbsoluteRight());
-			}
-		});
-		
-		aReview.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				AppManager.showCarouselPanel(popUp1,40,liReview.getAbsoluteRight());
+				position[1]= liFollowUp.getAbsoluteRight();
+				AppManager.showCarouselPanel(popUp1,position,false);
+				popUp1.showFollowUp();
+				System.out.println("Li FollowUp:"+ position[1]);
 			}
 		});
 		
 		aReceive.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				AppManager.showCarouselPanel(popUp1,40,liReceive.getAbsoluteRight());
+				position[1]=liReceive.getAbsoluteRight()-825;
+				AppManager.showCarouselPanel(popUp1,position,true);
+				popUp1.showTask();
+				System.out.println("Li Receive:"+ position[1]);
+			}
+		});
+		
+		aReview.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				position[1]=liReview.getAbsoluteRight()-825;
+				AppManager.showCarouselPanel(popUp1,position,true);
+				popUp1.showReview();
+				System.out.println("Li Review:"+ position[1]);
 			}
 		});
 		
