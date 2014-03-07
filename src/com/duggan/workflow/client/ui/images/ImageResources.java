@@ -35,31 +35,31 @@ public interface ImageResources extends ClientBundle {
 	@Source("file_icon.gif")
 	ImageResource file();
 	
-	@Source("business_process.PNG")
+	@Source("business_process.png")
 	ImageResource business_process();
 	
-	@Source("document_action.PNG")
+	@Source("document_action.png")
 	ImageResource document_action();
 	
-	@Source("generic_display.PNG")
+	@Source("generic_display.png")
 	ImageResource generic_display();
 	
-	@Source("LeaveApp.PNG")
+	@Source("LeaveApp.png")
 	ImageResource leaveapp();
 	
-	@Source("notification.PNG")
+	@Source("notification.png")
 	ImageResource notification();
 	
-	@Source("show_users.PNG")
+	@Source("show_users.png")
 	ImageResource show_users();
 	
 	@Source("AddDocScreenshot.png")
 	ImageResource adddoc();
 	
-	@Source("tasks.PNG")
+	@Source("tasks.png")
 	ImageResource tasks();
 	
-	@Source("activity.png")
+	@Source("Activity.png")
 	ImageResource activity();
 	
 }
