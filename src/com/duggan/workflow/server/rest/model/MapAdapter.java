@@ -2,6 +2,7 @@ package com.duggan.workflow.server.rest.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -20,10 +21,27 @@ public class MapAdapter extends XmlAdapter<Data, Map<String,Object>>{
 	public Map<String, Object> unmarshal(Data data) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		
-		if(data!=null)
-			for(KeyValuePair pair: data.keyValues){
-				result.put(pair.name, pair.value);
+		if(data!=null){
+			result = getMap(data.keyValues);
+		}
+		
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> getMap(List<KeyValuePair> keyValues) {
+		Map<String, Object> result = new HashMap<>();
+		
+
+		for(KeyValuePair pair: keyValues){
+			Object value = pair.getValue();
+			if(value instanceof List){
+				result.put(pair.name, getMap((List<KeyValuePair>) value) );
+			}else{
+				result.put(pair.name, pair.getValue());
 			}
+			
+		}
 		
 		return result;
 	}

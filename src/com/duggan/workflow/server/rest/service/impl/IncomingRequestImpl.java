@@ -11,19 +11,21 @@ import org.apache.log4j.Logger;
 import org.jbpm.executor.api.CommandContext;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
+import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.rest.exception.CommandNotFoundException;
-import com.duggan.workflow.server.rest.exception.WiraServiceException;
 import com.duggan.workflow.server.rest.model.BusinessKey;
 import com.duggan.workflow.server.rest.model.Data;
 import com.duggan.workflow.server.rest.model.KeyValuePair;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
@@ -98,41 +100,122 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		Document doc = new Document();
 		
 		Object documentDate = request.getContext("docDate");
+		if(documentDate==null){
+			documentDate = new Date();
+		}
+		
 		Object owner = request.getContext("ownerId");
-		Object type = request.getContext("docType");
+		Object docType = request.getContext("docType");
 		
 		throwExceptionIfNull("Document Date",documentDate);
 		throwExceptionIfNull("Owner ID",owner);
-		throwExceptionIfNull("Document Type",type);
+		throwExceptionIfNull("Document Type",docType);
 		
 		Map<String,Object> context = request.getContext();
 		doc.setDocumentDate(new Date());//(documentDate);
 		doc.setOwner(LoginHelper.get().getUser(owner.toString()));
 		
+		System.err.println(">>> DocType = "+docType);
+		
+		doc.setType(DocumentDaoHelper.getDocumentType(docType.toString()));
+		
 		for(String key: context.keySet()){
-			Object val = context.get(key);
+			Object value = context.get(key);
 			
-			if(val!=null){
+			if(value!=null){
 				if(key.equals("description")){
-					doc.setDescription(val.toString());
+					doc.setDescription(value.toString());
 				}
 				
 				if(key.equals("subject")){
-					doc.setSubject(val.toString());
+					doc.setSubject(value.toString());
 				}
 				
 				if(key.equals("priority")){
-					doc.setPriority(new Integer(val.toString()));
+					doc.setPriority(new Integer(value.toString()));
 				}
+				
+				if(value instanceof Map){
+					doc.addDetail(createLine(key, ((Map<String, Object>)value)));
+					continue;
+				}
+			}else{ 
+				continue;
+				//value is null - go to next loop
 			}
+		
 			
-			Value value = new StringValue(null,key, val.toString());
-			doc.setValue(key, value);
+			doc.setValue(key, getValue(key, value));
 			
 		}
 	
-		doc.setType(DocumentDaoHelper.getDocumentType(type.toString()));
 		return doc;
+	}
+	
+	
+
+	private Value getValue(String key, Object value) {
+		ADValue advalue = new ADValue();
+		advalue.setFieldName(key);			
+		
+		String stringValue=null;
+		Boolean booleanValue=null;
+		Long longValue=null;
+		Double doubleValue=null;
+		Date dateValue=null;
+		DataType type=null;
+		
+		if(value instanceof String){
+			stringValue = value.toString();
+			type=DataType.STRING;
+		}else if(value instanceof Boolean){
+			booleanValue = (Boolean)value;
+			value=booleanValue;
+			type=DataType.BOOLEAN;
+		}else if(value instanceof Long){
+			longValue=(Long)value;
+			value=longValue;
+			type=DataType.INTEGER;
+		}else if(value instanceof Integer){
+			longValue = new Long(value.toString());
+			value=longValue;
+			type=DataType.INTEGER;
+		}else if(value instanceof Double){
+			doubleValue = (Double)value;
+			value=doubleValue;
+			type=DataType.DOUBLE;
+		}else if(value instanceof Number){
+			doubleValue = ((Number)value).doubleValue();
+			value=doubleValue;
+			type=DataType.DOUBLE;
+		}else if(value instanceof Date){
+			dateValue = (Date)value;
+			value=dateValue;
+			type=DataType.DATE;
+		}
+		advalue.setStringValue(stringValue);
+		advalue.setBooleanValue(booleanValue);
+		advalue.setLongValue(longValue);
+		advalue.setDoubleValue(doubleValue);
+		advalue.setDateValue(dateValue);
+		
+		Value fieldValue = FormDaoHelper.getValue(advalue, type);
+	
+		return fieldValue;
+	}
+
+	private DocumentLine createLine(String key, Map<String, Object> map) {
+
+		DocumentLine line = new DocumentLine();
+		line.setName(key);
+		
+		for(String field: map.keySet()){
+			Object value = map.get(field);
+			Value fieldValue = getValue(field, value);			
+			line.addValue(field, fieldValue);
+		}
+		
+		return line;
 	}
 
 	private void throwExceptionIfNull(String field, Object value) {
