@@ -153,6 +153,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xstream-1.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/matheclipse-parser-0.0.10.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/java-image-scaling-0.8.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/Filters.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gflot-3.2.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>

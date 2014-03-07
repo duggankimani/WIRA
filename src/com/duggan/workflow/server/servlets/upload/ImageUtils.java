@@ -10,6 +10,9 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mortennobel.imagescaling.AdvancedResizeOp;
+import com.mortennobel.imagescaling.ResampleOp;
+
 public class ImageUtils {
 
 	static int IMG_WIDTH = 32;
@@ -21,7 +24,7 @@ public class ImageUtils {
 			BufferedImage bimage = ImageIO.read(new ByteArrayInputStream(bites));
 			int type = bimage.getType() == 0? BufferedImage.TYPE_INT_ARGB : bimage.getType();
 			
-			BufferedImage image = resizeImageWithHint(bimage, type);
+			BufferedImage image = resizeImage(bimage);
 			
 			ImageIO.write(image, "png", resp.getOutputStream());
 
@@ -41,6 +44,14 @@ public class ImageUtils {
 //
 //		return resizedImage;
 //	}
+	
+	private static BufferedImage resizeImage(BufferedImage image){
+		ResampleOp  resampleOp = new ResampleOp (IMG_WIDTH,IMG_HEIGHT);
+		resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Normal);
+		BufferedImage rescaledImage = resampleOp.filter(image, null);
+		
+		return rescaledImage;
+	}
 
 	private static BufferedImage resizeImageWithHint(
 			BufferedImage originalImage, int type) {
