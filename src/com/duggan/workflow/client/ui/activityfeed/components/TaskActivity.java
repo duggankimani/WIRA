@@ -10,6 +10,7 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,6 +30,7 @@ public class TaskActivity extends Composite {
 	interface TaskActivityUiBinder extends UiBinder<Widget, TaskActivity> {
 	}
 	
+	@UiField ImageElement img;
 	@UiField SpanElement spnAction;
 	@UiField SpanElement spnTask;
 	//@UiField SpanElement spnSubject;
@@ -43,6 +45,8 @@ public class TaskActivity extends Composite {
 
 	public TaskActivity(Notification notification) {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		setImage(notification.getOwner());
 		
 		String text = "";
 		
@@ -67,6 +71,7 @@ public class TaskActivity extends Composite {
 		}
 		
 		String owner = ownerObj.getSurname();
+		
 		if(AppContext.isCurrentUser(ownerObj.getUserId())){
 			owner = "You";
 		}
@@ -186,6 +191,15 @@ public class TaskActivity extends Composite {
 		spnAction.setInnerText(text);
 		//spnSubject.setInnerText(subject);
 		spnTime.setInnerText(time);
+	}
+
+	private void setImage(HTUser user) {
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if(moduleUrl.endsWith("/")){
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		}
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+user.getUserId();
+		img.setSrc(moduleUrl);
 	}
 
 }

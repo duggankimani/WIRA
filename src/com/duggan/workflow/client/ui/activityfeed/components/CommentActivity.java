@@ -9,6 +9,7 @@ import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -24,6 +25,7 @@ public class CommentActivity extends Composite {
 	interface CommentActivityUiBinder extends UiBinder<Widget, CommentActivity> {
 	}
 	
+	@UiField ImageElement img;
 	@UiField SpanElement spnAction;
 	@UiField Anchor aDocument;
 	//@UiField SpanElement spnSubject;
@@ -65,6 +67,15 @@ public class CommentActivity extends Composite {
 		
 		aDocument.setText(docType+" "+subject);
 		aDocument.setHref("#home;type=search;did="+documentId);
+		
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if(moduleUrl.endsWith("/")){
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		}
+		String url = moduleUrl.replace("/", "");
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+createdBy.getUserId();
+		img.setSrc(moduleUrl);
+		
 		setComment(comment);
 	}
 

@@ -4,6 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	xmlns:c='urn:import:com.duggan.workflow.client.ui.admin.component'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -50,11 +51,18 @@
 						    <label class="control-label"><b>Confirm Password:</b></label>
 						    <d:PasswordField ui:field="txtConfirmPassword" type="password" class="form-control" placeholder="Confirm Password"/>
 						  </div>
-					
+
+						  <div class="control-group">
+							<label class="control-label"><b>User Image</b></label>
+								<g:HTMLPanel ui:field="uploadPanel">
+									<up:Uploader ui:field="uploader"></up:Uploader>
+								</g:HTMLPanel>
+							</div>
+						 					
 						<div class="control-group">
 							<label class="control-label"><b>Group:</b></label>
 								<c:ListField ui:field="lstGroups"/>
-							</div>
+							</div>						
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			

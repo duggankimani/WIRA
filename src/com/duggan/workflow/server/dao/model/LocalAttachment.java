@@ -25,6 +25,8 @@ public class LocalAttachment extends PO{
 	
 	private String name;
 	
+	private String imageUserId;
+	
 	@Lob
 	private byte[] attachment;
 	
@@ -127,6 +129,14 @@ public class LocalAttachment extends PO{
 
 	public void setProcessDefImage(ProcessDefModel processDefImage) {
 		this.processDefImage = processDefImage;
+	}
+
+	public String getImageUserId() {
+		return imageUserId;
+	}
+
+	public void setImageUserId(String imageUserId) {
+		this.imageUserId = imageUserId;
 	}
 
 }

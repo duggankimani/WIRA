@@ -1,8 +1,11 @@
 package com.duggan.workflow.server.servlets.upload;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -93,7 +96,26 @@ public class GetReport extends HttpServlet {
 		if(action.equals("EXPORTFORM")){
 			processExportFormRequest(req , resp);
 		}
+		
+		if(action.equals("GetUser")){
+			processUserImage(req, resp);
+		}
 
+	}
+
+	private void processUserImage(HttpServletRequest req,
+			HttpServletResponse resp){		
+		String userId = req.getParameter("userId");
+		assert userId!=null;
+		LocalAttachment attachment = DB.getAttachmentDao().getUserImage(userId);
+		
+		if(attachment==null)
+			return;
+		
+		byte[] bites = attachment.getAttachment();
+		
+		ImageUtils.resizeImage(resp, bites);
+		
 	}
 
 	private void processExportFormRequest(HttpServletRequest req,

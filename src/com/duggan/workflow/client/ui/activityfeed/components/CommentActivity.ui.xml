@@ -4,7 +4,7 @@
 	<d:BulletPanel styleName="arrow-box-left gray">
 		<g:HTMLPanel>
 			<div class="avatar">
-				<img class="avatar-small" src="img/blueman.png" />
+				<img class="avatar-small" ui:field="img"/>
 			</div>
 			<div class="info">
 				<span class="name">

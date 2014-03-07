@@ -2,12 +2,15 @@ package com.duggan.workflow.client.ui.admin.users.save;
 
 import java.util.List;
 
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.admin.component.ListField;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.google.gwt.dom.client.DivElement;
@@ -15,6 +18,8 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -53,7 +58,7 @@ public class UserSaveView extends PopupViewImpl implements
 	@UiField SpanElement header;
 	
 	@UiField DivElement divUserSave;
-	
+	@UiField Uploader uploader;
 	@UiField ListField<UserGroup> lstGroups;
 	
 	TYPE type;
@@ -81,6 +86,23 @@ public class UserSaveView extends PopupViewImpl implements
 		double width1= (50.0/100.0)*width;
 		
 		AddUserDialog.setPopupPosition((int)width1,(int)height1);
+		
+		txtUserName.addValueChangeHandler(new ValueChangeHandler<String>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				setContext(event.getValue());
+			}
+		});
+		
+	}
+
+	protected void setContext(String value) {
+		UploadContext context = new UploadContext();
+		context.setAction(UPLOADACTION.UPLOADUSERIMAGE);
+		context.setContext("userId", value+"");
+		context.setAccept("png,jpeg,jpg,gif");
+		uploader.setContext(context);
 	}
 
 	@Override
@@ -139,6 +161,7 @@ public class UserSaveView extends PopupViewImpl implements
 		txtLastname.setValue(user.getSurname());
 		txtUserName.setValue(user.getUserId());
 		lstGroups.select(user.getGroups());
+		setContext(user.getUserId());
 
 	}
 

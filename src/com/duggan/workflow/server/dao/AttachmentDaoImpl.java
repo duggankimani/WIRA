@@ -70,7 +70,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 			.setParameter("processDef", model);
 			
 		if(name!=null && !isImage){
-			query.setParameter("attachmentName", name);
+			query.setParameter("attachmuentName", name);
 		}
 			
 		@SuppressWarnings("unchecked")
@@ -88,6 +88,32 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		.getSingleResult();
 		
 		return count>0;
+	}
+
+	public void deleteUserImage(String userId) {
+		String sql = "update localattachment set isActive=0 where imageUserId=?";
+		
+		Query query = em.createNativeQuery(sql).setParameter(1, userId);
+		query.executeUpdate();
+	}
+	
+	public LocalAttachment getUserImage(String userId){
+		Object obj = null;
+		
+		try{
+			obj = em.createQuery("FROM LocalAttachment d where imageUserId= :userId")
+					.setParameter("userId", userId).getSingleResult();
+		}catch(Exception e){			
+		}
+		
+		
+		LocalAttachment attachment = null;
+		
+		if(obj!=null){
+			attachment = (LocalAttachment)obj;
+		}
+		
+		return attachment;
 	}
 	
 }

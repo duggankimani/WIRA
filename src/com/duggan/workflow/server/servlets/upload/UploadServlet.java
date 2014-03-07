@@ -111,6 +111,9 @@ public class UploadServlet extends UploadAction {
 		case IMPORTFORM:
 			executor = new ImportFileExecutor();
 			break;
+		case UPLOADUSERIMAGE:
+			executor = new UserImageExecutor();
+			break;
 		}
 		
 		if(executor==null){
