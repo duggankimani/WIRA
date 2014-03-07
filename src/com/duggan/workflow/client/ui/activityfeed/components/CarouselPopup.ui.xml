@@ -1,79 +1,28 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p="urn:import:com.duggan.workflow.client.ui.component">
+
 	<g:FocusPanel ui:field="panelContainer">
 		<g:HTMLPanel>
 			<div class="carousel">
 				<div class="row-fluid">
 					<div class='offset-2 span12 text-center'>
-						<h2>Creating New Request</h2>
+						<h2><span ui:field="spnHeader">Creating New Request</span></h2>
 					</div>
 				</div>
 				<div class='row-fluid'>
 					<div class='offset-2 span12'>
 						<div class="carousel" data-ride="carousel" data-interval="false"
 							id="quote-carousel">
-							<!-- Bottom Carousel Indicators -->
-							<ol class="carousel-indicators">
-								<li data-target="#quote-carousel" data-slide-to="0" class="active"></li>
-								<li data-target="#quote-carousel" data-slide-to="1"></li>
-							</ol>
+							<!-- Bottom Indicators -->
+							<p:OLPanel styleName="carousel-indicators" ui:field="olCarousels">
+							</p:OLPanel>
 
-							<!-- Carousel Slides / Quotes -->
-							<div class="carousel-inner">
+							<!-- Inner Items Carousel -->
+							<g:HTMLPanel styleName="carousel-inner" ui:field="innerCarousel">
+							</g:HTMLPanel>
 
-								<!-- Item 1 -->
-								<div class="item active">
-									<div class="row-fluid">
-										<div class="span12 text-center">
-											<img class="" src="img/splash/AddDocScreenshot.png"
-												style="width: 431px;height:251px;" />
-										</div>
-									</div>
-									<div class="row-fluid">
-										<div class="span12">
-											<strong>
-												<p>Click on the Add Document Button. Choose the Type of
-													document
-												</p>
-											</strong>
-										</div>
-									</div>
-								</div>
-								<!-- Item 2 -->
-								<div class="item">
-									<div class="row-fluid">
-										<div class="span12 text-center">
-											<img class="" src="img/splash/FormApp.png" style="width: 431px;height:251px;" />
-										</div>
-									</div>
-									<div class="row-fluid">
-										<div class="span12">
-											<strong>
-												<p>Fill In the Form, Submit it For Approval
-												</p>
-											</strong>
-										</div>
-									</div>
-								</div>
-								
-								<!-- Item 3 -->
-								<div class="item">
-									<div class="row-fluid">
-										<div class="span12 text-center">
-											<img class="" src="img/splash/FormApp.png" style="width: 431px;height:251px;" />
-										</div>
-									</div>
-									<div class="row-fluid">
-										<div class="span12">
-											<strong>
-												<p>Fill In the Form, Submit it For Approval
-												</p>
-											</strong>
-										</div>
-									</div>
-								</div>
-							</div>
+
 							<!-- Carousel Buttons Next/Prev -->
 							<a data-slide="prev" href="#quote-carousel" class="left carousel-control">
 								<i class="icon-chevron-left"></i>
