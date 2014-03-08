@@ -58,6 +58,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 		void changeFocus();
 		void showAdminLink(boolean admin);
 		void setVersionInfo(Date created, String date, String version);
+		void setImage(HTUser currentUser);
 	}
 
 	@Inject DispatchAsync dispatcher;
@@ -202,6 +203,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
 		HTUser currentUser = event.getCurrentUser();
+		getView().setImage(currentUser);
 		getView().showAdminLink(currentUser.isAdmin());
 		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString());
 		

@@ -39,14 +39,17 @@
              <li class="user-dropdown dropdown">
                   <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
                       <span ui:field="spnUser"></span>
-                      <img src="img/blueman(small).png" width="30px" height="50px"/>
+                      <g:Image styleName="avatar-small" ui:field="imgSmall" width="30px" height="50px"/>
+                      <!-- img src="img/blueman(small).png" width="30px" height="50px"/-->
                       <b class="caret"></b>
                   </a>
                   
                   <ul class="dropdown-menu">
                         <div class="user-details row-fluid">
                         	<div class="span1">
-  				          	<img class="" data-src="img/blueman.png" src="img/blueman.png" width="70px" height="90px"/>                      
+                        	<g:Image ui:field="img" width="70px" height="90px"/>
+  				          	<!-- img class="" data-src="img/blueman.png" src="img/blueman.png" 
+  				          	    width="70px" height="90px"/-->                      
                          	</div>
 	                         <div class="span2">
 		                          <span class="text" ui:field="spnUserPull"></span>

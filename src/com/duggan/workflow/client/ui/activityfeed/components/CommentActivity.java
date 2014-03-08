@@ -70,7 +70,7 @@ public class CommentActivity extends Composite {
 			if(AppContext.isCurrentUser(createdBy.getUserId())){
 				spnUser.setInnerText("You");
 			}else{
-				spnUser.setInnerText(createdBy.getName());
+				spnUser.setInnerText(createdBy.getSurname());
 			}
 			
 		}

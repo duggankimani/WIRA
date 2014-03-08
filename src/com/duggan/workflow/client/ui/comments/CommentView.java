@@ -8,15 +8,20 @@ import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -30,6 +35,8 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 	}
 	
 	@UiField HTMLPanel root;
+	
+	@UiField Image img;
 	
 	@UiField SpanElement spnCreatedBy;
 	@UiField SpanElement spnCreated;
@@ -65,6 +72,17 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 				}
 			}
 		});
+		
+		img.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				img.setUrl("img/blueman.png");
+			}
+		});
+		
+		img.getElement().getStyle().setWidth(40.0, Unit.PX);
+		img.getElement().getStyle().setHeight(70.0, Unit.PX);
 
 	}
 	
@@ -86,6 +104,8 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			}else{
 				spnCreatedBy.setInnerText(createdBy.getName());
 			}
+			
+			setImage(createdBy);
 			
 		}
 		
@@ -140,4 +160,13 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 		return txtCommentBox.getaSaveComment();
 	}
 
+	private void setImage(HTUser user) {
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if(moduleUrl.endsWith("/")){
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		}
+		//moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&width=40&height=70&userId="+user.getUserId();
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+user.getUserId();
+		img.setUrl(moduleUrl);
+	}
 }

@@ -28,12 +28,15 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -64,6 +67,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField
 	SpanElement spnDescription;
 
+	@UiField Image img;
+	
 	@UiField Anchor aSimulate;	
 	@UiField Anchor aEdit;	
 	@UiField Anchor aSave;
@@ -129,7 +134,14 @@ public class GenericDocumentView extends ViewImpl implements
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		aShowProcess.setVisible(false);
-		
+		img.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				img.setUrl("img/blueman.png");
+			}
+		});
+
 		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
@@ -257,6 +269,8 @@ public class GenericDocumentView extends ViewImpl implements
 				eOwner.setInnerText(createdBy.getName());
 			else
 				eOwner.setInnerText(createdBy.getUserId());
+			
+			setImage(createdBy);
 		}
 		
 		if (created!= null)
@@ -591,4 +605,14 @@ public class GenericDocumentView extends ViewImpl implements
 		delegate.getUserId();
 		//eDelegate.setInnerText(delegate.getDelegateTo());
 	}
+	
+	private void setImage(HTUser user) {
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if(moduleUrl.endsWith("/")){
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		}
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+user.getUserId();
+		img.setUrl(moduleUrl);
+	}
+
 }

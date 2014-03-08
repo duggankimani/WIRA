@@ -1,11 +1,16 @@
 package com.duggan.workflow.client.ui.component;
 
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -14,11 +19,13 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CommentBox extends Composite {
 	
+	@UiField Image img;
 	@UiField Anchor aSaveComment;
 	@UiField HTMLPanel commentContainer;
 	@UiField TextArea commentBox;
@@ -35,7 +42,16 @@ public class CommentBox extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		commentBox.getElement().setAttribute("placeholder","Make comments, ask for clarifications ...");
 		commentPanel.getElement().removeAttribute("tabindex");
-		
+		img.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				img.setUrl("img/blueman.png");
+			}
+		});
+		img.getElement().getStyle().setWidth(45.0, Unit.PX);
+		img.getElement().getStyle().setHeight(45.0, Unit.PX);
+
 		/*Comment Box Effect
 		 * --OnFocus
 		 * */
@@ -79,7 +95,7 @@ public class CommentBox extends Composite {
 		commentBox.addFocusHandler(handler);
 		commentBox.addBlurHandler(blurHandler);		
 		
-		
+		setImage(AppContext.getContextUser());
 	}
 	
 	public TextArea getCommentBox() {
@@ -92,6 +108,15 @@ public class CommentBox extends Composite {
 	
 	public SpanElement getSpnArrow() {
 		return spnArrow;
+	}
+	
+	private void setImage(HTUser user) {
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if(moduleUrl.endsWith("/")){
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		}
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&width=45&height=45&userId="+user.getUserId();
+		img.setUrl(moduleUrl);
 	}
 
 }

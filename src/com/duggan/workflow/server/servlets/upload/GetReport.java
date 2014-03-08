@@ -107,6 +107,22 @@ public class GetReport extends HttpServlet {
 			HttpServletResponse resp){		
 		String userId = req.getParameter("userId");
 		assert userId!=null;
+		
+		String widthPx = req.getParameter("width");
+		String heightPx = req.getParameter("height");
+		
+		if(widthPx!=null && heightPx==null){
+			heightPx=widthPx;
+		}
+		
+		Double width=null;
+		Double height=null;
+		
+		if(widthPx!=null && widthPx.matches("[0-9]+(\\.[0-9][0-9]?)?")){
+			width = new Double(widthPx);
+			height = new Double(heightPx);
+		}
+		
 		LocalAttachment attachment = DB.getAttachmentDao().getUserImage(userId);
 		
 		if(attachment==null)
@@ -114,7 +130,11 @@ public class GetReport extends HttpServlet {
 		
 		byte[] bites = attachment.getAttachment();
 		
-		ImageUtils.resizeImage(resp, bites);
+		if(width!=null){
+			ImageUtils.resizeImage(resp, bites, width.intValue(), height.intValue());
+		}else{
+			ImageUtils.resizeImage(resp, bites);
+		}
 		
 	}
 
