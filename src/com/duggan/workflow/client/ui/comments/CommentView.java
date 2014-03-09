@@ -102,7 +102,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.ICommentVi
 			if(AppContext.isCurrentUser(createdBy.getUserId())){
 				spnCreatedBy.setInnerText("You");
 			}else{
-				spnCreatedBy.setInnerText(createdBy.getName());
+				spnCreatedBy.setInnerText(createdBy.getSurname());
 			}
 			
 			setImage(createdBy);

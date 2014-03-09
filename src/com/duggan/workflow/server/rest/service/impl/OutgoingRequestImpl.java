@@ -130,4 +130,8 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 		assert request!=null;
 	}
 
+	public void executePostCall(String urlEncoding) {
+		
+	}
+
 }

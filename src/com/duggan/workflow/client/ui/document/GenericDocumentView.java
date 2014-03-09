@@ -265,8 +265,8 @@ public class GenericDocumentView extends ViewImpl implements
 			Integer priority,DocStatus status, Long id, String taskDisplayName) {
 		disableAll();
 		if(createdBy!=null){
-			if(createdBy.getName()!=null)
-				eOwner.setInnerText(createdBy.getName());
+			if(createdBy.getSurname()!=null)
+				eOwner.setInnerText(createdBy.getSurname());
 			else
 				eOwner.setInnerText(createdBy.getUserId());
 			

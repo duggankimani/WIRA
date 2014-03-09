@@ -70,7 +70,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 			.setParameter("processDef", model);
 			
 		if(name!=null && !isImage){
-			query.setParameter("attachmuentName", name);
+			query.setParameter("attachmentName", name);
 		}
 			
 		@SuppressWarnings("unchecked")

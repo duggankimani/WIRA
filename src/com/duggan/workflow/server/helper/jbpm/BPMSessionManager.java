@@ -49,6 +49,7 @@ import xtension.workitems.GenerateNotificationWorkItemHandler;
 import xtension.workitems.IntegrationWorkItemHandler;
 import xtension.workitems.SendMailWorkItemHandler;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
+import xtension.workitems.WiseDigitsDocumentIntegration;
 
 import bitronix.tm.TransactionManagerServices;
 
@@ -164,7 +165,9 @@ class BPMSessionManager {
 				new GenerateNotificationWorkItemHandler());
 		session.getWorkItemManager().registerWorkItemHandler(
 				"ScheduleEmailNotification", new SendMailWorkItemHandler());
-		
+		session.getWorkItemManager().registerWorkItemHandler("WiseDigitsDocumentIntegration",
+				new WiseDigitsDocumentIntegration());
+				
 		//External Systems Integration Work Item 
 		session.getWorkItemManager().registerWorkItemHandler("Integration",
 				new IntegrationWorkItemHandler());

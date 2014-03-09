@@ -186,10 +186,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
 		}
 		//moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&width=40&height=70&userId="+user.getUserId();
-		String url1 =moduleUrl+"/getreport?ACTION=GetUser&width=30.0&height=35.0&userId="+user.getUserId();
+		String url1 =moduleUrl+"/getreport?ACTION=GetUser&width=48.0&height=48.0&userId="+user.getUserId();
 		imgSmall.setUrl(url1);
 		
-		String url2 =moduleUrl+"/getreport?ACTION=GetUser&width=70.0&height=80.0&userId="+user.getUserId();
+		String url2 =moduleUrl+"/getreport?ACTION=GetUser&width=70.0&height=70.0&userId="+user.getUserId();
 		img.setUrl(url2);
 	}
 }

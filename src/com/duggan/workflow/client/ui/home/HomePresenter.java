@@ -349,6 +349,7 @@ public class HomePresenter extends
 		
 		if(name==null){
 			getView().setTaskType(null);
+			Window.setTitle("Home");
 			activitiesFactory.get(new ServiceCallback<ActivitiesPresenter>() {
 				@Override
 				public void processResult(ActivitiesPresenter presenter) {
@@ -385,6 +386,7 @@ public class HomePresenter extends
 	private void loadTasks(final TaskType type) {
 		clear();
 		if(type==null){
+			getView().setHeading("Home");
 			History.newItem("home;type=drafts");
 			return;
 		}
