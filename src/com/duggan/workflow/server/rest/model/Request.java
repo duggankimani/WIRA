@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.rest.model;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,6 +19,8 @@ public class Request {
 	
 	@XmlJavaTypeAdapter(value=MapAdapter.class)
 	private Map<String, Object> context;
+	
+	private List<Detail> details;
 	
 	public Request() {
 		// TODO Auto-generated constructor stub
@@ -63,5 +66,13 @@ public class Request {
 	
 	public Object getContext(String key){
 		return context.get(key);
+	}
+
+	public List<Detail> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<Detail> details) {
+		this.details = details;
 	}
 }
