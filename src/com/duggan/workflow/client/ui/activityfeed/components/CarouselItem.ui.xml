@@ -12,7 +12,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<strong>
-						<p ui:field="divText">Click on the Add Document Button. Choose the Type of
+						<p class="muted" ui:field="divText">Click on the Add Document Button. Choose the Type of
 							document
 						</p>
 					</strong>

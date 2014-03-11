@@ -44,7 +44,7 @@
 					<li ui:field="liReceive">
 						<g:Anchor ui:field="aReceive">
 							<div class="image">
-								<span class='icon-arrow-down'></span>
+								<span class='icon-tasks'></span>
 							</div>
 							<div class="desc">
 								<h2>Manage Tasks</h2>

@@ -88,7 +88,7 @@ public class AppManager {
 
 	public static void showCarouselPanel(Widget widget, int[] position,
 			boolean isLeft) {
-		//propertyPanel.getView().getPopUpContainer().clear();
+		propertyPanel.getView().getPopUpContainer().clear();
 		propertyPanel.getView().showBody(true, widget);
 		
 		if (isLeft) {
