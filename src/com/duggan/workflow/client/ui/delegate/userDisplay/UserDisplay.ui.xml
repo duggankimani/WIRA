@@ -10,8 +10,9 @@
 					</div>
 
 					<div class="span2">
-						<img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg"
-							width="50px" height="70px" />
+						<g:Image ui:field="img" width="50px" height="50px"/>
+						<!-- img src="img/tom_pass.jpg" data-src="img/tom_pass.jpg"
+							width="50px" height="70px" /-->
 					</div>
 
 					<div class="span4">

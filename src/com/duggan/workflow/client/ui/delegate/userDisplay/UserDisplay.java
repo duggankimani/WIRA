@@ -9,6 +9,8 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
@@ -19,6 +21,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class UserDisplay extends Composite implements UserSelectedHandler {
@@ -31,6 +34,7 @@ public class UserDisplay extends Composite implements UserSelectedHandler {
 	
 	@UiField CheckBox chkSelect;
 	@UiField SpanElement spnNames;
+	@UiField Image img;
 	
 	private HTUser user;
 	
@@ -48,6 +52,15 @@ public class UserDisplay extends Composite implements UserSelectedHandler {
 				}
 			}
 		});
+		
+		img.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				img.setUrl("img/blueman.png");
+			}
+		});
+		setImage(user);
 	}
 	
 	void setSpnNames(String text) {
@@ -105,4 +118,12 @@ public class UserDisplay extends Composite implements UserSelectedHandler {
 		return null;
 	}
 	
+	private void setImage(HTUser user) {
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if(moduleUrl.endsWith("/")){
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		}
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&width=50&userId="+user.getUserId();
+		img.setUrl(moduleUrl);
+	}
 }
