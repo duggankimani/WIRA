@@ -6,10 +6,12 @@ import com.duggan.workflow.client.ui.component.OLPanel;
 import com.duggan.workflow.client.ui.images.ImageResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -18,14 +20,22 @@ import com.google.gwt.user.client.ui.Widget;
 public class CarouselPopup extends Composite {
 
 	@UiField
-	FocusPanel panelContainer;
+	FocusPanel focusContainer;
 	@UiField
 	HTMLPanel innerCarousel;
+
+	@UiField
+	HTMLPanel innerContainer;
+
 	@UiField
 	OLPanel olCarousels;
 
 	@UiField
 	SpanElement spnHeader;
+
+	// Additional width for focusPanel
+	int additionalWidth;
+	private boolean isLeft = false;
 
 	private static CarouselPopupUiBinder uiBinder = GWT
 			.create(CarouselPopupUiBinder.class);
@@ -37,7 +47,7 @@ public class CarouselPopup extends Composite {
 		olCarousels.clear();
 		for (int i = 1; i <= count; i++) {
 			BulletPanel liElement = new BulletPanel();
-			System.err.println(i);
+			// System.err.println(i);
 			if (i == 1) {
 				liElement.getElement().setClassName("active");
 			}
@@ -52,10 +62,12 @@ public class CarouselPopup extends Composite {
 
 	public CarouselPopup() {
 		initWidget(uiBinder.createAndBindUi(this));
+		focusContainer.getElement().setAttribute("id", "CarouselFocus");
 
-		panelContainer.addMouseOutHandler(new MouseOutHandler() {
+		focusContainer.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
+				//Window.alert("outside");
 				AppManager.hideCarousel();
 			}
 		});
@@ -66,7 +78,7 @@ public class CarouselPopup extends Composite {
 		innerCarousel.clear();
 	}
 
-	public void showCreate() {
+	public void showCreate(int liWidth) {
 		clear();
 		spnHeader.setInnerHTML("Creating New Request");
 		CarouselItem carousel1 = new CarouselItem(true,
@@ -125,7 +137,15 @@ public class CarouselPopup extends Composite {
 		showIndicators(2);
 	}
 
-	public FocusPanel getPanelContainer() {
-		return panelContainer;
+	/*
+	 * Sets the focus panel to display more to the Left
+	 */
+	public void setFocus(boolean isLeft) {
+		this.isLeft = isLeft;
+		/*if (isLeft) {
+			focusContainer.getElement().getStyle().setLeft(-281, Unit.PX);
+		} else {
+			focusContainer.getElement().getStyle().setLeft(0, Unit.PX);
+		}*/
 	}
 }

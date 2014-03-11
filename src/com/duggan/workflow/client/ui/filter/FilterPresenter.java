@@ -60,6 +60,7 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 				if(subject!=""){
 					homeview.setSearchBox(subject);
 				}
+				
 				homeview.hideFilterDialog();
 			}
 		});

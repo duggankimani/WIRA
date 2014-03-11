@@ -1,3 +1,10 @@
+#CarouselFocus{
+  width: 530px;
+  height: 396px;
+ /* border: 1px solid;*/
+  position: absolute;
+}
+
 .carousel h2{
   font-size: 25px;
 }

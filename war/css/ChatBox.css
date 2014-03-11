@@ -13,16 +13,15 @@
 	border-bottom:1px solid #CCCCCC;
 }
 
-.news-feed a {
-	color: #78808a;
+.news-feed .name a, a:active,a:visited{
+  color: #428bca; 
 }
 
 /* line 40, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
-.news-feed a:hover,a:active,a:focus {
+.news-feed a:hover,a:focus {
 	cursor: pointer;
 	outline: 0px none;
-	text-decoration: none;
-	color: #5a6573;
+	text-decoration: underline;
 }
 
 /* line 105, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
