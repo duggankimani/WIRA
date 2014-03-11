@@ -2,6 +2,7 @@ package com.duggan.workflow.server.rest.service.impl;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -18,6 +19,7 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.rest.exception.CommandNotFoundException;
 import com.duggan.workflow.server.rest.model.BusinessKey;
 import com.duggan.workflow.server.rest.model.Data;
+import com.duggan.workflow.server.rest.model.Detail;
 import com.duggan.workflow.server.rest.model.KeyValuePair;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
@@ -26,6 +28,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Value;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
@@ -116,8 +119,9 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		doc.setOwner(LoginHelper.get().getUser(owner.toString()));
 		
 		System.err.println(">>> DocType = "+docType);
-		
-		doc.setType(DocumentDaoHelper.getDocumentType(docType.toString()));
+		DocumentType type = DocumentDaoHelper.getDocumentType(docType.toString());
+		context.put("docType", type);
+		doc.setType(type);
 		
 		for(String key: context.keySet()){
 			Object value = context.get(key);
@@ -135,18 +139,26 @@ public class IncomingRequestImpl implements IncomingRequestService {
 					doc.setPriority(new Integer(value.toString()));
 				}
 				
-				if(value instanceof Map){
-					doc.addDetail(createLine(key, ((Map<String, Object>)value)));
-					continue;
-				}
+//				if(value instanceof Map){
+//					doc.addDetail(createLine(key, ((Map<String, Object>)value)));
+//					continue;
+//				}
 			}else{ 
 				continue;
 				//value is null - go to next loop
 			}
 		
-			
 			doc.setValue(key, getValue(key, value));
 			
+		}
+		
+		List<Detail> details = request.getDetails();
+		System.err.println(">>Detail: "+details);
+		if(details!=null){
+			for(Detail detail: details){
+				System.err.println("detail: "+detail.getName());
+				doc.addDetail(createLine(detail.getName(), detail.getDetails()));
+			}
 		}
 	
 		return doc;
