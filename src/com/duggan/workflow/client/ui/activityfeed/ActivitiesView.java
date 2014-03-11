@@ -109,6 +109,8 @@ public class ActivitiesView extends ViewImpl implements
 				divTutorial.addClassName("hidden");
 			}
 		});
+		//TODO: Remove this afterwards
+		divTutorial.addClassName("hidden");
 	}
 
 	@Override
