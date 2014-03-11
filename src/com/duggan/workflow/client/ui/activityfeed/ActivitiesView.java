@@ -6,8 +6,6 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -38,7 +36,7 @@ public class ActivitiesView extends ViewImpl implements
 	@UiField LIElement liFollowUp;
 	@UiField LIElement liReceive;
 	@UiField LIElement liReview;
-	protected boolean hasFocused=true;
+	protected boolean hasFocused=false;
 	
 	@Inject
 	public ActivitiesView(final Binder binder) {
@@ -54,7 +52,7 @@ public class ActivitiesView extends ViewImpl implements
 				position[1]=liCreate.getAbsoluteRight();
 				popUp1.showCreate();
 				AppManager.showCarouselPanel(popUp1,position,false);
-				System.out.println("Li Create:"+ position[1]);
+				//System.out.println("Li Create:"+ position[1]);
 			}
 		});
 		
@@ -64,7 +62,7 @@ public class ActivitiesView extends ViewImpl implements
 				position[1]= liFollowUp.getAbsoluteRight();
 				AppManager.showCarouselPanel(popUp1,position,false);
 				popUp1.showFollowUp();
-				System.out.println("Li FollowUp:"+ position[1]);
+				//System.out.println("Li FollowUp:"+ position[1]);
 			}
 		});
 		
@@ -74,7 +72,7 @@ public class ActivitiesView extends ViewImpl implements
 				position[1]=liReceive.getAbsoluteRight()-825;
 				AppManager.showCarouselPanel(popUp1,position,true);
 				popUp1.showTask();
-				System.out.println("Li Receive:"+ position[1]);
+				//System.out.println("Li Receive:"+ position[1]);
 			}
 		});
 		
@@ -84,7 +82,7 @@ public class ActivitiesView extends ViewImpl implements
 				position[1]=liReview.getAbsoluteRight()-825;
 				AppManager.showCarouselPanel(popUp1,position,true);
 				popUp1.showReview();
-				System.out.println("Li Review:"+ position[1]);
+				//System.out.println("Li Review:"+ position[1]);
 			}
 		});
 		
@@ -95,14 +93,17 @@ public class ActivitiesView extends ViewImpl implements
 			}
 		});
 		
-		aCreate.addMouseOutHandler(new MouseOutHandler() {
+	  /*	
+	  aCreate.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
+				//Window.alert("Un-Focused");
 				if(!hasFocused){
 					AppManager.hideCarousel();
 				}
 			}
 		});
+		*/
 		aClose.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

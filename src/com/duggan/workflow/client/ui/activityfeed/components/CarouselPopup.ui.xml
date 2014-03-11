@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p="urn:import:com.duggan.workflow.client.ui.component">
 
-	<g:FocusPanel ui:field="panelContainer">
+	<g:FocusPanel ui:field="panelContainer" styleName="FocusPanel">
 		<g:HTMLPanel>
 			<div class="carousel">
 				<div class="row-fluid">
