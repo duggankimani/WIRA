@@ -278,4 +278,18 @@ public class DBLoginHelper implements LoginIntf{
 		return get(dao.getGroup(groupId));
 	}
 	
+	@Override
+	public List<HTUser> getUsersForGroups(String[] groups) {
+		if(groups==null || groups.length==0){
+			return new ArrayList<>();
+		}
+		
+		List<HTUser> users = new ArrayList<>();
+		for(String groupId: groups){
+			users.addAll(getUsersForGroup(groupId));
+		}
+		
+		return users;
+	}
+	
 }

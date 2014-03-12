@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.helper.auth;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.HTUser;
@@ -126,5 +127,26 @@ public class LoginHelper implements LoginIntf{
 	@Override
 	public UserGroup getGroupById(String groupId) {
 		return impl.getGroupById(groupId);
+	}
+
+	public List<HTUser> getUsersForGroups(String[] groups) {
+
+		return impl.getUsersForGroups(groups);
+	}
+
+	public List<UserGroup> getGroupsByIds(String[] groups) {
+		if(groups==null || groups.length==0){
+			return new ArrayList<>();
+		}
+		
+		List<UserGroup> groupList = new ArrayList<>();
+		for(String groupId: groups){
+			UserGroup group = impl.getGroupById(groupId);
+			if(group!=null){
+				groupList.add(group);
+			}
+		}
+		
+		return groupList;
 	}
 }

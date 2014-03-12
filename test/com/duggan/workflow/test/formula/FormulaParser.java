@@ -13,6 +13,10 @@ import org.matheclipse.parser.client.eval.ComplexVariable;
 public class FormulaParser {
 
 	public static void main(String[] args) {
+		String str = "group1";
+		System.err.println(str.split(",")[0]);
+	}
+	public static void main4(String[] args) {
 		String sum="ThisA23";
 		System.out.println(sum.substring(0,sum.indexOf("23")));
 	}

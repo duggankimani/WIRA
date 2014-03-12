@@ -24,8 +24,10 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.duggan.workflow.shared.model.UserGroup;
 
 /**
  * Send Asynchronous Email
@@ -49,6 +51,11 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		String ownerId = (String) workItem.getParameter("OwnerId");
 		Object isApproved = workItem.getParameter("isApproved");
 
+		String[]groups = null;
+		if(groupId!=null){
+			groups = groupId.split(",");
+		}
+		
 		Document doc = null;
 		try{
 			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
@@ -69,31 +76,47 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		if(actorId!=null && !actorId.trim().isEmpty()){
 			users = new ArrayList<>();
 			users.add(LoginHelper.get().getUser(actorId));
-		}else if(groupId!=null && !groupId.trim().isEmpty()){
-			users = LoginHelper.get().getUsersForGroup(groupId);
+		}else if(groups!=null){
+			users = LoginHelper.get().getUsersForGroups(groups);
 		}
 		
 		List<HTUser> owner = new ArrayList<>();
 		owner.add(LoginHelper.get().getUser(ownerId));
 		
 		String body = "";
-		String approver = groupId;
-		if(approver==null){
+		String approver = "";
+		if(groups!=null && groups.length>0){
+			List<UserGroup> groupList = LoginHelper.get().getGroupsByIds(groups);
+			for(UserGroup group:groupList){
+				approver = approver.concat(group.getFullName()+", ");
+			}
+			
+			if(!approver.isEmpty() && approver.endsWith(", ")){
+				approver = approver.substring(0, approver.length()-2);
+			}
+		}
+		
+		if(approver==null && actorId!=null){
 			approver = actorId;
+			HTUser user = LoginHelper.get().getUser(actorId);
+			if(user!=null)
+				approver = user.getFullName();
+			
 		}
 		
 		if(approver==null){
 			approver="";
 		}
 		
+		params.put("Approver", approver);
 		switch (type) {
 		case APPROVALREQUEST_OWNERNOTE:
 			subject = subject+" Approval Request Submitted";
 			body = "Your document #"+subject+" was submitted to "+approver;
 			break;
 		case APPROVALREQUEST_APPROVERNOTE:
-			subject = subject+" Approval Request -"+approver;
-			body =  "The following document requires your review and approval.";
+			subject = subject+" Approval Request from "+getOwner(ownerId);
+			body =  "The following document requires your review/ approval.";
 			owner = users;
 			break;
 		case TASKCOMPLETED_APPROVERNOTE:
@@ -132,13 +155,26 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		
 		Iterator<HTUser> iter = users.iterator();
 		
+		List<String> usersList = new ArrayList<>();
 		while(iter.hasNext()){
-			recipient.append(iter.next().getEmail());
+			String email = iter.next().getEmail();
+			if(email==null){
+				continue;
+			}
+			if(usersList.contains(email)){
+				continue;
+			}
+			usersList.add(email);
+			
+			recipient.append(email);
 			
 			if(iter.hasNext())
 				recipient.append(",");
 		}
 		
+		if(recipient.toString().isEmpty()){
+			return;
+		}
 		
 		/**
 		 * Sending mail
@@ -157,27 +193,39 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			IOUtils.copy(is, bout);
 			html = new String(bout.toByteArray());
 			
-			String owner = params.get("OwnerId")==null? "Unknown":params.get("OwnerId").toString();
-			String desc = params.get("Description")==null?
-					doc.getDescription() : params.get("Description").toString();  
+			String ownerId = params.get("OwnerId")==null? "Unknown":params.get("OwnerId").toString(); 
 			String body = params.get("Body")==null?"":params.get("Body").toString();
 			
 			html = html.replace("${Request}",body);
-			html = html.replace("${OwnerId}", owner);			
-			html = html.replace("${Description}",desc);
+			html = html.replace("${OwnerId}", getOwner(ownerId));
+			html = html.replace("${Office}", params.get("Approver").toString());
+			html = html.replace("${Description}",doc.getDescription());
+			html = html.replace("${DocSubject}", doc.getSubject());
+			html = html.replace("${DocumentDate}", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(
+					doc.getDocumentDate()==null? doc.getCreated(): doc.getDocumentDate()));
+			DocumentType type = doc.getType();
+			html = html.replace("${DocType}",type.getDisplayName());
+			
 			HttpServletRequest request = SessionHelper.getHttpRequest();
 			if(request!=null){
 				String requestURL = request.getRequestURL().toString();
 				String servletPath = request.getServletPath();
+				String pathInfo = request.getPathInfo();
+				
+				log.debug("# RequestURL = "+requestURL);
+				log.debug("# ServletPath = "+servletPath);
+				log.debug("# Path Info = "+pathInfo);
+				if(pathInfo!=null){
+					requestURL = requestURL.replace(pathInfo, "");
+				}
+				log.debug("# Remove Path Info = "+requestURL);				
 				requestURL = requestURL.replace(servletPath, "?#home;type=search;did="+doc.getId());
+				log.debug("# Replace ServletPath = "+requestURL);
+				
 				html = html.replace("${DocumentURL}", requestURL);
 			}else{
 				html = html.replace("${DocumentURL}", "#");
 			}
-			html = html.replace("${DocSubject}", doc.getSubject());
-			html = html.replace("${DocumentDate}", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(doc.getCreated()));
-			html = html.replace("${Value}", doc.getValue());
-			html = html.replace("${BPartner}", doc.getPartner());
 			
 			params.put("Body", html);
 						
@@ -193,6 +241,18 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		
 	}
 
+
+	private CharSequence getOwner(String ownerId) {
+		
+		String owner = ownerId;
+		if(ownerId!=null){
+			HTUser user = LoginHelper.get().getUser(ownerId);
+			if(user!=null){
+				owner = user.getFullName();
+			}
+		}
+		return owner;
+	}
 
 	@Override
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {

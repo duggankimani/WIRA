@@ -64,6 +64,8 @@ public interface LoginIntf extends Closeable {
 	public UserGroup getGroupById(String groupId);
 
 	HTUser getUser(String userId, boolean loadGroups);
+
+	public List<HTUser> getUsersForGroups(String[] groups);
 	
 	
 }

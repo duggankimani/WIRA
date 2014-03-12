@@ -118,7 +118,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		doc.setDocumentDate(new Date());//(documentDate);
 		doc.setOwner(LoginHelper.get().getUser(owner.toString()));
 		
-		System.err.println(">>> DocType = "+docType);
+		logger.debug(">>> DocType = "+docType);
 		DocumentType type = DocumentDaoHelper.getDocumentType(docType.toString());
 		context.put("docType", type);
 		doc.setType(type);
@@ -153,10 +153,8 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		}
 		
 		List<Detail> details = request.getDetails();
-		System.err.println(">>Detail: "+details);
 		if(details!=null){
 			for(Detail detail: details){
-				System.err.println("detail: "+detail.getName());
 				doc.addDetail(createLine(detail.getName(), detail.getDetails()));
 			}
 		}
