@@ -20,7 +20,7 @@
 					</span>
 				</div>
 				<div class="action-buttons pull-right">
-					<d:ActionLink ui:field="aProcess" styleName="btn btn-default"
+					<d:ActionLink ui:field="aProcess" styleName="btn btn-default hidden"
 						title="Show Business Process">
 						<i class="icon-info"></i>
 						<!-- Process -->
@@ -167,7 +167,7 @@
 			</div>
 
 
-			<div class="row-fluid content-area span12" ui:field="divContent">
+			<div class="row-fluid content-area span9" ui:field="divContent">
 				<div class="row-fluid item" ui:field="divDate">
 					<strong>Document Date:</strong>
 					<span ui:field="spnDate" class="subject"></span>
@@ -221,7 +221,7 @@
 				</g:HTMLPanel>
 			</div>
 
-			<g:HTMLPanel styleName="status-section span3 pull-right row-fluid well hidden"
+			<g:HTMLPanel styleName="status-section span3 pull-right row-fluid well"
 				ui:field="divProcess">
 				<div class="row-fluid">
 					<h5>Business Process</h5>
