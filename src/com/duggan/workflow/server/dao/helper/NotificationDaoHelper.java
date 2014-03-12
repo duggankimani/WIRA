@@ -7,20 +7,15 @@ import java.util.List;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
-import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.dao.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.DocType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
-
-import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.*;
 
 public class NotificationDaoHelper {
 

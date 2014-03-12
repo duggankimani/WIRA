@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class Request {
 
 	private String commandName;
+	
 	private BusinessKey businessKey;
 	
 	@XmlJavaTypeAdapter(value=MapAdapter.class)
