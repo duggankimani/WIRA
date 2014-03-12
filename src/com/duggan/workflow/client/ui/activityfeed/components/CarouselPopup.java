@@ -6,12 +6,13 @@ import com.duggan.workflow.client.ui.component.OLPanel;
 import com.duggan.workflow.client.ui.images.ImageResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -26,39 +27,28 @@ public class CarouselPopup extends Composite {
 
 	@UiField
 	HTMLPanel innerContainer;
+	
+	@UiField
+	HTMLPanel panelControls;
 
 	@UiField
 	OLPanel olCarousels;
+	
+	@UiField
+	Anchor aClose;
 
 	@UiField
 	SpanElement spnHeader;
 
 	// Additional width for focusPanel
 	int additionalWidth;
-	private boolean isLeft = false;
 
 	private static CarouselPopupUiBinder uiBinder = GWT
 			.create(CarouselPopupUiBinder.class);
 
 	interface CarouselPopupUiBinder extends UiBinder<Widget, CarouselPopup> {
 	}
-
-	public void showIndicators(int count) {
-		olCarousels.clear();
-		for (int i = 1; i <= count; i++) {
-			BulletPanel liElement = new BulletPanel();
-			// System.err.println(i);
-			if (i == 1) {
-				liElement.getElement().setClassName("active");
-			}
-			liElement.getElement().setAttribute("data-slide-to",
-					Integer.toString(i));
-			liElement.setStyleName("hand");
-			liElement.getElement().setAttribute("data-target",
-					"#quote-carousel");
-			olCarousels.add(liElement);
-		}
-	}
+	
 
 	public CarouselPopup() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -71,8 +61,41 @@ public class CarouselPopup extends Composite {
 				AppManager.hideCarousel();
 			}
 		});
+		
+		aClose.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				AppManager.hideCarousel();
+			}
+		});
 
 	}
+	
+	public void showIndicators(int count) {
+		olCarousels.clear();
+		
+		if(count<=1){
+			System.err.println("Count <<" + count);
+			panelControls.addStyleName("hide");
+		}else{
+			panelControls.removeStyleName("hide");
+		}
+		
+		for (int i = 1; i <= count; i++) {
+			BulletPanel liElement = new BulletPanel();
+			if (i == 1) {
+				liElement.getElement().addClassName("active");
+			}
+			liElement.getElement().setAttribute("data-slide-to",
+					Integer.toString(i));
+			liElement.addStyleName("hand");
+			liElement.getElement().setAttribute("data-target",
+					"#quote-carousel");
+			olCarousels.add(liElement);
+		}
+	}
+
 
 	private void clear() {
 		innerCarousel.clear();
@@ -83,7 +106,7 @@ public class CarouselPopup extends Composite {
 		spnHeader.setInnerHTML("Creating New Request");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.adddoc(),
-				"Click on the Add Document Button. Choose the Type of document");
+				"Click on the Add Document Button. Choose the Type of document from the List and Click.");
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.leaveapp(),
 				"Fill In the Form, Submit it For Approval");
@@ -99,11 +122,11 @@ public class CarouselPopup extends Composite {
 		CarouselItem carousel1 = new CarouselItem(
 				true,
 				ImageResources.IMAGES.business_process(),
-				"On the right side of your document, exist a business process layout which indicates how far your document has reached in whole process.");
+				"Check the right side of a request in progress to see how far it has gone through the process.");
 
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.show_users(),
-				"Put the mouse pointer on top of each node to see the users involved");
+				"Put the mouse pointer on top of each node to see the users involved in each process.");
 
 		innerCarousel.add(carousel1);
 		innerCarousel.add(carousel2);
@@ -115,7 +138,7 @@ public class CarouselPopup extends Composite {
 		spnHeader.setInnerHTML("Managing Tasks");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.tasks(),
-				"Get a listing of all your tasks sorted based on the date.");
+				"The middle section displays a listing of all your tasks");
 
 		innerCarousel.add(carousel1);
 		showIndicators(1);
@@ -126,11 +149,11 @@ public class CarouselPopup extends Composite {
 		spnHeader.setInnerHTML("Reviewing Tasks");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.document_action(),
-				"Get a listing of all your tasks sorted based on the date.");
+				"Decide what to do with from a list of Actions displayed on top of each Task");
 
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.activity(),
-				"Comment and seek clarifications from the bottom panel at each document");
+				"Comment and seek clarifications from the bottom panel at each document/Task");
 
 		innerCarousel.add(carousel1);
 		innerCarousel.add(carousel2);
@@ -141,7 +164,6 @@ public class CarouselPopup extends Composite {
 	 * Sets the focus panel to display more to the Left
 	 */
 	public void setFocus(boolean isLeft) {
-		this.isLeft = isLeft;
 		/*if (isLeft) {
 			focusContainer.getElement().getStyle().setLeft(-281, Unit.PX);
 		} else {
