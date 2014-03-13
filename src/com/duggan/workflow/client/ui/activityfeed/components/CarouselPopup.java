@@ -76,7 +76,6 @@ public class CarouselPopup extends Composite {
 		olCarousels.clear();
 		
 		if(count<=1){
-			System.err.println("Count <<" + count);
 			panelControls.addStyleName("hide");
 		}else{
 			panelControls.removeStyleName("hide");

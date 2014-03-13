@@ -54,10 +54,12 @@ public class ActivitiesView extends ViewImpl implements
 	LIElement liReceive;
 	@UiField
 	LIElement liReview;
-	
-	@UiField DivElement imgReceive;
-	@UiField DivElement imgReview;
-	
+
+	@UiField
+	DivElement imgReceive;
+	@UiField
+	DivElement imgReview;
+
 	protected boolean hasElapsed = false;
 
 	@Inject
@@ -114,11 +116,14 @@ public class ActivitiesView extends ViewImpl implements
 					@Override
 					public void run() {
 						int browserWidth = Window.getClientWidth();
-						
-						//System.err.println("IMG>> "+img.getAbsoluteLeft()+"; BW> "+((int)(0.4*browserWidth)));
-						//int right =  liReceive.getAbsoluteRight();
-						position[1] =  imgReceive.getAbsoluteLeft()-(int)(0.4*browserWidth)+20;
-						
+
+						System.err.println("IMG>> "
+								+ imgReceive.getAbsoluteLeft() + "; BW> "
+								+ ((int) (0.4 * browserWidth)));
+						// int right = liReceive.getAbsoluteRight();
+						position[1] = imgReceive.getAbsoluteLeft()
+								- (int) (0.4 * browserWidth) - 5;
+
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showTask();
 						hasElapsed = true;
@@ -138,11 +143,12 @@ public class ActivitiesView extends ViewImpl implements
 					@Override
 					public void run() {
 						int browserWidth = Window.getClientWidth();
-						
-						//System.err.println("IMG>> "+img.getAbsoluteLeft()+"; BW> "+((int)(0.4*browserWidth)));
-						//int right =  liReceive.getAbsoluteRight();
-						position[1] =  imgReview.getAbsoluteLeft()-(int)(0.4*browserWidth)+20;
-						
+
+						// System.err.println("IMG>> "+imgReview.getAbsoluteLeft()+"; BW> "+((int)(0.4*browserWidth)));
+						// int right = liReceive.getAbsoluteRight();
+						position[1] = imgReview.getAbsoluteLeft()
+									  - (int) (0.4 * browserWidth)-5;
+
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showReview();
 						hasElapsed = true;
@@ -192,9 +198,9 @@ public class ActivitiesView extends ViewImpl implements
 				divTutorial.addClassName("hidden");
 			}
 		});
-		
-		//TODO: Remove this afterwards
-		//divTutorial.addClassName("hidden");
+
+		// TODO: Remove this afterwards
+		// divTutorial.addClassName("hidden");
 	}
 
 	@Override
