@@ -134,6 +134,12 @@ public class PropertyPanelView extends PopupViewImpl implements
 			divBottom.removeClassName("hidden");
 		}
 	}
+	
+	@Override
+	public void hide() {
+		clear();
+		super.hide();		
+	}
 
 	private void clear() {
 		pBody.clear();

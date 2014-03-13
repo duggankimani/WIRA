@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -53,6 +54,10 @@ public class ActivitiesView extends ViewImpl implements
 	LIElement liReceive;
 	@UiField
 	LIElement liReview;
+	
+	@UiField DivElement imgReceive;
+	@UiField DivElement imgReview;
+	
 	protected boolean hasElapsed = false;
 
 	@Inject
@@ -108,7 +113,12 @@ public class ActivitiesView extends ViewImpl implements
 				timer = new Timer() {
 					@Override
 					public void run() {
-						position[1] = liReceive.getAbsoluteRight() - 820;
+						int browserWidth = Window.getClientWidth();
+						
+						//System.err.println("IMG>> "+img.getAbsoluteLeft()+"; BW> "+((int)(0.4*browserWidth)));
+						//int right =  liReceive.getAbsoluteRight();
+						position[1] =  imgReceive.getAbsoluteLeft()-(int)(0.4*browserWidth)+20;
+						
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showTask();
 						hasElapsed = true;
@@ -127,7 +137,12 @@ public class ActivitiesView extends ViewImpl implements
 				timer = new Timer() {
 					@Override
 					public void run() {
-						position[1] = liReview.getAbsoluteRight() - 820;
+						int browserWidth = Window.getClientWidth();
+						
+						//System.err.println("IMG>> "+img.getAbsoluteLeft()+"; BW> "+((int)(0.4*browserWidth)));
+						//int right =  liReceive.getAbsoluteRight();
+						position[1] =  imgReview.getAbsoluteLeft()-(int)(0.4*browserWidth)+20;
+						
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showReview();
 						hasElapsed = true;

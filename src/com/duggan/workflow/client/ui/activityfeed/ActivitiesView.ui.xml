@@ -43,7 +43,7 @@
 					</li>
 					<li ui:field="liReceive">
 						<g:Anchor ui:field="aReceive">
-							<div class="image">
+							<div class="image"  ui:field="imgReceive">
 								<span class='icon-tasks'></span>
 							</div>
 							<div class="desc">
@@ -55,7 +55,7 @@
 					</li>
 					<li ui:field="liReview">
 						<g:Anchor ui:field="aReview">
-							<div class="image">
+							<div class="image" ui:field="imgReview">
 								<span class='icon-ok-circle'></span>
 							</div>
 							<div class="desc">
