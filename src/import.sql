@@ -43,6 +43,7 @@ insert into UserGroup(userid,groupid) values(11,9);
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Account Application', 'AccountApplication',0,'ACC/CBLC/{No}/{YY}');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Asset Finance Application', 'ASSETFINANCE',0,'AFN/CBLC/{No}/{YY}');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Requisition -WD', 'WDRequisition',0,'Req/WD/{No}/{YY}');
+ insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Student Leave', 'StudentLeave',0,'BUS-AFI-{No}/{YYYY}');
 
  
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'HR', 'Human Resources');
