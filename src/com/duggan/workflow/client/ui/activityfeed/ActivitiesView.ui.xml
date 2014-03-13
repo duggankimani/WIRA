@@ -7,6 +7,8 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="content-right span10 overflow-y">
+	    <g:FocusPanel ui:field="parentPanel">
+	        <g:HTMLPanel>
 		<div class="bootcamp js-notice" ui:field="divTutorial">
 			<h1>
 				Welcome to Wira BPM
@@ -68,7 +70,8 @@
 				</ul>
 			</div> <!-- /bootcamp-body -->
 		</div>
-
+		</g:HTMLPanel>
+		</g:FocusPanel>
 
 		<div class="news-feed row-fluid">
 			<h4>News Feed</h4>
