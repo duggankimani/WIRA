@@ -177,13 +177,13 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				if(isClicked){
-					//aProcess.addStyleName("disabled");
+					aProcess.addStyleName("disabled");
 					divProcess.removeStyleName("hidden");
 					divContent.removeClassName("span12");
 					divContent.addClassName("span9");
 					isClicked=false;
 				}else{
-					//aProcess.removeStyleName("disabled");
+					aProcess.removeStyleName("disabled");
 					divProcess.addStyleName("hidden");
 					divContent.removeClassName("span9");
 					divContent.addClassName("span12");

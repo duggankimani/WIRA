@@ -17,7 +17,7 @@ a{
 }
 a, a:visited, a:hover{
     text-decoration:none;
-    color: #cccccc;
+    /* color: #cccccc; */
 }
 .full-page{
     height:100%;
@@ -468,6 +468,7 @@ body .dateBoxPopup{
 }
 
 .navbar .dropdown-menu .action-area {
+	color:#ffffff;
 	padding: 10px;
 	padding-top: 0px;
 }
@@ -538,6 +539,8 @@ body .dateBoxPopup{
     width: 88%;
     height: 100%;
     position: relative;
+	background-color: #ffffff;
+	border: 1px solid #CCCCCC;
 }
 .main-container .content-right #middle-box{
   width: 25%;
@@ -1499,7 +1502,11 @@ ul.icons-list.text-xl {
 	text-shadow: none;
 }
 
-
+@media (max-width: 768px){
+	.main-container .content-right{
+		width: 100%;
+	}
+}
 /*---Tablet Layouting---*/
 @media (min-width: 768px) and (max-width: 1280px){ 
 	/*1.Sidebar*/

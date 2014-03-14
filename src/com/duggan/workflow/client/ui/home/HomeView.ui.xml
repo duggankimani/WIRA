@@ -8,7 +8,7 @@
  
  <g:HTMLPanel styleName="row-fluid main-container"> 
     <g:HTMLPanel ui:field="mainContainer" styleName="full-page">
-      <div id="sidebar-nav" class="span2">
+      <div id="sidebar-nav" class="span2 hidden-phone">
         
       <!-- g:HTMLPanel styleName="navbar" ui:field="divNavbar">
        <div class="navbar-inner">
@@ -77,6 +77,7 @@
             </li>
         </ul>
      </div>
+     
       <g:HTMLPanel ui:field="wholeContainer" styleName="hide content-right span10"> 
 			<!--middle navigation -->      		
       		<div class="span2" id="middle-box">
@@ -108,8 +109,9 @@
 	      </div>
       </g:HTMLPanel>
       	      
-      <g:HTMLPanel ui:field="activityContainer" styleName="full-page">  	
+      <g:HTMLPanel ui:field="activityContainer" styleName="overflow-y content-right span10">  	
       </g:HTMLPanel> 
+      
     </g:HTMLPanel>  
     </g:HTMLPanel><!--End of Container-->
     

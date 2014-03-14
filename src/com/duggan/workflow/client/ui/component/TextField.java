@@ -15,4 +15,10 @@ public class TextField extends TextBox{
 	public void setType(String type){
 		getElement().setAttribute("type", type);
 	}
+	
+	public void setDisabled(Boolean isDisabled){
+		if(isDisabled){
+			getElement().setAttribute("disabled", "disabled");
+		}
+	}
 }

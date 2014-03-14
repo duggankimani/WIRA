@@ -6,6 +6,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
+
 	<g:HTMLPanel styleName="content-right span10 overflow-y">
 	    <g:FocusPanel ui:field="parentPanel">
 	        <g:HTMLPanel>
@@ -45,7 +46,7 @@
 					</li>
 					<li ui:field="liReceive">
 						<g:Anchor ui:field="aReceive">
-							<div class="image"  ui:field="imgReceive">
+							<div class="image" ui:field="imgReceive">
 								<span class='icon-tasks'></span>
 							</div>
 							<div class="desc">
