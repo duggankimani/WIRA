@@ -97,6 +97,8 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.duggan.workflow.client.ui.profile.ProfilePresenter;
+import com.duggan.workflow.client.ui.profile.ProfileView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -252,5 +254,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(DSSavePresenter.class,
 				DSSavePresenter.IDSSaveView.class,
 				DSSaveView.class);
+
+		bindPresenter(ProfilePresenter.class, ProfilePresenter.MyView.class,
+				ProfileView.class, ProfilePresenter.MyProxy.class);
 	}
 }

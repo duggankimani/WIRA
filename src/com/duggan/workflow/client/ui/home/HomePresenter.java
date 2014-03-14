@@ -358,6 +358,7 @@ public class HomePresenter extends
 					presenter.loadActivities();
 				}
 			});
+			
 		}else{
 			TaskType type = TaskType.getTaskType(name);
 			this.currentTaskType=type;

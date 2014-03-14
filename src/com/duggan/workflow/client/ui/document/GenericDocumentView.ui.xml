@@ -85,10 +85,6 @@
 							<i class="icon-pencil color-black"></i>
 						</d:ActionLink>
 
-						<!-- <d:ActionLink ui:field="aAttach1" title="Attach word, pdf, scanned 
-							documents etc" styleName="hidden"> <i class="icon-upload-alt color-black"></i> 
-							</d:ActionLink> -->
-
 						<d:ActionLink ui:field="aClaim" styleName="btn btn-default"
 							title="Claim this task. Other users in your group cannot work on this task if claimed">
 							<i class="icon-arrow-down color-black"></i>

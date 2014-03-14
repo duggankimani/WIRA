@@ -6,8 +6,8 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="content-right span10 overflow-y">
-		<div class="bootcamp js-notice" ui:field="divTutorial">
+	<g:HTMLPanel>
+		<div class="bootcamp js-notice visible-desktop" ui:field="divTutorial">
 			<h1>
 				Welcome to Wira BPM
 				<span>Here is a Walk-through to get you started</span>
@@ -43,7 +43,7 @@
 					</li>
 					<li ui:field="liReceive">
 						<g:Anchor ui:field="aReceive">
-							<div class="image"  ui:field="imgReceive">
+							<div class="image" ui:field="imgReceive">
 								<span class='icon-tasks'></span>
 							</div>
 							<div class="desc">
