@@ -2,10 +2,15 @@ package com.duggan.workflow.client.ui.activityfeed;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.activityfeed.components.CarouselPopup;
+import com.duggan.workflow.client.ui.events.CloseCarouselEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -16,6 +21,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -60,6 +66,7 @@ public class ActivitiesView extends ViewImpl implements
 	@UiField
 	DivElement imgReview;
 
+	@UiField FocusPanel parentPanel;
 	protected boolean hasElapsed = false;
 
 	@Inject
@@ -116,13 +123,10 @@ public class ActivitiesView extends ViewImpl implements
 					@Override
 					public void run() {
 						int browserWidth = Window.getClientWidth();
-
-						System.err.println("IMG>> "
-								+ imgReceive.getAbsoluteLeft() + "; BW> "
-								+ ((int) (0.4 * browserWidth)));
-						// int right = liReceive.getAbsoluteRight();
+						int popovermaxwidth = (int) (0.4 * browserWidth);
 						position[1] = imgReceive.getAbsoluteLeft()
-								- (int) (0.4 * browserWidth) - 5;
+									  - popovermaxwidth;
+						popUp1.getElement().getStyle().setWidth(popovermaxwidth-15, Unit.PX);
 
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showTask();
@@ -143,11 +147,10 @@ public class ActivitiesView extends ViewImpl implements
 					@Override
 					public void run() {
 						int browserWidth = Window.getClientWidth();
-
-						// System.err.println("IMG>> "+imgReview.getAbsoluteLeft()+"; BW> "+((int)(0.4*browserWidth)));
-						// int right = liReceive.getAbsoluteRight();
+						int popovermaxwidth = (int) (0.4 * browserWidth);
 						position[1] = imgReview.getAbsoluteLeft()
-									  - (int) (0.4 * browserWidth)-5;
+									  - popovermaxwidth;
+						popUp1.getElement().getStyle().setWidth(popovermaxwidth-20, Unit.PX);
 
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showReview();
@@ -164,14 +167,18 @@ public class ActivitiesView extends ViewImpl implements
 			public void onMouseOut(MouseOutEvent event) {
 				if (hasElapsed) {
 					timer.cancel();
+					AppContext.fireEvent(new CloseCarouselEvent());
 				}
 			}
 		});
+	
+		
 		aFollowUp.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				if (hasElapsed) {
 					timer.cancel();
+					AppContext.fireEvent(new CloseCarouselEvent());
 				}
 			}
 		});
@@ -180,6 +187,7 @@ public class ActivitiesView extends ViewImpl implements
 			public void onMouseOut(MouseOutEvent event) {
 				if (hasElapsed) {
 					timer.cancel();
+					AppContext.fireEvent(new CloseCarouselEvent());
 				}
 			}
 		});
@@ -188,6 +196,7 @@ public class ActivitiesView extends ViewImpl implements
 			public void onMouseOut(MouseOutEvent event) {
 				if (hasElapsed) {
 					timer.cancel();
+					AppContext.fireEvent(new CloseCarouselEvent());
 				}
 			}
 		});

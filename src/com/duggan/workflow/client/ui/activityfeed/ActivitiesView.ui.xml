@@ -6,8 +6,11 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-		<div class="bootcamp js-notice visible-desktop" ui:field="divTutorial">
+
+	<g:HTMLPanel styleName="content-right span10 overflow-y">
+	    <g:FocusPanel ui:field="parentPanel">
+	        <g:HTMLPanel>
+		<div class="bootcamp js-notice" ui:field="divTutorial">
 			<h1>
 				Welcome to Wira BPM
 				<span>Here is a Walk-through to get you started</span>
@@ -68,7 +71,8 @@
 				</ul>
 			</div> <!-- /bootcamp-body -->
 		</div>
-
+		</g:HTMLPanel>
+		</g:FocusPanel>
 
 		<div class="news-feed row-fluid">
 			<h4>News Feed</h4>

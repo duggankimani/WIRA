@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p="urn:import:com.duggan.workflow.client.ui.component">
+	<g:FocusPanel ui:field="parentPanel">
 	<g:HTMLPanel>
 		<g:FocusPanel ui:field="focusContainer">
 		</g:FocusPanel>
@@ -46,4 +47,5 @@
 			</div>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
+	</g:FocusPanel>
 </ui:UiBinder> 

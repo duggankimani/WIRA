@@ -135,7 +135,7 @@ public class AppManager {
 	/*
 	 * Hide the Carousel Output
 	 */
-	public static void hideCarousel() {
+	public static void hidePopup() {
 		propertyPanel.getView().hide();
 	}
 }

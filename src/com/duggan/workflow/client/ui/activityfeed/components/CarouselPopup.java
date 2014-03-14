@@ -3,22 +3,34 @@ package com.duggan.workflow.client.ui.activityfeed.components;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.client.ui.component.OLPanel;
+import com.duggan.workflow.client.ui.events.CloseCarouselEvent;
+import com.duggan.workflow.client.ui.events.CloseCarouselEvent.CloseCarouselHandler;
 import com.duggan.workflow.client.ui.images.ImageResources;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CarouselPopup extends Composite {
+public class CarouselPopup extends Composite implements CloseCarouselHandler {
 
 	@UiField
 	FocusPanel focusContainer;
@@ -43,6 +55,8 @@ public class CarouselPopup extends Composite {
 	// Additional width for focusPanel
 	int additionalWidth;
 
+	@UiField FocusPanel parentPanel;
+	
 	private static CarouselPopupUiBinder uiBinder = GWT
 			.create(CarouselPopupUiBinder.class);
 
@@ -50,25 +64,39 @@ public class CarouselPopup extends Composite {
 	}
 	
 
+	HandlerRegistration reg=null;
 	public CarouselPopup() {
 		initWidget(uiBinder.createAndBindUi(this));
 		focusContainer.getElement().setAttribute("id", "CarouselFocus");
-
-		focusContainer.addMouseOutHandler(new MouseOutHandler() {
+		
+		parentPanel.addMouseOverHandler(new MouseOverHandler() {
+			
 			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				//Window.alert("outside");
-				AppManager.hideCarousel();
+			public void onMouseOver(MouseOverEvent event) {
+				if(timer!=null){
+					timer.cancel();
+				}
 			}
 		});
 		
+		parentPanel.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				//Window.alert("outside");
+				AppManager.hidePopup();
+			}
+		});
+				
 		aClose.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				AppManager.hideCarousel();
+				AppManager.hidePopup();
 			}
 		});
+		
+		Type<? extends EventHandler> type = CloseCarouselEvent.TYPE;
+		reg= AppContext.getEventBus().addHandler((GwtEvent.Type<EventHandler>)type,this);
 
 	}
 	
@@ -137,7 +165,7 @@ public class CarouselPopup extends Composite {
 		spnHeader.setInnerHTML("Managing Tasks");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.tasks(),
-				"The middle section displays a listing of all your tasks");
+				"The middle section displays a listing of all your tasks;");
 
 		innerCarousel.add(carousel1);
 		showIndicators(1);
@@ -168,5 +196,25 @@ public class CarouselPopup extends Composite {
 		} else {
 			focusContainer.getElement().getStyle().setLeft(0, Unit.PX);
 		}*/
+	}
+
+	//give the user 400ms to have focused on the carousel
+	Timer timer = null;
+	@Override
+	public void onCloseCarousel(CloseCarouselEvent event) {
+		timer = new Timer() {
+			
+			@Override
+			public void run() {
+				AppManager.hidePopup();
+			}
+		};
+		timer.schedule(600);
+	}
+	
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+		reg.removeHandler();
 	}
 }
