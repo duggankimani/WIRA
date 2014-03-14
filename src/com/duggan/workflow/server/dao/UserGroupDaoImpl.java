@@ -91,7 +91,9 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 
 	public Collection<User> getAllUsers(String groupId) {
 		Group group = getGroup(groupId);
-		
+		if(group==null){
+			return new ArrayList<>();
+		}
 		return group.getMembers();
 	}
 	

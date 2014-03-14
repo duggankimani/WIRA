@@ -82,7 +82,10 @@ public class ProcessState extends Composite {
 		if(state.getGroups()!=null){
 			String groups = "";
 			for(UserGroup group: state.getGroups()){
-				String groupStr = group.getDisplayName()+", ";
+				if(group==null){
+					continue;
+				}
+				String groupStr = group.getDisplayName()+", ";	
 				groups= groups.concat(groupStr);
 			}
 			

@@ -86,6 +86,9 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 
 	private void logErrors(boolean hasError, Throwable throwable, B result) {
 		
+		if(hasError)
+			throwable = getFirstThrowableWithMessage(throwable);
+		
 		if(hasError){
 			Long errorId=null;
 			
@@ -126,12 +129,22 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 					baseResult.setErrorMessage(e.getMessage());
 				}else{
 					throwable.printStackTrace();
-					//baseResult.setErrorMessage("[600] "+throwable.getMessage());
+					baseResult.setErrorMessage("We could not complete your request due to an error: "
+					+throwable.getMessage());
 				}
 				
 			}
 		}
 
+	}
+
+	private Throwable getFirstThrowableWithMessage(Throwable throwable) {
+		if(throwable.getMessage()==null || throwable.getMessage().isEmpty()){
+			if(throwable.getCause()!=null){
+				return getFirstThrowableWithMessage(throwable.getCause());
+			}
+		}
+		return throwable;
 	}
 
 	public abstract void execute(A action, BaseResponse actionResult,

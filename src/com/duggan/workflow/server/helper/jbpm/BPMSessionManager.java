@@ -34,14 +34,10 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
-import org.jbpm.task.Content;
 import org.jbpm.task.Task;
 import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
-import org.jbpm.task.service.TaskClient;
-import org.jbpm.task.service.TaskClientHandler;
-import org.jbpm.task.service.TaskClientHandler.TaskOperationResponseHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
@@ -50,22 +46,15 @@ import xtension.workitems.IntegrationWorkItemHandler;
 import xtension.workitems.SendMailWorkItemHandler;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import xtension.workitems.WiseDigitsDocumentIntegration;
-
 import bitronix.tm.TransactionManagerServices;
 
-import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
-import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.Notification;
-import com.duggan.workflow.shared.model.NotificationType;
 
 /**
  * 
@@ -169,7 +158,7 @@ class BPMSessionManager {
 				new WiseDigitsDocumentIntegration());
 				
 		//External Systems Integration Work Item 
-		session.getWorkItemManager().registerWorkItemHandler("Integration",
+		session.getWorkItemManager().registerWorkItemHandler("RestfulCommandIntegration",
 				new IntegrationWorkItemHandler());
 
 		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(

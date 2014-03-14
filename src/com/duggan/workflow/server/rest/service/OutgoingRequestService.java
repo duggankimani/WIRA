@@ -22,5 +22,7 @@ public interface OutgoingRequestService {
 	 * @return
 	 */
 	public Response executeCall(Request request);
+
+	public Response executeCall(Request request, String serviceURI);
 	
 }
