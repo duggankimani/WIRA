@@ -7,10 +7,10 @@
 	ui:generateLocales='default'>
 
 
-	<g:HTMLPanel styleName="content-right span10 overflow-y">
+	<g:HTMLPanel styleName="">
 	    <g:FocusPanel ui:field="parentPanel">
 	        <g:HTMLPanel>
-		<div class="bootcamp js-notice" ui:field="divTutorial">
+		<div class="bootcamp js-notice visible-desktop" ui:field="divTutorial">
 			<h1>
 				Welcome to Wira BPM
 				<span>Here is a Walk-through to get you started</span>
