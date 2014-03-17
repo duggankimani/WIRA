@@ -7,7 +7,7 @@
 
 	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
 		<div class="navbar-inner">
-			<g:Anchor styleName="brand" href="#home" ui:field="aBrand">Wira BPM |
+			<g:Anchor styleName="brand visible-desktop visible-tablet" href="#home" ui:field="aBrand">Wira BPM |
 				Your Organization</g:Anchor>
 
 			<ul class="nav pull-right">
