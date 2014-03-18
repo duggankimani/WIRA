@@ -95,9 +95,6 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 			}
 		});
 		
-		Type<? extends EventHandler> type = CloseCarouselEvent.TYPE;
-		reg= AppContext.getEventBus().addHandler((GwtEvent.Type<EventHandler>)type,this);
-
 	}
 	
 	public void showIndicators(int count) {
@@ -200,6 +197,7 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 
 	//give the user 400ms to have focused on the carousel
 	Timer timer = null;
+	
 	@Override
 	public void onCloseCarousel(CloseCarouselEvent event) {
 		timer = new Timer() {
@@ -210,6 +208,14 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 			}
 		};
 		timer.schedule(600);
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		Type<? extends EventHandler> type = CloseCarouselEvent.TYPE;
+		reg= AppContext.getEventBus().addHandler((GwtEvent.Type<EventHandler>)type,this);
+
 	}
 	
 	@Override
