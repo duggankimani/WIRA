@@ -61,7 +61,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 	public Response executeCall(Request request) {
 		String uri = null;
 		
-		Object URI = request.getContext("ServiceUri");
+		Object URI = request.getContext("serviceURI");
 		if(URI!=null && !URI.toString().isEmpty()){
 			uri =URI.toString();
 		}

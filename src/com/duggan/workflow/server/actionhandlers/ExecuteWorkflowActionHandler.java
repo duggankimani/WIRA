@@ -48,7 +48,8 @@ public class ExecuteWorkflowActionHandler extends
 				Value value = values.get(key);				
 				vals.put(key, value==null?null: value.getValue());
 				if(key!=null){
-					document.setValue(mappings.getOutputName(key),value);
+					key = mappings.getOutputName(key);
+					document.setValue(key,value);
 				}
 			}
 			vals.put("documentOut", document);
