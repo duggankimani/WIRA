@@ -177,6 +177,7 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 	
 
 	public void setUser(HTUser user){
+		issues.clear();
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getName());
 		txtLastname.setValue(user.getSurname());
