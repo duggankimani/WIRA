@@ -520,16 +520,15 @@ class BPMSessionManager {
 	private boolean complete(long taskId, String userId,
 			Map<String, Object> values) {
 
-		Map<String, Object> content = JBPMHelper.getMappedData(getTaskClient()
-				.getTask(taskId));
-		content.putAll(values);
+//		Map<String, Object> content = JBPMHelper.getMappedData(getTaskClient()
+//				.getTask(taskId));
+		
+		//content.putAll(values);
+		
 		// completing tasks is a single individuals responsibility
 		// Notifications & Emails sent after task completion must reflect this
-		content.put("ActorId", SessionHelper.getCurrentUser().getUserId());
-		// sessionManager.getTaskService().completeWithResults(taskId, userId,
-		// content);
-		getTaskClient().completeWithResults(taskId, userId, content);
-		// sessionManager.getTaskService().complete(taskId, userId, null);
+		values.put("ActorId", SessionHelper.getCurrentUser().getUserId());
+		getTaskClient().completeWithResults(taskId, userId, values);
 		return true;
 	}
 

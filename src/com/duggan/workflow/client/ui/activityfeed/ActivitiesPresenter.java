@@ -31,6 +31,8 @@ public class ActivitiesPresenter extends
 
 	public interface MyView extends View {
 		HasWidgets getPanelActivity();
+
+		void bind();
 	}
 
 	@Inject DispatchAsync requestHelper;
@@ -105,5 +107,6 @@ public class ActivitiesPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		getView().bind();
 	}
 }

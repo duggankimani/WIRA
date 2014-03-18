@@ -346,16 +346,19 @@ public class DocumentDaoHelper {
 		return getDoc(model);
 	}
 
+	public static Document getDocumentByProcessInstance(Long processInstanceId) {
+		return getDocumentByProcessInstance(processInstanceId, false);
+	}
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public static Document getDocumentByProcessInstance(Long processInstanceId) {
+	public static Document getDocumentByProcessInstance(Long processInstanceId, boolean checkUser) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		DocumentModel model = dao
-				.getDocumentByProcessInstanceId(processInstanceId);
+				.getDocumentByProcessInstanceId(processInstanceId, checkUser);
 
 		return getDoc(model);
 	}

@@ -73,6 +73,22 @@ public class ActivitiesView extends ViewImpl implements
 	public ActivitiesView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 
+	}
+	
+
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
+	@Override
+	public HasWidgets getPanelActivity() {
+		return panelActivity;
+	}
+
+
+	@Override
+	public void bind() {
 		final CarouselPopup popUp1 = new CarouselPopup();
 		final int[] position = new int[2];
 		position[0] = 40;
@@ -210,16 +226,7 @@ public class ActivitiesView extends ViewImpl implements
 
 		// TODO: Remove this afterwards
 		// divTutorial.addClassName("hidden");
-	}
-
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
-
-	@Override
-	public HasWidgets getPanelActivity() {
-		return panelActivity;
+		
 	}
 
 }

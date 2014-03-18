@@ -52,7 +52,6 @@ public class Uploader extends Composite {
 		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
 		uploader.addOnStartUploadHandler(uploadStarted);
-		
 	}
 	
 	public Uploader(UploadContext ctx){
@@ -94,13 +93,13 @@ public class Uploader extends Composite {
 				new PreloadedImage(uploader.fileUrl(), showImage);
 
 				// The server sends useful information to the client by default
-				UploadedInfo info = uploader.getServerInfo();
-				System.out.println("File name " + info.name);
-				System.out.println("File content-type " + info.ctype);
-				System.out.println("File size " + info.size);
-
-				// You can send any customized message and parse it
-				System.out.println("Server message " + info.message);
+//				UploadedInfo info = uploader.getServerInfo();
+//				System.out.println("File name " + info.name);
+//				System.out.println("File content-type " + info.ctype);
+//				System.out.println("File size " + info.size);
+//
+//				// You can send any customized message and parse it
+//				System.out.println("Server message " + info.message);
 			}
 		}
 	};
@@ -132,5 +131,13 @@ public class Uploader extends Composite {
 		}
 	}
 	
+	
+	public void addOnFinishUploaderHandler(OnFinishUploaderHandler handler){
+		uploader.addOnFinishUploadHandler(handler);
+	}
+
+	public void clear() {
+						
+	}
 
 }

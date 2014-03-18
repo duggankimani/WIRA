@@ -439,24 +439,7 @@ public class JBPMHelper implements Closeable {
 			//Exception thrown if process not started
 			task.setName(getDisplayName(master_task));
 		}catch(Exception e){}
-
-		Deadlines deadlines = master_task.getDeadlines();
-		if(deadlines!=null){
-			
-			/*{
-				List<Deadline> startDeadlinelst = deadlines.getStartDeadlines();
-				//if(startDeadlinelst!=null && "startDeadlinelst.isEmpty())
-				Deadline deadline = startDeadlinelst.get(0);
-				deadline.getDate();
-			}
-			
-			{
-				List<Deadline> endDeadlineLst = deadlines.getEndDeadlines();
-				Deadline deadline = endDeadlineLst.get(0);
-				deadline.getDate();
-			}*/
-		}
-
+		
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
 			task.setValues(doc.getValues());
@@ -528,8 +511,9 @@ public class JBPMHelper implements Closeable {
 		// task.get
 
 		List<I18NText> descriptions = task.getDescriptions();
-		if(myTask.getDescription()==null)
-		myTask.setDescription(descriptions.get(0).getText());
+		if(myTask.getDescription()==null){
+			myTask.setDescription(descriptions.get(0).getText());
+		}
 
 		List<I18NText> names = task.getNames();
 		if(names.size()>0){
@@ -538,29 +522,14 @@ public class JBPMHelper implements Closeable {
 		}
 
 		List<I18NText> subjects = task.getSubjects();// translations
-		if(myTask.getSubject()==null)
-		myTask.setSubject(subjects.get(0).getText());
+		if(myTask.getSubject()==null){
+			myTask.setSubject(subjects.get(0).getText());
+		}
 
 		int priority = task.getPriority();
 		if(myTask.getPriority()==null)
 			myTask.setPriority(priority);
 
-		Long id = task.getId();
-		myTask.setId(id);
-		
-		if(task.getTaskData().getStatus()== Status.Completed){
-			long output = task.getTaskData().getOutputContentId();
-			Map<String, Object> content = getMappedData(output);
-			Set<String> keys = content.keySet();
-
-			for (String key : keys) {
-				Value val = getValue(content.get(key));
-				if(val!=null)
-					myTask.setValue(key, val);
-			}
-			
-		}
-		
 		// int version = task.getVersion();
 		// myTask.setVersion(version);
 
@@ -585,12 +554,19 @@ public class JBPMHelper implements Closeable {
 		}
 		
 		// deadlines.getEndDeadlines();
-		Delegation delegation = task.getDelegation();
+		//Delegation delegation = task.getDelegation();
 
-		PeopleAssignments assignments = task.getPeopleAssignments();
+		//PeopleAssignments assignments = task.getPeopleAssignments();
 		// User user = assignments.getTaskInitiator();
 
-		List<OrganizationalEntity> entities = assignments.getRecipients();
+		//List<OrganizationalEntity> entities = assignments.getRecipients();
+
+		// myTask.setData(data);
+
+		return myTask;
+	}
+	
+	public HTData getTaskData(Task task){
 
 		// HT DATA
 		HTData data = new HTData();
@@ -655,8 +631,6 @@ public class JBPMHelper implements Closeable {
 		Date expiryTime = taskData.getExpirationTime();
 		data.setExpiryTime(expiryTime);
 
-		// AccessType faultAccessType = taskData.getFaultAccessType();
-
 		long parentId = taskData.getParentId();
 		data.setParentId(parentId);
 
@@ -666,15 +640,30 @@ public class JBPMHelper implements Closeable {
 					.toUpperCase()));
 		}
 
-		// myTask.setData(data);
-
-		return myTask;
+		return data;
 	}
 
 	public static Map<String, Object> getMappedData(Task task) {
 
 		Long contentId = task.getTaskData() == null ? null : task.getTaskData()
-				.getDocumentContentId();		
+				.getDocumentContentId();	
+		//task.getTaskData().
+		//long outContentId = task.getTaskData().getOutputContentId();
+		//if document is completed, include output values in the document map
+		
+//		if(task.getTaskData().getStatus()== Status.Completed){
+//			long output = task.getTaskData().getOutputContentId();
+//			Map<String, Object> content = getMappedData(output);
+//			Set<String> keys = content.keySet();
+//
+//			for (String key : keys) {
+//				Value val = getValue(content.get(key));
+//				if(val!=null)
+//					myTask.setValue(key, val);
+//			}
+//			
+//		}
+
 		
 		return get().getMappedData(contentId);
 	}
@@ -1012,6 +1001,14 @@ public class JBPMHelper implements Closeable {
 		
 		return null;
 		
+	}
+	
+	public ProcessMappings getProcessDataMappings(long taskId){
+		Task task = getSysTask(taskId);
+		String taskName = getTaskName(taskId);
+		String processId = task.getTaskData().getProcessId();
+		
+		return getProcessDataMappings(processId, taskName);
 	}
 	
 	public ProcessMappings getProcessDataMappings(String processId, String taskName){

@@ -16,6 +16,7 @@ import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.Value;
 
 public class TestGetProcessData {
@@ -24,29 +25,50 @@ public class TestGetProcessData {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.start(1L);
+		ProcessMigrationHelper.start(14L);
 	}
 	
-	@Test
+	@Ignore
 	public void getTaskParameters(){
-		Long taskId = 461L;
+		Long taskId = 1506L;
 		String name= JBPMHelper.get().getDisplayName(taskId);
 		
 		System.out.println("Name ="+name);
 	}
 	
+	@Test
+	public void getParameterz(){
+		Long taskId = 1518L;
+		Task task = JBPMHelper.get().getSysTask(taskId);
+		
+		Map<String,Object> vls = JBPMHelper.get().getMappedData(task);
+		for(String key: vls.keySet()){
+			Object v = vls.get(key);
+			System.err.println(key+" - "+v);
+		}
+		
+		Assert.assertNotNull(vls);
+		Assert.assertNotSame(vls.size(), 0);
+		
+		//Assert.assertNotNull(summary.getDetails());
+		//Assert.assertTrue(summary.getDetails().size()>0);
+	}
+	
 	@Ignore
 	public void getParameters(){
-		Long taskId = 461L;
-		HTSummary summary = JBPMHelper.get().getSummary(taskId);
-		
+		Long taskId = 1518L;
+		HTask summary = JBPMHelper.get().getTask(taskId);
 		Map<String,Value> vls = summary.getValues();
 		for(String key: vls.keySet()){
 			Value v = vls.get(key);
 			System.err.println(key+" - "+v.getValue());
 		}
-		Assert.assertNotNull(summary.getDetails());
-		Assert.assertTrue(summary.getDetails().size()>0);
+		Map<String, Value> values = summary.getValues();
+		Assert.assertNotNull(values);
+		Assert.assertNotSame(values.size(), 0);
+		
+		//Assert.assertNotNull(summary.getDetails());
+		//Assert.assertTrue(summary.getDetails().size()>0);
 	}
 	
 	@org.junit.After

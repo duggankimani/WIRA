@@ -122,12 +122,27 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	public DocumentModel getDocumentByProcessInstanceId(Long processInstanceId){
-		List lst = em.createQuery("FROM DocumentModel d where processInstanceId= :processInstanceId " +
-				"and createdBy=:createdBy  and isActive=:isActive")
+		return getDocumentByProcessInstanceId(processInstanceId, true);
+	}
+	/**
+	 * Returns only documents created by current user 
+	 * 
+	 * <p>
+	 * @param processInstanceId
+	 * @return
+	 */
+	public DocumentModel getDocumentByProcessInstanceId(Long processInstanceId, boolean checkUser){
+		 Query query= em.createQuery("FROM DocumentModel d where processInstanceId= :processInstanceId " +
+				(checkUser? "and createdBy=:createdBy ": "") +
+				" and isActive=:isActive")
 				.setParameter("processInstanceId", processInstanceId)
-				.setParameter("createdBy", SessionHelper.getCurrentUser().getUserId())
-				.setParameter("isActive", 1)
-				.getResultList();
+				.setParameter("isActive", 1);
+		
+		 if(checkUser){
+			query=query.setParameter("createdBy", SessionHelper.getCurrentUser().getUserId());
+		 }
+		 
+		 List lst = query.getResultList();
 		
 		if(lst.size()>0){
 			return (DocumentModel)lst.get(0);
