@@ -20,7 +20,7 @@
 					</span>
 				</div>
 				<div class="action-buttons pull-right">
-					<d:ActionLink ui:field="aProcess" styleName="btn btn-default hidden"
+					<d:ActionLink ui:field="aProcess" styleName="btn btn-default"
 						title="Show Business Process">
 						<i class="icon-info"></i>
 						<!-- Process -->

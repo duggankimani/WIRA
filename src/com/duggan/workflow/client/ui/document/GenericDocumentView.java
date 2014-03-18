@@ -172,7 +172,7 @@ public class GenericDocumentView extends ViewImpl implements
 		});
 		
 		aProcess.addClickHandler(new ClickHandler() {
-			private boolean isClicked=true;
+			private boolean isClicked=false;
 
 			@Override
 			public void onClick(ClickEvent event) {
