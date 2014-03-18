@@ -20,4 +20,12 @@ public class ProcessMappings {
 		this.outMappings = outMappings;
 	}
 	
+	public String getOutputName(String oldName){
+		String newName = outMappings.get(oldName);
+		if(newName==null){
+			newName = oldName;
+		}
+		return newName;
+	}
+	
 }

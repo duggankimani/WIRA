@@ -30,7 +30,10 @@ public class ErrorLogDaoHelper {
 	 * @return logId This is the log id of the log saved
 	 */
 	private static Long saveLog(String msg, String stackTrace){
-		
+		if(stackTrace.length()>5000){
+			//We need to truncate stack trace
+			stackTrace = stackTrace.substring(0, 4999);
+		}
 		ErrorDaoImpl dao = DB.getErrorDao();
 		
 		String ip=null;

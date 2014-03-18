@@ -59,12 +59,9 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 	
 	@Override
 	public Response executeCall(Request request) {
-		
-		logger.info("Submitting Request : "+request);
-
 		String uri = null;
 		
-		Object URI = request.getContext("ServiceUri");
+		Object URI = request.getContext("serviceURI");
 		if(URI!=null && !URI.toString().isEmpty()){
 			uri =URI.toString();
 		}
@@ -79,11 +76,19 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 			}
 		}
 
-		if(uri==null || uri.isEmpty()){
+		return executeCall(request, uri);
+	}
+	
+	@Override
+	public Response executeCall(Request request, String serviceURI) {
+			
+		logger.info("Submitting Request : "+request);
+
+		if(serviceURI==null || serviceURI.isEmpty()){
 			throw new IllegalArgumentException("REST URI cannot be null for rest service");
 		}
 
-		WebResource resource = jclient.resource(uri);
+		WebResource resource = jclient.resource(serviceURI);
 
 		ClientResponse clientResponse = null;
 

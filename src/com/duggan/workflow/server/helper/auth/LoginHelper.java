@@ -149,4 +149,8 @@ public class LoginHelper implements LoginIntf{
 		
 		return groupList;
 	}
+
+	public boolean updatePassword(String username, String password) {
+		return impl.updatePassword(username, password);
+	}
 }

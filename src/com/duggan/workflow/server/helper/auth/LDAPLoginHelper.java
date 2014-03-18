@@ -395,4 +395,10 @@ public class LDAPLoginHelper implements LoginIntf{
 		return users;
 	}
 
+	@Override
+	public boolean updatePassword(String username, String password) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

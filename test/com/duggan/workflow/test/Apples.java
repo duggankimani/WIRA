@@ -21,7 +21,6 @@ public class Apples {
 		Fatty fatty=new Fatty();
 		Food potpie = new Potpie();
 		
-		
 		fatty.digest(potpie);
 		/* 
 		 * Polymorphic Arrays

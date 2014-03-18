@@ -158,10 +158,13 @@ public class DBLoginHelper implements LoginIntf{
 	private Group get(UserGroup usergroup) {
 		
 		Group group = new Group();
+		if(usergroup.getId()!=null){
+			UserGroupDaoImpl dao = DB.getUserGroupDao();
+			group = dao.getGroup(usergroup.getName());
+		}
 		group.setFullName(usergroup.getFullName());
 		group.setName(usergroup.getName());
 		group.setArchived(false);
-		group.setId(usergroup.getId());
 		
 		return group;
 	}
@@ -290,6 +293,16 @@ public class DBLoginHelper implements LoginIntf{
 		}
 		
 		return users;
+	}
+
+	@Override
+	public boolean updatePassword(String username, String password) {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		User user = dao.getUser(username);
+		user.setPassword(password);
+		dao.save(user);
+		
+		return true;
 	}
 	
 }

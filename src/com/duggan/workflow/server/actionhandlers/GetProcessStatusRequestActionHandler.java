@@ -28,6 +28,7 @@ public class GetProcessStatusRequestActionHandler extends
 		try{
 			result.setNodes(JBPMHelper.get().getWorkflowProcessDia(action.getProcessInstanceId()));
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.error("Loading Workflow diagram failed cause: "+e.getMessage());
 			// no throwing exceptions back to the client
 		}

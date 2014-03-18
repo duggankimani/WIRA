@@ -96,6 +96,12 @@ import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
 import com.duggan.workflow.shared.requests.GetDSStatusRequest;
 import com.duggan.workflow.server.actionhandlers.GetDSStatusRequestActionHandler;
+import com.duggan.workflow.shared.requests.CheckPasswordRequest;
+import com.duggan.workflow.server.actionhandlers.CheckPasswordRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetUserRequest;
+import com.duggan.workflow.server.actionhandlers.GetUserRequestActionHandler;
+import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
+import com.duggan.workflow.server.actionhandlers.UpdatePasswordRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -247,5 +253,15 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetDSStatusRequest.class,
 				GetDSStatusRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(CheckPasswordRequest.class,
+				CheckPasswordRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(UpdatePasswordRequest.class,
+				UpdatePasswordRequestActionHandler.class,
+				SessionValidator.class);
 	}
 }

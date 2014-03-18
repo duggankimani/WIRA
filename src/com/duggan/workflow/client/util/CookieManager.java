@@ -21,4 +21,21 @@ public class CookieManager {
 		Cookies.removeCookie(Definitions.AUTHENTICATIONCOOKIE);
 		Cookies.removeCookie(Definitions.AUTHENTICATIONTIMECOOKIE);
 	}
+	
+	public static void setSessionValue(String name, String value){
+		Cookies.setCookie(name, value);
+	}
+	
+	public static String getSessionValue(String name){
+		return getSessionValue(name, null);
+	}
+	
+	public static String getSessionValue(String name, String valueIfNull){
+		String value = Cookies.getCookie(name);
+		if(value==null){
+			return valueIfNull;
+		}
+		
+		return value;
+	}
 }

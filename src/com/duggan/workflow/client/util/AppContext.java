@@ -49,6 +49,20 @@ public class AppContext {
 		
 	}
 	
+	public static void setSessionValue(String name, String value){
+		CookieManager.setSessionValue(name, value);
+	}
+	
+	public static String getSessionValue(String name){
+		return CookieManager.getSessionValue(name);
+	}
+	
+	public static boolean isShowWelcomeWiget(){
+		String val = CookieManager.getSessionValue(Definitions.SHOWWELCOMEWIDGET, "true");
+		Boolean show = Boolean.valueOf(val);
+		
+		return show;
+	}
 	 
 	public static boolean isValid(){
 		//System.err.println("Session Cookie Asked:: "+CookieManager.getAuthCookie());

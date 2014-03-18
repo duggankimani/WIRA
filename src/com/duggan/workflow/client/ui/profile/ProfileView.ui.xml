@@ -1,8 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	xmlns:d='urn:import:com.duggan.workflow.client.ui.component' xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
@@ -11,7 +13,8 @@
 			<h3>Profile Information</h3>
 			<hr />
 		</div>
-
+		<d:IssuesPanel ui:field="issues">
+	    </d:IssuesPanel>
 		<div class="row-fluid">
 			<g:HTMLPanel styleName="span6">
 				<div class="control-group">
@@ -57,8 +60,16 @@
 						<b>Password</b>
 					</label>
 
+					<div ui:field="divSaveUser">
+					<g:Button styleName="btn btn-primary" text="Save"
+							ui:field="btnSave"></g:Button>
+					
+					<g:Button styleName="btn btn-primary" text="Cancel"
+							ui:field="btnCancel"></g:Button>
+					</div>
 					<g:Button styleName="btn btn-primary" text="Change Password"
 						ui:field="btnPassword"></g:Button>
+					
 				</div>
 
 				<g:HTMLPanel ui:field="panelPassword" styleName="hide">
@@ -88,7 +99,9 @@
 
 					<div class="control-group">
 						<g:Button styleName="btn btn-primary" text="Save"
-							ui:field="btnSave"></g:Button>
+							ui:field="btnSavePassword"></g:Button>
+						<g:Button styleName="btn btn-primary" text="Cancel"
+							ui:field="btnCancelPasswordSave"></g:Button>
 					</div>
 				</g:HTMLPanel>
 
@@ -103,14 +116,11 @@
 					<g:FocusPanel ui:field="panelPicture">
 						<g:HTMLPanel styleName="control-group">
 							<!-- <g:Image ui:field="img" width="70px" height="90px" /> -->
-							<img class="" data-src="img/blueman.png" src="img/blueman.png"
-								width="179px" />
+							<g:Image ui:field="imgUser" styleName="" width="179px" />
 						</g:HTMLPanel>
 					</g:FocusPanel>
 
-					<div class="control-group">
-						<span class="label">HOD Procument</span>
-						<span class="label">HOD Sales Marketing</span>
+					<div class="control-group" ui:field="divGroups">
 					</div>
 
 				</div>

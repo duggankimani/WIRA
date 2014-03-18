@@ -45,6 +45,4 @@ public interface ClientGinjector extends Ginjector {
 
 	AsyncProvider<AdminHomePresenter> getAdminHomePresenter();
 
-	AsyncProvider<ProfilePresenter> getProfilePresenter();
-
 }
