@@ -37,6 +37,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.profile.ProfilePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
@@ -129,12 +130,13 @@ public class HomePresenter extends
 	@Inject DispatchAsync dispatcher;
 	@Inject PlaceManager placeManager;
 	@Inject DocumentPopupPresenter docPopup;
-	
+		
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
 	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
 	private IndirectProvider<ActivitiesPresenter> activitiesFactory;
+	private IndirectProvider<ProfilePresenter> profileFactory;
 	
 	private TaskType currentTaskType;
 	
@@ -170,7 +172,8 @@ public class HomePresenter extends
 			Provider<GenericFormPresenter> formProvider,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider,
-			Provider<ActivitiesPresenter> activitiesProvider) {
+			Provider<ActivitiesPresenter> activitiesProvider,
+			Provider<ProfilePresenter> profileProvider) {
 		super(eventBus, view, proxy);
 		
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
@@ -178,6 +181,7 @@ public class HomePresenter extends
 		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
 		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);
 		activitiesFactory = new StandardProvider<ActivitiesPresenter>(activitiesProvider);
+		profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
 	}
 
 	protected void search() {
@@ -342,12 +346,34 @@ public class HomePresenter extends
 		if(processInstID!=null){
 			processInstanceId = Long.parseLong(processInstID);
 		}
-		
 		if(documentSearchID!=null){
 			documentId = Long.parseLong(documentSearchID);
 		}
 		
-		if(name==null){
+		String page=request.getParameter("page", null);
+		
+
+		if(page!=null && page.equals("profile")){
+			getView().setTaskType(null);
+			Window.setTitle("Profile");
+			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
+				@Override
+				public void processResult(ProfilePresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			
+			
+		}else if(name!=null){
+
+			TaskType type = TaskType.getTaskType(name);
+			this.currentTaskType=type;
+			
+			getView().setTaskType(currentTaskType);
+			loadTasks(type);
+
+		}else{
+			//Task Type Name
 			getView().setTaskType(null);
 			Window.setTitle("Home");
 			activitiesFactory.get(new ServiceCallback<ActivitiesPresenter>() {
@@ -358,13 +384,6 @@ public class HomePresenter extends
 					presenter.loadActivities();
 				}
 			});
-			
-		}else{
-			TaskType type = TaskType.getTaskType(name);
-			this.currentTaskType=type;
-			
-			getView().setTaskType(currentTaskType);
-			loadTasks(type);
 		}
 					
 		

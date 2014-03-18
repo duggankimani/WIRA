@@ -255,7 +255,7 @@ public class ClientModule extends AbstractPresenterModule {
 				DSSavePresenter.IDSSaveView.class,
 				DSSaveView.class);
 
-		bindPresenter(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
-				ProfileView.class, ProfilePresenter.MyProxy.class);
+		bindPresenterWidget(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
+				ProfileView.class);
 	}
 }

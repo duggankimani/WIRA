@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.profile;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
@@ -32,7 +33,7 @@ import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.duggan.workflow.shared.responses.UpdatePasswordResponse;
 
 public class ProfilePresenter extends
-		Presenter<ProfilePresenter.IProfileView, ProfilePresenter.MyProxy> implements ContextLoadedHandler {
+		PresenterWidget<ProfilePresenter.IProfileView> implements ContextLoadedHandler {
 
 	public interface IProfileView extends View {
 		public boolean isValid();
@@ -55,27 +56,14 @@ public class ProfilePresenter extends
 		
 		public HasClickHandlers getCancelSaveUser();
 	}
-
-	@UseGatekeeper(LoginGateKeeper.class)
-	@ProxyCodeSplit
-	@NameToken(NameTokens.profile)
-	public interface MyProxy extends ProxyPlace<ProfilePresenter> {
-	}
 	
 	@Inject DispatchAsync requestHelper;
 
 	HTUser user;
 	
 	@Inject
-	public ProfilePresenter(final EventBus eventBus, final IProfileView view,
-			final MyProxy proxy) {
-		super(eventBus, view, proxy);
-		
-	}
-
-	@Override
-	protected void revealInParent() {
-		RevealContentEvent.fire(this, HomePresenter.ACTIVITIES_SLOT, this);
+	public ProfilePresenter(final EventBus eventBus, final IProfileView view) {
+		super(eventBus, view);
 	}
 
 	@Override

@@ -169,6 +169,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 				docContainer.add(content);
 			}
 		} else if(slot== ACTIVITIES_SLOT){
+			System.err.println("setIn Activities Slot!!!!");
 			showActivitiesPanel(true);
 			activityContainer.clear();
 			if(content != null){
