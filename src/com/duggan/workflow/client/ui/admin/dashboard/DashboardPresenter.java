@@ -9,6 +9,7 @@ public class DashboardPresenter extends
 		PresenterWidget<DashboardPresenter.MyView> {
 
 	public interface MyView extends View {
+		public void createPieChart();
 	}
 
 	@Inject
@@ -19,5 +20,11 @@ public class DashboardPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+	}
+	
+	@Override
+	protected void onReset() {
+		super.onReset();
+		getView().createPieChart();
 	}
 }
