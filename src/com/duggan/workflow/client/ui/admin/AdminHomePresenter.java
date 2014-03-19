@@ -8,9 +8,9 @@ import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
+import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
@@ -53,6 +53,8 @@ public class AdminHomePresenter extends
 		public void clearAllLinks();
 
 		public void SetFormBuilderLinks(boolean b, ADMINPAGES page);
+
+		public void SetSettingsLink(boolean b, ADMINPAGES page);
 	}
 
 	@ProxyCodeSplit
@@ -70,13 +72,18 @@ public class AdminHomePresenter extends
 	@Inject	ReportsPresenter reports;
 	@Inject	FormBuilderPresenter formbuilder;
 	@Inject DataSourcePresenter datasources;
+	@Inject SettingsPresenter settings;
 	@Inject DispatchAsync dispatcher;
 	
 	enum ADMINPAGES {
-		DASHBOARD("Dashboard", "icon-dashboard"), PROCESSES("Processes", "icon-cogs"),
-		USERS("Users","icon-group"),GROUPS("Groups","icon-group"), REPORTS("Reports","icon-bar-chart"), 
+		DASHBOARD("Dashboard", "icon-dashboard"), 
+		PROCESSES("Processes", "icon-cogs"),
+		USERS("Users","icon-group"),
+		GROUPS("Groups","icon-group"), 
+		REPORTS("Reports","icon-bar-chart"), 
 		FORMBUILDER("Form Builder","icon-edit"),
-		DATASOURCES("Data Sources","icon-cogs");
+		DATASOURCES("Data Sources","icon-briefcase"), 
+		SETTINGS("General Settings","icon-globe");
 
 		private String displayName;
 		private String displayIcon;
@@ -183,7 +190,11 @@ public class AdminHomePresenter extends
 			showUserPanel(TYPE.GROUP);
 			fireEvent(new LoadGroupsEvent());
 			break;
-
+		
+		case SETTINGS:
+			showSettingsPanel();
+			break;
+			
 		case REPORTS:
 			showReportPanel();
 			break;
@@ -193,6 +204,13 @@ public class AdminHomePresenter extends
 			break;
 		}
 
+	}
+
+	private void showSettingsPanel() {
+		setInSlot(CONTENT_SLOT, null);
+		setInSlot(CONTENT_SLOT, settings);
+		getView().clearAllLinks();
+		getView().SetSettingsLink(true, page);
 	}
 
 	private void showDSPanel() {

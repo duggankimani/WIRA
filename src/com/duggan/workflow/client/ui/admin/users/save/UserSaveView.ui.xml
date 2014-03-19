@@ -1,105 +1,128 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	xmlns:c='urn:import:com.duggan.workflow.client.ui.admin.component'
 	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="AddUserDialog">
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin"
+		modal="true" ui:field="AddUserDialog">
 		<g:HTMLPanel styleName="full-page">
-	 		<g:HTMLPanel styleName="modal-header">
-					<h5><i class="icon-cogs"></i>
-					    <span ui:field="header">New User</span>
-					    <g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
-			 </g:HTMLPanel>
-			 <d:IssuesPanel ui:field="issues">
-	    	</d:IssuesPanel>
-			 
-		 	<g:HTMLPanel styleName="modal-body">
-		 			<g:HTMLPanel styleName="hide" ui:field="divUserDetails">
-						  <div class="control-group">
-						  	<div class="controls"> 
-							    <label for="Names"><b>Names:</b></label>
-							    <d:TextField ui:field="txtLastname" type="text"  class="input-medium" placeholder="Last Name"/>
-							    <d:TextField ui:field="txtFirstname" type="text" class="input-medium" placeholder="First Name"/>							   
-						  	</div>
-						  </div>
-						  
-						   <div class="control-group">
-							   	<div class="controls">
-								    <label for="Username"><b>Username:</b></label>
-								    <d:TextField ui:field="txtUserName" type="text" class="input-large" placeholder=""/>
-							    </div>
-						  </div>
-						  <div class="control-group">
-						  		<div class="controls">
-							    <label for="Email"><b>Email:</b></label>
-							    <d:TextField ui:field="txtEmail" type="email" class="input-large" placeholder="Email"/>
-						  		</div>
-						  </div>
-						  
-						  <div class="control-group">
-						    <label for="ProcessName"><b>Password:</b></label>
-						    <d:PasswordField ui:field="txtPassword" type="password" class="form-control" placeholder="Password"/>
-						  </div>
-						  
-						  <div class="control-group">
-						    <label class="control-label"><b>Confirm Password:</b></label>
-						    <d:PasswordField ui:field="txtConfirmPassword" type="password" class="form-control" placeholder="Confirm Password"/>
-						  </div>
+			<g:HTMLPanel styleName="modal-header">
+				<h5>
+					<i class="icon-cogs"></i>
+					<span ui:field="header">New User</span>
+					<g:Anchor ui:field="aClose">
+						<i class="icon-remove pull-right" />
+					</g:Anchor>
+				</h5>
+			</g:HTMLPanel>
+			<d:IssuesPanel ui:field="issues">
+			</d:IssuesPanel>
 
-						  <div class="control-group">
-							<label class="control-label"><b>User Image</b></label>
-								<g:HTMLPanel ui:field="uploadPanel">
-									<up:Uploader ui:field="uploader"></up:Uploader>
-								</g:HTMLPanel>
-							</div>
-						 					
-						<div class="control-group">
-							<label class="control-label"><b>Group:</b></label>
-								<c:ListField ui:field="lstGroups"/>
-							</div>						
+			<g:HTMLPanel styleName="modal-body">
+				<g:HTMLPanel styleName="hide" ui:field="divUserDetails">
+					<div class="control-group">
+						<div class="controls">
+							<label for="Names">
+								<b>Names:</b>
+							</label>
+							<d:TextField ui:field="txtLastname" type="text"
+								class="input-medium" placeholder="Last Name" />
+							<d:TextField ui:field="txtFirstname" type="text"
+								class="input-medium" placeholder="First Name" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="controls">
+							<label for="Username">
+								<b>Username:</b>
+							</label>
+							<d:TextField ui:field="txtUserName" type="text"
+								class="input-large" placeholder="" />
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<label for="Email">
+								<b>Email:</b>
+							</label>
+							<d:TextField ui:field="txtEmail" type="email" class="input-large"
+								placeholder="Email" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label for="ProcessName">
+							<b>Password:</b>
+						</label>
+						<d:PasswordField ui:field="txtPassword" type="password"
+							class="form-control" placeholder="Password" />
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">
+							<b>Confirm Password:</b>
+						</label>
+						<d:PasswordField ui:field="txtConfirmPassword"
+							type="password" class="form-control" placeholder="Confirm Password" />
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">
+							<b>User Image</b>
+						</label>
+						<g:HTMLPanel ui:field="uploadPanel">
+							<up:Uploader ui:field="uploader"></up:Uploader>
+						</g:HTMLPanel>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">
+							<b>Group:</b>
+						</label>
+						<c:ListField ui:field="lstGroups" />
+					</div>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-			
-				<div class="form-actions" ui:field="divUserSave">
-					  <g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
-					   Save&nbsp; 
-				      <i class="icon-double-angle-right"></i>						      
-				  	</g:Anchor>
-				</div>
-		
-				<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
-					<g:HTMLPanel styleName="modal-body">
-						  <div class="form-group">
-						    <label for="ProcessName">Group Name:</label>
-						    <d:TextField ui:field="txtGroupname"  
-						        class="form-control" placeholder="Group Name"/>
-						  </div>
-						  
-						  <div class="form-group">
-						 	 <label for="ProcessDescription">Description:</label>
-						 	 <d:TextArea ui:field="txtDescription" class="form-control" rows="3"></d:TextArea>
-						  </div>
-						  
-						  <!-- div class="form-group">
-						    <label for="ProcessName">Users:</label>
-						    <d:TextField ui:field="txtUsers" type="users" 
-						        class="form-control" placeholder="Email"/>
-						  </div-->
-					</g:HTMLPanel>
-					
-					<div class="form-actions">
-						<g:Anchor ui:field="aSaveGroup" styleName="btn btn-primary pull-left">
-					  Save&nbsp; 
-				      <i class="icon-double-angle-right"></i>						      
-				  	</g:Anchor>
+
+			<div class="form-actions" ui:field="divUserSave">
+				<g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
+					Save&nbsp;
+					<i class="icon-double-angle-right"></i>
+				</g:Anchor>
+			</div>
+
+			<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
+				<g:HTMLPanel styleName="modal-body">
+					<div class="form-group">
+						<label for="ProcessName">Group Name:</label>
+						<d:TextField ui:field="txtGroupname" class="form-control"
+							placeholder="Group Name" />
 					</div>
-			 </g:HTMLPanel>
+
+					<div class="form-group">
+						<label for="ProcessDescription">Description:</label>
+						<d:TextArea ui:field="txtDescription" class="form-control"
+							rows="3"></d:TextArea>
+					</div>
+
+					<!-- div class="form-group"> <label for="ProcessName">Users:</label> 
+						<d:TextField ui:field="txtUsers" type="users" class="form-control" placeholder="Email"/> 
+						</div -->
+				</g:HTMLPanel>
+
+				<div class="form-actions">
+					<g:Anchor ui:field="aSaveGroup" styleName="btn btn-primary pull-left">
+						Save&nbsp;
+						<i class="icon-double-angle-right"></i>
+					</g:Anchor>
+				</div>
+			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>

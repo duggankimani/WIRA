@@ -116,7 +116,7 @@
 					<g:FocusPanel ui:field="panelPicture">
 						<g:HTMLPanel styleName="control-group">
 							<!-- <g:Image ui:field="img" width="70px" height="90px" /> -->
-							<g:Image ui:field="imgUser" styleName="" width="179px" />
+							<g:Image ui:field="imgUser" width="179px" />
 						</g:HTMLPanel>
 					</g:FocusPanel>
 

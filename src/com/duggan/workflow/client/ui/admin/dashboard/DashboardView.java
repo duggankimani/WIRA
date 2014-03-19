@@ -68,7 +68,7 @@ public class DashboardView extends ViewImpl implements
 	public void createPieChart(){
 		//Chart<Data> chart = new Chart<Data>();
 		chart.setWidth("100%");
-		chart.setHeight("335px");
+		chart.setHeight("330px");
 		final ListStore<Data> store = new ListStore<Data>(dataAccess.nameKey());
 		store.addAll(TestData.getInvoiceData(4, 20, 100));
 

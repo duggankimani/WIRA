@@ -10,7 +10,10 @@
 	position: absolute;
 	margin-top: 12.2%;
 }
-.profile-page .GWTUpld .gwt-FileUpload{
+body .upld-multiple{
+	height: 40px;
+}
+body .GWTUpld .gwt-FileUpload{
 	position: relative;
 	top:0px;
 	width: 100%;

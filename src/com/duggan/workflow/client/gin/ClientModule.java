@@ -99,6 +99,8 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.duggan.workflow.client.ui.profile.ProfilePresenter;
 import com.duggan.workflow.client.ui.profile.ProfileView;
+import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
+import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -257,5 +259,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
 				ProfileView.class);
+
+		bindPresenter(SettingsPresenter.class, SettingsPresenter.MyView.class,
+				SettingsView.class, SettingsPresenter.MyProxy.class);
+
 	}
 }
