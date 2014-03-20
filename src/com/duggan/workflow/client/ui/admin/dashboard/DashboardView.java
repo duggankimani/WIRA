@@ -25,7 +25,7 @@ public class DashboardView extends ViewImpl implements
 	public DashboardView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 	}
-
+	
 	@Override
 	public Widget asWidget() {
 		return widget;

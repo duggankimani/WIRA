@@ -307,6 +307,12 @@
 .content-body .action-buttons {
 	margin-bottom: 15px;
 }
+
+/*--content-body||Settings--*/
+#main-content .content .settings{
+	padding: 35px;
+}
+
 /*--content-body||Process--*/
 .content-body .table-process .td{
 	max-width:160px;
