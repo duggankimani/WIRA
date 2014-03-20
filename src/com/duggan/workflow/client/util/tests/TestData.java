@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.duggan.workflow.shared.model.dashboards.ChartType;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Random;
 import com.sencha.gxt.core.client.util.DateWrapper;
@@ -410,4 +411,56 @@ public class TestData {
 
   	};  
   	
+  	public static List<Data> getData(ChartType type){
+  		  		
+  		switch (type) {
+		case AGINGANALYSIS:
+			return getAgingData();
+		case AVGTURNAROUNDPERDOC:
+			return getDocTurnAround();
+		default:
+			break;
+		}
+  		
+  		
+  		return null;
+  	}
+
+	private static List<Data> getAgingData() {
+		List<Data> list= new ArrayList<Data>();
+		String[] abbr=new String[]{"0-7", 
+  		"8-14",
+  		"15-30",
+  		"30-60",
+  		">60"};
+		
+		for(int i=0;i<5;i++){
+  			Number value=Random.nextInt(300);
+  			String title = value+" processes";
+  			Data data = new Data(abbr[i], value, title);
+  			list.add(data);
+  		}
+  		
+		return list;
+	}
+	
+	
+	private static List<Data> getDocTurnAround() {
+		List<Data> list= new ArrayList<Data>();
+		String[] abbr=new String[]{"Invoice", 
+  		"Requisition",
+  		"LPO",
+  		"Loan Application",
+  		"Leave Application"};
+		
+		for(int i=0;i<5;i++){
+  			Number value=Random.nextInt(300);
+  			String title = value+" requests";
+  			Data data = new Data(abbr[i], value, title);
+  			list.add(data);
+  		}
+  		
+		return list;
+	}
+	  	
 }

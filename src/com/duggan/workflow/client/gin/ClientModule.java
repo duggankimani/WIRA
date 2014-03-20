@@ -16,6 +16,10 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomeView;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
+import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
+import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartView;
+import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphPresenter;
+import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphView;
 import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
 import com.duggan.workflow.client.ui.admin.ds.DataSourceView;
 import com.duggan.workflow.client.ui.admin.ds.item.DSItemPresenter;
@@ -257,5 +261,11 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
 				ProfileView.class);
+		
+		bindPresenterWidget(PieChartPresenter.class, PieChartPresenter.IPieChartView.class,
+				PieChartView.class);
+		
+		bindPresenterWidget(LineGraphPresenter.class, LineGraphPresenter.ILineGraphView.class,
+				LineGraphView.class);
 	}
 }

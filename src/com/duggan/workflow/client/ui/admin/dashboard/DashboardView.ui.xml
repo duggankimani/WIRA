@@ -52,7 +52,7 @@
 
 					<div class="details">
 						<span class="content-block">Failed Processes</span>
-						<span class="value">15</span>
+						<span class="value">0</span>
 					</div> <!-- /.details -->
 
 					<i class="icon-play-circle more"></i>
@@ -68,12 +68,10 @@
 					<div class="portlet-header">
 						<h3>
 							<i class="icon-bar-chart"></i>
-							OVERRALL TURN AROUND TIME
+							AGING ANALYSIS
 						</h3>
 					</div>
 					<g:HTMLPanel styleName="portlet-content" ui:field="panelTurnAroundTime">
-					    <c:Chart ui:field="chart"/>
-						<!-- img src="images/piechart.png"/ -->
 					</g:HTMLPanel>
 				</div>
 			</div>
@@ -83,12 +81,11 @@
 					<div class="portlet-header">
 						<h3>
 							<i class="icon-bar-chart"></i>
-							TURN AROUND PER DOCUMENT
+							TOTAL REQUESTS MADE PER DOCUMENT
 						</h3>
 					</div>
-					<div class="portlet-content">
-						<img src="images/piechart.png"/>
-					</div>
+					<g:HTMLPanel styleName="portlet-content" ui:field="panelTotalRequestsPerDoc">
+					</g:HTMLPanel>
 				</div>
 			</div>
 		</div>
@@ -153,9 +150,8 @@
 						REQUESTS VS APPROVALS CHART
 					</h3>
 				</div>
-				<div class="portlet-content">
-					<img src="images/linechart.png"/>
-				</div>
+				<g:HTMLPanel styleName="portlet-content" ui:field="panelRequestsApprovalsComp">
+				</g:HTMLPanel>
 			</div>
 		</div>
 

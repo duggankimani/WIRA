@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.rest.model;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +64,11 @@ public class Request {
 	}
 
 	public void setContext(Map<String, Object> context) {
-		this.context = context;
+		if(this.context==null){
+			this.context = context;
+		}else{
+			this.context.putAll(context);
+		}
 	}
 	
 	public Object getContext(String key){
@@ -75,5 +81,37 @@ public class Request {
 
 	public void setDetails(List<Detail> details) {
 		this.details = details;
+	}
+	
+	public void setDescription(String description){
+		checkNull();
+		context.put("description", description);
+	}
+	
+	public void setDocumentNo(String documentNo){
+		checkNull();
+		context.put("subject", documentNo);
+	}
+	
+	public void setDocumentDate(Date date){
+		context.put("docDate", date);
+	}
+	
+	public String getDescription(){
+		return context.get("description")==null? null: context.get("description").toString();
+	}
+	
+	public String getDocumentNo(){
+		return context.get("subject")==null? null: context.get("subject").toString();
+	}
+	
+	public Date getDate(){
+		return context.get("docDate")==null? null: (Date)context.get("docDate");
+	}
+	
+	private void checkNull() {
+		if(context==null){
+			context= new HashMap<String, Object>();
+		}
 	}
 }

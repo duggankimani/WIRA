@@ -10,7 +10,7 @@ package com.duggan.workflow.client.util.tests;
 public class Data {
 
   private String name;
-  private double data1;
+  private Number data1;
   private double data2;
   private double data3;
   private double data4;
@@ -19,11 +19,13 @@ public class Data {
   private double data7;
   private double data8;
   private double data9;
+  String title;
 
   public Data(String name, double data1, double data2, double data3, double data4, double data5, double data6,
       double data7, double data8, double data9) {
     super();
     this.name = name;
+    this.title = name;
     this.data1 = data1;
     this.data2 = data2;
     this.data3 = data3;
@@ -34,8 +36,14 @@ public class Data {
     this.data8 = data8;
     this.data9 = data9;
   }
+  
+  public Data(String name, Number value, String title){
+	  this.name = name;
+	  data1 = value;
+	  this.title = title;
+  }
 
-  public double getData1() {
+  public Number getData1() {
     return data1;
   }
 
@@ -75,7 +83,7 @@ public class Data {
     return name;
   }
 
-  public void setData1(double data1) {
+  public void setData1(Number data1) {
     this.data1 = data1;
   }
 
@@ -114,5 +122,13 @@ public class Data {
   public void setName(String name) {
     this.name = name;
   }
+
+public String getTitle() {
+	return title;
+}
+
+public void setTitle(String title) {
+	this.title = title;
+}
 
 }
