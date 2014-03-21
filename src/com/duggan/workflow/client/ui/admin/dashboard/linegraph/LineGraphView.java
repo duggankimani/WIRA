@@ -2,8 +2,7 @@ package com.duggan.workflow.client.ui.admin.dashboard.linegraph;
 
 import java.util.List;
 
-import com.duggan.workflow.client.util.tests.Data;
-import com.duggan.workflow.client.util.tests.TestData;
+import com.duggan.workflow.shared.model.dashboard.Data;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,9 +18,7 @@ import com.sencha.gxt.chart.client.chart.axis.NumericAxis;
 import com.sencha.gxt.chart.client.chart.series.LineSeries;
 import com.sencha.gxt.chart.client.chart.series.PieSeries;
 import com.sencha.gxt.chart.client.chart.series.Primitives;
-import com.sencha.gxt.chart.client.chart.series.SeriesLabelConfig;
 import com.sencha.gxt.chart.client.chart.series.SeriesLabelProvider;
-import com.sencha.gxt.chart.client.chart.series.SeriesRenderer;
 import com.sencha.gxt.chart.client.chart.series.SeriesToolTipConfig;
 import com.sencha.gxt.chart.client.draw.Color;
 import com.sencha.gxt.chart.client.draw.Gradient;
@@ -35,10 +32,7 @@ import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 public class LineGraphView extends ViewImpl implements
 		LineGraphPresenter.ILineGraphView {
@@ -49,11 +43,11 @@ public class LineGraphView extends ViewImpl implements
 	}
 
 	public interface DataPropertyAccess extends PropertyAccess<Data> {
-	    ValueProvider<Data, Double> data1();
+	    ValueProvider<Data, Number> data1();
 	 
-	    ValueProvider<Data, Double> data2();
+	    ValueProvider<Data, Number> data2();
 	 
-	    ValueProvider<Data, Double> data3();
+	   // ValueProvider<Data, Number> data3();
 	 
 	    ValueProvider<Data, String> name();
 	 
@@ -84,8 +78,8 @@ public class LineGraphView extends ViewImpl implements
 	      axis.setPosition(Position.LEFT);
 	      axis.addField(dataAccess.data1());
 	      axis.addField(dataAccess.data2());
-	      axis.addField(dataAccess.data3());
-	      TextSprite title = new TextSprite("Number of Hits");
+	    //  axis.addField(dataAccess.data3());
+	      TextSprite title = new TextSprite("Number of Tasks");
 	      title.setFontSize(18);
 	      axis.setTitleConfig(title);
 	      axis.setMinorTickSteps(1);
@@ -131,10 +125,11 @@ public class LineGraphView extends ViewImpl implements
 	      series.setStroke(new RGB(194, 0, 36));
 	      series.setShowMarkers(true);
 	      Sprite marker = Primitives.square(0, 0, 6);
-	      marker.setFill(new RGB(194, 0, 36));
+	      marker.setFill(new RGB(254, 100, 36));
 	      series.setMarkerConfig(marker);
 	      series.setHighlighting(true);
 	      series.setToolTipConfig(toolTip);
+	      series.setLegendTitle("Requested");
 	      chart.addSeries(series);
 	 
 	      final LineSeries<Data> series2 = new LineSeries<Data>();
@@ -148,22 +143,22 @@ public class LineGraphView extends ViewImpl implements
 	      series2.setMarkerConfig(marker);
 	      series2.setHighlighting(true);
 	      series2.setToolTipConfig(toolTip);
-	      series2.setLegendTitle("S2");
+	      series2.setLegendTitle("Completed");
 	      chart.addSeries(series2);
 	 
-	      final LineSeries<Data> series3 = new LineSeries<Data>();
-	      series3.setYAxisPosition(Position.LEFT);
-	      series3.setYField(dataAccess.data3());
-	      series3.setStroke(new RGB(32, 68, 186));
-	      series3.setShowMarkers(true);
-	      series3.setSmooth(true);
-	      series3.setFill(new RGB(32, 68, 186));
-	      marker = Primitives.diamond(0, 0, 6);
-	      marker.setFill(new RGB(32, 68, 186));
-	      series3.setMarkerConfig(marker);
-	      series3.setHighlighting(true);
-	      series3.setToolTipConfig(toolTip);
-	      chart.addSeries(series3);
+//	      final LineSeries<Data> series3 = new LineSeries<Data>();
+//	      series3.setYAxisPosition(Position.LEFT);
+//	      series3.setYField(dataAccess.data3());
+//	      series3.setStroke(new RGB(32, 68, 186));
+//	      series3.setShowMarkers(true);
+//	      series3.setSmooth(true);
+//	      series3.setFill(new RGB(32, 68, 186));
+//	      marker = Primitives.diamond(0, 0, 6);
+//	      marker.setFill(new RGB(32, 68, 186));
+//	      series3.setMarkerConfig(marker);
+//	      series3.setHighlighting(true);
+//	      series3.setToolTipConfig(toolTip);
+//	      chart.addSeries(series3);
 	 
 	      final Legend<Data> legend = new Legend<Data>();
 	      legend.setItemHighlighting(true);
@@ -226,6 +221,7 @@ public class LineGraphView extends ViewImpl implements
 
 	public void setData(List<Data> data) {
 		store.addAll(data);
+		chart.redrawChart();
 	}
 
 }

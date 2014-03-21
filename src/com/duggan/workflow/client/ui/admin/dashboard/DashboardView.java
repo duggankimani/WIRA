@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
+import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -10,7 +12,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.*;
 
 public class DashboardView extends ViewImpl implements
-		DashboardPresenter.MyView {
+		DashboardPresenter.IDashboardView {
 
 	public interface Binder extends UiBinder<Widget, DashboardView> {
 	}
@@ -20,6 +22,11 @@ public class DashboardView extends ViewImpl implements
 	@UiField HTMLPanel panelTurnAroundTime;
 	@UiField HTMLPanel panelTotalRequestsPerDoc;
 	@UiField HTMLPanel panelRequestsApprovalsComp;
+	@UiField HTMLPanel panelLongLastingProcesses;
+	
+	@UiField SpanElement spnReqCount;
+	@UiField SpanElement spnActiveCount;
+	@UiField SpanElement spnFailureCount;
 	
 	@Inject
 	public DashboardView(final Binder binder) {
@@ -49,8 +56,26 @@ public class DashboardView extends ViewImpl implements
 			if(content!=null){
 				panelRequestsApprovalsComp.add(content);
 			}
+		}else if(slot == LONGLASTINGTASKS_SLOT){
+			panelLongLastingProcesses.clear();
+			if(content!=null){
+				panelLongLastingProcesses.add(content);
+			}
 		}else
 			super.setInSlot(slot, content);
+	}
+
+	@Override
+	public void setValues(Integer requestCount, Integer activeCount,
+			Integer failureCount) {
+		NumberFormat format = NumberFormat.getFormat("#,###");
+		String reqC = format.format(requestCount);
+		String activeC = format.format(activeCount);
+		String failureC = format.format(failureCount);
+		
+		spnReqCount.setInnerText(reqC);
+		spnActiveCount.setInnerText(activeC);
+		spnFailureCount.setInnerText(failureC);
 	}
 
 }

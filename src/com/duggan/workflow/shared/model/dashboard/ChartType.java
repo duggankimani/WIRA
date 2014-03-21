@@ -1,4 +1,4 @@
-package com.duggan.workflow.shared.model.dashboards;
+package com.duggan.workflow.shared.model.dashboard;
 
 public enum ChartType {
 

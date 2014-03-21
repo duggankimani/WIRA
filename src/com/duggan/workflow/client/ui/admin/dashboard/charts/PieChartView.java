@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.admin.dashboard.charts;
 
 import java.util.List;
 
-import com.duggan.workflow.client.util.tests.Data;
+import com.duggan.workflow.shared.model.dashboard.Data;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -89,7 +89,15 @@ public class PieChartView extends ViewImpl implements
 		labelConfig.setSpriteConfig(textConfig);
 		labelConfig.setLabelPosition(LabelPosition.START);
 		labelConfig.setValueProvider(dataAccess.name(),
-				new StringLabelProvider<String>());
+				new StringLabelProvider<String>(){
+			@Override
+			public String getLabel(String item) {
+				if(item.length()>12){
+					item = item.substring(0,11)+"..";
+				}
+				return item;
+			}
+		});
 		series.setLabelConfig(labelConfig);
 		series.setHighlighting(true);
 		series.setLegendValueProvider(dataAccess.name(),
@@ -97,7 +105,7 @@ public class PieChartView extends ViewImpl implements
 
 					@Override
 					public String getLabel(String item) {
-						//return item.substring(0, 3);
+						//return item.substring(0, 3);						
 						return item;
 					}
 				});
@@ -112,7 +120,7 @@ public class PieChartView extends ViewImpl implements
 	 
 	      @Override
 	      public String getLabel(Data item, ValueProvider<? super Data, ? extends Number> valueProvider) {
-	        return "(" + item.getTitle() + ")";
+	        return "(" + valueProvider.getValue(item)+ ")";
 	      }
 	    });
 	    series.setToolTipConfig(toolTip);
@@ -130,46 +138,19 @@ public class PieChartView extends ViewImpl implements
 
 	}
 	
+	static String[] colors = new String []{"#FF4500","#3BDA00","#66DFB1","#FFD700","#C667DD", "#63537C",
+		"#C4B9D5","#FF9F00","#FFCB64","#CF2600", "#1EDC00"}; 
 	private void setColors(PieSeries<Data> series) {
-		Gradient slice1 = new Gradient("slice1", 45);
-		//slice1.setColor("#E5412D;");
-		slice1.addStop(new Stop(0, new RGB(82, 144, 233)));
-		slice1.addStop(new Stop(100, new RGB(82, 144, 233)));
-		chart.addGradient(slice1);
-
-		Gradient slice2 = new Gradient("slice2", 45);
-		slice2.addStop(new Stop(0, new RGB(113, 179, 124)));
-		slice2.addStop(new Stop(100, new RGB(113, 179, 124)));
-		chart.addGradient(slice2);
-
-		Gradient slice3 = new Gradient("slice3", 45);
-		slice3.addStop(new Stop(0, new RGB(236, 247, 47)));
-		slice3.addStop(new Stop(100, new RGB(236, 247, 47)));
-		chart.addGradient(slice3);
-
-		Gradient slice4 = new Gradient("slice4", 45);
-		slice4.addStop(new Stop(0, new RGB("#FF4500")));
-		slice4.addStop(new Stop(100, new RGB("#FF4500")));
-		chart.addGradient(slice4);
 		
+		for(int i=0; i<10; i++){
+			Gradient slice = new Gradient("slice"+i, 45);
+			
+			slice.addStop(new Stop(0, new RGB(colors[i])));
+			slice.addStop(new Stop(100, new RGB(colors[i])));
+			chart.addGradient(slice);
+			series.addColor(slice);
+		}		
 
-		Gradient slice5 = new Gradient("slice5", 45);
-		slice5.addStop(new Stop(0, new RGB("#3BDA00")));
-		slice5.addStop(new Stop(100, new RGB("#3BDA00")));
-		chart.addGradient(slice5);
-		
-
-		Gradient slice6 = new Gradient("slice6", 45);
-		slice6.addStop(new Stop(0, new RGB("#34D800")));
-		slice6.addStop(new Stop(100, new RGB("#34D800")));
-		chart.addGradient(slice6);
-
-		series.addColor(slice1);
-		series.addColor(slice2);
-		series.addColor(slice3);
-		series.addColor(slice4);
-		series.addColor(slice5);
-		series.addColor(slice6);
 	}
 
 	public void setData(List<Data> data){

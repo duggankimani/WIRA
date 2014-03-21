@@ -20,6 +20,8 @@ import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartView;
 import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphView;
+import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataPresenter;
+import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataView;
 import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
 import com.duggan.workflow.client.ui.admin.ds.DataSourceView;
 import com.duggan.workflow.client.ui.admin.ds.item.DSItemPresenter;
@@ -211,7 +213,7 @@ public class ClientModule extends AbstractPresenterModule {
 				UserView.class);
 
 		bindPresenterWidget(DashboardPresenter.class,
-				DashboardPresenter.MyView.class, DashboardView.class);
+				DashboardPresenter.IDashboardView.class, DashboardView.class);
 
 		bindPresenterWidget(ReportsPresenter.class,
 				ReportsPresenter.MyView.class, ReportsView.class);
@@ -272,6 +274,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(SettingsPresenter.class, SettingsPresenter.MyView.class,
 				SettingsView.class, SettingsPresenter.MyProxy.class);
+		
+		bindPresenterWidget(TableDataPresenter.class, TableDataPresenter.ITableDataView.class,
+				TableDataView.class);
 
 	}
 }

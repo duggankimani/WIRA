@@ -2,10 +2,8 @@ package com.duggan.workflow.client.ui.admin.dashboard.charts;
 
 import java.util.List;
 
-import com.duggan.workflow.client.util.tests.Data;
-import com.duggan.workflow.client.util.tests.TestData;
-import com.duggan.workflow.shared.model.DSConfiguration;
-import com.duggan.workflow.shared.model.dashboards.ChartType;
+import com.duggan.workflow.shared.model.dashboard.ChartType;
+import com.duggan.workflow.shared.model.dashboard.Data;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -33,19 +31,11 @@ public class PieChartPresenter extends
 		super.onBind();
 	}
 	
-	@Override
-	protected void onReset() {
-		super.onReset();
-		loadData();
-	}
-	
-	public void loadData(){
-		if(type!=null){
-			getView().setData(TestData.getData(type));
-		}
-	}
-
 	public void setChart(ChartType type) {
 		this.type =type; 		
+	}
+
+	public void setValues(List<Data> data) {
+		getView().setData(data);
 	}
 }

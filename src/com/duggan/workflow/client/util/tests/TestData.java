@@ -13,7 +13,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.duggan.workflow.shared.model.dashboards.ChartType;
+import com.duggan.workflow.shared.model.dashboard.ChartType;
+import com.duggan.workflow.shared.model.dashboard.Data;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Random;
 import com.sencha.gxt.core.client.util.DateWrapper;

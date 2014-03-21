@@ -5,13 +5,20 @@
  *
  * http://www.sencha.com/products/gxt/license/
  */
-package com.duggan.workflow.client.util.tests;
+package com.duggan.workflow.shared.model.dashboard;
 
-public class Data {
+import java.io.Serializable;
 
+public class Data implements Serializable{
+
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
   private String name;
   private Number data1;
-  private double data2;
+  private Number data2;
   private double data3;
   private double data4;
   private double data5;
@@ -20,6 +27,10 @@ public class Data {
   private double data8;
   private double data9;
   String title;
+  
+  public Data() {
+
+  }
 
   public Data(String name, double data1, double data2, double data3, double data4, double data5, double data6,
       double data7, double data8, double data9) {
@@ -42,12 +53,17 @@ public class Data {
 	  data1 = value;
 	  this.title = title;
   }
+  
+  public Data(String name, Number value){
+	  this(name,value,name);
+  }
+
 
   public Number getData1() {
     return data1;
   }
 
-  public double getData2() {
+  public Number getData2() {
     return data2;
   }
 
@@ -87,7 +103,7 @@ public class Data {
     this.data1 = data1;
   }
 
-  public void setData2(double data2) {
+  public void setData2(Number data2) {
     this.data2 = data2;
   }
 

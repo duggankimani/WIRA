@@ -23,6 +23,7 @@ import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DSConfigDaoImpl;
+import com.duggan.workflow.server.dao.DashboardDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
@@ -343,5 +344,9 @@ public class DB{
 			}
 		}
 		return connection;
+	}
+	
+	public static DashboardDaoImpl getDashboardDao(){
+		return factory().getDashboardDaoImpl(getEntityManager());
 	}
 }
