@@ -70,7 +70,7 @@
 					<div class="portlet-header">
 						<h3>
 							<i class="icon-bar-chart"></i>
-							AGING ANALYSIS
+							PROCESSES AGING ANALYSIS
 						</h3>
 					</div>
 					<g:HTMLPanel styleName="portlet-content" ui:field="panelTurnAroundTime">
