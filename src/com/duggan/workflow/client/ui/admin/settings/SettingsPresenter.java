@@ -1,43 +1,80 @@
 package com.duggan.workflow.client.ui.admin.settings;
 
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.duggan.workflow.client.place.NameTokens;
-import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
+import java.util.List;
+
+import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.shared.model.settings.Setting;
+import com.duggan.workflow.shared.requests.GetSettingsRequest;
+import com.duggan.workflow.shared.requests.SaveSettingsRequest;
+import com.duggan.workflow.shared.responses.GetSettingsResponse;
+import com.duggan.workflow.shared.responses.SaveSettingsResponse;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
 
 public class SettingsPresenter extends
-		Presenter<SettingsPresenter.MyView, SettingsPresenter.MyProxy> {
+		PresenterWidget<SettingsPresenter.ISettingsView> {
 
-	public interface MyView extends View {
+	public interface ISettingsView extends View {
+		public void setValues(List<Setting> settings);
+		public List<Setting> getSettings();
+		boolean isValid();
+		HasClickHandlers getSaveLink();
 	}
-
-	@ProxyCodeSplit
-	@NameToken(NameTokens.settings)
-	@UseGatekeeper(LoginGateKeeper.class)
-	public interface MyProxy extends ProxyPlace<SettingsPresenter> {
-	}
+	
+	@Inject DispatchAsync requestHelper;
 
 	@Inject
-	public SettingsPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy) {
-		super(eventBus, view, proxy);
+	public SettingsPresenter(final EventBus eventBus, final ISettingsView view) {
+		super(eventBus, view);
 	}
 
-	@Override
-	protected void revealInParent() {
-		RevealContentEvent.fire(this, AdminHomePresenter.CONTENT_SLOT, this);
-	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
+		getView().getSaveLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(getView().isValid()){
+					
+					requestHelper.execute(new SaveSettingsRequest(getView().getSettings()),
+							new TaskServiceCallback<SaveSettingsResponse>() {
+						@Override
+						public void processResult(
+								SaveSettingsResponse aResponse) {
+							getView().setValues(aResponse.getSettings());
+						}
+					}); 
+				}
+			}
+		});
+		
+	}
+	
+	@Override
+	protected void onReset() {
+		super.onReset();
+		loadSettings();
+	}
+
+	boolean loaded = false;
+	private void loadSettings() {
+		if(loaded){
+			return;
+		}
+		loaded=true;
+		requestHelper.execute(new GetSettingsRequest(), new TaskServiceCallback<GetSettingsResponse>() {
+			@Override
+			public void processResult(GetSettingsResponse aResponse) {
+				getView().setValues(aResponse.getSettings());
+			}
+		});
 	}
 }

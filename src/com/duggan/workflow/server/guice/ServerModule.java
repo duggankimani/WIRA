@@ -108,6 +108,10 @@ import com.duggan.workflow.shared.requests.GetLongTasksRequest;
 import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandler;
 import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
 import com.duggan.workflow.server.actionhandlers.GetTaskCompletionDataActionHandler;
+import com.duggan.workflow.shared.requests.GetSettingsRequest;
+import com.duggan.workflow.server.actionhandlers.GetSettingsRequestActionHandler;
+import com.duggan.workflow.shared.requests.SaveSettingsRequest;
+import com.duggan.workflow.server.actionhandlers.SaveSettingsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -280,5 +284,11 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetTaskCompletionRequest.class,
 				GetTaskCompletionDataActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(GetSettingsRequest.class,
+				GetSettingsRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(SaveSettingsRequest.class,
+				SaveSettingsRequestActionHandler.class, SessionValidator.class);
 	}
 }

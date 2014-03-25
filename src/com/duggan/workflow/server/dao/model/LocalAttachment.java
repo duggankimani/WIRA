@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.dao.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -8,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 
 @Entity
@@ -25,7 +29,11 @@ public class LocalAttachment extends PO{
 	
 	private String name;
 	
+	//UserId=Username
 	private String imageUserId;
+	
+	@Enumerated(EnumType.STRING)
+	private SETTINGNAME settingName;
 	
 	@Lob
 	private byte[] attachment;
@@ -137,6 +145,14 @@ public class LocalAttachment extends PO{
 
 	public void setImageUserId(String imageUserId) {
 		this.imageUserId = imageUserId;
+	}
+
+	public SETTINGNAME getSettingName() {
+		return settingName;
+	}
+
+	public void setSettingName(SETTINGNAME settingName) {
+		this.settingName = settingName;
 	}
 
 }

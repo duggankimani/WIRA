@@ -11,6 +11,7 @@ import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 
 class DaoFactory {
@@ -25,6 +26,7 @@ class DaoFactory {
 	FormDaoImpl formDao;
 	DSConfigDaoImpl dsDao;
 	DashboardDaoImpl dashDao;
+	SettingsDaoImpl settingsDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -148,6 +150,18 @@ class DaoFactory {
 		}
 		
 		return dashDao;
+	}
+
+	public SettingsDaoImpl getSettingsDaoImpl(EntityManager entityManager) {
+		if(settingsDao==null){
+			synchronized (DaoFactory.class) {
+				if(settingsDao==null){
+					settingsDao = new SettingsDaoImpl(entityManager);
+				}
+			}
+		}
+		
+		return settingsDao;
 	}
 
 }

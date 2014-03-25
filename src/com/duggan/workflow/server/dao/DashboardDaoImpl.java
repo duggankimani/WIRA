@@ -14,12 +14,10 @@ import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.ibm.icu.util.Calendar;
 
-public class DashboardDaoImpl {
+public class DashboardDaoImpl extends BaseDaoImpl{
 
-	EntityManager em;
-	
 	public DashboardDaoImpl(EntityManager em) {
-		this.em = em;
+		super(em);
 	}
 
 	public Integer getRequestCount(DocStatus status){

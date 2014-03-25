@@ -272,8 +272,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(LineGraphPresenter.class, LineGraphPresenter.ILineGraphView.class,
 				LineGraphView.class);
 
-		bindPresenter(SettingsPresenter.class, SettingsPresenter.MyView.class,
-				SettingsView.class, SettingsPresenter.MyProxy.class);
+		bindPresenterWidget(SettingsPresenter.class, SettingsPresenter.ISettingsView.class,
+				SettingsView.class);
 		
 		bindPresenterWidget(TableDataPresenter.class, TableDataPresenter.ITableDataView.class,
 				TableDataView.class);
