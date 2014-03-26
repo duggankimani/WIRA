@@ -29,7 +29,7 @@ body .GWTUpld .gwt-FileUpload{
   visibility: hidden;
 }
 .gwt-FileUpload::before {
-  content: 'Change Picture';
+  content: 'Browse File';
   display: inline-block;
   background:linear-gradient(to bottom, #4d90fe, #3078eb);
   /* border: 1px solid #999; */
