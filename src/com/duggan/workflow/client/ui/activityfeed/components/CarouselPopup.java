@@ -130,7 +130,7 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		spnHeader.setInnerHTML("Creating New Request");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.adddoc(),
-				"Click on the Add Document Button. Choose the Type of document from the List and Click.");
+				"Click on the 'Add Document' Button. Choose the Type of document from the List and Click.");
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.leaveapp(),
 				"Fill In the Form, Submit it For Approval");
@@ -146,11 +146,11 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		CarouselItem carousel1 = new CarouselItem(
 				true,
 				ImageResources.IMAGES.business_process(),
-				"Check the right side of a request in progress to see how far it has gone through the process.");
+				"Use the 'Business Process' tool to view the progress of your requests.");
 
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.show_users(),
-				"Put the mouse pointer on top of each node to see the users involved in each process.");
+				"Place the mouse pointer on top of a node to see the users involved in the step.");
 
 		innerCarousel.add(carousel1);
 		innerCarousel.add(carousel2);
@@ -162,10 +162,21 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		spnHeader.setInnerHTML("Managing Tasks");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.tasks(),
-				"The middle section displays a listing of all your tasks;");
+				"The middle section displays a listing of all your tasks");
+		
+		CarouselItem carousel2 = new CarouselItem(false,
+				ImageResources.IMAGES.advancedTaskSearch(),
+				"Filter your requests and tasks");
+
+		CarouselItem carousel3 = new CarouselItem(false,
+				ImageResources.IMAGES.taskSearch(),
+				"Use Advanced search to further filter your requests and tasks");
+
 
 		innerCarousel.add(carousel1);
-		showIndicators(1);
+		innerCarousel.add(carousel2);
+		innerCarousel.add(carousel3);
+		showIndicators(3);
 	}
 
 	public void showReview() {
@@ -173,11 +184,11 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		spnHeader.setInnerHTML("Reviewing Tasks");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.document_action(),
-				"Decide what to do with from a list of Actions displayed on top of each Task");
+				"Easily make your decision using a list of Actions displayed on top of each Task");
 
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.activity(),
-				"Comment and seek clarifications from the bottom panel at each document/Task");
+				"Comment and seek clarifications for your tasks");
 
 		innerCarousel.add(carousel1);
 		innerCarousel.add(carousel2);

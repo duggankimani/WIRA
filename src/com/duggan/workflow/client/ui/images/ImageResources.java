@@ -62,4 +62,9 @@ public interface ImageResources extends ClientBundle {
 	@Source("Activity.png")
 	ImageResource activity();
 	
+	@Source("task_search.png")
+	ImageResource taskSearch();
+	
+	@Source("task_search_advanced.png")
+	ImageResource advancedTaskSearch();
 }
