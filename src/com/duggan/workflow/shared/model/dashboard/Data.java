@@ -5,13 +5,20 @@
  *
  * http://www.sencha.com/products/gxt/license/
  */
-package com.duggan.workflow.client.util.tests;
+package com.duggan.workflow.shared.model.dashboard;
 
-public class Data {
+import java.io.Serializable;
 
+public class Data implements Serializable{
+
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
   private String name;
-  private double data1;
-  private double data2;
+  private Number data1;
+  private Number data2;
   private double data3;
   private double data4;
   private double data5;
@@ -19,11 +26,17 @@ public class Data {
   private double data7;
   private double data8;
   private double data9;
+  String title;
+  
+  public Data() {
+
+  }
 
   public Data(String name, double data1, double data2, double data3, double data4, double data5, double data6,
       double data7, double data8, double data9) {
     super();
     this.name = name;
+    this.title = name;
     this.data1 = data1;
     this.data2 = data2;
     this.data3 = data3;
@@ -34,12 +47,23 @@ public class Data {
     this.data8 = data8;
     this.data9 = data9;
   }
+  
+  public Data(String name, Number value, String title){
+	  this.name = name;
+	  data1 = value;
+	  this.title = title;
+  }
+  
+  public Data(String name, Number value){
+	  this(name,value,name);
+  }
 
-  public double getData1() {
+
+  public Number getData1() {
     return data1;
   }
 
-  public double getData2() {
+  public Number getData2() {
     return data2;
   }
 
@@ -75,11 +99,11 @@ public class Data {
     return name;
   }
 
-  public void setData1(double data1) {
+  public void setData1(Number data1) {
     this.data1 = data1;
   }
 
-  public void setData2(double data2) {
+  public void setData2(Number data2) {
     this.data2 = data2;
   }
 
@@ -114,5 +138,13 @@ public class Data {
   public void setName(String name) {
     this.name = name;
   }
+
+public String getTitle() {
+	return title;
+}
+
+public void setTitle(String title) {
+	this.title = title;
+}
 
 }

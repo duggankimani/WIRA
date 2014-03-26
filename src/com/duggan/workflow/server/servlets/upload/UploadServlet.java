@@ -114,6 +114,9 @@ public class UploadServlet extends UploadAction {
 		case UPLOADUSERIMAGE:
 			executor = new UserImageExecutor();
 			break;
+		case UPLOADLOGO:
+			executor = new LogoImageExecutor();
+			break;
 		}
 		
 		if(executor==null){

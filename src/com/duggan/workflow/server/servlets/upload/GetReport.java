@@ -1,11 +1,8 @@
 package com.duggan.workflow.server.servlets.upload;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +16,9 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+
+import org.apache.log4j.Logger;
 
 public class GetReport extends HttpServlet {
 
@@ -26,6 +26,8 @@ public class GetReport extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static Logger log = Logger.getLogger(GetReport.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -52,6 +54,7 @@ public class GetReport extends HttpServlet {
 			throws ServletException, IOException {
 
 		String action = req.getParameter("ACTION");
+		log.debug("GetReport Action = "+action);
 
 		if (action == null) {
 			action = "none";
@@ -100,7 +103,51 @@ public class GetReport extends HttpServlet {
 		if(action.equals("GetUser")){
 			processUserImage(req, resp);
 		}
+		
+		if(action.equals("GetLogo")){
+			processSettingsImage(req, resp);
+		}
 
+	}
+
+	private void processSettingsImage(HttpServletRequest req,
+			HttpServletResponse resp) {
+		
+		String settingName = req.getParameter("settingName");
+		log.debug("Logging- SettingName "+settingName);
+		assert settingName!=null;
+		
+		String widthPx = req.getParameter("width");
+		String heightPx = req.getParameter("height");
+		
+		if(widthPx!=null && heightPx==null){
+			heightPx=widthPx;
+		}
+		
+		Double width=null;
+		Double height=null;
+		
+		if(widthPx!=null && widthPx.matches("[0-9]+(\\.[0-9][0-9]?)?")){
+			width = new Double(widthPx);
+			height = new Double(heightPx);
+		}
+		
+		LocalAttachment attachment = DB.getAttachmentDao().getSettingImage(SETTINGNAME.valueOf(settingName));
+		
+		if(attachment==null){
+			log.debug("No Attachment Found for Setting: ["+settingName+"]");
+			return;
+		}
+		
+		log.debug("Attachment found for setting: ["+settingName+"], FileName = "+attachment.getName());
+		
+		byte[] bites = attachment.getAttachment();
+		
+		if(width!=null){
+			ImageUtils.resizeImage(resp, bites, width.intValue(), height.intValue());
+		}else{
+			ImageUtils.resizeImage(resp, bites);
+		}
 	}
 
 	private void processUserImage(HttpServletRequest req,

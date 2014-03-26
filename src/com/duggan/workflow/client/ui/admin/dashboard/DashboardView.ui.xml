@@ -5,7 +5,9 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'
-	xmlns:c="urn:import:com.sencha.gxt.chart.client.chart">
+	xmlns:c="urn:import:com.sencha.gxt.chart.client.chart"
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component"
+	>
 
 	<g:HTMLPanel styleName="content-body overflow-y">
 
@@ -18,7 +20,7 @@
 
 					<div class="details">
 						<span class="content-block">Requested Process</span>
-						<span class="value">1,236</span>
+						<span class="value" ui:field="spnReqCount"></span>
 					</div> <!-- /.details -->
 
 					<i class="icon-play-circle more"></i>
@@ -35,7 +37,7 @@
 
 					<div class="details">
 						<span class="content-block">Active Processes</span>
-						<span class="value">256</span>
+						<span class="value" ui:field="spnActiveCount"></span>
 					</div> <!-- /.details -->
 
 					<i class="icon-play-circle more"></i>
@@ -52,7 +54,7 @@
 
 					<div class="details">
 						<span class="content-block">Failed Processes</span>
-						<span class="value">15</span>
+						<span class="value" ui:field="spnFailureCount"></span>
 					</div> <!-- /.details -->
 
 					<i class="icon-play-circle more"></i>
@@ -68,12 +70,10 @@
 					<div class="portlet-header">
 						<h3>
 							<i class="icon-bar-chart"></i>
-							OVERRALL TURN AROUND TIME
+							PROCESSES AGING ANALYSIS
 						</h3>
 					</div>
 					<g:HTMLPanel styleName="portlet-content" ui:field="panelTurnAroundTime">
-					    <c:Chart ui:field="chart"/>
-						<!-- img src="images/piechart.png"/ -->
 					</g:HTMLPanel>
 				</div>
 			</div>
@@ -83,12 +83,11 @@
 					<div class="portlet-header">
 						<h3>
 							<i class="icon-bar-chart"></i>
-							TURN AROUND PER DOCUMENT
+							TOTAL REQUESTS MADE PER DOCUMENT
 						</h3>
 					</div>
-					<div class="portlet-content">
-						<img src="images/piechart.png"/>
-					</div>
+					<g:HTMLPanel styleName="portlet-content" ui:field="panelTotalRequestsPerDoc">
+					</g:HTMLPanel>
 				</div>
 			</div>
 		</div>
@@ -101,47 +100,8 @@
 						LONGEST WAIT POINTS
 					</h3>
 				</div>
-				<div class="portlet-content">
-					<div class="table table-striped table-hover table-bordered">
-						<div class='thead'>
-							<div class="tr">
-								<div class='th'>#</div>
-								<div class='th'>PROCESS ITEM</div>
-								<div class='th'>DOCUMENT TYPE</div>
-								<div class='th'>PROCESS TIME</div>
-							</div>
-						</div>
-
-						<div class='tbody'>
-							<div class="tr">
-								<div class='td'>1.</div>
-								<div class='td'>HOD PROCUREMENT APPROVAL</div>
-								<div class='td'>INVOICE</div>
-								<div class='td'>
-									<span class="label label-default arrowed-in">14 Days</span>
-								</div>
-							</div>
-
-							<div class="tr">
-								<div class='td'>2.</div>
-								<div class='td'>CEO APPROVAL</div>
-								<div class='td'>LPO</div>
-								<div class='td'>
-									<span class="label label-warning arrowed-in">2 Weeks</span>
-								</div>
-							</div>
-
-							<div class="tr">
-								<div class='td'>3.</div>
-								<div class='td'>MANAGER APPROVAL</div>
-								<div class='td'>LPO</div>
-								<div class='td'>
-									<span class="label label-info arrowed-in">1 Day</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<g:HTMLPanel styleName="portlet-content" ui:field="panelLongLastingProcesses">
+				</g:HTMLPanel>
 			</div>
 		</div>
 
@@ -150,12 +110,11 @@
 				<div class="portlet-header">
 					<h3>
 						<i class="icon-bar-chart"></i>
-						REQUESTS VS APPROVALS CHART
+						REQUESTS VS PROCESS COMPLETION
 					</h3>
 				</div>
-				<div class="portlet-content">
-					<img src="images/linechart.png"/>
-				</div>
+				<g:HTMLPanel styleName="portlet-content" ui:field="panelRequestsApprovalsComp">
+				</g:HTMLPanel>
 			</div>
 		</div>
 

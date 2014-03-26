@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -30,6 +34,9 @@ public class ADValue extends PO{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@Enumerated(EnumType.STRING)
+	private SETTINGNAME settingname;
 	
 	@Column(length=2000)
 	private String stringValue;
@@ -232,6 +239,14 @@ public class ADValue extends PO{
 
 	public void setDetail(DetailModel detail) {
 		this.detail = detail;
+	}
+
+	public SETTINGNAME getSettingname() {
+		return settingname;
+	}
+
+	public void setSettingname(SETTINGNAME settingname) {
+		this.settingname = settingname;
 	}
 
 }

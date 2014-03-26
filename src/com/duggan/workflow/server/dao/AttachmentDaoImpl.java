@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class AttachmentDaoImpl extends BaseDaoImpl{
 
@@ -108,6 +109,35 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		}catch(Exception e){			
 		}
 		
+		
+		LocalAttachment attachment = null;
+		
+		if(obj!=null){
+			attachment = (LocalAttachment)obj;
+		}
+		
+		return attachment;
+	}
+
+	public void deleteSettingImage(String settingName) {
+		String sql = "update localattachment set isActive=0 where settingName=?";
+		
+		Query query = em.createNativeQuery(sql).setParameter(1, settingName);
+		query.executeUpdate();
+	}
+
+	public LocalAttachment getSettingImage(SETTINGNAME settingName) {
+
+		Object obj = null;
+		
+		try{
+			obj = em.createQuery("FROM LocalAttachment d where d.settingName=:settingName and d.isActive=:isActive")
+					.setParameter("settingName", settingName)
+					.setParameter("isActive", 1)
+					.getSingleResult();
+		}catch(Exception e){	
+			e.printStackTrace();
+		}
 		
 		LocalAttachment attachment = null;
 		

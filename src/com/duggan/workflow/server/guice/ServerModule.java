@@ -102,6 +102,16 @@ import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.server.actionhandlers.GetUserRequestActionHandler;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
 import com.duggan.workflow.server.actionhandlers.UpdatePasswordRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
+import com.duggan.workflow.server.actionhandlers.GetDashBoardDataRequestHandler;
+import com.duggan.workflow.shared.requests.GetLongTasksRequest;
+import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandler;
+import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
+import com.duggan.workflow.server.actionhandlers.GetTaskCompletionDataActionHandler;
+import com.duggan.workflow.shared.requests.GetSettingsRequest;
+import com.duggan.workflow.server.actionhandlers.GetSettingsRequestActionHandler;
+import com.duggan.workflow.shared.requests.SaveSettingsRequest;
+import com.duggan.workflow.server.actionhandlers.SaveSettingsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -263,5 +273,22 @@ public class ServerModule extends HandlerModule {
 		bindHandler(UpdatePasswordRequest.class,
 				UpdatePasswordRequestActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(GetDashBoardDataRequest.class,
+				GetDashBoardDataRequestHandler.class,
+				SessionValidator.class);
+
+		bindHandler(GetLongTasksRequest.class,
+				GetLongTasksRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetTaskCompletionRequest.class,
+				GetTaskCompletionDataActionHandler.class,
+				SessionValidator.class);
+
+		bindHandler(GetSettingsRequest.class,
+				GetSettingsRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(SaveSettingsRequest.class,
+				SaveSettingsRequestActionHandler.class, SessionValidator.class);
 	}
 }

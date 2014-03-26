@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.db;
 
 import java.sql.Connection;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -23,14 +24,17 @@ import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DSConfigDaoImpl;
+import com.duggan.workflow.server.dao.DashboardDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 /**
  * <p>
@@ -343,5 +347,13 @@ public class DB{
 			}
 		}
 		return connection;
+	}
+	
+	public static DashboardDaoImpl getDashboardDao(){
+		return factory().getDashboardDaoImpl(getEntityManager());
+	}
+
+	public static SettingsDaoImpl getSettingsDao() {
+		return factory().getSettingsDaoImpl(getEntityManager());
 	}
 }
