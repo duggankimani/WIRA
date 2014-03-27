@@ -52,6 +52,7 @@ public class PropertyPanelView extends PopupViewImpl implements
 		widget = binder.createAndBindUi(this);
 		popUpContainer.getElement().getStyle().setDisplay(Display.BLOCK);
 		popUpContainer.getElement().getStyle().setOverflow(Overflow.AUTO);
+		popUpContainer.getElement().getFirstChildElement().addClassName("full-page");
 
 		btnCancel.addClickHandler(new ClickHandler() {
 			@Override
@@ -128,8 +129,10 @@ public class PropertyPanelView extends PopupViewImpl implements
 		if(status){
 			divHeader.addClassName("hidden");
 			divBottom.addClassName("hidden");
+			popUpContainer.removeStyleName("full-page");
 			add(w);
 		}else{
+			popUpContainer.addStyleName("full-page");
 			divHeader.removeClassName("hidden");
 			divBottom.removeClassName("hidden");
 		}
