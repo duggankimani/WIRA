@@ -5,7 +5,7 @@
 .overflow-y{
 	overflow-y:auto;
 	overflow-x:hidden;
-	max-height: 92%;
+	max-height: 91%;
 }
 
 .overflow-x{
@@ -472,10 +472,10 @@
 .popover .popupContent{
     height:100%;
 }
-.popover .popover-content{
-overflow-y:auto;
+.popover .overflow-y{
+	max-height:90%;
 }
-
+	
 #main-content .property-panel {
 	margin-left: 0px;
 	min-height: 480px;

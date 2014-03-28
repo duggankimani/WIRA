@@ -74,6 +74,9 @@ public class AppManager {
 
 	public static void showPropertyPanel(FormModel parent,
 			List<Property> properties, int top, int left, int arrowposition) {
+		//Bad Fix - For correction 
+		propertyPanel.getView().showBody(false, null);
+		
 		propertyPanel.setProperties(parent, properties);
 		int[] position = calculatePosition(top, left);
 		propertyPanel.getView().getPopUpContainer()

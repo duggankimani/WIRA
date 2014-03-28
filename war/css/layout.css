@@ -984,9 +984,9 @@ body .dateBoxPopup {
 }
 
 #detailed-info .comment-box .textbox {
-	margin-left: 0px;
+	/* margin-left: 0px; */
 	margin-top: 7px;
-	width: 89.905983%;
+	/* width: 89.905983%; */
 }
 
 #detailed-info .comment-box .button-post {

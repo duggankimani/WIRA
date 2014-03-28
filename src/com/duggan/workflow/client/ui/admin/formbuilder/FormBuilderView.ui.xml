@@ -52,7 +52,7 @@
 						Delete
 					</g:Anchor>
 			   </div>
-			   <div class="span5 notice">
+			   <div class="span3 notice">
 			   		<g:InlineLabel ui:field="spnNotice" styleName="muted"> All changes have been saved</g:InlineLabel>
 			   </div>	
 			    

@@ -186,10 +186,10 @@ public class DSSaveView extends PopupViewImpl implements
 				isValid=false;
 			}
 		
-			if(isNullOrEmpty(txtUser.getValue())){
-				issues.addError("Please specify database user");
-				isValid=false;
-			}
+//			if(isNullOrEmpty(txtUser.getValue())){
+//				issues.addError("Please specify database user");
+//				isValid=false;
+//			}
 			
 		}
 				
