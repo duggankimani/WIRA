@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.settings;
 import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.SaveSettingsRequest;
@@ -50,6 +51,7 @@ public class SettingsPresenter extends
 						public void processResult(
 								SaveSettingsResponse aResponse) {
 							getView().setValues(aResponse.getSettings());
+							AppContext.reloadContext();
 						}
 					}); 
 				}

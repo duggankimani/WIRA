@@ -138,6 +138,7 @@ public class ProfilePresenter extends
 			public void processResult(SaveUserResponse result) {
 				user = result.getUser();
 				getView().setUser(user);
+				AppContext.reloadContext();
 			}
 		});
 	}

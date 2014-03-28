@@ -94,9 +94,13 @@ public class AppContext {
 		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
 			@Override
 			public void processResult(GetContextRequestResult result) {
+				organizationName= result.getOrganizationName();
 				setUserValues(result.getUser());
 				version = result.getVersion();
-				eventBus.fireEvent(new ContextLoadedEvent(result.getUser(), version));
+				
+				ContextLoadedEvent event = new ContextLoadedEvent(result.getUser(), version);
+				event.setOrganizationName(organizationName);
+				eventBus.fireEvent(event);
 			}			
 		});
 	}
@@ -167,5 +171,9 @@ public class AppContext {
 		}
 		
 		return getContextUser().getUserId().equals(userId);
+	}
+
+	public static String getOrganizationName() {
+		return organizationName;
 	}
 }

@@ -1,10 +1,18 @@
 package com.duggan.workflow.client.ui.login;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.duggan.workflow.shared.model.settings.Setting;
+import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.LoginRequest;
+import com.duggan.workflow.shared.responses.GetSettingsResponse;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,6 +50,7 @@ public class LoginPresenter extends
 		void clearViewItems(boolean status);
 		TextBox getUserNameBox();
 		void clearErrors();
+		void setOrgName(String orgName);
 	}
 
 	@ProxyCodeSplit
@@ -84,6 +93,7 @@ public class LoginPresenter extends
 			
 			return;
 		}
+		loadName();
 	}
 	@Override
 	protected void onBind() {
@@ -110,10 +120,29 @@ public class LoginPresenter extends
 	}
 
 	protected void onReset() {
-		Window.setTitle("Tasks");	
+		Window.setTitle("WIRA");	
 		getView().clearViewItems(true);
 	};
 	
+	private void loadName() {		
+		//not secured -- probably a bad idea
+		requestHelper.execute(new GetSettingsRequest(Arrays.asList(SETTINGNAME.ORGNAME)), 
+				new TaskServiceCallback<GetSettingsResponse>() {
+			@Override
+			public void processResult(GetSettingsResponse aResponse) {
+				List<Setting> settings = aResponse.getSettings();
+				if(settings!=null && !settings.isEmpty()){
+					Setting setting = settings.get(0);
+					Value value = setting.getValue();
+					if(value.getValue()!=null){
+						String orgName = value.getValue().toString();
+						getView().setOrgName(orgName);
+					}
+				}
+			}
+		});
+	}
+
 	protected void login() {		
 		if (getView().isValid()) {
 			getView().clearErrors();

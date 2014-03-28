@@ -26,6 +26,10 @@ public class SessionValidator implements ActionValidator {
 	public boolean isValid(Action<? extends Result> action)
 			throws ActionException {
 		
+		if(!action.isSecured()){
+			return true;
+		}
+		
 		HttpSession session = request.get().getSession(false);
 		
 		if(session==null){

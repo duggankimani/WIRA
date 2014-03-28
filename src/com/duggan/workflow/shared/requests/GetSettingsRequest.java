@@ -26,4 +26,9 @@ public class GetSettingsRequest extends BaseRequest<GetSettingsResponse> {
 	public BaseResponse createDefaultActionResponse() {
 		return new GetSettingsResponse();
 	}
+	
+	@Override
+	public boolean isSecured() {
+		return false;
+	}
 }

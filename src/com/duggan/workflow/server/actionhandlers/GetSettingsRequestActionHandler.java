@@ -22,8 +22,8 @@ public class GetSettingsRequestActionHandler extends
 	public void execute(GetSettingsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		List<Setting> settings = SettingsDaoHelper.getSettings(action.getSettingNames());
-		GetSettingsResponse response = (GetSettingsResponse)actionResult;
 		
+		GetSettingsResponse response = (GetSettingsResponse)actionResult;		
 		response.setSettings(settings);
 	}
 	

@@ -12,6 +12,7 @@ public class ContextLoadedEvent extends
 	public static Type<ContextLoadedHandler> TYPE = new Type<ContextLoadedHandler>();
 	private HTUser currentUser;
 	private Version version;
+	private String organizationName;
 
 	public interface ContextLoadedHandler extends EventHandler {
 		void onContextLoaded(ContextLoadedEvent event);
@@ -46,5 +47,13 @@ public class ContextLoadedEvent extends
 
 	public static void fire(HasHandlers source, HTUser currentUser,Version version) {
 		source.fireEvent(new ContextLoadedEvent(currentUser,version));
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
 	}
 }

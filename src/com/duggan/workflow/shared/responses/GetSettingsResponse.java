@@ -18,4 +18,6 @@ public class GetSettingsResponse extends BaseResponse {
 	public void setSettings(List<Setting> settings) {
 		this.settings = settings;
 	}
+	
+	
 }

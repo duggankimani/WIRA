@@ -24,6 +24,8 @@ public class LoginView extends ViewImpl implements LoginPresenter.ILoginView{
 	@UiField TextBox password;
 	@UiField SpanElement loading;
 	@UiField HTMLPanel loadingbox;
+	
+	@UiField SpanElement spnCompanyName;
 
 	
 	@Inject
@@ -129,5 +131,10 @@ public class LoginView extends ViewImpl implements LoginPresenter.ILoginView{
 		//remove any Data written
 		username.setText("");
 		password.setText("");		
+	}
+
+	@Override
+	public void setOrgName(String orgName) {
+		spnCompanyName.setInnerText(orgName);
 	}
 }

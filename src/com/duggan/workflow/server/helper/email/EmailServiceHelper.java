@@ -1,9 +1,6 @@
 package com.duggan.workflow.server.helper.email;
 
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -18,24 +15,39 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.log4j.Logger;
+
+import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+
 public class EmailServiceHelper {
 
-	static Properties props = new Properties();
 	static Session session = null;
-	static {
+	static Properties props;
+	int count=0;
+	
+	static Logger log = Logger.getLogger(EmailServiceHelper.class);
+	
+	public static Properties getProperties(){
+		if(session==null){
+			initProperties();
+		}
+		return props;
+	}
+
+	public static void initProperties() {
+		
 		try {
+			props = new Properties();
 			
-			InputStream is =null;
-			//is = ClassLoader.getSystemResourceAsStream("smtp.properties");
-//			is = Thread.currentThread().getContextClassLoader().
-//					getResourceAsStream("com/duggan/workflow/server/helper/email/smtp.properties");
-			is = EmailServiceHelper.class.getResourceAsStream("/smtp.properties");
+			props.put(SETTINGNAME.SMTP_AUTH.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_AUTH));
+			props.put(SETTINGNAME.SMTP_HOST.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_HOST));
+			props.put(SETTINGNAME.SMTP_PASSWORD.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PASSWORD));
+			props.put(SETTINGNAME.SMTP_ACCOUNT.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_ACCOUNT));
+			props.put(SETTINGNAME.SMTP_PORT.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PORT));
+			props.put(SETTINGNAME.SMTP_PROTOCOL.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PROTOCOL));
+			props.put(SETTINGNAME.SMTP_STARTTLS.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_STARTTLS));
 			
-			//ClassLoader.
-			
-			assert is!=null;			
-			props.load(is);
-			is.close();
 			session = Session.getDefaultInstance(props,new Authenticator() {
 	            @Override
 	            protected PasswordAuthentication getPasswordAuthentication() {
@@ -46,14 +58,15 @@ public class EmailServiceHelper {
 	        });
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.debug("EmailServiceHelper.initProperties failed to initialize: "+e.getMessage());
+			//e.printStackTrace();
 		}
 		;
 
 	}
 
 	public static String getProperty(String name) {
-		String val = props.getProperty(name);
+		String val = getProperties().getProperty(name);
 		return val;
 	}
 
@@ -61,7 +74,7 @@ public class EmailServiceHelper {
 			throws MessagingException, UnsupportedEncodingException {
 
 		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(props.getProperty("mail.smtp.from")));
+		message.setFrom(new InternetAddress(getProperties().getProperty("mail.smtp.from")));
 		String[] emails = recipient.split(",");
 		InternetAddress dests[] = new InternetAddress[emails.length];
 		for (int i = 0; i < emails.length; i++) {
@@ -79,10 +92,6 @@ public class EmailServiceHelper {
 		Transport.send(message);
 	}
 	
-	public static Properties getProperties(){
-		return props;
-	}
-
 	public static void main(String[] args) throws Exception{
 		sendEmail("Hello world", "Test 1", "mdkimani@gmail.com");
 	}

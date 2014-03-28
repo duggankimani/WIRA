@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
+import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.shared.requests.SaveSettingsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveSettingsResponse;
@@ -21,6 +22,9 @@ public class SaveSettingsRequestActionHandler extends
 		SettingsDaoHelper.save(action.getSettings());
 		SaveSettingsResponse response = (SaveSettingsResponse)actionResult;
 		response.setSettings(SettingsDaoHelper.getSettings(null));
+		
+		//proactively re-initialize email service incase there was a change
+		EmailServiceHelper.initProperties();
 	}
 	
 	@Override

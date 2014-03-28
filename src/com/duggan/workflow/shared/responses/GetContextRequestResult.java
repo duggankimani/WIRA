@@ -12,6 +12,7 @@ public class GetContextRequestResult extends BaseResponse {
 	private HTUser user;
 	private List<UserGroup> groups;
 	private Version version;
+	private String organizationName;
 
 	public GetContextRequestResult() {
 		// For serialization only
@@ -47,6 +48,14 @@ public class GetContextRequestResult extends BaseResponse {
 
 	public void setVersion(Version version) {
 		this.version = version;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
 	}
 
 }

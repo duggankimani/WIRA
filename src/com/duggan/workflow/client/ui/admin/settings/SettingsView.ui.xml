@@ -102,7 +102,7 @@
 						<b>Start TLS:</b>
 					</label>
 					<div class="controls">
-						<g:CheckBox ui:field="chkStartTls" title="If true, enables the use of the STARTTLS command (if supported by the server) to switch the connection to a TLS-protected connection before issuing any login commands. Note that an appropriate trust store must configured so that the client will trust the server's certificate. Defaults to false."/>
+						<g:CheckBox ui:field="chkStartTls" value="false" title="If true, enables the use of the STARTTLS command (if supported by the server) to switch the connection to a TLS-protected connection before issuing any login commands. Note that an appropriate trust store must configured so that the client will trust the server's certificate. Defaults to false."/>
 						<span ui:field="spnTLS"/>
 					</div>
 				</div>
@@ -111,7 +111,7 @@
 						<b>Auth:</b>
 					</label>
 					<div class="controls">
-						<g:CheckBox ui:field="chkAuth" title="If true, attempt to authenticate the user using the AUTH command. Defaults to false."/>
+						<g:CheckBox ui:field="chkAuth" value="false" title="If true, attempt to authenticate the user using the AUTH command. Defaults to false."/>
 						<span ui:field="spnAuth"/>
 					</div>
 				</div>

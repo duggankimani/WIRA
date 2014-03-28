@@ -177,15 +177,15 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 		Object settingValue = value==null? null : value.getValue()==null? null: value.getValue();
 		
 		switch (name) {
-		case ACCOUNT:
+		case SMTP_ACCOUNT:
 			txtAccount.setValue(settingValue==null?null: settingValue.toString());	
 			spnAccount.setInnerText(settingValue==null?null: settingValue.toString());;
 			break;
-		case AUTH:
+		case SMTP_AUTH:
 			chkAuth.setValue(settingValue==null?null: (Boolean)settingValue);
 			spnAuth.setInnerText(settingValue==null?null: settingValue.toString());;
 			break;
-		case HOST:
+		case SMTP_HOST:
 			txtHost.setValue(settingValue==null?null: settingValue.toString());
 			spnHost.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
@@ -193,19 +193,19 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 			txtCompanyName.setValue(settingValue==null?null: settingValue.toString());
 			spnCompanyName.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
-		case PASSWORD:
+		case SMTP_PASSWORD:
 			txtPassword.setValue(settingValue==null?null: settingValue.toString());
 			spnPassword.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
-		case PORT:
+		case SMTP_PORT:
 			txtPort.setValue(settingValue==null? null: ((Number)settingValue).intValue());
 			spnPort.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
-		case PROTOCOL:
+		case SMTP_PROTOCOL:
 			txtProcotol.setValue(settingValue==null?null: settingValue.toString());
 			spnProtocol.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
-		case STARTTLS:
+		case SMTP_STARTTLS:
 			chkStartTls.setValue(settingValue==null?null: (Boolean)settingValue);
 			spnTLS.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
@@ -217,28 +217,28 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	public List<Setting> getSettings(){
 		List<Setting> lst = new ArrayList<Setting>();
 		
-		Setting setting  = new Setting(SETTINGNAME.ACCOUNT, new StringValue(null, SETTINGNAME.ACCOUNT.name(), txtAccount.getValue()));
+		Setting setting  = new Setting(SETTINGNAME.SMTP_ACCOUNT, new StringValue(null, SETTINGNAME.SMTP_ACCOUNT.name(), txtAccount.getValue()));
 		lst.add(setting);
 		
 		setting  = new Setting(SETTINGNAME.ORGNAME, new StringValue(null, SETTINGNAME.ORGNAME.name(), txtCompanyName.getValue()));
 		lst.add(setting);
 		
-		setting  = new Setting(SETTINGNAME.HOST, new StringValue(null, SETTINGNAME.HOST.name(), txtHost.getValue()));
+		setting  = new Setting(SETTINGNAME.SMTP_HOST, new StringValue(null, SETTINGNAME.SMTP_HOST.name(), txtHost.getValue()));
 		lst.add(setting);
 		
-		setting  = new Setting(SETTINGNAME.PASSWORD, new StringValue(null, SETTINGNAME.PASSWORD.name(), txtPassword.getValue()));
+		setting  = new Setting(SETTINGNAME.SMTP_PASSWORD, new StringValue(null, SETTINGNAME.SMTP_PASSWORD.name(), txtPassword.getValue()));
 		lst.add(setting);
 		
-		setting  = new Setting(SETTINGNAME.PORT, new LongValue(null, SETTINGNAME.PORT.name(), txtPort.getValue()==null? null: (txtPort.getValue()).longValue()));
+		setting  = new Setting(SETTINGNAME.SMTP_PORT, new LongValue(null, SETTINGNAME.SMTP_PORT.name(), txtPort.getValue()==null? null: (txtPort.getValue()).longValue()));
 		lst.add(setting);
 		
-		setting  = new Setting(SETTINGNAME.PROTOCOL, new StringValue(null, SETTINGNAME.PROTOCOL.name(), txtProcotol.getValue()));
+		setting  = new Setting(SETTINGNAME.SMTP_PROTOCOL, new StringValue(null, SETTINGNAME.SMTP_PROTOCOL.name(), txtProcotol.getValue()));
 		lst.add(setting);
 		
-		setting  = new Setting(SETTINGNAME.AUTH, new BooleanValue(null, SETTINGNAME.AUTH.name(), chkAuth.getValue()));
+		setting  = new Setting(SETTINGNAME.SMTP_AUTH, new BooleanValue(null, SETTINGNAME.SMTP_AUTH.name(), chkAuth.getValue()));
 		lst.add(setting);
 		
-		setting  = new Setting(SETTINGNAME.STARTTLS, new BooleanValue(null, SETTINGNAME.STARTTLS.name(), chkStartTls.getValue()));
+		setting  = new Setting(SETTINGNAME.SMTP_STARTTLS, new BooleanValue(null, SETTINGNAME.SMTP_STARTTLS.name(), chkStartTls.getValue()));
 		lst.add(setting);
 		return lst;
 	}

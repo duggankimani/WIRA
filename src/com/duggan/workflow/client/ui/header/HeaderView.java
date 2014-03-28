@@ -31,6 +31,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	public interface Binder extends UiBinder<Widget, HeaderView> {
 	}
 
+	@UiField SpanElement spnCompanyName;
+	
 	@UiField
 	Image imgSmall;
 	@UiField
@@ -122,7 +124,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		super.setInSlot(slot, content);
 	}
 
-	public void setValues(String user_names, String userGroups) {
+	public void setValues(String user_names, String userGroups, String orgName) {
 
 		if (user_names != null) {
 			spnUser.setInnerText(user_names);
@@ -134,6 +136,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 		if (userGroups != null) {
 			spnUserGroup.setInnerText(userGroups);
+		}
+		
+		if(orgName!=null){
+			spnCompanyName.setInnerText(orgName);
 		}
 	}
 

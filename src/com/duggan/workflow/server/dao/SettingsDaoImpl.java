@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,7 +23,8 @@ public class SettingsDaoImpl extends BaseDaoImpl {
 	}
 
 	private void deleteName(SETTINGNAME name) {
-		String sql = "update advalue set isActive=0 where settingName=? and isActive=1";
+		assert name!=null;
+		String sql = "delete from advalue where settingName=?";
 		Query query = em.createNativeQuery(sql).setParameter(1, name.name());
 		query.executeUpdate();
 	}
@@ -30,7 +32,17 @@ public class SettingsDaoImpl extends BaseDaoImpl {
 	public List<ADValue> getSettingValues(List<SETTINGNAME> names){
 		String sql = "FROM ADValue where isActive=1 and settingName is not null";
 		
+		boolean hasNames= names!=null && !names.isEmpty();
+		if(hasNames){
+			sql = sql.concat(" and settingName in (:names)");
+		}
+		
 		Query query = em.createQuery(sql);
+		
+		if(hasNames){
+			query.setParameter("names", EnumSet.copyOf(names));
+		}
+		
 		List<ADValue> values = new ArrayList<>();
 		try{
 			values = query.getResultList();

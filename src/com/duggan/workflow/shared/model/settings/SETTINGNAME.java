@@ -6,14 +6,13 @@ public enum SETTINGNAME {
 
 	ORGNAME("org.name", DataType.STRING),
 	ORGLOGO("org.logo", DataType.INTEGER),
-	HOST("mail.smtp.host", DataType.STRING),
-	PORT("mail.smtp.port", DataType.INTEGER),
-	AUTH("mail.smtp.auth", DataType.BOOLEAN),
-	PROTOCOL("mail.transport.protocol", DataType.STRING),
-	STARTTLS("mail.smtp.starttls.enable", DataType.BOOLEAN),
-	ACCOUNT("mail.smtp.from", DataType.STRING),
-	PASSWORD("mail.smtp.password", DataType.STRING),
-	VVV("Test1",DataType.STRING);
+	SMTP_HOST("mail.smtp.host", DataType.STRING),
+	SMTP_PORT("mail.smtp.port", DataType.INTEGER),
+	SMTP_AUTH("mail.smtp.auth", DataType.BOOLEAN),
+	SMTP_PROTOCOL("mail.transport.protocol", DataType.STRING),
+	SMTP_STARTTLS("mail.smtp.starttls.enable", DataType.BOOLEAN),
+	SMTP_ACCOUNT("mail.smtp.from", DataType.STRING),
+	SMTP_PASSWORD("mail.smtp.password", DataType.STRING);
 	
 	String key;
 	DataType type;

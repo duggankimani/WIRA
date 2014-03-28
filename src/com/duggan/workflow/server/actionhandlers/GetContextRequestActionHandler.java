@@ -1,13 +1,18 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.server.ServerConstants;
+import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
@@ -35,7 +40,6 @@ public class GetContextRequestActionHandler extends
 		
 		HttpSession session = httpRequest.get().getSession(false);
 		
-		
 		//Object sessionid=session.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
 		Object user = session.getAttribute(ServerConstants.USER);
 
@@ -48,6 +52,12 @@ public class GetContextRequestActionHandler extends
 		}
 		
 		result.setVersion(VersionManager.getVersion());
+		
+		Setting setting = SettingsDaoHelper.getSetting(SETTINGNAME.ORGNAME);
+		if(setting!=null){
+			Object value = setting.getValue().getValue();
+			result.setOrganizationName(value==null? null: value.toString());
+		}
 				
 	}
 

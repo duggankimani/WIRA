@@ -48,7 +48,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 
 	public interface IHeaderView extends View {
 		HasClickHandlers getLogout();
-		void setValues(String userNames, String userGroups);
+		void setValues(String userNames, String userGroups, String orgName);
 		Anchor getNotificationsButton();
 		void setPopupVisible();
 		void setCount(Integer count);
@@ -205,7 +205,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 		HTUser currentUser = event.getCurrentUser();
 		getView().setImage(currentUser);
 		getView().showAdminLink(currentUser.isAdmin());
-		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString());
+		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString(), event.getOrganizationName());
 		
 		Version version = event.getVersion();
 		getView().setVersionInfo(version.getCreated(), version.getDate(), version.getVersion());

@@ -36,7 +36,7 @@ public class ADValue extends PO{
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private SETTINGNAME settingname;
+	private SETTINGNAME settingName;
 	
 	@Column(length=2000)
 	private String stringValue;
@@ -241,12 +241,12 @@ public class ADValue extends PO{
 		this.detail = detail;
 	}
 
-	public SETTINGNAME getSettingname() {
-		return settingname;
+	public SETTINGNAME getSettingName() {
+		return settingName;
 	}
 
-	public void setSettingname(SETTINGNAME settingname) {
-		this.settingname = settingname;
+	public void setSettingname(SETTINGNAME settingName) {
+		this.settingName = settingName;
 	}
 
 }
