@@ -1,13 +1,8 @@
 <project name="gwtht" basedir="." default="war">
-	<!--target name="copydepnd">
-		<copy todir="war/WEB-INF/lib">
-			<fileset dir="../../../ExternalLibraries/"includes="**/*.jar"/> 
-		</copy>
-	</target-->
-
+	
 	<target name="war" depends="update-version-string">
 	    <copy file="src/Version.properties" todir="war/WEB-INF/classes" overwrite="true"></copy>
-		<war basedir="war" destfile="ebusiness.war" webxml="war/WEB-INF/web.xml">
+		<war basedir="war" destfile="wira.war" webxml="war/WEB-INF/web.xml">
 		    <!-- metainf>
 		        <fileset dir="war/META-INF"includes="**/*"></fileset>
 		    </metainf -->
@@ -58,9 +53,6 @@
 				<include name="classes/*.xml"/>
 			</webinf>
 		</war>
-	</target>	
-	<target name="deploy">		
-		<copy file="ebusiness.war" todir="/home/duggan/"/>
 	</target>	
 	
 	<!-- this target is only run if the 'version' property is undefined -->
