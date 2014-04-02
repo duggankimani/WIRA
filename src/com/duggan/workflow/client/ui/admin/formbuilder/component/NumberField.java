@@ -69,7 +69,7 @@ public class NumberField extends FieldWidget{
 		
 		txtComponent.setText(text);
 		txtComponent.setClass("input-large"); //Smaller TextField
-		showShim=true;
+		designMode=true;
 		
 		final String name = property.getName();
 		

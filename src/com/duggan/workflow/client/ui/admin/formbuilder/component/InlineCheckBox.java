@@ -51,7 +51,7 @@ public class InlineCheckBox extends FieldWidget {
 	 */
 	public InlineCheckBox(final Property property) {
 		this();
-		showShim=true;
+		designMode=true;
 		
 		setCaption(property.getCaption());
 		

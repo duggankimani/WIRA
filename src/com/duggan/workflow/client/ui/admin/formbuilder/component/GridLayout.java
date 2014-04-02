@@ -78,7 +78,7 @@ implements EditLineHandler{
 		
 	@Override
 	protected void afterInit() {
-		if(showShim){
+		if(designMode){
 			showDesignGrid();
 		}
 	}
@@ -174,7 +174,7 @@ implements EditLineHandler{
 	}
 
 	private void setLines(Collection<DocumentLine> doclines) {
-		if(showShim){
+		if(designMode){
 			//design mode
 			return;
 		}
@@ -330,7 +330,7 @@ implements EditLineHandler{
 	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
-		if(!showShim){
+		if(!designMode){
 			//not design mode
 			this.readOnly = isReadOnly || isComponentReadOnly();
 			

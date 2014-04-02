@@ -13,6 +13,7 @@ import com.allen_sauer.gwt.dnd.client.HasDragHandle;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
@@ -59,9 +60,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	
 	Field field = new Field();
 	//Design Mode Properties
-	protected boolean showShim = true;
+	protected boolean designMode = true;
 	protected boolean readOnly=false;
-	protected boolean popUpActivated = false;
 	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 	
 	//Formula handling properties
@@ -130,6 +130,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 	
 	public void activateShimHandler(){
+		if(this.getParent() instanceof PalettePanel){
+			return;
+		}
+		
 		shim.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -241,13 +245,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			addRegisteredHandler(OperandChangedEvent.TYPE, this);
 		}
 		
-		if (!popUpActivated) {
-			popUpActivated = true;
+		if (designMode) {
 			addRegisteredHandler(ResetFormPositionEvent.TYPE, this);
 			activateShimHandler();
-		}
-		
-		if(!showShim){
+		}else{
 			//runtime
 			//Check if this fields value is relied upon by other fields
 			
@@ -299,7 +300,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 	
 	private void initShim() {
-		if (!showShim){
+		if (!designMode){
 			return;
 		}
 		
@@ -626,7 +627,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		}
 
-		widget.showShim = activatePopup;
+		widget.designMode = activatePopup;
 		widget.setField(fld);
 		
 		if(activatePopup)
@@ -728,7 +729,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		assert widget != null;
 
 		if (widget != null) {
-			widget.showShim = false;
+			widget.designMode = false;
 		}
 
 		return widget;

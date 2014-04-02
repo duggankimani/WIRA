@@ -127,7 +127,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 
 	@Override
 	public void setSelectionValues(List<KeyValuePair> values) {
-		if(showShim && (getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null)){
+		if(designMode && (getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null)){
 			//design mode
 			values =new ArrayList<KeyValuePair>();
 			 
