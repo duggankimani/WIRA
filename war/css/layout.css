@@ -683,7 +683,17 @@ body .dateBoxPopup {
 
 #middle-nav .message-container .spnDescription {
 	font-size: 11px;
-	width: 90%;
+	width: 75%;
+}
+
+#middle-nav .message-container .spnDate {
+	float: right;
+	border-radius: 0px;
+	min-width: 13%;
+	font-weight: normal;
+	font-size: 9px;
+	text-align: center;
+	margin-top: 7px;
 }
 
 #middle-nav .message-container .inside-container {
