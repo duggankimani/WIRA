@@ -693,7 +693,8 @@ body .dateBoxPopup {
 	font-weight: normal;
 	font-size: 9px;
 	text-align: center;
-	margin-top: 7px;
+	margin-top: 9px;
+	padding: 1px 3px;
 }
 
 #middle-nav .message-container .inside-container {
