@@ -10,8 +10,8 @@ public class HTSummary extends Doc implements Serializable{
 	private long id;
 	private String name;//Display Name
 	private String taskName;//Code used for mapping to FormBuilder forms
-	private Date startDateDue;
-	private Date endDateDue;
+	private Date startDateDue;//Task Must have started by this time
+	private Date endDateDue;//Task must have ended by this time 
 	private Date lastUpdate;
 	private HTStatus status;
 	private Date created;

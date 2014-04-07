@@ -1,5 +1,6 @@
  package com.duggan.workflow.client.ui.tasklistitem;
 
+import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
@@ -139,6 +140,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			String desc =summ.getSubject()+" - "+ (summ.getDescription()==null? "": summ.getDescription());
 			spnDescription.setText(desc);
 			setTaskAction(summ.getStatus().getValidActions());
+			
+			if(summ.getEndDateDue()!=null){
+				showDeadlines(summ.getEndDateDue());
+			}else{
+				//default 1 day allowance				
+				showDeadlines(DateUtils.addDays(summ.getCreated(), 1));
+			}
+			
 		}else{
 			Document doc =(Document)aDoc;
 			setDocumentActions(doc.getStatus());
@@ -171,6 +180,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		
 	}
 	
+	private void showDeadlines(Date endDateDue) {
+		if(DateUtils.isOverdue(endDateDue)){
+			spnTime.getElement().getStyle().setColor("red");
+		}else if(DateUtils.isDueInMins(30, endDateDue)){
+			spnTime.getElement().getStyle().setColor("orange");
+		}
+	}
+
 	private void setDocumentActions(DocStatus status) {
 		if(status==DocStatus.DRAFTED){
 			aForwardForApproval.removeStyleName("hidden");

@@ -25,6 +25,11 @@ public class DateUtils {
 	public static final DateTimeFormat MONTHDAYFORMAT = DateTimeFormat.getFormat(monthDayPattern);
 	public static final DateTimeFormat TIMEFORMAT12HR = DateTimeFormat.getFormat(Time);
 	
+
+	static long dayInMillis = 24*3600*1000;
+	static long hourInMillis = 3600*1000;
+	static long minInMillis = 60*1000;
+	
 	public static String getTimeDifferenceAsString(Date createdDate){
 
 		if(createdDate==null){
@@ -37,10 +42,6 @@ public class DateUtils {
 		long diff = now -created;
 		
 		StringBuffer buff = new StringBuffer();
-		
-		long dayInMillis = 24*3600*1000;
-		long hourInMillis = 3600*1000;
-		long minInMillis = 60*1000;
 		
 		if(diff>2*dayInMillis){
 			return DateUtils.DATEFORMAT.format(createdDate);
@@ -79,5 +80,27 @@ public class DateUtils {
 		buff.append(" ago");
 		return buff.toString();
 	
+	}
+
+	public static boolean isDueInMins(int mins, Date endDate) {
+		long currentTime = new Date().getTime();
+		long endTime = endDate.getTime();
+		long diff= endTime-currentTime;
+		
+		if(diff>0 && diff<mins*60*1000){
+			return true;
+		}
+		
+		return false;
+	}
+
+	public static boolean isOverdue(Date endDate) {
+		Date currDate = new Date();
+		return currDate.after(endDate);
+	}
+
+	public static Date addDays(Date created, int days) {
+				
+		return new Date(created.getTime()+dayInMillis*days);
 	}
 }

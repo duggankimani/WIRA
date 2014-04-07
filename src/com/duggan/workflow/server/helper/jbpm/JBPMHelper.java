@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -434,6 +435,26 @@ public class JBPMHelper implements Closeable {
 		if (names.size() > 0) {
 			task.setTaskName(names.get(0).getText());
 		}
+	
+		Deadlines deadlines = master_task.getDeadlines();
+		if(deadlines!=null){
+			List<Deadline> startDeadlines = deadlines.getStartDeadlines();
+			if(startDeadlines!=null)
+			if(startDeadlines.size()>0){
+				Deadline deadline = startDeadlines.get(startDeadlines.size()-1);
+				Date date = deadline.getDate();
+				task.setStartDateDue(date);
+			}
+			
+			List<Deadline> endDeadlines = deadlines.getEndDeadlines();
+			if(endDeadlines!=null)
+			if(endDeadlines.size()>0){
+				Deadline deadline = endDeadlines.get(endDeadlines.size()-1);
+				Date date = deadline.getDate();
+				task.setEndDateDue(date);
+			}
+			
+		}
 		
 		try{
 			//Exception thrown if process not started
@@ -533,25 +554,6 @@ public class JBPMHelper implements Closeable {
 		// int version = task.getVersion();
 		// myTask.setVersion(version);
 
-		Deadlines deadlines = task.getDeadlines();
-		if(deadlines!=null){
-			List<Deadline> startDeadlines = deadlines.getStartDeadlines();
-			if(startDeadlines!=null)
-			if(startDeadlines.size()>0){
-				Deadline deadline = startDeadlines.get(0);
-				Date date = deadline.getDate();
-				myTask.setStartDateDue(date);
-			}
-			
-			List<Deadline> endDeadlines = deadlines.getEndDeadlines();
-			if(endDeadlines!=null)
-			if(endDeadlines.size()>0){
-				Deadline deadline = startDeadlines.get(0);
-				Date date = deadline.getDate();
-				myTask.setEndDateDue(date);
-			}
-			
-		}
 		
 		// deadlines.getEndDeadlines();
 		//Delegation delegation = task.getDelegation();

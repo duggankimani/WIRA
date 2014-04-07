@@ -34,6 +34,7 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
+import org.jbpm.task.Deadline;
 import org.jbpm.task.Task;
 import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
@@ -590,15 +591,24 @@ class BPMSessionManager {
 
 			try {
 				Task task = getTaskClient().getTask(event.getTaskId());
-
 				Map<String, Object> taskData = JBPMHelper.getMappedData(task);
 
 				Map<String, Object> values = null;
 				Map<String, Object> newValues = new HashMap<>();
 
-				Long documentId = Long.parseLong(taskData.get("documentId")
-						.toString());
-				Document doc = DocumentDaoHelper.getDocument(documentId);
+				Document doc=null;
+				if(taskData.get("document")!=null && taskData.get("document") instanceof Document){
+					doc = (Document)taskData.get("document");
+				}else if(taskData.get("documentId")!=null){
+					Long documentId = Long.parseLong(taskData.get("documentId")
+							.toString());
+					 doc = DocumentDaoHelper.getDocument(documentId);
+				}else{
+					doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
+				}
+				
+				assert doc!=null;
+				
 				Long sessionId = doc.getSessionId();
 
 				if (sessionId == null) {
@@ -679,9 +689,18 @@ class BPMSessionManager {
 
 				Map<String, Object> newValues = new HashMap<>();
 
-				Long documentId = Long.parseLong(taskData.get("documentId")
-						.toString());
-				Document doc = DocumentDaoHelper.getDocument(documentId);
+				Document doc=null;
+				
+				if(taskData.get("document")!=null && taskData.get("document") instanceof Document){
+					doc = (Document)taskData.get("document");
+				}else if(taskData.get("documentId")!=null){
+					Long documentId = Long.parseLong(taskData.get("documentId")
+							.toString());
+					doc = DocumentDaoHelper.getDocument(documentId);
+				}else{
+					doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
+				}
+				
 				Long processInstanceId = doc.getProcessInstanceId();
 
 				StatefulKnowledgeSession session = getSession(sessionId, task
