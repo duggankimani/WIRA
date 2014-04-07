@@ -33,7 +33,7 @@
 				    <g:InlineLabel ui:field="spnTime" styleName="spnTime"></g:InlineLabel>
 		            <d:Break/>
 		            <g:InlineLabel ui:field="spnDescription" styleName="spnDescription ellipsis"></g:InlineLabel> 
-		            <span class="label label-warning spnDate" ui:field="spnDates">OVERDUE</span>           	
+		            <span class="label spnDate hidden" ui:field="spnDeadline">OVERDUE</span>           	
 	           </g:HTMLPanel>
 	           
 	            <g:HTMLPanel ui:field="wfactions" styleName="hidden">

@@ -17,6 +17,7 @@ import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
@@ -51,21 +52,16 @@ public class GenericDocumentView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, GenericDocumentView> {
 	}
 
-	@UiField
-	SpanElement spnCreated;
-	@UiField
-	SpanElement spnDocType;
-	@UiField
-	SpanElement spnSubject;
+	@UiField SpanElement spnCreated;
+	@UiField SpanElement spnDeadline;
+	@UiField SpanElement spnDocType;
+	@UiField SpanElement spnSubject;
 	
 	@UiField SpanElement spnDate;
 
-	@UiField
-	SpanElement spnValue;	
-	@UiField
-	SpanElement spnPartner;
-	@UiField
-	SpanElement spnDescription;
+	@UiField SpanElement spnValue;	
+	@UiField SpanElement spnPartner;
+	@UiField SpanElement spnDescription;
 
 	@UiField Image img;
 	
@@ -604,6 +600,27 @@ public class GenericDocumentView extends ViewImpl implements
 		delegate.getDelegateTo();
 		delegate.getUserId();
 		//eDelegate.setInnerText(delegate.getDelegateTo());
+	}
+	
+	public void setDeadline(Date endDateDue) {
+
+		String deadline="";
+		timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
+		if(timeDiff != null){
+			deadline = TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
+		}
+
+		if(DateUtils.isOverdue(endDateDue)){
+			spnDeadline.removeClassName("hidden");
+			spnDeadline.getStyle().setColor("#DD4B39");
+			deadline = "Overdue "+deadline;
+		}else if(DateUtils.isDueInMins(30, endDateDue)){
+			spnDeadline.removeClassName("hidden");
+			spnDeadline.getStyle().setColor("#F89406");
+			deadline = "Due "+deadline;
+		}
+		
+		spnDeadline.setInnerText(deadline);
 	}
 	
 	private void setImage(HTUser user) {

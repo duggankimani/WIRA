@@ -150,7 +150,11 @@
 
 				<div class="span3">
 					<!-- <i class="icon-calendar icon-large"></i> -->
-					<span ui:field="spnCreated" style="float:right"></span>
+					<div style="float:right; text-align:right">
+						<span ui:field="spnCreated" class="tasktimelines"></span>
+						<span ui:field="spnDeadline" class="tasktimelines hidden"></span>    
+					</div>
+					
 				</div>
 
 				<!-- <div class="span3"> <span>Priority:</span> <span ui:field="spnPriority" 

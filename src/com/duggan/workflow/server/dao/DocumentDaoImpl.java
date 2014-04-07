@@ -151,7 +151,6 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		return null;
 	}
 	
-	@SuppressWarnings("unused")
 	public List<DocumentModel> search(String userId,SearchFilter filter){
 		
 		String subject=filter.getSubject();

@@ -30,6 +30,54 @@ public class DateUtils {
 	static long hourInMillis = 3600*1000;
 	static long minInMillis = 60*1000;
 	
+	public static String getTimeDifference(Date createdDate){
+
+		if(createdDate==null){
+			return "";
+		}
+	
+		Date today =new Date(); 
+		long now = today.getTime();
+		long created = createdDate.getTime();
+		long diff = now -created;
+		
+		StringBuffer buff = new StringBuffer();
+		
+		if(diff>dayInMillis){
+			int days = CalendarUtil.getDaysBetween(createdDate, today);
+			if(days==1){
+				return "1 day";
+			}
+			
+			return days+" days";
+		}
+				
+		if(!CalendarUtil.isSameDate(createdDate, new Date())){
+			return "1 day";
+		}
+		
+		if(diff>hourInMillis){
+			long hrs = diff/hourInMillis;
+			buff.append(hrs+" "+((hrs)==1? "hr":"hrs"));
+			diff= diff%hourInMillis;
+		}
+		
+		if(diff>minInMillis && buff.length()==0){
+			long mins = diff/minInMillis;
+			buff.append(mins+" "+((mins)==1? "min":"mins"));
+			diff= diff%minInMillis;
+		}
+		
+		if(buff.length()==0){
+			long secs = diff/1000;
+			buff.append(secs+" "+(secs==1? "sec":"secs"));
+		}
+		
+		return buff.toString();
+	
+	}
+
+	
 	public static String getTimeDifferenceAsString(Date createdDate){
 
 		if(createdDate==null){

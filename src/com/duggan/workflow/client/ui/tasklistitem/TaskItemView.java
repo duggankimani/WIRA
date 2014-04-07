@@ -12,6 +12,7 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.regexp.shared.RegExp;
 //import com.google.gwt.regexp.shared.RegExp;
@@ -36,6 +37,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 
 	@UiField DivElement spnSubject;
 	@UiField InlineLabel spnTime;
+	@UiField SpanElement spnDeadline;
 	@UiField InlineLabel spnDescription;
 	@UiField InlineLabel spnAttach;
 	@UiField HTMLPanel spnPriority;
@@ -141,11 +143,13 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			spnDescription.setText(desc);
 			setTaskAction(summ.getStatus().getValidActions());
 			
-			if(summ.getEndDateDue()!=null){
-				showDeadlines(summ.getEndDateDue());
-			}else{
-				//default 1 day allowance				
-				showDeadlines(DateUtils.addDays(summ.getCreated(), 1));
+			if(!status.equals(HTStatus.COMPLETED)){
+				if(summ.getEndDateDue()!=null){
+					setDeadlines(summ.getEndDateDue());
+				}else{
+					//default 1 day allowance				
+					setDeadlines(DateUtils.addDays(summ.getCreated(), 1));
+				}
 			}
 			
 		}else{
@@ -180,11 +184,23 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		
 	}
 	
-	private void showDeadlines(Date endDateDue) {
+	private void setDeadlines(Date endDateDue) {
 		if(DateUtils.isOverdue(endDateDue)){
-			spnTime.getElement().getStyle().setColor("red");
+			
+			String timeDiff = DateUtils.getTimeDifference(endDateDue);
+			
+			spnDeadline.setInnerText("Overdue");			
+			spnDeadline.setTitle("Overdue "+timeDiff+" Ago");
+			spnDeadline.removeClassName("hidden");
+			spnDeadline.addClassName("label-important");
 		}else if(DateUtils.isDueInMins(30, endDateDue)){
-			spnTime.getElement().getStyle().setColor("orange");
+			
+			String timeDiff = DateUtils.getTimeDifference(endDateDue);
+			
+			spnDeadline.setInnerText("Due soon");
+			spnDeadline.setTitle("Due in "+timeDiff);
+			spnDeadline.removeClassName("hidden");
+			spnDeadline.addClassName("label-warning");
 		}
 	}
 

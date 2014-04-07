@@ -596,16 +596,7 @@ class BPMSessionManager {
 				Map<String, Object> values = null;
 				Map<String, Object> newValues = new HashMap<>();
 
-				Document doc=null;
-				if(taskData.get("document")!=null && taskData.get("document") instanceof Document){
-					doc = (Document)taskData.get("document");
-				}else if(taskData.get("documentId")!=null){
-					Long documentId = Long.parseLong(taskData.get("documentId")
-							.toString());
-					 doc = DocumentDaoHelper.getDocument(documentId);
-				}else{
-					doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-				}
+				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
 				
 				assert doc!=null;
 				
@@ -689,17 +680,8 @@ class BPMSessionManager {
 
 				Map<String, Object> newValues = new HashMap<>();
 
-				Document doc=null;
+				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
 				
-				if(taskData.get("document")!=null && taskData.get("document") instanceof Document){
-					doc = (Document)taskData.get("document");
-				}else if(taskData.get("documentId")!=null){
-					Long documentId = Long.parseLong(taskData.get("documentId")
-							.toString());
-					doc = DocumentDaoHelper.getDocument(documentId);
-				}else{
-					doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-				}
 				
 				Long processInstanceId = doc.getProcessInstanceId();
 

@@ -43,6 +43,7 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Activity;
@@ -58,6 +59,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
+import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
@@ -156,6 +158,8 @@ public class GenericDocumentPresenter extends
 		void setDelegate(Delegate delegate);
 
 		HasClickHandlers getUploadLink2();
+
+		void setDeadline(Date endDateDue);
 	}
 	
 	Long taskId;
@@ -805,6 +809,16 @@ public class GenericDocumentPresenter extends
 			Delegate delegate = humantask.getDelegate();
 			if(delegate!=null){
 				getView().setDelegate(delegate);
+			}
+			
+			if(!(task.getStatus()==HTStatus.COMPLETED)){
+				if(task.getEndDateDue()!=null){
+					getView().setDeadline(task.getEndDateDue());
+				}else{
+					//default 1 day allowance				
+					getView().setDeadline(DateUtils.addDays(task.getCreated(), 1));
+					
+				}
 			}
 		}
 		
