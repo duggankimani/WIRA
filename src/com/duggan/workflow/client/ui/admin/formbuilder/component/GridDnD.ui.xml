@@ -56,7 +56,7 @@
 						<li>
 							<d:ActionLink ui:field="adateBox">
 								<i class="icon-edit"></i>
-								Text Area
+								Date Box
 							</d:ActionLink>
 						</li>
 						
