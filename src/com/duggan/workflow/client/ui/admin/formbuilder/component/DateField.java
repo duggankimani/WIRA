@@ -107,21 +107,21 @@ public class DateField extends FieldWidget {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
+		
 		UIObject.setVisible(dateBox.getElement(),!this.readOnly);
 		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
+		
 		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 	
 	@Override
 	public Widget getComponent(boolean small) {
 		
-		if(readOnly)
-			return lblComponent;
+		if(!readOnly)
+			if(small){
+				dateBox.setStyle("input-small");
+			}
 		
-		if(small){
-			dateBox.setStyle("input-small");
-		}
-		
-		return dateBox;
+		return panelControls;
 	}
 }
