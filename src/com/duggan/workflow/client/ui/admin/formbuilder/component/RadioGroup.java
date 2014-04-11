@@ -22,12 +22,12 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class InlineRadio extends FieldWidget implements IsSelectionField{
+public class RadioGroup extends FieldWidget implements IsSelectionField{
 
 	private static InlineRadioUiBinder uiBinder = GWT
 			.create(InlineRadioUiBinder.class);
 
-	interface InlineRadioUiBinder extends UiBinder<Widget, InlineRadio> {
+	interface InlineRadioUiBinder extends UiBinder<Widget, RadioGroup> {
 	}
 	
 	private final Widget widget;
@@ -36,7 +36,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 	@UiField HTMLPanel vPanel;
 	Value fieldValue=null;
 	
-	public InlineRadio() {
+	public RadioGroup() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
@@ -52,7 +52,7 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 
 	@Override
 	public FieldWidget cloneWidget() {
-		return new InlineRadio();
+		return new RadioGroup();
 	}
 	
 	@Override
@@ -130,14 +130,12 @@ public class InlineRadio extends FieldWidget implements IsSelectionField{
 			String name = txtBox.getName();
 			String val = txtBox.getFormValue();
 			
-			if(val.isEmpty()){
-				continue;
-			}
-			
-			KeyValuePair pair = new KeyValuePair();
-			pair.setKey(name);
-			pair.setValue(val);
-			list.add(pair);
+			if(txtBox.getValue()!=null && txtBox.getValue()){
+				KeyValuePair pair = new KeyValuePair();
+				pair.setKey(name);
+				pair.setValue(val);
+				list.add(pair);
+			}			
 		}
 		
 		return list;

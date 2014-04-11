@@ -105,7 +105,7 @@
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vInlineCheckBoxPanel">	
-									 	<f:InlineCheckBox></f:InlineCheckBox>
+									 	<f:CheckBoxField></f:CheckBoxField>
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vSelectBasicPanel">	
@@ -113,7 +113,7 @@
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vLabelPanel">	
-									    <f:LabelField></f:LabelField>	
+									    <f:StaticText></f:StaticText>	
 									</fb:PalettePanel>
 									
 			                      </fieldset>
@@ -126,7 +126,7 @@
 							 <div class="form-horizontal">
 								 <fieldset>
 								     <fb:PalettePanel ui:field="vInlineRadioPanel">	
-									 	<f:InlineRadio></f:InlineRadio>
+									 	<f:RadioGroup></f:RadioGroup>
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vSelectMultiplePanel">	
@@ -148,7 +148,7 @@
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vMultipleButtonPanel">	
-									    <f:MultipleButton></f:MultipleButton>	
+									    <f:ButtonGroup></f:ButtonGroup>	
 									</fb:PalettePanel>
 																		
 								</fieldset>

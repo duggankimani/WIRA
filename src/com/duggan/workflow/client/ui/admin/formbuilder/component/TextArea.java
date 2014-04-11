@@ -7,6 +7,8 @@ import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -38,6 +40,7 @@ public class TextArea extends FieldWidget {
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		widget= uiBinder.createAndBindUi(this);
+		
 		txtComponent.getElement().setAttribute("id", "textarea");
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
@@ -82,7 +85,7 @@ public class TextArea extends FieldWidget {
 				 * 
 				 * All other Properties need not be synched this way 
 				 */
-				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
+				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP) || name.equals(STATICCONTENT)){				
 					firePropertyChanged(property, value);
 				}
 				//AppContext.getEventBus().fireEvent(new );
@@ -149,6 +152,12 @@ public class TextArea extends FieldWidget {
 		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
 		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
 		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+		
+		if(!isReadOnly){
+			txtComponent.getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
+		}else{
+			txtComponent.getElement().getStyle().setBorderStyle(BorderStyle.NONE);
+		}
 	}
 	
 	@Override

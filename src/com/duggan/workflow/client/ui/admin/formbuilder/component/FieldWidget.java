@@ -372,12 +372,19 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		if (property.equals(HELP))
 			setHelp(value == null ? null : value.toString());
 		
+		if (property.equals(STATICCONTENT))
+			setStaticContent(value == null ? null : value.toString());
+		
 		if(property.equals(SELECTIONTYPE) && (this instanceof IsSelectionField)){
 			
 			IsSelectionField fld = (IsSelectionField)this;
 			fld.setSelectionValues((List<KeyValuePair>)event.getPropertyValue());
 		}
 
+	}
+
+	protected void setStaticContent(String content) {
+		
 	}
 
 	public boolean isComponentReadOnly(){
@@ -565,7 +572,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		switch (type) {
 		case BOOLEAN:
-			widget = new InlineRadio();
+			widget = new RadioGroup();
 			break;
 
 		case DATE:
@@ -597,11 +604,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 
 		case CHECKBOX:
-			widget = new InlineCheckBox();
+			widget = new CheckBoxField();
 			break;
 
 		case MULTIBUTTON:
-			widget = new MultipleButton();
+			widget = new ButtonGroup();
 			break;
 
 		case SELECTBASIC:
@@ -613,7 +620,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 
 		case LABEL:
-			widget = new LabelField();
+			widget = new StaticText();
 			break;
 			
 		case LAYOUTHR:
@@ -687,7 +694,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		switch (property.getType()) {
 		case BOOLEAN:
-			widget = new InlineCheckBox();
+			widget = new CheckBoxField();
 			break;
 
 		case DATE:
@@ -711,11 +718,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 
 		case CHECKBOX:
-			widget = new InlineCheckBox(property);
+			widget = new CheckBoxField(property);
 			break;
 
 		case LABEL:
-			widget = new LabelField();
+			widget = new StaticText();
 			break;
 			
 		case SELECTBASIC:

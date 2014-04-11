@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
 		   <g:HTMLPanel styleName="control-group">
-		       <label ui:field="lblEl" class="control-label">Select Basic:</label>
+		       <label ui:field="lblEl" class="control-label">List Field:</label>
 		       <g:HTMLPanel styleName="controls" ui:field="panelControls">
 			       	<d:DropDownList ui:field="lstItems" title=""></d:DropDownList>
 			       	<g:InlineLabel ui:field="lblComponent"></g:InlineLabel>

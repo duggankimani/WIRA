@@ -7,18 +7,18 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MultipleButton extends FieldWidget {
+public class ButtonGroup extends FieldWidget {
 
 	private static MultipleButtonUiBinder uiBinder = GWT
 			.create(MultipleButtonUiBinder.class);
 
-	interface MultipleButtonUiBinder extends UiBinder<Widget, MultipleButton> {
+	interface MultipleButtonUiBinder extends UiBinder<Widget, ButtonGroup> {
 	}
 	private final Widget widget;
 	
 	@UiField Element lblEl;
 	
-	public MultipleButton() {
+	public ButtonGroup() {
 		super();
 		widget= uiBinder.createAndBindUi(this);
 		
@@ -27,7 +27,7 @@ public class MultipleButton extends FieldWidget {
 
 	@Override
 	public FieldWidget cloneWidget() {
-		return new MultipleButton();
+		return new ButtonGroup();
 	}
 	
 	@Override

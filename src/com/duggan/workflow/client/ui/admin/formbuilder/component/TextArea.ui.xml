@@ -7,7 +7,7 @@
 			    <div class="controls">
 			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
 				  	<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
-				  	 <d:TextArea ui:field="txtComponent" styleName="textarea-box"></d:TextArea>
+				  	 <d:TextArea ui:field="txtComponent" type="text" class="input-xlarge"></d:TextArea>
 				  	 <g:InlineLabel ui:field="lblComponent"></g:InlineLabel>			  	 
 			    	</g:HTMLPanel>
 			    	<span ui:field="spnMandatory" style="color:red">*</span>

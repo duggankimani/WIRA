@@ -17,13 +17,13 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class InlineCheckBox extends FieldWidget {
+public class CheckBoxField extends FieldWidget {
 
 	private static InlineCheckBoxUiBinder uiBinder = GWT
 			.create(InlineCheckBoxUiBinder.class);
 	
 
-	interface InlineCheckBoxUiBinder extends UiBinder<Widget,InlineCheckBox> {
+	interface InlineCheckBoxUiBinder extends UiBinder<Widget,CheckBoxField> {
 	}
 	
 	@UiField AbsolutePanel container;
@@ -35,7 +35,7 @@ public class InlineCheckBox extends FieldWidget {
 	
 	private final Widget widget;
 
-	public InlineCheckBox() {
+	public CheckBoxField() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		widget = uiBinder.createAndBindUi(this);
@@ -49,7 +49,7 @@ public class InlineCheckBox extends FieldWidget {
 	 * 
 	 * @param property
 	 */
-	public InlineCheckBox(final Property property) {
+	public CheckBoxField(final Property property) {
 		this();
 		designMode=true;
 		
@@ -81,7 +81,7 @@ public class InlineCheckBox extends FieldWidget {
 
 	@Override
 	public FieldWidget cloneWidget() {
-		return new InlineCheckBox();
+		return new CheckBoxField();
 	}
 	
 	@Override

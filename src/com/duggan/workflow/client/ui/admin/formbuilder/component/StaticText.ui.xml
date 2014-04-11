@@ -3,11 +3,7 @@
     xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:AbsolutePanel ui:field="container">
 	        <g:HTMLPanel styleName="control-group">
-		       <label ui:field="lblEl" class="control-label">Label:</label>
-			    <div class="controls">
-			    <g:InlineLabel ui:field="lblComponent" text="Label value">
-			    </g:InlineLabel>
-		    	</div>
+		       <label ui:field="lblEl" class="control-label" style="width:100%; text-align:left;">Static Text:</label>
 	       </g:HTMLPanel>
 	</g:AbsolutePanel>
 </ui:UiBinder>

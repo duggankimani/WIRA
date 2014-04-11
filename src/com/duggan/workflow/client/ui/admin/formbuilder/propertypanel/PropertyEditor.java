@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DateField;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.InlineCheckBox;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.CheckBoxField;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -39,7 +39,7 @@ public class PropertyEditor extends Composite {
 		for(Property property: properties){
 			switch (property.getType()) {
 			case BOOLEAN:
-				add(new InlineCheckBox());
+				add(new CheckBoxField());
 				break;
 				
 			case DATE:

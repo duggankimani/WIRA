@@ -19,6 +19,7 @@ public interface HasProperties {
 	public static final String CURRENCY="CURRENCY";
 	public static final String SQLDS="SQLDS";
 	public static final String SQLSELECT="SQLSELECT";
+	public static final String STATICCONTENT="STATICCONTENT";
 	public static final String FORMULA="FORMULA";
 	void addProperty(Property property);
 	

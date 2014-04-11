@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 		   <g:AbsolutePanel ui:field="container">
 			   <g:HTMLPanel styleName="control-group">
-			       <label ui:field="lblEl" class="control-label">checkbox Buttons:</label>
+			       <label ui:field="lblEl" class="control-label">Checkbox</label>
 				    <div class="controls">
 					    <g:CheckBox ui:field="component"></g:CheckBox>
 					    <span ui:field="spnMandatory" style="color:red">*</span>
