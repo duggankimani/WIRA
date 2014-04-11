@@ -119,7 +119,7 @@ public class DateField extends FieldWidget {
 			return lblComponent;
 		
 		if(small){
-			dateBox.setStyle("input-large");
+			dateBox.setStyle("input-small");
 		}
 		
 		return dateBox;

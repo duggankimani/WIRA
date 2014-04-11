@@ -13,7 +13,8 @@
 						<span ui:field="spnNewRecordHandlerText"></span>
 				</g:Anchor>
 			</div>
-			<g:HTMLPanel styleName="table table-hover table-striped table-bordered">					     
+			<!-- g:HTMLPanel styleName="table table-hover table-striped table-bordered" -->					     
+			<g:HTMLPanel styleName="table table-hover table-striped table-bordered">
 			    <div class="thead">
 			    	<g:HTMLPanel styleName="tr" ui:field="header">
 											</g:HTMLPanel>						
