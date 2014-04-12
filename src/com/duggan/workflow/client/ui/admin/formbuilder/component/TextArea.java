@@ -174,11 +174,15 @@ public class TextArea extends FieldWidget {
 	
 	protected void setLabelPosition(boolean top) {
 		if(top){
-			panelControls.removeStyleName("comment-container");
+			if(getFieldValue()==null)
+				panelControls.removeStyleName("comment-container");
+			
 			lblEl.removeClassName("control-label");
 			divControls.removeClassName("controls");
 		}else{
-			panelControls.addStyleName("comment-container");
+//			if(txtComponent.getValue()==null || txtComponent.getValue().isEmpty())
+//				panelControls.addStyleName("comment-container");
+			
 			lblEl.addClassName("control-label");
 			divControls.addClassName("controls");
 		}
