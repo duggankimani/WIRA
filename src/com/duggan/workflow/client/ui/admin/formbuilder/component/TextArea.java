@@ -3,12 +3,13 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.BorderStyle;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -33,12 +34,18 @@ public class TextArea extends FieldWidget {
 	@UiField HTMLPanel panelControls;
 	@UiField InlineLabel lblComponent;
 	@UiField SpanElement spnMandatory;
+	@UiField DivElement divControls;
 	
 	public TextArea() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(LABELPOSITION, "Label Position", DataType.SELECTBASIC, 
+				new KeyValuePair("top", "Top"),
+				new KeyValuePair("left", "Left")
+				));
+		
 		widget= uiBinder.createAndBindUi(this);
 		
 		txtComponent.getElement().setAttribute("id", "textarea");
@@ -163,5 +170,17 @@ public class TextArea extends FieldWidget {
 	@Override
 	public Widget getComponent(boolean small){		
 		return panelControls;
+	}
+	
+	protected void setLabelPosition(boolean top) {
+		if(top){
+			panelControls.removeStyleName("comment-container");
+			lblEl.removeClassName("control-label");
+			divControls.removeClassName("controls");
+		}else{
+			panelControls.addStyleName("comment-container");
+			lblEl.addClassName("control-label");
+			divControls.addClassName("controls");
+		}
 	}
 }

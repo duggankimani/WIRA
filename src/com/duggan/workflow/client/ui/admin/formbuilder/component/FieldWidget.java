@@ -496,6 +496,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		if(alignment!=null){
 			setAlignment(alignment);
 		}
+		
+		String labelPosition = getPropertyValue(LABELPOSITION);
+		if(labelPosition!=null){
+			setLabelPosition(labelPosition.equals("top"));
+		}
+		
 		//set dropdown choices
 		if(this instanceof IsSelectionField){
 			((IsSelectionField)this).setSelectionValues(field.getSelectionValues());
@@ -514,6 +520,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			setFormula(formula);
 		}
 
+	}
+
+	protected void setLabelPosition(boolean equalsTop) {
+		
 	}
 
 	protected void setAlignment(String alignment) {

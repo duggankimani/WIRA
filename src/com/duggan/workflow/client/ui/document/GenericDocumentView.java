@@ -113,6 +113,7 @@ public class GenericDocumentView extends ViewImpl implements
 	String url=null;
 	
 	List<Actions> validActions = null;
+	boolean isBizProcessDisplayed=true;
 	private String timeDiff;
 	
 	@Inject
@@ -163,28 +164,15 @@ public class GenericDocumentView extends ViewImpl implements
 				UIObject.setVisible(aForward.getElement(), false);
 				UIObject.setVisible(aEdit.getElement(), false);
 				UIObject.setVisible(aSave.getElement(), true);
-				
+				if(isBizProcessDisplayed)
+					toggleProcess();
 			}
 		});
 		
 		aProcess.addClickHandler(new ClickHandler() {
-			private boolean isClicked=false;
-
 			@Override
 			public void onClick(ClickEvent event) {
-				if(isClicked){
-					aProcess.addStyleName("disabled");
-					divProcess.removeStyleName("hidden");
-					divContent.removeClassName("span12");
-					divContent.addClassName("span9");
-					isClicked=false;
-				}else{
-					aProcess.removeStyleName("disabled");
-					divProcess.addStyleName("hidden");
-					divContent.removeClassName("span9");
-					divContent.addClassName("span12");
-					isClicked=true;
-				}
+				toggleProcess();				
 			}
 		});
 	
@@ -203,6 +191,24 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
+	}
+
+	protected void toggleProcess() {
+		if(!isBizProcessDisplayed){
+			aProcess.addStyleName("disabled");
+			divProcess.removeStyleName("hidden");
+			divContent.removeClassName("span12");
+			divContent.addClassName("span9");
+			isBizProcessDisplayed=true;
+			aProcess.setTitle("Hide Business Process");
+		}else{
+			aProcess.removeStyleName("disabled");
+			divProcess.addStyleName("hidden");
+			divContent.removeClassName("span9");
+			divContent.addClassName("span12");
+			isBizProcessDisplayed=false;
+			aProcess.setTitle("Show Business Process");
+		}
 	}
 
 	private void showOneButton() {
