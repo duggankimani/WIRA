@@ -152,6 +152,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 			if(val!=null)
 			if(val.equals(key)){
 				txtBox.setValue(true);
+				valueChange(txtBox, true);
 				return;
 			}
 		}
@@ -159,6 +160,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	
 	@Override
 	public Value getFieldValue() {
+		
 		return fieldValue;
 	}
 	
