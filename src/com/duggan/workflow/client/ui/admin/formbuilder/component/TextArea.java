@@ -10,6 +10,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -174,14 +175,15 @@ public class TextArea extends FieldWidget {
 	
 	protected void setLabelPosition(boolean top) {
 		if(top){
-			if(getFieldValue()==null)
+			//if(getFieldValue()==null)
 				panelControls.removeStyleName("comment-container");
 			
 			lblEl.removeClassName("control-label");
 			divControls.removeClassName("controls");
+			divControls.getStyle().setMarginBottom(12, Unit.PX);
 		}else{
 //			if(txtComponent.getValue()==null || txtComponent.getValue().isEmpty())
-//				panelControls.addStyleName("comment-container");
+		//		panelControls.addStyleName("comment-container");
 			
 			lblEl.addClassName("control-label");
 			divControls.addClassName("controls");
