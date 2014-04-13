@@ -1,10 +1,25 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
+import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SingleButton extends FieldWidget {
@@ -17,10 +32,32 @@ public class SingleButton extends FieldWidget {
 	
 	private final Widget widget;
 	
+	@UiField Anchor aButton;
+	@UiField Element iIcon;
+	@UiField Element spnText;
 	@UiField Element lblEl;
+	
+	static String ICONSTYLE="ICONSTYLE";
+	static String BUTTONSTYLE="BUTTONSTYLE";
+	static String CONFIRMMESSAGE="CONFIRMMESSAGE";
+	public static String SUBMITTYPE="SUBMITTYPE";
+	static String VALUES="VALUES";
+	static String VALIDATEFORM="VALIDATEFORM";
 	
 	public SingleButton() {
 		super();
+		addProperty(new Property(BUTTONSTYLE, "Button Style", DataType.STRING));
+		addProperty(new Property(ICONSTYLE, "Icon Style", DataType.STRING));
+		addProperty(new Property(CONFIRMMESSAGE, "Confirm Message", DataType.STRINGLONG));
+		addProperty(new Property(SUBMITTYPE, "Type", DataType.SELECTBASIC,
+				new KeyValuePair("StartProcess", "Start Process"),
+				new KeyValuePair("CompleteProcess", "Complete Process")));
+		addProperty(new Property(VALUES, "Values", DataType.STRING));
+		
+		Property property = new Property(VALIDATEFORM, "Validate Form", DataType.CHECKBOX);
+		property.setValue(new BooleanValue(null, VALIDATEFORM, true));
+		addProperty(property);
+		
 		widget=uiBinder.createAndBindUi(this);
 		add(widget);
 	}
@@ -33,6 +70,118 @@ public class SingleButton extends FieldWidget {
 	@Override
 	protected DataType getType() {
 		return DataType.BUTTON;
+	}
+	
+	@Override
+	protected void setCaption(String caption) {
+		spnText.setInnerText(caption);
+		lblEl.addClassName("hidden");
+		
+		String buttonStyle = getPropertyValue(BUTTONSTYLE);
+		if(buttonStyle==null){
+			aButton.setStyleName("btn btn-primary");
+		}else{
+			aButton.setStyleName(buttonStyle);
+		}
+		
+		String iconStyle = getPropertyValue(ICONSTYLE);
+		if(iconStyle==null){
+			iIcon.setClassName("");
+		}else{
+			iIcon.setClassName(iconStyle);
+		}
+		
+		final String message = getPropertyValue(CONFIRMMESSAGE);
+		if(message!=null){
+			aButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					AppManager.showPopUp("Confirm", message, new OnOptionSelected() {
+						
+						@Override
+						public void onSelect(String key) {
+							if(key.equals("Yes")){
+								submit();
+							}
+						}
+
+					}, "Yes", "No","Cancel");
+				}
+			});
+		}else{
+			aButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					submit();
+				}
+			});
+		}
+		
+	}
+	
+
+	private void submit() {
+		String submitType = getPropertyValue(SUBMITTYPE);
+		AppContext.fireEvent(new ButtonClickEvent(submitType, getValues()));
+	}
+	
+	private Map<String, Value> getValues() {
+
+		Map<String, Value> values = new HashMap<String, Value>();
+		
+		String vals = getPropertyValue(VALUES);
+		if(vals!=null){
+			String[] array = vals.split(",");
+			for(String v: array){
+				String [] valueSet = v.split("=");
+				if(valueSet.length!=2){
+					continue;
+				}
+				
+				String key = valueSet[0];
+				String value=valueSet[1];
+				if(key!=null && value!=null)
+					values.put(key, new StringValue(null, key, value));
+			}
+		}
+		return values;
+	}
+
+	@Override
+	protected void setHelp(String help) {
+		if(help!=null)
+			aButton.setTitle(help);
+	}
+	
+	@Override
+	public boolean isMandatory() {
+		return false;
+	}
+	
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+		
+		if(!isReadOnly()){
+			aButton.setVisible(true);
+		}else{
+			aButton.setVisible(!readOnly);
+		}
+	}
+	
+	public boolean isReadOnly() {
+
+		Object readOnly = getValue(READONLY);
+
+		if (readOnly == null)
+			return true;
+
+		return (Boolean) readOnly;
+	}
+	
+	public Widget getComponent() {
+		return this;
 	}
 
 }

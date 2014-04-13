@@ -58,4 +58,9 @@ public class DateValue implements Value{
 		DateValue dvalue = new DateValue(identify, key, value);
 		return dvalue;
 	}
+	
+	@Override
+	public String toString() {
+		return key+":"+value;
+	}
 }

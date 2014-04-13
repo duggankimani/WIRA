@@ -69,5 +69,10 @@ public class BooleanValue implements Value, Serializable{
 		BooleanValue bvalue = new BooleanValue(identify, key, value);
 		return bvalue;
 	}
+	
+	@Override
+	public String toString() {
+		return key+":"+value;
+	}
 
 }

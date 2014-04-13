@@ -705,7 +705,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		switch (property.getType()) {
 		case BOOLEAN:
-			widget = new CheckBoxField();
+			widget = new CheckBoxField(property);
 			break;
 
 		case DATE:

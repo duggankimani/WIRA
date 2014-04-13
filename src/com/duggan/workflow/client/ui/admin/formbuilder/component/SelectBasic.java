@@ -46,6 +46,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		UIObject.setVisible(lblComponent.getElement(), false);
 	}
 	
 	public SelectBasic(final Property property){

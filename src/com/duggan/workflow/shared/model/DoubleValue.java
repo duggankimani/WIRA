@@ -58,4 +58,9 @@ public class DoubleValue implements Value {
 		DoubleValue dvalue = new DoubleValue(identify, key, value);
 		return dvalue;
 	}
+	
+	@Override
+	public String toString() {
+		return key+":"+value;
+	}
 }
