@@ -63,4 +63,9 @@ public class StringValue implements Value{
 		
 		return svalue;
 	}
+	
+	@Override
+	public String toString() {
+		return key+":"+value;
+	}
 }

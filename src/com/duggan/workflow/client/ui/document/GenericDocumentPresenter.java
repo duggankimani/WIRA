@@ -17,11 +17,15 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.SingleButton;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
 import com.duggan.workflow.client.ui.delegate.msg.DelegationMessageView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
+import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
@@ -71,6 +75,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
@@ -116,7 +121,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> 
 		implements ReloadDocumentHandler, ActivitiesLoadHandler,
-		ReloadAttachmentsHandler,DeleteLineHandler{
+		ReloadAttachmentsHandler,DeleteLineHandler, ButtonClickHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type, String subject,
@@ -160,6 +165,10 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getUploadLink2();
 
 		void setDeadline(Date endDateDue);
+
+		void overrideDefaultCompleteProcess();
+
+		void overrideDefaultStartProcess();
 	}
 	
 	Long taskId;
@@ -211,6 +220,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		addRegisteredHandler(DeleteLineEvent.TYPE, this);
+		addRegisteredHandler(ButtonClickEvent.TYPE, this);
 		
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override
@@ -222,18 +232,7 @@ public class GenericDocumentPresenter extends
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new ProcessingEvent());
-				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc), new TaskServiceCallback<ApprovalRequestResult>(){
-					@Override
-					public void processResult(ApprovalRequestResult result) {
-						GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
-						fireEvent(new ProcessingCompletedEvent());
-						//clear selected document
-						fireEvent(new AfterSaveEvent());
-						fireEvent(new WorkflowProcessEvent(doc.getSubject(), "You have forwarded for Approval",doc));
-					}
-				});
-				
+				forwardForApproval();				
 			}
 		});
 		
@@ -335,21 +334,21 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
-		getView().getCompleteLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				if(getView().isValid()){
-					
-					Map<String, Value> values = getView().getValues();
-					if(values==null){
-						values = new HashMap<String, Value>();
-					}
-					fireEvent(new CompleteDocumentEvent(taskId, values));
-				}
-				fireEvent(new ExecTaskEvent(taskId, Actions.COMPLETE));
-			}
-		});
+//		getView().getCompleteLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				if(getView().isValid()){
+//					
+//					Map<String, Value> values = getView().getValues();
+//					if(values==null){
+//						values = new HashMap<String, Value>();
+//					}
+//					fireEvent(new CompleteDocumentEvent(taskId, values));
+//				}
+//				fireEvent(new ExecTaskEvent(taskId, Actions.COMPLETE));
+//			}
+//		});
 		
 		getView().getDelegateLink().addClickHandler(new ClickHandler() {
 			
@@ -391,17 +390,9 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				if(getView().isValid()){
-					
-					Map<String, Value> values = getView().getValues();
-					if(values==null){
-							values = new HashMap<String, Value>();
-					}
-					values.put("isApproved", new BooleanValue(true));
-					fireEvent(new CompleteDocumentEvent(taskId, values));
-				}
-				
+				Map<String, Value> values= new HashMap<String, Value>();
+				values.put("isApproved", new BooleanValue(true));
+				complete(values, true);
 			}
 		});
 		
@@ -409,17 +400,55 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {				
-				Map<String, Value> values = getView().getValues();
-				if(values==null){
-						values = new HashMap<String, Value>();
-				}
+				Map<String, Value> values = new HashMap<String, Value>();
 				values.put("isApproved", new BooleanValue(false));
-				fireEvent(new CompleteDocumentEvent(taskId, values));
+				complete(values, false);
 			}
 		});
 		
 	}
+	
+	public void complete(Map<String, Value> withValues, boolean validateForm){
+		if(validateForm){
+			if(getView().isValid()){
+				completeIt(withValues);
+			}
+		}else{
+			completeIt(withValues);
+		}
+	}
 
+
+	private void completeIt(Map<String, Value> withValues) {
+		Map<String, Value> values = getView().getValues();
+		if(values==null){
+				values = new HashMap<String, Value>();
+		}
+		
+		if(withValues!=null)
+			values.putAll(withValues);
+		
+		assert !values.isEmpty();
+		values.remove(null);
+		
+		fireEvent(new CompleteDocumentEvent(taskId, values));
+	}
+
+	protected void forwardForApproval() {
+		if(getView().isValid()){
+			fireEvent(new ProcessingEvent());
+			requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc), new TaskServiceCallback<ApprovalRequestResult>(){
+				@Override
+				public void processResult(ApprovalRequestResult result) {
+					GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
+					fireEvent(new ProcessingCompletedEvent());
+					//clear selected document
+					fireEvent(new AfterSaveEvent());
+					fireEvent(new WorkflowProcessEvent(doc.getSubject(), "You have forwarded for Approval",doc));
+				}
+			});
+		}
+	}
 
 	protected void showUpload() {
 		uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
@@ -666,6 +695,27 @@ public class GenericDocumentPresenter extends
 					field.setValue(value);
 				}
 				continue;
+			}else if(field.getType()==DataType.BUTTON){
+				String submitType = field.getPropertyValue(SingleButton.SUBMITTYPE);
+				if(submitType!=null){
+					if(submitType.equals("CompleteProcess")){
+						//Override default complete
+						getView().overrideDefaultCompleteProcess();
+					}else if(submitType.equals("StartProcess")){
+						//Override default start
+						getView().overrideDefaultStartProcess();
+					}
+					
+				}
+				
+				if(doc instanceof Document){
+					DocStatus status = ((Document)doc).getStatus();
+					if(status==DocStatus.DRAFTED){
+						Property prop = new Property(HasProperties.READONLY, "Read only", DataType.BOOLEAN);
+						prop.setValue(new BooleanValue(null, HasProperties.READONLY, false));
+						field.getProperties().add(prop);
+					}
+				}
 			}
 			
 			Value value = values.get(name);
@@ -960,5 +1010,22 @@ public class GenericDocumentPresenter extends
 				AppContext.fireEvent(new ProcessingCompletedEvent());
 			}
 		});
+	}
+
+	@Override
+	public void onButtonClick(ButtonClickEvent event) {
+		String requestType = event.getRequestType();
+		
+		if(requestType==null){
+			return;
+		}
+		
+		if(requestType.equals("StartProcess")){
+			
+			forwardForApproval();
+			
+		}else if(requestType.equals("CompleteProcess")){
+			complete(event.getValues(),event.isValidateForm());
+		}
 	}
 }

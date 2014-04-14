@@ -4,7 +4,7 @@
 	xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
 		   <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" class="control-label">Text Area:</label>
-			    <div class="controls">
+			    <div class="controls" ui:field="divControls">
 			  	 <!-- textarea id="textarea" name="textarea">Some default text</textarea-->	
 				  	<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
 				  	 <d:TextArea ui:field="txtComponent" type="text" class="input-xlarge"></d:TextArea>

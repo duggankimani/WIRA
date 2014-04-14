@@ -64,4 +64,9 @@ public class LongValue implements Value{
 		LongValue lvalue = new LongValue(identify, key, value);
 		return lvalue;
 	}
+	
+	@Override
+	public String toString() {
+		return key+":"+value;
+	}
 }

@@ -35,6 +35,7 @@ import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.Deadline;
+import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
@@ -528,6 +529,13 @@ class BPMSessionManager {
 		
 		// completing tasks is a single individuals responsibility
 		// Notifications & Emails sent after task completion must reflect this
+		
+		Task task = getTaskClient().getTask(taskId);
+		if(task.getTaskData().getStatus()==Status.Created || task.getTaskData().getStatus()==Status.Ready){
+			//start
+			getTaskClient().start(taskId, userId);
+		}
+		
 		values.put("ActorId", SessionHelper.getCurrentUser().getUserId());
 		getTaskClient().completeWithResults(taskId, userId, values);
 		return true;

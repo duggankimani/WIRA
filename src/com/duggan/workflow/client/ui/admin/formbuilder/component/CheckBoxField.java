@@ -53,7 +53,8 @@ public class CheckBoxField extends FieldWidget {
 		this();
 		designMode=true;
 		
-		setCaption(property.getCaption());
+		lblEl.setInnerHTML(property.getCaption());
+		System.err.println(">>>>> Property Caption = "+property.getCaption());
 		
 		Value value = property.getValue();
 		if(value!=null){
@@ -86,7 +87,7 @@ public class CheckBoxField extends FieldWidget {
 	
 	@Override
 	protected void setCaption(String caption) {
-		lblEl.setInnerHTML(caption);
+		lblEl.setInnerText(caption);
 	}
 	
 	@Override
@@ -113,6 +114,19 @@ public class CheckBoxField extends FieldWidget {
 	@Override
 	public Widget getComponent(boolean small) {
 		return component;
+	}
+	
+	@Override
+	public Value getFieldValue() {
+		BooleanValue value = new BooleanValue(null, getPropertyValue(NAME), component.getValue());
+		return value;
+	}
+	
+	@Override
+	public void setValue(Object value) {
+		if(value!=null && value instanceof Boolean){
+			component.setValue((Boolean)value);
+		}
 	}
 
 }
