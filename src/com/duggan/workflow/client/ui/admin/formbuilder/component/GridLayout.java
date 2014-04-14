@@ -5,26 +5,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.grid.GridView;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.EditLineEvent;
 import com.duggan.workflow.client.ui.events.EditLineEvent.EditLineHandler;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.GridValue;
-import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
-import com.duggan.workflow.shared.requests.DeleteLineRequest;
-import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Unit;
@@ -32,10 +24,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -52,6 +44,7 @@ implements EditLineHandler{
 	@UiField Label lblEl;
 	@UiField HTMLPanel divControls;
 	@UiField Anchor btnAdd;
+	@UiField HTMLPanel tblGrid;
 	
 	GridDnD grid = null;
 	
@@ -64,6 +57,8 @@ implements EditLineHandler{
 		
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
+		
+		tblGrid.getElement().setAttribute("id", "grid");
 		
 		btnAdd.addClickHandler(new ClickHandler() {
 			

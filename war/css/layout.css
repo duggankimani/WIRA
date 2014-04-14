@@ -84,7 +84,8 @@ body .alert a {
 
 /*Uploader Modal */
 .modal {
-	max-width: 40%;
+	max-width: 70%;
+	min-width: 40%;
 }
 
 .modal .popupContent {
@@ -172,9 +173,8 @@ body .dateBoxPopup {
 }
 
 .modal-document {
-	width: inherit;
-	max-width: -moz-max-content;
-	display: inline-table;
+	width: auto;
+	/* display: inline-table; */
 }
 
 /* Custom navbar stuff */
@@ -1217,6 +1217,73 @@ body .dateBoxPopup {
 
 #detailed-info .panel-activity .feed-item-question .feed-icon {
 	background-color: #428bca;
+}
+
+
+/*Grid Styles*/ 
+#grid .generic-row .td input {
+	font-size: 12px;
+	border: none;
+	width: auto;
+}
+
+#grid .generic-row .td select{
+	border: none;
+}
+
+#grid .generic-row .td input:hover,
+#grid .generic-row .td input:focus,
+#grid .generic-row .td select:hover,
+#grid .generic-row .td select:focus
+{
+	outline: none;
+	box-shadow:none;
+}
+
+#grid .generic-row .td .gwt-InlineLabel {
+	padding: 1px 8px;
+	font-size: 12px;
+}
+
+#grid .generic-row .controls {
+	margin-left: 0px;
+}
+
+#grid .generic-row .input-group-addon {
+ background-color: #fff;
+ border: none;
+ padding-top: 0px;
+}
+
+#grid .generic-row  .td{
+	background-color: #ffffff;
+	text-align:center;
+}
+
+#grid .generic-row .td {
+	padding: 0px;
+}
+
+#grid .tr .generic-header {
+	text-align: center;
+}
+
+#grid .generic-row .td {
+	border: 1px solid #E0E0E0;
+	border-top:none;
+	border-left:none;
+}
+
+#grid .generic-row .th {
+	border: 1px solid #E0E0E0;
+	border-top:none;
+	border-left:none;
+}
+/*-- End of Grid --*/
+
+
+#detailed-info .form-horizontal .controls .comment-container {
+	border: 0px;
 }
 
 ul.icons-list {

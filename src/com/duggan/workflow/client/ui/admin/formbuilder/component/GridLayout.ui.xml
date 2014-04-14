@@ -1,47 +1,49 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" >
-	
-	<g:HorizontalPanel styleName="control-group" width="100%">
-	    <g:cell>
-	        <g:HorizontalPanel styleName="hidden">
-	            <g:cell>
-					<g:Label ui:field="lblEl" text="Grid Layout"></g:Label>
-				</g:cell>
-				<g:cell>
-				    <g:Anchor ui:field="btnAdd" text="Add"></g:Anchor>
-				</g:cell>
-			</g:HorizontalPanel>
-		</g:cell>
-		
-	    <g:cell>
-		<g:HTMLPanel ui:field="divControls">
-		    <g:HTMLPanel styleName="table table-hover table-striped table-bordered">					     
-			    <div class="thead">
-			    	<g:HTMLPanel styleName="tr" ui:field="header">
-						<div class="th">Column 1</div>
-						<div class="th">Column 1</div>											
-						<div class="th">Column 1</div>
-						<div class="th">Column 1</div>		
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:HTMLPanel ui:field="tblGrid">
+		<g:HorizontalPanel styleName="control-group" width="100%">
+			<g:cell>
+				<g:HorizontalPanel styleName="hidden">
+					<g:cell>
+						<g:Label ui:field="lblEl" text="Grid Layout"></g:Label>
+					</g:cell>
+					<g:cell>
+						<g:Anchor ui:field="btnAdd" text="Add"></g:Anchor>
+					</g:cell>
+				</g:HorizontalPanel>
+			</g:cell>
+
+			<g:cell>
+				<g:HTMLPanel ui:field="divControls">
+					<g:HTMLPanel styleName="table table-hover table-striped table-bordered">
+						<div class="thead">
+							<g:HTMLPanel styleName="tr" ui:field="header">
+								<div class="th">Column 1</div>
+								<div class="th">Column 1</div>
+								<div class="th">Column 1</div>
+								<div class="th">Column 1</div>
+							</g:HTMLPanel>
+							<g:HTMLPanel styleName="tr">
+								<div class="td"></div>
+								<div class="td"></div>
+								<div class="td"></div>
+								<div class="td"></div>
+							</g:HTMLPanel>
+							<g:HTMLPanel styleName="tr">
+								<div class="td"></div>
+								<div class="td"></div>
+								<div class="td"></div>
+								<div class="td"></div>
+							</g:HTMLPanel>
+						</div>
+						<g:HTMLPanel ui:field="panelLines" styleName="tbody"><!-- div class="tbody" -->
+
+						</g:HTMLPanel>
 					</g:HTMLPanel>
-					<g:HTMLPanel styleName="tr">
-						<div class="td"></div>
-						<div class="td"></div>		
-						<div class="td"></div>
-						<div class="td"></div>	
-					</g:HTMLPanel>
-					<g:HTMLPanel styleName="tr">
-						<div class="td"></div>											
-						<div class="td"></div>
-						<div class="td"></div>		
-						<div class="td"></div>	
-					</g:HTMLPanel>						
-				</div>
-				<g:HTMLPanel ui:field="panelLines" styleName="tbody"><!-- div class="tbody"-->
-				    
 				</g:HTMLPanel>
-	   		</g:HTMLPanel>
-	   	</g:HTMLPanel>
-	   </g:cell>
-	</g:HorizontalPanel>
+			</g:cell>
+		</g:HorizontalPanel>
+	</g:HTMLPanel>
 </ui:UiBinder> 
