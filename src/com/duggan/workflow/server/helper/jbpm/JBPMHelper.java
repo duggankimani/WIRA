@@ -155,20 +155,15 @@ public class JBPMHelper implements Closeable {
 	public void createApprovalRequest(String userId, Document summary) {
 
 		Map<String, Object> initialParams = new HashMap<String, Object>();
-		// initialParams.put("user_self_evaluation", "calcacuervo");
-//		initialParams.put("subject", summary.getSubject());// Human Tasks need
-//															// this
-//		initialParams.put("description", summary.getDescription());// Human
-																	// Tasks
-																	// need this
+	
 		initialParams.put("documentId", summary.getId().toString());
 		initialParams.put("ownerId", userId);
-		//initialParams.put("value", summary.getValue());
 		initialParams.put("priority", summary.getPriority());
 		
-		Document clone = summary.clone();
+		Document clone = summary.clone(); //Not sure why we clone here
+		clone.setId(summary.getId());
 		initialParams.put("document", clone);
-		//System.err.println("[Document lines = "+summary.getDetails()+"]");
+
 		Map<String, Value> vals = summary.getValues();
 		Collection<Value> values = vals.values();
 		
@@ -180,12 +175,6 @@ public class JBPMHelper implements Closeable {
 		
 		ProcessInstance processInstance = sessionManager.startProcess(
 				getProcessId(summary.getType()), initialParams, summary);
-
-		// processInstance.getId(); - Use this to link a document with a process
-		// instance + later for history generation
-		// summary.setProcessInstanceId(processInstance.getId());
-		// DocumentDaoHelper.save(summary);
-
 		assert (ProcessInstance.STATE_ACTIVE == processInstance.getState());
 
 	}
@@ -647,27 +636,28 @@ public class JBPMHelper implements Closeable {
 
 	public static Map<String, Object> getMappedData(Task task) {
 
-		Long contentId = task.getTaskData() == null ? null : task.getTaskData()
-				.getDocumentContentId();	
-		//task.getTaskData().
-		//long outContentId = task.getTaskData().getOutputContentId();
-		//if document is completed, include output values in the document map
 		
-//		if(task.getTaskData().getStatus()== Status.Completed){
-//			long output = task.getTaskData().getOutputContentId();
-//			Map<String, Object> content = getMappedData(output);
-//			Set<String> keys = content.keySet();
-//
-//			for (String key : keys) {
-//				Value val = getValue(content.get(key));
-//				if(val!=null)
-//					myTask.setValue(key, val);
-//			}
-//			
-//		}
-
+		Long outputId=null;
+		Map<String, Object> map = new HashMap<>();
 		
-		return get().getMappedData(contentId);
+		if(task.getTaskData() != null){
+			if(task.getTaskData().getStatus()==Status.Completed){
+				outputId=task.getTaskData().getOutputContentId();
+				if(outputId!=null){
+					map = getMappedDataByContentId(outputId);
+				}
+			}
+		
+			Long contentId=null;
+			if(contentId==null && !map.containsKey("documentOut")){
+				contentId = task.getTaskData().getDocumentContentId();
+				map.putAll(getMappedDataByContentId(contentId));
+			}
+			
+		}
+		
+					
+		return map;
 	}
 
 	public static Map<String, Object> getMappedDataByContentId(Long contentId) {
@@ -985,6 +975,8 @@ public class JBPMHelper implements Closeable {
 				
 		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
+		task.getTaskData().getWorkItemId();
+		
 	//	System.err.println("Globals:: "+wfprocess.get);
 		
 		for (Node node : wfprocess.getNodes()) {
@@ -1025,6 +1017,18 @@ public class JBPMHelper implements Closeable {
 			if(node instanceof HumanTaskNode){
 				HumanTaskNode htnode = (HumanTaskNode) node;
 				Object nodeTaskName = htnode.getWork().getParameter("TaskName");
+				
+				System.err.println("1. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
+				
+				if(nodeTaskName!=null){
+					String nodeName = nodeTaskName.toString();
+					if(nodeName.startsWith("#{")){
+						//dynamic Node Name
+						nodeTaskName=htnode.getWork().getParameter("taskName");
+					}
+				}
+				System.out.println("2. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
+				
 				
 				if(nodeTaskName!=null)
 				if(nodeTaskName.equals(taskName)){

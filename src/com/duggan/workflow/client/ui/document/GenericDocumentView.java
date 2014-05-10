@@ -11,9 +11,11 @@ import java.util.Map;
 
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
+import com.duggan.workflow.client.ui.events.SectionScrollEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -140,6 +142,7 @@ public class GenericDocumentView extends ViewImpl implements
 				img.setUrl("img/blueman.png");
 			}
 		});
+		
 
 		showDefaultFields(false);
 		disableAll();//Hide all buttons

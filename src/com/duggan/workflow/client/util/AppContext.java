@@ -9,6 +9,7 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.Cookies;
@@ -175,5 +176,24 @@ public class AppContext {
 
 	public static String getOrganizationName() {
 		return organizationName;
+	}
+	
+	public static String getUserImageUrl(){
+		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+		if (moduleUrl.endsWith("/")) {
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length() - 1);
+		}
+		String url = moduleUrl
+				+ "/getreport?ACTION=GetUser&userId="
+				+ user.getUserId();
+		return url;
+	}
+	
+	public static String getUserImageUrl(double width){
+		return getUserImageUrl()+"&width="+width;
+	}
+	
+	public static String getUserImageUrl(double width, double height){
+		return getUserImageUrl()+"&width="+width+"&height="+height;
 	}
 }

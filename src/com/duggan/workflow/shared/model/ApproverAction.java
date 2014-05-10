@@ -7,7 +7,8 @@ public enum ApproverAction {
 	RETURNED("returned"),
 	DELEGATE("delegated"),
 	UPLOADFILE("uploaded"),
-	REVIEWED("reviewed");
+	REVIEWED("reviewed"),
+	COMPLETED("completed");
 	
 	String action;
 	

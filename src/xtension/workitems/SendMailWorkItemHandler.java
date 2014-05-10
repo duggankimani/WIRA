@@ -109,6 +109,10 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		}
 		
 		params.put("Approver", approver);
+		
+		String noteaction = isApproved==null?"Completed": 
+			(Boolean)isApproved? "Approved": "Denied";
+		
 		switch (type) {
 		case APPROVALREQUEST_OWNERNOTE:
 			subject = subject+" Approval Request Submitted";
@@ -120,13 +124,11 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			owner = users;
 			break;
 		case TASKCOMPLETED_APPROVERNOTE:
-			String action = (Boolean)isApproved? "Approved": "Denied";
-			subject = subject+" - "+action;
-			body =  "You "+action.toLowerCase()+" Document #"+subject;
+			subject = subject+" - "+noteaction;
+			body =  "You "+noteaction.toLowerCase()+" Document #"+subject;
 			owner= users;
 			break;
-		case TASKCOMPLETED_OWNERNOTE:
-			String noteaction = (Boolean)isApproved? "Approved": "Denied";			
+		case TASKCOMPLETED_OWNERNOTE:						
 			subject = subject+" - "+approver+" "+noteaction;
 			body =  "The following document "+noteaction.toLowerCase()+" by "+approver;
 			break;

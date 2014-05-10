@@ -43,9 +43,12 @@ import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
+import xtension.workitems.FormValidationWorkItemHandler;
 import xtension.workitems.GenerateNotificationWorkItemHandler;
 import xtension.workitems.IntegrationWorkItemHandler;
+import xtension.workitems.SMSWorkItemHandler;
 import xtension.workitems.SendMailWorkItemHandler;
+import xtension.workitems.UpdateActivityStatus;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import xtension.workitems.WiseDigitsDocumentIntegration;
 import bitronix.tm.TransactionManagerServices;
@@ -162,6 +165,15 @@ class BPMSessionManager {
 		//External Systems Integration Work Item 
 		session.getWorkItemManager().registerWorkItemHandler("RestfulCommandIntegration",
 				new IntegrationWorkItemHandler());
+		
+		session.getWorkItemManager().registerWorkItemHandler("AutoValidateApplication",
+				new FormValidationWorkItemHandler());
+		
+		session.getWorkItemManager().registerWorkItemHandler("SendSMS",
+				new SMSWorkItemHandler());
+		
+		session.getWorkItemManager().registerWorkItemHandler("UpdateActivityStatus",
+				new UpdateActivityStatus());
 
 		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 				EmailServiceHelper.getProperty("mail.smtp.host"),
@@ -642,6 +654,7 @@ class BPMSessionManager {
 
 				String processId = "beforetask-notification";
 
+				newValues.put("DocumentId", doc.getId());
 				startProcess(processId, newValues);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -746,7 +759,10 @@ class BPMSessionManager {
 						ownerId = doc.getOwner().getUserId();
 						newValues.put("OwnerId", ownerId.toString());
 					}
-				}
+				}				
+				assert doc.getId()!=null;
+				newValues.put("DocumentId", doc.getId());
+
 
 				String processId = "aftertask-notification";
 

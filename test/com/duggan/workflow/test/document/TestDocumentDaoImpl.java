@@ -3,6 +3,7 @@ package com.duggan.workflow.test.document;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
@@ -18,6 +19,11 @@ public class TestDocumentDaoImpl {
 	}
 	
 	@Test
+	public void checkIfHasAttachment(){
+		DB.getAttachmentDao().getHasAttachment(134L);
+	}
+	
+	@Ignore
 	public void testGetDocumentTypeByDocumentId(){
 		
 		DB.getDocumentDao().getDocumentTypeByDocumentId(100L);
