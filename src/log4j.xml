@@ -25,14 +25,14 @@
     <logger name="com.duggan.workflow.server">
         <level value="DEBUG"/>
     </logger>
-    <logger name="com.duggan.workflow.server.helper.jbpm">
-        <level value="INFO"/>
+    <logger name="xtension.workitems">
+        <level value="DEBUG"/>
     </logger>
     <logger name="bitronix">
         <level value="FATAL"/>
     </logger>
     <root> 
-        <priority value ="FATAL" /> 
+        <priority value ="debug" /> 
         <appender-ref ref="console" /> 
     </root> 
 </log4j:configuration>

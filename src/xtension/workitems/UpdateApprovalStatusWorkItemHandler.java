@@ -22,7 +22,7 @@ public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		Long documentId = new Long((String)workItem.getParameter("DocumentId"));
+		Long documentId = new Long(workItem.getParameter("DocumentId").toString());
 		
 		Object isApproved = workItem.getParameter("isApproved");
 		

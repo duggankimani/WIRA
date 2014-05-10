@@ -81,11 +81,13 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 			logger.debug("[[[[[###############]]]]]>>>>> OWNERID IS NULL :: "
 		+workItem.getName()+" :: WorkItem "+workItem.getId());
 			ownerId = "calcacuervo";
+			
+			//Should return here
 		}
 		owner.add(LoginHelper.get().getUser(ownerId));
 		
 		ApproverAction action =isApproved==null? ApproverAction.COMPLETED:
-			(Boolean)isApproved? ApproverAction.APPROVED: ApproverAction.REJECTED;
+			(Boolean)isApproved? ApproverAction.APPROVED: ApproverAction.REJECTED;	
 		
 		switch (type) {
 		case APPROVALREQUEST_OWNERNOTE:
