@@ -412,7 +412,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	protected abstract DataType getType();
 
 	public void setValue(Object value) {
-		
+		ENV.setContext(field, value);
 	}
 
 	public void setFormId(Long formId) {

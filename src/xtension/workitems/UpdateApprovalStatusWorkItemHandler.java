@@ -1,5 +1,6 @@
 package xtension.workitems;
 
+import org.apache.log4j.Logger;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
@@ -16,15 +17,20 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
  *
  */
 public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
+	
+	private Logger log = Logger.getLogger(UpdateApprovalStatusWorkItemHandler.class);
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		Long documentId = new Long((String)workItem.getParameter("DocumentId"));
+		Long documentId = new Long(workItem.getParameter("DocumentId").toString());
 		
 		Object isApproved = workItem.getParameter("isApproved");
 		
-		if(documentId==null || isApproved==null){
-			throw new IllegalArgumentException("DocumentID and isApproved cannot be null");			
+		if(isApproved==null){
+			//nothing to update
+			log.warn("UpdateApproval status [DocumentId+"+documentId+"] cannot be performed. Reason [isApproved==null]");
+			manager.completeWorkItem(workItem.getId(), workItem.getParameters());
+			return;
 		}
 		
 		/*
@@ -36,7 +42,7 @@ public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
 		String work = workItem.getId()+" : "+workItem.getName()+"; Process Completed = "+workItem.getParameter("isProcessComplete")+
 				" :: Approved = "+isApproved;
 		Boolean processCompleted = workItem.getParameter("isProcessComplete")==null ? false: 
-			(Boolean)workItem.getParameter("isProcessComplete");
+			new Boolean(workItem.getParameter("isProcessComplete").toString());
 				
 		//only update document if process is completed or the document was rejected
 		if(processCompleted || !(Boolean)isApproved){

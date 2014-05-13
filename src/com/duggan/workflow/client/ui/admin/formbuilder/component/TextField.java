@@ -136,6 +136,8 @@ public class TextField extends FieldWidget {
 	
 	@Override
 	public void setValue(Object value) {
+		super.setValue(value);
+		
 		if(value!=null){
 			if(!(value instanceof String)){
 				value = value.toString();

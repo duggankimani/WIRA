@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class AttachmentDaoImpl extends BaseDaoImpl{
@@ -82,10 +83,12 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	}
 
 	public boolean getHasAttachment(Long documentId) {
-		
+		if(documentId==null){
+			return false;
+		}
 		Long count = (Long)em.createQuery("Select count(l) FROM LocalAttachment l " +
-				"where documentId= :documentId")
-		.setParameter("documentId", documentId)
+				"where l.document= :document")
+		.setParameter("document", DB.getDocumentDao().getById(documentId))
 		.getSingleResult();
 		
 		return count>0;

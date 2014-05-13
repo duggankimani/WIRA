@@ -1,13 +1,14 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HR extends FieldWidget {
+public class HR extends FieldWidget{
 
 	private static HRUiBinder uiBinder = GWT.create(HRUiBinder.class);
 
@@ -18,9 +19,12 @@ public class HR extends FieldWidget {
 	
 	@UiField Element lblTitle;
 
+	static String SECTION = "SECTION";
+	
 	public HR() {
 		super();
-		widget = uiBinder.createAndBindUi(this);		
+		widget = uiBinder.createAndBindUi(this);	
+		addProperty(new Property(SECTION, "Section Name", DataType.STRING));
 		add(widget);
 	}
 
@@ -37,5 +41,7 @@ public class HR extends FieldWidget {
 	@Override
 	protected void setCaption(String caption) {
 		lblTitle.setInnerText(caption);
+			
 	}
+	
 }

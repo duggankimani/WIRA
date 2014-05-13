@@ -113,7 +113,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		disable();
 		
 		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(aDoc.getCreated()));
-		
+		System.err.println("Subject>> "+aDoc.getSubject());
 		spnSubject.setInnerText(aDoc.getSubject());
 		
 		if(aDoc.hasAttachment()){
@@ -138,9 +138,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 				spnDocIcon.addStyleName("icon-play");
 			}
 			
-			spnSubject.setInnerText(summ.getName());
-			String desc =summ.getSubject()+" - "+ (summ.getDescription()==null? "": summ.getDescription());
-			spnDescription.setText(desc);
+			if(summ.getName()!=null && !summ.getName().isEmpty()){
+				spnSubject.setInnerText(summ.getName());
+				String desc =summ.getSubject()+" - "+ (summ.getDescription()==null? "": summ.getDescription());
+				spnDescription.setText(desc);
+			}else{
+				spnDescription.setText(summ.getDescription()==null?"": summ.getDescription());
+			}
+			
 			setTaskAction(summ.getStatus().getValidActions());
 			
 			if(!status.equals(HTStatus.COMPLETED)){

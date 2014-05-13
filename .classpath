@@ -78,7 +78,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-impl-2.2.3-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-bam-5.4.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-bpmn2-5.4.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-flow-5.4.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-flow-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-flow/5.4.0.Final/jbpm-flow-5.4.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-flow-builder-5.4.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-human-task-core-5.4.0.Final.jar" sourcepath="/home/duggan/.m2/repository/org/jbpm/jbpm-human-task-core/5.4.0.Final/jbpm-human-task-core-5.4.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jbpm-persistence-jpa-5.4.0.Final.jar"/>

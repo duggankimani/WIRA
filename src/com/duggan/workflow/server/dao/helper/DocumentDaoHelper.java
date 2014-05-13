@@ -371,10 +371,16 @@ public class DocumentDaoHelper {
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
 
-		if (content.get("document") != null) {
+		if(content.get("documentOut") != null){
+			
+			doc = (Document) content.get("documentOut");
+			
+		}else if (content.get("document") != null) {
+			
 			doc = (Document) content.get("document");
+			
 		} else {
-
+			System.err.println("Document is null!!");
 			String description = content.get("description") == null ? null
 					: (String) content.get("description");
 
@@ -391,14 +397,19 @@ public class DocumentDaoHelper {
 			doc.setSubject(subject);
 			doc.setValue(value);
 			doc.setPriority(priority);
+
 		}
 		
-		Object idStr = content.get("documentId");
-		if (idStr == null || idStr.equals("null")) {
-			idStr = null;
+		if(doc.getId()==null){
+			
+			Object idStr = content.get("documentId");
+			if (idStr == null || idStr.equals("null")) {
+				idStr = null;
+			}
+			Long id = idStr == null ? null : new Long(idStr.toString());
+			doc.setId(id);
+			
 		}
-		Long id = idStr == null ? null : new Long(idStr.toString());
-		doc.setId(id);
 		
 		return doc;
 	}

@@ -6,6 +6,10 @@ import java.util.Map;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.component.CommentBox;
+import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler;
@@ -51,6 +55,8 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -252,7 +258,22 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				completeDocument(true);
+				HTMLPanel panel = new HTMLPanel("");
+				panel.add(new InlineLabel("Do you want to reject this request?"));
+				TextArea area = new TextArea();
+				area.setPlaceholder("Rejection reason or comments");
+				panel.add(area);
+				
+				AppManager.showPopUp("Rejection Comments", panel, new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Reject")){
+							//create comment
+							completeDocument(true);
+						}						
+					}
+				}, "Reject", "Cancel");				
 			}
 		});
 		
@@ -260,7 +281,23 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				completeDocument(false);
+				
+				HTMLPanel panel = new HTMLPanel("");
+				panel.add(new InlineLabel("Do you want to reject this request?"));
+				TextArea area = new TextArea();
+				area.setPlaceholder("Rejection reason or comments");
+				panel.add(area);
+				
+				AppManager.showPopUp("Rejection Comments", panel, new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Reject")){
+							//create comment
+							completeDocument(false);
+						}						
+					}
+				}, "Reject", "Cancel");				
 			}
 		});
 		
@@ -294,7 +331,7 @@ public class TaskItemPresenter extends
 			delegate(workflow,action, values);
 			return;
 		}			
-			
+							
 		dispatcher.execute(workflow, new TaskServiceCallback<ExecuteWorkflowResult>() {
 			
 			@Override

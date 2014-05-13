@@ -69,6 +69,10 @@ public class ProcessState extends Composite {
 		
 		if(state.getActors()!=null){
 			for(HTUser user: state.getActors()){
+				if(user==null){
+					continue;
+				}
+				
 				String actor = user.getFullName()+" ("+
 						(AppContext.isCurrentUser(user.getUserId())? "You": user.getUserId())
 						+"), ";

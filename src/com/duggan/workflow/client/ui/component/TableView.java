@@ -22,6 +22,7 @@ public class TableView extends Composite {
 	
 	@UiField HTMLPanel panelHeader;
 	@UiField HTMLPanel panelBody;
+	@UiField HTMLPanel panelFooter;
 
 	private boolean isAutoNumber=true;
 	private int count=0;
@@ -76,6 +77,21 @@ public class TableView extends Composite {
 			row.add(getTd(widget));
 		}
 		panelBody.add(row);
+	}
+	
+	public void setFooter(List<Widget> widgets){
+		panelFooter.clear();
+		HTMLPanel row = new HTMLPanel("");
+		row.addStyleName("tr");
+			
+		if(isAutoNumber){
+			row.add(getTd(new InlineLabel()));
+		}
+		
+		for(Widget widget: widgets){
+			row.add(getTd(widget));
+		}
+		panelFooter.add(row);
 	}
 
 	private Widget getTd(Widget widget) {

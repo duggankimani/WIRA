@@ -52,6 +52,7 @@ public class ExecuteWorkflowActionHandler extends
 					document.setValue(key,value);
 				}
 			}
+		
 			vals.put("documentOut", document);
 		}
 		

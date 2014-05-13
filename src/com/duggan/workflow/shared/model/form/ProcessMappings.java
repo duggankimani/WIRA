@@ -28,4 +28,7 @@ public class ProcessMappings {
 		return newName;
 	}
 	
+	public boolean containsOutputMappingFrom(String outputKey){
+		return outMappings.containsKey(outputKey);
+	}
 }

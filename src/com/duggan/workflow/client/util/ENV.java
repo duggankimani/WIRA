@@ -119,4 +119,9 @@ public class ENV {
 		return observableFields.get(fld)!=null;
 	}
 
+	public static void setContext(String qualifiedName, Object value) {
+		
+		values.put(qualifiedName, value);
+	}
+
 }

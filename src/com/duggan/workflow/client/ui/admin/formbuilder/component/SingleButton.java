@@ -1,12 +1,15 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
@@ -43,6 +46,7 @@ public class SingleButton extends FieldWidget {
 	public static String SUBMITTYPE="SUBMITTYPE";
 	static String VALUES="VALUES";
 	static String VALIDATEFORM="VALIDATEFORM";
+	static String CUSTOMHANDLERCLASS="CUSTOMHANDLERCLASS";
 	
 	public SingleButton() {
 		super();
@@ -52,8 +56,9 @@ public class SingleButton extends FieldWidget {
 		addProperty(new Property(SUBMITTYPE, "Type", DataType.SELECTBASIC,
 				new KeyValuePair("StartProcess", "Start Process"),
 				new KeyValuePair("CompleteProcess", "Complete Process")));
-		addProperty(new Property(VALUES, "Values", DataType.STRING));
 		
+		addProperty(new Property(VALUES, "Values", DataType.STRING));
+		addProperty(new Property(CUSTOMHANDLERCLASS, "Custom Handler Class", DataType.STRING));
 		Property property = new Property(VALIDATEFORM, "Validate Form", DataType.CHECKBOX);
 		property.setValue(new BooleanValue(null, VALIDATEFORM, true));
 		addProperty(property);
@@ -123,7 +128,10 @@ public class SingleButton extends FieldWidget {
 
 	private void submit() {
 		String submitType = getPropertyValue(SUBMITTYPE);
-		AppContext.fireEvent(new ButtonClickEvent(submitType, getValues()));
+		String customHandler = getPropertyValue(CUSTOMHANDLERCLASS);
+		ButtonClickEvent event = new ButtonClickEvent(submitType, getValues());
+		event.setCustomHandlerClass(customHandler);
+		AppContext.fireEvent(event);
 	}
 	
 	private Map<String, Value> getValues() {
@@ -141,11 +149,53 @@ public class SingleButton extends FieldWidget {
 				
 				String key = valueSet[0];
 				String value=valueSet[1];
-				if(key!=null && value!=null)
-					values.put(key, new StringValue(null, key, value));
+				if(key!=null && value!=null){
+					List<String> names = new ArrayList<String>();
+					getNames(value, names, 0);
+					
+					if(names.size()>0){
+						String buttonQualifiedName = field.getQualifiedName();
+						
+						for(String fieldName: names){
+							String qualifiedName = buttonQualifiedName.replace(field.getName(),fieldName);
+							Object fieldValue = ENV.getValue(qualifiedName);
+							
+							if(fieldValue!=null){
+								value = value.replaceAll("\\{"+fieldName+"\\}", fieldValue.toString());
+							}
+						}
+					}
+					
+					System.err.println("Added >> "+key+" = "+value);
+					values.put(key, new StringValue(null, key.trim(), value.trim()));
+				}
 			}
 		}
+	
 		return values;
+	}
+	
+
+	private static void getNames(String originalStr, List<String> names, int startPos){
+		if(startPos==-1){
+			return;
+		}
+		if(startPos>=originalStr.length()){
+			return;
+		}
+		
+		int oIndex = originalStr.indexOf('{',startPos);
+		if(oIndex==-1){
+			return;
+		}
+		
+		int cIdx = originalStr.indexOf("}", oIndex);
+		if(cIdx==-1)
+			return;		
+		names.add(originalStr.substring(oIndex+1, cIdx));
+	
+		startPos=cIdx+1;				
+		getNames(originalStr, names, startPos);
 	}
 
 	@Override

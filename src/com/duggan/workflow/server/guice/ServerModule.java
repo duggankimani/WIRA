@@ -112,6 +112,8 @@ import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.server.actionhandlers.GetSettingsRequestActionHandler;
 import com.duggan.workflow.shared.requests.SaveSettingsRequest;
 import com.duggan.workflow.server.actionhandlers.SaveSettingsRequestActionHandler;
+import com.duggan.workflow.shared.requests.GenericRequest;
+import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -290,5 +292,8 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(SaveSettingsRequest.class,
 				SaveSettingsRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GenericRequest.class, GenericRequestActionHandler.class,
+				SessionValidator.class);
 	}
 }

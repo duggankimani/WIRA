@@ -20,6 +20,7 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.SingleButton;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
+import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
 import com.duggan.workflow.client.ui.delegate.msg.DelegationMessageView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
@@ -49,6 +50,7 @@ import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
@@ -80,6 +82,7 @@ import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
+import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
@@ -93,6 +96,7 @@ import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
+import com.duggan.workflow.shared.responses.GenericResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
@@ -107,6 +111,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -269,33 +274,6 @@ public class GenericDocumentPresenter extends
 				save(comment);
 			}
 		});
-		
-		//testing code
-		getView().getSimulationBtn().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-//				Document doc = new Document();
-//				doc.setCreated(new Date());
-//				doc.setDateDue(new Date());
-//				doc.setSubject("CNT/B&C/01/2013");
-//				doc.setDescription("Contract for the constrution of Hall6");
-//				doc.setPartner("B&C Contactors");
-//				doc.setValue("5.5Mil");
-//				doc.setType(DocumentType.CONTRACT);
-				
-				requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc), new TaskServiceCallback<ApprovalRequestResult>(){
-					@Override
-					public void processResult(ApprovalRequestResult result) {						
-						PlaceRequest request = new PlaceRequest("home").
-								with("type", TaskType.DRAFT.getURL());
-						
-						placeManager.revealPlace(request);
-						
-					}
-				});
-			}
-		});
 
 		getView().getClaimLink().addClickHandler(new ClickHandler() {
 			
@@ -333,22 +311,6 @@ public class GenericDocumentPresenter extends
 				fireEvent(new ExecTaskEvent(taskId, Actions.RESUME));
 			}
 		});
-		
-//		getView().getCompleteLink().addClickHandler(new ClickHandler() {
-//			
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				if(getView().isValid()){
-//					
-//					Map<String, Value> values = getView().getValues();
-//					if(values==null){
-//						values = new HashMap<String, Value>();
-//					}
-//					fireEvent(new CompleteDocumentEvent(taskId, values));
-//				}
-//				fireEvent(new ExecTaskEvent(taskId, Actions.COMPLETE));
-//			}
-//		});
 		
 		getView().getDelegateLink().addClickHandler(new ClickHandler() {
 			
@@ -390,19 +352,52 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				Map<String, Value> values= new HashMap<String, Value>();
-				values.put("isApproved", new BooleanValue(true));
-				complete(values, true);
+				final ConfirmAction confirm = new ConfirmAction("Do you want to approve this request?",
+						"Approval comments");
+				
+				AppManager.showPopUp("Approval Comments", confirm, new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Reject")){
+							//create comment
+							Map<String, Value> values= new HashMap<String, Value>();
+							values.put("isApproved", new BooleanValue(true));
+							complete(values, true);	
+							if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
+								save(confirm.getComment());
+							}
+						}						
+					}
+				}, "Reject", "Cancel");		
+				
 			}
 		});
 		
 		getView().getRejectLink().addClickHandler(new ClickHandler() {
 			
 			@Override
-			public void onClick(ClickEvent event) {				
-				Map<String, Value> values = new HashMap<String, Value>();
-				values.put("isApproved", new BooleanValue(false));
-				complete(values, false);
+			public void onClick(ClickEvent event) {							
+				final ConfirmAction confirm = new ConfirmAction("Do you want to reject this request?",
+						"Rejection reason or comments");
+				
+				AppManager.showPopUp("Rejection Comments", confirm, new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Reject")){
+							//create comment
+							Map<String, Value> values = new HashMap<String, Value>();
+							values.put("isApproved", new BooleanValue(false));
+							complete(values, false);		
+							
+							if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
+								save(confirm.getComment());
+							}
+						}						
+					}
+				}, "Reject", "Cancel");		
+				
 			}
 		});
 		
@@ -670,13 +665,14 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
 		this.form = form;
-		if(form.getFields()==null){
+		if(form.getFields()==null || form.getFields().isEmpty()){
 			getView().showDefaultFields(true);
 			return;
 		}
 			
 		Map<String, Value> values = doc.getValues();
 		//System.err.println("Details >>>>> "+doc.getDetails().size());
+		
 		for(Field field: form.getFields()){
 			String name = field.getName();
 			field.setDocId(doc.getId()+""); //Add DocId to all field
@@ -737,6 +733,15 @@ public class GenericDocumentPresenter extends
 			}
 				
 		}
+		
+
+		//Add Form Level Info to Env
+//		Field protoField = form.getFields().get(0);
+//		String protoQualifiedName = protoField.getQualifiedName();
+//		protoQualifiedName = protoQualifiedName.replace(protoField.getName(),"subject");
+//		System.err.println("Put>> "+protoQualifiedName+": "+doc.getSubject());
+//		ENV.setContext(protoQualifiedName, doc.getSubject());
+//		
 		getView().setForm(form);
 	}
 
@@ -1016,16 +1021,29 @@ public class GenericDocumentPresenter extends
 	public void onButtonClick(ButtonClickEvent event) {
 		String requestType = event.getRequestType();
 		
-		if(requestType==null){
+		if(requestType==null && event.getCustomHandlerClass()==null){
 			return;
 		}
 		
-		if(requestType.equals("StartProcess")){
-			
-			forwardForApproval();
-			
-		}else if(requestType.equals("CompleteProcess")){
-			complete(event.getValues(),event.isValidateForm());
+		if(requestType!=null){
+			if(requestType.equals("StartProcess")){
+				forwardForApproval();
+			}else if(requestType.equals("CompleteProcess")){
+				complete(event.getValues(),event.isValidateForm());
+			}
 		}
+		else{
+			executeGenericCode(event.getValues(), event.getCustomHandlerClass());
+		}
+	}
+
+	private void executeGenericCode(Map<String, Value> values,
+			String customHandlerClass) {
+		requestHelper.execute(new GenericRequest(values, customHandlerClass), 
+				new TaskServiceCallback<GenericResponse>() {
+			@Override
+			public void processResult(GenericResponse aResponse) {	
+			}
+		});
 	}
 }
