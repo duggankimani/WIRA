@@ -3,9 +3,12 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.FormImportView;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
@@ -13,6 +16,7 @@ import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
 import com.duggan.workflow.client.ui.events.SaveFormDesignEvent.SaveFormDesignHandler;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
@@ -32,18 +36,27 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class FormBuilderPresenter extends
-		PresenterWidget<FormBuilderPresenter.IFormBuilderView> implements
+		Presenter<FormBuilderPresenter.IFormBuilderView,FormBuilderPresenter.MyProxy> implements
 		SavePropertiesHandler, PropertyChangedHandler, SaveFormDesignHandler {
 
 	public interface IFormBuilderView extends View {
@@ -63,6 +76,17 @@ public class FormBuilderPresenter extends
 		void clear();
 		String getFormName();
 	}
+	
+	@ProxyCodeSplit
+	@NameToken(NameTokens.formbuilder)
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface MyProxy extends TabContentProxyPlace<FormBuilderPresenter> {
+	}
+	
+	@TabInfo(container = AdminHomePresenter.class)
+    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+        return new TabDataExt("Form Builder","icon-edit",4, adminGatekeeper);
+    }
 
 	@Inject
 	DispatchAsync dispatcher;
@@ -71,10 +95,10 @@ public class FormBuilderPresenter extends
 	
 	@Inject
 	public FormBuilderPresenter(final EventBus eventBus,
-			final IFormBuilderView view) {
-		super(eventBus, view);
+			final IFormBuilderView view, MyProxy proxy) {
+		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
 	}
-
+	
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -95,7 +119,7 @@ public class FormBuilderPresenter extends
 							return;
 						}
 						
-						History.newItem("adminhome;page=formbuilder;formid="+form.getId(), false);
+						History.newItem("formbuilder;formid="+form.getId(), false);
 						loadForm(form.getId());						
 					}
 				});
@@ -234,6 +258,13 @@ public class FormBuilderPresenter extends
 					}
 				});
 	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		loadForms();
+		
+	}
 
 	protected void loadForm(Long id) {
 		GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL,
@@ -269,12 +300,6 @@ public class FormBuilderPresenter extends
 						getView().setForms(response.getForms());
 					}
 				});
-	}
-
-	@Override
-	protected void onReset() {
-		super.onReset();
-		loadForms();
 	}
 	
 	private void loadForms() {

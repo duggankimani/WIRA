@@ -1,10 +1,7 @@
 package com.duggan.workflow.client.ui.activityfeed.components;
 
-import com.duggan.workflow.client.ui.images.ImageResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

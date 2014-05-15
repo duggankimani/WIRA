@@ -14,6 +14,7 @@ import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomeView;
+import com.duggan.workflow.client.ui.admin.TabPanel;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardView;
 import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
@@ -40,6 +41,8 @@ import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsView;
+import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
+import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserView;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
@@ -74,16 +77,14 @@ import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.notifications.note.NoteView;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupView;
+import com.duggan.workflow.client.ui.profile.ProfilePresenter;
+import com.duggan.workflow.client.ui.profile.ProfileView;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocView;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormView;
 import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
 import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewView;
-import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewPresenter;
-import com.duggan.workflow.client.ui.task.personalreview.PersonalReviewView;
-import com.duggan.workflow.client.ui.tasklist.tabs.TabsPresenter;
-import com.duggan.workflow.client.ui.tasklist.tabs.TabsView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
@@ -103,10 +104,6 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
-import com.duggan.workflow.client.ui.profile.ProfilePresenter;
-import com.duggan.workflow.client.ui.profile.ProfileView;
-import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
-import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -130,13 +127,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);
-
-		bindPresenterWidget(TabsPresenter.class, TabsPresenter.MyView.class,
-				TabsView.class);
-
-		bindPresenter(PersonalReviewPresenter.class,
-				PersonalReviewPresenter.MyView.class, PersonalReviewView.class,
-				PersonalReviewPresenter.MyProxy.class);
 
 		bindPresenter(PersonnelReviewPresenter.class,
 				PersonnelReviewPresenter.MyView.class,
@@ -206,14 +196,18 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(ProcessItemPresenter.class,
 				ProcessItemPresenter.MyView.class, ProcessItemView.class);
 		
-		bindPresenterWidget(ProcessPresenter.class, ProcessPresenter.IProcessView.class, ProcessView.class);
+		bindPresenter(ProcessPresenter.class, ProcessPresenter.IProcessView.class,
+				ProcessView.class,
+				ProcessPresenter.MyProxy.class);
 
 
-		bindPresenterWidget(UserPresenter.class, UserPresenter.MyView.class,
-				UserView.class);
+		bindPresenter(UserPresenter.class, UserPresenter.MyView.class,
+				UserView.class,
+				UserPresenter.MyProxy.class);
 
-		bindPresenterWidget(DashboardPresenter.class,
-				DashboardPresenter.IDashboardView.class, DashboardView.class);
+		bindPresenter(DashboardPresenter.class,
+				DashboardPresenter.IDashboardView.class, DashboardView.class,
+				DashboardPresenter.MyProxy.class);
 
 		bindPresenterWidget(ReportsPresenter.class,
 				ReportsPresenter.MyView.class, ReportsView.class);
@@ -226,8 +220,9 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(GroupPresenter.class, GroupPresenter.MyView.class, GroupView.class);
 
-		bindPresenterWidget(FormBuilderPresenter.class,
-				FormBuilderPresenter.IFormBuilderView.class, FormBuilderView.class);
+		bindPresenter(FormBuilderPresenter.class,
+				FormBuilderPresenter.IFormBuilderView.class, FormBuilderView.class,
+				FormBuilderPresenter.MyProxy.class);
 
 		bindPresenterWidget(PropertyPanelPresenter.class,
 				PropertyPanelPresenter.MyView.class, PropertyPanelView.class);
@@ -251,9 +246,9 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(IFrameDataPresenter.class,
 				IFrameDataPresenter.IFrameView.class, IFrameDataView.class);
 
-		bindPresenterWidget(DataSourcePresenter.class,
+		bindPresenter(DataSourcePresenter.class,
 				DataSourcePresenter.IDataSourceView.class,
-				DataSourceView.class);
+				DataSourceView.class, DataSourcePresenter.MyProxy.class);
 		
 		bindPresenterWidget(DSItemPresenter.class,
 				DSItemPresenter.MyView.class,
@@ -272,11 +267,13 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(LineGraphPresenter.class, LineGraphPresenter.ILineGraphView.class,
 				LineGraphView.class);
 
-		bindPresenterWidget(SettingsPresenter.class, SettingsPresenter.ISettingsView.class,
-				SettingsView.class);
+		bindPresenter(SettingsPresenter.class, SettingsPresenter.ISettingsView.class,
+				SettingsView.class, SettingsPresenter.MyProxy.class);
 		
 		bindPresenterWidget(TableDataPresenter.class, TableDataPresenter.ITableDataView.class,
 				TableDataView.class);
+		
+		 bind(TabPanel.class);
 
 	}
 }

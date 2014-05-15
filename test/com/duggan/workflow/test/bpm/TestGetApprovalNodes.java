@@ -2,7 +2,6 @@ package com.duggan.workflow.test.bpm;
 
 import java.util.List;
 
-import org.drools.definition.process.Node;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

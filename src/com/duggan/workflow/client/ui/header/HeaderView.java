@@ -3,12 +3,10 @@ package com.duggan.workflow.client.ui.header;
 import java.util.Date;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
@@ -19,6 +17,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -114,7 +113,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	}
 
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 		if (slot == HeaderPresenter.NOTIFICATIONS_SLOT) {
 			notificationsContainer.clear();
 			if (content != null) {

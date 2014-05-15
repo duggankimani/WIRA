@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
 import java.util.List;
 
-import com.duggan.workflow.client.ui.admin.formbuilder.component.DateField;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.CheckBoxField;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.DateField;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextField;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -12,8 +12,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
 
 public class PropertyEditor extends Composite {
 

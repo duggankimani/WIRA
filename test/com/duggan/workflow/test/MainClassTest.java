@@ -1,8 +1,5 @@
 package com.duggan.workflow.test;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 
 public class MainClassTest {

@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.io.Serializable;
-import java.lang.String;
 
 import com.duggan.workflow.shared.model.Listable;
 

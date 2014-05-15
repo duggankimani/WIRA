@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.HTSummary;
-
 import java.util.List;
+
+import com.duggan.workflow.shared.model.Doc;
 
 public class GetTaskListResult extends BaseResponse {
 

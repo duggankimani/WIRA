@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import org.matheclipse.parser.client.Parser;
-import org.matheclipse.parser.client.ast.ASTNode;
 import org.matheclipse.parser.client.eval.ComplexEvaluator;
 import org.matheclipse.parser.client.eval.ComplexVariable;
 

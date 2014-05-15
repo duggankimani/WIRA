@@ -6,7 +6,6 @@ package org.jbpm.executor;
 
 import org.jbpm.executor.impl.ExecutorServiceEntryPointImpl;
 
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 
 

@@ -1,10 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
-
-import java.lang.Long;
 
 public class GetCommentsRequest extends BaseRequest<GetCommentsResponse> {
 

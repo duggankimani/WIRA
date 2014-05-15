@@ -1,8 +1,8 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.EventHandler;
 import com.duggan.workflow.shared.model.Doc;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class PresentTaskEvent extends

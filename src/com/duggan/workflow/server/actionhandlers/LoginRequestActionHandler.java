@@ -13,7 +13,7 @@ import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class LoginRequestActionHandler extends

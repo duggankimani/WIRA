@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.Comment;
 import java.util.List;
+
+import com.duggan.workflow.shared.model.Comment;
 
 public class GetCommentsResponse extends BaseResponse {
 

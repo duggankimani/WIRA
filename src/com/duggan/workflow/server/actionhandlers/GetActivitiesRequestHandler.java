@@ -2,7 +2,6 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetActivitiesRequestHandler extends

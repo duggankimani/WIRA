@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.requests;
 
 
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.gwtplatform.dispatch.shared.ActionImpl;
+import com.gwtplatform.dispatch.rpc.shared.ActionImpl;
 
 /**
  * 

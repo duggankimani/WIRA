@@ -1,27 +1,38 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataPresenter;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.shared.model.dashboard.ChartType;
 import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
 import com.duggan.workflow.shared.responses.GetDashBoardDataResponse;
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.TabData;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class DashboardPresenter extends
-		PresenterWidget<DashboardPresenter.IDashboardView> {
+		Presenter<DashboardPresenter.IDashboardView, DashboardPresenter.MyProxy> {
 
 	public interface IDashboardView extends View {
 
@@ -29,7 +40,18 @@ public class DashboardPresenter extends
 				Integer failureCount);
 		
 	}
-
+	
+	@ProxyCodeSplit
+	@NameToken(NameTokens.dashboards)
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface MyProxy extends TabContentProxyPlace<DashboardPresenter> {
+	}
+	
+	@TabInfo(container = AdminHomePresenter.class)
+    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+        return new TabDataExt("Dashboards","icon-dashboard",1, adminGatekeeper);
+    }
+	
 	private IndirectProvider<PieChartPresenter> pieChartFactory;
 	private IndirectProvider<LineGraphPresenter> lineGraphFactory;
 	private IndirectProvider<TableDataPresenter> tableFactory;
@@ -46,29 +68,24 @@ public class DashboardPresenter extends
 	@Inject DispatchAsync requestHelper;
 	
 	@Inject
-	public DashboardPresenter(final EventBus eventBus, final IDashboardView view,
+	public DashboardPresenter(final EventBus eventBus, final IDashboardView view,MyProxy proxy,
 			Provider<PieChartPresenter>pieChartProvider,
 			Provider<LineGraphPresenter>lineGraphProvider,
 			Provider<TableDataPresenter>tableDataProvider) {
-		super(eventBus, view);
+		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
 		pieChartFactory = new StandardProvider<PieChartPresenter>(pieChartProvider);
 		lineGraphFactory = new StandardProvider<LineGraphPresenter>(lineGraphProvider);
 		tableFactory = new StandardProvider<TableDataPresenter>(tableDataProvider);
 	}
-
+	
 	@Override
-	protected void onReset() {
-		super.onReset();
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
 		loadCharts();
 	}
 	
 	boolean loaded=false;
-	int i;
 	private void loadCharts() {
-		if(loaded){
-			//System.err.println("Reset Called Again..........."+(++i));
-			return;
-		}
 		
 		loaded=true;
 		

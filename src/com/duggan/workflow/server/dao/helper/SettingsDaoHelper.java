@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.dao.helper;
 
+import static com.duggan.workflow.server.dao.helper.FormDaoHelper.getValue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +12,6 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
-
-import static com.duggan.workflow.server.dao.helper.FormDaoHelper.*;
 
 public class SettingsDaoHelper {
 

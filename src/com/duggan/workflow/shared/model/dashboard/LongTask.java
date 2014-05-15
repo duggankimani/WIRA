@@ -1,8 +1,6 @@
 package com.duggan.workflow.shared.model.dashboard;
 
 import java.io.Serializable;
-import java.lang.String;
-import java.lang.Integer;
 
 public class LongTask implements Serializable {
 

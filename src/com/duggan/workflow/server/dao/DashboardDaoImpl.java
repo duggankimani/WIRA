@@ -6,13 +6,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
-import com.ibm.icu.util.Calendar;
 
 public class DashboardDaoImpl extends BaseDaoImpl{
 

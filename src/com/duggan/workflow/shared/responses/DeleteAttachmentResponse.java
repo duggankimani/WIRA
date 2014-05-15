@@ -1,6 +1,5 @@
 package com.duggan.workflow.shared.responses;
 
-import java.lang.Boolean;
 
 public class DeleteAttachmentResponse extends BaseResponse {
 

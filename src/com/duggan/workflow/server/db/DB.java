@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.db;
 
 import java.sql.Connection;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -9,7 +8,6 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.sql.DataSource;
 import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
@@ -32,9 +30,7 @@ import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
-import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 /**
  * <p>

@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Attachment implements Serializable {

@@ -7,7 +7,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -22,7 +21,6 @@ import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
 import com.duggan.workflow.server.rest.service.impl.IncomingRequestImpl;
 import com.duggan.workflow.shared.model.HTUser;
-import com.sun.jersey.api.client.ClientResponse.Status;
 
 @Path("/request/")
 public class CommandBasedRestService{

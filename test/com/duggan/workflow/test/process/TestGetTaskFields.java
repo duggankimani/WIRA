@@ -1,7 +1,5 @@
 package com.duggan.workflow.test.process;
 
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

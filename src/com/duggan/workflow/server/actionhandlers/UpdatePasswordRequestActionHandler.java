@@ -1,13 +1,11 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.duggan.workflow.shared.responses.UpdatePasswordResponse;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class UpdatePasswordRequestActionHandler extends 

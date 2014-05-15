@@ -1,15 +1,12 @@
 package com.duggan.workflow.test.process;
 
 import java.util.List;
-import java.util.Map;
 
-import org.jbpm.task.Deadlines;
 import org.jbpm.task.Delegation;
 import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
-import org.jbpm.task.service.TaskClient;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.junit.After;
 import org.junit.Before;

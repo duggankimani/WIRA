@@ -10,8 +10,8 @@ import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.HTUser;
 
 public class CommentDaoHelper {
 

@@ -8,10 +8,10 @@ import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.dispatch.server.actionvalidator.ActionValidator;
-import com.gwtplatform.dispatch.shared.Action;
+import com.gwtplatform.dispatch.rpc.server.actionvalidator.ActionValidator;
+import com.gwtplatform.dispatch.rpc.shared.Action;
+import com.gwtplatform.dispatch.rpc.shared.Result;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.gwtplatform.dispatch.shared.Result;
 
 /**
  * Validate current Session

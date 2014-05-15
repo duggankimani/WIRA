@@ -3,23 +3,23 @@ package com.duggan.workflow.client.service;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.InvocationException;
-import com.gwtplatform.dispatch.shared.ServiceException;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.dispatch.rpc.shared.ServiceException;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 
 
 	@Override
 	public void onFailure(Throwable caught) {	
+	
 		if(caught instanceof InvalidSessionException){
 			AppContext.destroy();
-			AppContext.getPlaceManager().revealPlace(new PlaceRequest("login"));
+			AppContext.getPlaceManager().revealPlace(new PlaceRequest.Builder().nameToken("login").build());
 			return;
 		}
 		

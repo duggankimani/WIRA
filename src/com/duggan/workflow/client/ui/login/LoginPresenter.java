@@ -19,21 +19,21 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class LoginPresenter extends
 		Presenter<LoginPresenter.ILoginView, LoginPresenter.MyProxy> {
@@ -86,7 +86,7 @@ public class LoginPresenter extends
 		if(AppContext.isValid()){
 			
 			if(AppContext.isCurrentUserAdmin()){
-				History.newItem(NameTokens.adminhome);
+				History.newItem(NameTokens.processes);
 			}else{
 				placeManager.revealDefaultPlace();
 			}
@@ -165,7 +165,7 @@ public class LoginPresenter extends
 //												" :: "+result.getUser().getGroupsAsString());
 										
 										if(isAdmin && redirect.equals("home")){
-											History.newItem(NameTokens.adminhome);
+											History.newItem(NameTokens.processes);
 										}else{
 											History.newItem(redirect);
 										}
@@ -173,7 +173,7 @@ public class LoginPresenter extends
 									}else{
 										//System.err.println("No Redirect");
 										if(result.getUser().isAdmin()){
-											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
+											placeManager.revealPlace(new PlaceRequest(NameTokens.processes));
 										}else{
 											placeManager.revealDefaultPlace();
 										}

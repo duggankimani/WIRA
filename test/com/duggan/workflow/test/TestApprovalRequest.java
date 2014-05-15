@@ -3,7 +3,6 @@ package com.duggan.workflow.test;
 import java.io.IOException;
 import java.util.List;
 
-import org.aspectj.lang.annotation.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +13,6 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 

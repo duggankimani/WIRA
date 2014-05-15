@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.Notification;
 import java.util.List;
+
+import com.duggan.workflow.shared.model.Notification;
 
 public class GetNotificationsActionResult extends BaseResponse{
 

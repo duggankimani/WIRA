@@ -5,7 +5,7 @@
 package org.jbpm.executor.impl;
 
 import java.util.List;
-import javax.inject.Inject;
+
 import org.jbpm.executor.ExecutorServiceEntryPoint;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
@@ -14,8 +14,6 @@ import org.jbpm.executor.api.ExecutorQueryService;
 import org.jbpm.executor.api.ExecutorRequestAdminService;
 import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
-
-import com.duggan.workflow.server.db.DBTrxProvider;
 
 /**
  *

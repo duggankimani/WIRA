@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
+import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveDSConfigResponse;
-import com.duggan.workflow.shared.model.DSConfiguration;
 
 public class SaveDSConfigRequest extends BaseRequest<SaveDSConfigResponse> {
 

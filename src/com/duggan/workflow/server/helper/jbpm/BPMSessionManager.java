@@ -34,7 +34,6 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
-import org.jbpm.task.Deadline;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.event.TaskEventListener;

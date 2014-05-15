@@ -11,15 +11,12 @@ import java.util.Map;
 
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
-import com.duggan.workflow.client.ui.events.SectionScrollEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.DocStatus;
-import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
@@ -41,6 +38,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -525,7 +523,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 
 		if(slot==ACTIVITY_SLOT){
 			panelActivity.clear();
@@ -543,7 +541,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	@Override
-	public void addToSlot(Object slot, Widget content) {
+	public void addToSlot(Object slot, IsWidget content) {
 		
 		if(slot==ACTIVITY_SLOT){
 			

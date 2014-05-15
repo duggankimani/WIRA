@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.admin.settings;
 
+import gwtupload.client.IUploader;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gwtupload.client.IUploader;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;

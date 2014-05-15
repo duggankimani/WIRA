@@ -1,12 +1,10 @@
 package com.duggan.workflow.shared.requests;
 
+import java.util.Map;
+
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
-
-import java.util.Map;
-import java.lang.String;
 
 public class GenericRequest extends BaseRequest<GenericResponse> {
 

@@ -2,7 +2,6 @@ package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
-import java.lang.Long;
 
 public class GetProcessStatusRequest extends
 		BaseRequest<GetProcessStatusRequestResult> {

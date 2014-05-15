@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.HTStatus;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class ToolbarView extends ViewImpl implements ToolbarPresenter.MyView {
 

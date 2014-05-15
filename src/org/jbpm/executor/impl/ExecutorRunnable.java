@@ -13,12 +13,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Inject;
+
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.transaction.SystemException;
-import javax.transaction.Transaction;
-import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.jbpm.executor.api.Command;
@@ -29,8 +27,6 @@ import org.jbpm.executor.api.ExecutionResults;
 import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
 import org.jbpm.executor.entities.STATUS;
-
-import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.db.DB;
 

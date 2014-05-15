@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.dao.helper;
 
+import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,13 +11,10 @@ import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
-
-import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.*;
 
 public class ProcessDefHelper {
 

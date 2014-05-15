@@ -6,7 +6,7 @@ import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetProcessRequestActionHandler extends

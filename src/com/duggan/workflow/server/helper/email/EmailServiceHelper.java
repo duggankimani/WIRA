@@ -39,15 +39,25 @@ public class EmailServiceHelper {
 		
 		try {
 			props = new Properties();
+			Object auth = SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_AUTH);
+			Object host = SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_HOST);
+			Object password = SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PASSWORD);
+			Object account = SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_ACCOUNT);
+			Object port = SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PORT);
+			Object protocol = SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PROTOCOL);
+			Object starttls= SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_STARTTLS);
 			
-			props.put(SETTINGNAME.SMTP_AUTH.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_AUTH));
-			props.put(SETTINGNAME.SMTP_HOST.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_HOST));
-			props.put(SETTINGNAME.SMTP_PASSWORD.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PASSWORD));
-			props.put(SETTINGNAME.SMTP_ACCOUNT.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_ACCOUNT));
-			props.put(SETTINGNAME.SMTP_PORT.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PORT));
-			props.put(SETTINGNAME.SMTP_PROTOCOL.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_PROTOCOL));
-			props.put(SETTINGNAME.SMTP_STARTTLS.getKey(), SettingsDaoHelper.getSettingValue(SETTINGNAME.SMTP_STARTTLS));
+			props.setProperty(SETTINGNAME.SMTP_AUTH.getKey(), auth==null?null: auth.toString());
+			props.setProperty(SETTINGNAME.SMTP_HOST.getKey(), host==null?null: host.toString());
+			props.setProperty(SETTINGNAME.SMTP_PASSWORD.getKey(), password==null?null: password.toString());
+			props.setProperty(SETTINGNAME.SMTP_ACCOUNT.getKey(), account==null?null: account.toString());
+			props.setProperty(SETTINGNAME.SMTP_PORT.getKey(), port==null?null: port.toString());
+			props.setProperty(SETTINGNAME.SMTP_PROTOCOL.getKey(), protocol==null?null: protocol.toString());
+			props.setProperty(SETTINGNAME.SMTP_STARTTLS.getKey(), starttls==null?null: starttls.toString());
 			
+			for(Object prop: props.keySet()){
+				log.debug(prop+" : "+props.getProperty(prop.toString()));
+			}
 			session = Session.getDefaultInstance(props,new Authenticator() {
 	            @Override
 	            protected PasswordAuthentication getPasswordAuthentication() {
@@ -58,7 +68,7 @@ public class EmailServiceHelper {
 	        });
 			
 		} catch (Exception e) {
-			log.debug("EmailServiceHelper.initProperties failed to initialize: "+e.getMessage());
+			log.warn("EmailServiceHelper.initProperties failed to initialize: "+e.getMessage());
 			//e.printStackTrace();
 		}
 		;

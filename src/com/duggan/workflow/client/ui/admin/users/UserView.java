@@ -1,7 +1,9 @@
 package com.duggan.workflow.client.ui.admin.users;
 
+import static com.duggan.workflow.client.ui.admin.users.UserPresenter.GROUPSLOT;
+import static com.duggan.workflow.client.ui.admin.users.UserPresenter.ITEMSLOT;
+
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,10 +13,10 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.admin.users.UserPresenter.*;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 
@@ -64,7 +66,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 		if(slot==ITEMSLOT){
 			panelUsers.clear();
 			
@@ -85,7 +87,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 	
 	@Override
-	public void addToSlot(Object slot, Widget content) {
+	public void addToSlot(Object slot, IsWidget content) {
 		
 		if(slot==ITEMSLOT){
 			

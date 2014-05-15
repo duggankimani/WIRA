@@ -1,11 +1,10 @@
 package com.duggan.workflow.shared.requests;
 
+import java.util.List;
+
 import com.duggan.workflow.shared.model.settings.Setting;
-import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveSettingsResponse;
-
-import java.util.List;
 
 public class SaveSettingsRequest extends BaseRequest<SaveSettingsResponse> {
 

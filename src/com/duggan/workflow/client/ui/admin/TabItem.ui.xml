@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+	<d:BulletPanel ui:field="liContainter">
+		<g:Anchor ui:field="aLink" styleName="hand">
+			<div class="helper-font-24">
+                 <i class="icon-dashboard" ui:field="icon"></i>
+             </div>
+			<span class="sidebar-text" ui:field="spnName">Dashboard</span>
+		</g:Anchor>
+	</d:BulletPanel>
+</ui:UiBinder>

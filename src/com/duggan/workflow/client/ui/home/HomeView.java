@@ -22,6 +22,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -154,7 +155,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	}
 
 	@Override
-	public void setInSlot(Object slot, Widget content) {	
+	public void setInSlot(Object slot, IsWidget content) {	
 		if (slot == DATEGROUP_SLOT) {
 			showActivitiesPanel(false);
 			ulTaskGroups.clear();
@@ -194,7 +195,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	}
 
 	@Override
-	public void addToSlot(Object slot, Widget content) {
+	public void addToSlot(Object slot, IsWidget content) {
 		if (slot == DATEGROUP_SLOT) {
 			if (content != null) {
 				ulTaskGroups.add(content);

@@ -1,15 +1,19 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
+import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.LINEGRAPH_SLOT;
+import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.LONGLASTINGTASKS_SLOT;
+import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.OVERALLTURNAROUND_SLOT;
+import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.REQUESTSPERDOC_SLOT;
+
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
-
-import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.*;
 
 public class DashboardView extends ViewImpl implements
 		DashboardPresenter.IDashboardView {
@@ -39,7 +43,7 @@ public class DashboardView extends ViewImpl implements
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 		
 		if(slot == OVERALLTURNAROUND_SLOT){
 			panelTurnAroundTime.clear();

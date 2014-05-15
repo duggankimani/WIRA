@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.dashboard.ChartType;
 import com.duggan.workflow.shared.model.dashboard.Data;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 

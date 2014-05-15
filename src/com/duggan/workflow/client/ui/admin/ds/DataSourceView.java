@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -34,7 +35,7 @@ public class DataSourceView extends ViewImpl implements DataSourcePresenter.IDat
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 		if(slot == DataSourcePresenter.TABLE_SLOT){
 			tblRow.clear();
 			if(content!=null){
@@ -46,7 +47,7 @@ public class DataSourceView extends ViewImpl implements DataSourcePresenter.IDat
 	}
 	
 	@Override
-	public void addToSlot(Object slot, Widget content) {
+	public void addToSlot(Object slot, IsWidget content) {
 		if(slot == DataSourcePresenter.TABLE_SLOT){
 			if(content!=null){
 				tblRow.add(content);

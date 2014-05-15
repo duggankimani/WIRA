@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
-import com.duggan.workflow.shared.model.HTUser;
 
 /**
  * 

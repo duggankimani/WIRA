@@ -1,13 +1,12 @@
 package com.duggan.workflow.client.ui.admin;
 
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter.ADMINPAGES;
-import com.google.gwt.dom.client.LIElement;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.Tab;
+import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 public class AdminHomeView extends ViewImpl implements
@@ -15,34 +14,23 @@ public class AdminHomeView extends ViewImpl implements
 
 	private final Widget widget;
 	
-	@UiField LIElement liDashboard;
-	@UiField LIElement liProcesses;
-	@UiField LIElement liUsers;
-	//@UiField LIElement liReports;
-	@UiField LIElement liSettings;
-	@UiField LIElement liDS;
-	@UiField SpanElement spanTitle;
-	@UiField SpanElement iconTitle;
-	@UiField LIElement liFormBuilder;
-	
-	@UiField HTMLPanel divContent;
+	@UiField(provided=true) TabPanel tabPanel;
 	
 	public interface Binder extends UiBinder<Widget, AdminHomeView> {
 	}
 
 	@Inject
-	public AdminHomeView(final Binder binder) {
+	public AdminHomeView(final Binder binder, TabPanel panel) {
+		this.tabPanel = panel;
 		widget = binder.createAndBindUi(this);
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
-		if(slot == AdminHomePresenter.CONTENT_SLOT){
-			divContent.clear();
-			if(content!=null)
-			divContent.add(content);
+	public void setInSlot(Object slot, IsWidget content) {
+		if(slot == AdminHomePresenter.SLOT_SetTabContent){
+			tabPanel.setPanelContent(content);
 		}else{
-		super.setInSlot(slot, content);
+			super.setInSlot(slot, content);
 		}
 	}
 	
@@ -50,83 +38,34 @@ public class AdminHomeView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
-	
-	public void SetDashboardLink(boolean status, ADMINPAGES page){
-		if(status){
-			liDashboard.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-			}else
-			liDashboard.removeClassName("active");
-	}
-	
-	public void SetProcessLink(boolean status, ADMINPAGES page){
-		if(status){
-			liProcesses.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-		}else
-			liProcesses.removeClassName("active");
-	}
-	
-	public void SetUsersLink(boolean status, ADMINPAGES page){
-		if(status){
-			liUsers.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-		}else
-			liUsers.removeClassName("active");
-	}
-	
-	public void SetReportLink(boolean status, ADMINPAGES page){
-		if(status){
-			//liReports.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-		}else{
-			//liReports.removeClassName("active");
-		}
-	}
-	
-	@Override
-	public void SetDSLink(boolean status, ADMINPAGES page){
-		if(status){
-			liDS.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-		}else
-			liDS.removeClassName("active");
-	}
-	
-	@Override
-	public void SetSettingsLink(boolean status, ADMINPAGES page) {
-		if(status){
-			liSettings.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-		}else
-			liSettings.removeClassName("active");
-	}
-	
-	
-	@Override
-	public void SetFormBuilderLinks(boolean status, ADMINPAGES page) {
-		if(status){
-			liFormBuilder.setClassName("active");
-			iconTitle.setClassName(page.getDisplayIcon());
-			spanTitle.setInnerHTML(page.getDisplayName());
-		}else
-			liFormBuilder.removeClassName("active");
-	}
-	@Override
-	public void clearAllLinks() {
-		liDashboard.removeClassName("active");
-		liProcesses.removeClassName("active");
-		liUsers.removeClassName("active");
-		liSettings.removeClassName("active");
-		//liReports.removeClassName("active");
-		liFormBuilder.removeClassName("active");
-		liDS.removeClassName("active");
-	}
 
+	@Override
+    public Tab addTab(TabData tabData, String historyToken) {
+        return tabPanel.addTab(tabData, historyToken);
+    }
+
+    @Override
+    public void removeTab(Tab tab) {
+        tabPanel.removeTab(tab);
+    }
+
+    @Override
+    public void removeTabs() {
+        tabPanel.removeTabs();
+    }
+
+    @Override
+    public void setActiveTab(Tab tab) {
+        tabPanel.setActiveTab(tab);
+    }
+
+    @Override
+    public void changeTab(Tab tab, TabData tabData, String historyToken) {
+        tabPanel.changeTab(tab, tabData, historyToken);
+    }
+    
+    @Override
+    public void refreshTabs() {
+        tabPanel.refreshTabs();
+    }
 }

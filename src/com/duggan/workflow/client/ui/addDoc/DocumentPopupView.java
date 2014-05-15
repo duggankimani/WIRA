@@ -5,6 +5,7 @@ import static com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter.DOCITE
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -31,7 +32,7 @@ public class DocumentPopupView extends ViewImpl implements
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 		if(slot == DOCITEM_SLOT){
 			panelDocTypes.clear();
 			if(content!=null){
@@ -44,7 +45,7 @@ public class DocumentPopupView extends ViewImpl implements
 	}
 	
 	@Override
-	public void addToSlot(Object slot, Widget content) {
+	public void addToSlot(Object slot, IsWidget content) {
 		if(slot == DOCITEM_SLOT){			
 			if(content!=null){
 				panelDocTypes.add(content);

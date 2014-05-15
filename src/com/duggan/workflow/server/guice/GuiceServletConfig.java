@@ -2,17 +2,12 @@ package com.duggan.workflow.server.guice;
 
 import javax.servlet.ServletContextEvent;
 
-
-import com.google.inject.servlet.GuiceServletContextListener;
-import com.google.inject.Injector;
-import com.google.inject.Guice;
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
-import com.duggan.workflow.server.guice.ServerModule;
-import com.duggan.workflow.server.guice.DispatchServletModule;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.servlet.GuiceServletContextListener;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 

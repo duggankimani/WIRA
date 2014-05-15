@@ -3,7 +3,6 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,8 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
 
 import com.duggan.workflow.shared.model.Status;
 

@@ -1,26 +1,9 @@
 package com.duggan.workflow.client.ui.profile;
 
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.duggan.workflow.client.place.NameTokens;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
-import com.duggan.workflow.client.ui.home.HomePresenter;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
@@ -31,6 +14,14 @@ import com.duggan.workflow.shared.responses.CheckPasswordRequestResult;
 import com.duggan.workflow.shared.responses.GetUserRequestResult;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.duggan.workflow.shared.responses.UpdatePasswordResponse;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
 
 public class ProfilePresenter extends
 		PresenterWidget<ProfilePresenter.IProfileView> implements ContextLoadedHandler {

@@ -1,6 +1,5 @@
 package com.duggan.workflow.shared.responses;
 
-import java.lang.String;
 import java.util.Date;
 
 public class GetErrorRequestResult extends BaseResponse {

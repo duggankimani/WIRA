@@ -1,16 +1,14 @@
 package com.duggan.workflow.client.ui.profile;
 
-import java.util.List;
-
 import gwtupload.client.IUploader;
+
+import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextField;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
-import com.duggan.workflow.client.ui.images.ImageResources;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;

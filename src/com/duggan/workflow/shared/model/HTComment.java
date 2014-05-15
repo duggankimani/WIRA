@@ -1,10 +1,7 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
-import java.lang.String;
 import java.util.Date;
-import com.duggan.workflow.shared.model.HTUser;
-import java.lang.Long;
 
 /**
  * 

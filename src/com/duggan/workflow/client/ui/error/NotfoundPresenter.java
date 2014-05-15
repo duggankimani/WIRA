@@ -1,15 +1,15 @@
 package com.duggan.workflow.client.ui.error;
 
+import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.duggan.workflow.client.place.NameTokens;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.duggan.workflow.client.ui.MainPagePresenter;
 
 public class NotfoundPresenter extends
 		Presenter<NotfoundPresenter.MyView, NotfoundPresenter.MyProxy> {

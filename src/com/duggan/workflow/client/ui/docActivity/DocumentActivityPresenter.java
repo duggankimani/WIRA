@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.docActivity;
 
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
 
 public class DocumentActivityPresenter extends
 		PresenterWidget<DocumentActivityPresenter.MyView> {

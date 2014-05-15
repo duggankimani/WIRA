@@ -1,12 +1,8 @@
 package com.duggan.workflow.client.ui.events;
 
 import com.duggan.workflow.client.ui.util.DocMode;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
-import java.lang.Long;
-
-import javax.print.Doc;
-
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class DocumentSelectionEvent extends

@@ -1,11 +1,10 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.duggan.workflow.shared.model.Value;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.EventHandler;
-import java.lang.Boolean;
 import java.util.Map;
 
+import com.duggan.workflow.shared.model.Value;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class CompleteDocumentEvent extends

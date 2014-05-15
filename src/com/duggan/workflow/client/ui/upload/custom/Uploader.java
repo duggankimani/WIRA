@@ -1,16 +1,16 @@
 package com.duggan.workflow.client.ui.upload.custom;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gwtupload.client.IUploadStatus.Status;
-import static gwtupload.client.IUploader.*;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnCancelUploaderHandler;
-import gwtupload.client.IUploader.UploadedInfo;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.OnStartUploaderHandler;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;

@@ -1,9 +1,7 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
-import java.lang.String;
-import java.lang.Long;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class ErrorEvent extends GwtEvent<ErrorEvent.ErrorHandler> {

@@ -13,14 +13,14 @@ import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.SaveGroupResponse;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.PopupView;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PopupView;
+import com.gwtplatform.mvp.client.PresenterWidget;
 
 public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSaveView> {
 

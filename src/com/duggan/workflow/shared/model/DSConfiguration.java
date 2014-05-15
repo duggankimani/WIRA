@@ -1,8 +1,6 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
-import java.lang.String;
-import java.lang.Long;
 import java.util.Date;
 
 public class DSConfiguration implements Serializable {

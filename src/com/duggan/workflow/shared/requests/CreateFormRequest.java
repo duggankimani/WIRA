@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
+import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.CreateFormResponse;
-import com.duggan.workflow.shared.model.form.Form;
 
 public class CreateFormRequest extends BaseRequest<CreateFormResponse> {
 

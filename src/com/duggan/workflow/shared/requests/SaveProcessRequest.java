@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveProcessResponse;
-import com.duggan.workflow.shared.model.ProcessDef;
 
 public class SaveProcessRequest extends BaseRequest<SaveProcessResponse> {
 

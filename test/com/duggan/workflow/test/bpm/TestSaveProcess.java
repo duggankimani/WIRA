@@ -1,6 +1,5 @@
 package com.duggan.workflow.test.bpm;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -11,10 +10,8 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
-import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 
 public class TestSaveProcess {

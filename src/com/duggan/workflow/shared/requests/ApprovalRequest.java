@@ -4,8 +4,6 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.BaseResponse;
 
-import java.lang.String;
-
 public class ApprovalRequest extends BaseRequest<ApprovalRequestResult> {
 
 	private String username;

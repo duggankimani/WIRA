@@ -1,8 +1,9 @@
 package com.duggan.workflow.server.dao.helper;
 
+import static com.duggan.workflow.server.dao.helper.FormDaoHelper.getValue;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,18 +18,15 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
 import com.duggan.workflow.shared.model.DataType;
-import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
-import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-
-import static com.duggan.workflow.server.dao.helper.FormDaoHelper.*;
 
 /**
  * This class is Dao Helper for persisting all document related entities.

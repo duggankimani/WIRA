@@ -10,8 +10,6 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -28,7 +26,6 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
-import com.google.gwt.thirdparty.streamhtmlparser.util.EntityResolver.Status;
 
 public class TestNotications {
 

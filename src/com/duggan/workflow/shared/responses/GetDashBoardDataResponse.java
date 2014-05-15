@@ -1,8 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.dashboard.Data;
-import java.lang.Integer;
 import java.util.List;
+
+import com.duggan.workflow.shared.model.dashboard.Data;
 
 public class GetDashBoardDataResponse extends BaseResponse {
 

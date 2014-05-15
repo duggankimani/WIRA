@@ -2,7 +2,7 @@
 <module rename-to='gwtht'>
 	<!-- Inherit the core Web Toolkit stuff.                        -->
 	<inherits name='com.google.gwt.user.User'/>
-	<inherits name='com.google.gwt.inject.Inject'/>
+	<!--  inherits name='com.google.gwt.inject.Inject'/ -->
 	<inherits name='com.google.gwt.resources.Resources'/>
 
 	<!-- Inherit the default GWT style sheet.  You can change       -->
@@ -16,16 +16,17 @@
 	<!-- Include GWTUpload library -->
 	  <inherits name="gwtupload.GWTUpload"/>
 	  <!-- Load dinamically predefined styles in the library when the application starts -->
-	  <!-- stylesheet src="Upload.css"/-->
 	  
 	 <!-- GXT extensions -->
 	 <!-- inherits name='com.sencha.gxt.ui.GXT'/ -->
      <!-- inherits name="com.sencha.gwt.uibinder.UiBinder" /-->
-          
+    
+    <!-- GinUiBinder allows injecting widgets in UiBinder -->
+  	<inherits name="com.google.gwt.uibinder.GinUiBinder" />
+  	 
 	<!-- Other module inherits                                      -->
-	<inherits name='com.gwtplatform.mvp.Mvp'/>
+	<inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
-	<!--inherits name="com.github.gwtbootstrap.Bootstrap" / -->
 	
 	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 	<inherits name='com.googlecode.gflot.GFlot'/>
@@ -45,14 +46,25 @@
 	  </any>
 	</replace-with>
 	
-	<!-- Specify the app entry point class.                         -->
-	<entry-point class='com.duggan.workflow.client.GWTHT'/>
+	<!-- Specify the app entry point class. NOT REQUIRED com.gwtplatform.mvp.MvpWithEntryPoint   -->
+	<!-- entry-point class='com.duggan.workflow.client.GWTHT'/ -->
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client'/>
 	<source path='shared'/>
+
+	<!-- Generated Gin Injector will extend WiraInjector -->
+	<extend-configuration-property name='gin.ginjector.extensions' 
+	    value='com.duggan.workflow.client.gin.WiraGinjector' />
 	
-	<define-configuration-property name='gin.ginjector' is-multi-valued='false' />
-	<set-configuration-property name='gin.ginjector' value='com.duggan.workflow.client.gin.ClientGinjector' />
+	<!-- extend-configuration-property name="gin.ginjector.modules" 
+     value="com.gwtplatform.dispatch.client.gin.DispatchAsyncModule"/-->
+	
+	<!-- Gin Module add -->
+	<extend-configuration-property name="gin.ginjector.modules"
+     value="com.duggan.workflow.client.gin.ClientModule"/>
+	
+	<set-configuration-property name="gwtp.bootstrapper"  
+         value="com.duggan.workflow.client.BootStrapperImpl"/> 
 
 </module>

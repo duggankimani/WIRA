@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PreRemove;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;

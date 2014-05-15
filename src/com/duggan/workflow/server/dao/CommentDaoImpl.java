@@ -1,6 +1,5 @@
 package com.duggan.workflow.server.dao;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,11 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.jbpm.task.Comment;
-import org.jbpm.task.Task;
-
 import com.duggan.workflow.server.dao.model.CommentModel;
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.UserGroup;

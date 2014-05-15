@@ -4,23 +4,17 @@
  */
 package org.jbpm.executor;
 
+import static org.jbpm.executor.api.CommandCodes.SendEmailCallback;
+
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.EntityManager;
-
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
-import org.jbpm.executor.entities.RequestInfo;
-import org.jbpm.executor.impl.ExecutorFactory;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
-
-import static org.jbpm.executor.api.CommandCodes.*;
 
 /**
  * 

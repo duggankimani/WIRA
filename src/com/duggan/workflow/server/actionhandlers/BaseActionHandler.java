@@ -2,10 +2,8 @@ package com.duggan.workflow.server.actionhandlers;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Status;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.duggan.workflow.server.db.DB;
@@ -17,8 +15,8 @@ import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 /**

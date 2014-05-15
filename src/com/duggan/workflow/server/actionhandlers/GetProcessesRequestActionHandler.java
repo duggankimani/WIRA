@@ -2,14 +2,13 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.List;
 
-import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetProcessesResponse;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetProcessesRequestActionHandler extends

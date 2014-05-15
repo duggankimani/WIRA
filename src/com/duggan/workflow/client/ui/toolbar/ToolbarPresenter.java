@@ -6,14 +6,14 @@ import com.duggan.workflow.shared.event.SetStatusEvent.SetStatusHandler;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
 
 public class ToolbarPresenter extends PresenterWidget<ToolbarPresenter.MyView> implements SetStatusHandler{
 

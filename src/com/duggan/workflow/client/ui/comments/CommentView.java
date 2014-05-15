@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.comments;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsString;
 
 import java.util.Date;
 

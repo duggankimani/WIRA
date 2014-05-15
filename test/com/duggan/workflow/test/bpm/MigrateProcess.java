@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 
 public class MigrateProcess {

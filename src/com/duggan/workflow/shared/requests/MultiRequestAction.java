@@ -1,11 +1,10 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.duggan.workflow.shared.responses.BaseResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 
 public class MultiRequestAction extends BaseRequest<MultiRequestActionResult> {
 

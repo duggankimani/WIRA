@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE;
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLDS;
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLSELECT;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;

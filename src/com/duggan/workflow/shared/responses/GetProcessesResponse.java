@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.ProcessDef;
 import java.util.List;
+
+import com.duggan.workflow.shared.model.ProcessDef;
 
 public class GetProcessesResponse extends BaseResponse {
 

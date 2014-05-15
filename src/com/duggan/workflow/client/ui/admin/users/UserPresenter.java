@@ -2,22 +2,26 @@ package com.duggan.workflow.client.ui.admin.users;
 
 import java.util.List;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.duggan.workflow.client.ui.events.EditGroupEvent;
+import com.duggan.workflow.client.ui.events.EditGroupEvent.EditGroupHandler;
 import com.duggan.workflow.client.ui.events.EditUserEvent;
+import com.duggan.workflow.client.ui.events.EditUserEvent.EditUserHandler;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
+import com.duggan.workflow.client.ui.events.LoadGroupsEvent.LoadGroupsHandler;
+import com.duggan.workflow.client.ui.events.LoadUsersEvent;
+import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.events.EditGroupEvent.EditGroupHandler;
-import com.duggan.workflow.client.ui.events.EditUserEvent.EditUserHandler;
-import com.duggan.workflow.client.ui.events.LoadUsersEvent;
-import com.duggan.workflow.client.ui.events.LoadGroupsEvent.LoadGroupsHandler;
-import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
@@ -27,24 +31,43 @@ import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class UserPresenter extends PresenterWidget<UserPresenter.MyView> 
+public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter.MyProxy> 
 implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandler{
 
+		
 	public interface MyView extends View {
 
 		HasClickHandlers getaNewUser();
 		HasClickHandlers getaNewGroup();
 		void setType(TYPE type);
 	}
+	
+	@ProxyCodeSplit
+	@NameToken(NameTokens.users)
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface MyProxy extends TabContentProxyPlace<UserPresenter> {
+	}
+	
+	@TabInfo(container = AdminHomePresenter.class)
+    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+        return new TabDataExt("Users and Groups","icon-group",3, adminGatekeeper);
+    }
 	
 	public static final Object ITEMSLOT = new Object();
 	public static final Object GROUPSLOT = new Object();
@@ -58,29 +81,14 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	@Inject DispatchAsync requestHelper;
 	
 	@Inject
-	public UserPresenter(final EventBus eventBus, final MyView view,
+	public UserPresenter(final EventBus eventBus, final MyView view,MyProxy proxy,
 			Provider<UserSavePresenter> addUserProvider,
 			Provider<UserItemPresenter> itemProvider,
 			Provider<GroupPresenter> groupProvider) {
-		super(eventBus, view);
+		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
 		userFactory = new StandardProvider<UserSavePresenter>(addUserProvider);
 		userItemFactory = new StandardProvider<UserItemPresenter>(itemProvider);
 		groupFactory = new StandardProvider<GroupPresenter>(groupProvider); 
-	}
-	
-	private void showPopup(final UserSavePresenter.TYPE type){
-		showPopup(type, null);
-	}
-	
-	private void showPopup(final UserSavePresenter.TYPE type, final Object obj) {
-		userFactory.get(new ServiceCallback<UserSavePresenter>() {
-			@Override
-			public void processResult(UserSavePresenter result) {
-				result.setType(type, obj);
-				addToPopupSlot(result,false);
-			}
-		});
-			
 	}
 
 	@Override
@@ -104,6 +112,27 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 				showPopup(UserSavePresenter.TYPE.GROUP);
 			}
 		});
+	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		loadData();
+	}
+	
+	private void showPopup(final UserSavePresenter.TYPE type){
+		showPopup(type, null);
+	}
+	
+	private void showPopup(final UserSavePresenter.TYPE type, final Object obj) {
+		userFactory.get(new ServiceCallback<UserSavePresenter>() {
+			@Override
+			public void processResult(UserSavePresenter result) {
+				result.setType(type, obj);
+				addToPopupSlot(result,false);
+			}
+		});
+			
 	}
 	
 	void loadData(){
@@ -192,4 +221,5 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	public void onEditGroup(EditGroupEvent event) {
 		showPopup(type, event.getGroup());
 	}
+
 }

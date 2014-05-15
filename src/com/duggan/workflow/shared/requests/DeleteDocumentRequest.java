@@ -3,8 +3,6 @@ package com.duggan.workflow.shared.requests;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 
-import java.lang.Long;
-
 public class DeleteDocumentRequest extends
 		BaseRequest<DeleteDocumentResponse> {
 

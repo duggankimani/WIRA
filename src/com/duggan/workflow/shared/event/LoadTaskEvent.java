@@ -1,8 +1,7 @@
 package com.duggan.workflow.shared.event;
 
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
-import java.lang.Integer;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class LoadTaskEvent extends GwtEvent<LoadTaskEvent.LoadTaskHandler> {

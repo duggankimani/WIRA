@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.junit.Test;
 
 import com.duggan.workflow.shared.model.Comment;
-import com.duggan.workflow.shared.model.Document;
 
 public class TestABC {
 

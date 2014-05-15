@@ -1,7 +1,5 @@
 package com.duggan.workflow.shared.responses;
 
-import java.lang.Boolean;
-
 import com.duggan.workflow.shared.model.Document;
 
 public class ApprovalRequestResult extends BaseResponse {

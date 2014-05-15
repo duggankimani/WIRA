@@ -1,8 +1,8 @@
 package com.duggan.workflow.shared.event;
 
 import com.duggan.workflow.shared.model.HTStatus;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class SetStatusEvent extends GwtEvent<SetStatusEvent.SetStatusHandler> {

@@ -5,7 +5,9 @@
 package org.jbpm.executor.impl;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
+
 import org.jbpm.executor.api.ExecutorQueryService;
 import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;

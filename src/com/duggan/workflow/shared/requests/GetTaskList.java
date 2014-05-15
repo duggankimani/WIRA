@@ -5,8 +5,6 @@ import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 
-import java.lang.String;
-
 public class GetTaskList extends BaseRequest<GetTaskListResult> {
 
 	private String userId;

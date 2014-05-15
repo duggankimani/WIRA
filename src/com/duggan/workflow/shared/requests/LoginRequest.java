@@ -3,8 +3,6 @@ package com.duggan.workflow.shared.requests;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LoginRequestResult;
 
-import java.lang.String;
-
 public class LoginRequest extends BaseRequest<LoginRequestResult> {
 
 	private String username;

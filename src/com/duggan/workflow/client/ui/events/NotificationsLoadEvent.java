@@ -1,9 +1,10 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.duggan.workflow.shared.model.Notification;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.EventHandler;
 import java.util.List;
+
+import com.duggan.workflow.shared.model.Notification;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class NotificationsLoadEvent extends

@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
-import java.lang.String;
 import java.util.Date;
 
 public class HTSummary extends Doc implements Serializable{

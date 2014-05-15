@@ -7,7 +7,6 @@ import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.ExecutionResults;
 
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
-import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 public class SendMailCommand implements Command{
 

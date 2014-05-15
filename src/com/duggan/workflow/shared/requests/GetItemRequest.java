@@ -3,9 +3,6 @@ package com.duggan.workflow.shared.requests;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetItemResult;
 
-import java.lang.String;
-import java.lang.Long;
-
 public class GetItemRequest extends BaseRequest<GetItemResult> {
 
 	private String userId;

@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.form.Form;
 import java.util.List;
+
+import com.duggan.workflow.shared.model.form.Form;
 
 public class GetFormsResponse extends BaseResponse {
 

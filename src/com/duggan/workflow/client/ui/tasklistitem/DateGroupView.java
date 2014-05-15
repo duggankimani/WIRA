@@ -1,18 +1,19 @@
 package com.duggan.workflow.client.ui.tasklistitem;
 
 
+import static com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter.ITEM_SLOT;
+
 import java.util.Date;
 
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.util.DateUtils;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter.ITEM_SLOT;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class DateGroupView extends ViewImpl implements
 		DateGroupPresenter.MyView {
@@ -36,7 +37,7 @@ public class DateGroupView extends ViewImpl implements
 	}
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 		if(slot==ITEM_SLOT){
 			ulItemsContainer.clear();
 			
@@ -51,7 +52,7 @@ public class DateGroupView extends ViewImpl implements
 
 	
 	@Override
-	public void addToSlot(Object slot, Widget content) {
+	public void addToSlot(Object slot, IsWidget content) {
 		if(slot==ITEM_SLOT){
 			
 			if(content!=null){

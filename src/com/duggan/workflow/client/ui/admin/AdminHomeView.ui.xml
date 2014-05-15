@@ -4,105 +4,10 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:a='urn:import:com.duggan.workflow.client.ui.admin'
 	ui:generateLocales='default'>
 	
 	<g:HTMLPanel styleName="full-page">
-		<div class="row-fluid body-admin">
-			<!--sidebar-->
-			<div class="span1">
-				<aside id="side-left">
-					<ul class="sidebar">
-						<li ui:field="liDashboard">
-							<g:Anchor styleName="hand" title="dashboard"  href="#adminhome;page=dashboard">
-								<div class="helper-font-24">
-                                       <i class="icon-dashboard"></i>
-                                  </div>
-								<span class="sidebar-text">Dashboard</span>
-							</g:Anchor>
-						</li>
-						<li ui:field="liProcesses">
-							<g:Anchor styleName="hand" title="Manage System Processes" href="#adminhome;page=processes">
-								<div class="helper-font-24">
-                                       <i class="icon-cogs"></i>
-                                  </div>
-								<span class="sidebar-text">Processes</span>
-							</g:Anchor>
-						</li>
-			
-						<li ui:field="liFormBuilder">
-							<g:Anchor styleName="hand" title="Build Custom Forms" href="#adminhome;page=formbuilder">
-								<div class="helper-font-24">
-                                       <i class="icon-edit"></i>
-                                  </div>
-								<span class="sidebar-text">Form Builder</span>
-							</g:Anchor>
-						</li>
-						
-						<li ui:field="liUsers">
-							<g:Anchor styleName="hand" title="Manage System Users amp; Groups" href="#adminhome;page=users">
-									<div class="helper-font-24">
-	                                       <i class="icon-group"></i>
-	                                  </div>
-									<span class="sidebar-text">Users &amp; Roles</span>
-							</g:Anchor>
-						</li>
-						
-						<li ui:field="liSettings">
-							<g:Anchor styleName="hand" title="Configure Company Settings" href="#adminhome;page=settings">
-									<div class="helper-font-24">
-	                                       <i class="icon-globe"></i>
-	                                  </div>
-									<span class="sidebar-text">General Settings</span>
-							</g:Anchor>
-						</li>
-						
-						<!-- <li ui:field="liReports" class="hidden">
-							<g:Anchor styleName="hand" title="View and Produce System Reports" href="#adminhome;page=reports">
-									<div class="helper-font-24">
-	                                       <i class="icon-bar-chart"></i>
-	                                  </div>
-									<span class="sidebar-text">Reports</span>
-							</g:Anchor>
-						</li> -->
-						
-						<li ui:field="liDS">
-							<g:Anchor styleName="hand" title="View and Produce System Reports" href="#adminhome;page=datasources">
-									<div class="helper-font-24">
-	                                     <i class="icon-briefcase"></i>
-	                                  </div>
-									<span class="sidebar-text">Data Sources</span>
-							</g:Anchor>
-						</li>
-					</ul>
-				</aside>
-			</div>
-			<!-- End Of Sidebar  -->
-			
-			<!-- Main Content  -->
-				<g:HTMLPanel styleName="span11">
-					<div id="main-content">
-						<div class="content">
-							<!-- Content Header -->
-							<div class="content-header">
-								<h2>
-								<span class="icon-group" ui:field="iconTitle"></span>
-								<span ui:field="spanTitle">Users &amp; Groups</span>
-								</h2>
-							</div>
-							<!--BreadCrumb-->
-							<!--div class="content-breadcrumb">
-									<ul class="breadcrumb">
-	                                <li><a href=""><i class="icofont-home"></i> Dashboard</a> <span class="divider">›</span></li>
-	                                <li><a href="">Users &amp; Groups</a></li>
-	                          	    </ul>
-							</div -->
-							<!-- Content Details -->
-							<g:HTMLPanel  ui:field="divContent"></g:HTMLPanel>
-						</div>
-					</div>
-				
-				</g:HTMLPanel>
-			<!-- End of Content  -->
-		</div>
+	    <a:TabPanel ui:field="tabPanel"></a:TabPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

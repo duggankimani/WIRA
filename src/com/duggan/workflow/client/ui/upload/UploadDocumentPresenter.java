@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.upload;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent;
-import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent.CloseAttatchmentHandler;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
@@ -12,7 +12,7 @@ import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;

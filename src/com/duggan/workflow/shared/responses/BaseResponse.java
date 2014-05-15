@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.responses;
 
-import com.gwtplatform.dispatch.shared.Result;
+import com.gwtplatform.dispatch.rpc.shared.Result;
 
 /**
  * Base Class For All responses
@@ -10,6 +10,10 @@ import com.gwtplatform.dispatch.shared.Result;
  */
 public class BaseResponse implements Result{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 0 - OK
 	 * 1 - Error

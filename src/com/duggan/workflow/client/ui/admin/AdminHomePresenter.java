@@ -1,269 +1,64 @@
 package com.duggan.workflow.client.ui.admin;
 
-import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
-import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
-import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
-import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
-import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
-import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
-import com.duggan.workflow.client.ui.admin.users.UserPresenter;
-import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
-import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
-import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
-import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
-import com.duggan.workflow.client.ui.events.LoadUsersEvent;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
-import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.requests.GetContextRequest;
-import com.duggan.workflow.shared.responses.GetContextRequestResult;
-import com.google.gwt.event.shared.EventBus;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.History;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.ChangeTabHandler;
+import com.gwtplatform.mvp.client.RequestTabsHandler;
+import com.gwtplatform.mvp.client.Tab;
+import com.gwtplatform.mvp.client.TabContainerPresenter;
+import com.gwtplatform.mvp.client.TabData;
+import com.gwtplatform.mvp.client.TabView;
+import com.gwtplatform.mvp.client.annotations.ChangeTab;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.RequestTabs;
+import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class AdminHomePresenter extends
-		Presenter<AdminHomePresenter.MyView, AdminHomePresenter.MyProxy> {
+	TabContainerPresenter<AdminHomePresenter.MyView, AdminHomePresenter.MyProxy>{
 
-	public interface MyView extends View {
-		public void SetDashboardLink(boolean status, ADMINPAGES pages);
-
-		public void SetProcessLink(boolean status, ADMINPAGES pages);
-
-		public void SetUsersLink(boolean status, ADMINPAGES pages);
-
-		public void SetReportLink(boolean status, ADMINPAGES pages);
-
-		public void SetDSLink(boolean status, ADMINPAGES pages);
-		
-		public void clearAllLinks();
-
-		public void SetFormBuilderLinks(boolean b, ADMINPAGES page);
-
-		public void SetSettingsLink(boolean b, ADMINPAGES page);
+	public interface MyView extends TabView {		
+		public void refreshTabs();
+		void changeTab(Tab tab, TabData tabData, String historyToken);
 	}
-
-	@ProxyCodeSplit
-	@NameToken(NameTokens.adminhome)
-	@UseGatekeeper(LoginGateKeeper.class)
-	public interface MyProxy extends ProxyPlace<AdminHomePresenter> {
-	}
-
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> CONTENT_SLOT = new Type<RevealContentHandler<?>>();
-
-	@Inject	ProcessPresenter process;
-	@Inject	UserPresenter users;
-	@Inject	DashboardPresenter dashboard;
-	@Inject	ReportsPresenter reports;
-	@Inject	FormBuilderPresenter formbuilder;
-	@Inject DataSourcePresenter datasources;
-	@Inject SettingsPresenter settings;
-	@Inject DispatchAsync dispatcher;
 	
-	enum ADMINPAGES {
-		DASHBOARD("Dashboard", "icon-dashboard"), 
-		PROCESSES("Processes", "icon-cogs"),
-		USERS("Users","icon-group"),
-		GROUPS("Groups","icon-group"), 
-		REPORTS("Reports","icon-bar-chart"), 
-		FORMBUILDER("Form Builder","icon-edit"),
-		DATASOURCES("Data Sources","icon-briefcase"), 
-		SETTINGS("General Settings","icon-globe");
-
-		private String displayName;
-		private String displayIcon;
-
-		private ADMINPAGES(String displayName, String displayIcon) {
-			this.displayName = displayName;
-			this.displayIcon = displayIcon;
-		}
-
-		public String getDisplayName() {
-			return displayName;
-		}
-		
-		public String getDisplayIcon() {
-			return displayIcon;
-		}
-
+	@ProxyStandard
+	public interface MyProxy extends Proxy<AdminHomePresenter> {
 	}
 
-	ADMINPAGES page = null;
+	/**
+     * This will be the event sent to our "unknown" child presenters, in order for them to register their tabs.
+     */
+    @RequestTabs
+    public static final Type<RequestTabsHandler> SLOT_RequestTabs = new Type<RequestTabsHandler>();
 
+    /**
+     * Fired by child proxie's when their tab content is changed.
+     */
+    @ChangeTab
+    public static final Type<ChangeTabHandler> SLOT_ChangeTab = new Type<ChangeTabHandler>();
+
+    /**
+     * Use this in leaf presenters, inside their {@link #revealInParent} method.
+     */
+    @ContentSlot
+    public static final Type<RevealContentHandler<?>> SLOT_SetTabContent = new Type<RevealContentHandler<?>>();
+    
 	@Inject
 	public AdminHomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
-		super(eventBus, view, proxy);
-
-	}
-
-	@Override
-	protected void revealInParent() {
-		if(AppContext.getContextUser()==null || AppContext.getContextUser().getGroups()==null){
-			dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
-				@Override
-				public void processResult(GetContextRequestResult result) {
-					HTUser user = result.getUser();
-					revealMeToUser(user);
-				}			
-			});
-		}else{
-			revealMeToUser(AppContext.getContextUser());
-		}
-		
-	}
-
-	protected void revealMeToUser(HTUser user) {
-		if(AppContext.isCurrentUserAdmin()){
-			RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
-		}else{
-			//redirect
-			History.newItem("#home");
-		}
-	}
-
-	@Override
-	public void prepareFromRequest(PlaceRequest request) {
-		super.prepareFromRequest(request);
-		
-		String name = request.getParameter("page",
-				ADMINPAGES.DASHBOARD.toString());
-
-		ADMINPAGES pages = null;
-		
-		try{
-			pages = ADMINPAGES.valueOf(name.toUpperCase());
-		}catch(Exception e){
-			History.newItem(NameTokens.adminhome);
-			return;
-		}
-
-		//reload alerts
-		fireEvent(new LoadAlertsEvent());
-		
-		this.page = pages;
-
-		switch (pages) {
-		case DASHBOARD:
-			showDashBoard();
-			break;
-
-		case PROCESSES:
-			showProcessPanel();
-			fireEvent(new LoadProcessesEvent());
-			break;
-
-		case USERS:
-			showUserPanel();
-			fireEvent(new LoadUsersEvent());
-			break;
-
-		case FORMBUILDER:
-			String value = request.getParameter("formid", "");
-			
-			Long formId=null;
-			
-			if(!value.isEmpty() && value.matches("[0-9]+")){
-				formId = new Long(value);
-			}
-			
-			showFormBuilderPanel(formId);
-			//fireEvent(new LoadFormBuilderEvent());
-			break;
-
-		case GROUPS:
-			showUserPanel(TYPE.GROUP);
-			fireEvent(new LoadGroupsEvent());
-			break;
-		
-		case SETTINGS:
-			showSettingsPanel();
-			break;
-			
-		case REPORTS:
-			showReportPanel();
-			break;
-			
-		case DATASOURCES:
-			showDSPanel();
-			break;
-		}
-
-	}
-
-	private void showSettingsPanel() {
-		setInSlot(CONTENT_SLOT, null);
-		setInSlot(CONTENT_SLOT, settings);
-		getView().clearAllLinks();
-		getView().SetSettingsLink(true, page);
-	}
-
-	private void showDSPanel() {
-		setInSlot(CONTENT_SLOT, null);
-		setInSlot(CONTENT_SLOT, datasources);
-		getView().clearAllLinks();
-		getView().SetDSLink(true, page);
-	}
-
-	private void showDashBoard() {
-		setInSlot(CONTENT_SLOT, null);
-		setInSlot(CONTENT_SLOT, dashboard);
-		getView().clearAllLinks();
-		getView().SetDashboardLink(true, page);
-	}
-
-	private void showProcessPanel() {
-		setInSlot(CONTENT_SLOT, process);
-		getView().clearAllLinks();
-		getView().SetProcessLink(true, page);
-	}
-
-	private void showUserPanel() {
-		showUserPanel(TYPE.USER);
-	}
-
-	private void showUserPanel(TYPE type) {
-		users.setType(type);
-		setInSlot(CONTENT_SLOT, users);
-		getView().clearAllLinks();
-		getView().SetUsersLink(true, page);
+		super(eventBus, view, proxy,SLOT_SetTabContent,SLOT_RequestTabs, SLOT_ChangeTab,MainPagePresenter.CONTENT_SLOT);		
 	}
 	
-	private void showFormBuilderPanel(Long formId) {
-		formbuilder.setFormId(formId);
-		setInSlot(CONTENT_SLOT, formbuilder);
-		getView().clearAllLinks();
-		getView().SetFormBuilderLinks(true, page);
+	@ProxyEvent
+	public void onContextLoaded(ContextLoadedEvent event){
+		getView().refreshTabs();
 	}
 	
-	private void showReportPanel() {
-		setInSlot(CONTENT_SLOT, reports);
-		getView().clearAllLinks();
-		getView().SetReportLink(true, page);
-	}
-
-	@Override
-	protected void onBind() {
-		super.onBind();
-	}
-
-	@Override
-	protected void onReset() {
-		super.onReset();
-	}
+	
 }

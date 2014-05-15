@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
-import com.google.gwt.user.client.Random;
 
 /**
  * Represents A Form Field

@@ -1,5 +1,8 @@
 package com.duggan.workflow.server.dao.helper;
 
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.NAME;
+import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -38,8 +41,6 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
-
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.*;
 public class FormDaoHelper {
 
 	static final Logger logger= Logger.getLogger(FormDaoHelper.class);

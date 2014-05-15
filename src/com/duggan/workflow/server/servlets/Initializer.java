@@ -3,8 +3,6 @@ package com.duggan.workflow.server.servlets;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.jbpm.executor.ExecutorModule;
-
 public class Initializer implements ServletContextListener {
 
 	@Override

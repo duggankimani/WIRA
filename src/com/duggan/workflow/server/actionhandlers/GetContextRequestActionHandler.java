@@ -1,11 +1,8 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import java.util.Arrays;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -18,10 +15,8 @@ import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
-
-import static com.duggan.workflow.server.ServerConstants.*;
 
 public class GetContextRequestActionHandler extends 
 		BaseActionHandler<GetContextRequest, GetContextRequestResult> {

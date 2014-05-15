@@ -2,7 +2,6 @@ package com.duggan.workflow.server.rest.exception;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 

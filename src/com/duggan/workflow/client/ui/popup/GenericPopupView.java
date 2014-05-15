@@ -5,10 +5,11 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -62,7 +63,7 @@ public class GenericPopupView extends PopupViewImpl implements
 	
 	
 	@Override
-	public void setInSlot(Object slot, Widget content) {
+	public void setInSlot(Object slot, IsWidget content) {
 
 		if (slot == GenericPopupPresenter.BODY_SLOT) {
 			panelBody.clear();
@@ -79,7 +80,7 @@ public class GenericPopupView extends PopupViewImpl implements
 	}
 	
 	@Override
-	public void addToSlot(Object slot, Widget content) {	
+	public void addToSlot(Object slot, IsWidget content) {	
 		if (slot == GenericPopupPresenter.BODY_SLOT) {
 			if (content != null) {
 				panelBody.add(content);

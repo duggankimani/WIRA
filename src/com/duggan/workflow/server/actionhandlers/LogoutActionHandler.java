@@ -8,7 +8,7 @@ import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.LogoutActionResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class LogoutActionHandler extends

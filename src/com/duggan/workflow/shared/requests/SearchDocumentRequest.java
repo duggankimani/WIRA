@@ -1,11 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.requests.BaseRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SearchDocumentRequestResult;
-
-import java.lang.String;
-import java.lang.Long;
 
 public class SearchDocumentRequest extends
 		BaseRequest<SearchDocumentRequestResult> {
