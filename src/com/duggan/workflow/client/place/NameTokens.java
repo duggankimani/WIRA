@@ -12,7 +12,7 @@ public class NameTokens {
 	//public static final String activities = "activities";
 	public static final String profile = "profile";
 	public static final String settings = "settings";
-	public static final String users = "users";
+	public static final String usermgt = "usermgt";
 	public static final String dashboards = "dashboards";
 	public static final String datasources = "datasources";
 	public static final String formbuilder = "formbuilder";

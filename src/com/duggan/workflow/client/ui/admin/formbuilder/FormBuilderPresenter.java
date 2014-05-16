@@ -262,6 +262,15 @@ public class FormBuilderPresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
+		String value = request.getParameter("formid", "");		
+		Long formId=null;
+		
+		if(!value.isEmpty() && value.matches("[0-9]+")){
+			formId = new Long(value);
+		}
+		setFormId(formId);
+		
+		//fireEvent(new LoadFormBuilderEvent());
 		loadForms();
 		
 	}

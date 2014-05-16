@@ -116,6 +116,7 @@ public class HomePresenter extends
 	}
 
 	public static final Object DATEGROUP_SLOT = new Object();
+	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot

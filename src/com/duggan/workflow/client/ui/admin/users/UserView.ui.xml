@@ -25,8 +25,8 @@
 				</div>
 				
 					<ul id="mytab" class="nav nav-tabs">
-					  <li class="active" ui:field="liUser"><g:Anchor href="#user" ui:field="aUserstab">Users</g:Anchor></li>
-					  <li ui:field="liGroup"><g:Anchor href="#groups" ui:field="aGroupstab">Groups</g:Anchor></li>
+					  <li class="active" ui:field="liUser"><g:Anchor ui:field="aUserstab">Users</g:Anchor></li>
+					  <li ui:field="liGroup"><g:Anchor ui:field="aGroupstab">Groups</g:Anchor></li>
 					</ul>
 					<div id="usercontent" class="tab-content">
 							<!-- User's Information Tab  -->

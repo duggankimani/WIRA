@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.users;
 import static com.duggan.workflow.client.ui.admin.users.UserPresenter.GROUPSLOT;
 import static com.duggan.workflow.client.ui.admin.users.UserPresenter.ITEMSLOT;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -17,6 +18,8 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 
@@ -37,9 +40,12 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, UserView> {
 	}
 
+	PlaceManager placeManager;
+	
 	@Inject
-	public UserView(final Binder binder) {
+	public UserView(final Binder binder, PlaceManager manager) {
 		widget = binder.createAndBindUi(this);
+		placeManager = manager;
 		
 		aUserstab.getElement().setAttribute("data-toggle", "tab");
 		aGroupstab.getElement().setAttribute("data-toggle", "tab");
@@ -50,17 +56,18 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		aUserstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				History.newItem("adminhome;page=users");
-				//setType(TYPE.USER);
-				
+				placeManager.revealPlace(new PlaceRequest.Builder()
+				.nameToken(NameTokens.usermgt)
+				.with("p", "user").build());
 			}
 		});
 		
 		aGroupstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				History.newItem("adminhome;page=groups");
-				//setType(TYPE.GROUP);
+				placeManager.revealPlace(new PlaceRequest.Builder()
+				.nameToken(NameTokens.usermgt)
+				.with("p", "group").build());
 			}
 		});
 	}

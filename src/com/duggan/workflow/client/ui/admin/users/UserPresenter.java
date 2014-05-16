@@ -59,7 +59,7 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	}
 	
 	@ProxyCodeSplit
-	@NameToken(NameTokens.users)
+	@NameToken(NameTokens.usermgt)
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<UserPresenter> {
 	}
@@ -117,6 +117,17 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
+		
+		String page = request.getParameter("p", "USER").toUpperCase();
+		try{
+			type=TYPE.valueOf(page);
+		}catch(Exception e){}
+		
+		if(type==null){
+			type = TYPE.USER;
+		}
+		
+		setType(type);
 		loadData();
 	}
 	
