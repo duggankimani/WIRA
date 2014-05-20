@@ -1,0 +1,59 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+	<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	<!--xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"-->
+	<ui:style>
+	    .hidden{
+			display:none;
+		}
+		.visible{
+			display:inline;
+		}
+		.link{
+			text-decoration:underline;
+			cursor:pointer;
+			font-style:italic;
+		}
+	</ui:style>
+	
+	<g:HTMLPanel styleName="message-container">
+         <g:FocusPanel styleName="read" ui:field="container">
+           <g:HTMLPanel styleName="row-fluid">
+				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel> 
+	           
+	            <g:HTMLPanel ui:field="spnDocIcon" styleName="span1 doc-status"></g:HTMLPanel>
+	            
+	            <g:HTMLPanel ui:field="insidecontainer" styleName="span10">
+		       	    <div ui:field="spnSubject" class="bluename ellipsis"></div> 
+		       	    <g:InlineLabel ui:field="spnAttach" styleName="icon-paper-clip clip hidden"></g:InlineLabel>
+				    <g:InlineLabel ui:field="spnTime" styleName="spnTime"></g:InlineLabel>
+		            <d:Break/>
+		            <g:InlineLabel ui:field="spnDescription" styleName="spnDescription ellipsis"></g:InlineLabel> 
+		            <span class="label spnDate hidden" ui:field="spnDeadline">OVERDUE</span>           	
+	           </g:HTMLPanel>
+	           
+	            <g:HTMLPanel ui:field="wfactions" styleName="hidden">
+				    <g:Anchor ui:field="aClaim" styleName="icon-arrow-down hidden"></g:Anchor>
+				    <g:Anchor ui:field="aStart"  styleName="icon-play hidden"></g:Anchor>						    
+					<g:Anchor ui:field="aResume"  styleName="hidden">Resume</g:Anchor>
+					<g:Anchor ui:field="aComplete"  styleName="hidden">Complete</g:Anchor>
+					<g:Anchor ui:field="aSuspend"  styleName="hidden">Suspend</g:Anchor>
+					
+					<g:Anchor ui:field="aDelegate"  styleName="hidden">Delegate</g:Anchor>
+					<g:Anchor ui:field="aRevoke"  styleName="hidden">Revoke</g:Anchor>
+					<g:Anchor ui:field="aStop"  styleName="hidden">Stop</g:Anchor>
+					<g:Anchor ui:field="aForward"  styleName="icon-share-alt"></g:Anchor>
+					<g:Anchor ui:field="aView" styleName="{style.link} hidden">View Task</g:Anchor>		
+					<g:Anchor ui:field="aForwardForApproval" styleName="{style.link}icon-share-alt"></g:Anchor>
+					
+					<g:Anchor ui:field="aApprove"  styleName="icon-ok"></g:Anchor>
+					<g:Anchor ui:field="aReject"  styleName="icon-ban-circle"></g:Anchor>
+			   </g:HTMLPanel>
+           </g:HTMLPanel>
+         </g:FocusPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

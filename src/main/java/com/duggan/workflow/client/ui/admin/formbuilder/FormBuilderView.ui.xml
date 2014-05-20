@@ -1,0 +1,200 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:f='urn:import:com.duggan.workflow.client.ui.admin.formbuilder.component'
+	xmlns:fb='urn:import:com.duggan.workflow.client.ui.admin.formbuilder'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+   	<g:AbsolutePanel ui:field="container">
+	<g:HTMLPanel>
+		<div class="content-body">
+		    <div class="row-fluid action-buttons">
+				<div class="span2">
+					<g:Anchor ui:field="aNewForm" styleName="btn btn-primary"
+						title="New Form">
+						<i class="icon-plus"></i>
+						New Form
+					</g:Anchor>
+			   </div>
+			   
+				<div class="span2">
+					<g:Anchor ui:field="aImportForm" styleName="btn btn-primary"
+						title="Import Form">
+						<i class="icon-upload-alt"></i>
+						Import Form
+					</g:Anchor>
+			   </div>
+			   
+				<div class="span2">
+					<g:Anchor ui:field="aCloneForm" styleName="btn btn-primary"
+						title="Clone Form">
+						<i class="icon-plus"></i>
+						Clone Form
+					</g:Anchor>
+			   </div>
+			   
+				<div class="span2">
+					<g:Anchor ui:field="aExportForm" styleName="btn btn-primary"
+						title="Export Form">
+						<i class="icon-arrow-down"></i>
+						Export Form
+					</g:Anchor>
+			   </div>
+			   
+			   <div class="span2">
+			  	 	<g:Anchor ui:field="aDeleteForm" styleName="btn btn-danger"
+						title="Delete Form">
+						<i class="icon-trash"></i>
+						Delete
+					</g:Anchor>
+			   </div>
+			   <div class="span3 notice">
+			   		<g:InlineLabel ui:field="spnNotice" styleName="muted"> All changes have been saved</g:InlineLabel>
+			   </div>	
+			    
+			    <div class="span3 pull-right">
+			   		<d:DropDownList ui:field="frmDropdown"></d:DropDownList>	
+			   </div>															
+			</div>
+			
+			<div class="row-fluid">
+			<g:HTMLPanel styleName="palete-panel panel panel-default span2 overflow-y" ui:field="divPalettePanel">
+				<div class="panel-heading">
+						<div class="span10">
+						<h4 ui:field="hPaletetitle">Form Components</h4>
+						</div>
+						<div class="span2">
+							<g:Anchor styleName="minimize minimize-left hidden" ui:field="aMinimize"></g:Anchor>
+						</div>
+				</div>
+				<div class="panel-body" ui:field="divPaletteBody">
+						<ul class="nav nav-tabs">
+					      <li class="active"  ui:field="liInput"><g:Anchor ui:field="aInputtab">Input</g:Anchor></li>
+					      <li ui:field="liSelect"><g:Anchor ui:field="aSelecttab">Select</g:Anchor></li>
+					      <li ui:field="liButton"><g:Anchor ui:field="aButtontab">Buttons</g:Anchor></li>
+					      <li ui:field="liLayout"><g:Anchor ui:field="aLayouttab">Layout</g:Anchor></li>
+					    </ul>
+				    
+				    	<div id="myTabContent" class="tab-content">
+   						   <g:HTMLPanel styleName="tab-pane in active" ui:field="divInput">
+
+							 <div class="form-horizontal">
+								 <fieldset>
+									<fb:PalettePanel ui:field="vTextInputPanel">	
+									    <f:TextField></f:TextField>	
+									</fb:PalettePanel>
+			                      
+									<fb:PalettePanel ui:field="vNumberInputPanel">	
+									 	<f:NumberField></f:NumberField>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vCurrencyInputPanel">	
+									 	<f:CurrencyField></f:CurrencyField>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vDatePanel">	
+									    <f:DateField></f:DateField>					  	  
+									</fb:PalettePanel>
+									
+								 	<fb:PalettePanel ui:field="vTextAreaPanel">	
+									 	<f:TextArea></f:TextArea>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vInlineCheckBoxPanel">	
+									 	<f:CheckBoxField></f:CheckBoxField>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vSelectBasicPanel">	
+									    <f:SelectBasic></f:SelectBasic>	
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vLabelPanel">	
+									    <f:StaticText></f:StaticText>	
+									</fb:PalettePanel>
+									
+			                      </fieldset>
+		                      </div>
+	                      </g:HTMLPanel>
+	                      <!--End of Input Pane -->
+	                      
+	                      <!--Second Panel -->
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divSelect">
+							 <div class="form-horizontal">
+								 <fieldset>
+								     <fb:PalettePanel ui:field="vInlineRadioPanel">	
+									 	<f:RadioGroup></f:RadioGroup>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vSelectMultiplePanel">	
+									    <f:SelectMultiple></f:SelectMultiple>	
+									</fb:PalettePanel>
+									
+								</fieldset>
+		                      </div>
+	                      </g:HTMLPanel>
+	                      <!--End of Select Pane -->
+	                      
+	                      
+	                      <!--- Start of Button Panel -->
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divButtons">
+							 <div class="form-horizontal">
+								 <fieldset>
+									<fb:PalettePanel ui:field="vSingleButtonPanel">	
+									    <f:SingleButton></f:SingleButton>	
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vMultipleButtonPanel">	
+									    <f:ButtonGroup></f:ButtonGroup>	
+									</fb:PalettePanel>
+																		
+								</fieldset>
+		                      </div>
+	                     </g:HTMLPanel>
+	                     <!--End of Button Panel -->
+	                      
+	                      <g:HTMLPanel styleName="tab-pane in" ui:field="divLayoutComponents">
+							 <div class="form-horizontal">
+								 <fieldset>
+									<fb:PalettePanel ui:field="vHRPanel">
+									    <f:HR></f:HR>	
+									</fb:PalettePanel>	
+									
+									<fb:PalettePanel ui:field="vGridPanel">	
+									    <f:GridLayout></f:GridLayout>
+									</fb:PalettePanel>
+																	
+									<!-- </fb:PalettePanel>
+									<fb:PalettePanel ui:field="vGridPanel">	
+									    <f:GridField></f:GridField>	
+									</fb:PalettePanel>	 -->								
+								</fieldset>
+		                      </div>
+	                     </g:HTMLPanel><!--End of Select Pane -->
+	                   </div>
+					</div>
+			</g:HTMLPanel>
+			<g:HTMLPanel styleName="maincontent-panel panel panel-default span8 overflow-y" ui:field="divFormContent">			
+				<g:HTMLPanel styleName="panel-body">
+					<g:HTMLPanel styleName="form-horizontal">
+						<fieldset>
+						 <legend><g:InlineLabel ui:field="formLabel">Form Name:</g:InlineLabel></legend>
+						</fieldset>
+						<fieldset>
+							<g:InlineLabel ui:field="fldHelp"></g:InlineLabel>    
+						</fieldset>
+						
+						<g:VerticalPanel ui:field="vPanel" styleName="mainform">
+						</g:VerticalPanel>
+						
+					</g:HTMLPanel>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+			</div>
+		</div>
+	</g:HTMLPanel>
+	</g:AbsolutePanel>
+</ui:UiBinder>

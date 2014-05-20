@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
+	<display-name>GWTHT</display-name>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>GWTHT.html</welcome-file>
+	</welcome-file-list>
+
+	<!--
+		This Guice listener hijacks all further filters and servlets. Extra
+		filters and servlets have to be configured in your
+		ServletModule#configureServlets() by calling
+		serve(String).with(Class<? extends HttpServlet>) and
+		filter(String).through(Class<? extends Filter)
+	-->
+		
+	<resource-env-ref>
+	    <resource-env-ref-name>jdbc/ebusinessds</resource-env-ref-name>
+	    <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+	
+	<listener>
+		<listener-class>com.duggan.workflow.server.guice.GuiceServletConfig</listener-class>
+	</listener>
+	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.InitializerServlet</servlet-class>
+	    <servlet-name>daemon-initializer</servlet-name>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<filter>
+		<filter-name>guiceFilter</filter-name>
+		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>guiceFilter</filter-name>
+		<url-pattern>/dispatch/*</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+	    <servlet-name>RestService</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.rest.servlet.JerseyServletContainer</servlet-class>
+	    <init-param>
+	        <param-name>com.sun.jersey.config.property.packages</param-name>
+	        <param-value>com.duggan.workflow.server.rest</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>RestService</servlet-name>
+	    <url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.upload.UploadServlet</servlet-class>
+	    <servlet-name>uploader</servlet-name>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>uploader</servlet-name>
+	    <url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.upload.GetReport</servlet-class>
+	    <servlet-name>getReport</servlet-name>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>getReport</servlet-name>
+	    <url-pattern>/getreport</url-pattern>
+	</servlet-mapping>
+	
+	<!-- For Servlet 3.0 -Securing cookies http://www.jtmelton.com/2012/01/17/year-of-security-for-java-week-3-session-cookie-secure-flag/ -->
+	<!-- session-config>
+	  <cookie-config>
+	    <secure>true</secure>
+	  </cookie-config>
+	</session-config -->
+
+</web-app>

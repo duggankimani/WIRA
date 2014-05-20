@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module rename-to='gwtht'>
+	<!-- Inherit the core Web Toolkit stuff.                        -->
+	<inherits name='com.google.gwt.user.User'/>
+	<!--  inherits name='com.google.gwt.inject.Inject'/ -->
+	<inherits name='com.google.gwt.resources.Resources'/>
+
+	<!-- Inherit the default GWT style sheet.  You can change       -->
+	<!-- the theme of your GWT application by uncommenting          -->
+	<!-- any one of the following lines.                            -->
+	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+	<!-- inherits name='com.github.gwtbootstrap.Bootstrap' /-->
+	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+	<!-- Include GWTUpload library -->
+	  <inherits name="gwtupload.GWTUpload"/>
+	  <!-- Load dinamically predefined styles in the library when the application starts -->
+	  
+	 <!-- GXT extensions -->
+	 <!-- inherits name='com.sencha.gxt.ui.GXT'/ -->
+     <!-- inherits name="com.sencha.gwt.uibinder.UiBinder" /-->
+    
+    <!-- GinUiBinder allows injecting widgets in UiBinder -->
+  	<inherits name="com.google.gwt.uibinder.GinUiBinder" />
+  	 
+	<!-- Other module inherits                                      -->
+	<inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
+	
+	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+	<inherits name='com.googlecode.gflot.GFlot'/>
+	
+	<inherits name="org.matheclipse.parser.Parser"/>
+	
+	<inherits name='com.sencha.gxt.chart.Chart' />
+	<replace-with class='com.sencha.gxt.chart.client.draw.engine.SVG'>
+	  <when-type-is class='com.sencha.gxt.chart.client.draw.Surface' />
+	</replace-with>
+	 
+	<replace-with class='com.sencha.gxt.chart.client.draw.engine.VML'>
+	  <when-type-is class='com.sencha.gxt.chart.client.draw.Surface' />
+	  <any>
+	    <when-property-is name='user.agent' value='ie6' />
+	    <when-property-is name='user.agent' value='ie8' />
+	  </any>
+	</replace-with>
+	
+	<!-- Specify the app entry point class. NOT REQUIRED com.gwtplatform.mvp.MvpWithEntryPoint   -->
+	<!-- entry-point class='com.duggan.workflow.client.GWTHT'/ -->
+
+	<!-- Specify the paths for translatable code                    -->
+	<source path='client'/>
+	<source path='shared'/>
+
+	<!-- Generated Gin Injector will extend WiraInjector -->
+	<extend-configuration-property name='gin.ginjector.extensions' 
+	    value='com.duggan.workflow.client.gin.WiraGinjector' />
+	
+	<!-- extend-configuration-property name="gin.ginjector.modules" 
+     value="com.gwtplatform.dispatch.client.gin.DispatchAsyncModule"/-->
+	
+	<!-- Gin Module add -->
+	<extend-configuration-property name="gin.ginjector.modules"
+     value="com.duggan.workflow.client.gin.ClientModule"/>
+	
+	<set-configuration-property name="gwtp.bootstrapper"  
+         value="com.duggan.workflow.client.BootStrapperImpl"/> 
+
+</module>

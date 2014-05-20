@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+
+	<d:BulletPanel styleName="arrow-box-left gray">
+		<g:HTMLPanel>
+			<div class="avatar">
+				<g:Image styleName="avatar-small" ui:field="img"/>
+			</div>
+			<div class="info" id="activity">
+				<span class="name">
+					<span class="label label-blue" ui:field="spnTask">TASK</span>
+					<strong class="indent">
+						<span ui:field="spnUser">Michael</span>
+					</strong>
+					<span ui:field="spnAction">completed this task:</span>
+					<strong>
+					    <g:Anchor ui:field="aFile" styleName="item unread hand hide">
+        				</g:Anchor>
+        				<span ui:field="spnTo" class="hide">&nbsp;to&nbsp;</span>
+					    <g:Anchor ui:field="aDocument" styleName="item unread hand">
+        				</g:Anchor>  
+						<!-- span ui:field="spnSubject">Core Admin</span -->
+					</strong>
+				</span>
+				<span class="time">
+					<i class="icon-time"></i>
+					<span ui:field="spnTime">6 minutes ago</span>
+				</span>
+			</div>
+		</g:HTMLPanel>
+	</d:BulletPanel>
+</ui:UiBinder> 

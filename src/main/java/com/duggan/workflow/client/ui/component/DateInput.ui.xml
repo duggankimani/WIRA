@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:dt="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel styleName="dateinput">
+	     <div class="input-group" style="margin-bottom:0px;">
+		  	  <dt:DateBox ui:field="dtInput"/>
+		  	  <g:InlineLabel styleName="input-group-addon" ui:field="spnCalendar1"></g:InlineLabel>
+		 </div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

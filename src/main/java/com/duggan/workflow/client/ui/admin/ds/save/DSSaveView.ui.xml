@@ -1,0 +1,87 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom' 
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:admin='urn:import:com.duggan.workflow.client.ui.admin.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="divPopUp">
+		<g:HTMLPanel>
+	 		<g:HTMLPanel styleName="modal-header">
+					<h5><i class="icon-cogs"></i>New Data Source<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+			 </g:HTMLPanel>
+			 <d:IssuesPanel ui:field="issues">
+	    	</d:IssuesPanel>
+			 
+			 <g:HTMLPanel ui:field="divProcessDetails">
+			 	<g:HTMLPanel styleName="modal-body">
+		 			<g:HTMLPanel styleName="" >
+						  <div class="form-group">
+						    <label>RDBMS Type:</label>
+						    <d:DropDownList ui:field="lstRDBMS" styleName="form-control"/>						    
+						  </div>
+						  <div class="form-group">
+						    <label>Config Name</label>
+						    <d:TextField ui:field="txtConfig" type="text" 
+						        title="A unique descriptive name used to refer to this configuration"
+						        class="form-control" placeholder="Config Name"/>
+						  </div>
+						  <div class="form-group">
+						    <label></label>
+						    <g:CheckBox ui:field="chkUseJNDI" styleName="form-control">Use JNDI</g:CheckBox>						    
+						  </div>
+						  
+					   <g:HTMLPanel ui:field="panelUseJNDI" styleName="hide">
+						  <div class="form-group">
+						    <label>JNDI Name</label>
+						    <d:TextField ui:field="txtJNDIName" type="text" 
+						        title="Data source URL"
+						        class="form-control" placeholder="Data source URL"/>
+						  </div>
+					  </g:HTMLPanel>
+					  
+					   <g:HTMLPanel ui:field="panelJDBC">
+					      <div class="form-group">
+						 	 <label>Driver</label>
+						 	 <d:TextField ui:field="txtDriver" type="text" 
+						        title="Driver class"
+						        class="form-control" placeholder="Driver class"/>
+						  </div>
+						  <div class="form-group">
+						  	<label>URL</label>
+							  <d:TextField ui:field="txtUrl" type="text" 
+							      title="DB URL"
+						        class="form-control" placeholder="DB URL"/>
+						  </div>
+						  <div class="form-group">
+						    <label>User</label>
+						    <d:TextField ui:field="txtUser" type="text" 
+						        title="DB User"
+						        class="form-control" placeholder="DB User"/>
+						  </div>
+						  <div class="form-group">
+						 	 <label for="ProcessDescription">Password</label>
+						 	 <g:PasswordTextBox ui:field="txtPassword"
+						 	      styleName="form-control"></g:PasswordTextBox>
+						  </div>
+					       
+					   </g:HTMLPanel>
+					</g:HTMLPanel>
+				</g:HTMLPanel>
+
+		 	
+		 	  <div class="form-actions">
+				<g:Anchor styleName="btn btn-success pull-right" ui:field="aSave">Save &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+				<g:Anchor styleName="btn btn-danger pull-left" ui:field="aCancel">
+				    &nbsp; <i class="icon-remove"></i>Cancel 
+				    </g:Anchor>
+			  </div>
+		  </g:HTMLPanel>
+ 
+		</g:HTMLPanel>
+	</g:PopupPanel>
+</ui:UiBinder>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.omg.org/bpmn20"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_rfqNumberItem" structureRef="java.util.Collection" />
+
+  <itemDefinition id="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979-rfqNumberItem" structureRef="java.util.Collection" />
+
+  <itemDefinition id="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE-supplierNamesItem" structureRef="String" />
+  <itemDefinition id="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE-VariableNameItem" structureRef="String" />
+
+  <itemDefinition id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711-supplierNamesItem" structureRef="String" />
+  <itemDefinition id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711-VariableNameItem" structureRef="String" />
+
+  <itemDefinition id="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31-supplierNamesItem" structureRef="String" />
+  <itemDefinition id="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31-VariableNameItem" structureRef="String" />
+
+  <itemDefinition id="_412D1314-B9BC-426D-B02B-8D32364EEF70-supplierNamesItem" structureRef="String" />
+  <itemDefinition id="_412D1314-B9BC-426D-B02B-8D32364EEF70-VariableNameItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="defaultPackage.multiinstanceprocess" name="multiinstanceprocess" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="rfqNumber" itemSubjectRef="_rfqNumberItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_FE79F828-225D-4A0A-9886-0DFA0A5CC134" name="" />
+    <userTask id="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979" name="Create RFQs" >
+      <ioSpecification>
+        <dataInput id="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_rfqNumberInput" name="rfqNumber" />
+        <dataInput id="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_GroupIdInput" name="GroupId" />
+        <inputSet>
+          <dataInputRefs>_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_rfqNumberInput</dataInputRefs>
+          <dataInputRefs>_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>rfqNumber</sourceRef>
+        <targetRef>_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_rfqNumberInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>jodonya</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <subProcess id="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE" name="Select Supplier"  >
+    <!-- variables -->
+    <property id="supplierNames" itemSubjectRef="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE-supplierNamesItem"/>
+    <property id="VariableName" itemSubjectRef="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE-VariableNameItem"/>
+    <!-- nodes -->
+    <startEvent id="_9803229F-4FAC-477F-BC2A-83F647A998A5" name="" />
+    <userTask id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711" name="Select Suppliers" >
+      <ioSpecification>
+        <dataInput id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_rfqNoInput" name="rfqNo" />
+        <dataInput id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_GroupIdInput" name="GroupId" />
+        <dataOutput id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_supplierNamesOutput" name="supplierNames" />
+        <inputSet>
+          <dataInputRefs>_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_rfqNoInput</dataInputRefs>
+          <dataInputRefs>_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_supplierNamesOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>rfqNo</sourceRef>
+        <targetRef>_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_rfqNoInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">HOD_PROC</from>
+          <to xsi:type="tFormalExpression">_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_B6C3C5A1-9EF1-4838-8A7F-1A452A417711_supplierNamesOutput</sourceRef>
+        <targetRef>supplierNames</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>kimani</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <manualTask id="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31" name="Send RFQ" >
+    </manualTask>
+    <userTask id="_412D1314-B9BC-426D-B02B-8D32364EEF70" name="Input Quotation" >
+      <ioSpecification>
+        <dataInput id="_412D1314-B9BC-426D-B02B-8D32364EEF70_rfqNoInput" name="rfqNo" />
+        <dataInput id="_412D1314-B9BC-426D-B02B-8D32364EEF70_supplierNamesInput" name="supplierNames" />
+        <dataInput id="_412D1314-B9BC-426D-B02B-8D32364EEF70_GroupIdInput" name="GroupId" />
+        <inputSet>
+          <dataInputRefs>_412D1314-B9BC-426D-B02B-8D32364EEF70_rfqNoInput</dataInputRefs>
+          <dataInputRefs>_412D1314-B9BC-426D-B02B-8D32364EEF70_supplierNamesInput</dataInputRefs>
+          <dataInputRefs>_412D1314-B9BC-426D-B02B-8D32364EEF70_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>rfqNo</sourceRef>
+        <targetRef>_412D1314-B9BC-426D-B02B-8D32364EEF70_rfqNoInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>SupplierNames</sourceRef>
+        <targetRef>_412D1314-B9BC-426D-B02B-8D32364EEF70_supplierNamesInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_412D1314-B9BC-426D-B02B-8D32364EEF70_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">HOD_PROC</from>
+          <to xsi:type="tFormalExpression">_412D1314-B9BC-426D-B02B-8D32364EEF70_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>kimani</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <endEvent id="_AE8D4C40-E8FF-4D8A-ADD4-8C5D73E727CC" name="" />
+    <!-- connections -->
+    <sequenceFlow id="_9803229F-4FAC-477F-BC2A-83F647A998A5-_B6C3C5A1-9EF1-4838-8A7F-1A452A417711" sourceRef="_9803229F-4FAC-477F-BC2A-83F647A998A5" targetRef="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711" />
+    <sequenceFlow id="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711-_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31" sourceRef="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711" targetRef="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31" />
+    <sequenceFlow id="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31-_412D1314-B9BC-426D-B02B-8D32364EEF70" sourceRef="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31" targetRef="_412D1314-B9BC-426D-B02B-8D32364EEF70" />
+    <sequenceFlow id="_412D1314-B9BC-426D-B02B-8D32364EEF70-_AE8D4C40-E8FF-4D8A-ADD4-8C5D73E727CC" sourceRef="_412D1314-B9BC-426D-B02B-8D32364EEF70" targetRef="_AE8D4C40-E8FF-4D8A-ADD4-8C5D73E727CC" />
+    </subProcess>
+    <endEvent id="_EC091C59-D06F-4555-911B-9BFBB4FB6E78" name="" />
+
+    <!-- connections -->
+    <sequenceFlow id="_FE79F828-225D-4A0A-9886-0DFA0A5CC134-_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979" sourceRef="_FE79F828-225D-4A0A-9886-0DFA0A5CC134" targetRef="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979" />
+    <sequenceFlow id="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979-_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE" sourceRef="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979" targetRef="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE" />
+    <sequenceFlow id="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE-_EC091C59-D06F-4555-911B-9BFBB4FB6E78" sourceRef="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE" targetRef="_EC091C59-D06F-4555-911B-9BFBB4FB6E78" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="defaultPackage.multiinstanceprocess" >
+      <bpmndi:BPMNShape bpmnElement="_FE79F828-225D-4A0A-9886-0DFA0A5CC134" >
+        <dc:Bounds x="36" y="126" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979" >
+        <dc:Bounds x="150" y="110" width="112" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE" >
+        <dc:Bounds x="314" y="69" width="577" height="163" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9803229F-4FAC-477F-BC2A-83F647A998A5" >
+        <dc:Bounds x="183" y="122" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711" >
+        <dc:Bounds x="268" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31" >
+        <dc:Bounds x="410" y="106" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_412D1314-B9BC-426D-B02B-8D32364EEF70" >
+        <dc:Bounds x="565" y="106" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_AE8D4C40-E8FF-4D8A-ADD4-8C5D73E727CC" >
+        <dc:Bounds x="697" y="121" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_EC091C59-D06F-4555-911B-9BFBB4FB6E78" >
+        <dc:Bounds x="946" y="129" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_9803229F-4FAC-477F-BC2A-83F647A998A5-_B6C3C5A1-9EF1-4838-8A7F-1A452A417711" >
+        <di:waypoint x="-107" y="77" />
+        <di:waypoint x="4" y="78" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_B6C3C5A1-9EF1-4838-8A7F-1A452A417711-_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31" >
+        <di:waypoint x="4" y="78" />
+        <di:waypoint x="146" y="77" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_B5BA5DDF-B4B4-47D7-AB97-7EAE5266EB31-_412D1314-B9BC-426D-B02B-8D32364EEF70" >
+        <di:waypoint x="146" y="77" />
+        <di:waypoint x="301" y="77" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_412D1314-B9BC-426D-B02B-8D32364EEF70-_AE8D4C40-E8FF-4D8A-ADD4-8C5D73E727CC" >
+        <di:waypoint x="301" y="77" />
+        <di:waypoint x="407" y="76" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_FE79F828-225D-4A0A-9886-0DFA0A5CC134-_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979" >
+        <di:waypoint x="60" y="150" />
+        <di:waypoint x="206" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_46C3A3ED-6ABF-4D26-A6B3-B07D8E5DB979-_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE" >
+        <di:waypoint x="206" y="150" />
+        <di:waypoint x="602" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_0EB79BAA-CE3E-4A6E-9205-9EC44D0924EE-_EC091C59-D06F-4555-911B-9BFBB4FB6E78" >
+        <di:waypoint x="602" y="150" />
+        <di:waypoint x="970" y="153" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

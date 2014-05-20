@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+  <head>
+    <title>E-Business Task List</title>
+    <!-- bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/google/google-bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <!--link href="css/bootstrap-overrides.css" type="text/css" rel="stylesheet"-->
+
+    <!-- libraries -->
+    <link rel="stylesheet" type="text/css" href="css/elements.css">
+    <link href="css/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+  
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/elements.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+
+  <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/index.css" type="text/css" media="screen">    
+  </head>
+  
+  <body>     
+
+    <!--Main Container-->
+    <div class="row-fluid main-container">    
+      <div id="sidebar-nav" class="span2">
+        <!--Button Add Document -->
+        <div class="add-doc"><button class="btn-danger btn-large" type="button">Add Document</button></div>
+        
+
+        <ul id="dashboard-menu">
+           <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-book"></i>
+                    <span>My Documents</span>
+                    <i class="icon-chevron-up"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="user-list.html">In Progress(2)</a></li>
+                    <li><a href="new-user.html">Approved(2)</a></li>
+                    <li><a href="user-profile.html">Rejected(2)</a></li>
+                    <li><a href="new-user.html">In Progress(2)</a></li>
+                </ul>
+            </li>
+
+            <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-tasks"></i>
+                    <span>Approval Request</span>
+                    <i class="icon-chevron-up"></i>
+                </a>
+                <ul class="submenu second-menu">
+                    <li><a href="user-list.html">New Request(2)</a></li>
+                    <li><a href="new-user.html">Recent Approvals(2)</a></li>
+                    <li><a href="user-profile.html">Flagged(2)</a></li>
+                </ul>
+            </li>
+        </ul>
+      </div>
+      <!--middle navigation-->
+      <div id="middle-nav" class="span4">
+        <div class="row-fluid nav-top">
+          <input class="search" type="text">
+          <i class="icon-refresh icon-large"></i>
+        </div>
+
+          <div class="header-nav row-fluid">
+               <h5>IN PROGRESS</h5>         
+               <div class="ui-dropdown">
+                  <div class="head">
+                      Filter
+                      <i class="arrow-down"></i>
+                  </div> 
+                   <!-- custom popup filter -->
+                  <!-- styles are located in css/elements.css -->
+                  <!-- script that enables this dropdown is located in js/theme.js -->
+                  <div class="dialog">
+                      <div class="pointer">
+                          <div class="arrow"></div>
+                          <div class="arrow_border"></div>
+                      </div>
+                      <div class="body">
+                          <p class="title">
+                              Filter Option:
+                          </p>
+                          <div class="form">
+                              <select>
+                                  <option>Name</option>
+                                  <option>Email</option>
+                                  <option>Number of orders</option>
+                                  <option>Signed up</option>
+                                  <option>Last seen</option>
+                              </select>
+                              <select>
+                                  <option>is equal to</option>
+                                  <option>is not equal to</option>
+                                  <option>is greater than</option>
+                                  <option>starts with</option>
+                                  <option>contains</option>
+                              </select>
+                              <input type="text" />
+                              <a class="btn-flat small">Add filter</a>
+                          </div>
+                      </div>
+                  </div>
+               </div>
+          </div>
+
+        <div class="content-nav row-fluid">
+
+        <ul id="navigation-menu">
+           <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-caret-right"></i>
+                    <span>Today</span>
+                </a>
+                <ul class="submenu">
+                   <div class="message-container">
+                      <div class="unread">
+                      <p>
+                        <span class="label label-success">New</span>
+                         	
+                  <b>Inv / Fin / 023 / 2013<br/> Licence and Support payments for the ERP</b> </p>
+                     </div>
+                  </div>
+                   <div class="message-container">
+                      <div class="unread">
+                        <p>
+                         <span class="label label-important">Urgent</span>                       	
+                          <b>Inv / Fin / 023 / 2013<br/>Licence and Support payments for the ERP</b></p>
+                       </div>
+                  </div>
+                   <div class="message-container">
+                    <p>	
+                  <b>Inv / Fin / 023 / 2013<br/>Licence and Support payments for the ERP</b></p>
+                  </div>
+                </ul>
+            </li>
+
+            <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-caret-right"></i>
+                    <span>Wednesday</span>
+                </a>
+                <ul class="submenu">
+                    <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                     <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                     <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                </ul>
+            </li>
+
+            <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-caret-right"></i>
+                    <span>Tuesday</span>
+                </a>
+                <ul class="submenu">
+                    <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                     <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                     <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                </ul>
+            </li>
+
+            <li class="active">
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-caret-right"></i>
+                    <span>Monday</span>
+                </a>
+                <ul class="submenu">
+                    <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                     <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                     <div class="message-container">
+                      <p>	
+                  <b>Inv / Fin / 023 / 2013</b><br/>Licence and Support payments for the ERP</p>
+                    </div>
+                </ul>
+            </li>
+        </ul>
+
+        </div>
+      </div>
+      <!--Detailed Panel Description-->
+      <div id="detailed-info" class="span5">
+          <br/>
+          <div class="action-area row-fluid">            
+                <a class="btn-success btn-large" type="button"><i class="icon-share-alt"></i>Forward for Approval</a>
+                <a class="btn-success btn-large" type="button"><i class="icon-ok"></i>Approve</a>
+                <a class="btn-danger btn-large" type="button"><i class="icon-remove"></i>Disapprove</a>     
+          </div>
+
+             
+           <div class="well personal_info row-fluid">
+                 <div class="span1">
+                 <img data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="50px" height="100px">
+                </div>
+                <div class="span4">
+                  <address>
+                  <strong>Tom Kimani</strong><br/>
+                  22nd Aug 2013
+                  <address>
+                </div>
+          </div>
+
+          <div class="row-fluid content-area">       
+           <h5><strong>LPO/JK/0106/13</strong></h5>
+           Value: Ksh 556,000<br/>
+           Purchase Order for the Purchase of Daily Cows.<br>
+           Purchase Order for the Purchase of Daily Cows
+           Purchase Order for the Purchase of Daily Cows
+           Purchase Order for the Purchase of Daily Cows
+           Purchase Order for the Purchase of Daily Cows
+           Purchase Order for the Purchase of Daily Cows
+           <div>
+
+           <div class="attachment-section row-fluid">
+             <strong>Attatchments:</strong><br/>
+             <i class="icon-paper-clip icon-large"></i>
+               <img src="img/image_holder.png" class="img-polaroid" height="50px" width="50px">
+                Scanned_Invoince.jpg
+               <a href="#">View</a>
+               <a href="#">Download</a>
+            </div>
+
+
+            <div class="status-section row-fluid">
+              <strong>Document Status:</strong><br/>
+              <span class="label label-success"><i class="icon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span>
+            </div>
+            <hr/>
+
+             <div class="row-fluid comment-section">
+            <strong>Comments:</strong><br/>
+            <textarea name="comments"></textarea>
+            <div class="well"><a class="btn-success btn-large pull-right" type="button">Save</a></div>
+             </div>  
+
+      </div>
+
+      <!--Footer-->
+      <!--div class="container"> 
+        <hr>
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="span8">
+                  <a href="#">Terms of Service</a>    
+                  <a href="#">Privacy</a>    
+                  <a href="#">Security</a>
+                </div>
+                <div class="span4">
+                  <p class="muted pull-right">© MD-Kimani Inc. All rights reserved</p>
+                </div>
+              </div>
+            </div>
+      </div-->
+    </div><!--End of Container>
+
+ <!-- scripts -->
+<script src="js/jquery/jquery-latest.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery/jquery-ui-1.10.2.custom.min.js"></script>
+<script src="js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+.main-container .profile-page{
+	padding: 45px;
+}
+
+.profile-page img{
+	
+}
+.profile-page .custom-file-input{
+	height: 45px;
+	position: absolute;
+	margin-top: 12.2%;
+}
+body .upld-multiple{
+	height: 40px;
+}
+body .GWTUpld .gwt-FileUpload{
+	position: relative;
+	top:0px;
+	width: 100%;
+	height: 100%;
+}
+
+.profile-page input[type="file"]:focus{
+  outline: none;
+  outline-offset:0px;
+}
+
+.gwt-FileUpload::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.gwt-FileUpload::before {
+  content: 'Browse File';
+  display: inline-block;
+  background:linear-gradient(to bottom, #4d90fe, #3078eb);
+  /* border: 1px solid #999; */
+  border-radius: 3px;
+  padding: 0px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 10pt;
+  width: 85%;
+  text-align: center;
+  color: #fff;
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+.gwt-FileUpload:hover:before,
+.gwt-FileUpload:active:before,
+.gwt-FileUpload.active:before {
+  /* border: 1px solid #196aeb; */
+  color: #ffffff;
+  background-color: #4186f6;
+  cursor: pointer;
+  background-image: -moz-linear-gradient(top, #4d90fe, #3078eb);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4d90fe), to(#3078eb));
+  background-image: -webkit-linear-gradient(top, #4d90fe, #3078eb);
+  background-image: -o-linear-gradient(top, #4d90fe, #3078eb);
+  /* background-image: linear-gradient(to bottom, #4d90fe, #3078eb); */
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4d90fe', endColorstr='#ff3078eb', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-color: #3078eb;
+  background-color: #3078eb \9;
+}
+
+

@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.upload'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	
+    <g:HTMLPanel styleName="attachment-links span6">
+		<g:HTMLPanel styleName="span1 icon" ui:field="panelImg"></g:HTMLPanel>
+		<div class="span11 attachment-info">
+	        <b><span ui:field="spnName"></span></b>
+	        <br/>
+	        <div class="row">
+		      	<span ui:field="spnSize" class="attachment-size"></span>
+		        <g:Anchor ui:field="aDownload" text="Download" styleName="hand"/>
+	        </div>
+        </div>
+    </g:HTMLPanel>
+    
+</ui:UiBinder>

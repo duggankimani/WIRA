@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom' xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:PopupPanel styleName="popover left in fade popoverAttachment" modal="true" ui:field="uploaderDialog">
+		<g:HTMLPanel>
+			<g:HTMLPanel styleName="arrow" ui:field="iArrow"></g:HTMLPanel>
+			<g:HTMLPanel styleName="popover-title">
+					<h5><i class="icon-cloud-upload"></i>  Upload Documents</h5>
+			 </g:HTMLPanel>
+				
+			<div class="popover-content">
+				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
+					<up:Uploader ui:field="uploader"></up:Uploader>
+				</g:HTMLPanel>
+				<span class="muted">Click "Choose File" to upload</span>
+			</div>
+			
+			<g:HTMLPanel styleName="modal-footer">
+				<g:Button styleName="btn btn-primary pull-right" ui:field="btnDone"
+					text="DONE" />
+				<g:Button styleName="btn btn-default pull-left" ui:field="btnCancel"
+					text="CANCEL" />
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:PopupPanel>
+</ui:UiBinder>

@@ -1,0 +1,441 @@
+.main-container .news-feed {
+	margin-left: 0px;
+	padding: 10px 45px 0px 0px;
+	min-height: 100%;
+	border-top: 0px;
+}
+
+.news-feed h4{
+	margin:10px;
+	padding-bottom:5px;
+	border-bottom:1px solid #CCCCCC;
+}
+
+.news-feed .name a, a:active,a:visited{
+  color: #428bca; 
+}
+
+/* line 40, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
+.news-feed a:hover,a:focus {
+	cursor: pointer;
+	outline: 0px none;
+	text-decoration: underline;
+}
+
+/* line 105, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
+.avatar {
+	display: inline-block;
+}
+/* line 107, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
+.avatar img {
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	-webkit-box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* line 113, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
+.avatar-small {
+	max-width: 32px;
+	max-height: 32px;
+}
+
+.chat-box.timeline .arrow-box-left {
+	padding: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	min-height: auto;
+	margin-right: 0;
+}
+/* line 38, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box.timeline .info,.chat-box.timeline .content {
+	background: #fafafa;
+	padding: 5px 10px;
+}
+/* line 43, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box.timeline .content { *
+	zoom: 1;
+	border-top: 1px solid #ccc;
+	background: #f8f8f8;
+	-moz-border-radius-bottomleft: 2px;
+	-webkit-border-bottom-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+	-moz-border-radius-bottomright: 2px;
+	-webkit-border-bottom-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+/* line 24, /home/andrei/core-admin-release/core-admin/source/stylesheets/mixin_helpers.scss */
+.chat-box.timeline .content:before,.chat-box.timeline .content:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+/* line 30, /home/andrei/core-admin-release/core-admin/source/stylesheets/mixin_helpers.scss */
+.chat-box.timeline .content:after {
+	clear: both;
+}
+/* line 51, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box.timeline blockquote {
+	margin: 10px 0px;
+}
+/* line 55, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box.timeline .chat-message-box {
+	display: inline-block;
+	min-width: 100px;
+	margin-left: 64px;
+	padding: 3px 10px;
+	border-radius: 10px;
+}
+
+/* line 64, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box.timeline+.closable-chat-box {
+	margin-left: 65px;
+}
+
+/* line 69, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box {
+	list-style: none;
+	margin: 0;
+	font-size: 11px;
+	line-height: 20px;
+	color: #5f5f5f;
+	margin-right: 15px;
+}
+/* line 76, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .avatar {
+	position: absolute;
+	top: 0;
+}
+/* line 82, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-left,.chat-box .arrow-box-right {
+	min-height: 30px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	padding: 5px 10px;
+}
+/* line 101, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-left {
+	margin-left: 65px;
+	margin-right: 15px;
+}
+/* line 105, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-left .avatar {
+	left: -50px;
+}
+/* line 109, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-left.gray .info .name strong {
+	color: #393939;
+}
+/* line 101, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-right {
+	margin-right: 65px;
+	margin-left: 15px;
+}
+/* line 105, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-right .avatar {
+	right: -50px;
+}
+/* line 109, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .arrow-box-right.gray .info .name strong {
+	color: #393939;
+}
+/* line 114, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .info { *
+	zoom: 1;
+	color: #949494;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+}
+/* line 24, /home/andrei/core-admin-release/core-admin/source/stylesheets/mixin_helpers.scss */
+.chat-box .info:before,.chat-box .info:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+
+/* line 30, /home/andrei/core-admin-release/core-admin/source/stylesheets/mixin_helpers.scss */
+.chat-box .info:after {
+	clear: both;
+}
+
+/* line 120, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .info .name {
+	float: left;
+}
+
+/* line 122, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .info .name strong {
+	color: #2c596d;
+	/*margin-right: 10px;*/
+}
+
+/* line 132, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.chat-box .info .time {
+	float: right;
+}
+
+/*
+* ARROW BOXES -- For Chat Box
+*/
+/* line 56, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-left {
+	position: relative;
+	background: #fafeff;
+	border: 1px solid #b5cdd7;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+/* line 72, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-left:after,.arrow-box-left:before {
+	right: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+/* line 82, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-left:after {
+	border-right-color: #fafeff;
+	border-width: 6px;
+	top: 7px;
+}
+
+/* line 94, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-left:before {
+	border-right-color: #b5cdd7;
+	border-width: 7px;
+	top: 6px;
+}
+
+/* line 19, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.arrow-box-left.gray {
+	background: nil;
+	border-color: #d8d8d8;
+}
+/* line 26, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-left.gray:before {
+	border-right-color: #d8d8d8;
+}
+
+/* line 24, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.arrow-box-left {
+	-webkit-box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* line 56, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-right {
+	position: relative;
+	background: #fafeff;
+	border: 1px solid #b5cdd7;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+/* line 72, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-right:after,.arrow-box-right:before {
+	left: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+/* line 82, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-right:after {
+	border-left-color: #fafeff;
+	border-width: 6px;
+	top: 7px;
+}
+
+/* line 94, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-right:before {
+	border-left-color: #b5cdd7;
+	border-width: 7px;
+	top: 6px;
+}
+
+/* line 19, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.arrow-box-right.gray {
+	background: nil;
+	border-color: #d8d8d8;
+}
+/* line 26, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
+.arrow-box-right.gray:before {
+	border-left-color: #d8d8d8;
+}
+
+/* line 24, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
+.arrow-box-right {
+	-webkit-box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.1);
+}
+
+/*
+*** LABELS ***
+*/
+/* line 30, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label,.badge {
+	font-weight: 600;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-blue {
+	background: #599cc7;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdmYjNkNCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzU5OWNjNyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7fb3d4),
+		color-stop(100%, #599cc7));
+	background-image: -webkit-linear-gradient(top, #7fb3d4, #599cc7);
+	background-image: -moz-linear-gradient(top, #7fb3d4, #599cc7);
+	background-image: -o-linear-gradient(top, #7fb3d4, #599cc7);
+	background-image: linear-gradient(top, #7fb3d4, #599cc7);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #70aacf;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #70aacf;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #70aacf;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-gray {
+	background: #5d5d5d;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzc2NzY3NiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzVkNWQ1ZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #767676),
+		color-stop(100%, #5d5d5d));
+	background-image: -webkit-linear-gradient(top, #767676, #5d5d5d);
+	background-image: -moz-linear-gradient(top, #767676, #5d5d5d);
+	background-image: -o-linear-gradient(top, #767676, #5d5d5d);
+	background-image: linear-gradient(top, #767676, #5d5d5d);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #6c6c6c;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #6c6c6c;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #6c6c6c;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-green {
+	background: #6eb056;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzhjYzA3OSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzZlYjA1NiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #8cc079),
+		color-stop(100%, #6eb056));
+	background-image: -webkit-linear-gradient(top, #8cc079, #6eb056);
+	background-image: -moz-linear-gradient(top, #8cc079, #6eb056);
+	background-image: -o-linear-gradient(top, #8cc079, #6eb056);
+	background-image: linear-gradient(top, #8cc079, #6eb056);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #80b96b;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #80b96b;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #80b96b;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-red {
+	background: #964747;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2IzNWQ1ZCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzk2NDc0NyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b35d5d),
+		color-stop(100%, #964747));
+	background-image: -webkit-linear-gradient(top, #b35d5d, #964747);
+	background-image: -moz-linear-gradient(top, #b35d5d, #964747);
+	background-image: -o-linear-gradient(top, #b35d5d, #964747);
+	background-image: linear-gradient(top, #b35d5d, #964747);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #ab5050;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #ab5050;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #ab5050;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-dark-red {
+	background: #8f3831;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2I1NDczZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzhmMzgzMSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5473e),
+		color-stop(100%, #8f3831));
+	background-image: -webkit-linear-gradient(top, #b5473e, #8f3831);
+	background-image: -moz-linear-gradient(top, #b5473e, #8f3831);
+	background-image: -o-linear-gradient(top, #b5473e, #8f3831);
+	background-image: linear-gradient(top, #b5473e, #8f3831);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #a64139;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #a64139;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #a64139;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-black {
+	background: #4d4d4d;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzY2NjY2NiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRkNGQ0ZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #666666),
+		color-stop(100%, #4d4d4d));
+	background-image: -webkit-linear-gradient(top, #666666, #4d4d4d);
+	background-image: -moz-linear-gradient(top, #666666, #4d4d4d);
+	background-image: -o-linear-gradient(top, #666666, #4d4d4d);
+	background-image: linear-gradient(top, #666666, #4d4d4d);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #5c5c5c;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #5c5c5c;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #5c5c5c;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-cyan {
+	background: #60a8ab;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzgxYmFiZCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzYwYThhYiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #81babd),
+		color-stop(100%, #60a8ab));
+	background-image: -webkit-linear-gradient(top, #81babd, #60a8ab);
+	background-image: -moz-linear-gradient(top, #81babd, #60a8ab);
+	background-image: -o-linear-gradient(top, #81babd, #60a8ab);
+	background-image: linear-gradient(top, #81babd, #60a8ab);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #74b3b6;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #74b3b6;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #74b3b6;
+}
+
+/* line 35, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
+.label-purple {
+	background: #9086bd;
+	background-image:
+		url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2FlYTdjZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzkwODZiZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background-size: 100%;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #aea7cf),
+		color-stop(100%, #9086bd));
+	background-image: -webkit-linear-gradient(top, #aea7cf, #9086bd);
+	background-image: -moz-linear-gradient(top, #aea7cf, #9086bd);
+	background-image: -o-linear-gradient(top, #aea7cf, #9086bd);
+	background-image: linear-gradient(top, #aea7cf, #9086bd);
+	-webkit-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #a29ac8;
+	-moz-box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #a29ac8;
+	box-shadow: 0 1px 0 #f7f7f7, inset 0 1px 1px #a29ac8;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+	
+    <g:HTMLPanel>
+	    <g:FocusPanel ui:field="sltContainer">
+			<g:HTMLPanel>
+			<div class="controls">
+				<div class="select2-container select2-container-multi " ui:field="sltBox">
+					<d:BulletListPanel ui:field="ulSelected" styleName="select2-choices">		    
+					</d:BulletListPanel>
+				</div>	
+			</div>
+			</g:HTMLPanel>
+			
+		</g:FocusPanel>
+
+	     <g:FocusPanel styleName="select2-drop select2-drop-multi select2-drop-active hide" ui:field="sltDrop">
+	    	<d:BulletListPanel ui:field="ulOthers" styleName="select2-results">		    
+			</d:BulletListPanel>
+		</g:FocusPanel>	
+   </g:HTMLPanel>								
+
+</ui:UiBinder>

@@ -1,0 +1,74 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:FocusPanel ui:field="filterDialog">
+		<g:HTMLPanel styleName="dialog dialog-filter is-visible">
+				<g:HTMLPanel>
+	                      <div class="pointer">
+	                          <div class="arrow"></div>
+	                          <div class="arrow_border"></div>
+	                      </div>
+	                      <div class="body">
+	                    	  <div class="row-fluid">
+	                    	 
+		                          <p class="title span10">
+		                              Filter Options:
+		                          </p>
+	                             <g:Anchor styleName="span2" ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor>
+	                         </div>
+	                          <div class="form">
+	                          		<div class="row-fluid">
+			                              <span>Document Type:</span>
+			                        </div>
+	                               <div class="row-fluid">
+	                               
+		                             <d:DropDownList ui:field="lstDocType">
+		                             </d:DropDownList>
+		                           </div>
+			                         <div class="row-fluid">
+			                              <span>Subject:</span>
+			                         </div>
+			                         <div class="row-fluid">
+		                             	<g:TextBox ui:field="txtSubject"/>
+		                             </div>
+		                              <div class="row-fluid">
+			                              <span>Has the words:</span>
+			                         </div>
+		                          	 <div class="row-fluid">
+		                              <g:TextBox ui:field="txtPhrase"/>
+	                              	 </div>
+	                              	 
+	                              	 <div class="row-fluid">
+			                              <span>Date Range:</span>
+			                         </div>
+	                              <div class="row-fluid">
+		                              	<div class="span6">
+			                              	<div class="input-group">
+												  <dt:DateBox ui:field="dateInput1" styleName="form-control"></dt:DateBox>
+												  <g:InlineLabel styleName="input-group-addon" ui:field="spnCalendar1"></g:InlineLabel>
+											</div>
+										</div>
+										<div class="span6">
+			                              	<div class="input-group">
+												  <dt:DateBox ui:field="dateInput2" styleName="form-control"></dt:DateBox>
+												  <g:InlineLabel styleName="input-group-addon" ui:field="spnCalendar2"></g:InlineLabel>
+											</div>
+										</div>
+	                              </div>
+	                      		
+	                      		 <div class="row-fluid">
+	                      			<g:Button styleName="btn btn-primary pull-left" ui:field="btnSearch"><i class="icon-search icon-large"></i></g:Button>
+	                          	 </div>
+	                          </div>
+	                      </div>
+	           </g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:FocusPanel>
+</ui:UiBinder>
