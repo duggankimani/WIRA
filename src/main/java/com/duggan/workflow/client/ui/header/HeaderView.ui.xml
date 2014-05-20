@@ -1,0 +1,73 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
+		<div class="navbar-inner">
+			<g:Anchor styleName="brand visible-desktop visible-tablet" href="#home" ui:field="aBrand">
+			    Wira BPM |&nbsp;<span ui:field="spnCompanyName">Your Organisation</span></g:Anchor>
+
+			<ul class="nav pull-right">
+				<li class="home">
+					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand">
+						<i class="icon-home"> &nbsp; Home</i>
+					</g:Anchor>
+				</li>
+				<li class="home">
+					<g:Anchor href="#dashboard" ui:field="aAdmin" styleName="close-icon hand">
+						<i class="icon-bar-chart"> &nbsp;Admin</i>
+					</g:Anchor>
+				</li>
+				<li class="notification-dropdown">
+					<g:Anchor ui:field="aNotifications" styleName="close-icon hand dropdown-toggle">
+						<i class="icon-bell"></i>
+						<span ui:field="lblCount" class="label label-important"></span>
+					</g:Anchor>
+
+					<g:FocusPanel ui:field="popupContainer"
+						styleName="notification-dialog dropdown-menu">
+						<g:HTMLPanel>
+							<g:HTMLPanel ui:field="notificationsContainer">
+							</g:HTMLPanel>
+						</g:HTMLPanel>
+					</g:FocusPanel>
+
+				</li>
+
+				<li class="user-dropdown dropdown">
+					<a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+						<span ui:field="spnUser"></span>
+						<g:Image styleName="avatar-small" ui:field="imgSmall"
+							width="30px" height="50px" />
+						<!-- img src="img/blueman(small).png" width="30px" height="50px"/ -->
+						<b class="caret"></b>
+					</a>
+
+					<ul class="dropdown-menu">
+						<div class="user-details row-fluid">
+							<div class="span1">
+								<g:Image ui:field="img" width="70px" height="90px" />
+								<!-- img class="" data-src="img/blueman.png" src="img/blueman.png" 
+									width="70px" height="90px"/ -->
+							</div>
+							<div class="span2">
+								<span class="text" ui:field="spnUserPull"></span>
+								<br />
+								<span class="ellipsis" style="width: 90%;" ui:field="spnUserGroup"></span>
+							</div>
+
+						</div>
+						<div class="action-area">
+							<div class="version" ui:field="spnVersion"></div>
+							<g:Anchor styleName="btn btn-primary" ui:field="aProfile" href="#home;page=profile">View Profile</g:Anchor>
+							<g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
+						</div>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

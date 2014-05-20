@@ -80,3 +80,9 @@ subject -
 description - 
 document - 
 docDate - 
+
+ADDITIONAL Maven Libraries - To be addded to local repository
+-------------------------------------------------------------
+mvn install:install-file -DgroupId=org.matheclipse -DartifactId=matheclipse -Dversion=0.0.10_1 -Dpackaging=jar -Dfile=./src/main/webapps/WEB-INF/lib/matheclipse-parser-0.0.10.jar 
+
+

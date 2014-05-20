@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+    
+    <g:HTMLPanel styleName="row-fluid body-admin">
+			<!--sidebar-->
+			<g:HTMLPanel styleName="span1">
+				<aside id="side-left">
+					<d:BulletListPanel ui:field="tabPanel" styleName="sidebar">
+										
+					</d:BulletListPanel>
+				</aside>
+			</g:HTMLPanel>
+			<!-- End Of Sidebar  -->
+			
+			<!-- Main Content  -->
+				<g:HTMLPanel styleName="span11">
+					<div id="main-content">
+						<div class="content">
+							<!-- Content Header -->
+							<div class="content-header">
+								<h2>
+								<span class="icon-group" ui:field="iconTitle"></span>
+								<span ui:field="spanTitle">Users &amp; Groups</span>
+								</h2>
+							</div>
+							<!--BreadCrumb-->
+							<!--div class="content-breadcrumb">
+									<ul class="breadcrumb">
+	                                <li><a href=""><i class="icofont-home"></i> Dashboard</a> <span class="divider">›</span></li>
+	                                <li><a href="">Users &amp; Groups</a></li>
+	                          	    </ul>
+							</div -->
+							<!-- Content Details -->
+							<g:HTMLPanel  ui:field="tabContent"></g:HTMLPanel>
+						</div>
+					</div>
+				
+				</g:HTMLPanel>
+			<!-- End of Content  -->
+	</g:HTMLPanel>
+		
+	
+</ui:UiBinder>
