@@ -23,7 +23,7 @@ public class UploadContext {
 		UPLOADCHANGESET,
 		IMPORTFORM, 
 		UPLOADUSERIMAGE,
-		UPLOADLOGO
+		UPLOADLOGO, UPLOADDOCFILE
 	}
 	
 	public UploadContext(){

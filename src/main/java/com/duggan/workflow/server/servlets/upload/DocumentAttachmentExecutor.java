@@ -25,6 +25,9 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 			if (false == item.isFormField()) {
 				try {					
 					String fieldName = item.getFieldName();
+					
+					//Name of the form field against which this file was uploaded 
+					String formFieldName= request.getParameter("formFieldName");
 					String contentType=item.getContentType();					
 					String name = item.getName();
 					long size = item.getSize();
@@ -36,7 +39,8 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 					attachment.setId(null);
 					attachment.setName(name);
 					attachment.setSize(size);
-					attachment.setAttachment(item.get());					
+					attachment.setAttachment(item.get());
+					attachment.setFieldName(formFieldName);
 					saveAttachment(attachment, request);
 					
 					receivedFiles.put(fieldName, attachment.getId());

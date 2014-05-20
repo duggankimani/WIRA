@@ -7,6 +7,7 @@ import gwtupload.client.IUploader.OnFinishUploaderHandler;
 import gwtupload.client.IUploader.OnStartUploaderHandler;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
+import gwtupload.client.SingleUploader;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
@@ -41,13 +42,23 @@ public class Uploader extends Composite {
 	@UiField
 	HTMLPanel uploaderPanel;
 
-	MultiUploader uploader;
+	IUploader uploader;
 	
 	UploadContext context;
-
+	
 	public Uploader() {
+		this(false);
+	}
+	
+	public Uploader(boolean isSingleUploader) {
 		initWidget(binder.createAndBindUi(this));
-		uploader = new MultiUploader();		
+		
+		if(isSingleUploader){
+			uploader = new SingleUploader();
+		}else{
+			uploader = new MultiUploader();
+		}
+		
 		uploader.setAutoSubmit(true);		
 		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
@@ -60,7 +71,13 @@ public class Uploader extends Composite {
 	}
 	
 	public void setAvoidRepeatFiles(boolean allow){
-		uploader.setAvoidRepeatFiles(allow);
+		if(uploader instanceof MultiUploader){
+			((MultiUploader)uploader).setAvoidRepeatFiles(allow);
+		}
+		
+		if(uploader instanceof SingleUploader){
+			((SingleUploader)uploader).setAvoidRepeatFiles(allow);
+		}
 	}
 	
 	public void setContext(UploadContext context){
@@ -121,7 +138,14 @@ public class Uploader extends Composite {
 	};
 	
 	public void cancel(){
-		List<IUploader> uploaders = uploader.getUploaders();
+		List<IUploader> uploaders = new ArrayList<IUploader>();
+		if(uploader instanceof MultiUploader){
+			 uploaders = ((MultiUploader)uploader).getUploaders();
+		}else{
+			//Single Uploader
+			uploaders.add(uploader);
+		}	
+		
 		if(uploaders!=null){
 			List<IUploader> uplodas = new ArrayList<IUploader>();
 			uplodas.addAll(uploaders);

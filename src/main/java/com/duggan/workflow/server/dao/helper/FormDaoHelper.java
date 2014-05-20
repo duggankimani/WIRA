@@ -584,6 +584,10 @@ public class FormDaoHelper {
 			//System.err.println("Save Value >> "+value.getValue());
 			advalue.setStringValue((String)value.getValue());			
 			break;
+			
+		case FILEUPLOAD:
+			advalue.setLongValue((Long)value.getValue()); //Id of attachment
+			break;
 		}
 		
 		return advalue;

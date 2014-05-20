@@ -15,7 +15,8 @@ public enum DataType {
 	BUTTON,
 	LAYOUTHR,
 	GRID,
-	COLUMNPROPERTY;
+	COLUMNPROPERTY, 
+	FILEUPLOAD;
 	
 	public boolean isDropdown(){
 		return this.equals(SELECTBASIC);

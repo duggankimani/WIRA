@@ -22,6 +22,9 @@ public interface HasProperties {
 	public static final String STATICCONTENT="STATICCONTENT";
 	public static final String LABELPOSITION="LABELPOSITION";
 	public static final String FORMULA="FORMULA";
+	public static final String UPLOADERTYPE="UPLOADERTYPE";
+	public static final String ACCEPT = "ACCEPT";
+
 	void addProperty(Property property);
 	
 	String getPropertyValue(String propertyName);

@@ -642,6 +642,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			widget = new GridLayout();
 			/*widget = new GridField();*/
 			break;
+		case FILEUPLOAD:
+			widget = new FileUploadField();
+			break;
 
 		}
 

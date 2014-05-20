@@ -27,6 +27,7 @@ import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
@@ -617,10 +618,11 @@ public class GenericDocumentPresenter extends
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new GetDocumentRequest(documentId, taskId));
+		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
 		requests.addRequest(new GetActivitiesRequest(documentId));
-		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
+		
 		
 		fireEvent(new ProcessingEvent());
 		if(documentId != null){
@@ -628,20 +630,14 @@ public class GenericDocumentPresenter extends
 					new TaskServiceCallback<MultiRequestActionResult>() {
 				
 				public void processResult(MultiRequestActionResult results) {					
+					int i=0;
 					
-					GetDocumentResult result = (GetDocumentResult)results.get(0);
+					//Document
+					GetDocumentResult result = (GetDocumentResult)results.get(i++);
 					bindDocumentResult(result);
 					
-					GetCommentsResponse commentsResult = (GetCommentsResponse)results.get(1);
-					bindCommentsResult(commentsResult);
-					
-					GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(2);
-					bindAttachments(attachmentsresponse);
-					
-					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(3);
-					bindActivities(getActivities);
-					
-					GetFormModelResponse response = (GetFormModelResponse)results.get(4);					
+					//Form
+					GetFormModelResponse response = (GetFormModelResponse)results.get(i++);					
 					
 					if(!response.getFormModel().isEmpty()){
 						bindForm((Form)response.getFormModel().get(0), result.getDoc());
@@ -649,7 +645,19 @@ public class GenericDocumentPresenter extends
 					}else{
 						getView().showDefaultFields(true);
 					}
+
+					//Comments					
+					GetCommentsResponse commentsResult = (GetCommentsResponse)results.get(i++);
+					bindCommentsResult(commentsResult);
 					
+					//Attachments
+					GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
+					bindAttachments(attachmentsresponse);
+					
+					//Activities
+					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(i++);
+					bindActivities(getActivities);
+										
 					fireEvent(new ProcessingCompletedEvent());
 					
 				}	
@@ -675,7 +683,7 @@ public class GenericDocumentPresenter extends
 			if(name==null || name.isEmpty()){
 				continue;
 			}
-			
+						
 			if(field.getType()==DataType.GRID){
 				List<DocumentLine> lines=doc.getDetails().get(field.getName());
 				if(lines!=null){
@@ -807,6 +815,10 @@ public class GenericDocumentPresenter extends
 		
 		setInSlot(ATTACHMENTS_SLOT, null);//clear
 		for(final Attachment attachment: attachments){
+			if(attachment.getFieldName()!=null){
+				fireEvent(new FileLoadEvent(attachment));
+				continue;
+			}
 			attachmentPresenterFactory.get(new ServiceCallback<AttachmentPresenter>() {
 				@Override
 				public void processResult(AttachmentPresenter result) {

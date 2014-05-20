@@ -116,6 +116,10 @@
 									    <f:StaticText></f:StaticText>	
 									</fb:PalettePanel>
 									
+									<fb:PalettePanel ui:field="vFileUploadPanel">	
+									    <f:FileUploadField></f:FileUploadField>	
+									</fb:PalettePanel>
+									
 			                      </fieldset>
 		                      </div>
 	                      </g:HTMLPanel>
