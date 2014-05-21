@@ -6,6 +6,7 @@
 	        <g:HTMLPanel styleName="control-group">
 		       <label ui:field="lblEl" for="Username" class="control-label">File Upload</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
+			        
 				    <g:HTMLPanel ui:field="uploadContainer">				        
 				    </g:HTMLPanel>
 				    <g:InlineLabel ui:field="lblReadOnly"></g:InlineLabel>
