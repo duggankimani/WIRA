@@ -1,10 +1,13 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
@@ -95,6 +98,35 @@ public class TextField extends FieldWidget {
 			}
 		});
 		
+		if(property.getName().equals(NAME)){
+			addRegisteredHandler(PropertyChangedEvent.TYPE,
+					new PropertyChangedEvent.PropertyChangedHandler(){
+				@Override
+				public void onPropertyChanged(PropertyChangedEvent event) {
+					if(event.getPropertyName().equals(CAPTION)){
+						String propertyValue = event.getPropertyValue()==null? null: event.getPropertyValue().toString();
+						
+						if(propertyValue==null || propertyValue.isEmpty()){
+							return;
+						}
+						propertyValue = propertyValue.replaceAll("\\s", "_");
+						Converter<String, String> converter = CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL);
+						propertyValue = converter.convert(propertyValue);
+						txtComponent.setValue(propertyValue);
+						Value value = property.getValue();
+						if(value==null){
+							value = new StringValue(null, NAME,propertyValue);
+						}else{
+							value.setValue(propertyValue);
+							property.setValue(value);
+						}
+						
+					}
+				}
+			});
+		}
+		
+		
 		//name.equals()
 	}
 
@@ -130,7 +162,7 @@ public class TextField extends FieldWidget {
 		if(value==null || value.isEmpty())
 			return null;
 		
-		
+		System.err.println("FieldValue= "+value);
 		return new StringValue(field.getLastValueId(),field.getName(),value);
 	}
 	
