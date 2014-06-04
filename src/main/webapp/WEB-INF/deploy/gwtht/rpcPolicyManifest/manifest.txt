@@ -1,2 +1,0 @@
-# Module gwtht
-# RPC service class, partial path of RPC policy file

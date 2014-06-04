@@ -170,7 +170,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADCHANGESET);
 		context.setContext("processDefId", id+"");
-		context.setAccept("xml,bpmn,bpmn2,drl,png,jpeg,jpg,gif");
+		//context.setAccept("xml,bpmn,bpmn2,drl,png,jpeg,jpg,gif");
 		uploader.setContext(context);
 	}
 	
