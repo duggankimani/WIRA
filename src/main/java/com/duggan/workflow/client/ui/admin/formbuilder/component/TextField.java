@@ -118,8 +118,9 @@ public class TextField extends FieldWidget {
 							value = new StringValue(null, NAME,propertyValue);
 						}else{
 							value.setValue(propertyValue);
-							property.setValue(value);
 						}
+						
+						property.setValue(value);
 						
 					}
 				}
