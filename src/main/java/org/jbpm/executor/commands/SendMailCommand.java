@@ -18,7 +18,8 @@ public class SendMailCommand implements Command{
 		String body = data.get("Body")==null? "": data.get("Body").toString();
 		String recipients = data.get("To")==null? "": data.get("To").toString();
 		
-		EmailServiceHelper.sendEmail(body, subject, recipients);
+		EmailServiceHelper.sendEmail(body, subject, recipients,
+				data.get("OwnerId")==null? null :data.get("OwnerId").toString());
 		
 		ExecutionResults result = new ExecutionResults();
 		

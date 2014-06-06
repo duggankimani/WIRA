@@ -1,5 +1,6 @@
 <classpath>
   <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/test/resources" output="target/test-classes" excluding="**/*.java"/>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/wira-0.9/WEB-INF/classes"/>
@@ -153,7 +154,7 @@
   <classpathentry kind="var" path="M2_REPO/org/jbpm/jbpm-human-task-core/5.4.0.Final/jbpm-human-task-core-5.4.0.Final.jar" sourcepath="M2_REPO/org/jbpm/jbpm-human-task-core/5.4.0.Final/jbpm-human-task-core-5.4.0.Final-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/jbpm/jbpm-persistence-jpa/5.4.0.Final/jbpm-persistence-jpa-5.4.0.Final.jar" sourcepath="M2_REPO/org/jbpm/jbpm-persistence-jpa/5.4.0.Final/jbpm-persistence-jpa-5.4.0.Final-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/jbpm/jbpm-workitems/5.4.0.Final/jbpm-workitems-5.4.0.Final.jar" sourcepath="M2_REPO/org/jbpm/jbpm-workitems/5.4.0.Final/jbpm-workitems-5.4.0.Final-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.6/jcl-over-slf4j-1.5.6.jar" sourcepath="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.6/jcl-over-slf4j-1.5.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/jcl-over-slf4j/1.6.4/jcl-over-slf4j-1.6.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/jdom/jdom/1.0/jdom-1.0.jar" sourcepath="M2_REPO/jdom/jdom/1.0/jdom-1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-client/1.17/jersey-client-1.17.jar" sourcepath="M2_REPO/com/sun/jersey/jersey-client/1.17/jersey-client-1.17-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-core/1.17/jersey-core-1.17.jar" sourcepath="M2_REPO/com/sun/jersey/jersey-core/1.17/jersey-core-1.17-sources.jar"/>
@@ -213,8 +214,8 @@
   <classpathentry kind="var" path="M2_REPO/org/apache/directory/shared/shared-ldap-schema-loader/0.9.19/shared-ldap-schema-loader-0.9.19.jar" sourcepath="M2_REPO/org/apache/directory/shared/shared-ldap-schema-loader/0.9.19/shared-ldap-schema-loader-0.9.19-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/directory/shared/shared-ldap-schema-manager/0.9.19/shared-ldap-schema-manager-0.9.19.jar" sourcepath="M2_REPO/org/apache/directory/shared/shared-ldap-schema-manager/0.9.19/shared-ldap-schema-manager-0.9.19-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/directory/shared/shared-ldif/0.9.19/shared-ldif-0.9.19.jar" sourcepath="M2_REPO/org/apache/directory/shared/shared-ldif/0.9.19/shared-ldif-0.9.19-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.5.6/slf4j-log4j12-1.5.6.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.5.6/slf4j-log4j12-1.5.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-jdk14/1.6.4/slf4j-jdk14-1.6.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/jivesoftware/smack/3.1.0/smack-3.1.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.0.5.RELEASE/spring-aop-3.0.5.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-aop/3.0.5.RELEASE/spring-aop-3.0.5.RELEASE-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-asm/3.0.5.RELEASE/spring-asm-3.0.5.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-asm/3.0.5.RELEASE/spring-asm-3.0.5.RELEASE-sources.jar"/>

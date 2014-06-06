@@ -53,7 +53,6 @@ public class CheckBoxField extends FieldWidget {
 		designMode=true;
 		
 		lblEl.setInnerHTML(property.getCaption());
-		System.err.println(">>>>> Property Caption = "+property.getCaption());
 		
 		Value value = property.getValue();
 		if(value!=null){

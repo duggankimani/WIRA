@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -145,8 +147,9 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			break;
 		}
 		
-		params.put("Body", body);
-		params.put("Subject", subject);
+		params.put("title", body);
+		params.put("subject", subject);
+		
 		sendMail(doc,owner, params);
 		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
 	}
@@ -187,6 +190,12 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		params.put("callbacks", CommandCodes.SendEmailCallback.name());
 		params.put("To", recipient.toString());
 		params.put("From", params.get("From")==null? "ebpm.mgr@gmail.com": params.get("From"));
+		params.put("docDate", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(
+				doc.getDocumentDate()==null? doc.getCreated(): doc.getDocumentDate()));
+		DocumentType type = doc.getType();
+		params.put("DocType",type.getDisplayName());
+		params.put("DocumentURL", getDocUrl(doc.getId()));
+		params.put("ownerId", doc.getOwner());
 		
 		try{
 			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("email.html");			
@@ -195,42 +204,29 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 			IOUtils.copy(is, bout);
 			html = new String(bout.toByteArray());
 			
-			String ownerId = params.get("OwnerId")==null? "Unknown":params.get("OwnerId").toString(); 
-			String body = params.get("Body")==null?"":params.get("Body").toString();
-			
-			html = html.replace("${Request}",body);
-			html = html.replace("${OwnerId}", getOwner(ownerId));
-			html = html.replace("${Office}", params.get("Approver").toString());
-			html = html.replace("${Description}",doc.getDescription());
-			html = html.replace("${DocSubject}", doc.getSubject());
-			html = html.replace("${DocumentDate}", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(
-					doc.getDocumentDate()==null? doc.getCreated(): doc.getDocumentDate()));
-			DocumentType type = doc.getType();
-			html = html.replace("${DocType}",type.getDisplayName());
-			
-			HttpServletRequest request = SessionHelper.getHttpRequest();
-			if(request!=null){
-				String requestURL = request.getRequestURL().toString();
-				String servletPath = request.getServletPath();
-				String pathInfo = request.getPathInfo();
+			Pattern pattern = Pattern.compile("\\$\\{([^}]+)\\}");//pick all content in ${}
+			Matcher matcher = pattern.matcher(html);
+			while (matcher.find()) {
+				String key = matcher.group(1);
 				
-				log.debug("# RequestURL = "+requestURL);
-				log.debug("# ServletPath = "+servletPath);
-				log.debug("# Path Info = "+pathInfo);
-				if(pathInfo!=null){
-					requestURL = requestURL.replace(pathInfo, "");
+				String value = params.get(key)==null? null: params.get(key).toString();
+				if(value==null){
+					//log.debug("SendEmailWorkItemHandler Checking Document for value for key: " + key);
+					value = doc.getValues().get(key)==null ? null : 
+						doc.getValues().get(key).getValue()==null? null : doc.getValues().get(key).getValue().toString();
 				}
-				log.debug("# Remove Path Info = "+requestURL);				
-				requestURL = requestURL.replace(servletPath, "?#home;type=search;did="+doc.getId());
-				log.debug("# Replace ServletPath = "+requestURL);
 				
-				html = html.replace("${DocumentURL}", requestURL);
-			}else{
-				html = html.replace("${DocumentURL}", "#");
+				if(value==null || value.isEmpty()){
+					log.warn("SendEmailWorkItemHandler Missing Value for key: " + key);
+					value = "";
+				}else{
+					log.debug("SendEmailWorkItemHandler found key: " + key+" = "+value);
+				}
+				
+				html = html.replace("${"+key+"}",value);
 			}
 			
-			params.put("Body", html);
-						
+			params.put("Body", html);						
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -244,7 +240,30 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 	}
 
 
-	private CharSequence getOwner(String ownerId) {
+	private String getDocUrl(Long docId) {
+		HttpServletRequest request = SessionHelper.getHttpRequest();
+		if(request!=null){
+			String requestURL = request.getRequestURL().toString();
+			String servletPath = request.getServletPath();
+			String pathInfo = request.getPathInfo();
+			
+			log.debug("# RequestURL = "+requestURL);
+			log.debug("# ServletPath = "+servletPath);
+			log.debug("# Path Info = "+pathInfo);
+			if(pathInfo!=null){
+				requestURL = requestURL.replace(pathInfo, "");
+			}
+			log.debug("# Remove Path Info = "+requestURL);				
+			requestURL = requestURL.replace(servletPath, "?#home;type=search;did="+docId);
+			log.debug("# Replace ServletPath = "+requestURL);
+			
+			return requestURL;
+		}
+		return "#";
+		
+	}
+
+	private String getOwner(String ownerId) {
 		
 		String owner = ownerId;
 		if(ownerId!=null){
