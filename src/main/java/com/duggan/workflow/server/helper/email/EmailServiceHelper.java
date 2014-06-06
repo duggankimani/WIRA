@@ -3,6 +3,7 @@ package com.duggan.workflow.server.helper.email;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -26,6 +27,7 @@ import org.apache.log4j.Logger;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class EmailServiceHelper {
@@ -88,18 +90,98 @@ public class EmailServiceHelper {
 		return val;
 	}
 
+	
+	public static void sendEmail(String body, String subject,
+			List<HTUser> recipients, HTUser initiatorId) throws MessagingException, UnsupportedEncodingException {
+		initProperties();
+		assert session!=null;
+		MimeMessage message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(getProperties().getProperty("mail.smtp.from"),"WIRA BPMS"));
+		
+		InternetAddress dests[] = new InternetAddress[recipients.size()];
+		for (int i = 0; i < recipients.size(); i++) {
+			HTUser recipient = recipients.get(i);
+			assert recipient.getEmail()!=null;
+			System.err.println("Recipient : "+recipient.getEmail()+" : "+recipient.getFullName());
+			dests[i] = new InternetAddress(recipient.getEmail(), recipient.getFullName());
+		}
+		
+		message.setRecipients(Message.RecipientType.TO, dests);
+		message.setSubject(subject, "UTF-8");
+		
+        try {
+        	Multipart multipart = new MimeMultipart();
+        	//HTML
+    		MimeBodyPart messageBodyPart = new MimeBodyPart();
+    		messageBodyPart.setContent(body, "text/html;charset=utf-8");
+    		multipart.addBodyPart(messageBodyPart);
+    		    		
+    		String rootFolder = "com/duggan/workflow/server/helper/email";
+    		
+            multipart.addBodyPart(
+            		getBodyType(DB.getAttachmentDao().getSettingImage(SETTINGNAME.ORGLOGO),
+            		"<imageLogo>",
+            		rootFolder+"/logo.png"));
+            
+            if(initiatorId!=null){
+            	multipart.addBodyPart(
+            			getBodyType(DB.getAttachmentDao().getUserImage(initiatorId.getUserId()),"<imageUser>",rootFolder+"/blueman(small).png"));
+            }else{
+            	multipart.addBodyPart(
+            			getBodyType(DB.getAttachmentDao().getUserImage("RD2D-doesnt-exist"),
+            					"<imageUser>",rootFolder+"/blueman(small).png"));
+            }
+            
+    		message.setContent(multipart);
+    		message.setSentDate(new java.util.Date());
+    		
+    		assert message!=null;
+    		log.debug("Sending ........");
+    		Transport.send(message);
+            log.debug("Email Successfully send........");
+        } catch (Exception e) {
+        	log.fatal("Could not send email: "+subject+": Cause "+e.getMessage());
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+	}
+	
+
+	/**
+	 * Deprecated Use {@link #sendEmail(String, String, List, HTUser)}
+	 * 
+	 * @param body
+	 * @param subject
+	 * @param recipient
+	 * @throws MessagingException
+	 * @throws UnsupportedEncodingException
+	 */
+	@Deprecated
 	public static void sendEmail(String body, String subject, String recipient)
 			throws MessagingException, UnsupportedEncodingException {
 		sendEmail(body, subject, recipient, null);
 	}
 	
+	
+	/**
+	 * Deprecated Use {@link #sendEmail(String, String, List, HTUser)}
+	 * 
+	 * @param body
+	 * @param subject
+	 * @param recipient
+	 * @param initiatorId
+	 * @throws MessagingException
+	 * @throws UnsupportedEncodingException
+	 */
+	@Deprecated
 	public static void sendEmail(String body, String subject, String recipient, String initiatorId)
 			throws MessagingException, UnsupportedEncodingException {
 
 		initProperties();
 		assert session!=null;
 		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(getProperties().getProperty("mail.smtp.from")));
+		message.setFrom(new InternetAddress("WIRA BPM",getProperties().getProperty("mail.smtp.from")));
 		
 		String[] emails = recipient.split(",");
 		InternetAddress dests[] = new InternetAddress[emails.length];
@@ -177,4 +259,5 @@ public class EmailServiceHelper {
 	public static void main(String[] args) throws Exception{
 		sendEmail("Hello world", "Test 1", "mdkimani@gmail.com");
 	}
+
 }

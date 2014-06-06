@@ -156,28 +156,28 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 
 	private void sendMail(Document doc,List<HTUser> users, Map<String, Object> params) {
 		
-		StringBuffer recipient=new StringBuffer();
+//		StringBuffer recipient=new StringBuffer();
 		
-		Iterator<HTUser> iter = users.iterator();
+//		Iterator<HTUser> iter = users.iterator();
+//		
+//		List<String> usersList = new ArrayList<>();
+//		while(iter.hasNext()){
+//			String email = iter.next().getEmail();
+//			if(email==null){
+//				continue;
+//			}
+//			if(usersList.contains(email)){
+//				continue;
+//			}
+//			usersList.add(email);
+//			
+//			recipient.append(email);
+//			
+//			if(iter.hasNext())
+//				recipient.append(",");
+//		}
 		
-		List<String> usersList = new ArrayList<>();
-		while(iter.hasNext()){
-			String email = iter.next().getEmail();
-			if(email==null){
-				continue;
-			}
-			if(usersList.contains(email)){
-				continue;
-			}
-			usersList.add(email);
-			
-			recipient.append(email);
-			
-			if(iter.hasNext())
-				recipient.append(",");
-		}
-		
-		if(recipient.toString().isEmpty()){
+		if(users==null || users.isEmpty()){
 			return;
 		}
 		
@@ -188,7 +188,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		 */
 		CommandContext context = new CommandContext();
 		params.put("callbacks", CommandCodes.SendEmailCallback.name());
-		params.put("To", recipient.toString());
+		params.put("To", users);
 		params.put("From", params.get("From")==null? "ebpm.mgr@gmail.com": params.get("From"));
 		params.put("docDate", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(
 				doc.getDocumentDate()==null? doc.getCreated(): doc.getDocumentDate()));
