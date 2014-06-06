@@ -26,7 +26,7 @@ public class SendMailCommand implements Command{
 		Object recipients = data.get("To")==null? "": data.get("To");
 		
 		if(recipients instanceof List){
-			log.warn("## Recipients List<HTUser> found !!!!! ");
+			log.debug("## Recipients List<HTUser> found !!!!! ");
 			EmailServiceHelper.sendEmail(body, subject, (List<HTUser>)recipients,(HTUser)data.get("ownerId"));
 			
 		}else if(recipients instanceof String){
