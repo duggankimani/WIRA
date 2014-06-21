@@ -119,7 +119,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main1(String[] args) {
 		CommandContext ctx = new CommandContext();
 		//ctx.setData("docType", DocType.LPO.name());
 		ctx.setData("subject", "LPO/8023/12");
@@ -135,8 +135,17 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 		assert request!=null;
 	}
 
-	public void executePostCall(String urlEncoding) {
-		
+	public void executePostCall(String urlEncodedString) {
+		WebResource resource = jclient.resource(urlEncodedString);
+//		String s = resource.type(MediaType.APPLICATION_FORM_URLENCODED)
+//				.accept(MediaType.TEXT_PLAIN).get(String.class);
+		resource.type(MediaType.APPLICATION_FORM_URLENCODED)
+				.accept(MediaType.TEXT_PLAIN).post();
+		//System.err.println(s);
+	}
+	
+	public static void main(String[] args) {
+		new OutgoingRequestImpl().executePostCall("http://localhost:8080/wira/ipnserv?sender=ZZZZZ&sender_phone=0022322");
 	}
 
 }
