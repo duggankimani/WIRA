@@ -1,8 +1,11 @@
 package com.duggan.africaistaking.test;
 
+import org.hibernate.connection.DatasourceConnectionProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.omg.CosNaming.NamingContext;
+import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.sms.AfricasTalkingGateway;
 
@@ -12,7 +15,7 @@ public class TestAfricaIsTalking {
 	 * @param args
 	 * @throws Exception 
 	 */
-	public static void main1(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		String username="dkimani";
 		String apiKey="4f91e819ea8defb7d14111c51b46769a26856fde6a15cc85545701ca71c38026";
 		String to="+254721239821";
@@ -33,7 +36,7 @@ public class TestAfricaIsTalking {
 		System.out.println(status);
 	}
 	
-	public static void main(String[] args) throws JSONException {
+	public static void main1(String[] args) throws JSONException {
 		JSONArray array= new JSONArray("[{\"status\":\"Success\",\"number\":\"+254721239821\",\"messageId\":\"ATSid_dfcb613cf5d118ee4c37dc2daee665c3\",\"cost\":\"KES 1.00\"}]");
 		
 		JSONObject obj = array.getJSONObject(0);

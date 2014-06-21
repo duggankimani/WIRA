@@ -5,6 +5,7 @@ import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent.FileLoadHandler;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
@@ -15,6 +16,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
@@ -37,7 +39,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 	@UiField HTMLPanel panelControls;
 	@UiField SpanElement spnMandatory;
 	@UiField HTMLPanel values;
-	
+		
 	Uploader uploader = null;
 	
 	public FileUploadField() {
@@ -147,20 +149,31 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 	@Override
 	public void onFileLoad(FileLoadEvent event) {
 		Attachment attachment = event.getAttachment();
-		String fieldName = attachment.getFieldName();
-		System.err.println("######## OnFileLoad FieldName>> "+
-		fieldName+" >> "+attachment.getName()
-		+" DocId = "+field.getDocId()+"; ATTDOCID="+attachment.getDocumentid());
 		
-		if(this.field.getName().equals(fieldName) && 
-				this.field.getDocId().equals(attachment.getDocumentid().toString())){
-			System.err.println("##################RENDERING ATTACHMENT...........");
+		String docId = this.field.getDocId();
+		String fieldName = this.field.getName();
+		
+		if(docId==null || fieldName==null){
+			return;
+		}
+				
+		if(attachment.getFieldName().equals(fieldName) && 
+				docId.equals(attachment.getDocumentid().toString())){
+			
 			render(attachment);
 		}
 	}
 
 	private void render(Attachment attachment) {
 		//lblReadOnly.setText(attachment.getName());
-		values.add(new InlineLabel(attachment.getName()));
+		UploadContext context = new UploadContext("getreport");
+		context.setContext("attachmentId", attachment.getId()+"");
+		context.setContext("ACTION", "GETATTACHMENT");
+		String fullUrl = AppContext.getBaseUrl()+"/"+context.toUrl();;
+		
+		Anchor anchor = new Anchor(attachment.getName(),fullUrl);
+		anchor.setTarget("_blank");
+		
+		values.add(anchor);
 	}
 }

@@ -1,6 +1,9 @@
 package com.duggan.workflow.client.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,7 +16,7 @@ public class UploadContext {
 
 	private String url="/upload";
 	public static final String ACTION="ACTION"; 
-	private String acceptsDocTypes=null;
+	private List<String> acceptsDocTypes=new ArrayList<String>();
 	
 	private Map<String,String> context = new HashMap<String, String>();
 	
@@ -89,10 +92,23 @@ public class UploadContext {
 	 * 
 	 * Comma separated Acceptable file extensions 
 	 * 
+	 * @see UploadContext#setAccept(List)
+	 * 
 	 * @param docTypes
 	 */
+	@Deprecated
 	public void setAccept(String commaSeparatedDocTypes){
-		acceptsDocTypes = commaSeparatedDocTypes;
+		acceptsDocTypes.clear();
+		if(commaSeparatedDocTypes==null){			
+			return;
+		}
+		
+		String[] types= commaSeparatedDocTypes.split(",");
+		acceptsDocTypes.addAll(Arrays.asList(types));
+	}
+	
+	public void setAccept(List<String> accept){
+		this.acceptsDocTypes = accept;
 	}
 	
 	/**
@@ -100,7 +116,13 @@ public class UploadContext {
 	 * 
 	 * @return Acceptable File Extensions
 	 */
-	public String getAcceptTypes(){
-		return acceptsDocTypes;
+	public String[] getAcceptTypes(){
+		Object[] types = acceptsDocTypes.toArray();
+		String[] rtn = new String[types.length];
+		for(int i=0; i<types.length; i++){
+			rtn[i] = types[i].toString();
+		}
+		
+		return rtn ;
 	}
 }

@@ -69,7 +69,7 @@ public class HTUser implements Serializable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return userId;
+		return getFullName();
 	}
 
 	public List<UserGroup> getGroups() {
