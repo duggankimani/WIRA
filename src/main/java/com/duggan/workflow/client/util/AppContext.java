@@ -178,11 +178,18 @@ public class AppContext {
 		return organizationName;
 	}
 	
-	public static String getUserImageUrl(){
+	public static String getBaseUrl(){
+		
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
 		if (moduleUrl.endsWith("/")) {
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length() - 1);
 		}
+		
+		return moduleUrl;
+	}
+	
+	public static String getUserImageUrl(){
+		String moduleUrl = getBaseUrl();				
 		String url = moduleUrl
 				+ "/getreport?ACTION=GetUser&userId="
 				+ user.getUserId();

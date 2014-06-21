@@ -77,8 +77,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 	
 	public void defaultProperties(){
-		addProperty(new Property(NAME, "Name", DataType.STRING, id));
 		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
+		addProperty(new Property(NAME, "Name", DataType.STRING, id));
 		addProperty(new Property(HELP, "Help", DataType.STRING, id));
 	}
 
@@ -282,7 +282,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	 * @param type
 	 * @param handler
 	 */
-	public void addRegisteredHandler(Type<? extends EventHandler> type, FieldWidget handler){
+	public void addRegisteredHandler(Type<? extends EventHandler> type, EventHandler handler){
 		@SuppressWarnings("unchecked")
 		HandlerRegistration hr = AppContext.getEventBus().addHandler(
 				(GwtEvent.Type<EventHandler>)type, handler);
