@@ -118,10 +118,10 @@
     </userTask>
     <task id="_5" name="Pioneer Integration" tns:taskName="PioneerIntegration" >
       <ioSpecification>
-        <dataInput id="_5_documentOutInput" name="documentOut" />
+        <dataInput id="_5_documentInput" name="document" />
         <dataInput id="_5_uriInput" name="uri" />
         <inputSet>
-          <dataInputRefs>_5_documentOutInput</dataInputRefs>
+          <dataInputRefs>_5_documentInput</dataInputRefs>
           <dataInputRefs>_5_uriInput</dataInputRefs>
         </inputSet>
         <outputSet>
@@ -129,7 +129,7 @@
       </ioSpecification>
       <dataInputAssociation>
         <sourceRef>document</sourceRef>
-        <targetRef>_5_documentOutInput</targetRef>
+        <targetRef>_5_documentInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_5_uriInput</targetRef>

@@ -60,11 +60,16 @@ public class PioneerMpesaServlet extends HttpServlet {
 
 			// Request Context
 			Map<String, Object> context = new HashMap<String, Object>();
-			context.put("sender", req.getParameter("sender"));
-			context.put("sender_phone", req.getParameter("sender_phone"));
+			context.put("senderName", req.getParameter("senderName"));
+			context.put("senderPhone", req.getParameter("senderPhone"));
+			context.put("mpesaCode", req.getParameter("mpesaCode"));
+			context.put("mpesaDate", req.getParameter("mpesaDate"));
+			context.put("mpesaTime", req.getParameter("mpesaTime"));
+			context.put("mpesaAmount", req.getParameter("mpesaAmount"));
 			context.put("docType", "MPESAIPN");
+			
 			context.put("ownerId", "Administrator");
-			request.setDescription(req.getParameter("sender")+"-"+req.getParameter("sender_phone"));
+			request.setDescription(req.getParameter("senderName")+"-"+req.getParameter("senderPhone"));
 			request.setContext(context);
 			
 			System.err.println(context);
@@ -84,15 +89,14 @@ public class PioneerMpesaServlet extends HttpServlet {
 
 			resp.setContentType("text/html");
 			out.println("<b style=\"color:red\">" + key.getDocumentId() + " : "
-					+ key.getProcessInstanceId() + ":" + key.getSessionId()
-					+ "</b>");
+						+ key.getProcessInstanceId() + ":" + key.getSessionId()
+						+ "</b>");
 			out.close();
 			
 			DB.commitTransaction();
 		} catch (Exception e) {
 			DB.rollback();
 			e.printStackTrace();
-			//resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			throw new RuntimeException(e);
 		} finally {
 			if(session!=null){
