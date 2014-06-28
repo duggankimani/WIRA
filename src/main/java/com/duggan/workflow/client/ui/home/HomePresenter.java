@@ -1,8 +1,5 @@
 package com.duggan.workflow.client.ui.home;
 
-import java.util.HashMap;
-
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
@@ -31,7 +28,6 @@ import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class HomePresenter extends TabContainerPresenter<HomePresenter.MyView, HomePresenter.MyProxy> implements
@@ -80,14 +76,6 @@ ProcessingHandler, ProcessingCompletedHandler{
 		
 	}
 
-	
-	
-
-	@Override
-	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
-	}
-	
 	@Override
 	protected void onBind() {
 		super.onBind();

@@ -20,7 +20,6 @@ public class TabPanel extends AbstractTabPanel {
 
 	@UiField BulletListPanel linksPanel;
 	@UiField HTMLPanel tabContent;
-
 	@Inject PlaceManager placeManager;
 	
 	@Inject

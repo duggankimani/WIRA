@@ -84,11 +84,7 @@ public class DashboardPresenter extends
 		loadCharts();
 	}
 	
-	boolean loaded=false;
 	private void loadCharts() {
-		
-		loaded=true;
-		
 		setInSlot(OVERALLTURNAROUND_SLOT, null);
 		setInSlot(REQUESTSPERDOC_SLOT, null);
 		setInSlot(LINEGRAPH_SLOT, null);

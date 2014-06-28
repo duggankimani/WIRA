@@ -1,26 +1,8 @@
 package com.duggan.workflow.client.ui.home;
 
-import java.util.HashMap;
-
-import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.TabPanel;
-import com.duggan.workflow.client.ui.component.BulletListPanel;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Tab;
@@ -35,18 +17,14 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	}
 
 	
-	@UiField(provided=true) TabPanel tabPanel;
+	@UiField(provided=true) HomeTabPanel tabPanel;
 	
 	@Inject
-	public HomeView(final Binder binder,TabPanel panel) {
+	public HomeView(final Binder binder,HomeTabPanel panel) {
 		this.tabPanel = panel;
 		widget = binder.createAndBindUi(this);
 			
 	}
-
-//	public HTMLPanel getActivityContainer() {
-//		return activityContainer;
-//	}
 
 	@Override
 	public Widget asWidget() {
@@ -85,7 +63,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {	
-		if(slot == AdminHomePresenter.SLOT_SetTabContent){
+		if(slot == HomePresenter.SLOT_SetTabContent){
 			tabPanel.setPanelContent(content);
 		}else {
 			super.setInSlot(slot, content);

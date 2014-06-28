@@ -1,20 +1,23 @@
 package com.duggan.workflow.client.ui.home;
 
+import java.util.List;
+
+import com.duggan.workflow.client.ui.admin.AbstractTabPanel;
+import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.Tab;
+import com.gwtplatform.mvp.client.TabData;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
-public class HomeTabPanel extends Composite implements HasText {
+public class HomeTabPanel extends AbstractTabPanel {
 
 	private static HomeTabPanelUiBinder uiBinder = GWT
 			.create(HomeTabPanelUiBinder.class);
@@ -22,9 +25,14 @@ public class HomeTabPanel extends Composite implements HasText {
 	interface HomeTabPanelUiBinder extends UiBinder<Widget, HomeTabPanel> {
 	}
 	
+	@UiField BulletListPanel linksPanel;
+	
+	@UiField HTMLPanel tabContent;
+
+	@Inject PlaceManager placeManager;
+	
 	@UiField Anchor btnAdd;
 	
-	@UiField HTMLPanel wholeContainer;
 	@UiField HTMLPanel mainContainer;
 
 	public HomeTabPanel() {
@@ -34,28 +42,34 @@ public class HomeTabPanel extends Composite implements HasText {
 		
 	}
 
-	@UiField
-	Button button;
-
-	public HomeTabPanel(String firstName) {
-		initWidget(uiBinder.createAndBindUi(this));
-		button.setText(firstName);
-	}
-
-	@UiHandler("button")
-	void onClick(ClickEvent e) {
-		Window.alert("Hello!");
-	}
-
-	public void setText(String text) {
-		button.setText(text);
-	}
-
-	public String getText() {
-		return button.getText();
-	}
-
 	public HasClickHandlers getAddButton() {
 		return btnAdd;
+	}
+	
+	public void setPanelContent(IsWidget panelContent) {
+		tabContent.clear();
+		if (panelContent != null) {
+			tabContent.add(panelContent);
+		}
+	}
+	
+	@Override
+	public Tab addTab(TabData tabData, String historyToken) {
+		
+		if(tabData instanceof CompositeTabData){
+			CompositeTabData data = (CompositeTabData)tabData;
+			List<TabData> lst = data.getTabData();
+			for(TabData d: lst){
+				//addTab(d, d.get);
+			}
+			return null;
+		}else{
+			return super.addTab(tabData, historyToken);
+		}
+	}
+
+	@Override
+	public BulletListPanel getLinksPanel() {
+		return linksPanel;
 	}
 }

@@ -62,7 +62,7 @@
 						</div>
 						<div class="action-area">
 							<div class="version" ui:field="spnVersion"></div>
-							<g:Anchor styleName="btn btn-primary" ui:field="aProfile" href="#home;page=profile">View Profile</g:Anchor>
+							<g:Anchor styleName="btn btn-primary" ui:field="aProfile" href="#profile">View Profile</g:Anchor>
 							<g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
 						</div>
 					</ul>

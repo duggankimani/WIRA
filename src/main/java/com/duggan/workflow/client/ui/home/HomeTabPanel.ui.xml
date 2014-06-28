@@ -1,6 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component"
+	>
 
 	<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
 			<div id="sidebar-nav" class="span2 hidden-phone">
@@ -27,7 +29,10 @@
 							<span>My Documents</span>
 							<i class="icon-chevron-up hidden-tablet"></i>
 						</a>
-						<ul class="submenu">
+						<d:BulletListPanel styleName="submenu" ui:field="linksPanel">
+							
+						</d:BulletListPanel>
+						<!-- ul class="submenu">
 							<li ui:field="liDrafts" class="active">
 								<g:Anchor ui:field="aDrafts" styleName="hand" text="Drafts"></g:Anchor>
 							</li>
@@ -41,7 +46,7 @@
 							<li ui:field="liRejected">
 								<g:Anchor ui:field="aRejected" styleName="hand" text="Rejected"></g:Anchor>
 							</li>
-						</ul>
+						</ul -->
 					</li>
 
 					<li class="active">
@@ -66,12 +71,12 @@
 				</ul>
 			</div>
 		
-			<g:HTMLPanel ui:field="wholeContainer" styleName="hide content-right span10">
+			<g:HTMLPanel ui:field="tabContent" styleName="content-right span10">
 				
 			</g:HTMLPanel>
 
-			<g:HTMLPanel ui:field="activityContainer" styleName="overflow-y content-right span10">
-			</g:HTMLPanel>
+			<!-- g:HTMLPanel ui:field="activityContainer" styleName="overflow-y content-right span10">
+			</g:HTMLPanel -->
 
 		</g:HTMLPanel>
 

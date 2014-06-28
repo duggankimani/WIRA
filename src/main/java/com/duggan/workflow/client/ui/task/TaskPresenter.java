@@ -2,25 +2,36 @@ package com.duggan.workflow.client.ui.task;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
-import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.TabData;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
-import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
+import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
+import com.duggan.workflow.client.ui.events.AfterSearchEvent;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
+import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
+import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
+import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
+import com.duggan.workflow.client.ui.events.PresentTaskEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.ReloadEvent;
+import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
+import com.duggan.workflow.client.ui.filter.FilterPresenter;
+import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.profile.ProfilePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
@@ -28,52 +39,6 @@ import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.TextBox;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
-import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
-import com.duggan.workflow.client.ui.events.AfterSearchEvent;
-import com.duggan.workflow.client.ui.events.AlertLoadEvent;
-import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
-import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
-import com.duggan.workflow.client.ui.events.PresentTaskEvent;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.events.ReloadEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent;
-import com.duggan.workflow.client.ui.events.ActivitiesSelectedEvent.ActivitiesSelectedHandler;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
-import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
-import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
-import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
-import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
-import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
-import com.duggan.workflow.client.ui.filter.FilterPresenter;
-import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -83,6 +48,36 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.TabData;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class TaskPresenter extends
 		Presenter<TaskPresenter.MyView, TaskPresenter.MyProxy> implements AfterSaveHandler,
@@ -105,14 +100,14 @@ public class TaskPresenter extends
 	}
 
 	@ProxyCodeSplit
-	@NameToken(NameTokens.tasks)
+	@NameToken(NameTokens.task)
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<TaskPresenter> {
 	}
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Tasks","icon-dashboard",1, adminGatekeeper);
+        return new TabDataExt("Drafts","icon-dashboard",1, adminGatekeeper);
     }
 
 	@ContentSlot
@@ -128,13 +123,11 @@ public class TaskPresenter extends
 	@Inject PlaceManager placeManager;
 	@Inject DocumentPopupPresenter docPopup;
 		
-
 	public static final Object DATEGROUP_SLOT = new Object();
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
 	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
-	private IndirectProvider<ActivitiesPresenter> activitiesFactory;
 	private IndirectProvider<ProfilePresenter> profileFactory;
 	
 	private TaskType currentTaskType;
@@ -179,8 +172,8 @@ public class TaskPresenter extends
 		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
 		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
 		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);
-		activitiesFactory = new StandardProvider<ActivitiesPresenter>(activitiesProvider);
-		profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
+		//activitiesFactory = new StandardProvider<ActivitiesPresenter>(activitiesProvider);
+		//profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
 	}
 
 	@Override
@@ -242,42 +235,45 @@ public class TaskPresenter extends
 		if(documentSearchID!=null){
 			documentId = Long.parseLong(documentSearchID);
 		}
+
+		TaskType type = TaskType.DRAFT;
 		
-		String page=request.getParameter("page", null);
-		
-
-		if(page!=null && page.equals("profile")){
-			getView().setTaskType(null);
-			Window.setTitle("Profile");
-			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
-				@Override
-				public void processResult(ProfilePresenter aResponse) {
-					setInSlot(ACTIVITIES_SLOT, aResponse);
-				}
-			});
-			
-			
-		}else if(name!=null){
-
-			TaskType type = TaskType.getTaskType(name);
-			this.currentTaskType=type;
-			
-			getView().setTaskType(currentTaskType);
-			loadTasks(type);
-
-		}else{
-			//Task Type Name
-			getView().setTaskType(null);
-			Window.setTitle("Home");
-			activitiesFactory.get(new ServiceCallback<ActivitiesPresenter>() {
-				@Override
-				public void processResult(ActivitiesPresenter presenter) {
-
-					setInSlot(ACTIVITIES_SLOT, presenter);
-					presenter.loadActivities();
-				}
-			});
+		if(name!=null){
+			type=TaskType.getTaskType(name);
 		}
+		currentTaskType = type;
+		
+		getView().setTaskType(currentTaskType);
+		loadTasks(type);
+	
+
+//		if(page!=null && page.equals("profile")){
+//			getView().setTaskType(null);
+//			Window.setTitle("Profile");
+//			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
+//				@Override
+//				public void processResult(ProfilePresenter aResponse) {
+//					setInSlot(ACTIVITIES_SLOT, aResponse);
+//				}
+//			});
+//			
+//			
+//		}else if(name!=null){
+//
+//
+//		}else{
+//			//Task Type Name
+//			getView().setTaskType(null);
+//			Window.setTitle("Home");
+//			activitiesFactory.get(new ServiceCallback<ActivitiesPresenter>() {
+//				@Override
+//				public void processResult(ActivitiesPresenter presenter) {
+//
+//					setInSlot(ACTIVITIES_SLOT, presenter);
+//					presenter.loadActivities();
+//				}
+//			});
+//		}
 					
 		
 	}	
@@ -453,6 +449,15 @@ public class TaskPresenter extends
 		//System.err.println("HomePresenter - OnReset :: "+this);
 		setInSlot(FILTER_SLOT, filterPresenter);
 		setInSlot(DOCPOPUP_SLOT, docPopup);
+		
+//		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
+//			@Override
+//			public void processResult(GenericDocumentPresenter result) {
+//				result.setDocId(documentId, null);
+//				setInSlot(DOCUMENT_SLOT, result);
+//			}
+//		});
+		
 	}
 
 	@Override

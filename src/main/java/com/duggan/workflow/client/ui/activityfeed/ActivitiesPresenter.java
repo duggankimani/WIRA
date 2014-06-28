@@ -6,11 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.activityfeed.components.CommentActivity;
 import com.duggan.workflow.client.ui.activityfeed.components.TaskActivity;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.task.TaskPresenter;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
@@ -19,27 +24,51 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class ActivitiesPresenter extends
-		PresenterWidget<ActivitiesPresenter.MyView> {
+		Presenter<ActivitiesPresenter.MyView, ActivitiesPresenter.IActivitiesProxy> {
 
 	public interface MyView extends View {
 		HasWidgets getPanelActivity();
-
 		void bind();
 	}
+	
+	@ProxyCodeSplit
+	@NameToken(NameTokens.home)
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface IActivitiesProxy extends TabContentProxyPlace<ActivitiesPresenter> {
+	}
+	
+	@TabInfo(container = HomePresenter.class)
+    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+        return new TabDataExt("Activities","icon-dashboard",2, adminGatekeeper);
+    }
 
 	@Inject DispatchAsync requestHelper;
 
 	@Inject
-	public ActivitiesPresenter(final EventBus eventBus, MyView view){
-		super(eventBus, view);
+	public ActivitiesPresenter(final EventBus eventBus, final MyView view,
+			final IActivitiesProxy proxy){
+		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
+	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		loadActivities();
 	}
 	 
 	public void loadActivities() {
@@ -64,10 +93,7 @@ public class ActivitiesPresenter extends
 	protected void bindActivities(GetActivitiesResponse response) {
 		getView().getPanelActivity().clear();
 		
-		//Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
-		//setInSlot(ACTIVITY_SLOT, null);
 		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
-		//System.out.println(activitiesMap.size());
 		Set<Activity> keyset = activitiesMap.keySet();
 		List<Activity> activities= new ArrayList<Activity>();
 		
@@ -77,11 +103,9 @@ public class ActivitiesPresenter extends
 		
 		for(Activity activity: activities){
 			bind(activity,false);	
-			//System.err.println(activity);
 			List<Activity> children = activitiesMap.get(activity);	
 			if(children!=null){
 				for(Activity child: children){
-					//System.err.println(child);
 					bind(child, true);
 				}
 				

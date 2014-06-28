@@ -170,8 +170,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(NotePresenter.class,
 				NotePresenter.MyView.class, NoteView.class);
 
-		bindPresenterWidget(ActivitiesPresenter.class,
-				ActivitiesPresenter.MyView.class, ActivitiesView.class);
+		bindPresenter(ActivitiesPresenter.class,ActivitiesPresenter.MyView.class,
+				ActivitiesView.class, ActivitiesPresenter.IActivitiesProxy.class);
 
 		bindPresenterWidget(CommentPresenter.class,
 				CommentPresenter.ICommentView.class, CommentView.class);
@@ -260,8 +260,8 @@ public class ClientModule extends AbstractPresenterModule {
 				DSSavePresenter.IDSSaveView.class,
 				DSSaveView.class);
 
-		bindPresenterWidget(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
-				ProfileView.class);
+		bindPresenter(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
+				ProfileView.class, ProfilePresenter.IProfileProxy.class);
 		
 		bindPresenterWidget(PieChartPresenter.class, PieChartPresenter.IPieChartView.class,
 				PieChartView.class);

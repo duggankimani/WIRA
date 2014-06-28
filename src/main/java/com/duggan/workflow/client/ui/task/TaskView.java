@@ -31,7 +31,7 @@ public class TaskView extends ViewImpl implements TaskPresenter.MyView {
 	}
 
 	@UiField TextBox txtSearch;
-	@UiField HTMLPanel divDocPopup;
+	//@UiField HTMLPanel divDocPopup;
 	@UiField Element divDocListing;
 	@UiField Element divDocView;
 	@UiField BulletListPanel ulTaskGroups;
@@ -40,7 +40,7 @@ public class TaskView extends ViewImpl implements TaskPresenter.MyView {
 	@UiField Anchor iFilterdropdown;
 	@UiField HTMLPanel filterDialog;
 	@UiField InlineLabel spnNoItems;
-	@UiField HTMLPanel activityContainer;
+	//@UiField HTMLPanel activityContainer;
 	@UiField HTMLPanel docContainer;
 	
 	//Filter Dialog Caret
@@ -106,25 +106,28 @@ public class TaskView extends ViewImpl implements TaskPresenter.MyView {
 			if (content != null) {
 				docContainer.add(content);
 			}
-		} else if(slot== ACTIVITIES_SLOT){
-			activityContainer.clear();
-			if(content != null){
-				activityContainer.add(content);
-			}
-		}else if (slot == FILTER_SLOT) {
+		} 
+//		else if(slot== ACTIVITIES_SLOT){
+//			activityContainer.clear();
+//			if(content != null){
+//				activityContainer.add(content);
+//			}
+//		}
+		else if (slot == FILTER_SLOT) {
 			filterDialog.clear();
 			if (content != null) {
 				filterDialog.add(content);
 			}
 			
 		}	
-		else if (slot == DOCPOPUP_SLOT) {
-			divDocPopup.clear();
-			if (content != null) {
-				divDocPopup.add(content);
-			}
-			
-		}else{
+//		else if (slot == DOCPOPUP_SLOT) {
+//			divDocPopup.clear();
+//			if (content != null) {
+//				divDocPopup.add(content);
+//			}
+//			
+//		}
+		else{
 			super.setInSlot(slot, content);
 		}
 		
