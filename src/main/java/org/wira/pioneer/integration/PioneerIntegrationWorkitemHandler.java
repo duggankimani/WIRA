@@ -18,19 +18,21 @@ public class PioneerIntegrationWorkitemHandler implements WorkItemHandler {
 	public void executeWorkItem(WorkItem workItem, WorkItemManager workItemMgr) {
 		String uri = workItem.getParameter("uri").toString();
 		Document document = (Document)workItem.getParameter("document");
-		String clientCode = document.getValues().get("clientCode").toString();
-		String idNo = document.getValues().get("idNo").toString();
-		String trxNo = document.getValues().get("trxNo").toString();
+		String clCode = document.getValues().get("clCode").getValue().toString();
+		String idNo = document.getValues().get("idNumber").getValue().toString();
+		String mpesaCode = document.getValues().get("mpesaCode").getValue().toString();
 
-		send(uri, trxNo, idNo, clientCode);
+		send(uri, mpesaCode, idNo, clCode);
 		workItemMgr.completeWorkItem(workItem.getId(), new HashMap<String, Object>());
 	}
 
-	private void send(String uri, String trxNo, String idNo, String clientCode) {
+	private void send(String uri, String mpesaCode, String idNo, String clientCode) {
 		if(!uri.endsWith("/")){
 			uri = uri.substring(0, uri.length()-1);
 		}
-		String encodedUrl = uri+"?trxtNo="+trxNo+"&idNo="+idNo+"&clientCode="+clientCode;
+		String encodedUrl = uri+"?mpesaCode="+mpesaCode+"&idNo="+idNo+"&clientCode="+clientCode;
+		
+		System.out.println("Encoded::"+encodedUrl); 
 		log.warn("Encoded uri: "+encodedUrl);
 		new OutgoingRequestImpl().executePostCall(encodedUrl);
 	}

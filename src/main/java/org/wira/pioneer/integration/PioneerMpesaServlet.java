@@ -62,6 +62,9 @@ public class PioneerMpesaServlet extends HttpServlet {
 			Map<String, Object> context = new HashMap<String, Object>();
 			context.put("senderName", req.getParameter("senderName"));
 			context.put("senderPhone", req.getParameter("senderPhone"));
+			context.put("enteredId", req.getParameter("enteredId"));
+			context.put("clCode", req.getParameter("clCode"));
+			context.put("customerNames", req.getParameter("customerNames"));
 			context.put("mpesaCode", req.getParameter("mpesaCode"));
 			context.put("mpesaDate", req.getParameter("mpesaDate"));
 			context.put("mpesaTime", req.getParameter("mpesaTime"));
