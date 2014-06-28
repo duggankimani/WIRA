@@ -58,17 +58,17 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 				fireEvent(new SearchEvent(filter));
 				subject=filter.getSubject();
 				if(subject!=""){
-					homeview.setSearchBox(subject);
+					//homeview.setSearchBox(subject);
 				}
 				
-				homeview.hideFilterDialog();
+				//homeview.hideFilterDialog();
 			}
 		});
 		
 		getView().getCloseButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				homeview.hideFilterDialog();
+				//homeview.hideFilterDialog();
 			}
 		});
 		

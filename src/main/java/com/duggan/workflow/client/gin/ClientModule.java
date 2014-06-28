@@ -104,6 +104,8 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.duggan.workflow.client.ui.task.TaskPresenter;
+import com.duggan.workflow.client.ui.task.TaskView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -275,5 +277,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		 bind(TabPanel.class);
 
+
+		bindPresenter(TaskPresenter.class, TaskPresenter.MyView.class,
+				TaskView.class, TaskPresenter.MyProxy.class);
 	}
 }

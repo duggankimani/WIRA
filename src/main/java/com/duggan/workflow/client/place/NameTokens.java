@@ -17,6 +17,7 @@ public class NameTokens {
 	public static final String datasources = "datasources";
 	public static final String formbuilder = "formbuilder";
 	public static final String processes = "processes";
+	public static final String tasks = "tasks";
 
 	public static String getHome() {
 		return home;
@@ -52,6 +53,10 @@ public class NameTokens {
 
 	public static String getSettings() {
 		return settings;
+	}
+
+	public static String getTasks() {
+		return tasks;
 	}
 	
 }
