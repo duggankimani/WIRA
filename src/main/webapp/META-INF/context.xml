@@ -1,0 +1,5 @@
+<Context>
+ 
+    <Resource name="jdbc/ebusinessds" auth="Container" type="javax.sql.DataSource"
+        factory="bitronix.tm.resource.ResourceObjectFactory" uniqueName="jdbc/ebusinessds" />
+</Context>
