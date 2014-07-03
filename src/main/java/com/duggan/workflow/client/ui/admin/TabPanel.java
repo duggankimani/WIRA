@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.Tab;
+import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 public class TabPanel extends AbstractTabPanel {
@@ -32,6 +34,12 @@ public class TabPanel extends AbstractTabPanel {
 		if (panelContent != null) {
 			tabContent.add(panelContent);
 		}
+	}
+	
+	@Override
+	protected Tab createNewTab(TabData tabData) {
+		IconTabItem item = new IconTabItem(tabData);
+		return item;
 	}
 
 	@Override

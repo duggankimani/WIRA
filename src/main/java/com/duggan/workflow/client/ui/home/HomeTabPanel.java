@@ -1,7 +1,5 @@
 package com.duggan.workflow.client.ui.home;
 
-import java.util.List;
-
 import com.duggan.workflow.client.ui.admin.AbstractTabPanel;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.google.gwt.core.client.GWT;
@@ -54,22 +52,13 @@ public class HomeTabPanel extends AbstractTabPanel {
 	}
 	
 	@Override
-	public Tab addTab(TabData tabData, String historyToken) {
-		
-		if(tabData instanceof CompositeTabData){
-			CompositeTabData data = (CompositeTabData)tabData;
-			List<TabData> lst = data.getTabData();
-			for(TabData d: lst){
-				//addTab(d, d.get);
-			}
-			return null;
-		}else{
-			return super.addTab(tabData, historyToken);
-		}
+	public BulletListPanel getLinksPanel() {
+		return linksPanel;
 	}
 
 	@Override
-	public BulletListPanel getLinksPanel() {
-		return linksPanel;
+	protected Tab createNewTab(TabData tabData) {
+		
+		return new TabItem(tabData);
 	}
 }

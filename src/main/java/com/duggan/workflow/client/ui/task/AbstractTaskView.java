@@ -1,9 +1,12 @@
 package com.duggan.workflow.client.ui.task;
 
-import static com.duggan.workflow.client.ui.task.TaskPresenter.*;
+import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.*;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
+import com.duggan.workflow.client.ui.task.DraftsPresenter.IDraftsView;
+import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedView;
+import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter.ISuspendedView;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
@@ -23,11 +26,11 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class TaskView extends ViewImpl implements TaskPresenter.MyView {
+public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.ITaskView, IDraftsView, IParticipatedView, ISuspendedView{
 
 	private final Widget widget;
 
-	public interface Binder extends UiBinder<Widget, TaskView> {
+	public interface Binder extends UiBinder<Widget, AbstractTaskView> {
 	}
 
 	@UiField TextBox txtSearch;
@@ -47,7 +50,7 @@ public class TaskView extends ViewImpl implements TaskPresenter.MyView {
 	boolean isNotDisplayed=true;
 	
 	@Inject
-	public TaskView(final Binder binder) {
+	public AbstractTaskView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 
 		ulTaskGroups.setId("navigation-menu");

@@ -12,7 +12,7 @@ import com.gwtplatform.mvp.client.TabData;
 public abstract class AbstractTabPanel extends Composite implements com.gwtplatform.mvp.client.TabPanel{
 
 
-	private final List<TabItem> tabList = new ArrayList<TabItem>();
+	private final List<Tab> tabList = new ArrayList<Tab>();
 	Tab currentActiveTab;
 	
 	public AbstractTabPanel(){
@@ -22,7 +22,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 	
 	@Override
 	public Tab addTab(TabData tabData, String historyToken) {
-		TabItem newTab = createNewTab(tabData);
+		Tab newTab = createNewTab(tabData);
 		int beforeIndex;
 		for (beforeIndex = 0; beforeIndex < tabList.size(); ++beforeIndex) {
 			if (newTab.getPriority() < tabList.get(beforeIndex).getPriority()) {
@@ -37,10 +37,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 		return newTab;
 	}
 
-	private TabItem createNewTab(TabData tabData) {
-		TabItem item = new TabItem(tabData);
-		return item;
-	}
+	protected abstract Tab createNewTab(TabData tabData);
 
 	@Override
 	public void removeTab(Tab tab) {
@@ -86,7 +83,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 	 * Ensures that all tabs are visible or hidden as they should.
 	 */
 	public void refreshTabs() {
-		for (TabItem tab : tabList) {
+		for (Tab tab : tabList) {
 			setTabVisibility(tab);
 		}
 	}
@@ -95,9 +92,9 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 	 * Ensures the specified tab is visible or hidden as it should.
 	 * 
 	 * @param tab
-	 *            The {@link TabItem} to check.
+	 *            The {@link IconTabItem} to check.
 	 */
-	private void setTabVisibility(TabItem tab) {
+	protected void setTabVisibility(Tab tab) {
 		
 		//boolean visible = (tab == currentActiveTab) || tab.canUserAccess();
 		//tab.setVisible(visible);

@@ -1,7 +1,5 @@
 package com.duggan.workflow.client.gin;
 
-import com.duggan.workflow.client.ui.task.TaskPresenter;
-import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;

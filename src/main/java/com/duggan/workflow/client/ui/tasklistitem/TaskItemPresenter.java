@@ -168,16 +168,6 @@ public class TaskItemPresenter extends
 				});				
 			}
 		});
-		
-		getView().getViewLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				PlaceRequest request = new PlaceRequest(NameTokens.personalreview);
-				request = request.with("taskId", task.getId()+"");				
-				placeManager.revealPlace(request);
-			}
-		});
 
 
 		getView().getClaimLink().addClickHandler(new ClickHandler() {

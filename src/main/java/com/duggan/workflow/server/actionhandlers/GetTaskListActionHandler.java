@@ -88,6 +88,7 @@ public class GetTaskListActionHandler extends
 			break;
 			
 		default:
+			//Tasks loaded here
 			summary = getPendingApprovals(userId, type);
 			break;
 		}

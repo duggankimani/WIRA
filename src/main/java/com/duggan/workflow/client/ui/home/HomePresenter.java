@@ -99,13 +99,6 @@ ProcessingHandler, ProcessingCompletedHandler{
 		
 	}
 
-	
-//	
-//	@Override
-//	public void onActivitiesSelected(ActivitiesSelectedEvent event) {
-//		getView().showActivitiesPanel(true);
-//	}
-
 	@Override
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
 		getView().showmask(false);

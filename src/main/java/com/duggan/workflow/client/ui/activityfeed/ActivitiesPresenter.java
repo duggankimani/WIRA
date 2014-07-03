@@ -15,7 +15,6 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
-import com.duggan.workflow.client.ui.task.TaskPresenter;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
@@ -54,7 +53,7 @@ public class ActivitiesPresenter extends
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Activities","icon-dashboard",2, adminGatekeeper);
+        return new TabDataExt("Activities","icon-dashboard",10, adminGatekeeper);
     }
 
 	@Inject DispatchAsync requestHelper;

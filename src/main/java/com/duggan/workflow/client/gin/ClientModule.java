@@ -83,8 +83,15 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocView;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormView;
-import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
-import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewView;
+import com.duggan.workflow.client.ui.task.AbstractTaskView;
+import com.duggan.workflow.client.ui.task.DraftsPresenter;
+import com.duggan.workflow.client.ui.task.DraftsView;
+import com.duggan.workflow.client.ui.task.InboxPresenter;
+import com.duggan.workflow.client.ui.task.InboxTaskView;
+import com.duggan.workflow.client.ui.task.ParticipatedPresenter;
+import com.duggan.workflow.client.ui.task.ParticipatedView;
+import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter;
+import com.duggan.workflow.client.ui.task.SuspendedTaskView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
@@ -104,8 +111,6 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
-import com.duggan.workflow.client.ui.task.TaskPresenter;
-import com.duggan.workflow.client.ui.task.TaskView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -129,11 +134,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);
-
-		bindPresenter(PersonnelReviewPresenter.class,
-				PersonnelReviewPresenter.MyView.class,
-				PersonnelReviewView.class,
-				PersonnelReviewPresenter.MyProxy.class);
 		
 		bindPresenterWidget(ToolbarPresenter.class,
 				ToolbarPresenter.MyView.class, ToolbarView.class);
@@ -275,10 +275,19 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(TableDataPresenter.class, TableDataPresenter.ITableDataView.class,
 				TableDataView.class);
 		
-		 bind(TabPanel.class);
+		bind(TabPanel.class);
 
-
-		bindPresenter(TaskPresenter.class, TaskPresenter.MyView.class,
-				TaskView.class, TaskPresenter.MyProxy.class);
+		bindPresenter(ParticipatedPresenter.class, ParticipatedPresenter.IParticipatedView.class,
+				ParticipatedView.class, ParticipatedPresenter.INewTaskProxy.class);
+		
+		bindPresenter(InboxPresenter.class, InboxPresenter.IInboxView.class,
+				InboxTaskView.class, InboxPresenter.InboxTaskProxy.class);
+		
+		bindPresenter(DraftsPresenter.class, DraftsPresenter.IDraftsView.class,
+				DraftsView.class, DraftsPresenter.IDraftsProxy.class);
+		
+		bindPresenter(SuspendedTaskPresenter.class, SuspendedTaskPresenter.ISuspendedView.class,
+				SuspendedTaskView.class, SuspendedTaskPresenter.ISuspendedTaskProxy.class);
+		
 	}
 }

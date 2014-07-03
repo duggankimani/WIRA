@@ -8,12 +8,21 @@ public class TabDataExt extends TabDataBasic {
 	private final Gatekeeper gatekeeper;
 	
 	private String iconStyle;
+	private int count=0;
 	public TabDataExt(String label,String iconStyle,
 	                  float priority,
 	                  Gatekeeper gatekeeper) {
 	    super(label, priority);
 	    this.iconStyle = iconStyle;
 	    this.gatekeeper = gatekeeper;
+	}
+	
+	public TabDataExt(String label,int count,
+            float priority,
+            Gatekeeper gatekeeper) {
+		super(label, priority);
+		this.count=count;
+		this.gatekeeper = gatekeeper;
 	}
 	
 	public Gatekeeper getGatekeeper() {
@@ -23,6 +32,9 @@ public class TabDataExt extends TabDataBasic {
 	public String getIconStyle() {
 		return iconStyle;
 	}
-	
+
+	public int getCount() {
+		return count;
+	}
 
 }

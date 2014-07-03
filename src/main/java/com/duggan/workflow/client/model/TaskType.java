@@ -8,9 +8,10 @@ public enum TaskType {
 	REJECTED("rejected", "Rejected"),
 	APPROVALREQUESTNEW("appreqnew", "New Tasks"),
 	APPROVALREQUESTDONE("appredone", "Completed"),
-	FLAGGED("flagged", "Flagged"),
+	SUSPENDED("suspended", "Suspended"),
 	NOTIFICATIONS("notifications", "Notifications"),
-	SEARCH("search","Search");
+	SEARCH("search","Search"),
+	PARTICIPATED("participated", "Participated");
 	
 	String url;
 	String title;

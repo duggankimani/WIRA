@@ -113,7 +113,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		disable();
 		
 		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(aDoc.getCreated()));
-		System.err.println("Subject>> "+aDoc.getSubject());
 		spnSubject.setInnerText(aDoc.getSubject());
 		
 		if(aDoc.hasAttachment()){
