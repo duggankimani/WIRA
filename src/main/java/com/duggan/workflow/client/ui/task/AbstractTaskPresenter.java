@@ -387,7 +387,14 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	protected void onUnbind() {
 		super.onUnbind();
+		System.err.println("Unbind ########################################...... "+this);
 	}
-	
+
+	@Override
+	protected void onHide() {
+		// TODO Auto-generated method stub
+		super.onHide();
+		System.err.println("Hide ########################################...... "+this);
+	}
 
 }

@@ -53,9 +53,7 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 		widget = binder.createAndBindUi(this);
 
 		ulTaskGroups.setId("navigation-menu");
-		
 		txtSearch.getElement().setAttribute("placeholder", "Search...");
-		
 		divDocListing.setId("middle-nav");
 		divDocView.setId("detailed-info");
 		
