@@ -4,80 +4,53 @@
 	xmlns:d="urn:import:com.duggan.workflow.client.ui.component"
 	>
 
-	<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
-			<div id="sidebar-nav" class="span2 hidden-phone">
-				<!-- g:HTMLPanel styleName="navbar" ui:field="divNavbar"> <div class="navbar-inner"> 
-					<ul class="nav pull-right"> <li class="dropdown"> <a href="#" class="dropdown-toggle 
-					hidden-phone" data-toggle="dropdown"> <g:Button styleName="btn-danger btn-large">Add 
-					Document</g:Button> </a> <ul class="dropdown-menu"> <div>This is what am 
-					looking for</div> </ul> </li> </ul> </div> </g:HTMLPanel -->
-
-				<!--Button Add Document -->
-				<div class="add-doc">
-					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">Add Document</g:Anchor>
-
-					<!-- Document Pop-up -->
-					<g:HTMLPanel ui:field="divDocPopup" styleName="dropdown-menu document-drop">
-					</g:HTMLPanel>
-
-				</div>
-
-				<ul id="dashboard-menu">
-					<li class="active">
-					    <a class="dropdown-toggle" href="#home;type=appreqnew">
-							<i class="icon-tasks"></i>
-							<span>My Tasks</span>
-							<i class="icon-chevron-up hidden-tablet"></i>
-						</a>						
-						<d:BulletListPanel styleName="submenu" ui:field="linksPanel">
-							
-						</d:BulletListPanel>
-						<!-- ul class="submenu">
-							<li ui:field="liDrafts" class="active">
-								<g:Anchor ui:field="aDrafts" styleName="hand" text="Drafts"></g:Anchor>
-							</li>
-							<li ui:field="liProgress">
-								<g:Anchor ui:field="aProgress" text="In Progress"
-									styleName="hand"></g:Anchor>
-							</li>
-							<li ui:field="liApproved">
-								<g:Anchor ui:field="aApproved" styleName="hand" text="Approved"></g:Anchor>
-							</li>
-							<li ui:field="liRejected">
-								<g:Anchor ui:field="aRejected" styleName="hand" text="Rejected"></g:Anchor>
-							</li>
-						</ul -->
-					</li>
-
-					<li class="active">
-						<a class="dropdown-toggle" href="#home">
-							<i class="icon-book"></i>
-							<span>My Documents</span>
-							<i class="icon-chevron-up hidden-tablet"></i>
-						</a>
-						<ul class="submenu second-menu">
-							<li ui:field="liNewReq">
-								<g:Anchor ui:field="aNewReq" styleName="hand" text="LPOs"></g:Anchor>
-							</li>
-							<li ui:field="liRecentApprovals">
-								<g:Anchor ui:field="aRecentApprovals" styleName="hand"
-									text="Invoices"></g:Anchor>
-							</li>
-							<li ui:field="liFlagged">
-								<g:Anchor ui:field="aFlagged" styleName="hand" text="PVs"></g:Anchor>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		
-			<g:HTMLPanel ui:field="tabContent" styleName="content-right span10">
+    <g:HTMLPanel>
+	<ul id="dashboard-menu">
+		<li class="active">
+		    <a class="dropdown-toggle" href="#home;type=appreqnew">
+				<i class="icon-tasks"></i>
+				<span>My Tasks</span>
+				<i class="icon-chevron-up hidden-tablet"></i>
+			</a>						
+			<d:BulletListPanel styleName="submenu" ui:field="linksPanel">
 				
-			</g:HTMLPanel>
+			</d:BulletListPanel>
+			<!-- ul class="submenu">
+				<li ui:field="liDrafts" class="active">
+					<g:Anchor ui:field="aDrafts" styleName="hand" text="Drafts"></g:Anchor>
+				</li>
+				<li ui:field="liProgress">
+					<g:Anchor ui:field="aProgress" text="In Progress"
+						styleName="hand"></g:Anchor>
+				</li>
+				<li ui:field="liApproved">
+					<g:Anchor ui:field="aApproved" styleName="hand" text="Approved"></g:Anchor>
+				</li>
+				<li ui:field="liRejected">
+					<g:Anchor ui:field="aRejected" styleName="hand" text="Rejected"></g:Anchor>
+				</li>
+			</ul -->
+		</li>
 
-			<!-- g:HTMLPanel ui:field="activityContainer" styleName="overflow-y content-right span10">
-			</g:HTMLPanel -->
-
-		</g:HTMLPanel>
-
+		<li class="active">
+			<a class="dropdown-toggle" href="#home">
+				<i class="icon-book"></i>
+				<span>My Documents</span>
+				<i class="icon-chevron-up hidden-tablet"></i>
+			</a>
+			<ul class="submenu second-menu">
+				<li ui:field="liNewReq">
+					<g:Anchor ui:field="aNewReq" styleName="hand" text="LPOs"></g:Anchor>
+				</li>
+				<li ui:field="liRecentApprovals">
+					<g:Anchor ui:field="aRecentApprovals" styleName="hand"
+						text="Invoices"></g:Anchor>
+				</li>
+				<li ui:field="liFlagged">
+					<g:Anchor ui:field="aFlagged" styleName="hand" text="PVs"></g:Anchor>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	</g:HTMLPanel>
 </ui:UiBinder> 

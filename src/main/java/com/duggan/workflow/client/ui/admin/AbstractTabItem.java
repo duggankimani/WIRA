@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,6 +26,7 @@ public abstract class AbstractTabItem extends Composite implements Tab{
 	public void setActive(boolean active){
 		if(active){
 			getLiContainer().addStyleName("active");
+			Window.setTitle(getNameEl().getInnerText());
 		}else{
 			getLiContainer().removeStyleName("active");
 		}

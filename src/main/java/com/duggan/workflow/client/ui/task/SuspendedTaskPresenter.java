@@ -6,8 +6,6 @@ import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -18,6 +16,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class SuspendedTaskPresenter extends AbstractTaskPresenter<SuspendedTaskPresenter.ISuspendedView, SuspendedTaskPresenter.ISuspendedTaskProxy>{
 
@@ -38,14 +37,17 @@ public class SuspendedTaskPresenter extends AbstractTaskPresenter<SuspendedTaskP
 	
 	@Inject
 	public SuspendedTaskPresenter(EventBus eventBus, ISuspendedView view,
-			ISuspendedTaskProxy proxy, Provider<CreateDocPresenter> docProvider,
-			Provider<GenericFormPresenter> formProvider,
+			ISuspendedTaskProxy proxy,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
-		super(eventBus, view, proxy, docProvider, formProvider, docViewProvider,
+		super(eventBus, view, proxy, docViewProvider,
 				dateGroupProvider);
+	}
+
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType=TaskType.SUSPENDED;
 		getView().setTaskType(currentTaskType);
+		super.prepareFromRequest(request);
 	}
-	
 }

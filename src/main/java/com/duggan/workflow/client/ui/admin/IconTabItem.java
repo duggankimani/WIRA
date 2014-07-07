@@ -27,6 +27,7 @@ public class IconTabItem extends AbstractTabItem{
 		initWidget(uiBinder.createAndBindUi(this));
 		TabDataExt data = (TabDataExt)tabData;
 		icon.setClassName(data.getIconStyle());
+		setText(tabData.getLabel());
 	}
 
 	@Override

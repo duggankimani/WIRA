@@ -7,7 +7,31 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="row-fluid main-container">
-		<tab:HomeTabPanel ui:field="tabPanel"></tab:HomeTabPanel>
+		<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
+			<div id="sidebar-nav" class="span2 hidden-phone">
+				<!-- g:HTMLPanel styleName="navbar" ui:field="divNavbar"> <div class="navbar-inner"> 
+					<ul class="nav pull-right"> <li class="dropdown"> <a href="#" class="dropdown-toggle 
+					hidden-phone" data-toggle="dropdown"> <g:Button styleName="btn-danger btn-large">Add 
+					Document</g:Button> </a> <ul class="dropdown-menu"> <div>This is what am 
+					looking for</div> </ul> </li> </ul> </div> </g:HTMLPanel -->
+
+				<!--Button Add Document -->
+				<div class="add-doc">
+					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">Add Document</g:Anchor>
+
+					<!-- Document Pop-up -->
+					<g:HTMLPanel ui:field="divDocPopup" styleName="dropdown-menu document-drop">
+					</g:HTMLPanel>
+
+				</div>
+				<tab:HomeTabPanel ui:field="tabPanel"></tab:HomeTabPanel>
+			</div>
+		
+			<g:HTMLPanel ui:field="tabContent" styleName="content-right span10">
+				
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+		
 	</g:HTMLPanel><!--End of Container -->
 
 

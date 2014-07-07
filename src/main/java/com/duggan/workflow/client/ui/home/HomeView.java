@@ -3,14 +3,19 @@ package com.duggan.workflow.client.ui.home;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.ViewImpl;
+
+import static com.duggan.workflow.client.ui.home.HomePresenter.*;
 
 public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
@@ -19,16 +24,22 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	public interface Binder extends UiBinder<Widget, HomeView> {
 	}
 
-	
+	@UiField Anchor btnAdd;	
 	@UiField(provided=true) HomeTabPanel tabPanel;
+	@UiField HTMLPanel tabContent;
+	@UiField HTMLPanel divDocPopup;
 	
 	@Inject
 	public HomeView(final Binder binder,HomeTabPanel panel) {
 		this.tabPanel = panel;
-		widget = binder.createAndBindUi(this);
-			
+		widget = binder.createAndBindUi(this);	
+		btnAdd.getElement().setAttribute("data-toggle", "dropdown");
 	}
 
+	public HasClickHandlers getAddButton() {
+		return btnAdd;
+	}
+	
 	@Override
 	public Widget asWidget() {
 		return widget;
@@ -67,7 +78,15 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {	
 		if(slot == HomePresenter.SLOT_SetTabContent){
-			tabPanel.setPanelContent(content);
+			tabContent.clear();
+			if (content != null) {
+				tabContent.add(content);
+			}
+		}else if (slot == DOCPOPUP_SLOT) {
+			divDocPopup.clear();
+			if (content != null) {
+				divDocPopup.add(content);
+			}			
 		}else {
 			super.setInSlot(slot, content);
 		}
@@ -97,13 +116,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 //			}
 //			
 //		}	
-//		else if (slot == DOCPOPUP_SLOT) {
-//			divDocPopup.clear();
-//			if (content != null) {
-//				divDocPopup.add(content);
-//			}
-//			
-//		}		
+			
 		
 	}
 
@@ -184,6 +197,11 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 		}else{
 			//wholeContainer.removeStyleName("working-request");
 		}
+	}
+
+	@Override
+	public void showDocsList() {
+		
 	}
 
 }

@@ -13,7 +13,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 
 
 	protected final List<Tab> tabList = new ArrayList<Tab>();
-	Tab currentActiveTab;
+	protected Tab currentActiveTab;
 	
 	public AbstractTabPanel(){
 	}
@@ -58,6 +58,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 		if (currentActiveTab != null) {
 			currentActiveTab.deactivate();
 		}
+		
 		if (tab != null) {
 			tab.activate();
 		}

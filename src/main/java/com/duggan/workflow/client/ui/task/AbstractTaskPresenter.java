@@ -4,19 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AfterSearchEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
-import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
-import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
@@ -28,8 +24,6 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
@@ -37,7 +31,6 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetTaskList;
@@ -50,7 +43,6 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
@@ -69,26 +61,21 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>> 
 		extends	Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> 
-		implements AfterSaveHandler,
-		DocumentSelectionHandler, ReloadHandler, AlertLoadHandler,
-		SearchHandler,CreateDocumentHandler{
+		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,SearchHandler
+		//AlertLoadHandler,
+		{
 
 	public interface ITaskView extends View {
-		//HasClickHandlers getAddButton();	
 		void setHeading(String heading);
-		//void bindAlerts(HashMap<TaskType, Integer> alerts);
 		HasClickHandlers getRefreshButton();
 		public void setHasItems(boolean hasItems);
 		void setTaskType(TaskType currentTaskType);
-		//void showActivitiesPanel(boolean b);
 		public Anchor getaRefresh() ;
 		TextBox getSearchBox();
 		public void hideFilterDialog();
 		public void setSearchBox(String text);
 	}
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot
@@ -98,15 +85,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	
 	@Inject DispatchAsync dispatcher;
 	@Inject PlaceManager placeManager;
-	@Inject DocumentPopupPresenter docPopup;
 		
 	public static final Object DATEGROUP_SLOT = new Object();
-	private IndirectProvider<CreateDocPresenter> createDocProvider;
-	private IndirectProvider<GenericFormPresenter> genericFormProvider;
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
 	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
 	
-	protected TaskType currentTaskType;
+	protected static TaskType currentTaskType;
 	
 	/**
 	 * on select documentId
@@ -135,15 +119,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	};
 	
 	public AbstractTaskPresenter(final EventBus eventBus, final ITaskView view,
-			final Proxy_ proxy,Provider<CreateDocPresenter> docProvider,
-			Provider<GenericFormPresenter> formProvider,
+			final Proxy_ proxy,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
-		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
 		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
-		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);
 	}
 
 	@Override
@@ -152,11 +133,11 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
-		addRegisteredHandler(AlertLoadEvent.TYPE, this);
+		//addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		//addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		
 		addRegisteredHandler(SearchEvent.TYPE, this);
-		addRegisteredHandler(CreateDocumentEvent.TYPE, this);
+		
 		
 		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
 			
@@ -343,35 +324,10 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	
 	}
 	
-	protected void showEditForm(final MODE mode) {
-		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
-			@Override
-			public void processResult(CreateDocPresenter result) {
-				if(mode.equals(MODE.EDIT) && selectedDocumentId!=null){
-					result.setDocumentId(selectedDocumentId);
-				}
-					
-				addToPopupSlot(result, false);
-			}
-		});
-	}
-	
-	protected void showEditForm(final DocumentType type){
-		genericFormProvider.get(new ServiceCallback<GenericFormPresenter>() {
-			@Override
-			public void processResult(GenericFormPresenter result) {
-				result.setDocumentType(type);
-				addToPopupSlot(result, false);
-			}
-		});
-	}
-
 	@Override
 	protected void onReset() {
 		super.onReset();
-		setInSlot(FILTER_SLOT, filterPresenter);
-		setInSlot(DOCPOPUP_SLOT, docPopup);
-		
+		setInSlot(FILTER_SLOT, filterPresenter);		
 	}
 
 	@Override
@@ -411,14 +367,16 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		loadTasks();
 	}
 
-	@Override
-	public void onAlertLoad(AlertLoadEvent event) {
-		//event.getAlerts();
-		Integer count = event.getAlerts().get(currentTaskType);
-		if(count==null) count=0;
-		if(currentTaskType!=null)
-		Window.setTitle(currentTaskType.getTitle()+ (count==0? "" : " ("+count+")"));
-	}
+//	@Override
+//	public void onAlertLoad(AlertLoadEvent event) {
+//		//event.getAlerts();
+//		Integer count = event.getAlerts().get(currentTaskType);
+//		if(count==null) 
+//			count=0;
+//		
+//		if(currentTaskType!=null)
+//			Window.setTitle(currentTaskType.getTitle()+ (count==0? "" : " ("+count+")"));
+//	}
 	
 	@Override
 	public void onSearch(SearchEvent event) {
@@ -427,20 +385,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	}
 
 	@Override
-	public void onCreateDocument(CreateDocumentEvent event) {
-		DocumentType type = event.getDocType();	
-		
-		if(type.getFormId()!=null){
-			showEditForm(type);
-		}else{
-			showEditForm(MODE.CREATE);
-		}
-	}
-
-	@Override
 	protected void onUnbind() {
 		super.onUnbind();
-		System.err.println("################### Calling Unbind on "+this);
 	}
 	
 

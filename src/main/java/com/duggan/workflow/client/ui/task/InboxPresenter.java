@@ -18,6 +18,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class InboxPresenter extends AbstractTaskPresenter<InboxPresenter.IInboxView, InboxPresenter.InboxTaskProxy>{
 
@@ -40,10 +41,15 @@ public class InboxPresenter extends AbstractTaskPresenter<InboxPresenter.IInboxV
 			Provider<GenericFormPresenter> formProvider,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
-		super(eventBus, view, proxy, docProvider, formProvider, docViewProvider,
+		super(eventBus, view, proxy, docViewProvider,
 				dateGroupProvider);
+	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType=TaskType.INBOX;
 		getView().setTaskType(currentTaskType);
+		super.prepareFromRequest(request);
 	}
 
 }

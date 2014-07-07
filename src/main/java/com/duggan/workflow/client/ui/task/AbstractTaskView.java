@@ -43,7 +43,6 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 	@UiField Anchor iFilterdropdown;
 	@UiField HTMLPanel filterDialog;
 	@UiField InlineLabel spnNoItems;
-	//@UiField HTMLPanel activityContainer;
 	@UiField HTMLPanel docContainer;
 	
 	//Filter Dialog Caret
