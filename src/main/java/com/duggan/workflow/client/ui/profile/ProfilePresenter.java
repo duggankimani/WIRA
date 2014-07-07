@@ -66,7 +66,9 @@ public class ProfilePresenter extends
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Profile","icon-dashboard",11, adminGatekeeper);
+		TabDataExt data = new TabDataExt("Profile","icon-dashboard",11, adminGatekeeper);
+		data.setDisplayed(false);
+        return data;
     }
 
 	@Inject DispatchAsync requestHelper;

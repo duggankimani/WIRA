@@ -19,6 +19,7 @@ public class NameTokens {
 	public static final String participated = "participated";
 	public static final String inbox = "inbox";
 	public static final String suspended = "suspended";
+	public static final String search = "search";
 
 	public static String getHome() {
 		return home;

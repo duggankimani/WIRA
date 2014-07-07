@@ -9,6 +9,7 @@ public class TabDataExt extends TabDataBasic {
 	
 	private String iconStyle;
 	private int count=0;
+	private boolean isDisplayed=true;
 	public TabDataExt(String label,String iconStyle,
 	                  float priority,
 	                  Gatekeeper gatekeeper) {
@@ -36,5 +37,12 @@ public class TabDataExt extends TabDataBasic {
 	public int getCount() {
 		return count;
 	}
+	
+	public void setDisplayed(boolean isDisplayed){
+		this.isDisplayed = isDisplayed;
+	}
 
+	public boolean isDisplayed(){
+		return isDisplayed;
+	}
 }

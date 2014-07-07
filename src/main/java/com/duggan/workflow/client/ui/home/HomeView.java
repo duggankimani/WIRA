@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.home;
 
+import java.util.HashMap;
+
+import com.duggan.workflow.client.model.TaskType;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -9,7 +12,7 @@ import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class HomeView extends ViewImpl implements HomePresenter.MyView {
+public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	private final Widget widget;
 	
@@ -105,37 +108,13 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	}
 
 
-//	@Override
-//	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
-//
-//		for (TaskType type : alerts.keySet()) {
-//			String txt = type.getTitle();
-//			switch (type) {
-//			case APPROVALREQUESTDONE:
-//				aRecentApprovals.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			case APPROVALREQUESTNEW:
-//				aNewReq.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			case DRAFT:
-//				aDrafts.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			case APPROVED:
-//				aApproved.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			case INPROGRESS:
-//				aProgress.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			case REJECTED:
-//				aRejected.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			case FLAGGED:
-//				aFlagged.setText(txt + " (" + alerts.get(type) + ")");
-//				break;
-//			}
-//		}
-
-//	}
+	@Override
+	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
+		for (TaskType type : alerts.keySet()) {
+			String text = (type.getTitle() + " (" + alerts.get(type) + ")");
+			tabPanel.changeTab(type,text);
+		}
+	}
 
 	
 

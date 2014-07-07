@@ -1,10 +1,15 @@
 package com.duggan.workflow.client.ui.home;
 
+import java.util.HashMap;
+
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
@@ -30,14 +35,15 @@ import com.gwtplatform.mvp.client.annotations.RequestTabs;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class HomePresenter extends TabContainerPresenter<HomePresenter.MyView, HomePresenter.MyProxy> implements
-ProcessingHandler, ProcessingCompletedHandler{
+public class HomePresenter extends TabContainerPresenter<HomePresenter.IHomeView, HomePresenter.MyProxy> implements
+ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler{
 
-	public interface MyView extends TabView {
+	public interface IHomeView extends TabView {
 		//void bindAlerts(HashMap<TaskType, Integer> alerts);
 		void refreshTabs();
 		void changeTab(Tab tab, TabData tabData, String historyToken);
 		void showmask(boolean b);
+		void bindAlerts(HashMap<TaskType, Integer> alerts);
 	}
 	
 	@ProxyStandard
@@ -64,7 +70,7 @@ ProcessingHandler, ProcessingCompletedHandler{
 
 	
 	@Inject
-	public HomePresenter(final EventBus eventBus, final MyView view,
+	public HomePresenter(final EventBus eventBus, final IHomeView view,
 			final MyProxy proxy,
 			Provider<CreateDocPresenter> docProvider,
 			Provider<GenericFormPresenter> formProvider,
@@ -81,7 +87,7 @@ ProcessingHandler, ProcessingCompletedHandler{
 		super.onBind();
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
-		
+		addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		
 		/*getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
@@ -99,7 +105,6 @@ ProcessingHandler, ProcessingCompletedHandler{
 		
 	}
 
-	@Override
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
 		getView().showmask(false);
 		
@@ -115,5 +120,10 @@ ProcessingHandler, ProcessingCompletedHandler{
 		getView().refreshTabs();
 	}
 	
+	@Override
+	public void onAlertLoad(AlertLoadEvent event) {
+		//event.getAlerts();
+		getView().bindAlerts(event.getAlerts());		
+	}
 
 }

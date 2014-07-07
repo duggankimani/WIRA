@@ -6,9 +6,16 @@ import com.gwtplatform.mvp.client.proxy.Gatekeeper;
 public class HomeTabData extends TabDataExt{
 
 	String itemStyle=null;
-	
-	public HomeTabData(String label,String itemStyle, String iconStyle, float priority,
+	String key=null;
+	public HomeTabData(String key,String label,String itemStyle, float priority,
 			Gatekeeper gatekeeper) {
-		super(label, iconStyle, priority, gatekeeper);
+		super(label, "", priority, gatekeeper);
+		this.itemStyle=itemStyle;
+		this.key=key;
 	}
+	
+	public String getKey(){
+		return key;
+	}
+	
 }

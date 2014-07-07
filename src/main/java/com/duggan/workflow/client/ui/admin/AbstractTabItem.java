@@ -10,6 +10,7 @@ import com.gwtplatform.mvp.client.TabData;
 public abstract class AbstractTabItem extends Composite implements Tab{
 
 	protected TabData data;
+	
 	public AbstractTabItem(TabData data){
 		this.data=data;
 	}
@@ -70,4 +71,7 @@ public abstract class AbstractTabItem extends Composite implements Tab{
 		return true;
 	}
 	
+	public TabDataExt getTabData(){
+		return (TabDataExt)data;
+	}
 }

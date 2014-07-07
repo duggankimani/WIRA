@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.home;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.admin.AbstractTabPanel;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.google.gwt.core.client.GWT;
@@ -60,5 +61,15 @@ public class HomeTabPanel extends AbstractTabPanel {
 	protected Tab createNewTab(TabData tabData) {
 		
 		return new TabItem(tabData);
+	}
+
+	public void changeTab(TaskType type, String text) {
+		for(Tab tab: tabList){
+			TabItem item = (TabItem)tab;
+			if(item.isFor(type)){
+				item.setText(text);
+			}
+			
+		}
 	}
 }

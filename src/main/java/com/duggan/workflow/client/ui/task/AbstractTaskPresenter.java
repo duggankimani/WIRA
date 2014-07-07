@@ -414,7 +414,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onAlertLoad(AlertLoadEvent event) {
 		//event.getAlerts();
-		//getView().bindAlerts(event.getAlerts());
 		Integer count = event.getAlerts().get(currentTaskType);
 		if(count==null) count=0;
 		if(currentTaskType!=null)

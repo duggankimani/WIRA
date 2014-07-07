@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.home;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.admin.AbstractTabItem;
 import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.google.gwt.core.client.GWT;
@@ -20,8 +21,8 @@ public class TabItem extends AbstractTabItem {
 	@UiField BulletPanel liContainter;
 	@UiField Anchor aLink;
 	
-	public TabItem(TabData tab) {
-		super(tab);
+	public TabItem(TabData tabData) {
+		super(tabData);
 		initWidget(uiBinder.createAndBindUi(this));
 		setText(data.getLabel());
 	}
@@ -39,6 +40,14 @@ public class TabItem extends AbstractTabItem {
 	@Override
 	public Element getNameEl() {
 		return aLink.getElement();
+	}
+	
+	public boolean isFor(TaskType type){
+		if(!(data instanceof HomeTabData)){
+			return false;
+		}
+		
+		return type.name().equals(((HomeTabData)data).getKey());
 	}
 
 }

@@ -2,9 +2,9 @@ package com.duggan.workflow.client.ui.task;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
@@ -31,7 +31,7 @@ public class ParticipatedPresenter extends AbstractTaskPresenter<ParticipatedPre
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Participated","",3, adminGatekeeper);
+        return new HomeTabData(TaskType.PARTICIPATED.name(),"Participated","",3, adminGatekeeper);
     }
 	
 	@Inject

@@ -160,7 +160,7 @@ public class TaskItemPresenter extends
 					@Override
 					public void processResult(ApprovalRequestResult result) {						
 						PlaceRequest request = new PlaceRequest("home").
-								with("type", TaskType.APPROVALREQUESTNEW.getURL());
+								with("type", TaskType.INBOX.getURL());
 						
 						placeManager.revealPlace(request);
 						

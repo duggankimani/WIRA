@@ -8,6 +8,7 @@ import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
+import com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -19,33 +20,33 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 
-public class SuspendedTaskPresenter extends AbstractTaskPresenter<SuspendedTaskPresenter.ISuspendedView, SuspendedTaskPresenter.ISuspendedTaskProxy>{
+public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISearchView, SearchPresenter.ISearchProxy>{
 
-
-	public interface ISuspendedView extends com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView{}
+	public interface ISearchView extends ITaskView{}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.suspended})
+	@NameToken({NameTokens.search})
 	@UseGatekeeper(LoginGateKeeper.class)
-	public interface ISuspendedTaskProxy extends TabContentProxyPlace<SuspendedTaskPresenter> {
+	public interface ISearchProxy extends TabContentProxyPlace<SearchPresenter> {
 	}
 	
-	static int index=4;
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new HomeTabData(TaskType.SUSPENDED.name(),"Suspended","",4, adminGatekeeper);
+		HomeTabData data = new HomeTabData(TaskType.SEARCH.name(),"Search","",6, adminGatekeeper);
+		data.setDisplayed(false);
+        return data;
     }
 	
 	@Inject
-	public SuspendedTaskPresenter(EventBus eventBus, ISuspendedView view,
-			ISuspendedTaskProxy proxy, Provider<CreateDocPresenter> docProvider,
+	public SearchPresenter(EventBus eventBus, ISearchView view,
+			ISearchProxy proxy, Provider<CreateDocPresenter> docProvider,
 			Provider<GenericFormPresenter> formProvider,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, docProvider, formProvider, docViewProvider,
 				dateGroupProvider);
-		currentTaskType=TaskType.SUSPENDED;
+		currentTaskType=TaskType.SEARCH;
 		getView().setTaskType(currentTaskType);
 	}
-	
+
 }

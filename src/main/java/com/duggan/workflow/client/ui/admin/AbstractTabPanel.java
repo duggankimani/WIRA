@@ -12,7 +12,7 @@ import com.gwtplatform.mvp.client.TabData;
 public abstract class AbstractTabPanel extends Composite implements com.gwtplatform.mvp.client.TabPanel{
 
 
-	private final List<Tab> tabList = new ArrayList<Tab>();
+	protected final List<Tab> tabList = new ArrayList<Tab>();
 	Tab currentActiveTab;
 	
 	public AbstractTabPanel(){
@@ -95,9 +95,8 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 	 *            The {@link IconTabItem} to check.
 	 */
 	protected void setTabVisibility(Tab tab) {
-		
-		//boolean visible = (tab == currentActiveTab) || tab.canUserAccess();
-		//tab.setVisible(visible);
+		AbstractTabItem item = ((AbstractTabItem)tab);
+		item.show(item.getTabData().isDisplayed());
 	}
 
 }

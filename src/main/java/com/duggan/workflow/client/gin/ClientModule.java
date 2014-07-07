@@ -90,6 +90,8 @@ import com.duggan.workflow.client.ui.task.InboxPresenter;
 import com.duggan.workflow.client.ui.task.InboxTaskView;
 import com.duggan.workflow.client.ui.task.ParticipatedPresenter;
 import com.duggan.workflow.client.ui.task.ParticipatedView;
+import com.duggan.workflow.client.ui.task.SearchPresenter;
+import com.duggan.workflow.client.ui.task.SearchView;
 import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter;
 import com.duggan.workflow.client.ui.task.SuspendedTaskView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
@@ -126,7 +128,7 @@ public class ClientModule extends AbstractPresenterModule {
 				MainPageView.class, MainPagePresenter.MyProxy.class);
 
 		bindPresenter(HomePresenter.class,
-				HomePresenter.MyView.class, HomeView.class,
+				HomePresenter.IHomeView.class, HomeView.class,
 				HomePresenter.MyProxy.class);
 
 		bindPresenterWidget(TaskItemPresenter.class,
@@ -289,5 +291,7 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(SuspendedTaskPresenter.class, SuspendedTaskPresenter.ISuspendedView.class,
 				SuspendedTaskView.class, SuspendedTaskPresenter.ISuspendedTaskProxy.class);
 		
+		bindPresenter(SearchPresenter.class, SearchPresenter.ISearchView.class,
+				SearchView.class, SearchPresenter.ISearchProxy.class);
 	}
 }
