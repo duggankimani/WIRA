@@ -101,6 +101,27 @@
                 </executions>
             </plugin>
             
+            <!-- Plugin to generate Version information -->
+           <plugin>
+	        <artifactId>maven-antrun-plugin</artifactId>
+	        <version>1.7</version>
+	        <executions>
+	          <execution>
+	            <phase>prepare-package</phase>
+	            <configuration>
+			<tasks>
+			    <property name="resourcesDir" value="${basedir}/src/main/resources"/>
+ 	                    <property name="project.version" value="${project.version}"/>
+			     <ant antfile="build.xml" target="update-version-string"/>
+		    </tasks>
+	            </configuration>
+	            <goals>
+	              <goal>run</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+      
 	        <!-- plugin>
 			    <artifactId>maven-clean-plugin</artifactId>
 			    <version>2.5</version>

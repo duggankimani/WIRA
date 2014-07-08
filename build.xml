@@ -1,7 +1,7 @@
 <project name="gwtht" basedir="." default="war">
 	
 	<target name="war" depends="update-version-string">
-	    <copy file="src/Version.properties" todir="war/WEB-INF/classes" overwrite="true"></copy>
+	    <copy file="${resourcesDir}/Version.properties" todir="war/WEB-INF/classes" overwrite="true"></copy>
 		<war basedir="war" destfile="wira.war" webxml="war/WEB-INF/web.xml">
 		    <!-- metainf>
 		        <fileset dir="war/META-INF"includes="**/*"></fileset>
@@ -65,7 +65,7 @@
 	        </exec>
 	        <antcall target="-store-version-string"/>
 	        <!-- ensure version is defined even if git was not available -->
-	        <property file="src/Version.properties"/>
+	        <property file="${resourcesDir}/Version.properties"/>
 	</target>
 	
 	<target name="-timestamp">
@@ -78,7 +78,7 @@
 	<target name="-store-version-string" depends="-timestamp" if="version">
         <!-- store the new  version string in the correct property file -->
         <echo message="version=${version}"/>
-        <propertyfile file="src/Version.properties">
+        <propertyfile file="${resourcesDir}/Version.properties">
            <entry key="version" value="${version}"/>
            <entry key="timestamp" value="${timestamp}"/>
            <entry key="build.date" value="${build.date}"/>
@@ -86,7 +86,7 @@
         <exec executable="git">
            <arg value="update-index"/>
            <arg value="--assume-unchanged"/>
-           <arg value="src/Version.properties"/>
+           <arg value="${resourcesDir}/Version.properties"/>
         </exec>
 	</target>
 </project>
