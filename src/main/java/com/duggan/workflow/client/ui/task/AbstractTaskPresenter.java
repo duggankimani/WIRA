@@ -332,7 +332,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
-		loadTasks();
+		if(this.isVisible()){
+			loadTasks();
+		}
 	}
 
 	/**
@@ -341,10 +343,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	 */
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
-		this.selectedDocumentId=event.getDocumentId();		
-		displayDocument(event.getDocumentId(), event.getTaskId());
-		System.err.println("Called!! +"+this+" Document= "+event.getDocumentId()+
-				" : Task="+event.getTaskId()+" :: "+event.getSource());
+		if(this.isVisible()){
+			this.selectedDocumentId=event.getDocumentId();		
+			displayDocument(event.getDocumentId(), event.getTaskId());
+			System.err.println("Called!! +"+this+" Document= "+event.getDocumentId()+
+					" : Task="+event.getTaskId()+" :: "+event.getSource());
+		}
 	}
 	
 	private void displayDocument(final Long documentId, final Long taskId) {
@@ -364,7 +368,10 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	
 	@Override
 	public void onReload(ReloadEvent event) {
-		loadTasks();
+		if(this.isVisible()){
+			//only the visible presenter should respond 
+			loadTasks();
+		}		
 	}
 
 //	@Override
@@ -380,21 +387,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	
 	@Override
 	public void onSearch(SearchEvent event) {
-		SearchFilter filter= event.getFilter();
-		search(filter);
+		if(this.isVisible()){
+			SearchFilter filter= event.getFilter();
+			search(filter);
+		}
 	}
-
-	@Override
-	protected void onUnbind() {
-		super.onUnbind();
-		System.err.println("Unbind ########################################...... "+this);
-	}
-
-	@Override
-	protected void onHide() {
-		// TODO Auto-generated method stub
-		super.onHide();
-		System.err.println("Hide ########################################...... "+this);
-	}
-
 }
