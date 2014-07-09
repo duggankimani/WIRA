@@ -4,7 +4,7 @@
 	xmlns:d="urn:import:com.duggan.workflow.client.ui.component"
 	>
 
-    <g:HTMLPanel>
+    <g:HTMLPanel styleName="full-page">
 	<ul id="dashboard-menu">
 		<li class="active">
 		    <a class="dropdown-toggle" href="#home;type=appreqnew">
@@ -13,23 +13,7 @@
 				<i class="icon-chevron-up hidden-tablet"></i>
 			</a>						
 			<d:BulletListPanel styleName="submenu" ui:field="linksPanel">
-				
 			</d:BulletListPanel>
-			<!-- ul class="submenu">
-				<li ui:field="liDrafts" class="active">
-					<g:Anchor ui:field="aDrafts" styleName="hand" text="Drafts"></g:Anchor>
-				</li>
-				<li ui:field="liProgress">
-					<g:Anchor ui:field="aProgress" text="In Progress"
-						styleName="hand"></g:Anchor>
-				</li>
-				<li ui:field="liApproved">
-					<g:Anchor ui:field="aApproved" styleName="hand" text="Approved"></g:Anchor>
-				</li>
-				<li ui:field="liRejected">
-					<g:Anchor ui:field="aRejected" styleName="hand" text="Rejected"></g:Anchor>
-				</li>
-			</ul -->
 		</li>
 
 		<li class="active">

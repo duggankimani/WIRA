@@ -88,6 +88,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 			final MyProxy proxy,
 			Provider<CreateDocPresenter> docProvider,
 			Provider<GenericFormPresenter> formProvider) {
+		
 		super(eventBus, view, proxy,SLOT_SetTabContent,SLOT_RequestTabs, SLOT_ChangeTab,MainPagePresenter.CONTENT_SLOT);
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);

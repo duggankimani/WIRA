@@ -6,7 +6,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 	
-	<g:HTMLPanel styleName="main-body">
+	<g:HTMLPanel styleName="main-body full-page">
 	    <span ui:field="loadingtext" class="span2 hide">Loading ...</span>
 	    <span ui:field="disconnectionText" class="serverdisconnected alert hide"></span>
 	      <div class="alert alert-success hidden" ui:field="divAlert">
@@ -20,13 +20,12 @@
     	<!-- g:HTMLPanel ui:field="taskHeader"></g:HTMLPanel-->
 		
 		<!-- Domain Specific View goes here -->
-		<g:HTMLPanel>
-   			<g:HTMLPanel ui:field="pContainer">			 	    
+		<g:HTMLPanel styleName="full-page">
+   			<g:HTMLPanel ui:field="pContainer" styleName="full-page">			 	    
 			</g:HTMLPanel>	
 			<!-- div class="footer">
 				A product of Anger Enterprises <span class="copyyear"></span>
 			</div -->    
 		</g:HTMLPanel>
-		
 	</g:HTMLPanel>
 </ui:UiBinder>
