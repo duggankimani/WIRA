@@ -269,7 +269,7 @@ public class JBPMHelper implements Closeable {
 			// Status.Exited,
 			// Status.Failed,
 			// Status.Obsolete,
-					Status.Ready, Status.Reserved, Status.Suspended);
+					Status.Ready, Status.Reserved);
 			break;
 		case PARTICIPATED:
 		case APPROVALREQUESTDONE:
