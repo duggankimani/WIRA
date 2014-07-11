@@ -147,10 +147,10 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler, ClientDisconnectio
 		Doc summary = event.getDocument();
 		String url = "";
 		if(summary instanceof Document){
-			url = "#home;type=search;did="+summary.getId();
+			url = "#search;did="+summary.getId();
 		}else{
 			long processInstanceId = ((HTSummary)summary).getProcessInstanceId();
-			url = "#home;type=search;pid="+processInstanceId;
+			url = "#search;pid="+processInstanceId;
 		}
 		
 		getView().setAlertVisible(event.getSubject(), event.getAction(),url);

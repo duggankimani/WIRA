@@ -22,7 +22,7 @@
 				<span>My Documents</span>
 				<i class="icon-chevron-up hidden-tablet"></i>
 			</a>
-			<ul class="submenu second-menu">
+			<!-- ul class="submenu second-menu">
 				<li ui:field="liNewReq">
 					<g:Anchor ui:field="aNewReq" styleName="hand" text="LPOs"></g:Anchor>
 				</li>
@@ -33,7 +33,7 @@
 				<li ui:field="liFlagged">
 					<g:Anchor ui:field="aFlagged" styleName="hand" text="PVs"></g:Anchor>
 				</li>
-			</ul>
+			</ul -->
 		</li>
 	</ul>
 	</g:HTMLPanel>

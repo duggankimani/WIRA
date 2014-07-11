@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.admin;
 
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -23,6 +24,8 @@ public class TabPanel extends AbstractTabPanel {
 	@UiField BulletListPanel linksPanel;
 	@UiField HTMLPanel tabContent;
 	@Inject PlaceManager placeManager;
+	@UiField SpanElement spanTitle;
+	@UiField SpanElement iconTitle;
 	
 	@Inject
 	public TabPanel() {
@@ -45,6 +48,14 @@ public class TabPanel extends AbstractTabPanel {
 	@Override
 	public BulletListPanel getLinksPanel() {
 		return linksPanel;
+	}
+	
+	@Override
+	public void setActiveTab(Tab tab) {
+		super.setActiveTab(tab);
+		
+		iconTitle.setClassName(((IconTabItem)tab).getTabData().getIconStyle());
+		spanTitle.setInnerText(((AbstractTabItem)tab).getTabData().getLabel());
 	}
 
 }
