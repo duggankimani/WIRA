@@ -2,17 +2,6 @@
 	margin-top: -5px;
 }
 
-.overflow-y{
-	overflow-y:auto;
-	overflow-x:hidden;
-	max-height: 91%;
-}
-
-.overflow-x{
-	overflow-x:auto;
-	overflow-y:hidden;
-}
-
 #side-left {
 	position: absolute;
 	display: block;

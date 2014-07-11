@@ -17,18 +17,21 @@
   <itemDefinition id="_ownerIdItem" structureRef="String" />
   <itemDefinition id="_documentIdItem" structureRef="String" />
   <itemDefinition id="_isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_isProcessCompletedItem" structureRef="Boolean" />
 
   <itemDefinition id="_2-documentItem" />
   <itemDefinition id="_2-actorItem" structureRef="String" />
   <itemDefinition id="_2-ownerIdItem" structureRef="String" />
   <itemDefinition id="_2-documentIdItem" structureRef="String" />
   <itemDefinition id="_2-isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_2-isProcessCompletedItem" structureRef="Boolean" />
 
   <itemDefinition id="_4-documentItem" />
   <itemDefinition id="_4-actorItem" structureRef="String" />
   <itemDefinition id="_4-ownerIdItem" structureRef="String" />
   <itemDefinition id="_4-documentIdItem" structureRef="String" />
   <itemDefinition id="_4-isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_4-isProcessCompletedItem" structureRef="Boolean" />
 
   <process processType="Private" isExecutable="true" id="io.wira.sample.leaveapplication" name="leaveapplication" tns:packageName="io.wira.sample" >
 
@@ -38,6 +41,7 @@
     <property id="ownerId" itemSubjectRef="_ownerIdItem"/>
     <property id="documentId" itemSubjectRef="_documentIdItem"/>
     <property id="isApproved" itemSubjectRef="_isApprovedItem"/>
+    <property id="isProcessCompleted" itemSubjectRef="_isProcessCompletedItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
@@ -98,12 +102,35 @@
       </dataOutputAssociation>
     </userTask>
     <task id="_4" name="Update Local" tns:taskName="UpdateLocal" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>kcontext.setVariable("isProcessComplete",true);</script>
+        </tns:onEntry-script>
+      </extensionElements>
       <ioSpecification>
+        <dataInput id="_4_isProcessCompleteInput" name="isProcessComplete" />
+        <dataInput id="_4_DocumentIdInput" name="DocumentId" />
+        <dataInput id="_4_isApprovedInput" name="isApproved" />
         <inputSet>
+          <dataInputRefs>_4_isProcessCompleteInput</dataInputRefs>
+          <dataInputRefs>_4_DocumentIdInput</dataInputRefs>
+          <dataInputRefs>_4_isApprovedInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
       </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>isProcessComplete</sourceRef>
+        <targetRef>_4_isProcessCompleteInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>documentId</sourceRef>
+        <targetRef>_4_DocumentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_4_isApprovedInput</targetRef>
+      </dataInputAssociation>
     </task>
     <endEvent id="_5" name="End" >
         <terminateEventDefinition/>
