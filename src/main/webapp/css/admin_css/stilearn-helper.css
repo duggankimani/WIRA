@@ -180,7 +180,7 @@ body .breadcrumb a,a:hover{
 .overflow-y{
 	overflow-y:auto;
 	overflow-x:hidden;
-	/* max-height: 91%; */
+	max-height: 91%;
 }
 
 .overflow-x{
