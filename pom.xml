@@ -42,6 +42,13 @@
 
         <plugins>
             <plugin>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>2.4</version>
+		        <configuration>
+		          <packagingExcludes>WEB-INF/lib/javassist*.jar</packagingExcludes>
+		        </configuration>
+		      </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
@@ -1165,13 +1172,15 @@
             <version>3.0.5.RELEASE</version>
         </dependency>
         
+        <!-- Manual install external jar into repository -->
+        <!-- mvn install:install-file -Dfile=matheclipse-0.0.10_1.jar -DgroupId=org.matheclipse -DartifactId=matheclipse -Dversion=0.0.10_1 -Dpackaging=jar -->
         <dependency>
             <groupId>org.matheclipse</groupId>
             <artifactId>matheclipse</artifactId>
             <version>0.0.10_1</version>
         </dependency>
         
-        <!-- Test -->
+        <!-- Test -->	
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
