@@ -6,7 +6,6 @@ public class NameTokens {
 	public static final String error = "error";
 	public static final String login = "login";
 	public static final String error404 = "error404";
-	//public static final String activities = "activities";
 	public static final String profile = "profile";
 	public static final String settings = "settings";
 	public static final String usermgt = "usermgt";
