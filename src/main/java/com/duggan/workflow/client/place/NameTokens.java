@@ -3,13 +3,9 @@ package com.duggan.workflow.client.place;
 public class NameTokens {
 
 	public static final String home = "home";
-	public static final String task = "task";
-	public static final String personalreview = "personalreview";
-	public static final String personnelreview = "personnelreview";
 	public static final String error = "error";
 	public static final String login = "login";
 	public static final String error404 = "error404";
-	//public static final String activities = "activities";
 	public static final String profile = "profile";
 	public static final String settings = "settings";
 	public static final String usermgt = "usermgt";
@@ -17,21 +13,15 @@ public class NameTokens {
 	public static final String datasources = "datasources";
 	public static final String formbuilder = "formbuilder";
 	public static final String processes = "processes";
+	public static final String tasks = "tasks";
+	public static final String drafts = "drafts";
+	public static final String participated = "participated";
+	public static final String inbox = "inbox";
+	public static final String suspended = "suspended";
+	public static final String search = "search";
 
 	public static String getHome() {
 		return home;
-	}
-
-	public static String getTask() {
-		return task;
-	}
-
-	public static String getPersonalreview() {
-		return personalreview;
-	}
-
-	public static String getPersonnelreview() {
-		return personnelreview;
 	}
 
 	public static String getLogin() {
@@ -52,6 +42,10 @@ public class NameTokens {
 
 	public static String getSettings() {
 		return settings;
+	}
+
+	public static String getTasks() {
+		return tasks;
 	}
 	
 }

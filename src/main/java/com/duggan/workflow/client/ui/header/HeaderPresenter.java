@@ -209,6 +209,7 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 		
 		Version version = event.getVersion();
 		getView().setVersionInfo(version.getCreated(), version.getDate(), version.getVersion());
+		loadAlertCount();
 	}
 
 	@Override

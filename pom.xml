@@ -42,6 +42,13 @@
 
         <plugins>
             <plugin>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>2.4</version>
+		        <configuration>
+		          <packagingExcludes>WEB-INF/lib/javassist*.jar</packagingExcludes>
+		        </configuration>
+		      </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
@@ -101,6 +108,27 @@
                 </executions>
             </plugin>
             
+            <!-- Plugin to generate Version information -->
+           <plugin>
+	        <artifactId>maven-antrun-plugin</artifactId>
+	        <version>1.7</version>
+	        <executions>
+	          <execution>
+	            <phase>prepare-package</phase>
+	            <configuration>
+			<tasks>
+			    <property name="resourcesDir" value="${basedir}/src/main/resources"/>
+ 	                    <property name="project.version" value="${project.version}"/>
+			     <ant antfile="build.xml" target="update-version-string"/>
+		    </tasks>
+	            </configuration>
+	            <goals>
+	              <goal>run</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+      
 	        <!-- plugin>
 			    <artifactId>maven-clean-plugin</artifactId>
 			    <version>2.5</version>
@@ -739,6 +767,13 @@
         </dependency>
 
         <dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+            <!--scope>provided</scope-->
+        </dependency>
+        
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.2-1002-jdbc4</version>
@@ -782,7 +817,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.6.4</version>
-            <!--scope>provided</scope -->
+            <!--scope>provided</scope-->
         </dependency>
 
         <dependency>
@@ -1137,13 +1172,15 @@
             <version>3.0.5.RELEASE</version>
         </dependency>
         
+        <!-- Manual install external jar into repository -->
+        <!-- mvn install:install-file -Dfile=matheclipse-0.0.10_1.jar -DgroupId=org.matheclipse -DartifactId=matheclipse -Dversion=0.0.10_1 -Dpackaging=jar -->
         <dependency>
             <groupId>org.matheclipse</groupId>
             <artifactId>matheclipse</artifactId>
             <version>0.0.10_1</version>
         </dependency>
         
-        <!-- Test -->
+        <!-- Test -->	
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

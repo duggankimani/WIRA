@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component"
+	>
+
+    <g:HTMLPanel styleName="full-page">
+	<ul id="dashboard-menu">
+		<li class="active">
+		    <a class="dropdown-toggle" href="#home;type=appreqnew">
+				<i class="icon-tasks"></i>
+				<span>My Tasks</span>
+				<i class="icon-chevron-up hidden-tablet"></i>
+			</a>						
+			<d:BulletListPanel styleName="submenu" ui:field="linksPanel">
+			</d:BulletListPanel>
+		</li>
+
+		<li class="active">
+			<a class="dropdown-toggle" href="#home">
+				<i class="icon-book"></i>
+				<span>My Documents</span>
+				<i class="icon-chevron-up hidden-tablet"></i>
+			</a>
+			<!-- ul class="submenu second-menu">
+				<li ui:field="liNewReq">
+					<g:Anchor ui:field="aNewReq" styleName="hand" text="LPOs"></g:Anchor>
+				</li>
+				<li ui:field="liRecentApprovals">
+					<g:Anchor ui:field="aRecentApprovals" styleName="hand"
+						text="Invoices"></g:Anchor>
+				</li>
+				<li ui:field="liFlagged">
+					<g:Anchor ui:field="aFlagged" styleName="hand" text="PVs"></g:Anchor>
+				</li>
+			</ul -->
+		</li>
+	</ul>
+	</g:HTMLPanel>
+</ui:UiBinder> 

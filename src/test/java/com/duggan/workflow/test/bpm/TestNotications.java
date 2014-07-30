@@ -132,7 +132,7 @@ public class TestNotications {
 		
 		DB.beginTransaction();
 		//get tasks for approver
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver, TaskType.APPROVALREQUESTNEW);
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver, TaskType.INBOX);
 		DB.commitTransaction();
 		DB.closeSession();
 		
@@ -185,9 +185,9 @@ public class TestNotications {
 		String userId = "calcacuervo";
 		JBPMHelper.get().getCount(userId, vals);
 		System.err.println(TaskType.APPROVALREQUESTDONE+" : "+vals.get(TaskType.APPROVALREQUESTDONE));
-		System.err.println(TaskType.APPROVALREQUESTNEW+" : "+vals.get(TaskType.APPROVALREQUESTNEW));
+		System.err.println(TaskType.INBOX+" : "+vals.get(TaskType.INBOX));
 		
-		TaskType type = TaskType.APPROVALREQUESTNEW;
+		TaskType type = TaskType.INBOX;
 		Integer count = vals.get(type);
 		Integer actualCount = 0;		
 		List<HTSummary> summary = JBPMHelper.get().getTasksForUser(userId, type);

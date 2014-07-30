@@ -230,9 +230,9 @@ public class JBPMHelper implements Closeable {
 				.setParameter("groupIds", groupIds)
 				.setParameter("language", "en-UK")
 				.setParameter("status",
-						getStatusesForTaskType(TaskType.APPROVALREQUESTNEW))
+						getStatusesForTaskType(TaskType.INBOX))
 				.getSingleResult();
-		counts.put(TaskType.APPROVALREQUESTNEW, count.intValue());
+		counts.put(TaskType.INBOX, count.intValue());
 
 		/**
 		 * If John & James share the Role HOD_DEV John Claims, Starts and
@@ -245,8 +245,17 @@ public class JBPMHelper implements Closeable {
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
 				.setParameter("status", Status.Completed).getSingleResult();
-		counts.put(TaskType.APPROVALREQUESTDONE, count2.intValue());
-
+		
+		//Inprogress participated requests
+		int c = counts.get(TaskType.PARTICIPATED)==null? 0: counts.get(TaskType.PARTICIPATED);
+		counts.put(TaskType.PARTICIPATED, count2.intValue()+c);
+		
+		Long count3 = (Long) DB.getEntityManager()
+				.createNamedQuery("TasksOwnedCount")
+				.setParameter("userId", userId)
+				.setParameter("language", "en-UK")
+				.setParameter("status", Status.Suspended).getSingleResult();
+		counts.put(TaskType.SUSPENDED, count3.intValue());
 	}
 
 	public List<Status> getStatusesForTaskType(TaskType type) {
@@ -254,17 +263,19 @@ public class JBPMHelper implements Closeable {
 		List<Status> statuses = new ArrayList<>();
 
 		switch (type) {
-		case APPROVALREQUESTNEW:
+		case INBOX:
 			statuses = Arrays.asList(Status.Created, Status.InProgress,
 			// Status.Error,
 			// Status.Exited,
 			// Status.Failed,
 			// Status.Obsolete,
-					Status.Ready, Status.Reserved, Status.Suspended);
+					Status.Ready, Status.Reserved);
 			break;
+		case PARTICIPATED:
 		case APPROVALREQUESTDONE:
 			statuses = Arrays.asList(Status.Completed);
 			break;
+			
 		}
 		return statuses;
 	}
@@ -346,23 +357,27 @@ public class JBPMHelper implements Closeable {
 		}
 
 		if (type == null) {
-			type = TaskType.APPROVALREQUESTNEW;
+			type = TaskType.INBOX;
 		}
 
 		List<TaskSummary> ts = new ArrayList<>();
 
 		switch (type) {
+		case PARTICIPATED:
 		case APPROVALREQUESTDONE:
 			// approvals - show only items I have approved
 			ts = sessionManager.getTaskClient().getTasksOwned(userId,
 					Arrays.asList(Status.Completed), "en-UK");
 
 			break;
-		case APPROVALREQUESTNEW:
+		case INBOX:
 			ts = sessionManager.getTaskClient()
 					.getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			break;
-
+		case SUSPENDED:
+			ts = sessionManager.getTaskClient().getTasksOwned(userId,
+					Arrays.asList(Status.Suspended), "en-UK");
+			break;
 		default:
 			break;
 		}

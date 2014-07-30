@@ -83,8 +83,17 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocView;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormView;
-import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewPresenter;
-import com.duggan.workflow.client.ui.task.perfomancereview.PersonnelReviewView;
+import com.duggan.workflow.client.ui.task.AbstractTaskView;
+import com.duggan.workflow.client.ui.task.DraftsPresenter;
+import com.duggan.workflow.client.ui.task.DraftsView;
+import com.duggan.workflow.client.ui.task.InboxPresenter;
+import com.duggan.workflow.client.ui.task.InboxTaskView;
+import com.duggan.workflow.client.ui.task.ParticipatedPresenter;
+import com.duggan.workflow.client.ui.task.ParticipatedView;
+import com.duggan.workflow.client.ui.task.SearchPresenter;
+import com.duggan.workflow.client.ui.task.SearchView;
+import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter;
+import com.duggan.workflow.client.ui.task.SuspendedTaskView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
@@ -119,7 +128,7 @@ public class ClientModule extends AbstractPresenterModule {
 				MainPageView.class, MainPagePresenter.MyProxy.class);
 
 		bindPresenter(HomePresenter.class,
-				HomePresenter.MyView.class, HomeView.class,
+				HomePresenter.IHomeView.class, HomeView.class,
 				HomePresenter.MyProxy.class);
 
 		bindPresenterWidget(TaskItemPresenter.class,
@@ -127,11 +136,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);
-
-		bindPresenter(PersonnelReviewPresenter.class,
-				PersonnelReviewPresenter.MyView.class,
-				PersonnelReviewView.class,
-				PersonnelReviewPresenter.MyProxy.class);
 		
 		bindPresenterWidget(ToolbarPresenter.class,
 				ToolbarPresenter.MyView.class, ToolbarView.class);
@@ -168,8 +172,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(NotePresenter.class,
 				NotePresenter.MyView.class, NoteView.class);
 
-		bindPresenterWidget(ActivitiesPresenter.class,
-				ActivitiesPresenter.MyView.class, ActivitiesView.class);
+		bindPresenter(ActivitiesPresenter.class,ActivitiesPresenter.MyView.class,
+				ActivitiesView.class, ActivitiesPresenter.IActivitiesProxy.class);
 
 		bindPresenterWidget(CommentPresenter.class,
 				CommentPresenter.ICommentView.class, CommentView.class);
@@ -258,8 +262,8 @@ public class ClientModule extends AbstractPresenterModule {
 				DSSavePresenter.IDSSaveView.class,
 				DSSaveView.class);
 
-		bindPresenterWidget(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
-				ProfileView.class);
+		bindPresenter(ProfilePresenter.class, ProfilePresenter.IProfileView.class,
+				ProfileView.class, ProfilePresenter.IProfileProxy.class);
 		
 		bindPresenterWidget(PieChartPresenter.class, PieChartPresenter.IPieChartView.class,
 				PieChartView.class);
@@ -273,7 +277,21 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(TableDataPresenter.class, TableDataPresenter.ITableDataView.class,
 				TableDataView.class);
 		
-		 bind(TabPanel.class);
+		bind(TabPanel.class);
 
+		bindPresenter(ParticipatedPresenter.class, ParticipatedPresenter.IParticipatedView.class,
+				ParticipatedView.class, ParticipatedPresenter.INewTaskProxy.class);
+		
+		bindPresenter(InboxPresenter.class, InboxPresenter.IInboxView.class,
+				InboxTaskView.class, InboxPresenter.InboxTaskProxy.class);
+		
+		bindPresenter(DraftsPresenter.class, DraftsPresenter.IDraftsView.class,
+				DraftsView.class, DraftsPresenter.IDraftsProxy.class);
+		
+		bindPresenter(SuspendedTaskPresenter.class, SuspendedTaskPresenter.ISuspendedView.class,
+				SuspendedTaskView.class, SuspendedTaskPresenter.ISuspendedTaskProxy.class);
+		
+		bindPresenter(SearchPresenter.class, SearchPresenter.ISearchView.class,
+				SearchView.class, SearchPresenter.ISearchProxy.class);
 	}
 }

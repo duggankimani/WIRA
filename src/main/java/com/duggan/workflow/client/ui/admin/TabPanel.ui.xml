@@ -7,7 +7,7 @@
 			<!--sidebar-->
 			<g:HTMLPanel styleName="span1">
 				<aside id="side-left">
-					<d:BulletListPanel ui:field="tabPanel" styleName="sidebar">
+					<d:BulletListPanel ui:field="linksPanel" styleName="sidebar">
 										
 					</d:BulletListPanel>
 				</aside>

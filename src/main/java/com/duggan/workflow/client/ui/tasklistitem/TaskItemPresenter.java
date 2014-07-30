@@ -160,22 +160,12 @@ public class TaskItemPresenter extends
 					@Override
 					public void processResult(ApprovalRequestResult result) {						
 						PlaceRequest request = new PlaceRequest("home").
-								with("type", TaskType.APPROVALREQUESTNEW.getURL());
+								with("type", TaskType.INBOX.getURL());
 						
 						placeManager.revealPlace(request);
 						
 					}
 				});				
-			}
-		});
-		
-		getView().getViewLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				PlaceRequest request = new PlaceRequest(NameTokens.personalreview);
-				request = request.with("taskId", task.getId()+"");				
-				placeManager.revealPlace(request);
 			}
 		});
 

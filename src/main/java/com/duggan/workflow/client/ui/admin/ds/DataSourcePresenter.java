@@ -57,7 +57,7 @@ public class DataSourcePresenter extends
 	
 	@TabInfo(container = AdminHomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Data Sources","icon-briefcase",5, adminGatekeeper);
+        return new TabDataExt("Data Sources","icon-briefcase",6, adminGatekeeper);
     }
 	
 	public static final Object TABLE_SLOT = new Object();

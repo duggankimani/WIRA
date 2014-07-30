@@ -37,7 +37,7 @@ public class TestSearchDocument {
 	@Test
 	public void getTasks(){
 		String userId = "mariano";
-		TaskType type = TaskType.APPROVALREQUESTNEW;
+		TaskType type = TaskType.INBOX;
 		
 		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(userId, type);
 		for(HTSummary summary: summaries){

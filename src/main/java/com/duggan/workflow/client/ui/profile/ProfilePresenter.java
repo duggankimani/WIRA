@@ -1,9 +1,13 @@
 package com.duggan.workflow.client.ui.profile;
 
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
+import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
@@ -17,14 +21,20 @@ import com.duggan.workflow.shared.responses.UpdatePasswordResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 
 public class ProfilePresenter extends
-		PresenterWidget<ProfilePresenter.IProfileView> implements ContextLoadedHandler {
+		Presenter<ProfilePresenter.IProfileView, ProfilePresenter.IProfileProxy> implements ContextLoadedHandler {
 
 	public interface IProfileView extends View {
 		public boolean isValid();
@@ -48,13 +58,26 @@ public class ProfilePresenter extends
 		public HasClickHandlers getCancelSaveUser();
 	}
 	
+	@ProxyCodeSplit
+	@NameToken(NameTokens.profile)
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface IProfileProxy extends TabContentProxyPlace<ProfilePresenter> {
+	}
+	
+	@TabInfo(container = HomePresenter.class)
+    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+		TabDataExt data = new TabDataExt("Profile","icon-dashboard",11, adminGatekeeper);
+		data.setDisplayed(false);
+        return data;
+    }
+
 	@Inject DispatchAsync requestHelper;
 
 	HTUser user;
 	
 	@Inject
-	public ProfilePresenter(final EventBus eventBus, final IProfileView view) {
-		super(eventBus, view);
+	public ProfilePresenter(final EventBus eventBus, final IProfileView view,final IProfileProxy proxy) {
+		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 	}
 
 	@Override

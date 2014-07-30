@@ -6,11 +6,12 @@ public enum TaskType {
 	INPROGRESS("inprog", "In Progress"),
 	APPROVED("approved", "Approved"),
 	REJECTED("rejected", "Rejected"),
-	APPROVALREQUESTNEW("appreqnew", "New Tasks"),
+	INBOX("appreqnew", "Inbox"),
 	APPROVALREQUESTDONE("appredone", "Completed"),
-	FLAGGED("flagged", "Flagged"),
+	SUSPENDED("suspended", "Suspended"),
 	NOTIFICATIONS("notifications", "Notifications"),
-	SEARCH("search","Search");
+	SEARCH("search","Search"),
+	PARTICIPATED("participated", "Participated");
 	
 	String url;
 	String title;

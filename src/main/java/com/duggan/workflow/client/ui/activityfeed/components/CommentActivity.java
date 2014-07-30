@@ -75,7 +75,7 @@ public class CommentActivity extends Composite {
 		}
 		
 		aDocument.setText(docType+" "+subject);
-		aDocument.setHref("#home;type=search;did="+documentId);
+		aDocument.setHref("#search;did="+documentId);
 		
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
 		if(moduleUrl.endsWith("/")){

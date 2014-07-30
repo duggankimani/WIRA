@@ -111,7 +111,7 @@ public class SingleButton extends FieldWidget {
 							}
 						}
 
-					}, "Yes", "No","Cancel");
+					}, "Yes","Cancel");
 				}
 			});
 		}else{
@@ -166,7 +166,7 @@ public class SingleButton extends FieldWidget {
 						}
 					}
 					
-					System.err.println("Added >> "+key+" = "+value);
+					//System.err.println("Added >> "+key+" = "+value);
 					values.put(key, new StringValue(null, key.trim(), value.trim()));
 				}
 			}
