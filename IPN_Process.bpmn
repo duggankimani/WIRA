@@ -134,7 +134,7 @@
       <dataInputAssociation>
         <targetRef>_5_uriInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">http://localhost:8030/Paybill_IPN/index.php/paybill/updateDetails</from>
+          <from xsi:type="tFormalExpression">http://197.237.142.169:8030/Paybill_IPN/index.php/paybill/updateDetails</from>
           <to xsi:type="tFormalExpression">_5_uriInput</to>
         </assignment>
       </dataInputAssociation>
