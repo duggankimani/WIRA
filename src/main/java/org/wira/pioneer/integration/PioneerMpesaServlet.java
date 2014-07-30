@@ -26,7 +26,7 @@ import com.duggan.workflow.shared.model.HTUser;
  * BPM process for handling wrong/non-existent ID numbers {see IPNProcess.bpmn2}
  * 
  * url - http://localhost:8080/wira/ipnserv?paramName=paramValue etc
- * @author Maggy's
+ * @author Tom
  * 
  */
 public class PioneerMpesaServlet extends HttpServlet {

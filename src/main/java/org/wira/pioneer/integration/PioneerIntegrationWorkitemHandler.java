@@ -1,7 +1,5 @@
 package org.wira.pioneer.integration;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
