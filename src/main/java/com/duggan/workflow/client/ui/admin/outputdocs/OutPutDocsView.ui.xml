@@ -6,5 +6,33 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel/>
+	<g:HTMLPanel>
+		<div class="content-body overflow-y">
+					<div class="row-fluid">
+						<div class="action-buttons">
+							<g:Anchor ui:field="aNewDocument" styleName="btn btn-primary"
+								title="Add a New Process">
+								<i class="icon-plus"></i>
+								Add Document
+							</g:Anchor>
+					   </div>																			
+					</div>
+					
+					<div class="table table-striped table-hover table-bordered table-process">
+					    <div class="thead">
+					    	<div class="tr">
+								<div class="th">
+								  <label><input type="checkbox" class="ace"/></label>
+								</div>
+								<div class="th" style="width:40%">NAME:</div>
+								<div class="th" style="width:40%">DOCUMENT ID:</div>
+								<div class="th" style="width:20%">ATTATCHMENT:</div>
+							</div>								
+
+						</div>
+						<g:HTMLPanel ui:field="tblRow" styleName="tbody">
+						</g:HTMLPanel>
+					</div>
+				</div>
+	</g:HTMLPanel>
 </ui:UiBinder>

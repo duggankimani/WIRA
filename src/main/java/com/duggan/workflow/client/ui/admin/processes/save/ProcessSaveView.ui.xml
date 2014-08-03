@@ -1,73 +1,90 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom' 
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	xmlns:admin='urn:import:com.duggan.workflow.client.ui.admin.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="divPopUp">
+	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin"
+		modal="true" ui:field="divPopUp">
 		<g:HTMLPanel>
-	 		<g:HTMLPanel styleName="modal-header">
-					<h5><i class="icon-cogs"></i>New Process Wizard <g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
-			 </g:HTMLPanel>
-			 <d:IssuesPanel ui:field="issues">
-	    	</d:IssuesPanel>
-			 
-			 <g:HTMLPanel ui:field="divProcessDetails">
-		 	<g:HTMLPanel styleName="modal-body">
-		 			<g:HTMLPanel styleName="" >
-						  <div class="form-group">
-						    <label for="ProcessName">Name:</label>
-						    <d:TextField ui:field="txtName" type="text" 
-						        class="form-control" placeholder="Process Name"/>
-						  </div>
-						  <div class="form-group">
-						    <label for="ProcessName">Process Id:</label>
-						    <d:TextField ui:field="txtProcess" type="text" 
-						        title="A single process may have multiple processes and subprocesses, this property identifies the main process"
-						        class="form-control" placeholder="Main Process Id"/>
-						  </div>
-						  <div class="form-group">
-						 	 <label for="ProcessDescription">Description:</label>
-						 	 <d:TextArea ui:field="txtDescription" class="form-control" rows="3"></d:TextArea>
-						  </div>
-						  <div class="form-group">
-						  	<label for="ProcessName">Document Types:</label>
-							  <admin:ListField ui:field="lstDocTypes"></admin:ListField>
-						  </div>
-					</g:HTMLPanel>
+			<g:HTMLPanel styleName="modal-header">
+				<h5>
+					<i class="icon-cogs"></i>
+					New Process Wizard
+					<g:Anchor ui:field="aClose">
+						<i class="icon-remove pull-right" />
+					</g:Anchor>
+				</h5>
 			</g:HTMLPanel>
-			  <div class="form-actions">
-					<g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
-			  </div>
-			  </g:HTMLPanel>
-			
+			<d:IssuesPanel ui:field="issues">
+			</d:IssuesPanel>
+
+			<g:HTMLPanel ui:field="divProcessDetails">
+				<g:HTMLPanel styleName="modal-body">
+					<g:HTMLPanel styleName="">
+						<div class="form-group">
+							<label for="ProcessName">Name:</label>
+							<d:TextField ui:field="txtName" type="text" class="form-control"
+								placeholder="Process Name" />
+						</div>
+						<div class="form-group">
+							<label for="ProcessName">Process Id:</label>
+							<d:TextField ui:field="txtProcess" type="text"
+								title="A single process may have multiple processes and subprocesses, this property identifies the main process"
+								class="form-control" placeholder="Main Process Id" />
+						</div>
+						<div class="form-group">
+							<label for="ProcessDescription">Description:</label>
+							<d:TextArea ui:field="txtDescription" class="form-control"
+								rows="3"></d:TextArea>
+						</div>
+						<div class="form-group">
+							<label for="ProcessName">Document Types:</label>
+							<admin:ListField ui:field="lstDocTypes"></admin:ListField>
+						</div>
+					</g:HTMLPanel>
+				</g:HTMLPanel>
+				<div class="form-actions">
+					<g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next
+						&nbsp;
+						<i class="icon-double-angle-right"></i>
+					</g:Anchor>
+				</div>
+			</g:HTMLPanel>
+
 			<g:HTMLPanel styleName="hide" ui:field="divUploadDetails">
 				<g:HTMLPanel styleName="modal-body">
-				    <g:HTMLPanel styleName="uploadPanel">
-				        <g:InlineLabel ui:field="lblWarning" styleName="text-warning">
-				            Mixing Guvnor changesets with other files may cause difficult to debug errors.				            
-				        </g:InlineLabel>
-				        <g:VerticalPanel styleName="upld-multiple" ui:field="currentAttachmentsPanel">
-				            
-				        </g:VerticalPanel>
-				    </g:HTMLPanel>
+					<g:HTMLPanel styleName="uploadPanel">
+						<g:InlineLabel ui:field="lblWarning" styleName="text-warning">
+							Mixing Guvnor changesets with other files may cause difficult to
+							debug errors.
+						</g:InlineLabel>
+						<g:VerticalPanel styleName="upld-multiple"
+							ui:field="currentAttachmentsPanel">
+
+						</g:VerticalPanel>
+					</g:HTMLPanel>
 					<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
 						<up:Uploader ui:field="uploader"></up:Uploader>
 					</g:HTMLPanel>
-				 </g:HTMLPanel>
-				 <g:HTMLPanel styleName="form-actions">
-						<div class="pull-right">
-						<g:Anchor styleName="btn btn-default" ui:field="aBack"><i class="icon-double-angle-left"></i> &nbsp; Back </g:Anchor>
-						<g:Anchor styleName="btn btn-success" ui:field="aFinish">Finish &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
-				 		</div>
-				 </g:HTMLPanel>
-			 </g:HTMLPanel>
-			 
+				</g:HTMLPanel>
+				<g:HTMLPanel styleName="form-actions">
+					<div class="pull-right">
+						<g:Anchor styleName="btn btn-default" ui:field="aBack">
+							<i class="icon-double-angle-left"></i>
+							&nbsp; Back
+						</g:Anchor>
+						<g:Anchor styleName="btn btn-success" ui:field="aFinish">Finish
+							&nbsp;
+							<i class="icon-double-angle-right"></i>
+						</g:Anchor>
+					</div>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>

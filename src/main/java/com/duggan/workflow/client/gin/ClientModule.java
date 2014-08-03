@@ -115,6 +115,8 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
+import com.duggan.workflow.client.ui.admin.outputdocs.save.OutPutDocsSavePresenter;
+import com.duggan.workflow.client.ui.admin.outputdocs.save.OutPutDocsSaveView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -299,5 +301,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(OutPutDocsPresenter.class,
 				OutPutDocsPresenter.MyView.class, OutPutDocsView.class,
 				OutPutDocsPresenter.MyProxy.class);
+
+		bindPresenterWidget(OutPutDocsSavePresenter.class,
+				OutPutDocsSavePresenter.MyView.class, OutPutDocsSaveView.class);
 	}
 }
