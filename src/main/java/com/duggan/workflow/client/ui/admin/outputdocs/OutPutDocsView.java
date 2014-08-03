@@ -1,5 +1,10 @@
 package com.duggan.workflow.client.ui.admin.outputdocs;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.duggan.workflow.client.ui.component.TableHeader;
+import com.duggan.workflow.client.ui.component.TableView;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,6 +18,7 @@ public class OutPutDocsView extends ViewImpl implements
 
 	private final Widget widget;
 	@UiField Anchor aNewDocument;
+	@UiField TableView tblView;
 
 	public interface Binder extends UiBinder<Widget, OutPutDocsView> {
 	}
@@ -20,6 +26,16 @@ public class OutPutDocsView extends ViewImpl implements
 	@Inject
 	public OutPutDocsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		setTable();
+	}
+
+	private void setTable() {
+		List<TableHeader> th = new ArrayList<TableHeader>();
+		th.add(new TableHeader("Name", 40.0,"title"));
+		th.add(new TableHeader("Document Id", 10.0));
+		th.add(new TableHeader("Attatchment(s)", 10.0));
+		
+		tblView.setTableHeaders(th);
 	}
 
 	@Override
@@ -30,4 +46,5 @@ public class OutPutDocsView extends ViewImpl implements
 	public HasClickHandlers getDocumentButton() {
 		return aNewDocument;
 	}
+	
 }

@@ -1,20 +1,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
-	<g:HTMLPanel>
-	    <div class="table table-striped table-hover table-bordered">
+	<g:HTMLPanel ui:field="overalContainer">
+	    <g:HTMLPanel styleName="table table-striped table-hover table-bordered" ui:field="tblContainer">
 			<div class='thead'>
 				<g:HTMLPanel styleName="tr" ui:field="panelHeader">
-					
 				</g:HTMLPanel>
 			</div>
 
-			<g:HTMLPanel ui:field="panelBody" styleName='tbody'>				
-			</g:HTMLPanel>
+			<g:FlowPanel ui:field="panelBody" styleName='tbody'>
+			</g:FlowPanel>
 			
-			<g:HTMLPanel ui:field="panelFooter">
-			    				
+			<g:HTMLPanel ui:field="panelFooter" styleName='tbody'>
 			</g:HTMLPanel>
-		</div>
+		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>
