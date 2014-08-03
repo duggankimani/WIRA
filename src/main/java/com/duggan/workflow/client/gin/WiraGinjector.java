@@ -3,10 +3,11 @@ package com.duggan.workflow.client.gin;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;
+import com.google.gwt.inject.client.AsyncProvider;
+import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
 
 @GinModules({RpcDispatchAsyncModule.class,ClientModule.class})
 public interface WiraGinjector extends Ginjector {
-
 	//AsyncProvider<TaskPresenter> getTaskPresenter();
 
 	//EventBus getEventBus();

@@ -46,7 +46,7 @@ public class SettingsPresenter extends
 	
 	@TabInfo(container = AdminHomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Settings","icon-globe",5, adminGatekeeper);
+        return new TabDataExt("Settings","icon-globe",6, adminGatekeeper);
     }
 	
 	
