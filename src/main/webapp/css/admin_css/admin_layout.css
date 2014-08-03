@@ -37,7 +37,7 @@
 	margin: 0px;
 	padding: 10px 0px;
 	list-style: none;
-	height: 40px;
+	min-height: 40px;
 	display: block;
 	text-align: center;
 	font-size: 11px;
