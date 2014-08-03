@@ -18,6 +18,7 @@
   <itemDefinition id="_documentIdItem" structureRef="String" />
   <itemDefinition id="_idNoItem" structureRef="String" />
   <itemDefinition id="_isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_isProcessCompleteItem" structureRef="Boolean" />
 
   <itemDefinition id="_4-documentItem" />
   <itemDefinition id="_4-actorItem" structureRef="String" />
@@ -25,6 +26,7 @@
   <itemDefinition id="_4-documentIdItem" structureRef="String" />
   <itemDefinition id="_4-idNoItem" structureRef="String" />
   <itemDefinition id="_4-isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_4-isProcessCompleteItem" structureRef="Boolean" />
 
   <itemDefinition id="_5-documentItem" />
   <itemDefinition id="_5-actorItem" structureRef="String" />
@@ -32,6 +34,15 @@
   <itemDefinition id="_5-documentIdItem" structureRef="String" />
   <itemDefinition id="_5-idNoItem" structureRef="String" />
   <itemDefinition id="_5-isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_5-isProcessCompleteItem" structureRef="Boolean" />
+
+  <itemDefinition id="_6-documentItem" />
+  <itemDefinition id="_6-actorItem" structureRef="String" />
+  <itemDefinition id="_6-ownerIdItem" structureRef="String" />
+  <itemDefinition id="_6-documentIdItem" structureRef="String" />
+  <itemDefinition id="_6-idNoItem" structureRef="String" />
+  <itemDefinition id="_6-isApprovedItem" structureRef="Boolean" />
+  <itemDefinition id="_6-isProcessCompleteItem" structureRef="Boolean" />
 
   <process processType="Private" isExecutable="true" id="com.tomkimani.ipn.mpesaipn" name="mpesaipn" tns:packageName="com.tomkimani.ipn" >
 
@@ -42,12 +53,10 @@
     <property id="documentId" itemSubjectRef="_documentIdItem"/>
     <property id="idNo" itemSubjectRef="_idNoItem"/>
     <property id="isApproved" itemSubjectRef="_isApprovedItem"/>
+    <property id="isProcessComplete" itemSubjectRef="_isProcessCompleteItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
-    <endEvent id="_3" name="End" >
-        <terminateEventDefinition/>
-    </endEvent>
     <userTask id="_4" name="Officer Id Capture" >
       <ioSpecification>
         <dataInput id="_4_documentInput" name="document" />
@@ -134,16 +143,48 @@
       <dataInputAssociation>
         <targetRef>_5_uriInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">http://197.237.142.169:8030/Paybill_IPN/index.php/paybill/updateDetails</from>
+          <from xsi:type="tFormalExpression">http://197.248.2.44:8030/paybill/index.php/paybill/updateDetails</from>
           <to xsi:type="tFormalExpression">_5_uriInput</to>
         </assignment>
       </dataInputAssociation>
     </task>
+    <task id="_6" name="Update Local" tns:taskName="UpdateLocal" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>kcontext.setVariable("isProcessComplete",true);</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_6_isApprovedInput" name="isApproved" />
+        <dataInput id="_6_DocumentIdInput" name="DocumentId" />
+        <inputSet>
+          <dataInputRefs>_6_isApprovedInput</dataInputRefs>
+          <dataInputRefs>_6_DocumentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>isApproved</sourceRef>
+        <targetRef>_6_isApprovedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_6_DocumentIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{documentId}</from>
+          <to xsi:type="tFormalExpression">_6_DocumentIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_7" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
 
     <!-- connections -->
-    <sequenceFlow id="_5-_3" sourceRef="_5" targetRef="_3" />
     <sequenceFlow id="_1-_4" sourceRef="_1" targetRef="_4" />
     <sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5" />
+    <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
 
   </process>
 
@@ -152,26 +193,33 @@
       <bpmndi:BPMNShape bpmnElement="_1" >
         <dc:Bounds x="16" y="16" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="360" y="16" width="48" height="48" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
         <dc:Bounds x="96" y="16" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="228" y="16" width="100" height="48" />
+        <dc:Bounds x="244" y="16" width="100" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_5-_3" >
-        <di:waypoint x="278" y="40" />
-        <di:waypoint x="384" y="40" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="388" y="19" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="553" y="21" width="48" height="48" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_4" >
         <di:waypoint x="40" y="40" />
         <di:waypoint x="146" y="40" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_4-_5" >
         <di:waypoint x="146" y="40" />
-        <di:waypoint x="278" y="40" />
+        <di:waypoint x="294" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_6" >
+        <di:waypoint x="294" y="40" />
+        <di:waypoint x="438" y="43" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="438" y="43" />
+        <di:waypoint x="577" y="45" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

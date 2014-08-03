@@ -47,6 +47,7 @@ public class PioneerMpesaServlet extends HttpServlet {
 		HttpSession session = null;
 		try{
 			session=req.getSession(true);
+			SessionHelper.setHttpRequest(req);
 		}catch(Exception e){e.printStackTrace();}
 		
 		Response response = new Response();
