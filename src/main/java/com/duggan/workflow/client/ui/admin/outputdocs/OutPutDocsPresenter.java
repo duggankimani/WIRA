@@ -1,25 +1,18 @@
 package com.duggan.workflow.client.ui.admin.outputdocs;
 
-import org.apache.directory.server.core.subtree.SubentryInterceptor.HideEntriesFilter;
-
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.OutPutDocsSavePresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.shared.model.OutputDocument;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
-import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
@@ -65,10 +58,11 @@ public class OutPutDocsPresenter extends
 			public void onClick(ClickEvent event) {
 				AppManager.showPopUp("Create Output Document",saveProvider.asWidget(),new OptionControl(){
 					@Override
-					public void onSelect(String name) {
-						hide();
+					public void onSelect(String name) {						
 						if(name.equals("Save")){
+							OutputDocument doc = saveProvider.getOutputDocument();
 						}
+						hide();
 					}
 				},"Save", "Cancel");
 			}

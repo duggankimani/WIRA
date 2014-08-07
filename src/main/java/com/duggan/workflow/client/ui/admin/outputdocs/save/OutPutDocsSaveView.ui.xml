@@ -14,13 +14,13 @@
 				placeholder="Process Name" />
 		</div>
 		<div class="form-group">
-			<label for="ProcessName">Document Id:</label>
-			<d:TextField ui:field="txtProcess" type="text"
+			<label for="ProcessName">Document Ref:</label>
+			<d:TextField ui:field="txtDocRef" type="text"
 				title="A single process may have multiple processes and subprocesses,this property identifies the main process"
 				class="form-control" placeholder="Main Process Id" />
 		</div>
 		<div class="form-group">
-			<label for="ProcessDescription">Description:</label>
+			<label for="ProcessDescription">Notes:</label>
 			<d:TextArea ui:field="txtDescription" class="form-control"
 				rows="3"></d:TextArea>
 		</div>
