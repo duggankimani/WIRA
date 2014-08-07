@@ -26,6 +26,7 @@ import com.duggan.workflow.shared.model.HTUser;
  * BPM process for handling wrong/non-existent ID numbers {see IPNProcess.bpmn2}
  * 
  * url - http://localhost:8080/wira/ipnserv?paramName=paramValue etc
+ * 
  * @author Tom
  * 
  */
@@ -35,32 +36,90 @@ public class PioneerMpesaServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Map<String, Object> context;
+	private Request wiraRequest;
 
 	/**
 	 *
 	 */
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected void doGet(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
-		//super.doGet(req, resp);
+		// super.doGet(req, resp);
 
 		HttpSession session = null;
-		try{
-			session=req.getSession(true);
-			SessionHelper.setHttpRequest(req);
-		}catch(Exception e){e.printStackTrace();}
-		
+		try {
+			session = request.getSession(true);
+			SessionHelper.setHttpRequest(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		Response response = new Response();
 
 		try {
 			DB.beginTransaction();
 
-			// Request
-			Request request = new Request();
-			request.setCommandName(IncomingRequestImpl.NEWAPPROVALREQUESTCOMMAND);
+			wiraRequest = new Request();
+			wiraRequest.setCommandName(IncomingRequestImpl.NEWAPPROVALREQUESTCOMMAND);
+			
+			System.err.println("Received the request");
+			
+			String parameter = request.getParameter("docType");
+			RequestType requestType = RequestType.getRequestType(parameter);
+			
+			//Create Context and set it
+			createContext(request, requestType);
+			wiraRequest.setContext(context);
+		
+			System.err.println(context);
+			
+			HTUser user = new HTUser();
+			user.setUserId(wiraRequest.getContext("ownerId").toString());
+			if (session != null)
+				session.setAttribute(ServerConstants.USER, user);
 
-			// Request Context
-			Map<String, Object> context = new HashMap<String, Object>();
+			// Submit
+			IncomingRequestImpl handler = new IncomingRequestImpl();
+			handler.executeClientRequest(wiraRequest, response);
+			
+			
+			//Response
+			PrintWriter out = resp.getWriter();
+			BusinessKey key = response.getBusinessKey();
+			assert key != null;
+
+			resp.setContentType("text/html");
+			out.println("<b style=\"color:red\">" + key.getDocumentId() + " : "
+					+ key.getProcessInstanceId() + ":" + key.getSessionId()
+					+ "</b>");
+			out.close();
+
+			DB.commitTransaction();
+		} catch (Exception e) {
+			DB.rollback();
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			if (session != null) {
+				session.invalidate();
+			}
+
+			DB.closeSession();
+			SessionHelper.setHttpRequest(null);
+			JBPMHelper.clearRequestData();
+		}
+	}
+
+	private void createContext(HttpServletRequest req, RequestType reqType) {
+		context = new HashMap<String, Object>();
+		switch (reqType) {
+		case ALLOCATIONREQUEST:
+			break;
+		
+		case MPESAIPN:
+			wiraRequest.setDescription(req.getParameter("senderName") + "-"
+					+ req.getParameter("senderPhone"));
 			context.put("senderName", req.getParameter("senderName"));
 			context.put("senderPhone", req.getParameter("senderPhone"));
 			context.put("enteredId", req.getParameter("enteredId"));
@@ -71,47 +130,14 @@ public class PioneerMpesaServlet extends HttpServlet {
 			context.put("mpesaTime", req.getParameter("mpesaTime"));
 			context.put("mpesaAmount", req.getParameter("mpesaAmount"));
 			context.put("docType", "MPESAIPN");
-			
 			context.put("ownerId", "Administrator");
-			request.setDescription(req.getParameter("senderName")+"-"+req.getParameter("senderPhone"));
-			request.setContext(context);
+			break;
 			
-			System.err.println(context);
-			
-			HTUser user = new HTUser();
-			user.setUserId(request.getContext("ownerId").toString());
-			if(session!=null)
-				session.setAttribute(ServerConstants.USER,user);
-			
-			// Submit
-			IncomingRequestImpl handler = new IncomingRequestImpl();
-			handler.executeClientRequest(request, response);
-
-			PrintWriter out = resp.getWriter();
-			BusinessKey key = response.getBusinessKey();
-			assert key != null;
-
-			resp.setContentType("text/html");
-			out.println("<b style=\"color:red\">" + key.getDocumentId() + " : "
-						+ key.getProcessInstanceId() + ":" + key.getSessionId()
-						+ "</b>");
-			out.close();
-			
-			DB.commitTransaction();
-		} catch (Exception e) {
-			DB.rollback();
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		} finally {
-			if(session!=null){
-				session.invalidate();
-			}
-			
-			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
-			JBPMHelper.clearRequestData();
+		default:
+			break;
 		}
+		
+		
 	}
 
 }
-	
