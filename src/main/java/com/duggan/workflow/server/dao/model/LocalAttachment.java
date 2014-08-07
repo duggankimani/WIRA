@@ -3,12 +3,14 @@ package com.duggan.workflow.server.dao.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
@@ -29,8 +31,9 @@ public class LocalAttachment extends PO{
 	
 	private String name;
 	
-	//UserId=Username
-	private String imageUserId;
+	private long size;
+	
+	private String contentType;
 	
 	@Enumerated(EnumType.STRING)
 	private SETTINGNAME settingName;
@@ -39,6 +42,10 @@ public class LocalAttachment extends PO{
 	private byte[] attachment;
 	
 	private boolean archived;
+	
+
+	//UserId=Username
+	private String imageUserId;
 	
 	@ManyToOne
 	@JoinColumn(name="documentId",referencedColumnName="id")
@@ -55,9 +62,8 @@ public class LocalAttachment extends PO{
 	@JoinColumn(name="processDefIdImage", referencedColumnName="id")
 	private ProcessDefModel processDefImage;
 	
-	private long size;
-	
-	private String contentType;
+	@OneToOne(fetch=FetchType.LAZY)
+	private ADOutputDoc outputDoc;
 
 	public LocalAttachment(){
 		super();

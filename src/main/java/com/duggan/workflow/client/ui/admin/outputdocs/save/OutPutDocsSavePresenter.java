@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.outputdocs.save;
 
+import com.duggan.workflow.shared.model.OutputDocument;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PopupView;
@@ -19,5 +20,10 @@ public class OutPutDocsSavePresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+	}
+
+	public OutputDocument getOutputDocument() {
+
+		return null;
 	}
 }
