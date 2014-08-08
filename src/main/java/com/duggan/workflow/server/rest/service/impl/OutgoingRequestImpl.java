@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.rest.service.impl;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.ws.rs.core.MediaType;
@@ -15,7 +17,9 @@ import com.duggan.workflow.server.rest.service.OutgoingRequestService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 public class OutgoingRequestImpl implements OutgoingRequestService {
 
@@ -52,13 +56,22 @@ public class OutgoingRequestImpl implements OutgoingRequestService {
 	 */
 	private Client jclient;
 
+	
 	public OutgoingRequestImpl() {
+		this(false);
+	}
+	
+	public OutgoingRequestImpl(Boolean myConfiguration) {
 		DefaultClientConfig config = new DefaultClientConfig(
 				JAXBProviderImpl.class);
+		if(myConfiguration){
+			config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);	
+		}
 		jclient = Client.create(config);
 		jclient.setConnectTimeout(15000);
 
 	}
+	
 
 	@Override
 	public Response executeCall(Request request) {
@@ -123,40 +136,45 @@ public class OutgoingRequestImpl implements OutgoingRequestService {
 		return response;
 
 	}
-
-	public static void main1(String[] args) {
-		CommandContext ctx = new CommandContext();
-		// ctx.setData("docType", DocType.LPO.name());
-		ctx.setData("subject", "LPO/8023/12");
-		ctx.setData("approvalStatus", "20/09/2013");
-
-		Request request = new Request("WORKFLOWCALLOUTCOMMAND", null,
-				ctx.getData());
-
-		// //
-		// marshalXml(request);
-		//
-		Response response = new OutgoingRequestImpl().executeCall(request);
-
-		assert request != null;
+	
+	public void executePostCall(String urlEncodedString) {
+		executePostCall(urlEncodedString, null);
 	}
 
-	public void executePostCall(String urlEncodedString) {
-		logger.warn("Executing post: "+urlEncodedString);
-		WebResource resource = jclient.resource(urlEncodedString);
-		// String s = resource.type(MediaType.APPLICATION_FORM_URLENCODED)
-		// .accept(MediaType.TEXT_PLAIN).get(String.class);
-		resource.type(MediaType.APPLICATION_FORM_URLENCODED)
-				.accept(MediaType.TEXT_PLAIN).post();
-		// System.err.println(s);
-		
+	public void executePostCall(String urlEncodedString, Map <String,Object> postBody) {
+		logger.warn("Executing post: " + urlEncodedString);
+		try {
+			WebResource resource = jclient.resource(urlEncodedString);
+			
+			ClientResponse response = resource.type(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)
+					.post(ClientResponse.class, postBody);
+			
+			// check response status code
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+
+			// display response
+			String output = response.getEntity(String.class);
+			System.out.println("Output from Server .... ");
+			System.out.println(output + "\n");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Something wrong happened while executing the Post call ");
+		}
+
 	}
 
 	public static void main(String[] args) {
-		new OutgoingRequestImpl()
-				.executePostCall("http://localhost:8030/Paybill_IPN/index.php/paybill/updateDetails?mpesaCode=EV32VZ788&idNo=3421441&clientCode=PB/02555");
-		
-		System.err.println("Executed");
+		Map<String,Object> postBody = new HashMap<String,Object>();
+		postBody.put("allocatedTo", "1");
+		postBody.put("allocatedBy", "daniel");
+		postBody.put("terminalId", "28");
+		String url  = "http://localhost:8030/PioneerMSSQL/index.php/api/flexipay_server/postAllocation";
+		new OutgoingRequestImpl(true)
+				.executePostCall(url,postBody);
 	}
 
 }

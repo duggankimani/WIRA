@@ -52,7 +52,7 @@
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
-    <userTask id="_2" name="Admin Approval" >
+    <userTask id="_2" name="Approval Request" >
       <ioSpecification>
         <dataInput id="_2_documentInput" name="document" />
         <dataInput id="_2_ownerIdInput" name="ownerId" />
@@ -145,8 +145,12 @@
     <task id="_5" name="Pioneer Integration" tns:taskName="PioneerIntegration" >
       <ioSpecification>
         <dataInput id="_5_documentInput" name="document" />
+        <dataInput id="_5_actorIdInput" name="actorId" />
+        <dataInput id="_5_uriInput" name="uri" />
         <inputSet>
           <dataInputRefs>_5_documentInput</dataInputRefs>
+          <dataInputRefs>_5_actorIdInput</dataInputRefs>
+          <dataInputRefs>_5_uriInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
@@ -154,6 +158,17 @@
       <dataInputAssociation>
         <sourceRef>document</sourceRef>
         <targetRef>_5_documentInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>actor</sourceRef>
+        <targetRef>_5_actorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_5_uriInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">http://localhost:8030/PioneerMSSQL/index.php/api/flexipay_server/postAllocation</from>
+          <to xsi:type="tFormalExpression">_5_uriInput</to>
+        </assignment>
       </dataInputAssociation>
     </task>
     <endEvent id="_6" name="End" >

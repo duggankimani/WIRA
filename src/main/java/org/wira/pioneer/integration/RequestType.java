@@ -4,7 +4,7 @@ package org.wira.pioneer.integration;
 public enum RequestType {
 	
 	MPESAIPN("MPESAIPN"),
-	ALLOCATIONREQUEST("ALLOCATION_REQUEST");
+	ALLOCATIONREQUEST("TERMINAL ALLOCATION");
 	
 	String name;
 	private RequestType(String name){

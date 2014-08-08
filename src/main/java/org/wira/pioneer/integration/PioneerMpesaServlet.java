@@ -36,7 +36,7 @@ public class PioneerMpesaServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, Object> context;
+	private Map<String, Object> context = new HashMap<String, Object>();
 	private Request wiraRequest;
 
 	/**
@@ -63,9 +63,8 @@ public class PioneerMpesaServlet extends HttpServlet {
 			wiraRequest = new Request();
 			wiraRequest.setCommandName(IncomingRequestImpl.NEWAPPROVALREQUESTCOMMAND);
 			
-			System.err.println("Received the request");
-			
 			String parameter = request.getParameter("docType");
+			System.err.println("Document Type Received>>"+parameter);
 			RequestType requestType = RequestType.getRequestType(parameter);
 			
 			//Create Context and set it
@@ -112,16 +111,20 @@ public class PioneerMpesaServlet extends HttpServlet {
 	}
 
 	private void createContext(HttpServletRequest req, RequestType reqType) {
-		context = new HashMap<String, Object>();
+		
+		context.put("docType", req.getParameter("docType"));
+		context.put("requestType", req.getParameter("docType"));
+		
 		switch (reqType) {
 		case ALLOCATIONREQUEST:
 			wiraRequest.setDescription(req.getParameter("allocateeName") + "-"
 					+ req.getParameter("terminalName"));
 			context.put("allocateeName", req.getParameter("allocateeName"));
 			context.put("terminalName", req.getParameter("terminalName"));
+			context.put("terminalId", req.getParameter("terminalId"));
 			context.put("imeiCode", req.getParameter("imeiCode"));
+			context.put("allocatedTo", req.getParameter("allocatedTo"));
 			context.put("ownerId", req.getParameter("allocateeName"));
-			context.put("docType", "TERMINAL ALLOCATION");
 			break;
 		
 		case MPESAIPN:
@@ -136,7 +139,6 @@ public class PioneerMpesaServlet extends HttpServlet {
 			context.put("mpesaDate", req.getParameter("mpesaDate"));
 			context.put("mpesaTime", req.getParameter("mpesaTime"));
 			context.put("mpesaAmount", req.getParameter("mpesaAmount"));
-			context.put("docType", "MPESAIPN");
 			context.put("ownerId", "Administrator");
 			break;
 			
