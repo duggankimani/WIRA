@@ -115,6 +115,13 @@ public class PioneerMpesaServlet extends HttpServlet {
 		context = new HashMap<String, Object>();
 		switch (reqType) {
 		case ALLOCATIONREQUEST:
+			wiraRequest.setDescription(req.getParameter("allocateeName") + "-"
+					+ req.getParameter("terminalName"));
+			context.put("allocateeName", req.getParameter("allocateeName"));
+			context.put("terminalName", req.getParameter("terminalName"));
+			context.put("imeiCode", req.getParameter("imeiCode"));
+			context.put("ownerId", req.getParameter("allocateeName"));
+			context.put("docType", "TERMINAL ALLOCATION");
 			break;
 		
 		case MPESAIPN:

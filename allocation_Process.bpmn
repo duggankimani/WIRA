@@ -12,35 +12,35 @@
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
-  <itemDefinition id="_documentItem" structureRef="" />
+  <itemDefinition id="_documentItem" />
   <itemDefinition id="_actorItem" structureRef="String" />
   <itemDefinition id="_ownerIdItem" structureRef="String" />
   <itemDefinition id="_documentIdItem" structureRef="String" />
   <itemDefinition id="_isApprovedItem" structureRef="Boolean" />
   <itemDefinition id="_isProcessCompleteItem" structureRef="Boolean" />
 
-  <itemDefinition id="_2-documentItem" structureRef="" />
+  <itemDefinition id="_2-documentItem" />
   <itemDefinition id="_2-actorItem" structureRef="String" />
   <itemDefinition id="_2-ownerIdItem" structureRef="String" />
   <itemDefinition id="_2-documentIdItem" structureRef="String" />
   <itemDefinition id="_2-isApprovedItem" structureRef="Boolean" />
   <itemDefinition id="_2-isProcessCompleteItem" structureRef="Boolean" />
 
-  <itemDefinition id="_4-documentItem" structureRef="" />
+  <itemDefinition id="_4-documentItem" />
   <itemDefinition id="_4-actorItem" structureRef="String" />
   <itemDefinition id="_4-ownerIdItem" structureRef="String" />
   <itemDefinition id="_4-documentIdItem" structureRef="String" />
   <itemDefinition id="_4-isApprovedItem" structureRef="Boolean" />
   <itemDefinition id="_4-isProcessCompleteItem" structureRef="Boolean" />
 
-  <itemDefinition id="_5-documentItem" structureRef="" />
+  <itemDefinition id="_5-documentItem" />
   <itemDefinition id="_5-actorItem" structureRef="String" />
   <itemDefinition id="_5-ownerIdItem" structureRef="String" />
   <itemDefinition id="_5-documentIdItem" structureRef="String" />
   <itemDefinition id="_5-isApprovedItem" structureRef="Boolean" />
   <itemDefinition id="_5-isProcessCompleteItem" structureRef="Boolean" />
 
-  <process processType="Private" isExecutable="true" id="com.tomkimani.pioneer.allocation" name="Sample Process" tns:packageName="defaultPackage" >
+  <process processType="Private" isExecutable="true" id="com.tomkimani.pioneer.allocation" name="allocation" tns:packageName="defaultPackage" >
 
     <!-- process variables -->
     <property id="document" itemSubjectRef="_documentItem"/>
@@ -90,7 +90,7 @@
       <dataInputAssociation>
         <targetRef>_2_TaskNameInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">terminalApproval</from>
+          <from xsi:type="tFormalExpression">terminal_approval</from>
           <to xsi:type="tFormalExpression">_2_TaskNameInput</to>
         </assignment>
       </dataInputAssociation>
