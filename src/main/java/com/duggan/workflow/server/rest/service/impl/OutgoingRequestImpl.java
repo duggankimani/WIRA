@@ -150,7 +150,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService {
 					.accept(MediaType.APPLICATION_JSON)
 					.post(ClientResponse.class, postBody);
 			
-			// check response status code
+			// Check response status code
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ response.getStatus());
@@ -160,6 +160,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService {
 			String output = response.getEntity(String.class);
 			System.out.println("Output from Server .... ");
 			System.out.println(output + "\n");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Something wrong happened while executing the Post call ");

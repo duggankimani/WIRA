@@ -40,7 +40,7 @@
   <itemDefinition id="_5-isApprovedItem" structureRef="Boolean" />
   <itemDefinition id="_5-isProcessCompleteItem" structureRef="Boolean" />
 
-  <process processType="Private" isExecutable="true" id="com.tomkimani.pioneer.allocation" name="com.wira.allocation.AllocationProcess" tns:packageName="com.wira.allocation" >
+  <process processType="Private" isExecutable="true" id="com.tomkimani.pioneer.deAllocation" name="com.wira.allocation.deAllocationProcess" tns:packageName="com.wira.deallocation" >
 
     <!-- process variables -->
     <property id="document" itemSubjectRef="_documentItem"/>
@@ -90,7 +90,7 @@
       <dataInputAssociation>
         <targetRef>_2_TaskNameInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">terminal_approval</from>
+          <from xsi:type="tFormalExpression">deallocation_approval</from>
           <to xsi:type="tFormalExpression">_2_TaskNameInput</to>
         </assignment>
       </dataInputAssociation>
@@ -194,7 +194,7 @@
   </process>
 
   <bpmndi:BPMNDiagram>
-    <bpmndi:BPMNPlane bpmnElement="com.tomkimani.pioneer.allocation" >
+    <bpmndi:BPMNPlane bpmnElement="com.tomkimani.pioneer.deAllocation" >
       <bpmndi:BPMNShape bpmnElement="_1" >
         <dc:Bounds x="16" y="56" width="48" height="48" />
       </bpmndi:BPMNShape>
@@ -202,13 +202,13 @@
         <dc:Bounds x="96" y="56" width="117" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
-        <dc:Bounds x="458" y="16" width="100" height="48" />
+        <dc:Bounds x="481" y="8" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="326" y="16" width="100" height="48" />
+        <dc:Bounds x="349" y="8" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_6" >
-        <dc:Bounds x="590" y="16" width="48" height="48" />
+        <dc:Bounds x="613" y="8" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_8" >
         <dc:Bounds x="245" y="56" width="48" height="48" />
@@ -221,16 +221,16 @@
         <di:waypoint x="154" y="80" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_5-_4" >
-        <di:waypoint x="376" y="40" />
-        <di:waypoint x="508" y="40" />
+        <di:waypoint x="399" y="32" />
+        <di:waypoint x="531" y="32" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_8-_5" >
         <di:waypoint x="269" y="80" />
-        <di:waypoint x="376" y="40" />
+        <di:waypoint x="399" y="32" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_4-_6" >
-        <di:waypoint x="508" y="40" />
-        <di:waypoint x="614" y="40" />
+        <di:waypoint x="531" y="32" />
+        <di:waypoint x="637" y="32" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_2-_8" >
         <di:waypoint x="154" y="80" />

@@ -89,9 +89,9 @@
     <startEvent id="_1" name="StartProcess" />
     <userTask id="_2" name="HOD Approval" >
       <ioSpecification>
-        <dataInput id="_2_descriptionInput" name="description" />
-        <dataInput id="_2_priorityInput" name="priority" />
         <dataInput id="_2_subjectInput" name="subject" />
+        <dataInput id="_2_priorityInput" name="priority" />
+        <dataInput id="_2_descriptionInput" name="description" />
         <dataInput id="_2_valueInput" name="value" />
         <dataInput id="_2_documentIdInput" name="documentId" />
         <dataInput id="_2_NotStartedNotifyInput" name="NotStartedNotify" />
@@ -103,9 +103,9 @@
         <dataOutput id="_2_ActorIdOutput" name="ActorId" />
         <dataOutput id="_2_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_2_descriptionInput</dataInputRefs>
-          <dataInputRefs>_2_priorityInput</dataInputRefs>
           <dataInputRefs>_2_subjectInput</dataInputRefs>
+          <dataInputRefs>_2_priorityInput</dataInputRefs>
+          <dataInputRefs>_2_descriptionInput</dataInputRefs>
           <dataInputRefs>_2_valueInput</dataInputRefs>
           <dataInputRefs>_2_documentIdInput</dataInputRefs>
           <dataInputRefs>_2_NotStartedNotifyInput</dataInputRefs>
@@ -121,16 +121,16 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_2_descriptionInput</targetRef>
+        <sourceRef>subject</sourceRef>
+        <targetRef>_2_subjectInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>priority</sourceRef>
         <targetRef>_2_priorityInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <sourceRef>subject</sourceRef>
-        <targetRef>_2_subjectInput</targetRef>
+        <sourceRef>description</sourceRef>
+        <targetRef>_2_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -201,8 +201,8 @@ eBusiness Administration]@[]</from>
     </userTask>
     <userTask id="_3" name="Finance Approval" >
       <ioSpecification>
-        <dataInput id="_3_descriptionInput" name="description" />
         <dataInput id="_3_subjectInput" name="subject" />
+        <dataInput id="_3_descriptionInput" name="description" />
         <dataInput id="_3_valueInput" name="value" />
         <dataInput id="_3_documentIdInput" name="documentId" />
         <dataInput id="_3_CommentInput" name="Comment" />
@@ -214,8 +214,8 @@ eBusiness Administration]@[]</from>
         <dataOutput id="_3_ActorIdOutput" name="ActorId" />
         <dataOutput id="_3_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_3_descriptionInput</dataInputRefs>
           <dataInputRefs>_3_subjectInput</dataInputRefs>
+          <dataInputRefs>_3_descriptionInput</dataInputRefs>
           <dataInputRefs>_3_valueInput</dataInputRefs>
           <dataInputRefs>_3_documentIdInput</dataInputRefs>
           <dataInputRefs>_3_CommentInput</dataInputRefs>
@@ -231,12 +231,12 @@ eBusiness Administration]@[]</from>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_3_descriptionInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>subject</sourceRef>
         <targetRef>_3_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_3_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>
@@ -340,8 +340,8 @@ eBusiness Administration]@[]</from>
     </task>
     <userTask id="_15" name="CEO Approval" >
       <ioSpecification>
-        <dataInput id="_15_descriptionInput" name="description" />
         <dataInput id="_15_subjectInput" name="subject" />
+        <dataInput id="_15_descriptionInput" name="description" />
         <dataInput id="_15_valueInput" name="value" />
         <dataInput id="_15_documentIdInput" name="documentId" />
         <dataInput id="_15_CommentInput" name="Comment" />
@@ -353,8 +353,8 @@ eBusiness Administration]@[]</from>
         <dataOutput id="_15_ActorIdOutput" name="ActorId" />
         <dataOutput id="_15_isApprovedOutput" name="isApproved" />
         <inputSet>
-          <dataInputRefs>_15_descriptionInput</dataInputRefs>
           <dataInputRefs>_15_subjectInput</dataInputRefs>
+          <dataInputRefs>_15_descriptionInput</dataInputRefs>
           <dataInputRefs>_15_valueInput</dataInputRefs>
           <dataInputRefs>_15_documentIdInput</dataInputRefs>
           <dataInputRefs>_15_CommentInput</dataInputRefs>
@@ -370,12 +370,12 @@ eBusiness Administration]@[]</from>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>description</sourceRef>
-        <targetRef>_15_descriptionInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>subject</sourceRef>
         <targetRef>_15_subjectInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>description</sourceRef>
+        <targetRef>_15_descriptionInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>value</sourceRef>

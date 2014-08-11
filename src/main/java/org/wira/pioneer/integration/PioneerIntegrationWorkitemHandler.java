@@ -18,7 +18,6 @@ public class PioneerIntegrationWorkitemHandler implements WorkItemHandler {
 	private Document document;
 	private String uri;
 	private WorkItem workItem;
-	private String encodedUrl = "";
 	private Map<String,Object> postBody;
 	private WorkItemManager workItemMgr;
 
@@ -58,7 +57,7 @@ public class PioneerIntegrationWorkitemHandler implements WorkItemHandler {
 			postBody.put("clCode", clCode);
 			postBody.put("idNo", idNo);
 			postBody.put("mpesaCode", mpesaCode);
-			send(encodedUrl,postBody);
+			send(uri,postBody);
 			break;
 
 		case ALLOCATIONREQUEST:
@@ -71,7 +70,7 @@ public class PioneerIntegrationWorkitemHandler implements WorkItemHandler {
 			postBody.put("allocatedTo", allocatedTo);
 			postBody.put("allocatedBy", allocatedBy);
 			postBody.put("terminalId", terminalId);
-			send(encodedUrl,postBody);
+			send(uri,postBody);
 			break;
 
 		default:
