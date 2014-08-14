@@ -38,8 +38,8 @@ public class HTMLToPDFConvertor {
 	 * @throws DocumentException
 	 */
 	public byte[] convert(Doc doc, String html) throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
-		
-		return convert(html);
+		html = html.replaceAll("&nbsp;", "&#160;");
+		return convert(new DocumentHTMLMapper().map(doc, html));
 	}
 
 	/**

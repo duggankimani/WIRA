@@ -1,19 +1,15 @@
 package com.duggan.workflow.server.export;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.Value;
 
 public class DocumentHTMLMapper {
 
@@ -21,114 +17,102 @@ public class DocumentHTMLMapper {
 	
 	public String map(Doc doc, String html){
 		
-		String mappedHTMLStr = "";
+		html = parseReplaceGridMatches(doc,html);
+		html = parseAndReplace(doc.getValues(), html);
 		
-		Pattern pattern = Pattern.compile("\\$\\{([^}]+)\\}");//pick all content in ${}
-		Matcher matcher = pattern.matcher(html);
-		while (matcher.find()) {
-			String key = matcher.group(1);
-			
-			String value = null;
-			
-			//log.debug("SendEmailWorkItemHandler Checking Document for value for key: " + key);
-			value = doc.getValues().get(key)==null ? null : 
-				doc.getValues().get(key).getValue()==null? null : doc.getValues().get(key).getValue().toString();
-			
-			if(value==null){
-				//try details
-				List<DocumentLine> detailLines = doc.getDetails().get(key);
-				if(detailLines!=null){
-					html = mapLines(key, detailLines, html);
-				}				
-			}
-			
-			if(value==null || value.isEmpty()){
-				log.warn("DocumentHTMLMapper Missing Value for key: " + key);
-				value = "";
-			}else{
-				log.debug("DocumentHTMLMapper found key: " + key+" = "+value);
-			}
-			
-			html = html.replace("${"+key+"}",value);
-		}
-
-		return mappedHTMLStr;
+		return html;
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param detailLines
-	 * @param html
-	 * @return
-	 */
-	private String mapLines(String key, List<DocumentLine> detailLines,
-			String html) {
+	private String parseReplaceGridMatches(Doc doc, String html) {
+		Pattern pattern = Pattern.compile("<!--\\s*?@[<>]\\w+?\\b\\s*?-->");
+		Matcher matcher = pattern.matcher(html);
 		
-		return null;
+		//Expected <!-- @>GridName --> Content <!-- @<GridName -->
+		int c=0;
+		int start=0;
+		while(matcher.find()){
+			++c;
+			System.err.format("I found the text" +
+                    " \"%s\" starting at " +
+                    "index %d and ending at index %d.%n",
+                    matcher.group(),
+                    matcher.start(),
+                    matcher.end());
+			
+			if(c%2==0){
+				String gridRows = html.substring(start,matcher.start());
+				String gridName = getGridName(matcher.group());
+				log.debug("GridName = "+gridName);
+				List<DocumentLine> gridVals=doc.getDetails().get(gridName);
+				
+				StringBuffer buff = new StringBuffer();
+				if(gridVals!=null){
+					for(DocumentLine line: gridVals){
+						buff.append(parseAndReplaceGridRow(line, new String(gridRows)));
+					}
+				}
+				
+				html = html.replace(gridRows, buff.toString());
+				html = html.replaceAll("<!--\\s*?@[<>]"+gridName+"\\b\\s*?-->", "");
+				return parseReplaceGridMatches(doc, html);
+			}else{
+				start=matcher.end();
+			}
+			
+        }
+        
+		return html;
+	}
+
+	private String parseAndReplaceGridRow(DocumentLine line, String html) {			
+		return parseAndReplace(line.getValues(), html);
+	}
+
+
+	private String parseAndReplace(Map<String, Value> values, String html) {
+		Pattern pattern = Pattern.compile("@[@#]\\w+?\\b");
+		String rtn = new String(html);
+		Matcher matcher = pattern.matcher(rtn);
+		
+		while(matcher.find()){
+			String group = matcher.group();
+			int start = matcher.start();
+			int end=matcher.end();
+			System.err.format("I found the text" +
+                    " \"%s\" starting at " +
+                    "index %d and ending at index %d.%n",
+                    group,
+                    start,
+                    end);
+			String value = getValue(values.get(group.substring(2, group.length())));
+			rtn= rtn.replace(matcher.group(), value);
+        }
+        	
+        return rtn;
+	}
+
+	private String getValue(Value value) {
+
+		if(value!=null && value.getValue()!=null){
+			return value.getValue().toString();
+		}
+		
+		return "";
+	}
+
+	public String getGridName(String group) {
+		Pattern pattern = Pattern.compile("@[<>]\\w+?\\b");
+		Matcher matcher = pattern.matcher(group);
+		String gridName=null;
+		if(matcher.find()){
+			log.warn("match found >> "+matcher.group());
+			gridName = group.substring(matcher.start(), matcher.end());
+			return gridName.substring(2,gridName.length());
+		}else{
+			log.warn("No match found for "+group);
+			return "";
+		}
+		
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException, IOException {
-		String detail = "<!-- Test --> <!-- Test -->"+
-				"<!-- @@podetail --> <!-- @@podetail -->"+
-				"<!--@@detail-->"+
-				"@#col1 <td> @#col2 </td> @@col3 <td> mkimani@gmail.com"+
-				"<!-- @@detail -->";
-		
-		List<String> vals=IOUtils.readLines(new FileInputStream("/home/duggan/Downloads/PO (1).html"));
-		StringBuffer input = new StringBuffer();
-		for(String in:vals){
-			input.append(in);
-		}
-		System.out.println(input.toString());
-		test2(input.toString());
-		test1(input.toString());
-		
-	}
-
-	private static void test2(String detail) {
-		Pattern pattern = Pattern.compile("<!--\\s*?@[<>]\\w+?\\b\\s*?-->");
-		Matcher matcher = pattern.matcher(detail);
-		boolean found=false;
-		int start=-1;
-		int end=-1;
-		while(matcher.find()){
-			System.err.format("I found the text" +
-                    " \"%s\" starting at " +
-                    "index %d and ending at index %d.%n",
-                    matcher.group(),
-                    matcher.start(),
-                    matcher.end());
-			if(start==-1){
-				start=matcher.end();
-			}else{
-				end=matcher.start();
-			}
-			found = true;
-        }
-        if(!found){
-        	System.err.format("No match found.%n");
-        }else{
-        	System.out.println(detail.substring(start,end));
-        }
-	}
-
-	private static void test1(String detail) {
-		
-		Pattern pattern = Pattern.compile("@[@#]\\w+?\\b");
-		Matcher matcher = pattern.matcher(detail);
-		boolean found=false;
-		while(matcher.find()){
-			System.err.format("I found the text" +
-                    " \"%s\" starting at " +
-                    "index %d and ending at index %d.%n",
-                    matcher.group(),
-                    matcher.start(),
-                    matcher.end());
-			found = true;
-        }
-        if(!found){
-        	System.err.format("No match found.%n");
-        }
-	}
 }
