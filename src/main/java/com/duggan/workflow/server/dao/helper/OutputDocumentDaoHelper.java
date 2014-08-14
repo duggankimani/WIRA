@@ -1,7 +1,11 @@
 package com.duggan.workflow.server.dao.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.duggan.workflow.server.dao.OutputDocumentDao;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.OutputDocument;
 
@@ -23,6 +27,11 @@ public class OutputDocumentDaoHelper {
 		document.setId(output.getId());
 		document.setName(output.getName());
 		
+		if(output.getAttachment()!=null){
+			LocalAttachment attachment= output.getAttachment();
+			document.setAttachmentName(attachment.getName());
+			document.setAttachmentId(attachment.getId());
+		}
 		return document;
 	}
 
@@ -33,10 +42,25 @@ public class OutputDocumentDaoHelper {
 		if(doc.getId()!=null){
 			adDoc=dao.getOuputDocument(doc.getId());
 		}
+		adDoc.setIsActive(doc.isActive()?1:0);
 		adDoc.setCode(doc.getCode());
 		adDoc.setName(doc.getName());
 		adDoc.setDescription(doc.getDescription());
 		
 		return adDoc;
+	}
+
+	public static List<OutputDocument> getDocuments(Long documentId) {
+		OutputDocumentDao dao = DB.getOutputDocDao();
+		List<OutputDocument> documents = new ArrayList<>();
+		if(documentId!=null){
+			documents.add(get(dao.getOuputDocument(documentId)));
+		}else{
+			List<ADOutputDoc> docs  =dao.getOutputDocuments();
+			for(ADOutputDoc doc: docs){
+				documents.add(get(doc));
+			}
+		}
+		return documents;
 	}
 }

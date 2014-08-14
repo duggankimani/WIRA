@@ -13,6 +13,9 @@ public class OutputDocument implements Serializable {
 	private String code;
 	private Long id;
 	private String description;
+	private boolean isActive=true;
+	private Long attachmentId;
+	private String attachmentName;
 	
 	public OutputDocument() {
 	}
@@ -42,6 +45,30 @@ public class OutputDocument implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Long getAttachmentId() {
+		return attachmentId;
+	}
+
+	public void setAttachmentId(Long attachmentId) {
+		this.attachmentId = attachmentId;
+	}
+
+	public String getAttachmentName() {
+		return attachmentName;
+	}
+
+	public void setAttachmentName(String attachmentName) {
+		this.attachmentName = attachmentName;
 	}
 
 }

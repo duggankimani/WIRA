@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.upload.custom;
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnCancelUploaderHandler;
+import gwtupload.client.IUploader.OnChangeUploaderHandler;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
 import gwtupload.client.IUploader.OnStartUploaderHandler;
 import gwtupload.client.MultiUploader;
@@ -64,6 +65,7 @@ public class Uploader extends Composite {
 		uploaderPanel.add(uploader);
 		uploader.addOnFinishUploadHandler(onFinishHandler);
 		uploader.addOnStartUploadHandler(uploadStarted);
+		
 	}
 	
 	public Uploader(UploadContext ctx){
@@ -160,9 +162,13 @@ public class Uploader extends Composite {
 	public void addOnFinishUploaderHandler(OnFinishUploaderHandler handler){
 		uploader.addOnFinishUploadHandler(handler);
 	}
+	
+	public void addOnChangeUploaderHandler(OnChangeUploaderHandler handler){
+		uploader.addOnChangeUploadHandler(handler);
+	}
 
 	public void clear() {
-						
+		uploader.clear();			
 	}
 
 }

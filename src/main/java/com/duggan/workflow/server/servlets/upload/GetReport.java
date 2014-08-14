@@ -230,7 +230,7 @@ public class GetReport extends HttpServlet {
 	}
 	
 	private void processAttachmentRequest(HttpServletResponse resp, byte[] data, String name ){
-		if(name.endsWith("png")){
+		if(name.endsWith("png") || name.endsWith("jpg") || name.endsWith("html")){
 			//displayed automatically
 			resp.setHeader("Content-disposition", "inline;filename=\""
 					+ name);

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.ViewImpl;
 
@@ -54,8 +55,15 @@ public class AppManager {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					popupPresenter.getView().hide();
-					onOptionSelected.onSelect(text);
+					if (onOptionSelected instanceof OptionControl) {
+						((OptionControl) onOptionSelected)
+								.setPopupView((PopupView) (popupPresenter
+										.getView()));
+						onOptionSelected.onSelect(text);
+					} else {
+						popupPresenter.getView().hide();
+						onOptionSelected.onSelect(text);
+					}
 				}
 			});
 			popupPresenter.getView().addToSlot(
@@ -69,7 +77,7 @@ public class AppManager {
 	public static void showPopUp(String header,
 			PresenterWidget<ViewImpl> presenter,
 			final OnOptionSelected onOptionSelected, String... buttons) {
-		showPopUp(header, presenter.getWidget(), onOptionSelected, buttons);
+		showPopUp(header, presenter.asWidget(), onOptionSelected, buttons);
 	}
 
 	public static void showPropertyPanel(FormModel parent,

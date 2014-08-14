@@ -53,7 +53,10 @@ public class TableView extends Composite {
 
 	public void setTableHeaders(List<TableHeader> headers) {
 		panelHeader.clear();
-		// for (TableHeader header : headers) {
+		if (isAutoNumber) {
+			headers.add(0, new TableHeader("#", 1.0));
+		}
+		
 		// InlineLabel label = new InlineLabel(header.getTitleName());
 		for (TableHeader header : headers) {
 			// th

@@ -94,7 +94,7 @@ public class UploadServlet extends UploadAction {
 	public FileExecutor getExecutor(HttpServletRequest request){
 		String action = request.getParameter(UploadContext.ACTION);
 		
-		UploadContext.UPLOADACTION uploadAction = UploadContext.UPLOADACTION.valueOf(action);
+		UploadContext.UPLOADACTION uploadAction = UploadContext.UPLOADACTION.valueOf(action.toUpperCase());
 		FileExecutor executor = null;
 		
 		switch (uploadAction) {
@@ -116,6 +116,9 @@ public class UploadServlet extends UploadAction {
 			break;
 		case UPLOADLOGO:
 			executor = new LogoImageExecutor();
+			break;
+		case UPLOADOUTPUTDOC:
+			executor = new UploadOutputDocExecutor();
 			break;
 		}
 		

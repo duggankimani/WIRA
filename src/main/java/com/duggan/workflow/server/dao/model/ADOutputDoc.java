@@ -6,6 +6,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class ADOutputDoc extends PO {
 
@@ -22,7 +25,8 @@ public class ADOutputDoc extends PO {
 	private String description;
 	private String code;
 	
-	@OneToOne(mappedBy="outputDoc",orphanRemoval=true)
+	@OneToOne(mappedBy="outputDoc")
+	@Cascade(value={CascadeType.ALL})
 	private LocalAttachment attachment;
 	
 	public ADOutputDoc() {

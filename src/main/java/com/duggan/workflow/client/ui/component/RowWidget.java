@@ -21,6 +21,7 @@ public abstract class RowWidget extends Composite {
 	private int rowNum=0;
 	HTMLPanel row;
 	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	private Object data=null;
 	
 	public void setRow(HTMLPanel row){
 		this.row = row;
@@ -118,5 +119,13 @@ public abstract class RowWidget extends Composite {
 	protected void onUnload() {
 		super.onUnload();
 		cleanUpEvents();
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 }

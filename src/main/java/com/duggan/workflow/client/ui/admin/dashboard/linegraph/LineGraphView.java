@@ -68,13 +68,13 @@ public class LineGraphView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 	}
 	
+	NumericAxis<Data> axis = new NumericAxis<Data>();
 	public Widget asWidget() {
 	    if (store == null) {
 	      store = new ListStore<Data>(dataAccess.nameKey());
 	      chart.setStore(store);
 	      chart.setShadowChart(false);
-	 
-	      NumericAxis<Data> axis = new NumericAxis<Data>();
+	 	      
 	      axis.setPosition(Position.LEFT);
 	      axis.addField(dataAccess.data1());
 	      axis.addField(dataAccess.data2());
@@ -220,6 +220,13 @@ public class LineGraphView extends ViewImpl implements
 	}
 
 	public void setData(List<Data> data) {
+		double max = axis.getMaximum();
+		for(Data d: data){
+			double big = Math.max(d.getData1().doubleValue(), d.getData2().doubleValue());
+			max = Math.max(max, big);
+		}
+		axis.setMaximum(max);
+		
 		store.addAll(data);
 		chart.redrawChart();
 	}

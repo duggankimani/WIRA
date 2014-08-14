@@ -32,6 +32,7 @@ import com.duggan.workflow.server.actionhandlers.GetGroupsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetItemActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetOutputDocumentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessesRequestActionHandler;
@@ -48,6 +49,7 @@ import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler
 import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveGroupRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.SaveOuputDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveSettingsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveUserRequestActionHandler;
@@ -87,6 +89,7 @@ import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.requests.GetLongTasksRequest;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
+import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
@@ -103,6 +106,7 @@ import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
+import com.duggan.workflow.shared.requests.SaveOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.requests.SaveSettingsRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
@@ -110,6 +114,7 @@ import com.duggan.workflow.shared.requests.SearchDocumentRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
+import com.duggan.workflow.shared.responses.SaveOutputDocumentResponse;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 
@@ -293,5 +298,10 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GenericRequest.class, GenericRequestActionHandler.class,
 				SessionValidator.class);
+		
+		bindHandler(SaveOutputDocumentRequest.class,SaveOuputDocumentRequestHandler.class, 
+				SessionValidator.class);
+		
+		bindHandler(GetOutputDocumentsRequest.class, GetOutputDocumentsRequestHandler.class, SessionValidator.class);
 	}
 }

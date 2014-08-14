@@ -49,6 +49,7 @@ public class LineGraphPresenter extends
 		requestHelper.execute(new GetTaskCompletionRequest(), new TaskServiceCallback<GetTaskCompletionResponse>() {
 			@Override
 			public void processResult(GetTaskCompletionResponse aResponse) {
+				
 				getView().setData(aResponse.getData());
 			}
 		});

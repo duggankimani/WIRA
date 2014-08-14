@@ -34,6 +34,10 @@ public enum RDBMSType implements Listable{
 	"jdbc:microsoft:sqlserver://<HOST>:<PORT>[;DatabaseName=<DB>]",
 	"com.microsoft.sqlserver.jdbc.SQLServerDriver"),
 
+	MSSQL2008("Microsoft SQL Server 2008 and Later (Microsoft Driver)",
+			"jdbc:sqlserver://<HOST>:<PORT>[;DatabaseName=<DB>]",
+			"com.microsoft.sqlserver.jdbc.SQLServerDriver"),
+			
 	MYSQL("MySQL Driver",
 			"jdbc:mysql://<HOST>:<PORT>/<DB>",
 			"com.mysql.jdbc.Driver"),

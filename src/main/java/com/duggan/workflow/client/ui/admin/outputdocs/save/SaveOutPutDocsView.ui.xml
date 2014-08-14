@@ -11,13 +11,12 @@
 		<div class="form-group">
 			<label for="ProcessName">Name:</label>
 			<d:TextField ui:field="txtName" type="text" class="form-control"
-				placeholder="Process Name" />
+				placeholder="Output Doc Name" />
 		</div>
 		<div class="form-group">
 			<label for="ProcessName">Document Ref:</label>
 			<d:TextField ui:field="txtDocRef" type="text"
-				title="A single process may have multiple processes and subprocesses,this property identifies the main process"
-				class="form-control" placeholder="Main Process Id" />
+				class="form-control" placeholder="Output Doc Ref" />
 		</div>
 		<div class="form-group">
 			<label for="ProcessDescription">Notes:</label>
