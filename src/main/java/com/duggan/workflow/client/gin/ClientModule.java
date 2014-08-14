@@ -69,6 +69,8 @@ import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.header.HeaderView;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeView;
+import com.duggan.workflow.client.ui.home.doctree.DocTreePresenter;
+import com.duggan.workflow.client.ui.home.doctree.DocTreeView;
 import com.duggan.workflow.client.ui.login.LoginPresenter;
 import com.duggan.workflow.client.ui.login.LoginView;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
@@ -304,5 +306,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(SaveOutPutDocsPresenter.class,
 				SaveOutPutDocsPresenter.IOutputDocView.class, SaveOutPutDocsView.class);
+		
+		bindPresenterWidget(DocTreePresenter.class, 
+				DocTreePresenter.IDocTreeView.class,DocTreeView.class);
 	}
 }

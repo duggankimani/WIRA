@@ -5,6 +5,7 @@ import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getDocumen
 import java.io.Closeable;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.drools.builder.ResourceType;
@@ -811,7 +814,7 @@ public class JBPMHelper implements Closeable {
 					}
 				}
 				
-				// System.err.println(node.getName());
+				// log.debug(node.getName());
 				// Ignore all other nodes - Only work pick human Task Nodes
 				if (node instanceof HumanTaskNode || node instanceof StartNode
 						|| node instanceof EndNode) {
@@ -884,11 +887,11 @@ public class JBPMHelper implements Closeable {
 		List<NodeInstanceLog> log = JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, nodeId); 
 		
 		
-		System.err.println("Logs:: "+log);
+		logger.debug("Logs:: "+log);
 		if(log!=null && !log.isEmpty()){
 			NodeInstanceLog nil = log.get(0);
 			
-			System.err.println("Class >> "+nil.getClass());			
+			logger.debug("Class >> "+nil.getClass());			
 		}
 		
 		return null;
@@ -984,7 +987,7 @@ public class JBPMHelper implements Closeable {
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 		task.getTaskData().getWorkItemId();
 		
-	//	System.err.println("Globals:: "+wfprocess.get);
+	//	log.debug("Globals:: "+wfprocess.get);
 		
 		for (Node node : wfprocess.getNodes()) {
 			
@@ -1017,7 +1020,7 @@ public class JBPMHelper implements Closeable {
 		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 
-	//	System.err.println("Globals:: "+wfprocess.get);
+	//	log.debug("Globals:: "+wfprocess.get);
 		
 		for (Node node : wfprocess.getNodes()) {
 			
@@ -1025,7 +1028,7 @@ public class JBPMHelper implements Closeable {
 				HumanTaskNode htnode = (HumanTaskNode) node;
 				Object nodeTaskName = htnode.getWork().getParameter("TaskName");
 				
-				System.err.println("1. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
+				logger.debug("1. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
 				
 				if(nodeTaskName!=null){
 					String nodeName = nodeTaskName.toString();
@@ -1034,7 +1037,7 @@ public class JBPMHelper implements Closeable {
 						nodeTaskName=htnode.getWork().getParameter("taskName");
 					}
 				}
-				System.out.println("2. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
+				logger.debug("2. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
 				
 				
 				if(nodeTaskName!=null)
@@ -1047,6 +1050,22 @@ public class JBPMHelper implements Closeable {
 		}
 	
 		return processData;
+	}
+
+	public List<Long> getTaskIdsForUser(String userId) {
+		Query query = DB.getEntityManager().createNamedQuery("TasksOwnedIds")
+				.setParameter("userId", userId)
+				.setParameter("language", "en-UK")
+				.setParameter("status", Arrays.asList(Status.Completed, Status.Created, Status.InProgress,Status.Suspended,
+						// Status.Error,
+						// Status.Exited,
+						// Status.Failed,
+						// Status.Obsolete,
+								Status.Ready, Status.Reserved));
+		
+		List<Long> ids  = query.getResultList();
+		
+		return ids;
 	}
 
 }

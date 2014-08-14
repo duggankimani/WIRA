@@ -20,7 +20,14 @@ public class GetAttachmentsRequestActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		GetAttachmentsResponse response = (GetAttachmentsResponse)actionResult;
-		response.setAttachments(AttachmentDaoHelper.getAttachments(action.getDocumentId()));
+		if(action.getDocumentId()!=null){
+			response.setAttachments(AttachmentDaoHelper.getAttachments(action.getDocumentId()));
+		}else if(action.getUserId()!=null){
+			response.setAttachments(AttachmentDaoHelper.getAllAttachments(action.getUserId()));
+		}else{
+			//TODO: Determine default behavior
+		}
+		
 	}
 	
 	@Override

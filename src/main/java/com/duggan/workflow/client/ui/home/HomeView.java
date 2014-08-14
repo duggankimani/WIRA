@@ -28,6 +28,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@UiField(provided=true) HomeTabPanel tabPanel;
 	@UiField HTMLPanel tabContent;
 	@UiField HTMLPanel divDocPopup;
+	@UiField HTMLPanel panelDocTree;
 	
 	@Inject
 	public HomeView(final Binder binder,HomeTabPanel panel) {
@@ -87,6 +88,11 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			if (content != null) {
 				divDocPopup.add(content);
 			}			
+		}else if(slot==DOCTREE_SLOT){
+			panelDocTree.clear();
+			if(content!=null){
+				panelDocTree.add(content);
+			}
 		}else {
 			super.setInSlot(slot, content);
 		}

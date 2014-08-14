@@ -32,12 +32,12 @@ public class DocumentHTMLMapper {
 		int start=0;
 		while(matcher.find()){
 			++c;
-			System.err.format("I found the text" +
-                    " \"%s\" starting at " +
-                    "index %d and ending at index %d.%n",
-                    matcher.group(),
-                    matcher.start(),
-                    matcher.end());
+//			System.err.format("I found the text" +
+//                    " \"%s\" starting at " +
+//                    "index %d and ending at index %d.%n",
+//                    matcher.group(),
+//                    matcher.start(),
+//                    matcher.end());
 			
 			if(c%2==0){
 				String gridRows = html.substring(start,matcher.start());
@@ -76,14 +76,14 @@ public class DocumentHTMLMapper {
 		
 		while(matcher.find()){
 			String group = matcher.group();
-			int start = matcher.start();
-			int end=matcher.end();
-			System.err.format("I found the text" +
-                    " \"%s\" starting at " +
-                    "index %d and ending at index %d.%n",
-                    group,
-                    start,
-                    end);
+//			int start = matcher.start();
+//			int end=matcher.end();
+//			System.err.format("I found the text" +
+//                    " \"%s\" starting at " +
+//                    "index %d and ending at index %d.%n",
+//                    group,
+//                    start,
+//                    end);
 			String value = getValue(values.get(group.substring(2, group.length())));
 			rtn= rtn.replace(matcher.group(), value);
         }
@@ -105,11 +105,11 @@ public class DocumentHTMLMapper {
 		Matcher matcher = pattern.matcher(group);
 		String gridName=null;
 		if(matcher.find()){
-			log.warn("match found >> "+matcher.group());
+			log.debug("match found >> "+matcher.group());
 			gridName = group.substring(matcher.start(), matcher.end());
 			return gridName.substring(2,gridName.length());
 		}else{
-			log.warn("No match found for "+group);
+			log.debug("No match found for "+group);
 			return "";
 		}
 		

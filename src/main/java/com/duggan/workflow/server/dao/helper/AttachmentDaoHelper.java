@@ -47,6 +47,11 @@ public class AttachmentDaoHelper{
 	public static List<Attachment> getAttachments(Long documentId){
 		List<LocalAttachment> models = DB.getAttachmentDao().getAttachmentsForDocument(documentId);
 		
+		return get(models);
+		
+	}
+	
+	private static List<Attachment> get(List<LocalAttachment> models) {
 		List<Attachment> attachments = new ArrayList<>();
 		
 		for(LocalAttachment model: models){
@@ -55,7 +60,7 @@ public class AttachmentDaoHelper{
 		}
 		return attachments;
 	}
-	
+
 	public static Attachment get(LocalAttachment model) {
 		Attachment attachment = new Attachment();
 		attachment.setArchived(model.isArchived());
@@ -107,6 +112,12 @@ public class AttachmentDaoHelper{
 		AttachmentDaoImpl dao = DB.getAttachmentDao();
 		dao.delete(attachmentId);
 		return true;
+	}
+	
+	public static List<Attachment> getAllAttachments(String userId){
+		AttachmentDaoImpl dao = DB.getAttachmentDao();
+		List<LocalAttachment> attachments = dao.getAttachmentsForUser(userId);
+		return get(attachments);
 	}
 
 }

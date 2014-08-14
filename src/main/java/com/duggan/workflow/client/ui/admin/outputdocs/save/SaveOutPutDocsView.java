@@ -10,6 +10,10 @@ import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.OutputDocument;
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -36,6 +40,15 @@ public class SaveOutPutDocsView extends ViewImpl implements
 	public SaveOutPutDocsView(final Binder binder) {
 		uploader=new Uploader(true);
 		widget = binder.createAndBindUi(this);
+		
+		txtName.addValueChangeHandler(new ValueChangeHandler<String>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				String value = event.getValue();
+				txtDocRef.setValue(value.trim().replaceAll(" ", "_").toUpperCase());
+			}
+		});
 	}
 	
 	@Override

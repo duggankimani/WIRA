@@ -7,6 +7,7 @@ public class GetAttachmentsRequest extends
 		BaseRequest<GetAttachmentsResponse> {
 
 	private Long documentId;
+	private String userId;
 
 	@SuppressWarnings("unused")
 	private GetAttachmentsRequest() {
@@ -16,6 +17,10 @@ public class GetAttachmentsRequest extends
 	public GetAttachmentsRequest(Long documentId) {
 		this.documentId = documentId;
 	}
+	
+	public GetAttachmentsRequest(String userId){
+		this.userId= userId;
+	}
 
 	public Long getDocumentId() {
 		return documentId;
@@ -24,5 +29,9 @@ public class GetAttachmentsRequest extends
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		return new GetAttachmentsResponse();
+	}
+
+	public String getUserId() {
+		return userId;
 	}
 }

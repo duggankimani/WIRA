@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.outputdocs;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
@@ -61,6 +63,14 @@ public class OutPutDocsView extends ViewImpl implements
 	@Override
 	public void setOutputDocuments(List<OutputDocument> documents) {
 		tblView.clearRows();
+		Collections.sort(documents, new Comparator<OutputDocument>(){
+			@Override
+			public int compare(OutputDocument o1, OutputDocument o2) {
+			
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		
 		for(OutputDocument doc: documents){
 			createRow(doc);
 		}

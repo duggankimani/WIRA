@@ -16,6 +16,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
+import com.duggan.workflow.client.ui.home.doctree.DocTreePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -78,10 +79,15 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
-	
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> DOCTREE_SLOT = new Type<RevealContentHandler<?>>();
+		
 	@Inject DocumentPopupPresenter docPopup;
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
+	
+	@Inject DocTreePresenter documentTreePresenter;
 	
 	@Inject
 	public HomePresenter(final EventBus eventBus, final IHomeView view,
@@ -121,6 +127,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	protected void onReset() {
 		super.onReset();
 		setInSlot(DOCPOPUP_SLOT, docPopup);
+		setInSlot(DOCTREE_SLOT, documentTreePresenter);
 	}
 	
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
@@ -176,6 +183,5 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 			}
 		});
 	}
-
 
 }

@@ -1,13 +1,17 @@
 package com.duggan.workflow.server.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.jbpm.task.Task;
+
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class AttachmentDaoImpl extends BaseDaoImpl{
@@ -149,6 +153,29 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		}
 		
 		return attachment;
+	}
+
+	public List<LocalAttachment> getAttachmentsForUser(String userId) {
+		
+		List<Long> tasksOwnedIds = JBPMHelper.get().getTaskIdsForUser(userId);
+		
+		if(tasksOwnedIds==null){
+			return new ArrayList<>();
+		}
+		List<Long> ids = getResultList(
+				em.createQuery("Select t.taskData.processInstanceId from Task t "
+						+ "where t.id in (:ids)")
+				.setParameter("ids", tasksOwnedIds)); 
+				
+		String sql = "Select l from LocalAttachment l "
+				+ "where "
+				+ "(l.document.processInstanceId is not null "
+				+ "and l.document.processInstanceId in (:ids)) "
+				+ "or l.document.createdBy=:userId";
+		Query query = em.createQuery(sql).setParameter("ids", ids)
+				.setParameter("userId", userId);
+				
+		return getResultList(query);
 	}
 	
 }
