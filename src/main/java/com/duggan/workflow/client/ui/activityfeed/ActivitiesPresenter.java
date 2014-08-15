@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.activityfeed;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
@@ -23,7 +25,9 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -43,6 +47,7 @@ public class ActivitiesPresenter extends
 	public interface MyView extends View {
 		HasWidgets getPanelActivity();
 		void bind();
+		void createGroup(String label);
 	}
 	
 	@ProxyCodeSplit
@@ -91,6 +96,7 @@ public class ActivitiesPresenter extends
 		
 	}
 
+	int i=0;
 	protected void bindActivities(GetActivitiesResponse response) {
 		getView().getPanelActivity().clear();
 		
@@ -102,11 +108,27 @@ public class ActivitiesPresenter extends
 		Collections.sort(activities);
 		Collections.reverse(activities);
 		
+		Date dateGroup = null;
+		Date today = new Date();
+		boolean activitiesOlderThanAMonth=false;
 		for(Activity activity: activities){
-			bind(activity,false);	
+			Date created = activity.getCreated();
+			
+			if(!activitiesOlderThanAMonth)
+			if(!DateUtils.isSameDate(dateGroup,created)){
+				
+				if(dateGroup!=null && CalendarUtil.getDaysBetween(created, today)>31){
+					activitiesOlderThanAMonth=true;
+				}
+				dateGroup = created;
+				String groupName = DateUtils.getDateGroupDescription(dateGroup);
+				getView().createGroup(groupName);
+			}
+			
+			bind(activity,false);
 			List<Activity> children = activitiesMap.get(activity);	
 			if(children!=null){
-				for(Activity child: children){
+				for(Activity child: children){										
 					bind(child, true);
 				}
 				

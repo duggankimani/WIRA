@@ -26,7 +26,7 @@ public class TestGetDocumentsForCurrentUser {
 	
 	@Test
 	public void getAttachmentsForUser(){
-		List<Attachment> list = AttachmentDaoHelper.getAllAttachments("Administrator");
+		List<Attachment> list = AttachmentDaoHelper.getAllAttachments("Administrator",true);
 		for(Attachment a: list){
 			System.err.println(a.getName());
 		}

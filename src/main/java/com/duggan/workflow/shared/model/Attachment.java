@@ -22,6 +22,9 @@ public class Attachment implements Serializable {
 	private String createdBy;
 	private Date created;
 	
+	private String documentType;
+	private String subject;
+	
 	public Long getId() {
 		return id;
 	}
@@ -91,5 +94,17 @@ public class Attachment implements Serializable {
 	}
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getDocumentType() {
+		return documentType;
+	}
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
 	}
 }

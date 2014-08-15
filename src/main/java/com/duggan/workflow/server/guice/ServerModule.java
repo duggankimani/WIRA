@@ -17,7 +17,7 @@ import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
-import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetContextRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetDSConfigurationsRequestHandler;
@@ -178,7 +178,7 @@ public class ServerModule extends HandlerModule {
 				SessionValidator.class);
 
 		bindHandler(GetAttachmentsRequest.class,
-				GetAttachmentsRequestActionHandler.class,
+				GetAttachmentsRequestHandler.class,
 				SessionValidator.class);
 
 		bindHandler(GetActivitiesRequest.class,

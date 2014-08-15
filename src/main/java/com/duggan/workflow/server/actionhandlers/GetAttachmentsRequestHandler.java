@@ -8,11 +8,11 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetAttachmentsRequestActionHandler extends
+public class GetAttachmentsRequestHandler extends
 		BaseActionHandler<GetAttachmentsRequest, GetAttachmentsResponse> {
 
 	@Inject
-	public GetAttachmentsRequestActionHandler() {
+	public GetAttachmentsRequestHandler() {
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class GetAttachmentsRequestActionHandler extends
 		if(action.getDocumentId()!=null){
 			response.setAttachments(AttachmentDaoHelper.getAttachments(action.getDocumentId()));
 		}else if(action.getUserId()!=null){
-			response.setAttachments(AttachmentDaoHelper.getAllAttachments(action.getUserId()));
+			response.setAttachments(AttachmentDaoHelper.getAllAttachments(action.getUserId(),true));
 		}else{
 			//TODO: Determine default behavior
 		}

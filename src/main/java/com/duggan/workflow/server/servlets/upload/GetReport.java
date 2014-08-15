@@ -230,7 +230,7 @@ public class GetReport extends HttpServlet {
 	}
 	
 	private void processAttachmentRequest(HttpServletResponse resp, byte[] data, String name ){
-		if(name.endsWith("png") || name.endsWith("jpg") || name.endsWith("html")){
+		if(name.endsWith("png") || name.endsWith("jpg") || name.endsWith("html") || name.endsWith("htm")){
 			//displayed automatically
 			resp.setHeader("Content-disposition", "inline;filename=\""
 					+ name);
@@ -238,10 +238,8 @@ public class GetReport extends HttpServlet {
 			resp.setHeader("Content-disposition", "attachment;filename=\""
 					+ name);
 		}
-			
 		
 		resp.setContentLength(data.length);
-		
 		writeOut(resp, data);
 
 	}

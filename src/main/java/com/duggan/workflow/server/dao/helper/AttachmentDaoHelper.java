@@ -47,21 +47,25 @@ public class AttachmentDaoHelper{
 	public static List<Attachment> getAttachments(Long documentId){
 		List<LocalAttachment> models = DB.getAttachmentDao().getAttachmentsForDocument(documentId);
 		
-		return get(models);
+		return get(models,false);
 		
 	}
 	
-	private static List<Attachment> get(List<LocalAttachment> models) {
+	private static List<Attachment> get(List<LocalAttachment> models, boolean loadDocumentDetails) {
 		List<Attachment> attachments = new ArrayList<>();
 		
 		for(LocalAttachment model: models){
-			Attachment attachment = get(model);
+			Attachment attachment = get(model,loadDocumentDetails);
 			attachments.add(attachment);
 		}
 		return attachments;
 	}
 
-	public static Attachment get(LocalAttachment model) {
+	public static Attachment get(LocalAttachment model){
+		return get(model,false);
+	}
+	
+	public static Attachment get(LocalAttachment model, boolean loadDocumentDetails) {
 		Attachment attachment = new Attachment();
 		attachment.setArchived(model.isArchived());
 		attachment.setContentType(model.getContentType());
@@ -79,6 +83,10 @@ public class AttachmentDaoHelper{
 		attachment.setCreated(model.getCreated());
 		attachment.setCreatedBy(model.getCreatedBy());
 		
+		if(loadDocumentDetails){
+			attachment.setDocumentType(model.getDocument().getType().getDisplay());
+			attachment.setSubject(model.getDocument().getSubject());
+		}
 		return attachment;
 	}
 	
@@ -114,10 +122,10 @@ public class AttachmentDaoHelper{
 		return true;
 	}
 	
-	public static List<Attachment> getAllAttachments(String userId){
+	public static List<Attachment> getAllAttachments(String userId, boolean loadDocumentDetails){
 		AttachmentDaoImpl dao = DB.getAttachmentDao();
 		List<LocalAttachment> attachments = dao.getAttachmentsForUser(userId);
-		return get(attachments);
+		return get(attachments, loadDocumentDetails);
 	}
 
 }

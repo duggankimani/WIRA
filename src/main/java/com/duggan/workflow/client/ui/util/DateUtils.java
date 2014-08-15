@@ -151,4 +151,33 @@ public class DateUtils {
 				
 		return new Date(created.getTime()+dayInMillis*days);
 	}
+	
+	public static String getDateGroupDescription(Date date){
+		Date today = new Date();
+		if(CalendarUtil.isSameDate(date, today)){
+			return "Today";
+		}
+		
+		if(CalendarUtil.getDaysBetween(date, today) ==1){
+			return "Yesterday";
+		}
+		
+		if(CalendarUtil.getDaysBetween(date, today) <8){
+			return "This Week";
+		}
+		
+		if(CalendarUtil.getDaysBetween(date, today) <31){
+			return "This Month";
+		}
+		
+		return "Older Than One Month";
+	}
+
+	public static boolean isSameDate(Date dateGroup, Date created) {
+		if(dateGroup==null){
+			return false;
+		}
+		
+		return CalendarUtil.isSameDate(dateGroup, created);
+	}
 }
