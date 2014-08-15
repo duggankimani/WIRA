@@ -2,6 +2,9 @@ package org.wira.pioneer.integration;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +19,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.server.rest.model.BusinessKey;
+import com.duggan.workflow.server.rest.model.Detail;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.impl.IncomingRequestImpl;
@@ -36,8 +40,6 @@ public class PioneerMpesaServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, Object> context = new HashMap<String, Object>();
-	private Request wiraRequest;
 
 	/**
 	 *
@@ -48,6 +50,8 @@ public class PioneerMpesaServlet extends HttpServlet {
 		// super.doGet(req, resp);
 
 		HttpSession session = null;
+		Request wiraRequest = new Request();
+
 		try {
 			session = request.getSession(true);
 			SessionHelper.setHttpRequest(request);
@@ -59,20 +63,16 @@ public class PioneerMpesaServlet extends HttpServlet {
 
 		try {
 			DB.beginTransaction();
+			wiraRequest
+					.setCommandName(IncomingRequestImpl.NEWAPPROVALREQUESTCOMMAND);
 
-			wiraRequest = new Request();
-			wiraRequest.setCommandName(IncomingRequestImpl.NEWAPPROVALREQUESTCOMMAND);
-			
 			String parameter = request.getParameter("docType");
-			System.err.println("Document Type Received>>"+parameter);
 			RequestType requestType = RequestType.getRequestType(parameter);
-			
-			//Create Context and set it
-			createContext(request, requestType);
-			wiraRequest.setContext(context);
-		
-			System.err.println(context);
-			
+
+			// Create Context and set it
+			wiraRequest.setContext(createContext(request, requestType,
+					wiraRequest));
+
 			HTUser user = new HTUser();
 			user.setUserId(wiraRequest.getContext("ownerId").toString());
 			if (session != null)
@@ -81,15 +81,14 @@ public class PioneerMpesaServlet extends HttpServlet {
 			// Submit
 			IncomingRequestImpl handler = new IncomingRequestImpl();
 			handler.executeClientRequest(wiraRequest, response);
-			
-			
-			//Response
+
+			// Response
 			PrintWriter out = resp.getWriter();
 			BusinessKey key = response.getBusinessKey();
 			assert key != null;
 
-			resp.setContentType("text/html");
-			out.println("<b style=\"color:red\">" + key.getDocumentId() + " : "
+			resp.setContentType("text/json");
+			out.println("Response:" + key.getDocumentId() + " : "
 					+ key.getProcessInstanceId() + ":" + key.getSessionId()
 					+ "</b>");
 			out.close();
@@ -110,11 +109,12 @@ public class PioneerMpesaServlet extends HttpServlet {
 		}
 	}
 
-	private void createContext(HttpServletRequest req, RequestType reqType) {
-		
+	private Map<String, Object> createContext(HttpServletRequest req,
+			RequestType reqType, Request wiraRequest) {
+		Map<String, Object> context = new HashMap<String, Object>();
 		context.put("docType", req.getParameter("docType"));
 		context.put("requestType", req.getParameter("docType"));
-		
+
 		switch (reqType) {
 		case ALLOCATIONREQUEST:
 			wiraRequest.setDescription(req.getParameter("allocateeName") + "-"
@@ -126,7 +126,7 @@ public class PioneerMpesaServlet extends HttpServlet {
 			context.put("allocatedTo", req.getParameter("allocatedTo"));
 			context.put("ownerId", req.getParameter("allocateeName"));
 			break;
-		
+
 		case MPESAIPN:
 			wiraRequest.setDescription(req.getParameter("senderName") + "-"
 					+ req.getParameter("senderPhone"));
@@ -141,12 +141,63 @@ public class PioneerMpesaServlet extends HttpServlet {
 			context.put("mpesaAmount", req.getParameter("mpesaAmount"));
 			context.put("ownerId", "Administrator");
 			break;
+
+		case DEALLOCATIONREQUEST:
+			wiraRequest.setDescription(req.getParameter("allocateeNames") + "-"
+					+ req.getParameter("terminalName"));
+
+			Detail detail = new Detail();
+			detail.setName("summaryTable");
+			Map<String, Object> summaryDetails = new HashMap<String, Object>();
+
+			if (req.getParameter("allocateeNames") != null) {
+				summaryDetails.put(
+						"terminalUser",
+						req.getParameter("userName") + " "
+								+ req.getParameter("terminalName"));
+			}
+
+			if (req.getParameter("transactionCount") != null) {
+				summaryDetails.put("transactionCount",
+						req.getParameter("transactionCount"));
+			}
 			
+			System.err.println("transactionSum<<<"+req.getParameter("transactionSum"));
+			if (req.getParameter("transactionSum") != null) {
+				try {
+					summaryDetails.put("transactionSum",
+							NumberFormat.getNumberInstance().parse(req.getParameter("transactionSum")));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (req.getParameter("customerCount") != null) {
+				summaryDetails.put("customerCount",
+						req.getParameter("customerCount"));
+			}
+
+			if (req.getParameter("allocationId") != null) {
+				summaryDetails.put("allocationId",
+						req.getParameter("allocationId"));
+			}
+
+			detail.setDetails(summaryDetails);
+
+			wiraRequest.setDetails(Arrays.asList(detail));
+
+			context.put("ownerId", req.getParameter("userName"));
+			context.put("actorId", req.getParameter("userName"));
+			break;
+
 		default:
 			break;
 		}
-		
-		
+		return context;
 	}
 
+	public static void main(String[] args) throws ParseException {
+	
+				System.err.println(NumberFormat.getNumberInstance().parse("1,232,456.11"));
+	}
 }
