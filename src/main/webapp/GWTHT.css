@@ -304,12 +304,3 @@ span.tasktimelines{
 	font-size:11px;
 	padding-right:5px;
 }
-
-div.activities-group{
-	font-size:1rem;
-	font-family:'Lato',Times New Roman;
-	text-align:center;
-	margin:0 auto;
-	font-weight:900;
-	position:relative;
-}

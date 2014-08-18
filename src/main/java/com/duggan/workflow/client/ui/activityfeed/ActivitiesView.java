@@ -2,10 +2,12 @@ package com.duggan.workflow.client.ui.activityfeed;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.activityfeed.components.CarouselPopup;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.HR;
 import com.duggan.workflow.client.ui.events.CloseCarouselEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.HRElement;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,7 +16,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
@@ -240,9 +241,14 @@ public class ActivitiesView extends ViewImpl implements
 
 	@Override
 	public void createGroup(String label) {
+		HTMLPanel divLabel = new HTMLPanel("<hr/>");
+		divLabel.addStyleName("day_divider");
+		
 		HTMLPanel lbl = new HTMLPanel(label);
-		lbl.addStyleName("activities-group");
-		panelActivity.add(lbl);
+		lbl.addStyleName("day_divider_label");
+		divLabel.add(lbl); 
+		
+		panelActivity.add(divLabel);
 	}
 
 }
