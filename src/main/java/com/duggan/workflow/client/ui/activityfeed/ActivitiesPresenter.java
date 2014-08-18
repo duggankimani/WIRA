@@ -25,7 +25,6 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
@@ -117,7 +116,6 @@ public class ActivitiesPresenter extends
 			
 			if(!activitiesOlderThanAMonth)
 			if(!DateUtils.isSameDate(dateGroup,created)){
-				
 				if(dateGroup!=null && CalendarUtil.getDaysBetween(created, today)>31){
 					activitiesOlderThanAMonth=true;
 				}

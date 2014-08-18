@@ -202,6 +202,41 @@ body .breadcrumb a,a:hover{
 .container{
 	/* padding-top: 20px; */
 }
+
+/*Divider with Text at the center*/
+.day_divider {
+	background: white;
+	margin: 1.5rem 0;
+	line-height: 1.2rem;
+	font-size: 1rem;
+	font-family: 'Lato', sans-serif;
+	color: #555459;
+	font-weight: 900;
+	text-align: center;
+	cursor: default;
+	clear: both;
+	position: relative
+;
+	padding-left: 40px;
+}
+
+.day_divider hr {
+	position: absolute;
+	border-top: 1px solid #DDD;
+	width: 95%;
+	top: .6rem;
+	margin: 0
+;
+}
+
+.day_divider_label {
+	background: white;
+	padding: 0 1rem;
+	display: inline-block;
+	margin: 0 auto;
+	position: relative
+}
+
 /*End of my Utility helpers*/
 
 /** font size helper **/
