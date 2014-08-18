@@ -108,6 +108,7 @@ public class ActivitiesPresenter extends
 		Collections.reverse(activities);
 		
 		Date dateGroup = null;
+		String previousGroup="";
 		Date today = new Date();
 		boolean activitiesOlderThanAMonth=false;
 		for(Activity activity: activities){
@@ -120,7 +121,12 @@ public class ActivitiesPresenter extends
 				}
 				dateGroup = created;
 				String groupName = DateUtils.getDateGroupDescription(dateGroup);
-				getView().createGroup(groupName);
+				
+				if(!previousGroup.equals(groupName)){
+					getView().createGroup(groupName);
+				}
+				
+				previousGroup=groupName;
 			}
 			
 			bind(activity,false);

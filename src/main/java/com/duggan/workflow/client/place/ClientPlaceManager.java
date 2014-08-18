@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.place;
 
-import com.duggan.workflow.client.util.AppContext;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
@@ -16,17 +15,13 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 			final TokenFormatter tokenFormatter,
 			@DefaultPlace final String defaultPlaceNameToken) {
 		super(eventBus, tokenFormatter);
-		this.defaultPlaceRequest = new PlaceRequest(defaultPlaceNameToken);
+		
+		this.defaultPlaceRequest = new PlaceRequest.Builder().nameToken(defaultPlaceNameToken).build();
 	}
 
 	@Override
 	public void revealDefaultPlace() {
-		if(AppContext.isCurrentUserAdmin()){
-			revealPlace(new PlaceRequest(NameTokens.dashboards), true);
-		}else{
-			revealPlace(defaultPlaceRequest, true);
-		}
-		
+		revealPlace(defaultPlaceRequest, true);
 	}
 	
 	@Override
@@ -36,7 +31,8 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 	
 	@Override
 	public void revealUnauthorizedPlace(String unauthorizedHistoryToken) {
-		PlaceRequest place = new PlaceRequest("login").with("redirect", unauthorizedHistoryToken);
+		PlaceRequest place = new PlaceRequest.Builder().nameToken("login")
+				.with("redirect", unauthorizedHistoryToken).build();
 		
 		revealPlace(place,true);
 	}
