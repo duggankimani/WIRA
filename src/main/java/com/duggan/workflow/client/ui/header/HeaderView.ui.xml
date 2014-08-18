@@ -17,7 +17,7 @@
 					</g:Anchor>
 				</li>
 				<li class="home">
-					<g:Anchor href="#dashboard" ui:field="aAdmin" styleName="close-icon hand">
+					<g:Anchor href="#dashboards" ui:field="aAdmin" styleName="close-icon hand">
 						<i class="icon-bar-chart"> &nbsp;Admin</i>
 					</g:Anchor>
 				</li>

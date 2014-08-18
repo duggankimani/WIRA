@@ -82,17 +82,18 @@ public class LoginPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		redirect = request.getParameter("redirect", null);
+		placeManager.revealDefaultPlace();
 		
-		if(AppContext.isValid()){
-			
-			if(AppContext.isCurrentUserAdmin()){
-				History.newItem(NameTokens.processes);
-			}else{
-				placeManager.revealDefaultPlace();
-			}
-			
-			return;
-		}
+//		if(AppContext.isValid()){
+//			
+//			if(AppContext.isCurrentUserAdmin()){
+//				History.newItem(NameTokens.processes);
+//			}else{
+//				
+//			}
+//			
+//			return;
+//		}
 		loadName();
 	}
 	@Override

@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.place;
 
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -31,6 +32,7 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 	
 	@Override
 	public void revealUnauthorizedPlace(String unauthorizedHistoryToken) {
+		//Window.alert("Unauthorized place!!!!!!");
 		PlaceRequest place = new PlaceRequest.Builder().nameToken("login")
 				.with("redirect", unauthorizedHistoryToken).build();
 		
