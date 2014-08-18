@@ -93,6 +93,7 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 		String url = context.toUrl();
 		
 		ActionLink link = new ActionLink(attachment.getName());
+		link.setTitle(attachment.getName());
 		link.setTarget("_blank");
 		link.setHref(AppContext.getBaseUrl()+"/"+url);
 		
