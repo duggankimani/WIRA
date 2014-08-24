@@ -63,4 +63,9 @@ public class OutputDocumentDaoHelper {
 		}
 		return documents;
 	}
+
+	public static String getHTMLTemplate(String templateName) {
+
+		return null;
+	}
 }
