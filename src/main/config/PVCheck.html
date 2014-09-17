@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<style type="text/css">
+    	
+   		body {
+			margin:50px 0px; padding:0px;
+			text-align:center;
+		}
+		
+		#content {
+			width:700px;
+			margin:0px auto;
+			text-align:left;
+			padding:15px;
+		}
+   	
+    	table{
+    		font-size:12px; 
+    		font-family=Arial, sans-serif;
+    	}
+    	thead, th{
+    		text-align:center;
+    		border-bottom:1px solid;
+    	}
+    	
+    	table.clientdetails td{
+    		padding:4px;
+    		min-width:100px;
+    	}
+    	
+    	.detail th,td{
+    		padding:4px;
+    		min-width:100px;
+    		border:1px solid grey;
+    	}
+    	
+    	.detail{
+    		width:100%;
+    	}
+    	
+    	.detail .num{
+    		text-align:right;
+    	}
+    	
+    	.maindetails td{
+    		font-weight:bold;
+    	}
+    	table.signaturetable div{
+          margin-top:30px;
+          min-width:100px;
+        }
+    </style>
+</head>
+<body>
+<center><img align="middle" data-mce-src="http://eaprocessmaker.org/EA_logo.jpg" src="http://eaprocessmaker.org/EA_logo.jpg" style="" height="69" width="153" />
+<table style="width: 80%;" rules="ROWS" frame="BOX" cellpadding="5" border="1">
+<tbody>
+<tr>
+<td>
+<h2>Payment Request - Check | Case #: @#CaseNumber</h2>
+</td>
+</tr>
+<tr>
+<td>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td><b>SECTION 1: Check Details</b></td>
+<td></td>
+</tr>
+<tr>
+<td>Payee Name:</td>
+<td>@#Paytotheorderof</td>
+</tr>
+<tr>
+<td>Memo:</td>
+<td>@#CheckMemo</td>
+</tr>
+<tr>
+<td>Amount:</td>
+<td>Kshs @#CalcAmount</td>
+</tr>
+<tr>
+<td>Date:</td>
+<td>@#CheckDate</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td><b>Project Combination:</b> @#SelectPRFProject</td>
+</tr>
+<tr></tr>
+<tr>
+<td><b>Expense Lines</b></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>Expense Account</td>
+<td>Segment</td>
+<td>Sub Segment</td>
+<td>Memo</td>
+<td>Amount</td>
+</tr>
+<!--@>PRGrid-->
+<tr>
+<td><font face="courier new" size="2">@#ExpenseAccount</font></td>
+<td><font face="courier new" size="2">@#Segment</font></td>
+<td><font face="courier new" size="2">@#SubSegment</font></td>
+<td><font face="courier new" size="2">@#Memo</font></td>
+<td><font face="courier new" size="2">@#Amount</font></td>
+</tr>
+<!--@<PRGrid--></tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="mceItemTable">
+<tbody>
+<tr></tr>
+</tbody>
+<tbody>
+<tr>
+<td>Submitted By:</td>
+<td>@#Submitter</td>
+<td>Date Submitted:</td>
+<td>@#DateSubmitted</td>
+<td><font size="2">UID:@#OriginatorUserID</font></td>
+</tr>
+<tr>
+<td>Finance Verification By</td>
+<td>@#ApproverName</td>
+<td>Date Approved</td>
+<td>@#ApprovalDate</td>
+<td><font size="2">UID: @#ApproverUserID </font></td>
+</tr>
+<tr>
+<td>DFA Approval By</td>
+<td colspan="2">@#BHPOApprover2</td>
+<td colspan="2"><font size="2">UID: @#BHUserID2 </font></td>
+</tr>
+<tr>
+<td>DAR / DDAR Approval By</td>
+<td colspan="2">@#CDDCDApproverName</td>
+<td colspan="2"><font size="2">UID: @#CDDCDApproverID </font></td>
+</tr>
+<tr>
+<td colspan="6"><font size="2"><i>Project authority to approve for project requests. DCD, CD or DO to approve for non-project-specific requests</i></font></td>
+</tr>
+</tbody>
+</table>
+<b>SECTION 2: Accounts</b>
+<table class="mceItemTable signaturetable">
+<tbody>
+<tr>
+<td>Check Number:</td>
+<td><div>____________________</div></td>
+<td>Bank A/C:</td>
+<td><div>____________________</div></td>
+</tr>
+<tr></tr>
+<tr>
+<td>Finance Approver</td>
+<td>@#FinanceApproverName</td>
+<td>Date:</td>
+<td>@#FinanceApprovalDate</td>
+</tr>
+<tr>
+<td>Signature:</td>
+<td><div>____________________</div></td>
+<td>UID:</td>
+<td>@#FinanceApproverUserID</td>
+</tr>
+<tr>
+<td>Final Approved by:</td>
+<td><div>____________________</div></td>
+<td>Signature:</td>
+<td><div>____________________</div></td>
+<td>Date:</td>
+<td><div>_____________</div></td>
+</tr>
+<tr>
+<td colspan="6"><font size="2"><i>All payments by check require final approval by the DCD, CD</i></font></td>
+</tr>
+<tr>
+<td>Verified by:</td>
+<td><div>____________________</div></td>
+<td>Signature:</td>
+<td><div>____________________</div></td>
+<td>Date:</td>
+<td><div>_____________</div></td>
+<!--</tr--></tr>
+<tr>
+<td colspan="6"><font size="2"><i>All payments by check are verified by the Senior Accountant before disbursement</i></font></td>
+</tr>
+<tr></tr>
+</tbody>
+</table>
+<b>SECTION 3: </b>Payee, or check deliverer to sign upon receiving/delivering the check. If check delivered by Courier, the receipt number should be written in the Name Space
+<table class="mceItemTable signaturetable">
+<tbody>
+<tr></tr>
+<tr>
+<td>Name:</td>
+<td><div>____________________</div></td>
+<td>PAYEE</td>
+<td>DELIVERER <i>(circle one)</i></td>
+</tr>
+<tr>
+<td>Signature:</td>
+<td><div>____________________</div></td>
+<td>Date:</td>
+<td><div>____________________</div></td>
+<td>ID No:</td>
+<td><div>_____________</div></td>
+</tr>
+</tbody>
+</table>
+<!--footer starts-->
+<div class="mceItemVisualAid mceItemLayer" style="position: fixed; bottom: 5mm; left:30mm"><hr />Evidence Action | Document generated: @#GenDate</div>
+<!--footer ends--></center>
+</body>
+</html>

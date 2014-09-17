@@ -5,7 +5,7 @@ import java.util.List;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.admin.component.ListField;
+import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
@@ -45,7 +45,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 	@UiField TextField txtProcess;
 	@UiField Uploader uploader;
 	@UiField TextArea txtDescription;
-	@UiField ListField<DocumentType> lstDocTypes;
+	@UiField AutoCompleteField<DocumentType> lstDocTypes;
 	@UiField VerticalPanel currentAttachmentsPanel;
 	@UiField InlineLabel lblWarning;
 

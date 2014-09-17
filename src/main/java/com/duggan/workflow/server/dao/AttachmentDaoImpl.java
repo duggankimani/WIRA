@@ -159,7 +159,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		
 		List<Long> tasksOwnedIds = JBPMHelper.get().getTaskIdsForUser(userId);
 		
-		if(tasksOwnedIds==null){
+		if(tasksOwnedIds==null || tasksOwnedIds.isEmpty()){
 			return new ArrayList<>();
 		}
 		List<Long> ids = getResultList(

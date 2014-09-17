@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
-import com.duggan.workflow.client.ui.admin.component.ListField;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
+import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextArea;
@@ -59,7 +59,8 @@ public class UserSaveView extends PopupViewImpl implements
 	
 	@UiField DivElement divUserSave;
 	@UiField Uploader uploader;
-	@UiField ListField<UserGroup> lstGroups;
+	//@UiField ListField<UserGroup> lstGroups;
+	@UiField AutoCompleteField<UserGroup> lstGroups;
 	
 	TYPE type;
 	

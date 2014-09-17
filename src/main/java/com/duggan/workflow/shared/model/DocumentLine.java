@@ -67,8 +67,10 @@ public class DocumentLine implements Serializable {
 	public String toString() {
 		String s="";
 		for(Value v: values.values()){
+			if(v!=null){
 			s=s.concat(getName()+"|"+
-					getId()+" | "+v.getId()+"|"+v.getKey()+" :: "+v.getValue()+"\n");
+					getId()+" | "+v.getId()+"|"+v.getKey()+" = "+v.getValue()+"\n");
+			}
 		}
 		return s;
 	}

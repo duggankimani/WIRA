@@ -33,7 +33,7 @@ public class TestHTMLToPDFExport {
 	
 	@Test
 	public void map() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
-		long documentId = 187L;
+		long documentId = 7L;
 		Document doc = DocumentDaoHelper.getDocument(documentId);
 		
 		DocumentHTMLMapper mapper = new DocumentHTMLMapper();
@@ -42,7 +42,9 @@ public class TestHTMLToPDFExport {
 		for(String in:vals){
 			input.append(in);
 		}
+		
 		String out = mapper.map(doc, input.toString());
+		
 		byte[] bites = new HTMLToPDFConvertor().convert(doc, out);
 		IOUtils.write(bites, new FileOutputStream("PO.pdf"));		
 	}

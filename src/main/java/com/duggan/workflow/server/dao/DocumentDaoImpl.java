@@ -88,9 +88,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 	}
 
-	public Integer count(DocStatus status) {
+	public Integer count(DocStatus status){
+		return count(status,true);
+	}
+	public Integer count(DocStatus status, boolean isEqualTo) {
 
-		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d where status=:status and createdBy=:createdBy  and isActive=:isActive").
+		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d "
+		 		+ "where "
+		 		+ (isEqualTo?"status=:status ":"status!=:status ")
+		 		+ "and createdBy=:createdBy  and isActive=:isActive").
 				setParameter("status", status).
 				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId())
 				.setParameter("isActive", 1)

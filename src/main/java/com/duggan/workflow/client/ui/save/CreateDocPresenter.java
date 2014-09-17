@@ -8,6 +8,7 @@ import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -180,5 +181,11 @@ public class CreateDocPresenter extends
 
 	public void setDocumentId(Long selectedValue) {
 		this.Id = selectedValue;
+	}
+	
+	@Override
+	protected void onHide() {
+		super.onHide();
+		ENV.clear();
 	}
 }

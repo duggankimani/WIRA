@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -20,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
+import com.duggan.workflow.server.dao.BaseDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DSConfigDaoImpl;
 import com.duggan.workflow.server.dao.DashboardDaoImpl;

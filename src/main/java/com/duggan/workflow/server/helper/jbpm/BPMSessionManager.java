@@ -44,6 +44,7 @@ import org.jbpm.task.service.local.LocalTaskService;
 
 import xtension.workitems.FormValidationWorkItemHandler;
 import xtension.workitems.GenerateNotificationWorkItemHandler;
+import xtension.workitems.GenerateOutputDocWorkItemHandler;
 import xtension.workitems.IntegrationWorkItemHandler;
 import xtension.workitems.SMSWorkItemHandler;
 import xtension.workitems.SendMailWorkItemHandler;
@@ -173,6 +174,9 @@ class BPMSessionManager {
 		
 		session.getWorkItemManager().registerWorkItemHandler("UpdateActivityStatus",
 				new UpdateActivityStatus());
+		
+		session.getWorkItemManager().registerWorkItemHandler("GenerateOutputDoc",
+				new GenerateOutputDocWorkItemHandler());
 
 		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 				EmailServiceHelper.getProperty("mail.smtp.host"),

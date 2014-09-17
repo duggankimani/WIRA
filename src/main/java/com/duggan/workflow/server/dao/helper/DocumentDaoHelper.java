@@ -437,6 +437,7 @@ public class DocumentDaoHelper {
 		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
 		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
 		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
+		counts.put(TaskType.PARTICIPATED, dao.count(DocStatus.DRAFTED,false));
 		// counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 

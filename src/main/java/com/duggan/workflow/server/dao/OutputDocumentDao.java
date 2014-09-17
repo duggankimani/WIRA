@@ -3,8 +3,10 @@ package com.duggan.workflow.server.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.LocalAttachment;
 
 public class OutputDocumentDao extends BaseDaoImpl {
 
@@ -20,6 +22,15 @@ public class OutputDocumentDao extends BaseDaoImpl {
 		
 		String query = "FROM ADOutputDoc WHERE isActive=1";
 		return getResultList(em.createQuery(query));
+	}
+
+	public byte[] getHTMLTemplate(String templateName) {
+		String sql = "SELECT o.attachment from ADOutputDoc o where o.code=:code";
+		Query query = em.createQuery(sql).setParameter("code", templateName);
+		
+		LocalAttachment attachment = getSingleResultOrNull(query);
+		
+ 		return attachment==null? null: attachment.getAttachment();
 	}
 
 }

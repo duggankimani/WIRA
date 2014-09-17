@@ -66,6 +66,8 @@ public class OutputDocumentDaoHelper {
 
 	public static String getHTMLTemplate(String templateName) {
 
-		return null;
+		OutputDocumentDao dao = DB.getOutputDocDao();
+		byte[] bites= dao.getHTMLTemplate(templateName);
+		return bites==null? null: new String(bites);
 	}
 }

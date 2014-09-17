@@ -145,9 +145,6 @@ public class GenericDocumentView extends ViewImpl implements
 		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
-		showOneButton();
-		
-		
 		aShowProcess.removeStyleName("gwt-Anchor");
 		
 		aShowProcess.addClickHandler(new ClickHandler() {
@@ -192,12 +189,22 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 		});
 		
+		showProcessTree(false);
 		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
 	}
 
 	protected void toggleProcess() {
 		if(!isBizProcessDisplayed){
+			showProcessTree(true);
+		}else{
+			showProcessTree(false);
+		}
+	}
+	
+	public void showProcessTree(boolean show){
+		
+		if(show){
 			aProcess.addStyleName("disabled");
 			divProcess.removeStyleName("hidden");
 			divContent.removeClassName("span12");
@@ -212,10 +219,6 @@ public class GenericDocumentView extends ViewImpl implements
 			isBizProcessDisplayed=false;
 			aProcess.setTitle("Show Business Process");
 		}
-	}
-
-	private void showOneButton() {
-
 	}
 
 	private void disableAll() {

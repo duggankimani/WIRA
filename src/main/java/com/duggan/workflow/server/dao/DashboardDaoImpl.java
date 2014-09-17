@@ -150,7 +150,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 				"(select processinstanceid from task inner join i18ntext on " +
 				"(task.id=i18ntext.task_names_id) where shorttext=? limit 1))");
 		Query query = em.createNativeQuery(buffer.toString()).setParameter(1, taskName);
-		String docType = query.getSingleResult().toString();
+		String docType = getSingleResultOrNull(query);
 		
 		return docType;
 	}

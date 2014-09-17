@@ -1,0 +1,9 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+	<g:HTMLPanel ui:field="container">
+	   <d:BulletListPanel ui:field="ulPanel" styleName="token-input-list-facebook">
+	       <d:BulletPanel ui:field="liPanel" styleName="token-input-input-token-facebook"></d:BulletPanel>
+	   </d:BulletListPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>
