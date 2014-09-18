@@ -96,13 +96,15 @@ public class EmailServiceHelper {
 		initProperties();
 		assert session!=null;
 		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(getProperties().getProperty("mail.smtp.from"),"WIRA BPMS"));
+		message.setFrom(new InternetAddress(getProperties().getProperty("mail.smtp.from"),
+				props.getProperty(SETTINGNAME.ORGNAME.getKey())==null? "WIRA BPMS":
+						props.getProperty(SETTINGNAME.ORGNAME.getKey())));
 		
 		InternetAddress dests[] = new InternetAddress[recipients.size()];
 		for (int i = 0; i < recipients.size(); i++) {
 			HTUser recipient = recipients.get(i);
 			assert recipient.getEmail()!=null;
-			System.err.println("Recipient : "+recipient.getEmail()+" : "+recipient.getFullName());
+			log.debug("Recipient : "+recipient.getEmail()+" : "+recipient.getFullName());
 			dests[i] = new InternetAddress(recipient.getEmail(), recipient.getFullName());
 		}
 		
