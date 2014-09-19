@@ -39,6 +39,8 @@ import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSaveView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
+import com.duggan.workflow.client.ui.admin.processitem.TaskStepPresenter;
+import com.duggan.workflow.client.ui.admin.processitem.TaskStepView;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsView;
 import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
@@ -309,5 +311,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(DocTreePresenter.class, 
 				DocTreePresenter.IDocTreeView.class,DocTreeView.class);
+		
+		bindPresenterWidget(TaskStepPresenter.class, 
+				TaskStepPresenter.MyView.class,TaskStepView.class);
 	}
 }

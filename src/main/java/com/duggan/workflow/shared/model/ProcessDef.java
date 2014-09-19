@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProcessDef implements Serializable{
+public class ProcessDef implements Serializable,Listable{
 
 	/**
 	 * 
@@ -147,6 +147,12 @@ public class ProcessDef implements Serializable{
 
 	public void addFile(Attachment attachment) {
 		files.add(attachment);
+	}
+
+	@Override
+	public String getDisplayName() {
+
+		return name;
 	}
 	
 }

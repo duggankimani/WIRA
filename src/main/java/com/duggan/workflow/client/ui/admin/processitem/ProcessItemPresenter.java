@@ -8,6 +8,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
+import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -21,7 +22,11 @@ import com.duggan.workflow.shared.responses.ManageKnowledgeBaseResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -41,6 +46,8 @@ public class ProcessItemPresenter extends
 		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
 				Status status,  String imageName, Long imageId);
+
+		CheckBox getSelectBox();
 	}
 	
 	@Inject DispatchAsync requestHelper;
@@ -55,6 +62,21 @@ public class ProcessItemPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+
+		getView().getSelectBox().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				if(processDef.getStatus()==Status.INACTIVE){
+					Window.alert("Please activate this process to continue");
+					((CheckBox)event.getSource()).setValue(false);//reset
+				}else{
+					fireEvent(new ProcessSelectedEvent(processDef, event.getValue()));
+				}
+				
+			}
+		});
+		
 		getView().getActivateButton().addClickHandler(new ClickHandler() {
 			
 			@Override

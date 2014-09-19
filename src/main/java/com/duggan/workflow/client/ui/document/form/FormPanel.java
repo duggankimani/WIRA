@@ -5,13 +5,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextArea;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.delegate.FormDelegate;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;

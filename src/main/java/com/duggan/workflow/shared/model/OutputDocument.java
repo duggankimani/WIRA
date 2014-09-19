@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class OutputDocument implements Serializable {
+public class OutputDocument implements Serializable, Listable {
 
 	/**
 	 * 
@@ -69,6 +69,12 @@ public class OutputDocument implements Serializable {
 
 	public void setAttachmentName(String attachmentName) {
 		this.attachmentName = attachmentName;
+	}
+
+	@Override
+	public String getDisplayName() {
+	
+		return name;
 	}
 
 }

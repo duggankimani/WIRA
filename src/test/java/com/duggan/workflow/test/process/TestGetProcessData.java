@@ -2,6 +2,7 @@ package com.duggan.workflow.test.process;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jbpm.task.Task;
@@ -20,6 +21,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTask;
+import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
 
@@ -29,10 +31,21 @@ public class TestGetProcessData {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.start(14L);
-		ProcessMigrationHelper.start(16L);
-		ProcessMigrationHelper.start(4L);
+//		ProcessMigrationHelper.start(14L);
+//		ProcessMigrationHelper.start(16L);
+//		ProcessMigrationHelper.start(4L);
+		ProcessMigrationHelper.start(1L);
 	}
+	
+	@Test
+	public void getTaskNodes(){
+		List<TaskNode> nodes = JBPMHelper.get().getWorkflowProcessNodes("invoice-approval");
+		
+		for(TaskNode node: nodes){
+			System.err.println(node.getDisplayName());
+		}
+	}
+	
 	
 	@Ignore
 	public void submitTask(){
@@ -82,7 +95,7 @@ public class TestGetProcessData {
 		System.out.println("Name ="+name);
 	}
 	
-	@Test
+	@Ignore
 	public void getParameterz(){
 		//Long taskId = 1518L;
 		Long taskId = 2568L;

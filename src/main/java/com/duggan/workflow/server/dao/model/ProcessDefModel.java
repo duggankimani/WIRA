@@ -39,6 +39,9 @@ public class ProcessDefModel extends PO {
 	
 	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
 	private Collection<ADDocType> documentTypes = new HashSet<>();
+	
+	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
+	private Collection<TaskStepModel> taskSteps = new HashSet<>();
 		
 	public ProcessDefModel(){
 		status = Status.INACTIVE;
@@ -123,5 +126,14 @@ public class ProcessDefModel extends PO {
 		for(ADDocType t: documentTypes){
 			t.setProcessDef(null);
 		}
+	}
+
+	public Collection<TaskStepModel> getTaskSteps() {
+		return taskSteps;
+	}
+
+	public void addTaskStep(TaskStepModel step) {
+		step.setProcessDef(this);
+		taskSteps.add(step);
 	}
 }

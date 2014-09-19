@@ -67,6 +67,7 @@ import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
@@ -782,10 +783,11 @@ public class JBPMHelper implements Closeable {
 				.getProcess(processDefId);
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
-
+		
 		for (Node node : wfprocess.getNodes()) {
 
 			long nodeId = node.getId();
+			
 			List<NodeInstanceLog> nodeLogInstance = JPAProcessInstanceDbLog
 					.findNodeInstances(processInstanceId,
 							new Long(nodeId).toString());
@@ -853,6 +855,39 @@ public class JBPMHelper implements Closeable {
 		return details;
 
 	}
+	
+	public List<TaskNode> getWorkflowProcessNodes(String processId) {
+
+		List<TaskNode> details = new ArrayList<>();
+		org.drools.definition.process.Process process = sessionManager
+				.getProcess(processId);
+
+		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
+		
+		for (Node node : wfprocess.getNodes()) {
+
+			if (node instanceof SubProcessNode) {
+				SubProcessNode n = (SubProcessNode) node;
+				details.addAll(getWorkflowProcessNodes(n.getProcessId()));
+			}
+			
+			// Ignore all other nodes - Only work pick human Task Nodes
+			if (node instanceof HumanTaskNode) {
+
+				TaskNode detail = new TaskNode();
+				String name = node.getName();
+				detail.setNodeId(node.getId());
+				detail.setName(name);
+				detail.setDisplayName(name);
+				details.add(detail);
+			}
+	
+		}
+
+		return details;
+
+	}
+	
 	
 	/**
 	 * Comma separated List of actors

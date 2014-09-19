@@ -3,10 +3,12 @@ package com.duggan.workflow.server.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 
 public class ProcessDaoImpl extends BaseDaoImpl{
@@ -76,6 +78,45 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 //				"where :docType in elements(p.documentTypes)")
 //				.setParameter("docType", type)
 //				.getResultList();
+	}
+	
+	public void createStep(TaskStepModel step){
+		int sequence = step.getSequenceNo();
+		ProcessDefModel model = step.getProcessDef();
+		if(sequence==0){			
+			int size = model.getTaskSteps().size();
+			step.setSequenceNo(sequence = size+1);
+		}else{
+			for(TaskStepModel s: model.getTaskSteps()){
+				if(!s.equals(step)){
+					if(s.getSequenceNo()>= sequence){
+						s.setSequenceNo(s.getSequenceNo()+1);
+						em.persist(s);
+					}
+				}				
+			}
+		}
+		
+		em.persist(step);
+	}
+
+
+	public List<TaskStepModel> getTaskSteps(String processId, Long nodeId) {
+		String hql = "FROM TaskStepModel t where t.processDef.processId=:processId";
+		if(nodeId!=null){
+			hql = hql.concat(" and t.nodeId=:nodeId");
+		}else{
+			hql = hql.concat(" and t.nodeId is null");
+		}
+			
+		Query query = em.createQuery(hql)
+				.setParameter("processId", processId);
+		
+		if(nodeId!=null){
+			query.setParameter("nodeId", nodeId);
+		}
+		
+		return getResultList(query);
 	}
 	
 }

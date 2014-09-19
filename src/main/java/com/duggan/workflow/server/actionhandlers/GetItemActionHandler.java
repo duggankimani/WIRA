@@ -6,13 +6,13 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.GetItemResult;
+import com.duggan.workflow.shared.responses.GetTaskNodesResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetItemActionHandler extends
-		BaseActionHandler<GetItemRequest, GetItemResult> {
+		BaseActionHandler<GetItemRequest, GetTaskNodesResponse> {
 
 	@Inject
 	public GetItemActionHandler() {
@@ -32,7 +32,7 @@ public class GetItemActionHandler extends
 	}
 
 	@Override
-	public void undo(GetItemRequest action, GetItemResult result, ExecutionContext context)
+	public void undo(GetItemRequest action, GetTaskNodesResponse result, ExecutionContext context)
 			throws ActionException {
 	}
 

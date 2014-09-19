@@ -1,9 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.GetItemResult;
+import com.duggan.workflow.shared.responses.GetTaskNodesResponse;
 
-public class GetItemRequest extends BaseRequest<GetItemResult> {
+public class GetItemRequest extends BaseRequest<GetTaskNodesResponse> {
 
 	private String userId;
 	private Long itemId;
@@ -25,7 +25,7 @@ public class GetItemRequest extends BaseRequest<GetItemResult> {
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		
-		return new GetItemResult();
+		return new GetTaskNodesResponse();
 	}
 
 	public boolean isTask() {

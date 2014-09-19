@@ -8,7 +8,7 @@
 	<g:HTMLPanel styleName="tr">
 		<g:HTMLPanel styleName="center td">
 			<label>
-				<input type="checkbox" />
+				<g:CheckBox ui:field="chkSelect"></g:CheckBox>
 			</label>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td">

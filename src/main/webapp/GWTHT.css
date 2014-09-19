@@ -304,3 +304,12 @@ span.tasktimelines{
 	font-size:11px;
 	padding-right:5px;
 }
+
+div.multicolumn{
+	max-width:100%;
+	position:absolute;
+}
+
+div.tr-step{
+	height:250px;
+}

@@ -8,13 +8,17 @@ import java.util.List;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADForm;
+import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
+import com.duggan.workflow.shared.model.TaskStepDTO;
 
 public class ProcessDefHelper {
 
@@ -165,6 +169,70 @@ public class ProcessDefHelper {
 
 		return model;
 
+	}
+	
+	public static List<TaskStepDTO> createTaskSteps(List<TaskStepDTO> steps){
+		ProcessDaoImpl dao = DB.getProcessDao();
+		List<TaskStepDTO> list = new ArrayList<>();
+		
+		for(TaskStepDTO step: steps){
+			TaskStepModel model = getStep(step);
+			if(!step.isActive()){
+				dao.delete(model);
+				continue;
+			}
+			dao.createStep(model);
+			list.add(getStep(model));
+		}
+		
+		return list;
+	}
+
+	private static TaskStepDTO getStep(TaskStepModel model) {
+
+		TaskStepDTO dto = new TaskStepDTO();
+		dto.setCondition(model.getCondition());
+		dto.setFormName(model.getForm()==null? null: model.getForm().getCaption());
+		dto.setId(model.getId());
+		dto.setMode(model.getMode());
+		dto.setNodeId(model.getNodeId());
+		dto.setOutputDocName(model.getDoc()==null?null: model.getDoc().getName());
+		dto.setProcessDefId(model.getProcessDef().getId());
+		dto.setSequenceNo(model.getSequenceNo());
+		dto.setStepName(model.getStepName());
+		
+		return dto;
+	}
+
+	private static TaskStepModel getStep(TaskStepDTO step) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		
+		TaskStepModel model = new TaskStepModel();
+		if(step.getId()!=null){
+			model = dao.getById(TaskStepModel.class, step.getId());
+		}
+		model.setCondition(step.getCondition());
+		model.setForm(step.getFormId()==null? null: dao.getById(ADForm.class, step.getFormId()));
+		model.setDoc(step.getOutputDocId()==null? null: dao.getById(ADOutputDoc.class, step.getOutputDocId()));
+		model.setMode(step.getMode());
+		model.setNodeId(step.getNodeId());
+		model.setProcessDef(dao.getById(ProcessDefModel.class, step.getProcessDefId()));
+		model.setSequenceNo(step.getSequenceNo());
+		model.setStepName(step.getStepName());
+		
+		return model;
+	}
+	
+	public static List<TaskStepDTO> getSteps(String processId, Long nodeId){
+		ProcessDaoImpl dao = DB.getProcessDao();
+		List<TaskStepModel> list = dao.getTaskSteps(processId, nodeId);
+		List<TaskStepDTO> dtos = new ArrayList<>();
+		
+		for(TaskStepModel model: list){
+			dtos.add(getStep(model));
+		}
+		
+		return dtos;
 	}
 
 }

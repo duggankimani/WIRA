@@ -4,10 +4,10 @@ import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsSt
 
 import java.util.Date;
 
-import com.duggan.workflow.client.model.MODE;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.MODE;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
