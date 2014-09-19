@@ -76,7 +76,7 @@ public class FormDaoHelper {
 		return form;
 	}
 	
-	private static Form getForm(ADForm adform, boolean loadFields) {
+	public static Form getForm(ADForm adform, boolean loadFields) {
 		if(adform==null){
 			return null;
 		}

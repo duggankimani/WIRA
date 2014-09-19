@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
@@ -107,6 +108,9 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField DivElement divContent;
 	
 	@UiField HTMLPanel fldForm;
+	
+	@UiField ActionLink aPrevious;
+	@UiField ActionLink aNext;
 	
 	FormPanel formPanel;
 	
@@ -659,6 +663,14 @@ public class GenericDocumentView extends ViewImpl implements
 	public void overrideDefaultStartProcess() {
 		overrideDefaultStart=true;
 		aForward.addStyleName("hidden");
+	}
+	
+	public HasClickHandlers getLinkNext(){
+		return aNext;
+	}
+	
+	public HasClickHandlers getLinkPrevious(){
+		return aPrevious;
 	}
 
 }

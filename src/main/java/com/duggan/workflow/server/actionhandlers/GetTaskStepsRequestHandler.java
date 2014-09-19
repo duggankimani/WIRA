@@ -1,6 +1,10 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
@@ -19,8 +23,19 @@ public class GetTaskStepsRequestHandler extends
 	public void execute(GetTaskStepsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		((GetTaskStepsResponse)actionResult).setSteps(
-				ProcessDefHelper.getSteps(action.getProcessId(), action.getNodeId()));
+		List<TaskStepDTO> steps = new ArrayList<>();
+		if(action.getProcessId()==null){
+		
+			if(action.getTaskId()!=null){
+				steps = ProcessDefHelper.getTaskStepsByTaskId(action.getTaskId());
+			}else if(action.getDocumentId()!=null){
+				steps = ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
+			}
+		}else{
+			steps = ProcessDefHelper.getSteps(action.getProcessId(), action.getNodeId());
+		}
+		
+		((GetTaskStepsResponse)actionResult).setSteps(steps);
 		
 	}
 	

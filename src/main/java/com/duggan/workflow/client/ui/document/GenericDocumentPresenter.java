@@ -71,6 +71,7 @@ import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
@@ -87,6 +88,7 @@ import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
+import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
@@ -101,6 +103,7 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
+import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
@@ -149,6 +152,8 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getApproveLink();
 		HasClickHandlers getRejectLink();
 		HasClickHandlers getSaveCommentButton();
+		HasClickHandlers getLinkPrevious();
+		HasClickHandlers getLinkNext();
 		String getComment();
 		Uploader getUploader();
 		void setComment(String string);
@@ -173,17 +178,16 @@ public class GenericDocumentPresenter extends
 	}
 	
 	Long taskId;
-	
 	Long documentId;
 	
 	Doc doc;
-	
 	Form form;
+	private int currentStep=0;
+	private List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
 	
 	private Integer activities=0;
 	
 	@Inject DispatchAsync requestHelper;
-	
 	@Inject PlaceManager placeManager;
 	
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
@@ -397,8 +401,47 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
+		
+		getView().getLinkNext().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(steps.size()>currentStep+1){
+					currentStep = currentStep+1;
+					navigateToView(steps.get(currentStep));
+				}
+			}
+		});
+		
+		getView().getLinkPrevious().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(!steps.isEmpty() && currentStep>0){
+					currentStep = currentStep-1;
+					navigateToView(steps.get(currentStep));
+				}
+			}
+		});
+		
 	}
 	
+	protected void navigateToView(TaskStepDTO taskStepDTO) {
+		Long formId = taskStepDTO.getFormId();
+		if(formId!=null){
+			fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
+			requestHelper.execute(new GetFormModelRequest(FormModel.FORMMODEL, formId, true),
+					new TaskServiceCallback<GetFormModelResponse>() {
+						@Override
+						public void processResult(GetFormModelResponse aResponse) {
+							Form form = (Form) aResponse.getFormModel().get(0);							
+							bindForm(form, doc);
+							fireEvent(new ProcessingCompletedEvent());
+						}
+					});
+		}
+	}
+
 	public void complete(Map<String, Value> withValues, boolean validateForm){
 		if(validateForm){
 			if(getView().isValid()){
@@ -622,7 +665,7 @@ public class GenericDocumentPresenter extends
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
 		requests.addRequest(new GetActivitiesRequest(documentId));
-		
+		requests.addRequest(new GetTaskStepsRequest(documentId, taskId));
 		
 		fireEvent(new ProcessingEvent());
 		if(documentId != null){
@@ -641,7 +684,6 @@ public class GenericDocumentPresenter extends
 					
 					if(!response.getFormModel().isEmpty()){
 						bindForm((Form)response.getFormModel().get(0), result.getDoc());
-						
 					}else{
 						getView().showDefaultFields(true);
 					}
@@ -658,6 +700,9 @@ public class GenericDocumentPresenter extends
 					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(i++);
 					bindActivities(getActivities);
 										
+					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
+					steps = resp.getSteps();
+					
 					fireEvent(new ProcessingCompletedEvent());
 					
 				}	

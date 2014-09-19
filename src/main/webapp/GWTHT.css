@@ -306,7 +306,7 @@ span.tasktimelines{
 }
 
 div.multicolumn{
-	max-width:100%;
+	min-width:500px;
 	position:absolute;
 }
 

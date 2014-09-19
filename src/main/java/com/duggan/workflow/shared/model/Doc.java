@@ -16,14 +16,6 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 
 	private boolean hasAttachment=false;
 
-	public boolean hasAttachment() {
-		return hasAttachment;
-	}
-
-	public void setHasAttachment(boolean hasAttachment) {
-		this.hasAttachment = hasAttachment;
-	}
-
 	public abstract String getSubject();
 
 	public abstract String getDescription();
@@ -39,6 +31,11 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	protected Map<String, Value> values = new HashMap<String, Value>();
 	
 	protected Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
+	
+	private String processId;
+	private String processName;
+	private String nodeName;
+	private Long nodeId;
 	
 	/**
 	 * Sorts document/task elements in descending order
@@ -69,6 +66,14 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	
 	public abstract Long getProcessInstanceId();
 	
+	public boolean hasAttachment() {
+		return hasAttachment;
+	}
+
+	public void setHasAttachment(boolean hasAttachment) {
+		this.hasAttachment = hasAttachment;
+	}
+	
 	public Map<String, List<DocumentLine>> getDetails() {
 		return details;
 	}
@@ -87,6 +92,38 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 		}
 		
 		lines.add(line);
+	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
+
+	public String getProcessName() {
+		return processName;
+	}
+
+	public void setProcessName(String processName) {
+		this.processName = processName;
+	}
+
+	public String getNodeName() {
+		return nodeName;
+	}
+
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+
+	public Long getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(Long nodeId) {
+		this.nodeId = nodeId;
 	}
 
 }

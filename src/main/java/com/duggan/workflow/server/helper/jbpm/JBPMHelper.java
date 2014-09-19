@@ -421,12 +421,19 @@ public class JBPMHelper implements Closeable {
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
-		
-		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 
+		String processId =master_task.getTaskData().getProcessId(); 
+		WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
+		task.setProcessId(processId);
+		task.setProcessName(process.getName());
 		task.setProcessInstanceId(master_task.getTaskData()
 				.getProcessInstanceId());
-	
+		
+		Node node = getNode(master_task);
+		task.setNodeId(node.getId());
+		task.setNodeName(node.getName());
+		
+		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 		Status status = master_task.getTaskData().getStatus();
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
 
@@ -776,11 +783,11 @@ public class JBPMHelper implements Closeable {
 
 		long processInstanceId = log.getProcessInstanceId();
 
-		String processDefId = log.getProcessId();
+		String processId = log.getProcessId();
 		// JPAProcessInstanceDbLog.findNodeInstances(processInstanceId);
 
 		org.drools.definition.process.Process process = sessionManager
-				.getProcess(processDefId);
+				.getProcess(processId);
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
 		
@@ -1015,14 +1022,21 @@ public class JBPMHelper implements Closeable {
 	 */
 	public String getDisplayName(Task task){
 		//
+		Node node = getNode(task);
+		if(node!=null){
+			return node.getName();
+		}
+		
+		return null;
+	}
+	
+	public Node getNode(Task task){
 		String processId=task.getTaskData().getProcessId();
 		String taskName = getTaskName(task.getId());
 				
 		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 		task.getTaskData().getWorkItemId();
-		
-	//	log.debug("Globals:: "+wfprocess.get);
 		
 		for (Node node : wfprocess.getNodes()) {
 			
@@ -1032,14 +1046,13 @@ public class JBPMHelper implements Closeable {
 				
 				if(nodeTaskName!=null)
 				if(nodeTaskName.equals(taskName)){
-					return htnode.getName();					
+					return htnode;					
 				}
 				
 			}
 		}
 		
 		return null;
-		
 	}
 	
 	public ProcessMappings getProcessDataMappings(long taskId){
@@ -1101,6 +1114,17 @@ public class JBPMHelper implements Closeable {
 		List<Long> ids  = query.getResultList();
 		
 		return ids;
+	}
+
+	public String getProcessName(String processId) {
+		String name = null;
+		
+		try{
+			WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
+			name = process.getName();
+		}catch(Exception e){}
+		
+		return name;
 	}
 
 }

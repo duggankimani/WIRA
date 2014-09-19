@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.drools.definition.process.Node;
+import org.jbpm.task.Task;
+
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
@@ -193,13 +197,16 @@ public class ProcessDefHelper {
 		TaskStepDTO dto = new TaskStepDTO();
 		dto.setCondition(model.getCondition());
 		dto.setFormName(model.getForm()==null? null: model.getForm().getCaption());
+		dto.setFormId(model.getForm()==null? null: model.getForm().getId());
 		dto.setId(model.getId());
 		dto.setMode(model.getMode());
 		dto.setNodeId(model.getNodeId());
 		dto.setOutputDocName(model.getDoc()==null?null: model.getDoc().getName());
+		dto.setOutputDocId(model.getDoc()==null?null: model.getDoc().getId());
 		dto.setProcessDefId(model.getProcessDef().getId());
 		dto.setSequenceNo(model.getSequenceNo());
 		dto.setStepName(model.getStepName());
+		
 		
 		return dto;
 	}
@@ -233,6 +240,36 @@ public class ProcessDefHelper {
 		}
 		
 		return dtos;
+	}
+
+	public static List<TaskStepDTO> getTaskStepsByTaskId(Long taskId) {
+		Task task = JBPMHelper.get().getSysTask(taskId);
+		Node node = JBPMHelper.get().getNode(task);
+		List<TaskStepModel> models= DB.getProcessDao().getTaskSteps(task.getTaskData().getProcessId(), node.getId());
+		
+		List<TaskStepDTO> steps = new ArrayList<>();
+		for(TaskStepModel m: models){
+			steps.add(getStep(m));
+		}
+		return steps;
+	}
+
+	public static List<TaskStepDTO> getTaskStepsByDocumentId(Long documentId) {
+
+
+		DocumentModel docModel = DB.getDocumentDao().getById(documentId);
+		
+		String processId = docModel.getProcessId();
+		if(processId==null && docModel.getType()!=null){
+			processId = docModel.getType().getProcessDef().getProcessId();
+		}
+		List<TaskStepModel> models= DB.getProcessDao().getTaskSteps(processId, null);
+	
+		List<TaskStepDTO> steps = new ArrayList<>();
+		for(TaskStepModel m: models){
+			steps.add(getStep(m));
+		}
+		return steps;
 	}
 
 }

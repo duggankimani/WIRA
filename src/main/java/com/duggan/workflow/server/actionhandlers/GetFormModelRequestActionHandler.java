@@ -3,10 +3,17 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.drools.definition.process.Node;
+import org.jbpm.task.Task;
+
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -42,22 +49,28 @@ public class GetFormModelRequestActionHandler extends
 				model = FormDaoHelper.getForm(id, loadChildrenInfo);
 				models.add(model);
 			}else if(action.getTaskId()!=null){
-				model = FormDaoHelper.getFormByName(JBPMHelper.get().getTaskName(action.getTaskId()));
+				//model = FormDaoHelper.getFormByName(JBPMHelper.get().getTaskName(action.getTaskId()));
+				Long taskId = action.getTaskId();
+				List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByTaskId(taskId);
+				if(steps.size()>0){
+					TaskStepDTO step = steps.get(0);
+					model = FormDaoHelper.getForm(step.getFormId(),true);
+				}
+				
 				if(model!=null)
 					models.add(model);
 			}else if(action.getDocumentId()!=null){
 				
-				ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
-				Long formId=null;
+				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
 				
-				if(type!=null)
-					formId = DB.getDocumentDao().getFormId(type.getId());
+				List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
 				
-				if(formId!=null){
-					model = FormDaoHelper.getForm(formId, true);
+				if(steps.size()>0){
+					TaskStepDTO step = steps.get(0);
+					model = FormDaoHelper.getForm(step.getFormId(),true);
 					models.add(model);
 				}
-								
+												
 			}else{
 				models.addAll(FormDaoHelper.getForms());
 			}

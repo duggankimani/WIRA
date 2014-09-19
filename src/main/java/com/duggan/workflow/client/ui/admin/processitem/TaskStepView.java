@@ -57,6 +57,8 @@ public class TaskStepView extends ViewImpl implements
 		
 		for(TaskStepDTO dto: dtos){
 			Link link = new Link("Delete",dto);
+			link.addStyleName("btn");
+			
 			link.addClickHandler(deleteHandler);
 			tblView.addRow(
 					new InlineLabel(dto.getFormName()==null? dto.getOutputDocName(): dto.getFormName()),

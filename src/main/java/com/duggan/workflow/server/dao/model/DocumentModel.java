@@ -64,6 +64,8 @@ public class DocumentModel extends PO{
 	
 	private Long processInstanceId;
 	
+	private String processId;
+	
 	private Long sessionId;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="document",cascade=CascadeType.ALL)
@@ -196,5 +198,13 @@ public class DocumentModel extends PO{
 	public void addDetail(DetailModel model){
 		model.setDocument(this);
 		details.add(model);
+	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
 	}
 }

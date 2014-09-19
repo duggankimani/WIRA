@@ -16,6 +16,7 @@ import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Doc;
@@ -219,6 +220,16 @@ public class DocumentDaoHelper {
 		doc.setValue(model.getValue());
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
+		if(model.getProcessId()==null && model.getType()!=null){
+			doc.setProcessId(model.getType().getProcessDef().getProcessId());
+		}else{
+			doc.setProcessId(model.getProcessId());
+		}
+		
+		if(doc.getProcessId()!=null){
+			doc.setProcessName(JBPMHelper.get().getProcessName(doc.getProcessId()));
+		}
+		
 		doc.setSessionId(model.getSessionId());
 		doc.setHasAttachment(DB.getAttachmentDao().getHasAttachment(model.getId()));
 		Collection<ADValue> values = model.getValues();

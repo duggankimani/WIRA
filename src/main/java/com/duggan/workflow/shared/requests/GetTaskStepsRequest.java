@@ -8,13 +8,20 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 	private String processId;
 	private Long nodeId;
 	
+	private Long documentId;
+	private Long taskId;
+	
 	public GetTaskStepsRequest() {
-		
 	}
 	
 	public GetTaskStepsRequest(String processId,Long nodeId) {
 		this.processId = processId;
 		this.nodeId = nodeId;
+	}
+	
+	public GetTaskStepsRequest(Long documentId, Long taskId){
+		this.documentId = documentId;
+		this.taskId = taskId;
 	}
 
 	public String getProcessId() {
@@ -29,5 +36,13 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 	public BaseResponse createDefaultActionResponse() {
 		
 		return new GetTaskStepsResponse();
+	}
+
+	public Long getDocumentId() {
+		return documentId;
+	}
+
+	public Long getTaskId() {
+		return taskId;
 	}
 }
