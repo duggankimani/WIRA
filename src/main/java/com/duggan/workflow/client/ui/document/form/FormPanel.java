@@ -48,6 +48,7 @@ public class FormPanel extends Composite {
 	@UiField LegendElement divFormCaption;
 	@UiField SpanElement divFormHelp;
 	@UiField IssuesPanel issues;
+	boolean isReadOnly=true;
 	
 	FormDelegate formDelegate = new FormDelegate();
 	MODE mode = MODE.VIEW;
@@ -130,6 +131,11 @@ public class FormPanel extends Composite {
 	}
 	
 	public void setReadOnly(boolean readOnly){
+		this.isReadOnly = readOnly;
 		formDelegate.setReadOnly(readOnly, (ComplexPanel)panelFields);
+	}
+
+	public boolean isReadOnly() {
+		return isReadOnly;
 	}
 }

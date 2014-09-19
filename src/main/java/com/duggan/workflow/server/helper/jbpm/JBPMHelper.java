@@ -423,15 +423,18 @@ public class JBPMHelper implements Closeable {
 		task.setDocumentRef(doc.getId());
 
 		String processId =master_task.getTaskData().getProcessId(); 
-		WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
 		task.setProcessId(processId);
-		task.setProcessName(process.getName());
 		task.setProcessInstanceId(master_task.getTaskData()
 				.getProcessInstanceId());
 		
-		Node node = getNode(master_task);
-		task.setNodeId(node.getId());
-		task.setNodeName(node.getName());
+		try{
+			WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
+			task.setProcessName(process.getName());
+			
+			Node node = getNode(master_task);
+			task.setNodeId(node.getId());
+			task.setNodeName(node.getName());
+		}catch(Exception e){}
 		
 		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 		Status status = master_task.getTaskData().getStatus();

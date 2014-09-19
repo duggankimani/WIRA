@@ -113,7 +113,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField ActionLink aNext;
 	
 	FormPanel formPanel;
-	
+		
 	String url=null;
 	
 	List<Actions> validActions = null;
@@ -185,6 +185,7 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				if(isValid()){
+					formPanel.setReadOnly(true);
 					UIObject.setVisible(btnGroup, true);
 					UIObject.setVisible(aForward.getElement(),true);
 					UIObject.setVisible(aEdit.getElement(), true);
@@ -253,6 +254,11 @@ public class GenericDocumentView extends ViewImpl implements
 		//hide static fields		
 		showDefaultFields(false);
 		
+		boolean readOnly = true;
+		if(formPanel!=null){
+			readOnly = formPanel.isReadOnly();
+		}
+		
 		formPanel = new FormPanel(form);
 		
 		if(validActions!=null){
@@ -261,7 +267,10 @@ public class GenericDocumentView extends ViewImpl implements
 			}else{
 				formPanel.setReadOnly(true);
 			}
+		}else{
+			formPanel.setReadOnly(readOnly);
 		}
+		
 		fldForm.add(formPanel);
 	}
 

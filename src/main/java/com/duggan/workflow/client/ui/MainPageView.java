@@ -36,7 +36,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		public void run() {
 			hideAlert();
 		}
- };
+	};
 
 	
 	
