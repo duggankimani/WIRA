@@ -12,13 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 
-@XmlRootElement
+@XmlRootElement(name="form")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADForm extends PO implements HasProperties{
@@ -33,9 +34,11 @@ public class ADForm extends PO implements HasProperties{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
+	@XmlAttribute
 	@Column(length=255,unique=true)
 	private String name;
 	
+	@XmlAttribute
 	@Column(length=255)
 	private String caption;
 	

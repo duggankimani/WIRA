@@ -185,13 +185,13 @@
 					<span ui:field="spnDescription"></span>
 				</div>
 				
-				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
-				</g:HTMLPanel>
-				
 				<g:HTMLPanel styleName="form-horizontal">
 					<d:ActionLink ui:field="aPrevious" styleName="btn btn-primary">Previous</d:ActionLink>
 					<d:ActionLink ui:field="aNext" styleName="btn btn-primary">Next</d:ActionLink>
 				</g:HTMLPanel>
+				
+				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
+				</g:HTMLPanel>			
 
 				<div class="title attachment hidden" ui:field="divAttachment">
 					<h4>

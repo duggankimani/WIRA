@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,12 +39,15 @@ public class ADProperty extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	@Column(length=255)
 	private String name;
 	
+	@XmlAttribute
 	@Column(length=255)
 	private String caption;
 	
+	@XmlAttribute
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private DataType type;

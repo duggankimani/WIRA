@@ -9,6 +9,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -40,6 +41,7 @@ public abstract class PO implements Serializable{
 	@Column
 	private Date updated;
 	
+	@XmlTransient
 	@Column(columnDefinition="int default 1")
 	private int isActive=1;
 

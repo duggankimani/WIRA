@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
 
@@ -26,6 +27,8 @@ import com.duggan.workflow.shared.model.TaskStepDTO;
 
 public class ProcessDefHelper {
 
+	static Logger log = Logger.getLogger(ProcessDefHelper.class);
+	
 	public static ProcessDef save(ProcessDef processDef) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 		ProcessDefModel model = get(processDef);
@@ -244,7 +247,18 @@ public class ProcessDefHelper {
 
 	public static List<TaskStepDTO> getTaskStepsByTaskId(Long taskId) {
 		Task task = JBPMHelper.get().getSysTask(taskId);
-		Node node = JBPMHelper.get().getNode(task);
+		Node node = null;
+		
+		try{
+			node= JBPMHelper.get().getNode(task);
+		}catch(Exception e){
+			log.warn(e.getMessage());
+		}
+		
+		if(node==null){
+			return new ArrayList<>();
+		}
+		
 		List<TaskStepModel> models= DB.getProcessDao().getTaskSteps(task.getTaskData().getProcessId(), node.getId());
 		
 		List<TaskStepDTO> steps = new ArrayList<>();
