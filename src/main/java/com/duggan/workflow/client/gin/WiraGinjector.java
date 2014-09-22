@@ -6,7 +6,6 @@ import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;
 
 @GinModules({RpcDispatchAsyncModule.class,ClientModule.class})
 public interface WiraGinjector extends Ginjector {
-
 	//AsyncProvider<TaskPresenter> getTaskPresenter();
 
 	//EventBus getEventBus();

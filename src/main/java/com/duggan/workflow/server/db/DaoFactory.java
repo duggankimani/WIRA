@@ -10,6 +10,7 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.dao.OutputDocumentDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
@@ -27,6 +28,7 @@ class DaoFactory {
 	DSConfigDaoImpl dsDao;
 	DashboardDaoImpl dashDao;
 	SettingsDaoImpl settingsDao;
+	OutputDocumentDao outputDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -162,6 +164,18 @@ class DaoFactory {
 		}
 		
 		return settingsDao;
+	}
+
+	public OutputDocumentDao getOuputDocDaoImpl(EntityManager entityManager) {
+		if(outputDao==null){
+			synchronized (DaoFactory.class) {
+				if(outputDao==null){
+					outputDao = new OutputDocumentDao(entityManager);
+				}
+			}
+		}
+		
+		return outputDao;
 	}
 
 }

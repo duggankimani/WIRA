@@ -113,6 +113,10 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
+import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
+import com.duggan.workflow.client.ui.admin.outputdocs.save.OutPutDocsSavePresenter;
+import com.duggan.workflow.client.ui.admin.outputdocs.save.OutPutDocsSaveView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -293,5 +297,12 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenter(SearchPresenter.class, SearchPresenter.ISearchView.class,
 				SearchView.class, SearchPresenter.ISearchProxy.class);
+
+		bindPresenter(OutPutDocsPresenter.class,
+				OutPutDocsPresenter.MyView.class, OutPutDocsView.class,
+				OutPutDocsPresenter.MyProxy.class);
+
+		bindPresenterWidget(OutPutDocsSavePresenter.class,
+				OutPutDocsSavePresenter.MyView.class, OutPutDocsSaveView.class);
 	}
 }
