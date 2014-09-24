@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.home.doctree;
 import static com.duggan.workflow.client.ui.resources.ICONS.INSTANCE;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 		}
 		
 		long i=0;
-		List<Attachment> list = new ArrayList<Attachment>();
+		ArrayList<Attachment> list = new ArrayList<Attachment>();
 		for(String docType: docTypeDocNameList.keySet()){
 			
 			Attachment rootNode = createAttachment(docType);
@@ -246,11 +247,17 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 		};
 	}
 
-	public void setFolders(List<Attachment> folders) {
+	public void setFolders(ArrayList<Attachment> folders) {
 		tree.getStore().clear();
 		
 		assert folders!=null;
 		
-		tree.getStore().addSubTree(0,folders);
+		Attachment attachment = new Attachment();
+		attachment.setName("Documents");
+		attachment.setId(-1L);
+		attachment.setDirectory(true);
+		attachment.setChildren(folders);
+		
+		tree.getStore().addSubTree(0,Arrays.asList(attachment));
 	}
 }
