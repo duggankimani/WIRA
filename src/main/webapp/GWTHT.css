@@ -307,9 +307,10 @@ span.tasktimelines{
 
 div.multicolumn{
 	min-width:500px;
-	position:absolute;
+	/* position:absolute; */
 }
 
 div.tr-step{
 	height:250px;
+	position: relative;
 }
