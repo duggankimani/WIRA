@@ -95,9 +95,12 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
+	@UiField HTMLPanel divActivity;
 	//@UiField Anchor aAttach1;
 	@UiField Anchor aAttach2;
 	@UiField Anchor aShowProcess;
+	@UiField Anchor aContinue;
+	@UiField HTMLPanel divContinue;
 	@UiField CommentBox commentPanel;
 	
 	@UiField DivElement btnGroup;
@@ -118,6 +121,7 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	List<Actions> validActions = null;
 	boolean isBizProcessDisplayed=true;
+	boolean isEditMode=true;
 	boolean overrideDefaultComplete=false;
 	boolean overrideDefaultStart=false;
 	private String timeDiff;
@@ -168,8 +172,9 @@ public class GenericDocumentView extends ViewImpl implements
 				UIObject.setVisible(aForward.getElement(), false);
 				UIObject.setVisible(aEdit.getElement(), false);
 				UIObject.setVisible(aSave.getElement(), true);
-				if(isBizProcessDisplayed)
+				if(isBizProcessDisplayed){
 					toggleProcess();
+				}
 			}
 		});
 		
@@ -207,8 +212,17 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 	
+	protected void toggleEditMode()
+	{
+		if(!isEditMode){
+			divActivity.addStyleName("hide");
+			divContinue.addStyleName("hide");
+		}else{
+			divActivity.removeStyleName("hide");
+			divContinue.removeStyleName("hide");
+		}
+	}
 	public void showProcessTree(boolean show){
-		
 		if(show){
 			aProcess.addStyleName("disabled");
 			divProcess.removeStyleName("hidden");

@@ -6,7 +6,7 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
-	
+
 	<g:HTMLPanel styleName="full-page">
 		<g:HTMLPanel styleName="upper-content">
 			<div class="action-area row-fluid">
@@ -135,8 +135,9 @@
 			<div class="personal_info row-fluid span12">
 				<div class="span9">
 					<div class="span2 image">
-					    <g:Image ui:field="img" width="32px"/>
-						<!-- img src="img/blueman.png" data-src="img/blueman.png" width="32px" / -->
+						<g:Image ui:field="img" width="32px" />
+						<!-- img src="img/blueman.png" data-src="img/blueman.png" width="32px" 
+							/ -->
 					</div>
 					<strong>
 						<span ui:field="eOwner"></span>
@@ -152,9 +153,9 @@
 					<!-- <i class="icon-calendar icon-large"></i> -->
 					<div style="float:right; text-align:right">
 						<span ui:field="spnCreated" class="tasktimelines"></span>
-						<span ui:field="spnDeadline" class="tasktimelines hidden"></span>    
+						<span ui:field="spnDeadline" class="tasktimelines hidden"></span>
 					</div>
-					
+
 				</div>
 
 				<!-- <div class="span3"> <span>Priority:</span> <span ui:field="spnPriority" 
@@ -184,14 +185,25 @@
 					<strong>Description:</strong>
 					<span ui:field="spnDescription"></span>
 				</div>
-				
+
 				<g:HTMLPanel styleName="form-horizontal">
-					<d:ActionLink ui:field="aPrevious" styleName="btn btn-primary">Previous</d:ActionLink>
-					<d:ActionLink ui:field="aNext" styleName="btn btn-primary">Next</d:ActionLink>
+					<d:ActionLink ui:field="aPrevious">
+						<i class="icon-double-angle-left"></i>
+						<span class="underline">Previous</span>
+					</d:ActionLink>
+					<d:ActionLink ui:field="aNext" styleName="pull-right">
+						<span class="underline">Next</span>
+						<i class="icon-double-angle-right"></i>
+					</d:ActionLink>
 				</g:HTMLPanel>
-				
+
 				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
-				</g:HTMLPanel>			
+				</g:HTMLPanel>
+
+				<g:HTMLPanel ui:field="divContinue" styleName="hide">
+					<hr/>
+					<d:ActionLink ui:field="aContinue" styleName="btn btn-success">Continue</d:ActionLink>
+				</g:HTMLPanel>
 
 				<div class="title attachment hidden" ui:field="divAttachment">
 					<h4>
@@ -207,8 +219,7 @@
 					<up:Uploader ui:field="uploader"></up:Uploader>
 				</div>
 
-				<g:HTMLPanel styleName="row-fluid recent-activity">
-
+				<g:HTMLPanel styleName="row-fluid recent-activity" ui:field="divActivity">
 					<div class="title">
 						<h4>
 							<span ui:field="spnActivityNo"></span>
