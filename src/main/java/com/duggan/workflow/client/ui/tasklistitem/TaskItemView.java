@@ -113,14 +113,14 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		disable();
 		
 		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(aDoc.getCreated()));
-		spnSubject.setInnerText(aDoc.getSubject());
+		spnSubject.setInnerText((aDoc.getProcessName()==null? "" : aDoc.getProcessName())+" "+aDoc.getSubject());
 		
 		if(aDoc.hasAttachment()){
 			spnAttach.removeStyleName("hidden");
 		}
 		
 		if(aDoc.getDescription()!=null)
-			spnDescription.setText(aDoc.getDescription());
+			spnDescription.setText((aDoc.getNodeName()==null? "": aDoc.getNodeName())+" "+aDoc.getDescription());
 		//spnPriority.setText(summaryTask.getPriority()==null? "": summaryTask.getPriority().toString());
 		
 		if(aDoc instanceof HTSummary){

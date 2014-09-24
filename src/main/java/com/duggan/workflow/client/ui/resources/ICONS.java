@@ -18,4 +18,24 @@ public interface ICONS extends ClientBundle{
     
     ImageResource attachment();
     
+    ImageResource plus();
+	
+    ImageResource minus();
+    
+    ImageResource folder();
+    
+    ImageResource folderOpen();
+
+	ImageResource text();
+	
+	ImageResource folderClosed64();
+	
+	ImageResource pdf64();
+	
+	@Source("file64.png")
+	ImageResource file64();
+	
+	ImageResource download();
+
+    
 }
