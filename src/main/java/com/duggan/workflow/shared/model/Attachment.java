@@ -1,9 +1,15 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
-public class Attachment implements Serializable {
+import com.sencha.gxt.data.shared.TreeStore;
+
+public class Attachment implements Serializable,TreeStore.TreeNode<Attachment> {
 
 	/**
 	 * 
@@ -21,9 +27,12 @@ public class Attachment implements Serializable {
 	private String contentType;
 	private String createdBy;
 	private Date created;
-	
+	private ArrayList<Attachment> children;
 	private String documentType;
 	private String subject;
+	private boolean isDirectory;
+
+	private Attachment parent;
 	
 	public Long getId() {
 		return id;
@@ -107,4 +116,79 @@ public class Attachment implements Serializable {
 	public void setDocumentType(String documentType) {
 		this.documentType = documentType;
 	}
+	public void setParent(Attachment parent) {
+		this.parent = parent;
+	}
+
+	public void setDirectory(boolean isDirectory) {
+		this.isDirectory = isDirectory;
+	}
+	public void addChild(Attachment child){
+		if(children==null){
+			children = new ArrayList<Attachment>();
+		}
+		isDirectory=true;
+		children.add(child);
+		child.setParent(this);
+	}
+	
+	public void setChildren(ArrayList<Attachment> children){
+		
+		this.children = children;
+	}
+	
+	public boolean hasChildren(){
+		
+		return children!=null && children.size()>0; 
+	}
+	
+	public List<Attachment> getChildren(){
+		sort();
+		if(children==null || children.size()==0)
+			return null;
+		
+		return children;
+	}
+
+	@Override
+	public Attachment getData() {
+		
+		return this;
+	}
+	
+	public void sort(){
+		if(children!=null){
+			Collections.sort(children, new Comparator<Attachment>() {
+				@Override
+				public int compare(Attachment o1, Attachment o2) {
+					Integer score1 = o1.getScore();
+					Integer score2 = o2.getScore();
+					
+					int comparison = score1.compareTo(score2);
+					
+					if(comparison==0)
+						comparison = o1.getName().toUpperCase().compareTo(o2.getName().toUpperCase());
+					
+					return comparison;
+				}
+			});
+		}
+	}
+	
+	private int getScore(){
+		if(isDirectory){
+			return 1;
+		}
+		
+		return 2;
+	}
+	
+	public Attachment getParent() {
+		return parent;
+	}
+	
+	public boolean isDirectory() {
+		return isDirectory;
+	}
+	
 }
