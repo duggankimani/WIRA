@@ -314,3 +314,7 @@ div.tr-step{
 	height:250px;
 	position: relative;
 }
+
+div.centered{
+	text-align:center;
+}

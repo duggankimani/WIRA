@@ -187,11 +187,11 @@
 				</div>
 
 				<g:HTMLPanel styleName="form-horizontal">
-					<d:ActionLink ui:field="aPrevious">
+					<d:ActionLink ui:field="aPrevious" styleName="hidden">
 						<i class="icon-double-angle-left"></i>
 						<span class="underline">Previous</span>
 					</d:ActionLink>
-					<d:ActionLink ui:field="aNext" styleName="pull-right">
+					<d:ActionLink ui:field="aNext" styleName="pull-right hidden">
 						<span class="underline">Next</span>
 						<i class="icon-double-angle-right"></i>
 					</d:ActionLink>
@@ -200,9 +200,10 @@
 				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
 				</g:HTMLPanel>
 
-				<g:HTMLPanel ui:field="divContinue" styleName="hide">
+				<g:HTMLPanel ui:field="divContinue" styleName="centered hide">
 					<hr/>
-					<d:ActionLink ui:field="aContinue" styleName="btn btn-success">Continue</d:ActionLink>
+					<d:ActionLink ui:field="aContinue" styleName="btn btn-success">Finish</d:ActionLink>
+					<i class="icon-double-angle-right"/>
 				</g:HTMLPanel>
 
 				<div class="title attachment hidden" ui:field="divAttachment">

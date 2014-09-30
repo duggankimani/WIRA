@@ -454,7 +454,7 @@ public class FormBuilderView extends ViewImpl implements
 			}
 		}
 		
-		formLabel.setText(caption);
+		formLabel.getElement().setInnerHTML(caption);
 		
 		setFields(form.getFields());
 		//frmDropdown.setItems(form.getProperties());
@@ -527,13 +527,13 @@ public class FormBuilderView extends ViewImpl implements
 
 		if(property.equals(CAPTION)){
 			//setCaption(value);
-			formLabel.setText(value);
+			formLabel.getElement().setInnerHTML(value);
 			form.setCaption(value);
 		}
 
 		if(property.equals(HELP)){
 			//setHelp(value);
-			fldHelp.setText(value);
+			fldHelp.getElement().setInnerHTML(value);
 		}
 	}
 	

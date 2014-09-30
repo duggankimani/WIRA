@@ -34,7 +34,7 @@ public class TestGetProcessData {
 //		ProcessMigrationHelper.start(14L);
 //		ProcessMigrationHelper.start(16L);
 //		ProcessMigrationHelper.start(4L);
-		ProcessMigrationHelper.start(1L);
+//		ProcessMigrationHelper.start(1L);
 	}
 	
 	@Test

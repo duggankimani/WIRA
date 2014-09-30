@@ -167,11 +167,8 @@ public class GenericDocumentView extends ViewImpl implements
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				formPanel.setReadOnly(false);
-				UIObject.setVisible(btnGroup, false);
-				UIObject.setVisible(aForward.getElement(), false);
-				UIObject.setVisible(aEdit.getElement(), false);
-				UIObject.setVisible(aSave.getElement(), true);
+								
+				setEditMode(true);
 				if(isBizProcessDisplayed){
 					toggleProcess();
 				}
@@ -190,11 +187,7 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				if(isValid()){
-					formPanel.setReadOnly(true);
-					UIObject.setVisible(btnGroup, true);
-					UIObject.setVisible(aForward.getElement(),true);
-					UIObject.setVisible(aEdit.getElement(), true);
-					UIObject.setVisible(aSave.getElement(), false);
+					setEditMode(false);
 				}
 			}
 		});
@@ -202,6 +195,25 @@ public class GenericDocumentView extends ViewImpl implements
 		showProcessTree(false);
 		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
+	}
+
+	protected void setEditMode(boolean isEditMode) {
+		formPanel.setReadOnly(!isEditMode);
+		UIObject.setVisible(btnGroup, !isEditMode);
+		UIObject.setVisible(aForward.getElement(), !isEditMode);
+		UIObject.setVisible(aEdit.getElement(), !isEditMode);
+		UIObject.setVisible(aSave.getElement(), isEditMode);
+		showNavigation(isEditMode);
+	}
+	
+	public void showNavigation(boolean isEditMode){
+		if(!isEditMode){
+			//divActivity.addStyleName("hide");
+			divContinue.addStyleName("hide");
+		}else{
+			//divActivity.removeStyleName("hide");
+			divContinue.removeStyleName("hide");
+		}
 	}
 
 	protected void toggleProcess() {
@@ -212,16 +224,16 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 	
-	protected void toggleEditMode()
-	{
-		if(!isEditMode){
-			divActivity.addStyleName("hide");
-			divContinue.addStyleName("hide");
-		}else{
-			divActivity.removeStyleName("hide");
-			divContinue.removeStyleName("hide");
-		}
-	}
+//	protected void toggleEditMode()
+//	{
+//		if(!isEditMode){
+//			divActivity.addStyleName("hide");
+//			divContinue.addStyleName("hide");
+//		}else{
+//			divActivity.removeStyleName("hide");
+//			divContinue.removeStyleName("hide");
+//		}
+//	}
 	public void showProcessTree(boolean show){
 		if(show){
 			aProcess.addStyleName("disabled");
@@ -278,8 +290,10 @@ public class GenericDocumentView extends ViewImpl implements
 		if(validActions!=null){
 			if(validActions.contains(Actions.COMPLETE)){
 				formPanel.setReadOnly(false);
+				showNavigation(true);
 			}else{
 				formPanel.setReadOnly(true);
+				showNavigation(false);
 			}
 		}else{
 			formPanel.setReadOnly(readOnly);
@@ -405,8 +419,9 @@ public class GenericDocumentView extends ViewImpl implements
 			case COMPLETE:
 				//target=aComplete;
 				if(!overrideDefaultComplete){
-					show(aApprove);
-					show(aReject);
+//					show(aApprove);
+//					show(aReject);
+					show(aContinue);
 				}
 				break;
 			case DELEGATE:
@@ -694,6 +709,10 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	public HasClickHandlers getLinkPrevious(){
 		return aPrevious;
+	}
+
+	public Anchor getLinkContinue() {
+		return aContinue;
 	}
 
 }

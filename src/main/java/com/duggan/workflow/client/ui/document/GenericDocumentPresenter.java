@@ -112,6 +112,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -154,6 +155,7 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getSaveCommentButton();
 		HasClickHandlers getLinkPrevious();
 		HasClickHandlers getLinkNext();
+		Anchor getLinkContinue();
 		String getComment();
 		Uploader getUploader();
 		void setComment(String string);
@@ -175,6 +177,10 @@ public class GenericDocumentPresenter extends
 		void overrideDefaultCompleteProcess();
 
 		void overrideDefaultStartProcess();
+
+		void show(Anchor linkNext, boolean isShowRejectLink);
+
+		void showNavigation(boolean b);
 	}
 	
 	Long taskId;
@@ -241,16 +247,26 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
+		getView().getLinkContinue().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(steps.size()>currentStep+1){
+					navigateToView(true);
+					//last step submits
+				}else if(doc instanceof Document){
+					forwardForApproval();
+				}else{
+					complete(null, true);
+				}
+			}
+		});
+		
 		getView().getSaveButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				if(doc instanceof Document)
-				if(((Document)doc).getStatus()==DocStatus.DRAFTED){
-					//showEditForm(MODE.EDIT);
-					save((Document)doc);
-				}
+				save((Document)doc);
 			}
 		});
 		
@@ -406,10 +422,7 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if(steps.size()>currentStep+1){
-					currentStep = currentStep+1;
-					navigateToView(steps.get(currentStep));
-				}
+				navigateToView(true);
 			}
 		});
 		
@@ -417,28 +430,72 @@ public class GenericDocumentPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if(!steps.isEmpty() && currentStep>0){
-					currentStep = currentStep-1;
-					navigateToView(steps.get(currentStep));
-				}
+				navigateToView(false);
 			}
 		});
 		
 	}
 	
+	protected void navigateToView(boolean isNavigateNext) {
+		boolean navigating = false;
+		if(getView().isValid() && steps.size()>1){
+			if(isNavigateNext){
+				if(steps.size()>currentStep+1){
+					currentStep = currentStep+1;
+					navigating=true;
+				}//else ignore
+			}else{
+				//Navigate Previous
+				if(currentStep>0){
+					currentStep = currentStep-1;
+					navigating=true;
+				}
+			}
+			
+			
+		}
+		
+		save(doc);
+		
+		if(navigating){
+			navigateToView(steps.get(currentStep));
+		}
+		
+	}
+
 	protected void navigateToView(TaskStepDTO taskStepDTO) {
 		Long formId = taskStepDTO.getFormId();
 		if(formId!=null){
+			getView().getLinkContinue().setText("Continue");
+			
+			getView().show((Anchor)getView().getLinkPrevious(), true);
+			getView().show((Anchor)getView().getLinkNext(), true);
+			if((steps.size()-1)==currentStep){
+				getView().getLinkContinue().setText("Finish");
+				getView().show((Anchor)getView().getLinkNext(), false);
+			}else if(currentStep==0){
+				getView().show((Anchor)getView().getLinkPrevious(), false);
+			}
+			
+			MultiRequestAction requests = new MultiRequestAction();
+			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, formId, true));
+			requests.addRequest(new GetAttachmentsRequest(documentId));
+			
 			fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
-			requestHelper.execute(new GetFormModelRequest(FormModel.FORMMODEL, formId, true),
-					new TaskServiceCallback<GetFormModelResponse>() {
-						@Override
-						public void processResult(GetFormModelResponse aResponse) {
-							Form form = (Form) aResponse.getFormModel().get(0);							
-							bindForm(form, doc);
-							fireEvent(new ProcessingCompletedEvent());
-						}
-					});
+			requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					public void processResult(MultiRequestActionResult results) {					
+						int i=0;	
+						GetFormModelResponse aResponse = (GetFormModelResponse)results.get(i++);
+						Form form = (Form) aResponse.getFormModel().get(0);							
+						bindForm(form, doc);
+						
+						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
+						bindAttachments(attachmentsresponse);
+						
+						fireEvent(new ProcessingCompletedEvent());							
+					}
+			});
 		}
 	}
 
@@ -571,7 +628,25 @@ public class GenericDocumentPresenter extends
 				}, "Ok", "Cancel");
 	}
 
+	boolean save(Doc doc){
+		boolean save=false;
+		
+		if(doc instanceof Document)
+			if(((Document)doc).getStatus()==DocStatus.DRAFTED){
+				//showEditForm(MODE.EDIT);
+				save = true;
+			}
+		
+		if(save){
+			save((Document)doc);
+		}else{
+			doc.getValues().putAll(getView().getValues());
+		}
+		
+		return save;
+	}
 	protected void save(Document document) {
+		
 		document.setValues(getView().getValues());
 		document.getDetails().clear();
 		for(Value val: document.getValues().values()){
@@ -592,16 +667,25 @@ public class GenericDocumentPresenter extends
 		
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
-			requestHelper.execute(new CreateDocumentRequest(document),
-					new TaskServiceCallback<CreateDocumentResult>() {
-						@Override
-						public void processResult(CreateDocumentResult result) {
-							fireEvent(new ProcessingCompletedEvent());
-							Document saved = result.getDocument();
-							assert saved.getId() != null;
-							bindForm(form, saved);
-						}
-					});
+			MultiRequestAction requests = new MultiRequestAction();
+			requests.addRequest(new CreateDocumentRequest(document));
+			requests.addRequest(new GetAttachmentsRequest(documentId));
+			
+			requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					public void processResult(MultiRequestActionResult results) {					
+						int i=0;	
+						CreateDocumentResult aResponse = (CreateDocumentResult)results.get(i++);
+						Document saved = aResponse.getDocument();
+						assert saved.getId() != null;
+						bindForm(form, saved);
+						
+						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
+						bindAttachments(attachmentsresponse);
+						
+						fireEvent(new ProcessingCompletedEvent());							
+					}
+			});
 		}
 		
 	}
@@ -701,12 +785,24 @@ public class GenericDocumentPresenter extends
 					bindActivities(getActivities);
 										
 					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
-					steps = resp.getSteps();
+					setSteps(resp.getSteps());
 					
 					fireEvent(new ProcessingCompletedEvent());
 					
 				}	
 			});
+		}
+	}
+
+	protected void setSteps(List<TaskStepDTO> steps) {
+		this.steps = steps;
+		if(steps==null){
+			return;
+		}
+		
+		if(steps.size()>1){
+			getView().show((Anchor)getView().getLinkNext(), true);
+			getView().getLinkContinue().setText("Continue");
 		}
 	}
 
@@ -761,6 +857,14 @@ public class GenericDocumentPresenter extends
 					}
 				}
 			}
+			
+			if(doc instanceof Document){
+				DocStatus status = ((Document)doc).getStatus();
+				if(status==DocStatus.DRAFTED){
+					getView().showNavigation(true); //Continue button will always be available
+				}
+			}
+			
 			
 			Value value = values.get(name);
 			field.setValue(value);

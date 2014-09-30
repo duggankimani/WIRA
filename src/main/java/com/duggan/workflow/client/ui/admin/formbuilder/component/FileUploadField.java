@@ -113,6 +113,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 	public void setValue(Object value) {
 		super.setValue(value);
 		
+		System.err.println(getField().getName()+" = "+value);
 		if(value!=null){
 			if(!(value instanceof String)){
 				value = value.toString();

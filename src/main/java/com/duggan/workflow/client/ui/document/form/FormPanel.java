@@ -70,14 +70,14 @@ public class FormPanel extends Composite {
 				if(prop.getName().equals(HasProperties.CAPTION)){
 					Value val = prop.getValue();
 					if(val!=null){
-						divFormCaption.setInnerText(((StringValue)val).getValue());
+						divFormCaption.setInnerHTML(((StringValue)val).getValue());
 					}
 					
 				}
 				if(prop.getName().equals(HasProperties.HELP)){
 					Value val = prop.getValue();
 					if(val!=null){
-						divFormHelp.setInnerText(((StringValue)val).getValue());
+						divFormHelp.setInnerHTML(((StringValue)val).getValue());
 					}
 					
 				}

@@ -29,7 +29,7 @@ PropertyChangedHandler{
 		panel.add(label);
 		
 		addStyleName("thead th td");		
-		setText(field.getCaption());				
+		label.getElement().setInnerHTML(field.getCaption());				
 		this.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -51,9 +51,9 @@ PropertyChangedHandler{
 		label.addClickHandler(clickHandler);
 	}
 
-	private void setText(String caption) {
-		label.setText(caption);
-	}
+//	private void setText(String caption) {
+//		label.setText(caption);
+//	}
 
 	public Field getField(){
 		return fieldWidget.getField();

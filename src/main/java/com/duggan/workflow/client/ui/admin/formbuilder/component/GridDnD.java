@@ -66,7 +66,7 @@ public class GridDnD extends AbsolutePanel {
 					col.delete();
 				}
 				
-				System.err.println("GridDnD Dragged............");
+				//System.err.println("GridDnD Dragged............");
 				save();
 			}
 			

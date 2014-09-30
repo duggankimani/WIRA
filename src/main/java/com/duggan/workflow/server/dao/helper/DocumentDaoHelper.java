@@ -241,7 +241,7 @@ public class DocumentDaoHelper {
 				doc.setValue(val.getFieldName(), getValue(val, type));
 			}
 		}
-
+		
 		doc.setDetails(getDetails(model.getDetails()));
 
 		return doc;

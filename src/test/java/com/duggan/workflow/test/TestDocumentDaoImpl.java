@@ -17,9 +17,11 @@ import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.Value;
 
 public class TestDocumentDaoImpl {
 
@@ -29,13 +31,23 @@ public class TestDocumentDaoImpl {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
+		ProcessMigrationHelper.start(17L);
 		dao = DB.getDocumentDao();
+		
 	}
 	
 	@Test
 	public void getAttachments(){
-		long documentId = 81L;
-		DB.getAttachmentDao().getHasAttachment(documentId);
+		long documentId = 385L;
+		Assert.assertTrue(DB.getAttachmentDao().getHasAttachment(documentId));
+		
+		Document document = DocumentDaoHelper.getDocument(documentId);
+		Value bankStatementAttachment = document.getValues().get("bankStatements");
+		
+		//
+		Assert.assertNotNull(bankStatementAttachment);
+		
+		System.out.println(bankStatementAttachment);
 	}
 	
 	@Ignore

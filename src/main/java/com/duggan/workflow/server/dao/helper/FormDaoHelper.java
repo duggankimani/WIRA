@@ -659,7 +659,7 @@ public class FormDaoHelper {
 			pair.setDisplayValue(keyValuePair.getDisplayName());
 	
 			if(keyValuePair.getName()==null || keyValuePair.getName().trim().isEmpty()){
-				pair.setName(UUID.randomUUID().toString());
+				pair.setName(keyValuePair.getValue());
 			}else{
 				pair.setName(keyValuePair.getName());
 			}
