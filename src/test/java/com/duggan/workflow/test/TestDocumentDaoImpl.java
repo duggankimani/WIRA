@@ -31,12 +31,28 @@ public class TestDocumentDaoImpl {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.start(17L);
+		//ProcessMigrationHelper.start(17L);
 		dao = DB.getDocumentDao();
 		
 	}
 	
 	@Test
+	public void cloneDoc(){
+		Document doc = DocumentDaoHelper.getDocument(4L);
+		
+		for(int i=0; i<10;i++){
+			Document clone = doc.clone();
+			clone.getValues().put("subject", null);
+			clone.getValues().put("description", null);
+			clone.setSubject(null);
+			clone.setDescription(null);
+			
+			DocumentDaoHelper.save(clone);
+		}
+		
+	}
+	
+	@Ignore
 	public void getAttachments(){
 		long documentId = 385L;
 		Assert.assertTrue(DB.getAttachmentDao().getHasAttachment(documentId));
@@ -130,7 +146,7 @@ public class TestDocumentDaoImpl {
 	
 	@After
 	public void close(){
-		DB.rollback();
+		DB.commitTransaction();
 		DB.closeSession();
 	}
 	
