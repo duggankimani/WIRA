@@ -177,5 +177,14 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 				
 		return getResultList(query);
 	}
+
+	public List<LocalAttachment> getAttachmentsForDocument(Long documentId,
+			String name) {
+		Query query  = em.createQuery("FROM LocalAttachment l where documentId= :documentId and l.name=:name")
+				.setParameter("documentId", documentId)
+				.setParameter("name", name);
+		
+		return getResultList(query);
+	}
 	
 }

@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.servlets.upload;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,17 +9,27 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
+import com.duggan.workflow.server.dao.AttachmentDaoImpl;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.export.HTMLToPDFConvertor;
+import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.itextpdf.text.DocumentException;
 
 public class GetReport extends HttpServlet {
 
@@ -107,7 +118,54 @@ public class GetReport extends HttpServlet {
 		if(action.equals("GetLogo")){
 			processSettingsImage(req, resp);
 		}
+		
+		if(action.equalsIgnoreCase("GENERATEOUTPUT")){
+			processOutputDoc(req,resp);
+		}
 
+	}
+
+	private void processOutputDoc(HttpServletRequest req,
+			HttpServletResponse resp) {
+		String outdoc= req.getParameter("template");
+		String name = req.getParameter("name");
+		String doc = req.getParameter("doc");
+		
+		assert outdoc!=null && doc!=null;
+		
+		byte[] pdf;
+		
+		try {
+			
+			String template = OutputDocumentDaoHelper.getHTMLTemplate(outdoc);
+			Long documentId = new Long(doc);
+			Doc document  = DocumentDaoHelper.getDocument(documentId);
+			pdf = new HTMLToPDFConvertor().convert(document, template);
+			
+			LocalAttachment attachment = new LocalAttachment();
+	
+			AttachmentDaoImpl dao = DB.getAttachmentDao();		
+			List<LocalAttachment> attachments = dao.getAttachmentsForDocument(documentId, name);
+			if(!attachments.isEmpty()){
+				attachment = attachments.get(0);
+			}
+			
+			attachment.setArchived(false);
+			attachment.setContentType("application/pdf");
+			attachment.setDocument(DB.getDocumentDao().getById(documentId));
+			attachment.setName(name+".pdf");
+			attachment.setSize(pdf.length);
+			attachment.setAttachment(pdf);
+			dao.save(attachment);
+			
+		} catch (IOException | SAXException | ParserConfigurationException
+				| FactoryConfigurationError | DocumentException e) {
+			
+			e.printStackTrace();
+			return;
+		}
+		
+		processAttachmentRequest(resp, pdf, name);
 	}
 
 	private void processSettingsImage(HttpServletRequest req,

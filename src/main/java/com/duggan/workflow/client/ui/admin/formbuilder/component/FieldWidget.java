@@ -645,7 +645,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case FILEUPLOAD:
 			widget = new FileUploadField();
 			break;
-
+			
+		case LINK:
+			widget = new LinkField();
+			break;
 		}
 
 		widget.designMode = activatePopup;

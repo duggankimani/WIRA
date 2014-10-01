@@ -24,6 +24,7 @@ public interface HasProperties {
 	public static final String FORMULA="FORMULA";
 	public static final String UPLOADERTYPE="UPLOADERTYPE";
 	public static final String ACCEPT = "ACCEPT";
+	public static final String HREF = "HREF";
 
 	void addProperty(Property property);
 	

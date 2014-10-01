@@ -70,6 +70,7 @@ import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.Value;
@@ -87,6 +88,7 @@ import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
+import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
@@ -102,6 +104,7 @@ import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
+import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
@@ -464,19 +467,22 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void navigateToView(TaskStepDTO taskStepDTO) {
-		Long formId = taskStepDTO.getFormId();
-		if(formId!=null){
-			getView().getLinkContinue().setText("Continue");
-			
-			getView().show((Anchor)getView().getLinkPrevious(), true);
-			getView().show((Anchor)getView().getLinkNext(), true);
-			if((steps.size()-1)==currentStep){
-				getView().getLinkContinue().setText("Finish");
-				getView().show((Anchor)getView().getLinkNext(), false);
-			}else if(currentStep==0){
-				getView().show((Anchor)getView().getLinkPrevious(), false);
-			}
-			
+				
+		getView().getLinkContinue().setText("Continue");
+		
+		getView().show((Anchor)getView().getLinkPrevious(), true);
+		getView().show((Anchor)getView().getLinkNext(), true);
+		if((steps.size()-1)==currentStep){
+			getView().getLinkContinue().setText("Finish");
+			getView().show((Anchor)getView().getLinkNext(), false);
+		}else if(currentStep==0){
+			getView().show((Anchor)getView().getLinkPrevious(), false);
+		}
+		fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
+		
+
+		if(taskStepDTO.getFormId()!=null){
+			Long formId = taskStepDTO.getFormId();			
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, formId, true));
 			requests.addRequest(new GetAttachmentsRequest(documentId));
@@ -488,6 +494,30 @@ public class GenericDocumentPresenter extends
 						int i=0;	
 						GetFormModelResponse aResponse = (GetFormModelResponse)results.get(i++);
 						Form form = (Form) aResponse.getFormModel().get(0);							
+						bindForm(form, doc);
+						
+						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
+						bindAttachments(attachmentsresponse);
+						
+						fireEvent(new ProcessingCompletedEvent());							
+					}
+			});
+			
+		}else if(taskStepDTO.getOutputDocId()!=null){
+			MultiRequestAction requests = new MultiRequestAction();
+			
+			requests.addRequest(new GetOutputDocumentsRequest(taskStepDTO.getOutputDocId()));
+			requests.addRequest(new GetAttachmentsRequest(documentId));			
+			
+			requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					public void processResult(MultiRequestActionResult results) {					
+						int i=0;	
+						GetOutputDocumentsResponse aResponse = (GetOutputDocumentsResponse)results.get(i++);
+						OutputDocument outDoc = aResponse.getDocuments().get(0);
+						
+						Form form = GenericDocUtils.generateForm(outDoc, doc);
+						
 						bindForm(form, doc);
 						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
