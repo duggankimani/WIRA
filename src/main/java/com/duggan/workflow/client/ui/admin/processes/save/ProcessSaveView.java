@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.processes.save;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
@@ -170,7 +171,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADCHANGESET);
 		context.setContext("processDefId", id+"");
-		context.setAccept("xml,bpmn,bpmn2,drl,png,jpeg,jpg,gif");
+		context.setAccept(Arrays.asList("xml","bpmn","bpmn2","drl","png","jpeg","jpg","gif","svg"));
 		uploader.setContext(context);
 	}
 	
