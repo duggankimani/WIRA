@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.servlets.upload;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,8 +25,8 @@ import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.itextpdf.text.DocumentException;
 
@@ -46,7 +45,9 @@ public class GetReport extends HttpServlet {
 
 		try {
 			// check session
-
+			//check session
+			SessionHelper.setHttpRequest(req);
+			
 			DB.beginTransaction();
 
 			executeGet(req, resp);
@@ -57,6 +58,7 @@ public class GetReport extends HttpServlet {
 			e.printStackTrace();
 		} finally {
 			DB.closeSession();
+			SessionHelper.setHttpRequest(null);
 		}
 
 	}
@@ -130,6 +132,7 @@ public class GetReport extends HttpServlet {
 		String outdoc= req.getParameter("template");
 		String name = req.getParameter("name");
 		String doc = req.getParameter("doc");
+		String path = req.getParameter("path");
 		
 		assert outdoc!=null && doc!=null;
 		
@@ -153,7 +156,8 @@ public class GetReport extends HttpServlet {
 			attachment.setArchived(false);
 			attachment.setContentType("application/pdf");
 			attachment.setDocument(DB.getDocumentDao().getById(documentId));
-			attachment.setName(name+".pdf");
+			attachment.setName(name+(name.endsWith(".pdf")? "": name));
+			attachment.setPath(path);
 			attachment.setSize(pdf.length);
 			attachment.setAttachment(pdf);
 			dao.save(attachment);

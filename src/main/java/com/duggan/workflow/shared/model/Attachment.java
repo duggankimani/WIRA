@@ -30,6 +30,7 @@ public class Attachment implements Serializable,TreeStore.TreeNode<Attachment> {
 	private ArrayList<Attachment> children;
 	private String documentType;
 	private String subject;
+	private String path;
 	private boolean isDirectory;
 
 	private Attachment parent;
@@ -189,6 +190,12 @@ public class Attachment implements Serializable,TreeStore.TreeNode<Attachment> {
 	
 	public boolean isDirectory() {
 		return isDirectory;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 }

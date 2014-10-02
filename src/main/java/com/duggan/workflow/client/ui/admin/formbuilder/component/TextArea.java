@@ -147,6 +147,7 @@ public class TextArea extends FieldWidget {
 
 	@Override
 	public void setValue(Object value) {
+		super.setValue(value);
 		if(value!=null){
 			txtComponent.setValue((String)value);
 			lblComponent.setText((String)value);

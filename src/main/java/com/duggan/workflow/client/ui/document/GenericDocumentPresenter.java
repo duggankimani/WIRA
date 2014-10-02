@@ -466,8 +466,7 @@ public class GenericDocumentPresenter extends
 		
 	}
 
-	protected void navigateToView(TaskStepDTO taskStepDTO) {
-				
+	private void alterNavigation(){
 		getView().getLinkContinue().setText("Continue");
 		
 		getView().show((Anchor)getView().getLinkPrevious(), true);
@@ -478,9 +477,13 @@ public class GenericDocumentPresenter extends
 		}else if(currentStep==0){
 			getView().show((Anchor)getView().getLinkPrevious(), false);
 		}
+		
+		
+	}
+	protected void navigateToView(TaskStepDTO taskStepDTO) {
+		
 		fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
 		
-
 		if(taskStepDTO.getFormId()!=null){
 			Long formId = taskStepDTO.getFormId();			
 			MultiRequestAction requests = new MultiRequestAction();
@@ -495,7 +498,7 @@ public class GenericDocumentPresenter extends
 						GetFormModelResponse aResponse = (GetFormModelResponse)results.get(i++);
 						Form form = (Form) aResponse.getFormModel().get(0);							
 						bindForm(form, doc);
-						
+						alterNavigation();
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
 						bindAttachments(attachmentsresponse);
 						
@@ -519,6 +522,7 @@ public class GenericDocumentPresenter extends
 						Form form = GenericDocUtils.generateForm(outDoc, doc);
 						
 						bindForm(form, doc);
+						alterNavigation();
 						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
 						bindAttachments(attachmentsresponse);
@@ -526,6 +530,8 @@ public class GenericDocumentPresenter extends
 						fireEvent(new ProcessingCompletedEvent());							
 					}
 			});
+		}else{
+			fireEvent(new ProcessingCompletedEvent());
 		}
 	}
 

@@ -300,6 +300,9 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 		
 		fldForm.add(formPanel);
+
+		//Force Scroll To Top of Form
+		img.getElement().scrollIntoView();
 	}
 
 	public void showDefaultFields(boolean show) {

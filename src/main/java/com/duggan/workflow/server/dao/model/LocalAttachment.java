@@ -43,6 +43,9 @@ public class LocalAttachment extends PO{
 	
 	private boolean archived;
 	
+	//This is meant for output documents - eg Requisitions/HR/REQ-IPA-009-14.pdf
+	//This will be used to dynamically generate the document tree in the front end
+	private String path;
 
 	//UserId=Username
 	private String imageUserId;
@@ -178,6 +181,14 @@ public class LocalAttachment extends PO{
 
 	public void setOutputDoc(ADOutputDoc outputDoc) {
 		this.outputDoc = outputDoc;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

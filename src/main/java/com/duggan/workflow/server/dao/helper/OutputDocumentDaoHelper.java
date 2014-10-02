@@ -26,7 +26,7 @@ public class OutputDocumentDaoHelper {
 		document.setDescription(output.getDescription());
 		document.setId(output.getId());
 		document.setName(output.getName());
-		
+		document.setPath(output.getPath());
 		if(output.getAttachment()!=null){
 			LocalAttachment attachment= output.getAttachment();
 			document.setAttachmentName(attachment.getName());
@@ -46,6 +46,7 @@ public class OutputDocumentDaoHelper {
 		adDoc.setCode(doc.getCode());
 		adDoc.setName(doc.getName());
 		adDoc.setDescription(doc.getDescription());
+		adDoc.setPath(doc.getPath());
 		
 		return adDoc;
 	}

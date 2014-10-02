@@ -43,9 +43,10 @@ public class OutPutDocsView extends ViewImpl implements
 	private void setTable() {
 		tblView.setAutoNumber(true);
 		List<TableHeader> th = new ArrayList<TableHeader>();
-		th.add(new TableHeader("Name", 40.0,"title"));
+		th.add(new TableHeader("Name", 20.0,"title"));
 		th.add(new TableHeader("Template Id", 20.0));
-		th.add(new TableHeader("Attachment(s)", 30.0));
+		th.add(new TableHeader("Path", 30.0));
+		th.add(new TableHeader("Attachment(s)", 20.0));
 		th.add(new TableHeader("Action(s)", 10.0));
 		
 		tblView.setTableHeaders(th);
@@ -115,7 +116,7 @@ public class OutPutDocsView extends ViewImpl implements
 		panel.add(delete);
 		
 		tblView.addRow(new InlineLabel(doc.getName()), new InlineLabel(doc.getCode()), 
-				link, panel);
+				new InlineLabel(doc.getPath()),link, panel);
 	}
 	
 	class Link extends ActionLink{

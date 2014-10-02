@@ -19,6 +19,13 @@
 				class="form-control" placeholder="Output Doc Ref" />
 		</div>
 		<div class="form-group">
+			<label for="ProcessName">Path:</label>
+			<d:TextField ui:field="txtPath" type="text" class="form-control"
+				placeholder="e.g Requisitions/@@subject.pdf" />
+		</div>
+		
+		<!-- No Value here -->
+		<div class="form-group hidden">
 			<label for="ProcessDescription">Notes:</label>
 			<d:TextArea ui:field="txtDescription" class="form-control"
 				rows="3"></d:TextArea>

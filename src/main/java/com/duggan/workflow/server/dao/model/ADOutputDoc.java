@@ -24,6 +24,7 @@ public class ADOutputDoc extends PO {
 	private String name;
 	private String description;
 	private String code;
+	private String path;
 	
 	@OneToOne(mappedBy="outputDoc")
 	@Cascade(value={CascadeType.ALL})
@@ -63,6 +64,14 @@ public class ADOutputDoc extends PO {
 
 	public void setAttachment(LocalAttachment attachment) {
 		this.attachment = attachment;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	

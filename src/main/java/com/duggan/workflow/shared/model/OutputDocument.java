@@ -16,6 +16,7 @@ public class OutputDocument implements Serializable, Listable {
 	private boolean isActive=true;
 	private Long attachmentId;
 	private String attachmentName;
+	private String path;
 	
 	public OutputDocument() {
 	}
@@ -75,6 +76,14 @@ public class OutputDocument implements Serializable, Listable {
 	public String getDisplayName() {
 	
 		return name;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

@@ -140,6 +140,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	@Override
 	public void setValue(Object value) {
 		String val = value==null? null: value.toString();
+		super.setValue(value);
 		int count = vPanel.getWidgetCount();
 		for(int i=0; i<count; i++){
 			RadioButton txtBox= (RadioButton)vPanel.getWidget(i);

@@ -10,8 +10,6 @@ import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.OutputDocument;
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Converter;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -34,6 +32,7 @@ public class SaveOutPutDocsView extends ViewImpl implements
 	@UiField TextField txtName;
 	@UiField TextField txtDocRef;
 	@UiField TextArea txtDescription;
+	@UiField TextField txtPath;
 	@UiField VerticalPanel currentAttachmentsPanel;
 	
 	@Inject
@@ -57,7 +56,7 @@ public class SaveOutPutDocsView extends ViewImpl implements
 		document.setCode(txtDocRef.getValue());
 		document.setDescription(txtDescription.getValue());
 		document.setName(txtName.getValue());
-		
+		document.setPath(txtPath.getValue());
 		return document;
 	}
 
@@ -71,6 +70,7 @@ public class SaveOutPutDocsView extends ViewImpl implements
 		txtDocRef.setValue(null);
 		txtName.setValue(null);
 		txtDescription.setValue(null);
+		txtPath.setValue(null);
 		currentAttachmentsPanel.clear();
 		createContext(null);
 		
@@ -96,6 +96,7 @@ public class SaveOutPutDocsView extends ViewImpl implements
 		txtName.setValue(doc.getName());
 		txtDocRef.setValue(doc.getCode());
 		txtDescription.setValue(doc.getDescription());
+		txtPath.setValue(doc.getPath());
 		
 		if(doc.getAttachmentName()!=null){
 			ActionLink link = new ActionLink(doc.getAttachmentName());

@@ -159,6 +159,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	
 	@Override
 	public void setValue(Object value) {
+		super.setValue(value);
 		if(value==null){
 			return;
 		}

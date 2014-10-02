@@ -44,7 +44,6 @@ public class LinkField extends FieldWidget{
 	public void setField(Field field) {
 		super.setField(field);
 		String href = getPropertyValue(HREF);
-		System.err.println("HREF = "+href);
 		aLink.setHref(href);
 	}
 	

@@ -98,6 +98,7 @@ public class DateField extends FieldWidget {
 	
 	@Override
 	public void setValue(Object value) {
+		super.setValue(value);
 		if(value!=null){
 			dateBox.setValue((Date)value);
 			lblComponent.setText(DateUtils.DATEFORMAT.format((Date)value));
