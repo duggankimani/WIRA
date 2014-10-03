@@ -63,7 +63,7 @@ public class TaskStepView extends ViewImpl implements
 		tblView.clearRows();
 		
 		for(TaskStepDTO dto: dtos){
-			String buttonStyle = "none";//"btn";
+			String buttonStyle = "italics";//"btn";
 			
 			HTMLPanel actions = new HTMLPanel("");
 			Link up = new Link("Up",dto,-1);

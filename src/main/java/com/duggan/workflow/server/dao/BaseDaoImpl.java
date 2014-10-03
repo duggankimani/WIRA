@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.PO;
@@ -29,7 +30,10 @@ public class BaseDaoImpl {
 		try{
 			value = (T)query.getSingleResult();
 		}catch(Exception e){
-			e.printStackTrace();
+			if(!(e instanceof NoResultException)){
+				e.printStackTrace();
+			}
+			
 		}
 		
 		return value;
