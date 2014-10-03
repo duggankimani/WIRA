@@ -10,11 +10,14 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent.ProcessSelectedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
+import com.duggan.workflow.client.ui.events.SaveTaskStepEvent.SaveTaskStepHandler;
 import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.ProcessDef;
-import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.form.Form;
@@ -35,7 +38,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -43,7 +45,7 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
 public class TaskStepPresenter extends
-		PresenterWidget<TaskStepPresenter.MyView> implements ProcessSelectedHandler{
+		PresenterWidget<TaskStepPresenter.MyView> implements ProcessSelectedHandler, SaveTaskStepHandler{
 
 	public interface MyView extends View {
 		void show(boolean show);
@@ -72,6 +74,7 @@ public class TaskStepPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(ProcessSelectedEvent.TYPE, this);
+		addRegisteredHandler(SaveTaskStepEvent.TYPE, this);
 		
 		getView().setDeleteHandler(new ClickHandler() {
 			
@@ -131,6 +134,7 @@ public class TaskStepPresenter extends
 		if(def.getId().equals(processDef.getId())){
 			getView().show(event.isSelected());
 			if(event.isSelected()){
+				getView().getTasksDropDown().setNullText("--"+def.getName()+"--");
 				loadForms();
 			}
 		}
@@ -195,13 +199,21 @@ public class TaskStepPresenter extends
 	}
 
 	private void saveDTOs(List<TaskStepDTO> dtos) {
+		fireEvent(new ProcessingEvent("Saving Task Steps..."));
 		requestHelper.execute(new SaveTaskStepRequest(dtos), new TaskServiceCallback<SaveTaskStepResponse>() {
 			@Override
 			public void processResult(SaveTaskStepResponse aResponse) {
 				List<TaskStepDTO> dtos = aResponse.getList();
 				getView().displaySteps(dtos);
+				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
+	}
+	
+	@Override
+	public void onSaveTaskStep(SaveTaskStepEvent event) {
+		
+		saveDTOs(Arrays.asList(event.getTaskStepDTO()));
 	}
 
 }

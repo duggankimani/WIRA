@@ -37,6 +37,12 @@ public class TestDocumentDaoImpl {
 	}
 	
 	@Test
+	public void getTaskStepCount(){
+		int count = DB.getProcessDao().getStepCount(1L, null);
+		System.err.println("Count = "+count);
+	}
+	
+	@Ignore
 	public void cloneDoc(){
 		Document doc = DocumentDaoHelper.getDocument(4L);
 		

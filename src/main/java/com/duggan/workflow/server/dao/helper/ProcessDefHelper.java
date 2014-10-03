@@ -171,28 +171,74 @@ public class ProcessDefHelper {
 				ADDocType adtype = getType(type);
 				model.addDocType(adtype);
 			}
-
 		}
 
 		return model;
-
 	}
 	
 	public static List<TaskStepDTO> createTaskSteps(List<TaskStepDTO> steps){
 		ProcessDaoImpl dao = DB.getProcessDao();
 		List<TaskStepDTO> list = new ArrayList<>();
 		
+		Long processDefId = steps.get(0).getProcessDefId();
+		Long nodeId = steps.get(0).getNodeId();
+		int size = dao.getStepCount(processDefId,nodeId);
+		
 		for(TaskStepDTO step: steps){
+			
+			int previousPos = -1;
+			int newPos = -1;
+			if(step.getId()!=null){
+				previousPos = dao.getById(TaskStepModel.class, step.getId()).getSequenceNo();
+				newPos = step.getSequenceNo();
+			}else{
+				newPos=previousPos=++size;
+				step.setSequenceNo(newPos);
+			}
+			
+			if(previousPos!=newPos){
+				//Changed sequence
+				TaskStepModel previousModel = 
+						dao.getTaskStepBySequenceNo(step.getProcessDefId(),step.getNodeId(),newPos);
+				if(previousModel!=null){
+					//Swap the positions of affected models
+					previousModel.setSequenceNo(previousPos);
+					dao.createStep(previousModel);
+				}
+			}
+			
 			TaskStepModel model = getStep(step);
 			if(!step.isActive()){
 				dao.delete(model);
+				recalculatePositionsForSubsequentSteps(step);
 				continue;
 			}
+			
+			//Creating/ Updating model
 			dao.createStep(model);
+						
 			list.add(getStep(model));
 		}
 		
 		return list;
+	}
+
+	/**
+	 * Called After step delete</p>
+	 * Recalculates positions of subsequent steps after delete
+	 * <p>
+	 * @param sequenceNo
+	 */
+	private static void recalculatePositionsForSubsequentSteps(TaskStepDTO deletedModel) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		List<TaskStepModel> models  = dao.getTaskStepsAfterSeqNo(deletedModel.getProcessDefId(),
+				deletedModel.getNodeId(),
+				deletedModel.getSequenceNo()); 
+		for(TaskStepModel model: models){
+			int seqNo = model.getSequenceNo();
+			model.setSequenceNo(seqNo-1);
+			dao.save(model);
+		}
 	}
 
 	private static TaskStepDTO getStep(TaskStepModel model) {

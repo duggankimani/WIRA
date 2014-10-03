@@ -27,6 +27,7 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 	@UiField ListBox listBox;
 	
 	private List<T> items;
+	private String nullText = "--Select--";
 	
 	T value = null;
 	
@@ -34,6 +35,8 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 		initWidget(uiBinder.createAndBindUi(this));
 		initComponents();
 	}
+	
+	
 	
 	void initComponents(){
 		listBox.addChangeHandler(new ChangeHandler() {
@@ -60,7 +63,7 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 		this.items = items;
 		
 		listBox.clear();
-		listBox.addItem("--Select--", "");
+		listBox.addItem(nullText, "");
 		
 		for(T item: items){
 			listBox.addItem(item.getDisplayName(), item.getName());
@@ -117,4 +120,20 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 		return items;
 	}
 	
+	@Override
+	public void addStyleName(String style) {
+		listBox.addStyleName(style);
+	}
+
+
+
+	public String getNullText() {
+		return nullText;
+	}
+
+
+
+	public void setNullText(String nullText) {
+		this.nullText = nullText;
+	}
 }

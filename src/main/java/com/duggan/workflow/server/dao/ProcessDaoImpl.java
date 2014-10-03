@@ -81,22 +81,6 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 	}
 	
 	public void createStep(TaskStepModel step){
-		int sequence = step.getSequenceNo();
-		ProcessDefModel model = step.getProcessDef();
-		if(sequence==0){			
-			int size = model.getTaskSteps().size();
-			step.setSequenceNo(sequence = size+1);
-		}else{
-			for(TaskStepModel s: model.getTaskSteps()){
-				if(!s.equals(step)){
-					if(s.getSequenceNo()>= sequence){
-						s.setSequenceNo(s.getSequenceNo()+1);
-						em.persist(s);
-					}
-				}				
-			}
-		}
-		
 		em.persist(step);
 	}
 
@@ -108,6 +92,8 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 		}else{
 			hql = hql.concat(" and t.nodeId is null");
 		}
+		
+		hql = hql.concat(" order by sequenceNo");
 			
 		Query query = em.createQuery(hql)
 				.setParameter("processId", processId);
@@ -117,6 +103,72 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 		}
 		
 		return getResultList(query);
+	}
+
+
+	public TaskStepModel getTaskStepBySequenceNo(Long processDefId, Long nodeId,
+			int sequenceNo) {
+		
+		String hql = "FROM TaskStepModel t where t.processDef.id=:processDefId and sequenceNo=:sequenceNo";
+		if(nodeId!=null){
+			hql = hql.concat(" and t.nodeId=:nodeId");
+		}else{
+			hql = hql.concat(" and t.nodeId is null");
+		}
+			
+		Query query = em.createQuery(hql)
+				.setParameter("sequenceNo", sequenceNo)
+				.setParameter("processDefId", processDefId);
+		
+		if(nodeId!=null){
+			query.setParameter("nodeId", nodeId);
+		}
+		
+		return getSingleResultOrNull(query);
+	}
+
+
+	public List<TaskStepModel> getTaskStepsAfterSeqNo(Long processDefId,
+			Long nodeId, int sequenceNo) {
+		String hql = "FROM TaskStepModel t where t.processDef.id=:processDefId and sequenceNo>:sequenceNo";
+		
+		if(nodeId!=null){
+			hql = hql.concat(" and t.nodeId=:nodeId");
+		}else{
+			hql = hql.concat(" and t.nodeId is null");
+		}
+			
+		Query query = em.createQuery(hql)
+				.setParameter("sequenceNo", sequenceNo)
+				.setParameter("processDefId", processDefId);
+		
+		if(nodeId!=null){
+			query.setParameter("nodeId", nodeId);
+		}
+		
+		return getResultList(query);
+	}
+
+
+	public int getStepCount(Long processDefId, Long nodeId) {
+		
+		String hql = "select count (t) FROM TaskStepModel t where t.processDef.id=:processDefId";
+		
+		if(nodeId!=null){
+			hql = hql.concat(" and t.nodeId=:nodeId");
+		}else{
+			hql = hql.concat(" and t.nodeId is null");
+		}
+			
+		Query query = em.createQuery(hql)
+				.setParameter("processDefId", processDefId);
+		
+		if(nodeId!=null){
+			query.setParameter("nodeId", nodeId);
+		}
+		
+		Number count = getSingleResultOrNull(query);
+		return count.intValue();
 	}
 	
 }
