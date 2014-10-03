@@ -547,17 +547,26 @@ public class GenericDocumentPresenter extends
 
 
 	private void completeIt(Map<String, Value> withValues) {
-		Map<String, Value> values = getView().getValues();
-		if(values==null){
-				values = new HashMap<String, Value>();
-		}
 		
+		//Copy all previous values from the task object into the result/values
+		Map<String, Value> values = doc.getValues();
+		
+		//Get Form Values
+		Map<String, Value> formValues = getView().getValues();
+		if(formValues==null){
+			formValues = new HashMap<String, Value>();
+		}		
+		//Add form field values : to take care of new values
+		values.putAll(formValues); 
+		
+		//Add any programmatic values (Button values e.g isApproved)
 		if(withValues!=null)
 			values.putAll(withValues);
 		
-		assert !values.isEmpty();
+		//Remove any null keys
 		values.remove(null);
 		
+		//Fire Event
 		fireEvent(new CompleteDocumentEvent(taskId, values));
 	}
 

@@ -7,6 +7,7 @@ import org.jbpm.task.Task;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
@@ -38,22 +39,31 @@ public class ExecuteWorkflowActionHandler extends
 			processInstanceId = task.getTaskData().getProcessInstanceId();
 						
 			Document document = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,false);
+			//Doc document = JBPMHelper.get().getTask(action.getTaskId());
 			assert document!=null;
 			
-			ProcessMappings mappings = JBPMHelper.get().getProcessDataMappings(action.getTaskId());
-			
 			for(String key: values.keySet()){
-				Value value = values.get(key);				
-				vals.put(key, value==null?null: value.getValue());
+				Value value = values.get(key);	
+				Object val = value==null?null: value.getValue();
+				vals.put(key, val);
 				if(key!=null){
-					key = mappings.getOutputName(key);
+					//key = mappings.getOutputName(key);
 					document.setValue(key,value);
+					log.warn("ExecuteWorkflowActionHandler.documentOut "+key+"="+val);
 				}
 			}
 		
-			vals.put("documentOut", document);
+			//ProcessMappings mappings = JBPMHelper.get().getProcessDataMappings(action.getTaskId());
+			//The Task Output Parameter Name mapped to Parameter Name document. 
+			String docOutputName = "documentOut";//mappings.getOutputName("document");
+			
+			if(docOutputName!=null){
+				log.info("Task Output Parameter Mapping '"+docOutputName+"' -(mappedto)>  'document' ");
+				vals.put(docOutputName, document);
+			}
+			
+			
 		}
-		
 		
 		JBPMHelper.get().execute(action.getTaskId(),action.getUserId(), action.getAction(), vals);
 		

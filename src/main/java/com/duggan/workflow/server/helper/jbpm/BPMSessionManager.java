@@ -567,7 +567,7 @@ class BPMSessionManager {
 
 		@Override
 		public void taskStopped(TaskUserEvent event) {
-			logger.debug("Task Stopped "+JBPMHelper.get().getDisplayName(event.getTaskId()));
+			logger.info("NotificationTaskEventListener says Task Stopped "+JBPMHelper.get().getDisplayName(event.getTaskId()));
 		}
 
 		/**
@@ -577,33 +577,33 @@ class BPMSessionManager {
 		@Override
 		public void taskClaimed(TaskUserEvent event) {
 			//when do we use this?
-			logger.debug("Task Claimed ");
+			logger.info("NotificationTaskEventListener says Task Claimed ");
 			onTaskCreated(event.getTaskId());
 		}
 		
 		@Override
 		public void taskStarted(TaskUserEvent event) {
-			logger.debug("Task Started "+JBPMHelper.get().getDisplayName(event.getTaskId()));
+			logger.info("NotificationTaskEventListener says Task Started "+JBPMHelper.get().getDisplayName(event.getTaskId()));
 		}
 
 		@Override
 		public void taskSkipped(TaskUserEvent event) {
-			logger.debug("Task Skipped "+JBPMHelper.get().getDisplayName(event.getTaskId()));
+			logger.info("NotificationTaskEventListener says Task Skipped "+JBPMHelper.get().getDisplayName(event.getTaskId()));
 		}
 
 		@Override
 		public void taskReleased(TaskUserEvent event) {
-			logger.debug("Task Released "+JBPMHelper.get().getDisplayName(event.getTaskId()));
+			logger.info("NotificationTaskEventListener says Task Released "+JBPMHelper.get().getDisplayName(event.getTaskId()));
 		}
 
 		@Override
 		public void taskForwarded(TaskUserEvent event) {
-			logger.debug("Task Forwarded "+JBPMHelper.get().getDisplayName(event.getTaskId()));
+			logger.info("NotificationTaskEventListener says Task Forwarded "+JBPMHelper.get().getDisplayName(event.getTaskId()));
 		}
 
 		@Override
 		public void taskFailed(TaskUserEvent event) {
-			logger.debug("Task Failed "+JBPMHelper.get().getDisplayName(event.getTaskId()));
+			logger.info("NotificationTaskEventListener says Task Failed "+JBPMHelper.get().getDisplayName(event.getTaskId()));
 		}
 
 		/**
@@ -630,12 +630,12 @@ class BPMSessionManager {
 			// session.startProcess(processId, parameters)
 
 			try {
-				logger.debug("onTaskCreated");
+				logger.info("NotificationTaskEventListener onTaskCreated");
 				onTaskCreated(event.getTaskId());				
-				logger.debug("onTaskCreated : End");
+				logger.info("NotificationTaskEventListener onTaskCreated : End");
 			} catch (Exception e) {
 				e.printStackTrace();
-				logger.debug("onTaskCreated : Fail");
+				logger.info("NotificationTaskEventListener onTaskCreated : Fail");
 				throw new RuntimeException(e);
 			}
 		}
@@ -661,28 +661,21 @@ class BPMSessionManager {
 		 */
 		@Override
 		public void taskCompleted(TaskUserEvent event) {
-
-			logger.debug(Thread.currentThread()
-					+ "############ COMPLETING TASK - event TaskID= "
-					+ event.getTaskId() + " :: SessionId= "
-					+ event.getSessionId());
-
 			Long sessionId = new Long(event.getSessionId());
 
 			try {
 
 				Task task = getTaskClient().getTask(event.getTaskId());
+				logger.debug(Thread.currentThread()
+						+ "NotificationTaskEventListener  COMPLETING TASK - event TaskID="
+						+ event.getTaskId() + " SessionId="+ event.getSessionId()+" ProcessId="+task.getTaskData().getProcessId());
+
 				Long outputId = task.getTaskData().getOutputContentId();
 
 				Map<String, Object> taskData = JBPMHelper
 						.getMappedDataByContentId(outputId);
-
-				Map<String, Object> newValues = new HashMap<>();
-
-				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
 				
-				
-				Long processInstanceId = doc.getProcessInstanceId();
+				Long processInstanceId = task.getTaskData().getProcessInstanceId();
 
 				StatefulKnowledgeSession session = getSession(sessionId, task
 						.getTaskData().getProcessId());
@@ -692,6 +685,7 @@ class BPMSessionManager {
 
 				// Task Data
 				Set<String> keys = taskData.keySet();
+				Map<String, Object> newValues = new HashMap<>();
 				for (String key : keys) {
 					Object value = taskData.get(key);
 					if (!key.equals("isApproved"))
@@ -699,8 +693,7 @@ class BPMSessionManager {
 								+ key.substring(1);
 
 					newValues.put(key, value);
-//					System.err.println("###>>>>Task Data Key :: " + key + " = "
-//							+ value);
+					logger.debug("NotificationTaskEventListener Task Data " + key + "="+ value);
 				}
 
 				ContextInstance ctxInstance = null;
@@ -720,17 +713,19 @@ class BPMSessionManager {
 				for (String key : keys) {
 					Object value = values.get(key);
 
-					if (!key.equals("isApproved"))
+					if (!key.equals("isApproved")){
 						key = key.substring(0, 1).toUpperCase()
-								+ key.substring(1);
+								+ key.substring(1); //IsApproved
+					}
 
 					if (newValues.get(key) == null) {
 						newValues.put(key, value);
-//						System.err.println("###>>>>Process Variable Key :: "
-//								+ key + " = " + value);
+						logger.debug("NotificationTaskEventListener Process Variable Key :: "
+								+ key + " = " + value);
 					}
 				}
 
+				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
 				Object ownerId = newValues.get("OwnerId");
 				if (ownerId == null) {
 					if (doc != null) {
@@ -740,11 +735,10 @@ class BPMSessionManager {
 				}				
 				assert doc.getId()!=null;
 				newValues.put("DocumentId", doc.getId());
-
-
 				String processId = "aftertask-notification";
 
 				//
+				
 				startProcess(processId, newValues);
 
 			} catch (Exception e) {
@@ -804,12 +798,18 @@ class BPMSessionManager {
 			logger.debug(key+"="+value);
 		}
 
-		logger.debug("GroupId="+taskData.get("GroupId"));
-		logger.debug("ActorId="+taskData.get("ActorId"));
-		logger.debug("Priority="+taskData.get("Priority"));
+		Object groupId = taskData.get("GroupId");
+		Object actorId = taskData.get("ActorId");
+		logger.debug("BPMSessionManager#onTaskCreated GroupId="+groupId);
+		logger.debug("BPMSessionManager#onTaskCreated ActorId="+actorId);
+		logger.debug("BPMSessionManager#onTaskCreated Priority="+taskData.get("Priority"));
 		
-		newValues.put("GroupId", taskData.get("GroupId"));
-		newValues.put("ActorId", taskData.get("ActorId"));
+		if(actorId==null && groupId==null){
+			throw new IllegalArgumentException("Subsequent Task '"+JBPMHelper.get().getDisplayName(task)+"' has no User or Group defined");
+		}
+		
+		newValues.put("GroupId", groupId);
+		newValues.put("ActorId", actorId);
 		newValues.put("Priority", taskData.get("Priority"));
 		if (newValues.get("Priority") == null)
 			newValues.put("Priority", values.get("Priority"));

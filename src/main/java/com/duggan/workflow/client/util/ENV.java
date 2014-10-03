@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,8 +111,22 @@ public class ENV {
 		values.remove(qualifiedFieldName);
 	}
 	
+	static List<String> specialNames = Arrays.asList("current_timestamp","current_date","current_time","UserID");
+	
 	public static Object getValue(String key) {
+		
+		if(specialNames.contains(key)){
+			//special name
+			//.....
+			return generate(key);
+		}
+		
 		return values.get(key);
+	}
+
+	private static Object generate(String key) {
+		
+		return null;
 	}
 
 	public static boolean isAggregate(String fld) {

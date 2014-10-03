@@ -32,7 +32,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends BaseResponse>
 		implements ActionHandler<A, B> {
 
-	private static Logger log = Logger.getLogger(BaseActionHandler.class);
+	Logger log = Logger.getLogger(this.getClass());
 
 	@Inject	Provider<HttpServletRequest> request;
 	
