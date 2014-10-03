@@ -19,6 +19,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.Value;
@@ -271,9 +272,15 @@ public class GenericDocumentView extends ViewImpl implements
 		return widget;
 	}
 	
+	
 	public void setForm(Form form){
+		setForm(form, null);
+	}
+	
+	public void setForm(Form form, MODE mode){
 		fldForm.clear();
-		
+		boolean isFormReadOnly = (mode!=null && mode==MODE.VIEW);  
+				
 		if(form==null || form.getFields()==null)
 			return;
 		
@@ -289,14 +296,14 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		if(validActions!=null){
 			if(validActions.contains(Actions.COMPLETE)){
-				formPanel.setReadOnly(false);
+				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
 			}else{
 				formPanel.setReadOnly(true);
 				showNavigation(false);
 			}
 		}else{
-			formPanel.setReadOnly(readOnly);
+			formPanel.setReadOnly(readOnly || isFormReadOnly);
 		}
 		
 		fldForm.add(formPanel);

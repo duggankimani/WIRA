@@ -166,6 +166,7 @@ public class GenericDocumentPresenter extends
 		SpanElement getSpnActivityNo();
 		DivElement getDivAttachment();
 		void setForm(Form form);
+		void setForm(Form form, MODE mode);
 		boolean isValid();
 		Map<String,Value> getValues(); //Task Data
 
@@ -789,12 +790,12 @@ public class GenericDocumentPresenter extends
 	
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(new GetTaskStepsRequest(documentId, taskId));
 		requests.addRequest(new GetDocumentRequest(documentId, taskId));
 		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
 		requests.addRequest(new GetActivitiesRequest(documentId));
-		requests.addRequest(new GetTaskStepsRequest(documentId, taskId));
 		
 		fireEvent(new ProcessingEvent());
 		if(documentId != null){
@@ -803,6 +804,10 @@ public class GenericDocumentPresenter extends
 				
 				public void processResult(MultiRequestActionResult results) {					
 					int i=0;
+					
+					//Steps
+					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
+					setSteps(resp.getSteps());
 					
 					//Document
 					GetDocumentResult result = (GetDocumentResult)results.get(i++);
@@ -829,9 +834,6 @@ public class GenericDocumentPresenter extends
 					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(i++);
 					bindActivities(getActivities);
 										
-					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
-					setSteps(resp.getSteps());
-					
 					fireEvent(new ProcessingCompletedEvent());
 					
 				}	
@@ -854,13 +856,13 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
 		this.form = form;
+		
 		if(form.getFields()==null || form.getFields().isEmpty()){
 			getView().showDefaultFields(true);
 			return;
 		}
 			
 		Map<String, Value> values = doc.getValues();
-		//System.err.println("Details >>>>> "+doc.getDetails().size());
 		
 		for(Field field: form.getFields()){
 			String name = field.getName();
@@ -931,15 +933,13 @@ public class GenericDocumentPresenter extends
 				
 		}
 		
-
-		//Add Form Level Info to Env
-//		Field protoField = form.getFields().get(0);
-//		String protoQualifiedName = protoField.getQualifiedName();
-//		protoQualifiedName = protoQualifiedName.replace(protoField.getName(),"subject");
-//		System.err.println("Put>> "+protoQualifiedName+": "+doc.getSubject());
-//		ENV.setContext(protoQualifiedName, doc.getSubject());
-//		
-		getView().setForm(form);
+		MODE mode = null;
+		if(!steps.isEmpty()){
+			TaskStepDTO dto = steps.get(currentStep);
+			mode = dto.getMode();
+		}
+		
+		getView().setForm(form,mode);
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
