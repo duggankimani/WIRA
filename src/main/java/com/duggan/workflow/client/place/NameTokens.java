@@ -19,6 +19,7 @@ public class NameTokens {
 	public static final String inbox = "inbox";
 	public static final String suspended = "suspended";
 	public static final String search = "search";
+	public static final String outputdocs = "outputdocs";
 
 	public static String getHome() {
 		return home;
@@ -46,6 +47,10 @@ public class NameTokens {
 
 	public static String getTasks() {
 		return tasks;
+	}
+
+	public static String getOutputdocs() {
+		return outputdocs;
 	}
 	
 }
