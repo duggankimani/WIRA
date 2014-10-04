@@ -661,6 +661,21 @@
 	border: 1px solid #dddddd;
 }
 
+.table-noborder {
+	border: 0px solid #dddddd;
+}
+
+.table-noborder>.thead>.tr>.th,.table-noborder>.tbody>.tr>.th,.table-noborder>.tfoot>.tr>.th,.table-noborder>.thead>.tr>.td,.table-noborder>.tbody>.tr>.td,.table-noborder>.tfoot>.tr>.td
+	{
+	border: 0px solid #dddddd;
+}
+
+.table-noborder>.thead, .table-noborder>.thead>.tr>.th{
+	background:none;
+	text-align:left;
+}
+
+
 .table-bordered>.thead>.tr>.th,.table-bordered>.thead>.tr>.td {
 	border-bottom-width: 2px;
 }

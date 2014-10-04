@@ -159,8 +159,10 @@ public class TaskItemPresenter extends
 						new TaskServiceCallback<ApprovalRequestResult>(){
 					@Override
 					public void processResult(ApprovalRequestResult result) {						
-						PlaceRequest request = new PlaceRequest("home").
-								with("type", TaskType.INBOX.getURL());
+						PlaceRequest request = new PlaceRequest.Builder().nameToken("home")
+								.with("type", TaskType.INBOX.getURL()).build();
+//								new PlaceRequest("home").
+//								with("type", TaskType.INBOX.getURL());
 						
 						placeManager.revealPlace(request);
 						
@@ -520,6 +522,14 @@ public class TaskItemPresenter extends
 			
 		}else if(task instanceof HTSummary){
 			HTSummary doc= (HTSummary)task;
+			if(doc.getDocumentRef()==null){
+				//This happens if this task was not loaded correctly.
+				//this should be changed to processinstanceid - documents dont matter; processes do.
+				return;
+			}
+			
+			assert doc.getDocumentRef()!=null;
+			assert documentId!=null;
 			if(doc.getDocumentRef().equals(documentId)){
 				getView().showAttachmentIcon(true);
 			}

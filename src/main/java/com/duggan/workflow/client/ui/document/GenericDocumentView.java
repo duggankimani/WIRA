@@ -127,6 +127,8 @@ public class GenericDocumentView extends ViewImpl implements
 	boolean overrideDefaultStart=false;
 	private String timeDiff;
 	
+	@UiField ActionLink aEnv;
+	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -196,6 +198,8 @@ public class GenericDocumentView extends ViewImpl implements
 		showProcessTree(false);
 		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
+		
+		
 	}
 
 	protected void setEditMode(boolean isEditMode) {
@@ -723,6 +727,11 @@ public class GenericDocumentView extends ViewImpl implements
 
 	public Anchor getLinkContinue() {
 		return aContinue;
+	}
+
+	@Override
+	public HasClickHandlers getLinkEnv() {
+		return aEnv;
 	}
 
 }

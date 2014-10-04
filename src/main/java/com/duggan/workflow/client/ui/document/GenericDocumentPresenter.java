@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.document;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +19,7 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.SingleButton;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
+import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
 import com.duggan.workflow.client.ui.delegate.msg.DelegationMessageView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
@@ -48,6 +50,7 @@ import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
@@ -158,6 +161,7 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getSaveCommentButton();
 		HasClickHandlers getLinkPrevious();
 		HasClickHandlers getLinkNext();
+		HasClickHandlers getLinkEnv();
 		Anchor getLinkContinue();
 		String getComment();
 		Uploader getUploader();
@@ -220,6 +224,7 @@ public class GenericDocumentPresenter extends
 			Provider<NotePresenter> noteProvider,
 			Provider<UploadDocumentPresenter> uploaderProvider) {
 		super(eventBus, view);		
+		ENV.clear();
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		commentPresenterFactory = new StandardProvider<CommentPresenter>(commentProvider);
 		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(attachmentProvider);
@@ -435,6 +440,38 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				navigateToView(false);
+			}
+		});
+		
+		getView().getLinkEnv().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+			
+				TableView tableEnv = new TableView();
+				tableEnv.setHeaders(Arrays.asList("Key","Value"));
+				
+				List<String> keys = new ArrayList<String>();
+				keys.addAll(ENV.getValues().keySet());
+				Collections.sort(keys);
+				
+				String suffix = "";
+				if(taskId!=null){
+					suffix = Field.getSuffix(taskId+"");
+				}else{
+					suffix = Field.getSuffix(documentId+"");
+				}
+				
+				for(String key: keys){
+					Object value = ENV.getValue(key);
+					tableEnv.addRow(new InlineLabel(key.replace(suffix, "")), 
+							new InlineLabel(value==null? "": value.toString()));
+				}
+				
+				AppManager.showPopUp("Environment", tableEnv, new OnOptionSelected() {
+					@Override
+					public void onSelect(String name) {}
+				}, "Ok");
 			}
 		});
 		
@@ -856,6 +893,14 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
 		this.form = form;
+		
+		if(doc instanceof Document){
+			documentId = (Long) doc.getId();
+			taskId=null;
+		}else{
+			documentId = ((HTSummary)doc).getDocumentRef();
+			taskId = ((HTSummary)doc).getId();
+		}
 		
 		if(form.getFields()==null || form.getFields().isEmpty()){
 			getView().showDefaultFields(true);

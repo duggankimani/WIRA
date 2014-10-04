@@ -64,8 +64,8 @@ public class ENV {
 		return false;
 	}
 	
-	public static Map<String, Long> getValues(){
-		return observableFields;
+	public static Map<String, Object> getValues(){
+		return values;
 	}
 	
 	/**

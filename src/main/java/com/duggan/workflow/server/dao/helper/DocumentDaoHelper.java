@@ -389,7 +389,7 @@ public class DocumentDaoHelper {
 			doc = (Document) content.get("document");
 			
 		} else {
-			System.err.println("Document is null!!");
+			System.err.println("DocumentDaoHelper.getDocument says Document is null!!");
 			String description = content.get("description") == null ? null
 					: (String) content.get("description");
 

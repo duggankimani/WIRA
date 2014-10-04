@@ -231,7 +231,11 @@ public class Field extends FormModel{
 	}
 
 	public String getDocSpecificName(){
-		return name+docId+"D";//Delimited with a D
+		return name+getSuffix(docId);
+	}
+	
+	public static String getSuffix(String documentId){
+		return documentId+"D";//Delimited with a D
 	}
 	
 	public String getQualifiedName() {

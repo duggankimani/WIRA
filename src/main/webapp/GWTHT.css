@@ -319,6 +319,6 @@ div.centered{
 	text-align:center;
 }
 
-italics{
-	font-style:italics;
+#detailed-info .lead, .form-horizontal .lead {
+    background-color: #F5F5F5;
 }

@@ -126,6 +126,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		if(aDoc instanceof HTSummary){
 			HTSummary summ =(HTSummary)aDoc; 
 			HTStatus status = summ.getStatus();
+			if(summ.getDocumentRef()==null){
+				spnSubject.getStyle().setColor("red");
+				spnSubject.setTitle("This request was not loaded correctly.");// documentId is missing
+			}
 			
 			if(status.equals(HTStatus.COMPLETED)){
 				spnDocIcon.addStyleName("icon-ok");

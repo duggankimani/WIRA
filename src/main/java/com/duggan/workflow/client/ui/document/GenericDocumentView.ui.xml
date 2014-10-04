@@ -117,6 +117,13 @@
 									Delegate
 								</d:ActionLink>
 							</li>
+							
+							<li>
+								<d:ActionLink ui:field="aEnv" title="View Env Variables">
+									<i class="icon-group"></i>
+									ENV
+								</d:ActionLink>
+							</li>
 
 							<li>
 								<d:ActionLink ui:field="aDelete">
@@ -251,7 +258,7 @@
 					</d:ActionLink>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-
+			
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

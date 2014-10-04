@@ -103,7 +103,7 @@ public class GenericDocUtils {
 				String groupStr = matchResult.getGroup(i);
 				String fieldName = groupStr.substring(2, groupStr.length());
 				Object fieldValue = getFieldValue(fieldName,doc);		
-				System.err.println("### "+pathEl + ", "+fieldName+ "="+fieldValue);
+				System.err.println("GenericDocUtils#decode "+pathEl + ", "+fieldName+ "="+fieldValue);
 				pathEl = pathEl.replaceAll(groupStr, fieldValue==null? "": fieldValue.toString());
 			}
 		}
