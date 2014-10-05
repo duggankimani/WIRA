@@ -210,5 +210,17 @@ public class NumberField extends FieldWidget{
 	}
 	
 	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		if(field.getDocId()!=null)
+			txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<Double> event) {
+						ENV.setContext(field, event.getValue());
+				}
+			});
+	}
+	
 	
 }

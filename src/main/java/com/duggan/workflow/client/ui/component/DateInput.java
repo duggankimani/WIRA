@@ -5,6 +5,7 @@ import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -39,5 +40,10 @@ public class DateInput extends Composite {
 	
 	public void setStyle(String styleName){
 		dtInput.setStyleName(styleName);
+	}
+
+	public void addValueChangeHandler(
+			ValueChangeHandler<Date> valueChangeHandler) {
+		dtInput.addValueChangeHandler(valueChangeHandler);
 	}
 }

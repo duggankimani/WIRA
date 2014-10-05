@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -182,6 +183,18 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 //			return lstItems;
 //		}
 		return panelControls;
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		if(field.getDocId()!=null)
+			lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
+						ENV.setContext(field, event.getValue()==null? null: event.getValue().getKey());
+				}
+			});
 	}
 	
 }

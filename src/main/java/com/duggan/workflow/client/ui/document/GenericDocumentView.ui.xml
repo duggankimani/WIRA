@@ -121,7 +121,7 @@
 							<li>
 								<d:ActionLink ui:field="aEnv" title="View Env Variables">
 									<i class="icon-group"></i>
-									ENV
+									Env
 								</d:ActionLink>
 							</li>
 

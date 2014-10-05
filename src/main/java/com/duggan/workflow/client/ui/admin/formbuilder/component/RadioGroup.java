@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -111,8 +112,10 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	protected void valueChange(RadioButton source, boolean value) {
 		if(value){
 			fieldValue = new StringValue(field.getLastValueId(), source.getName(), source.getFormValue());
+			ENV.setContext(field, source.getFormValue());
 		}else{
 			fieldValue=null;
+			ENV.setContext(field, null);
 		}
 	}
 

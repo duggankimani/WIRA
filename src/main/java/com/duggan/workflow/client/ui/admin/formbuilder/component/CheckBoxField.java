@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
@@ -125,6 +126,18 @@ public class CheckBoxField extends FieldWidget {
 		if(value!=null && value instanceof Boolean){
 			component.setValue((Boolean)value);
 		}
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		if(field.getDocId()!=null)
+			component.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<Boolean> event) {
+						ENV.setContext(field, event.getValue());
+				}
+			});
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.duggan.workflow.client.ui.component.DateInput;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Value;
@@ -11,6 +12,8 @@ import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -124,5 +127,19 @@ public class DateField extends FieldWidget {
 			}
 		
 		return panelControls;
+	}
+	
+	@Override
+	protected void onLoad() {
+		// TODO Auto-generated method stub
+		super.onLoad();
+		
+		if(field.getDocId()!=null)
+			dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<Date> event) {
+						ENV.setContext(field, event.getValue());
+				}
+			});
 	}
 }

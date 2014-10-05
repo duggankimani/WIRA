@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -209,6 +210,19 @@ public class TextField extends FieldWidget {
 		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));		
 		panelControls.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
 		
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		
+		if(field.getDocId()!=null)
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+					ENV.setContext(field, event.getValue());
+			}
+		});
 	}
 	
 }
