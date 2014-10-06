@@ -32,6 +32,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
@@ -108,6 +109,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	private Long documentId=null;
 	
 	String searchTerm="";
+	
+	//Form Mode - Edit/ View - Applicable for Drafts only
+	MODE mode = null;
 	
 	@Inject FilterPresenter filterPresenter;
 	Timer timer = new Timer() {
@@ -346,8 +350,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		if(this.isVisible()){
 			this.selectedDocumentId=event.getDocumentId();		
 			displayDocument(event.getDocumentId(), event.getTaskId());
-			System.err.println("Called!! +"+this+" Document= "+event.getDocumentId()+
-					" : Task="+event.getTaskId()+" :: "+event.getSource());
+//			System.err.println("Called!! +"+this+" Document= "+event.getDocumentId()+
+//					" : Task="+event.getTaskId()+" :: "+event.getSource());
 		}
 	}
 	
@@ -361,6 +365,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
 				result.setDocId(documentId, taskId);
+				result.setFormMode(mode);
 				setInSlot(DOCUMENT_SLOT, result);
 			}
 		});

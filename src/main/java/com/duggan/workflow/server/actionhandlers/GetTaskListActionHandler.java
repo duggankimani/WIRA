@@ -78,7 +78,16 @@ public class GetTaskListActionHandler extends
 					processInstanceId = DocumentDaoHelper.getProcessInstanceIdByDocumentId(action.getDocumentId());
 				}
 								
-				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
+				//Document doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
+				
+				Document doc = null;
+				
+				if(action.getDocumentId()!=null){
+					doc = DocumentDaoHelper.getDocument(action.getDocumentId());
+				}else if(processInstanceId!=null){
+					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
+				}
+				
 				if(doc!=null)
 					summary.add(doc);
 				

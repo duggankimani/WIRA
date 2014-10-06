@@ -202,7 +202,7 @@ public class GenericDocumentView extends ViewImpl implements
 		
 	}
 
-	protected void setEditMode(boolean isEditMode) {
+	public void setEditMode(boolean isEditMode) {
 		formPanel.setReadOnly(!isEditMode);
 		UIObject.setVisible(btnGroup, !isEditMode);
 		UIObject.setVisible(aForward.getElement(), !isEditMode);

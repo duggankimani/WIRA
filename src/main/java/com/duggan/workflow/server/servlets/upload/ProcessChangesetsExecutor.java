@@ -65,7 +65,7 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 			String name = attachment.getName();
 			String xtension = name.substring(name.lastIndexOf('.')+1, name.length()).toLowerCase();
 			boolean isImage = xtension.equals("png") || xtension.equals("jpg") || xtension.equals("jpeg") ||
-					xtension.equals("gif");
+					xtension.equals("gif") || xtension.equals("svg");
 					
 			if(isImage){
 				attachment.setProcessDefImage(model);

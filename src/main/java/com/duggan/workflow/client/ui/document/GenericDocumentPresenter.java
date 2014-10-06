@@ -189,6 +189,8 @@ public class GenericDocumentPresenter extends
 		void show(Anchor linkNext, boolean isShowRejectLink);
 
 		void showNavigation(boolean b);
+
+		void setEditMode(boolean editMode);
 	}
 	
 	Long taskId;
@@ -209,6 +211,7 @@ public class GenericDocumentPresenter extends
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
 	private IndirectProvider<UploadDocumentPresenter> uploaderFactory;
+	private MODE formMode;//Form Mode; can be set on set
 	
 	//@Inject static MainPagePresenter mainPagePresenter;
 	@Inject static GenericPopupPresenter popupPresenter;
@@ -978,13 +981,17 @@ public class GenericDocumentPresenter extends
 				
 		}
 		
-		MODE mode = null;
+		MODE stepMode = null;
 		if(!steps.isEmpty()){
 			TaskStepDTO dto = steps.get(currentStep);
-			mode = dto.getMode();
+			stepMode = dto.getMode();
 		}
 		
-		getView().setForm(form,mode);
+		getView().setForm(form,stepMode);
+		
+		if(formMode!=null && formMode.equals(MODE.EDIT) && doc instanceof Document){
+			getView().setEditMode(true && ((Document)doc).getStatus()==DocStatus.DRAFTED);
+		}
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
@@ -1291,5 +1298,9 @@ public class GenericDocumentPresenter extends
 			public void processResult(GenericResponse aResponse) {	
 			}
 		});
+	}
+
+	public void setFormMode(MODE mode) {
+		this.formMode = mode;
 	}
 }

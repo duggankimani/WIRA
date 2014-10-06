@@ -7,6 +7,7 @@ import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.login.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.shared.model.MODE;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -48,6 +49,14 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType=TaskType.SEARCH;
 		getView().setTaskType(currentTaskType);
+		String formMode = request.getParameter("mode", null);
+		if(formMode!=null){
+			try{
+				mode = MODE.valueOf(formMode.toUpperCase());
+			}catch(Exception e){}
+			
+		}
+		
 		super.prepareFromRequest(request);
 	}
 

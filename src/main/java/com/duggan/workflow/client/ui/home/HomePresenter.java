@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.ServiceCallback;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
@@ -18,8 +19,11 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.home.doctree.DocTreePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.MODE;
+import com.duggan.workflow.shared.requests.CreateDocumentRequest;
+import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -27,6 +31,7 @@ import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ChangeTabHandler;
 import com.gwtplatform.mvp.client.RequestTabsHandler;
 import com.gwtplatform.mvp.client.Tab;
@@ -38,8 +43,10 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class HomePresenter extends TabContainerPresenter<HomePresenter.IHomeView, HomePresenter.MyProxy> implements
 ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHandler{
@@ -88,6 +95,9 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
 	
 	@Inject DocTreePresenter documentTreePresenter;
+	
+	@Inject DispatchAsync requestHelper;
+	@Inject PlaceManager placeManager;
 	
 	@Inject
 	public HomePresenter(final EventBus eventBus, final IHomeView view,
@@ -152,13 +162,26 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	
 	@Override
 	public void onCreateDocument(CreateDocumentEvent event) {
-		DocumentType type = event.getDocType();	
+		Document doc = new Document();
+		doc.setType(event.getDocType());
 		
-		if(type.getFormId()!=null){
-			showEditForm(type);
-		}else{
-			showEditForm(MODE.CREATE);
-		}
+		CreateDocumentRequest request = new CreateDocumentRequest(doc);
+		
+		requestHelper.execute(request, new TaskServiceCallback<CreateDocumentResult>() {
+			@Override
+			public void processResult(CreateDocumentResult aResponse) {
+				PlaceRequest request = new PlaceRequest.Builder().nameToken("search")
+						.with("did", aResponse.getDocument().getId()+"")
+						.with("mode", "edit")
+						.build();
+				placeManager.revealPlace(request);
+			}
+		});
+//		if(type.getFormId()!=null){
+//			showEditForm(type);
+//		}else{
+//			showEditForm(MODE.CREATE);
+//		}
 	}
 	
 	protected void showEditForm(final MODE mode) {
