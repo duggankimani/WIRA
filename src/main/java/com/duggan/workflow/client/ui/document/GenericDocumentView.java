@@ -229,16 +229,6 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 	
-//	protected void toggleEditMode()
-//	{
-//		if(!isEditMode){
-//			divActivity.addStyleName("hide");
-//			divContinue.addStyleName("hide");
-//		}else{
-//			divActivity.removeStyleName("hide");
-//			divContinue.removeStyleName("hide");
-//		}
-//	}
 	public void showProcessTree(boolean show){
 		if(show){
 			aProcess.addStyleName("disabled");
