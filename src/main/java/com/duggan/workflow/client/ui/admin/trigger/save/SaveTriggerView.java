@@ -20,7 +20,7 @@ public class SaveTriggerView extends ViewImpl implements
 
 	
 	@UiField TextField txtName;
-	@UiField TextField txtImports;
+	@UiField TextArea txtImports;
 	@UiField TextArea txtScript;
 	@UiField IssuesPanel issues;
 	
