@@ -20,12 +20,12 @@
 		<div class="form-group">
 			<label>Mvel Imports:</label>
 			<d:TextArea ui:field="txtImports" class="form-control"
-				rows="3"></d:TextArea>
+				rows="3" width="402px"></d:TextArea>
 		</div>
 		<div class="form-group">
 			<label>Mvel Script:</label>
 			<d:TextArea ui:field="txtScript" class="form-control"
-				rows="10"></d:TextArea>
+				rows="7" width="506px"></d:TextArea>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

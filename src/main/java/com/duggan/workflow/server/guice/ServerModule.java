@@ -12,6 +12,7 @@ import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestHandler;
+import com.duggan.workflow.server.actionhandlers.ExecuteTriggerActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
@@ -77,6 +78,7 @@ import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
+import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
@@ -336,6 +338,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetTaskStepTriggersRequest.class, GetTaskStepTriggersRequestHandler.class, SessionValidator.class);
 		
 		bindHandler(GetTriggerCountRequest.class, GetTriggerCountActionHandler.class, SessionValidator.class);
+		
+		bindHandler(ExecuteTriggersRequest.class, ExecuteTriggerActionHandler.class, SessionValidator.class);
 		
 	}
 }

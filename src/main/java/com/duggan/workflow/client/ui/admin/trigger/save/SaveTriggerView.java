@@ -35,6 +35,7 @@ public class SaveTriggerView extends ViewImpl implements
 		trigger.setName(txtName.getValue());
 		trigger.setScript(txtScript.getValue());
 		trigger.setImports(txtImports.getValue());
+		
 		return trigger;
 	}
 

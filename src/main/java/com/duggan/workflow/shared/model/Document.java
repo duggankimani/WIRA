@@ -215,8 +215,9 @@ public class Document extends Doc implements Serializable{
 			if(key.equals("value"))
 				setValue(val==null? null : val.toString());
 		
+			setValue(key, values.get(key));
 		}
-		super.setValues(values);
+		//super.setValues(values);
 	}
 
 	@Override

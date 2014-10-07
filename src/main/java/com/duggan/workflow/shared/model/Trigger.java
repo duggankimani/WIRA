@@ -50,6 +50,7 @@ public class Trigger implements Serializable{
 		trigger.setId(id);
 		trigger.setName(name);
 		trigger.setScript(script);
+		trigger.setImports(imports);
 		
 		return trigger;
 	}

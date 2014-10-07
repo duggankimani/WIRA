@@ -85,6 +85,7 @@ import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
+import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
@@ -101,6 +102,7 @@ import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
+import com.duggan.workflow.shared.responses.ExecuteTriggersResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
@@ -495,14 +497,13 @@ public class GenericDocumentPresenter extends
 					navigating=true;
 				}
 			}
-			
-			
 		}
 		
-		save(doc);
+		//save(doc);
+		mergeFormValuesWithDoc();
 		
 		if(navigating){
-			navigateToView(steps.get(currentStep));
+			navigateToView(steps.get(currentStep),isNavigateNext);
 		}
 		
 	}
@@ -521,14 +522,25 @@ public class GenericDocumentPresenter extends
 		
 		
 	}
-	protected void navigateToView(TaskStepDTO taskStepDTO) {
+	protected void navigateToView(TaskStepDTO taskStepDTO, final boolean isNavigateNext) {
 		
 		fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
+		
+		Long previousStepId = -1L;
+		Long nextStepId = -1L;
+		
+		if(isNavigateNext){
+			//Navigating forward
+			previousStepId = steps.get(currentStep-1).getId();
+			nextStepId = taskStepDTO.getId();
+		}
 		
 		if(taskStepDTO.getFormId()!=null){
 			Long formId = taskStepDTO.getFormId();			
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, formId, true));
+			if(isNavigateNext)
+				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
 			requests.addRequest(new GetAttachmentsRequest(documentId));
 			
 			fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
@@ -537,9 +549,19 @@ public class GenericDocumentPresenter extends
 					public void processResult(MultiRequestActionResult results) {					
 						int i=0;	
 						GetFormModelResponse aResponse = (GetFormModelResponse)results.get(i++);
-						Form form = (Form) aResponse.getFormModel().get(0);							
-						bindForm(form, doc);
+						
+						Doc document=null;
+						if(isNavigateNext){
+							document=((ExecuteTriggersResponse)results.get(i++)).getDocument();
+						}else{
+							document=doc;
+						}
+						
+						bindForm((Form) aResponse.getFormModel().get(0), document);
+						
+						//Continue, Finish buttons alteration
 						alterNavigation();
+						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
 						bindAttachments(attachmentsresponse);
 						
@@ -549,8 +571,9 @@ public class GenericDocumentPresenter extends
 			
 		}else if(taskStepDTO.getOutputDocId()!=null){
 			MultiRequestAction requests = new MultiRequestAction();
-			
 			requests.addRequest(new GetOutputDocumentsRequest(taskStepDTO.getOutputDocId()));
+			if(isNavigateNext)
+				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
 			requests.addRequest(new GetAttachmentsRequest(documentId));			
 			
 			requestHelper.execute(requests,
@@ -560,9 +583,16 @@ public class GenericDocumentPresenter extends
 						GetOutputDocumentsResponse aResponse = (GetOutputDocumentsResponse)results.get(i++);
 						OutputDocument outDoc = aResponse.getDocuments().get(0);
 						
-						Form form = GenericDocUtils.generateForm(outDoc, doc);
+						Doc document=null;
+						if(isNavigateNext){
+							document=((ExecuteTriggersResponse)results.get(i++)).getDocument();
+						}else{
+							document=doc;
+						}
 						
-						bindForm(form, doc);
+						Form form = GenericDocUtils.generateForm(outDoc,document);
+						bindForm(form,document);
+						
 						alterNavigation();
 						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
@@ -586,9 +616,7 @@ public class GenericDocumentPresenter extends
 		}
 	}
 
-
-	private void completeIt(Map<String, Value> withValues) {
-		
+	private void mergeFormValuesWithDoc(){
 		//Copy all previous values from the task object into the result/values
 		Map<String, Value> values = doc.getValues();
 		
@@ -598,7 +626,28 @@ public class GenericDocumentPresenter extends
 			formValues = new HashMap<String, Value>();
 		}		
 		//Add form field values : to take care of new values
-		values.putAll(formValues); 
+		for(String key: formValues.keySet()){
+			Value val = formValues.get(key);
+			
+			if(val instanceof GridValue){
+				List<DocumentLine> lines = new ArrayList<DocumentLine>();
+				lines.addAll(((GridValue)val).getValue());
+				
+				doc.getDetails().remove(key);
+				doc.getDetails().put(key, lines);
+			}else{
+				values.put(key, val);
+			}
+		}
+		 
+		
+	}
+
+	private void completeIt(Map<String, Value> withValues) {
+		
+		mergeFormValuesWithDoc();
+		
+		Map<String, Value> values = doc.getValues();
 		
 		//Add any programmatic values (Button values e.g isApproved)
 		if(withValues!=null)
@@ -714,42 +763,28 @@ public class GenericDocumentPresenter extends
 				}, "Ok", "Cancel");
 	}
 
-	boolean save(Doc doc){
-		boolean save=false;
-		
-		if(doc instanceof Document)
-			if(((Document)doc).getStatus()==DocStatus.DRAFTED){
-				//showEditForm(MODE.EDIT);
-				save = true;
-			}
-		
-		if(save){
-			save((Document)doc);
-		}else{
-			doc.getValues().putAll(getView().getValues());
-		}
-		
-		return save;
-	}
+//	boolean save(Doc doc){
+//		boolean save=false;
+//		
+//		if(doc instanceof Document)
+//			if(((Document)doc).getStatus()==DocStatus.DRAFTED){
+//				//showEditForm(MODE.EDIT);
+//				save = true;
+//			}
+//		
+//		if(save){
+//			save((Document)doc);
+//		}else{
+//			doc.getValues().putAll(getView().getValues());
+//		}
+//		
+//		return save;
+//	}
+	
 	protected void save(Document document) {
 		
-		document.setValues(getView().getValues());
-		document.getDetails().clear();
-		for(Value val: document.getValues().values()){
-			if(val instanceof GridValue){
-				GridValue gridVal = (GridValue)val;
-				Collection<DocumentLine> lines = gridVal.getValue();
-				for(DocumentLine line: lines){
-					line.setName(gridVal.getKey());
-					document.addDetail(line);
-				}				
-			}
-		}
-		
-//		List<DocumentLine> lnes=document.getDetails().get("lines");
-//		for(DocumentLine l: lnes){
-//			System.err.println(l);
-//		}
+		//Incremental/ Page based additions
+		mergeFormValuesWithDoc();
 		
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
@@ -824,7 +859,6 @@ public class GenericDocumentPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		
 		loadData();
 	}
 	
@@ -857,6 +891,7 @@ public class GenericDocumentPresenter extends
 					GetFormModelResponse response = (GetFormModelResponse)results.get(i++);					
 					
 					if(!response.getFormModel().isEmpty()){
+						//executeTriggers((Form)response.getFormModel().get(0), result.getDoc());
 						bindForm((Form)response.getFormModel().get(0), result.getDoc());
 					}else{
 						getView().showDefaultFields(true);
@@ -879,6 +914,24 @@ public class GenericDocumentPresenter extends
 				}	
 			});
 		}
+	}
+
+	protected void executeTriggers(final Form formToBind, Doc loadedDocument) {
+		if(steps==null || steps.isEmpty()){
+			bindForm(formToBind, loadedDocument);
+			return;
+		}
+		
+		Long previousStepId = 0L;
+		Long nextStepId = steps.get(0).getId();
+		
+		requestHelper.execute(new ExecuteTriggersRequest(previousStepId, nextStepId, loadedDocument), 
+				new TaskServiceCallback<ExecuteTriggersResponse>() {
+			@Override
+			public void processResult(ExecuteTriggersResponse aResponse) {
+				bindForm(formToBind, aResponse.getDocument());
+			}
+		});
 	}
 
 	protected void setSteps(List<TaskStepDTO> steps) {
