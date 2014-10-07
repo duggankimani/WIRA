@@ -117,7 +117,7 @@
 									Delegate
 								</d:ActionLink>
 							</li>
-							
+
 							<li>
 								<d:ActionLink ui:field="aEnv" title="View Env Variables">
 									<i class="icon-group"></i>
@@ -194,23 +194,45 @@
 				</div>
 
 				<g:HTMLPanel styleName="form-horizontal">
-					<d:ActionLink ui:field="aPrevious" styleName="hidden">
-						<i class="icon-double-angle-left"></i>
-						<span class="underline">Previous</span>
-					</d:ActionLink>
-					<d:ActionLink ui:field="aNext" styleName="pull-right hidden">
-						<span class="underline">Next</span>
-						<i class="icon-double-angle-right"></i>
-					</d:ActionLink>
+					<div class="pagination pagination-centered">
+						<ul>
+							<li>
+								<d:ActionLink ui:field="aPrevious" styleName="hidden">
+									<i class="icon-double-angle-left"></i>
+								</d:ActionLink>
+							</li>
+							<li>
+								<a href="#">1</a>
+							</li>
+							<li>
+								<a href="#">2</a>
+							</li>
+							<li>
+								<a href="#">3</a>
+							</li>
+							<li>
+								<a href="#">4</a>
+							</li>
+							<li>
+								<a href="#">5</a>
+							</li>
+							<li>
+								<d:ActionLink ui:field="aNext" styleName="pull-right hidden">
+									<i class="icon-double-angle-right"></i>
+								</d:ActionLink>
+							</li>
+						</ul>
+					</div>
+
 				</g:HTMLPanel>
 
 				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
 				</g:HTMLPanel>
 
 				<g:HTMLPanel ui:field="divContinue" styleName="centered hide">
-					<hr/>
+					<hr />
 					<d:ActionLink ui:field="aContinue" styleName="btn btn-success">Finish</d:ActionLink>
-					<i class="icon-double-angle-right"/>
+					<i class="icon-double-angle-right" />
 				</g:HTMLPanel>
 
 				<div class="title attachment hidden" ui:field="divAttachment">
@@ -227,7 +249,8 @@
 					<up:Uploader ui:field="uploader"></up:Uploader>
 				</div>
 
-				<g:HTMLPanel styleName="row-fluid recent-activity" ui:field="divActivity">
+				<g:HTMLPanel styleName="row-fluid recent-activity"
+					ui:field="divActivity">
 					<div class="title">
 						<h4>
 							<span ui:field="spnActivityNo"></span>
@@ -258,7 +281,7 @@
 					</d:ActionLink>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-			
+
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>
