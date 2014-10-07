@@ -13,6 +13,7 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.TaskStepDTO;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -20,8 +21,10 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -37,14 +40,60 @@ public class TaskStepView extends ViewImpl implements
 	@UiField HTMLPanel divTasks;
 	@UiField TableView tblView;
 	@UiField DropDownList<TaskNode> tasksDropDown;
-	@UiField ActionLink aAddItem;
+	//@UiField Anchor aAddItem;
 	ClickHandler deleteHandler;
+	
+	@UiField Anchor aNewStep;
+	@UiField Anchor aNewTrigger;
+	@UiField Anchor aStepstab;
+	@UiField Anchor aTriggerstab;
+	
+	@UiField Element divStepContent;
+	@UiField Element divTriggerContent;
+	@UiField HTMLPanel panelTriggerContent;
+	
+	@UiField Element liTrigger;
+	@UiField Element liStep;
+
 	
 	@Inject
 	public TaskStepView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		show(false);
 		setTable();
+		aStepstab.getElement().setAttribute("data-toggle", "tab");
+		aTriggerstab.getElement().setAttribute("data-toggle", "tab");
+		
+		divStepContent.setId("user");
+		divTriggerContent.setId("groups");
+		
+		aStepstab.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				setType(1);
+			}
+		});
+		
+		aTriggerstab.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				setType(2);
+			}
+		});
+		
+		setType(1);
+	}
+	
+	@Override
+	public void setInSlot(Object slot, IsWidget content) {
+		if(slot==TaskStepPresenter.TRIGGER_SLOT){
+			panelTriggerContent.clear();
+			if(content!=null){
+				panelTriggerContent.add(content);
+			}
+		}else{
+			super.setInSlot(slot, content);
+		}
 	}
 	
 	private void setTable() {
@@ -146,7 +195,7 @@ public class TaskStepView extends ViewImpl implements
 	}
 	
 	public HasClickHandlers getAddItemActionLink(){
-		return aAddItem;
+		return aNewStep;
 	}
 	
 	public void setTasks(List<TaskNode> values){
@@ -177,5 +226,45 @@ public class TaskStepView extends ViewImpl implements
 		this.deleteHandler = clickHandler;
 	}
 
+	@Override
+	public void setType(int tab) {
+		if(tab==1){
+			aNewStep.removeStyleName("hide");
+			 aNewTrigger.addStyleName("hide");
+			 liTrigger.removeClassName("active");
+			 liStep.addClassName("active");
+			 
+			 divStepContent.addClassName("in"); 
+			 divStepContent.addClassName("active");
+			 
+			 divTriggerContent.removeClassName("in");
+			 divTriggerContent.removeClassName("active");
+		}else{
 
+			aNewStep.addStyleName("hide");
+			aNewTrigger.removeStyleName("hide");
+			liTrigger.setClassName("active");
+			liStep.removeClassName("active");
+			
+			divStepContent.removeClassName("in");
+			divStepContent.removeClassName("active");
+			
+			divTriggerContent.addClassName("in");
+			divTriggerContent.addClassName("active");
+		}
+	}
+	
+	public HasClickHandlers getAddTriggerLink(){
+		return aNewTrigger;
+	}
+
+	@Override
+	public HasClickHandlers getTriggersTabLink(){
+		return aTriggerstab;
+	}
+	
+	@Override
+	public HasClickHandlers getStepsTabLink(){
+		return aStepstab;
+	}
 }

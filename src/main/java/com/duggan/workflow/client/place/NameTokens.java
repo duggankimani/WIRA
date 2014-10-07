@@ -20,6 +20,8 @@ public class NameTokens {
 	public static final String suspended = "suspended";
 	public static final String search = "search";
 	public static final String outputdocs = "outputdocs";
+	public static final String triggers = "triggers";
+	
 
 	public static String getHome() {
 		return home;

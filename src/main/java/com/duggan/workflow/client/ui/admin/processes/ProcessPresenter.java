@@ -56,7 +56,7 @@ public class ProcessPresenter extends
 	
 	@Inject DispatchAsync requestHelper;
 	
-	IndirectProvider<ProcessSavePresenter> processFactory;
+	IndirectProvider<ProcessSavePresenter> processFactory;	
 	IndirectProvider<ProcessItemPresenter> processItemFactory;
 	IndirectProvider<TaskStepPresenter> taskStepsFactory;
 	

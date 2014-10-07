@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component' ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<div class="content-body overflow-y">
+			<div class="row-fluid">
+				<div class="action-buttons">
+					<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary"
+						title="Add a New Trigger">
+						<i class="icon-plus"></i>
+						Add Trigger
+					</g:Anchor>
+				</div>
+			</div>
+
+			<d:TableView ui:field="tblView" striped="false" isGrid="false"
+				bordered="true" autoNumber="false" styleName="table-programs">
+			</d:TableView>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

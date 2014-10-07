@@ -6,10 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
+import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.TriggerType;
 
 public class ProcessDaoImpl extends BaseDaoImpl{
 	
@@ -169,6 +172,58 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 		
 		Number count = getSingleResultOrNull(query);
 		return count.intValue();
+	}
+
+
+	public List<ADTrigger> getTriggers() {
+		Query query = em.createQuery("FROM ADTrigger t where isActive=:active")
+				.setParameter("active", 1);
+		
+		return getResultList(query);
+	}
+
+
+	public int getTaskCount(Long taskStepId, TriggerType type) {
+		Query query = em.createQuery("SELECT COUNT(t) from ADTaskStepTrigger t "
+				+ "where t.taskStep.id=:taskStepId "
+				+ "and t.type=:type")
+				.setParameter("taskStepId", taskStepId)
+				.setParameter("type", type);
+		
+		Number count = getSingleResultOrNull(query);
+		
+		return count.intValue();
+	}
+
+
+	public List<ADTaskStepTrigger> getTaskStepTriggers(Long taskStepId, TriggerType type) {
+		Query query = em.createQuery("FROM ADTaskStepTrigger t where t.isActive=:active "
+				+ "and t.taskStep.id=:taskStepId and t.type=:type")
+				.setParameter("active", 1)
+				.setParameter("taskStepId", taskStepId)
+				.setParameter("type", type);
+		
+		return getResultList(query);
+	}
+
+
+	public void cascadeDeleteTrigger(ADTrigger po) {
+		
+		Query query = em.createQuery("delete ADTaskStepTrigger t where t.trigger=:trigger")
+				.setParameter("trigger", po);
+		query.executeUpdate();
+		
+		em.remove(po);
+	}
+
+
+	public void cascadeDelete(TaskStepModel taskStep) {
+		
+		Query query = em.createQuery("delete ADTaskStepTrigger t where t.taskStep=:taskStep")
+				.setParameter("taskStep", taskStep);
+		query.executeUpdate();
+		
+		em.remove(taskStep);
 	}
 	
 }

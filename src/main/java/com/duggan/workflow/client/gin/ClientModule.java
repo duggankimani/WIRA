@@ -45,6 +45,12 @@ import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsView;
 import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.settings.SettingsView;
+import com.duggan.workflow.client.ui.admin.trigger.TriggerPresenter;
+import com.duggan.workflow.client.ui.admin.trigger.TriggerView;
+import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
+import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
+import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPresenter;
+import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerView;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserView;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
@@ -314,5 +320,14 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(TaskStepPresenter.class, 
 				TaskStepPresenter.MyView.class,TaskStepView.class);
+		
+		bindPresenter(TriggerPresenter.class, TriggerPresenter.ITriggerView.class, TriggerView.class, TriggerPresenter.MyProxy.class);
+		
+		bindPresenterWidget(SaveTriggerPresenter.class, SaveTriggerPresenter.ISaveTriggerView.class,
+				SaveTriggerView.class);
+		
+		bindPresenterWidget(TaskStepTriggerPresenter.class, TaskStepTriggerPresenter.ITaskStepTriggerView.class,
+				TaskStepTriggerView.class);
+		
 	}
 }

@@ -21,6 +21,7 @@ public class TaskStepDTO implements Serializable{
 	private String outputDocName;
 	private Long outputDocId;
 	private boolean isActive = true;
+	private transient TriggerType triggerType;
 	
 	public TaskStepDTO() {
 	
@@ -96,5 +97,31 @@ public class TaskStepDTO implements Serializable{
 	}
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+	public TriggerType getTriggerType() {
+		return triggerType;
+	}
+	public void setTriggerType(TriggerType triggerType) {
+		this.triggerType = triggerType;
+	}
+	
+	public TaskStepDTO clone() {
+		
+		TaskStepDTO dto = new TaskStepDTO();
+		dto.setActive(isActive);
+		dto.setCondition(condition);
+		dto.setFormId(formId);
+		dto.setFormName(formName);
+		dto.setId(id);
+		dto.setMode(mode);
+		dto.setNodeId(nodeId);
+		dto.setOutputDocId(outputDocId);
+		dto.setOutputDocName(outputDocName);
+		dto.setProcessDefId(processDefId);
+		dto.setSequenceNo(sequenceNo);
+		dto.setStepName(stepName);
+		dto.setTriggerType(triggerType);
+		
+		return dto;
 	}
 }

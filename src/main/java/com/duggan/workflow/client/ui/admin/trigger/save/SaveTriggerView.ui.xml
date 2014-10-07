@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component' xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="">
+		<d:IssuesPanel ui:field="issues">
+		</d:IssuesPanel>
+		<div class="form-group">
+			<label for="ProcessName">Name:</label>
+			<d:TextField ui:field="txtName" type="text" class="form-control"
+				placeholder="Trigger Name" />
+				<span ui:field="spnMandatory" style="color:red">*</span>
+		</div>
+		
+		<div class="form-group">
+			<label>Mvel Imports:</label>
+			<d:TextArea ui:field="txtImports" class="form-control"
+				rows="3"></d:TextArea>
+		</div>
+		<div class="form-group">
+			<label>Mvel Script:</label>
+			<d:TextArea ui:field="txtScript" class="form-control"
+				rows="10"></d:TextArea>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

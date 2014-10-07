@@ -7,7 +7,9 @@ import java.util.List;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPresenter;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent.ProcessSelectedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -55,6 +57,10 @@ public class TaskStepPresenter extends
 		TaskNode getSelectedTask();
 		DropDownList<TaskNode> getTasksDropDown();
 		void setDeleteHandler(ClickHandler clickHandler);
+		void setType(int tabNo);
+		HasClickHandlers getTriggersTabLink();
+		HasClickHandlers getStepsTabLink();
+		HasClickHandlers getAddTriggerLink();
 	}
 	
 	@Inject DispatchAsync requestHelper;
@@ -64,6 +70,12 @@ public class TaskStepPresenter extends
 	
 	List<Form> forms;
 	List<OutputDocument> templates;
+	
+	@Inject TaskStepTriggerPresenter presenter;
+
+	private List<TaskStepDTO> taskSteps;
+	
+	public static final Object TRIGGER_SLOT = new Object();
 	
 	@Inject
 	public TaskStepPresenter(final EventBus eventBus, final MyView view) {
@@ -121,7 +133,21 @@ public class TaskStepPresenter extends
 			}
 		});
 		
+		getView().getTriggersTabLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				setInSlot(TRIGGER_SLOT, presenter);
+			}
+		});
 		
+		getView().getAddTriggerLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				fireEvent(new EditTriggerEvent(null));
+			}
+		});
 	}
 
 	public void setProcess(ProcessDef def) {
@@ -135,12 +161,12 @@ public class TaskStepPresenter extends
 			getView().show(event.isSelected());
 			if(event.isSelected()){
 				getView().getTasksDropDown().setNullText("--"+def.getName()+"--");
-				loadForms();
+				load();
 			}
 		}
 	}
 	
-	public void loadForms(){
+	public void load(){
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetFormsRequest());
 		action.addRequest(new GetOutputDocumentsRequest());
@@ -153,9 +179,15 @@ public class TaskStepPresenter extends
 				forms = ((GetFormsResponse)results.get(0)).getForms();
 				templates = ((GetOutputDocumentsResponse)results.get(1)).getDocuments();
 				getView().setTasks(((GetTaskNodesResponse)results.get(2)).getTaskNodes());
-				getView().displaySteps(((GetTaskStepsResponse)results.get(3)).getSteps());
+				bindSteps(((GetTaskStepsResponse)results.get(3)).getSteps());
 			}});
 				
+	}
+	
+	void bindSteps(List<TaskStepDTO> dtos){
+		getView().displaySteps(dtos);
+		presenter.setTaskSteps(dtos);
+		this.taskSteps = dtos;
 	}
 	
 	void reloadSteps(){
@@ -167,7 +199,7 @@ public class TaskStepPresenter extends
 		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
 			public void processResult(MultiRequestActionResult results) {
-				getView().displaySteps(((GetTaskStepsResponse)results.get(0)).getSteps());
+				bindSteps(((GetTaskStepsResponse)results.get(0)).getSteps());
 			}});
 	}
 
@@ -204,7 +236,7 @@ public class TaskStepPresenter extends
 			@Override
 			public void processResult(SaveTaskStepResponse aResponse) {
 				List<TaskStepDTO> dtos = aResponse.getList();
-				getView().displaySteps(dtos);
+				bindSteps(dtos);
 				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
@@ -212,7 +244,6 @@ public class TaskStepPresenter extends
 	
 	@Override
 	public void onSaveTaskStep(SaveTaskStepEvent event) {
-		
 		saveDTOs(Arrays.asList(event.getTaskStepDTO()));
 	}
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.shared.responses.BaseResponse;
+import com.duggan.workflow.shared.responses.GetAlertCountResult;
 
 public class GetAlertCount extends BaseRequest<GetAlertCountResult> {
 

@@ -40,7 +40,10 @@ import com.duggan.workflow.server.actionhandlers.GetSettingsRequestActionHandler
 import com.duggan.workflow.server.actionhandlers.GetTaskCompletionDataActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskNodesActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetTaskStepTriggersRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskStepsRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetTriggerCountActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetTriggersRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetUserRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetUsersRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.LoginRequestActionHandler;
@@ -55,6 +58,8 @@ import com.duggan.workflow.server.actionhandlers.SaveOuputDocumentRequestHandler
 import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveSettingsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveTaskStepRequestHandler;
+import com.duggan.workflow.server.actionhandlers.SaveTaskStepTriggerRequestHandler;
+import com.duggan.workflow.server.actionhandlers.SaveTriggerRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveUserRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SearchDocumentRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
@@ -100,7 +105,10 @@ import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.GetTaskNodesRequest;
+import com.duggan.workflow.shared.requests.GetTaskStepTriggersRequest;
 import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
+import com.duggan.workflow.shared.requests.GetTriggerCountRequest;
+import com.duggan.workflow.shared.requests.GetTriggersRequest;
 import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.LoginRequest;
@@ -115,6 +123,8 @@ import com.duggan.workflow.shared.requests.SaveOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.requests.SaveSettingsRequest;
 import com.duggan.workflow.shared.requests.SaveTaskStepRequest;
+import com.duggan.workflow.shared.requests.SaveTaskStepTriggerRequest;
+import com.duggan.workflow.shared.requests.SaveTriggerRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.requests.SearchDocumentRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
@@ -316,5 +326,16 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetTaskStepsRequest.class, GetTaskStepsRequestHandler.class, SessionValidator.class);
 		
 		bindHandler(SaveTaskStepRequest.class, SaveTaskStepRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(SaveTriggerRequest.class, SaveTriggerRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetTriggersRequest.class, GetTriggersRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(SaveTaskStepTriggerRequest.class, SaveTaskStepTriggerRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetTaskStepTriggersRequest.class, GetTaskStepTriggersRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetTriggerCountRequest.class, GetTriggerCountActionHandler.class, SessionValidator.class);
+		
 	}
 }

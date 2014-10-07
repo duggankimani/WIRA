@@ -1,16 +1,27 @@
 package com.duggan.workflow.server.dao.model;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.duggan.workflow.shared.model.MODE;
+import com.duggan.workflow.shared.model.TaskStepTrigger;
 
 @Entity
 public class TaskStepModel extends PO {
@@ -45,6 +56,10 @@ public class TaskStepModel extends PO {
 	@ManyToOne
 	@JoinColumn(name="processDefId")
 	private ProcessDefModel processDef;
+	
+	@OneToMany(fetch=FetchType.LAZY)
+	@Cascade(value={CascadeType.DELETE, CascadeType.DELETE_ORPHAN, CascadeType.REMOVE})
+	private Collection<ADTaskStepTrigger> taskStepTriggers = new HashSet<>();
 	
 	public TaskStepModel() {
 	}
@@ -108,8 +123,8 @@ public class TaskStepModel extends PO {
 	public boolean equals(Object obj) {
 		TaskStepModel other = (TaskStepModel)obj;
 		
-		if(id!=null && other.id!=null){
-			return id.equals(other.id);
+		if(nodeId!=null && other.nodeId!=null){
+			return nodeId.equals(other.nodeId);
 		}
 		
 		return super.equals(obj);
@@ -121,6 +136,16 @@ public class TaskStepModel extends PO {
 
 	public void setNodeId(Long nodeId) {
 		this.nodeId = nodeId;
+	}
+
+	public Collection<ADTaskStepTrigger> getTaskStepTriggers() {
+		return taskStepTriggers;
+	}
+	
+	public void addTaskStepTrigger(ADTaskStepTrigger trigger){
+		trigger.setTaskStep(this);
+		taskStepTriggers.remove(trigger);
+		taskStepTriggers.add(trigger);
 	}
 	
 }

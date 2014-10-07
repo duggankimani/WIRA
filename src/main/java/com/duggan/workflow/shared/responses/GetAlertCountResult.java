@@ -1,12 +1,16 @@
-package com.duggan.workflow.shared.requests;
+package com.duggan.workflow.shared.responses;
 
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.shared.responses.BaseResponse;
 
 public class GetAlertCountResult extends BaseResponse {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private HashMap<TaskType, Integer> counts;
 
 	@SuppressWarnings("unused")

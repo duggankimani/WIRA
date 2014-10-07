@@ -14,6 +14,8 @@ import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
+import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
@@ -24,6 +26,9 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TaskStepDTO;
+import com.duggan.workflow.shared.model.TaskStepTrigger;
+import com.duggan.workflow.shared.model.Trigger;
+import com.duggan.workflow.shared.model.TriggerType;
 
 public class ProcessDefHelper {
 
@@ -209,7 +214,7 @@ public class ProcessDefHelper {
 			
 			TaskStepModel model = getStep(step);
 			if(!step.isActive()){
-				dao.delete(model);
+				dao.cascadeDelete(model);
 				recalculatePositionsForSubsequentSteps(step);
 				continue;
 			}
@@ -331,5 +336,138 @@ public class ProcessDefHelper {
 		}
 		return steps;
 	}
+
+	public static List<Trigger> getTriggers() {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		
+		List<Trigger> triggers = new ArrayList<>();
+		List<ADTrigger> adTriggers = dao.getTriggers();
+		
+		for(ADTrigger adtrigger: adTriggers){
+			triggers.add(getTrigger(adtrigger));
+		}
+		
+		return triggers;
+	}
+
+//	public static List<Trigger> getTriggers(Long taskStepId, TriggerType type) {
+//
+//		ProcessDaoImpl dao = DB.getProcessDao();
+//		
+//		List<Trigger> triggers = new ArrayList<>();
+//		List<ADTrigger> adTriggers = dao.getTriggers(taskStepId, type);
+//		
+//		for(ADTrigger adtrigger: adTriggers){
+//			triggers.add(getTrigger(adtrigger));
+//		}
+//		
+//		return triggers;
+//	}
+
+	public static Trigger saveTrigger(Trigger trigger) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADTrigger po = getTrigger(trigger);
+		
+		if(trigger.isActive()){
+			dao.save(po);
+		}else{
+			dao.cascadeDeleteTrigger(po);
+			return trigger;
+		}
+		
+		Trigger saved  = getTrigger(po);
+		
+		return saved;
+	}
+
+	private static Trigger getTrigger(ADTrigger po) {
+		
+		Trigger trigger = new Trigger();
+		trigger.setId(po.getId());
+		trigger.setName(po.getName());
+		trigger.setScript(po.getScript());
+		trigger.setImports(po.getImports());
+		return trigger;
+	}
+
+	private static ADTrigger getTrigger(Trigger trigger) {
+		
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADTrigger po = new ADTrigger();
+		
+		if(trigger.getId()!=null){
+			po = dao.getById(ADTrigger.class, trigger.getId());
+		}
+		
+		po.setName(trigger.getName());
+		po.setImports(trigger.getImports());
+		po.setScript(trigger.getScript());
+		return po;
+	}
+
+	public static List<TaskStepTrigger> getTaskStepTriggers(Long taskStepId, TriggerType type) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		
+		Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(taskStepId, type);
+		
+		List<TaskStepTrigger> triggers = new ArrayList<>();
+		for(ADTaskStepTrigger adTrigger: adTriggers){
+			TaskStepTrigger trigger  = getStepTrigger(adTrigger);
+			triggers.add(trigger);
+		}
+		
+		return triggers;
+	}
+	
+	public static int getTriggerCount(Long taskStepId, TriggerType type){
+		
+		ProcessDaoImpl dao = DB.getProcessDao();
+
+		return dao.getTaskCount(taskStepId, type);
+	}
+
+	public static TaskStepTrigger saveTaskStepTrigger(TaskStepTrigger trigger) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		
+		ADTaskStepTrigger adTaskStep = getStepTrigger(trigger);
+		
+		if(trigger.isActive()){
+			dao.save(adTaskStep);
+		}else{
+			
+			dao.delete(adTaskStep);
+			return trigger;
+		}
+		
+		return getStepTrigger(adTaskStep);
+	}
+
+	private static TaskStepTrigger getStepTrigger(ADTaskStepTrigger adTaskStep) {
+		
+		TaskStepTrigger stepTrigger = new TaskStepTrigger();
+		stepTrigger.setTrigger(getTrigger(adTaskStep.getTrigger()));
+		stepTrigger.setTaskStepId(adTaskStep.getTaskStep().getId());
+		stepTrigger.setType(adTaskStep.getType());
+		stepTrigger.setId(adTaskStep.getId());
+		
+		return stepTrigger;
+	}
+
+	private static ADTaskStepTrigger getStepTrigger(TaskStepTrigger trigger) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADTaskStepTrigger adTaskStep = new ADTaskStepTrigger();
+		
+		if(trigger.getId()!=null){
+			adTaskStep = dao.getById(ADTaskStepTrigger.class, trigger.getId());
+		}
+		
+		adTaskStep.setTaskStep(dao.getById(TaskStepModel.class, trigger.getTaskStepId()));
+		
+		adTaskStep.setType(trigger.getType());
+		adTaskStep.setTrigger(dao.getById(ADTrigger.class, trigger.getTrigger().getId()));
+		
+		return adTaskStep;
+	}
+	
 
 }

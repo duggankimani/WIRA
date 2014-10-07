@@ -52,7 +52,7 @@ public class OutPutDocsPresenter extends
 
 	@TabInfo(container = AdminHomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new TabDataExt("Output Documents","icon-cogs",5, adminGatekeeper);
+        return new TabDataExt("Output Documents","icon-cogs",6, adminGatekeeper);
     }
 	
 	@Inject

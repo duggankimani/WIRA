@@ -3,11 +3,13 @@ package com.duggan.workflow.test.tasksteps;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
@@ -26,6 +28,13 @@ public class TestTaskSteps {
 	}
 	
 	@Test
+	public void testCascadeDelete(){
+		ADTrigger trigger = dao.getById(ADTrigger.class, 3L);
+		
+		dao.cascadeDeleteTrigger(trigger);
+	}
+	
+	@Ignore
 	public void create(){
 		ADForm form = DB.getFormDao().getForm(1L);
 		ADOutputDoc doc = DB.getOutputDocDao().getOuputDocument(1L);

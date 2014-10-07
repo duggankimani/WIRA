@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
+	
+	<g:HTMLPanel>
+		<d:TableView ui:field="tblView" striped="false" isGrid="false"
+			bordered="true" autoNumber="false" styleName="table-programs">
+		</d:TableView>
+	</g:HTMLPanel>
+</ui:UiBinder> 

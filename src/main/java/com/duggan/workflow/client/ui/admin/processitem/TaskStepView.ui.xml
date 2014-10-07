@@ -18,15 +18,49 @@
 				<div class="form-group">
 					<label for="ProcessName">Tasks:</label>
 					<d:DropDownList ui:field="tasksDropDown" styleName="form-control"/>
-					<d:ActionLink ui:field="aAddItem" styleName="btn btn-primary">Add</d:ActionLink>
+					<!-- d:ActionLink ui:field="aAddItem" styleName="btn btn-primary">Add</d:ActionLink-->
 				</div>
 				
-				<div class="form-group">
-					<!-- label for="ProcessName">Selected:</label -->
-					<d:TableView ui:field="tblView" striped="false" isGrid="false"
-						bordered="true" autoNumber="false" styleName="table-programs">
-					</d:TableView>
+				<div class="content-body">
+					<div class="row-fluid">
+						<!--Action Buttons  -->
+						 <div class="action-buttons">
+							<g:Anchor ui:field="aNewStep" styleName="btn btn-primary"
+								title="Add a New Step">
+								<i class="icon-plus"></i>
+									Steps
+							</g:Anchor>
+							
+							<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary hide"
+								title="Add a New Trigger">
+								<i class="icon-plus"></i>
+									Triggers
+							</g:Anchor>
+						</div>
+						
+							<ul id="mytab" class="nav nav-tabs">
+							  <li class="active" ui:field="liStep"><g:Anchor ui:field="aStepstab">Steps</g:Anchor></li>
+							  <li ui:field="liTrigger"><g:Anchor ui:field="aTriggerstab">Triggers</g:Anchor></li>
+							</ul>
+							<div id="stepcontent" class="tab-content">
+								<div ui:field="divStepContent" class="tab-pane fade in active">
+									<div class="form-group">
+										<!-- label for="ProcessName">Selected:</label -->
+										<d:TableView ui:field="tblView" striped="false" isGrid="false"
+											bordered="true" autoNumber="false" styleName="table-programs">
+										</d:TableView>
+									</div>
+								</div>
+								
+								<!-- Trigger Content -->
+								<div ui:field="divTriggerContent" class="tab-pane fade">
+									<g:HTMLPanel ui:field="panelTriggerContent">
+									</g:HTMLPanel>
+								</div><!--  -->
+							</div>
+					</div>
 				</div>
+				
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

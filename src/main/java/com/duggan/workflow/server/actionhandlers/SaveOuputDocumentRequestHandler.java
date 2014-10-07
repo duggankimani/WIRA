@@ -5,10 +5,15 @@ import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.SaveOutputDocumentRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveOutputDocumentResponse;
+import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveOuputDocumentRequestHandler extends BaseActionHandler<SaveOutputDocumentRequest, SaveOutputDocumentResponse> {
+	
+	@Inject
+	public SaveOuputDocumentRequestHandler() {
+	}
 	
 	@Override
 	public void execute(SaveOutputDocumentRequest action,
