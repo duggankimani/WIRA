@@ -158,8 +158,11 @@ public class TaskStepView extends ViewImpl implements
 		
 		@Override
 		public void onValueChange(ValueChangeEvent<MODE> event) {
-			dto.setMode(event.getValue());
-			AppContext.fireEvent(new SaveTaskStepEvent(dto));
+			if(event.getValue()!=null){
+				dto.setMode(event.getValue());
+				AppContext.fireEvent(new SaveTaskStepEvent(dto));
+			}
+			
 		}
 	}
 	

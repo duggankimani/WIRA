@@ -73,8 +73,6 @@ public class TaskStepPresenter extends
 	
 	@Inject TaskStepTriggerPresenter presenter;
 
-	private List<TaskStepDTO> taskSteps;
-	
 	public static final Object TRIGGER_SLOT = new Object();
 	
 	@Inject
@@ -187,7 +185,6 @@ public class TaskStepPresenter extends
 	void bindSteps(List<TaskStepDTO> dtos){
 		getView().displaySteps(dtos);
 		presenter.setTaskSteps(dtos);
-		this.taskSteps = dtos;
 	}
 	
 	void reloadSteps(){

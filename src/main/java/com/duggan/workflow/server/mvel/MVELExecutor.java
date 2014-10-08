@@ -34,7 +34,10 @@ public class MVELExecutor {
 		ParserContext context = new ParserContext();
 		if(importsArray!=null)
 			for(String im: importsArray){
-				context.addPackageImport(im);
+				if(!im.trim().isEmpty()){
+					context.addPackageImport(im.trim());
+				}
+				
 			}
 		
 		Serializable compilexEx = MVEL.compileExpression(script,context);

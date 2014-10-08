@@ -292,10 +292,23 @@ public class GenericDocumentView extends ViewImpl implements
 			if(validActions.contains(Actions.COMPLETE)){
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
+				spnStatusBody.setClassName("label label-success");
+				spnStatusBody.setInnerText("You are currently working on this task");
 			}else{
+				
+				if(validActions.contains(Actions.START) || validActions.contains(Actions.RESUME)){
+					spnStatusBody.setClassName("label");
+					spnStatusBody.setInnerText("Task awaiting your action");
+				}else{
+					spnStatusBody.setClassName("label label-info");
+					spnStatusBody.setInnerText("Completed Task");
+				}
 				formPanel.setReadOnly(true);
 				showNavigation(false);
+				
 			}
+			
+			
 		}else{
 			formPanel.setReadOnly(readOnly || isFormReadOnly);
 		}
