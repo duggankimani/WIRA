@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.rest.service.impl;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.ws.rs.core.MediaType;
@@ -15,77 +17,93 @@ import com.duggan.workflow.server.rest.service.OutgoingRequestService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
-public class OutgoingRequestImpl implements OutgoingRequestService{
+public class OutgoingRequestImpl implements OutgoingRequestService {
 
 	static String serviceUri = null;
-	
+
 	static String propfile = "/general.properties";
-	
-	//String erpUrl = "http://ebusiness-duggansit.rhcloud.com/ebusiness/rest";
-	
+
+	// String erpUrl = "http://ebusiness-duggansit.rhcloud.com/ebusiness/rest";
+
 	static Logger logger = Logger.getLogger(OutgoingRequestImpl.class);
-	
+
 	static Properties properties = new Properties();
-	
-	static{
-		try{
-			InputStream is = OutgoingRequestImpl.class.getResourceAsStream(propfile);
+
+	static {
+		try {
+			InputStream is = OutgoingRequestImpl.class
+					.getResourceAsStream(propfile);
 			properties.load(is);
 			String prop = properties.getProperty("ServiceUri");
-			if(prop!=null){
+			if (prop != null) {
 				serviceUri = prop;
-			}else{
-				logger.warn("Property [ServiceUri] not found, using default value ["+serviceUri+"]");
+			} else {
+				logger.warn("Property [ServiceUri] not found, using default value ["
+						+ serviceUri + "]");
 			}
-		}catch(Exception e){
-//			logger.warn("Error Loading [erpUrl], using default value ["+erpUrl+"] :: Cause "+e.getMessage());
-//			e.printStackTrace();
+		} catch (Exception e) {
+			// logger.warn("Error Loading [erpUrl], using default value ["+erpUrl+"] :: Cause "+e.getMessage());
+			// e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Jersey Client
 	 */
 	private Client jclient;
+
 	
-	public OutgoingRequestImpl(){
-		DefaultClientConfig config = new DefaultClientConfig(JAXBProviderImpl.class);
+	public OutgoingRequestImpl() {
+		this(false);
+	}
+	
+	public OutgoingRequestImpl(Boolean myConfiguration) {
+		DefaultClientConfig config = new DefaultClientConfig(
+				JAXBProviderImpl.class);
+		if(myConfiguration){
+			config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);	
+		}
 		jclient = Client.create(config);
 		jclient.setConnectTimeout(15000);
 
 	}
 	
+
 	@Override
 	public Response executeCall(Request request) {
 		String uri = null;
-		
+
 		Object URI = request.getContext("serviceURI");
-		if(URI!=null && !URI.toString().isEmpty()){
-			uri =URI.toString();
+		if (URI != null && !URI.toString().isEmpty()) {
+			uri = URI.toString();
 		}
-		
-		if(uri==null){			
-			String log = "Trying ServiceUri Property from classpath:"+propfile+".. ";
-			if(serviceUri==null){
-				logger.info(log+" - NO VALUE FOUND");
-			}else{
-				uri=serviceUri;
-				logger.info(log+" - "+uri);
+
+		if (uri == null) {
+			String log = "Trying ServiceUri Property from classpath:"
+					+ propfile + ".. ";
+			if (serviceUri == null) {
+				logger.info(log + " - NO VALUE FOUND");
+			} else {
+				uri = serviceUri;
+				logger.info(log + " - " + uri);
 			}
 		}
 
 		return executeCall(request, uri);
 	}
-	
+
 	@Override
 	public Response executeCall(Request request, String serviceURI) {
-			
-		logger.info("Submitting Request : "+request);
 
-		if(serviceURI==null || serviceURI.isEmpty()){
-			throw new IllegalArgumentException("REST URI cannot be null for rest service");
+		logger.info("Submitting Request : " + request);
+
+		if (serviceURI == null || serviceURI.isEmpty()) {
+			throw new IllegalArgumentException(
+					"REST URI cannot be null for rest service");
 		}
 
 		WebResource resource = jclient.resource(serviceURI);
@@ -96,7 +114,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 			clientResponse = resource.type(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON)
 					.post(ClientResponse.class, request);
-			
+
 			// response.getHeaders()
 		} catch (Exception e) {
 
@@ -107,36 +125,57 @@ public class OutgoingRequestImpl implements OutgoingRequestService{
 		if (!clientResponse.getClientResponseStatus().equals(
 				ClientResponse.Status.OK)) {
 
-			WiraExceptionModel model = clientResponse.getEntity(WiraExceptionModel.class);
-			
+			WiraExceptionModel model = clientResponse
+					.getEntity(WiraExceptionModel.class);
+
 			throw new RuntimeException(model.getCause());
 		}
 
 		Response response = clientResponse.getEntity(Response.class);
-		
+
 		return response;
 
 	}
 	
-	
-	public static void main(String[] args) {
-		CommandContext ctx = new CommandContext();
-		//ctx.setData("docType", DocType.LPO.name());
-		ctx.setData("subject", "LPO/8023/12");
-		ctx.setData("approvalStatus", "20/09/2013");
-		
-		Request request = new Request("WORKFLOWCALLOUTCOMMAND", null, ctx.getData());
-
-//		//
-//		 marshalXml(request);
-		//
-		Response response = new OutgoingRequestImpl().executeCall(request);
-		
-		assert request!=null;
+	public void executePostCall(String urlEncodedString) {
+		executePostCall(urlEncodedString, null);
 	}
 
-	public void executePostCall(String urlEncoding) {
-		
+	public void executePostCall(String urlEncodedString, Map <String,Object> postBody) {
+		logger.warn("Executing post: " + urlEncodedString);
+		try {
+			WebResource resource = jclient.resource(urlEncodedString);
+			
+			ClientResponse response = resource.type(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)
+					.post(ClientResponse.class, postBody);
+			
+			// Check response status code
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+
+			// display response
+			String output = response.getEntity(String.class);
+			System.out.println("Output from Server .... ");
+			System.out.println(output + "\n");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Something wrong happened while executing the Post call ");
+		}
+
+	}
+
+	public static void main(String[] args) {
+		Map<String,Object> postBody = new HashMap<String,Object>();
+		postBody.put("allocatedTo", "1");
+		postBody.put("allocatedBy", "daniel");
+		postBody.put("terminalId", "28");
+		String url  = "http://localhost:8030/PioneerMSSQL/index.php/api/flexipay_server/postAllocation";
+		new OutgoingRequestImpl(true)
+				.executePostCall(url,postBody);
 	}
 
 }

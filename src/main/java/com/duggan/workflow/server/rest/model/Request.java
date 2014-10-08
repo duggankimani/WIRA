@@ -51,7 +51,6 @@ public class Request {
 	
 	@Override
 	public String toString() {
-		
 		String str = "BusinessKey = [Command Name= "+commandName+"; " +
 				"BusinessKey = "+businessKey+"; " +
 						"Context = "+context+"]";
