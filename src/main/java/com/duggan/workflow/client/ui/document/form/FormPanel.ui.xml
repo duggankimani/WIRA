@@ -12,13 +12,7 @@
 			<span ui:field="divFormHelp" styleName="text-info"></span>
 		</div>
 		<g:HTMLPanel styleName="form-horizontal" ui:field="panelFields">
-			<div class="control-group">
-				<strong>
-					<g:InlineLabel styleName="control-label" ui:field="panelLabel">
-					</g:InlineLabel>
-				</strong>
-				<g:HTMLPanel styleName="controls" ui:field="panelItem"></g:HTMLPanel>
-			</div>
+			
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

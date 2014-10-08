@@ -863,7 +863,7 @@ body .dateBoxPopup {
 #detailed-info .form-horizontal .control-label {
 	padding-top: 1px;
 	width: 37%;
-	font-weight:bold;
+	/*font-weight:bold;*/
 }
 
 #detailed-info .form-horizontal .control-label:after{

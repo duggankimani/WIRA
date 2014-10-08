@@ -4929,7 +4929,8 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 }
 
 .pagination {
-	margin: 20px 0;
+	/*margin: 20px 0;*/
+	margin: 0px 0;
 }
 
 .pagination ul {

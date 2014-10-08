@@ -30,6 +30,7 @@ import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetFormModelRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetGroupsRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetInitialDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetItemActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
@@ -96,6 +97,7 @@ import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
+import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.requests.GetLongTasksRequest;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
@@ -340,6 +342,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetTriggerCountRequest.class, GetTriggerCountActionHandler.class, SessionValidator.class);
 		
 		bindHandler(ExecuteTriggersRequest.class, ExecuteTriggerActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetInitialDocumentRequest.class, GetInitialDocumentRequestHandler.class, SessionValidator.class);
 		
 	}
 }
