@@ -25,7 +25,6 @@ public class GetTaskStepsRequestHandler extends
 		
 		List<TaskStepDTO> steps = new ArrayList<>();
 		if(action.getProcessId()==null){
-		
 			if(action.getTaskId()!=null){
 				steps = ProcessDefHelper.getTaskStepsByTaskId(action.getTaskId());
 			}else if(action.getDocumentId()!=null){

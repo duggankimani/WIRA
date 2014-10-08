@@ -1,15 +1,20 @@
 package com.duggan.workflow.server.db;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
 public class DBUtil {
 
-	Logger logger = Logger.getLogger(DBUtil.class);
+	static Logger logger = Logger.getLogger(DBUtil.class);
 	
-	public String getStringValue(final String sql, String connectionName){
+	public static String getStringValue(final String sql){
+		return getStringValue(sql, null);
+	}
+	
+	public static String getStringValue(final String sql, String connectionName){
 		
 		DBExecute<String> exec = new DBExecute<String>(connectionName) {
 			
@@ -23,14 +28,17 @@ public class DBUtil {
 					throws SQLException {
 				
 				if(hasResults){
-					return getResultSet().getString(1); 
+					ResultSet rs = getResultSet();
+					if(rs.next()){
+						return rs.getString(1);
+					}
 				}
-				return null;
+				return "";
 			}
 			
 			@Override
 			protected String getQueryString() {
-				
+				logger.info("DBUtil.getStringValue sql = "+sql);
 				return sql;
 			}
 		};

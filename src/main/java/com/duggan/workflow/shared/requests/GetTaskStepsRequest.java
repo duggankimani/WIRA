@@ -45,4 +45,5 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 	public Long getTaskId() {
 		return taskId;
 	}
+
 }

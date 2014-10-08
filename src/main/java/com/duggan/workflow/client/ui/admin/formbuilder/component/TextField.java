@@ -164,7 +164,7 @@ public class TextField extends FieldWidget {
 		if(value==null || value.isEmpty())
 			return null;
 		
-		System.err.println("TextField.FieldValue "+field.getName()+"= "+value);
+		//System.err.println("TextField.FieldValue "+field.getName()+"= "+value);
 		return new StringValue(field.getLastValueId(),field.getName(),value);
 	}
 	
