@@ -202,19 +202,19 @@
 								</d:ActionLink>
 							</li>
 							<li>
-								<a href="#">1</a>
+								<a>1</a>
 							</li>
 							<li>
-								<a href="#">2</a>
+								<a>2</a>
 							</li>
 							<li>
-								<a href="#">3</a>
+								<a>3</a>
 							</li>
 							<li>
-								<a href="#">4</a>
+								<a>4</a>
 							</li>
 							<li>
-								<a href="#">5</a>
+								<a>5</a>
 							</li>
 							<li>
 								<d:ActionLink ui:field="aNext" styleName="pull-right hidden">

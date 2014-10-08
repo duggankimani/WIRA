@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.document;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,12 +27,12 @@ import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
-import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
+import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
@@ -92,6 +91,7 @@ import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
+import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
@@ -109,6 +109,7 @@ import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
+import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
@@ -119,11 +120,11 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -543,7 +544,6 @@ public class GenericDocumentPresenter extends
 				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
 			requests.addRequest(new GetAttachmentsRequest(documentId));
 			
-			fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
 			requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					public void processResult(MultiRequestActionResult results) {					
@@ -864,8 +864,9 @@ public class GenericDocumentPresenter extends
 	
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
-		requests.addRequest(new GetTaskStepsRequest(documentId, taskId));
-		requests.addRequest(new GetDocumentRequest(documentId, taskId));
+//		requests.addRequest(new GetTaskStepsRequest(documentId, taskId));
+//		requests.addRequest(new GetDocumentRequest(documentId, taskId));
+		requests.addRequest(new GetInitialDocumentRequest(documentId, taskId));
 		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
@@ -880,19 +881,23 @@ public class GenericDocumentPresenter extends
 					int i=0;
 					
 					//Steps
-					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
-					setSteps(resp.getSteps());
-					
+//					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
+//					setSteps(resp.getSteps());
 					//Document
-					GetDocumentResult result = (GetDocumentResult)results.get(i++);
-					bindDocumentResult(result);
+//					GetDocumentResult result = (GetDocumentResult)results.get(i++);
+//					bindDocumentResult(result);
+					
+					//Document and Task Steps & Trigger before Load
+					GetInitialDocumentResponse compositeResp =  (GetInitialDocumentResponse)results.get(i++);
+					setSteps(compositeResp.getSteps());
+					bindDocumentResult(compositeResp.getDoc());
 					
 					//Form
 					GetFormModelResponse response = (GetFormModelResponse)results.get(i++);					
 					
 					if(!response.getFormModel().isEmpty()){
 						//executeTriggers((Form)response.getFormModel().get(0), result.getDoc());
-						bindForm((Form)response.getFormModel().get(0), result.getDoc());
+						bindForm((Form)response.getFormModel().get(0), compositeResp.getDoc());
 					}else{
 						getView().showDefaultFields(true);
 					}
@@ -1147,9 +1152,9 @@ public class GenericDocumentPresenter extends
 		}
 	}
 
-	protected void bindDocumentResult(GetDocumentResult result) {
+	protected void bindDocumentResult(Doc result) {
 
-		this.doc = result.getDoc();
+		this.doc = result;
 		Map<String, Value> vals= doc.getValues();
 		
 		long docId=0l;
