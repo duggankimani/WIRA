@@ -15,9 +15,6 @@
 					<span ui:field="spnDocType"></span>
 					-&nbsp;
 					<span ui:field="spnSubject"></span>
-
-					<span class="label label-default" ui:field="spnStatusBody">
-					</span>
 				</div>
 				<div class="action-buttons pull-right">
 					<d:ActionLink ui:field="aProcess" styleName="btn btn-default disabled"
@@ -228,9 +225,9 @@
 
 				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal field-form">
 					<div class="ribbon">
-						<div class="ribbon-inner ribbon-draft" data-bindattr-192="192">
+						<div ui:field="divRibbon" class="ribbon-inner" data-bindattr-192="192">
 							<script id="metamorph-655-start" type="text/x-placeholder"></script>
-							Draft
+							<span ui:field="spnRibbon"></span>
 							<script id="metamorph-655-end" type="text/x-placeholder"></script>
 						</div>
 					</div>

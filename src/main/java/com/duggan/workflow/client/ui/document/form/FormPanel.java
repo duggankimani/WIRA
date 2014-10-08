@@ -1,7 +1,10 @@
 package com.duggan.workflow.client.ui.document.form;
 
+import static com.duggan.workflow.client.ui.util.DateUtils.*;
+
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +13,8 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextArea;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.delegate.FormDelegate;
+import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -42,12 +47,13 @@ public class FormPanel extends Composite {
 	}
 
 	@UiField HTMLPanel panelFields;
-	//@UiField InlineLabel panelLabel;
-	//@UiField HTMLPanel panelItem;
 	@UiField LegendElement divFormCaption;
 	@UiField SpanElement divFormHelp;
 	@UiField IssuesPanel issues;
 	boolean isReadOnly=true;
+
+	@UiField SpanElement spnCreated;
+	@UiField SpanElement spnDeadline;
 	
 	FormDelegate formDelegate = new FormDelegate();
 	MODE mode = MODE.VIEW;
@@ -108,11 +114,43 @@ public class FormPanel extends Composite {
 				((TextArea) fieldWidget).getContainer().removeStyleName("hidden");
 			}
 			
-			//System.err.println("||| "+field.getCaption()+" :: "+
-			//(field.getValue()==null? "null" : field.getValue().getValue()));
 			panelFields.add(fieldWidget);
 		}
 		
+	}
+	
+	public void setCreated(Date created){
+
+		if (created!= null){
+			String timeDiff =  MONTHDAYFORMAT.format(created);//DateUtils.getTimeDifferenceAsString(created);
+			spnCreated.setInnerText(timeDiff);
+			//TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
+		}
+			
+	}
+	
+	public void setDeadline(Date endDateDue) {
+		if(endDateDue==null){
+			return;
+		}
+
+		String deadline="";
+		String timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
+		
+		if(timeDiff != null){
+			deadline =  MONTHDAYFORMAT.format(endDateDue);
+					//TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
+		}
+
+		if(DateUtils.isOverdue(endDateDue)){
+			spnDeadline.removeClassName("hidden");
+			spnDeadline.getStyle().setColor("#DD4B39");
+		}else if(DateUtils.isDueInMins(30, endDateDue)){
+			spnDeadline.removeClassName("hidden");
+			spnDeadline.getStyle().setColor("#F89406");
+		}
+		
+		spnDeadline.setInnerText("Due "+deadline);
 	}
 
 	public boolean isValid(){
@@ -136,4 +174,5 @@ public class FormPanel extends Composite {
 	public boolean isReadOnly() {
 		return isReadOnly;
 	}
+	
 }

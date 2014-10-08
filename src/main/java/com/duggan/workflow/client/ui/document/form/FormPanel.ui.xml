@@ -5,15 +5,15 @@
 		<v:IssuesPanel ui:field="issues">
 		</v:IssuesPanel>
 		<div class="row-fluid item">
-			<div class="10">
+			<div class="span10">
 				<legend ui:field="divFormCaption">
 				</legend>
 			</div>
 			<div class="span2">
 				<!-- <i class="icon-calendar icon-large"></i> -->
 				<div style="float:right; text-align:right">
-					<span ui:field="spnCreated" class="tasktimelines">June 21st 2014</span>
-					<span ui:field="spnDeadline" class="tasktimelines">Overdue</span>
+					<span ui:field="spnCreated" class="tasktimelines"></span>
+					<span ui:field="spnDeadline" class="tasktimelines"></span>
 				</div>
 
 			</div>

@@ -18,6 +18,7 @@ import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NodeDetail;
@@ -54,8 +55,6 @@ public class GenericDocumentView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, GenericDocumentView> {
 	}
 
-	@UiField SpanElement spnCreated;
-	@UiField SpanElement spnDeadline;
 	@UiField SpanElement spnDocType;
 	@UiField SpanElement spnSubject;
 	
@@ -92,7 +91,6 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField SpanElement spnAttachmentNo;
 	@UiField SpanElement spnActivityNo;
 	@UiField DivElement divAttachment;
-	@UiField SpanElement spnStatusBody;
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
@@ -116,6 +114,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField ActionLink aPrevious;
 	@UiField ActionLink aNext;
 	
+	@UiField Element divRibbon;
+	@UiField SpanElement spnRibbon;
 	FormPanel formPanel;
 		
 	String url=null;
@@ -128,6 +128,9 @@ public class GenericDocumentView extends ViewImpl implements
 	private String timeDiff;
 	
 	@UiField ActionLink aEnv;
+	private Date dateDue;
+	private Date dateCreated;
+	DocStatus status = null;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -292,26 +295,43 @@ public class GenericDocumentView extends ViewImpl implements
 			if(validActions.contains(Actions.COMPLETE)){
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
-				spnStatusBody.setClassName("label label-success");
-				spnStatusBody.setInnerText("You are currently working on this task");
+				
+				//Running or started
+				divRibbon.addClassName("ribbon-success");
+				spnRibbon.setInnerText("In Progress");
 			}else{
 				
 				if(validActions.contains(Actions.START) || validActions.contains(Actions.RESUME)){
-					spnStatusBody.setClassName("label");
-					spnStatusBody.setInnerText("Task awaiting your action");
+					//Not Started
+					divRibbon.addClassName("ribbon-open");
+					spnRibbon.setInnerText("Pending");
+					
 				}else{
-					spnStatusBody.setClassName("label label-info");
-					spnStatusBody.setInnerText("Completed Task");
+					//
+					divRibbon.addClassName("ribbon-accepted");
+					spnRibbon.setInnerText("Completed");
 				}
 				formPanel.setReadOnly(true);
 				showNavigation(false);
 				
 			}
 			
-			
 		}else{
+			if(status!=null){
+				if(status==DocStatus.INPROGRESS){
+					divRibbon.addClassName("ribbon-draft");
+					spnRibbon.setInnerText("Sent");
+				}else{
+					divRibbon.addClassName("ribbon-draft");
+					spnRibbon.setInnerText("Drafted");
+				}
+				
+			}
 			formPanel.setReadOnly(readOnly || isFormReadOnly);
 		}
+		
+		formPanel.setCreated(dateCreated);
+		formPanel.setDeadline(dateDue);
 		
 		fldForm.add(formPanel);
 
@@ -339,10 +359,8 @@ public class GenericDocumentView extends ViewImpl implements
 			setImage(createdBy);
 		}
 		
-		if (created!= null)
-			timeDiff =  DateUtils.getTimeDifferenceAsString(created);
-			if(timeDiff != null)
-			spnCreated.setInnerText(TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
+		this.dateCreated = created;
+		this.status = status;
 
 		if(!(taskDisplayName==null || taskDisplayName.equals(""))){
 			spnDocType.setInnerText(taskDisplayName);
@@ -377,22 +395,6 @@ public class GenericDocumentView extends ViewImpl implements
 			showForward(false);
 		}
 		
-		if(status!=null){
-			spnStatusBody.setInnerText(status.name());
-			
-			if(status==DocStatus.APPROVED){
-				spnStatusBody.setClassName("label label-success");
-			}
-			
-			if(status==DocStatus.INPROGRESS){
-				spnStatusBody.setClassName("label label-info");
-			}
-			
-			if(status==DocStatus.REJECTED){
-				spnStatusBody.setClassName("label label-danger");
-			}
-			
-		}
 		
 		if(priority!=null){
 			Priority prty = Priority.get(priority);
@@ -677,26 +679,7 @@ public class GenericDocumentView extends ViewImpl implements
 		//eDelegate.setInnerText(delegate.getDelegateTo());
 	}
 	
-	public void setDeadline(Date endDateDue) {
-
-		String deadline="";
-		timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
-		if(timeDiff != null){
-			deadline = TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
-		}
-
-		if(DateUtils.isOverdue(endDateDue)){
-			spnDeadline.removeClassName("hidden");
-			spnDeadline.getStyle().setColor("#DD4B39");
-			deadline = "Overdue "+deadline;
-		}else if(DateUtils.isDueInMins(30, endDateDue)){
-			spnDeadline.removeClassName("hidden");
-			spnDeadline.getStyle().setColor("#F89406");
-			deadline = "Due "+deadline;
-		}
-		
-		spnDeadline.setInnerText(deadline);
-	}
+	
 	
 	private void setImage(HTUser user) {
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
@@ -735,6 +718,12 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public HasClickHandlers getLinkEnv() {
 		return aEnv;
+	}
+
+	@Override
+	public void setDeadline(Date endDateDue) {
+		this.dateDue = endDateDue;
+		//formPanel.setDeadline(endDateDue);
 	}
 
 }
