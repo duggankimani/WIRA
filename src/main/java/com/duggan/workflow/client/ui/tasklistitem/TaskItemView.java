@@ -133,12 +133,18 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			
 			if(status.equals(HTStatus.COMPLETED)){
 				spnDocIcon.addStyleName("icon-ok");
+				spnDocIcon.setTitle("Completed Task");
 			}
 			else if(status.equals(HTStatus.SUSPENDED)){
 				spnDocIcon.addStyleName("icon-pause");
+				spnDocIcon.setTitle("Task Currently Suspended");
+			}else if(status.equals(HTStatus.INPROGRESS)){
+				spnDocIcon.addStyleName("icon-forward");
+				spnDocIcon.setTitle("Task Currently in Progress");
 			}
 			else {
 				spnDocIcon.addStyleName("icon-play");
+				spnDocIcon.setTitle("Task Awaiting your action");
 			}
 			
 			if(summ.getName()!=null && !summ.getName().isEmpty()){
