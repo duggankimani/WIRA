@@ -226,7 +226,14 @@
 
 				</g:HTMLPanel>
 
-				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal">
+				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal field-form">
+					<div class="ribbon">
+						<div class="ribbon-inner ribbon-draft" data-bindattr-192="192">
+							<script id="metamorph-655-start" type="text/x-placeholder"></script>
+							Draft
+							<script id="metamorph-655-end" type="text/x-placeholder"></script>
+						</div>
+					</div>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel ui:field="divContinue" styleName="centered hide">

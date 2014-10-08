@@ -824,6 +824,7 @@ body .dateBoxPopup {
 	height: 40px;
 	/* border-bottom: 1px solid #CCCCCC; */
 	margin-left: 0px;
+	display:none;
 }
 
 #detailed-info .personal_info .image {
@@ -1224,6 +1225,18 @@ body .dateBoxPopup {
 
 #detailed-info .panel-activity .feed-item-question .feed-icon {
 	background-color: #428bca;
+}
+
+/*Paginations Margins*/
+#detailed-info .pagination{
+	margin:2px;
+}
+
+#detailed-info .field-form{
+	position: relative;
+	-webkit-box-shadow: 0 0 6px #ccc;
+	box-shadow: 0 0 6px #ccc;
+	padding:25px;
 }
 
 ul.icons-list {

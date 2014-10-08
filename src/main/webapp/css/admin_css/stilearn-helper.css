@@ -644,3 +644,89 @@ input[type="color"]:focus,
 	margin-right: 8px;
 	padding-left: 10px !important;
 }
+
+
+
+/**Ribbon Styles Start Here**/
+.ribbon {
+	position: absolute !important;
+	top: -5px;
+	left: -5px;
+	overflow: hidden;
+	width: 96px;
+	height: 94px;
+	border-bottom-right-radius: 92px
+}
+
+.ribbon .ribbon-inner {
+	text-align: center;
+	color: #fff;
+	top: 24px;
+	left: -31px;
+	width: 135px;
+	padding: 3px;
+	position: relative;
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg)
+}
+
+.ribbon .ribbon-inner:before, .ribbon .ribbon-inner:after {
+	content: "";
+	border-top: 5px solid transparent;
+	border-left: 5px solid;
+	border-left-color: inherit;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid;
+	border-bottom-color: inherit;
+	position: absolute;
+	top: 20px;
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg)
+}
+
+.ribbon .ribbon-inner:before {
+	left: 0;
+	border-left: 2px solid transparent
+}
+
+.ribbon .ribbon-inner:after {
+	right: -2px;
+	border-bottom: 3px solid transparent
+}
+
+.ribbon .ribbon-open {
+	background-color: #2c96dd;
+	border-color: #1e7ab8
+}
+
+.ribbon .ribbon-accepted {
+	background: #1aaf5d;
+	border-color: #138345
+}
+
+.ribbon .ribbon-success {
+	background: #1fcd6d;
+	border-color: #18a155
+}
+
+.ribbon .ribbon-overdue {
+	background: #f59d00;
+	border-color: #c27c00
+}
+
+.ribbon .ribbon-draft {
+	background: #94a5a6;
+	border-color: #788e8f
+}
+
+.ribbon .ribbon-error {
+	background: #c46766;
+	border-color: #953b39
+}
+
+.ribbon .ribbon-void {
+	background: #474747;
+	border-color: #1a1a1a
+}
