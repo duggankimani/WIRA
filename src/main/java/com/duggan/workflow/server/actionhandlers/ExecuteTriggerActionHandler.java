@@ -5,8 +5,13 @@ import java.util.Collection;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.server.mvel.MVELExecutor;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTStatus;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.TriggerType;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -34,19 +39,42 @@ public class ExecuteTriggerActionHandler extends
 		
 		Doc doc = action.getDoc();
 		
-		ProcessDaoImpl dao = DB.getProcessDao();
+		boolean canExecute=false;
 		
-		//After Step Triggers
-		Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(action.getPreviousStepId(), TriggerType.AFTERSTEP);
-		for(ADTaskStepTrigger stepTrigger: adTriggers){
-			new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+		if(doc instanceof Document){
+			if(doc.getOwner()!=null && 
+					doc.getOwner().equals(SessionHelper.getCurrentUser()) &&
+					((Document)doc).getStatus()==DocStatus.DRAFTED){
+				canExecute=true;
+			}
+		}else{
+			HTSummary summary = (HTSummary)doc;
+			if(
+//					summary.getStatus()==HTStatus.CREATED 
+//					|| summary.getStatus()==HTStatus.READY
+					 summary.getStatus()==HTStatus.RESERVED
+					|| summary.getStatus()==HTStatus.INPROGRESS){
+				canExecute=true;
+			}
 		}
 		
-		//Before Next Step Triggers
-		adTriggers= dao.getTaskStepTriggers(action.getNextStepId(), TriggerType.BEFORESTEP);
-		for(ADTaskStepTrigger stepTrigger: adTriggers){
-			new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+		if(canExecute){
+			ProcessDaoImpl dao = DB.getProcessDao();
+			
+			//After Step Triggers
+			Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(action.getPreviousStepId(), TriggerType.AFTERSTEP);
+			for(ADTaskStepTrigger stepTrigger: adTriggers){
+				new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+			}
+			
+			//Before Next Step Triggers
+			adTriggers= dao.getTaskStepTriggers(action.getNextStepId(), TriggerType.BEFORESTEP);
+			for(ADTaskStepTrigger stepTrigger: adTriggers){
+				new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+			}
+			
 		}
+		
 		
 		((ExecuteTriggersResponse)actionResult).setDocument(doc);
 				

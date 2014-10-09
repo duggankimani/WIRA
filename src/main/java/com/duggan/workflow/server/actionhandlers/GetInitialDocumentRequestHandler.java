@@ -49,31 +49,9 @@ public class GetInitialDocumentRequestHandler extends
 			
 			List<TaskStepDTO> steps = response.getSteps();
 			if(steps!=null && !steps.isEmpty()){
-				
-				boolean execute=false;
-				
-				if(doc instanceof Document){
-					if(doc.getOwner()!=null && 
-							doc.getOwner().equals(SessionHelper.getCurrentUser()) &&
-							((Document)doc).getStatus()==DocStatus.DRAFTED){
-						execute=true;
-					}
-				}else{
-					HTSummary summary = (HTSummary)doc;
-					if(
-//							summary.getStatus()==HTStatus.CREATED 
-//							|| summary.getStatus()==HTStatus.READY
-							 summary.getStatus()==HTStatus.RESERVED
-							|| summary.getStatus()==HTStatus.INPROGRESS){
-						execute=true;
-					}
-				}
-				
-				if(execute){
-					//Execute initial
-					ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(-1L, steps.get(0).getId(), doc);
-					doc = execContext.execute(execTrigger).getDocument();			
-				}
+				//Execute initial
+				ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(-1L, steps.get(0).getId(), doc);
+				doc = execContext.execute(execTrigger).getDocument();			
 			}
 			
 			GetInitialDocumentResponse finalResult = (GetInitialDocumentResponse)actionResult;
