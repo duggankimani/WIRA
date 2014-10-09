@@ -192,33 +192,8 @@
 
 				<g:HTMLPanel styleName="form-horizontal">
 					<div class="pagination pagination-centered">
-						<ul>
-							<li>
-								<d:ActionLink ui:field="aPrevious" styleName="hidden">
-									<i class="icon-double-angle-left"></i>
-								</d:ActionLink>
-							</li>
-							<li>
-								<a>1</a>
-							</li>
-							<li>
-								<a>2</a>
-							</li>
-							<li>
-								<a>3</a>
-							</li>
-							<li>
-								<a>4</a>
-							</li>
-							<li>
-								<a>5</a>
-							</li>
-							<li>
-								<d:ActionLink ui:field="aNext" styleName="pull-right hidden">
-									<i class="icon-double-angle-right"></i>
-								</d:ActionLink>
-							</li>
-						</ul>
+						<d:BulletListPanel ui:field="bulletListPanel">
+						</d:BulletListPanel>
 					</div>
 
 				</g:HTMLPanel>
