@@ -133,7 +133,10 @@ public class FormPanel extends Composite {
 					//System.err.println(">>"+lines.size());
 					field.setValue(value);
 				}
+				
+				bind(field);
 				continue;
+				
 			}else if(field.getType()==DataType.BUTTON){
 				String submitType = field.getPropertyValue(SingleButton.SUBMITTYPE);
 				if(submitType!=null){
