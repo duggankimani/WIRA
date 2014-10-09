@@ -24,6 +24,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -55,6 +56,7 @@ implements EditLineHandler{
 		
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
+		DOM.setStyleAttribute(getElement(), "overflow", "auto");
 		
 		btnAdd.addClickHandler(new ClickHandler() {
 			
