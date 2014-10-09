@@ -3,25 +3,27 @@ package com.duggan.workflow.client.ui.document;
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ACTIVITY_SLOT;
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
 import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
-import static com.duggan.workflow.client.ui.util.DateUtils.TIMEFORMAT12HR;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.client.ui.component.BulletListPanel;
+import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
+import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Form;
 import com.google.gwt.core.client.GWT;
@@ -33,6 +35,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -54,8 +57,6 @@ public class GenericDocumentView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, GenericDocumentView> {
 	}
 
-	@UiField SpanElement spnCreated;
-	@UiField SpanElement spnDeadline;
 	@UiField SpanElement spnDocType;
 	@UiField SpanElement spnSubject;
 	
@@ -92,7 +93,6 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField SpanElement spnAttachmentNo;
 	@UiField SpanElement spnActivityNo;
 	@UiField DivElement divAttachment;
-	@UiField SpanElement spnStatusBody;
 	@UiField HTMLPanel panelActivity;
 	@UiField Uploader uploader;
 	@UiField HTMLPanel panelAttachments;
@@ -113,9 +113,16 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	@UiField HTMLPanel fldForm;
 	
-	@UiField ActionLink aPrevious;
-	@UiField ActionLink aNext;
+	@UiField BulletListPanel bulletListPanel;
 	
+	BulletPanel liPrevious;
+	ActionLink aPrevious;
+	
+	BulletPanel liNext;
+	ActionLink aNext;
+	
+	@UiField Element divRibbon;
+	@UiField SpanElement spnRibbon;
 	FormPanel formPanel;
 		
 	String url=null;
@@ -125,13 +132,17 @@ public class GenericDocumentView extends ViewImpl implements
 	boolean isEditMode=true;
 	boolean overrideDefaultComplete=false;
 	boolean overrideDefaultStart=false;
-	private String timeDiff;
 	
 	@UiField ActionLink aEnv;
+	private Date dateDue;
+	private Date dateCreated;
+	DocStatus status = null;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		createNavigationButtons();
+		
 		UIObject.setVisible(aEdit.getElement(), false);
 		aEdit.getElement().setAttribute("type","button");
 		aEdit.getElement().setAttribute("data-toggle","tooltip");
@@ -198,8 +209,42 @@ public class GenericDocumentView extends ViewImpl implements
 		showProcessTree(false);
 		UIObject.setVisible(aSave.getElement(), false);
 		statusContainer.add(new InlineLabel("Nothing to show"));
+	}
+	
+	public void createNavigationButtons(){
+		//Previous
+		liPrevious = new BulletPanel();
+		liPrevious.addStyleName("disabled");
+		aPrevious = new ActionLink();
+		aPrevious.getElement().setInnerSafeHtml(
+				new SafeHtmlBuilder()
+				.appendHtmlConstant("<i class=\"icon-double-angle-left\"></i>")
+				.toSafeHtml());
+		liPrevious.add(aPrevious);
+		//Added on setTaskSteps/ Form Steps
 		
 		
+		liNext = new BulletPanel();
+		liNext.addStyleName("disabled");
+		aNext = new ActionLink();
+		aNext.getElement().setInnerSafeHtml(
+				new SafeHtmlBuilder()
+				.appendHtmlConstant("<i class=\"icon-double-angle-right\"></i>")
+				.toSafeHtml());
+		liNext.add(aNext);
+		//Added after all steps have been 
+	}
+	
+	public BulletPanel generateStep(String stepName, String stepTitle, String styleName){
+		BulletPanel liStep = new BulletPanel();
+		if(styleName!=null && !styleName.isEmpty())
+			liStep.addStyleName(styleName);
+		
+		ActionLink aStep = new ActionLink(stepName);
+		aStep.setTitle(stepTitle);
+		liStep.add(aStep);
+		
+		return liStep;
 	}
 
 	public void setEditMode(boolean isEditMode) {
@@ -268,13 +313,17 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	
 	public void setForm(Form form){
-		setForm(form, null);
+		setForm(form, null,null);
 	}
 	
-	public void setForm(Form form, MODE mode){
+	
+	public void setForm(Form form,Doc doc, MODE mode){
+		boolean isFormReadOnly = (mode!=null && mode==MODE.VIEW);
+		setForm(form, doc, isFormReadOnly);
+	}
+	
+	public void setForm(Form form,Doc doc, boolean isFormReadOnly){
 		fldForm.clear();
-		boolean isFormReadOnly = (mode!=null && mode==MODE.VIEW);  
-				
 		if(form==null || form.getFields()==null)
 			return;
 		
@@ -286,32 +335,49 @@ public class GenericDocumentView extends ViewImpl implements
 			readOnly = formPanel.isReadOnly();
 		}
 		
-		formPanel = new FormPanel(form);
+		formPanel = new FormPanel(form,doc);
 		
 		if(validActions!=null){
 			if(validActions.contains(Actions.COMPLETE)){
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
-				spnStatusBody.setClassName("label label-success");
-				spnStatusBody.setInnerText("You are currently working on this task");
+				
+				//Running or started
+				divRibbon.addClassName("ribbon-success");
+				spnRibbon.setInnerText("In Progress");
 			}else{
 				
 				if(validActions.contains(Actions.START) || validActions.contains(Actions.RESUME)){
-					spnStatusBody.setClassName("label");
-					spnStatusBody.setInnerText("Task awaiting your action");
+					//Not Started
+					divRibbon.addClassName("ribbon-open");
+					spnRibbon.setInnerText("Pending");
+					
 				}else{
-					spnStatusBody.setClassName("label label-info");
-					spnStatusBody.setInnerText("Completed Task");
+					//
+					divRibbon.addClassName("ribbon-accepted");
+					spnRibbon.setInnerText("Completed");
 				}
 				formPanel.setReadOnly(true);
 				showNavigation(false);
 				
 			}
 			
-			
 		}else{
+			if(status!=null){
+				if(status==DocStatus.INPROGRESS){
+					divRibbon.addClassName("ribbon-draft");
+					spnRibbon.setInnerText("Sent");
+				}else{
+					divRibbon.addClassName("ribbon-draft");
+					spnRibbon.setInnerText("Drafted");
+				}
+				
+			}
 			formPanel.setReadOnly(readOnly || isFormReadOnly);
 		}
+		
+		formPanel.setCreated(dateCreated);
+		formPanel.setDeadline(dateDue);
 		
 		fldForm.add(formPanel);
 
@@ -339,10 +405,8 @@ public class GenericDocumentView extends ViewImpl implements
 			setImage(createdBy);
 		}
 		
-		if (created!= null)
-			timeDiff =  DateUtils.getTimeDifferenceAsString(created);
-			if(timeDiff != null)
-			spnCreated.setInnerText(TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
+		this.dateCreated = created;
+		this.status = status;
 
 		if(!(taskDisplayName==null || taskDisplayName.equals(""))){
 			spnDocType.setInnerText(taskDisplayName);
@@ -377,22 +441,6 @@ public class GenericDocumentView extends ViewImpl implements
 			showForward(false);
 		}
 		
-		if(status!=null){
-			spnStatusBody.setInnerText(status.name());
-			
-			if(status==DocStatus.APPROVED){
-				spnStatusBody.setClassName("label label-success");
-			}
-			
-			if(status==DocStatus.INPROGRESS){
-				spnStatusBody.setClassName("label label-info");
-			}
-			
-			if(status==DocStatus.REJECTED){
-				spnStatusBody.setClassName("label label-danger");
-			}
-			
-		}
 		
 		if(priority!=null){
 			Priority prty = Priority.get(priority);
@@ -677,26 +725,7 @@ public class GenericDocumentView extends ViewImpl implements
 		//eDelegate.setInnerText(delegate.getDelegateTo());
 	}
 	
-	public void setDeadline(Date endDateDue) {
-
-		String deadline="";
-		timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
-		if(timeDiff != null){
-			deadline = TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
-		}
-
-		if(DateUtils.isOverdue(endDateDue)){
-			spnDeadline.removeClassName("hidden");
-			spnDeadline.getStyle().setColor("#DD4B39");
-			deadline = "Overdue "+deadline;
-		}else if(DateUtils.isDueInMins(30, endDateDue)){
-			spnDeadline.removeClassName("hidden");
-			spnDeadline.getStyle().setColor("#F89406");
-			deadline = "Due "+deadline;
-		}
-		
-		spnDeadline.setInnerText(deadline);
-	}
+	
 	
 	private void setImage(HTUser user) {
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
@@ -735,6 +764,57 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public HasClickHandlers getLinkEnv() {
 		return aEnv;
+	}
+
+	@Override
+	public void setDeadline(Date endDateDue) {
+		this.dateDue = endDateDue;
+		//formPanel.setDeadline(endDateDue);
+	}
+
+	@Override
+	public void setSteps(List<TaskStepDTO> steps, int currentStep) {
+		bulletListPanel.clear();
+		if(steps==null || steps.isEmpty()){
+			return;
+		}
+		
+		int size = steps.size();
+		
+		if(size==1){
+			aContinue.setText("Finish");
+			return; //No Next/Previous Buttons
+		}
+		
+		aContinue.setText("Continue");
+		
+		liNext.removeStyleName("disabled");
+		liPrevious.removeStyleName("disabled");
+		
+		bulletListPanel.add(liPrevious);
+		for(TaskStepDTO dto: steps){
+			int idx= steps.indexOf(dto);
+			String title = dto.getFormName()==null? dto.getOutputDocName(): dto.getFormName(); 
+			
+			String styleName =  null;
+			if(idx==currentStep){
+				styleName="active";
+			}else{
+				styleName="disabled";
+			}
+			bulletListPanel.add(generateStep((idx+1)+"", title, styleName));
+		}
+		
+		bulletListPanel.add(liNext);
+		
+		if((size-1)==currentStep){
+			//last step
+			aContinue.setText("Finish");
+			liNext.setStyleName("disabled");
+		}else if(currentStep==0){
+			//first step
+			liPrevious.setStyleName("disabled");
+		}
 	}
 
 }

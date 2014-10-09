@@ -30,7 +30,6 @@ public class GenericDocUtils {
 					:path); 
 		
 		Form form = new Form();
-		form.setId(-10L);
 		form.setCaption("Generate Document");
 		Property prop = new Property(HasProperties.CAPTION, null, DataType.STRING);
 		prop.setValue(new StringValue(form.getCaption()));
@@ -39,6 +38,7 @@ public class GenericDocUtils {
 		form.setProperties(Arrays.asList(prop,help));
 				
 		Field field = new Field();
+		field.setName(outDoc.getName());
 		field.setType(DataType.LINK);
 		
 		List<Property> properties = new ArrayList<Property>();
@@ -103,7 +103,7 @@ public class GenericDocUtils {
 				String groupStr = matchResult.getGroup(i);
 				String fieldName = groupStr.substring(2, groupStr.length());
 				Object fieldValue = getFieldValue(fieldName,doc);		
-				System.err.println("GenericDocUtils#decode "+pathEl + ", "+fieldName+ "="+fieldValue);
+//				System.err.println("GenericDocUtils#decode "+pathEl + ", "+fieldName+ "="+fieldValue);
 				pathEl = pathEl.replaceAll(groupStr, fieldValue==null? "": fieldValue.toString());
 			}
 		}

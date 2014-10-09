@@ -245,6 +245,10 @@ public class Field extends FormModel{
 		return getDocSpecificName();
 	}
 	
+	public static String getQualifiedName(String documentId, String fieldName){
+		return fieldName+getSuffix(documentId)+getSeparator();
+	}
+	
 	public Long getDetailId() {
 		return detailId;
 	}

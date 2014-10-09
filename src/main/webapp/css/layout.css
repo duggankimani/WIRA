@@ -855,6 +855,7 @@ body .dateBoxPopup {
 	font-size: 16px;
 	font-weight: bold;
 	margin-bottom: 4px;
+	text-align:center;
 }
 
 #detailed-info .form-horizontal .control-group {

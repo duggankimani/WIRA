@@ -55,8 +55,6 @@ import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Comment;
-import com.duggan.workflow.shared.model.DataType;
-import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -89,12 +87,10 @@ import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
-import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
-import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
@@ -107,12 +103,10 @@ import com.duggan.workflow.shared.responses.GenericResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
-import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
-import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
@@ -172,8 +166,7 @@ public class GenericDocumentPresenter extends
 		SpanElement getSpnAttachmentNo();
 		SpanElement getSpnActivityNo();
 		DivElement getDivAttachment();
-		void setForm(Form form);
-		void setForm(Form form, MODE mode);
+		void setForm(Form form,Doc doc, MODE mode);
 		boolean isValid();
 		Map<String,Value> getValues(); //Task Data
 
@@ -194,6 +187,8 @@ public class GenericDocumentPresenter extends
 		void showNavigation(boolean b);
 
 		void setEditMode(boolean editMode);
+
+		void setSteps(List<TaskStepDTO> steps, int currentStep);
 	}
 	
 	Long taskId;
@@ -356,8 +351,6 @@ public class GenericDocumentPresenter extends
 						showDelegatePopup(result.getUsers());
 					}
 				});
-				
-				//mainPagePresenter.addToPopupSlot(popupPresenter, false);
 			}
 		});
 		
@@ -500,7 +493,6 @@ public class GenericDocumentPresenter extends
 			}
 		}
 		
-		//save(doc);
 		mergeFormValuesWithDoc();
 		
 		if(navigating){
@@ -509,26 +501,13 @@ public class GenericDocumentPresenter extends
 		
 	}
 
-	private void alterNavigation(){
-		getView().getLinkContinue().setText("Continue");
-		
-		getView().show((Anchor)getView().getLinkPrevious(), true);
-		getView().show((Anchor)getView().getLinkNext(), true);
-		if((steps.size()-1)==currentStep){
-			getView().getLinkContinue().setText("Finish");
-			getView().show((Anchor)getView().getLinkNext(), false);
-		}else if(currentStep==0){
-			getView().show((Anchor)getView().getLinkPrevious(), false);
-		}
-		
-		
-	}
 	protected void navigateToView(TaskStepDTO taskStepDTO, final boolean isNavigateNext) {
 		
 		fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
 		
 		Long previousStepId = -1L;
 		Long nextStepId = -1L;
+		
 		
 		if(isNavigateNext){
 			//Navigating forward
@@ -538,10 +517,13 @@ public class GenericDocumentPresenter extends
 		
 		if(taskStepDTO.getFormId()!=null){
 			Long formId = taskStepDTO.getFormId();			
+			
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, formId, true));
+			
 			if(isNavigateNext)
 				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
+			
 			requests.addRequest(new GetAttachmentsRequest(documentId));
 			
 			requestHelper.execute(requests,
@@ -557,10 +539,11 @@ public class GenericDocumentPresenter extends
 							document=doc;
 						}
 						
-						bindForm((Form) aResponse.getFormModel().get(0), document);
+						Form form = (Form) aResponse.getFormModel().get(0);
+						bindForm(form, document);
 						
 						//Continue, Finish buttons alteration
-						alterNavigation();
+						getView().setSteps(steps, currentStep);
 						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
 						bindAttachments(attachmentsresponse);
@@ -570,6 +553,7 @@ public class GenericDocumentPresenter extends
 			});
 			
 		}else if(taskStepDTO.getOutputDocId()!=null){
+			
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new GetOutputDocumentsRequest(taskStepDTO.getOutputDocId()));
 			if(isNavigateNext)
@@ -593,7 +577,7 @@ public class GenericDocumentPresenter extends
 						Form form = GenericDocUtils.generateForm(outDoc,document);
 						bindForm(form,document);
 						
-						alterNavigation();
+						getView().setSteps(steps, currentStep);
 						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
 						bindAttachments(attachmentsresponse);
@@ -763,24 +747,6 @@ public class GenericDocumentPresenter extends
 				}, "Ok", "Cancel");
 	}
 
-//	boolean save(Doc doc){
-//		boolean save=false;
-//		
-//		if(doc instanceof Document)
-//			if(((Document)doc).getStatus()==DocStatus.DRAFTED){
-//				//showEditForm(MODE.EDIT);
-//				save = true;
-//			}
-//		
-//		if(save){
-//			save((Document)doc);
-//		}else{
-//			doc.getValues().putAll(getView().getValues());
-//		}
-//		
-//		return save;
-//	}
-	
 	protected void save(Document document) {
 		
 		//Incremental/ Page based additions
@@ -864,8 +830,6 @@ public class GenericDocumentPresenter extends
 	
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
-//		requests.addRequest(new GetTaskStepsRequest(documentId, taskId));
-//		requests.addRequest(new GetDocumentRequest(documentId, taskId));
 		requests.addRequest(new GetInitialDocumentRequest(documentId, taskId));
 		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
@@ -880,13 +844,6 @@ public class GenericDocumentPresenter extends
 				public void processResult(MultiRequestActionResult results) {					
 					int i=0;
 					
-					//Steps
-//					GetTaskStepsResponse resp = (GetTaskStepsResponse)results.get(i++);
-//					setSteps(resp.getSteps());
-					//Document
-//					GetDocumentResult result = (GetDocumentResult)results.get(i++);
-//					bindDocumentResult(result);
-					
 					//Document and Task Steps & Trigger before Load
 					GetInitialDocumentResponse compositeResp =  (GetInitialDocumentResponse)results.get(i++);
 					setSteps(compositeResp.getSteps());
@@ -896,7 +853,6 @@ public class GenericDocumentPresenter extends
 					GetFormModelResponse response = (GetFormModelResponse)results.get(i++);					
 					
 					if(!response.getFormModel().isEmpty()){
-						//executeTriggers((Form)response.getFormModel().get(0), result.getDoc());
 						bindForm((Form)response.getFormModel().get(0), compositeResp.getDoc());
 					}else{
 						getView().showDefaultFields(true);
@@ -945,10 +901,8 @@ public class GenericDocumentPresenter extends
 			return;
 		}
 		
-		if(steps.size()>1){
-			getView().show((Anchor)getView().getLinkNext(), true);
-			getView().getLinkContinue().setText("Continue");
-		}
+		getView().setSteps(steps,currentStep);
+		
 	}
 
 	protected void bindForm(Form form, Doc doc) {
@@ -967,76 +921,13 @@ public class GenericDocumentPresenter extends
 			getView().showDefaultFields(true);
 			return;
 		}
-			
-		Map<String, Value> values = doc.getValues();
-		
-		for(Field field: form.getFields()){
-			String name = field.getName();
-			field.setDocId(doc.getId()+""); //Add DocId to all field
-			
-			if(name==null || name.isEmpty()){
-				continue;
+
+		//Form Fields
+		if(doc instanceof Document){
+			DocStatus status = ((Document)doc).getStatus();
+			if(status==DocStatus.DRAFTED){
+				getView().showNavigation(true); //Continue button will always be available
 			}
-						
-			if(field.getType()==DataType.GRID){
-				List<DocumentLine> lines=doc.getDetails().get(field.getName());
-				if(lines!=null){
-					GridValue value = new GridValue();
-					value.setKey(field.getName());
-					value.setCollectionValue(lines);
-					//System.err.println(">>"+lines.size());
-					field.setValue(value);
-				}
-				continue;
-			}else if(field.getType()==DataType.BUTTON){
-				String submitType = field.getPropertyValue(SingleButton.SUBMITTYPE);
-				if(submitType!=null){
-					if(submitType.equals("CompleteProcess")){
-						//Override default complete
-						getView().overrideDefaultCompleteProcess();
-					}else if(submitType.equals("StartProcess")){
-						//Override default start
-						getView().overrideDefaultStartProcess();
-					}
-					
-				}
-				
-				if(doc instanceof Document){
-					DocStatus status = ((Document)doc).getStatus();
-					if(status==DocStatus.DRAFTED){
-						Property prop = new Property(HasProperties.READONLY, "Read only", DataType.BOOLEAN);
-						prop.setValue(new BooleanValue(null, HasProperties.READONLY, false));
-						field.getProperties().add(prop);
-					}
-				}
-			}
-			
-			if(doc instanceof Document){
-				DocStatus status = ((Document)doc).getStatus();
-				if(status==DocStatus.DRAFTED){
-					getView().showNavigation(true); //Continue button will always be available
-				}
-			}
-			
-			
-			Value value = values.get(name);
-			field.setValue(value);
-			
-			if(value==null){
-				if(name.equals("subject")){
-					value = new StringValue(doc.getSubject());
-				}
-				
-				if(name.equals("description")){
-					value = new StringValue(doc.getDescription());
-				}
-				
-				if(name.equals("docDate")){
-					value = new DateValue(doc.getCreated());
-				}
-				field.setValue(value);
-			}
-				
 		}
 		
 		MODE stepMode = null;
@@ -1045,10 +936,12 @@ public class GenericDocumentPresenter extends
 			stepMode = dto.getMode();
 		}
 		
-		getView().setForm(form,stepMode);
-		
 		if(formMode!=null && formMode.equals(MODE.EDIT) && doc instanceof Document){
+			getView().setForm(form,doc,stepMode);
 			getView().setEditMode(true && ((Document)doc).getStatus()==DocStatus.DRAFTED);
+			
+		}else{
+			getView().setForm(form,doc,stepMode);
 		}
 	}
 
