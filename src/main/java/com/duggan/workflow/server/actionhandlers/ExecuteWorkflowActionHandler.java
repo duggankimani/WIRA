@@ -9,6 +9,8 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
@@ -48,7 +50,14 @@ public class ExecuteWorkflowActionHandler extends
 				vals.put(key, val);
 				if(key!=null){
 					//key = mappings.getOutputName(key);
-					document.setValue(key,value);
+					
+					if(value instanceof GridValue){
+						document.setDetails(key,((GridValue)value).getValue());
+					}else{
+						document.setValue(key,value);
+					}
+					
+					
 					log.warn("ExecuteWorkflowActionHandler.documentOut "+key+"="+val);
 				}
 			}

@@ -49,7 +49,7 @@ public class LinkField extends FieldWidget{
 	
 	@Override
 	protected void setCaption(String caption) {
-		System.err.println(">>>>>>>>>>>> Link field Create -- "+caption);
+		//System.err.println(">>>>>>>>>>>> Link field Create -- "+caption);
 		aLink.setText(caption);		
 	}
 	

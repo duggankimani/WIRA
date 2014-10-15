@@ -28,7 +28,8 @@ public class Field extends FormModel{
 	private int position;
 	private Long parentId;
 	private List<Field> fields = new ArrayList<Field>();
-	private transient Long detailId = null;
+	private transient String gridName="";
+	private transient Long lineRefId = null;
 	private transient String docId="";
 	
 	public Field() {
@@ -231,7 +232,7 @@ public class Field extends FormModel{
 	}
 
 	public String getDocSpecificName(){
-		return name+getSuffix(docId);
+		return (gridName.isEmpty()? "" : gridName+"_")+name+getSuffix(docId);
 	}
 	
 	public static String getSuffix(String documentId){
@@ -239,22 +240,22 @@ public class Field extends FormModel{
 	}
 	
 	public String getQualifiedName() {
-		if(detailId!=null){
-			return getDocSpecificName()+getSeparator()+detailId;
+		if(lineRefId!=null){
+			return getDocSpecificName()+getSeparator()+lineRefId;
 		}
 		return getDocSpecificName();
 	}
 	
-	public static String getQualifiedName(String documentId, String fieldName){
-		return fieldName+getSuffix(documentId)+getSeparator();
-	}
+//	public static String getQualifiedName(String documentId, String fieldName){
+//		return fieldName+getSuffix(documentId)+getSeparator();
+//	}
 	
-	public Long getDetailId() {
-		return detailId;
+	public Long getLineRefId() {
+		return lineRefId;
 	}
 
-	public void setDetailId(Long detailId) {
-		this.detailId = detailId;
+	public void setLineRefId(Long lineRefId) {
+		this.lineRefId = lineRefId;
 	}
 	
 	/**
@@ -283,6 +284,14 @@ public class Field extends FormModel{
 				field.setDocId(docId);
 			}
 		}
+	}
+
+	public String getGridName() {
+		return gridName;
+	}
+
+	public void setGridName(String gridName) {
+		//this.gridName = gridName;
 	}
 
 }

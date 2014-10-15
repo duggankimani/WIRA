@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;

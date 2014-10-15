@@ -176,7 +176,7 @@ implements EditLineHandler{
 		assert field.getFields()!=null;
 		
 		field.sortFields();
-		GridView view = new GridView(field.getFields(),field.getId());
+		GridView view = new GridView(field.getFields(),field.getId(), field.getName());
 		view.setData(doclines);
 		divControls.add(view);
 		view.setReadOnly(isReadOnly());

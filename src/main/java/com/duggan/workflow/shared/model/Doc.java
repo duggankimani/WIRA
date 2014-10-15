@@ -2,10 +2,13 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.drools.rule.Collect;
 
 public abstract class Doc implements Serializable,Comparable<Doc>{
 
@@ -92,6 +95,15 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 		}
 		
 		lines.add(line);
+	}
+	
+	public void setDetails(String key, Collection<DocumentLine> values){
+		//Clear previous - Meant to avoid duplicates
+		details.remove(key);
+		for(DocumentLine line: values){
+			line.setName(key);
+			addDetail(line);
+		}
 	}
 
 	public String getProcessId() {

@@ -36,23 +36,19 @@ public class GridRow extends Composite {
 	@UiField Anchor aDelete;
 	
 	DocumentLine line;
-	Long detailId=null;
+	Long refId = null;
 	
-	public GridRow(Collection<Field> columns, DocumentLine line) {
+	public GridRow(Collection<Field> columns, DocumentLine line, String gridName) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.line = line;
-		detailId = line.getId();
-		
-		if(detailId==null){
-			detailId = System.currentTimeMillis();
-			line.setTempId(detailId);
-		}
+		refId = line.getTempId();
 		
 		initRow();
 		
 		for(Field col: columns){
 			Field clone = col.clone(true);
-			clone.setDetailId(detailId);
+			clone.setGridName(gridName);
+			clone.setLineRefId(refId);
 			//System.err.println(clone.getId()+" : "+clone.getParentId()+" : "+clone.getDetailId());
 			panelRow.add(createCell(clone));
 		}

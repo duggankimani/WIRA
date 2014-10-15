@@ -10,7 +10,7 @@ public class OperandChangedEvent extends
 	public static Type<OperandChangedHandler> TYPE = new Type<OperandChangedHandler>();
 	private String sourceField;
 	private Object newValue;
-	private Long detailId;
+	private Long lineRefId;
 
 	public interface OperandChangedHandler extends EventHandler {
 		void onOperandChanged(OperandChangedEvent event);
@@ -21,10 +21,10 @@ public class OperandChangedEvent extends
 		this.newValue = newValue;
 	}
 	
-	public OperandChangedEvent(String documentSpecificFieldName, Object newValue, Long detailId) {
+	public OperandChangedEvent(String documentSpecificFieldName, Object newValue, Long lineRefId) {
 		this.sourceField = documentSpecificFieldName;
 		this.newValue = newValue;
-		this.detailId = detailId;
+		this.lineRefId = lineRefId;
 	}
 
 	public String getSourceField() {
@@ -57,11 +57,11 @@ public class OperandChangedEvent extends
 		this.newValue = newValue;
 	}
 
-	public Long getDetailId() {
-		return detailId;
+	public Long getLineRefId() {
+		return lineRefId;
 	}
 
-	public void setDetailId(Long detailId) {
-		this.detailId = detailId;
+	public void setLineRefId(Long lineRefId) {
+		this.lineRefId = lineRefId;
 	}
 }

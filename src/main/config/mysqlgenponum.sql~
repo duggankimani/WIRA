@@ -1,0 +1,51 @@
+drop procedure if exists `proc_generateponum`;
+
+DELIMITER $$
+create procedure proc_generateponum(in p_doctype varchar(45), in p_casenumber varchar(45))
+BEGIN
+	declare v_startval int;
+	declare v_nextval int;	
+	declare v_previousallocatedno varchar(20);
+	
+	set p_doctype=upper(p_doctype);
+	set v_startval = (select startval from doctypeseq where doctype=p_doctype);
+	set v_nextval= (select nextval  from doctypeseq where doctype=p_doctype);	
+	
+	select docno into v_previousallocatedno from docnums where casenumber=p_casenumber and doctype=p_doctype;
+	
+	if (v_previousallocatedno is null) then
+		if(v_startval is null) then
+			/*doesnt exist, add it*/
+			insert into doctypeseq values (p_doctype, 0,1);
+			set v_startval = 0;
+			set v_nextval = v_startval+1;
+		else
+			set v_nextval = v_nextval+1;
+			update doctypeseq set nextval= v_nextval where doctype=p_doctype;
+		end if;
+		
+		insert into docnums values (p_casenumber,p_doctype, concat(p_doctype,'-',v_nextval));
+		select concat(p_doctype,'-',v_nextval) as ponum;
+	else
+		select v_previousallocatedno as ponum;
+	end if;
+	
+END$$
+
+DELIMITER ;
+
+drop table if exists doctypeseq;
+create table if not exists doctypeseq(
+	doctype varchar(45) primary key not null,
+	startval int default 0,
+	nextval int not null
+);
+
+drop table if exists docnums;
+create table if not exists docnums(
+	casenumber varchar(20),	
+        doctype varchar(45), 
+	docno varchar(20) not null,
+        constraint pk_docnums primary key (casenumber,doctype);
+);
+

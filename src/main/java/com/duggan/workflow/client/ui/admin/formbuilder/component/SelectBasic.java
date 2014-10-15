@@ -41,6 +41,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	public SelectBasic() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
 		addProperty(new Property(SQLSELECT, "Sql", DataType.STRINGLONG));
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));		

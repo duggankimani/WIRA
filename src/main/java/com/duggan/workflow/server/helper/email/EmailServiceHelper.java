@@ -66,7 +66,12 @@ public class EmailServiceHelper {
 			props.setProperty(SETTINGNAME.SMTP_STARTTLS.getKey(), starttls==null?null: starttls.toString());
 			
 			for(Object prop: props.keySet()){
-				log.debug(prop+" : "+props.getProperty(prop.toString()));
+				if(prop.equals(SETTINGNAME.SMTP_PASSWORD.getKey())){
+					log.debug(prop+" : xxxxxxxxx");
+				}else{
+					log.debug(prop+" : "+props.getProperty(prop.toString()));
+				}
+				
 			}
 			session = Session.getInstance(props,new Authenticator() {
 	            @Override

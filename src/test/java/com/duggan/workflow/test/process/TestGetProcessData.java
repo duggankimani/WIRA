@@ -37,7 +37,7 @@ public class TestGetProcessData {
 //		ProcessMigrationHelper.start(1L);
 	}
 	
-	@Test
+	@Ignore
 	public void getTaskNodes(){
 		List<TaskNode> nodes = JBPMHelper.get().getWorkflowProcessNodes("invoice-approval");
 		
@@ -98,7 +98,7 @@ public class TestGetProcessData {
 	@Ignore
 	public void getParameterz(){
 		//Long taskId = 1518L;
-		Long taskId = 2568L;
+		Long taskId = 157L;
 		Task task = JBPMHelper.get().getSysTask(taskId);
 		
 		Map<String,Object> vls = JBPMHelper.get().getMappedData(task);
@@ -114,15 +114,22 @@ public class TestGetProcessData {
 		//Assert.assertTrue(summary.getDetails().size()>0);
 	}
 	
-	@Ignore
+	@Test
 	public void getParameters(){
-		Long taskId = 1518L;
+		//Long taskId = 1518L;
+		Long taskId = 146L;
 		HTask summary = JBPMHelper.get().getTask(taskId);
 		Map<String,Value> vls = summary.getValues();
 		for(String key: vls.keySet()){
 			Value v = vls.get(key);
-			System.err.println(key+" - "+v.getValue());
+			
+			System.err.println(key+" - "+(v==null? null : v.getValue()));
 		}
+		
+		for(String key: summary.getDetails().keySet()){
+			System.err.println(key + " =  "+summary.getDetails().get(key));
+		}
+		
 		Map<String, Value> values = summary.getValues();
 		Assert.assertNotNull(values);
 		Assert.assertNotSame(values.size(), 0);

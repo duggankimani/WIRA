@@ -31,9 +31,12 @@ public class GridView extends Composite {
 	@UiField SpanElement spnNewRecordHandlerText;
 	
 	Collection<Field> columnConfigs = new ArrayList<Field>();
+	private String gridName="";
 	
-	public GridView(Collection<Field> columns, Long parentId) {	
+	public GridView(Collection<Field> columns, Long parentId, String gridName) {	
 		initWidget(uiBinder.createAndBindUi(this));
+		this.gridName = gridName;
+		
 		setNewRecordHandlerText("Add Row");	
 		
 		if(columns!=null){
@@ -54,7 +57,8 @@ public class GridView extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				DocumentLine line = new DocumentLine();
-				createLine(line);
+				//line count
+				createLine(line,new Long(getRecords().size()+1));
 			}
 		});
 	}
@@ -64,9 +68,11 @@ public class GridView extends Composite {
 	}
 	
 	public void setData(Collection<DocumentLine> lines){
+		int count= 0;
+		
 		for(DocumentLine line: lines){
 			//System.err.println(line);
-			createLine(line);
+			createLine(line, new Long(++count));
 		}
 	}
 	
@@ -83,8 +89,9 @@ public class GridView extends Composite {
 		return lines;
 	}
 
-	private void createLine(DocumentLine line) {
-		GridRow row = new GridRow(columnConfigs, line);	
+	private void createLine(DocumentLine line, Long lineRefId) {
+		line.setTempId(lineRefId);
+		GridRow row = new GridRow(columnConfigs, line,gridName);	
 		panelLines.add(row);
 	}
 

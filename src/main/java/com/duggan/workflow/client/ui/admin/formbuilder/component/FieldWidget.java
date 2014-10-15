@@ -68,7 +68,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	List<String> dependentFields = new ArrayList<String>();
 	boolean isObserver = false;//depends on other fields - registered for OperandChangeEvent
 	boolean isObservable=false;//its value is depended upon by other fields - fires an event
-	Long detailId=null;
 	
 	public FieldWidget() {
 		shim.addStyleName("demo-PaletteWidget-shim");
@@ -830,15 +829,15 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		/*
 		 * check if the source and target are grid fields
-		 * to ensure row wise updates
+		 * to confirm row wise updates
 		 */
 		if(ENV.isParent(fieldName, field.getParentId())){
 			//Same ParentId = Same Detail Grid 
-			Long detailId = event.getDetailId();
-			Long fieldDetailId = field.getDetailId();
+			Long lineRefId = event.getLineRefId();
+			Long fieldDetailId = field.getLineRefId();
 				
-			if(detailId!=null && fieldDetailId!=null){
-				if(!detailId.equals(fieldDetailId)){
+			if(lineRefId!=null && fieldDetailId!=null){
+				if(!lineRefId.equals(fieldDetailId)){
 					//two different rows
 					return;
 				}
@@ -864,7 +863,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
         	
         	if(field.getParentId()!=null && val==null){
         		//Current Field is a detail field, and no value was found for dependent field
-        		val=ENV.getValue(formularFieldName=fld+Field.getSeparator()+field.getDetailId());
+        		
+        		val=ENV.getValue(formularFieldName=fld+Field.getSeparator()+field.getLineRefId());
+        		//Added Grid Name to Qualified Name
+        		//val=ENV.getValue(formularFieldName=fld+Field.getSeparator()+field.getLineRefId());
         	}
         	
         	//System.err.println(fld+" == "+val);
@@ -907,7 +909,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
         	
 	        if(contained){
 	        	//potential for an endless loop
-	        	AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), result, field.getDetailId()));
+	        	AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), result, field.getLineRefId()));
 	        }
         }
 	}
@@ -962,16 +964,16 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	@Override
 	public void onDeleteLine(DeleteLineEvent event) {
-		if(isObservable && field.getDetailId()!=null){
+		if(isObservable && field.getLineRefId()!=null){
 			Long sourceDetailId = event.getLine().getId();
 			if(sourceDetailId==null){
 				sourceDetailId = event.getLine().getTempId();
 			}
-			if(!field.getDetailId().equals(sourceDetailId)){
+			if(!field.getLineRefId().equals(sourceDetailId)){
 				return;
 			}
 			ENV.setContext(field, new Double(0.0));
-			AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), new Double(0.0), field.getDetailId()));
+			AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), new Double(0.0), field.getLineRefId()));
 		}
 	}
 	

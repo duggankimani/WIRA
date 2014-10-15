@@ -3,7 +3,10 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.Collection;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
+import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.server.mvel.MVELExecutor;
@@ -13,6 +16,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.TriggerType;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggersResponse;
@@ -58,8 +62,8 @@ public class ExecuteTriggerActionHandler extends
 			}
 		}
 		
+		ProcessDaoImpl dao = DB.getProcessDao();
 		if(canExecute){
-			ProcessDaoImpl dao = DB.getProcessDao();
 			
 			//After Step Triggers
 			Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(action.getPreviousStepId(), TriggerType.AFTERSTEP);
@@ -75,6 +79,13 @@ public class ExecuteTriggerActionHandler extends
 			
 		}
 		
+		if(canExecute && action.getNextStepId()!=null){
+			TaskStepModel model = dao.getById(TaskStepModel.class, action.getNextStepId());
+			if(model.getDoc()!=null){
+				Value value = OutputDocumentDaoHelper.generateDoc(model.getDoc(), doc);
+				doc.setValue(value.getKey(), value);
+			}
+		}
 		
 		((ExecuteTriggersResponse)actionResult).setDocument(doc);
 				

@@ -119,7 +119,7 @@ public class NumberField extends FieldWidget{
 				ENV.setContext(field, value);
 				//System.err.println("Change event fired -> "+value);
 				//fire based on actual name-- other fields are aware of actuals
-				AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), value, field.getDetailId()));
+				AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), value, field.getLineRefId()));
 			}
 			
 		});

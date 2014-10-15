@@ -1,4 +1,5 @@
 <html>
+
 <head>
 <title></title>
 <style type="text/css">
@@ -272,38 +273,30 @@ table td[class*="span"],table th[class*="span"],.row-fluid table td[class*="span
 }
 
 .top,bottom {
-	min-height: 150px;
+	min-height: 100px;
 }
 
 .bottom {
 	margin-top: 40px;
 }
-
 .bottom div{
 	margin-bottom:10px;
 }
-
-.bottom div.received{
-	margin-top:40px;
+.middle{
+	height:150px;
 }
 
-.middle {
-	height: 150px;
+.delivery-content{
+     max-width:340px;
+     overflow-wrap: break-word;
+     overflow-x: auto;
 }
-
-.delivery-content {
-	max-width: 340px;
-	overflow-wrap: break-word;
-	overflow-x: auto;
+.delivery-content b{
+	 width:100px;
 }
-
-.delivery-content b {
-	width: 100px;
-}
-
-.supplier {
-	max-width: 340px;
-	width: 300px;
+.supplier{
+	max-width:340px;
+	width:300px;
 }
 
 .pull-left {
@@ -318,9 +311,18 @@ table td[class*="span"],table th[class*="span"],.row-fluid table td[class*="span
 	top: 0;
 }
 
-.num {
-	text-align: right !important;
+/*.footer {
+	position: absolute;
+	width: inherit;
+	text-align: center;
+	font-style: italic;
+	color: grey;
+	bottom: 0;
+} */
+.num{
+	text-align:right !important;
 }
+
 div.footer {
    display: block; text-align: center; 
    position: running(footer);
@@ -329,164 +331,135 @@ div.footer {
 @page { @bottom-center { content: element(footer); }}
 
 </style>
-
 </head>
 
 <body>
 	<div class="container">
-		<img align="middle" src="/home/duggan/Pictures/kemsa_logo.png"
-			height="69" width="153" />
-		<table style="width: 80%;" cellpadding="5" border="1">
-			<tbody>
+		<div class="header row">
+			<img class="logo" align="middle" width="266px"
+			 src="/home/duggan/Pictures/kemsa_logo.png"/>
+			<span class="type">Invoice</span>
+		</div>
+
+		<div class="row top">
+			<div class="pull-left delivery-content">
+				<!--div>
+					<b>Delivery Note:</b>
+				</div-->
+				<div>
+					<b>PO Number:</b><span> @#apInvoiceNumber</span>
+				</div>
+				<div>
+					<b>PO Date:</b><span> @#invoiceDate</span>
+				</div>
+				<div>
+					<b>Delivery Date:</b><span> @#poDueDate</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row middle">
+			<div class="pull-left delivery-content">
+				<div>
+					<b>From</b>
+				</div>
+				<div>
+					@#poSupplierName
+				</div>
+				<div>
+					@#poSupplierAddress
+				</div>
+				<div>
+					@#poSupplierPhone
+				</div>	
+				<div>
+					 @#poSupplierEmail
+				</div>
+				<div>
+					 @#poSupplierFax
+				</div>
+				
+			</div>
+			<div class="pull-right supplier">
+				<div>
+					<b>To</b>
+				</div>
+				
+				<div>
+					KEMSA Limited <!--  @#preparedBy -->
+				</div>
+				<div>
+					@#poIssuedByAddress
+				</div>
+				<div>
+					@#poIssuedByPhone
+				</div>
+				<div>
+					@#poIssuedByEmail
+				</div>	
+			</div>
+		</div>
+
+
+		<div class="row">
+			<table class="table table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th>Description</th>
+						<th>Quantity</th>
+						<th>UOM</th>
+    					<th>Unit Price</th>
+    					<th>Total Cost</th>	 
+					</tr>
+				</thead>
+				<tbody>
+					<!--@>poParticulars-->
+	    					<tr>	    					
+	    						<td>@#item</td>
+								<td class="num">@#poLineQuantity</td>
+								<td>@#uom</td>
+								<td class="num">@#poLineUnitPrice</td>								
+	    						<td class="num">@#poLineTotal</td>	    						
+	    					</tr>
+				<!--@<poParticulars-->				
 				<tr>
-					<td>
-						<h2>Payment Request - Cash | Case #: @#subject</h2>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<table class="mceItemTable">
-							<tbody>
-								<tr>
-									<td><b>SECTION 1: Cash Request Details</b></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Vendor Name:</td>
-									<td>@#poSupplierName</td>
-								</tr>
-								<tr>
-									<td>Memo:</td>
-									<td>@#VendorFor</td>
-								</tr>
-								<tr>
-									<td>Amount:</td>
-									<td>Kshs @#poValue</td>
-								</tr>
-								<tr>
-									<td>Date:</td>
-									<td>@#paymentDate</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-						<table class="mceItemTable">
-							<tbody>
-								<tr>
-									<td><b>Project Combination:</b> @#SelectPRFProject</td>
-								</tr>
-								<tr></tr>
-								<tr>
-									<td><b>Expense Lines</b></td>
-								</tr>
-							</tbody>
-						</table>
-						<table border="1">
-							<tbody>
-								<tr>
-									<td>Expense Account</td>
-									<td>Segment</td>
-									<td>Sub Segment</td>
-									<td>Memo</td>
-									<td>Amount</td>
-								</tr>
-								<!--@>PRGrid-->
-								<tr>
-									<td><font face="courier new" size="2">@#ExpenseAccount</font></td>
-									<td><font face="courier new" size="2">@#Segment</font></td>
-									<td><font face="courier new" size="2">@#SubSegment</font></td>
-									<td><font face="courier new" size="2">@#Memo</font></td>
-									<td><font face="courier new" size="2">@#Amount</font></td>
-								</tr>
-								<!--@<PRGrid-->
-							</tbody>
-						</table>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<br /> <b>Total Amount: Kshs @#poValue </b>
-		<table class="mceItemTable">
-			<tbody>
-				<tr></tr>
-			</tbody>
-			<tbody>
-				<tr>
-					<td>Submitted By:</td>
-					<td>@#Submitter</td>
-					<td>Date Submitted:</td>
-					<td>@#DateSubmitted</td>
-					<td><font size="2">UID:@#OriginatorUserID</font></td>
-				</tr>
-				<tr>
-					<td>Finance Verification By</td>
-					<td>@#ApproverName</td>
-					<td>Date Approved</td>
-					<td>@#ApprovalDate</td>
-					<td><font size="2">UID: @#ApproverUserID </font></td>
-				</tr>
-				<tr>
-					<td>DFA Approval By</td>
-					<td colspan="2">@#BHPOApprover2</td>
-					<td colspan="2"><font size="2">UID: @#BHUserID2 </font></td>
-				</tr>
-				<tr>
-					<td>DAR / DDAR Approval By</td>
-					<td colspan="2">@#CDDCDApproverName</td>
-					<td colspan="2"><font size="2">UID: @#CDDCDApproverID </font></td>
-				</tr>
-			</tbody>
-		</table>
-		<b>SECTION 2: Accounts</b>
-		<table class="mceItemTable signaturetable"
-			style="width: 616px; height: 108px;">
-			<tbody>
-				<tr>
-					<td>Sage Ref Number:</td>
-					<td><div>____________________</div></td>
-					<td>Office:</td>
-					<td><div>__________________</div></td>
-				</tr>
-				<tr></tr>
-				<tr>
-					<td>Finance Approver:</td>
-					<td>@#FinanceApproverName</td>
-					<td>Date:</td>
-					<td>@#FinanceApprovalDate</td>
-				</tr>
-				<tr>
-					<td>Signature:</td>
-					<td><div>____________________</div></td>
-					<td>UID:</td>
-					<td>@#FinanceApproverUserID</td>
-				</tr>
-				<tr></tr>
-			</tbody>
-		</table>
-		<b>SECTION 3: </b>Vendor/Payee to sign upon receiving the cash.
-		<table class="mceItemTable signaturetable">
-			<tbody>
-				<tr></tr>
-				<tr>
-					<td>Name:</td>
-					<td><div>____________________</div></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Signature:</td>
-					<td><div>____________________</div></td>
-					<td>Date:</td>
-					<td><div>____________________</div></td>
-					<td>ID No:</td>
-					<td><div>_____________</div></td>
-				</tr>
-			</tbody>
-		</table>
+								<td></td>
+								<td></td>
+								<td></td>
+	    						<td class="num"><b>Grand Total</b></td>
+	    						<td class="num"><b style="border-bottom:3px double;">&nbsp;KES @#poValue</b></td>
+				</tr>	    		
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="row bottom">
+		  	 	<div>
+					<b>Generated by:</b> 
+					@#lpoSubmittedBy &nbsp;&nbsp;<b>UID:</b>@#POUserID
+				</div>
+				<div>
+					<b>Generated Date:</b>
+					@#lpoDateSubmitted
+				</div>
+				
+				<div>
+					<b>Approved By:</b> 
+					@#lpoApprovedByPM &nbsp;&nbsp; 
+					<b>UID:</b>
+					@#BHUserID
+				</div>
+				<div>
+					<b>Approved Date:</b> 
+					@#lpoDateReviewedPM
+				</div>
+		</div>
+
+		<!-- div class="row footer"><hr>Workpoint Limited | Document generated: @#GenDate</hr></div -->
 	</div>
 	<div class="footer"><hr>Workpoint Limited | Document generated: @#GenDate</hr></div>
 </body>
+
 </html>
+

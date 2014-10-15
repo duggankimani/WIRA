@@ -249,7 +249,7 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 
 	public void setFolders(ArrayList<Attachment> folders) {
 		tree.getStore().clear();
-		
+		//System.err.println("#############>>>>>>>>>>>>>>> onreset1 - setfolders");
 		assert folders!=null;
 		
 		Attachment attachment = new Attachment();
@@ -258,6 +258,19 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 		attachment.setDirectory(true);
 		attachment.setChildren(folders);
 		
-		tree.getStore().addSubTree(0,Arrays.asList(attachment));
+//		if(tree.getStore().getChild(0)!=null){
+//			Attachment parent = tree.getStore().getChild(0);
+//			parent.setChildren(folders);
+//			tree.getStore().add(parent,folders);
+//		}else{
+			tree.getStore().addSubTree(0,Arrays.asList(attachment));
+		//}
+		
+		
+	}
+
+	@Override
+	public Tree<Attachment, String> getTree() {
+		return tree;
 	}
 }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mvel2.MVEL;
 import org.mvel2.ParserContext;
@@ -23,7 +24,7 @@ public class TestMvel {
 		DB.beginTransaction();
 	}
 	
-	@Test
+	@Ignore
 	public void scriptMvel() throws FileNotFoundException, IOException{
 		long documentId = 5L;
 		Document doc = DocumentDaoHelper.getDocument(documentId);
@@ -56,6 +57,32 @@ public class TestMvel {
 //		MVEL.eval("setValue('matta',values.subject); setValue('yatta',values.subject);", doc);
 //		System.out.println("############ "+MVEL.evalToString("values.matta.value", doc)+ " :: "
 //				+MVEL.evalToString("values.yatta.value", doc));
+	}
+	
+	@Test
+	public void mvelLoop(){
+		long documentId = 10L;
+		Document doc = DocumentDaoHelper.getDocument(documentId);
+		ParserContext context = new ParserContext();
+		context.addPackageImport("com.duggan.workflow.server.db");
+		context.addPackageImport("com.duggan.workflow.shared.model");
+		
+		String script= "foreach(Object l: details.requisitionLines){"
+		+ "addDetail(with(new com.duggan.workflow.shared.model.DocumentLine()){"
+		+ "documentId=l.documentId,"
+		+ "name='poParticulars',"
+		+ "values=['Item':l.values.?item,"
+		+ "'quantity':l.?values.quantity,"
+		+ "'uom': l.values.?uom, "
+		+ "'unitPrice':l.?values.unitPrice,"
+		+ "'total':l.values.total]"
+		+ "})"
+		+ "};"
+		+ "setValue('poValue', values.reqValue);";
+		
+		Serializable compilexEx = MVEL.compileExpression(script,context);
+		MVEL.executeExpression(compilexEx, doc);
+		System.out.println("############ "+MVEL.evalToString("details.poParticulars", doc));
 	}
 	
 	@After

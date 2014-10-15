@@ -21,7 +21,7 @@ public class SaveOutPutDocsPresenter extends
 		Uploader getUploader();
 	}
 
-	OutputDocument doc=null;
+	OutputDocument doc=new OutputDocument();
 	
 	@Inject
 	public SaveOutPutDocsPresenter(final EventBus eventBus, final IOutputDocView view) {
@@ -37,7 +37,6 @@ public class SaveOutPutDocsPresenter extends
 			@Override
 			public void onFinish(IUploader uploader) {
 				String csv = uploader.getServerMessage().getMessage();
-				doc = new OutputDocument();
 				//Window.alert(csv);
 				String[]values = csv.split(",");
 				for(String v: values){

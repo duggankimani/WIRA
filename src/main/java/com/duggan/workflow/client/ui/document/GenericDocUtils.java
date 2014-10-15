@@ -13,6 +13,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.Property;
@@ -51,10 +52,21 @@ public class GenericDocUtils {
 		properties.add(prop);
 		
 		prop = new Property(HasProperties.HREF, "Href", DataType.STRING);
-		String href = AppContext.getBaseUrl()+"/getreport?name="+name
-				+"&path="+path
-				+"&template="+outDoc.getCode()+"&doc="+(doc instanceof Document? 
-						doc.getId() : ((HTSummary)doc).getDocumentRef())+"&ACTION=generateoutput";
+		
+		Value value = doc.getValues().get(outDoc.getName());
+		
+		Long attachmentId = null;
+		if(value!=null){
+			attachmentId=(Long)value.getValue();
+		}
+		String href = AppContext.getBaseUrl()+"/getreport?"
+				+"&attachmentId="+attachmentId
+				+"&ACTION=GETATTACHMENT";
+		
+//		String href = AppContext.getBaseUrl()+"/getreport?name="+name
+//				+"&path="+path
+//				+"&template="+outDoc.getCode()+"&doc="+(doc instanceof Document? 
+//						doc.getId() : ((HTSummary)doc).getDocumentRef())+"&ACTION=generateoutput";
 		prop.setValue(new StringValue(href));
 		properties.add(prop);
 		
@@ -121,5 +133,4 @@ public class GenericDocUtils {
 		return ENV.getValue(field.getQualifiedName());
 	}
 
-	
 }

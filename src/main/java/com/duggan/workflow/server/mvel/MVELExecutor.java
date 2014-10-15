@@ -17,8 +17,14 @@ public class MVELExecutor {
 	
 	public void execute(ADTrigger trigger, Doc doc){
 		String script = trigger.getScript();
-		String imports = trigger.getImports(); //semicolon separated imports
-		
+		String imports ="com.duggan.workflow.shared.model;"
+						+ "com.duggan.workflow.server.db;"
+						+ "com.duggan.workflow.server.helper.session;"
+						+ "java.util";
+				 
+		if(trigger.getImports()!=null){
+			imports = imports.concat(";"+trigger.getImports()); //semicolon separated imports
+		}
 		String[] importsArray = null;
 		
 		if(imports!=null && !imports.isEmpty()){
@@ -34,7 +40,7 @@ public class MVELExecutor {
 		ParserContext context = new ParserContext();
 		if(importsArray!=null)
 			for(String im: importsArray){
-				if(!im.trim().isEmpty()){
+				if(!im.trim().isEmpty() && !context.hasImport(im)){
 					context.addPackageImport(im.trim());
 				}
 				

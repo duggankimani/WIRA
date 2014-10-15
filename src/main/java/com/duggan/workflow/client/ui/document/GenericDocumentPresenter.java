@@ -619,7 +619,13 @@ public class GenericDocumentPresenter extends
 				
 				doc.getDetails().remove(key);
 				doc.getDetails().put(key, lines);
+				
+				/*Grid Value must be written too - otherwise it gets lost if the task is completed
+				 *  Coz complete takes only form values >> Map<String, Value>
+				 */
+				values.put(key, val);
 			}else{
+				//GridValue is never written here 
 				values.put(key, val);
 			}
 		}
@@ -629,9 +635,10 @@ public class GenericDocumentPresenter extends
 
 	private void completeIt(Map<String, Value> withValues) {
 		
+		//Get document Values
 		mergeFormValuesWithDoc();
 		
-		Map<String, Value> values = doc.getValues();
+		final Map<String, Value> values = doc.getValues();
 		
 		//Add any programmatic values (Button values e.g isApproved)
 		if(withValues!=null)
@@ -640,14 +647,27 @@ public class GenericDocumentPresenter extends
 		//Remove any null keys
 		values.remove(null);
 		
-		//Fire Event
-		fireEvent(new CompleteDocumentEvent(taskId, values));
+		AppManager.showPopUp("Confirm Action", "Are you ready to submit?",
+				new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Yes")){
+
+							//Fire Event
+							fireEvent(new CompleteDocumentEvent(taskId, values));
+						}
+					}
+				},"Yes", "Cancel");
+		
 	}
 
 	protected void forwardForApproval() {
+		mergeFormValuesWithDoc();
 		if(getView().isValid()){
 			fireEvent(new ProcessingEvent());
-			requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc), new TaskServiceCallback<ApprovalRequestResult>(){
+			requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc),
+					new TaskServiceCallback<ApprovalRequestResult>(){
 				@Override
 				public void processResult(ApprovalRequestResult result) {
 					GenericDocumentPresenter.this.getView().asWidget().removeFromParent();

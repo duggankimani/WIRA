@@ -137,6 +137,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	protected void onReset() {
 		super.onReset();
 		setInSlot(DOCPOPUP_SLOT, docPopup);
+		documentTreePresenter.initDocuments();
 		setInSlot(DOCTREE_SLOT, documentTreePresenter);
 	}
 	

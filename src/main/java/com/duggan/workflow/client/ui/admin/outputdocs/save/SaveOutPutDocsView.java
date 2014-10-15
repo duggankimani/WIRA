@@ -94,8 +94,10 @@ public class SaveOutPutDocsView extends ViewImpl implements
 	@Override
 	public void setOutputDoc(OutputDocument doc) {
 		txtName.setValue(doc.getName());
+		
 		txtDocRef.setValue(doc.getCode());
 		txtDescription.setValue(doc.getDescription());
+		
 		txtPath.setValue(doc.getPath());
 		
 		if(doc.getAttachmentName()!=null){

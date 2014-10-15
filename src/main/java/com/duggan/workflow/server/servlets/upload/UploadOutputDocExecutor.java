@@ -2,7 +2,6 @@ package com.duggan.workflow.server.servlets.upload;
 
 import gwtupload.server.exceptions.UploadActionException;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
-import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.shared.model.OutputDocument;
-import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class UploadOutputDocExecutor extends FileExecutor {
 
