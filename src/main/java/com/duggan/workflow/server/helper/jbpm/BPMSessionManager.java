@@ -41,6 +41,7 @@ import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
+import org.wira.pioneer.integration.PioneerIntegrationWorkitemHandler;
 
 import xtension.workitems.FormValidationWorkItemHandler;
 import xtension.workitems.GenerateNotificationWorkItemHandler;
@@ -178,6 +179,9 @@ class BPMSessionManager {
 		session.getWorkItemManager().registerWorkItemHandler("GenerateOutputDoc",
 				new GenerateOutputDocWorkItemHandler());
 
+		session.getWorkItemManager().registerWorkItemHandler("PioneerIntegration", 
+				new PioneerIntegrationWorkitemHandler());
+		
 		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 				EmailServiceHelper.getProperty("mail.smtp.host"),
 				EmailServiceHelper.getProperty("mail.smtp.port"),

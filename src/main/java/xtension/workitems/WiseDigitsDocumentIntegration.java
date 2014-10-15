@@ -29,7 +29,6 @@ public class WiseDigitsDocumentIntegration implements WorkItemHandler {
 		context.put("document", document);
 		request.setContext(context);
 		
-		
 		new OutgoingRequestImpl().executePostCall(getUrlEncoding((Document)document));
 	}
 	

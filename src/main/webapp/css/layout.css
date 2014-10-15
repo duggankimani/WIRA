@@ -1238,6 +1238,8 @@ body .dateBoxPopup {
 	-webkit-box-shadow: 0 0 6px #ccc;
 	box-shadow: 0 0 6px #ccc;
 	padding:25px;
+	overflow-x: auto;
+	max-width:100%;
 }
 
 ul.icons-list {

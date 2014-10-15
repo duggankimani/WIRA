@@ -30,25 +30,33 @@ public class TaskActivity extends Composite {
 
 	interface TaskActivityUiBinder extends UiBinder<Widget, TaskActivity> {
 	}
-	
-	@UiField Image img;
-	@UiField SpanElement spnAction;
-	@UiField SpanElement spnTask;
-	//@UiField SpanElement spnSubject;
-	@UiField Anchor aFile;
-	@UiField SpanElement spnTo;
-	@UiField Anchor aDocument;
-	
-	@UiField SpanElement spnTime;
-	@UiField SpanElement spnUser;
-	
+
+	@UiField
+	Image img;
+	@UiField
+	SpanElement spnAction;
+	@UiField
+	SpanElement spnTask;
+	// @UiField SpanElement spnSubject;
+	@UiField
+	Anchor aFile;
+	@UiField
+	SpanElement spnTo;
+	@UiField
+	Anchor aDocument;
+
+	@UiField
+	SpanElement spnTime;
+	@UiField
+	SpanElement spnUser;
+
 	String url;
 
 	public TaskActivity(Notification notification) {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		img.addErrorHandler(new ErrorHandler() {
-			
+
 			@Override
 			public void onError(ErrorEvent event) {
 				img.setUrl("img/blueman.png");
@@ -56,103 +64,109 @@ public class TaskActivity extends Composite {
 		});
 
 		String text = "";
-		
-		String subject=notification.getSubject();
-		DocumentType documentType=notification.getDocumentType();
-		
-		NotificationType notificationType=notification.getNotificationType();
-		HTUser ownerObj=notification.getOwner();
-		HTUser targetUser=notification.getTargetUserId();
-		HTUser createdBy=notification.getCreatedBy();
-		ApproverAction approverAction=notification.getApproverAction();
-		Long processInstanceId=notification.getProcessInstanceId();
-		String time=getTimeDifferenceAsString(notification.getCreated());
-		
+
+		String subject = notification.getSubject();
+		DocumentType documentType = notification.getDocumentType();
+
+		NotificationType notificationType = notification.getNotificationType();
+		HTUser ownerObj = notification.getOwner();
+		HTUser targetUser = notification.getTargetUserId();
+		HTUser createdBy = notification.getCreatedBy();
+		ApproverAction approverAction = notification.getApproverAction();
+		Long processInstanceId = notification.getProcessInstanceId();
+		String time = getTimeDifferenceAsString(notification.getCreated());
+
 		String prefix = documentType.getDisplayName();
 		subject = prefix + " " + subject;
 
 		String action = "";
-		
-		if(approverAction!=null){
+
+		if (approverAction != null) {
 			action = approverAction.getAction();
 		}
-		
+
 		String owner = ownerObj.getSurname();
-		
-		if(AppContext.isCurrentUser(ownerObj.getUserId())){
+
+		if (AppContext.isCurrentUser(ownerObj.getUserId())) {
 			owner = "You";
 		}
-		
-		String approver = createdBy.getSurname();
-		if(AppContext.isCurrentUser(createdBy.getUserId())){
-			approver="You";
-		}
-		
-		String target = null;
-		
-		if(targetUser!=null){
-			target =targetUser.getSurname();
-			if(AppContext.isCurrentUser(targetUser.getUserId())){
-				target="You";
+		String approver ="";
+		if (createdBy.getSurname() != null) {
+			approver= createdBy.getSurname();
+			if (AppContext.isCurrentUser(createdBy.getUserId())) {
+				approver = "You";
 			}
 		}
-		
+
+		String target = null;
+
+		if (targetUser != null) {
+			target = targetUser.getSurname();
+			if (AppContext.isCurrentUser(targetUser.getUserId())) {
+				target = "You";
+			}
+		}
+
 		switch (notificationType) {
 		case APPROVALREQUEST_APPROVERNOTE:
-			//safeHtml = Template1.render(subject, owner, time);
+			// safeHtml = Template1.render(subject, owner, time);
 			spnUser.setInnerText(owner);
 			text = "submitted for approval ";
 
 			setImage(ownerObj);
-			
+
 			break;
 
 		case APPROVALREQUEST_OWNERNOTE:
-//			if(isNotification)
-//				safeHtml = Template2.render(owner, subject, time);
-//			else{
-//				safeHtml2= Template6.render(owner,subject, time);
-//			}
+			// if(isNotification)
+			// safeHtml = Template2.render(owner, subject, time);
+			// else{
+			// safeHtml2= Template6.render(owner,subject, time);
+			// }
 			spnUser.setInnerText(owner);
 			text = "forwarded for approval ";
 
 			setImage(ownerObj);
-			
+
 			break;
 
 		case TASKCOMPLETED_APPROVERNOTE:
-//			safeHtml = Template3.render(subject, owner, time, action, 
-//					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
-			
+			// safeHtml = Template3.render(subject, owner, time, action,
+			// ApproverAction.APPROVED.equals(approverAction)? "icon-check":
+			// "icon-remove-sign");
+
 			spnUser.setInnerText(owner);
-			text =action +" ";
+			text = action + " ";
 
 			setImage(notification.getOwner());
-			
+
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
-//			if(isNotification)
-//			safeHtml = Template4.render(subject, approver, time, action, 
-//					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
-//			else
-//			safeHtml2 =Template5.render(subject, approver, time, 
-//					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign",action)
+			// if(isNotification)
+			// safeHtml = Template4.render(subject, approver, time, action,
+			// ApproverAction.APPROVED.equals(approverAction)? "icon-check":
+			// "icon-remove-sign");
+			// else
+			// safeHtml2 =Template5.render(subject, approver, time,
+			// ApproverAction.APPROVED.equals(approverAction)? "icon-check":
+			// "icon-remove-sign",action)
 			spnUser.setInnerText(approver);
-			text =action+" ";
+			text = action + " ";
 
 			setImage(notification.getCreatedBy());
-			
+
 			break;
 		case TASKDELEGATED:
-			
-//			if(isNotification){
-//				safeHtml = Template9.render(subject, owner, target, time, action,"icon-signin");
-//			}else{
-//				safeHtml2 = Template8.render(approver,subject, target, time);
-//			}
-		
+
+			// if(isNotification){
+			// safeHtml = Template9.render(subject, owner, target, time,
+			// action,"icon-signin");
+			// }else{
+			// safeHtml2 = Template8.render(approver,subject, target, time);
+			// }
+
 			spnUser.setInnerText(approver);
-			text = "delegated to "+target+" "; 
+			text = "delegated to " + target + " ";
 			setImage(notification.getCreatedBy());
 			break;
 		case FILE_UPLOADED:
@@ -166,59 +180,62 @@ public class TaskActivity extends Composite {
 			spnTo.removeClassName("hide");
 			aFile.setText(notification.getFileName());
 			UploadContext context = new UploadContext("getreport");
-			context.setContext("attachmentId", notification.getFileId()+"");
+			context.setContext("attachmentId", notification.getFileId() + "");
 			context.setContext("ACTION", "GETATTACHMENT");
 			url = context.toUrl();
-			
+
 			aFile.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
-					if(moduleUrl.endsWith("/")){
-						moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+					String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht",
+							"");
+					if (moduleUrl.endsWith("/")) {
+						moduleUrl = moduleUrl.substring(0,
+								moduleUrl.length() - 1);
 					}
 					url = url.replace("/", "");
-					moduleUrl =moduleUrl+"/"+url;
+					moduleUrl = moduleUrl + "/" + url;
 					Window.open(moduleUrl, aFile.getText(), "");
 				}
 			});
-			
+
 			break;
 		default:
-			//safeHtml= "<p>You have no new notification</p>";
+			// safeHtml= "<p>You have no new notification</p>";
 			break;
 		}
-		
-//		if(safeHtml!=null){
-//			aDocument.setHTML(safeHtml);
-//			aDocument.removeStyleName("hidden");
-//		}
-//		
-//		if(safeHtml2!=null){
-//			divActivity.getElement().setInnerSafeHtml(safeHtml2);	
-//			divActivity.removeStyleName("hidden");
-//			aDocument.addStyleName("hidden");
-//		}
-//		
+
+		// if(safeHtml!=null){
+		// aDocument.setHTML(safeHtml);
+		// aDocument.removeStyleName("hidden");
+		// }
+		//
+		// if(safeHtml2!=null){
+		// divActivity.getElement().setInnerSafeHtml(safeHtml2);
+		// divActivity.removeStyleName("hidden");
+		// aDocument.addStyleName("hidden");
+		// }
+		//
 		aDocument.setText(subject);
-		
-		if(notification.getDocumentId()!=null){
-			aDocument.setHref("#search;did="+notification.getDocumentId());
-		}else if(processInstanceId!=null){
-			aDocument.setHref("#search;pid="+processInstanceId);
+
+		if (notification.getDocumentId() != null) {
+			aDocument.setHref("#search;did=" + notification.getDocumentId());
+		} else if (processInstanceId != null) {
+			aDocument.setHref("#search;pid=" + processInstanceId);
 		}
 
 		spnAction.setInnerText(text);
-		//spnSubject.setInnerText(subject);
+		// spnSubject.setInnerText(subject);
 		spnTime.setInnerText(time);
 	}
 
 	private void setImage(HTUser user) {
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
-		if(moduleUrl.endsWith("/")){
-			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+		if (moduleUrl.endsWith("/")) {
+			moduleUrl = moduleUrl.substring(0, moduleUrl.length() - 1);
 		}
-		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+user.getUserId();
+		moduleUrl = moduleUrl + "/getreport?ACTION=GetUser&userId="
+				+ user.getUserId();
 		img.setUrl(moduleUrl);
 	}
 

@@ -36,7 +36,7 @@ import com.sun.jersey.api.json.JSONMarshaller;
 
 public class IncomingRequestImpl implements IncomingRequestService {
 
-	private static final String NEWAPPROVALREQUESTCOMMAND = "NEWAPPROVALREQUESTCOMMAND";
+	public static final String NEWAPPROVALREQUESTCOMMAND = "NEWAPPROVALREQUESTCOMMAND";
 	//private static final String WORKFLOWCALLOUTCOMMAND = "WORKFLOWCALLOUTCOMMAND";
 
 	private static Logger logger = Logger.getLogger(IncomingRequestImpl.class);

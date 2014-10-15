@@ -45,6 +45,9 @@ insert into UserGroup(userid,groupid) values(11,9);
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Requisition -WD', 'WDRequisition',0,'Req/WD/{No}/{YY}');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Student Leave', 'StudentLeave',0,'BUS-AFI-{No}/{YYYY}');
  insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-blue','KINGA YA MKULIMA Application Form', 'KINGAYAMKULIMA',0,'BA/KM/{No}');
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','MPESAIPN', 'MPESAIPN',0,'MPESA_IPN#{No}');
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Terminal Allocation', 'TERMINAL ALLOCATION',0,'Allocation Request #{No}');
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Terminal De-allocation', 'TERMINAL DEALLOCATION',0,'De-Allocation Request #{No}');
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Asset Finance Application I&M', 'ASSETFINANCEFORMIM',0,'AF/IM/{No}/{YY}');
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Procurement To Payment Process', 'PROCURETOPAY',0,'Case/{No}');
  
@@ -59,12 +62,6 @@ create index on localdocument (lower(subject));
 create index on localdocument (lower(description));
 alter table adfield alter column formid drop not null;
 
-update addoctype set subjectformat='INV/{No}/{YY}' where id=(select id from addoctype where name='INVOICE');
-update addoctype set subjectformat='CNT/{No}/{YY}' where id=(select id from addoctype where name='CONTRACT');
-update addoctype set subjectformat='REQ/{No}/{YY}' where id=(select id from addoctype where name='REQUISITION');
-update addoctype set subjectformat='LPO/{No}/{YY}' where id=(select id from addoctype where name='LPO');
-update addoctype set subjectformat='Leave/{No}/{MM}/{YY}' where id=(select id from addoctype where name='LEAVEAPP');
-update addoctype set subjectformat='RFQ/{No}/{YY}' where id=(select id from addoctype where name='RFQ');
 
 /*A fix for ADProperties Bug - Multiple Repeated properties for a single Field specifically grid columns - Repeated as the grid is moved around*/
 delete from advalue where propertyid is not null and propertyid in(select id from adproperty where fieldid is not null and id not in (select max(id) from adproperty where fieldid is not null group by fieldid,name order by fieldid));

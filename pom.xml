@@ -779,6 +779,16 @@
             <version>9.2-1002-jdbc4</version>
             <!--scope>provided</scope-->
         </dependency>
+        
+        <!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar-->
+        
+        <!-- dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>4.0</version-->
+			<!--scope>provided</scope-->
+		<!-- /dependency -->
+        
 
         <!--  Utitity Dependencies -->
         <dependency>

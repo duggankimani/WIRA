@@ -303,17 +303,17 @@ eBusiness Administration]@[]</from>
       </potentialOwner>
     </userTask>
     <endEvent id="_4" name="End" >
-        <terminateEventDefinition />
+        <terminateEventDefinition/>
     </endEvent>
     <exclusiveGateway id="_5" name="approved?" gatewayDirection="Diverging" />
     <exclusiveGateway id="_8" name="approved?" gatewayDirection="Diverging" />
     <endEvent id="_10" name="End" >
-        <terminateEventDefinition />
+        <terminateEventDefinition/>
     </endEvent>
     <task id="_14" name="Update Success" tns:taskName="UpdateLocal" >
       <extensionElements>
         <tns:onEntry-script scriptFormat="http://www.java.com/java">
-          <tns:script>kcontext.setVariable("isProcessComplete",true);</tns:script>
+          <script>kcontext.setVariable("isProcessComplete",true);</script>
         </tns:onEntry-script>
       </extensionElements>
       <ioSpecification>
@@ -442,13 +442,13 @@ eBusiness Administration]@[]</from>
       </potentialOwner>
     </userTask>
     <endEvent id="_20" name="End" >
-        <terminateEventDefinition />
+        <terminateEventDefinition/>
     </endEvent>
     <callActivity id="_23" name="Completion Notifications" calledElement="aftertask-notification" >
       <extensionElements>
         <tns:onExit-script>
-          <tns:script>kcontext.setVariable("group", null);
-kcontext.setVariable("actor", null);</tns:script>
+          <script>kcontext.setVariable("group", null);
+kcontext.setVariable("actor", null);</script>
         </tns:onExit-script>
       </extensionElements>
       <ioSpecification>
@@ -509,11 +509,11 @@ kcontext.setVariable("actor", null);</tns:script>
     <callActivity id="_22" name="Assign Notifications" calledElement="beforetask-notification" >
       <extensionElements>
         <tns:onEntry-script>
-          <tns:script>kcontext.setVariable("group", "HOD_DEV");
-kcontext.setVariable("actor", null);</tns:script>
+          <script>kcontext.setVariable("group", "HOD_DEV");
+kcontext.setVariable("actor", null);</script>
         </tns:onEntry-script>
         <tns:onExit-script>
-          <tns:script></tns:script>
+          <script></script>
         </tns:onExit-script>
       </extensionElements>
       <ioSpecification>
@@ -568,11 +568,11 @@ kcontext.setVariable("actor", null);</tns:script>
     <callActivity id="_25" name="Notification" calledElement="aftertask-notification" >
       <extensionElements>
         <tns:onEntry-script scriptFormat="http://www.java.com/java">
-          <tns:script></tns:script>
+          <script></script>
         </tns:onEntry-script>
         <tns:onExit-script scriptFormat="http://www.java.com/java">
-          <tns:script>kcontext.setVariable("group", null);
-kcontext.setVariable("actor", null);</tns:script>
+          <script>kcontext.setVariable("group", null);
+kcontext.setVariable("actor", null);</script>
         </tns:onExit-script>
       </extensionElements>
       <ioSpecification>
@@ -633,8 +633,8 @@ kcontext.setVariable("actor", null);</tns:script>
     <callActivity id="_24" name="Notifications" calledElement="beforetask-notification" >
       <extensionElements>
         <tns:onEntry-script>
-          <tns:script>kcontext.setVariable("group", "HOD_FIN");
-kcontext.setVariable("actor", null);</tns:script>
+          <script>kcontext.setVariable("group", "HOD_FIN");
+kcontext.setVariable("actor", null);</script>
         </tns:onEntry-script>
       </extensionElements>
       <ioSpecification>
@@ -689,11 +689,11 @@ kcontext.setVariable("actor", null);</tns:script>
     <callActivity id="_27" name="Notification" calledElement="aftertask-notification" >
       <extensionElements>
         <tns:onEntry-script scriptFormat="http://www.java.com/java">
-          <tns:script></tns:script>
+          <script></script>
         </tns:onEntry-script>
         <tns:onExit-script scriptFormat="http://www.java.com/java">
-          <tns:script>kcontext.setVariable("group", null);
-kcontext.setVariable("actor", null);</tns:script>
+          <script>kcontext.setVariable("group", null);
+kcontext.setVariable("actor", null);</script>
         </tns:onExit-script>
       </extensionElements>
       <ioSpecification>
@@ -754,8 +754,8 @@ kcontext.setVariable("actor", null);</tns:script>
     <callActivity id="_26" name="Notification" calledElement="beforetask-notification" >
       <extensionElements>
         <tns:onEntry-script scriptFormat="http://www.java.com/java">
-          <tns:script>kcontext.setVariable("group", "CEO");
-kcontext.setVariable("actor", null);</tns:script>
+          <script>kcontext.setVariable("group", "CEO");
+kcontext.setVariable("actor", null);</script>
         </tns:onEntry-script>
       </extensionElements>
       <ioSpecification>
@@ -808,7 +808,7 @@ kcontext.setVariable("actor", null);</tns:script>
       </dataInputAssociation>
     </callActivity>
     <endEvent id="_29" name="End" >
-        <terminateEventDefinition />
+        <terminateEventDefinition/>
     </endEvent>
     <exclusiveGateway id="_28" name="approved?" gatewayDirection="Diverging" />
     <scriptTask id="_31" name="Script" scriptFormat="http://www.java.com/java" >
