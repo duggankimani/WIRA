@@ -75,18 +75,29 @@ public class GetTaskListActionHandler extends
 				Long processInstanceId = action.getProcessInstanceId();
 				
 				if(processInstanceId==null || processInstanceId==0L){
-					processInstanceId = DocumentDaoHelper.getProcessInstanceIdByDocumentId(action.getDocumentId());
+					processInstanceId = 
+							DocumentDaoHelper.getProcessInstanceIdByDocumentId(action.getDocumentId());
 				}
 								
 				//Document doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
+			
+//				if(action.getDocumentId()!=null){
+//					doc = DocumentDaoHelper.getDocument(action.getDocumentId());
+//				}else if(processInstanceId!=null){
+//					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
+//				}
 				
+	
 				Document doc = null;
 				
-				if(action.getDocumentId()!=null){
-					doc = DocumentDaoHelper.getDocument(action.getDocumentId());
-				}else if(processInstanceId!=null){
-					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
+				if(processInstanceId!=null){
+					//ensure current user has rights to view
+					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,true);
+				}else if(action.getDocumentId()!=null){
+					doc = DocumentDaoHelper.getDocument(action.getDocumentId(),true);
 				}
+				
+			
 				
 				if(doc!=null)
 					summary.add(doc);

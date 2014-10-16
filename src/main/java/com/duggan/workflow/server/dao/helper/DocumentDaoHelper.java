@@ -17,6 +17,7 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Doc;
@@ -348,10 +349,19 @@ public class DocumentDaoHelper {
 	 * @return
 	 */
 	public static Document getDocument(Long id) {
+		return getDocument(id,false);	
+	}
+	
+	public static Document getDocument(Long id, boolean checkUser){
 		DocumentDaoImpl dao = DB.getDocumentDao();
-
-		DocumentModel model = dao.getById(id);
-
+		DocumentModel model=null;
+		
+		if(checkUser){
+			model = dao.getDocumentByIdAndUser(id,SessionHelper.getCurrentUser().getUserId());
+		}else{
+			model = dao.getById(id);
+		}
+		
 		return getDoc(model);
 	}
 

@@ -253,7 +253,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 				requestURL = requestURL.replace(pathInfo, "");
 			}
 			log.debug("# Remove Path Info = "+requestURL);				
-			requestURL = requestURL.replace(servletPath, "?#home;type=search;did="+docId);
+			requestURL = requestURL.replace(servletPath, "/#search;did="+docId);
 			log.debug("# Replace ServletPath = "+requestURL);
 			
 			return requestURL;

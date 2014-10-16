@@ -32,9 +32,9 @@ public class TestEmail {
 	public void initDB(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.start(4L);
-		ProcessMigrationHelper.start(17L);
-		doc = DocumentDaoHelper.getDocument(359L);
+//		ProcessMigrationHelper.start(4L);
+//		ProcessMigrationHelper.start(17L);
+//		doc = DocumentDaoHelper.getDocument(359L);
 	}
 	
 	@Before
@@ -73,7 +73,7 @@ public class TestEmail {
 		EmailServiceHelper.sendEmail(body, "RE: Wira Enhanced mailing", 
 				Arrays.asList(LoginHelper.get().getUser("mariano"),
 						LoginHelper.get().getUser("james")),
-				LoginHelper.get().getUser("pnjenga"));
+				LoginHelper.get().getUser("jshikuku"));
 	}
 	
 	@SuppressWarnings("deprecation")

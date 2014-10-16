@@ -725,5 +725,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		return result>0;
 	}
+
+	public DocumentModel getDocumentByIdAndUser(Long id, String userId) {
+		String jpql = "from DocumentModel m where m.createdBy=:userId and m.id=:id";
+		
+		Query query = em.createQuery(jpql)
+				.setParameter("id", id)
+				.setParameter("userId", userId);
+		
+		return getSingleResultOrNull(query);
+	}
 	
 }
