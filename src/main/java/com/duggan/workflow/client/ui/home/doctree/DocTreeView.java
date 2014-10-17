@@ -56,9 +56,13 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 
 	@Override
 	public void display(List<Attachment> attachments) {
+		if(attachments==null){
+			return;
+		}
+		
 		Map<String, List<String>> docTypeDocNameList = new HashMap<String, List<String>>();
 		Map<String, ArrayList<Attachment>> docNameAttachmentList = new HashMap<String, ArrayList<Attachment>>();
-
+		
 		for(Attachment attachment: attachments){
 			String docType = attachment.getDocumentType();
 			List<String> docNameList = docTypeDocNameList.get(docType);

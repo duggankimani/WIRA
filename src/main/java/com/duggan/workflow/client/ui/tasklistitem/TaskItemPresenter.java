@@ -305,6 +305,7 @@ public class TaskItemPresenter extends
 	}
 	
 	protected void submitRequest(final Actions action, final Map<String, Value> values) {
+		
 		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
 		//values.put("DocumentURL", new StringValue(docUrl));
 		fireEvent(new ProcessingEvent());
@@ -320,8 +321,8 @@ public class TaskItemPresenter extends
 		if(action==Actions.DELEGATE){
 			delegate(workflow,action, values);
 			return;
-		}			
-							
+		}				
+		
 		dispatcher.execute(workflow, new TaskServiceCallback<ExecuteWorkflowResult>() {
 			
 			@Override

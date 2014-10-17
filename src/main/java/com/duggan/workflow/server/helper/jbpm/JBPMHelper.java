@@ -56,6 +56,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Delegate;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTAccessType;
@@ -446,38 +447,9 @@ public class JBPMHelper implements Closeable {
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
 		
 		if(status==Status.Completed){
-			//then how far is the process now?
-			ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(master_task.getTaskData().getProcessInstanceId());
-			if(log.getStatus()==2){
-				//Process Completed
-				task.setProcessStatus(HTStatus.COMPLETED);
-			}else{
-				//where is my request?
-				List<Object[]> actualOwners = DB.getProcessDao()
-						.getCurrentActualOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
-				
-				//Task Id, 
-				for(Object[] row: actualOwners){
-					if(row[1]!=null){
-						task.setTaskActualOwner(LoginHelper.get().getUser(row[1].toString(), false));
-					}
-				}
-				
-				List<Object[]> potOwners = DB.getProcessDao()
-						.getCurrentPotentialOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
-				
-				String entities = "";
-				//Task Id, 
-				for(Object[] row: potOwners){
-					if(row[1]!=null){
-						entities = entities.concat(row[1].toString()+", ");
-					}
-				}
-				if(!entities.isEmpty()){
-					entities = entities.substring(0, entities.length()-2);
-					task.setPotentialOwners(entities);
-				}
-			}
+			
+			loadProgressInfo(task,master_task.getTaskData().getProcessInstanceId());
+			
 		}else{
 			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
 			
@@ -557,6 +529,41 @@ public class JBPMHelper implements Closeable {
 //				((HTask)task).setDelegate(delegate);
 //			}
 			
+		}
+	}
+
+	public void loadProgressInfo(Doc task, long processInstanceId) {
+		//then how far is the process now?
+		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
+		if(log.getStatus()==2){
+			//Process Completed
+			task.setProcessStatus(HTStatus.COMPLETED);
+		}else{
+			//where is my request?
+			List<Object[]> actualOwners = DB.getProcessDao()
+					.getCurrentActualOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
+			
+			//Task Id, 
+			for(Object[] row: actualOwners){
+				if(row[1]!=null){
+					task.setTaskActualOwner(LoginHelper.get().getUser(row[1].toString(), false));
+				}
+			}
+			
+			List<Object[]> potOwners = DB.getProcessDao()
+					.getCurrentPotentialOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
+			
+			String entities = "";
+			//Task Id, 
+			for(Object[] row: potOwners){
+				if(row[1]!=null){
+					entities = entities.concat(row[1].toString()+", ");
+				}
+			}
+			if(!entities.isEmpty()){
+				entities = entities.substring(0, entities.length()-2);
+				task.setPotentialOwners(entities);
+			}
 		}
 	}
 

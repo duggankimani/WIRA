@@ -314,8 +314,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 				HTSummary summ = (HTSummary)doc;
 				if(summ.getStatus()==HTStatus.COMPLETED){
 					dateToUse  = summ.getCompletedOn();
-				}else{
-					dateToUse  = summ.getCreated();
 				}
 			}
 			
@@ -329,17 +327,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 					@Override
 					public void processResult(DateGroupPresenter result) {
 						
-						if(doc instanceof HTSummary){
-							HTSummary summ = (HTSummary)doc;
-							if(summ.getStatus()==HTStatus.COMPLETED){
-								result.setDate(summ.getCompletedOn());
-							}else{
-								result.setDate(summ.getCreated());
-							}
-							
-						}else{
-							result.setDate(doc.getCreated());
-						}
+						result.setDate(date);
 						
 						addToSlot(DATEGROUP_SLOT, result);						
 						fireEvent(new PresentTaskEvent(doc));						

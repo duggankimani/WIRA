@@ -208,6 +208,14 @@ public class FormPanel extends Composite {
 			
 	}
 	
+	public void setCompletedOn(Date completedOn){
+		if (completedOn!= null){
+			String timeDiff =  MONTHDAYFORMAT.format(completedOn);//DateUtils.getTimeDifferenceAsString(created);
+			spnDeadline.setInnerText("Done "+timeDiff);
+			//TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
+		}
+	}
+	
 	public void setDeadline(Date endDateDue) {
 		if(endDateDue==null){
 			return;

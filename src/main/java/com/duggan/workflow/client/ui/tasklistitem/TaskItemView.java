@@ -128,8 +128,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			spnAttach.removeStyleName("hidden");
 		}
 		
-		if(aDoc.getDescription()!=null)
-			spnDescription.setText((aDoc.getNodeName()==null? "": aDoc.getNodeName())+" "+aDoc.getDescription());
 		//spnPriority.setText(summaryTask.getPriority()==null? "": summaryTask.getPriority().toString());
 		
 		if(aDoc instanceof HTSummary){
@@ -158,31 +156,6 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			
 			if(summ.getName()!=null && !summ.getName().isEmpty()){
 				spnSubject.setInnerText(summ.getName());
-				String desc =summ.getSubject();
-				
-				String taskActualOwner = "";
-				if(summ.getProcessStatus()==HTStatus.COMPLETED){
-					taskActualOwner="Completed";
-				}else{
-					//How far in the workflow is my request
-					if(summ.getTaskActualOwner()!=null){
-						//Delegations are also handled here
-					
-						
-						if(summ.getDelegate()!=null && summ.getDelegate().getDelegateTo()!=null){
-							taskActualOwner = "Delegated: "+summ.getTaskActualOwner().getFullName();
-						}else{
-							taskActualOwner = summ.getTaskActualOwner().getFullName();
-						}
-								
-						
-					}else{
-						taskActualOwner = summ.getPotentialOwners();
-					}
-				}
-					
-				spnDescription.getElement().setInnerHTML(desc+ 
-						" - <span>"+taskActualOwner+"</span>" );
 			}
 			
 			
@@ -199,14 +172,47 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
  		}else{
 			Document doc =(Document)aDoc;
 			setDocumentActions(doc.getStatus());
-			spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
+			if(doc.getStatus()!=DocStatus.DRAFTED){
+				spnDocIcon.addStyleName("icon-ok");
+				spnDocIcon.setTitle("Completed Task");
+			}else{
+				spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
+			}	
 		}
 		
+		//Description
+		String desc =aDoc.getSubject();
+		String taskActualOwner = "";
+		if(aDoc.getProcessStatus()==HTStatus.COMPLETED){
+			taskActualOwner="Completed";
+			spnDescription.getElement().setInnerHTML(desc+ 
+					" - <span style='color:green;'>"+taskActualOwner+"</span>" );
+		}else{
+			//How far in the workflow is my request
+			if(aDoc.getTaskActualOwner()!=null){
+				
+				//Delegations are also handled here
+				if(aDoc instanceof HTSummary){
+					HTSummary summ = (HTSummary)aDoc;
+					if(summ.getDelegate()!=null && summ.getDelegate().getDelegateTo()!=null){
+						taskActualOwner = "Delegated: "+summ.getTaskActualOwner().getFullName();
+					}else{
+						taskActualOwner = aDoc.getTaskActualOwner().getFullName();
+					}
+				}else{
+					taskActualOwner = aDoc.getTaskActualOwner().getFullName();
+				}
+						
+			}else{
+				taskActualOwner = aDoc.getPotentialOwners();
+			}
+			
+			//Span Description
+			spnDescription.getElement().setInnerHTML(desc+ 
+					" - <span style='color:#2C3539;font-size:9pt;'>"+(taskActualOwner==null? "": taskActualOwner)+"</span>" );
+		}// End of setting descriptions
 		
 		
-		aDoc.getId();
-		
-		//System.err.println("Priority :: "+summaryTask.getPriority());
 		
 		Priority priority = Priority.get(aDoc.getPriority());
 		

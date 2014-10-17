@@ -25,11 +25,6 @@ public class HTSummary extends Doc implements Serializable{
 	private DocStatus docStatus;
 	private Delegate delegate;
 	
-	private HTStatus processStatus=HTStatus.INPROGRESS;
-	
-	private HTUser taskActualOwner;
-	private String potentialOwners;
-	
 	public Long getProcessInstanceId() {
 		return processInstanceId;
 	}
@@ -186,27 +181,4 @@ public class HTSummary extends Doc implements Serializable{
 		this.completedOn = completedOn;
 	}
 
-	public HTUser getTaskActualOwner() {
-		return taskActualOwner;
-	}
-
-	public void setTaskActualOwner(HTUser taskActualOwner) {
-		this.taskActualOwner = taskActualOwner;
-	}
-
-	public void setProcessStatus(HTStatus status) {
-		this.processStatus=status;
-	}
-
-	public HTStatus getProcessStatus() {
-		return processStatus;
-	}
-
-	public String getPotentialOwners() {
-		return potentialOwners;
-	}
-
-	public void setPotentialOwners(String potentialOwners) {
-		this.potentialOwners = potentialOwners;
-	}
 }

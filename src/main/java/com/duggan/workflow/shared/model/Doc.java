@@ -40,6 +40,12 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	private String nodeName;
 	private Long nodeId;
 	
+	private HTStatus processStatus=HTStatus.INPROGRESS;
+	
+	private HTUser taskActualOwner;
+	private String potentialOwners;
+	
+	
 	/**
 	 * Sorts document/task elements in descending order
 	 * hence the negative sign (-)
@@ -47,7 +53,17 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	@Override
 	public int compareTo(Doc o) {
 		
-		return - getCreated().compareTo(o.getCreated());
+		Date thisDate = (this instanceof HTSummary)? (((HTSummary)this).getCompletedOn()==null)?
+				this.getCreated() : ((HTSummary)this).getCompletedOn() 
+				: this.getCreated();
+				
+		
+		Date other = (o instanceof HTSummary)? (((HTSummary)o).getCompletedOn()==null)?
+				o.getCreated() : ((HTSummary)o).getCompletedOn() 
+				: o.getCreated();
+				
+					
+		return (- thisDate.compareTo(other));
 	}
 
 	public Map<String, Value> getValues() {
@@ -136,6 +152,30 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 
 	public void setNodeId(Long nodeId) {
 		this.nodeId = nodeId;
+	}
+	
+	public HTUser getTaskActualOwner() {
+		return taskActualOwner;
+	}
+
+	public void setTaskActualOwner(HTUser taskActualOwner) {
+		this.taskActualOwner = taskActualOwner;
+	}
+
+	public void setProcessStatus(HTStatus status) {
+		this.processStatus=status;
+	}
+
+	public HTStatus getProcessStatus() {
+		return processStatus;
+	}
+
+	public String getPotentialOwners() {
+		return potentialOwners;
+	}
+
+	public void setPotentialOwners(String potentialOwners) {
+		this.potentialOwners = potentialOwners;
 	}
 
 }

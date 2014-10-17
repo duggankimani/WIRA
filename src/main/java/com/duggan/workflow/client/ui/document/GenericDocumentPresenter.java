@@ -647,13 +647,12 @@ public class GenericDocumentPresenter extends
 		//Remove any null keys
 		values.remove(null);
 		
-		AppManager.showPopUp("Confirm Action", "Are you ready to submit?",
+		AppManager.showPopUp("Confirm Action", "Are you ready to submit? ",
 				new OnOptionSelected() {
 					
 					@Override
 					public void onSelect(String name) {
 						if(name.equals("Yes")){
-
 							//Fire Event
 							fireEvent(new CompleteDocumentEvent(taskId, values));
 						}

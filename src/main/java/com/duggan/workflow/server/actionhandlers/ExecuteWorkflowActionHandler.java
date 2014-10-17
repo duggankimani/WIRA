@@ -58,7 +58,7 @@ public class ExecuteWorkflowActionHandler extends
 					}
 					
 					
-					log.warn("ExecuteWorkflowActionHandler.documentOut "+key+"="+val);
+					log.debug("ExecuteWorkflowActionHandler.documentOut "+key+"="+val);
 				}
 			}
 		
@@ -67,10 +67,9 @@ public class ExecuteWorkflowActionHandler extends
 			String docOutputName = "documentOut";//mappings.getOutputName("document");
 			
 			if(docOutputName!=null){
-				log.info("Task Output Parameter Mapping '"+docOutputName+"' -(mappedto)>  'document' ");
+				log.debug("Task Output Parameter Mapping '"+docOutputName+"' -(mappedto)>  'document' ");
 				vals.put(docOutputName, document);
 			}
-			
 			
 		}
 		

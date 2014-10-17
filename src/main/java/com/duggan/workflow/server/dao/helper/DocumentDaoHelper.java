@@ -221,6 +221,10 @@ public class DocumentDaoHelper {
 		doc.setValue(model.getValue());
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
+		
+		if(model.getProcessInstanceId()!=null){
+			JBPMHelper.get().loadProgressInfo(doc, model.getProcessInstanceId());
+		}
 		if(model.getProcessId()==null && model.getType()!=null){
 			doc.setProcessId(model.getType().getProcessDef().getProcessId());
 		}else{

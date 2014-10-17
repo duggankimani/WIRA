@@ -53,7 +53,7 @@ public class GenericDocUtils {
 		
 		prop = new Property(HasProperties.HREF, "Href", DataType.STRING);
 		
-		Value value = doc.getValues().get(outDoc.getName());
+		Value value = doc.getValues().get("_"+outDoc.getCode());
 		
 		Long attachmentId = null;
 		if(value!=null){

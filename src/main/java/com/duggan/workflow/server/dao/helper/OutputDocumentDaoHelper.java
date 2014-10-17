@@ -142,7 +142,7 @@ public class OutputDocumentDaoHelper {
 			
 		}
 	
-		LongValue value = new LongValue(null, outTemplate.getName(), attachment.getId());
+		LongValue value = new LongValue(null, "_"+outTemplate.getCode(), attachment.getId());
 		
 		return value;
 	}
