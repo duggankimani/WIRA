@@ -31,6 +31,7 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.SearchFilter;
@@ -307,7 +308,18 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		for(int i=0; i< tasks.size(); i++){
 			//final String dt = DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
 			final Doc doc = tasks.get(i);
-			final String dt = DateUtils.DATEFORMAT.format(doc.getCreated());
+			
+			Date dateToUse  = doc.getCreated();
+			if(doc instanceof HTSummary){
+				HTSummary summ = (HTSummary)doc;
+				if(summ.getStatus()==HTStatus.COMPLETED){
+					dateToUse  = summ.getCompletedOn();
+				}else{
+					dateToUse  = summ.getCreated();
+				}
+			}
+			
+			final String dt = DateUtils.DATEFORMAT.format(dateToUse);
 			final Date date = DateUtils.DATEFORMAT.parse(dt);
 			
 			if(dates.contains(date)){
@@ -316,7 +328,19 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
 					@Override
 					public void processResult(DateGroupPresenter result) {
-						result.setDate(doc.getCreated());
+						
+						if(doc instanceof HTSummary){
+							HTSummary summ = (HTSummary)doc;
+							if(summ.getStatus()==HTStatus.COMPLETED){
+								result.setDate(summ.getCompletedOn());
+							}else{
+								result.setDate(summ.getCreated());
+							}
+							
+						}else{
+							result.setDate(doc.getCreated());
+						}
+						
 						addToSlot(DATEGROUP_SLOT, result);						
 						fireEvent(new PresentTaskEvent(doc));						
 						dates.add(date);

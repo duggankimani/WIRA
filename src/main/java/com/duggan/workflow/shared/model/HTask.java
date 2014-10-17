@@ -6,7 +6,6 @@ public class HTask extends HTSummary {
 	
 	private String name;
 	private Long taskFormId;
-	private Delegate delegate;
 
 	public HTask(){
 		
@@ -32,11 +31,4 @@ public class HTask extends HTSummary {
 		this.taskFormId = taskFormId;
 	}
 
-	public Delegate getDelegate() {
-		return delegate;
-	}
-
-	public void setDelegate(Delegate delegate) {
-		this.delegate = delegate;
-	}
 }

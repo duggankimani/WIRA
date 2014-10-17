@@ -8,9 +8,10 @@ public class HTSummary extends Doc implements Serializable{
 	private static final long serialVersionUID = -3021583190508951117L;
 	private long id;
 	private String name;//Display Name
-	private String taskName;//Code used for mapping to FormBuilder forms
+	private String taskName;//Code used for mapping to FormBuilder forms --17/Oct/2014 - this has changed
 	private Date startDateDue;//Task Must have started by this time
 	private Date endDateDue;//Task must have ended by this time 
+	private Date completedOn;//Date this task was completed
 	private Date lastUpdate;
 	private HTStatus status;
 	private Date created;
@@ -22,6 +23,12 @@ public class HTSummary extends Doc implements Serializable{
 	private HTUser owner;
 	private Date documentDate;
 	private DocStatus docStatus;
+	private Delegate delegate;
+	
+	private HTStatus processStatus=HTStatus.INPROGRESS;
+	
+	private HTUser taskActualOwner;
+	private String potentialOwners;
 	
 	public Long getProcessInstanceId() {
 		return processInstanceId;
@@ -161,5 +168,45 @@ public class HTSummary extends Doc implements Serializable{
 
 	public void setEndDateDue(Date endDateDue) {
 		this.endDateDue = endDateDue;
+	}
+	
+	public Delegate getDelegate() {
+		return delegate;
+	}
+
+	public void setDelegate(Delegate delegate) {
+		this.delegate = delegate;
+	}
+
+	public Date getCompletedOn() {
+		return completedOn;
+	}
+
+	public void setCompletedOn(Date completedOn) {
+		this.completedOn = completedOn;
+	}
+
+	public HTUser getTaskActualOwner() {
+		return taskActualOwner;
+	}
+
+	public void setTaskActualOwner(HTUser taskActualOwner) {
+		this.taskActualOwner = taskActualOwner;
+	}
+
+	public void setProcessStatus(HTStatus status) {
+		this.processStatus=status;
+	}
+
+	public HTStatus getProcessStatus() {
+		return processStatus;
+	}
+
+	public String getPotentialOwners() {
+		return potentialOwners;
+	}
+
+	public void setPotentialOwners(String potentialOwners) {
+		this.potentialOwners = potentialOwners;
 	}
 }

@@ -38,7 +38,7 @@ import com.duggan.workflow.shared.model.Value;
  */
 public class DocumentDaoHelper {
 
-	public static List<Doc> getAllDocuments(DocStatus status) {
+	public static List<Doc> getAllDocuments(DocStatus...status) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		List<DocumentModel> models = dao.getAllDocuments(status);

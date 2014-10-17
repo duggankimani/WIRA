@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.jbpm.task.Status;
+
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
@@ -224,6 +226,39 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 		query.executeUpdate();
 		
 		em.remove(taskStep);
+	}
+
+
+	public List<Object[]> getCurrentActualOwnersByProcessInstanceId(long processInstanceId,
+			Status targetStatus, boolean isEqualToStatus) {
+
+		String sql = "select id,actualowner_id from task "
+				+ " inner join peopleassignments_potowners o on (o.task_id=id) "
+				+ " where processinstanceid=? "
+				+ (isEqualToStatus? " and status=?": " and status!=?");
+	
+		Query query = em.createNativeQuery(sql)
+				.setParameter(1, processInstanceId)
+				.setParameter(2, targetStatus.name());
+		
+		return getResultList(query);
+		
+	}
+	
+	public List<Object[]> getCurrentPotentialOwnersByProcessInstanceId(long processInstanceId,
+			Status targetStatus, boolean isEqualToStatus) {
+
+		String sql = "select id,o.entity_id from task "
+				+ " inner join peopleassignments_potowners o on (o.task_id=id) "
+				+ " where processinstanceid=? "
+				+ (isEqualToStatus? " and status=?": " and status!=?");
+	
+		Query query = em.createNativeQuery(sql)
+				.setParameter(1, processInstanceId)
+				.setParameter(2, targetStatus.name());
+		
+		return getResultList(query);
+		
 	}
 	
 }

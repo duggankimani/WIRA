@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
@@ -111,8 +112,16 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		//spnDateDue.setText(format(summaryTask.getDateDue()));
 		
 		disable();
-		
-		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(aDoc.getCreated()));
+		Date dateToUse  = aDoc.getCreated();
+		if(aDoc instanceof HTSummary){
+			HTSummary summ = (HTSummary)aDoc;
+			if(summ.getStatus()==HTStatus.COMPLETED){
+				dateToUse  = summ.getCompletedOn();
+			}else{
+				dateToUse  = summ.getCreated();
+			}
+		}
+		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(dateToUse));
 		spnSubject.setInnerText((aDoc.getProcessName()==null? "" : aDoc.getProcessName())+" "+aDoc.getSubject());
 		
 		if(aDoc.hasAttachment()){
@@ -149,11 +158,33 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			
 			if(summ.getName()!=null && !summ.getName().isEmpty()){
 				spnSubject.setInnerText(summ.getName());
-				String desc =summ.getSubject()+" - "+ (summ.getDescription()==null? "": summ.getDescription());
-				spnDescription.setText(desc);
-			}else{
-				spnDescription.setText(summ.getDescription()==null?"": summ.getDescription());
+				String desc =summ.getSubject();
+				
+				String taskActualOwner = "";
+				if(summ.getProcessStatus()==HTStatus.COMPLETED){
+					taskActualOwner="Completed";
+				}else{
+					//How far in the workflow is my request
+					if(summ.getTaskActualOwner()!=null){
+						//Delegations are also handled here
+					
+						
+						if(summ.getDelegate()!=null && summ.getDelegate().getDelegateTo()!=null){
+							taskActualOwner = "Delegated: "+summ.getTaskActualOwner().getFullName();
+						}else{
+							taskActualOwner = summ.getTaskActualOwner().getFullName();
+						}
+								
+						
+					}else{
+						taskActualOwner = summ.getPotentialOwners();
+					}
+				}
+					
+				spnDescription.getElement().setInnerHTML(desc+ 
+						" - <span>"+taskActualOwner+"</span>" );
 			}
+			
 			
 			setTaskAction(summ.getStatus().getValidActions());
 			
@@ -165,8 +196,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 					setDeadlines(DateUtils.addDays(summ.getCreated(), 1));
 				}
 			}
-			
-		}else{
+ 		}else{
 			Document doc =(Document)aDoc;
 			setDocumentActions(doc.getStatus());
 			spnDocIcon.addStyleName("icon-file-alt color-silver-dark");

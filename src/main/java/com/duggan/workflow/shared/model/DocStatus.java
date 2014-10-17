@@ -6,5 +6,6 @@ public enum DocStatus {
 	DRAFTED,
 	INPROGRESS,
 	APPROVED,
+	COMPLETED,
 	REJECTED, FAILED;
 }

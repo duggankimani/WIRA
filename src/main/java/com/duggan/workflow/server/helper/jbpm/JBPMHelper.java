@@ -29,6 +29,7 @@ import org.jbpm.task.Comment;
 import org.jbpm.task.Deadline;
 import org.jbpm.task.Deadlines;
 import org.jbpm.task.I18NText;
+import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
@@ -48,6 +49,7 @@ import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.DBLoginHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 import com.duggan.workflow.shared.model.Actions;
@@ -421,12 +423,15 @@ public class JBPMHelper implements Closeable {
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
-
+		task.setCompletedOn(master_task.getTaskData().getCompletedOn());
+		
 		String processId =master_task.getTaskData().getProcessId(); 
 		task.setProcessId(processId);
 		task.setProcessInstanceId(master_task.getTaskData()
 				.getProcessInstanceId());
 		
+		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
+
 		try{
 			WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
 			task.setProcessName(process.getName());
@@ -439,6 +444,69 @@ public class JBPMHelper implements Closeable {
 		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 		Status status = master_task.getTaskData().getStatus();
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
+		
+		if(status==Status.Completed){
+			//then how far is the process now?
+			ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(master_task.getTaskData().getProcessInstanceId());
+			if(log.getStatus()==2){
+				//Process Completed
+				task.setProcessStatus(HTStatus.COMPLETED);
+			}else{
+				//where is my request?
+				List<Object[]> actualOwners = DB.getProcessDao()
+						.getCurrentActualOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
+				
+				//Task Id, 
+				for(Object[] row: actualOwners){
+					if(row[1]!=null){
+						task.setTaskActualOwner(LoginHelper.get().getUser(row[1].toString(), false));
+					}
+				}
+				
+				List<Object[]> potOwners = DB.getProcessDao()
+						.getCurrentPotentialOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
+				
+				String entities = "";
+				//Task Id, 
+				for(Object[] row: potOwners){
+					if(row[1]!=null){
+						entities = entities.concat(row[1].toString()+", ");
+					}
+				}
+				if(!entities.isEmpty()){
+					entities = entities.substring(0, entities.length()-2);
+					task.setPotentialOwners(entities);
+				}
+			}
+		}else{
+			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
+			
+			if(taskdelegation!=null){
+				Delegate delegate = new Delegate(taskdelegation.getId(), 
+						taskdelegation.getTaskId(), taskdelegation.getUserId(),
+						taskdelegation.getDelegateTo());
+				task.setDelegate(delegate);
+			}
+			
+			User user = null;
+			if((user=master_task.getTaskData().getActualOwner())!=null){
+				task.setTaskActualOwner(LoginHelper.get().getUser(user.getId(), false));
+			}else{
+				List<OrganizationalEntity> entitiesList = master_task.getPeopleAssignments().getPotentialOwners();
+				
+				String entities = "";
+				if(entities!=null)
+				for(OrganizationalEntity entity : entitiesList){
+					entities = entities.concat(entity.getId()+", ");
+				}
+				
+				if(!entities.isEmpty()){
+					entities = entities.substring(0, entities.length()-2);
+					task.setPotentialOwners(entities);
+				}
+			}
+			
+		}
 
 		List<I18NText> names = master_task.getNames();
 
@@ -471,6 +539,7 @@ public class JBPMHelper implements Closeable {
 			task.setName(getDisplayName(master_task));
 		}catch(Exception e){}
 		
+		
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
 			task.setValues(doc.getValues());
@@ -478,16 +547,15 @@ public class JBPMHelper implements Closeable {
 			task.setDocumentDate(doc.getDocumentDate());
 			task.setDocStatus(DB.getDocumentDao().getById(doc.getId()).getStatus());
 			task.setOwner(doc.getOwner());
-			task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 		
-			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
-			
-			if(taskdelegation!=null){
-				Delegate delegate = new Delegate(taskdelegation.getId(), 
-						taskdelegation.getTaskId(), taskdelegation.getUserId(),
-						taskdelegation.getDelegateTo());
-				((HTask)task).setDelegate(delegate);
-			}
+//			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
+//			
+//			if(taskdelegation!=null){
+//				Delegate delegate = new Delegate(taskdelegation.getId(), 
+//						taskdelegation.getTaskId(), taskdelegation.getUserId(),
+//						taskdelegation.getDelegateTo());
+//				((HTask)task).setDelegate(delegate);
+//			}
 			
 		}
 	}

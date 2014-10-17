@@ -58,7 +58,7 @@ public class GetTaskListActionHandler extends
 			summary = DocumentDaoHelper.getAllDocuments(status);
 			break;
 		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocuments(DocStatus.INPROGRESS);
+			summary = DocumentDaoHelper.getAllDocuments(DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED);
 			summary.addAll(getPendingApprovals(userId, type));
 			break;
 		case REJECTED:
@@ -96,8 +96,6 @@ public class GetTaskListActionHandler extends
 				}else if(action.getDocumentId()!=null){
 					doc = DocumentDaoHelper.getDocument(action.getDocumentId(),true);
 				}
-				
-			
 				
 				if(doc!=null)
 					summary.add(doc);

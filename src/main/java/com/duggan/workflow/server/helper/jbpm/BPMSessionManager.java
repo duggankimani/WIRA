@@ -19,6 +19,12 @@ import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.definition.process.Process;
+import org.drools.event.process.ProcessCompletedEvent;
+import org.drools.event.process.ProcessEventListener;
+import org.drools.event.process.ProcessNodeLeftEvent;
+import org.drools.event.process.ProcessNodeTriggeredEvent;
+import org.drools.event.process.ProcessStartedEvent;
+import org.drools.event.process.ProcessVariableChangedEvent;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
@@ -60,6 +66,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 
 /**
@@ -382,6 +389,9 @@ class BPMSessionManager {
 					sessionId.intValue(), kbase, null, env);
 
 		}
+		
+		//Process Event Listener
+		session.addEventListener(new WiraProcessEventListener());
 
 		registerWorkItemHandlers(session);
 
@@ -863,4 +873,66 @@ class BPMSessionManager {
 		}
 	}
 
+	
+	class WiraProcessEventListener implements ProcessEventListener {
+		
+		@Override
+		public void beforeVariableChanged(ProcessVariableChangedEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeProcessStarted(ProcessStartedEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeProcessCompleted(ProcessCompletedEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeNodeTriggered(ProcessNodeTriggeredEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeNodeLeft(ProcessNodeLeftEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterVariableChanged(ProcessVariableChangedEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterProcessStarted(ProcessStartedEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterProcessCompleted(ProcessCompletedEvent event) {
+			//DB.getDocumentDao().updateStatus(event.getProcessInstance().getId(), DocStatus.COMPLETED);
+		}
+		
+		@Override
+		public void afterNodeTriggered(ProcessNodeTriggeredEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterNodeLeft(ProcessNodeLeftEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 }

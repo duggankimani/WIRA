@@ -3,6 +3,8 @@ package com.duggan.workflow.server.dao;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +39,10 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DocumentModel> getAllDocuments(DocStatus status){
+	public List<DocumentModel> getAllDocuments(DocStatus...status){
 		
-		return em.createQuery("FROM DocumentModel d where status=:status and createdBy=:createdBy and isActive=:isActive").
-				setParameter("status", status).
+		return em.createQuery("FROM DocumentModel d where status in (:status) and createdBy=:createdBy and isActive=:isActive").
+				setParameter("status", Arrays.asList(status)).
 				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).
 				setParameter("isActive", 1).
 				getResultList();
@@ -734,6 +736,12 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 				.setParameter("userId", userId);
 		
 		return getSingleResultOrNull(query);
+	}
+
+	public void updateStatus(long processInstanceId, DocStatus completed) {
+		DocumentModel model = getDocumentByProcessInstanceId(processInstanceId);
+		model.setStatus(completed);
+		save(model);
 	}
 	
 }
