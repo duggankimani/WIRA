@@ -30,6 +30,7 @@ import org.jbpm.task.Deadline;
 import org.jbpm.task.Deadlines;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.OrganizationalEntity;
+import org.jbpm.task.PeopleAssignments;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
@@ -42,6 +43,7 @@ import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
+import org.jbpm.workflow.instance.node.WorkItemNodeInstance;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
@@ -244,7 +246,7 @@ public class JBPMHelper implements Closeable {
 		/**
 		 * If John & James share the Role HOD_DEV John Claims, Starts and
 		 * completes a task, should that task be presented to James as one of
-		 * his completed tasks? This mechanism creates the posibility of this
+		 * his completed tasks? This mechanism creates the possibility of this
 		 * scenario happening TODO: Test the query with two users sharing a role
 		 */
 		Long count2 = (Long) DB.getEntityManager()
@@ -263,6 +265,8 @@ public class JBPMHelper implements Closeable {
 				.setParameter("language", "en-UK")
 				.setParameter("status", Status.Suspended).getSingleResult();
 		counts.put(TaskType.SUSPENDED, count3.intValue());
+		
+		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassigned());
 	}
 
 	public List<Status> getStatusesForTaskType(TaskType type) {
@@ -378,12 +382,19 @@ public class JBPMHelper implements Closeable {
 
 			break;
 		case INBOX:
+//			ts = sessionManager.getTaskClient()
+//					.getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			ts = sessionManager.getTaskClient()
-					.getTasksAssignedAsPotentialOwner(userId, "en-UK");
+					.getTasksAssignedAsPotentialOwnerByStatus(userId, 
+							getStatusesForTaskType(type), 
+							"en-UK");
 			break;
 		case SUSPENDED:
 			ts = sessionManager.getTaskClient().getTasksOwned(userId,
 					Arrays.asList(Status.Suspended), "en-UK");
+			break;
+		case UNASSIGNED:
+			ts = DB.getDocumentDao().getUnassignedTasks();
 			break;
 		default:
 			break;
@@ -535,6 +546,10 @@ public class JBPMHelper implements Closeable {
 	public void loadProgressInfo(Doc task, long processInstanceId) {
 		//then how far is the process now?
 		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
+		if(log==null){
+			return;
+		}
+		
 		if(log.getStatus()==2){
 			//Process Completed
 			task.setProcessStatus(HTStatus.COMPLETED);
@@ -653,82 +668,82 @@ public class JBPMHelper implements Closeable {
 		return myTask;
 	}
 	
-	public HTData getTaskData(Task task){
-
-		// HT DATA
-		HTData data = new HTData();
-
-		// TASK DATA
-		TaskData taskData = task.getTaskData();
-		String docType = taskData.getDocumentType();
-		data.setDocType(docType);
-
-		long workId = taskData.getWorkItemId();
-		data.setWorkId(workId);
-
-		// owner
-		User actualOwner = taskData.getActualOwner();
-		if (actualOwner != null) {
-			HTUser taskOwner = new HTUser(actualOwner.getId());
-			data.setActualOwner(taskOwner);
-		}
-
-		// comments
-		List<Comment> comments = taskData.getComments();
-		if (comments != null)
-			for (Comment comment : comments) {
-				HTComment htComment = new HTComment();
-				htComment.setAddedAt(comment.getAddedAt());
-				htComment.setId(comment.getId());
-				htComment.setText(comment.getText());
-
-				User addedBy = comment.getAddedBy();
-				if (addedBy != null)
-					htComment.setAddedBy(new HTUser(addedBy.getId()));
-
-			}
-
-		Date completedOn = taskData.getCompletedOn();
-		data.setCompletedOn(completedOn);
-
-		User createdBy = taskData.getCreatedBy();
-		if (createdBy != null) {
-			data.setCreatedBy(new HTUser(createdBy.getId()));
-		}
-
-		AccessType accessType = taskData.getDocumentAccessType();
-
-		if (accessType != null) {
-			data.setDocAccessType(HTAccessType.valueOf(accessType.name()
-					.toUpperCase()));
-		}
-
-		long contentId = taskData.getDocumentContentId();
-		data.setContentId(contentId);
-
-		Status taskDataStatus = taskData.getStatus();
-		if (taskDataStatus != null) {
-			data.setStatus(HTStatus
-					.valueOf(taskDataStatus.name().toUpperCase()));
-		}
-
-		String taskDataOutputType = taskData.getOutputType();
-		data.setOutputType(taskDataOutputType);
-
-		Date expiryTime = taskData.getExpirationTime();
-		data.setExpiryTime(expiryTime);
-
-		long parentId = taskData.getParentId();
-		data.setParentId(parentId);
-
-		Status previousStatus = taskData.getPreviousStatus();
-		if (previousStatus != null) {
-			data.setPreviousStatus(HTStatus.valueOf(previousStatus.name()
-					.toUpperCase()));
-		}
-
-		return data;
-	}
+//	public HTData getTaskData(Task task){
+//
+//		// HT DATA
+//		HTData data = new HTData();
+//
+//		// TASK DATA
+//		TaskData taskData = task.getTaskData();
+//		String docType = taskData.getDocumentType();
+//		data.setDocType(docType);
+//
+//		long workId = taskData.getWorkItemId();
+//		data.setWorkId(workId);
+//
+//		// owner
+//		User actualOwner = taskData.getActualOwner();
+//		if (actualOwner != null) {
+//			HTUser taskOwner = new HTUser(actualOwner.getId());
+//			data.setActualOwner(taskOwner);
+//		}
+//
+//		// comments
+//		List<Comment> comments = taskData.getComments();
+//		if (comments != null)
+//			for (Comment comment : comments) {
+//				HTComment htComment = new HTComment();
+//				htComment.setAddedAt(comment.getAddedAt());
+//				htComment.setId(comment.getId());
+//				htComment.setText(comment.getText());
+//
+//				User addedBy = comment.getAddedBy();
+//				if (addedBy != null)
+//					htComment.setAddedBy(new HTUser(addedBy.getId()));
+//
+//			}
+//
+//		Date completedOn = taskData.getCompletedOn();
+//		data.setCompletedOn(completedOn);
+//
+//		User createdBy = taskData.getCreatedBy();
+//		if (createdBy != null) {
+//			data.setCreatedBy(new HTUser(createdBy.getId()));
+//		}
+//
+//		AccessType accessType = taskData.getDocumentAccessType();
+//
+//		if (accessType != null) {
+//			data.setDocAccessType(HTAccessType.valueOf(accessType.name()
+//					.toUpperCase()));
+//		}
+//
+//		long contentId = taskData.getDocumentContentId();
+//		data.setContentId(contentId);
+//
+//		Status taskDataStatus = taskData.getStatus();
+//		if (taskDataStatus != null) {
+//			data.setStatus(HTStatus
+//					.valueOf(taskDataStatus.name().toUpperCase()));
+//		}
+//
+//		String taskDataOutputType = taskData.getOutputType();
+//		data.setOutputType(taskDataOutputType);
+//
+//		Date expiryTime = taskData.getExpirationTime();
+//		data.setExpiryTime(expiryTime);
+//
+//		long parentId = taskData.getParentId();
+//		data.setParentId(parentId);
+//
+//		Status previousStatus = taskData.getPreviousStatus();
+//		if (previousStatus != null) {
+//			data.setPreviousStatus(HTStatus.valueOf(previousStatus.name()
+//					.toUpperCase()));
+//		}
+//
+//		return data;
+//	}
 
 	public static Map<String, Object> getMappedData(Task task) {
 
@@ -1182,7 +1197,8 @@ public class JBPMHelper implements Closeable {
 		Query query = DB.getEntityManager().createNamedQuery("TasksOwnedIds")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
-				.setParameter("status", Arrays.asList(Status.Completed, Status.Created, Status.InProgress,Status.Suspended,
+				.setParameter("status", Arrays.asList(Status.Completed, Status.Created, 
+						Status.InProgress,Status.Suspended,
 						// Status.Error,
 						// Status.Exited,
 						// Status.Failed,
@@ -1203,6 +1219,21 @@ public class JBPMHelper implements Closeable {
 		}catch(Exception e){}
 		
 		return name;
+	}
+
+	public void assignTask(Long taskId, String userId) {
+		
+		Task task = DB.getEntityManager().find(Task.class, taskId);
+		
+		PeopleAssignments peopleAssign = new PeopleAssignments();
+		List<OrganizationalEntity> entities = new ArrayList<>();
+		entities.add(new User(userId));
+		peopleAssign.setPotentialOwners(entities);
+		task.setPeopleAssignments(peopleAssign);
+		
+		DB.getEntityManager().persist(task);
+		
+		//WorkItemNodeInstance i;
 	}
 
 }

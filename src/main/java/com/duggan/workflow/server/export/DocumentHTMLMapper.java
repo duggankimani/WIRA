@@ -1,9 +1,16 @@
 package com.duggan.workflow.server.export;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.glxn.qrgen.core.image.ImageType;
+import net.glxn.qrgen.javase.QRCode;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +25,7 @@ public class DocumentHTMLMapper {
 	public String map(Doc doc, String html){
 		
 		html = parseReplaceGridMatches(doc,html);
+		html = parseAndReplaceQR(doc, html);
 		html = parseAndReplace(doc.getValues(), html);
 		
 		return html;
@@ -68,6 +76,65 @@ public class DocumentHTMLMapper {
 		return parseAndReplace(line.getValues(), html);
 	}
 
+	/**
+	 * Example QR Representation
+	 * <p>
+	 * <pre>
+	 * {@code
+	 * <img width="100" height="100"
+		src="QRCode
+		DocNo @@lpoNumber\n
+		CaseNo @@subject\n
+		CaseId @#documentId\n
+		Created @#GenDate\n
+		CreatedBy @@createdBy\n 
+		ValidationUrl: @@url 
+		QRCode"></img>
+	 }
+	 * </pre>
+	 * @param values
+	 * @param html
+	 * @return
+	 */
+	private String parseAndReplaceQR(Doc doc, String html) {
+		Map<String, Value> values = doc.getValues();
+		
+		Pattern pattern = Pattern.compile("QRCode\\b(.*?)\\bQRCode",Pattern.DOTALL);//"QRCode\\b(.+?)\\bQRCode");
+		String rtn = new String(html);
+		Matcher matcher = pattern.matcher(rtn);
+		
+		while(matcher.find()){
+			String group = matcher.group();
+			String replacement = parseAndReplace(values, group.substring(7, group.length()-7));
+			String pngUrl = generateQRCode(doc.getSubject(),replacement);
+			rtn = rtn.replace(group, pngUrl);
+        }
+		
+		return rtn;
+	}
+
+	private String generateQRCode(String subject, String strToEncode) {
+
+		log.debug(subject+"- Encode to QR{ "+strToEncode+" }");
+		
+		String uri=null;
+		
+		try {
+			
+			File file = File.createTempFile(subject+" ", System.currentTimeMillis()+".png");
+			
+			QRCode.from(strToEncode).to(ImageType.PNG).writeTo(new FileOutputStream(file));
+			
+			uri = file.getAbsolutePath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		log.debug("image url = "+uri);
+		
+		return uri;
+	}
 
 	private String parseAndReplace(Map<String, Value> values, String html) {
 		Pattern pattern = Pattern.compile("@[@#]\\w+?\\b");

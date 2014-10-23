@@ -2,6 +2,7 @@ package com.duggan.workflow.server.guice;
 
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.AssignTaskActionHandler;
 import com.duggan.workflow.server.actionhandlers.CheckPasswordRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
 import com.duggan.workflow.server.actionhandlers.CreateFieldRequestActionHandler;
@@ -69,6 +70,7 @@ import com.duggan.workflow.server.actionhandlers.UpdateNotificationRequestAction
 import com.duggan.workflow.server.actionhandlers.UpdatePasswordRequestActionHandler;
 import com.duggan.workflow.server.actionvalidator.SessionValidator;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.CreateFieldRequest;
@@ -345,5 +347,6 @@ public class ServerModule extends HandlerModule {
 		
 		bindHandler(GetInitialDocumentRequest.class, GetInitialDocumentRequestHandler.class, SessionValidator.class);
 		
+		bindHandler(AssignTaskRequest.class, AssignTaskActionHandler.class, SessionValidator.class);
 	}
 }

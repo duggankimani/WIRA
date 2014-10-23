@@ -181,4 +181,9 @@ public class HTSummary extends Doc implements Serializable{
 		this.completedOn = completedOn;
 	}
 
+	@Override
+	public Long getDocumentId() {
+		return getDocumentRef();
+	}
+
 }

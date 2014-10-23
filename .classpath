@@ -66,6 +66,8 @@
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-net/commons-net/2.0/commons-net-2.0.jar" sourcepath="M2_REPO/commons-net/commons-net/2.0/commons-net-2.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/zxing/core/3.1.0/core-3.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/glxn/qrgen/core/2.0-SNAPSHOT/core-2.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/cxf/cxf-api/2.4.4/cxf-api-2.4.4.jar" sourcepath="M2_REPO/org/apache/cxf/cxf-api/2.4.4/cxf-api-2.4.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/cxf/cxf-bundle/2.7.7/cxf-bundle-2.7.7.jar" sourcepath="M2_REPO/org/apache/cxf/cxf-bundle/2.7.7/cxf-bundle-2.7.7-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/cxf/cxf-common-utilities/2.4.4/cxf-common-utilities-2.4.4.jar" sourcepath="M2_REPO/org/apache/cxf/cxf-common-utilities/2.4.4/cxf-common-utilities-2.4.4-sources.jar"/>
@@ -144,6 +146,8 @@
   <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-xc/1.9.2/jackson-xc-1.9.2.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-xc/1.9.2/jackson-xc-1.9.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/mortennobel/java-image-scaling/0.8.5/java-image-scaling-0.8.5.jar" sourcepath="M2_REPO/com/mortennobel/java-image-scaling/0.8.5/java-image-scaling-0.8.5-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/javaee-api/7.0/javaee-api-7.0.jar" sourcepath="M2_REPO/javax/javaee-api/7.0/javaee-api-7.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/zxing/javase/3.1.0/javase-3.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/glxn/qrgen/javase/2.0-SNAPSHOT/javase-2.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/javassist/javassist/3.4.GA/javassist-3.4.GA.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/javassist/javassist/3.14.0-GA/javassist-3.14.0-GA.jar" sourcepath="M2_REPO/org/javassist/javassist/3.14.0-GA/javassist-3.14.0-GA-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/ow2/util/bundles/javassist-3.14.0-GA/1.0.0/javassist-3.14.0-GA-1.0.0.jar" sourcepath="M2_REPO/org/ow2/util/bundles/javassist-3.14.0-GA/1.0.0/javassist-3.14.0-GA-1.0.0-sources.jar"/>
@@ -171,6 +175,7 @@
   <classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-security/8.1.12.v20130726/jetty-security-8.1.12.v20130726.jar" sourcepath="M2_REPO/org/eclipse/jetty/jetty-security/8.1.12.v20130726/jetty-security-8.1.12.v20130726-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-server/8.1.12.v20130726/jetty-server-8.1.12.v20130726.jar" sourcepath="M2_REPO/org/eclipse/jetty/jetty-server/8.1.12.v20130726/jetty-server-8.1.12.v20130726-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-util/8.1.12.v20130726/jetty-util-8.1.12.v20130726.jar" sourcepath="M2_REPO/org/eclipse/jetty/jetty-util/8.1.12.v20130726/jetty-util-8.1.12.v20130726-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/jfree/jfreesvg/2.1/jfreesvg-2.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/joda-time/joda-time/2.3/joda-time-2.3.jar" sourcepath="M2_REPO/joda-time/joda-time/2.3/joda-time-2.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/rhino/js/1.7R2/js-1.7R2.jar" sourcepath="M2_REPO/rhino/js/1.7R2/js-1.7R2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/json/json/20090211/json-20090211.jar"/>

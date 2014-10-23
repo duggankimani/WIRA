@@ -267,4 +267,10 @@ public class Document extends Doc implements Serializable{
 		return document;
 	}
 	//public Map<String, Value> 
+	
+	@Override
+	public Long getDocumentId() {
+	
+		return id;
+	}
 }

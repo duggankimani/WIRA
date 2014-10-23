@@ -37,6 +37,15 @@
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     </properties>
 
+	<repositories>
+		<repository>
+		    <id>sonatype-snapshots</id>
+		    <name>sonatype-snapshots</name>
+		    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+	
+	
     <build>
         <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
@@ -1189,7 +1198,11 @@
 			<version>9.0.1</version>
 		</dependency>
 
-        
+	    <dependency>
+	        <groupId>net.glxn.qrgen</groupId>
+	        <artifactId>javase</artifactId>
+	        <version>2.0-SNAPSHOT</version>
+	    </dependency>
         
         <!-- Manual install external jar into repository -->
         <!-- mvn install:install-file -Dfile=matheclipse-0.0.10_1.jar -DgroupId=org.matheclipse -DartifactId=matheclipse -Dversion=0.0.10_1 -Dpackaging=jar -->

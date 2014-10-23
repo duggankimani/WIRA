@@ -33,7 +33,6 @@
     </logger>
     <root>
     	<level value="FATAL"/> 
-        <priority value ="WARNING" /> 
         <appender-ref ref="console" /> 
     </root> 
 </log4j:configuration>

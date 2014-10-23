@@ -1,11 +1,15 @@
 package com.duggan.workflow.server.dao;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.jbpm.task.Status;
+import org.jbpm.task.Task;
+import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;

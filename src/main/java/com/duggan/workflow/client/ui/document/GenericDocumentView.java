@@ -79,6 +79,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Anchor aResume;
 	@UiField Anchor aComplete;
 	@UiField Anchor aDelegate;
+	@UiField Anchor aAssign;
 	@UiField Anchor aRevoke;
 	@UiField Anchor aStop;
 	@UiField Anchor aForward;
@@ -820,6 +821,14 @@ public class GenericDocumentView extends ViewImpl implements
 			//first step
 			liPrevious.setStyleName("disabled");
 		}
+	}
+	
+	public void showAssignLink(boolean show){
+		show(aAssign, show);
+	}
+	
+	public HasClickHandlers getAssignLink(){
+		return aAssign;
 	}
 
 }

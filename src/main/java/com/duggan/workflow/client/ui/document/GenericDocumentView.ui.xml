@@ -108,6 +108,14 @@
 							</li>
 
 							<li>
+								<d:ActionLink ui:field="aAssign" styleName="hidden"
+									title="Assign this task">
+									<i class="icon-group"></i>
+									Assign
+								</d:ActionLink>
+							</li>
+							
+							<li>
 								<d:ActionLink ui:field="aDelegate" styleName="hidden"
 									title="Delegate this task">
 									<i class="icon-group"></i>

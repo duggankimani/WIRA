@@ -241,26 +241,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 
 
 	private String getDocUrl(Long docId) {
-		HttpServletRequest request = SessionHelper.getHttpRequest();
-		if(request!=null){
-			String requestURL = request.getRequestURL().toString();
-			String servletPath = request.getServletPath();
-			String pathInfo = request.getPathInfo();
-			
-			log.debug("# RequestURL = "+requestURL);
-			log.debug("# ServletPath = "+servletPath);
-			log.debug("# Path Info = "+pathInfo);
-			if(pathInfo!=null){
-				requestURL = requestURL.replace(pathInfo, "");
-			}
-			log.debug("# Remove Path Info = "+requestURL);				
-			requestURL = requestURL.replace(servletPath, "/#search;did="+docId);
-			log.debug("# Replace ServletPath = "+requestURL);
-			
-			return requestURL;
-		}
-		return "#";
-		
+		return SessionHelper.generateDocUrl(docId);
 	}
 
 	private String getOwner(String ownerId) {

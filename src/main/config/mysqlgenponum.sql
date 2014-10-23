@@ -5,6 +5,7 @@ create procedure proc_generateponum(in p_doctype varchar(45), in p_casenumber va
 BEGIN
 	declare v_startval int;
 	declare v_nextval int;	
+        declare v_filler char(5);
 	declare v_previousallocatedno varchar(20);
 	
 	set p_doctype=upper(p_doctype);
@@ -24,8 +25,14 @@ BEGIN
 			update doctypeseq set nextval= v_nextval where doctype=p_doctype;
 		end if;
 		
-		insert into docnums values (p_casenumber,p_doctype, concat(p_doctype,'-',v_nextval));
-		select concat(p_doctype,'-',v_nextval) as ponum;
+		if(v_nextval<10) then set v_filler = '000';
+                elseif (v_nextval<100 ) then set v_filler = '00';
+                elseif (v_nextval<1000 ) then set v_filler = '0';
+                else set v_filler = '';
+		end if;
+
+		insert into docnums values (p_casenumber,p_doctype, concat(p_doctype,'-',v_filler,v_nextval));
+		select concat(p_doctype,'-',v_filler,v_nextval) as ponum;
 	else
 		select v_previousallocatedno as ponum;
 	end if;
@@ -33,19 +40,3 @@ BEGIN
 END$$
 
 DELIMITER ;
-
-drop table if exists doctypeseq;
-create table if not exists doctypeseq(
-	doctype varchar(45) primary key not null,
-	startval int default 0,
-	nextval int not null
-);
-
-drop table if exists docnums;
-create table if not exists docnums(
-	casenumber varchar(20),
-        doctype varchar(45),
-	docno varchar(20) not null,
-        constraint pk_docnums primary key (casenumber,doctype)
-);
-

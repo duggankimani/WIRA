@@ -175,4 +175,42 @@ where
           <!-- hint name="org.hibernate.timeout" value="200"/ -->
       </named-query>
       
+ <named-query name="TasksUnassignedCount">
+          <query>
+select
+  count(*)
+from
+    Task t 
+    left join t.taskData.createdBy as createdBy
+    left join t.taskData.actualOwner as actualOwner
+    left join t.subjects as subject
+    left join t.descriptions as description
+    left join t.names as name
+where
+    t.archived = 0 and
+    ( t.taskData.actualOwner is null ) and
+    t.peopleAssignments.potentialOwners is empty  and
+
+    (
+    name.language = :language
+    or t.names.size = 0
+    ) and
+
+    (
+    subject.language = :language
+    or t.subjects.size = 0
+    ) and
+
+    (
+    description.language = :language
+    or t.descriptions.size = 0
+    ) and
+
+    t.taskData.status in (:status) and
+
+    t.taskData.expirationTime is null
+          </query>
+          <!-- hint name="org.hibernate.timeout" value="200"/ -->
+      </named-query>
+ 
 </entity-mappings>

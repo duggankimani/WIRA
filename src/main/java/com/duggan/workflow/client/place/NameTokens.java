@@ -21,6 +21,7 @@ public class NameTokens {
 	public static final String search = "search";
 	public static final String outputdocs = "outputdocs";
 	public static final String triggers = "triggers";
+	public static final String unassigned = "unassigned";
 	
 
 	public static String getHome() {

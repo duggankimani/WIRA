@@ -26,6 +26,7 @@ import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHa
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
+import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
@@ -79,6 +80,7 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
+import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
@@ -143,6 +145,7 @@ public class GenericDocumentPresenter extends
 		void setStates(List<NodeDetail> states);
 		HasClickHandlers getSimulationBtn();
 		HasClickHandlers getSaveButton();
+		HasClickHandlers getAssignLink();
 		HasClickHandlers getDeleteButton();
 		HasClickHandlers getForwardForApproval();		
 		HasClickHandlers getClaimLink();
@@ -189,6 +192,8 @@ public class GenericDocumentPresenter extends
 		void setEditMode(boolean editMode);
 
 		void setSteps(List<TaskStepDTO> steps, int currentStep);
+
+		void showAssignLink(boolean show);
 	}
 	
 	Long taskId;
@@ -442,6 +447,18 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
+		getView().getAssignLink().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				requestHelper.execute(new GetUsersRequest(), new TaskServiceCallback<GetUsersResponse>() {
+					@Override
+					public void processResult(GetUsersResponse result) {
+						showAssignPopup(result.getUsers());
+					}
+				});
+			}
+		});
+		
 		getView().getLinkEnv().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -476,6 +493,44 @@ public class GenericDocumentPresenter extends
 		
 	}
 	
+	protected void showAssignPopup(List<HTUser> users) {
+		final DelegateTaskView view = new DelegateTaskView(users);
+		
+		AppManager.showPopUp("Assign Task", view,
+				new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Ok")){
+							final HTUser user = view.getSelectedUser();
+							if(user!=null && user.getUserId()!=null){
+								
+								DelegationMessageView msgView = 
+										new DelegationMessageView(user, doc.getSubject());
+								
+								AppManager.showPopUp("Assign Message",
+										msgView,
+										new OnOptionSelected() {
+											
+											@Override
+											public void onSelect(String name) {
+												
+												if(name.equals("Back")){
+													showDelegatePopup(view);
+												}else{
+													fireEvent(new AssignTaskEvent(taskId, user.getUserId()));
+												}
+												
+											}
+
+										}, "Back", "Done");
+								
+							}
+						}
+					}
+				}, "Ok", "Cancel");
+	}
+
 	protected void navigateToView(boolean isNavigateNext) {
 		boolean navigating = false;
 		if(getView().isValid() && steps.size()>1){
@@ -1272,5 +1327,9 @@ public class GenericDocumentPresenter extends
 
 	public void setFormMode(MODE mode) {
 		this.formMode = mode;
+	}
+
+	public void showAssignLink(boolean show) {
+		getView().showAssignLink(show);
 	}
 }

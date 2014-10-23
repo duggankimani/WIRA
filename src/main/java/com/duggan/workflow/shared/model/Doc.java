@@ -177,5 +177,7 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	public void setPotentialOwners(String potentialOwners) {
 		this.potentialOwners = potentialOwners;
 	}
+	
+	public abstract Long getDocumentId();
 
 }

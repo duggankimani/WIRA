@@ -14,12 +14,14 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.jbpm.task.Status;
 import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -499,7 +501,7 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 				
 	}
 
-	private List<TaskSummary> searchTasks(List<Long> ids) {
+	public List<TaskSummary> searchTasks(List<Long> ids) {
 		String query = "select "+
 		   "distinct "+
 		   "new org.jbpm.task.query.TaskSummary( "+
@@ -742,6 +744,36 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		DocumentModel model = getDocumentByProcessInstanceId(processInstanceId);
 		model.setStatus(completed);
 		save(model);
+	}
+	
+
+	public int getUnassigned(){
+		Query query = em.createNamedQuery("TasksUnassignedCount")
+				.setParameter("language", "en-UK")
+				.setParameter("status", Arrays.asList(Status.Created,Status.Ready));
+		
+		Number count = getSingleResultOrNull(query);
+		return count.intValue();
+	}
+	
+	public List<TaskSummary> getUnassignedTasks(){
+		Query query = em.createNativeQuery("select id from task t "
+				+ "left join peopleassignments_potowners o on (o.task_id=t.id)  "
+				+ "where status in ('Ready', 'Created') "
+				+ "and o.task_id is null "
+				+ "and actualowner_id is null;");
+		List<BigInteger> idz = getResultList(query); 
+		
+		List<Long> ids = new ArrayList<>();
+		for(BigInteger id: idz){
+			ids.add(id.longValue());
+		}
+		
+		if(ids.isEmpty()){
+			return new ArrayList<>();
+		}
+		
+		return DB.getDocumentDao().searchTasks(ids);
 	}
 	
 }

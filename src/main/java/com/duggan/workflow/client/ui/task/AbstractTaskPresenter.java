@@ -13,6 +13,8 @@ import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AfterSearchEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
+import com.duggan.workflow.client.ui.events.AssignTaskEvent;
+import com.duggan.workflow.client.ui.events.AssignTaskEvent.AssignTaskHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
@@ -35,8 +37,12 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -63,7 +69,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>> 
 		extends	Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> 
-		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,SearchHandler
+		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,SearchHandler, AssignTaskHandler
 		//AlertLoadHandler,
 		{
 
@@ -138,6 +144,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		addRegisteredHandler(AfterSaveEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
+		addRegisteredHandler(AssignTaskEvent.TYPE, this);
 		//addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		//addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		
@@ -378,6 +385,10 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			public void processResult(GenericDocumentPresenter result) {
 				result.setDocId(documentId, taskId);
 				result.setFormMode(mode);
+				
+				if(currentTaskType==TaskType.UNASSIGNED){
+					result.showAssignLink(true);
+				}
 				setInSlot(DOCUMENT_SLOT, result);
 			}
 		});
@@ -408,5 +419,23 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			SearchFilter filter= event.getFilter();
 			search(filter);
 		}
+	}
+	
+	@Override
+	public void onAssignTask(AssignTaskEvent event) {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new AssignTaskRequest(event.getTaskId(), event.getUserId()));
+		action.addRequest(new GetTaskList(AppContext.getUserId(), TaskType.UNASSIGNED));
+		
+		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResponse) {
+				BaseResponse response = aResponse.get(0);
+				GetTaskListResult listResult = (GetTaskListResult) aResponse.get(1);
+				loadLines(listResult.getTasks());
+			}
+		});
+		
+		
 	}
 }

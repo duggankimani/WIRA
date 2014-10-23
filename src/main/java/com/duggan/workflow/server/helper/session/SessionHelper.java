@@ -3,6 +3,10 @@ package com.duggan.workflow.server.helper.session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
+import xtension.workitems.SendMailWorkItemHandler;
+
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.shared.model.HTUser;
 
@@ -16,6 +20,7 @@ import com.duggan.workflow.shared.model.HTUser;
 public class SessionHelper{
 
 	static ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
+	private static Logger log = Logger.getLogger(SessionHelper.class);
 	
 	/**
 	 * 
@@ -35,6 +40,32 @@ public class SessionHelper{
 		}
 		
 		return (HTUser)session.getAttribute(ServerConstants.USER);
+	}
+	
+	public static String getRemoteIP(){
+		return getHttpRequest()==null? "Not Defined" :getHttpRequest().getRemoteAddr();
+	}
+	
+	public static String generateDocUrl(Long docId){
+		HttpServletRequest request = getHttpRequest();
+		if(request!=null){
+			String requestURL = request.getRequestURL().toString();
+			String servletPath = request.getServletPath();
+			String pathInfo = request.getPathInfo();
+			
+			log.debug("# RequestURL = "+requestURL);
+			log.debug("# ServletPath = "+servletPath);
+			log.debug("# Path Info = "+pathInfo);
+			if(pathInfo!=null){
+				requestURL = requestURL.replace(pathInfo, "");
+			}
+			log.debug("# Remove Path Info = "+requestURL);				
+			requestURL = requestURL.replace(servletPath, "/#search;did="+docId);
+			log.debug("# Replace ServletPath = "+requestURL);
+			
+			return requestURL;
+		}
+		return "#";
 	}
 	
 	/**

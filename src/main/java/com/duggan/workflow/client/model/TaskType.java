@@ -11,7 +11,8 @@ public enum TaskType {
 	SUSPENDED("suspended", "Suspended"),
 	NOTIFICATIONS("notifications", "Notifications"),
 	SEARCH("search","Search"),
-	PARTICIPATED("participated", "Participated");
+	PARTICIPATED("participated", "Participated"),
+	UNASSIGNED("UnAssigned", "UnAssigned");
 	
 	String url;
 	String title;

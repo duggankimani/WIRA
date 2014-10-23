@@ -104,6 +104,8 @@ import com.duggan.workflow.client.ui.task.SearchPresenter;
 import com.duggan.workflow.client.ui.task.SearchView;
 import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter;
 import com.duggan.workflow.client.ui.task.SuspendedTaskView;
+import com.duggan.workflow.client.ui.task.UnAssignedPresenter;
+import com.duggan.workflow.client.ui.task.UnAssignedView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
@@ -328,6 +330,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(TaskStepTriggerPresenter.class, TaskStepTriggerPresenter.ITaskStepTriggerView.class,
 				TaskStepTriggerView.class);
+		
+		bindPresenter(UnAssignedPresenter.class, UnAssignedPresenter.IUnAssignedView.class, UnAssignedView.class, UnAssignedPresenter.IUnAssignedProxy.class);
 		
 	}
 }
