@@ -8,8 +8,15 @@ public class HomeTabData extends TabDataExt{
 	String itemStyle=null;
 	String key=null;
 	public HomeTabData(String key,String label,String itemStyle, float priority,
-			Gatekeeper gatekeeper) {
-		super(label, "", priority, gatekeeper);
+			Gatekeeper gateKeeper) {
+		super(label, "", priority, gateKeeper);
+		this.itemStyle=itemStyle;
+		this.key=key;
+	}
+	
+	public HomeTabData(String key,String label,String itemStyle, float priority,
+			Gatekeeper gateKeeper, boolean isDisplayLink){
+		super(label, "", priority, gateKeeper,isDisplayLink);
 		this.itemStyle=itemStyle;
 		this.key=key;
 	}

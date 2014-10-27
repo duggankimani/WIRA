@@ -5,17 +5,24 @@ import com.gwtplatform.mvp.client.proxy.Gatekeeper;
 
 public class TabDataExt extends TabDataBasic {
 
-	private final Gatekeeper gatekeeper;
-	
 	private String iconStyle;
 	private int count=0;
-	private boolean isDisplayed=true;
+	Gatekeeper gateKeeper;
+	boolean isDisplayLink=true;
+	
 	public TabDataExt(String label,String iconStyle,
 	                  float priority,
-	                  Gatekeeper gatekeeper) {
+	                  Gatekeeper gateKeeper) {
 	    super(label, priority);
 	    this.iconStyle = iconStyle;
-	    this.gatekeeper = gatekeeper;
+	    this.gateKeeper = gateKeeper;
+	}
+	
+	public TabDataExt(String label,String iconStyle,
+            float priority,
+            Gatekeeper gateKeeper, boolean isDisplayLink) {
+		this(label, iconStyle, priority, gateKeeper);
+		this.isDisplayLink = isDisplayLink;
 	}
 	
 	public TabDataExt(String label,int count,
@@ -23,11 +30,6 @@ public class TabDataExt extends TabDataBasic {
             Gatekeeper gatekeeper) {
 		super(label, priority);
 		this.count=count;
-		this.gatekeeper = gatekeeper;
-	}
-	
-	public Gatekeeper getGatekeeper() {
-	    return gatekeeper;
 	}
 
 	public String getIconStyle() {
@@ -38,11 +40,10 @@ public class TabDataExt extends TabDataBasic {
 		return count;
 	}
 	
-	public void setDisplayed(boolean isDisplayed){
-		this.isDisplayed = isDisplayed;
-	}
 
-	public boolean isDisplayed(){
-		return isDisplayed;
+	public boolean canUserAccess() {
+		
+		return gateKeeper.canReveal() && isDisplayLink;
 	}
+	
 }

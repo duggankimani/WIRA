@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.login;
+package com.duggan.workflow.client.ui.security;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.google.inject.Inject;

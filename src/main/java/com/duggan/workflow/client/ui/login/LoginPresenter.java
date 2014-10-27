@@ -6,6 +6,7 @@ import java.util.List;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
@@ -93,6 +94,9 @@ public class LoginPresenter extends
 //			}
 			
 			return;
+		}else{
+			//Actively clear context
+			AppContext.clear();
 		}
 		loadName();
 	}

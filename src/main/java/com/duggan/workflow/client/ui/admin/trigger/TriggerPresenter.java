@@ -12,7 +12,8 @@ import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -46,12 +47,12 @@ implements EditTriggerHandler{
 
 	@ProxyCodeSplit
 	@NameToken(NameTokens.triggers)
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<TriggerPresenter>{
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new TabDataExt("Triggers","icon-cogs",5, adminGatekeeper);
     }
 	

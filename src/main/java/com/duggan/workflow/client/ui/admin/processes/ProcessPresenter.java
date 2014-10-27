@@ -16,7 +16,8 @@ import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent.LoadProcessesHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
@@ -62,12 +63,12 @@ public class ProcessPresenter extends
 	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.processes)
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<ProcessPresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new TabDataExt("Processes","icon-cogs",2, adminGatekeeper);
     }
 

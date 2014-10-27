@@ -7,7 +7,7 @@ import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
@@ -66,8 +66,7 @@ public class ProfilePresenter extends
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-		TabDataExt data = new TabDataExt("Profile","icon-dashboard",11, adminGatekeeper);
-		data.setDisplayed(false);
+		TabDataExt data = new TabDataExt("Profile","icon-dashboard",11,adminGatekeeper, false);
         return data;
     }
 

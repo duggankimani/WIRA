@@ -19,6 +19,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.drools.builder.ResourceType;
+import org.drools.definition.process.Connection;
 import org.drools.definition.process.Node;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
@@ -955,7 +956,7 @@ public class JBPMHelper implements Closeable {
 		return details;
 
 	}
-	
+
 	public List<TaskNode> getWorkflowProcessNodes(String processId) {
 
 		List<TaskNode> details = new ArrayList<>();

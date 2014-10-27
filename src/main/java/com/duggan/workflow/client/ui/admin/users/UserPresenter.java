@@ -21,7 +21,8 @@ import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
@@ -60,12 +61,12 @@ implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandle
 	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.usermgt)
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<UserPresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new TabDataExt("Users and Groups","icon-group",3, adminGatekeeper);
     }
 	

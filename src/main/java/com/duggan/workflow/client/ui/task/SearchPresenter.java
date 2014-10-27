@@ -5,7 +5,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.shared.model.MODE;
 import com.google.inject.Inject;
@@ -31,8 +31,7 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-		HomeTabData data = new HomeTabData(TaskType.SEARCH.name(),"Search","",6, adminGatekeeper);
-		data.setDisplayed(false);
+		HomeTabData data = new HomeTabData(TaskType.SEARCH.name(),"Search","",6, adminGatekeeper,false);
         return data;
     }
 	

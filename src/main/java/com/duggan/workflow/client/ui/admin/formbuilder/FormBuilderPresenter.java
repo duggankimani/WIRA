@@ -16,7 +16,8 @@ import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
 import com.duggan.workflow.client.ui.events.SaveFormDesignEvent.SaveFormDesignHandler;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
@@ -77,12 +78,12 @@ public class FormBuilderPresenter extends
 	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.formbuilder)
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<FormBuilderPresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new TabDataExt("Form Builder","icon-edit",4, adminGatekeeper);
     }
 

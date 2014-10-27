@@ -15,7 +15,8 @@ import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent;
 import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent.LoadDSConfigsHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
 import com.duggan.workflow.shared.requests.GetDSStatusRequest;
@@ -51,12 +52,12 @@ public class DataSourcePresenter extends
 	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.datasources)
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<DataSourcePresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new TabDataExt("Data Sources","icon-briefcase",8, adminGatekeeper);
     }
 	

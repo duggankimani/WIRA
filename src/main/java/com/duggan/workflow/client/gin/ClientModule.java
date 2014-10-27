@@ -93,7 +93,6 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.CreateDocView;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormView;
-import com.duggan.workflow.client.ui.task.AbstractTaskView;
 import com.duggan.workflow.client.ui.task.DraftsPresenter;
 import com.duggan.workflow.client.ui.task.DraftsView;
 import com.duggan.workflow.client.ui.task.InboxPresenter;
@@ -134,6 +133,7 @@ public class ClientModule extends AbstractPresenterModule {
 
 	@Override
 	protected void configure() {
+		
 		install(new DefaultModule(ClientPlaceManager.class));
 		
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);

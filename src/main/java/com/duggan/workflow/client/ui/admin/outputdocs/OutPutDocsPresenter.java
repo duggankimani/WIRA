@@ -12,7 +12,8 @@ import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent.EditOutputDocHandler;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -46,12 +47,12 @@ public class OutPutDocsPresenter extends
 
 	@ProxyCodeSplit
 	@NameToken(NameTokens.outputdocs)
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<OutPutDocsPresenter>{
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new TabDataExt("Output Documents","icon-cogs",6, adminGatekeeper);
     }
 	

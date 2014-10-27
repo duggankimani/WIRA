@@ -5,7 +5,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.login.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -30,7 +30,7 @@ public class ParticipatedPresenter extends AbstractTaskPresenter<ParticipatedPre
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new HomeTabData(TaskType.PARTICIPATED.name(),"Participated","",3, adminGatekeeper);
+        return new HomeTabData(TaskType.PARTICIPATED.name(),"Participated","",3,adminGatekeeper);
     }
 	
 	@Inject

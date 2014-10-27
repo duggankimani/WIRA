@@ -70,7 +70,7 @@ public abstract class AbstractTabItem extends Composite implements Tab{
 	}
 
 	public boolean canUserAccess() {
-		return true;
+		return getTabData().canUserAccess();
 	}
 	
 	public TabDataExt getTabData(){

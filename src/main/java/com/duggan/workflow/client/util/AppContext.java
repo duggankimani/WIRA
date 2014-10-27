@@ -1,11 +1,13 @@
 package com.duggan.workflow.client.util;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
@@ -78,8 +80,11 @@ public class AppContext {
 			PlaceRequest req = placeManager.getCurrentPlaceRequest();
 			
 			if(req!=null && !req.matchesNameToken(NameTokens.login)){
-				String token = placeManager.buildHistoryToken(req);
-				Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
+				System.err.println(">>>>>>>>>> Token =  "+req);
+				if(req.getNameToken()!=null){
+					String token = placeManager.buildHistoryToken(req);
+					Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
+				}
 			}
 		}
 		return valid;
@@ -202,5 +207,14 @@ public class AppContext {
 	
 	public static String getUserImageUrl(double width, double height){
 		return getUserImageUrl()+"&width="+width+"&height="+height;
+	}
+
+	public static void clear() {
+		user.setEmail(null);
+		user.setGroups(new ArrayList<UserGroup>());
+		user.setId(null);
+		user.setSurname(null);
+		user.setPassword(null);
+		user.setUserId(null);
 	}
 }

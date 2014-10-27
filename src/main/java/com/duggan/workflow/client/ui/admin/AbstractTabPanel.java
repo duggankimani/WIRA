@@ -97,7 +97,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 	 */
 	protected void setTabVisibility(Tab tab) {
 		AbstractTabItem item = ((AbstractTabItem)tab);
-		item.show(item.getTabData().isDisplayed());
+		item.show(item.getTabData().canUserAccess());
 	}
 
 }
