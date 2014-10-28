@@ -387,7 +387,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 				result.setFormMode(mode);
 				
 				if(currentTaskType==TaskType.UNASSIGNED){
-					result.showAssignLink(true);
+					result.setUnAssignedList(true);
 				}
 				setInSlot(DOCUMENT_SLOT, result);
 			}

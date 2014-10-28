@@ -330,18 +330,27 @@ public class TaskItemPresenter extends
 				Doc doc = result.getDocument();
 				
 				//refresh list
-				fireEvent(new ProcessingCompletedEvent());			
-				if(action==Actions.COMPLETE){
-					Boolean isApproved = null;
-					if(values!=null){
-						Value value = values.get("isApproved");
-						if(value!=null){
-							isApproved= value.getValue()==null? null : (Boolean)(value.getValue());
+				fireEvent(new ProcessingCompletedEvent());
+				
+				if(action==Actions.COMPLETE || action==Actions.SUSPEND || action==Actions.RESUME){
+					String out = "";
+					if(action==Actions.COMPLETE){
+						Boolean isApproved = null;
+						if(values!=null){
+							Value value = values.get("isApproved");
+							if(value!=null){
+								isApproved= value.getValue()==null? null : (Boolean)(value.getValue());
+							}
 						}
+						
+						out = isApproved==null? "Review completed for ":
+								isApproved? "You have Approved ": "You have Rejected ";
+					}else if(action==Actions.SUSPEND){
+						out = "You have suspended ";
+					}else if(action==Actions.RESUME){
+						out = "You have resumed ";
 					}
 					
-					String out = isApproved==null? "Review completed for ":
-							isApproved? " You have Approved ": "You have Rejected ";
 					//removeFromParent();
 					fireEvent(new AfterSaveEvent());
 					//reload((HTSummary)result.getDocument());

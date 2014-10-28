@@ -139,6 +139,7 @@ public class GenericDocumentView extends ViewImpl implements
 	private Date dateDue;
 	private Date dateCreated;
 	DocStatus status = null;
+	private boolean isUnassignedList=false;
 	
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -306,6 +307,7 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
+		show(aAssign, false);
 	}
 
 	@Override
@@ -582,11 +584,14 @@ public class GenericDocumentView extends ViewImpl implements
 	public void show(Anchor target){
 		show(target,true);
 	}
-	public void show(Anchor target, boolean isvisible){
-		if(isvisible){
+	
+	public void show(Anchor target, boolean isShow){
+		isShow = isShow && (!isUnassignedList || (target==aAssign));
+		
+		if(isShow){
 			target.removeStyleName("hidden");
 		}
-		UIObject.setVisible(target.getElement(), isvisible);
+		UIObject.setVisible(target.getElement(), isShow);
 		
 	}
 
@@ -829,6 +834,12 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	public HasClickHandlers getAssignLink(){
 		return aAssign;
+	}
+
+	@Override
+	public void setUnAssignedList(boolean isUnassignedList) {
+		this.isUnassignedList = isUnassignedList;
+		show(aAssign, isUnassignedList);
 	}
 
 }

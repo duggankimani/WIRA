@@ -38,4 +38,9 @@ public class CookieManager {
 		
 		return value;
 	}
+
+	public static boolean isCurrentUserAdmin() {
+		String value = CookieManager.getSessionValue(Definitions.ISADMINSESSION);
+		return value!=null && value.equals("Y");
+	}
 }

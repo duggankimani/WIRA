@@ -104,7 +104,7 @@ public class HTUser implements Serializable {
 	}
 
 	public boolean hasGroup(String groupName) {
-		
+		if(groups!=null)
 		for(UserGroup group:groups){
 			if(group.getName().equalsIgnoreCase(groupName)){
 				return true;

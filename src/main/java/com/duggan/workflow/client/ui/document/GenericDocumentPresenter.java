@@ -15,8 +15,6 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.SingleButton;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.delegate.DelegateTaskView;
@@ -78,9 +76,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
-import com.duggan.workflow.shared.model.form.Property;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
-import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
@@ -194,6 +190,8 @@ public class GenericDocumentPresenter extends
 		void setSteps(List<TaskStepDTO> steps, int currentStep);
 
 		void showAssignLink(boolean show);
+
+		void setUnAssignedList(boolean isUnassignedList);
 	}
 	
 	Long taskId;
@@ -900,6 +898,7 @@ public class GenericDocumentPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		loadData();
+		getView().show((Anchor)getView().getLinkEnv(), AppContext.isCurrentUserAdmin());
 	}
 	
 	private void loadData() {
@@ -1329,7 +1328,11 @@ public class GenericDocumentPresenter extends
 		this.formMode = mode;
 	}
 
-	public void showAssignLink(boolean show) {
-		getView().showAssignLink(show);
+	/**
+	 * 
+	 * @param show
+	 */
+	public void setUnAssignedList(boolean isUnassignedList) {
+		getView().setUnAssignedList(isUnassignedList);
 	}
 }

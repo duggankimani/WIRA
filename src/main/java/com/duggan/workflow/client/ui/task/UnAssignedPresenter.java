@@ -5,7 +5,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -24,12 +24,12 @@ public class UnAssignedPresenter extends AbstractTaskPresenter<UnAssignedPresent
 	
 	@ProxyCodeSplit
 	@NameToken({NameTokens.unassigned})
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface IUnAssignedProxy extends TabContentProxyPlace<UnAssignedPresenter> {
 	}
 	
 	@TabInfo(container = HomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
         return new HomeTabData(TaskType.UNASSIGNED.name(),"UnAssigned","",5, adminGatekeeper);
     }
 	

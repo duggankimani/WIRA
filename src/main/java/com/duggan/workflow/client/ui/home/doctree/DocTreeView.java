@@ -192,7 +192,7 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 	    contextMenu.setWidth(140);  
 	      
 	    MenuItem download = new MenuItem();  
-	    download.setText("Download");  
+	    download.setText("View");  
 	    download.setIcon(ICONS.INSTANCE.download());  
 	    contextMenu.add(download);  
 	    sourceTree.setContextMenu(contextMenu);

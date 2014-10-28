@@ -14,7 +14,7 @@
 	        <br/>
 	        <div class="row">
 		      	<span ui:field="spnSize" class="attachment-size"></span>
-		        <g:Anchor ui:field="aDownload" text="Download" styleName="hand"/>
+		        <g:Anchor ui:field="aDownload" text="View" styleName="hand"/>
 	        </div>
         </div>
     </g:HTMLPanel>

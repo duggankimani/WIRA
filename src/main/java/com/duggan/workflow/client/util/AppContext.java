@@ -80,7 +80,6 @@ public class AppContext {
 			PlaceRequest req = placeManager.getCurrentPlaceRequest();
 			
 			if(req!=null && !req.matchesNameToken(NameTokens.login)){
-				System.err.println(">>>>>>>>>> Token =  "+req);
 				if(req.getNameToken()!=null){
 					String token = placeManager.buildHistoryToken(req);
 					Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
@@ -96,19 +95,31 @@ public class AppContext {
 		}
 	}
 
+	static boolean reloading =false;//Controlled reload
 	public static void reloadContext() {
-		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
-			@Override
-			public void processResult(GetContextRequestResult result) {
-				organizationName= result.getOrganizationName();
-				setUserValues(result.getUser());
-				version = result.getVersion();
+		if(!reloading){
+			reloading=true;
+			dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
+				@Override
+				public void processResult(GetContextRequestResult result) {
+					System.err.println("Reloading Context!!!!!!!!!!!!!!!!!!!!");
+					organizationName= result.getOrganizationName();
+					setUserValues(result.getUser());
+					version = result.getVersion();
+					
+					ContextLoadedEvent event = new ContextLoadedEvent(result.getUser(), version);
+					event.setOrganizationName(organizationName);
+					eventBus.fireEvent(event);
+					reloading=false;
+				}
 				
-				ContextLoadedEvent event = new ContextLoadedEvent(result.getUser(), version);
-				event.setOrganizationName(organizationName);
-				eventBus.fireEvent(event);
-			}			
-		});
+				@Override
+				public void onFailure(Throwable caught) {
+					reloading=false;
+					super.onFailure(caught);
+				}
+			});
+		}
 	}
 	
 	protected static void setUserValues(HTUser htuser) {
@@ -118,6 +129,7 @@ public class AppContext {
 		user.setEmail(htuser.getEmail());
 		user.setSurname(htuser.getSurname());
 		user.setId(htuser.getId());
+		CookieManager.setSessionValue(Definitions.ISADMINSESSION, htuser.isAdmin()? "Y":"N");
 	}
 
 
@@ -163,10 +175,12 @@ public class AppContext {
 	}
 
 	public static boolean isCurrentUserAdmin() {
-		if(getContextUser().getGroups()==null)
-			return false;
-
-		return getContextUser().isAdmin();
+		boolean isAdmin = CookieManager.isCurrentUserAdmin();
+		if(!isAdmin){
+			System.err.println("2) IsCurrentUserAdmin? NOOO :: on Refresh -- USER IS NOT AN ADMIN");
+		}
+		
+		return isAdmin;
 	}
 
 
