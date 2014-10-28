@@ -48,10 +48,13 @@ insert into UserGroup(userid,groupid) values(11,9);
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','MPESAIPN', 'MPESAIPN',0,'MPESA_IPN#{No}');
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Terminal Allocation', 'TERMINAL ALLOCATION',0,'Allocation Request #{No}');
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Terminal De-allocation', 'TERMINAL DEALLOCATION',0,'De-Allocation Request #{No}');
-insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Asset Finance Application I&M', 'ASSETFINANCEFORMIM',0,'AF/IM/{No}/{YY}');
-insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Procurement To Payment Process', 'PROCURETOPAY',0,'Case/{No}');
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Asset Finance Application I&M', 'ASSETFINANCEFORMIM');
+
+--Default numbering uses a sequence producing case numbers as: Case-XYZ [this is activated iff subjectformat=null)
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Procurement To Payment Process', 'PROCURETOPAY');
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Imprest Request', 'IMPRESTREQUEST');
  
-insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Entry Permit Application', 'ENTRYPERMIT',0,'Case/{No}');
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Entry Permit Application', 'ENTRYPERMIT');
 
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'HR', 'Human Resources');
  insert into ADKeyValuePair(created, createdBy, updated, updatedBy, referenceType, name, displayValue) values (now(),'Administrator',null,null,'DEPARTMENT', 'FIN', 'Finance');
@@ -70,3 +73,6 @@ delete from advalue where documentid is not null and fieldname is not null and i
 
 create index idx_propertyid on advalue(propertyid);
 create index idx_documentid on advalue(documentid);
+
+--Case Number Sequence - must always be included
+create sequence caseno_sequence increment by 1 minvalue 1 MaxValue 100000000 start with 1;

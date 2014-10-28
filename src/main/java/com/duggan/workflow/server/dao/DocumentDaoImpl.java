@@ -651,9 +651,9 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	/**
-	 * Request/{No}/{YY} - Request/0001/14 <br/>
-	 * Request/{No}/{MM}/{YY} - Request/0001/01/14 <br/> 
-	 * Request/{No}/{YYYY} - Request/0001/2014 <br/>
+	 * Case/{No}/{YY} - Case/0001/14 <br/>
+	 * Case/{No}/{MM}/{YY} - Case/0001/01/14 <br/> 
+	 * Case/{No}/{YYYY} - Case/0001/2014 <br/>
 	 * <p>
 	 * TODO: check the impact of locking this record to performance
 	 * This record will be locked to the current transaction every time
@@ -664,22 +664,20 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	 * @return String generated subject
 	 */
 	public String generateDocumentSubject(ADDocType type){
-		String format = "Request/"+type.getId()+"/{No}/{YY}";
-				
-		Integer no = type.getLastNum();
-		if(no==null || no==0){
-			no=0;
+		String format = "Case-{No}";
+		
+		Integer no = getNextCaseNo();
+		
+		if(type.getSubjectFormat()!=null){
+			no = type.getLastNum();
+			if(no==null || no==0){
+				no=0;
+			}
+			++no;
+			type.setLastNum(no);
+			format = type.getSubjectFormat();
 		}
-		++no;
 		
-		type.setLastNum(no);
-		
-		String subjectFormat = type.getSubjectFormat();
-		
-		if(subjectFormat!=null){
-			format = subjectFormat;
-		}
-
 		String num = (no<10)? "000"+no :
 			(no<100)? "00"+no :
 				(no<1000)? "0"+no :no+"";
@@ -699,6 +697,14 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 				.replaceAll("\\{MM\\}",mm);
 		
 		return format;
+	}
+
+	private int getNextCaseNo() {
+		
+		String sql = "select nextval('caseno_sequence')";
+		Number value = getSingleResultOrNull(em.createNativeQuery(sql));
+		
+		return value.intValue();
 	}
 
 	public boolean deleteDocument(Long documentId) {
