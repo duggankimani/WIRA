@@ -102,7 +102,7 @@ public class AppContext {
 			dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
 				@Override
 				public void processResult(GetContextRequestResult result) {
-					System.err.println("Reloading Context!!!!!!!!!!!!!!!!!!!!");
+					//System.err.println("Reloading Context!!!!!!!!!!!!!!!!!!!!");
 					organizationName= result.getOrganizationName();
 					setUserValues(result.getUser());
 					version = result.getVersion();
@@ -177,7 +177,7 @@ public class AppContext {
 	public static boolean isCurrentUserAdmin() {
 		boolean isAdmin = CookieManager.isCurrentUserAdmin();
 		if(!isAdmin){
-			System.err.println("2) IsCurrentUserAdmin? NOOO :: on Refresh -- USER IS NOT AN ADMIN");
+			//System.err.println("2) IsCurrentUserAdmin? NOOO :: on Refresh -- USER IS NOT AN ADMIN");
 		}
 		
 		return isAdmin;

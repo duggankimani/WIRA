@@ -15,6 +15,7 @@ import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
@@ -307,7 +308,7 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
-		show(aAssign, false);
+		show(aAssign, isUnassignedList && AppContext.isCurrentUserAdmin());
 	}
 
 	@Override
@@ -586,7 +587,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 	
 	public void show(Anchor target, boolean isShow){
-		isShow = isShow && (!isUnassignedList || (target==aAssign));
+		isShow = isShow && (!isUnassignedList || (target.equals(aAssign)));
 		
 		if(isShow){
 			target.removeStyleName("hidden");
@@ -840,6 +841,7 @@ public class GenericDocumentView extends ViewImpl implements
 	public void setUnAssignedList(boolean isUnassignedList) {
 		this.isUnassignedList = isUnassignedList;
 		show(aAssign, isUnassignedList);
+		show(aAttach2, !isUnassignedList);
 	}
 
 }
