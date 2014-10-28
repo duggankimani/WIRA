@@ -533,21 +533,22 @@ body .dateBoxPopup {
 	padding: 0px;
 }
 
-#sidebar-nav .document-dialog .span6 {
+#sidebar-nav .document-dialog .span6, #sidebar-nav .document-dialog .span12 {
 	min-height: 40px;
 	margin-left: 0px;
 	padding: 5px 16px;
 }
 
-#sidebar-nav .document-dialog .span6 {
+#sidebar-nav .document-dialog .span6, #sidebar-nav .document-dialog .span12 {
 	font-size: 12px;
 	color: #000;
 }
 
-#sidebar-nav .document-dialog .span6:hover {
+#sidebar-nav .document-dialog .span6:hover, #sidebar-nav .document-dialog .span12:hover {
 	background: #f0f0f0;
 	cursor: pointer;
 }
+
 
 .working-request {
 	background: #ffffff;
