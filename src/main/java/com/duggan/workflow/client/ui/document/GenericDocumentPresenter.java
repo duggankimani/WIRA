@@ -717,18 +717,30 @@ public class GenericDocumentPresenter extends
 	protected void forwardForApproval() {
 		mergeFormValuesWithDoc();
 		if(getView().isValid()){
-			fireEvent(new ProcessingEvent());
-			requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc),
-					new TaskServiceCallback<ApprovalRequestResult>(){
-				@Override
-				public void processResult(ApprovalRequestResult result) {
-					GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
-					fireEvent(new ProcessingCompletedEvent());
-					//clear selected document
-					fireEvent(new AfterSaveEvent());
-					fireEvent(new WorkflowProcessEvent(doc.getSubject(), "You have forwarded for Approval",doc));
-				}
-			});
+			
+			AppManager.showPopUp("Confirm action", "Ready To submit?",
+					new OnOptionSelected() {
+						
+						@Override
+						public void onSelect(String name) {
+							
+							if(name.equals("Yes")){
+								fireEvent(new ProcessingEvent());
+								requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc),
+										new TaskServiceCallback<ApprovalRequestResult>(){
+									@Override
+									public void processResult(ApprovalRequestResult result) {
+										GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
+										fireEvent(new ProcessingCompletedEvent());
+										//clear selected document
+										fireEvent(new AfterSaveEvent());
+										fireEvent(new WorkflowProcessEvent(doc.getSubject(), "You have forwarded for Approval",doc));
+									}
+								});
+							}
+						}
+					}, "Yes", "Cancel");
+			
 		}
 	}
 

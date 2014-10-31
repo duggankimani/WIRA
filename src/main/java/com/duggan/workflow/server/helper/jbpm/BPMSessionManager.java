@@ -478,7 +478,7 @@ class BPMSessionManager {
 	private ProcessInstance startProcess(StatefulKnowledgeSession session,
 			String processId, Map<String, Object> parameters, Document summary) {
 
-		logger.debug(">>> Starting process " + processId + "; Doc=" + summary);
+		logger.info(">>> Starting process " + processId + "; Doc=" + summary);
 		
 		ProcessInstance instance = session.createProcessInstance(processId, parameters);
 		
@@ -491,6 +491,8 @@ class BPMSessionManager {
 			DocumentDaoHelper.save(summary);
 		}
 
+		
+		assert instance!=null;
 		
 		session.startProcessInstance(instance.getId());
 		

@@ -14,6 +14,7 @@ public class Form extends FormModel implements Listable, Serializable{
 	private static final long serialVersionUID = 1L;
 	private List<Property> properties;
 	private List<Field> fields;
+	private Long processDefId;
 	
 	public Form() {
 	}
@@ -90,6 +91,14 @@ public class Form extends FormModel implements Listable, Serializable{
 		return "[Form Id="+Id
 				+",Name="+name
 				+",caption="+caption+"]";
+	}
+
+	public Long getProcessDefId() {
+		return processDefId;
+	}
+
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
 	}
 	
 	

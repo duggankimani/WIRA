@@ -166,7 +166,7 @@ public class TaskStepPresenter extends
 	
 	public void load(){
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetFormsRequest());
+		action.addRequest(new GetFormsRequest(processDef.getId()));
 		action.addRequest(new GetOutputDocumentsRequest());
 		action.addRequest(new GetTaskNodesRequest(processDef.getProcessId()));
 		action.addRequest(new GetTaskStepsRequest(processDef.getProcessId(), null));

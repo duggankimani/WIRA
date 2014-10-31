@@ -11,6 +11,7 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 	private Long taskId;
 	private Long documentId;
 	private Boolean loadChildrenToo;
+	private Long processDefId;
 
 	@SuppressWarnings("unused")
 	private GetFormModelRequest() {
@@ -68,5 +69,13 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 
 	public Long getDocumentId() {
 		return documentId;
+	}
+
+	public Long getProcessDefId() {
+		return processDefId;
+	}
+
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
 	}
 }

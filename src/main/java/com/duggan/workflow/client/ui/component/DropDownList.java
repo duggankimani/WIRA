@@ -125,13 +125,14 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 		listBox.addStyleName(style);
 	}
 
-
-
 	public String getNullText() {
 		return nullText;
 	}
 
-
+	@Override
+	public void setStyleName(String style) {
+		listBox.setStyleName(style);
+	}
 
 	public void setNullText(String nullText) {
 		this.nullText = nullText;

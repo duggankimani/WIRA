@@ -264,5 +264,18 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 		return getResultList(query);
 		
 	}
+
+
+	public int getInstanceStatus(Long processInstanceId) {
+		if(processInstanceId==null){
+			return -1;
+		}
+		
+		String sql = "select status from processinstancelog where processinstanceid=:processInstanceId";
+		Number status = getSingleResultOrNull(em.createNativeQuery(sql)
+				.setParameter("processInstanceId", processInstanceId));
+		
+		return status==null? -1: status.intValue();
+	}
 	
 }

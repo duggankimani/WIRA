@@ -16,6 +16,7 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -59,6 +60,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField AbsolutePanel container;
 	@UiField VerticalPanel vPanel;
 	@UiField DropDownList<Form> frmDropdown;
+	@UiField DropDownList<ProcessDef> processDropdown;
 	
 	@UiField Anchor aNewForm;
 	@UiField Anchor aCloneForm;
@@ -166,15 +168,6 @@ public class FormBuilderView extends ViewImpl implements
 		VerticalPanelDropController widgetDropController = new VerticalPanelDropController(vPanel);
 		widgetDragController.registerDropController(widgetDropController);
 		
-		//Grid Drop controller
-//		com.duggan.workflow.client.ui.admin.formbuilder.component.GridLayout field =
-//				(com.duggan.workflow.client.ui.admin.formbuilder.component.GridLayout)vGridPanel.getWidget(0);
-//		//HorizontalPanel columnPanel = field.getColumnPanel(); 
-//		HorizontalPanelDropController gridDropController = new HorizontalPanelDropController(columnPanel);
-//		widgetDragController.registerDropController(gridDropController);
-//		
-		
-		
 		DeactivatePalete();
 		
 		aMinimize.addClickHandler(new ClickHandler() {
@@ -216,18 +209,18 @@ public class FormBuilderView extends ViewImpl implements
 		frmDropdown.addValueChangeHandler(new ValueChangeHandler<Form>() {		
 			@Override
 			public void onValueChange(ValueChangeEvent<Form> event) {
+				
 				Long previousId = form.getId();
-				Long id = event.getValue().getId();
+				Long id = event.getValue()==null? null: event.getValue().getId();
 				
-				if(previousId!=null && previousId.equals(id)){
+				if(previousId==null || id==null){
+					clear();
+				}else if(previousId!=null && previousId.equals(id)){
 					return;
 				}
-				
-				if(id!=null && (id.equals(previousId))){
-					return;
-				}
-				
+					
 				clear();
+				
 				//
 			}
 		});
@@ -398,8 +391,8 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public void setForm(Form form) {
 		this.form = form;
-		frmDropdown.setValue(form);
 		
+		frmDropdown.setValue(form);
 		registerInputDrag();
 		activatePalette();
 		
@@ -544,6 +537,7 @@ public class FormBuilderView extends ViewImpl implements
 	@Override
 	public void setForms(List<Form> forms) {
 		frmDropdown.setItems(forms);
+		if(form!=null)
 		if(form.getId()!=null){
 			frmDropdown.setValue(form);
 		}
@@ -589,5 +583,26 @@ public class FormBuilderView extends ViewImpl implements
 			return form.getCaption();
 		
 		return "Untitled";
+	}
+
+	@Override
+	public void setProcesses(List<ProcessDef> processes) {
+		processDropdown.setNullText("--Process--");
+		processDropdown.setItems(processes);
+	}
+	
+	@Override
+	public DropDownList<ProcessDef> getProcessDropDown() {
+		return processDropdown;
+	}
+
+	@Override
+	public void enableCreateForm(boolean isProcessSelected) {
+		aNewForm.setVisible(isProcessSelected);
+		aImportForm.setVisible(isProcessSelected);
+		
+		if(!isProcessSelected){
+			setForm(null);
+		}
 	}
 }

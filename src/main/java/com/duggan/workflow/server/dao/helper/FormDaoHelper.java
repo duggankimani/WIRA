@@ -49,10 +49,10 @@ public class FormDaoHelper {
 	 * 
 	 * @return Forms in the detabase (Only general form details are included - no fields & Form properties are included)
 	 */
-	public static List<Form> getForms(){
+	public static List<Form> getForms(Long processDefId){
 		
 		FormDaoImpl dao = DB.getFormDao();		
-		List<ADForm> adforms = dao.getAllForms();
+		List<ADForm> adforms = dao.getAllForms(processDefId);
 		
 		List<Form> forms = new ArrayList<>();
 		for(ADForm adform: adforms){
@@ -94,6 +94,7 @@ public class FormDaoHelper {
 		
 		form.setId(adform.getId());
 		form.setName(adform.getName());
+		form.setProcessDefId(adform.getProcessDefId());
 		form.setProperties(getProperties(adform.getProperties()));
 				
 		return form;
@@ -338,6 +339,7 @@ public class FormDaoHelper {
 		}
 		adform.setCaption(form.getCaption());		
 		adform.setName(form.getName());
+		adform.setProcessDefId(form.getProcessDefId());
 		getADFields(form.getFields(), adform);				
 		getADProperties(form.getProperties(), adform);
 		//adform.setProperties(properties);

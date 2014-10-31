@@ -30,9 +30,11 @@ public class FormDaoImpl extends BaseDaoImpl {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<ADForm> getAllForms(){
+	public List<ADForm> getAllForms(Long processDefId){
 		
-		List lst = em.createQuery("from ADForm f order by f.caption").getResultList();
+		List lst = em.createQuery("from ADForm f where f.processDefId=:processDefId order by f.caption")
+				.setParameter("processDefId", processDefId)
+				.getResultList();
 		
 		return lst;
 	}

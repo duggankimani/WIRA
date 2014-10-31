@@ -546,18 +546,19 @@ public class JBPMHelper implements Closeable {
 
 	public void loadProgressInfo(Doc task, long processInstanceId) {
 		//then how far is the process now?
-		ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
-		if(log==null){
+		//ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
+		int instanceStatus = DB.getProcessDao().getInstanceStatus(processInstanceId);
+		if(instanceStatus==-1){
 			return;
 		}
 		
-		if(log.getStatus()==2){
+		if(instanceStatus==2){
 			//Process Completed
 			task.setProcessStatus(HTStatus.COMPLETED);
 		}else{
 			//where is my request?
 			List<Object[]> actualOwners = DB.getProcessDao()
-					.getCurrentActualOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
+					.getCurrentActualOwnersByProcessInstanceId(processInstanceId, Status.Completed, false);
 			
 			//Task Id, 
 			for(Object[] row: actualOwners){
@@ -567,7 +568,7 @@ public class JBPMHelper implements Closeable {
 			}
 			
 			List<Object[]> potOwners = DB.getProcessDao()
-					.getCurrentPotentialOwnersByProcessInstanceId(log.getProcessInstanceId(), Status.Completed, false);
+					.getCurrentPotentialOwnersByProcessInstanceId(processInstanceId, Status.Completed, false);
 			
 			String entities = "";
 			//Task Id, 

@@ -52,6 +52,9 @@ public class ADForm extends PO implements HasProperties{
 	@OneToMany(mappedBy="form", cascade=CascadeType.ALL)
 	private Collection<ADField> fields = new HashSet<>();
 	
+	@Column(nullable=false)
+	private Long processDefId;
+	
 	public Long getId() {
 		return id;
 	}
@@ -128,5 +131,13 @@ public class ADForm extends PO implements HasProperties{
 		}
 		
 		return super.hashCode();
+	}
+
+	public Long getProcessDefId() {
+		return processDefId;
+	}
+
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
 	}
 }

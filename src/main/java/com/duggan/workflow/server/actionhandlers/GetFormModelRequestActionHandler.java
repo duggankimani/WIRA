@@ -71,8 +71,8 @@ public class GetFormModelRequestActionHandler extends
 					models.add(model);
 				}
 												
-			}else{
-				models.addAll(FormDaoHelper.getForms());
+			}else if(action.getProcessDefId()!=null){
+				models.addAll(FormDaoHelper.getForms(action.getProcessDefId()));
 			}
 			break;
 

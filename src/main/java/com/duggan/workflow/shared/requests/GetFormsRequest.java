@@ -5,11 +5,22 @@ import com.duggan.workflow.shared.responses.GetFormsResponse;
 
 public class GetFormsRequest extends BaseRequest<GetFormsResponse> {
 
-	public GetFormsRequest() {
+	private Long processDefId;
+	
+	@SuppressWarnings("unused")
+	private GetFormsRequest() {
+	}
+	
+	public GetFormsRequest(Long processDefId) {
+		this.processDefId = processDefId;
 	}
 	
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		return new GetFormsResponse();
+	}
+
+	public Long getProcessDefId() {
+		return processDefId;
 	}
 }

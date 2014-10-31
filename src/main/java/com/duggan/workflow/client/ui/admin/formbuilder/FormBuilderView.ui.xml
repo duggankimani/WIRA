@@ -55,9 +55,14 @@
 			   <div class="span3 notice">
 			   		<g:InlineLabel ui:field="spnNotice" styleName="muted"> All changes have been saved</g:InlineLabel>
 			   </div>	
-			    
+
 			    <div class="span3 pull-right">
-			   		<d:DropDownList ui:field="frmDropdown"></d:DropDownList>	
+			    	<div class="span6">
+			    		<d:DropDownList ui:field="processDropdown" styleName="input-medium"></d:DropDownList>
+			    	</div>
+			    	<div class="span6">
+			   			<d:DropDownList ui:field="frmDropdown" styleName="input-medium"></d:DropDownList>
+			   		</div>	
 			   </div>															
 			</div>
 			

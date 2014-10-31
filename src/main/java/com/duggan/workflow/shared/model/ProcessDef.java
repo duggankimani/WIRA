@@ -155,4 +155,9 @@ public class ProcessDef implements Serializable,Listable{
 		return name;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return ((ProcessDef)obj).id.equals(id);
+	}
+	
 }
