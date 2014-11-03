@@ -1,0 +1,149 @@
+<html>
+<head>
+<style type="text/css">
+    	
+   		body {
+			margin:50px 0px; padding:0px;
+			text-align:center;
+		}
+		
+		#content {
+			width:700px;
+			margin:0px auto;
+			text-align:left;
+			padding:15px;
+		}
+   	
+    	table{
+    		font-size:12px; 
+    		font-family=Arial, sans-serif;
+    	}
+    	thead, th{
+    		text-align:center;
+    		border-bottom:1px solid;
+    	}
+    	
+    	table.clientdetails td{
+    		padding:4px;
+    		min-width:100px;
+    	}
+    	
+    	.detail th,td{
+    		padding:4px;
+    		min-width:100px;
+    		border:1px solid grey;
+    	}
+    	
+    	.detail{
+    		width:100%;
+    	}
+    	
+    	.detail .num{
+    		text-align:right;
+    	}
+    	
+    	.maindetails td{
+    		font-weight:bold;
+    	}
+    </style>
+</head>
+<body>
+<div style="text-align:center">
+<img src="http://localhost:8080/wira/getreport?ACTION=GetLogo&settingName=ORGLOGO&width=140&height=80" height="69" width="153" style="" />
+<table style="width: 700px;" border="1" cellpadding="5">
+<tbody>
+<tr>
+<td>
+<h2>Imprest Request | Case #: @#CaseNumber</h2>
+</td>
+</tr>
+<tr>
+<td>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td>Employee Name:</td>
+<td>@#OriginatorName</td>
+</tr>
+<tr>
+<td>Office:</td>
+<td>@#IPAOffice</td>
+</tr>
+<tr>
+<td>Request Date:</td>
+<td>@#RequestDate</td>
+</tr>
+<tr>
+<td>Amount Advanced:</td>
+<td>KES @#CalcAmount</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td>Project Approval:</td>
+<td>@#ApprovalDate</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>@#ApproverName1 (ID:@#ApproverUserID)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td>Finance Approval:</td>
+<td>@#FinanceApprovalDate</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>@#FinanceApproverName (ID:@#ApproverUserID)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td><b>Expense Lines</b>
+<table border="1">
+<tbody>
+<tr><th>GL</th><th>Grant</th><th>Project</th><th>Activity</th><th>Field Office</th><th>Memo</th><th>Amount</th></tr>
+<!--@>ImprestRequestLinesGrid-->
+<tr>
+<td>@#ExpenseAccount</td>
+<td>@#ProjectClass</td>
+<td>@#Project</td>
+<td>@#Segment</td>
+<td>@#SubSegment</td>
+<td>@#Memo</td>
+<td>@#Amount</td>
+</tr>
+<!--@<ImprestRequestLinesGrid--></tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--footer starts-->
+<div class="mceItemVisualAid mceItemLayer" style="position: fixed; bottom: 5mm; left: 5mm;"><br /> Name: __________________________ Signature: _____________________Date: ___________<hr />Evidence Action (c) 2014 | Document generated: @#GenDate</div>
+<!--footer ends--></td>
+</tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>
