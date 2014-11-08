@@ -40,8 +40,7 @@ public class HTMLToPDFConvertor {
 	 */
 	public byte[] convert(Doc doc, String html) throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
 		html = html.replaceAll("&nbsp;", "&#160;");
-		new DocumentHTMLMapper().map(doc, html);
-		
+		html = new DocumentHTMLMapper().map(doc, html);
 		html = html.replaceAll("&", "&amp;");
 		return convert(html);
 	}

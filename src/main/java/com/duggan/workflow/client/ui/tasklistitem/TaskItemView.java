@@ -207,9 +207,18 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 				taskActualOwner = aDoc.getPotentialOwners();
 			}
 			
-			//Span Description
-			spnDescription.getElement().setInnerHTML(desc+ 
-					" - <span style='color:#2C3539;font-size:9pt;'>"+(taskActualOwner==null? "": taskActualOwner)+"</span>" );
+			if(aDoc.getProcessInstanceId()!=null && (taskActualOwner==null || taskActualOwner.isEmpty())){
+				spnDescription.getElement().setInnerHTML(desc+ 
+						" - <span style='color:#D74819;font-size:9pt;'>UnAssigned</span>" );
+			}else if(aDoc.getProcessInstanceId()!=null){
+
+				//Span Description
+				spnDescription.getElement().setInnerHTML(desc+ 
+					" - <span style='color:#2C3539;font-size:9pt;'>"+taskActualOwner+"</span>" );	
+			}else{
+				spnDescription.getElement().setInnerHTML(desc+
+						" - <span style='color:#2C3539;font-size:9pt;'>\'Draft\'</span>" );
+			}
 		}// End of setting descriptions
 		
 		

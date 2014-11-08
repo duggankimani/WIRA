@@ -54,7 +54,7 @@
 <tbody>
 <tr>
 <td>
-<h2>Imprest Request | Case #: @#CaseNumber</h2>
+<h2>Imprest Request | Case #: @#subject</h2>
 </td>
 </tr>
 <tr>
@@ -63,7 +63,7 @@
 <tbody>
 <tr>
 <td>Employee Name:</td>
-<td>@#OriginatorName</td>
+<td>@#requestedBy</td>
 </tr>
 <tr>
 <td>Office:</td>
@@ -71,11 +71,11 @@
 </tr>
 <tr>
 <td>Request Date:</td>
-<td>@#RequestDate</td>
+<td>@#dateRequested</td>
 </tr>
 <tr>
 <td>Amount Advanced:</td>
-<td>KES @#CalcAmount</td>
+<td>KES @#totalImprestAmount</td>
 </tr>
 </tbody>
 </table>
@@ -87,11 +87,11 @@
 <tbody>
 <tr>
 <td>Project Approval:</td>
-<td>@#ApprovalDate</td>
+<td>@#dateSupervisorApproved</td>
 </tr>
 <tr>
 <td>By:</td>
-<td>@#ApproverName1 (ID:@#ApproverUserID)</td>
+<td>@#supervisorName (ID:@#ApproverUserID)</td>
 </tr>
 </tbody>
 </table>
@@ -103,11 +103,11 @@
 <tbody>
 <tr>
 <td>Finance Approval:</td>
-<td>@#FinanceApprovalDate</td>
+<td>@#dateAccApproved</td>
 </tr>
 <tr>
 <td>By:</td>
-<td>@#FinanceApproverName (ID:@#ApproverUserID)</td>
+<td>@#reviewedByAcc (ID:@#ApproverUserID)</td>
 </tr>
 </tbody>
 </table>
@@ -121,18 +121,17 @@
 <td><b>Expense Lines</b>
 <table border="1">
 <tbody>
-<tr><th>GL</th><th>Grant</th><th>Project</th><th>Activity</th><th>Field Office</th><th>Memo</th><th>Amount</th></tr>
-<!--@>ImprestRequestLinesGrid-->
+<tr><th>GL</th><th>Project</th><th>Activity</th><th>Field Office</th><th>Memo</th><th>Amount</th></tr>
+<!--@>imprestLines-->
 <tr>
-<td>@#ExpenseAccount</td>
-<td>@#ProjectClass</td>
-<td>@#Project</td>
-<td>@#Segment</td>
-<td>@#SubSegment</td>
-<td>@#Memo</td>
-<td>@#Amount</td>
+<td>@#account</td>
+<td>@#program</td>
+<td>@#activity</td>
+<td>@#fieldOffice</td>
+<td>@#memo</td>
+<td>@#amount</td>
 </tr>
-<!--@<ImprestRequestLinesGrid--></tbody>
+<!--@<imprestLines--></tbody>
 </table>
 </td>
 </tr>

@@ -84,6 +84,18 @@ public class TestMvel {
 		MVEL.executeExpression(compilexEx, doc);
 		System.out.println("############ "+MVEL.evalToString("details.poParticulars", doc));
 	}
+//	
+//	foreach(Object doc: details.imprestLines){
+//		if(doc!=null){
+//		  addDetail(with(new com.duggan.workflow.shared.model.DocumentLine()){
+//		   documentId=doc.documentId,
+//		   name='imprestLinesOut',
+//		   values=['account': new StringValue(DBUtil.getStringValue("
+//		select accountcode||'-'||accountname from pmt_accounts 
+//		where accountcode='"+doc.values.?account.?value+"' ", 'workflowmgr'))]
+//		}))
+//		}
+//		};
 	
 	@After
 	public void close(){
