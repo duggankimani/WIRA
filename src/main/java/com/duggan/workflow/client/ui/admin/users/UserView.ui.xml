@@ -42,6 +42,9 @@
 											<div class="th">Username</div>
 											<div class="th">Email</div>		
 											<div class="th">Group</div>
+											<div class="th" title="Inbox">Inbox</div>
+											<div class="th" title="Participated Tasks">Done</div>
+											<div class="th" title="Total tasks">Total</div>
 											<div class="th">Action</div>	
 										</div>						
 									</div>

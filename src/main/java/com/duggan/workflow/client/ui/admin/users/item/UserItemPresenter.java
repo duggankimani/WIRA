@@ -20,7 +20,8 @@ import com.gwtplatform.mvp.client.View;
 public class UserItemPresenter extends PresenterWidget<UserItemPresenter.MyView> {
 
 	public interface MyView extends View {
-		void setValues(String firstName, String lastName, String username, String email, String groups);
+		void setValues(String firstName, String lastName, String username, String email, String groups,
+				 int inbox,int participated, int total);
 		
 		HasClickHandlers getEdit();
 		
@@ -84,6 +85,8 @@ public class UserItemPresenter extends PresenterWidget<UserItemPresenter.MyView>
 	
 	public void setUser(HTUser user){
 		this.user = user;
-		getView().setValues(user.getName(), user.getSurname(), user.getUserId(), user.getEmail(), user.getGroupsAsString());
+		getView().setValues(user.getName(), user.getSurname(), user.getUserId(),
+				user.getEmail(), user.getGroupsAsString(), 
+				user.getInbox(), user.getParticipated(), user.getTotal());
 	}
 }

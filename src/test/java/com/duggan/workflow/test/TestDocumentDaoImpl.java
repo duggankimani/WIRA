@@ -87,7 +87,7 @@ public class TestDocumentDaoImpl {
 	@Ignore
 	public void getCount(){
 		HashMap<TaskType, Integer> counts = new HashMap<TaskType, Integer>();
-		DocumentDaoHelper.getCounts(counts);
+		DocumentDaoHelper.getCounts("Administrator",counts);
 		
 		for(TaskType key: counts.keySet()){
 			System.err.println(key+" : "+counts.get(key));

@@ -24,7 +24,6 @@ public class GetAlertCountActionHandler extends
 			throws ActionException {
 
 		GetAlertCountResult countResult = (GetAlertCountResult)actionResult;
-		DocumentDaoHelper.getCounts(countResult.getCounts());
 		JBPMHelper.get().getCount(SessionHelper.getCurrentUser().getUserId(), countResult.getCounts());
 		NotificationDaoHelper.getCounts(countResult.getCounts());
 	}

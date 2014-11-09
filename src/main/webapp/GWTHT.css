@@ -322,3 +322,11 @@ div.centered{
 #detailed-info .lead, .form-horizontal .lead {
     background-color: #F5F5F5;
 }
+
+div.num{
+	text-align:right;
+}
+
+div.center{
+	text-align:center;
+}

@@ -224,7 +224,12 @@ public class JBPMHelper implements Closeable {
 	 * @param counts
 	 */
 	public void getCount(String userId, HashMap<TaskType, Integer> counts) {
+		
+		//Count drafts & initiated documents
+		DocumentDaoHelper.getCounts(userId, counts);
 
+		//Count Tasks
+		
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
 		List<String> groupIds = new ArrayList<>();
@@ -1232,10 +1237,20 @@ public class JBPMHelper implements Closeable {
 		entities.add(new User(userId));
 		peopleAssign.setPotentialOwners(entities);
 		task.setPeopleAssignments(peopleAssign);
-		
 		DB.getEntityManager().persist(task);
 		
 		//WorkItemNodeInstance i;
+	}
+
+	public void setCounts(HTUser htuser) {
+		String userId = htuser.getUserId();
+		assert userId!=null;
+		
+		HashMap<TaskType,Integer> counts = new HashMap<>();
+		getCount(userId, counts);
+		
+		htuser.setParticipated(counts.get(TaskType.PARTICIPATED));
+		htuser.setInbox(counts.get(TaskType.INBOX));
 	}
 
 }

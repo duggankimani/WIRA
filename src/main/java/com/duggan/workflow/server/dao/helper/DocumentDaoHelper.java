@@ -458,14 +458,14 @@ public class DocumentDaoHelper {
 		dao.saveDocument(model);
 	}
 
-	public static void getCounts(HashMap<TaskType, Integer> counts) {
+	public static void getCounts(String userId,HashMap<TaskType, Integer> counts) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		counts.put(TaskType.DRAFT, dao.count(DocStatus.DRAFTED));
-		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
-		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
-		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
-		counts.put(TaskType.PARTICIPATED, dao.count(DocStatus.DRAFTED,false));
+		counts.put(TaskType.DRAFT, dao.count(userId,DocStatus.DRAFTED));
+//		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
+//		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
+//		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
+		counts.put(TaskType.PARTICIPATED, dao.count(userId,DocStatus.DRAFTED,false));
 		// counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 

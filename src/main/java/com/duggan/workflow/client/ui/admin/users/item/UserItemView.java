@@ -21,6 +21,9 @@ public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 	@UiField HTMLPanel panelEmail;
 	@UiField HTMLPanel panelGroups;
 	@UiField HTMLPanel panelUserName;
+	@UiField HTMLPanel panelParticipated;
+	@UiField HTMLPanel panelInbox;
+	@UiField HTMLPanel panelTotal;
 	
 	@UiField Anchor aEdit;
 	@UiField Anchor aDelete;
@@ -30,7 +33,8 @@ public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 		widget = binder.createAndBindUi(this);
 	}
 
-	public void setValues(String firstName, String lastName, String username, String email, String groups){
+	public void setValues(String firstName, String lastName, String username, String email, String groups,
+			int inbox,int participated, int total){
 		
 		if(firstName!=null){
 			panelFirstName.getElement().setInnerText(firstName);
@@ -51,6 +55,10 @@ public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 		if(username!=null){
 			panelUserName.getElement().setInnerText(username);
 		}
+		
+		panelInbox.getElement().setInnerText(""+inbox);
+		panelParticipated.getElement().setInnerText(""+participated);
+		panelTotal.getElement().setInnerText(""+total);
 	}
 	
 	@Override

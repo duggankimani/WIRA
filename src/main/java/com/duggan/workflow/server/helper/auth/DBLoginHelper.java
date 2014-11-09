@@ -9,6 +9,7 @@ import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 
@@ -55,8 +56,10 @@ public class DBLoginHelper implements LoginIntf{
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
 		
-		if(loadGroups)
-			htuser.setGroups(getFromDb(user.getGroups()));	
+		if(loadGroups){
+			htuser.setGroups(getFromDb(user.getGroups()));
+			JBPMHelper.get().setCounts(htuser);
+		}
 		
 		return htuser;
 	}

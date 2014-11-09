@@ -13,6 +13,8 @@ public class HTUser implements Serializable {
 	private String surname;
 	private String password;
 	private List<UserGroup> groups ;
+	private int participated;
+	private int inbox;
 	
 	public HTUser() {
 	}
@@ -131,5 +133,26 @@ public class HTUser implements Serializable {
 		}
 		
 		return name.equals(other.name);
+	}
+
+	public int getInbox() {
+		return inbox;
+	}
+
+	public void setInbox(int inbox) {
+		this.inbox = inbox;
+	}
+
+	public int getParticipated() {
+		return participated;
+	}
+
+	public void setParticipated(int participated) {
+		this.participated = participated;
+	}
+
+	public int getTotal() {
+		
+		return participated+inbox;
 	}
 }
