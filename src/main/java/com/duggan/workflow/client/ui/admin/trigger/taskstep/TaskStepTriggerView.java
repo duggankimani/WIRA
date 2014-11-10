@@ -42,8 +42,13 @@ public class TaskStepTriggerView extends ViewImpl implements
 
 	@Override
 	public void addStep(TaskStepDTO step, HashMap<TriggerType, Integer> counts) {
-		TreeItem taskStep = new TreeItem(createTaskStepWidget(step.getFormName()==null?step.getOutputDocName():
-			step.getFormName()));
+		int total = counts.get(TriggerType.BEFORESTEP)+counts.get(TriggerType.AFTERSTEP);
+		
+		String stepName = step.getFormName()==null?step.getOutputDocName():
+			step.getFormName();
+		stepName = stepName.concat(" ("+total+")");
+		
+		TreeItem taskStep = new TreeItem(createTaskStepWidget(stepName));
 		createTriggerTypeItem(taskStep, TriggerType.BEFORESTEP, step, counts.get(TriggerType.BEFORESTEP));
 		createTriggerTypeItem(taskStep, TriggerType.AFTERSTEP, step, counts.get(TriggerType.AFTERSTEP));
 		tree.addItem(taskStep);
