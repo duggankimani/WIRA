@@ -18,22 +18,32 @@
 			<span ui:field="spnDocTypes"></span>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td">
-			<span ui:field="spnFileName" class="ellipsis" style="width:61%"></span>
+			<span ui:field="spnFileName"></span>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td">
-			<g:Anchor ui:field="aImageName" styleName="ellipsis"></g:Anchor>
+			<g:Anchor ui:field="aImageName"></g:Anchor>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td">
-			<span ui:field="spnProcessId" class="ellipsis" style="width:71%"></span>
+			<span ui:field="spnProcessId"></span>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td">
 			<span ui:field="spnStatus"></span>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td">
+			<span ui:field="spnActive"></span>
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td">
+			<span ui:field="spnCompleted"></span>
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td">
+			<span ui:field="spnTotal"></span>
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td">
 			<span ui:field="spnLastModified"></span>
 		</g:HTMLPanel>
 
-		<g:HTMLPanel styleName="td">
+		<div class="td" style="width:140px;white-space:nowrap;">
+		    <div>
 			<g:Anchor ui:field="aActivate" styleName="btn btn-success"
 				title="Activate Process">
 				<i class="icon-play"></i>
@@ -54,6 +64,7 @@
 			<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
 				<i class="icon-trash"></i>
 			</g:Anchor>
-		</g:HTMLPanel>
+			</div>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -29,14 +29,17 @@
 								<div class="th">
 								  <label><input type="checkbox" class="ace"/></label>
 								</div>
-								<div class="th" style="width:14%">NAME:</div>
-								<div class="th" style="width:16%">DOCUMENT TYPE</div>
-								<div class="th" style="width:5%">FILE NAME</div>
-								<div class="th" style="width:10%">IMAGE</div>
-								<div class="th" style="width:5%">PROCESS ID</div>
-								<div class="th" style="width:5%">STATUS</div>
-								<div class="th" style="width:15%">LAST MODIFIED</div>
-								<div class="th" style="width:30%">ACTIONS</div>	
+								<div class="th" style="">NAME:</div>
+								<div class="th" style="">DOCUMENT TYPE</div>
+								<div class="th" style="">FILE NAME</div>
+								<div class="th" style="">IMAGE</div>
+								<div class="th" style="">PROCESS ID</div>
+								<div class="th" style="">STATUS</div>
+								<div class="th" style="">Active</div>
+								<div class="th" style="">Completed</div>
+								<div class="th" style="">Total</div>
+								<div class="th" style="">MODIFIED</div>
+								<div class="th" style="width:158px;">ACTIONS</div>	
 							</div>								
 
 						</div>

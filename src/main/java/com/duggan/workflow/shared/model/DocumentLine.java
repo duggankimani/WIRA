@@ -78,6 +78,10 @@ public class DocumentLine implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(obj==null){
+			return false;
+		}
+		
 		DocumentLine other = (DocumentLine)obj;
 		
 		if(id!=null){

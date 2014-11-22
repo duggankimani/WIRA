@@ -17,7 +17,6 @@ import com.duggan.workflow.client.ui.events.LoadProcessesEvent.LoadProcessesHand
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;

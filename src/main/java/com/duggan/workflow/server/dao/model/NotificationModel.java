@@ -40,6 +40,8 @@ public class NotificationModel extends PO {
 	
 	private Boolean isRead; /*Mark as read/unread*/
 	
+	private Boolean isSeen;
+	
 	@Enumerated(EnumType.STRING)
 	private ApproverAction approverAction;
 	
@@ -129,6 +131,14 @@ public class NotificationModel extends PO {
 
 	public void setFileId(Long fileId) {
 		this.fileId = fileId;
+	}
+
+	public Boolean getIsSeen() {
+		return isSeen;
+	}
+
+	public void setIsSeen(Boolean isSeen) {
+		this.isSeen = isSeen;
 	}
 
 }
