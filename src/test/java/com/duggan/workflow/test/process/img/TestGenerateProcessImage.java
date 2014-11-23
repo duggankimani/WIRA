@@ -34,7 +34,8 @@ public class TestGenerateProcessImage {
 		//Long processInstanceId = 950L;
 		//Long processInstanceId = 922L;
 		//Long processInstanceId = 906L;
-		Long processInstanceId = 428L;
+		//Long processInstanceId = 428L;
+		Long processInstanceId = 55L;
 		
 		InputStream is = JBPMHelper.get().getProcessMap(processInstanceId);
 		

@@ -150,6 +150,10 @@ public class GetReport extends HttpServlet {
 		assert processInstanceId!=null;
 		
 		InputStream is = JBPMHelper.get().getProcessMap(processInstanceId);
+		if(is==null){
+			return;
+		}
+		
 		byte[] data = IOUtils.toByteArray(is);
 		IOUtils.closeQuietly(is);
 		

@@ -865,6 +865,9 @@ public class JBPMHelper implements Closeable {
 
 		ProcessInstanceLog log = JPAProcessInstanceDbLog
 				.findProcessInstance(processInstanceId);
+		if(log==null){
+			return null;
+		}
 		String processId = log.getProcessId();
 
 		
@@ -901,7 +904,7 @@ public class JBPMHelper implements Closeable {
 				// HumanTaskNode ht = (HumanTaskNode) node;
 				String name = node.getName();
 				
-				boolean isCompletedNode = nodeLogInstance.size()==2;
+				boolean isCompletedNode = nodeLogInstance.size()%2==0;
 				processor.addTransformationJob(
 						new TaskColorTransformationJob(name, isCompletedNode?"#00ff00":"#ff0000"));
 			}
