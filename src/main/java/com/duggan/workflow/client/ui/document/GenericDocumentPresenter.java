@@ -138,7 +138,7 @@ public class GenericDocumentPresenter extends
 		void setValidTaskActions(List<Actions> actions);
 		void show(boolean IsShowapprovalLink, boolean IsShowRejectLink);
 		void showEdit(boolean displayed);
-		void setStates(List<NodeDetail> states);
+//		void setStates(List<NodeDetail> states);
 		HasClickHandlers getSimulationBtn();
 		HasClickHandlers getSaveButton();
 		HasClickHandlers getAssignLink();
@@ -192,6 +192,8 @@ public class GenericDocumentPresenter extends
 		void showAssignLink(boolean show);
 
 		void setUnAssignedList(boolean isUnassignedList);
+
+		void setProcessUrl(Long processInstanceId);
 	}
 	
 	Long taskId;
@@ -1229,24 +1231,25 @@ public class GenericDocumentPresenter extends
 		}	
 		
 		Long processInstanceId = doc.getProcessInstanceId();
-		
-		if(processInstanceId!=null){
-			//System.err.println("Loading activities for ProcessInstanceId = "+processInstanceId);
-			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
-					new TaskServiceCallback<GetProcessStatusRequestResult>() {
-				@Override
-				public void processResult(
-						GetProcessStatusRequestResult result) {
-					List<NodeDetail> details = result.getNodes();
-					setProcessState(details);
-				}
-			});
-		}
+		if(processInstanceId!=null)
+			getView().setProcessUrl(processInstanceId);
+//		if(processInstanceId!=null){
+//			//System.err.println("Loading activities for ProcessInstanceId = "+processInstanceId);
+//			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
+//					new TaskServiceCallback<GetProcessStatusRequestResult>() {
+//				@Override
+//				public void processResult(
+//						GetProcessStatusRequestResult result) {
+//					List<NodeDetail> details = result.getNodes();
+//					setProcessState(details);
+//				}
+//			});
+//		}
 	}
 
-	public void setProcessState(List<NodeDetail> states){
-		getView().setStates(states);
-	}
+//	public void setProcessState(List<NodeDetail> states){
+//		getView().setStates(states);
+//	}
 
 	public void setDocId(Long documentId, Long taskId) {
 		this.documentId=documentId;

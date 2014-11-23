@@ -32,11 +32,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -102,7 +105,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel divActivity;
 	//@UiField Anchor aAttach1;
 	@UiField Anchor aAttach2;
-	@UiField Anchor aShowProcess;
+	@UiField Image aShowProcess;
 	@UiField Anchor aContinue;
 	@UiField HTMLPanel divContinue;
 	@UiField CommentBox commentPanel;
@@ -173,11 +176,19 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		aShowProcess.removeStyleName("gwt-Anchor");
 		
-		aShowProcess.addClickHandler(new ClickHandler() {
-		@Override
-			public void onClick(ClickEvent event) {
-				if(url!=null)
-				Window.open(url, "Business Process", null);
+//		aShowProcess.addClickHandler(new ClickHandler() {
+//		@Override
+//			public void onClick(ClickEvent event) {
+//				if(url!=null)
+//				Window.open(url, "Business Process", null);
+//			}
+//		});
+		
+		aShowProcess.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				statusContainer.add(new InlineLabel("Nothing to show"));
 			}
 		});
 		
@@ -212,7 +223,7 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		showProcessTree(false);
 		UIObject.setVisible(aSave.getElement(), false);
-		statusContainer.add(new InlineLabel("Nothing to show"));
+		
 	}
 	
 	public void createNavigationButtons(){
@@ -283,14 +294,16 @@ public class GenericDocumentView extends ViewImpl implements
 			aProcess.addStyleName("disabled");
 			divProcess.removeStyleName("hidden");
 			divContent.removeClassName("span12");
-			divContent.addClassName("span9");
+//			divContent.addClassName("span9");
+			divContent.addClassName("hidden");
 			isBizProcessDisplayed=true;
 			aProcess.setTitle("Hide Business Process");
 		}else{
 			aProcess.removeStyleName("disabled");
 			divProcess.addStyleName("hidden");
-			divContent.removeClassName("span9");
+//			divContent.removeClassName("span9");
 			divContent.addClassName("span12");
+			divContent.removeClassName("hidden");
 			isBizProcessDisplayed=false;
 			aProcess.setTitle("Show Business Process");
 		}
@@ -471,14 +484,11 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 		}
 		
-		this.url=null;
-		if(id!=null){
-			String root = GWT.getModuleBaseURL();
-			root = root.replaceAll("/gwtht", "");
-			this.url = root+"getreport?did="+id+"&ACTION=GETDOCUMENTPROCESS";
-			aShowProcess.setVisible(true);
-		}
 		
+		this.url=null;
+		if(status==DocStatus.DRAFTED){
+			setProcessForDoc(id);
+		}
 	}
 		
 	public void setValidTaskActions(List<Actions> actions){
@@ -562,25 +572,25 @@ public class GenericDocumentView extends ViewImpl implements
 		UIObject.setVisible(aDelete.getElement(), displayed);
 	}
 
-	@Override
-	public void setStates(List<NodeDetail> states) {
-		statusContainer.clear();
-		if(states!=null){
-			NodeDetail detail = null;
-			for(NodeDetail state:states){
-				if(state.isEndNode())
-					detail = state;
-				else
-					statusContainer.add(new ProcessState(state));
-				
-			}
-			
-			//ensure end node always comes last
-			if(detail!=null){
-				statusContainer.add(new ProcessState(detail));
-			}
-		}
-	}
+//	@Override
+//	public void setStates(List<NodeDetail> states) {
+//		statusContainer.clear();
+//		if(states!=null){
+//			NodeDetail detail = null;
+//			for(NodeDetail state:states){
+//				if(state.isEndNode())
+//					detail = state;
+//				else
+//					statusContainer.add(new ProcessState(state));
+//				
+//			}
+//			
+//			//ensure end node always comes last
+//			if(detail!=null){
+//				statusContainer.add(new ProcessState(detail));
+//			}
+//		}
+//	}
 	
 	public void show(Anchor target){
 		show(target,true);
@@ -842,6 +852,27 @@ public class GenericDocumentView extends ViewImpl implements
 		this.isUnassignedList = isUnassignedList;
 		show(aAssign, isUnassignedList);
 		show(aAttach2, !isUnassignedList);
+	}
+
+	@Override
+	public void setProcessUrl(Long processInstanceId) {
+		if(processInstanceId!=null){
+			String root = GWT.getModuleBaseURL();
+			root = root.replaceAll("/gwtht", "");
+			this.url = root+"getreport?pid="+processInstanceId+"&ACTION=PROCESSMAP&v="+System.currentTimeMillis();
+			aShowProcess.setVisible(true);
+			aShowProcess.setUrl(this.url);
+		}
+	}
+	
+	public void setProcessForDoc(Long documentId){
+		if(documentId!=null){
+			String root = GWT.getModuleBaseURL();
+			root = root.replaceAll("/gwtht", "");
+			this.url = root+"getreport?did="+documentId+"&ACTION=GETDOCUMENTPROCESS";
+			aShowProcess.setVisible(true);
+			aShowProcess.setUrl(this.url);
+		}
 	}
 
 }

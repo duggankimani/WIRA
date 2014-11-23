@@ -43,6 +43,10 @@
 		    <name>sonatype-snapshots</name>
 		    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</repository>
+		<repository>
+	        <id>jBPM-Process-Image-Processor</id>
+	        <url>https://github.com/esteban-aliverti/jBPM-Process-Image-Processor-mvn-repo/raw/master/snapshots</url>
+    	</repository>
 	</repositories>
 	
 	
@@ -795,7 +799,6 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version-->
-			<!--scope>provided</scope-->
 		<!-- /dependency -->
         
 
@@ -1211,6 +1214,25 @@
             <artifactId>matheclipse</artifactId>
             <version>0.0.10_1</version>
         </dependency>
+        
+        <!-- Drawing the JBPM Process Image- API by  esteban-aliverti -->
+        <dependency>
+	        <groupId>com.ilesteban</groupId>
+	        <artifactId>jbpm-process-image-processor</artifactId>
+	        <version>1.0-SNAPSHOT</version>
+	        <exclusions>
+	        	<exclusion>
+	        		<groupId>batik</groupId>
+            		<artifactId>batik-svg-dom</artifactId>
+	        	</exclusion>
+	        </exclusions>
+	    </dependency>
+	   
+	    <dependency>
+	    	<groupId>org.apache.xmlgraphics</groupId>
+	    	<artifactId>batik-svg-dom</artifactId>
+	    	<version>1.7</version>
+	    </dependency>
         
         <!-- Test -->	
         <dependency>

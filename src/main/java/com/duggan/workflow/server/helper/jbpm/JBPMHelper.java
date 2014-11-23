@@ -2,10 +2,12 @@ package com.duggan.workflow.server.helper.jbpm;
 
 import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getDocument;
 
+import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,14 +21,11 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.drools.builder.ResourceType;
-import org.drools.definition.process.Connection;
 import org.drools.definition.process.Node;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.NodeInstanceLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
-import org.jbpm.task.AccessType;
-import org.jbpm.task.Comment;
 import org.jbpm.task.Deadline;
 import org.jbpm.task.Deadlines;
 import org.jbpm.task.I18NText;
@@ -34,7 +33,6 @@ import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.PeopleAssignments;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
-import org.jbpm.task.TaskData;
 import org.jbpm.task.User;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.local.LocalTaskService;
@@ -44,15 +42,14 @@ import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
-import org.jbpm.workflow.instance.node.WorkItemNodeInstance;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.DBLoginHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.exceptions.ProcessInitializationException;
 import com.duggan.workflow.shared.model.Actions;
@@ -62,9 +59,6 @@ import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.HTAccessType;
-import com.duggan.workflow.shared.model.HTComment;
-import com.duggan.workflow.shared.model.HTData;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
@@ -77,6 +71,9 @@ import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
+import com.ilesteban.processimage.ProcessImageProcessor;
+import com.ilesteban.processimage.ProcessImageProcessorConfiguration;
+import com.ilesteban.processimage.transformation.TaskColorTransformationJob;
 
 /**
  * This is a Helper Class for all JBPM associated requests. It provides utility
@@ -857,6 +854,62 @@ public class JBPMHelper implements Closeable {
 
 		sessionManager.execute(taskId, userId, action, values);
 
+	}
+	
+	/**
+	 * 
+	 * @return PNG Diagram
+	 * @throws IOException 
+	 */
+	public InputStream getProcessMap(long processInstanceId) throws IOException{
+
+		ProcessInstanceLog log = JPAProcessInstanceDbLog
+				.findProcessInstance(processInstanceId);
+		String processId = log.getProcessId();
+
+		
+		List<LocalAttachment> attachment = DB.getAttachmentDao().getAttachmentsForProcessDef(
+				DB.getProcessDao().getProcessDef(processId), true);
+		
+		if(attachment.size()!=1 || !attachment.get(0).getName().endsWith("svg")){
+			throw new RuntimeException("Cannot Generate ProcessMap; SVG Image not found");
+		}
+		
+		byte[] svgImage = attachment.get(0).getAttachment();
+
+        //Create a new Configuration object to set the padd to use in the label of the tasks
+        ProcessImageProcessorConfiguration config = new ProcessImageProcessorConfiguration();
+        config.setDefaultextPad(20.0f);
+        
+        //Create a processor instance for test1.svg
+        ProcessImageProcessor processor = new ProcessImageProcessor(new ByteArrayInputStream(svgImage), config);
+        
+		org.drools.definition.process.Process process = sessionManager
+				.getProcess(processId);
+
+		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
+		
+		for (Node node : wfprocess.getNodes()) {
+
+			long nodeId = node.getId();
+			
+			List<NodeInstanceLog> nodeLogInstance = JPAProcessInstanceDbLog
+					.findNodeInstances(processInstanceId,
+							new Long(nodeId).toString());
+
+			if (nodeLogInstance.size() > 0) {
+				// HumanTaskNode ht = (HumanTaskNode) node;
+				String name = node.getName();
+				
+				boolean isCompletedNode = nodeLogInstance.size()==2;
+				processor.addTransformationJob(
+						new TaskColorTransformationJob(name, isCompletedNode?"#00ff00":"#ff0000"));
+			}
+		}
+		  //apply the transformations
+        processor.applyTransformationJobs(true);
+        
+        return processor.toPNG();
 	}
 
 	public List<NodeDetail> getWorkflowProcessDia(long processInstanceId) {

@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.servlets.upload;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -25,6 +27,7 @@ import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
@@ -124,7 +127,33 @@ public class GetReport extends HttpServlet {
 		if(action.equalsIgnoreCase("GENERATEOUTPUT")){
 			processOutputDoc(req,resp);
 		}
+		
+		if(action.equalsIgnoreCase("PROCESSMAP")){
+			processBPMProcessMap(req, resp);
+		}
 
+	}
+
+	private void processBPMProcessMap(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		String pid = req.getParameter("pid");
+		String did = req.getParameter("did");
+		
+		Long processInstanceId = null;
+		
+		if(pid!=null){
+			processInstanceId = new Long(pid);
+		}else if(did!=null){
+			processInstanceId = DB.getDocumentDao().getProcessInstanceIdByDocumentId(new Long(did));
+		}
+		
+		assert processInstanceId!=null;
+		
+		InputStream is = JBPMHelper.get().getProcessMap(processInstanceId);
+		byte[] data = IOUtils.toByteArray(is);
+		IOUtils.closeQuietly(is);
+		
+		processAttachmentRequest(resp, data,"pid"+processInstanceId+".png");
 	}
 
 	private void processOutputDoc(HttpServletRequest req,

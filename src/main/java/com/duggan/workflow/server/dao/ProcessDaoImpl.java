@@ -41,6 +41,14 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 		return em.find(ProcessDefModel.class, processDefId);
 	}
 	
+	public ProcessDefModel getProcessDef(String processId){
+		return getSingleResultOrNull(em.createQuery("FROM ProcessDefModel p "
+				+ "where p.isArchived=:isArchived "
+				+ "and p.processId=:processId")
+				.setParameter("isArchived", false)
+				.setParameter("processId", processId));
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<ProcessDefModel> getAllProcesses(){
 		return em.createQuery("FROM ProcessDefModel p where p.isArchived=:isArchived order by p.name")
