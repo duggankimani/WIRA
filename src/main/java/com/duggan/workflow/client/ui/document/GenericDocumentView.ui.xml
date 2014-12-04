@@ -18,7 +18,7 @@
 				</div>
 				<div class="action-buttons pull-right">
 					<d:ActionLink ui:field="aProcess" styleName="btn btn-default disabled"
-						title="Hide Business Process">
+						title="Hide Process Map">
 						<i class="icon-info"></i>
 						<!-- Process -->
 					</d:ActionLink>
@@ -258,16 +258,17 @@
 				ui:field="divProcess">
 				<div class="row-fluid">
 					<h5>Process Map</h5>
+					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
 				</div>
 				<g:HTMLPanel ui:field="statusContainer" styleName="panel-body">
-				    <g:Image ui:field="aShowProcess" title="Open in new tab"></g:Image>
+				    <g:Image ui:field="imgProcess"></g:Image>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			
 			<!-- g:HTMLPanel styleName="status-section span3 pull-right row-fluid well"
 				ui:field="divProcess">
 				<div class="row-fluid">
-					<h5>Business Process</h5>
+					<h5>Process Map</h5>
 				</div>
 				<g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>
 

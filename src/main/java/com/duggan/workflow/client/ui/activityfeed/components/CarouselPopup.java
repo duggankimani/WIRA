@@ -144,11 +144,11 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		CarouselItem carousel1 = new CarouselItem(
 				true,
 				ImageResources.IMAGES.business_process(),
-				"Use the 'Business Process' tool to view the progress of your requests.");
+				"Use the Process Map to view the progress of your requests.");
 
 		CarouselItem carousel2 = new CarouselItem(false,
-				ImageResources.IMAGES.show_users(),
-				"Place the mouse pointer on top of a node to see the users involved in the step.");
+				ImageResources.IMAGES.tasks(),
+				"Each task has the name of the person working on the task.");
 
 		innerCarousel.add(carousel1);
 		innerCarousel.add(carousel2);

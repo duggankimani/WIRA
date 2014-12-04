@@ -35,6 +35,8 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -105,7 +107,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField HTMLPanel divActivity;
 	//@UiField Anchor aAttach1;
 	@UiField Anchor aAttach2;
-	@UiField Image aShowProcess;
+	@UiField Image imgProcess;
 	@UiField Anchor aContinue;
 	@UiField HTMLPanel divContinue;
 	@UiField CommentBox commentPanel;
@@ -161,7 +163,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aForward.getElement().setAttribute("type", "button");
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
-		aShowProcess.setVisible(false);
+		imgProcess.setVisible(false);
 		img.addErrorHandler(new ErrorHandler() {
 			
 			@Override
@@ -170,21 +172,28 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 		});
 		
+		img.addDoubleClickHandler(new DoubleClickHandler() {
+			
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				Window.open(img.getUrl(),"_blank",null);
+			}
+		});
 
 		showDefaultFields(false);
 		disableAll();//Hide all buttons
 		
-		aShowProcess.removeStyleName("gwt-Anchor");
+		imgProcess.removeStyleName("gwt-Anchor");
 		
 //		aShowProcess.addClickHandler(new ClickHandler() {
 //		@Override
 //			public void onClick(ClickEvent event) {
 //				if(url!=null)
-//				Window.open(url, "Business Process", null);
+//				Window.open(url, "Process Map", null);
 //			}
 //		});
 		
-		aShowProcess.addErrorHandler(new ErrorHandler() {
+		imgProcess.addErrorHandler(new ErrorHandler() {
 			
 			@Override
 			public void onError(ErrorEvent event) {
@@ -297,7 +306,7 @@ public class GenericDocumentView extends ViewImpl implements
 //			divContent.addClassName("span9");
 			divContent.addClassName("hidden");
 			isBizProcessDisplayed=true;
-			aProcess.setTitle("Hide Business Process");
+			aProcess.setTitle("Hide Process Map");
 		}else{
 			aProcess.removeStyleName("disabled");
 			divProcess.addStyleName("hidden");
@@ -305,7 +314,7 @@ public class GenericDocumentView extends ViewImpl implements
 			divContent.addClassName("span12");
 			divContent.removeClassName("hidden");
 			isBizProcessDisplayed=false;
-			aProcess.setTitle("Show Business Process");
+			aProcess.setTitle("Show Process Map");
 		}
 	}
 
@@ -860,8 +869,8 @@ public class GenericDocumentView extends ViewImpl implements
 			String root = GWT.getModuleBaseURL();
 			root = root.replaceAll("/gwtht", "");
 			this.url = root+"getreport?pid="+processInstanceId+"&ACTION=PROCESSMAP&v="+System.currentTimeMillis();
-			aShowProcess.setVisible(true);
-			aShowProcess.setUrl(this.url);
+			imgProcess.setVisible(true);
+			imgProcess.setUrl(this.url);
 		}
 	}
 	
@@ -870,8 +879,8 @@ public class GenericDocumentView extends ViewImpl implements
 			String root = GWT.getModuleBaseURL();
 			root = root.replaceAll("/gwtht", "");
 			this.url = root+"getreport?did="+documentId+"&ACTION=GETDOCUMENTPROCESS";
-			aShowProcess.setVisible(true);
-			aShowProcess.setUrl(this.url);
+			imgProcess.setVisible(true);
+			imgProcess.setUrl(this.url);
 		}
 	}
 
