@@ -617,7 +617,7 @@ body .dateBoxPopup {
 	width: 94%;
 	padding: 0px;
 	position: relative;
-	top: -2px;
+	/*top: -2px;*/
 }
 
 #nav-top .search-box:hover,#nav-top .search-box:focus {
