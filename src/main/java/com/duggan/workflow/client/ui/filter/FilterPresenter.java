@@ -60,15 +60,6 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 				if(subject!=""){
 					//homeview.setSearchBox(subject);
 				}
-				
-				//homeview.hideFilterDialog();
-			}
-		});
-		
-		getView().getCloseButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				//homeview.hideFilterDialog();
 			}
 		});
 		
@@ -100,5 +91,9 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 					getView().setDocTypes(response.getDocumentTypes());
 				}
 		});
+	}
+
+	public void addCloseHandler(ClickHandler clickHandler) {
+		getView().getCloseButton().addClickHandler(clickHandler);
 	}
 }

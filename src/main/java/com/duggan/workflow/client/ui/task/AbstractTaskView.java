@@ -56,7 +56,6 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 		txtSearch.getElement().setAttribute("placeholder", "Search...");
 		divDocListing.setId("middle-nav");
 		divDocView.setId("detailed-info");
-		
 
 		// InlineLabel l;
 		// l.addClickHandler(handler)

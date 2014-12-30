@@ -149,7 +149,13 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		//addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		
 		addRegisteredHandler(SearchEvent.TYPE, this);
-		
+		filterPresenter.addCloseHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getView().hideFilterDialog();
+			}
+		});
 		
 		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
 			
@@ -418,6 +424,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		if(this.isVisible()){
 			SearchFilter filter= event.getFilter();
 			search(filter);
+			getView().hideFilterDialog();
 		}
 	}
 	
