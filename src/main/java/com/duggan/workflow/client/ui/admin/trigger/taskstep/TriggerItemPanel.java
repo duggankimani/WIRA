@@ -19,12 +19,12 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TriggerPanel extends Composite {
+public class TriggerItemPanel extends Composite {
 
 	private static TriggerPanelUiBinder uiBinder = GWT
 			.create(TriggerPanelUiBinder.class);
 
-	interface TriggerPanelUiBinder extends UiBinder<Widget, TriggerPanel> {
+	interface TriggerPanelUiBinder extends UiBinder<Widget, TriggerItemPanel> {
 	}
 
 	@UiField InlineLabel lblName;
@@ -34,7 +34,7 @@ public class TriggerPanel extends Composite {
 	
 	TreeItem item;
 	
-	public TriggerPanel(TreeItem parentItem, TaskStepTrigger aTrigger){
+	public TriggerItemPanel(TreeItem parentItem, TaskStepTrigger aTrigger){
 		this(aTrigger.getTrigger().getName());
 		this.trigger = aTrigger;
 		this.item = parentItem;
@@ -70,7 +70,7 @@ public class TriggerPanel extends Composite {
 		});
 	}
 
-	public TriggerPanel(String name) {
+	public TriggerItemPanel(String name) {
 		initWidget(uiBinder.createAndBindUi(this));
 		lblName.setText(name);
 	}

@@ -9,7 +9,7 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
-import com.duggan.workflow.client.ui.admin.processitem.TaskStepPresenter;
+import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
 import com.duggan.workflow.client.ui.events.EditProcessEvent.EditProcessHandler;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
@@ -58,7 +58,7 @@ public class ProcessPresenter extends
 	
 	IndirectProvider<ProcessSavePresenter> processFactory;	
 	IndirectProvider<ProcessItemPresenter> processItemFactory;
-	IndirectProvider<TaskStepPresenter> taskStepsFactory;
+	IndirectProvider<ProcessStepsPresenter> taskStepsFactory;
 	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.processes)
@@ -75,11 +75,11 @@ public class ProcessPresenter extends
 	public ProcessPresenter(final EventBus eventBus, final IProcessView view,final MyProxy proxy,
 			Provider<ProcessSavePresenter> addprocessProvider, 
 			Provider<ProcessItemPresenter> columnProvider,
-			Provider<TaskStepPresenter> taskStepsProvider) {
+			Provider<ProcessStepsPresenter> taskStepsProvider) {
 		super(eventBus,view,proxy,AdminHomePresenter.SLOT_SetTabContent);
 		processFactory = new StandardProvider<ProcessSavePresenter>(addprocessProvider);
 		processItemFactory= new StandardProvider<ProcessItemPresenter>(columnProvider);
-		taskStepsFactory = new StandardProvider<TaskStepPresenter>(taskStepsProvider);
+		taskStepsFactory = new StandardProvider<ProcessStepsPresenter>(taskStepsProvider);
 	}
 	
 	@Override
@@ -154,10 +154,10 @@ public class ProcessPresenter extends
 								addToSlot(TABLE_SLOT, result);
 								
 								//Task Steps
-								taskStepsFactory.get(new ServiceCallback<TaskStepPresenter>() {
+								taskStepsFactory.get(new ServiceCallback<ProcessStepsPresenter>() {
 									@Override
 									public void processResult(
-											TaskStepPresenter aResponse) {
+											ProcessStepsPresenter aResponse) {
 										aResponse.setProcess(def);
 										addToSlot(TABLE_SLOT, aResponse);
 									}

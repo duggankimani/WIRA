@@ -86,7 +86,7 @@ public class TaskStepTriggerView extends ViewImpl implements
 		item.removeItems();
 		((TriggerTypePanel)item.getWidget()).setCount(triggers.size());
 		for(TaskStepTrigger trigger: triggers){
-			TreeItem child = new TreeItem(new TriggerPanel(item, trigger));
+			TreeItem child = new TreeItem(new TriggerItemPanel(item, trigger));
 			item.addItem(child);
 			
 		}

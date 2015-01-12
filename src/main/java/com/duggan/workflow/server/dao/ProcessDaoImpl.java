@@ -11,13 +11,16 @@ import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 
+import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.TriggerType;
 
 public class ProcessDaoImpl extends BaseDaoImpl{
@@ -284,6 +287,30 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 				.setParameter("processInstanceId", processInstanceId));
 		
 		return status==null? -1: status.intValue();
+	}
+
+
+	public ADTaskNotification getTaskNotificationById(Long id) {
+
+		return getSingleResultOrNull(em.createQuery("from ADTaskNotification t where t.id=:id")
+				.setParameter("id", id));
+	}
+
+
+	public ADTaskNotification getTaskNotification(Long nodeId, String stepName,
+			Long processDefId, NotificationCategory category, Actions action) {
+
+		return getSingleResultOrNull(em.createQuery("from ADTaskNotification t where "
+				+ "t.nodeId=:nodeId and "
+				//+ "t.stepName=:stepName and "
+				+ "t.processDefId=:processDefId and "
+				+ "t.action=:action and "
+				+ "t.category=:category")
+				.setParameter("nodeId", nodeId)
+				//.setParameter("stepName", stepName)
+				.setParameter("processDefId", processDefId)
+				.setParameter("action", action)
+				.setParameter("category", category));
 	}
 	
 }

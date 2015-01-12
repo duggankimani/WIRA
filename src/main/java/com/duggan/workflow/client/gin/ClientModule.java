@@ -39,8 +39,8 @@ import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSaveView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
-import com.duggan.workflow.client.ui.admin.processitem.TaskStepPresenter;
-import com.duggan.workflow.client.ui.admin.processitem.TaskStepView;
+import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
+import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsView;
 import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.reports.ReportsView;
 import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
@@ -124,6 +124,9 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter.INotificationSetupView;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupView;
 import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
@@ -320,8 +323,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(DocTreePresenter.class, 
 				DocTreePresenter.IDocTreeView.class,DocTreeView.class);
 		
-		bindPresenterWidget(TaskStepPresenter.class, 
-				TaskStepPresenter.MyView.class,TaskStepView.class);
+		bindPresenterWidget(ProcessStepsPresenter.class, 
+				ProcessStepsPresenter.MyView.class,ProcessStepsView.class);
 		
 		bindPresenter(TriggerPresenter.class, TriggerPresenter.ITriggerView.class, TriggerView.class, TriggerPresenter.MyProxy.class);
 		
@@ -333,5 +336,7 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenter(UnAssignedPresenter.class, UnAssignedPresenter.IUnAssignedView.class, UnAssignedView.class, UnAssignedPresenter.IUnAssignedProxy.class);
 		
+		bindPresenterWidget(NotificationSetupPresenter.class, 
+				INotificationSetupView.class, NotificationSetupView.class);
 	}
 }

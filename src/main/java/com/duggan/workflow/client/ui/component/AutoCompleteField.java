@@ -211,11 +211,21 @@ public class AutoCompleteField<T extends Listable> extends Composite {
 	public List<T> getSelectedItems(){
 		List<T> selectedVals = new ArrayList<T>();
 		for(String s: itemsSelected){
-			selectedVals.add(valuesMap.get(s));
+			T val = valuesMap.get(s);
+			if(val==null){
+				val = createItem(s);
+			}
+			if(val!=null){
+				selectedVals.add(val);
+			}
 		}
 		return selectedVals;
 	}
 	
+	public T createItem(String s) {
+		return null;
+	}
+
 	public void clearSelection(){
 		itemsSelected.clear();
 		int count = ulPanel.getWidgetCount();

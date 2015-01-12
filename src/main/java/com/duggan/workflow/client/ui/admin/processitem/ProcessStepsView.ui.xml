@@ -24,7 +24,7 @@
 				<div class="content-body">
 					<div class="row-fluid">
 						<!--Action Buttons  -->
-						 <div class="action-buttons">
+						<div class="action-buttons">
 							<g:Anchor ui:field="aNewStep" styleName="btn btn-primary"
 								title="Add a New Step">
 								<i class="icon-plus"></i>
@@ -36,11 +36,15 @@
 								<i class="icon-plus"></i>
 									Triggers
 							</g:Anchor>
+							
+							<d:DropDownList ui:field="listNotificationType" styleName="input-medium hide">
+							</d:DropDownList>
 						</div>
 						
 							<ul id="mytab" class="nav nav-tabs">
 							  <li class="active" ui:field="liStep"><g:Anchor ui:field="aStepstab">Steps</g:Anchor></li>
 							  <li ui:field="liTrigger"><g:Anchor ui:field="aTriggerstab">Triggers</g:Anchor></li>
+							  <li ui:field="liNotifications"><g:Anchor ui:field="aNotificationstab">Notifications</g:Anchor></li>
 							</ul>
 							<div id="stepcontent" class="tab-content">
 								<div ui:field="divStepContent" class="tab-pane fade in active">
@@ -55,6 +59,11 @@
 								<!-- Trigger Content -->
 								<div ui:field="divTriggerContent" class="tab-pane fade">
 									<g:HTMLPanel ui:field="panelTriggerContent">
+									</g:HTMLPanel>
+								</div><!--  -->
+								
+								<div ui:field="divNotificationsContent" class="tab-pane fade">
+									<g:HTMLPanel ui:field="panelNotificationsContent">
 									</g:HTMLPanel>
 								</div><!--  -->
 							</div>

@@ -330,3 +330,8 @@ div.num{
 div.center{
 	text-align:center;
 }
+
+div.htmlEditorPopup{
+	max-width:90% !important;
+	width:860px !important;
+}

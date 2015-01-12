@@ -10,10 +10,12 @@ import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
 
+import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.DocumentModel;
@@ -22,9 +24,11 @@ import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
+import com.duggan.workflow.shared.model.TaskNotification;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
@@ -469,5 +473,59 @@ public class ProcessDefHelper {
 		return adTaskStep;
 	}
 	
+	public static TaskNotification saveTaskNotification(TaskNotification notification){
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADTaskNotification model = getTaskNotificationModel(notification);
+		dao.save(model);
+		return getTaskNotification(model);
+	}
+
+	private static TaskNotification getTaskNotification(ADTaskNotification model) {
+		
+		TaskNotification notification = new TaskNotification();
+		if(model==null){
+			return notification;
+		}
+		notification.setId(model.getId());
+		notification.setAction(model.getAction());
+		notification.setCategory(model.getCategory());
+		notification.setEnableNotification(model.isEnableNotification());
+		notification.setNotificationTemplate(model.getNotificationTemplate());
+		notification.setTargets(model.getTargets());
+		notification.setUseDefaultNotification(model.isUseDefaultNotification());
+		notification.setNodeId(model.getNodeId());
+		notification.setStepName(model.getStepName());
+		notification.setProcessDefId(model.getProcessDefId());
+		return notification;
+	}
+	
+	private static ADTaskNotification getTaskNotificationModel(
+			TaskNotification notification) {
+
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADTaskNotification model = new ADTaskNotification();
+		if(notification.getId()!=null){
+			model= dao.getTaskNotificationById(notification.getId());
+		}
+		
+		model.setAction(notification.getAction());
+		model.setCategory(notification.getCategory());
+		model.setEnableNotification(notification.isEnableNotification());
+		model.setNotificationTemplate(notification.getNotificationTemplate());
+		model.setTargets(notification.getTargets());
+		model.setUseDefaultNotification(notification.isUseDefaultNotification());
+		model.setNodeId(notification.getNodeId());
+		model.setStepName(notification.getStepName());
+		model.setProcessDefId(notification.getProcessDefId());
+		
+		return model;
+	}
+	
+	public static TaskNotification getTaskNotificationTemplate(Long nodeId, String stepName, Long processDefId, 
+			NotificationCategory category, Actions action){
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADTaskNotification model = dao.getTaskNotification(nodeId, stepName, processDefId, category,action);
+		return getTaskNotification(model);
+	}
 
 }

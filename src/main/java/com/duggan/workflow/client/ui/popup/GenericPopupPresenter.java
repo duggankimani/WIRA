@@ -18,6 +18,10 @@ public class GenericPopupPresenter extends
 		void setHeader(String header);
 
 		PopupPanel getPopUpPanel();
+
+		void addStyleName(String customPopupStyle);
+
+		void removeStyleName(String customPopupStyle);
 	}
 
 	@Inject

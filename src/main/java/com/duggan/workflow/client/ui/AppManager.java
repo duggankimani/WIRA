@@ -34,12 +34,22 @@ public class AppManager {
 
 	public static void showPopUp(String header, Widget widget,
 			final OnOptionSelected onOptionSelected, String... buttons) {
+		showPopUp(header, widget, null, onOptionSelected, buttons);
+	}
+	
+	public static void showPopUp(String header, Widget widget,final String customPopupStyle,
+			final OnOptionSelected onOptionSelected, String... buttons) {
 		popupPresenter.setHeader(header);
 		popupPresenter.setInSlot(GenericPopupPresenter.BODY_SLOT, null);
 		popupPresenter.setInSlot(GenericPopupPresenter.BUTTON_SLOT, null);
 
 		popupPresenter.getView().setInSlot(GenericPopupPresenter.BODY_SLOT,
 				widget);
+		
+		if(customPopupStyle!=null){
+			popupPresenter.getView().addStyleName(customPopupStyle);
+		}
+		
 		for (final String text : buttons) {
 			Anchor aLnk = new Anchor();
 			if (text.equals("Cancel")) {
@@ -55,6 +65,7 @@ public class AppManager {
 
 				@Override
 				public void onClick(ClickEvent event) {
+										
 					if (onOptionSelected instanceof OptionControl) {
 						((OptionControl) onOptionSelected)
 								.setPopupView((PopupView) (popupPresenter
@@ -63,6 +74,10 @@ public class AppManager {
 					} else {
 						popupPresenter.getView().hide();
 						onOptionSelected.onSelect(text);
+					}
+					
+					if(customPopupStyle!=null){
+						popupPresenter.getView().removeStyleName(customPopupStyle);
 					}
 				}
 			});

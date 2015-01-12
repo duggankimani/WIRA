@@ -92,4 +92,14 @@ public class GenericPopupView extends PopupViewImpl implements
 			}
 		}
 	}
+
+	@Override
+	public void addStyleName(String customPopupStyle) {
+		popUpPanel.addStyleName(customPopupStyle);
+	}
+
+	@Override
+	public void removeStyleName(String customPopupStyle) {
+		popUpPanel.removeStyleName(customPopupStyle);
+	}
 }

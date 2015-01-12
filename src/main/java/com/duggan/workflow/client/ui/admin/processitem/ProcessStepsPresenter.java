@@ -7,9 +7,11 @@ import java.util.List;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPresenter;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
+import com.duggan.workflow.client.ui.events.NotificationCategoryChangeEvent;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent.ProcessSelectedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -40,14 +42,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
-public class TaskStepPresenter extends
-		PresenterWidget<TaskStepPresenter.MyView> implements ProcessSelectedHandler, SaveTaskStepHandler{
+public class ProcessStepsPresenter extends
+		PresenterWidget<ProcessStepsPresenter.MyView> implements ProcessSelectedHandler, SaveTaskStepHandler{
 
 	public interface MyView extends View {
 		void show(boolean show);
@@ -61,6 +64,8 @@ public class TaskStepPresenter extends
 		HasClickHandlers getTriggersTabLink();
 		HasClickHandlers getStepsTabLink();
 		HasClickHandlers getAddTriggerLink();
+		HasClickHandlers getNotificationsTabLink();
+		DropDownList<NotificationCategory> getNotificationCategoryDropdown();
 	}
 	
 	@Inject DispatchAsync requestHelper;
@@ -72,11 +77,13 @@ public class TaskStepPresenter extends
 	List<OutputDocument> templates;
 	
 	@Inject TaskStepTriggerPresenter presenter;
+	@Inject NotificationSetupPresenter notificationsPresenter;
 
 	public static final Object TRIGGER_SLOT = new Object();
+	public static final Object NOTIFICATIONS_SLOT = new Object();
 	
 	@Inject
-	public TaskStepPresenter(final EventBus eventBus, final MyView view) {
+	public ProcessStepsPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
 
@@ -90,7 +97,7 @@ public class TaskStepPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				TaskStepDTO dto = ((TaskStepView.Link)event.getSource()).dto;
+				TaskStepDTO dto = ((ProcessStepsView.Link)event.getSource()).dto;
 				dto.setActive(false);
 				
 				saveDTOs(Arrays.asList(dto));
@@ -139,6 +146,19 @@ public class TaskStepPresenter extends
 			}
 		});
 		
+		getView().getNotificationsTabLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				notificationsPresenter.setProcessDefId(processDef.getId());
+				setInSlot(NOTIFICATIONS_SLOT, notificationsPresenter);
+				loadNotificationTemplate(getView().getNotificationCategoryDropdown().getValue(),
+						selected==null? null: selected.getNodeId(),
+								selected==null? null: selected.getName(),
+										processDef.getId());
+			}
+		});
+		
 		getView().getAddTriggerLink().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -146,6 +166,24 @@ public class TaskStepPresenter extends
 				fireEvent(new EditTriggerEvent(null));
 			}
 		});
+		
+		getView().getNotificationCategoryDropdown().addValueChangeHandler(new ValueChangeHandler<NotificationCategory>() {
+			@Override
+			public void onValueChange(
+					ValueChangeEvent<NotificationCategory> event) {
+				Long nodeId = selected==null? null: selected.getNodeId();
+				String stepName= selected==null? null: selected.getName();
+				loadNotificationTemplate(event.getValue(), 
+						nodeId, stepName, processDef.getId());
+			}
+		});
+	}
+
+	protected void loadNotificationTemplate(NotificationCategory notificationCategory,
+			Long nodeId, String stepName, Long processDefId) {
+		fireEvent(new NotificationCategoryChangeEvent(notificationCategory==null?
+				NotificationCategory.EMAILNOTIFICATION:
+			notificationCategory, nodeId, stepName, processDefId));
 	}
 
 	public void setProcess(ProcessDef def) {
@@ -192,6 +230,9 @@ public class TaskStepPresenter extends
 		
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetTaskStepsRequest(processDef.getProcessId(), nodeId));
+		loadNotificationTemplate(
+				getView().getNotificationCategoryDropdown().getValue(), 
+				nodeId, selected==null? null : selected.getName(), processDef.getId());
 		
 		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
@@ -215,7 +256,6 @@ public class TaskStepPresenter extends
 			}else{
 				dto.setOutputDocId(((OutputDocument)l).getId());
 			}
-			
 			
 			dto.setNodeId(nodeId);
 			dto.setProcessDefId(processDef.getId());	
@@ -242,6 +282,12 @@ public class TaskStepPresenter extends
 	@Override
 	public void onSaveTaskStep(SaveTaskStepEvent event) {
 		saveDTOs(Arrays.asList(event.getTaskStepDTO()));
+	}
+	
+	@Override
+	protected void onUnbind() {
+		super.onUnbind();
+		Window.alert("Unbind ProcessStepsPresenter "+this);
 	}
 
 }
