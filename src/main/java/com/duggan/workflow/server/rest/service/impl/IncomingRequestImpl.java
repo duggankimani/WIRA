@@ -132,7 +132,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 				}
 				
 				if(key.equals("subject")){
-					doc.setSubject(value.toString());
+					doc.setCaseNo(value.toString());
 				}
 				
 				if(key.equals("priority")){

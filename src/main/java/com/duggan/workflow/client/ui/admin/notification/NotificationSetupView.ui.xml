@@ -27,17 +27,18 @@
 		  </tr>
 		</table>
 		
-		<g:HTMLPanel styleName="control-group">
+		<g:HTMLPanel styleName="control-group hidden">
 	       <label ui:field="lblEl" class="control-label">To</label>
 		   <g:HTMLPanel styleName="controls" ui:field="panelControls">
 		   	  <d:AutoCompleteField ui:field="autocompleteTargets"></d:AutoCompleteField>
-			  <!-- d:TextField ui:field="txtComponent" type="text" class="input-xlarge"/ -->
 	       </g:HTMLPanel>
        </g:HTMLPanel>
        
 		<g:HTMLPanel>
+			<d:TextArea ui:field="txtSubject" type="text"
+			 placeholder="Subject" class="input-xlarge" rows="1" width="100%"/>
 			<d:TextArea ui:field="txtNotification" 
-			rows="5" width="100%" placeholder="Custom Notification"> 
+			rows="3" width="100%" placeholder="Custom Notification"> 
 			</d:TextArea>
 		</g:HTMLPanel>
 		

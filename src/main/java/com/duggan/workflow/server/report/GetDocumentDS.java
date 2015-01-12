@@ -20,7 +20,7 @@ public class GetDocumentDS {
 		Document doc = new Document();
 		doc.setCreated(new Date());
 		doc.setPartner("ABC LTD");
-		doc.setSubject("INV/565/12");
+		doc.setCaseNo("INV/565/12");
 		//doc.setType(DocType.REQUISITION);
 		doc.setStatus(DocStatus.REJECTED);
 		doc.setDocumentDate(new Date());

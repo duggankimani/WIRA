@@ -21,7 +21,7 @@ public class SendMailCommand implements Command{
 	public ExecutionResults execute(CommandContext ctx) throws Exception {
 		
 		Map<String, Object> data = ctx.getData(); 
-		String subject = data.get("Subject")== null ? "": data.get("Subject").toString();
+		String subject = data.get("emailSubject")== null ? "": data.get("emailSubject").toString();
 		String body = data.get("Body")==null? "": data.get("Body").toString();
 		Object recipients = data.get("To")==null? "": data.get("To");
 		

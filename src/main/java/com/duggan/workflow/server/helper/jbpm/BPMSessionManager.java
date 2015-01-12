@@ -47,6 +47,7 @@ import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
+import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.wira.pioneer.integration.PioneerIntegrationWorkitemHandler;
 
 import xtension.workitems.FormValidationWorkItemHandler;
@@ -60,7 +61,9 @@ import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import xtension.workitems.WiseDigitsDocumentIntegration;
 import bitronix.tm.TransactionManagerServices;
 
+import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
@@ -783,16 +786,7 @@ class BPMSessionManager {
 		Map<String, Object> values = null;
 		Map<String, Object> newValues = new HashMap<>();
 
-		Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-		
-		assert doc!=null;
-		
-		Long sessionId = doc.getSessionId();
-
-		if (sessionId == null) {
-			throw new IllegalArgumentException(
-					"SessionId must not be null!!!");
-		}
+		Long sessionId = new Long(task.getTaskData().getProcessSessionId());
 
 		StatefulKnowledgeSession session = getSession(sessionId, task
 				.getTaskData().getProcessId());
@@ -830,11 +824,25 @@ class BPMSessionManager {
 		if (newValues.get("Priority") == null)
 			newValues.put("Priority", values.get("Priority"));
 
-		String processId = "beforetask-notification";
-
-		assert doc.getId()!=null;
-		newValues.put("DocumentId", doc.getId());
-		startProcess(processId, newValues);
+		HumanTaskNode node = (HumanTaskNode)JBPMHelper.get().getNode(task);
+		Long nodeId = node.getId();
+		String nodeName= node.getName();
+		
+		ADTaskNotification notification = DB.getProcessDao().getTaskNotification(
+				nodeId, nodeName, task.getTaskData().getProcessId(), NotificationCategory.EMAILNOTIFICATION,
+				Actions.CREATE);
+		
+		logger.debug("NodeId= "+nodeId+"; NodeName= "+nodeName+"; processId= "+task.getTaskData().getProcessId()
+				+"; category= "+NotificationCategory.EMAILNOTIFICATION.getName()
+				+"; Action= "+Actions.CREATE.getName());
+		
+		//Put all New Values into Task Data; This map has all inputs defined to the human task 
+		taskData.putAll(newValues);
+		new NotificationHandler().sendNotification(notification, taskData);
+		
+		
+		//String processId = "beforetask-notification";
+		//startProcess(processId, newValues);
 	}
 
 	public Process getProcess(String processId) {

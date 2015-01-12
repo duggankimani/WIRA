@@ -24,6 +24,7 @@ public class TaskNotification implements Serializable{
 	private Long nodeId;//Accommodate initial input form
 	private String stepName;
 	private Long processDefId;
+	private String subject;
 	
 	public TaskNotification() {
 	}
@@ -107,6 +108,14 @@ public class TaskNotification implements Serializable{
 
 	public void setProcessDefId(Long processDefId) {
 		this.processDefId = processDefId;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 	

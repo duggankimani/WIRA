@@ -491,11 +491,13 @@ public class ProcessDefHelper {
 		notification.setCategory(model.getCategory());
 		notification.setEnableNotification(model.isEnableNotification());
 		notification.setNotificationTemplate(model.getNotificationTemplate());
-		notification.setTargets(model.getTargets());
+		notification.setTargets(model.getReceipients());
 		notification.setUseDefaultNotification(model.isUseDefaultNotification());
 		notification.setNodeId(model.getNodeId());
 		notification.setStepName(model.getStepName());
 		notification.setProcessDefId(model.getProcessDefId());
+		notification.setSubject(model.getSubject());
+		
 		return notification;
 	}
 	
@@ -512,11 +514,12 @@ public class ProcessDefHelper {
 		model.setCategory(notification.getCategory());
 		model.setEnableNotification(notification.isEnableNotification());
 		model.setNotificationTemplate(notification.getNotificationTemplate());
-		model.setTargets(notification.getTargets());
+		model.setReceipients(notification.getTargets());
 		model.setUseDefaultNotification(notification.isUseDefaultNotification());
 		model.setNodeId(notification.getNodeId());
 		model.setStepName(notification.getStepName());
 		model.setProcessDefId(notification.getProcessDefId());
+		model.setSubject(notification.getSubject());
 		
 		return model;
 	}

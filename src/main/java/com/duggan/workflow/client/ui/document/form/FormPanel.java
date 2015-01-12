@@ -165,7 +165,7 @@ public class FormPanel extends Composite {
 			
 			if(value==null){
 				if(name.equals("subject")){
-					value = new StringValue(doc.getSubject());
+					value = new StringValue(doc.getCaseNo());
 				}
 				
 				if(name.equals("description")){

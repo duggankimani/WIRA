@@ -66,31 +66,31 @@ public class DocumentDaoHelper {
 
 		// save
 		if(document.getId()==null){
-			if(exists(document.getSubject())){
+			if(exists(document.getCaseNo())){
 				throw new InvalidSubjectExeption("Document '"+
-						document.getSubject()+"' already exists, this number cannot be reused");
+						document.getCaseNo()+"' already exists, this number cannot be reused");
 				
 			}
 			
-			if(document.getSubject()==null){
+			if(document.getCaseNo()==null){
 				ADDocType type = dao.getDocumentTypeByName(document.getType().getName());
-				document.setSubject(dao.generateDocumentSubject(type));
+				document.setCaseNo(dao.generateDocumentSubject(type));
 				
 				Value value = document.getValues().get("subject");
 				if(value==null){
 					value = new StringValue(null, "subject", "");
 				}
-				value.setValue(document.getSubject());
+				value.setValue(document.getCaseNo());
 				document.getValues().put("subject", value);
 			}
 	
 			if(document.getDescription()==null){
-				document.setDescription(document.getSubject());
+				document.setDescription(document.getCaseNo());
 				Value value = document.getValues().get("description");
 				if(value==null){
 					value = new StringValue(null, "description", "");					
 				}
-				value.setValue(document.getSubject());
+				value.setValue(document.getCaseNo());
 				document.getValues().put("description", value);
 			}
 		
@@ -103,7 +103,7 @@ public class DocumentDaoHelper {
 			model.setDocumentDate(document.getDocumentDate());
 			model.setPartner(document.getPartner());
 			model.setPriority(document.getPriority());
-			model.setSubject(document.getSubject());
+			model.setSubject(document.getCaseNo());
 			model.setType(getType(document.getType()));
 			model.setValue(document.getValue());
 			model.setStatus(document.getStatus());
@@ -213,7 +213,7 @@ public class DocumentDaoHelper {
 		doc.setDocumentDate(model.getDocumentDate());
 		doc.setId(model.getId());
 		doc.setOwner(LoginHelper.get().getUser(model.getCreatedBy()));
-		doc.setSubject(model.getSubject());
+		doc.setCaseNo(model.getSubject());
 		doc.setType(getType(model.getType()));
 		doc.setDocumentDate(model.getDocumentDate());
 		doc.setPartner(model.getPartner());
@@ -335,7 +335,7 @@ public class DocumentDaoHelper {
 	 */
 	private static DocumentModel getDoc(Document document) {
 		DocumentModel model = new DocumentModel(document.getId(),
-				document.getSubject(), document.getDescription(),
+				document.getCaseNo(), document.getDescription(),
 				getType(document.getType()));
 
 		model.setDocumentDate(document.getDocumentDate());
@@ -420,7 +420,7 @@ public class DocumentDaoHelper {
 					: (Integer) content.get("priority");
 
 			doc.setDescription(description);
-			doc.setSubject(subject);
+			doc.setCaseNo(subject);
 			doc.setValue(value);
 			doc.setPriority(priority);
 

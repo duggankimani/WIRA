@@ -24,7 +24,7 @@ public class Document extends Doc implements Serializable{
 	
 	private HTUser owner;
 	
-	protected String subject;
+	protected String caseNo;
 	
 	protected String description;
 	
@@ -79,12 +79,12 @@ public class Document extends Doc implements Serializable{
 		this.id = id;
 	}
 	
-	public String getSubject() {
-		return subject;
+	public String getCaseNo() {
+		return caseNo;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setCaseNo(String caseNo) {
+		this.caseNo = caseNo;
 	}
 
 	public String getDescription() {
@@ -151,8 +151,8 @@ public class Document extends Doc implements Serializable{
 		summary.setDescription(description);
 		summary.setDocumentRef(id);
 		summary.setPriority(priority);
-		summary.setSubject(subject);
-		summary.setTaskName(type.getDisplayName()+" - "+subject);
+		summary.setSubject(caseNo);
+		summary.setTaskName(type.getDisplayName()+" - "+caseNo);
 		
 		return summary;
 	}
@@ -206,8 +206,9 @@ public class Document extends Doc implements Serializable{
 			if(key.equals("partner"))
 				setPartner(val==null? null : val.toString());
 			
-			if(key.equals("subject"))
-				setSubject(val==null? null : val.toString());
+			if(key.equals("subject")){
+				setCaseNo(val==null? null : val.toString());
+			}
 			
 			if(key.equals("docType"))
 				setType(val==null? null : (DocumentType)val);
@@ -217,13 +218,15 @@ public class Document extends Doc implements Serializable{
 		
 			setValue(key, values.get(key));
 		}
+		
+		setValue("caseNo", new StringValue(null, "caseNo", caseNo));
 		//super.setValues(values);
 	}
 
 	@Override
 	public String toString() {
 	
-		return "DocumentId = "+id+", subject="+subject;
+		return "DocumentId = "+id+", subject="+caseNo;
 	}
 	public Document clone(){
 		return clone(false);

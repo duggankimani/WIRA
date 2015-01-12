@@ -42,7 +42,7 @@ public class TestApprovalRequest {
 		List<HTSummary> lst = JBPMHelper.get().getTasksForUser(userId, TaskType.INBOX);
 		
 		for(HTSummary summary: lst){
-			System.err.println(summary.getDocumentRef()+" : "+summary.getSubject()+" : "+summary.getDescription());
+			System.err.println(summary.getDocumentRef()+" : "+summary.getCaseNo()+" : "+summary.getDescription());
 		}
 		
 	}

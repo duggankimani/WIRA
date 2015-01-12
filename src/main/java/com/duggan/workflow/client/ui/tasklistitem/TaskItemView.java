@@ -122,7 +122,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			}
 		}
 		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(dateToUse));
-		spnSubject.setInnerText((aDoc.getProcessName()==null? "" : aDoc.getProcessName())+" "+aDoc.getSubject());
+		spnSubject.setInnerText((aDoc.getProcessName()==null? "" : aDoc.getProcessName())+" "+aDoc.getCaseNo());
 		
 		if(aDoc.hasAttachment()){
 			spnAttach.removeStyleName("hidden");
@@ -181,7 +181,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		}
 		
 		//Description
-		String desc =aDoc.getSubject();
+		String desc =aDoc.getCaseNo();
 		String taskActualOwner = "";
 		if(aDoc.getProcessStatus()==HTStatus.COMPLETED){
 			taskActualOwner="Completed";

@@ -354,7 +354,7 @@ public class TaskItemPresenter extends
 					//removeFromParent();
 					fireEvent(new AfterSaveEvent());
 					//reload((HTSummary)result.getDocument());
-					fireEvent(new WorkflowProcessEvent(doc.getSubject(),out,doc));
+					fireEvent(new WorkflowProcessEvent(doc.getCaseNo(),out,doc));
 				}else{
 					//fireEvent(new ReloadEvent());
 					reload((HTSummary)result.getDocument());
@@ -374,7 +374,7 @@ public class TaskItemPresenter extends
 		notification.setProcessInstanceId(summary.getProcessInstanceId());
 		notification.setNotificationType(NotificationType.TASKDELEGATED);
 		notification.setRead(false);
-		notification.setSubject(summary.getSubject());
+		notification.setSubject(summary.getCaseNo());
 		
 		HTUser user = new HTUser((String)values.get("targetUserId").getValue());
 		notification.setTargetUserId(user);

@@ -19,7 +19,7 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 
 	private boolean hasAttachment=false;
 
-	public abstract String getSubject();
+	public abstract String getCaseNo();
 
 	public abstract String getDescription();
 
@@ -77,6 +77,11 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	public void setValue(String name, Value value){
 		if(value!=null){
 			value.setKey(name);
+		}
+		
+		if(name.equals("subject")){
+			//backward compatibility - Changing subject to-> CaseNo
+			setValue("caseNo", value);
 		}
 		values.put(name, value);
 	}

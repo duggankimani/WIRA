@@ -50,7 +50,7 @@ public class TestDocumentDaoImpl {
 			Document clone = doc.clone();
 			clone.getValues().put("subject", null);
 			clone.getValues().put("description", null);
-			clone.setSubject(null);
+			clone.setCaseNo(null);
 			clone.setDescription(null);
 			
 			DocumentDaoHelper.save(clone);
@@ -133,7 +133,7 @@ public class TestDocumentDaoImpl {
 		doc.setDescription("test");
 		doc.setDocumentDate(new Date());
 		//doc.setType(DocumentType.INVOICE);
-		doc.setSubject("test");
+		doc.setCaseNo("test");
 		
 		Document model = DocumentDaoHelper.save(doc);
 		Assert.assertNotNull(model.getId());

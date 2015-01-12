@@ -197,7 +197,7 @@ public class OutputDocumentDaoHelper {
 		Value value = doc.getValues().get(fieldName);
 		if(value==null){
 			if(fieldName.equals("subject")){
-				return doc.getSubject();
+				return doc.getCaseNo();
 			}else if(fieldName.equals("documentId")){
 				return doc.getId();
 			}

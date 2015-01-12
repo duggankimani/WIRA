@@ -43,7 +43,7 @@ public class TestSearchDocument {
 		for(HTSummary summary: summaries){
 			System.err.format("%d : %s : %s : %s",
 					summary.getId(), summary.getCreated(), summary.getDocumentRef(), 
-					summary.getSubject())
+					summary.getCaseNo())
 			.println();
 		}
 	}

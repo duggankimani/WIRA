@@ -27,5 +27,17 @@ public class StringListable implements Listable, Serializable{
 		return value;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj==null){
+			return false;
+		}
+		
+		if(! (obj instanceof StringListable)){
+			return false;
+		}
+		
+		return value.equals(((StringListable)obj).value);
+	}
 	
 }

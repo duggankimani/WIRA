@@ -506,7 +506,7 @@ public class GenericDocumentPresenter extends
 							if(user!=null && user.getUserId()!=null){
 								
 								DelegationMessageView msgView = 
-										new DelegationMessageView(user, doc.getSubject());
+										new DelegationMessageView(user, doc.getCaseNo());
 								
 								AppManager.showPopUp("Assign Message",
 										msgView,
@@ -736,7 +736,7 @@ public class GenericDocumentPresenter extends
 										fireEvent(new ProcessingCompletedEvent());
 										//clear selected document
 										fireEvent(new AfterSaveEvent());
-										fireEvent(new WorkflowProcessEvent(doc.getSubject(), "You have forwarded for Approval",doc));
+										fireEvent(new WorkflowProcessEvent(doc.getCaseNo(), "You have forwarded for Approval",doc));
 									}
 								});
 							}
@@ -764,7 +764,7 @@ public class GenericDocumentPresenter extends
 
 	protected void delete(Document document) {
 		AppManager.showPopUp("Confirm Delete", 
-				new InlineLabel("Do you want to delete document '"+document.getSubject()+"'"),
+				new InlineLabel("Do you want to delete document '"+document.getCaseNo()+"'"),
 				new OnOptionSelected() {
 					
 					@Override
@@ -802,7 +802,7 @@ public class GenericDocumentPresenter extends
 							final HTUser user = view.getSelectedUser();
 							if(user!=null && user.getUserId()!=null){
 								
-								DelegationMessageView msgView = new DelegationMessageView(user, doc.getSubject());
+								DelegationMessageView msgView = new DelegationMessageView(user, doc.getCaseNo());
 								
 								AppManager.showPopUp("Delegation Message",
 										msgView,
@@ -1171,7 +1171,7 @@ public class GenericDocumentPresenter extends
 		this.documentId = docId;
 		
 		Date created = doc.getCreated();
-		String subject = doc.getSubject();
+		String subject = doc.getCaseNo();
 		
 		Date docDate = doc.getDocumentDate();					
 		String description = doc.getDescription();

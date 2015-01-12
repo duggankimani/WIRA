@@ -434,7 +434,7 @@ public class JBPMHelper implements Closeable {
 		assert doc != null;
 
 		task.setCreated(master_task.getTaskData().getCreatedOn());
-		task.setSubject(doc.getSubject());
+		task.setSubject(doc.getCaseNo());
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
@@ -647,7 +647,7 @@ public class JBPMHelper implements Closeable {
 		}
 
 		List<I18NText> subjects = task.getSubjects();// translations
-		if(myTask.getSubject()==null){
+		if(myTask.getCaseNo()==null){
 			myTask.setSubject(subjects.get(0).getText());
 		}
 

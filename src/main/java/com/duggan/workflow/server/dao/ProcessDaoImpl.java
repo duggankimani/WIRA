@@ -21,6 +21,7 @@ import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.TriggerType;
 
 public class ProcessDaoImpl extends BaseDaoImpl{
@@ -296,6 +297,15 @@ public class ProcessDaoImpl extends BaseDaoImpl{
 				.setParameter("id", id));
 	}
 
+	public ADTaskNotification getTaskNotification(Long nodeId, String stepName,
+			String processId, NotificationCategory category, Actions action) {
+		ProcessDefModel def = getProcessDef(processId);
+		if(def==null){
+			return null;
+		}
+		
+		return getTaskNotification(nodeId, stepName, def.getId(), category, action);
+	}
 
 	public ADTaskNotification getTaskNotification(Long nodeId, String stepName,
 			Long processDefId, NotificationCategory category, Actions action) {

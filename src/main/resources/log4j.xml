@@ -23,7 +23,7 @@
         <level value="FATAL"/>
     </logger>
     <logger name="com.duggan.workflow.server">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
     <logger name="xtension.workitems">
         <level value="DEBUG"/>

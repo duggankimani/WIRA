@@ -82,7 +82,7 @@ public class HTSummary extends Doc implements Serializable{
 		this.created = created;
 	}
 
-	public String getSubject() {
+	public String getCaseNo() {
 		return subject;
 	}
 

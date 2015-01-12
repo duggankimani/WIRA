@@ -40,6 +40,7 @@ public class NotificationSetupView extends ViewImpl implements
 	}
 
 	@UiField TextArea txtNotification;
+	@UiField TextArea txtSubject;
 	@UiField CheckBox chkNotification;
 	@UiField CheckBox chkDefault;
 	@UiField SpanElement spnNotification;
@@ -68,23 +69,23 @@ public class NotificationSetupView extends ViewImpl implements
 				setUseDefaultMessage(event.getValue());
 			}
 		});
-		chkNotification.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				List<StringListable> values= autocompleteTargets.getSelectedItems();
-				if(values==null){
-					txtNotification.setValue("Null");
-					return;
-				}
-				txtNotification.setValue("");
-				String txt = "";
-				for(Listable listable: values){
-					txt = txt.concat("<"+listable.getName()+">"+listable.getDisplayName()+",");
-				}
-				txtNotification.setValue(txt);
-			}
-		});
+//		chkNotification.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+//			
+//			@Override
+//			public void onValueChange(ValueChangeEvent<Boolean> event) {
+//				List<StringListable> values= autocompleteTargets.getSelectedItems();
+//				if(values==null){
+//					txtNotification.setValue("Null");
+//					return;
+//				}
+//				txtNotification.setValue("");
+//				String txt = "";
+//				for(Listable listable: values){
+//					txt = txt.concat("<"+listable.getName()+">"+listable.getDisplayName()+",");
+//				}
+//				txtNotification.setValue(txt);
+//			}
+//		});
 		
 	}
 
@@ -93,9 +94,9 @@ public class NotificationSetupView extends ViewImpl implements
 		notification.setAction(listActions.getValue()==null? Actions.CREATE : listActions.getValue());
 		notification.setEnableNotification(chkNotification.getValue()==null? true : chkNotification.getValue());
 		notification.setNotificationTemplate(txtNotification.getValue());
-		notification.setTargets(getTargets());
+		//notification.setTargets(getTargets());
 		notification.setUseDefaultNotification(chkDefault.getValue()==null? false: chkDefault.getValue());
-		
+		notification.setSubject(txtSubject.getValue());
 		return notification;
 	}
 	
@@ -153,17 +154,42 @@ public class NotificationSetupView extends ViewImpl implements
 		}
 		chkNotification.setValue(notification.isEnableNotification());
 		txtNotification.setValue(notification.getNotificationTemplate());
+		txtSubject.setValue(notification.getSubject());
 		List<String> targets = notification.getTargets();
 		List<StringListable> list = new ArrayList<StringListable>();
 		for(String value : targets){
 			list.add(new StringListable(value));
 		}
+		
+		setDefaultContextValues(notification.getAction(), list);
 		autocompleteTargets.setValues(list);
 		autocompleteTargets.select(list);
+		
 		chkDefault.setValue(notification.isUseDefaultNotification());
 		setUseDefaultMessage(notification.isUseDefaultNotification());
 	}
 	
+	private void setDefaultContextValues(Actions action,
+			List<StringListable> list) {
+		if(action==null){
+			action = Actions.CREATE;
+		}
+		
+		addIfNotExists(list, "@@UserId");
+		if(action==Actions.CREATE){
+			addIfNotExists(list,"@@GroupId");
+			addIfNotExists(list, "@@ActorId");
+			addIfNotExists(list, "@@OwnerId");
+		}
+	}
+
+	private void addIfNotExists(List<StringListable> list, String key) {
+		StringListable listable = new StringListable(key);
+		if(!list.contains(listable)){
+			list.add(listable);
+		}
+	}
+
 	public DropDownList<Actions> getActionsDropdown(){
 		return listActions;
 	}
@@ -175,6 +201,7 @@ public class NotificationSetupView extends ViewImpl implements
 		autocompleteTargets.select(null);
 		autocompleteTargets.setValues(null);
 		chkDefault.setValue(null);
+		txtSubject.setValue(null);
 		setUseDefaultMessage(false);
 	}
 	

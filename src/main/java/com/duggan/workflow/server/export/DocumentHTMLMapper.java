@@ -106,7 +106,7 @@ public class DocumentHTMLMapper {
 		while(matcher.find()){
 			String group = matcher.group();
 			String replacement = parseAndReplace(values, group.substring(7, group.length()-7));
-			String pngUrl = generateQRCode(doc.getSubject(),replacement);
+			String pngUrl = generateQRCode(doc.getCaseNo(),replacement);
 			rtn = rtn.replace(group, pngUrl);
         }
 		
@@ -151,11 +151,47 @@ public class DocumentHTMLMapper {
 //                    group,
 //                    start,
 //                    end);
-			String value = getValue(values.get(group.substring(2, group.length())));
+			String key = group.substring(2, group.length());
+			Object val = get(values, key);
+			String value = val==null ? "": getValue((Value)val);
 			rtn= rtn.replace(matcher.group(), value);
         }
         	
         return rtn;
+	}
+	
+	public String map(Map<String, Object> values,String html) {
+		Pattern pattern = Pattern.compile("@[@#]\\w+?\\b");
+		String rtn = new String(html);
+		Matcher matcher = pattern.matcher(rtn);
+		
+		while(matcher.find()){
+			String group = matcher.group();
+//			int start = matcher.start();
+//			int end=matcher.end();
+//			System.err.format("I found the text" +
+//                    " \"%s\" starting at " +
+//                    "index %d and ending at index %d.%n",
+//                    group,
+//                    start,
+//                    end);
+			String key = group.substring(2, group.length());
+			Object val = get(values, key);
+			String value = val==null? "": val.toString();
+			rtn= rtn.replace(matcher.group(), value);
+        }
+        	
+        return rtn;
+	}
+
+	private Object get(Map<String, ?> values, String key) {
+		Object value  = values.get(key);
+		if(value==null){
+			key = key.substring(0, 1).toUpperCase()+key.substring(1, key.length());
+			value = values.get(key);
+		}
+		
+		return value;
 	}
 
 	private String getValue(Value value) {

@@ -74,7 +74,7 @@ public class TestNotications {
 		
 		for(HTSummary sum : summaries){
 			System.err.format("%d | %s | %s | %d",
-					sum.getId(), sum.getSubject(),
+					sum.getId(), sum.getCaseNo(),
 					sum.getCreated(), sum.getDocumentRef()).println();
 		}
 		Assert.assertEquals(1, summaries.size());
@@ -117,7 +117,7 @@ public class TestNotications {
 		doc.setPriority(2);
 		doc.setStatus(DocStatus.DRAFTED);
 		//unique - increment by one on every run
-		doc.setSubject("INV/20024/2013");
+		doc.setCaseNo("INV/20024/2013");
 		//doc.setType(DocType.INVOICE);
 		doc.setValue("10,000Ksh");
 	

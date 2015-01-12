@@ -156,7 +156,7 @@ public class CreateDocView extends PopupViewImpl implements
 		doc.setDescription(txtDescription.getValue());
 		doc.setDocumentDate(new Date());
 		doc.setId(null);
-		doc.setSubject(txtSubject.getText());
+		doc.setCaseNo(txtSubject.getText());
 		doc.setDocumentDate(dtDocDate.getValue());
 		doc.setPartner(txtPartner.getValue());
 		doc.setValue(txtValue.getValue());

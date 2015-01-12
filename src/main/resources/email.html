@@ -19,7 +19,7 @@
 					</tr>
 
 					<tr>
-						<td colspan="2">${title}&nbsp;&nbsp; <span
+						<td colspan="2">@@emailSubject &nbsp;&nbsp; <span
 							style="text-decoration: underline; font-weight: bold; color: #000000; cursor: pointer;">
 						</span>
 						</td>
@@ -34,7 +34,7 @@
 						<td style="border-top: 1px dashed #000000; padding-top: 10px;"
 							colspan="2"><a
 							style="text-decoration: underline; font-weight: bold; color: #000000; font-size: 16px;"
-							href="${DocumentURL}"> ${subject} </a></td>
+							href="@@DocumentURL"> @@caseNo </a></td>
 					</tr>
 					<tr>
 						<td width="5%" valign="top"><img class="imgLogo"
@@ -45,29 +45,29 @@
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"
 										width="95%"><span style="font-weight: bold">
-											Process</span> : ${DocType}</td>
+											Process</span> : @@DocType</td>
 								</tr>
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
-										style="font-weight: bold">Initiated By</span> : ${ownerId}</td>
+										style="font-weight: bold">Initiated By</span> : @@ownerId</td>
 								</tr>
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
-										style="font-weight: bold">Sent To</span> : ${ActorId} ${GroupId}</td>
+										style="font-weight: bold">Sent To</span> : @@ActorId @@GroupId</td>
 								</tr>
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
-										style="font-weight: bold">Document Date</span> ${docDate}</td>
+										style="font-weight: bold">Document Date</span> @@docDate</td>
 								</tr>
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;">
-										${description}</td>
+										@@description</td>
 								</tr>
 
 								<tr>
 									<td style="padding-top: 10px;"><a
 										style="display: inline-block; padding: 8px 12px; margin-bottom: 0; font-size: 14px; font-weight: 500; line-height: 1.428571429; text-align: center; white-space: nowrap; vertical-align: middle; cursor: pointer; border: 1px solid transparent; border-radius: 4px; color: #ffffff; background-color: #5cb85c; border-color: #5cb85c; text-decoration: none;"
-										href="${DocumentURL}">Click To View</a>
+										href="@@DocumentURL">Click To View</a>
 								</tr>
 
 							</table>

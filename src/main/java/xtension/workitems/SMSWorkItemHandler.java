@@ -18,7 +18,7 @@ public class SMSWorkItemHandler implements WorkItemHandler {
 		
 		try{
 			Document document = (Document)workItem.getParameter("document");
-			message = message.replace("{subject}", document.getSubject());
+			message = message.replace("{subject}", document.getCaseNo());
 		}catch(Exception e){}
 	
 		SMSIntegration integration = new SMSIntegration();

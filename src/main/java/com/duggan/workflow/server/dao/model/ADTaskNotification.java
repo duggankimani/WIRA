@@ -49,8 +49,8 @@ public class ADTaskNotification extends PO{
 	@CollectionOfElements(targetElement=String.class)
 	@JoinTable(name = "notification_targets",
      joinColumns = @JoinColumn(name = "notificationid"))
-	@Column(name = "target", nullable = false)
-	private Set<String> targets = new HashSet<>();
+	@Column(name = "receipient", nullable = false)
+	private Set<String> receipients = new HashSet<>();
 	
 	@Column(length=5000)
 	private String notificationTemplate; 
@@ -61,6 +61,7 @@ public class ADTaskNotification extends PO{
 	
 	@Column(nullable=false)
 	private Long processDefId;
+	private String subject;
 	
 	public ADTaskNotification() {
 	}
@@ -145,13 +146,21 @@ public class ADTaskNotification extends PO{
 		this.processDefId = processDefId;
 	}
 
-	public Set<String> getTargets() {
-		return targets;
+	public Set<String> getReceipients() {
+		return receipients;
 	}
 
-	public void setTargets(Collection<String> targets) {
-		this.targets.clear();
-		this.targets.addAll(targets);
+	public void setReceipients(Collection<String> receipients) {
+		this.receipients.clear();
+		this.receipients.addAll(receipients);
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 }

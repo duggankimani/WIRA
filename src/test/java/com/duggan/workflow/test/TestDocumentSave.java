@@ -28,11 +28,11 @@ public class TestDocumentSave {
 	@Ignore
 	public void save(){
 		Document doc = new Document();
-		doc.setSubject("INV/99004/13");
+		doc.setCaseNo("INV/99004/13");
 		doc.setDescription("Invoice for .. .. .. ");
 		doc.setDocumentDate(new Date());
 		doc.setType(DocumentDaoHelper.getDocumentType("INVOICE"));
-		doc.setValue("subject", new StringValue(null, "subject", doc.getSubject()));
+		doc.setValue("subject", new StringValue(null, "subject", doc.getCaseNo()));
 		doc.setValue("description", new StringValue(null, "description", doc.getDescription()));
 		doc.setValue("docDate", new DateValue(null, "docDate", new Date()));
 		

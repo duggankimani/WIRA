@@ -101,7 +101,7 @@ public class CreateDocPresenter extends
 		Document document = (Document)result.getDoc();
 
 		DocumentType docType = document.getType();
-		String subject = document.getSubject();
+		String subject = document.getCaseNo();
 		Date docDate = document.getDocumentDate();
 		String partner = document.getPartner();
 		String value = document.getValue();
