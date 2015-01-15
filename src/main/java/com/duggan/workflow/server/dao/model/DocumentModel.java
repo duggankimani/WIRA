@@ -38,7 +38,7 @@ public class DocumentModel extends PO{
 	
 	@Index(name="idx_subject")
 	@Column(length=200,nullable=false, unique=true)
-	private String subject;
+	private String subject;//caseNo
 	
 	@Column(length=350,nullable=false)
 	private String description;

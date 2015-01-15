@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.drools.rule.Collect;
-
 public abstract class Doc implements Serializable,Comparable<Doc>{
 
 	/**
@@ -18,8 +16,6 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	protected static final long serialVersionUID = 1L;
 
 	private boolean hasAttachment=false;
-
-	public abstract String getCaseNo();
 
 	public abstract String getDescription();
 
@@ -39,6 +35,7 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	private String processName;
 	private String nodeName;
 	private Long nodeId;
+	protected String caseNo;
 	
 	private HTStatus processStatus=HTStatus.INPROGRESS;
 	
@@ -81,7 +78,7 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 		
 		if(name.equals("subject")){
 			//backward compatibility - Changing subject to-> CaseNo
-			setValue("caseNo", value);
+			setValue("caseNo", value.clone(false));
 		}
 		values.put(name, value);
 	}
@@ -184,5 +181,22 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	}
 	
 	public abstract Long getDocumentId();
+	
+	public Object get(String key){
+		Value val = values.get(key);
+		if(val==null){
+			return null;
+		}
+		
+		return val.getValue();
+	}
 
-}
+	public String getCaseNo() {
+		return caseNo;
+	}
+
+	public void setCaseNo(String caseNo) {
+		this.caseNo = caseNo;
+		setValue("caseNo", new StringValue(null, "caseNo", caseNo));
+	}
+}	

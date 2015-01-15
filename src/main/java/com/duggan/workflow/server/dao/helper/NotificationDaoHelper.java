@@ -110,6 +110,7 @@ public class NotificationDaoHelper {
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
 		notificationTo.setFileId(modelFrom.getFileId());
 		notificationTo.setFileName(modelFrom.getFileName());
+		notificationTo.setDocumentTypeDesc(modelFrom.getDocumentTypeDesc());
 	}
 	
 	private static void copyData(Notification notificationTo,
@@ -140,6 +141,7 @@ public class NotificationDaoHelper {
 		DocumentType type = new DocumentType();
 		type.setDisplayName(DB.getDocumentDao().getDocumentTypeDisplayNameByDocumentId(documentId));
 		notificationTo.setDocumentType(type);
+		notificationTo.setDocumentTypeDesc(modelFrom.getDocumentTypeDesc());
 		
 		notificationTo.setApproverAction(modelFrom.getApproverAction());
 		

@@ -76,7 +76,8 @@ public class TaskActivity extends Composite {
 		Long processInstanceId = notification.getProcessInstanceId();
 		String time = getTimeDifferenceAsString(notification.getCreated());
 
-		String prefix = documentType.getDisplayName();
+		String prefix = notification.getDocumentTypeDesc()==null?
+				documentType.getDisplayName() : notification.getDocumentTypeDesc();
 		subject = prefix + " " + subject;
 
 		String action = "";

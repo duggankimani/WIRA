@@ -34,13 +34,13 @@
 	       </g:HTMLPanel>
        </g:HTMLPanel>
        
-		<g:HTMLPanel>
+		<div style="margin-top:10px">
 			<d:TextArea ui:field="txtSubject" type="text"
 			 placeholder="Subject" class="input-xlarge" rows="1" width="100%"/>
 			<d:TextArea ui:field="txtNotification" 
-			rows="3" width="100%" placeholder="Custom Notification"> 
+			rows="5" width="100%" placeholder="Custom Notification"> 
 			</d:TextArea>
-		</g:HTMLPanel>
+		</div>
 		
 		<g:HTMLPanel styleName="control-group">
 			  <div class="controls">

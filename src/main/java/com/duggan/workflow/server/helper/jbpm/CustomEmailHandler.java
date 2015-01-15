@@ -31,15 +31,12 @@ import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.UserGroup;
 
-public class NotificationHandler {
+public class CustomEmailHandler {
 
-	private static Logger log = Logger.getLogger(NotificationHandler.class);
+	private static Logger log = Logger.getLogger(CustomEmailHandler.class);
 	
 	public void sendNotification(ADTaskNotification template, Map<String, Object> params){
-		if(template==null){
-			throw new RuntimeException("####ADTaskNotification Not Found");
-		}
-	
+		
 		String caseNo = null;
 		String noteType = null;
 		String documentId= null;
@@ -48,7 +45,8 @@ public class NotificationHandler {
 		String ownerId = null;
 		Object isApproved = null;
 		String html=null;
-		if(!template.isUseDefaultNotification() && template.getNotificationTemplate()!=null){
+		
+		if(template!=null && !template.isUseDefaultNotification() && template.getNotificationTemplate()!=null){
 			html = template.getNotificationTemplate();
 		}
 
@@ -93,7 +91,12 @@ public class NotificationHandler {
 //		owner.add(LoginHelper.get().getUser(ownerId));
 		
 		
-		String emailSubject = parse(template.getSubject(), doc);
+		String emailSubject = (doc.getType()==null? "Work item" : 
+			doc.getType().getDisplayName())+" "+doc.getCaseNo();
+		if(template!=null){
+			emailSubject = parse(template.getSubject(), doc);
+		}
+		
 		params.put("emailSubject", emailSubject);
 		sendMail(html,doc,receipients, params);
 		log.info("EMAILSUBJECT = "+emailSubject);

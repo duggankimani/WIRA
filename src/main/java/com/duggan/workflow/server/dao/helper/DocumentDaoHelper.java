@@ -67,7 +67,7 @@ public class DocumentDaoHelper {
 		// save
 		if(document.getId()==null){
 			if(exists(document.getCaseNo())){
-				throw new InvalidSubjectExeption("Document '"+
+				throw new InvalidSubjectExeption("Case '"+
 						document.getCaseNo()+"' already exists, this number cannot be reused");
 				
 			}
@@ -76,12 +76,12 @@ public class DocumentDaoHelper {
 				ADDocType type = dao.getDocumentTypeByName(document.getType().getName());
 				document.setCaseNo(dao.generateDocumentSubject(type));
 				
-				Value value = document.getValues().get("subject");
+				Value value = document.getValues().get("caseNo");
 				if(value==null){
-					value = new StringValue(null, "subject", "");
+					value = new StringValue(null, "caseNo", "");
 				}
 				value.setValue(document.getCaseNo());
-				document.getValues().put("subject", value);
+				document.setValue("caseNo", value);
 			}
 	
 			if(document.getDescription()==null){
@@ -412,6 +412,10 @@ public class DocumentDaoHelper {
 
 			String subject = content.get("subject") == null ? null
 					: (String) content.get("subject");
+			if(subject==null){
+				subject = content.get("caseNo") == null ? null
+							: (String) content.get("caseNo");
+			}
 
 			String value = content.get("value") == null ? null
 					: (String) content.get("value");

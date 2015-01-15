@@ -1,13 +1,11 @@
-package xtension.workitems;
+package com.duggan.workflow.server.helper.jbpm;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemHandler;
-import org.drools.runtime.process.WorkItemManager;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
@@ -18,33 +16,38 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
-/**
- * This class is responsible for generating
- * <ul>
- * <li>System Notification - Synchronous
- * </ul>
- * 
- * @author duggan
- * 
- */
-public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
+public class CustomNotificationHandler {
 
-	private Logger logger = Logger.getLogger(GenerateNotificationWorkItemHandler.class);
+	private static Logger logger = Logger.getLogger(CustomEmailHandler.class);
 	
-	@Override
-	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		String subject = (String) workItem.getParameter("Subject");
-		String noteType = (String) workItem.getParameter("NotificationType");
-		NotificationType type = NotificationType.valueOf(noteType);
-		String documentId = (String) workItem.getParameter("DocumentId");
-		String groupId = (String) workItem.getParameter("GroupId");
-		String actorId = (String) workItem.getParameter("ActorId");
-		String ownerId = (String) workItem.getParameter("OwnerId");
-		Object isApproved = workItem.getParameter("isApproved");
+	public void generate(Map<String, Object> params,NotificationType type) {
+		
+		String subject = (String) params.get("Subject");
+		String documentId =  params.get("DocumentId").toString();
+		String groupId = (String) params.get("GroupId");
+		String actorId = (String) params.get("ActorId");
+		String ownerId = (String) params.get("OwnerId");
+		Object isApproved = params.get("isApproved");
+		String _docTypeDesc = null;
+		_docTypeDesc = params.get("_docTypeDesc")==null? null : params.get("_docTypeDesc").toString();
+		
+		Document doc = params.get("document")==null? null : (Document)params.get("document");
+		try{
+			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
+		}catch(Exception e){}
+		
+		
+		if(_docTypeDesc==null){
+			_docTypeDesc = doc.get("_docTypeDesc")==null? null : doc.get("_docTypeDesc").toString();
+		}
+		
+		if(subject==null && doc!=null){
+			subject = doc.getCaseNo();
+		}
 		
 		logger.debug("Class : "+this.getClass());
 		logger.debug("Subject : "+subject);
-		logger.debug("NotificationType : "+noteType);
+		logger.debug("NotificationType : "+type+" | "+_docTypeDesc);
 		logger.debug("DocumentId : "+documentId);
 		logger.debug("GroupId : "+groupId);
 		logger.debug("ActorId : "+actorId);
@@ -57,8 +60,8 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		notification.setOwner(LoginHelper.get().getUser(ownerId));
 		notification.setRead(false);
 		notification.setSubject(subject);
-		Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
 		notification.setDocumentType(doc.getType());
+		notification.setDocumentTypeDesc(_docTypeDesc);
 		
 		List<HTUser> actors = null;
 		List<HTUser> potentialActors = null;
@@ -76,14 +79,6 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		
 		List<HTUser> owner = new ArrayList<>();
 		//Testing;;
-		
-		if(ownerId==null){
-			logger.debug("[[[[[###############]]]]]>>>>> OWNERID IS NULL :: "
-		+workItem.getName()+" :: WorkItem "+workItem.getId());
-			ownerId = "calcacuervo";
-			
-			//Should return here
-		}
 		owner.add(LoginHelper.get().getUser(ownerId));
 		
 		ApproverAction action =isApproved==null? ApproverAction.COMPLETED:
@@ -121,7 +116,6 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 			break;
 		}
 
-		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
 	}
 
 	private void generateNotes(List<HTUser> users, Notification notification) {
@@ -136,11 +130,6 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 			NotificationDaoHelper.saveNotification(note);
 		}
 		
-	}
-
-	@Override
-	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
-
 	}
 
 }

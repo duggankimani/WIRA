@@ -98,7 +98,7 @@ public class TestGetProcessData {
 	@Ignore
 	public void getParameterz(){
 		//Long taskId = 1518L;
-		Long taskId = 157L;
+		Long taskId = 1042L;
 		Task task = JBPMHelper.get().getSysTask(taskId);
 		
 		Map<String,Object> vls = JBPMHelper.get().getMappedData(task);
@@ -117,8 +117,9 @@ public class TestGetProcessData {
 	@Test
 	public void getParameters(){
 		//Long taskId = 1518L;
-		Long taskId = 146L;
+		Long taskId = 1044L;
 		HTask summary = JBPMHelper.get().getTask(taskId);
+		System.err.println(summary);
 		Map<String,Value> vls = summary.getValues();
 		for(String key: vls.keySet()){
 			Value v = vls.get(key);

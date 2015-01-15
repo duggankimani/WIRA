@@ -38,6 +38,8 @@ public class NotificationModel extends PO {
 	@Enumerated(EnumType.STRING)
 	private NotificationType notificationType;
 	
+	private String documentTypeDesc;
+	
 	private Boolean isRead; /*Mark as read/unread*/
 	
 	private Boolean isSeen;
@@ -139,6 +141,14 @@ public class NotificationModel extends PO {
 
 	public void setIsSeen(Boolean isSeen) {
 		this.isSeen = isSeen;
+	}
+
+	public String getDocumentTypeDesc() {
+		return documentTypeDesc;
+	}
+
+	public void setDocumentTypeDesc(String documentTypeDesc) {
+		this.documentTypeDesc = documentTypeDesc;
 	}
 
 }

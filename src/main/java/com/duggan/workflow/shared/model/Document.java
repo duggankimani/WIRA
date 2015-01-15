@@ -24,8 +24,6 @@ public class Document extends Doc implements Serializable{
 	
 	private HTUser owner;
 	
-	protected String caseNo;
-	
 	protected String description;
 	
 	protected Date created;
@@ -77,14 +75,6 @@ public class Document extends Doc implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public String getCaseNo() {
-		return caseNo;
-	}
-
-	public void setCaseNo(String caseNo) {
-		this.caseNo = caseNo;
 	}
 
 	public String getDescription() {
@@ -151,7 +141,7 @@ public class Document extends Doc implements Serializable{
 		summary.setDescription(description);
 		summary.setDocumentRef(id);
 		summary.setPriority(priority);
-		summary.setSubject(caseNo);
+		summary.setCaseNo(caseNo);
 		summary.setTaskName(type.getDisplayName()+" - "+caseNo);
 		
 		return summary;
@@ -219,7 +209,6 @@ public class Document extends Doc implements Serializable{
 			setValue(key, values.get(key));
 		}
 		
-		setValue("caseNo", new StringValue(null, "caseNo", caseNo));
 		//super.setValues(values);
 	}
 
@@ -237,6 +226,7 @@ public class Document extends Doc implements Serializable{
 		Document document = new Document();
 		document.setCreated(created);
 		document.setDateDue(dateDue);
+		document.setCaseNo(caseNo);
 		document.setDescription(description);
 		document.setDocumentDate(documentDate);
 		document.setOwner(owner);

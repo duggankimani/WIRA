@@ -16,8 +16,9 @@ public class Notification extends Activity{
 	private HTUser targetUserId;
 	private Long documentId;
 	private NotificationType notificationType;
-	private String subject;
+	private String subject;//case Number
 	private DocumentType documentType;
+	private String documentTypeDesc;
 	private Boolean isRead;
 	private Date created;
 	private HTUser createdBy;
@@ -92,6 +93,7 @@ public class Notification extends Activity{
 		note.setCreated(created);
 		note.setDocumentId(documentId);
 		note.setDocumentType(documentType);
+		note.setDocumentTypeDesc(documentTypeDesc);
 		note.setNotificationType(notificationType);
 		note.setOwner(owner);
 		note.setRead(isRead);
@@ -174,5 +176,13 @@ public class Notification extends Activity{
 
 	public void setFileId(Long fileId) {
 		this.fileId = fileId;
+	}
+
+	public String getDocumentTypeDesc() {
+		return documentTypeDesc;
+	}
+
+	public void setDocumentTypeDesc(String documentTypeDesc) {
+		this.documentTypeDesc = documentTypeDesc;
 	}
 }

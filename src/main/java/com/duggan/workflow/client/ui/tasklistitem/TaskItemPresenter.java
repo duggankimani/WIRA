@@ -500,7 +500,6 @@ public class TaskItemPresenter extends
 		if(task instanceof Document){
 			return;
 		}
-		System.err.println("ExecTask ####################### >>>>>>>>>>> "+event.getTaskId()+" :: Actual = "+task.getId());
 		
 		if(task.getId().equals(event.getTaskId())){			
 			//System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);

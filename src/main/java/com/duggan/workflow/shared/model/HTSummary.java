@@ -15,7 +15,6 @@ public class HTSummary extends Doc implements Serializable{
 	private Date lastUpdate;
 	private HTStatus status;
 	private Date created;
-	private String subject;
 	private Integer priority;
 	private String description;
 	private Long documentRef;
@@ -81,15 +80,7 @@ public class HTSummary extends Doc implements Serializable{
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-
-	public String getCaseNo() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
+	
 	public Integer getPriority() {
 		return priority;
 	}

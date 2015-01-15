@@ -182,6 +182,13 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		
 		//Description
 		String desc =aDoc.getCaseNo();
+		if(desc==null){
+			desc = aDoc.get("subject")==null? null : aDoc.get("subject").toString();
+		}
+		if(desc==null){
+			desc = aDoc.get("caseNo")==null? null : aDoc.get("caseNo").toString();
+		}
+		
 		String taskActualOwner = "";
 		if(aDoc.getProcessStatus()==HTStatus.COMPLETED){
 			taskActualOwner="Completed";

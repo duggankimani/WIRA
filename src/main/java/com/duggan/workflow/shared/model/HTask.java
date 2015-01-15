@@ -30,5 +30,11 @@ public class HTask extends HTSummary {
 	public void setTaskFormId(Long taskFormId) {
 		this.taskFormId = taskFormId;
 	}
+	
+	@Override
+	public String toString() {
+	
+		return "DocumentId = "+getDocumentRef()+", CaseNo = "+getCaseNo()+", subject="+caseNo;
+	}
 
 }

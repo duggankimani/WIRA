@@ -47,9 +47,9 @@ public class UpdateApprovalStatusWorkItemHandler implements WorkItemHandler{
 		//only update document if process is completed or the document was rejected
 		if(processCompleted || !(Boolean)isApproved){
 			DocumentDaoHelper.saveApproval(new Long(documentId.toString()), (Boolean)isApproved);
-			System.err.println("SAVE :: "+work);
+//			System.err.println("SAVE :: "+work);
 		}else{
-			System.err.println("Ignore :: "+work);
+//			System.err.println("Ignore :: "+work);
 		}
 		
 		manager.completeWorkItem(workItem.getId(), workItem.getParameters());

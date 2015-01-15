@@ -71,6 +71,7 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.NotificationType;
 
 /**
  * 
@@ -754,11 +755,13 @@ class BPMSessionManager {
 				}				
 				assert doc.getId()!=null;
 				newValues.put("DocumentId", doc.getId());
-				String processId = "aftertask-notification";
-
-				//
 				
-				startProcess(processId, newValues);
+				//
+				taskData.putAll(newValues);
+				new CustomNotificationHandler().generate(taskData, NotificationType.TASKCOMPLETED_OWNERNOTE);
+				new CustomNotificationHandler().generate(taskData, NotificationType.TASKCOMPLETED_APPROVERNOTE);
+				String processId = "aftertask-notification";
+				//startProcess(processId, newValues);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -838,8 +841,9 @@ class BPMSessionManager {
 		
 		//Put all New Values into Task Data; This map has all inputs defined to the human task 
 		taskData.putAll(newValues);
-		new NotificationHandler().sendNotification(notification, taskData);
-		
+		new CustomEmailHandler().sendNotification(notification, taskData);
+		new CustomNotificationHandler().generate(taskData, NotificationType.APPROVALREQUEST_OWNERNOTE);
+		new CustomNotificationHandler().generate(taskData, NotificationType.APPROVALREQUEST_APPROVERNOTE);
 		
 		//String processId = "beforetask-notification";
 		//startProcess(processId, newValues);
