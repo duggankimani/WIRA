@@ -9,13 +9,15 @@ public class ShowIframeEvent extends
 
 	public static Type<ShowIframeHandler> TYPE = new Type<ShowIframeHandler>();
 	private String uri;
+	private String title;
 
 	public interface ShowIframeHandler extends EventHandler {
 		void onShowIframe(ShowIframeEvent event);
 	}
 
-	public ShowIframeEvent(String uri) {
+	public ShowIframeEvent(String uri, String title) {
 		this.uri = uri;
+		this.title = title;
 	}
 
 	public String getUri() {
@@ -36,7 +38,11 @@ public class ShowIframeEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, String uri) {
-		source.fireEvent(new ShowIframeEvent(uri));
+	public static void fire(HasHandlers source, String uri, String title) {
+		source.fireEvent(new ShowIframeEvent(uri,title));
+	}
+
+	public String getTitle() {
+		return title;
 	}
 }

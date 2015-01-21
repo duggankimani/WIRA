@@ -1,9 +1,12 @@
 package com.duggan.workflow.client.ui.upload.attachment;
 
+import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.shared.model.Attachment;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -30,7 +33,20 @@ public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAt
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//fireEvent(new ShowIframeEvent("www.google.com"));
+				UploadContext context = new UploadContext("getreport");
+				context.setContext("attachmentId", attachment.getId()+"");
+				context.setContext("ACTION", "GETATTACHMENT");
+				String url = context.toUrl();
+				
+				String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+				if(moduleUrl.endsWith("/")){
+					moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+				}
+				
+				url = url.replace("/", "");
+				moduleUrl =moduleUrl+"/"+url;
+				
+				fireEvent(new ShowIframeEvent(moduleUrl,attachment.getName()));
 			}
 		});
 	}

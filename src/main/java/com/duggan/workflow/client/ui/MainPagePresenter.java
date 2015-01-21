@@ -158,6 +158,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler, ClientDisconnectio
 	
 	@Override
 	public void onShowIframe(ShowIframeEvent event) {
+		presenter.setInfo(event.getUri(), event.getTitle());
 		addToPopupSlot(presenter, true);
 	}
 	

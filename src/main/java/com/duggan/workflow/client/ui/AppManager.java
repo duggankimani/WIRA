@@ -48,6 +48,7 @@ public class AppManager {
 		
 		if(customPopupStyle!=null){
 			popupPresenter.getView().addStyleName(customPopupStyle);
+			//popupPresenter.getView().removeStyleName("modal");
 		}
 		
 		for (final String text : buttons) {

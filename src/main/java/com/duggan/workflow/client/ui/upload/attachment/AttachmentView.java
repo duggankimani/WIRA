@@ -38,18 +38,18 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 		widget = binder.createAndBindUi(this);	
 		aDownload.removeStyleName("gwt-Anchor");
 		aDownload.getElement().getStyle().setDisplay(Display.INLINE);
-		aDownload.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
-				if(moduleUrl.endsWith("/")){
-					moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
-				}
-				url = url.replace("/", "");
-				moduleUrl =moduleUrl+"/"+url;
-				Window.open(moduleUrl, spnName.getInnerText(), "");
-			}
-		});
+//		aDownload.addClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+//				if(moduleUrl.endsWith("/")){
+//					moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+//				}
+//				url = url.replace("/", "");
+//				moduleUrl =moduleUrl+"/"+url;
+//				Window.open(moduleUrl, spnName.getInnerText(), "");
+//			}
+//		});
 		
 	}
 	

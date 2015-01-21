@@ -6,18 +6,41 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:DialogBox modal="true"
-	    width="1000px" height="600px" ui:field="uploaderDialog" text="Request For Quotations- RFQ/7891/13">
+	<!-- g:DialogBox modal="true"
+	    width="1000px" height="600px" ui:field="uploaderDialog" text="Request For Quotations- RFQ/7891/13"-->
+	
+	<g:PopupPanel ui:field="uploaderDialog" glassEnabled="false"
+	 styleName="modal-iframe modal-admin htmlEditorPopup" modal="true">
+	 
 		<g:HTMLPanel>
-				<iframe src="http://localhost:8080" ui:field="iframe" width="1000px" height="600px">
-				    
+			<g:HTMLPanel styleName="modal-header">
+				<h5><i class="icon-cogs"></i>
+				    <span ui:field="spnHeader"/>
+				<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+			</g:HTMLPanel>
+			
+			<g:HTMLPanel styleName="modal-iframe-body" ui:field="panelBody">
+				<iframe src="http://localhost:8080" ui:field="iframe" width="100%" height="99%">
 				</iframe>
-			<g:HTMLPanel styleName="modal-footer">
+			</g:HTMLPanel>
+			
+			<!-- g:HTMLPanel styleName="form-actions">
+			    <g:HTMLPanel ui:field="panelButtons" styleName="row-fluid">
+			    	<g:Button styleName="btn btn-primary pull-right" ui:field="btnDone"
+					text="DONE" />
+				<g:Button styleName="btn btn-default pull-left hidden" ui:field="btnCancel"
+					text="CANCEL" />
+			    </g:HTMLPanel>
+			</g:HTMLPanel-->
+			
+			<!-- g:HTMLPanel styleName="modal-footer">
 				<g:Button styleName="btn btn-primary pull-right" ui:field="btnDone"
 					text="DONE" />
 				<g:Button styleName="btn btn-default pull-left" ui:field="btnCancel"
 					text="CANCEL" />
-			</g:HTMLPanel>
+			</g:HTMLPanel -->
+			
 		</g:HTMLPanel>
-	</g:DialogBox>
+	</g:PopupPanel>
+	<!-- /g:DialogBox -->
 </ui:UiBinder>

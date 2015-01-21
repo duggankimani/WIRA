@@ -16,6 +16,7 @@ public class IFrameDataPresenter extends
 
 	public interface IFrameView extends PopupView {
 		HasClickHandlers getDoneButton();
+		void setInfo(String uri, String title);
 	}
 
 	@Inject
@@ -39,5 +40,9 @@ public class IFrameDataPresenter extends
 	@Override
 	public void onCloseAttatchment(CloseAttatchmentEvent event) {
 		getView().hide();
+	}
+
+	public void setInfo(String uri, String title) {
+		getView().setInfo(uri, title);
 	}
 }
