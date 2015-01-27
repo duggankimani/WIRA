@@ -1294,6 +1294,11 @@ ul.icons-list.text-xl {
 }
 
 /*--Dashboard Menu--*/
+
+.sidebar-manager #dashboard-menu{
+	top: 20px;
+}
+
 #dashboard-menu {
 	list-style: none;
 	padding-right: 0px;
@@ -1303,6 +1308,7 @@ ul.icons-list.text-xl {
 	position: absolute;
 	top: 50px;
 }
+
 
 #dashboard-menu>li>a {
 	display: block;

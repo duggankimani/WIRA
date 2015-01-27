@@ -16,7 +16,9 @@
 
 				<!--Button Add Document -->
 				<div class="add-doc">
-					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">Start Process</g:Anchor>
+					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">
+					Start Process
+					</g:Anchor>
 
 					<!-- Document Pop-up -->
 					<g:HTMLPanel ui:field="divDocPopup" styleName="dropdown-menu document-drop">
@@ -44,18 +46,7 @@
 							<g:HTMLPanel ui:field="panelDocTree">
 								
 							</g:HTMLPanel>
-							<!-- ul class="submenu second-menu">
-								<li ui:field="liNewReq">
-									<g:Anchor ui:field="aNewReq" styleName="hand" text="LPOs"></g:Anchor>
-								</li>
-								<li ui:field="liRecentApprovals">
-									<g:Anchor ui:field="aRecentApprovals" styleName="hand"
-										text="Invoices"></g:Anchor>
-								</li>
-								<li ui:field="liFlagged">
-									<g:Anchor ui:field="aFlagged" styleName="hand" text="PVs"></g:Anchor>
-								</li>
-							</ul -->
+							
 						</li>
 					</ul>
 				</g:HTMLPanel>

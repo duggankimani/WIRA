@@ -61,6 +61,8 @@ import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter;
 import com.duggan.workflow.client.ui.admin.users.save.UserSaveView;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
+import com.duggan.workflow.client.ui.dashboardimmigration.ImmigrationPresenter;
+import com.duggan.workflow.client.ui.dashboardimmigration.ImmigrationView;
 import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
 import com.duggan.workflow.client.ui.docActivity.DocumentActivityView;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
@@ -338,5 +340,7 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(NotificationSetupPresenter.class, 
 				INotificationSetupView.class, NotificationSetupView.class);
+		
+		bindPresenter(ImmigrationPresenter.class, ImmigrationPresenter.IImmigrationView.class, ImmigrationView.class, ImmigrationPresenter.IImmigrationProxy.class);
 	}
 }

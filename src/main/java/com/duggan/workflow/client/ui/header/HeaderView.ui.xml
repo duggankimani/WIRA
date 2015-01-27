@@ -12,6 +12,11 @@
 
 			<ul class="nav pull-right">
 				<li class="home">
+					<g:Anchor href="#reports" ui:field="aDashboard" styleName="close-icon hand">
+						<i class="icon-dashboard"> &nbsp; Dashboard</i>
+					</g:Anchor>
+				</li>
+				<li class="home">
 					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand">
 						<i class="icon-home"> &nbsp; Home</i>
 					</g:Anchor>

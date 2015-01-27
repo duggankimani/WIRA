@@ -1,0 +1,62 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+
+	<g:HTMLPanel styleName="row-fluid main-container">
+		<g:HTMLPanel styleName="full-page">
+			<div id="sidebar-nav" class="span2 hidden-phone sidebar-manager">
+				<div class="full-page">
+					<ul id="dashboard-menu">
+						<li class="active">
+							<d:ActionLink ui:field="aDashboard" styleName="dropdown-toggle">
+								<!-- <i class="icon-dashboard"></i> -->
+								<span>My Dashboard</span>
+							</d:ActionLink>
+							<ul class="submenu">
+
+							</ul>
+
+
+							<d:ActionLink ui:field="aTraffic"  styleName="dropdown-toggle">
+								<!-- <i class="icon-tasks"></i> -->
+								<span>Application Traffic</span>
+							</d:ActionLink>
+
+							<ul class="submenu">
+								<li>
+									<d:ActionLink ui:field="aTrafficByLocation" styleName="hand">By Location</d:ActionLink>
+								</li>
+								<li>
+									<d:ActionLink ui:field="aTrafficByClass" styleName="hand">By Class</d:ActionLink>
+								</li>
+							</ul>
+
+							<d:ActionLink ui:field="aPerformance" styleName="dropdown-toggle">
+								<!-- <i class="icon-tasks"></i> -->
+								<span>Performance</span>
+							</d:ActionLink>
+
+							<ul class="submenu">
+								<li>
+									<d:ActionLink ui:field="aPerformanceByDepartment" styleName="hand">By Department</d:ActionLink>
+								</li>
+							</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<g:HTMLPanel ui:field="tabContent" styleName="content-right span10 overflow-y">
+				<g:Image ui:field="aImage">
+				</g:Image>
+			</g:HTMLPanel>
+
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>
