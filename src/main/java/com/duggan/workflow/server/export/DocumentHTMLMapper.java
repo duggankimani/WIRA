@@ -65,7 +65,6 @@ public class DocumentHTMLMapper {
 				html = html.replace(gridRows, buff.toString());
 				html = html.replaceAll("<!--\\s*?@[<>]"+gridName+"\\b\\s*?-->", "");
 				
-				//System.err.println("########## Done "+gridName+"; Next Loop!!!! ");
 				return parseReplaceGridMatches(doc, html);
 			}else{
 				start=matcher.end();
@@ -125,7 +124,7 @@ public class DocumentHTMLMapper {
 		
 		try {
 			
-			File file = File.createTempFile(subject+" ", System.currentTimeMillis()+".png");
+			File file = File.createTempFile(subject+" ", Long.toString(System.nanoTime())+".png", new File("."));
 			
 			QRCode.from(strToEncode).to(ImageType.PNG).writeTo(new FileOutputStream(file));
 			
