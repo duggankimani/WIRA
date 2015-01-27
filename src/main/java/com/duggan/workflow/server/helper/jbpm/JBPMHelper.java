@@ -476,20 +476,9 @@ public class JBPMHelper implements Closeable {
 			
 			User user = null;
 			if((user=master_task.getTaskData().getActualOwner())!=null){
-				task.setTaskActualOwner(LoginHelper.get().getUser(user.getId(), false));
+				task.setTaskActualOwner(getUser(user.getId()));
 			}else{
-				List<OrganizationalEntity> entitiesList = master_task.getPeopleAssignments().getPotentialOwners();
-				
-				String entities = "";
-				if(entities!=null)
-				for(OrganizationalEntity entity : entitiesList){
-					entities = entities.concat(entity.getId()+", ");
-				}
-				
-				if(!entities.isEmpty()){
-					entities = entities.substring(0, entities.length()-2);
-					task.setPotentialOwners(entities);
-				}
+				task.setPotentialOwners(getPotentialOwners(master_task));
 			}
 			
 		}
@@ -544,6 +533,33 @@ public class JBPMHelper implements Closeable {
 //			}
 			
 		}
+	}
+
+	public HTUser getUser(String id) {
+		
+		return LoginHelper.get().getUser(id, false);
+	}
+
+	public String getPotentialOwners(Long taskId) {
+		return getPotentialOwners(getSysTask(taskId));
+	}
+	
+	public String getPotentialOwners(Task master_task) {
+		
+		List<OrganizationalEntity> entitiesList = master_task.getPeopleAssignments().getPotentialOwners();
+		
+		String entities = "";
+		if(entities!=null)
+		for(OrganizationalEntity entity : entitiesList){
+			entities = entities.concat(entity.getId()+", ");
+		}
+		
+		if(!entities.isEmpty()){
+			entities = entities.substring(0, entities.length()-2);
+			return entities;
+		}
+		
+		return null;
 	}
 
 	public void loadProgressInfo(Doc task, long processInstanceId) {
