@@ -33,16 +33,16 @@ public class TestHTMLToPDFExport {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.start(1L);
+		//ProcessMigrationHelper.start(1L);
 	}
 	
 	@Ignore
 	public void mapHTML(){
 		
-		Document doc = DocumentDaoHelper.getDocument(53L);
+		Document doc = DocumentDaoHelper.getDocument(4L);
 		
-		String html = OutputDocumentDaoHelper.getHTMLTemplate("IMPRESTREQUEST_DOC");
-		new DocumentHTMLMapper().map(doc, html);
+		String html = OutputDocumentDaoHelper.getHTMLTemplate("ENTRY_APPLICATION");
+		html = new DocumentHTMLMapper().map(doc, html);
 		
 		System.out.println(html);
 		
@@ -50,11 +50,11 @@ public class TestHTMLToPDFExport {
 	
 	@Test
 	public void map() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
-		Doc doc = DocumentDaoHelper.getDocument(53L);//JBPMHelper.get().getTask(JBPMHelper.get().getSysTask(taskId));
+		Doc doc = DocumentDaoHelper.getDocument(4L);//JBPMHelper.get().getTask(JBPMHelper.get().getSysTask(taskId));
 		
 		DocumentHTMLMapper mapper = new DocumentHTMLMapper();
 		List<String> vals=IOUtils.readLines(
-				new FileInputStream("/home/duggan/Projects/JBPMHT/src/main/config/imprestrequest.html"));
+				new FileInputStream("/home/duggan/Projects/EntryPermit/entrypermit.html"));
 		StringBuffer input = new StringBuffer();
 		for(String in:vals){
 			input.append(in);
@@ -65,7 +65,7 @@ public class TestHTMLToPDFExport {
 		System.err.println(html);
 
 		byte[] bites = new HTMLToPDFConvertor().convert(doc, input.toString());
-		IOUtils.write(bites, new FileOutputStream("imprestreq.pdf"));		
+		IOUtils.write(bites, new FileOutputStream("permit.pdf"));		
 	}
 	
 	@After

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -62,6 +64,8 @@ public class DocumentHTMLMapper {
 				
 				html = html.replace(gridRows, buff.toString());
 				html = html.replaceAll("<!--\\s*?@[<>]"+gridName+"\\b\\s*?-->", "");
+				
+				//System.err.println("########## Done "+gridName+"; Next Loop!!!! ");
 				return parseReplaceGridMatches(doc, html);
 			}else{
 				start=matcher.end();
@@ -197,6 +201,9 @@ public class DocumentHTMLMapper {
 	private String getValue(Value value) {
 
 		if(value!=null && value.getValue()!=null){
+			if(value.getValue() instanceof Date){
+				return new SimpleDateFormat("dd/MM/yyyy").format((Date)value.getValue());
+			}
 			return value.getValue().toString();
 		}
 		
