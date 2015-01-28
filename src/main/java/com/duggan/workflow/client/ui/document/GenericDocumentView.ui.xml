@@ -17,6 +17,11 @@
 					<span ui:field="spnSubject"></span>
 				</div>
 				<div class="action-buttons pull-right">
+					<d:ActionLink ui:field="aDoc" styleName="btn btn-default disabled"
+						title="Show Form">
+						<i class="icon-file"></i>
+						<!-- Process -->
+					</d:ActionLink>
 					<d:ActionLink ui:field="aAudit" styleName="btn btn-default disabled"
 						title="Show Process Audit">
 						<i class="icon-time"></i>
@@ -24,7 +29,7 @@
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aProcess" styleName="btn btn-default disabled"
-						title="Hide Process Map">
+						title="Show Process Map">
 						<i class="icon-info"></i>
 						<!-- Process -->
 					</d:ActionLink>

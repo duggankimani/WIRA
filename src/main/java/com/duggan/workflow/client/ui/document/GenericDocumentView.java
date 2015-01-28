@@ -87,6 +87,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField
 	Image img;
 
+	@UiField Anchor aDoc;
 	@UiField
 	Anchor aAudit;
 	@UiField
@@ -215,6 +216,8 @@ public class GenericDocumentView extends ViewImpl implements
 	enum SHOWITEMS {
 		FORM, PROCESSTREE, AUDITLOG
 	}
+	
+	SHOWITEMS selected = SHOWITEMS.FORM;
 
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -308,6 +311,15 @@ public class GenericDocumentView extends ViewImpl implements
 				changeView(SHOWITEMS.AUDITLOG);
 			}
 		});
+		
+		aDoc.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(SHOWITEMS.FORM);
+			}
+		});
+		
 		changeView(SHOWITEMS.FORM);
 		UIObject.setVisible(aSave.getElement(), false);
 
@@ -381,23 +393,30 @@ public class GenericDocumentView extends ViewImpl implements
 		divContent.addClassName("hide");
 		divAuditLog.addStyleName("hide");
 		divContent.addClassName("hide");
-		
+				
 		aProcess.removeStyleName("disabled");
-		aProcess.setTitle("Show Process Map");
+		aAudit.removeStyleName("disabled");
 
+		if(itemToShow==selected){
+			itemToShow=SHOWITEMS.FORM;
+		}
+		
 		switch (itemToShow) {
 		case FORM:
 			aProcess.removeStyleName("disabled");
+			aAudit.removeStyleName("disabled");
+			aDoc.addStyleName("disabled");
 			divContent.removeClassName("hide");
-			aProcess.setTitle("Show Process Map");
 			break;
 		case PROCESSTREE:
 			divProcess.removeStyleName("hide");
 			aProcess.addStyleName("disabled");
-			aProcess.setTitle("Hide Process Map");
+			aDoc.removeStyleName("disabled");
 			break;
 		case AUDITLOG:
 			divAuditLog.removeStyleName("hide");
+			aAudit.addStyleName("disabled");
+			aDoc.removeStyleName("disabled");
 			break;
 		}
 

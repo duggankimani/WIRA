@@ -396,20 +396,20 @@ public class DocumentDaoHelper {
 	 */
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
-
 		if(content.get("documentOut") != null){
 			
 			doc = (Document) content.get("documentOut");
-			
+			System.out.println("(1) ::"+doc.getCaseNo());
 		}else if (content.get("document") != null) {
 			
 			doc = (Document) content.get("document");
+			System.out.println("(2) :: "+doc.getCaseNo());
 			
 		} else {
 			//System.err.println("DocumentDaoHelper.getDocument says Document is null!!");
 			String description = content.get("description") == null ? null
 					: (String) content.get("description");
-
+			
 			String subject = content.get("subject") == null ? null
 					: (String) content.get("subject");
 			if(subject==null){
@@ -427,6 +427,7 @@ public class DocumentDaoHelper {
 			doc.setCaseNo(subject);
 			doc.setValue(value);
 			doc.setPriority(priority);
+			System.out.println("(3) :: "+doc.getCaseNo());
 
 		}
 		

@@ -39,7 +39,7 @@ public class TestGetProcessData {
 //		ProcessMigrationHelper.start(1L);
 	}
 	
-	@Test
+	@Ignore
 	public void getTaskLog(){
 		List<TaskLog> logs = DB.getProcessDao().getProcessLog(55L, "en-UK");
 		for(TaskLog log: logs){
@@ -124,10 +124,10 @@ public class TestGetProcessData {
 		//Assert.assertTrue(summary.getDetails().size()>0);
 	}
 	
-	@Ignore
+	@Test
 	public void getParameters(){
 		//Long taskId = 1518L;
-		Long taskId = 1044L;
+		Long taskId = 1042L;
 		HTask summary = JBPMHelper.get().getTask(taskId);
 		System.err.println(summary);
 		Map<String,Value> vls = summary.getValues();

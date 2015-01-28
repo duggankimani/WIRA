@@ -435,6 +435,12 @@ public class JBPMHelper implements Closeable {
 
 		task.setCreated(master_task.getTaskData().getCreatedOn());
 		task.setCaseNo(doc.getCaseNo());
+		if(task.getCaseNo()==null){
+			Object subject = doc.get("subject");
+			if(subject!=null){
+				task.setCaseNo(subject.toString());
+			}
+		}
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
