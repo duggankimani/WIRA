@@ -71,6 +71,7 @@ import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -88,6 +89,7 @@ import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
+import com.duggan.workflow.shared.requests.GetProcessLogRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -104,6 +106,7 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
+import com.duggan.workflow.shared.responses.GetProcessLogResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
@@ -158,6 +161,7 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getLinkPrevious();
 		HasClickHandlers getLinkNext();
 		HasClickHandlers getLinkEnv();
+		HasClickHandlers getLinkViewProcessLog();
 		Anchor getLinkContinue();
 		String getComment();
 		Uploader getUploader();
@@ -194,6 +198,8 @@ public class GenericDocumentPresenter extends
 		void setUnAssignedList(boolean isUnassignedList);
 
 		void setProcessUrl(Long processInstanceId);
+
+		void bindProcessLog(List<TaskLog> logs);
 	}
 	
 	Long taskId;
@@ -221,6 +227,7 @@ public class GenericDocumentPresenter extends
 	
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
+	private List<TaskLog> logs = null;
 	
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
@@ -491,8 +498,31 @@ public class GenericDocumentPresenter extends
 			}
 		});
 		
+		getView().getLinkViewProcessLog().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				loadProcessLog();
+			}
+		});	
+		
 	}
 	
+	protected void loadProcessLog() {
+		if(doc.getProcessInstanceId()!=null){
+			requestHelper.execute(new GetProcessLogRequest(doc.getProcessInstanceId()),
+					new TaskServiceCallback<GetProcessLogResponse>() {
+				
+				@Override
+				public void processResult(
+						GetProcessLogResponse aResponse) {
+					logs = aResponse.getLogs();
+					getView().bindProcessLog(logs);
+				}
+			});
+		}
+	}
+
 	protected void showAssignPopup(List<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
 		

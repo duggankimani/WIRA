@@ -180,4 +180,34 @@ public class DateUtils {
 		
 		return CalendarUtil.isSameDate(dateGroup, created);
 	}
+
+
+	public static String getTimeDifference(Date start, Date finish) {
+		int days = CalendarUtil.getDaysBetween(start, finish);
+		
+		if(days==0){
+			long diff = finish.getTime() - start.getTime();
+			StringBuffer buff = new StringBuffer();
+			
+			if(diff>hourInMillis){
+				long hrs = diff/hourInMillis;
+				buff.append(hrs+" "+((hrs)==1? "hr":"hrs"));
+				diff= diff%hourInMillis;
+			}
+			
+			if(diff>minInMillis && buff.length()==0){
+				long mins = diff/minInMillis;
+				buff.append(mins+" "+((mins)==1? "min":"mins"));
+				diff= diff%minInMillis;
+			}
+			
+			if(buff.length()==0){
+				long secs = diff/1000;
+				buff.append(secs+" "+(secs==1? "sec":"secs"));
+			}
+			
+			return buff.toString();
+		}
+		return days+" days";
+	}
 }

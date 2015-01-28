@@ -28,6 +28,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
+import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskNotification;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
@@ -529,6 +530,10 @@ public class ProcessDefHelper {
 		ProcessDaoImpl dao = DB.getProcessDao();
 		ADTaskNotification model = dao.getTaskNotification(nodeId, stepName, processDefId, category,action);
 		return getTaskNotification(model);
+	}
+	
+	public static List<TaskLog> getProcessLog(Long processInstanceId, String language) {
+		return DB.getProcessDao().getProcessLog(processInstanceId, language);
 	}
 
 }

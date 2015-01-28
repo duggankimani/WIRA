@@ -21,6 +21,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTask;
+import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
@@ -31,10 +32,19 @@ public class TestGetProcessData {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
+		ProcessMigrationHelper.start(1L);
 //		ProcessMigrationHelper.start(14L);
 //		ProcessMigrationHelper.start(16L);
 //		ProcessMigrationHelper.start(4L);
 //		ProcessMigrationHelper.start(1L);
+	}
+	
+	@Ignore
+	public void getTaskLog(){
+		List<TaskLog> logs = DB.getProcessDao().getProcessLog(55L, "en-UK");
+		for(TaskLog log: logs){
+			System.err.println(log);
+		}
 	}
 	
 	@Ignore
@@ -117,7 +127,7 @@ public class TestGetProcessData {
 	@Test
 	public void getParameters(){
 		//Long taskId = 1518L;
-		Long taskId = 1044L;
+		Long taskId = 1042L;
 		HTask summary = JBPMHelper.get().getTask(taskId);
 		System.err.println(summary);
 		Map<String,Value> vls = summary.getValues();
