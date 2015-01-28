@@ -11,7 +11,7 @@
 		<g:HTMLPanel styleName="upper-content">
 			<div class="action-area row-fluid">
 				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel>
-				<div class="generic-doc-title span7">
+				<div class="generic-doc-title span6">
 					<span ui:field="spnDocType"></span>
 					-&nbsp;
 					<span ui:field="spnSubject"></span>
