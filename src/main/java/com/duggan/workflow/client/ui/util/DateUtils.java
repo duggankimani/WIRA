@@ -208,6 +208,6 @@ public class DateUtils {
 			
 			return buff.toString();
 		}
-		return days+" days";
+		return days+" day"+(days==1? "":"s");
 	}
 }

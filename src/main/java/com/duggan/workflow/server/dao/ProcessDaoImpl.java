@@ -341,9 +341,9 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		List<TaskLog> logs = new ArrayList<>();
 		String sql = "select t.id,t.status,t.createdon, t.completedon, t.activationtime,t.expirationtime,"
 				+ "t.processinstanceid, "
-				+ "t.actualowner_id from task t "
+				+ "t.actualowner_id, i.text from task t "
 				//+ "left join peopleassignments_potowners p  on p.task_id=t.id "
-				//+ "inner join i18ntext i on i.task_names_id=t.id "
+				+ "inner join i18ntext i on i.task_names_id=t.id "
 				+ "where processinstanceid=:processinstanceid order by t.id";
 
 		Query query = em.createNativeQuery(sql)
@@ -365,6 +365,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 					value.toString());
 			String actualOwner = (value = row[i++]) == null ? null : value
 					.toString();
+			String taskName = (value = row[i++]) == null ? null : value.toString();
 			
 			TaskLog log  = new TaskLog();
 			log.setTaskId(id);
@@ -380,7 +381,12 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				log.setPotOwner(JBPMHelper.get().getPotentialOwners(id));
 			}
 			
-			log.setTaskName(JBPMHelper.get().getDisplayName(id));
+			try{
+				log.setTaskName(JBPMHelper.get().getDisplayName(id));
+			}catch(Exception e){
+				log.setTaskName(taskName);
+				log.setProcessLoaded(false);
+			} 			
 			
 			logs.add(log);
 			

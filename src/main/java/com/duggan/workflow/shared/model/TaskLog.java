@@ -20,6 +20,7 @@ public class TaskLog implements Serializable{
 	private HTUser actualOwner;
 	private String potOwner;
 	private String taskName;
+	private boolean isProcessLoaded=true;
 	
 	public TaskLog() {
 	}
@@ -107,5 +108,13 @@ public class TaskLog implements Serializable{
 
 	public void setActualOwner(HTUser actualOwner) {
 		this.actualOwner = actualOwner;
+	}
+
+	public boolean isProcessLoaded() {
+		return isProcessLoaded;
+	}
+
+	public void setProcessLoaded(boolean isProcessLoaded) {
+		this.isProcessLoaded = isProcessLoaded;
 	}
 }

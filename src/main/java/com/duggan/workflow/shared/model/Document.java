@@ -28,6 +28,8 @@ public class Document extends Doc implements Serializable{
 	
 	protected Date created;
 	
+	protected Date dateSubmitted;
+	
 	protected Date documentDate;
 	
 	protected Integer priority;
@@ -265,5 +267,13 @@ public class Document extends Doc implements Serializable{
 	public Long getDocumentId() {
 	
 		return id;
+	}
+
+	public Date getDateSubmitted() {
+		return dateSubmitted;
+	}
+
+	public void setDateSubmitted(Date dateSubmitted) {
+		this.dateSubmitted = dateSubmitted;
 	}
 }

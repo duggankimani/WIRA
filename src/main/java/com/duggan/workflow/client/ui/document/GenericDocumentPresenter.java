@@ -509,6 +509,7 @@ public class GenericDocumentPresenter extends
 	}
 	
 	protected void loadProcessLog() {
+		fireEvent(new ProcessingEvent("Loading Audit Log"));
 		if(doc.getProcessInstanceId()!=null){
 			requestHelper.execute(new GetProcessLogRequest(doc.getProcessInstanceId()),
 					new TaskServiceCallback<GetProcessLogResponse>() {
@@ -518,6 +519,7 @@ public class GenericDocumentPresenter extends
 						GetProcessLogResponse aResponse) {
 					logs = aResponse.getLogs();
 					getView().bindProcessLog(logs);
+					fireEvent(new ProcessingCompletedEvent());
 				}
 			});
 		}
@@ -732,7 +734,9 @@ public class GenericDocumentPresenter extends
 		//Remove any null keys
 		values.remove(null);
 		
-		AppManager.showPopUp("Confirm Action", "Are you ready to submit? ",
+		final ConfirmAction confirm = new ConfirmAction("Are you ready to submit?",
+				"Comments");
+		AppManager.showPopUp("Confirm Action", confirm,
 				new OnOptionSelected() {
 					
 					@Override
@@ -740,6 +744,10 @@ public class GenericDocumentPresenter extends
 						if(name.equals("Yes")){
 							//Fire Event
 							fireEvent(new CompleteDocumentEvent(taskId, values));
+							
+							if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
+								save(confirm.getComment());
+							}
 						}
 					}
 				},"Yes", "Cancel");
@@ -750,7 +758,9 @@ public class GenericDocumentPresenter extends
 		mergeFormValuesWithDoc();
 		if(getView().isValid()){
 			
-			AppManager.showPopUp("Confirm action", "Ready To submit?",
+			final ConfirmAction confirm = new ConfirmAction("Are you ready to submit?",
+					"Comments/ Processing Advice");
+			AppManager.showPopUp("Confirm action", confirm,
 					new OnOptionSelected() {
 						
 						@Override
@@ -769,6 +779,11 @@ public class GenericDocumentPresenter extends
 										fireEvent(new WorkflowProcessEvent(doc.getCaseNo(), "You have forwarded for Approval",doc));
 									}
 								});
+								
+								//Save comment
+								if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
+									save(confirm.getComment());
+								}
 							}
 						}
 					}, "Yes", "Cancel");

@@ -190,13 +190,16 @@ public class GenericDocumentView extends ViewImpl implements
 	BulletPanel liNext;
 	ActionLink aNext;
 
+	@UiField SpanElement spnTimeTaken;
+	
 	@UiField
 	Element divRibbon;
 	@UiField
 	SpanElement spnRibbon;
 	FormPanel formPanel;
 	
-	@UiField TableView view;
+	@UiField TableView tblAuditLog;
+	@UiField SpanElement spnAuditEmpty;
 
 	String url = null;
 
@@ -236,7 +239,7 @@ public class GenericDocumentView extends ViewImpl implements
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		imgProcess.setVisible(false);
-		view.setHeaders(Arrays
+		tblAuditLog.setHeaders(Arrays
 				.asList("Task Name", "Assignee", "Status",
 						"Start Date", "Completion Date", "Time Taken"));
 		
@@ -273,7 +276,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 			@Override
 			public void onError(ErrorEvent event) {
-				statusContainer.add(new InlineLabel("Nothing to show"));
+				statusContainer.add(new InlineLabel("We Could Not Load the Process Map. (Hint, confirm that the process is running)"));
 			}
 		});
 
@@ -914,7 +917,7 @@ public class GenericDocumentView extends ViewImpl implements
 		int size = steps.size();
 
 		if (size == 1) {
-			aContinue.setText("Finish");
+			aContinue.setText("Submit");
 			return; // No Next/Previous Buttons
 		}
 
@@ -942,7 +945,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 		if ((size - 1) == currentStep) {
 			// last step
-			aContinue.setText("Finish");
+			aContinue.setText("Submit");
 			liNext.setStyleName("disabled");
 		} else if (currentStep == 0) {
 			// first step
@@ -995,10 +998,23 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@Override
 	public void bindProcessLog(List<TaskLog> logs) {
-		view.clearRows();
-		if (logs != null) {
-
+		tblAuditLog.clearRows();
+		
+		if (logs != null && !logs.isEmpty()) {
+			spnAuditEmpty.addClassName("hide");
+			Date start = logs.get(0).getCreatedon();
+			Date end = logs.get(logs.size()-1).getCompletedon();
+			end = end==null? new Date() : end;
+			String timeTaken = DateUtils.getTimeDifference(start,end);
+			spnTimeTaken.setInnerText("("+timeTaken+")");
+			
+			if(!((TaskLog)logs.get(0)).isProcessLoaded()){
+				spnAuditEmpty.removeClassName("hide");
+				spnAuditEmpty.setInnerText("Issue404: Task Keys will be used in place of names. (Hint - Start the process to view tasks correctly)");
+			}
+			
 			for (TaskLog log : logs) {
+				
 				InlineLabel label = new InlineLabel();
 				HTStatus status = HTStatus.valueOf(log.getStatus().toUpperCase());
 				String text = "";
@@ -1049,7 +1065,7 @@ public class GenericDocumentView extends ViewImpl implements
 				label.addStyleName(styleName);
 				label.setText(text);
 				
-				view.addRow(
+				tblAuditLog.addRow(
 						new InlineLabel(log.getTaskName()),
 						new InlineLabel(log.getActualOwner() == null ? log
 								.getPotOwner() : log.getActualOwner()
@@ -1067,9 +1083,13 @@ public class GenericDocumentView extends ViewImpl implements
 										.getCompletedon())));
 			}
 			
+		}else{
+			spnAuditEmpty.setInnerText("No Data To Display");
+			spnAuditEmpty.removeClassName("hide");
+			//nothing to display
 		}
 		
-		auditContainer.add(view);
+		auditContainer.add(tblAuditLog);
 	}
 
 }

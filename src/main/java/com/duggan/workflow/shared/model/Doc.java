@@ -49,18 +49,32 @@ public abstract class Doc implements Serializable,Comparable<Doc>{
 	 */
 	@Override
 	public int compareTo(Doc o) {
-		
-		Date thisDate = (this instanceof HTSummary)? (((HTSummary)this).getCompletedOn()==null)?
-				this.getCreated() : ((HTSummary)this).getCompletedOn() 
-				: this.getCreated();
+		Date thisDate = getSortDate(this);
 				
-		
-		Date other = (o instanceof HTSummary)? (((HTSummary)o).getCompletedOn()==null)?
-				o.getCreated() : ((HTSummary)o).getCompletedOn() 
-				: o.getCreated();
-				
-					
+		Date other = getSortDate(o);
 		return (- thisDate.compareTo(other));
+	}
+
+	public Date getSortDate(){
+		return getSortDate(this);
+	}
+	
+	private Date getSortDate(Doc doc) {
+		
+		Date dateToUse = doc.getCreated();
+		if(doc instanceof HTSummary){
+			HTSummary summ = (HTSummary)doc;
+			if(summ.getStatus()==HTStatus.COMPLETED){
+				dateToUse  = summ.getCompletedOn();
+			}
+		}else{
+			Document document = (Document)doc;
+			if(!document.getStatus().equals(DocStatus.DRAFTED)){
+				dateToUse  = document.getDateSubmitted();
+			}
+		}
+		
+		return dateToUse;
 	}
 
 	public Map<String, Value> getValues() {

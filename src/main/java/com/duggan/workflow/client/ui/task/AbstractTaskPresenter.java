@@ -322,13 +322,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			//final String dt = DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
 			final Doc doc = tasks.get(i);
 			
-			Date dateToUse  = doc.getCreated();
-			if(doc instanceof HTSummary){
-				HTSummary summ = (HTSummary)doc;
-				if(summ.getStatus()==HTStatus.COMPLETED){
-					dateToUse  = summ.getCompletedOn();
-				}
-			}
+			Date dateToUse  = doc.getSortDate();
 			
 			final String dt = DateUtils.DATEFORMAT.format(dateToUse);
 			final Date date = DateUtils.DATEFORMAT.parse(dt);

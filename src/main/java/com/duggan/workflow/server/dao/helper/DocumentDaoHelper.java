@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.process.audit.JPAProcessInstanceDbLog;
+import org.jbpm.process.audit.ProcessInstanceLog;
+
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -221,6 +224,12 @@ public class DocumentDaoHelper {
 		doc.setValue(model.getValue());
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
+		
+		if(model.getProcessInstanceId()!=null){
+			ProcessInstanceLog log = JPAProcessInstanceDbLog
+					.findProcessInstance(model.getProcessInstanceId());
+			doc.setDateSubmitted(log.getStart());
+		}
 		
 		if(model.getProcessInstanceId()!=null){
 			try{

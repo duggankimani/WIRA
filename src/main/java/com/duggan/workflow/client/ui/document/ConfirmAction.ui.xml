@@ -7,6 +7,6 @@
 	</ui:style>
 	<g:VerticalPanel>
 	    <g:InlineLabel ui:field="spnConfirm"></g:InlineLabel>
-	    <d:TextArea ui:field="txtComment"></d:TextArea>
+	    <d:TextArea ui:field="txtComment" width="400px"></d:TextArea>
 	</g:VerticalPanel>
 </ui:UiBinder>

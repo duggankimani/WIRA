@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 //import com.google.gwt.regexp.shared.RegExp;
@@ -112,16 +113,16 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		//spnTaskName.setText("Contract Approval");
 		//spnDateDue.setText(format(summaryTask.getDateDue()));
 		disable();
-		Date dateToUse  = aDoc.getCreated();
-		if(aDoc instanceof HTSummary){
-			HTSummary summ = (HTSummary)aDoc;
-			if(summ.getStatus()==HTStatus.COMPLETED){
-				dateToUse  = summ.getCompletedOn();
-			}else{
-				dateToUse  = summ.getCreated();
-			}
+		Date dateToUse  = aDoc.getSortDate();
+		
+		//Several days ago
+		if(CalendarUtil.getDaysBetween(dateToUse, new Date())>=1){
+			spnTime.setText(DateUtils.MONTHDAYFORMAT.format(dateToUse));
+		}else{
+			spnTime.setText(DateUtils.TIMEFORMAT12HR.format(dateToUse));
 		}
-		spnTime.setText(DateUtils.TIMEFORMAT12HR.format(dateToUse));
+		
+		
 		spnSubject.setInnerText((aDoc.getProcessName()==null? "" : aDoc.getProcessName())+" "+aDoc.getCaseNo());
 		
 		if(aDoc.hasAttachment()){

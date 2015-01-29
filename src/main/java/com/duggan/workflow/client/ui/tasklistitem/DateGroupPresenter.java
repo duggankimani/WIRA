@@ -6,6 +6,8 @@ import java.util.Date;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent.PresentTaskHandler;
+import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.google.web.bindery.event.shared.EventBus;
@@ -50,14 +52,7 @@ public class DateGroupPresenter extends
 	@Override
 	public void onPresentTask(final PresentTaskEvent event) {
 		//Date docDate = event.getDoc().getCreated();
-		
-		Date dateToUse  = event.getDoc().getCreated();
-		if(event.getDoc() instanceof HTSummary){
-			HTSummary summ = (HTSummary)event.getDoc();
-			if(summ.getStatus()==HTStatus.COMPLETED){
-				dateToUse  = summ.getCompletedOn();
-			}
-		}
+		Date dateToUse  = event.getDoc().getSortDate();
 		
 		if(!CalendarUtil.isSameDate(date, dateToUse)){
 			return;
