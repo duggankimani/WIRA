@@ -23,6 +23,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
@@ -514,6 +515,11 @@ public class GenericDocumentView extends ViewImpl implements
 
 		if (doc instanceof HTSummary) {
 			formPanel.setCompletedOn(((HTSummary) doc).getCompletedOn());
+		}else{
+			Document document = (Document)doc;
+			if(document.getDateSubmitted()!=null){
+				formPanel.setCreated(document.getDateSubmitted());
+			}
 		}
 
 		fldForm.add(formPanel);

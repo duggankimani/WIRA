@@ -66,7 +66,6 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.MODE;
-import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.OutputDocument;
@@ -90,7 +89,6 @@ import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
-import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
@@ -107,7 +105,6 @@ import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessLogResponse;
-import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
@@ -562,22 +559,40 @@ public class GenericDocumentPresenter extends
 					}
 				}, "Ok", "Cancel");
 	}
+	
+	boolean navigateIndex(boolean isNavigateNext){
+		if(isNavigateNext){
+			if(steps.size()>currentStep+1){
+				currentStep = currentStep+1;
+				return true;
+			}//else ignore
+		}else{
+			//Navigate Previous
+			if(currentStep>0){
+				currentStep = currentStep-1;
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	protected void navigateToView(boolean isNavigateNext) {
 		boolean navigating = false;
-		if(getView().isValid() && steps.size()>1){
-			if(isNavigateNext){
-				if(steps.size()>currentStep+1){
-					currentStep = currentStep+1;
-					navigating=true;
-				}//else ignore
-			}else{
-				//Navigate Previous
-				if(currentStep>0){
-					currentStep = currentStep-1;
-					navigating=true;
-				}
-			}
+		//Complete/ Submitted documents should not be validated
+		boolean validate=false;
+		if(doc instanceof HTSummary){
+			HTSummary summ = (HTSummary)doc;
+			validate = !summ.getStatus().equals(HTStatus.COMPLETED);
+		}else{
+			Document document = (Document)doc;
+			validate = !document.getStatus().equals(DocStatus.COMPLETED);
+		}
+		
+		if((!isNavigateNext || !validate || (validate && getView().isValid())) && steps.size()>1){
+
+			// !isNavigateNext -> Going Back
+			navigating = navigateIndex(isNavigateNext);
 		}
 		
 		mergeFormValuesWithDoc();
@@ -637,14 +652,22 @@ public class GenericDocumentPresenter extends
 						
 						fireEvent(new ProcessingCompletedEvent());							
 					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						super.onFailure(caught);
+						//Reverse Navigation
+						navigateIndex(!isNavigateNext);
+					}
 			});
 			
 		}else if(taskStepDTO.getOutputDocId()!=null){
 			
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new GetOutputDocumentsRequest(taskStepDTO.getOutputDocId()));
-			if(isNavigateNext)
+			if(isNavigateNext){
 				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
+			}
 			requests.addRequest(new GetAttachmentsRequest(documentId));			
 			
 			requestHelper.execute(requests,
@@ -670,6 +693,13 @@ public class GenericDocumentPresenter extends
 						bindAttachments(attachmentsresponse);
 						
 						fireEvent(new ProcessingCompletedEvent());							
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						super.onFailure(caught);
+						//Reverse Navigation
+						navigateIndex(!isNavigateNext);
 					}
 			});
 		}else{

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.document.form;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.MONTHDAYFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.*;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,6 +39,7 @@ import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 
 /**
  * Runtime form
@@ -201,16 +202,36 @@ public class FormPanel extends Composite {
 	public void setCreated(Date created){
 
 		if (created!= null){
-			String timeDiff =  MONTHDAYFORMAT.format(created);//DateUtils.getTimeDifferenceAsString(created);
+			//DateUtils.getTimeDifferenceAsString(created);
+			String timeDiff = getTime(created);
 			spnCreated.setInnerText(timeDiff);
 			//TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
 		}
 			
 	}
 	
+	private String getTime(Date date) {
+		String timeDiff = "";
+		int days  = CalendarUtil.getDaysBetween(date, new Date());
+		if(days>=1 && days<8){
+			//Jan 18 (2 days ago)
+			 timeDiff = MONTHDAYFORMAT.format(date)+" ("+ DateUtils.getTimeDifferenceAsString(date)+")";
+		}else if(days<0){
+			//future
+			timeDiff = MONTHTIME.format(date);
+		}else if(days<1){
+			//Several hr ago
+			timeDiff = TIMEFORMAT12HR.format(date);
+		}else{
+			//More than 8 days
+			timeDiff = DATEFORMAT.format(date);
+		}
+		return timeDiff;
+	}
+
 	public void setCompletedOn(Date completedOn){
 		if (completedOn!= null){
-			String timeDiff =  MONTHDAYFORMAT.format(completedOn);//DateUtils.getTimeDifferenceAsString(created);
+			String timeDiff =  getTime(completedOn);//MONTHDAYFORMAT.format(completedOn);//DateUtils.getTimeDifferenceAsString(created);
 			spnDeadline.setInnerText("Done "+timeDiff);
 			//TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
 		}
@@ -221,13 +242,13 @@ public class FormPanel extends Composite {
 			return;
 		}
 
-		String deadline="";
-		String timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
+		String deadline=getTime(endDateDue);
+		//String timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
 		
-		if(timeDiff != null){
-			deadline =  MONTHDAYFORMAT.format(endDateDue);
-					//TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
-		}
+//		if(timeDiff != null){
+//			deadline =  MONTHDAYFORMAT.format(endDateDue);
+//					//TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
+//		}
 
 		if(DateUtils.isOverdue(endDateDue)){
 			spnDeadline.removeClassName("hidden");
