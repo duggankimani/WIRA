@@ -115,6 +115,19 @@
 						<span ui:field="spnAuth"/>
 					</div>
 				</div>
+				
+				<div><b>Report View Settings</b></div>
+
+				<div class="control-group">
+					<label class="control-label">
+						<b>Report View Impl:</b>
+					</label>
+					<div class="controls">
+						<d:DropDownList ui:field="listReportView"
+						 title="Report View Implementation"/>
+						 <span ui:field="spnReportViewImpl"/>
+					</div>
+				</div>
 			</div>
 		</div>
 

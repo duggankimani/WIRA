@@ -12,7 +12,8 @@ public enum SETTINGNAME {
 	SMTP_PROTOCOL("mail.transport.protocol", DataType.STRING),
 	SMTP_STARTTLS("mail.smtp.starttls.enable", DataType.BOOLEAN),
 	SMTP_ACCOUNT("mail.smtp.from", DataType.STRING),
-	SMTP_PASSWORD("mail.smtp.password", DataType.STRING);
+	SMTP_PASSWORD("mail.smtp.password", DataType.STRING),
+	REPORT_VIEW_IMPL("REPORT_VIEW_IMPL", DataType.STRING); //GOOGLE_DOCS, NEW_TAB, IFRAME
 	
 	String key;
 	DataType type;
@@ -29,5 +30,6 @@ public enum SETTINGNAME {
 	public DataType getType() {
 		return type;
 	}
+	
 	
 }

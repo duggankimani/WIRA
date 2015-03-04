@@ -3,10 +3,12 @@ package com.duggan.workflow.client.ui.admin.settings;
 import gwtupload.client.IUploader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IntegerField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
@@ -16,6 +18,7 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.google.gwt.core.client.GWT;
@@ -63,6 +66,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	@UiField CheckBox chkAuth;
 	@UiField TextField txtAccount;
 	@UiField PasswordField txtPassword;
+	@UiField DropDownList<REPORTVIEWIMPL> listReportView;
 	
 	@UiField Element spnCompanyName;
 	@UiField Element spnHost;
@@ -72,6 +76,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	@UiField Element spnPassword;
 	@UiField Element spnTLS;
 	@UiField Element spnAuth;
+	@UiField Element spnReportViewImpl;
 	
 	@UiField Anchor aSave;
 	@UiField Anchor aEdit;
@@ -80,6 +85,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	public SettingsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		
+		listReportView.setItems(Arrays.asList(REPORTVIEWIMPL.values()));
 		setEdit(false);		
 		panelPicture.addMouseOverHandler(new MouseOverHandler() {
 			@Override
@@ -146,6 +152,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 		UIObject.setVisible(spnPassword,!edit);
 		UIObject.setVisible(spnTLS,!edit);
 		UIObject.setVisible(spnAuth,!edit);
+		UIObject.setVisible(spnReportViewImpl,!edit);
 		
 		txtCompanyName.setVisible(edit);
 		txtHost.setVisible(edit);
@@ -155,6 +162,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 		chkAuth.setVisible(edit);
 		txtAccount.setVisible(edit);
 		txtPassword.setVisible(edit);
+		listReportView.setVisible(edit);
 		
 		aSave.setVisible(edit);
 		aEdit.setVisible(!edit);
@@ -209,6 +217,14 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 			chkStartTls.setValue(settingValue==null?null: (Boolean)settingValue);
 			spnTLS.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
+		case REPORT_VIEW_IMPL:
+			String val = settingValue==null?null: settingValue.toString();
+			if(val!=null){
+				listReportView.setValue(REPORTVIEWIMPL.valueOf(val));
+			}
+			spnReportViewImpl.setInnerText(val);
+			
+			break;
 		
 		}
 	}
@@ -240,6 +256,12 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 		
 		setting  = new Setting(SETTINGNAME.SMTP_STARTTLS, new BooleanValue(null, SETTINGNAME.SMTP_STARTTLS.name(), chkStartTls.getValue()));
 		lst.add(setting);
+		
+		setting  = new Setting(SETTINGNAME.REPORT_VIEW_IMPL,
+				new StringValue(null, SETTINGNAME.REPORT_VIEW_IMPL.name(), 
+						listReportView.getValue()==null? null : listReportView.getValue().getName()));
+		lst.add(setting);
+		
 		return lst;
 	}
 	

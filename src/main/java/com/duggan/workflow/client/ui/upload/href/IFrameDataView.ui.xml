@@ -20,9 +20,18 @@
 			</g:HTMLPanel>
 			
 			<g:HTMLPanel styleName="modal-iframe-body" ui:field="panelBody">
-				<iframe src="http://localhost:8080" ui:field="iframe" width="100%" height="99%">
+				<iframe src="http://localhost:8080" 
+				ui:field="iframe" width="100%" height="99%" frameborder="0">
 				</iframe>
 			</g:HTMLPanel>
+			
+			<!--
+			Google Iframe 
+			<iframe 
+			src="http://docs.google.com/gview?url=http://infolab.stanford.edu/pub/papers/google.pdf&embedded=true" 
+			style="width:600px; height:500px;"
+			frameborder="0"></iframe>
+			 -->
 			
 			<!-- g:HTMLPanel styleName="form-actions">
 			    <g:HTMLPanel ui:field="panelButtons" styleName="row-fluid">

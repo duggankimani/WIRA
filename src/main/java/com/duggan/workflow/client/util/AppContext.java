@@ -9,6 +9,7 @@ import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Version;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.core.client.GWT;
@@ -33,6 +34,7 @@ public class AppContext {
 	@Inject static EventBus eventBus;
 	@Inject static PlaceManager placeManager;
 	static Version version;
+	static REPORTVIEWIMPL reportViewImpl;
 
 	static String organizationName;
 	
@@ -106,6 +108,7 @@ public class AppContext {
 					organizationName= result.getOrganizationName();
 					setUserValues(result.getUser());
 					version = result.getVersion();
+					reportViewImpl = result.getReportViewImpl();
 					
 					ContextLoadedEvent event = new ContextLoadedEvent(result.getUser(), version);
 					event.setOrganizationName(organizationName);
@@ -221,6 +224,10 @@ public class AppContext {
 	
 	public static String getUserImageUrl(double width, double height){
 		return getUserImageUrl()+"&width="+width+"&height="+height;
+	}
+	
+	public static REPORTVIEWIMPL getReportViewImpl(){
+		return reportViewImpl;
 	}
 
 	public static void clear() {

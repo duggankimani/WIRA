@@ -1,7 +1,9 @@
 package com.duggan.workflow.client.ui.upload.attachment;
 
 import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -46,7 +48,12 @@ public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAt
 				url = url.replace("/", "");
 				moduleUrl =moduleUrl+"/"+url;
 				
-				fireEvent(new ShowIframeEvent(moduleUrl,attachment.getName()));
+				REPORTVIEWIMPL impl = AppContext.getReportViewImpl();
+				if(impl==null){
+					impl = REPORTVIEWIMPL.getDefaultImplementation();
+				}
+				
+				fireEvent(new ShowAttachmentEvent(moduleUrl,attachment.getName(), impl));
 			}
 		});
 	}

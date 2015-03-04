@@ -16,13 +16,16 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent.WorkflowProcessHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
-import com.duggan.workflow.client.ui.upload.attachment.ShowIframeEvent;
-import com.duggan.workflow.client.ui.upload.attachment.ShowIframeEvent.ShowIframeHandler;
+import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
+import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowAttachmentHandler;
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -42,7 +45,7 @@ import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 public class MainPagePresenter extends
 		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
 implements ErrorHandler, ProcessingCompletedHandler, 
-ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler, ClientDisconnectionHandler{
+ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconnectionHandler{
 
 	public interface MyView extends View {
 
@@ -91,7 +94,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler, ClientDisconnectio
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(WorkflowProcessEvent.TYPE, this);
-		addRegisteredHandler(ShowIframeEvent.TYPE, this);
+		addRegisteredHandler(ShowAttachmentEvent.TYPE, this);
 		addRegisteredHandler(ClientDisconnectionEvent.TYPE, this);
 	}
 	
@@ -157,9 +160,35 @@ ProcessingHandler ,WorkflowProcessHandler, ShowIframeHandler, ClientDisconnectio
 	}
 	
 	@Override
-	public void onShowIframe(ShowIframeEvent event) {
-		presenter.setInfo(event.getUri(), event.getTitle());
-		addToPopupSlot(presenter, true);
+	public void onShowAttachment(ShowAttachmentEvent event) {
+		REPORTVIEWIMPL reportView = event.getViewImplementation();
+		if(reportView==null){
+			reportView = AppContext.getReportViewImpl()==null? 
+					REPORTVIEWIMPL.getDefaultImplementation(): AppContext.getReportViewImpl();
+		}
+		
+		switch (reportView) {
+		case IFRAME:
+			presenter.setInfo(event.getUri(), event.getTitle());
+			addToPopupSlot(presenter, true);
+			break;
+		case NEW_TAB:
+			Window.open(event.getUri(), "_blank", null);
+			break;
+		case GOOGLE_DOCS:
+			
+			String docsUri = "http://docs.google.com/gview?url=";
+			String uri = docsUri+ event.getUri();
+			uri = uri+"&embedded=true";
+			
+			presenter.setInfo(uri, event.getTitle());
+			addToPopupSlot(presenter, true);
+			break;	
+		default:
+			Window.open(event.getUri(), "_blank", null);
+			break;
+		}
+		
 	}
 	
 	@Override

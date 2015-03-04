@@ -76,6 +76,8 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
@@ -89,6 +91,7 @@ import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
+import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
@@ -105,6 +108,7 @@ import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessLogResponse;
+import com.duggan.workflow.shared.responses.GetSettingsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
@@ -506,17 +510,17 @@ public class GenericDocumentPresenter extends
 	}
 	
 	protected void loadProcessLog() {
-		fireEvent(new ProcessingEvent("Loading Audit Log"));
+		
 		if(doc.getProcessInstanceId()!=null){
+			fireEvent(new ProcessingEvent("Loading Log"));
 			requestHelper.execute(new GetProcessLogRequest(doc.getProcessInstanceId()),
 					new TaskServiceCallback<GetProcessLogResponse>() {
-				
 				@Override
 				public void processResult(
 						GetProcessLogResponse aResponse) {
+					fireEvent(new ProcessingCompletedEvent());
 					logs = aResponse.getLogs();
 					getView().bindProcessLog(logs);
-					fireEvent(new ProcessingCompletedEvent());
 				}
 			});
 		}

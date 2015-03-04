@@ -11,6 +11,7 @@ import java.util.Map;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.images.ImageResources;
 import com.duggan.workflow.client.ui.resources.ICONS;
+import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -203,7 +204,10 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 			public void onSelection(SelectionEvent<Item> event) {
 				Attachment a = tree.getSelectionModel().getSelectedItem();
 				String href = getHref(a);
-				Window.open(href, "_blank", null);
+				
+				AppContext.fireEvent(
+						new ShowAttachmentEvent(href, a.getName()));
+				//Window.open(href, "_blank", null);
 			}
 		});
 	    

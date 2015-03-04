@@ -8,6 +8,7 @@ import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetContextRequest;
@@ -54,6 +55,11 @@ public class GetContextRequestActionHandler extends
 			result.setOrganizationName(value==null? null: value.toString());
 		}
 				
+		Setting reportView = SettingsDaoHelper.getSetting(SETTINGNAME.REPORT_VIEW_IMPL);
+		if(reportView.getValue()!=null && reportView.getValue().getValue()!=null){
+			result.setReportViewImpl(REPORTVIEWIMPL.valueOf(reportView.getValue().getValue().toString()));
+		}
+			
 	}
 
 	@Override

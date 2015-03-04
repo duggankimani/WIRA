@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.upload.href;
 
 import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -57,7 +58,6 @@ public class IFrameDataView extends PopupViewImpl implements
 	}
 	
 	
-	
 	public HasClickHandlers getDoneButton(){
 		return aClose;
 	}
@@ -69,6 +69,7 @@ public class IFrameDataView extends PopupViewImpl implements
 
 	@Override
 	public void setInfo(String uri, String title) {
+		
 		iframe.setSrc(uri);
 		spnHeader.setInnerText(title);
 		//uploaderDialog.setText(title);

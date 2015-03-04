@@ -4,6 +4,7 @@ import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent.FileLoadHandler;
+import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
@@ -14,6 +15,8 @@ import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -165,15 +168,22 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 		}
 	}
 
-	private void render(Attachment attachment) {
+	private void render(final Attachment attachment) {
 		//lblReadOnly.setText(attachment.getName());
 		UploadContext context = new UploadContext("getreport");
 		context.setContext("attachmentId", attachment.getId()+"");
 		context.setContext("ACTION", "GETATTACHMENT");
-		String fullUrl = AppContext.getBaseUrl()+"/"+context.toUrl();;
+		final String fullUrl = AppContext.getBaseUrl()+"/"+context.toUrl();;
 		
-		Anchor anchor = new Anchor(attachment.getName(),fullUrl);
-		anchor.setTarget("_blank");
+		Anchor anchor = new Anchor(attachment.getName());
+		anchor.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				AppContext.fireEvent(
+						new ShowAttachmentEvent(fullUrl, attachment.getName()));
+			}
+		});
 		
 		values.add(anchor);
 	}

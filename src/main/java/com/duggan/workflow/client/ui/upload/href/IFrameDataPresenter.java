@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.upload.href;
 import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent;
 import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent.CloseAttatchmentHandler;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;

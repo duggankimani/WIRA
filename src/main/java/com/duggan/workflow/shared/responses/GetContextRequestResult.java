@@ -5,14 +5,20 @@ import java.util.List;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Version;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 
 public class GetContextRequestResult extends BaseResponse {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Boolean isValid;
 	private HTUser user;
 	private List<UserGroup> groups;
 	private Version version;
 	private String organizationName;
+	private REPORTVIEWIMPL reportViewImpl;
 
 	public GetContextRequestResult() {
 		// For serialization only
@@ -56,6 +62,14 @@ public class GetContextRequestResult extends BaseResponse {
 
 	public void setOrganizationName(String organizationName) {
 		this.organizationName = organizationName;
+	}
+
+	public REPORTVIEWIMPL getReportViewImpl() {
+		return reportViewImpl;
+	}
+
+	public void setReportViewImpl(REPORTVIEWIMPL reportViewImpl) {
+		this.reportViewImpl = reportViewImpl;
 	}
 
 }
