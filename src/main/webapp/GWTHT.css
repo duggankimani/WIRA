@@ -379,7 +379,7 @@ div.htmlEditorPopup {
 	overflow: hidden;
 }
 
-::-webkit-scrollbar-thumb {
+.attachments-well ::-webkit-scrollbar-thumb {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -457,7 +457,7 @@ ul,menu,dir {
 	-webkit-padding-start: 40px;
 }
 
-::-webkit-scrollbar {
+.attachments-well ::-webkit-scrollbar {
 	width: 10px;
 	height: 10px;
 }
