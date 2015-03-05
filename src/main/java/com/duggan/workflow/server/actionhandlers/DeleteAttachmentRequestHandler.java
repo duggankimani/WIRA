@@ -19,7 +19,14 @@ public class DeleteAttachmentRequestHandler extends
 	public void execute(DeleteAttachmentRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-		boolean deleted = AttachmentDaoHelper.delete(action.getAttachmentId());
+		boolean deleted = false;
+		if(action.getAttachmentId()!=null){
+			deleted = AttachmentDaoHelper.delete(action.getAttachmentId());
+		}
+		
+		if(action.getAttachmentIds()!=null){
+			deleted = AttachmentDaoHelper.delete(action.getAttachmentIds());
+		}
 		
 		DeleteAttachmentResponse response = (DeleteAttachmentResponse)actionResult;
 		response.setIsDeleted(deleted);

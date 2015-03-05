@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+
+	<g:HTMLPanel styleName="attachments-well">
+			<div class="attachments-welcome">
+			</div>
+			<div class="attachments-header hidden" ui:field="attachmentsHeader">
+				<div class="error hidden">
+					<span>An error occurred while uploading.</span>
+					<a href="#" class="dismiss">Dismiss</a>
+				</div>
+				<div class="self-close-msg hidden"></div>
+				<ul class="info">
+					<li>
+						<span class="totalAttached" ui:field="spnTotal">2</span>
+						Attachments
+					</li>
+					<li>
+						<d:ActionLink ui:field="aRemoveAll" styleName="removeAll" role="button" 
+						title="Remove All">Remove All</d:ActionLink>
+					</li>
+				</ul>
+			</div>
+			<d:BulletListPanel ui:field="lstAttachments" role="listbox" ariaLive="polite" styleName="file-attach" >
+			</d:BulletListPanel>
+			<div role="alert" class="error transfer-error hidden">
+				<span class="attachmenterror">
+				</span>
+			</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

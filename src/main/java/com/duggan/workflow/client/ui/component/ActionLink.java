@@ -25,6 +25,10 @@ public class ActionLink extends Anchor {
 		getElement().setAttribute("data-toggle", data);
 	}
 	
+	public void setRole(String role){
+		getElement().setAttribute("role", role);
+	}
+	
 	public void setDataOriginalTitle(String data){
 		getElement().setAttribute("data-original-title", data);
 	}

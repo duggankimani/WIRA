@@ -10,13 +10,18 @@ public class DeleteAttachmentEvent extends
 
 	public static Type<DeleteAttachmentHandler> TYPE = new Type<DeleteAttachmentHandler>();
 	private Attachment attachment;
-
+	private Long [] attachmentIds;
+	
 	public interface DeleteAttachmentHandler extends EventHandler {
 		void onDeleteAttachment(DeleteAttachmentEvent event);
 	}
 
 	public DeleteAttachmentEvent(Attachment attachment) {
 		this.attachment = attachment;
+	}
+	
+	public DeleteAttachmentEvent(Long [] attachmentIds) {
+		this.attachmentIds= attachmentIds;
 	}
 
 	public Attachment getAttachment() {
@@ -39,5 +44,9 @@ public class DeleteAttachmentEvent extends
 
 	public static void fire(HasHandlers source, Attachment attachment) {
 		source.fireEvent(new DeleteAttachmentEvent(attachment));
+	}
+
+	public Long[] getAttachmentIds() {
+		return attachmentIds;
 	}
 }

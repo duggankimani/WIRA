@@ -7,6 +7,7 @@ public class DeleteAttachmentRequest extends
 		BaseRequest<DeleteAttachmentResponse> {
 
 	private Long attachmentId;
+	private Long[] attachmentIds;
 
 	@SuppressWarnings("unused")
 	private DeleteAttachmentRequest() {
@@ -15,6 +16,11 @@ public class DeleteAttachmentRequest extends
 
 	public DeleteAttachmentRequest(Long attachmentId) {
 		this.attachmentId = attachmentId;
+	}
+	
+	public DeleteAttachmentRequest(Long [] attachmentIds){
+		this.attachmentIds = attachmentIds;
+		
 	}
 
 	public Long getAttachmentId() {
@@ -25,5 +31,13 @@ public class DeleteAttachmentRequest extends
 	public BaseResponse createDefaultActionResponse() {
 		
 		return new DeleteAttachmentResponse();
+	}
+
+	public Long[] getAttachmentIds() {
+		return attachmentIds;
+	}
+
+	public void setAttachmentIds(Long[] attachmentIds) {
+		this.attachmentIds = attachmentIds;
 	}
 }

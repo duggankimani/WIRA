@@ -1,10 +1,19 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploadStatus.Status;
+import gwtupload.client.IUploader.OnCancelUploaderHandler;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.UploadedInfo;
+
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.component.AttachmentsPanel;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
+import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent.FileLoadHandler;
-import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
@@ -15,17 +24,15 @@ import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class FileUploadField extends FieldWidget implements FileLoadHandler{
+public class FileUploadField extends FieldWidget implements FileLoadHandler, ReloadAttachmentsHandler{
 
 	private static UploadFileFieldUiBinder uiBinder = GWT
 			.create(UploadFileFieldUiBinder.class);
@@ -41,7 +48,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 	@UiField InlineLabel lblReadOnly;
 	@UiField HTMLPanel panelControls;
 	@UiField SpanElement spnMandatory;
-	@UiField HTMLPanel values;
+	@UiField AttachmentsPanel attachmentsPanel;
 		
 	Uploader uploader = null;
 	
@@ -57,7 +64,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		addRegisteredHandler(FileLoadEvent.TYPE, this);
-		
+		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 	}
 
 	@Override
@@ -116,7 +123,6 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 	public void setValue(Object value) {
 		super.setValue(value);
 		
-		System.err.println(getField().getName()+" = "+value);
 		if(value!=null){
 			if(!(value instanceof String)){
 				value = value.toString();
@@ -138,6 +144,8 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
 		
 		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+		
+		attachmentsPanel.setReadOnly(isReadOnly);
 	}
 
 	@Override
@@ -164,27 +172,13 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler{
 		if(attachment.getFieldName().equals(fieldName) && 
 				docId.equals(attachment.getDocumentid().toString())){
 			
-			render(attachment);
+			attachmentsPanel.addAttachment(attachment);
 		}
 	}
 
-	private void render(final Attachment attachment) {
-		//lblReadOnly.setText(attachment.getName());
-		UploadContext context = new UploadContext("getreport");
-		context.setContext("attachmentId", attachment.getId()+"");
-		context.setContext("ACTION", "GETATTACHMENT");
-		final String fullUrl = AppContext.getBaseUrl()+"/"+context.toUrl();;
-		
-		Anchor anchor = new Anchor(attachment.getName());
-		anchor.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				AppContext.fireEvent(
-						new ShowAttachmentEvent(fullUrl, attachment.getName()));
-			}
-		});
-		
-		values.add(anchor);
+	@Override
+	public void onReloadAttachments(ReloadAttachmentsEvent event) {
+		attachmentsPanel.clear();
 	}
+
 }

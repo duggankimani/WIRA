@@ -14,7 +14,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BulletPanel extends ComplexPanel implements HasClickHandlers, HasKeyDownHandlers, HasBlurHandlers {
+public class BulletPanel extends ComplexPanel
+implements HasClickHandlers, HasKeyDownHandlers, HasBlurHandlers {
     HandlerRegistration clickHandler;
 
     //HasText, HasHTML,
@@ -28,6 +29,10 @@ public class BulletPanel extends ComplexPanel implements HasClickHandlers, HasKe
 
     public void insert(Widget w, int beforeIndex) {
         super.insert(w, getElement(), beforeIndex, true);
+    }
+    
+    public void setRole(String role){
+    	getElement().setAttribute("role", role);
     }
 
     public String getText() {

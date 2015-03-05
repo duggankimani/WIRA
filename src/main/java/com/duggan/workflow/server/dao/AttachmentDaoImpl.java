@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -185,6 +186,12 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 				.setParameter("name", name);
 		
 		return getResultList(query);
+	}
+
+	public void delete(Long[] attachmentIds) {
+		Query query  = em.createQuery("DELETE FROM LocalAttachment where id in (:ids)")
+				.setParameter("ids", Arrays.asList(attachmentIds));
+		query.executeUpdate();
 	}
 	
 }

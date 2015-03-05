@@ -28,6 +28,8 @@ import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
+import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
+import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
@@ -80,6 +82,7 @@ import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
+import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
@@ -97,6 +100,7 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
+import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggersResponse;
@@ -131,7 +135,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> 
 		implements ReloadDocumentHandler, ActivitiesLoadHandler,
-		ReloadAttachmentsHandler,DeleteLineHandler, ButtonClickHandler{
+		ReloadAttachmentsHandler,DeleteAttachmentHandler,DeleteLineHandler, ButtonClickHandler{
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type, String subject,
@@ -255,6 +259,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		addRegisteredHandler(DeleteLineEvent.TYPE, this);
 		addRegisteredHandler(ButtonClickEvent.TYPE, this);
+		addRegisteredHandler(DeleteAttachmentEvent.TYPE, this);
 		
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override
@@ -1428,5 +1433,25 @@ public class GenericDocumentPresenter extends
 	 */
 	public void setUnAssignedList(boolean isUnassignedList) {
 		getView().setUnAssignedList(isUnassignedList);
+	}
+
+	@Override
+	public void onDeleteAttachment(DeleteAttachmentEvent event) {
+		Attachment attachment = event.getAttachment();
+		
+		DeleteAttachmentRequest request = null;
+		if(attachment!=null){
+			request = new DeleteAttachmentRequest(attachment.getId());
+		}else{
+			request = new DeleteAttachmentRequest(event.getAttachmentIds());
+		}
+		
+		requestHelper.execute(request,
+				new TaskServiceCallback<DeleteAttachmentResponse>() {
+					@Override
+					public void processResult(DeleteAttachmentResponse result) {
+						
+					}
+				});
 	}
 }

@@ -170,5 +170,8 @@ public class Uploader extends Composite {
 	public void clear() {
 		uploader.clear();			
 	}
-
+	
+	public void addOnCancelUploaderHandler(OnCancelUploaderHandler handler){
+		uploader.addOnCancelUploadHandler(handler);
+	}
 }

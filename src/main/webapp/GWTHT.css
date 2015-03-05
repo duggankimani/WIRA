@@ -40,8 +40,8 @@
 	border-radius: 0 0 5px 5px;
 }
 
-.bootcamp ul{
-	margin:0px;
+.bootcamp ul {
+	margin: 0px;
 }
 
 .bootcamp ul li {
@@ -133,6 +133,7 @@
 	/* background-image:
 		url("https://github.com/images/modules/dashboard/bootcamp/octocat_setup.png?152282f8");
 	background-size: 129px 96px; */
+	
 }
 
 .dummycontainer {
@@ -267,16 +268,16 @@
 	max-width: 95%;
 }
 
-.action-area .version{
+.action-area .version {
 	font-size: 10px;
-    font-style: oblique;
+	font-style: oblique;
 }
 
 .highlight {
-    background-color: yellow;
+	background-color: yellow;
 }
 
-.control-group .controls .gwt-RadioButton-disabled{
+.control-group .controls .gwt-RadioButton-disabled {
 	color: #000000;
 }
 
@@ -290,62 +291,61 @@
 	vertical-align: text-top;
 }
 
-#activity .indent strong{
+#activity .indent strong {
 	margin-right: 0;
 }
 
-span.serverdisconnected{
+span.serverdisconnected {
 	background: #db4439;
 	color: white;
 }
 
-span.tasktimelines{
-	display:block; 
-	font-size:11px;
-	padding-right:5px;
+span.tasktimelines {
+	display: block;
+	font-size: 11px;
+	padding-right: 5px;
 }
 
-div.multicolumn{
-	min-width:500px;
+div.multicolumn {
+	min-width: 500px;
 	/* position:absolute; */
 }
 
-div.tr-step{
-	height:250px;
+div.tr-step {
+	height: 250px;
 	position: relative;
 }
 
-div.centered{
-	text-align:center;
+div.centered {
+	text-align: center;
 }
 
-#detailed-info .lead, .form-horizontal .lead {
-    background-color: #F5F5F5;
+#detailed-info .lead,.form-horizontal .lead {
+	background-color: #F5F5F5;
 }
 
-div.num{
-	text-align:right;
+div.num {
+	text-align: right;
 }
 
-div.center{
-	text-align:center;
+div.center {
+	text-align: center;
 }
 
 div.htmlEditorPopup {
-    max-width: 90% !important;
-    width: 90% !important;
+	max-width: 90% !important;
+	width: 90% !important;
 }
 
 .modal-iframe {
 	left: 5%;
-    overflow: visible;
-    position: absolute;
-    top: 5%;
-    visibility: visible;
-
+	overflow: visible;
+	position: absolute;
+	top: 5%;
+	visibility: visible;
 	position: fixed;
-	width:90%;
-	height:90%;
+	width: 90%;
+	height: 90%;
 	z-index: 1050;
 	background-color: #ffffff;
 	border: 1px solid #999;
@@ -363,9 +363,188 @@ div.htmlEditorPopup {
 	background-clip: padding-box;
 }
 
-.modal-iframe-body{
+.modal-iframe-body {
 	height: 622px;
-    padding: 2px;
-    position: relative;
-	
+	padding: 2px;
+	position: relative;
+}
+
+.attachments-header {
+	color: #454545;
+	line-height: 14px;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.attachments-well,.attachments-header,.thumbnails-attach {
+	overflow: hidden;
+}
+
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+table {
+	display: table;
+	border-collapse: separate;
+	border-spacing: 2px;
+	border-color: gray;
+}
+
+.thread-item.expanded {
+	cursor: default;
+	height: auto;
+	margin: 6px 0;
+}
+
+.thread-item {
+	padding: 6px 10px;
+	position: relative;
+	background-color: #fff;
+	overflow: hidden;
+	cursor: pointer;
+	border-top: 2px solid #fff;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
+	height: 21px;
+	margin-top: 0;
+}
+
+body,.btn input,.items a,.list-view a,.result a,.nf-text,.msg-loadingpane .message,.conv-loadingpane .message,.list-view-item .icon,.mb-list-ad .icon
+	{
+	color: #fff;
+}
+
+body,input,button,select,textarea,#custom-folders,#newsfeed-filterbar,.newsfeed-container,.js-stream-filter-item
+	{
+	font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial,
+		"Lucida Grande", sans-serif;
+}
+
+ody,input,button,select,textarea {
+	font-size: 13px;
+	font-size: 1.3rem;
+}
+
+.attachments-well ul.file-attach {
+	float: left;
+	width: 70%;
+	max-width: 600px;
+}
+
+.attachments-well ul li {
+	display: inline-block;
+}
+
+.attachments-well ul, .attachments-well ol {
+	list-style: none;
+}
+
+h1,h2,h3,h4,h5,h6,p,ul,ol,table,a,dt,dd {
+	margin: 0;
+	padding: 0;
+}
+
+ul,menu,dir {
+	display: block;
+	list-style-type: disc;
+	-webkit-margin-before: 1em;
+	-webkit-margin-after: 1em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 40px;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.threadpane ::-webkit-scrollbar-thumb {
+	background: none;
+	background: rgba(255, 255, 255, 0.5);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#80FFFFFF,
+		endColorstr=#80FFFFFF);
+}
+
+table {
+	display: table;
+	border-collapse: separate;
+	border-spacing: 2px;
+	border-color: gray;
+}
+
+.thread-item.expanded {
+	cursor: default;
+	height: auto;
+	margin: 6px 0;
+}
+
+.file-attach .filename {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	float: left;
+	overflow: hidden;
+	width: 225px;
+}
+
+.file-attach .options {
+	color: #196ad4;
+}
+
+.file-attach li {
+	min-width: 380px;
+	/**padding: 2px 0 0 0.3em;**/
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	line-height: 20px;
+	clear: both;
+}
+
+.file-attach li.readonly {
+    min-width: 325px;
+}
+
+.file-attach li:first-child {
+	border-top: 0;
+}
+
+.compose .inner {
+	overflow: auto;
+	cursor: text;
+	padding: 8px 28px;
+	margin-right: 20px;
+}
+
+.file-attach .options .remove {
+	padding-right: 5px;
+	border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.file-attach .options {
+	float: right;
+}
+
+a {
+	text-decoration: none;
+	color: #196ad4;
+	outline: none;
+}
+
+li {
+	display: list-item;
+	text-align: -webkit-match-parent;
+}
+
+.attachments-well ul,.attachments-well ol {
+	list-style: none;
+}
+
+.messagepane,.threadpane,.compose {
+	color: #000;
+}
+
+.attachments-well ul {
+    margin-left:0px;
 }

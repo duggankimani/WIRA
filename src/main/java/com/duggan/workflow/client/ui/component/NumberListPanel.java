@@ -5,10 +5,10 @@ import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BulletListPanel extends ComplexPanel {
+public class NumberListPanel extends ComplexPanel {
 
-	public BulletListPanel() {
-		   setElement(Document.get().createULElement());
+	public NumberListPanel() {
+		   setElement(Document.get().createOLElement());
     }
  
     public void setId(String id)

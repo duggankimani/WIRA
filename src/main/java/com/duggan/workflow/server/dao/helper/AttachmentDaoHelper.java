@@ -128,4 +128,10 @@ public class AttachmentDaoHelper{
 		return get(attachments, loadDocumentDetails);
 	}
 
+	public static boolean delete(Long[] attachmentIds) {
+		AttachmentDaoImpl dao = DB.getAttachmentDao();
+		dao.delete(attachmentIds);
+		return true;
+	}
+
 }

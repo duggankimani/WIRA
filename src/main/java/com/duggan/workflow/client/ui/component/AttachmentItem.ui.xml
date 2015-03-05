@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+	
+	<d:BulletPanel ui:field="container" role="presentation" styleName="disposition-attachment">
+		<g:Image ui:field="img"></g:Image>
+		<g:InlineLabel styleName="filename" ui:field="lblFileName">456-duggan.pdf</g:InlineLabel>
+		<g:HTMLPanel styleName="options">
+			<d:ActionLink ui:field="aRemove" styleName="remove">Remove</d:ActionLink>
+			<d:ActionLink ui:field="aDownload" styleName="download">
+				Download
+				<i class="icon icon-chevron-down" aria-haspopup="true"></i>
+			</d:ActionLink>
+		</g:HTMLPanel>
+		<!-- div class="progress-bar">
+			<span class="progress" style="width: 92.1833075049812%;">
+				<span class="progress-content"></span>
+			</span>
+		</div-->
+	</d:BulletPanel>
+</ui:UiBinder> 
