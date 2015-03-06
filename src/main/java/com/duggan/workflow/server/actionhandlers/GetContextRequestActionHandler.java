@@ -56,7 +56,7 @@ public class GetContextRequestActionHandler extends
 		}
 				
 		Setting reportView = SettingsDaoHelper.getSetting(SETTINGNAME.REPORT_VIEW_IMPL);
-		if(reportView.getValue()!=null && reportView.getValue().getValue()!=null){
+		if(reportView!=null && reportView.getValue()!=null && reportView.getValue().getValue()!=null){
 			result.setReportViewImpl(REPORTVIEWIMPL.valueOf(reportView.getValue().getValue().toString()));
 		}
 			
