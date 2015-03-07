@@ -15,6 +15,7 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.StringValue;
 
 public class TestMvel {
 
@@ -22,6 +23,30 @@ public class TestMvel {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
+	}
+	
+	@Test
+	public void scriptMvel1() throws FileNotFoundException, IOException{
+		long documentId = 94L;
+		Document doc = DocumentDaoHelper.getDocument(documentId);
+		doc.setValue("approved",new StringValue("Yes"));
+		
+		//System.err.println(doc.getDetails().keySet());
+		ParserContext context = new ParserContext();
+		context.addPackageImport("com.duggan.workflow.server.db");
+		context.addPackageImport("com.duggan.workflow.shared.model");
+		
+		String script = "setValue('isApproved',new BooleanValue(values.approved.value=='Yes'))";
+		Serializable compilexEx = MVEL.compileExpression(script,context);
+		MVEL.executeExpression(compilexEx, doc);
+		System.out.println("############ "+MVEL.evalToString("values.isApproved", doc));
+		
+//		System.out.println("############ "+MVEL.evalToString("details.poNumber", doc));
+//		System.out.println("############ "+MVEL.evalToString("details.poParticulars", doc));
+				
+//		MVEL.eval("setValue('matta',values.subject); setValue('yatta',values.subject);", doc);
+//		System.out.println("############ "+MVEL.evalToString("values.matta.value", doc)+ " :: "
+//				+MVEL.evalToString("values.yatta.value", doc));
 	}
 	
 	@Ignore
@@ -59,7 +84,7 @@ public class TestMvel {
 //				+MVEL.evalToString("values.yatta.value", doc));
 	}
 	
-	@Test
+	@Ignore
 	public void mvelLoop(){
 		long documentId = 10L;
 		Document doc = DocumentDaoHelper.getDocument(documentId);

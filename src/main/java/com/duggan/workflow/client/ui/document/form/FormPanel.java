@@ -23,6 +23,7 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.GridValue;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -116,10 +117,19 @@ public class FormPanel extends Composite {
 	
 	void bind(List<Field> fields, Doc doc){
 		Map<String, Value> values = doc.getValues();
+		Long documentId = null;
+		Long taskId = null;
 		
+		if(doc instanceof Document){
+			documentId = (Long) doc.getId();
+			taskId=null;
+		}else{
+			documentId = ((HTSummary)doc).getDocumentRef();
+			taskId = ((HTSummary)doc).getId();
+		}
 		for(Field field: fields){
 			String name = field.getName();
-			field.setDocId(doc.getId()+""); //Add DocId to all field
+			field.setDocId(documentId+""); //Add DocId to all field
 			
 			if(name==null || name.isEmpty()){
 				continue;
