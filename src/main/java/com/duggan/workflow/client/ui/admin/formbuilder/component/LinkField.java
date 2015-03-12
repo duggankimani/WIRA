@@ -1,10 +1,14 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
@@ -20,12 +24,20 @@ public class LinkField extends FieldWidget{
 	}
 
 	@UiField ActionLink aLink;
+
+	private String href;
 	
 	public LinkField() {
 		super();
 		addProperty(new Property(HREF, "HREF", DataType.STRING));
 		widget = uiBinder.createAndBindUi(this);
-		aLink.setTarget("_blank");
+		aLink.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				AppContext.fireEvent(new ShowAttachmentEvent(href, aLink.getText()));
+			}
+		});
 		add(widget);
 	}
 	
@@ -43,14 +55,14 @@ public class LinkField extends FieldWidget{
 	@Override
 	public void setField(Field field) {
 		super.setField(field);
-		String href = getPropertyValue(HREF);
-		aLink.setHref(href);
+		href = getPropertyValue(HREF);
 	}
 	
 	@Override
 	protected void setCaption(String caption) {
 		//System.err.println(">>>>>>>>>>>> Link field Create -- "+caption);
 		aLink.setText(caption);		
+		aLink.setTitle(caption);
 	}
 	
 	@Override

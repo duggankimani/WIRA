@@ -3,6 +3,8 @@ package com.duggan.workflow.mvel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,10 +14,15 @@ import org.mvel2.MVEL;
 import org.mvel2.ParserContext;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TaskStepDTO;
+import com.duggan.workflow.shared.model.TriggerType;
 
 public class TestMvel {
 
@@ -23,10 +30,24 @@ public class TestMvel {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
+		ProcessMigrationHelper.start(4L);
 	}
 	
 	@Test
 	public void scriptMvel1() throws FileNotFoundException, IOException{
+		Long taskId= 1090L;
+		List<TaskStepDTO> steps = ProcessDefHelper.getTaskStepsByTaskId(taskId);
+		
+		for(TaskStepDTO dto: steps){
+			System.out.println(dto.getId()+" >> "+dto.getFormName());
+		}
+		TaskStepDTO step= steps.get(steps.size()-1);
+		Collection<ADTaskStepTrigger> adTriggers= 
+				DB.getProcessDao().getTaskStepTriggers(step.getId(),TriggerType.AFTERSTEP);
+		for(ADTaskStepTrigger t: adTriggers){
+			System.err.println(">> "+t.getTrigger().getName());
+		}
+		
 		long documentId = 94L;
 		Document doc = DocumentDaoHelper.getDocument(documentId);
 		doc.setValue("approved",new StringValue("Yes"));

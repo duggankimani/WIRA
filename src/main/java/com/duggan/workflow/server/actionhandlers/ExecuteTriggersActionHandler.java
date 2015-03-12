@@ -3,7 +3,6 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.Collection;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
-import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
@@ -29,11 +28,11 @@ import com.gwtplatform.dispatch.shared.ActionException;
  * @author duggan
  *
  */
-public class ExecuteTriggerActionHandler extends
+public class ExecuteTriggersActionHandler extends
 		BaseActionHandler<ExecuteTriggersRequest, ExecuteTriggersResponse> {
 
 	@Inject
-	public ExecuteTriggerActionHandler() {
+	public ExecuteTriggersActionHandler() {
 	}
 
 	@Override
@@ -66,20 +65,23 @@ public class ExecuteTriggerActionHandler extends
 		if(canExecute){
 			
 			//After Step Triggers
-			Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(action.getPreviousStepId(), TriggerType.AFTERSTEP);
+			Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(action.getPreviousStepId(),
+					TriggerType.AFTERSTEP);
 			for(ADTaskStepTrigger stepTrigger: adTriggers){
 				new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
 			}
 			
 			//Before Next Step Triggers
-			adTriggers= dao.getTaskStepTriggers(action.getNextStepId(), TriggerType.BEFORESTEP);
-			for(ADTaskStepTrigger stepTrigger: adTriggers){
-				new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+			if(action.getNextStepId()!=null){
+				adTriggers= dao.getTaskStepTriggers(action.getNextStepId(), TriggerType.BEFORESTEP);
+				for(ADTaskStepTrigger stepTrigger: adTriggers){
+					new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+				}
 			}
-			
 		}
 		
 		if(canExecute && action.getNextStepId()!=null){
+			//Next step is an Output Document
 			TaskStepModel model = dao.getById(TaskStepModel.class, action.getNextStepId());
 			if(model.getDoc()!=null){
 				Value value = OutputDocumentDaoHelper.generateDoc(model.getDoc(), doc);

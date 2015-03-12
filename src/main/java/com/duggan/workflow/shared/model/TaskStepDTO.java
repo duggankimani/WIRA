@@ -12,12 +12,15 @@ public class TaskStepDTO implements Serializable{
 	private Long id;
 	private Long nodeId;
 	private String stepName;
+	
 	private int sequenceNo;
 	private MODE mode;
 	private String condition;
 	private Long processDefId;
+	
 	private String formName;
 	private Long formId;
+	
 	private String outputDocName;
 	private Long outputDocId;
 	private boolean isActive = true;
