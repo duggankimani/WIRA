@@ -73,7 +73,7 @@ public class GetReport extends HttpServlet {
 		log.debug("GetReport Action = "+action);
 
 		if (action == null) {
-			action = "none";
+			action = "GETATTACHMENT";
 		}
 
 		if(action.equals("GETDOCUMENTPROCESS")){
