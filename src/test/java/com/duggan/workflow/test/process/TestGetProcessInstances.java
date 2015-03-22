@@ -23,7 +23,7 @@ public class TestGetProcessInstances {
 	
 	@Test
 	public void getAllProcessIntances(){
-		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(null,null);
+		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(null);
 		for(ProcessLog log: logs){
 			System.out.println(log);
 		}
