@@ -25,7 +25,7 @@ public class Attachment implements Serializable,TreeStore.TreeNode<Attachment> {
 	private Long size;
 	private String sizeStr;
 	private String contentType;
-	private String createdBy;
+	private HTUser createdBy;
 	private Date created;
 	private ArrayList<Attachment> children;
 	private String documentType;
@@ -78,10 +78,10 @@ public class Attachment implements Serializable,TreeStore.TreeNode<Attachment> {
 	public void setSizeStr(String size) {
 		this.sizeStr = size;
 	}
-	public String getCreatedBy() {
+	public HTUser getCreatedBy() {
 		return createdBy;
 	}
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(HTUser createdBy) {
 		this.createdBy = createdBy;
 	}
 	public Date getCreated() {

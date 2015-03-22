@@ -62,7 +62,7 @@ public class ProcessAttachment extends Composite {
 
 	private void setValues(Attachment attach) {
 		lblFileName.setText(attach.getName());
-		lblCreatedBy.setText(attach.getCreatedBy());
+		lblCreatedBy.setText(attach.getCreatedBy().getFullName());
 		lblCreated.setText(DateUtils.DATEFORMAT.format(attach.getCreated()));
 	}
 

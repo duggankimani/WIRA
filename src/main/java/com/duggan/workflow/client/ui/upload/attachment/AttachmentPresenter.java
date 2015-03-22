@@ -47,13 +47,7 @@ public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAt
 				
 				url = url.replace("/", "");
 				moduleUrl =moduleUrl+"/"+url;
-				
-				REPORTVIEWIMPL impl = AppContext.getReportViewImpl();
-				if(impl==null){
-					impl = REPORTVIEWIMPL.getDefaultImplementation();
-				}
-				
-				fireEvent(new ShowAttachmentEvent(moduleUrl,attachment.getName(), impl));
+				fireEvent(new ShowAttachmentEvent(moduleUrl,attachment.getName()));
 			}
 		});
 	}

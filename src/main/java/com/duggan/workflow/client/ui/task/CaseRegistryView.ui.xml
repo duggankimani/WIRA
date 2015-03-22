@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="span12">
+		<div class="no-overflow-x overflow-y">
+			<g:HTMLPanel styleName="upper-content">
+				<div class="row-fluid">
+					<div class="pull-right registry">
+						<d:DropDownList ui:field="listUsers" styleName="caseregistry" />
+						<d:DropDownList ui:field="listProcesses" styleName="caseregistry" />
+						<d:TextField ui:field="txtSearch" placeholder="Search.."
+							styleName="input-medium caseregistry" />
+						<div style="display:inline-block">
+							<label ui:field="lblEl" style="display:inline">Case No</label>
+							<d:TextField ui:field="txtCaseNo" placeholder="CaseNo"
+								type="text" class="input-small caseregistry" />
+						</div>
+						<g:Anchor ui:field="aSearch" styleName="btn caseregistry"
+							title="Search">
+							Search
+							<i class="icon-search"></i>
+						</g:Anchor>
+					</div>
+				</div>
+			</g:HTMLPanel>
+			<div class="no-overflow-x overflow-y registry-table" ui:field="divTable">
+				<d:TableView ui:field="tblRegistry"></d:TableView>
+				<span ui:field="spnNoData" class="hide label label-info">
+					No Data To Display
+				</span>
+			</div>
+			
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -18,6 +18,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,7 +31,6 @@ public class AttachmentItem extends Composite {
 	interface AttachmentItemUiBinder extends UiBinder<Widget, AttachmentItem> {
 	}
 	
-	@UiField BulletPanel container;
 	@UiField InlineLabel lblFileName;
 	@UiField Anchor aRemove;
 	//@UiField Anchor view;
@@ -39,6 +39,10 @@ public class AttachmentItem extends Composite {
 	private Attachment attachment=null;
 
 	public AttachmentItem(final Attachment attachment) {
+		this(attachment,false,true);
+	}
+	
+	public AttachmentItem(final Attachment attachment, boolean isReadOnly, boolean isShowDownloadLink) {
 		this.attachment = attachment;
 		String name=attachment.getName();
 		if(name.endsWith(".pdf")){
@@ -67,11 +71,14 @@ public class AttachmentItem extends Composite {
 		img.getElement().getStyle().setFloat(Float.LEFT);
 		img.getElement().getStyle().setMarginRight(3, Unit.PX);
 		img.getElement().getStyle().setMarginTop(2, Unit.PX);
+		img.addStyleName("hand");
 		
 		//Init widget
 		initWidget(uiBinder.createAndBindUi(this));
 		lblFileName.setText(name);
 		lblFileName.setTitle(name);
+		
+		setReadOnly(isReadOnly);
 		
 		aRemove.addClickHandler(new ClickHandler() {
 			@Override
@@ -94,24 +101,44 @@ public class AttachmentItem extends Composite {
 		aDownload.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//Download
-				UploadContext context = new UploadContext("getreport");
-				context.setContext("attachmentId", attachment.getId()+"");
-				context.setContext("ACTION", "GETATTACHMENT");
-				final String fullUrl = AppContext.getBaseUrl()+"/"+context.toUrl();
-				AppContext.fireEvent(
-						new ShowAttachmentEvent(fullUrl, attachment.getName()));
+				download();
 			}
 		});
+		
+		img.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				download();
+			}
+		});
+		
+		showDownloadLink(isShowDownloadLink);
+	}
+	
+	protected void download() {
+		//Download
+		UploadContext context = new UploadContext("getreport");
+		context.setContext("attachmentId", attachment.getId()+"");
+		context.setContext("ACTION", "GETATTACHMENT");
+		final String fullUrl = AppContext.getBaseUrl()+"/"+context.toUrl();
+		AppContext.fireEvent(
+				new ShowAttachmentEvent(fullUrl, attachment.getName()));
+	}
+
+	public void showDownloadLink(boolean isShowDownloadLink){
+		if(!isShowDownloadLink){
+			aDownload.addStyleName("hide");
+		}
 	}
 	
 	public void setReadOnly(boolean isReadOnly){
 		if(isReadOnly){
 			aRemove.addStyleName("hidden");
-			container.addStyleName("readonly");
+			//container.addStyleName("readonly");
 		}else{
 			aRemove.removeStyleName("hidden");
-			container.removeStyleName("readonly");
+			//container.removeStyleName("readonly");
 		}
 	}
 

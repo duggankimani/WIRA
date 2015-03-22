@@ -335,6 +335,11 @@ public class DocumentDaoHelper {
 		if(loadDetails){
 			type.setFormId(dao.getFormId(adtype.getId()));
 		}
+		
+		if(adtype.getProcessDef()!=null){
+			type.setProcessId(adtype.getProcessDef().getProcessId());
+		}
+		
 		return type;
 	}
 

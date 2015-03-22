@@ -87,7 +87,13 @@ public class AttachmentsPanel extends Composite {
 		spnTotal.setInnerText(attachments.size()+"");
 		AttachmentItem item = new AttachmentItem(attachment);
 		item.setReadOnly(isReadOnly);
-		lstAttachments.add(item);
+		
+		BulletPanel wrapper = new BulletPanel();
+		wrapper.setRole("presentation");
+		wrapper.setStyleName("disposition-attachment");
+				
+		wrapper.add(item);
+		lstAttachments.add(wrapper);
 		
 		if(attachments.size()>1){
 			attachmentsHeader.removeClassName("hidden");
@@ -111,7 +117,15 @@ public class AttachmentsPanel extends Composite {
 			aRemoveAll.removeStyleName("hidden");
 		}
 		for(int i=0; i<size; i++){
-			AttachmentItem item = ((AttachmentItem)lstAttachments.getWidget(i));
+			BulletPanel wrapper = (BulletPanel)lstAttachments.getWidget(i);
+			
+			if(isReadOnly){	
+				wrapper.addStyleName("readonly");
+			}else{
+				wrapper.removeStyleName("readonly");
+			}
+			
+			AttachmentItem item = (AttachmentItem)wrapper.getWidget(0);
 			item.setReadOnly(isReadOnly);
 		}
 	}

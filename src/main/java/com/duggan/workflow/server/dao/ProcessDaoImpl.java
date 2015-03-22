@@ -8,6 +8,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.drools.runtime.process.ProcessInstance;
+import org.hibernate.Hibernate;
+import org.hibernate.SQLQuery;
+import org.hibernate.ejb.QueryImpl;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
@@ -23,7 +27,10 @@ import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.CaseFilter;
+import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;
 
@@ -387,6 +394,142 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				log.setTaskName(taskName);
 				log.setProcessLoaded(false);
 			} 			
+			
+			logs.add(log);
+			
+		}
+		return logs;
+	}
+	
+	public List<ProcessLog> getProcessInstances(CaseFilter filter){
+		if(filter==null){
+			filter = new CaseFilter();
+		}
+		
+		String sql = "select d.id docId, "
+				+ "t.id taskid, "
+				+ "l.processinstanceid, "
+				+ "l.processid, "
+				+ "l.start_date,l.end_date,"
+				+ "d.subject caseNo, "
+				+ "l.status processstatus,"
+				+ "t.status, "
+				+ "concat(u1.firstname,' ' ,u1.lastname) createdby,"
+				+ "concat(u.firstname,' ' ,u.lastname) taskowner,"
+				+ "i.text, "
+				+ "(select array_to_string(array_agg(concat(b.firstname,' ' ,b.lastname,g.fullname)),',') "
+				+ "from peopleassignments_potowners po "
+				+ "left join buser b  on (b.userid=po.entity_id) "
+				+ "left join bgroup g on (g.name=po.entity_id) "
+				+ "where task_id=t.id) potowners "
+				+ "from processinstancelog l "
+				+ "left join task t "
+				+ "on (t.processinstanceid=l.processinstanceid and t.status!='Completed') "
+				+ "inner join localdocument d "
+				+ "on (d.processinstanceid=l.processinstanceid)  "
+				+ "left join buser u on (u.userid=t.actualowner_id) "
+				+ "left join buser u1 on (u1.userid=d.createdby) "
+				+ "left join i18ntext i on i.task_names_id=t.id ";
+		
+			boolean isFirst = true;
+			
+			if(filter.getProcessId()!=null){
+				if(isFirst){
+					sql = sql +" where ";
+				}else{
+					sql = sql +" and ";
+				}
+				isFirst = false;
+				
+				sql = sql+" l.processid=:processId";
+			}
+			
+			if(filter.getCaseNo()!=null){
+				if(isFirst){
+					sql = sql +" where ";
+				}else{
+					sql = sql +" and ";
+				}
+				isFirst = false;
+				
+				sql = sql+" d.subject ilike :caseNo";
+			}
+			
+			if(filter.getUserId()!=null){
+				if(isFirst){
+					sql = sql +" where ";
+				}else{
+					sql = sql +" and ";
+				}
+				isFirst = false;
+				
+				sql = sql+" (u.userid= :userId or u1.userid= :userId)";
+			}
+			
+			sql = sql+ " order by l.processinstanceid desc";
+		
+		Query query = em.createNativeQuery(sql);
+		if(filter.getProcessId()!=null){
+			query.setParameter("processId", filter.getProcessId());
+		}
+		
+		if(filter.getCaseNo()!=null){
+			query.setParameter("caseNo", "%"+filter.getCaseNo()+"%");
+		}
+		
+		if(filter.getUserId()!=null){
+			query.setParameter("userId", filter.getUserId());
+		}
+		
+		List<Object[]> rows = getResultList(query);
+		List<ProcessLog> logs = new ArrayList<>();
+		
+		for (Object[] row : rows) {
+			int i = 0;
+			Object value = null;
+			Long docId = (value = row[i++]) == null ? null : new Long(
+					value.toString());
+			Long taskId = (value = row[i++]) == null ? null : new Long(
+					value.toString());
+			Long processinstanceid = (value = row[i++]) == null ? null : new Long(
+					value.toString());
+			String processId = (value = row[i++]) == null ? null : value.toString();
+			Date startDate = (value = row[i++]) == null ? null : (Date)value;
+			Date endDate = (value = row[i++]) == null ? null : (Date)value;
+			String caseNo = (value = row[i++]) == null ? null : value.toString();
+			int processStatus = (value = row[i++]) == null ? null : new Integer(
+					value.toString());
+			String taskStatus = (value = row[i++]) == null ? null : value.toString();
+			String initiator = (value = row[i++]) == null ? null : value.toString();
+			String taskOwner = (value = row[i++]) == null ? null : value.toString();
+			String taskName = (value = row[i++]) == null ? null : value.toString();
+			
+			String potOwners = (value = row[i++]) == null ? null : value.toString();
+			
+			ProcessLog log  = new ProcessLog();
+			log.setTaskId(taskId);
+			log.setTaskOwner(taskOwner);
+			log.setCaseNo(caseNo);
+			log.setDocId(docId);
+			log.setInitiator(initiator);
+			log.setPotOwners(potOwners);
+			log.setProcessId(processId);
+			log.setProcessinstanceid(processinstanceid);
+			log.setTaskStatus(taskStatus);
+			log.setProcessState(processStatus);
+			log.setStartDate(startDate);
+			log.setEndDate(endDate);
+			try{
+				log.setTaskName(JBPMHelper.get().getDisplayName(taskId));
+			}catch(Exception e){
+				log.setTaskName(taskName);
+			} 	
+			
+			try{
+				log.setProcessName(JBPMHelper.get().getProcessName(processId));
+			}catch(Exception e){
+				log.setProcessName(processId);
+			} 	
 			
 			logs.add(log);
 			

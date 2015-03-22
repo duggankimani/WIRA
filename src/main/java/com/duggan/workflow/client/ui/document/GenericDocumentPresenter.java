@@ -205,6 +205,8 @@ public class GenericDocumentPresenter extends
 		void setProcessUrl(Long processInstanceId);
 
 		void bindProcessLog(List<TaskLog> logs);
+		
+		void showAttachments(List<Attachment> attachments);
 	}
 	
 	Long taskId;
@@ -1174,10 +1176,11 @@ public class GenericDocumentPresenter extends
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
 		
 		List<Attachment> attachments = attachmentsresponse.getAttachments();
+		getView().showAttachments(attachments);
 		
 		if(attachments.size()>0){
-			getView().getDivAttachment().removeClassName("hidden");
-			getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
+//			getView().getDivAttachment().removeClassName("hidden");
+//			getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
 			fireEvent(new AfterAttachmentReloadedEvent(documentId));
 		}
 		

@@ -34,9 +34,14 @@
 						<!-- Process -->
 					</d:ActionLink>
 
-					<d:ActionLink ui:field="aAttach2" styleName="btn btn-default"
+					<d:ActionLink ui:field="aAttach2" styleName="btn btn-default hidden"
 						title="Attach word, pdf, scanned documents etc">
-						<i class="icon-upload-alt color-black"></i>
+						<i class="icon-upload-alt color-orange"></i>
+					</d:ActionLink>
+					
+					<d:ActionLink ui:field="aViewAttachments" styleName="btn btn-default"
+						title="Attach word, pdf, scanned documents etc">
+						<i class="icon-paper-clip color-black"></i>
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aStart" styleName="btn btn-success hidden"
@@ -287,6 +292,20 @@
 				    	No Data To Display
 				    </span>
 				    <d:TableView ui:field="tblAuditLog"></d:TableView>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+			
+			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
+				ui:field="divAttachmentPanel">
+				<div class="row-fluid">
+					<h5>Documents</h5>
+					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
+				</div>
+				<g:HTMLPanel styleName="panel-body">
+					<span ui:field="spnAttachmentsEmpty" class="hide">
+				    	No Data To Display
+				    </span>
+				    <d:TableView ui:field="tblAttachments"></d:TableView>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			

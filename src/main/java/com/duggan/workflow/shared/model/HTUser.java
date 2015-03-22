@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class HTUser implements Serializable {
+public class HTUser implements Listable,Serializable {
 
 	private static final long serialVersionUID = -5249516544970187459L;
 	private Long id;
@@ -154,5 +154,10 @@ public class HTUser implements Serializable {
 	public int getTotal() {
 		
 		return participated+inbox;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return getFullName();
 	}
 }

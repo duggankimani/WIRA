@@ -37,6 +37,7 @@ import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandle
 import com.duggan.workflow.server.actionhandlers.GetNotificationTemplateRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetOutputDocumentsRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetProcessInstancesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessLogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
@@ -108,6 +109,7 @@ import com.duggan.workflow.shared.requests.GetLongTasksRequest;
 import com.duggan.workflow.shared.requests.GetNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
+import com.duggan.workflow.shared.requests.GetProcessInstancesRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
@@ -362,6 +364,8 @@ public class ServerModule extends HandlerModule {
 				SessionValidator.class);
 		
 		bindHandler(GetProcessLogRequest.class, GetProcessLogRequestHandler.class,
+				SessionValidator.class);
+		bindHandler(GetProcessInstancesRequest.class, GetProcessInstancesRequestHandler.class,
 				SessionValidator.class);
 		
 	}

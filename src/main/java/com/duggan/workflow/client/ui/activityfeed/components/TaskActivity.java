@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.activityfeed.components;
 import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsString;
 
 import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -52,7 +53,7 @@ public class TaskActivity extends Composite {
 
 	String url;
 
-	public TaskActivity(Notification notification) {
+	public TaskActivity(final Notification notification) {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		img.addErrorHandler(new ErrorHandler() {
@@ -194,9 +195,14 @@ public class TaskActivity extends Composite {
 						moduleUrl = moduleUrl.substring(0,
 								moduleUrl.length() - 1);
 					}
+					
 					url = url.replace("/", "");
 					moduleUrl = moduleUrl + "/" + url;
-					Window.open(moduleUrl, aFile.getText(), "");
+					
+					AppContext.fireEvent(
+							new ShowAttachmentEvent(moduleUrl, notification.getFileName()));
+				
+					//Window.open(moduleUrl, aFile.getText(), "");
 				}
 			});
 

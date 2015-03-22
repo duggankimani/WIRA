@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.client.ui.component.AttachmentItem;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.client.ui.component.CommentBox;
@@ -20,6 +21,7 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -201,6 +203,12 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	@UiField TableView tblAuditLog;
 	@UiField SpanElement spnAuditEmpty;
+	
+	//Attachments View
+	@UiField Anchor aViewAttachments;
+	@UiField Element spnAttachmentsEmpty;
+	@UiField TableView tblAttachments;
+	@UiField HTMLPanel divAttachmentPanel;
 
 	String url = null;
 
@@ -218,7 +226,7 @@ public class GenericDocumentView extends ViewImpl implements
 	private boolean isUnassignedList = false;
 
 	enum SHOWITEMS {
-		FORM, PROCESSTREE, AUDITLOG
+		FORM, PROCESSTREE, AUDITLOG, ATTACHMENTS
 	}
 	
 	SHOWITEMS selected = SHOWITEMS.FORM;
@@ -243,6 +251,9 @@ public class GenericDocumentView extends ViewImpl implements
 		tblAuditLog.setHeaders(Arrays
 				.asList("Task Name", "Assignee", "Status",
 						"Start Date", "Completion Date", "Time Taken"));
+		//Arrays.asList("filename","",""),
+		tblAttachments.setHeaders(
+				Arrays.asList("File Name","Created By","Date Created"));
 		
 		img.addErrorHandler(new ErrorHandler() {
 
@@ -295,6 +306,13 @@ public class GenericDocumentView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				changeView(SHOWITEMS.PROCESSTREE);
+			}
+		});
+		
+		aViewAttachments.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(SHOWITEMS.ATTACHMENTS);
 			}
 		});
 
@@ -397,9 +415,12 @@ public class GenericDocumentView extends ViewImpl implements
 		divContent.addClassName("hide");
 		divAuditLog.addStyleName("hide");
 		divContent.addClassName("hide");
+		divAttachmentPanel.addStyleName("hide");
 				
 		aProcess.removeStyleName("disabled");
 		aAudit.removeStyleName("disabled");
+		aViewAttachments.removeStyleName("disabled");
+		aDoc.removeStyleName("disabled");
 
 		if(itemToShow==selected){
 			itemToShow=SHOWITEMS.FORM;
@@ -407,21 +428,20 @@ public class GenericDocumentView extends ViewImpl implements
 		
 		switch (itemToShow) {
 		case FORM:
-			aProcess.removeStyleName("disabled");
-			aAudit.removeStyleName("disabled");
 			aDoc.addStyleName("disabled");
 			divContent.removeClassName("hide");
 			break;
 		case PROCESSTREE:
 			divProcess.removeStyleName("hide");
 			aProcess.addStyleName("disabled");
-			aDoc.removeStyleName("disabled");
 			break;
 		case AUDITLOG:
 			divAuditLog.removeStyleName("hide");
 			aAudit.addStyleName("disabled");
-			aDoc.removeStyleName("disabled");
 			break;
+		case ATTACHMENTS:
+			divAttachmentPanel.removeStyleName("hide");
+			aViewAttachments.addStyleName("disabled");
 		}
 
 	}
@@ -1096,6 +1116,19 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 		
 		auditContainer.add(tblAuditLog);
+	}
+	
+	public void showAttachments(List<Attachment> attachments){
+		tblAttachments.clearRows();
+		tblAttachments.addStyleName("file-attach");
+		if(attachments!=null){
+			for(Attachment attachment: attachments){
+				tblAttachments.addRow(Arrays.asList("","",""),
+						new AttachmentItem(attachment, true, false),
+						new InlineLabel(attachment.getCreatedBy().getFullName()),
+						new InlineLabel(DateUtils.CREATEDFORMAT.format(attachment.getCreated())));
+			}
+		}
 	}
 
 }

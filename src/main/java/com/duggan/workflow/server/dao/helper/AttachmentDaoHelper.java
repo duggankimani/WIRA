@@ -8,9 +8,11 @@ import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
@@ -81,7 +83,7 @@ public class AttachmentDaoHelper{
 		attachment.setSize(model.getSize());
 		attachment.setSizeStr(getSizeAsStr(model.getSize()));
 		attachment.setCreated(model.getCreated());
-		attachment.setCreatedBy(model.getCreatedBy());
+		attachment.setCreatedBy(LoginHelper.get().getUser(model.getCreatedBy(), false));
 		
 		if(loadDocumentDetails){
 			attachment.setDocumentType(model.getDocument().getType().getDisplay());

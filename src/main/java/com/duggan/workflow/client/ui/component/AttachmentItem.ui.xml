@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
 	
-	<d:BulletPanel ui:field="container" role="presentation" styleName="disposition-attachment">
+	<g:HTMLPanel>
 		<g:Image ui:field="img"></g:Image>
 		<g:InlineLabel styleName="filename" ui:field="lblFileName">456-duggan.pdf</g:InlineLabel>
 		<g:HTMLPanel styleName="options">
@@ -18,5 +18,5 @@
 				<span class="progress-content"></span>
 			</span>
 		</div-->
-	</d:BulletPanel>
+	</g:HTMLPanel>
 </ui:UiBinder> 

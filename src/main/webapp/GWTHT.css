@@ -548,3 +548,41 @@ li {
 .attachments-well ul {
     margin-left:0px;
 }
+
+.caseregistry{
+	display: inline-block;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+input[type="text"].caseregistry, select.caseregistry{
+    display: inline-block;
+    margin-bottom: 2px !important;
+    margin-right: 2px !important;
+    vertical-align: middle;
+    font-size: 12px;
+}
+input[type="text"].caseregistry{
+	height: 16px;	
+}
+
+select.caseregistry{
+	height: 27px;	
+}
+
+a.caseregistry{
+	padding: 2px 12px;
+	vertical-align: inherit;
+}
+
+div.registry{
+	margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+div.registry-table{
+	-webkit-box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
+-moz-box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
+box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
+}
