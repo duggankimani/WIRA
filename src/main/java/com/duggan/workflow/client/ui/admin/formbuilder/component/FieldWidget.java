@@ -991,4 +991,50 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		return formular!=null && !formular.isEmpty();
 	}
 
+	public boolean isValid() {
+
+		boolean isValid = true;
+		
+		Object obj = getValue(FieldWidget.MANDATORY);
+		if(obj==null){
+			return true;
+		}
+		
+		Boolean mandatory = (Boolean)obj;
+		if(mandatory){
+			Value fieldValue = getFieldValue();
+			Object val = null;
+			
+			if(fieldValue!=null){
+				val = fieldValue.getValue();
+			}
+			
+			if(val==null){
+				isValid=false;
+			}
+			
+			if(val instanceof String){
+				if(isNullOrEmpty(val.toString())){
+					isValid=false;
+				}
+			}
+		}
+		
+		
+		setComponentValid(isValid);
+		
+		return isValid;
+	}
+
+	/**
+	 * Override this to set style to your components
+	 * @param isValid
+	 */
+	private void setComponentValid(boolean isValid) {
+		//this.addStyleName();
+	}
+
+	boolean isNullOrEmpty(String value) {
+		return value == null || value.trim().length() == 0;
+	}
 }

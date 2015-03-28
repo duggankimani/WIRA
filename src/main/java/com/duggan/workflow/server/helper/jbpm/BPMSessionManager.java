@@ -31,6 +31,7 @@ import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.persistence.jpa.JPAKnowledgeService;
 import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
+import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
@@ -48,6 +49,7 @@ import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.workflow.core.node.HumanTaskNode;
+import org.jbpm.workflow.instance.WorkflowProcessInstanceUpgrader;
 import org.wira.pioneer.integration.PioneerIntegrationWorkitemHandler;
 
 import xtension.workitems.FormValidationWorkItemHandler;
@@ -221,6 +223,13 @@ class BPMSessionManager {
 
 		session.getWorkItemManager().registerWorkItemHandler("Human Task",
 				taskHandler);
+	}
+	
+	public void upgradeProcessInstance(long processInstanceId, String processId){
+		KnowledgeRuntime kruntime = getSession(processId);
+		
+		WorkflowProcessInstanceUpgrader.upgradeProcessInstance
+		(kruntime, processInstanceId, processId, new HashMap<String,Long>());
 	}
 
 	public boolean isRunning(String processId) {

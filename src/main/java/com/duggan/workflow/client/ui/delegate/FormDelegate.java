@@ -31,35 +31,11 @@ public class FormDelegate {
 			}
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
-			Field field = fieldWidget.getField();
-			
-			Object obj = fieldWidget.getValue(FieldWidget.MANDATORY);
-			if(obj==null){
-				continue;
+			if(!fieldWidget.isValid()){
+				isValid=false;
+				issues.addError("'"+fieldWidget.getField().getCaption()+"' is Mandatory");
 			}
 			
-			Boolean mandatory = (Boolean)obj;
-			if(mandatory){
-				Value fieldValue = fieldWidget.getFieldValue();
-				Object val = null;
-				
-				if(fieldValue!=null){
-					val = fieldValue.getValue();
-				}
-				
-				if(val==null){
-					isValid=false;
-					issues.addError("'"+field.getCaption()+"' is Mandatory");
-				}
-				
-				if(val instanceof String){
-					if(isNullOrEmpty(val.toString())){
-						isValid=false;
-						issues.addError("'"+field.getCaption()+"' is Mandatory");
-					}
-				}
-				
-			}
 		}
 		
 		return isValid;

@@ -1330,5 +1330,9 @@ public class JBPMHelper implements Closeable {
 		htuser.setParticipated(counts.get(TaskType.PARTICIPATED));
 		htuser.setInbox(counts.get(TaskType.INBOX));
 	}
+	
+	public void upgradeProcessInstance(long processInstanceId, String processId){
+		sessionManager.upgradeProcessInstance(processInstanceId, processId);
+	}
 
 }

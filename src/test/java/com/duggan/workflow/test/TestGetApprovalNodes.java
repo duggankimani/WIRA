@@ -2,6 +2,7 @@ package com.duggan.workflow.test;
 
 import java.util.List;
 
+import org.jbpm.workflow.instance.WorkflowProcessInstanceUpgrader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,17 +19,26 @@ public class TestGetApprovalNodes {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.init();
+		ProcessMigrationHelper.start(5L);
 	}
 	
 	@Test
 	public void getApprovalNodeStatus(){
-		List<NodeDetail> lst = JBPMHelper.get().getWorkflowProcessDia(12L);
 		
-		System.err.println("List :: "+lst.size());
+		Long processInstanceId = 1116L;
+		//JBPMHelper.get().upgradeProcessInstance(processInstanceId, "org.im.v2.AssetFinance");
+		
+		//JBPMHelper.get().getNode(task);
+		
+//		List<NodeDetail> lst = JBPMHelper.get().getWorkflowProcessDia(processInstanceId);
+//		System.err.println("List :: "+lst.size());
+		
 		//Assert.assertTrue(lst.size()==2);
-		
+	
+//		WorkflowProcessInstanceUpgrader.upgradeProcessInstance(kruntime,
+//				processInstanceId, processId, nodeMapping);
 	}
+	
 	
 	@After
 	public void destroy(){
