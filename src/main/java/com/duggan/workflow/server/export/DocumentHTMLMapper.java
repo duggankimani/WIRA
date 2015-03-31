@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -155,9 +156,10 @@ public class DocumentHTMLMapper {
 //                    group,
 //                    start,
 //                    end);
+			boolean isNumber = group.startsWith("@#");
 			String key = group.substring(2, group.length());
 			Object val = get(values, key);
-			String value = val==null ? "": getValue((Value)val);
+			String value = val==null ? "": getValue((Value)val,isNumber);
 			rtn= rtn.replace(matcher.group(), value);
         }
         	
@@ -199,11 +201,21 @@ public class DocumentHTMLMapper {
 	}
 
 	private String getValue(Value value) {
-
+		return getValue(value, false);
+	}
+	
+	private String getValue(Value value, boolean isNumber) {
 		if(value!=null && value.getValue()!=null){
 			if(value.getValue() instanceof Date){
 				return new SimpleDateFormat("dd/MM/yyyy").format((Date)value.getValue());
 			}
+			
+			if(isNumber && (value.getValue() instanceof Number)){
+				NumberFormat format = NumberFormat.getNumberInstance();
+				String out = format.format(value.getValue());
+				return out;
+			}
+			
 			return value.getValue().toString();
 		}
 		

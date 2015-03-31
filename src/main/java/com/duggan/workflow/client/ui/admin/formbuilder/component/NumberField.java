@@ -16,6 +16,8 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -55,14 +57,14 @@ public class NumberField extends FieldWidget{
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
-
 	}
 	
 	public NumberField(final Property property){
 		this();
 		lblEl.setInnerHTML(property.getCaption());
 		txtComponent.setName(property.getName());
-		
+		//txtComponent.set
+				
 		Value textValue = property.getValue();
 		String text = textValue==null? "": 
 			textValue.getValue()==null? "": textValue.getValue().toString();
@@ -123,6 +125,14 @@ public class NumberField extends FieldWidget{
 			}
 			
 		});
+		
+	}
+	
+	@Override
+	public void addRegisteredHandler(Type<? extends EventHandler> type,
+			EventHandler handler) {
+		// TODO Auto-generated method stub
+		super.addRegisteredHandler(type, handler);
 	}
 	
 	@Override
