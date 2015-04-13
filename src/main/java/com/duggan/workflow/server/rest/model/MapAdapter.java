@@ -29,14 +29,14 @@ public class MapAdapter extends XmlAdapter<Data, Map<String,Object>>{
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> getMap(List<KeyValuePair> keyValues) {
+	private Map<String, Object> getMap(List<MapEntry> keyValues) {
 		Map<String, Object> result = new HashMap<>();
 		
 
-		for(KeyValuePair pair: keyValues){
+		for(MapEntry pair: keyValues){
 			Object value = pair.getValue();
 			if(value instanceof List){
-				result.put(pair.name, getMap((List<KeyValuePair>) value) );
+				result.put(pair.name, getMap((List<MapEntry>) value) );
 			}else{
 				result.put(pair.name, pair.getValue());
 			}
@@ -53,7 +53,7 @@ public class MapAdapter extends XmlAdapter<Data, Map<String,Object>>{
 		
 		if(v!=null)
 			for(Entry<String, Object> e: v.entrySet()){
-				data.keyValues.add(new KeyValuePair(e.getKey(), (Serializable)e.getValue()));
+				data.keyValues.add(new MapEntry(e.getKey(), (Serializable)e.getValue()));
 			}
 		
 		return data;

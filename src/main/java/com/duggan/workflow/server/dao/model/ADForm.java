@@ -16,9 +16,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 
+@XmlSeeAlso({KeyValuePair.class,ADProperty.class,ADField.class})
 @XmlRootElement(name="form")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity

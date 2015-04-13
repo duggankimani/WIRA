@@ -14,7 +14,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 
-public class WiseDigitsIntegration {
+public class TestWiseDigitsIntegration {
 
 	@Before
 	public void setup(){
@@ -26,13 +26,13 @@ public class WiseDigitsIntegration {
 	@Test
 	public void sendDocument() {
 
-		//String serviceUrl = "http://localhost:8080/ebusiness/rest/request/approval";
-		String serviceUrl = "http://localhost:8888/rest/request/approval";
+		String serviceUrl = "http://demo.wira.io:8080/wira/rest/request/approval";
+		//String serviceUrl = "http://localhost:8888/rest/request/approval";
 		String ownerId="Administrator";
 		
 		Document document = DocumentDaoHelper.getDocument(171L);
 		
-		String urlEncoded = getUrlEncoding(serviceUrl+serviceUrl, document);
+		String urlEncoded = getUrlEncoding(serviceUrl, document);
 		
 		System.err.println(urlEncoded);
 	}

@@ -8,5 +8,5 @@ import javax.xml.bind.annotation.XmlElement;
 public class Data {
 
 	@XmlElement(name="value")
-	List<KeyValuePair> keyValues = new ArrayList<>();
+	List<MapEntry> keyValues = new ArrayList<>();
 }

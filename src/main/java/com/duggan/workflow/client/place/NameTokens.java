@@ -2,6 +2,8 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
+	public static final String payment = "payment";
+
 	public static final String home = "home";
 	public static final String error = "error";
 	public static final String login = "login";
@@ -23,7 +25,6 @@ public class NameTokens {
 	public static final String triggers = "triggers";
 	public static final String unassigned = "unassigned";
 	public static final String registry = "registry";
-	
 
 	public static String getHome() {
 		return home;
@@ -37,9 +38,9 @@ public class NameTokens {
 		return error404;
 	}
 
-//	public static String getActivities() {
-//		return activities;
-//	}
+	//	public static String getActivities() {
+	//		return activities;
+	//	}
 
 	public static String getProfile() {
 		return profile;
@@ -56,5 +57,9 @@ public class NameTokens {
 	public static String getOutputdocs() {
 		return outputdocs;
 	}
-	
+
+	public static String getPayment() {
+		return payment;
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -252,11 +253,13 @@ public class Document extends Doc implements Serializable{
 		
 		for(String key: details.keySet()){
 			List<DocumentLine> linez = details.get(key);
+			Collections.reverse(linez);
 			for(DocumentLine line: linez){
 				DocumentLine clone = line.clone(fullClone);
 				clone.setName(key);
 				document.addDetail(clone);
 			}
+			
 		}
 		
 		return document;

@@ -645,7 +645,7 @@ public class FormDaoHelper {
 		return getForm(formId, true);
 	}
 
-	public static void save(String selectionKey,List<KeyValuePair> keyValuePairs){
+	public static void save(String selectionKey,Collection<KeyValuePair> keyValuePairs){
 		FormDaoImpl dao = DB.getFormDao();
 		List<ADKeyValuePair> adkeyvaluepairs = dao.getKeyValuePairs(selectionKey);//previous set
 		
@@ -679,12 +679,24 @@ public class FormDaoHelper {
 	public static String exportForm(Long formId){
 		FormDaoImpl dao = DB.getFormDao();
 		ADForm form = dao.getForm(formId);
+		Collection<ADField> fields= form.getFields();
+		
+		if(fields!=null)
+		for(ADField field:fields){
+			if(field.getType()==DataType.SELECTBASIC){
+				ADProperty prop = field.getProperty(SELECTIONTYPE);
+				ADValue value = prop.getValue();
+				String referenceName = value.getStringValue();
+				field.setKeyValuePairs(getDropdownValues(referenceName));
+			}
+		}
 		
 		return exportForm(form);
 	}
 	
 	public static String exportForm(ADForm form){
-		JAXBContext context = new JaxbFormExportProviderImpl().getContext(ADForm.class);
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(
+				ADForm.class);
 		String out = null;
 		try{
 			Marshaller marshaller = context.createMarshaller();
@@ -735,6 +747,12 @@ public class FormDaoHelper {
 				prop.setField(field);
 				if(prop.getValue()!=null){
 					prop.getValue().setProperty(prop);
+				}
+				
+				if(field.getKeyValuePairs()!=null && 
+						prop.getName()!=null && prop.getName().equals(SELECTIONTYPE)
+						&& prop.getValue()!=null){
+					save(prop.getValue().getStringValue(), field.getKeyValuePairs());
 				}
 			}
 			

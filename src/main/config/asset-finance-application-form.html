@@ -2364,7 +2364,7 @@
 				<!-- @<directors -->
 				
 				<p class="p45 ft17">
-					Annual Turnover (Kes) <span class="dotted">@@annualTurnOver</span>  Annual Net profit (Kes) <span class="dotted">annualProfit</span>
+					Annual Turnover (Kes) <span class="dotted">@@annualTurnOver</span>  Annual Net profit (Kes) <span class="dotted">@@annualProfit</span>
 				</p>
 				<p class="p46 ft17"></p>
 			</div>
@@ -2433,7 +2433,7 @@
 					7. ASSET DETAILS / FACILITY:
 				</p>
 				<p class="p51 ft17">
-					Make <span class="dotted">@@Make</span>  New/Used <span class="dotted">@@isNew</span>   Invoice Price <span class="dotted">@@invPrice</span>
+					Make <span class="dotted">@@Make</span> &nbps;&nbps;&nbps; New/Used  <span class="dotted">@@isNew</span> &nbps;&nbps;&nbps;  Invoice Price   <span class="dotted">@#invPrice</span>
 				</p>
 				<table cellpadding="0" cellspacing="0" class="t3">
 					<tbody>
@@ -2444,7 +2444,7 @@
 							</p></td>
 							<td class="tr14 td70">
 							<p class="p22 ft17">
-								Less: Discounts <span class="dotted">@@discounts</span>
+								Less: Discounts <span class="dotted">@#discounts</span>
 							</p></td>
 						</tr>
 						<tr>
@@ -2454,17 +2454,17 @@
 							</p></td>
 							<td class="tr17 td70">
 							<p class="p4 ft18">
-								<span class="ft4">Net Cost </span> <span class="dotted">@@netCost</span>
+								<span class="ft4">Net Cost </span> <span class="dotted">@#netCost</span>
 							</p></td>
 						</tr>
 						<tr>
 							<td class="tr12 td69">
 							<p class="p21 ft17">
-								Valuation Amount <span class="dotted">@@valAmt</span>
+								Valuation Amount <span class="dotted">@#valAmt</span>
 							</p></td>
 							<td class="tr12 td70">
 							<p class="p4 ft17">
-								Add: Accessories/ Other <span class="dotted">@@accOther</span>
+								Add: Accessories/ Other <span class="dotted">@#accOther</span>
 							</p></td>
 						</tr>
 						<tr>
@@ -2484,7 +2484,7 @@
 							</p></td>
 							<td class="tr14 td70">
 							<p class="p4 ft17">
-								<span class="ft25">Total Cost</span> <span class="dotted">@@totCost</span>
+								<span class="ft25">Total Cost</span> <span class="dotted">@#totCost</span>
 							</p></td>
 						</tr>
 						<tr>
@@ -2494,7 +2494,7 @@
 							</p></td>
 							<td class="tr17 td70">
 							<p class="p21 ft18">
-								Less: Deposit <span class="dotted">@@lessDeposit</span>
+								Less: Deposit <span class="dotted">@#lessDeposit</span>
 							</p></td>
 						</tr>
 						<tr>
@@ -2504,7 +2504,7 @@
 							</p></td>
 							<td class="tr17 td72">
 							<p class="p4 ft17">
-								<span class="ft25">Balance of Cost</span> <span class="dotted">@@amount</span>
+								<span class="ft25">Balance of Cost</span> <span class="dotted">@#amount</span>
 							</p></td>
 						</tr>
 						<tr>
@@ -2628,66 +2628,45 @@
 								Current Outstanding
 							</p></td>
 						</tr>
-						<!-- @>othercreditfacilitiesgrid -->
+						
 						<tr>
 							<td class="tr21 td79">
 							<p class="p2 ft30">
-								@@name
 								&nbsp;
 							</p></td>
 							<td class="tr21 td80">
 							<p class="p2 ft30">
-								@@facilityType
 								&nbsp;
 							</p></td>
 							<td class="tr21 td81">
 							<p class="p2 ft30">
-								@@limit
 								&nbsp;
 							</p></td>
 							<td class="tr21 td82">
 							<p class="p2 ft30">
-								@@outstanding
 								&nbsp;
+							</p></td>
+						</tr>
+						<!-- @>othercreditfacilitiesgrid -->
+						<tr>
+							<td class="tr22 td79">
+							<p class="p2">
+								@@name
+							</p></td>
+							<td class="tr22 td80">
+							<p class="p2">
+								@@facilityType
+							</p></td>
+							<td class="tr22 td81">
+							<p class="p2">
+								@@limit
+							</p></td>
+							<td class="tr22 td82">
+							<p class="p2">
+								@@outstanding
 							</p></td>
 						</tr>
 						<!-- @<othercreditfacilitiesgrid -->
-						<tr>
-							<td class="tr0 td79">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-							<td class="tr0 td80">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-							<td class="tr0 td81">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-							<td class="tr0 td82">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-						</tr>
-						<tr>
-							<td class="tr22 td79">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-							<td class="tr22 td80">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-							<td class="tr22 td81">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-							<td class="tr22 td82">
-							<p class="p2 ft7">
-								&nbsp;
-							</p></td>
-						</tr>
 					</tbody>
 				</table>
 				<p class="p55 ft29">

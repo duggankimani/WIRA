@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class KeyValuePair {
+public class MapEntry {
 
 	/**
 	 * Field Name
@@ -26,12 +26,12 @@ public class KeyValuePair {
 	
 	private Date dateValue;
 	
-	private List<KeyValuePair> line;
+	private List<MapEntry> line;
 	
-	public KeyValuePair(){		
+	public MapEntry(){		
 	}
 	
-	public KeyValuePair(String key, Object value){
+	public MapEntry(String key, Object value){
 		this.name= key;
 		
 		if(value==null)

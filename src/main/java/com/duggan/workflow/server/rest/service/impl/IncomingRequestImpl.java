@@ -20,7 +20,7 @@ import com.duggan.workflow.server.rest.exception.CommandNotFoundException;
 import com.duggan.workflow.server.rest.model.BusinessKey;
 import com.duggan.workflow.server.rest.model.Data;
 import com.duggan.workflow.server.rest.model.Detail;
-import com.duggan.workflow.server.rest.model.KeyValuePair;
+import com.duggan.workflow.server.rest.model.MapEntry;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
@@ -276,7 +276,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 	private static void marshalXml(Request request) throws Exception {
 		JAXBContext jaxbCtx = JAXBContext.newInstance(Request.class,
 				CommandContext.class, Response.class, Data.class,
-				KeyValuePair.class);
+				MapEntry.class);
 
 		Marshaller marshaller = jaxbCtx.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

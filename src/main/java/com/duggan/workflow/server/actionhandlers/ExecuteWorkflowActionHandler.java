@@ -109,12 +109,7 @@ public class ExecuteWorkflowActionHandler extends
 			Value value = values.get(key);	
 			if(key!=null){
 				//key = mappings.getOutputName(key);
-				
-				if(value instanceof GridValue){
-					task.setDetails(key,((GridValue)value).getValue());
-				}else{
-					task.setValue(key,value);
-				}
+				task.setValue(key,value);
 			}
 		}
 		ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(stepId, nextStepId, task);

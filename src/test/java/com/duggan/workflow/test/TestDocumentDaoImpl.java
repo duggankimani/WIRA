@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.naming.NamingException;
+import javax.transaction.SystemException;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +24,7 @@ import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Value;
 
 public class TestDocumentDaoImpl {
@@ -33,26 +37,28 @@ public class TestDocumentDaoImpl {
 		DB.beginTransaction();
 		//ProcessMigrationHelper.start(17L);
 		dao = DB.getDocumentDao();
-		
 	}
 	
-	@Test
+	@Ignore
 	public void getTaskStepCount(){
 		int count = DB.getProcessDao().getStepCount(1L, null);
 		System.err.println("Count = "+count);
 	}
 	
-	@Ignore
-	public void cloneDoc(){
-		Document doc = DocumentDaoHelper.getDocument(4L);
+	@Test
+	public void cloneDoc() throws SystemException, NamingException{
+		Document doc = DocumentDaoHelper.getDocument(112L);
 		
-		for(int i=0; i<10;i++){
+		for(int i=0; i<5;i++){
 			Document clone = doc.clone();
+			clone.setOwner(new HTUser("ewairimu"));
 			clone.getValues().put("subject", null);
+			clone.getValues().put("caseNo", null);
 			clone.getValues().put("description", null);
 			clone.setCaseNo(null);
 			clone.setDescription(null);
-			
+			clone.setProcessInstanceId(null);
+			clone.setStatus(DocStatus.DRAFTED);
 			DocumentDaoHelper.save(clone);
 		}
 		

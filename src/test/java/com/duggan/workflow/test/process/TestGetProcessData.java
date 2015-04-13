@@ -32,7 +32,7 @@ public class TestGetProcessData {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		ProcessMigrationHelper.start(1L);
+		ProcessMigrationHelper.start(6L);
 //		ProcessMigrationHelper.start(14L);
 //		ProcessMigrationHelper.start(16L);
 //		ProcessMigrationHelper.start(4L);
@@ -108,7 +108,7 @@ public class TestGetProcessData {
 	@Ignore
 	public void getParameterz(){
 		//Long taskId = 1518L;
-		Long taskId = 1042L;
+		Long taskId = 1176L;
 		Task task = JBPMHelper.get().getSysTask(taskId);
 		
 		Map<String,Object> vls = JBPMHelper.get().getMappedData(task);
@@ -127,7 +127,8 @@ public class TestGetProcessData {
 	@Test
 	public void getParameters(){
 		//Long taskId = 1518L;
-		Long taskId = 1042L;
+		//Long taskId = 1176L;
+		Long taskId = 1174L;
 		HTask summary = JBPMHelper.get().getTask(taskId);
 		System.err.println(summary);
 		Map<String,Value> vls = summary.getValues();

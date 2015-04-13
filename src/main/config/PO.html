@@ -336,8 +336,8 @@ div.footer {
 <body>
 	<div class="container">
 		<div class="header row">
-			<img class="logo" align="middle" width="266px"
-			 src="http://localhost:8080/wira/getreport?ACTION=GetLogo&settingName=ORGLOGO&width=140&height=80"/>
+			<img class="logo" align="middle" width="266px"/>
+			 <!-- src="http://localhost:8080/wira/getreport?ACTION=GetLogo&settingName=ORGLOGO&width=140&height=80"-->
 			<span class="type">Purchase Order</span>
 		</div>
 
@@ -347,13 +347,16 @@ div.footer {
 					<b>Delivery Note:</b>
 				</div-->
 				<div>
+					<b>Contract Number:</b><span> @#contractNumber</span>
+				</div>
+				<div>
 					<b>PO Number:</b><span> @#lpoNumber</span>
 				</div>
 				<div>
-					<b>PO Date:</b><span> @#poDate</span>
+					<b>PO Date:</b><span> @#lpoDate</span>
 				</div>
 				<div>
-					<b>Delivery Date:</b><span> @#poDueDate</span>
+					<b>Delivery Date:</b><span> @#lpoDueDate</span>
 				</div>
 			</div>
 		</div>
@@ -364,7 +367,7 @@ div.footer {
 					<b>From</b>
 				</div>
 				<div>
-					KEMSA Limited <!--  @#preparedBy -->
+					Kisii County <!--  @#preparedBy -->
 				</div>
 				<div>
 					@#poIssuedByAddress
@@ -403,6 +406,7 @@ div.footer {
 			<table class="table table-bordered table-condensed">
 				<thead>
 					<tr>
+					    <th>Item</th>
 						<th>Description</th>
 						<th>Quantity</th>
 						<th>UOM</th>
@@ -411,21 +415,23 @@ div.footer {
 					</tr>
 				</thead>
 				<tbody>
-					<!--@>poParticulars-->
+					<!--@>boqpoParticulars-->
 	    					<tr>	    					
 	    						<td>@#item</td>
+	    						<td>@#description</td>
 								<td class="num">@#poLineQuantity</td>
 								<td>@#uom</td>
 								<td class="num">@#poLineUnitPrice</td>								
 	    						<td class="num">@#poLineTotal</td>	    						
 	    					</tr>
-				<!--@<poParticulars-->				
+				<!--@<boqpoParticulars-->				
 				<tr>
 								<td></td>
 								<td></td>
 								<td></td>
+								<td></td>
 	    						<td class="num"><b>Grand Total</b></td>
-	    						<td class="num"><b style="border-bottom:3px double;">&nbsp;KES @#poValue</b></td>
+	    						<td class="num"><b style="border-bottom:3px double;">KES @#poValue</b></td>
 				</tr>	    		
 				</tbody>
 			</table>

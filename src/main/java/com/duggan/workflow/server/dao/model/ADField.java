@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -16,16 +17,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 
-
+@XmlSeeAlso({KeyValuePair.class,ADProperty.class,ADField.class})
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
@@ -75,6 +79,11 @@ public class ADField extends PO implements HasProperties{
 	@XmlElement(name="field")
 	@OneToMany(mappedBy="parentField", cascade=CascadeType.ALL)
 	private Collection<ADField> fields = new HashSet<>();
+	
+	@Transient
+	@XmlElementWrapper(name="kvp")
+	@XmlElement(name="keyvalue")
+	private Collection<KeyValuePair> keyValuePairs = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -231,6 +240,24 @@ public class ADField extends PO implements HasProperties{
 			return super.hashCode();
 		
 		return hashcode;
+	}
+
+	public Collection<KeyValuePair> getKeyValuePairs() {
+		return keyValuePairs;
+	}
+
+	public void setKeyValuePairs(Collection<KeyValuePair> keyValuePairs) {
+		this.keyValuePairs = keyValuePairs;
+	}
+
+	public ADProperty getProperty(String propName) {
+		if(properties!=null)
+		for(ADProperty prop: properties){
+			if(prop.getName()!=null && prop.getName().equals(propName)){
+				return prop;
+			}
+		}
+		return null;
 	}
 
 	
