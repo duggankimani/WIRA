@@ -295,21 +295,40 @@ public class JBPMHelper implements Closeable {
 	}
 
 	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId) {
+		return getTasksForUser(userId, processInstanceId, false);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId, boolean isLoadAsAdmin) {
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
 		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
 			groupIds.add(group.getName());
 		}
-
-		@SuppressWarnings("unchecked")
-		List<TaskSummary> ts = DB.getEntityManager()
+		
+		List<TaskSummary> ts = new ArrayList<>();
+		
+		if(isLoadAsAdmin){
+			//Load Tasks As System administrator
+			ts = DB.getEntityManager()
+					.createNamedQuery("TaskAssignedAsBizAdministrator")
+					.setParameter("userId", userId)
+					.setParameter("language", "en-UK")
+					.setParameter("processInstanceId", processInstanceId)
+					.getResultList();
+		}else{
+			
+			ts = DB.getEntityManager()
 				.createNamedQuery("TasksOwnedBySubject")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
 				.setParameter("groupIds", groupIds)
 				.setParameter("processInstanceId", processInstanceId)
 				.getResultList();
+		}
+			
+		 
 
 		return translateSummaries(ts);
 	}
@@ -638,7 +657,7 @@ public class JBPMHelper implements Closeable {
 		
 		return value;
 	}
-
+	
 	/**
 	 * This method retrieves the full task object, which provides more
 	 * comprehensive details for a task
@@ -873,7 +892,6 @@ public class JBPMHelper implements Closeable {
 	 */
 	public void execute(long taskId, String userId, Actions action,
 			Map<String, Object> values) {
-
 		sessionManager.execute(taskId, userId, action, values);
 
 	}

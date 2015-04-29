@@ -1,8 +1,10 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -10,7 +12,7 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.admin.formbuilder.upload.FormImportView;
+import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
@@ -198,7 +200,14 @@ public class FormBuilderPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				final FormImportView view = new FormImportView();
+
+				UploadContext context = new UploadContext();
+				context.setAction(UPLOADACTION.IMPORTFORM);
+				context.setAccept(Arrays.asList("xml","json"));
+				
+				String message = "This will auto import the form, if the form already exists(check based on form name),"
+						+ "the form will be renamed to {formName+formId}";
+				final ImportView view = new ImportView(message,context);
 				view.setAvoidRepeatFiles(false);
 				AppManager.showPopUp("Import Form", view, 
 						new OnOptionSelected() {

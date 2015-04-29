@@ -1037,4 +1037,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;
 	}
+
+	public Value from(String key,String val) {
+		return new StringValue(null,key,val);
+	}
 }

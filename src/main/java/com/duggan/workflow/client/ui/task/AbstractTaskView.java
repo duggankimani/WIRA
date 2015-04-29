@@ -37,6 +37,7 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 	//@UiField HTMLPanel divDocPopup;
 	@UiField Element divDocListing;
 	@UiField Element divDocView;
+	@UiField Element divTasks;
 	@UiField BulletListPanel ulTaskGroups;
 	@UiField HeadingElement hCategory;
 	@UiField Anchor aRefresh;
@@ -51,7 +52,7 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 	@Inject
 	public AbstractTaskView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-
+		divTasks.setId("middle-box");
 		ulTaskGroups.setId("navigation-menu");
 		txtSearch.getElement().setAttribute("placeholder", "Search...");
 		divDocListing.setId("middle-nav");
@@ -176,13 +177,11 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 
 	@Override
 	public void setTaskType(TaskType currentTaskType) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Anchor getaRefresh() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

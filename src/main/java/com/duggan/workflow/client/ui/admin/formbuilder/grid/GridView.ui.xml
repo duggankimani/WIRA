@@ -12,12 +12,17 @@
 					<i class="icon-plus"></i>
 						<span ui:field="spnNewRecordHandlerText"></span>
 				</g:Anchor>
+				<g:Anchor ui:field="aImport" styleName="btn btn-primary btn-small"
+					title="Import CSV">
+					<i class="icon-upload-alt"></i>
+					Import
+				</g:Anchor>
 			</div>
 			<!-- g:HTMLPanel styleName="table table-hover table-striped table-bordered" -->					     
 			<g:HTMLPanel styleName="table table-hover table-striped table-noborder">
 			    <div class="thead">
 			    	<g:HTMLPanel styleName="tr" ui:field="header">
-											</g:HTMLPanel>						
+					</g:HTMLPanel>						
 				</div>
 				<g:HTMLPanel ui:field="panelLines" styleName="tbody"><!-- div class="tbody"-->
 				    

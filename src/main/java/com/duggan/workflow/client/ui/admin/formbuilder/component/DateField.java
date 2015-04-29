@@ -7,6 +7,8 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
+import com.duggan.workflow.shared.model.DoubleValue;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -141,5 +143,14 @@ public class DateField extends FieldWidget {
 						ENV.setContext(field, event.getValue());
 				}
 			});
+	}
+	
+	public Value from(String key,String val) {
+		try{
+			return new DateValue(null,key,DateUtils.DATEFORMAT.parse(val));
+		}catch(Exception e){
+		}
+		
+		return super.from(key, val);
 	}
 }

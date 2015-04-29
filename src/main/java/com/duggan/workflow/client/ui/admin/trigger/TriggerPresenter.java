@@ -53,7 +53,7 @@ implements EditTriggerHandler{
 
 	@TabInfo(container = AdminHomePresenter.class)
     static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Triggers","icon-cogs",5, adminGatekeeper);
+        return new TabDataExt("Triggers","icon-wrench",5, adminGatekeeper);
     }
 	
 	@Inject	SaveTriggerPresenter savePresenter;

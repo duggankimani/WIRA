@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.task;
 import java.util.Arrays;
 import java.util.List;
 
+import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.component.TextField;
@@ -46,8 +47,11 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		listProcesses.setNullText("--Select Process--");
 		listUsers.setNullText("--Select Users--");
 		tblRegistry.setAutoNumber(true);
-		tblRegistry.setHeaders(Arrays.asList("Case No", 
-				//"Summary", "Case Notes",
+		tblRegistry.setHeaders(
+				Arrays.asList("icon","icon","date","date","large","user","large","user","",""),
+				Arrays.asList("Case No", 
+				"Summary", 
+				//"Case Notes",
 				"Start",
 				"End",
 				"Process", 
@@ -97,8 +101,9 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 			InlineLabel priority = new InlineLabel("NORMAL");
 			//priority.addStyleName("label label-info");
 			
-			tblRegistry.addRow(new InlineLabel(log.getCaseNo()),
-//					new InlineLabel(""), -summary
+			tblRegistry.addRow(Arrays.asList("icon","icon text-center","date","date","large","user","large","user","",""),
+					new InlineLabel(parse(log.getCaseNo())),
+					getSummaryLink(log),
 //					new InlineLabel(""), -Case Notes
 					new InlineLabel(DateUtils.DATEFORMAT.format(log.getStartDate())),
 					new InlineLabel(log.getEndDate()==null? "--" :
@@ -110,6 +115,18 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 					priority,
 					getProcessState(log.getProcessState()));
 		}
+	}
+	
+	private String parse(String caseNo) {
+		return caseNo.replace("Case-","#");
+	}
+
+	Anchor getSummaryLink(ProcessLog log){
+		ActionLink anchor = new ActionLink();
+		anchor.getElement().setInnerHTML("<i class='icon-th-large'/>");
+		anchor.setTitle("Summary");
+		anchor.setHref("#caseview;did="+log.getDocId());
+		return anchor;
 	}
 
 	private Widget getProcessState(int processState) {

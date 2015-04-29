@@ -101,11 +101,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	protected static TaskType currentTaskType;
 	
 	/**
-	 * on select documentId
-	 */
-	private Long selectedDocumentId;
-	
-	/**
 	 * Url processInstanceId (pid) - required incase the use hits refresh
 	 */
 	private Long processInstanceId=null;
@@ -267,6 +262,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		GetTaskList request = new GetTaskList(userId,currentTaskType);
 		request.setProcessInstanceId(processInstanceId);
 		request.setDocumentId(documentId);
+		request.setLoadAsAdmin(isLoadAsAdmin());
 		
 		//System.err.println("###### Search:: did="+documentId+"; PID="+processInstanceId+"; TaskType="+type);
 		
@@ -367,7 +363,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
 		if(this.isVisible()){
-			this.selectedDocumentId=event.getDocumentId();		
 			displayDocument(event.getDocumentId(), event.getTaskId());
 //			System.err.println("Called!! +"+this+" Document= "+event.getDocumentId()+
 //					" : Task="+event.getTaskId()+" :: "+event.getSource());
@@ -383,7 +378,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
-				result.setDocId(documentId, taskId);
+				result.setDocId(documentId, taskId, isLoadAsAdmin());
 				result.setFormMode(mode);
 				
 				if(currentTaskType==TaskType.UNASSIGNED){
@@ -438,5 +433,17 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		});
 		
 		
+	}
+	
+	/**
+	 * <p>
+	 * Tells the server to load a Task as Administrator[Business Admin] for Admin Overview &
+	 * Management
+	 * <p>
+	 * Override it in inheriting presenters
+	 * @return
+	 */
+	boolean isLoadAsAdmin(){
+		return false;
 	}
 }

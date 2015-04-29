@@ -14,6 +14,7 @@ public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentRes
 
 	private Long documentId;
 	private Long taskId;
+	private boolean isLoadAsAdmin=false;
 
 	@SuppressWarnings("unused")
 	private GetInitialDocumentRequest() {
@@ -23,6 +24,11 @@ public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentRes
 	public GetInitialDocumentRequest(Long documentId, Long taskId) {
 		this.documentId = documentId;
 		this.taskId = taskId;
+	}
+	
+	public GetInitialDocumentRequest(Long documentId, Long taskId, boolean isLoadAsAdmin) {
+		this(documentId,taskId);
+		this.isLoadAsAdmin=isLoadAsAdmin;
 	}
 	
 	public BaseResponse createDefaultActionResponse() {
@@ -35,5 +41,13 @@ public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentRes
 
 	public Long getTaskId() {
 		return taskId;
+	}
+
+	public boolean isLoadAsAdmin() {
+		return isLoadAsAdmin;
+	}
+
+	public void setLoadAsAdmin(boolean isLoadAsAdmin) {
+		this.isLoadAsAdmin = isLoadAsAdmin;
 	};
 }

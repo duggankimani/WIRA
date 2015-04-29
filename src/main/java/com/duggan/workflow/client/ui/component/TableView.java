@@ -41,6 +41,9 @@ public class TableView extends Composite {
 	}
 
 	public void setHeaders(List<String> names) {
+		setHeaders(null,names);
+	}
+	public void setHeaders(List<String> tdStyles,List<String> names) {
 		List<Widget> widgets = new ArrayList<Widget>();
 
 		for (String name : names) {
@@ -48,7 +51,7 @@ public class TableView extends Composite {
 			widgets.add(label);
 		}
 
-		setHeaderWidgets(widgets);
+		setHeaderWidgets(tdStyles,widgets);
 	}
 
 	public void setTableHeaders(List<TableHeader> headers) {
@@ -86,17 +89,24 @@ public class TableView extends Composite {
 		return super.asWidget();
 	}
 
-	public void setHeaderWidgets(List<Widget> widgets) {
+	public void setHeaderWidgets(List<String> tdStyles,List<Widget> widgets) {
 		panelHeader.clear();
 		if (isAutoNumber) {
 			InlineLabel label = new InlineLabel("#");
 			widgets.add(0, label);
 		}
 
+		int i= isAutoNumber? -1: 0;
 		for (Widget widget : widgets) {
 			HTMLPanel th = new HTMLPanel("");
 			th.addStyleName("th");
+			if(i!=-1 && tdStyles!=null && i<tdStyles.size()){
+				String style = tdStyles.get(i);
+				if(style!=null && !style.trim().isEmpty())
+					th.addStyleName(style);
+			}
 			th.add(widget);
+			i++;
 			panelHeader.add(th);
 		}
 	}

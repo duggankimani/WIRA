@@ -219,6 +219,14 @@ public class NumberField extends FieldWidget{
 
 	}
 	
+	public Value from(String key,String val) {
+		try{
+			return new DoubleValue(null,key,new Double(val.trim()));
+		}catch(Exception e){
+		}
+		
+		return super.from(key, val);
+	}
 	
 	@Override
 	protected void onLoad() {

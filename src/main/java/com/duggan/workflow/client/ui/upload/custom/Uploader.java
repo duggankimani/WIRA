@@ -158,7 +158,6 @@ public class Uploader extends Composite {
 		}
 	}
 	
-	
 	public void addOnFinishUploaderHandler(OnFinishUploaderHandler handler){
 		uploader.addOnFinishUploadHandler(handler);
 	}

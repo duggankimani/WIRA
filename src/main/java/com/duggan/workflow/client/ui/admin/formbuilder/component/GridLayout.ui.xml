@@ -11,12 +11,6 @@
 				<g:cell>
 				    <g:Anchor ui:field="btnAdd" text="Add"></g:Anchor>
 				</g:cell>
-				<g:cell>
-				    <g:Anchor ui:field="btnImport" text="Import"></g:Anchor>
-				</g:cell>
-				<g:cell>
-				    <g:Anchor ui:field="btnDelete" text="Delete"></g:Anchor>
-				</g:cell>
 			</g:HorizontalPanel>
 		</g:cell>
 		

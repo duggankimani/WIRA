@@ -207,6 +207,8 @@ public class GenericDocumentPresenter extends
 		void bindProcessLog(List<TaskLog> logs);
 		
 		void showAttachments(List<Attachment> attachments);
+
+		void setLoadAsAdmin(boolean isLoadAsAdmin);
 	}
 	
 	Long taskId;
@@ -235,6 +237,7 @@ public class GenericDocumentPresenter extends
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
 	private List<TaskLog> logs = null;
+	private boolean isLoadAsAdmin;
 	
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
@@ -1003,7 +1006,7 @@ public class GenericDocumentPresenter extends
 	
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
-		requests.addRequest(new GetInitialDocumentRequest(documentId, taskId));
+		requests.addRequest(new GetInitialDocumentRequest(documentId, taskId,isLoadAsAdmin));
 		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
 		requests.addRequest(new GetCommentsRequest(documentId));
 		requests.addRequest(new GetAttachmentsRequest(documentId));
@@ -1338,9 +1341,11 @@ public class GenericDocumentPresenter extends
 //		getView().setStates(states);
 //	}
 
-	public void setDocId(Long documentId, Long taskId) {
+	public void setDocId(Long documentId, Long taskId,boolean isLoadAsAdmin) {
 		this.documentId=documentId;
 		this.taskId = taskId;
+		this.isLoadAsAdmin = isLoadAsAdmin;
+		getView().setLoadAsAdmin(isLoadAsAdmin);
 	}
 	
 	@Override

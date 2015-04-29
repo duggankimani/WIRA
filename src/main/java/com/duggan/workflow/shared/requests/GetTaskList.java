@@ -12,6 +12,7 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 	private Long processInstanceId;
 	private Long documentId;
 	private SearchFilter filter;
+	private boolean isLoadAsAdmin=false;
 	
 	@SuppressWarnings("unused")
 	private GetTaskList() {
@@ -61,6 +62,14 @@ public class GetTaskList extends BaseRequest<GetTaskListResult> {
 
 	public void setDocumentId(Long documentId) {
 		this.documentId = documentId;
+	}
+
+	public boolean isLoadAsAdmin() {
+		return isLoadAsAdmin;
+	}
+
+	public void setLoadAsAdmin(boolean isLoadAsAdmin) {
+		this.isLoadAsAdmin = isLoadAsAdmin;
 	}
 
 }

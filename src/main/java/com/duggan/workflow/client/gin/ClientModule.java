@@ -23,6 +23,8 @@ import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphPresente
 import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphView;
 import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataView;
+import com.duggan.workflow.client.ui.admin.datatable.DataTablePresenter;
+import com.duggan.workflow.client.ui.admin.datatable.DataTableView;
 import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
 import com.duggan.workflow.client.ui.admin.ds.DataSourceView;
 import com.duggan.workflow.client.ui.admin.ds.item.DSItemPresenter;
@@ -95,6 +97,8 @@ import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormView;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
 import com.duggan.workflow.client.ui.task.CaseRegistryView;
+import com.duggan.workflow.client.ui.task.CaseView;
+import com.duggan.workflow.client.ui.task.CaseViewPresenter;
 import com.duggan.workflow.client.ui.task.DraftsPresenter;
 import com.duggan.workflow.client.ui.task.DraftsView;
 import com.duggan.workflow.client.ui.task.InboxPresenter;
@@ -341,5 +345,9 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenterWidget(NotificationSetupPresenter.class, 
 				INotificationSetupView.class, NotificationSetupView.class);
+		
+		bindPresenter(DataTablePresenter.class, DataTablePresenter.IDataTableView.class, DataTableView.class, DataTablePresenter.IDataTableProxy.class);
+		
+		bindPresenter(CaseViewPresenter.class, CaseViewPresenter.ICaseView.class, CaseView.class, CaseViewPresenter.ICaseViewProxy.class);
 	}
 }

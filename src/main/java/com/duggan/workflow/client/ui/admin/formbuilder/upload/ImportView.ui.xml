@@ -4,7 +4,7 @@
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
 	
 	<g:HTMLPanel>   
-	   <span>This will auto import the form, if the form already exists(check based on form name),
+	   <span ui:field="spnMessage">This will auto import the form, if the form already exists(check based on form name),
 	       the form will be renamed to {formName+formId}</span>   
        <g:HTMLPanel styleName="control-group">
 		    <g:HTMLPanel styleName="controls" ui:field="panelUpload">

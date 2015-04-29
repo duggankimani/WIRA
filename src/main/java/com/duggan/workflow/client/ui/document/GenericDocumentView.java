@@ -230,6 +230,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 	
 	SHOWITEMS selected = SHOWITEMS.FORM;
+	private boolean isLoadAsAdmin;
 
 	@Inject
 	public GenericDocumentView(final Binder binder) {
@@ -633,6 +634,12 @@ public class GenericDocumentView extends ViewImpl implements
 
 	public void setValidTaskActions(List<Actions> actions) {
 		this.validActions = actions;
+		if(isLoadAsAdmin){
+			disableAll();
+			
+			//show(aStop);
+			return;
+		}
 		if (actions != null)
 			for (Actions action : actions) {
 				Anchor target = null;
@@ -1129,6 +1136,12 @@ public class GenericDocumentView extends ViewImpl implements
 						new InlineLabel(DateUtils.CREATEDFORMAT.format(attachment.getCreated())));
 			}
 		}
+	}
+
+	@Override
+	public void setLoadAsAdmin(boolean isLoadAsAdmin) {
+		this.isLoadAsAdmin = isLoadAsAdmin;
+		
 	}
 
 }

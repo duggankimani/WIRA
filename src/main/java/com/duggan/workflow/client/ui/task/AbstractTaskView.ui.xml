@@ -9,7 +9,7 @@
 
 	<g:HTMLPanel styleName="full-page">
 		<!--middle navigation -->
-		<div class="span2" id="middle-box">
+		<div class="span2" ui:field="divTasks">
 			<div id="nav-top">
 				<i class="icon-tag"></i>
 				<h5 ui:field="hCategory">Completed</h5>

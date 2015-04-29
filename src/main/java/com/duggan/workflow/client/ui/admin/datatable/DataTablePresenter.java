@@ -1,9 +1,8 @@
-package com.duggan.workflow.client.ui.admin.ds;
+package com.duggan.workflow.client.ui.admin.datatable;
 
 import java.util.List;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
@@ -16,7 +15,6 @@ import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent.LoadDSConfigsHand
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
 import com.duggan.workflow.shared.requests.GetDSStatusRequest;
@@ -25,11 +23,9 @@ import com.duggan.workflow.shared.responses.GetDSStatusResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
@@ -40,41 +36,37 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 
-public class DataSourcePresenter extends
-		Presenter<DataSourcePresenter.IDataSourceView,DataSourcePresenter.MyProxy> 
+public class DataTablePresenter extends
+		Presenter<DataTablePresenter.IDataTableView,DataTablePresenter.IDataTableProxy> 
 		implements LoadDSConfigsHandler, EditDSConfigHandler{
 
-	public interface IDataSourceView extends View {
+	public interface IDataTableView extends View {
 
 		HasClickHandlers getNewDatasourceButton();
 		HasClickHandlers getTestAllDatasources();
 	}
 	
 	@ProxyCodeSplit
-	@NameToken(NameTokens.datasources)
+	@NameToken(NameTokens.datatable)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<DataSourcePresenter> {
+	public interface IDataTableProxy extends TabContentProxyPlace<DataTablePresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
     static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Data Sources","icon-briefcase",9, adminGatekeeper);
+		TabDataExt ext = new TabDataExt("Data Table","icon-th",8, adminGatekeeper);
+        return ext;
     }
 	
 	public static final Object TABLE_SLOT = new Object();
 	
 	@Inject DispatchAsync requestHelper;
-	
-	IndirectProvider<DSSavePresenter> dsSaveFactory;
-	IndirectProvider<DSItemPresenter> dsItemFactory;
 
 	@Inject
-	public DataSourcePresenter(final EventBus eventBus, final IDataSourceView view,MyProxy proxy,
+	public DataTablePresenter(final EventBus eventBus, final IDataTableView view,IDataTableProxy proxy,
 			Provider<DSSavePresenter> dsSaveProvider, 
 			Provider<DSItemPresenter> dsItemProvider) {
 		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
-		dsSaveFactory = new StandardProvider<DSSavePresenter>(dsSaveProvider);
-		dsItemFactory = new StandardProvider<DSItemPresenter>(dsItemProvider);
 	}
 	
 	@Override
@@ -113,16 +105,9 @@ public class DataSourcePresenter extends
 	private void showConfigSavePopup(){
 		showConfigSavePopup(null);
 	}
+	
 	private void showConfigSavePopup(final DSConfiguration config) {
 		
-		dsSaveFactory.get(new ServiceCallback<DSSavePresenter>() {
-			@Override
-			public void processResult(DSSavePresenter aResponse) {
-				aResponse.setConfiguration(config);
-				addToPopupSlot(aResponse,false);
-			}
-		});
-			
 	}
 	
 	@Override
@@ -150,14 +135,7 @@ public class DataSourcePresenter extends
 		setInSlot(TABLE_SLOT, null);
 		if(configs!=null){
 			for(final DSConfiguration config: configs){
-				dsItemFactory.get(new ServiceCallback<DSItemPresenter>() {
-					@Override
-					public void processResult(
-							DSItemPresenter result) {
-						result.setConfiguration(config);
-						addToSlot(TABLE_SLOT, result);
-					}
-				});
+				
 			}
 		}
 	}

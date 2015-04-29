@@ -134,6 +134,11 @@ public class GetReport extends HttpServlet {
 
 	}
 
+	private void processImportData(HttpServletRequest req,
+			HttpServletResponse resp) {
+		
+	}
+
 	private void processBPMProcessMap(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		String pid = req.getParameter("pid");
