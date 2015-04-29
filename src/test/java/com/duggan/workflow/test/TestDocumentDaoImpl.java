@@ -35,7 +35,7 @@ public class TestDocumentDaoImpl {
 	public void setup(){
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		//ProcessMigrationHelper.start(17L);
+		ProcessMigrationHelper.start(4L);
 		dao = DB.getDocumentDao();
 	}
 	
@@ -47,11 +47,11 @@ public class TestDocumentDaoImpl {
 	
 	@Test
 	public void cloneDoc() throws SystemException, NamingException{
-		Document doc = DocumentDaoHelper.getDocument(112L);
+		Document doc = DocumentDaoHelper.getDocument(4L);
 		
 		for(int i=0; i<5;i++){
 			Document clone = doc.clone();
-			clone.setOwner(new HTUser("ewairimu"));
+			clone.setOwner(new HTUser("ewaringa"));
 			clone.getValues().put("subject", null);
 			clone.getValues().put("caseNo", null);
 			clone.getValues().put("description", null);

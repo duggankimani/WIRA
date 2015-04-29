@@ -586,3 +586,43 @@ div.registry-table{
 -moz-box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
 box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
 }
+
+.text-center a, .text-center a:visited, .text-center a:hover {
+    color:  #3A87AD;
+}
+
+.text-center{
+	font-size:16px;
+	text-align:center !important;
+}
+
+.registry-table .icon{
+	max-width:32px;
+}
+
+.registry-table .small{
+	max-width:42px;
+}
+
+.registry-table .date{
+	max-width:42px;
+}
+
+.registry-table .user{
+	max-width:100px;
+}
+
+.registry-table .large{
+	max-width:150px;
+}
+
+
+.registry-table .table .th, .registry-table .table .td{
+	.text-overflow();
+} 
+
+.text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
