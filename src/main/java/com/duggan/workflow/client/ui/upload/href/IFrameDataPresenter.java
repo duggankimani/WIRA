@@ -2,9 +2,6 @@ package com.duggan.workflow.client.ui.upload.href;
 
 import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent;
 import com.duggan.workflow.client.ui.events.CloseAttatchmentEvent.CloseAttatchmentHandler;
-import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;

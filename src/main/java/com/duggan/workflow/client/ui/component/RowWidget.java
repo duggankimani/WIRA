@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.dom.client.Style.TextAlign;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -22,6 +24,7 @@ public abstract class RowWidget extends Composite {
 	HTMLPanel row;
 	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 	private Object data=null;
+	private boolean isShowRemove;
 	
 	public void setRow(HTMLPanel row){
 		this.row = row;
@@ -43,6 +46,7 @@ public abstract class RowWidget extends Composite {
 		this.isAutoNumber = isAutoNumber;
 	}
 	
+	
 	public void createRow(List<Widget> widgets){
 		if(isAutoNumber){
 			row.add(getTd(new InlineLabel(rowNum+"")));
@@ -50,6 +54,21 @@ public abstract class RowWidget extends Composite {
 		
 		for(Widget widget: widgets){
 			row.add(getTd(widget));
+		}
+		
+		
+		if(isShowRemove){
+			ActionLink anchor = new ActionLink();
+			anchor.setTitle("Remove Line");
+			anchor.getElement().setInnerHTML("<i class=\"icon-trash\"></i>");
+			anchor.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					RowWidget.this.removeFromParent();
+				}
+			});
+			row.add(getTd(anchor));
 		}
 	}
 	
@@ -127,5 +146,13 @@ public abstract class RowWidget extends Composite {
 
 	public void setData(Object data) {
 		this.data = data;
+	}
+
+	public boolean isShowRemove() {
+		return isShowRemove;
+	}
+
+	public void setShowRemove(boolean isShowRemove) {
+		this.isShowRemove = isShowRemove;
 	}
 }

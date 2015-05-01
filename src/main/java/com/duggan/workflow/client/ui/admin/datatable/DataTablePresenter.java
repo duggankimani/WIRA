@@ -3,28 +3,18 @@ package com.duggan.workflow.client.ui.admin.datatable;
 import java.util.List;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.service.ServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.admin.ds.item.DSItemPresenter;
-import com.duggan.workflow.client.ui.admin.ds.save.DSSavePresenter;
-import com.duggan.workflow.client.ui.events.EditDSConfigEvent;
-import com.duggan.workflow.client.ui.events.EditDSConfigEvent.EditDSConfigHandler;
-import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent;
-import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent.LoadDSConfigsHandler;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.EditCatalogEvent;
+import com.duggan.workflow.client.ui.events.EditCatalogEvent.EditCatalogHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.shared.model.DSConfiguration;
-import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
-import com.duggan.workflow.shared.requests.GetDSStatusRequest;
-import com.duggan.workflow.shared.responses.GetDSConfigurationsResponse;
-import com.duggan.workflow.shared.responses.GetDSStatusResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -35,119 +25,206 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
+import com.duggan.workflow.shared.requests.GetCatalogsRequest;
+import com.duggan.workflow.shared.requests.GetDataRequest;
+import com.duggan.workflow.shared.requests.InsertDataRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveCatalogRequest;
+import com.duggan.workflow.shared.responses.BaseResponse;
+import com.duggan.workflow.shared.responses.GetCatalogsResponse;
+import com.duggan.workflow.shared.responses.GetDataResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 
-public class DataTablePresenter extends
-		Presenter<DataTablePresenter.IDataTableView,DataTablePresenter.IDataTableProxy> 
-		implements LoadDSConfigsHandler, EditDSConfigHandler{
+public class DataTablePresenter
+		extends
+		Presenter<DataTablePresenter.IDataTableView, DataTablePresenter.IDataTableProxy>
+		implements EditCatalogHandler {
 
 	public interface IDataTableView extends View {
+		HasClickHandlers getNewButton();
 
-		HasClickHandlers getNewDatasourceButton();
-		HasClickHandlers getTestAllDatasources();
+		HasClickHandlers getImportButton();
+
+		void bindCatalogs(List<Catalog> catalogs);
 	}
-	
+
 	@ProxyCodeSplit
 	@NameToken(NameTokens.datatable)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface IDataTableProxy extends TabContentProxyPlace<DataTablePresenter> {
+	public interface IDataTableProxy extends
+			TabContentProxyPlace<DataTablePresenter> {
 	}
-	
+
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		TabDataExt ext = new TabDataExt("Data Table","icon-th",8, adminGatekeeper);
-        return ext;
-    }
-	
+	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+		TabDataExt ext = new TabDataExt("Data Table", "icon-th", 8,
+				adminGatekeeper);
+		return ext;
+	}
+
 	public static final Object TABLE_SLOT = new Object();
-	
-	@Inject DispatchAsync requestHelper;
 
 	@Inject
-	public DataTablePresenter(final EventBus eventBus, final IDataTableView view,IDataTableProxy proxy,
-			Provider<DSSavePresenter> dsSaveProvider, 
-			Provider<DSItemPresenter> dsItemProvider) {
-		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
+	DispatchAsync requestHelper;
+
+	@Inject
+	public DataTablePresenter(final EventBus eventBus,
+			final IDataTableView view, IDataTableProxy proxy) {
+		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(LoadDSConfigsEvent.TYPE, this);
-		addRegisteredHandler(EditDSConfigEvent.TYPE, this);
-		
-		getView().getNewDatasourceButton().addClickHandler(new ClickHandler() {
+		addRegisteredHandler(EditCatalogEvent.TYPE, this);
+		getView().getNewButton().addClickHandler(new ClickHandler() {
+
 			@Override
 			public void onClick(ClickEvent event) {
-				showConfigSavePopup();
+				showPopup(null);
 			}
 		});
-		
-		getView().getTestAllDatasources().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				fireEvent(new ProcessingEvent("Starting processes"));
-				requestHelper.execute(new GetDSStatusRequest(), 
-						new TaskServiceCallback<GetDSStatusResponse>() {
+
+	}
+
+	protected void showPopup(Catalog catalog) {
+		final CreateTableView view = new CreateTableView(catalog);
+		AppManager.showPopUp("Create Table", view, "create-data-table-popup",
+				new OptionControl() {
+
 					@Override
-					public void processResult(
-							GetDSStatusResponse aResponse) {
-						bindValues(aResponse.getConfigs());
-						fireEvent(new ProcessingCompletedEvent());
+					public void onSelect(String name) {
+
+						if (name.equals("Save")) {
+							if (view.isValid()) {
+								Catalog cat = view.getCatalog();
+								save(cat);
+
+								hide();
+							}
+						} else {
+							hide();
+						}
 					}
 
-				});
-			}
-		});
-		
-	}
-	
-	private void showConfigSavePopup(){
-		showConfigSavePopup(null);
-	}
-	
-	private void showConfigSavePopup(final DSConfiguration config) {
-		
-	}
-	
-	@Override
-	protected void onReveal() {
-		super.onReveal();
-		loadConfigurations();
+				}, "Save", "Cancel");
 	}
 
-	public void loadConfigurations(){
-		
-		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new GetDSConfigurationsRequest(),
-				new TaskServiceCallback<GetDSConfigurationsResponse>() {
+	private void showDataPopup(final Catalog catalog) {
+		final CreateDataView view = new CreateDataView(catalog);
+		requestHelper.execute(new GetDataRequest(catalog.getId()),
+				new ServiceCallback<GetDataResponse>() {
+					@Override
+					public void processResult(GetDataResponse aResponse) {
+						view.setData(aResponse.getLines());
+
+						AppManager.showPopUp("Data View", view,
+								"create-data-table-popup", new OptionControl() {
+
+									@Override
+									public void onSelect(String name) {
+
+										if (name.equals("Save")) {
+											saveData(catalog, view.getData());
+											hide();
+										} else {
+											hide();
+										}
+									}
+
+
+								}, "Save", "Cancel");
+					}
+				});
+
+	}
+	
+	private void saveData(Catalog catalog,
+			List<DocumentLine> data) {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new InsertDataRequest(catalog, data));
+		action.addRequest(new GetCatalogsRequest());
+		requestHelper.execute(action,  new ServiceCallback<MultiRequestActionResult>() {
 			@Override
-			public void processResult(GetDSConfigurationsResponse result) {
-				List<DSConfiguration> configs = result.getConfigurations();
-				bindValues(configs);
-				fireEvent(new ProcessingCompletedEvent());
+			public void processResult(MultiRequestActionResult aResponse) {
 				
+				List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+						.get(1)).getCatalogs();
+				getView().bindCatalogs(catalogs);
 			}
 		});
 	}
-	
-	private void bindValues(List<DSConfiguration> configs) {
-		setInSlot(TABLE_SLOT, null);
-		if(configs!=null){
-			for(final DSConfiguration config: configs){
-				
-			}
+
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+
+		loadData();
+	}
+
+	private void loadData() {
+		requestHelper.execute(new GetCatalogsRequest(),
+				new ServiceCallback<GetCatalogsResponse>() {
+					@Override
+					public void processResult(GetCatalogsResponse aResponse) {
+						List<Catalog> catalogs = aResponse.getCatalogs();
+						getView().bindCatalogs(catalogs);
+					}
+				});
+	}
+
+	public void save(Catalog catalog) {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new SaveCatalogRequest(catalog));
+		action.addRequest(new GetCatalogsRequest());
+
+		requestHelper.execute(action,
+				new ServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+
+						Catalog saved = ((SaveCatalogResponse) aResponse.get(0))
+								.getCatalog();
+
+						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+								.get(1)).getCatalogs();
+						getView().bindCatalogs(catalogs);
+					}
+				});
+	}
+
+	@Override
+	public void onEditCatalog(EditCatalogEvent event) {
+		if (event.isEditData()) {
+			showDataPopup(event.getCatalog());
+		} else if (event.isDelete()) {
+			deleteCatalog(event.getCatalog());
+		} else {
+			showPopup(event.getCatalog());
 		}
 	}
 
+	private void deleteCatalog(Catalog catalog) {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new DeleteCatalogRequest(catalog));
+		action.addRequest(new GetCatalogsRequest());
 
-	@Override
-	public void onLoadDSConfigs(LoadDSConfigsEvent event) {
-		loadConfigurations();
-	}
+		requestHelper.execute(action,
+				new ServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
 
-	@Override
-	public void onEditDSConfig(EditDSConfigEvent event) {
-		showConfigSavePopup(event.getConfiguration());
+						BaseResponse r = aResponse.get(0);
+
+						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+								.get(1)).getCatalogs();
+						getView().bindCatalogs(catalogs);
+					}
+				});
 	}
 }

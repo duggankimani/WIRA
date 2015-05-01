@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui;
 
 import com.gwtplatform.mvp.client.PopupView;
 
-public class OptionControl implements OnOptionSelected {
+public class OptionControl implements OnOptionSelected{
 
 	PopupView parentPanel;
 	

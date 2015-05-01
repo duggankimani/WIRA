@@ -323,6 +323,68 @@ public class FormDaoHelper {
 		
 		return value;
 	}
+	
+	public static Value getValue(Long id,String key, Object obj, DataType type) {
+		if(obj==null)
+			return null;
+		
+		if(type==null){
+			logger.warn("FormDaoHelper.GetValue: [Field="+key+"] Datatype must be provided");
+			return null;
+		}
+			
+		
+		Value value = null;
+		
+		switch (type) {
+		case BOOLEAN:
+			value = new BooleanValue(id, key, (Boolean)obj);
+			break;
+			
+		case DATE:
+			value = new DateValue(id, key, (Date)obj);
+			break;
+			
+		case DOUBLE:
+			value =new DoubleValue(id, key, ((Number)obj).doubleValue());
+			break;
+			
+		case INTEGER:
+			value = new LongValue(id, key, ((Number)obj).longValue());
+			break;
+			
+		case STRING:
+			value = new StringValue(id, key, obj.toString());
+			break;
+
+		case CHECKBOX:
+			value = new BooleanValue(id, key, (Boolean)obj);
+			break;
+
+			
+		case MULTIBUTTON:
+			value = new StringValue(id, key, obj.toString());
+			break;
+
+			
+		case SELECTBASIC:
+			value = new StringValue(id, key, obj.toString());
+			break;
+
+			
+		case SELECTMULTIPLE:
+			value = new StringValue(id, key, obj.toString());
+			break;
+
+			
+		case STRINGLONG:
+			value = new StringValue(id, key, obj.toString());
+			break;
+		}
+		
+		
+		return value;
+	}
 
 	public static void deleteValue(Long valueId){
 		DB.getFormDao().deleteValue(valueId);

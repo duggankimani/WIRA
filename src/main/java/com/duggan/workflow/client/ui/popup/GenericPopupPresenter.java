@@ -31,7 +31,7 @@ public class GenericPopupPresenter extends
 	public static final Type<RevealContentHandler<?>> BODY_SLOT = new Type<RevealContentHandler<?>>();
 	
 	public static final Object BUTTON_SLOT = new Object();
-
+	
 	@Inject
 	public GenericPopupPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);

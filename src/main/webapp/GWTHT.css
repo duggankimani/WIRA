@@ -626,3 +626,13 @@ box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.create-data-table-popup{
+	left: 30% !important;
+	max-width:1000px !important;
+	width:90% !important;
+}
+
+.detailed-info-table{
+	width:100% !important;
+}

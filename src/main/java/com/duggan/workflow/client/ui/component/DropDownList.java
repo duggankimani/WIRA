@@ -13,10 +13,11 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class DropDownList<T extends Listable> extends Composite implements HasValueChangeHandlers<T>{
+public class DropDownList<T extends Listable> extends Composite implements HasValueChangeHandlers<T>,HasValue<T>{
 
 	private static DropDownListUiBinder uiBinder = GWT
 			.create(DropDownListUiBinder.class);
@@ -82,6 +83,11 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 	}
 
 	public void setValue(T value) {
+		if(value==null){
+			listBox.setSelectedIndex(0);
+			this.value = null;
+			return;
+		}
 		
 		for(int i=0; i<listBox.getItemCount(); i++){
 			
@@ -141,5 +147,10 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 
 	public void setNullText(String nullText) {
 		this.nullText = nullText;
+	}
+
+	@Override
+	public void setValue(T value, boolean fireEvents) {
+		setValue(value);
 	}
 }

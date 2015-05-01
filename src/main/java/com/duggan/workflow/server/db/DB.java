@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.BaseDaoImpl;
+import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DSConfigDaoImpl;
 import com.duggan.workflow.server.dao.DashboardDaoImpl;
@@ -359,5 +360,9 @@ public class DB{
 
 	public static OutputDocumentDao getOutputDocDao() {
 		return factory().getOuputDocDaoImpl(getEntityManager());
+	}
+	
+	public static CatalogDaoImpl getCatalogDao() {
+		return factory().getCatalogDaoImp(getEntityManager());
 	}
 }

@@ -176,11 +176,13 @@ public class TableView extends Composite {
 		}
 	}
 
+	
 	public void setBordered(Boolean status) {
+		tblContainer.removeStyleName("table-bordered");
 		if (status) {
 			tblContainer.addStyleName("table-bordered");
 		} else {
-			tblContainer.removeStyleName("table-bordered");
+			tblContainer.addStyleName("table-noborder");
 		}
 	}
 

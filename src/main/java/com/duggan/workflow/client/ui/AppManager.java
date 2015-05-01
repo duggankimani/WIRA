@@ -77,7 +77,8 @@ public class AppManager {
 						onOptionSelected.onSelect(text);
 					}
 					
-					if(customPopupStyle!=null){
+					
+					if(!popupPresenter.isVisible() && customPopupStyle!=null){
 						popupPresenter.getView().removeStyleName(customPopupStyle);
 					}
 				}

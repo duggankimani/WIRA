@@ -8,6 +8,7 @@ import com.duggan.workflow.server.actionhandlers.CreateDocumentActionHandler;
 import com.duggan.workflow.server.actionhandlers.CreateFieldRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.CreateFormRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteAttachmentRequestHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteCatalogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteDSConfigurationEventActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestHandler;
@@ -20,11 +21,13 @@ import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetCatalogsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetContextRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetDSConfigurationsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDSStatusRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetDashBoardDataRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetDataRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentTypesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
@@ -52,10 +55,12 @@ import com.duggan.workflow.server.actionhandlers.GetTriggerCountActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTriggersRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetUserRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetUsersRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.InsertDataRequestHandler;
 import com.duggan.workflow.server.actionhandlers.LoginRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
 import com.duggan.workflow.server.actionhandlers.MultiRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.SaveCatalogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveGroupRequestActionHandler;
@@ -80,6 +85,7 @@ import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.CreateFieldRequest;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
+import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
 import com.duggan.workflow.shared.requests.DeleteDSConfigurationEvent;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
@@ -92,11 +98,13 @@ import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
+import com.duggan.workflow.shared.requests.GetCatalogsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
 import com.duggan.workflow.shared.requests.GetDSStatusRequest;
 import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
+import com.duggan.workflow.shared.requests.GetDataRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
@@ -124,10 +132,12 @@ import com.duggan.workflow.shared.requests.GetTriggerCountRequest;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
 import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.shared.requests.InsertDataRequest;
 import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveCatalogRequest;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
@@ -368,5 +378,14 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetProcessInstancesRequest.class, GetProcessInstancesRequestHandler.class,
 				SessionValidator.class);
 		
+		bindHandler(SaveCatalogRequest.class, SaveCatalogRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetCatalogsRequest.class, GetCatalogsRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(DeleteCatalogRequest.class, DeleteCatalogRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(InsertDataRequest.class, InsertDataRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetDataRequest.class, GetDataRequestHandler.class, SessionValidator.class);
 	}
 }

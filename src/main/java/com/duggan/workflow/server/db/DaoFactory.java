@@ -3,6 +3,7 @@ package com.duggan.workflow.server.db;
 import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
+import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DSConfigDaoImpl;
 import com.duggan.workflow.server.dao.DashboardDaoImpl;
@@ -29,6 +30,7 @@ class DaoFactory {
 	DashboardDaoImpl dashDao;
 	SettingsDaoImpl settingsDao;
 	OutputDocumentDao outputDao;
+	CatalogDaoImpl catalogDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -178,4 +180,15 @@ class DaoFactory {
 		return outputDao;
 	}
 
+	public CatalogDaoImpl getCatalogDaoImp(EntityManager entityManager) {
+		if(catalogDao==null){
+			synchronized (DaoFactory.class) {
+				if(catalogDao==null){
+					catalogDao = new CatalogDaoImpl(entityManager);
+				}
+			}
+		}
+		
+		return catalogDao;
+	}
 }
