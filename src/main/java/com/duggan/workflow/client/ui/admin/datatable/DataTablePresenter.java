@@ -62,7 +62,7 @@ public class DataTablePresenter
 
 	@TabInfo(container = AdminHomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		TabDataExt ext = new TabDataExt("Data Table", "icon-th", 8,
+		TabDataExt ext = new TabDataExt("Data Tables", "icon-th", 8,
 				adminGatekeeper);
 		return ext;
 	}

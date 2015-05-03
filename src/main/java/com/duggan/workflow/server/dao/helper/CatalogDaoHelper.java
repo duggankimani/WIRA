@@ -1,10 +1,11 @@
 package com.duggan.workflow.server.dao.helper;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+
+import org.hibernate.connection.DatasourceConnectionProvider;
+import org.hibernate.ejb.HibernateEntityManagerFactory;
+import org.hibernate.impl.SessionFactoryImpl;
 
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
@@ -163,5 +164,28 @@ public class CatalogDaoHelper {
 
 	private static Value getValue(CatalogColumnModel column, Object v) {
 		return FormDaoHelper.getValue(null, column.getName(), v, column.getType().getFieldType());
+	}
+	
+	public static String exportTable(String tableName){
+		HibernateEntityManagerFactory hibernateFactory = 
+				(HibernateEntityManagerFactory)DB.getEntityManagerFactory();
+		SessionFactoryImpl sessionFactory=(SessionFactoryImpl)hibernateFactory.getSessionFactory();
+		DatasourceConnectionProvider connProvider = (DatasourceConnectionProvider) sessionFactory.getConnectionProvider();
+		
+//		Platform platform = PlatformFactory.createNewPlatformInstance(connProvider.getDataSource());
+//		Table table = platform.readTableFromDatabase(
+//				connProvider.getConnection(), "", "", "ext_accountant".toUpperCase());
+//		
+//		StringWriter out = new StringWriter();
+//		new DatabaseIO().write(table, out);
+//		
+//		org.jumpmind.db.model.Table t=null;
+//		
+//		DatabaseXmlUtil.write(t, out);
+//		IDatabasePlatform dbplatform  = JdbcD; 
+//		new DbExport(platform).exportTables(new Table[]{});		
+//		return xml;
+		
+		return null;
 	}
 }
