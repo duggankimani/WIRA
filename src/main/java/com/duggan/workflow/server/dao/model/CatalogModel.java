@@ -13,40 +13,55 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cascade;
 
-
+@XmlRootElement(name = "table")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso(CatalogColumnModel.class)
 @Entity
-@Table(name="catalog")
-public class CatalogModel extends PO{
+@Table(name = "catalog")
+public class CatalogModel extends PO {
 
+	@XmlTransient
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	@Column(nullable=false, length=125)
+
+	@XmlAttribute(required = true)
+	@Column(nullable = false, length = 125)
 	private String name;
-	
-	@Column(nullable=false, length=255)
+
+	@XmlAttribute
+	@Column(nullable = false, length = 255)
 	private String description;
-	
+
+	@XmlTransient
 	private String recordCount;
+	@XmlTransient
 	private String process;
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="catalog",
-			cascade={CascadeType.PERSIST,CascadeType.REMOVE, CascadeType.MERGE})
-	@Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+	@XmlElement(name="column")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "catalog", cascade = {
+			CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE })
+	@Cascade({ org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private Set<CatalogColumnModel> columns = new HashSet<>();
-	
+
 	public CatalogModel() {
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -85,7 +100,7 @@ public class CatalogModel extends PO{
 
 	public void setColumns(Collection<CatalogColumnModel> cols) {
 		columns.clear();
-		for(CatalogColumnModel model: cols){
+		for (CatalogColumnModel model : cols) {
 			columns.add(model);
 			model.setCatalog(this);
 		}

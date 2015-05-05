@@ -10,15 +10,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.shared.model.DBType;
 
 
+@XmlRootElement(name="column")
+@XmlAccessorType(XmlAccessType.FIELD)
 
 @Entity
 @Table(name="catalogcolumn")
 public class CatalogColumnModel extends PO{
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -27,15 +35,24 @@ public class CatalogColumnModel extends PO{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@XmlAttribute
 	private String name;
+	@XmlAttribute
 	private String label;
+	
+	@XmlAttribute
 	@Enumerated(EnumType.STRING)
 	private DBType type;
+	@XmlAttribute
 	private Integer size;
+	@XmlAttribute
 	private boolean isNullable;
+	@XmlAttribute
 	private boolean isPrimaryKey;
+	@XmlAttribute
 	private boolean isAutoIncrement;
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
 	@JoinColumn(name="catalogid", referencedColumnName="id")
 	private CatalogModel catalog;

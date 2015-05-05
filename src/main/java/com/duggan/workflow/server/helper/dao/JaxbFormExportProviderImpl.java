@@ -8,6 +8,8 @@ import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
+import com.duggan.workflow.server.dao.model.CatalogColumnModel;
+import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 
 public class JaxbFormExportProviderImpl implements ContextResolver<JAXBContext> {
@@ -23,7 +25,7 @@ public class JaxbFormExportProviderImpl implements ContextResolver<JAXBContext> 
 		
 		try{
 			context = JAXBContext.newInstance(ADForm.class, ADField.class, ADProperty.class,ADValue.class, 
-					ADKeyValuePair.class, KeyValuePair.class);
+					ADKeyValuePair.class, KeyValuePair.class, CatalogModel.class, CatalogColumnModel.class);
 			return context;
 		}catch(Exception e){
 			e.printStackTrace();

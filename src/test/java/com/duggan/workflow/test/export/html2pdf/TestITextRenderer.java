@@ -1,6 +1,5 @@
 package com.duggan.workflow.test.export.html2pdf;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 

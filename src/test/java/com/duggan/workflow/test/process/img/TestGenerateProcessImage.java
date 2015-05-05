@@ -1,6 +1,5 @@
 package com.duggan.workflow.test.process.img;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -1,9 +1,5 @@
 package com.duggan.workflow.test.process.img;
 
-import com.ilesteban.processimage.ProcessImageProcessor;
-import com.ilesteban.processimage.ProcessImageProcessorConfiguration;
-import com.ilesteban.processimage.transformation.TaskColorTransformationJob;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +9,10 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.ilesteban.processimage.ProcessImageProcessor;
+import com.ilesteban.processimage.ProcessImageProcessorConfiguration;
+import com.ilesteban.processimage.transformation.TaskColorTransformationJob;
 
 /**
  *

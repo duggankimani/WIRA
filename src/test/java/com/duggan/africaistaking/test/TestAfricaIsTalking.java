@@ -1,11 +1,8 @@
 package com.duggan.africaistaking.test;
 
-import org.hibernate.connection.DatasourceConnectionProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.omg.CosNaming.NamingContext;
-import org.slf4j.LoggerFactory;
 
 import com.duggan.workflow.server.sms.AfricasTalkingGateway;
 

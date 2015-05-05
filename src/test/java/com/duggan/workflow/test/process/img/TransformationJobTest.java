@@ -1,11 +1,5 @@
 package com.duggan.workflow.test.process.img;
 
-import com.ilesteban.processimage.ProcessImageProcessor;
-import com.ilesteban.processimage.ProcessImageProcessorConfiguration;
-import com.ilesteban.processimage.transformation.AttributeNameTransformationJob;
-import com.ilesteban.processimage.transformation.TaskBorderTransformationJob;
-import com.ilesteban.processimage.transformation.UndefinedValueForAttributeTransformationJob;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +10,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.ilesteban.processimage.ProcessImageProcessor;
+import com.ilesteban.processimage.ProcessImageProcessorConfiguration;
+import com.ilesteban.processimage.transformation.AttributeNameTransformationJob;
+import com.ilesteban.processimage.transformation.TaskBorderTransformationJob;
+import com.ilesteban.processimage.transformation.UndefinedValueForAttributeTransformationJob;
 
 /**
  *

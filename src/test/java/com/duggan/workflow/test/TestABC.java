@@ -1,10 +1,6 @@
 package com.duggan.workflow.test;
 
-import java.io.Serializable;
-
 import org.junit.Test;
-
-import com.duggan.workflow.shared.model.Comment;
 
 public class TestABC {
 

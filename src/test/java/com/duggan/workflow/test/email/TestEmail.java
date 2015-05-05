@@ -13,13 +13,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Document;
 
 public class TestEmail {

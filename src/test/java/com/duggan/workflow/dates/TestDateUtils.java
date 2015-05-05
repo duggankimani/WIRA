@@ -1,6 +1,5 @@
 package com.duggan.workflow.dates;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
