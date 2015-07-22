@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.addDoc;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.client.service.ServiceCallback;
@@ -28,6 +30,8 @@ public class DocumentPopupPresenter extends
 	DispatchAsync requestHelper;
 
 	public interface MyView extends View {
+
+		void addSeparator(String category);
 	}
 	
 	@Inject
@@ -55,6 +59,24 @@ public class DocumentPopupPresenter extends
 			@Override
 			public void processResult(GetDocumentTypesResponse result) {
 				List<DocumentType> types=result.getDocumentTypes();
+				Collections.sort(types, new Comparator<DocumentType>() {
+					@Override
+					public int compare(DocumentType o1, DocumentType o2) {
+						
+						String o1Category = o1.getCategory();
+						String o2Category = o2.getCategory();
+						
+						if(o1Category==null){
+							return -1;
+						}
+						
+						if(o2Category==null){
+							return 1;
+						}
+						
+						return o1Category.compareTo(o2Category);
+					}
+				});
 				setDocumentItems(types);
 			}
 		});
@@ -62,7 +84,17 @@ public class DocumentPopupPresenter extends
 	
 	public void setDocumentItems(List<DocumentType> types){
 		this.setInSlot(DOCITEM_SLOT, null);
+		
+		String category="";
 		for(final DocumentType type : types) {
+			if(type.getCategory()!=null && !category.equals(type.getCategory())){
+				category = type.getCategory();
+				getView().addSeparator(category);
+			}else if(type.getCategory()==null && !category.equals("NULL")){
+				category="NULL";
+				getView().addSeparator("General");
+			}
+			
 			docTypeFactory.get(new ServiceCallback<DocTypeItemPresenter>() {
 				@Override
 				public void processResult(DocTypeItemPresenter result) {

@@ -13,6 +13,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ManageProcessAction;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
@@ -45,7 +46,7 @@ public class ProcessItemPresenter extends
 		HasClickHandlers getDeleteButton();
 		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
-				Status status,  String imageName, Long imageId);
+				Status status,  String imageName, Long imageId, ProcessCategory category);
 
 		CheckBox getSelectBox();
 	}
@@ -164,6 +165,7 @@ public class ProcessItemPresenter extends
 		this.processDef = def;
 		getView().setValues(def.getName(), def.getProcessId(), def.getDescription(),
 				def.getDocTypes(), def.getLastModified(),
-				def.getFileId(), def.getFileName(), def.getStatus(), def.getImageName(), def.getImageId());
+				def.getFileId(), def.getFileName(), def.getStatus(), def.getImageName(), def.getImageId(),
+				def.getCategory());
 	}
 }

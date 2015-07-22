@@ -37,7 +37,7 @@ public class ProcessDefModel extends PO {
 	
 	private Status status;
 	
-	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="processDef", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	private Collection<ADDocType> documentTypes = new HashSet<>();
 	
 	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)

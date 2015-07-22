@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.Status;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -100,22 +101,25 @@ public class ProcessItemView extends ViewImpl implements
 	@Override
 	public void setValues(String name, String processId,String description,
 			List<DocumentType> docTypes, Date lastModified, Long fileId,
-			String fileName, Status status, String imageName, Long imageId) {
+			String fileName, Status status, String imageName, Long imageId,ProcessCategory category) {
 		
 		spnName.setInnerText(name);
 		spnName.setTitle(description);
 		spnProcessId.setInnerText(processId);
 		spnProcessId.setTitle(processId);
 		
-		
-		if(docTypes!=null && !docTypes.isEmpty()){
-			StringBuffer docs = new StringBuffer();
-			for(DocumentType type: docTypes){
-				docs.append(type.getName()+",");
-			}			
-			
-			spnDocTypes.setInnerText(docs.substring(0, docs.length()-1));
+		if(category!=null){
+			spnDocTypes.setInnerText(category.getDisplayName());
 		}
+		
+//		if(docTypes!=null && !docTypes.isEmpty()){
+//			StringBuffer docs = new StringBuffer();
+//			for(DocumentType type: docTypes){
+//				docs.append(type.getName()+",");
+//			}			
+//			
+//			spnDocTypes.setInnerText(docs.substring(0, docs.length()-1));
+//		}
 		
 		if(fileName!=null)
 			spnFileName.setInnerText(fileName);

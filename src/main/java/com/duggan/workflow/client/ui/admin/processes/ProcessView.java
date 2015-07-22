@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.admin.processes;
 
+import java.util.List;
+
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -16,6 +19,7 @@ public class ProcessView extends ViewImpl implements ProcessPresenter.IProcessVi
 	@UiField Anchor aNewProcess;
 	@UiField HTMLPanel tblRow;
 	@UiField Anchor aStartProcesses;
+	@UiField Anchor aAddCategory;
 	
 	public interface Binder extends UiBinder<Widget, ProcessView> {
 	}
@@ -60,6 +64,16 @@ public class ProcessView extends ViewImpl implements ProcessPresenter.IProcessVi
 	@Override
 	public HasClickHandlers getStartAllProcesses(){
 		return aStartProcesses;
+	}
+	
+	@Override
+	public HasClickHandlers getAddCategories(){
+		return aAddCategory;
+	}
+
+	@Override
+	public void setCategories(List<ProcessCategory> categories) {
+		//lstCategories.setItems(categories);
 	}
 	
 }

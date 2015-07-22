@@ -13,7 +13,9 @@ import org.jbpm.process.audit.ProcessInstanceLog;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
@@ -29,6 +31,8 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
+import com.duggan.workflow.shared.model.ProcessCategory;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -200,6 +204,23 @@ public class DocumentDaoHelper {
 
 		return adtype;
 	}
+	
+	public static ADDocType getTypeFromProcess(ProcessDef processDef) {
+		DocumentDaoImpl docDao = DB.getDocumentDao();
+		ADDocType adtype = docDao.getDocumentTypeByName(processDef.getDisplayName());
+		if(adtype!=null){
+			adtype = new ADDocType(null, processDef.getDisplayName(),
+					processDef.getDisplayName());
+		}
+		
+		ProcessCategory category = processDef.getCategory();
+		if(category!=null){
+			ProcessDaoImpl dao = DB.getProcessDao();
+			ADProcessCategory cat = dao.getById(ADProcessCategory.class, category.getId());
+			adtype.setCategory(cat);
+		}
+		return adtype;
+	}
 
 	/**
 	 * 
@@ -338,6 +359,10 @@ public class DocumentDaoHelper {
 		
 		if(adtype.getProcessDef()!=null){
 			type.setProcessId(adtype.getProcessDef().getProcessId());
+		}
+		
+		if(adtype.getCategory()!=null){
+			type.setCategory(adtype.getCategory().getName());
 		}
 		
 		return type;

@@ -18,6 +18,7 @@ import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
@@ -535,6 +536,10 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			
 		}
 		return logs;
+	}
+
+	public List<ADProcessCategory> getAllProcessCategories() {
+		return getResultList(em.createQuery("FROM ADProcessCategory where isActive=1"));
 	}
 
 }

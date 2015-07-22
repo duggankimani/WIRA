@@ -4,6 +4,7 @@ import static com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter.DOCITE
 
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,6 +55,19 @@ public class DocumentPopupView extends ViewImpl implements
 			super.addToSlot(slot, content);
 		}
 		
+	}
+
+	@Override
+	public void addSeparator(String category) {
+		if(category==null){
+			category= new String("");
+		}
+		
+		HTML html = new HTML("<div>"+
+		"<span style=\"padding-left:8px; font-size:12px;font-family:Arial Unicode MS,Arial,sans-serif;\">"+category+"</span>"+
+		"<li style=\"margin:2px 0px;\" role=\"separator\" class=\"divider\"></li>"+
+		"</div>");
+		panelDocTypes.add(html);
 	}
 
 }

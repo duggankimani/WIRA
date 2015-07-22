@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.sencha.gxt.data.shared.TreeStore;
 
-public class Attachment implements Serializable,TreeStore.TreeNode<Attachment> {
+public class Attachment extends SerializableObj implements Serializable,TreeStore.TreeNode<Attachment> {
 
 	/**
 	 * 

@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao.model;
 import java.util.Collection;
 import java.util.HashSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,7 @@ public class ADDocType extends PO {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
 	private Collection<DocumentModel> documents = new HashSet<>();
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="processDefId", referencedColumnName="id")
 	private ProcessDefModel processDef;
 	
@@ -44,6 +45,10 @@ public class ADDocType extends PO {
 	private Integer lastNum;
 	
 	private String subjectFormat;
+	
+	@ManyToOne
+	@JoinColumn(name="categoryId")
+	private ADProcessCategory category;
 	
 	public ADDocType() {
 	}
@@ -164,5 +169,13 @@ public class ADDocType extends PO {
 
 	public void setSubjectFormat(String subjectFormat) {
 		this.subjectFormat = subjectFormat;
+	}
+
+	public ADProcessCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ADProcessCategory category) {
+		this.category = category;
 	}
 }

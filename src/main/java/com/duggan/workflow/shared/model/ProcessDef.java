@@ -1,11 +1,10 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProcessDef implements Serializable,Listable{
+public class ProcessDef extends SerializableObj implements Listable{
 
 	/**
 	 * 
@@ -13,28 +12,18 @@ public class ProcessDef implements Serializable,Listable{
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	
 	private String name;
-	
 	private String processId;
-	
 	private List<DocumentType> docTypes;
-	
 	private Date lastModified;
-	
 	private Long fileId;
-	
 	private String fileName;
-	
 	private String description;
-	
 	private Status status;
-	
 	private Long imageId;
-	
 	private String imageName;
-	
 	private List<Attachment> files = new ArrayList<Attachment>();
+	private ProcessCategory category;
 
 	public ProcessDef() {
 	}
@@ -159,5 +148,12 @@ public class ProcessDef implements Serializable,Listable{
 	public boolean equals(Object obj) {
 		return ((ProcessDef)obj).id.equals(id);
 	}
-	
+
+	public ProcessCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProcessCategory category) {
+		this.category = category;
+	}
 }

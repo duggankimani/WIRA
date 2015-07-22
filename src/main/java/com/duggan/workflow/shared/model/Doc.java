@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Doc implements Serializable,Comparable<Doc>{
+public abstract class Doc extends SerializableObj implements Serializable,Comparable<Doc>{
 
 	/**
 	 * 

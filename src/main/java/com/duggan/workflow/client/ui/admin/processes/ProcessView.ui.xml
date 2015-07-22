@@ -2,6 +2,7 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -20,6 +21,11 @@
 								<i class="icon-ok"></i>
 								Start All Processes
 							</g:Anchor>
+							<g:Anchor ui:field="aAddCategory" styleName="btn btn-primary"
+								title="Add Process Category">
+								<i class="icon-plus"></i>
+								Add/Edit Categories
+							</g:Anchor>
 					   </div>																			
 					</div>
 					
@@ -30,7 +36,7 @@
 								  <label><input type="checkbox" class="ace"/></label>
 								</div>
 								<div class="th" style="">NAME:</div>
-								<div class="th" style="">DOCUMENT TYPE</div>
+								<div class="th" style="">CATEGORY</div>
 								<div class="th" style="">FILE NAME</div>
 								<div class="th" style="">IMAGE</div>
 								<div class="th" style="">PROCESS ID</div>

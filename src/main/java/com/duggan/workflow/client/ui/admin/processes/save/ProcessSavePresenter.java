@@ -12,22 +12,27 @@ import com.duggan.workflow.client.ui.events.UploadStartedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent.UploadStartedHandler;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
+import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
+import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -45,11 +50,12 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 		ProcessDef getProcess();
 		void setProcessId(Long id);
 		void enable(boolean enableFinish, boolean Cancel);
-		void setValues(Long processDefId,String name, String processId,String description, List<DocumentType> docTypes, List<Attachment> list);
+		void setValues(Long processDefId,String name, String processId,String description, List<DocumentType> docTypes, List<Attachment> list,ProcessCategory category);
 		void setDocumentTypes(List<DocumentType> documentTypes);
 		void setAttachments(List<Attachment> attachments);
 //		void setValues(Long processDefId, String name, String processId,
 //				String description, List<DocumentType> docTypes);
+		void setCategories(List<ProcessCategory> categories);
 
 	}
 
@@ -88,6 +94,7 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 					ProcessDef def = getView().getProcess();
 					if(process!=null){
 						def.setId(process.getId());
+						def.setDocTypes(process.getDocTypes());
 					}
 					
 					SaveProcessRequest request = new SaveProcessRequest(def);
@@ -130,7 +137,7 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 	private void loadProcess() {
 		
 		MultiRequestAction requests = new MultiRequestAction();
-		requests.addRequest(new GetDocumentTypesRequest());
+		requests.addRequest(new GetProcessCategoriesRequest());
 		if(processDefId!=null)
 			requests.addRequest( new GetProcessRequest(processDefId));
 		
@@ -139,8 +146,8 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 			@Override
 			public void processResult(MultiRequestActionResult results) {
 				
-				GetDocumentTypesResponse response = (GetDocumentTypesResponse)results.get(0);
-				getView().setDocumentTypes(response.getDocumentTypes());
+				GetProcessCategoriesResponse response = (GetProcessCategoriesResponse)results.get(0);
+				getView().setCategories(response.getCategories());
 				
 				if(processDefId!=null){
 					GetProcessResponse result =  (GetProcessResponse)results.get(1);
@@ -148,7 +155,7 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 					getView().setValues(process.getId(),
 							process.getName(),process.getProcessId(),
 							process.getDescription(),
-							process.getDocTypes(), process.getFiles());
+							process.getDocTypes(), process.getFiles(), process.getCategory());
 				}
 			}
 		});		

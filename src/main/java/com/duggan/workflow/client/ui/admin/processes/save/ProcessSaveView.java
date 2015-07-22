@@ -7,11 +7,13 @@ import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -49,6 +51,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 	@UiField AutoCompleteField<DocumentType> lstDocTypes;
 	@UiField VerticalPanel currentAttachmentsPanel;
 	@UiField InlineLabel lblWarning;
+	@UiField DropDownList<ProcessCategory> lstCategories;
 
 	public interface Binder extends UiBinder<Widget, ProcessSaveView> {
 	}
@@ -103,7 +106,8 @@ public class ProcessSaveView extends PopupViewImpl implements
 	
 	@Override
 	public void setValues(Long processDefId,
-			String name,String processId,String description, List<DocumentType> docTypes,List<Attachment> attachments) {
+			String name,String processId,String description, List<DocumentType> docTypes,
+			List<Attachment> attachments, ProcessCategory category) {
 		txtName.setValue(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
@@ -114,6 +118,8 @@ public class ProcessSaveView extends PopupViewImpl implements
 		if(docTypes!=null){
 			lstDocTypes.select(docTypes);
 		}
+		
+		lstCategories.setValue(category);
 		
 		if(attachments!=null){
 			setAttachments(attachments);
@@ -126,6 +132,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 		def.setName(txtName.getValue());
 		def.setProcessId(txtProcess.getValue());		
 		def.setDescription(txtDescription.getValue());
+		def.setCategory(lstCategories.getValue());
 		
 		return def;
 	}
@@ -143,7 +150,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 			issues.addError("Please specify Process Id");
 			isValid=false;
 		}
-		
+				
 		return isValid;
 	}
 	
@@ -199,6 +206,11 @@ public class ProcessSaveView extends PopupViewImpl implements
 	@Override
 	public void setDocumentTypes(List<DocumentType> documentTypes) {
 		lstDocTypes.addItems(documentTypes);
+	}
+
+	@Override
+	public void setCategories(List<ProcessCategory> categories) {
+		lstCategories.setItems(categories);
 	}
 
 }

@@ -14,6 +14,7 @@ public class DocumentType implements Listable, Serializable{
 	private String className;
 	private Long formId;//start-up form for this process
 	private String processId;
+	private String category;
 	
 	public DocumentType(){
 		
@@ -77,5 +78,13 @@ public class DocumentType implements Listable, Serializable{
 
 	public void setProcessId(String processId) {
 		this.processId = processId;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }

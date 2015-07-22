@@ -42,6 +42,11 @@ public class DocTypeItemView extends ViewImpl implements
 	@Override
 	public void setValues(String displayName, String className) {
 		spnIcon.setInnerText(displayName);
-		docIcon.addClassName(className);
+		
+		if(className!=null){
+			docIcon.addClassName(className);
+		}else{
+			docIcon.addClassName("color-win8");
+		}
 	}
 }

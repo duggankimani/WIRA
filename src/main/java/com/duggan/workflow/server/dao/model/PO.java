@@ -24,6 +24,10 @@ public abstract class PO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(nullable=false, unique=true, updatable=false, length=45)
+    //@Index(name="idx_ref_id")
+	protected String refId;
+	
 	@XmlTransient
 	@Column
 	private String createdBy;
@@ -92,6 +96,10 @@ public abstract class PO implements Serializable{
 	public void onPrePersist(){
 		this.created=new Date();
 		this.createdBy = SessionHelper.getCurrentUser()==null? null : SessionHelper.getCurrentUser().getUserId();
+		
+		if(refId==null){
+			refId = IDUtils.generateId();
+		}
 	}
 	
 	@PreUpdate
@@ -114,5 +122,13 @@ public abstract class PO implements Serializable{
 		}
 		
 		return created;
+	}
+
+	public String getRefId() {
+		return refId;
+	}
+
+	public void setRefId(String refId) {
+		this.refId = refId;
 	}
 }

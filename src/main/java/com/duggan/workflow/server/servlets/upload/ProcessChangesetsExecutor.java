@@ -13,6 +13,7 @@ import org.apache.commons.fileupload.FileItem;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 public class ProcessChangesetsExecutor extends FileExecutor{
 
@@ -38,7 +39,7 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 					attachment.setId(null);
 					attachment.setName(name);
 					attachment.setSize(size);
-					attachment.setAttachment(item.get());					
+					attachment.setAttachment(item.get());	
 					saveAttachment(attachment, request);
 					
 					receivedFiles.put(fieldName, attachment.getId());
@@ -61,7 +62,6 @@ public class ProcessChangesetsExecutor extends FileExecutor{
 		String message = null;
 		if(id!=null && id.matches("[0-9]+")){
 			ProcessDefModel model = DB.getProcessDao().getProcessDef(new Long(id.trim()));
-			
 			String name = attachment.getName();
 			String xtension = name.substring(name.lastIndexOf('.')+1, name.length()).toLowerCase();
 			boolean isImage = xtension.equals("png") || xtension.equals("jpg") || xtension.equals("jpeg") ||

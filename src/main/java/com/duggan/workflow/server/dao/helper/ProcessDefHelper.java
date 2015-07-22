@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.dao.helper;
 
 import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getType;
+import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getTypeFromProcess;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
+import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
@@ -26,6 +28,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TaskLog;
@@ -42,10 +45,42 @@ public class ProcessDefHelper {
 	public static ProcessDef save(ProcessDef processDef) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 		ProcessDefModel model = get(processDef);
-
+		
 		dao.save(model);
-
 		return get(model);
+	}
+	
+	public static List<ProcessCategory> getProcessCategories(){
+		ProcessDaoImpl dao = DB.getProcessDao();
+		List<ADProcessCategory> list  = dao.getAllProcessCategories();
+		List<ProcessCategory> categories = new ArrayList<>();
+		
+		for(ADProcessCategory cat: list){
+			categories.add(get(cat));
+		}
+		
+		return categories;
+	}
+	
+	public static ProcessCategory save(ProcessCategory category){
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADProcessCategory adCat = get(category);
+		
+		dao.save(adCat);
+		
+		return get(adCat);
+	}
+
+	private static ADProcessCategory get(ProcessCategory category) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ADProcessCategory adCat  =new ADProcessCategory();
+		if(category.getId()!=null){
+			adCat = dao.getById(ADProcessCategory.class, category.getId());
+		}
+		adCat.setIndex(category.getIndex());
+		adCat.setName(category.getName());
+		
+		return adCat;
 	}
 
 	public static void delete(Long processDefId) {
@@ -92,6 +127,10 @@ public class ProcessDefHelper {
 
 		ProcessDef def = new ProcessDef();
 		def.setDocTypes(getDocTypes(model.getDocumentTypes()));
+		
+		for(ADDocType type: model.getDocumentTypes()){
+			def.setCategory(get(type.getCategory()));
+		}
 		def.setName(model.getName());
 		def.setProcessId(model.getProcessId());
 		def.setId(model.getId());
@@ -144,6 +183,20 @@ public class ProcessDefHelper {
 		return def;
 	}
 
+	private static ProcessCategory get(ADProcessCategory category) {
+		if(category==null){
+			return null;
+		}
+		
+		ProcessCategory cat = new ProcessCategory();
+		cat.setId(category.getId());
+		cat.setIndex(category.getIndex());
+		cat.setName(category.getName());
+		cat.setRefId(category.getRefId());
+		
+		return cat;
+	}
+
 	private static List<DocumentType> getDocTypes(
 			Collection<ADDocType> processDocuments) {
 		if (processDocuments == null) {
@@ -176,16 +229,30 @@ public class ProcessDefHelper {
 
 		List<DocumentType> types = processDef.getDocTypes();
 
-		if (types != null) {
+		if (types != null && !types.isEmpty()) {
 			for (DocumentType type : types) {
+				type.setName(processDef.getProcessId());
+				type.setDisplayName(processDef.getDisplayName());
+				type.setProcessId(processDef.getProcessId());
 				ADDocType adtype = getType(type);
+				
+				ProcessCategory category = processDef.getCategory();
+				if(category!=null){
+					ADProcessCategory cat = dao.getById(ADProcessCategory.class, category.getId());
+					adtype.setCategory(cat);
+				}
+				
 				model.addDocType(adtype);
 			}
+		}else{
+			//Auto Generate Types
+			ADDocType adtype = getTypeFromProcess(processDef);
+			model.addDocType(adtype);
 		}
 
 		return model;
 	}
-	
+
 	public static List<TaskStepDTO> createTaskSteps(List<TaskStepDTO> steps){
 		ProcessDaoImpl dao = DB.getProcessDao();
 		List<TaskStepDTO> list = new ArrayList<>();
