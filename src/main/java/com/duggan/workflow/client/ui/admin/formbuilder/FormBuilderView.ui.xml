@@ -175,6 +175,10 @@
 									<fb:PalettePanel ui:field="vGridPanel">	
 									    <f:GridLayout></f:GridLayout>
 									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vPanelIFrame">	
+									    <f:IFrameField></f:IFrameField>
+									</fb:PalettePanel>
 																	
 									<!-- </fb:PalettePanel>
 									<fb:PalettePanel ui:field="vGridPanel">	

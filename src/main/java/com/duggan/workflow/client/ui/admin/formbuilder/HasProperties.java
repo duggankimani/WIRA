@@ -25,6 +25,7 @@ public interface HasProperties {
 	public static final String UPLOADERTYPE="UPLOADERTYPE";
 	public static final String ACCEPT = "ACCEPT";
 	public static final String HREF = "HREF";
+	public static final String IFRAME = "IFRAME";
 
 	void addProperty(Property property);
 	

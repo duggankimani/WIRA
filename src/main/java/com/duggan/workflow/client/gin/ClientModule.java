@@ -148,6 +148,10 @@ public class ClientModule extends AbstractPresenterModule {
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
 		
 		bindConstant().annotatedWith(SecurityCookie.class).to(Definitions.AUTHENTICATIONCOOKIE);
+		
+		requestStaticInjection(AppContext.class);
+		requestStaticInjection(AppManager.class);
+
 
 		bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class,
 				MainPageView.class, MainPagePresenter.MyProxy.class);
@@ -182,9 +186,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(LoginPresenter.class, LoginPresenter.ILoginView.class,
 				LoginView.class, LoginPresenter.MyProxy.class);
 		
-		requestStaticInjection(AppContext.class);
-		requestStaticInjection(AppManager.class);
-
 		bindPresenterWidget(DateGroupPresenter.class,
 				DateGroupPresenter.MyView.class, DateGroupView.class);
 

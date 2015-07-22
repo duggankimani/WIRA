@@ -648,6 +648,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case LINK:
 			widget = new LinkField();
 			break;
+		case IFRAME:
+			widget = new IFrameField();
+			break;
 		}
 
 		widget.designMode = activatePopup;
