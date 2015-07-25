@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -93,7 +95,8 @@ public class CommentDaoImpl {
 		"t.archived = 0 and "+ 
 		"(d.createdBy=? or " +
 		" owner.id = ? or "+
-		"( potowners.entity_id = ? or potowners.entity_id in (?) )) " +
+		"( potowners.entity_id = ? or potowners.entity_id in (?) )) "
+		+ "and c.created>? " +
 		" order by c.created desc"
 		 );
 		
@@ -101,7 +104,8 @@ public class CommentDaoImpl {
 				.setParameter(1, userId)
 				.setParameter(2, userId)
 				.setParameter(3, userId)
-				.setParameter(4, groupsIds);
+				.setParameter(4, groupsIds)
+				.setParameter(5, DateUtils.addDays(new Date(), -30));
 		
 		@SuppressWarnings("unchecked")
 		List<BigInteger> commentIds = query.getResultList(); 

@@ -2,10 +2,13 @@ package com.duggan.workflow.server.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -39,11 +42,13 @@ public class NotificationDaoImpl {
 	@SuppressWarnings("unchecked")
 	public List<NotificationModel> getAllNotifications(String userId) {
 
-		return em.createQuery("FROM NotificationModel n where " +
-				"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType)) "+
-				"order by created desc")
+		return em.createQuery("FROM NotificationModel n where "
+				+ "(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType)) "
+				+ "and n.created>:thirtyDays "
+				+ "order by created desc")
 				.setParameter("userId", userId)
 				.setParameter("notificationType", NotificationType.TASKDELEGATED)
+				.setParameter("thirtyDays", DateUtils.addDays(new Date(), -30))
 				.getResultList();
 	}
 
@@ -66,10 +71,11 @@ public class NotificationDaoImpl {
 		
 		Long count = (Long)em.createQuery("select count(n) from NotificationModel n where " +
 				"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType))  " +
-				"and n.isRead=:isRead")
+				"and n.isRead=:isRead and n.created>:thirtyDays")
 				.setParameter("userId", userId)
 				.setParameter("notificationType", NotificationType.TASKDELEGATED)
-				.setParameter("isRead",false)				
+				.setParameter("isRead",false)
+				.setParameter("thirtyDays", DateUtils.addDays(new Date(), -30))
 				.getSingleResult();
 		
 		return count.intValue();
@@ -150,7 +156,8 @@ public class NotificationDaoImpl {
 		"(d.createdBy=? or " +
 		" owner.id = ? or "+
 		"( potowners.entity_id = ? or potowners.entity_id in (?) )) and " +
-		"n.notificationType in (:noteTypes)"
+		"n.notificationType in (:noteTypes) and "+
+		"n.created>:thirtyDays"
 		 );
 		
 		Query query = em.createNativeQuery(hql.toString())
@@ -158,7 +165,9 @@ public class NotificationDaoImpl {
 				.setParameter(2, userId)
 				.setParameter(3, userId)
 				.setParameter(4, groupsIds)
-				.setParameter("noteTypes", notes);
+				.setParameter("noteTypes", notes)
+				.setParameter("thirtyDays", DateUtils.addDays(new Date(), -30));
+				
 		
 		List<BigInteger> commentIds = query.getResultList(); 
 		
