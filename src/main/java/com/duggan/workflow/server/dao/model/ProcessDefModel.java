@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
 
 import com.duggan.workflow.shared.model.Status;
 
@@ -42,6 +46,15 @@ public class ProcessDefModel extends PO {
 	
 	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
 	private Collection<TaskStepModel> taskSteps = new HashSet<>();
+	
+	@ManyToMany(mappedBy="processDef", cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
+	private Set<User> users = new HashSet<>();
+	
+	@ManyToMany(mappedBy="processDef", cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
+	private Set<Group> groups = new HashSet<>();
+	
 		
 	public ProcessDefModel(){
 		status = Status.INACTIVE;
@@ -122,10 +135,26 @@ public class ProcessDefModel extends PO {
 		documentType.setProcessDef(this);
 	}
 	
+	public void addUser(User u){
+		getUsers().add(u);
+		u.addProcessDef(this);
+	}
+	
 	public void clear(){
 		for(ADDocType t: documentTypes){
 			t.setProcessDef(null);
 		}
+		
+		for(User u: getUsers()){
+			u.removeProcessDef(this);
+		}
+		
+		for(Group group: getGroups()){
+			group.removeProcessDef(this);
+		}
+		
+		users.clear();
+		groups.clear();
 	}
 
 	public Collection<TaskStepModel> getTaskSteps() {
@@ -135,5 +164,26 @@ public class ProcessDefModel extends PO {
 	public void addTaskStep(TaskStepModel step) {
 		step.setProcessDef(this);
 		taskSteps.add(step);
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+
+	public Set<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<Group> groups) {
+		this.groups = groups;
+	}
+
+	public void addGroup(Group group) {
+		getGroups().add(group);
+		group.addProcessDef(this);
 	}
 }

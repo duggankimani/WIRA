@@ -13,12 +13,12 @@ import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PopupViewImpl;
 
 public class ProcessSaveView extends PopupViewImpl implements
@@ -48,7 +49,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 	@UiField TextField txtProcess;
 	@UiField Uploader uploader;
 	@UiField TextArea txtDescription;
-	@UiField AutoCompleteField<DocumentType> lstDocTypes;
+	@UiField AutoCompleteField<Listable> lstUserGroups;
 	@UiField VerticalPanel currentAttachmentsPanel;
 	@UiField InlineLabel lblWarning;
 	@UiField DropDownList<ProcessCategory> lstCategories;
@@ -107,7 +108,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 	@Override
 	public void setValues(Long processDefId,
 			String name,String processId,String description, List<DocumentType> docTypes,
-			List<Attachment> attachments, ProcessCategory category) {
+			List<Attachment> attachments, ProcessCategory category,List<Listable> userGroups) {
 		txtName.setValue(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
@@ -115,8 +116,8 @@ public class ProcessSaveView extends PopupViewImpl implements
 			txtDescription.setValue(description);
 		}
 		
-		if(docTypes!=null){
-			lstDocTypes.select(docTypes);
+		if(userGroups!=null){
+			lstUserGroups.select(userGroups);
 		}
 		
 		lstCategories.setValue(category);
@@ -128,7 +129,7 @@ public class ProcessSaveView extends PopupViewImpl implements
 
 	public ProcessDef getProcess(){
 		ProcessDef def = new ProcessDef();
-		def.setDocTypes(lstDocTypes.getSelectedItems());
+		def.setUsersAndGroups(lstUserGroups.getSelectedItems());
 		def.setName(txtName.getValue());
 		def.setProcessId(txtProcess.getValue());		
 		def.setDescription(txtDescription.getValue());
@@ -204,8 +205,8 @@ public class ProcessSaveView extends PopupViewImpl implements
 	}
 
 	@Override
-	public void setDocumentTypes(List<DocumentType> documentTypes) {
-		lstDocTypes.addItems(documentTypes);
+	public void setUserGroups(List<Listable> userGroups) {
+		lstUserGroups.addItems(userGroups);
 	}
 
 	@Override

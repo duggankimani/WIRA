@@ -15,12 +15,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.jbpm.task.Status;
+import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
+import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -602,10 +605,38 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		return type;
 	}
 
-	public List<ADDocType> getDocumentTypes() {
+	public List<ADDocType> getDocumentTypes(){
 		
-		List docTypes = em.createQuery("from ADDocType t order by t.display")
-				.getResultList();
+		return getDocumentTypes(SessionHelper.getCurrentUser().getUserId());
+	}
+	
+	
+	public List<ADDocType> getDocumentTypes(String userId) {
+		
+		User user = DB.getUserGroupDao().getUser(userId);
+		List<Long> groupIds = new ArrayList<>();
+		for(Group group: user.getGroups()){
+			groupIds.add(group.getId());
+		}
+		
+		List<ADDocType> docTypes = getResultList(em.createQuery("SELECT distinct "
+				+ "new com.duggan.workflow.server.dao.model.ADDocType("
+				+ "t.id,"
+				+ "t.name,"
+				+ "t.display,"
+				+ "t.className,"
+				+ "t.category) "
+				+ "FROM "
+				+ "ADDocType t "
+				+ "inner join t.processDef def "
+				+ "left join t.processDef.users u "
+				+ "left join t.processDef.groups g "
+				+ "where (u.userId=:userId "
+				+ "or (g.id in (:groupIds) "
+				+ "and g in elements (t.processDef.groups))) "
+				+ "order by t.display")
+				.setParameter("userId", userId)
+				.setParameter("groupIds", groupIds));
 		
 		return docTypes;
 	}

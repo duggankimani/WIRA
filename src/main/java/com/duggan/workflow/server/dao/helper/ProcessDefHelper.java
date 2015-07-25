@@ -21,13 +21,19 @@ import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
+import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.DBLoginHelper;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
@@ -37,6 +43,7 @@ import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
+import com.duggan.workflow.shared.model.UserGroup;
 
 public class ProcessDefHelper {
 
@@ -122,7 +129,7 @@ public class ProcessDefHelper {
 
 		return processDefs;
 	}
-
+	
 	public static ProcessDef get(ProcessDefModel model) {
 
 		ProcessDef def = new ProcessDef();
@@ -135,6 +142,17 @@ public class ProcessDefHelper {
 		def.setProcessId(model.getProcessId());
 		def.setId(model.getId());
 
+		DBLoginHelper helper = new DBLoginHelper();
+		Collection<User> users = model.getUsers();
+		for(User user: users){
+			def.addUserOrGroup(helper.get(user,false));
+		}
+		
+		Collection<Group> groups =model.getGroups();
+		for(Group g: groups){
+			def.addUserOrGroup(helper.get(g));
+		}
+		
 		boolean running = JBPMHelper.get().isProcessingRunning(
 				model.getProcessId());
 		def.setStatus(running ? Status.RUNNING
@@ -226,6 +244,17 @@ public class ProcessDefHelper {
 		model.setName(processDef.getName());
 		model.setDescription(processDef.getDescription());
 		model.setProcessId(processDef.getProcessId());
+		
+		List<Listable> usersAndGroups = processDef.getUsersAndGroups();
+		for(Listable item: usersAndGroups){
+			if(item instanceof HTUser){
+				User u = DB.getUserGroupDao().getUser(((HTUser)item).getUserId());
+				model.addUser(u);
+			}else{
+				Group g = DB.getUserGroupDao().getGroup(((UserGroup)item).getName());
+				model.addGroup(g);
+			}
+		}
 
 		List<DocumentType> types = processDef.getDocTypes();
 

@@ -67,6 +67,11 @@ public class ADDocType extends PO {
 		this.className = className;
 	}
 	
+	public ADDocType(Long id, String name, String display, String className, ADProcessCategory category){
+		this(id,name,display,className);
+		this.category = category;
+	}
+	
 	public Long getId() {
 		return id;
 	}

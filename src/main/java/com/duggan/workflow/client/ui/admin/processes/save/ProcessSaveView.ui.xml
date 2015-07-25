@@ -47,9 +47,9 @@
 							<label for="ProcessName">Process Categories:</label>
 							<d:DropDownList ui:field="lstCategories"></d:DropDownList>
 						</div>
-						<div class="form-group hide">
-							<label for="ProcessName">Document Types:</label>
-							<d:AutoCompleteField ui:field="lstDocTypes"></d:AutoCompleteField>
+						<div class="form-group">
+							<label for="ProcessName">Users/Groups:</label>
+							<d:AutoCompleteField ui:field="lstUserGroups"></d:AutoCompleteField>
 						</div>
 					</g:HTMLPanel>
 				</g:HTMLPanel>

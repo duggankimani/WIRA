@@ -552,9 +552,14 @@ public class DocumentDaoHelper {
 	}
 
 	public static List<DocumentType> getDocumentTypes() {
+		
+		return getDocumentTypes(SessionHelper.getCurrentUser().getUserId());
+	}
+	
+	public static List<DocumentType> getDocumentTypes(String userId) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		List<ADDocType> adtypes = dao.getDocumentTypes();
+		List<ADDocType> adtypes = dao.getDocumentTypes(userId);
 
 		List<DocumentType> types = new ArrayList<>();
 

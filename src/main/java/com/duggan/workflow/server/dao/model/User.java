@@ -54,10 +54,15 @@ public class User extends PO {
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinTable(name="UserGroup",
 		joinColumns={@JoinColumn(name="userid")},
-		inverseJoinColumns={@JoinColumn(name="groupid")}
-	)
+		inverseJoinColumns={@JoinColumn(name="groupid")})
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
 	private Collection<Group> groups = new HashSet<>();
+	
+	@ManyToMany
+	@JoinTable(name="process_useraccess", 
+	joinColumns={@JoinColumn(name="userid")},
+	inverseJoinColumns={@JoinColumn(name="processid")})
+	private Collection<ProcessDefModel> processDef = new HashSet<>();
 	
 	public User(){
 		this.isArchived=false;
@@ -130,5 +135,13 @@ public class User extends PO {
 
 	public void setGroups(Collection<Group> groups) {
 		this.groups = groups;
+	}
+	
+	public void addProcessDef(ProcessDefModel processDefModel) {
+		processDef.add(processDefModel);
+	}
+
+	public void removeProcessDef(ProcessDefModel processDefModel) {
+		processDef.remove(processDefModel);		
 	}
 }

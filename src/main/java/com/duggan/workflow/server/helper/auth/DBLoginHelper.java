@@ -47,7 +47,7 @@ public class DBLoginHelper implements LoginIntf{
 		return get(user, false);
 	}
 	
-	private HTUser get(User user, boolean loadGroups) {
+	public HTUser get(User user, boolean loadGroups) {
 		HTUser htuser = new HTUser();
 		htuser.setEmail(user.getEmail());
 		htuser.setUserId(user.getUserId());
@@ -106,7 +106,7 @@ public class DBLoginHelper implements LoginIntf{
 		return userGroups;
 	}
 
-	private UserGroup get(Group group) {
+	public UserGroup get(Group group) {
 
 		if(group==null){
 			return null;

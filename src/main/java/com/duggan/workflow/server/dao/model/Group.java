@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -38,9 +40,14 @@ public class Group extends PO {
 	
 	@ManyToMany(mappedBy="groups", fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,
 			CascadeType.MERGE,CascadeType.REFRESH})
-	
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private Collection<User> members = new HashSet<>();
+	
+	@ManyToMany
+	@JoinTable(name="process_groupaccess", 
+	joinColumns={@JoinColumn(name="groupid")},
+	inverseJoinColumns={@JoinColumn(name="processid")})
+	private Collection<ProcessDefModel> processDef = new HashSet<>();
 	
 	private boolean isArchived;
 	
@@ -103,6 +110,22 @@ public class Group extends PO {
 		Group other = (Group)obj;
 		
 		return name.equals(other.getName());
+	}
+
+	public void addProcessDef(ProcessDefModel processDefModel) {
+		getProcessDef().add(processDefModel);
+	}
+
+	public Collection<ProcessDefModel> getProcessDef() {
+		return processDef;
+	}
+
+	public void setProcessDef(Collection<ProcessDefModel> processDef) {
+		this.processDef = processDef;
+	}
+
+	public void removeProcessDef(ProcessDefModel processDefModel) {
+		processDef.remove(processDefModel);
 	}
 
 }
