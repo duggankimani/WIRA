@@ -32,6 +32,8 @@ public class DocumentPopupPresenter extends
 	public interface MyView extends View {
 
 		void addSeparator(String category);
+
+		void addContent(String string);
 	}
 	
 	@Inject
@@ -102,6 +104,10 @@ public class DocumentPopupPresenter extends
 					DocumentPopupPresenter.this.addToSlot(DOCITEM_SLOT, result);
 				}
 			});
+		}
+		
+		if(types.size()==0){
+			getView().addContent("There are no processes assigned to you.");
 		}
 	}
 }

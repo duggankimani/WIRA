@@ -70,4 +70,14 @@ public class DocumentPopupView extends ViewImpl implements
 		panelDocTypes.add(html);
 	}
 
+	@Override
+	public void addContent(String content) {
+		HTML html = new HTML("<div style=\"margin-left:8px;\">"+
+				"<span class=\"label label-info\" "
+				+ "style=\"padding-left:8px; font-size:12px;font-family:Arial Unicode MS,Arial,sans-serif;\">"+
+				content+"</span>"+
+				"</div>");
+				panelDocTypes.add(html);
+	}
+
 }
