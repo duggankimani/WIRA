@@ -46,7 +46,8 @@ public class ProcessItemPresenter extends
 		HasClickHandlers getDeleteButton();
 		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
-				Status status,  String imageName, Long imageId, ProcessCategory category);
+				Status status,  String imageName, Long imageId, 
+				ProcessCategory category, int inbox, int participated);
 
 		CheckBox getSelectBox();
 	}
@@ -166,6 +167,6 @@ public class ProcessItemPresenter extends
 		getView().setValues(def.getName(), def.getProcessId(), def.getDescription(),
 				def.getDocTypes(), def.getLastModified(),
 				def.getFileId(), def.getFileName(), def.getStatus(), def.getImageName(), def.getImageId(),
-				def.getCategory());
+				def.getCategory(), def.getInbox(), def.getParticipated());
 	}
 }

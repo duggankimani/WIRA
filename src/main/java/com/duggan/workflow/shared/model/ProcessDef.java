@@ -25,6 +25,8 @@ public class ProcessDef extends SerializableObj implements Listable{
 	private List<Attachment> files = new ArrayList<Attachment>();
 	private ProcessCategory category;
 	private List<Listable> usersAndGroups = new ArrayList<Listable>();
+	private int participated;
+	private int inbox;
 
 	public ProcessDef() {
 	}
@@ -168,5 +170,21 @@ public class ProcessDef extends SerializableObj implements Listable{
 	
 	public void addUserOrGroup(Listable userOrGroup){
 		usersAndGroups.add(userOrGroup);
+	}
+
+	public int getParticipated() {
+		return participated;
+	}
+
+	public void setParticipated(int participated) {
+		this.participated = participated;
+	}
+
+	public int getInbox() {
+		return inbox;
+	}
+
+	public void setInbox(int inbox) {
+		this.inbox = inbox;
 	}
 }

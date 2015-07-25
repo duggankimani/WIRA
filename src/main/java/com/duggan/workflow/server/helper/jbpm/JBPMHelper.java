@@ -123,10 +123,10 @@ public class JBPMHelper implements Closeable {
 		sessionManager.disposeSessions();
 	}
 
-	public LocalTaskService getTaskClient(){
+	public LocalTaskService getTaskClient() {
 		return sessionManager.getTaskClient();
 	}
-	
+
 	/**
 	 * This method clears the runtime environment when the application is
 	 * shutdown
@@ -154,24 +154,24 @@ public class JBPMHelper implements Closeable {
 	public void createApprovalRequest(String userId, Document summary) {
 
 		Map<String, Object> initialParams = new HashMap<String, Object>();
-	
+
 		initialParams.put("documentId", summary.getId().toString());
 		initialParams.put("ownerId", userId);
 		initialParams.put("priority", summary.getPriority());
-		
-		Document clone = summary.clone(); //Not sure why we clone here
+
+		Document clone = summary.clone(); // Not sure why we clone here
 		clone.setId(summary.getId());
 		initialParams.put("document", clone);
 
 		Map<String, Value> vals = summary.getValues();
 		Collection<Value> values = vals.values();
-		
+
 		for (Value val : values) {
-			if(val!=null){
+			if (val != null) {
 				initialParams.put(val.getKey(), val.getValue());
 			}
 		}
-		
+
 		ProcessInstance processInstance = sessionManager.startProcess(
 				getProcessId(summary.getType()), initialParams, summary);
 		assert (ProcessInstance.STATE_ACTIVE == processInstance.getState());
@@ -209,9 +209,38 @@ public class JBPMHelper implements Closeable {
 
 		return processId;
 	}
-	
-	public Task getSysTask(Long taskId){
+
+	public Task getSysTask(Long taskId) {
 		return sessionManager.getTaskClient().getTask(taskId);
+	}
+
+	public void getProcessCounts(String processId, HashMap<TaskType, Integer> counts) {
+
+		Long inbox = (Long) DB.getEntityManager()
+				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
+				.setParameter("language", "en-UK")
+				.setParameter("status", getStatusesForTaskType(TaskType.INBOX))
+				.setParameter("processId", processId)
+				.getSingleResult();
+		counts.put(TaskType.INBOX, inbox.intValue());
+		
+		Long participated = (Long) DB.getEntityManager()
+				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
+				.setParameter("language", "en-UK")
+				.setParameter("status", getStatusesForTaskType(TaskType.PARTICIPATED))
+				.setParameter("processId", processId)
+				.getSingleResult();
+		counts.put(TaskType.PARTICIPATED, participated.intValue());
+		
+		Long suspended = (Long) DB.getEntityManager()
+				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
+				.setParameter("language", "en-UK")
+				.setParameter("status", Status.Suspended)
+				.setParameter("processId", processId)
+				.getSingleResult();
+		counts.put(TaskType.SUSPENDED, suspended.intValue());
+		
+		
 	}
 
 	/**
@@ -221,12 +250,12 @@ public class JBPMHelper implements Closeable {
 	 * @param counts
 	 */
 	public void getCount(String userId, HashMap<TaskType, Integer> counts) {
-		
-		//Count drafts & initiated documents
+
+		// Count drafts & initiated documents
 		DocumentDaoHelper.getCounts(userId, counts);
 
-		//Count Tasks
-		
+		// Count Tasks
+
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
 		List<String> groupIds = new ArrayList<>();
@@ -241,8 +270,7 @@ public class JBPMHelper implements Closeable {
 				.setParameter("userId", userId)
 				.setParameter("groupIds", groupIds)
 				.setParameter("language", "en-UK")
-				.setParameter("status",
-						getStatusesForTaskType(TaskType.INBOX))
+				.setParameter("status", getStatusesForTaskType(TaskType.INBOX))
 				.getSingleResult();
 		counts.put(TaskType.INBOX, count.intValue());
 
@@ -257,18 +285,19 @@ public class JBPMHelper implements Closeable {
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
 				.setParameter("status", Status.Completed).getSingleResult();
-		
-		//Inprogress participated requests
-		int c = counts.get(TaskType.PARTICIPATED)==null? 0: counts.get(TaskType.PARTICIPATED);
-		counts.put(TaskType.PARTICIPATED, count2.intValue()+c);
-		
+
+		// Inprogress participated requests
+		int c = counts.get(TaskType.PARTICIPATED) == null ? 0 : counts
+				.get(TaskType.PARTICIPATED);
+		counts.put(TaskType.PARTICIPATED, count2.intValue() + c);
+
 		Long count3 = (Long) DB.getEntityManager()
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
 				.setParameter("status", Status.Suspended).getSingleResult();
 		counts.put(TaskType.SUSPENDED, count3.intValue());
-		
+
 		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassigned());
 	}
 
@@ -289,7 +318,7 @@ public class JBPMHelper implements Closeable {
 		case APPROVALREQUESTDONE:
 			statuses = Arrays.asList(Status.Completed);
 			break;
-			
+
 		}
 		return statuses;
 	}
@@ -297,38 +326,36 @@ public class JBPMHelper implements Closeable {
 	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId) {
 		return getTasksForUser(userId, processInstanceId, false);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId, boolean isLoadAsAdmin) {
+	public List<HTSummary> getTasksForUser(String userId,
+			Long processInstanceId, boolean isLoadAsAdmin) {
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
 		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
 			groupIds.add(group.getName());
 		}
-		
+
 		List<TaskSummary> ts = new ArrayList<>();
-		
-		if(isLoadAsAdmin){
-			//Load Tasks As System administrator
+
+		if (isLoadAsAdmin) {
+			// Load Tasks As System administrator
 			ts = DB.getEntityManager()
 					.createNamedQuery("TaskAssignedAsBizAdministrator")
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
 					.setParameter("processInstanceId", processInstanceId)
 					.getResultList();
-		}else{
-			
-			ts = DB.getEntityManager()
-				.createNamedQuery("TasksOwnedBySubject")
-				.setParameter("userId", userId)
-				.setParameter("language", "en-UK")
-				.setParameter("groupIds", groupIds)
-				.setParameter("processInstanceId", processInstanceId)
-				.getResultList();
+		} else {
+
+			ts = DB.getEntityManager().createNamedQuery("TasksOwnedBySubject")
+					.setParameter("userId", userId)
+					.setParameter("language", "en-UK")
+					.setParameter("groupIds", groupIds)
+					.setParameter("processInstanceId", processInstanceId)
+					.getResultList();
 		}
-			
-		 
 
 		return translateSummaries(ts);
 	}
@@ -346,30 +373,30 @@ public class JBPMHelper implements Closeable {
 	 * @param taskName
 	 * @return Input/Output parameter mappings for tasks
 	 */
-	public Collection<String> getProcessData(String processId, String taskName){
-		org.drools.definition.process.Process process = sessionManager.getProcess(processId);
-		
-		WorkflowProcessImpl workflow = (WorkflowProcessImpl)process;
-		
-		Node [] nodes = workflow.getNodes();
-		
-		for(Node node: nodes){
-			
-			if(node instanceof HumanTaskNode){
-				HumanTaskNode htnode = (HumanTaskNode)node;
+	public Collection<String> getProcessData(String processId, String taskName) {
+		org.drools.definition.process.Process process = sessionManager
+				.getProcess(processId);
+
+		WorkflowProcessImpl workflow = (WorkflowProcessImpl) process;
+
+		Node[] nodes = workflow.getNodes();
+
+		for (Node node : nodes) {
+
+			if (node instanceof HumanTaskNode) {
+				HumanTaskNode htnode = (HumanTaskNode) node;
 				Object name = htnode.getWork().getParameter("TaskName");
-				
-				if(name!=null && name.equals(taskName)){					
+
+				if (name != null && name.equals(taskName)) {
 					Collection<String> vals = htnode.getInMappings().values();
 					return vals;
 				}
-					
-					
+
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * This method retrieves all tasks assigned to a user.
@@ -404,12 +431,11 @@ public class JBPMHelper implements Closeable {
 
 			break;
 		case INBOX:
-//			ts = sessionManager.getTaskClient()
-//					.getTasksAssignedAsPotentialOwner(userId, "en-UK");
+			// ts = sessionManager.getTaskClient()
+			// .getTasksAssignedAsPotentialOwner(userId, "en-UK");
 			ts = sessionManager.getTaskClient()
-					.getTasksAssignedAsPotentialOwnerByStatus(userId, 
-							getStatusesForTaskType(type), 
-							"en-UK");
+					.getTasksAssignedAsPotentialOwnerByStatus(userId,
+							getStatusesForTaskType(type), "en-UK");
 			break;
 		case SUSPENDED:
 			ts = sessionManager.getTaskClient().getTasksOwned(userId,
@@ -454,9 +480,9 @@ public class JBPMHelper implements Closeable {
 
 		task.setCreated(master_task.getTaskData().getCreatedOn());
 		task.setCaseNo(doc.getCaseNo());
-		if(task.getCaseNo()==null){
+		if (task.getCaseNo() == null) {
 			Object subject = doc.get("subject");
-			if(subject!=null){
+			if (subject != null) {
 				task.setCaseNo(subject.toString());
 			}
 		}
@@ -464,48 +490,54 @@ public class JBPMHelper implements Closeable {
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
 		task.setCompletedOn(master_task.getTaskData().getCompletedOn());
-		
-		String processId =master_task.getTaskData().getProcessId(); 
+
+		String processId = master_task.getTaskData().getProcessId();
 		task.setProcessId(processId);
 		task.setProcessInstanceId(master_task.getTaskData()
 				.getProcessInstanceId());
-		
-		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
 
-		try{
-			WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
+		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(
+				doc.getId()));
+
+		try {
+			WorkflowProcessImpl process = (WorkflowProcessImpl) sessionManager
+					.getProcess(processId);
 			task.setProcessName(process.getName());
-			
+
 			Node node = getNode(master_task);
 			task.setNodeId(node.getId());
 			task.setNodeName(node.getName());
-		}catch(Exception e){}
-		
-		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(doc.getId()));
+		} catch (Exception e) {
+		}
+
+		task.setHasAttachment(DB.getAttachmentDao().getHasAttachment(
+				doc.getId()));
 		Status status = master_task.getTaskData().getStatus();
 		task.setStatus(HTStatus.valueOf(status.name().toUpperCase()));
-		
-		if(status==Status.Completed){
-			
-			loadProgressInfo(task,master_task.getTaskData().getProcessInstanceId());
-			
-		}else{
-			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
-			
-			if(taskdelegation!=null){
-				Delegate delegate = new Delegate(taskdelegation.getId(), 
+
+		if (status == Status.Completed) {
+
+			loadProgressInfo(task, master_task.getTaskData()
+					.getProcessInstanceId());
+
+		} else {
+			TaskDelegation taskdelegation = DB.getDocumentDao()
+					.getTaskDelegationByTaskId(master_task.getId());
+
+			if (taskdelegation != null) {
+				Delegate delegate = new Delegate(taskdelegation.getId(),
 						taskdelegation.getTaskId(), taskdelegation.getUserId(),
 						taskdelegation.getDelegateTo());
 				task.setDelegate(delegate);
 			}
-			
+
 			User user = null;
-			if((user=master_task.getTaskData().getActualOwner())!=null){
+			if ((user = master_task.getTaskData().getActualOwner()) != null) {
 				task.setTaskActualOwner(getUser(user.getId()));
-			}else{
+			} else {
 				task.setPotentialOwners(getPotentialOwners(master_task));
 			}
-			
+
 		}
 
 		List<I18NText> names = master_task.getNames();
@@ -513,115 +545,125 @@ public class JBPMHelper implements Closeable {
 		if (names.size() > 0) {
 			task.setTaskName(names.get(0).getText());
 		}
-	
+
 		Deadlines deadlines = master_task.getDeadlines();
-		if(deadlines!=null){
+		if (deadlines != null) {
 			List<Deadline> startDeadlines = deadlines.getStartDeadlines();
-			if(startDeadlines!=null)
-			if(startDeadlines.size()>0){
-				Deadline deadline = startDeadlines.get(startDeadlines.size()-1);
-				Date date = deadline.getDate();
-				task.setStartDateDue(date);
-			}
-			
+			if (startDeadlines != null)
+				if (startDeadlines.size() > 0) {
+					Deadline deadline = startDeadlines.get(startDeadlines
+							.size() - 1);
+					Date date = deadline.getDate();
+					task.setStartDateDue(date);
+				}
+
 			List<Deadline> endDeadlines = deadlines.getEndDeadlines();
-			if(endDeadlines!=null)
-			if(endDeadlines.size()>0){
-				Deadline deadline = endDeadlines.get(endDeadlines.size()-1);
-				Date date = deadline.getDate();
-				task.setEndDateDue(date);
-			}
-			
+			if (endDeadlines != null)
+				if (endDeadlines.size() > 0) {
+					Deadline deadline = endDeadlines
+							.get(endDeadlines.size() - 1);
+					Date date = deadline.getDate();
+					task.setEndDateDue(date);
+				}
+
 		}
-		
-		try{
-			//Exception thrown if process not started
+
+		try {
+			// Exception thrown if process not started
 			task.setName(getDisplayName(master_task));
-		}catch(Exception e){}
-		
-		
+		} catch (Exception e) {
+		}
+
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
 			task.setValues(doc.getValues());
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
-			task.setDocStatus(DB.getDocumentDao().getById(doc.getId()).getStatus());
+			task.setDocStatus(DB.getDocumentDao().getById(doc.getId())
+					.getStatus());
 			task.setOwner(doc.getOwner());
-		
-//			TaskDelegation taskdelegation = DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
-//			
-//			if(taskdelegation!=null){
-//				Delegate delegate = new Delegate(taskdelegation.getId(), 
-//						taskdelegation.getTaskId(), taskdelegation.getUserId(),
-//						taskdelegation.getDelegateTo());
-//				((HTask)task).setDelegate(delegate);
-//			}
-			
+
+			// TaskDelegation taskdelegation =
+			// DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());
+			//
+			// if(taskdelegation!=null){
+			// Delegate delegate = new Delegate(taskdelegation.getId(),
+			// taskdelegation.getTaskId(), taskdelegation.getUserId(),
+			// taskdelegation.getDelegateTo());
+			// ((HTask)task).setDelegate(delegate);
+			// }
+
 		}
 	}
 
 	public HTUser getUser(String id) {
-		
+
 		return LoginHelper.get().getUser(id, false);
 	}
 
 	public String getPotentialOwners(Long taskId) {
 		return getPotentialOwners(getSysTask(taskId));
 	}
-	
+
 	public String getPotentialOwners(Task master_task) {
-		
-		List<OrganizationalEntity> entitiesList = master_task.getPeopleAssignments().getPotentialOwners();
-		
+
+		List<OrganizationalEntity> entitiesList = master_task
+				.getPeopleAssignments().getPotentialOwners();
+
 		String entities = "";
-		if(entities!=null)
-		for(OrganizationalEntity entity : entitiesList){
-			entities = entities.concat(entity.getId()+", ");
-		}
-		
-		if(!entities.isEmpty()){
-			entities = entities.substring(0, entities.length()-2);
+		if (entities != null)
+			for (OrganizationalEntity entity : entitiesList) {
+				entities = entities.concat(entity.getId() + ", ");
+			}
+
+		if (!entities.isEmpty()) {
+			entities = entities.substring(0, entities.length() - 2);
 			return entities;
 		}
-		
+
 		return null;
 	}
 
 	public void loadProgressInfo(Doc task, long processInstanceId) {
-		//then how far is the process now?
-		//ProcessInstanceLog log = JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
-		int instanceStatus = DB.getProcessDao().getInstanceStatus(processInstanceId);
-		if(instanceStatus==-1){
+		// then how far is the process now?
+		// ProcessInstanceLog log =
+		// JPAProcessInstanceDbLog.findProcessInstance(processInstanceId);
+		int instanceStatus = DB.getProcessDao().getInstanceStatus(
+				processInstanceId);
+		if (instanceStatus == -1) {
 			return;
 		}
-		
-		if(instanceStatus==2){
-			//Process Completed
+
+		if (instanceStatus == 2) {
+			// Process Completed
 			task.setProcessStatus(HTStatus.COMPLETED);
-		}else{
-			//where is my request?
+		} else {
+			// where is my request?
 			List<Object[]> actualOwners = DB.getProcessDao()
-					.getCurrentActualOwnersByProcessInstanceId(processInstanceId, Status.Completed, false);
-			
-			//Task Id, 
-			for(Object[] row: actualOwners){
-				if(row[1]!=null){
-					task.setTaskActualOwner(LoginHelper.get().getUser(row[1].toString(), false));
+					.getCurrentActualOwnersByProcessInstanceId(
+							processInstanceId, Status.Completed, false);
+
+			// Task Id,
+			for (Object[] row : actualOwners) {
+				if (row[1] != null) {
+					task.setTaskActualOwner(LoginHelper.get().getUser(
+							row[1].toString(), false));
 				}
 			}
-			
+
 			List<Object[]> potOwners = DB.getProcessDao()
-					.getCurrentPotentialOwnersByProcessInstanceId(processInstanceId, Status.Completed, false);
-			
+					.getCurrentPotentialOwnersByProcessInstanceId(
+							processInstanceId, Status.Completed, false);
+
 			String entities = "";
-			//Task Id, 
-			for(Object[] row: potOwners){
-				if(row[1]!=null){
-					entities = entities.concat(row[1].toString()+", ");
+			// Task Id,
+			for (Object[] row : potOwners) {
+				if (row[1] != null) {
+					entities = entities.concat(row[1].toString() + ", ");
 				}
 			}
-			if(!entities.isEmpty()){
-				entities = entities.substring(0, entities.length()-2);
+			if (!entities.isEmpty()) {
+				entities = entities.substring(0, entities.length() - 2);
 				task.setPotentialOwners(entities);
 			}
 		}
@@ -630,9 +672,9 @@ public class JBPMHelper implements Closeable {
 	private Value getValue(Object val) {
 
 		Value value = null;
-		
+
 		if (val instanceof Boolean) {
-			value = new BooleanValue((Boolean)val);
+			value = new BooleanValue((Boolean) val);
 		}
 
 		if (val instanceof String) {
@@ -640,24 +682,24 @@ public class JBPMHelper implements Closeable {
 		}
 
 		if (val instanceof Integer) {
-			Long longVal = new Long((Integer)val);
+			Long longVal = new Long((Integer) val);
 			value = new LongValue(longVal);
 		}
 		if (val instanceof Long) {
-			value = new LongValue((Long)val);
+			value = new LongValue((Long) val);
 		}
-		
+
 		if (val instanceof Date) {
-			value = new DateValue((Date)val);
+			value = new DateValue((Date) val);
 		}
-		
-		if(val instanceof Value){
-			value=(Value)val;
+
+		if (val instanceof Value) {
+			value = (Value) val;
 		}
-		
+
 		return value;
 	}
-	
+
 	/**
 	 * This method retrieves the full task object, which provides more
 	 * comprehensive details for a task
@@ -672,147 +714,144 @@ public class JBPMHelper implements Closeable {
 		HTask myTask = new HTask(taskId);
 
 		Task task = sessionManager.getTaskClient().getTask(taskId);
-		
+
 		copy(myTask, task);
 		// task.get
 
 		List<I18NText> descriptions = task.getDescriptions();
-		if(myTask.getDescription()==null){
+		if (myTask.getDescription() == null) {
 			myTask.setDescription(descriptions.get(0).getText());
 		}
 
 		List<I18NText> names = task.getNames();
-		if(names.size()>0){
+		if (names.size() > 0) {
 			String taskName = names.get(0).getText();
 			myTask.setTaskName(taskName);
 		}
 
 		List<I18NText> subjects = task.getSubjects();// translations
-		if(myTask.getCaseNo()==null){
+		if (myTask.getCaseNo() == null) {
 			myTask.setCaseNo(subjects.get(0).getText());
 		}
 
 		int priority = task.getPriority();
-		if(myTask.getPriority()==null)
+		if (myTask.getPriority() == null)
 			myTask.setPriority(priority);
 
 		// int version = task.getVersion();
 		// myTask.setVersion(version);
 
-		
 		// deadlines.getEndDeadlines();
-		//Delegation delegation = task.getDelegation();
+		// Delegation delegation = task.getDelegation();
 
-		//PeopleAssignments assignments = task.getPeopleAssignments();
+		// PeopleAssignments assignments = task.getPeopleAssignments();
 		// User user = assignments.getTaskInitiator();
 
-		//List<OrganizationalEntity> entities = assignments.getRecipients();
+		// List<OrganizationalEntity> entities = assignments.getRecipients();
 
 		// myTask.setData(data);
 
 		return myTask;
 	}
-	
-//	public HTData getTaskData(Task task){
-//
-//		// HT DATA
-//		HTData data = new HTData();
-//
-//		// TASK DATA
-//		TaskData taskData = task.getTaskData();
-//		String docType = taskData.getDocumentType();
-//		data.setDocType(docType);
-//
-//		long workId = taskData.getWorkItemId();
-//		data.setWorkId(workId);
-//
-//		// owner
-//		User actualOwner = taskData.getActualOwner();
-//		if (actualOwner != null) {
-//			HTUser taskOwner = new HTUser(actualOwner.getId());
-//			data.setActualOwner(taskOwner);
-//		}
-//
-//		// comments
-//		List<Comment> comments = taskData.getComments();
-//		if (comments != null)
-//			for (Comment comment : comments) {
-//				HTComment htComment = new HTComment();
-//				htComment.setAddedAt(comment.getAddedAt());
-//				htComment.setId(comment.getId());
-//				htComment.setText(comment.getText());
-//
-//				User addedBy = comment.getAddedBy();
-//				if (addedBy != null)
-//					htComment.setAddedBy(new HTUser(addedBy.getId()));
-//
-//			}
-//
-//		Date completedOn = taskData.getCompletedOn();
-//		data.setCompletedOn(completedOn);
-//
-//		User createdBy = taskData.getCreatedBy();
-//		if (createdBy != null) {
-//			data.setCreatedBy(new HTUser(createdBy.getId()));
-//		}
-//
-//		AccessType accessType = taskData.getDocumentAccessType();
-//
-//		if (accessType != null) {
-//			data.setDocAccessType(HTAccessType.valueOf(accessType.name()
-//					.toUpperCase()));
-//		}
-//
-//		long contentId = taskData.getDocumentContentId();
-//		data.setContentId(contentId);
-//
-//		Status taskDataStatus = taskData.getStatus();
-//		if (taskDataStatus != null) {
-//			data.setStatus(HTStatus
-//					.valueOf(taskDataStatus.name().toUpperCase()));
-//		}
-//
-//		String taskDataOutputType = taskData.getOutputType();
-//		data.setOutputType(taskDataOutputType);
-//
-//		Date expiryTime = taskData.getExpirationTime();
-//		data.setExpiryTime(expiryTime);
-//
-//		long parentId = taskData.getParentId();
-//		data.setParentId(parentId);
-//
-//		Status previousStatus = taskData.getPreviousStatus();
-//		if (previousStatus != null) {
-//			data.setPreviousStatus(HTStatus.valueOf(previousStatus.name()
-//					.toUpperCase()));
-//		}
-//
-//		return data;
-//	}
+
+	// public HTData getTaskData(Task task){
+	//
+	// // HT DATA
+	// HTData data = new HTData();
+	//
+	// // TASK DATA
+	// TaskData taskData = task.getTaskData();
+	// String docType = taskData.getDocumentType();
+	// data.setDocType(docType);
+	//
+	// long workId = taskData.getWorkItemId();
+	// data.setWorkId(workId);
+	//
+	// // owner
+	// User actualOwner = taskData.getActualOwner();
+	// if (actualOwner != null) {
+	// HTUser taskOwner = new HTUser(actualOwner.getId());
+	// data.setActualOwner(taskOwner);
+	// }
+	//
+	// // comments
+	// List<Comment> comments = taskData.getComments();
+	// if (comments != null)
+	// for (Comment comment : comments) {
+	// HTComment htComment = new HTComment();
+	// htComment.setAddedAt(comment.getAddedAt());
+	// htComment.setId(comment.getId());
+	// htComment.setText(comment.getText());
+	//
+	// User addedBy = comment.getAddedBy();
+	// if (addedBy != null)
+	// htComment.setAddedBy(new HTUser(addedBy.getId()));
+	//
+	// }
+	//
+	// Date completedOn = taskData.getCompletedOn();
+	// data.setCompletedOn(completedOn);
+	//
+	// User createdBy = taskData.getCreatedBy();
+	// if (createdBy != null) {
+	// data.setCreatedBy(new HTUser(createdBy.getId()));
+	// }
+	//
+	// AccessType accessType = taskData.getDocumentAccessType();
+	//
+	// if (accessType != null) {
+	// data.setDocAccessType(HTAccessType.valueOf(accessType.name()
+	// .toUpperCase()));
+	// }
+	//
+	// long contentId = taskData.getDocumentContentId();
+	// data.setContentId(contentId);
+	//
+	// Status taskDataStatus = taskData.getStatus();
+	// if (taskDataStatus != null) {
+	// data.setStatus(HTStatus
+	// .valueOf(taskDataStatus.name().toUpperCase()));
+	// }
+	//
+	// String taskDataOutputType = taskData.getOutputType();
+	// data.setOutputType(taskDataOutputType);
+	//
+	// Date expiryTime = taskData.getExpirationTime();
+	// data.setExpiryTime(expiryTime);
+	//
+	// long parentId = taskData.getParentId();
+	// data.setParentId(parentId);
+	//
+	// Status previousStatus = taskData.getPreviousStatus();
+	// if (previousStatus != null) {
+	// data.setPreviousStatus(HTStatus.valueOf(previousStatus.name()
+	// .toUpperCase()));
+	// }
+	//
+	// return data;
+	// }
 
 	public static Map<String, Object> getMappedData(Task task) {
 
-		
-		Long outputId=null;
+		Long outputId = null;
 		Map<String, Object> map = new HashMap<>();
-		
-		if(task.getTaskData() != null){
-			if(task.getTaskData().getStatus()==Status.Completed){
-				outputId=task.getTaskData().getOutputContentId();
-				if(outputId!=null){
+
+		if (task.getTaskData() != null) {
+			if (task.getTaskData().getStatus() == Status.Completed) {
+				outputId = task.getTaskData().getOutputContentId();
+				if (outputId != null) {
 					map = getMappedDataByContentId(outputId);
 				}
 			}
-		
-			Long contentId=null;
-			if(contentId==null && !map.containsKey("documentOut")){
+
+			Long contentId = null;
+			if (contentId == null && !map.containsKey("documentOut")) {
 				contentId = task.getTaskData().getDocumentContentId();
 				map.putAll(getMappedDataByContentId(contentId));
 			}
-			
+
 		}
-		
-					
+
 		return map;
 	}
 
@@ -895,47 +934,51 @@ public class JBPMHelper implements Closeable {
 		sessionManager.execute(taskId, userId, action, values);
 
 	}
-	
+
 	/**
 	 * 
 	 * @return PNG Diagram
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public InputStream getProcessMap(long processInstanceId) throws IOException{
+	public InputStream getProcessMap(long processInstanceId) throws IOException {
 
 		ProcessInstanceLog log = JPAProcessInstanceDbLog
 				.findProcessInstance(processInstanceId);
-		if(log==null){
+		if (log == null) {
 			return null;
 		}
 		String processId = log.getProcessId();
 
-		
-		List<LocalAttachment> attachment = DB.getAttachmentDao().getAttachmentsForProcessDef(
-				DB.getProcessDao().getProcessDef(processId), true);
-		
-		if(attachment.size()!=1 || !attachment.get(0).getName().endsWith("svg")){
-			throw new RuntimeException("Cannot Generate ProcessMap; SVG Image not found");
+		List<LocalAttachment> attachment = DB.getAttachmentDao()
+				.getAttachmentsForProcessDef(
+						DB.getProcessDao().getProcessDef(processId), true);
+
+		if (attachment.size() != 1
+				|| !attachment.get(0).getName().endsWith("svg")) {
+			throw new RuntimeException(
+					"Cannot Generate ProcessMap; SVG Image not found");
 		}
-		
+
 		byte[] svgImage = attachment.get(0).getAttachment();
 
-        //Create a new Configuration object to set the padd to use in the label of the tasks
-        ProcessImageProcessorConfiguration config = new ProcessImageProcessorConfiguration();
-        config.setDefaultextPad(20.0f);
-        
-        //Create a processor instance for test1.svg
-        ProcessImageProcessor processor = new ProcessImageProcessor(new ByteArrayInputStream(svgImage), config);
-        
+		// Create a new Configuration object to set the padd to use in the label
+		// of the tasks
+		ProcessImageProcessorConfiguration config = new ProcessImageProcessorConfiguration();
+		config.setDefaultextPad(20.0f);
+
+		// Create a processor instance for test1.svg
+		ProcessImageProcessor processor = new ProcessImageProcessor(
+				new ByteArrayInputStream(svgImage), config);
+
 		org.drools.definition.process.Process process = sessionManager
 				.getProcess(processId);
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
-		
+
 		for (Node node : wfprocess.getNodes()) {
 
 			long nodeId = node.getId();
-			
+
 			List<NodeInstanceLog> nodeLogInstance = JPAProcessInstanceDbLog
 					.findNodeInstances(processInstanceId,
 							new Long(nodeId).toString());
@@ -943,16 +986,16 @@ public class JBPMHelper implements Closeable {
 			if (nodeLogInstance.size() > 0) {
 				// HumanTaskNode ht = (HumanTaskNode) node;
 				String name = node.getName();
-				
-				boolean isCompletedNode = nodeLogInstance.size()%2==0;
-				processor.addTransformationJob(
-						new TaskColorTransformationJob(name, isCompletedNode?"#00ff00":"#ff0000"));
+
+				boolean isCompletedNode = nodeLogInstance.size() % 2 == 0;
+				processor.addTransformationJob(new TaskColorTransformationJob(
+						name, isCompletedNode ? "#00ff00" : "#ff0000"));
 			}
 		}
-		  //apply the transformations
-        processor.applyTransformationJobs(true);
-        
-        return processor.toPNG();
+		// apply the transformations
+		processor.applyTransformationJobs(true);
+
+		return processor.toPNG();
 	}
 
 	public List<NodeDetail> getWorkflowProcessDia(long processInstanceId) {
@@ -986,11 +1029,11 @@ public class JBPMHelper implements Closeable {
 				.getProcess(processId);
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
-		
+
 		for (Node node : wfprocess.getNodes()) {
 
 			long nodeId = node.getId();
-			
+
 			List<NodeInstanceLog> nodeLogInstance = JPAProcessInstanceDbLog
 					.findNodeInstances(processInstanceId,
 							new Long(nodeId).toString());
@@ -1018,7 +1061,7 @@ public class JBPMHelper implements Closeable {
 						// }
 					}
 				}
-				
+
 				// log.debug(node.getName());
 				// Ignore all other nodes - Only work pick human Task Nodes
 				if (node instanceof HumanTaskNode || node instanceof StartNode
@@ -1033,24 +1076,22 @@ public class JBPMHelper implements Closeable {
 					detail.setCurrentNode(nodeLogInstance.size() == 1);
 					detail.setNodeId(node.getId());
 					details.add(detail);
-					
-					
-					if(node instanceof HumanTaskNode){
-						HumanTaskNode htn = (HumanTaskNode)node;
+
+					if (node instanceof HumanTaskNode) {
+						HumanTaskNode htn = (HumanTaskNode) node;
 						Object groups = htn.getWork().getParameter("GroupId");
 						Object actors = htn.getWork().getParameter("ActorId");
-						
-						if(groups!=null){
+
+						if (groups != null) {
 							loadGroups(groups.toString(), detail);
 						}
-						
-						if(actors!=null){
+
+						if (actors != null) {
 							loadActors(actors.toString(), detail);
 						}
 					}
-					
-					
-					//((HumanTaskNode)node).getOutMappings().get("isApproved");
+
+					// ((HumanTaskNode)node).getOutMappings().get("isApproved");
 				}
 			}
 		}
@@ -1066,14 +1107,14 @@ public class JBPMHelper implements Closeable {
 				.getProcess(processId);
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
-		
+
 		for (Node node : wfprocess.getNodes()) {
 
 			if (node instanceof SubProcessNode) {
 				SubProcessNode n = (SubProcessNode) node;
 				details.addAll(getWorkflowProcessNodes(n.getProcessId()));
 			}
-			
+
 			// Ignore all other nodes - Only work pick human Task Nodes
 			if (node instanceof HumanTaskNode) {
 
@@ -1084,22 +1125,22 @@ public class JBPMHelper implements Closeable {
 				detail.setDisplayName(name);
 				details.add(detail);
 			}
-	
+
 		}
 
 		return details;
 
 	}
-	
-	
+
 	/**
 	 * Comma separated List of actors
+	 * 
 	 * @param actors
 	 * @param detail
 	 */
 	private void loadActors(String actors, NodeDetail detail) {
 		String[] actorIds = actors.split(",");
-		for(String userId: actorIds){
+		for (String userId : actorIds) {
 			HTUser user = LoginHelper.get().getUser(userId.trim());
 			detail.addUser(user);
 		}
@@ -1107,12 +1148,13 @@ public class JBPMHelper implements Closeable {
 
 	/**
 	 * Comma separated list of groups
+	 * 
 	 * @param groups
 	 * @param detail
 	 */
 	private void loadGroups(String groups, NodeDetail detail) {
-		String [] groupIds = groups.split(",");
-		for(String groupId: groupIds){
+		String[] groupIds = groups.split(",");
+		for (String groupId : groupIds) {
 			UserGroup group = LoginHelper.get().getGroupById(groupId);
 			List<HTUser> lst = LoginHelper.get().getUsersForGroup(groupId);
 			detail.addAllUsers(lst);
@@ -1120,20 +1162,20 @@ public class JBPMHelper implements Closeable {
 		}
 	}
 
-	public Object getActors(Long processInstanceId, String nodeId){
+	public Object getActors(Long processInstanceId, String nodeId) {
 		//
-		List<NodeInstanceLog> log = JPAProcessInstanceDbLog.findNodeInstances(processInstanceId, nodeId); 
-		
-		
-		logger.debug("Logs:: "+log);
-		if(log!=null && !log.isEmpty()){
+		List<NodeInstanceLog> log = JPAProcessInstanceDbLog.findNodeInstances(
+				processInstanceId, nodeId);
+
+		logger.debug("Logs:: " + log);
+		if (log != null && !log.isEmpty()) {
 			NodeInstanceLog nil = log.get(0);
-			
-			logger.debug("Class >> "+nil.getClass());			
+
+			logger.debug("Class >> " + nil.getClass());
 		}
-		
+
 		return null;
-		
+
 	}
 
 	public HTSummary getSummary(Long taskId) {
@@ -1174,9 +1216,8 @@ public class JBPMHelper implements Closeable {
 
 	public void loadKnowledge(List<byte[]> files, List<ResourceType> types,
 			String rootProcess) {
-		sessionManager.loadKnowledge(files, types,rootProcess);
+		sessionManager.loadKnowledge(files, types, rootProcess);
 	}
-
 
 	public boolean isProcessingRunning(String processId) {
 		return sessionManager.isRunning(processId);
@@ -1203,153 +1244,166 @@ public class JBPMHelper implements Closeable {
 
 		return name;
 	}
-	
-	public String getDisplayName(Long taskId){
+
+	public String getDisplayName(Long taskId) {
 		Task task = sessionManager.getTaskClient().getTask(taskId);
 		return getDisplayName(task);
 	}
+
 	/**
 	 * Returns the 'Name' property of a task (Node Name)
 	 * <p>
 	 * This process is inefficient - TODO: Find a better way to do this
 	 * <p>
+	 * 
 	 * @param taskId
 	 * @return
 	 */
-	public String getDisplayName(Task task){
+	public String getDisplayName(Task task) {
 		//
 		Node node = getNode(task);
-		if(node!=null){
+		if (node != null) {
 			return node.getName();
 		}
-		
+
 		return null;
 	}
-	
-	public Node getNode(Task task){
-		String processId=task.getTaskData().getProcessId();
+
+	public Node getNode(Task task) {
+		String processId = task.getTaskData().getProcessId();
 		String taskName = getTaskName(task.getId());
-				
-		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
+
+		org.drools.definition.process.Process droolsProcess = sessionManager
+				.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 		task.getTaskData().getWorkItemId();
-		
+
 		for (Node node : wfprocess.getNodes()) {
-			
-			if(node instanceof HumanTaskNode){
+
+			if (node instanceof HumanTaskNode) {
 				HumanTaskNode htnode = (HumanTaskNode) node;
 				Object nodeTaskName = htnode.getWork().getParameter("TaskName");
-				
-				if(nodeTaskName!=null)
-				if(nodeTaskName.equals(taskName)){
-					return htnode;					
-				}
-				
+
+				if (nodeTaskName != null)
+					if (nodeTaskName.equals(taskName)) {
+						return htnode;
+					}
+
 			}
 		}
-		
+
 		return null;
 	}
-	
-	public ProcessMappings getProcessDataMappings(long taskId){
+
+	public ProcessMappings getProcessDataMappings(long taskId) {
 		Task task = getSysTask(taskId);
 		String taskName = getTaskName(taskId);
 		String processId = task.getTaskData().getProcessId();
-		
+
 		return getProcessDataMappings(processId, taskName);
 	}
-	
-	public ProcessMappings getProcessDataMappings(String processId, String taskName){
+
+	public ProcessMappings getProcessDataMappings(String processId,
+			String taskName) {
 		ProcessMappings processData = new ProcessMappings();
-		org.drools.definition.process.Process droolsProcess = sessionManager.getProcess(processId);
+		org.drools.definition.process.Process droolsProcess = sessionManager
+				.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 
-	//	log.debug("Globals:: "+wfprocess.get);
-		
+		// log.debug("Globals:: "+wfprocess.get);
+
 		for (Node node : wfprocess.getNodes()) {
-			
-			if(node instanceof HumanTaskNode){
+
+			if (node instanceof HumanTaskNode) {
 				HumanTaskNode htnode = (HumanTaskNode) node;
 				Object nodeTaskName = htnode.getWork().getParameter("TaskName");
-				
-				logger.debug("1. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
-				
-				if(nodeTaskName!=null){
+
+				logger.debug("1. Searching for TaskName> " + taskName
+						+ " :: Node TaskName >> " + nodeTaskName);
+
+				if (nodeTaskName != null) {
 					String nodeName = nodeTaskName.toString();
-					if(nodeName.startsWith("#{")){
-						//dynamic Node Name
-						nodeTaskName=htnode.getWork().getParameter("taskName");
+					if (nodeName.startsWith("#{")) {
+						// dynamic Node Name
+						nodeTaskName = htnode.getWork()
+								.getParameter("taskName");
 					}
 				}
-				logger.debug("2. Searching for TaskName> "+taskName+" :: Node TaskName >> "+nodeTaskName);
-				
-				
-				if(nodeTaskName!=null)
-				if(nodeTaskName.equals(taskName)){
-					processData.setInputMappings(htnode.getInMappings());
-					processData.setOutMappings(htnode.getOutMappings());					
-				}
-				
+				logger.debug("2. Searching for TaskName> " + taskName
+						+ " :: Node TaskName >> " + nodeTaskName);
+
+				if (nodeTaskName != null)
+					if (nodeTaskName.equals(taskName)) {
+						processData.setInputMappings(htnode.getInMappings());
+						processData.setOutMappings(htnode.getOutMappings());
+					}
+
 			}
 		}
-	
+
 		return processData;
 	}
 
 	public List<Long> getTaskIdsForUser(String userId) {
-		Query query = DB.getEntityManager().createNamedQuery("TasksOwnedIds")
+		Query query = DB
+				.getEntityManager()
+				.createNamedQuery("TasksOwnedIds")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
-				.setParameter("status", Arrays.asList(Status.Completed, Status.Created, 
-						Status.InProgress,Status.Suspended,
-						// Status.Error,
-						// Status.Exited,
-						// Status.Failed,
-						// Status.Obsolete,
+				.setParameter(
+						"status",
+						Arrays.asList(Status.Completed, Status.Created,
+								Status.InProgress, Status.Suspended,
+								// Status.Error,
+								// Status.Exited,
+								// Status.Failed,
+								// Status.Obsolete,
 								Status.Ready, Status.Reserved));
-		
-		List<Long> ids  = query.getResultList();
-		
+
+		List<Long> ids = query.getResultList();
+
 		return ids;
 	}
 
 	public String getProcessName(String processId) {
 		String name = null;
-		
-		try{
-			WorkflowProcessImpl process = (WorkflowProcessImpl)sessionManager.getProcess(processId);
+
+		try {
+			WorkflowProcessImpl process = (WorkflowProcessImpl) sessionManager
+					.getProcess(processId);
 			name = process.getName();
-		}catch(Exception e){}
-		
+		} catch (Exception e) {
+		}
+
 		return name;
 	}
 
 	public void assignTask(Long taskId, String userId) {
-		
+
 		Task task = DB.getEntityManager().find(Task.class, taskId);
-		
+
 		PeopleAssignments peopleAssign = new PeopleAssignments();
 		List<OrganizationalEntity> entities = new ArrayList<>();
 		entities.add(new User(userId));
 		peopleAssign.setPotentialOwners(entities);
 		task.setPeopleAssignments(peopleAssign);
 		DB.getEntityManager().persist(task);
-		
-		//WorkItemNodeInstance i;
+
+		// WorkItemNodeInstance i;
 	}
 
 	public void setCounts(HTUser htuser) {
 		String userId = htuser.getUserId();
-		assert userId!=null;
-		
-		HashMap<TaskType,Integer> counts = new HashMap<>();
+		assert userId != null;
+
+		HashMap<TaskType, Integer> counts = new HashMap<>();
 		getCount(userId, counts);
-		
+
 		htuser.setParticipated(counts.get(TaskType.PARTICIPATED));
 		htuser.setInbox(counts.get(TaskType.INBOX));
 	}
-	
-	public void upgradeProcessInstance(long processInstanceId, String processId){
+
+	public void upgradeProcessInstance(long processInstanceId, String processId) {
 		sessionManager.upgradeProcessInstance(processInstanceId, processId);
 	}
 

@@ -48,6 +48,10 @@ public class ProcessItemView extends ViewImpl implements
 	
 	@UiField Anchor aImageName;
 	
+	@UiField SpanElement spnActive;
+	@UiField SpanElement spnCompleted;
+	@UiField SpanElement spnTotal;
+	
 	String url=null;
 	Long imageId=null;
 	String imageName=null;
@@ -101,12 +105,17 @@ public class ProcessItemView extends ViewImpl implements
 	@Override
 	public void setValues(String name, String processId,String description,
 			List<DocumentType> docTypes, Date lastModified, Long fileId,
-			String fileName, Status status, String imageName, Long imageId,ProcessCategory category) {
+			String fileName, Status status, String imageName, Long imageId,ProcessCategory category,
+			int inbox, int participated) {
 		
 		spnName.setInnerText(name);
 		spnName.setTitle(description);
 		spnProcessId.setInnerText(processId);
 		spnProcessId.setTitle(processId);
+
+		spnActive.setInnerText(""+inbox);
+		spnCompleted.setInnerText(""+participated);
+		spnTotal.setInnerText(""+(inbox+participated));
 		
 		if(category!=null){
 			spnDocTypes.setInnerText(category.getDisplayName());

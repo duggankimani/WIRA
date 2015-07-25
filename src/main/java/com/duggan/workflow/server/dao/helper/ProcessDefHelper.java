@@ -5,12 +5,14 @@ import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getTypeFro
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -142,16 +144,23 @@ public class ProcessDefHelper {
 		def.setProcessId(model.getProcessId());
 		def.setId(model.getId());
 
+		//Process Access
 		DBLoginHelper helper = new DBLoginHelper();
 		Collection<User> users = model.getUsers();
 		for(User user: users){
 			def.addUserOrGroup(helper.get(user,false));
 		}
-		
 		Collection<Group> groups =model.getGroups();
 		for(Group g: groups){
 			def.addUserOrGroup(helper.get(g));
 		}
+		
+		//Process Counts
+		HashMap<TaskType, Integer> counts = new HashMap<>();
+		JBPMHelper.get().getProcessCounts(model.getProcessId(),counts);
+		def.setInbox(counts.get(TaskType.INBOX));
+		def.setParticipated(counts.get(TaskType.PARTICIPATED));
+		
 		
 		boolean running = JBPMHelper.get().isProcessingRunning(
 				model.getProcessId());
