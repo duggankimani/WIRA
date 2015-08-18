@@ -3,11 +3,11 @@ package com.duggan.workflow.client.model;
 public enum TaskType {
 
 	DRAFT("drafts", "Drafts"),
-	INPROGRESS("inprog", "In Progress"),
-	APPROVED("approved", "Approved"),
-	REJECTED("rejected", "Rejected"),
+//	INPROGRESS("inprog", "In Progress"),
+//	APPROVED("approved", "Approved"),
+//	REJECTED("rejected", "Rejected"),
 	INBOX("appreqnew", "Inbox"),
-	APPROVALREQUESTDONE("appredone", "Completed"),
+	COMPLETED("appredone", "Completed"),
 	SUSPENDED("suspended", "Suspended"),
 	NOTIFICATIONS("notifications", "Notifications"),
 	SEARCH("search","Search"),

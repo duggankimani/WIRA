@@ -30,6 +30,7 @@ public class ColumnConfig {
 	private String styleName;
 	private boolean isAggregationColumn;
 	private boolean isMandatory;
+	private boolean isEditable = true;
 	private DataType type;
 	private List<Listable> dropDownItems = new ArrayList<Listable>();
 	
@@ -48,6 +49,11 @@ public class ColumnConfig {
 		this(key,displayName,type);
 		this.placeHolder = placeHolder;
 		this.styleName = styleName;
+	}
+	
+	public ColumnConfig(String key, String displayName, DataType type, String placeHolder, String styleName, boolean isEditable){
+		this(key, displayName, type, placeHolder, styleName);
+		this.isEditable = isEditable;
 	}
 
 	public String getKey() {
@@ -73,12 +79,15 @@ public class ColumnConfig {
 		if(type==DataType.INTEGER){
 			IntegerField field= new IntegerField();
 			field.setPlaceholder(placeHolder==null?"": placeHolder);
-			 //field.setStyleName("input-medium");
+			 field.setEnabled(isEditable);
+			 if(value!=null){
+				 value = ((Number)value).intValue();
+			 }
 			 widget = field;
 		}else if(type==DataType.DOUBLE){
 			 DoubleField field= new DoubleField();
 			 field.setPlaceholder(placeHolder==null?"": placeHolder);
-			 //field.setStyleName("input-medium");
+			 field.setEnabled(isEditable);
 			 widget = field;
 		}else if(type==DataType.SELECTBASIC){
 			DropDownList dropDown = new DropDownList();
@@ -207,6 +216,14 @@ public class ColumnConfig {
 
 	public void setStyleName(String styleName) {
 		this.styleName = styleName;
+	}
+
+	public boolean isEditable() {
+		return isEditable;
+	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 	
 }

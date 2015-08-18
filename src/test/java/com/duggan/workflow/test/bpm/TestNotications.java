@@ -86,7 +86,7 @@ public class TestNotications {
 		
 		JBPMHelper.get().getCount("james", counts);
 		
-		Integer count = counts.get(TaskType.APPROVALREQUESTDONE);
+		Integer count = counts.get(TaskType.COMPLETED);
 		
 		Assert.assertNotNull(count);
 		System.err.println(count);
@@ -184,7 +184,7 @@ public class TestNotications {
 		HashMap<TaskType, Integer> vals = new HashMap<>(); 
 		String userId = "calcacuervo";
 		JBPMHelper.get().getCount(userId, vals);
-		System.err.println(TaskType.APPROVALREQUESTDONE+" : "+vals.get(TaskType.APPROVALREQUESTDONE));
+		System.err.println(TaskType.COMPLETED+" : "+vals.get(TaskType.COMPLETED));
 		System.err.println(TaskType.INBOX+" : "+vals.get(TaskType.INBOX));
 		
 		TaskType type = TaskType.INBOX;
@@ -194,7 +194,7 @@ public class TestNotications {
 		actualCount = summary.size();
 		Assert.assertEquals(actualCount, count);
 		
-		TaskType type2 = TaskType.APPROVALREQUESTDONE;
+		TaskType type2 = TaskType.COMPLETED;
 		Integer count2 = vals.get(type2);
 		Integer actualCount2 = 0;		
 		List<HTSummary> summary2 = JBPMHelper.get().getTasksForUser(userId, type2);

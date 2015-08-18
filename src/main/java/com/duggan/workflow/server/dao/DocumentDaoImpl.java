@@ -95,19 +95,28 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 	}
 
-	public Integer count(String userId, DocStatus status){
-		return count(userId,status,true);
+	public Integer count(String processId, String userId, DocStatus status){
+		return count(processId, userId,status,true);
 	}
-	public Integer count(String userId,DocStatus status, boolean isEqualTo) {
+	public Integer count(String processId,String userId,DocStatus status, boolean isEqualTo) {
 
-		 Long value = (Long)em.createQuery("select count(d) FROM DocumentModel d "
+		 Query query = em.createQuery("select count(d) FROM DocumentModel d "
 		 		+ "where "
 		 		+ (isEqualTo?"status=:status ":"status!=:status ")
-		 		+ "and createdBy=:createdBy  and isActive=:isActive").
-				setParameter("status", status).
-				setParameter("createdBy", userId)
-				.setParameter("isActive", 1)
-				.getSingleResult();
+		 		+ (userId==null? "": "and createdBy=:createdBy and isActive=:isActive ")
+		 		+ (processId==null? "": "and processId=:processId"))
+				.setParameter("status", status)
+				.setParameter("isActive", 1);
+		 
+		 if(userId!=null){
+			 query.setParameter("createdBy", userId);
+		 }
+		 
+		 if(processId!=null){
+			 query.setParameter("processId", processId);
+		 }
+		 
+		 Long value = (Long)query.getSingleResult();
 		 
 		 return value.intValue();
 	}
@@ -560,9 +569,13 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 
 	public ADDocType getDocumentTypeByName(String docTypeName) {
 
-		ADDocType docType = (ADDocType)em.createQuery("from ADDocType t where t.name=:name")
+		ADDocType docType = null;
+		
+		try{
+			docType = (ADDocType)em.createQuery("from ADDocType t where t.name=:name")
 				.setParameter("name", docTypeName)
 				.getSingleResult();
+		}catch(RuntimeException e){}
 		
 		return docType;
 	}

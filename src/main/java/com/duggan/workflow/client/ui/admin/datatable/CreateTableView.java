@@ -15,6 +15,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -23,7 +24,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CreateTableView extends Composite{
+public class CreateTableView extends Composite {
 
 	private static CreateTableViewUiBinder uiBinder = GWT
 			.create(CreateTableViewUiBinder.class);
@@ -31,20 +32,27 @@ public class CreateTableView extends Composite{
 	interface CreateTableViewUiBinder extends UiBinder<Widget, CreateTableView> {
 	}
 
-	@UiField TextField txtName;
-	@UiField TextArea txtDescription;
-	@UiField AggregationGrid grid;
-	@UiField HasClickHandlers aNew;
-	@UiField IssuesPanel issues;
-	
+	@UiField
+	TextField txtName;
+	@UiField
+	TextArea txtDescription;
+	@UiField
+	AggregationGrid grid;
+	@UiField
+	HasClickHandlers aNew;
+	@UiField
+	IssuesPanel issues;
+	@UiField
+	SpanElement spnWarning;
+
 	DataMapper mapper = new DataMapper() {
-		
+
 		@Override
 		public List<DataModel> getDataModels(List objs) {
 			List<DataModel> models = new ArrayList<DataModel>();
-			for(Object o: objs){
-				CatalogColumn c = (CatalogColumn)o;
-				DataModel model =  new DataModel();
+			for (Object o : objs) {
+				CatalogColumn c = (CatalogColumn) o;
+				DataModel model = new DataModel();
 				model.setId(c.getId());
 				model.set("fieldAutoInc", c.isAutoIncrement());
 				model.set("fieldLabel", c.getLabel());
@@ -57,72 +65,77 @@ public class CreateTableView extends Composite{
 			}
 			return models;
 		}
-		
+
 		@Override
 		public CatalogColumn getData(DataModel model) {
 			CatalogColumn col = new CatalogColumn();
 			col.setId(model.getId());
-			col.setAutoIncrement(model.get("fieldAutoInc")==null?false:
-					(Boolean)model.get("fieldAutoInc"));
-			col.setLabel((String)model.get("fieldLabel"));
-			col.setName((String)model.get("fieldName"));
-			col.setNullable(model.get("fieldNullable")==null?false:
-				(Boolean)model.get("fieldNullable"));
-			col.setPrimaryKey((Boolean)model.get("fieldPrimary"));
-			col.setSize((Integer)model.get("fieldSize"));
-			col.setType((DBType)model.get("fieldType"));
-			
-			if(isNullOrEmpty(col.getName()) || isNullOrEmpty(col.getLabel()) ||
-					col.getType()==null){
+			col.setAutoIncrement(model.get("fieldAutoInc") == null ? false
+					: (Boolean) model.get("fieldAutoInc"));
+			col.setLabel((String) model.get("fieldLabel"));
+			col.setName((String) model.get("fieldName"));
+			col.setNullable(model.get("fieldNullable") == null ? false
+					: (Boolean) model.get("fieldNullable"));
+			col.setPrimaryKey((Boolean) model.get("fieldPrimary"));
+			col.setSize((Integer) model.get("fieldSize"));
+			col.setType((DBType) model.get("fieldType"));
+
+			if (isNullOrEmpty(col.getName()) || isNullOrEmpty(col.getLabel())
+					|| col.getType() == null) {
 				return null;
 			}
 			return col;
 		}
 	};
 	private Long id;
-	
+
 	public CreateTableView() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		List<ColumnConfig> columnConfigs= new ArrayList<ColumnConfig>();
-		columnConfigs.add(new ColumnConfig("fieldName", "Field Name", DataType.STRING,"","input-medium"));
-		columnConfigs.add(new ColumnConfig("fieldLabel", "Field Label", DataType.STRING,"","input-medium"));
-		
-		ColumnConfig config = new ColumnConfig("fieldType", "Type", DataType.SELECTBASIC,"","input-medium");
+
+		List<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
+		columnConfigs.add(new ColumnConfig("fieldName", "Field Name",
+				DataType.STRING, "", "input-medium"));
+		columnConfigs.add(new ColumnConfig("fieldLabel", "Field Label",
+				DataType.STRING, "", "input-medium"));
+
+		ColumnConfig config = new ColumnConfig("fieldType", "Type",
+				DataType.SELECTBASIC, "", "input-medium");
 		config.setDropDownItems(DBType.getValues());
 		columnConfigs.add(config);
-		
-		columnConfigs.add(new ColumnConfig("fieldSize", "Size", DataType.INTEGER,"","input-small"));
-		columnConfigs.add(new ColumnConfig("fieldNullable", "Nullable", DataType.BOOLEAN));
-		columnConfigs.add(new ColumnConfig("fieldPrimary", "Primary Key", DataType.BOOLEAN));
-		columnConfigs.add(new ColumnConfig("fieldAutoInc", "Auto Increment", DataType.BOOLEAN));
+
+		columnConfigs.add(new ColumnConfig("fieldSize", "Size",
+				DataType.INTEGER, "", "input-small"));
+		columnConfigs.add(new ColumnConfig("fieldNullable", "Nullable",
+				DataType.BOOLEAN));
+		columnConfigs.add(new ColumnConfig("fieldPrimary", "Primary Key",
+				DataType.BOOLEAN));
+		columnConfigs.add(new ColumnConfig("fieldAutoInc", "Auto Increment",
+				DataType.BOOLEAN));
 		grid.setColumnConfigs(columnConfigs);
-		
+
 		aNew.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				grid.addRowData(new DataModel());
 			}
 		});
 	}
-	
-	
+
 	public CreateTableView(Catalog catalog) {
 		this();
-		
-		if(catalog!=null){
+
+		if (catalog != null) {
 			setCatalog(catalog);
 			id = catalog.getId();
 		}
 	}
 
-
 	protected boolean isNullOrEmpty(String name) {
-		return name==null || name.trim().isEmpty();
+		return name == null || name.trim().isEmpty();
 	}
 
-	public Catalog getCatalog(){
+	public Catalog getCatalog() {
 		Catalog catalog = new Catalog();
 		catalog.setId(id);
 		catalog.setName(txtName.getValue().toUpperCase());
@@ -131,32 +144,35 @@ public class CreateTableView extends Composite{
 		catalog.setColumns(columns);
 		return catalog;
 	}
-	
-	public void setCatalog(Catalog c){
+
+	public void setCatalog(Catalog c) {
+
+		if (c.getRecordCount() > 0) {
+			spnWarning.addClassName("label label-warning");
+			spnWarning.setInnerText("Editing this table will lose all your existing data. Consider exporting your data first.");
+		}
+
 		txtName.setValue(c.getName());
 		txtDescription.setValue(c.getDescription());
 		grid.setData(mapper.getDataModels(c.getColumns()));
 	}
 
-
 	public boolean isValid() {
 		issues.clear();
-		boolean isValid= true;
-		
-		if(txtName.getValue().trim().isEmpty()){
+		boolean isValid = true;
+
+		if (txtName.getValue().trim().isEmpty()) {
 			issues.addError("Table Name is mandatory");
-			isValid=false;
+			isValid = false;
 		}
-		
-		if(getCatalog().getColumns().isEmpty()){
+
+		if (getCatalog().getColumns().isEmpty()) {
 			issues.addError("Cannot create table with zero columns. "
 					+ "Ensure you specify Name, Label and Data Type for each column");
-			isValid=false;
+			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
-	
 
 }

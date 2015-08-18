@@ -49,23 +49,23 @@ public class GetTaskListActionHandler extends
 			status = DocStatus.DRAFTED;
 			summary = DocumentDaoHelper.getAllDocuments(status);
 			break;
-		case APPROVED:
-			status = DocStatus.APPROVED;
-			summary = DocumentDaoHelper.getAllDocuments(status);
-			break;
-		case INPROGRESS:
-			status = DocStatus.INPROGRESS;
-			summary = DocumentDaoHelper.getAllDocuments(status);
-			break;
+//		case APPROVED:
+//			status = DocStatus.APPROVED;
+//			summary = DocumentDaoHelper.getAllDocuments(status);
+//			break;
+//		case INPROGRESS:
+//			status = DocStatus.INPROGRESS;
+//			summary = DocumentDaoHelper.getAllDocuments(status);
+//			break;
 		case PARTICIPATED:
 			summary = DocumentDaoHelper.getAllDocuments(DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
 					DocStatus.COMPLETED);
 			summary.addAll(getPendingApprovals(userId, type));
 			break;
-		case REJECTED:
-			status = DocStatus.REJECTED;
-			summary = DocumentDaoHelper.getAllDocuments(status);
-			break;
+//		case REJECTED:
+//			status = DocStatus.REJECTED;
+//			summary = DocumentDaoHelper.getAllDocuments(status);
+//			break;
 		case SEARCH:
 			
 			if(action.getFilter()!=null){				

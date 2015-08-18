@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
@@ -94,7 +95,17 @@ public class ProcessDefHelper {
 
 	public static void delete(Long processDefId) {
 		ProcessDaoImpl dao = DB.getProcessDao();
-		dao.remove(dao.getProcessDef(processDefId));
+		
+		//Check if there are any docs linked to the process
+		//if not, delete
+		ProcessDefModel model = dao.getProcessDef(processDefId);
+		Map<TaskType, Integer> counts = new HashMap<>(); 
+		DocumentDaoHelper.getCounts(model.getProcessId(),null, counts);
+		
+		model.setArchived(true);
+		model.setIsActive(0);
+		
+		dao.save(model);
 	}
 
 	public static void delete(ProcessDef processDef) {

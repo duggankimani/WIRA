@@ -9,6 +9,7 @@
 
 	<g:HTMLPanel styleName="full-page">
 
+		<span ui:field="spnWarning"></span>
 		<d:IssuesPanel ui:field="issues">
 		</d:IssuesPanel>
 		<g:HTMLPanel>

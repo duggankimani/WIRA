@@ -214,7 +214,7 @@ public class JBPMHelper implements Closeable {
 		return sessionManager.getTaskClient().getTask(taskId);
 	}
 
-	public void getProcessCounts(String processId, HashMap<TaskType, Integer> counts) {
+	public void getProcessCounts(String processId, Map<TaskType, Integer> counts) {
 
 		Long inbox = (Long) DB.getEntityManager()
 				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
@@ -315,7 +315,7 @@ public class JBPMHelper implements Closeable {
 					Status.Ready, Status.Reserved);
 			break;
 		case PARTICIPATED:
-		case APPROVALREQUESTDONE:
+		case COMPLETED:
 			statuses = Arrays.asList(Status.Completed);
 			break;
 
@@ -424,7 +424,7 @@ public class JBPMHelper implements Closeable {
 
 		switch (type) {
 		case PARTICIPATED:
-		case APPROVALREQUESTDONE:
+		case COMPLETED:
 			// approvals - show only items I have approved
 			ts = sessionManager.getTaskClient().getTasksOwned(userId,
 					Arrays.asList(Status.Completed), "en-UK");

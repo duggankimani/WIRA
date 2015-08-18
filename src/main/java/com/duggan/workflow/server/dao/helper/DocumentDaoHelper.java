@@ -207,8 +207,8 @@ public class DocumentDaoHelper {
 	
 	public static ADDocType getTypeFromProcess(ProcessDef processDef) {
 		DocumentDaoImpl docDao = DB.getDocumentDao();
-		ADDocType adtype = docDao.getDocumentTypeByName(processDef.getDisplayName());
-		if(adtype!=null){
+		ADDocType adtype = docDao.getDocumentTypeByName(processDef.getProcessId().toUpperCase());
+		if(adtype==null){
 			adtype = new ADDocType(null, processDef.getDisplayName(),
 					processDef.getDisplayName());
 		}
@@ -503,14 +503,18 @@ public class DocumentDaoHelper {
 		dao.saveDocument(model);
 	}
 
-	public static void getCounts(String userId,HashMap<TaskType, Integer> counts) {
+	public static void getCounts(String userId,Map<TaskType, Integer> counts) {
+		getCounts(null, userId, counts);
+	}
+	
+	public static void getCounts(String processId,String userId,Map<TaskType, Integer> counts) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		counts.put(TaskType.DRAFT, dao.count(userId,DocStatus.DRAFTED));
+		counts.put(TaskType.DRAFT, dao.count(processId,userId,DocStatus.DRAFTED));
 //		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
 //		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
 //		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
-		counts.put(TaskType.PARTICIPATED, dao.count(userId,DocStatus.DRAFTED,false));
+		counts.put(TaskType.PARTICIPATED, dao.count(processId, userId,DocStatus.DRAFTED,false));
 		// counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 

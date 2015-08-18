@@ -1,6 +1,5 @@
 package com.duggan.workflow.server.dao.helper;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
-import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
@@ -28,7 +26,7 @@ public class CatalogDaoHelper {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel model = get(catalog);
 		dao.save(model);
-		dao.generateTable(model);
+		dao.generateTable(catalog);
 		catalog.setId(model.getId());
 
 		return catalog;

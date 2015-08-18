@@ -94,7 +94,8 @@ public class DataTablePresenter
 
 	protected void showPopup(Catalog catalog) {
 		final CreateTableView view = new CreateTableView(catalog);
-		AppManager.showPopUp("Create Table", view, "create-data-table-popup",
+		AppManager.showPopUp(catalog.getId()!=null?
+				"Edit Table":"Create Table", view, "create-data-table-popup",
 				new OptionControl() {
 
 					@Override
