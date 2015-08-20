@@ -558,7 +558,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 	public void setValues(HTUser createdBy, Date created, String type,
 			String subject, Date docDate, String value, String partner,
-			String description, Integer priority, DocStatus status, Long id,
+			String description, Integer priority, DocStatus status, String docRefId,
 			String taskDisplayName) {
 		disableAll();
 		if (createdBy != null) {
@@ -628,7 +628,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 		this.url = null;
 		if (status == DocStatus.DRAFTED) {
-			setProcessForDoc(id);
+			setProcessForDoc(docRefId);
 		}
 	}
 
@@ -1013,11 +1013,11 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 
-	public void setProcessForDoc(Long documentId) {
-		if (documentId != null) {
+	public void setProcessForDoc(String docRefId) {
+		if (docRefId != null) {
 			String root = GWT.getModuleBaseURL();
 			root = root.replaceAll("/gwtht", "");
-			this.url = root + "getreport?did=" + documentId
+			this.url = root + "getreport?docRefId=" + docRefId
 					+ "&ACTION=GETDOCUMENTPROCESS";
 			imgProcess.setVisible(true);
 			imgProcess.setUrl(this.url);

@@ -116,7 +116,6 @@ CaseRegistryPresenter.ICaseRegistryProxy>{
 	
 
 	private void loadData(CaseFilter filter) {
-		System.err.println(">> Filter> "+filter);
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetProcessInstancesRequest(filter));
 		fireEvent(new ProcessingEvent());

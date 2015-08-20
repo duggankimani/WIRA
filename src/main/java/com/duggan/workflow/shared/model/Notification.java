@@ -15,6 +15,7 @@ public class Notification extends Activity{
 	private HTUser owner;
 	private HTUser targetUserId;
 	private Long documentId;
+	private String docRefId;
 	private NotificationType notificationType;
 	private String subject;//case Number
 	private DocumentType documentType;
@@ -92,6 +93,7 @@ public class Notification extends Activity{
 		Notification note = new Notification();
 		note.setCreated(created);
 		note.setDocumentId(documentId);
+		note.setDocRefId(docRefId);
 		note.setDocumentType(documentType);
 		note.setDocumentTypeDesc(documentTypeDesc);
 		note.setNotificationType(notificationType);
@@ -184,5 +186,13 @@ public class Notification extends Activity{
 
 	public void setDocumentTypeDesc(String documentTypeDesc) {
 		this.documentTypeDesc = documentTypeDesc;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 }

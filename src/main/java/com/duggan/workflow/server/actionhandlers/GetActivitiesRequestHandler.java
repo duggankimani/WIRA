@@ -29,14 +29,15 @@ public class GetActivitiesRequestHandler extends
 	@Override
 	public void execute(GetActivitiesRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		Long documentId = action.getDocumentId();
+		String docRefId = action.getDocRefId();
 		List<Activity> activities = new ArrayList<>();		
-		activities.addAll(NotificationDaoHelper.getAllNotifications(documentId,
+		activities.addAll(NotificationDaoHelper.getAllNotificationsByRefId(docRefId,
 				NotificationType.TASKCOMPLETED_OWNERNOTE,
 				NotificationType.APPROVALREQUEST_OWNERNOTE,
 				NotificationType.TASKDELEGATED, NotificationType.FILE_UPLOADED));
 				
-		activities.addAll(CommentDaoHelper.getAllCommentsByDocumentId(documentId));		
+		//activities.addAll(CommentDaoHelper.getAllCommentsByDocumentId(documentId));
+		activities.addAll(CommentDaoHelper.getAllCommentsByDocRefId(docRefId));	
 		Collections.sort(activities);
 				
 		Map<Activity, List<Activity>> activityMap = new LinkedHashMap<>();

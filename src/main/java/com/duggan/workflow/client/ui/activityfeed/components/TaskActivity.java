@@ -225,8 +225,8 @@ public class TaskActivity extends Composite {
 		//
 		aDocument.setText(subject);
 
-		if (notification.getDocumentId() != null) {
-			aDocument.setHref("#search;did=" + notification.getDocumentId());
+		if (notification.getDocRefId() != null) {
+			aDocument.setHref("#search;docRefId=" + notification.getDocRefId());
 		} else if (processInstanceId != null) {
 			aDocument.setHref("#search;pid=" + processInstanceId);
 		}

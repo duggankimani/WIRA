@@ -489,6 +489,7 @@ public class JBPMHelper implements Closeable {
 		task.setDescription(doc.getDescription());
 		task.setPriority(doc.getPriority());
 		task.setDocumentRef(doc.getId());
+		task.setRefId(doc.getRefId());
 		task.setCompletedOn(master_task.getTaskData().getCompletedOn());
 
 		String processId = master_task.getTaskData().getProcessId();

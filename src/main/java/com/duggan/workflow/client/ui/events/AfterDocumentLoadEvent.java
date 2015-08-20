@@ -11,7 +11,7 @@ public class AfterDocumentLoadEvent extends
 		GwtEvent<AfterDocumentLoadEvent.AfterDocumentLoadHandler> {
 
 	public static Type<AfterDocumentLoadHandler> TYPE = new Type<AfterDocumentLoadHandler>();
-	private Long documentId;
+	private String docRefId;
 	private Long taskId;
 	private List<Actions> validActions;
 	
@@ -19,13 +19,13 @@ public class AfterDocumentLoadEvent extends
 		void onAfterDocumentLoad(AfterDocumentLoadEvent event);
 	}
 
-	public AfterDocumentLoadEvent(Long documentId, Long taskId) {
-		this.documentId = documentId;
+	public AfterDocumentLoadEvent(String docRefId, Long taskId) {
+		this.docRefId = docRefId;
 		this.taskId = taskId;
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public String getDocRefId() {
+		return docRefId;
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class AfterDocumentLoadEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId,Long taskId) {
-		source.fireEvent(new AfterDocumentLoadEvent(documentId, taskId));
+	public static void fire(HasHandlers source, String docRefId,Long taskId) {
+		source.fireEvent(new AfterDocumentLoadEvent(docRefId, taskId));
 	}
 
 	public List<Actions> getValidActions() {

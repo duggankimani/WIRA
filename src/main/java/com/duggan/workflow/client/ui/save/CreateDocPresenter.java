@@ -54,7 +54,7 @@ public class CreateDocPresenter extends
 
 		void setValues(DocumentType docType, String subject, Date docDate,
 				String partner, String value, String description,
-				Priority priority, Long documentId);
+				Priority priority, String docRefId);
 	}
 
 	@ContentSlot
@@ -63,7 +63,7 @@ public class CreateDocPresenter extends
 	@Inject
 	DispatchAsync requestHelper;
 
-	private Long Id;
+	private String docRefId;
 
 	@Inject
 	PlaceManager placeManager;
@@ -79,8 +79,8 @@ public class CreateDocPresenter extends
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new GetDocumentTypesRequest());
 
-		if (Id != null)
-			requests.addRequest(new GetDocumentRequest(Id,null));
+		if (docRefId != null)
+			requests.addRequest(new GetDocumentRequest(docRefId,null));
 
 		requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -91,7 +91,7 @@ public class CreateDocPresenter extends
 								.get(0);
 						getView().setDocTypes(response.getDocumentTypes());
 
-						if (Id != null)
+						if (docRefId != null)
 							showDocument((GetDocumentResult) responses.get(1));
 					}
 				});
@@ -109,7 +109,7 @@ public class CreateDocPresenter extends
 		Integer priority = document.getPriority();
 
 		getView().setValues(docType, subject, docDate, partner, value,
-				description, Priority.get(priority), document.getId());
+				description, Priority.get(priority), document.getRefId());
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class CreateDocPresenter extends
 
 				Document document = getView().getDocument();
 				document.setStatus(DocStatus.DRAFTED);
-				document.setId(Id);
+				document.setRefId(docRefId);
 				if (getView().isValid()) {
 					fireEvent(new ProcessingEvent());
 					requestHelper.execute(
@@ -158,7 +158,7 @@ public class CreateDocPresenter extends
 			public void onClick(ClickEvent event) {
 				Document document = getView().getDocument();
 				document.setStatus(DocStatus.DRAFTED);
-				document.setId(Id);
+				document.setRefId(docRefId);
 
 				// document.setDescription(null);
 				if (getView().isValid()) {
@@ -179,8 +179,8 @@ public class CreateDocPresenter extends
 		});
 	}
 
-	public void setDocumentId(Long selectedValue) {
-		this.Id = selectedValue;
+	public void setDocRefId(String selectedValue) {
+		this.docRefId = selectedValue;
 	}
 	
 	@Override

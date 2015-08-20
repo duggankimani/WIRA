@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Activity implements Serializable, Comparable<Activity> {
+public abstract class Activity extends SerializableObj implements Comparable<Activity> {
 
 	/**
 	 * 

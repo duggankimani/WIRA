@@ -13,7 +13,6 @@ import com.duggan.workflow.shared.responses.GetDocumentResult;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.google.inject.Inject;
-import com.google.zxing.Result;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
@@ -36,11 +35,11 @@ public class GetInitialDocumentRequestHandler extends
 		
 		try{
 			
-			GetDocumentRequest request = new GetDocumentRequest(action.getDocumentId(), action.getTaskId(),action.isLoadAsAdmin());
+			GetDocumentRequest request = new GetDocumentRequest(action.getDocRefId(), action.getTaskId(),action.isLoadAsAdmin());
 			GetDocumentResult result = execContext.execute(request);
 			Doc doc = result.getDoc(); 
 			
-			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(action.getDocumentId(), action.getTaskId());
+			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(action.getDocRefId(), action.getTaskId());
 			GetTaskStepsResponse response = execContext.execute(taskSteps);
 			
 			List<TaskStepDTO> steps = response.getSteps();

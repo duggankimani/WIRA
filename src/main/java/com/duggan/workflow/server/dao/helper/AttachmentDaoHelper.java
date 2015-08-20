@@ -25,6 +25,13 @@ public class AttachmentDaoHelper{
 		save(attachment);
 	}
 	
+	public static void saveDocument(String docRefId, LocalAttachment attachment) {
+		DocumentModel doc = DB.getDocumentDao().findByRefId(docRefId, DocumentModel.class);
+		attachment.setDocument(doc);
+		
+		save(attachment);
+	}
+	
 	public static void save(LocalAttachment attachment){
 		
 		DB.getAttachmentDao().save(attachment);

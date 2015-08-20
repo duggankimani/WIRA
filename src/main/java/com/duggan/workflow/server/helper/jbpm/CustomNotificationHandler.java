@@ -27,6 +27,7 @@ public class CustomNotificationHandler {
 		String groupId = (String) params.get("GroupId");
 		String actorId = (String) params.get("ActorId");
 		String ownerId = (String) params.get("OwnerId");
+		String docRefId = null;
 		Object isApproved = params.get("isApproved");
 		String _docTypeDesc = null;
 		_docTypeDesc = params.get("_docTypeDesc")==null? null : params.get("_docTypeDesc").toString();
@@ -34,6 +35,7 @@ public class CustomNotificationHandler {
 		Document doc = params.get("document")==null? null : (Document)params.get("document");
 		try{
 			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
+			docRefId = doc.getRefId();
 		}catch(Exception e){}
 		
 		
@@ -49,6 +51,7 @@ public class CustomNotificationHandler {
 		logger.debug("Subject : "+subject);
 		logger.debug("NotificationType : "+type+" | "+_docTypeDesc);
 		logger.debug("DocumentId : "+documentId);
+		logger.debug("DocRefId : "+documentId);
 		logger.debug("GroupId : "+groupId);
 		logger.debug("ActorId : "+actorId);
 		logger.debug("OwnerId : "+ownerId);		
@@ -56,6 +59,7 @@ public class CustomNotificationHandler {
 		Notification notification = new Notification();
 		notification.setCreated(new Date());
 		notification.setDocumentId(new Long(documentId));
+		notification.setDocRefId(docRefId);
 		notification.setNotificationType(type);
 		notification.setOwner(LoginHelper.get().getUser(ownerId));
 		notification.setRead(false);

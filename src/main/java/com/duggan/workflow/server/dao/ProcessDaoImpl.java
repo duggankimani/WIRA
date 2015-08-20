@@ -408,6 +408,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		}
 		
 		String sql = "select d.id docId, "
+				+ "t.refId "
 				+ "t.id taskid, "
 				+ "l.processinstanceid, "
 				+ "l.processid, "
@@ -490,6 +491,8 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			Object value = null;
 			Long docId = (value = row[i++]) == null ? null : new Long(
 					value.toString());
+			String docRefId = (value = row[i++]) == null ? null : value.toString();
+
 			Long taskId = (value = row[i++]) == null ? null : new Long(
 					value.toString());
 			Long processinstanceid = (value = row[i++]) == null ? null : new Long(
@@ -512,6 +515,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			log.setTaskOwner(taskOwner);
 			log.setCaseNo(caseNo);
 			log.setDocId(docId);
+			log.setDocRefId(docRefId);
 			log.setInitiator(initiator);
 			log.setPotOwners(potOwners);
 			log.setProcessId(processId);

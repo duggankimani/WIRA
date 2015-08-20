@@ -104,7 +104,7 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentV
 
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCommentRequest(commentToSave));
-		action.addRequest(new GetActivitiesRequest(comment.getDocumentId()));
+		action.addRequest(new GetActivitiesRequest(comment.getDocRefId()));
 		
 		requestHelper.execute(action,
 				 new TaskServiceCallback<MultiRequestActionResult>(){

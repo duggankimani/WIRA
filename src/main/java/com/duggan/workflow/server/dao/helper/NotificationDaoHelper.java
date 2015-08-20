@@ -73,6 +73,13 @@ public class NotificationDaoHelper {
 		return copyData(models);
 	}
 	
+	public static List<Notification> getAllNotificationsByRefId(String docRefId, NotificationType...notificationTypes){
+		NotificationDaoImpl dao = DB.getNotificationDao();
+		List<NotificationModel> models = dao.getAllNotificationsByDocRefId(docRefId, notificationTypes);
+		
+		return copyData(models);
+	}
+	
 	private static List<Notification> copyData(List<NotificationModel> models) {
 		List<Notification> notifications = new ArrayList<>();
 		
@@ -100,6 +107,7 @@ public class NotificationDaoHelper {
 		}
 		
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
+		notificationTo.setDocRefId(modelFrom.getDocRefId());
 		notificationTo.setOwner(modelFrom.getOwner().getUserId());
 		if(modelFrom.getTargetUserId()!=null)
 			notificationTo.setTargetUserId(modelFrom.getTargetUserId().getUserId());
@@ -118,6 +126,7 @@ public class NotificationDaoHelper {
 	
 		Long documentId = modelFrom.getDocumentId();
 		notificationTo.setDocumentId(modelFrom.getDocumentId());
+		notificationTo.setDocRefId(modelFrom.getDocRefId());
 		
 		String owner = modelFrom.getOwner();
 		HTUser htOwner = LoginHelper.get().getUser(owner);

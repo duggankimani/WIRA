@@ -140,7 +140,7 @@ public class GenericDocumentPresenter extends
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type, String subject,
 				Date docDate, String value, String partner, String description, 
-				Integer priority,DocStatus status, Long id, String taskDisplayName);
+				Integer priority,DocStatus status, String docRefid, String taskDisplayName);
 		
 		void showForward(boolean show);
 		void setValidTaskActions(List<Actions> actions);
@@ -212,7 +212,8 @@ public class GenericDocumentPresenter extends
 	}
 	
 	Long taskId;
-	Long documentId;
+	//Long documentId;
+	private String docRefId;
 	
 	Doc doc;
 	Form form;
@@ -238,6 +239,7 @@ public class GenericDocumentPresenter extends
 	public static final Object ATTACHMENTS_SLOT = new Object();
 	private List<TaskLog> logs = null;
 	private boolean isLoadAsAdmin;
+	
 	
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
@@ -493,7 +495,8 @@ public class GenericDocumentPresenter extends
 				if(taskId!=null){
 					suffix = Field.getSuffix(taskId+"");
 				}else{
-					suffix = Field.getSuffix(documentId+"");
+					//suffix = Field.getSuffix(documentId+"");
+					suffix = Field.getSuffix(docRefId+"");
 				}
 				
 				for(String key: keys){
@@ -640,7 +643,7 @@ public class GenericDocumentPresenter extends
 			if(isNavigateNext)
 				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
 			
-			requests.addRequest(new GetAttachmentsRequest(documentId));
+			requests.addRequest(new GetAttachmentsRequest(docRefId));
 			
 			requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -682,7 +685,7 @@ public class GenericDocumentPresenter extends
 			if(isNavigateNext){
 				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
 			}
-			requests.addRequest(new GetAttachmentsRequest(documentId));			
+			requests.addRequest(new GetAttachmentsRequest(docRefId));			
 			
 			requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -842,13 +845,13 @@ public class GenericDocumentPresenter extends
 				
 				UploadContext context = new UploadContext();
 				context.setAction(UPLOADACTION.ATTACHDOCUMENT);
-				context.setContext("documentId", documentId+"");
+				//context.setContext("documentId", documentId+"");
+				context.setContext("docRefId", docRefId+"");
 				context.setContext("userid", AppContext.getUserId());
 				result.setContext(context);
 				addToPopupSlot(result,false);
 			}
 		});
-		
 	}
 
 	protected void delete(Document document) {
@@ -859,7 +862,7 @@ public class GenericDocumentPresenter extends
 					@Override
 					public void onSelect(String name) {
 						if(name.equals("Yes")){
-							requestHelper.execute(new DeleteDocumentRequest(documentId),
+							requestHelper.execute(new DeleteDocumentRequest(docRefId),
 									new TaskServiceCallback<DeleteDocumentResponse>() {
 										@Override
 										public void processResult(
@@ -931,7 +934,7 @@ public class GenericDocumentPresenter extends
 			fireEvent(new ProcessingEvent());
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new CreateDocumentRequest(document));
-			requests.addRequest(new GetAttachmentsRequest(documentId));
+			requests.addRequest(new GetAttachmentsRequest(docRefId));
 			
 			requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -959,14 +962,15 @@ public class GenericDocumentPresenter extends
 		getView().setComment("");
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
-		comment.setDocumentId(documentId);
+		//comment.setDocumentId(documentId);
+		comment.setDocRefId(docRefId);
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
 		//comment.setCreatedBy(AppContext.getUserId());
 		
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCommentRequest(comment));
-		action.addRequest(new GetActivitiesRequest(documentId));
+		action.addRequest(new GetActivitiesRequest(docRefId));
 		
 		requestHelper.execute(action,
 				 new TaskServiceCallback<MultiRequestActionResult>(){
@@ -985,7 +989,7 @@ public class GenericDocumentPresenter extends
 			@Override
 			public void processResult(CreateDocPresenter result) {
 				if(mode.equals(MODE.EDIT)){
-					result.setDocumentId(documentId);
+					result.setDocRefId(docRefId);
 				}
 				
 				addToPopupSlot(result, true);				
@@ -1006,14 +1010,14 @@ public class GenericDocumentPresenter extends
 	
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
-		requests.addRequest(new GetInitialDocumentRequest(documentId, taskId,isLoadAsAdmin));
-		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,documentId));
-		requests.addRequest(new GetCommentsRequest(documentId));
-		requests.addRequest(new GetAttachmentsRequest(documentId));
-		requests.addRequest(new GetActivitiesRequest(documentId));
+		requests.addRequest(new GetInitialDocumentRequest(docRefId, taskId,isLoadAsAdmin));
+		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,docRefId));
+		requests.addRequest(new GetCommentsRequest(docRefId));
+		requests.addRequest(new GetAttachmentsRequest(docRefId));
+		requests.addRequest(new GetActivitiesRequest(docRefId));
 		
 		fireEvent(new ProcessingEvent());
-		if(documentId != null){
+		if(docRefId != null){
 			requestHelper.execute(requests, 
 					new TaskServiceCallback<MultiRequestActionResult>() {
 				
@@ -1086,10 +1090,12 @@ public class GenericDocumentPresenter extends
 		this.form = form;
 		
 		if(doc instanceof Document){
-			documentId = (Long) doc.getId();
+			//documentId = (Long) doc.getId();
+			docRefId = doc.getRefId();
 			taskId=null;
 		}else{
-			documentId = ((HTSummary)doc).getDocumentRef();
+			//documentId = ((HTSummary)doc).getDocumentRef();
+			docRefId = doc.getRefId();
 			taskId = ((HTSummary)doc).getId();
 		}
 		
@@ -1184,7 +1190,7 @@ public class GenericDocumentPresenter extends
 		if(attachments.size()>0){
 //			getView().getDivAttachment().removeClassName("hidden");
 //			getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
-			fireEvent(new AfterAttachmentReloadedEvent(documentId));
+			fireEvent(new AfterAttachmentReloadedEvent(docRefId));
 		}
 		
 		setInSlot(ATTACHMENTS_SLOT, null);//clear
@@ -1258,7 +1264,8 @@ public class GenericDocumentPresenter extends
 			}
 		}
 		
-		this.documentId = docId;
+		//this.documentId = docId;
+		this.docRefId = result.getRefId();
 		
 		Date created = doc.getCreated();
 		String subject = doc.getCaseNo();
@@ -1303,7 +1310,7 @@ public class GenericDocumentPresenter extends
 		
 		
 		getView().setValues(doc.getOwner(),created,
-				type, subject, docDate,  value, partner, description, priority,status, documentId,
+				type, subject, docDate,  value, partner, description, priority,status, docRefId,
 				taskDisplayName);
 		
 		if(status==DocStatus.DRAFTED){
@@ -1314,7 +1321,7 @@ public class GenericDocumentPresenter extends
 		}
 		
 		//get document actions - if any
-		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(documentId, taskId);
+		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(docRefId, taskId);
 		fireEvent(e);		
 		if(e.getValidActions()!=null){
 			getView().setValidTaskActions(e.getValidActions());
@@ -1341,8 +1348,8 @@ public class GenericDocumentPresenter extends
 //		getView().setStates(states);
 //	}
 
-	public void setDocId(Long documentId, Long taskId,boolean isLoadAsAdmin) {
-		this.documentId=documentId;
+	public void setDocId(String docRefId,Long taskId,boolean isLoadAsAdmin) {
+		this.docRefId = docRefId;
 		this.taskId = taskId;
 		this.isLoadAsAdmin = isLoadAsAdmin;
 		getView().setLoadAsAdmin(isLoadAsAdmin);
@@ -1356,7 +1363,7 @@ public class GenericDocumentPresenter extends
 
 	@Override
 	public void onReloadDocument(ReloadDocumentEvent event) {
-		if(event.getDocumentId()==this.documentId){
+		if(event.getDocRefId().equals(this.docRefId)){
 			loadData();
 		}
 	}
@@ -1372,7 +1379,7 @@ public class GenericDocumentPresenter extends
 	}
 
 	private void reloadAttachments() {
-		requestHelper.execute(new GetAttachmentsRequest(documentId),
+		requestHelper.execute(new GetAttachmentsRequest(docRefId),
 				new TaskServiceCallback<GetAttachmentsResponse>() {
 			@Override
 			public void processResult(GetAttachmentsResponse result) {

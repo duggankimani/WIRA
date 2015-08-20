@@ -26,6 +26,8 @@ public class NotificationModel extends PO {
 	
 	private Long documentId;
 	
+	private String docRefId;
+	
 	private String targetUserId;
 	
 	private String subject;
@@ -149,6 +151,14 @@ public class NotificationModel extends PO {
 
 	public void setDocumentTypeDesc(String documentTypeDesc) {
 		this.documentTypeDesc = documentTypeDesc;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 
 }

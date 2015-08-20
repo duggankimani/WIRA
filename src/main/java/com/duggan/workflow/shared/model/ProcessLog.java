@@ -12,6 +12,7 @@ public class ProcessLog implements Serializable{
 	
 	private Long taskId;
 	private Long docId;
+	private String docRefId;
 	private String caseNo;
 	private int processState;
 	private String taskStatus;
@@ -57,10 +58,12 @@ public class ProcessLog implements Serializable{
 				+",taskName:"+taskName+", taskOwner:"+taskOwner+",potOwners:"+potOwners+"}";
 	}
 
+	@Deprecated
 	public Long getDocId() {
 		return docId;
 	}
 
+	@Deprecated
 	public void setDocId(Long docId) {
 		this.docId = docId;
 	}
@@ -143,5 +146,13 @@ public class ProcessLog implements Serializable{
 
 	public void setProcessState(int processState) {
 		this.processState = processState;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 }

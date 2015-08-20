@@ -59,10 +59,11 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 	private void saveAttachment(LocalAttachment attachment,
 			HttpServletRequest request) {
 		
-		String id = request.getParameter("documentId");
+		//String id = request.getParameter("documentId");
+		String docRefId = request.getParameter("docRefId");
 		
-		if(id!=null){
-			AttachmentDaoHelper.saveDocument(Long.parseLong(id.toString()), attachment);
+		if(docRefId!=null){
+			AttachmentDaoHelper.saveDocument(docRefId, attachment);
 		}
 	}
 

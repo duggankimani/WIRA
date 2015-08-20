@@ -15,6 +15,7 @@ public class Comment extends Activity {
 	private Date updated;
 	private String userId;
 	private Long documentId;
+	private String docRefId;
 	private Long parentId;
 	
 	public String getComment() {
@@ -119,6 +120,12 @@ public class Comment extends Activity {
 	}
 	public void setDocType(String docType) {
 		this.docType = docType;
+	}
+	public String getDocRefId() {
+		return docRefId;
+	}
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 	
 }

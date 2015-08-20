@@ -34,6 +34,7 @@ public class TestNotificationDao {
 		Notification notification = new Notification();
 		notification.setCreated(new Date());
 		notification.setDocumentId(31L);
+		notification.setDocRefId("");
 		//notification.setDocumentType(DocType.INVOICE);
 		notification.setNotificationType(NotificationType.APPROVALREQUEST_APPROVERNOTE);
 		notification.setOwner(LoginHelper.get().getUser("calcacuervo"));

@@ -457,6 +457,24 @@ public class ProcessDefHelper {
 		}
 		return steps;
 	}
+	
+	public static List<TaskStepDTO> getTaskStepsByDocRefId(String docRefId) {
+
+
+		DocumentModel docModel = DB.getDocumentDao().findByRefId(docRefId, DocumentModel.class);
+		
+		String processId = docModel.getProcessId();
+		if(processId==null && docModel.getType()!=null){
+			processId = docModel.getType().getProcessDef().getProcessId();
+		}
+		List<TaskStepModel> models= DB.getProcessDao().getTaskSteps(processId, null);
+	
+		List<TaskStepDTO> steps = new ArrayList<>();
+		for(TaskStepModel m: models){
+			steps.add(getStep(m));
+		}
+		return steps;
+	}
 
 	public static List<Trigger> getTriggers() {
 		ProcessDaoImpl dao = DB.getProcessDao();

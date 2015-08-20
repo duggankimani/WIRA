@@ -8,18 +8,18 @@ public class ReloadDocumentEvent extends
 		GwtEvent<ReloadDocumentEvent.ReloadDocumentHandler> {
 
 	public static Type<ReloadDocumentHandler> TYPE = new Type<ReloadDocumentHandler>();
-	private Long documentId;
+	private String docRefId;
 
 	public interface ReloadDocumentHandler extends EventHandler {
 		void onReloadDocument(ReloadDocumentEvent event);
 	}
 
-	public ReloadDocumentEvent(Long documentId) {
-		this.documentId = documentId;
+	public ReloadDocumentEvent(String docRefId) {
+		this.docRefId = docRefId;
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public String getDocRefId() {
+		return docRefId;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ReloadDocumentEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId) {
-		source.fireEvent(new ReloadDocumentEvent(documentId));
+	public static void fire(HasHandlers source, String docRefId) {
+		source.fireEvent(new ReloadDocumentEvent(docRefId));
 	}
 }

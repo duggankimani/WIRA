@@ -121,6 +121,30 @@ public class NotificationDaoImpl {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<NotificationModel> getAllNotificationsByDocRefId(String docRefId, NotificationType[] notificationTypes) {
+
+		if(docRefId==null){
+			return getAllNotificationsByDocumentId(notificationTypes);
+		}
+		
+		List<NotificationType> notes = new ArrayList<>();
+		
+		if(notificationTypes!=null)
+		for(NotificationType type: notificationTypes){
+			notes.add(type);
+		}
+		
+		return em.createQuery("FROM NotificationModel n " +
+				"where n.docRefId=:docRefId " +
+				"and n.notificationType in (:notificationType)" +
+				"order by created desc")
+		.setParameter("docRefId", docRefId)
+		.setParameter("notificationType", notes)
+		.getResultList();
+		
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<NotificationModel> getAllNotificationsByDocumentId(NotificationType[] notificationTypes) {

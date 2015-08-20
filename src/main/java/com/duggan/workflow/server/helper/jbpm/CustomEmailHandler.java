@@ -123,7 +123,7 @@ public class CustomEmailHandler {
 				doc.getDocumentDate()==null? doc.getCreated(): doc.getDocumentDate()));
 		DocumentType type = doc.getType();
 		params.put("DocType",type.getDisplayName());
-		params.put("DocumentURL", getDocUrl(doc.getId()));
+		params.put("DocumentURL", getDocUrl(doc.getRefId()));
 		params.put("ownerId", doc.getOwner());
 		
 		try{
@@ -163,8 +163,8 @@ public class CustomEmailHandler {
 		return result;
 	}
 
-	private String getDocUrl(Long docId) {
-		return SessionHelper.generateDocUrl(docId);
+	private String getDocUrl(String docRefId) {
+		return SessionHelper.generateDocUrl(docRefId);
 	}
 	
 

@@ -198,7 +198,7 @@ public class CreateDocView extends PopupViewImpl implements
 
 	@Override
 	public void setValues(DocumentType docType, String subject, Date docDate,
-			String partner, String value, String description, Priority priority, Long documentId) {
+			String partner, String value, String description, Priority priority, String docRefId) {
 
 		if (docType != null)
 			setDocumentType(docType);
@@ -224,12 +224,12 @@ public class CreateDocView extends PopupViewImpl implements
 
 		setPriority(priority);
 		
-		if(documentId!=null){
+		if(docRefId!=null){
 			//will be enabled in edit mode
 			//UIObject.setVisible(uploadPanel.getElement(), true);
 			//set upload context here
 			UploadContext context = new UploadContext();
-			context.setContext("documentId", documentId+"");
+			context.setContext("docRefId", docRefId+"");
 			context.setAction(UPLOADACTION.ATTACHDOCUMENT);
 			uploader.setContext(context);
 		}

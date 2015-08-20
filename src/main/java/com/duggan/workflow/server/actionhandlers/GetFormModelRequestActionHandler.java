@@ -59,6 +59,19 @@ public class GetFormModelRequestActionHandler extends
 				
 				if(model!=null)
 					models.add(model);
+			}else if(action.getDocRefId()!=null){
+				
+				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
+				
+				//List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
+				List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocRefId(action.getDocRefId());
+				
+				if(steps.size()>0){
+					TaskStepDTO step = steps.get(0);
+					model = FormDaoHelper.getForm(step.getFormId(),true);
+					models.add(model);
+				}
+												
 			}else if(action.getDocumentId()!=null){
 				
 				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());

@@ -5,23 +5,24 @@ import com.duggan.workflow.shared.responses.GetCommentsResponse;
 
 public class GetCommentsRequest extends BaseRequest<GetCommentsResponse> {
 
-	private Long documentId;
+	private String docRefId;
 
 	@SuppressWarnings("unused")
 	private GetCommentsRequest() {
 		// For serialization only
 	}
 
-	public GetCommentsRequest(Long documentId) {
-		this.documentId = documentId;
+	public GetCommentsRequest(String docRefId) {
+		this.docRefId = docRefId;
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public String getDocRefId() {
+		return docRefId;
 	}
 	
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		return new GetCommentsResponse();
 	}
+
 }

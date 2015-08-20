@@ -6,21 +6,21 @@ import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 public class GetActivitiesRequest extends
 		BaseRequest<GetActivitiesResponse> {
 
-	private Long documentId;
+	private String docRefId;
 	private boolean categorized=true;//parent child relationship set
 	
 	@SuppressWarnings("unused")
 	private GetActivitiesRequest() {
 	}
-
-	public GetActivitiesRequest(Long documentId) {
-		this.documentId = documentId;
-	}
-
-	public Long getDocumentId() {
-		return documentId;
+	
+	public GetActivitiesRequest(String docRefId) {
+		this.docRefId = docRefId;
 	}
 	
+	public String getDocRefId() {
+		return docRefId;
+	}
+
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 	
@@ -34,4 +34,5 @@ public class GetActivitiesRequest extends
 	public void setCategorized(boolean categorized) {
 		this.categorized = categorized;
 	}
+
 }

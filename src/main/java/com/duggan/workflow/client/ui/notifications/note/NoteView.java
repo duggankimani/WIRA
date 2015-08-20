@@ -66,7 +66,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			NotificationType notificationType, HTUser ownerObj,
 			HTUser targetUser, String time, boolean isRead,
 			HTUser createdBy, ApproverAction approverAction,
-			 Long processInstanceId, Long documentId, boolean isNotification) {
+			 Long processInstanceId, String docRefId, boolean isNotification) {
 		
 		String prefix = documentType == null ? "Document" : documentType
 				.getDisplayName();
@@ -155,8 +155,8 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			aDocument.addStyleName("hidden");
 		}
 		
-		if(documentId!=null){
-			aDocument.setHref("#search;did="+documentId);
+		if(docRefId!=null){
+			aDocument.setHref("#search;docRefId="+docRefId);
 		}else if(processInstanceId!=null){
 			aDocument.setHref("#search;pid="+processInstanceId);
 		}

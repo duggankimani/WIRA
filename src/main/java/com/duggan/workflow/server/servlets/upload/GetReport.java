@@ -77,13 +77,14 @@ public class GetReport extends HttpServlet {
 		}
 
 		if(action.equals("GETDOCUMENTPROCESS")){
-			String docId = req.getParameter("did");
-			if(docId==null){
+			//String docId = req.getParameter("did");
+			String docRefId = req.getParameter("docRefId");
+			if(docRefId==null){
 				throw new IllegalStateException("DocumentId must not be null for action "+action);
 			}
-			Long documentId = new Long(docId);
+			//Long documentId = new Long(docId);
 			
-			DocumentModel model = DB.getDocumentDao().getById(documentId);
+			DocumentModel model = DB.getDocumentDao().findByRefId(docRefId, DocumentModel.class);
 			assert model!=null;
 			
 			ADDocType type = model.getType();
@@ -132,11 +133,6 @@ public class GetReport extends HttpServlet {
 			processBPMProcessMap(req, resp);
 		}
 
-	}
-
-	private void processImportData(HttpServletRequest req,
-			HttpServletResponse resp) {
-		
 	}
 
 	private void processBPMProcessMap(HttpServletRequest req,

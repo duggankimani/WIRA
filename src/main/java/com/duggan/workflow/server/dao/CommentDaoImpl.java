@@ -69,6 +69,19 @@ public class CommentDaoImpl {
 				.getResultList();
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CommentModel> getAllCommentsByDocRefId(String docRefId) {
+	
+		if(docRefId==null){
+			return getAllComments();
+		}
+		
+		return em.createQuery("FROM CommentModel n where n.docRefId=:docRefId order by created desc")
+				.setParameter("docRefId", docRefId)
+				.getResultList();
+
+	}
 
 	public List<CommentModel> getAllComments() {
 

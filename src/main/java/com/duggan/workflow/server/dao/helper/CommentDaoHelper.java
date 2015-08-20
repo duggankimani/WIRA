@@ -70,6 +70,7 @@ public class CommentDaoHelper {
 		}
 		
 		commentTo.setDocumentId(modelFrom.getDocumentId());
+		commentTo.setDocRefId(modelFrom.getDocRefId());
 		commentTo.setComment(modelFrom.getComment());
 		commentTo.setId(modelFrom.getId());
 		commentTo.setUserId(modelFrom.getUserId());
@@ -87,6 +88,7 @@ public class CommentDaoHelper {
 		commentTo.setCreated(modelFrom.getCreated());
 		commentTo.setCreatedBy(createdBy);
 		commentTo.setDocumentId(modelFrom.getDocumentId());
+		commentTo.setDocRefId(modelFrom.getDocRefId());
 		commentTo.setId(modelFrom.getId());
 		commentTo.setUpdated(modelFrom.getUpdated());
 		commentTo.setUpdatedBy(modelFrom.getUpdatedBy());
@@ -110,6 +112,15 @@ public class CommentDaoHelper {
 	public static List<Comment> getAllCommentsByDocumentId(Long documentId) {
 		CommentDaoImpl dao = DB.getCommentDao();
 		List<CommentModel> comments = dao.getAllComments(documentId);
+		
+		List<Comment> rtn = copyData(comments);
+		
+		return rtn;
+	}
+	
+	public static List<Comment> getAllCommentsByDocRefId(String docRefId) {
+		CommentDaoImpl dao = DB.getCommentDao();
+		List<CommentModel> comments = dao.getAllCommentsByDocRefId(docRefId);
 		
 		List<Comment> rtn = copyData(comments);
 		

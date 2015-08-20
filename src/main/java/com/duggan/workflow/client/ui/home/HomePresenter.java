@@ -172,7 +172,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 			@Override
 			public void processResult(CreateDocumentResult aResponse) {
 				PlaceRequest request = new PlaceRequest.Builder().nameToken("search")
-						.with("did", aResponse.getDocument().getId()+"")
+						.with("docRefId", aResponse.getDocument().getRefId())
 						.with("mode", "edit")
 						.build();
 				placeManager.revealPlace(request);

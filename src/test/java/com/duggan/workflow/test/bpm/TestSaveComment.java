@@ -35,7 +35,7 @@ public class TestSaveComment {
 	
 	@Test
 	public void getActivities(){
-		List<Notification> notes = NotificationDaoHelper.getAllNotifications(null, NotificationType.APPROVALREQUEST_OWNERNOTE);
+		List<Notification> notes = NotificationDaoHelper.getAllNotificationsByRefId(null, NotificationType.APPROVALREQUEST_OWNERNOTE);
 		System.err.println("Notes:: "+notes.size());		
 	}
 	
@@ -46,6 +46,7 @@ public class TestSaveComment {
 		comment.setCreated(new Date());
 		comment.setCreatedBy(LoginHelper.get().getUser("mariano"));
 		comment.setDocumentId(2L);
+		comment.setDocRefId("");
 		comment.setId(null);
 		comment.setUserId("mariano");
 		CommentDaoHelper.saveComment(comment);

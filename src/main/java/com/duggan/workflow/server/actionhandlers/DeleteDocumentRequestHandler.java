@@ -19,9 +19,9 @@ public class DeleteDocumentRequestHandler extends
 	public void execute(DeleteDocumentRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-		Long documentId = action.getDocumentId();
-		assert documentId!=null;
-		boolean deleted = DB.getDocumentDao().deleteDocument(documentId);
+		String docRefId = action.getDocRefId();
+		assert docRefId!=null;
+		boolean deleted = DB.getDocumentDao().deleteDocument(docRefId);
 		
 		DeleteDocumentResponse response = (DeleteDocumentResponse)actionResult;
 		response.setDelete(deleted);

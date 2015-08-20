@@ -139,6 +139,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		return processInstanceId==null? null : (Long)processInstanceId;
 	}
 	
+	public Long getProcessInstanceIdByDocRefId(String docRefId) {
+		Object processInstanceId = em.createQuery("select n.processInstanceId FROM DocumentModel n" +
+				" where n.refId=:refId")
+				.setParameter("refId", docRefId)
+				.getSingleResult();
+	
+		return processInstanceId==null? null : (Long)processInstanceId;
+	}
+	
 	public DocumentModel getDocumentByProcessInstanceId(Long processInstanceId){
 		return getDocumentByProcessInstanceId(processInstanceId, true);
 	}
@@ -759,6 +768,14 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		return true;
 	}
+	
+	public boolean deleteDocument(String docRefId) {
+		DocumentModel document = findByRefId(docRefId, DocumentModel.class);
+		document.setIsActive(0);
+		save(document);
+		
+		return true;
+	}
 
 	public String getDocumentSubject(Long documentId) {
 		
@@ -785,6 +802,16 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		
 		Query query = em.createQuery(jpql)
 				.setParameter("id", id)
+				.setParameter("userId", userId);
+		
+		return getSingleResultOrNull(query);
+	}
+	
+	public DocumentModel getDocumentByIdAndUser(String refId, String userId) {
+		String jpql = "from DocumentModel m where m.createdBy=:userId and m.refId=:refId";
+		
+		Query query = em.createQuery(jpql)
+				.setParameter("refId", refId)
 				.setParameter("userId", userId);
 		
 		return getSingleResultOrNull(query);

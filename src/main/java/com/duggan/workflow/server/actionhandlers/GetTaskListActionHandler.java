@@ -71,13 +71,13 @@ public class GetTaskListActionHandler extends
 			if(action.getFilter()!=null){				
 				summary.addAll(DocumentDaoHelper.search(userId,action.getFilter()));
 				summary.addAll(JBPMHelper.get().searchTasks(userId, action.getFilter()));
-			}else if(action.getProcessInstanceId()!=null || action.getDocumentId()!=null){
+			}else if(action.getProcessInstanceId()!=null || action.getDocRefId()!=null){
 				
 				Long processInstanceId = action.getProcessInstanceId();
 				
 				if(processInstanceId==null || processInstanceId==0L){
 					processInstanceId = 
-							DocumentDaoHelper.getProcessInstanceIdByDocumentId(action.getDocumentId());
+							DocumentDaoHelper.getProcessInstanceIdByDocRefId(action.getDocRefId());
 				}
 								
 				//Document doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
@@ -94,8 +94,8 @@ public class GetTaskListActionHandler extends
 				if(processInstanceId!=null){
 					//ensure current user has rights to view
 					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,true);
-				}else if(action.getDocumentId()!=null){
-					doc = DocumentDaoHelper.getDocument(action.getDocumentId(),true);
+				}else if(action.getDocRefId()!=null){
+					doc = DocumentDaoHelper.getDocument(action.getDocRefId(),true);
 				}
 				
 				if(doc!=null)

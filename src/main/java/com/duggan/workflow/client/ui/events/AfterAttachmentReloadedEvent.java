@@ -8,18 +8,18 @@ public class AfterAttachmentReloadedEvent extends
 		GwtEvent<AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler> {
 
 	public static Type<AfterAttachmentReloadedHandler> TYPE = new Type<AfterAttachmentReloadedHandler>();
-	private Long documentId;
+	private String docRefId;
 
 	public interface AfterAttachmentReloadedHandler extends EventHandler {
 		void onAfterAttachmentReloaded(AfterAttachmentReloadedEvent event);
 	}
 
-	public AfterAttachmentReloadedEvent(Long documentId) {
-		this.documentId = documentId;
+	public AfterAttachmentReloadedEvent(String docRefId) {
+		this.docRefId = docRefId;
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public String getDocRefId() {
+		return docRefId;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class AfterAttachmentReloadedEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId) {
-		source.fireEvent(new AfterAttachmentReloadedEvent(documentId));
+	public static void fire(HasHandlers source, String docRefId) {
+		source.fireEvent(new AfterAttachmentReloadedEvent(docRefId));
 	}
 }

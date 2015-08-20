@@ -9,7 +9,7 @@ public class DocumentSelectionEvent extends
 		GwtEvent<DocumentSelectionEvent.DocumentSelectionHandler> {
 
 	public static Type<DocumentSelectionHandler> TYPE = new Type<DocumentSelectionHandler>();
-	private Long documentId;
+	private String docRefId;
 	private Long taskId;
 	private DocMode mode;
 
@@ -17,13 +17,13 @@ public class DocumentSelectionEvent extends
 		void onDocumentSelection(DocumentSelectionEvent event);
 	}
 
-	public DocumentSelectionEvent(Long documentId, Long taskId, DocMode docMode) {
-		this.documentId = documentId;
+	public DocumentSelectionEvent(String docRefId, Long taskId, DocMode docMode) {
+		this.docRefId = docRefId;
 		this.taskId = taskId;
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public String getDocRefId() {
+		return docRefId;
 	}
 	
 	public DocMode getDocMode(){
@@ -44,8 +44,8 @@ public class DocumentSelectionEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long documentId, Long taskId, DocMode docMode) {
-		source.fireEvent(new DocumentSelectionEvent(documentId, taskId, docMode));
+	public static void fire(HasHandlers source, String docRefId, Long taskId, DocMode docMode) {
+		source.fireEvent(new DocumentSelectionEvent(docRefId, taskId, docMode));
 	}
 
 	public Long getTaskId() {

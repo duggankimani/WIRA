@@ -128,11 +128,11 @@ public class TaskItemPresenter extends
 			public void onClick(ClickEvent event) {
 				if(task instanceof Document){
 					Document doc = (Document)task;
-					fireEvent(new DocumentSelectionEvent(doc.getId(),null, DocMode.READWRITE));
+					fireEvent(new DocumentSelectionEvent(doc.getRefId(),null, DocMode.READWRITE));
 				}else{
 					Long taskId = ((HTSummary)task).getId();
-					Long docId = ((HTSummary)task).getDocumentRef();
-					fireEvent(new DocumentSelectionEvent(docId, taskId, DocMode.READ));
+					String docRefId = ((HTSummary)task).getRefId();
+					fireEvent(new DocumentSelectionEvent(docRefId, taskId, DocMode.READ));
 				}
 			}
 		});		
@@ -369,6 +369,7 @@ public class TaskItemPresenter extends
 		notification.setApproverAction(ApproverAction.DELEGATE);
 		HTSummary summary = (HTSummary)task;
 		notification.setDocumentId(summary.getDocumentRef());
+		notification.setDocRefId(summary.getRefId());
 		//notification.setDocumentType(summary.getDocStatus());
 		//notification.setOwner(summary.getOwner());
 		notification.setProcessInstanceId(summary.getProcessInstanceId());
@@ -410,10 +411,10 @@ public class TaskItemPresenter extends
 		setDocSummary(summary);
 		if(task instanceof Document){
 			Document doc = (Document)task;
-			fireEvent(new DocumentSelectionEvent(doc.getId(), null, DocMode.READWRITE));
+			fireEvent(new DocumentSelectionEvent(doc.getRefId(), null, DocMode.READWRITE));
 		}else{
 			Long taskId = ((HTSummary)task).getId();
-			fireEvent(new DocumentSelectionEvent((Long)task.getId(), taskId, DocMode.READ));
+			fireEvent(new DocumentSelectionEvent(task.getRefId(), taskId, DocMode.READ));
 		}
 		
 	}
@@ -438,12 +439,12 @@ public class TaskItemPresenter extends
 	
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
-		Long documentId = event.getDocumentId();
+		String docRefId = event.getDocRefId();
 		Long taskId = event.getTaskId();
 		
 		if((task instanceof  Document) && taskId==null){
 			Document doc = (Document)task;
-			if(doc.getId()!=documentId){
+			if(!doc.getRefId().equals(docRefId)){
 				getView().setSelected(false);
 			}else{
 				getView().setSelected(true);
@@ -522,10 +523,10 @@ public class TaskItemPresenter extends
 
 	@Override
 	public void onAfterAttachmentReloaded(AfterAttachmentReloadedEvent event) {
-		Long documentId = event.getDocumentId();
+		String docRefId = event.getDocRefId();
 		if((task instanceof  Document)){
 			Document doc = (Document)task;
-			if(doc.getId().equals(documentId)){
+			if(doc.getRefId().equals(docRefId)){
 				getView().showAttachmentIcon(true);
 			}
 			
@@ -538,8 +539,8 @@ public class TaskItemPresenter extends
 			}
 			
 			assert doc.getDocumentRef()!=null;
-			assert documentId!=null;
-			if(doc.getDocumentRef().equals(documentId)){
+			assert docRefId!=null;
+			if(doc.getRefId().equals(docRefId)){
 				getView().showAttachmentIcon(true);
 			}
 		}

@@ -108,7 +108,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	/**
 	 * Url documentId (did) - required incase the use hits refresh
 	 */
-	private Long documentId=null;
+	//private Long documentId=null;
+	private String docRefId=null;
 	
 	String searchTerm="";
 	
@@ -186,16 +187,17 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		//fireEvent(new LoadAlertsEvent());
 		clear();		
 		processInstanceId=null;
-		documentId=null;
 		
 		String processInstID = request.getParameter("pid", null);
-		String documentSearchID = request.getParameter("did", null);
+		//String documentSearchID = request.getParameter("did", null);
+		docRefId = request.getParameter("docRefId", null);
+		
 		if(processInstID!=null){
 			processInstanceId = Long.parseLong(processInstID);
 		}
-		if(documentSearchID!=null){
-			documentId = Long.parseLong(documentSearchID);
-		}
+//		if(documentSearchID!=null){
+//			documentId = Long.parseLong(documentSearchID);
+//		}
 		loadTasks();
 		
 	}	
@@ -261,7 +263,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		
 		GetTaskList request = new GetTaskList(userId,currentTaskType);
 		request.setProcessInstanceId(processInstanceId);
-		request.setDocumentId(documentId);
+		//request.setDocumentId(documentId);
+		request.setDocRefId(docRefId);
 		request.setLoadAsAdmin(isLoadAsAdmin());
 		
 		//System.err.println("###### Search:: did="+documentId+"; PID="+processInstanceId+"; TaskType="+type);
@@ -279,21 +282,21 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 					getView().setHasItems(true);
 					
 					Doc doc = tasks.get(0);
-					Long docId=null;
+					String docRefId=null;
 					DocMode docMode = DocMode.READ;
 					
 					if(doc instanceof Document){
-						docId = (Long)doc.getId();
+						docRefId = doc.getRefId();
 						if(((Document)doc).getStatus()==DocStatus.DRAFTED){
 							docMode = DocMode.READWRITE;
 						}
 						//Load document
-						fireEvent(new DocumentSelectionEvent(docId,null,docMode));
+						fireEvent(new DocumentSelectionEvent(docRefId,null,docMode));
 					}else{
-						docId = ((HTSummary)doc).getDocumentRef();
+						docRefId = ((HTSummary)doc).getRefId();
 						long taskId = ((HTSummary)doc).getId(); 
 						//Load Task
-						fireEvent(new DocumentSelectionEvent(docId,taskId,docMode));
+						fireEvent(new DocumentSelectionEvent(docRefId,taskId,docMode));
 					}
 					
 				}else{
@@ -363,14 +366,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
 		if(this.isVisible()){
-			displayDocument(event.getDocumentId(), event.getTaskId());
-//			System.err.println("Called!! +"+this+" Document= "+event.getDocumentId()+
-//					" : Task="+event.getTaskId()+" :: "+event.getSource());
+			displayDocument(event.getDocRefId(), event.getTaskId());
 		}
 	}
 	
-	private void displayDocument(final Long documentId, final Long taskId) {
-		if(documentId==null && taskId==null){
+	private void displayDocument(final String docRefId, final Long taskId) {
+		if(docRefId==null && taskId==null){
 			setInSlot(DOCUMENT_SLOT, null);
 			return;
 		}
@@ -378,7 +379,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
-				result.setDocId(documentId, taskId, isLoadAsAdmin());
+				result.setDocId(docRefId, taskId, isLoadAsAdmin());
 				result.setFormMode(mode);
 				
 				if(currentTaskType==TaskType.UNASSIGNED){
@@ -397,17 +398,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		}		
 	}
 
-//	@Override
-//	public void onAlertLoad(AlertLoadEvent event) {
-//		//event.getAlerts();
-//		Integer count = event.getAlerts().get(currentTaskType);
-//		if(count==null) 
-//			count=0;
-//		
-//		if(currentTaskType!=null)
-//			Window.setTitle(currentTaskType.getTitle()+ (count==0? "" : " ("+count+")"));
-//	}
-	
 	@Override
 	public void onSearch(SearchEvent event) {
 		if(this.isVisible()){

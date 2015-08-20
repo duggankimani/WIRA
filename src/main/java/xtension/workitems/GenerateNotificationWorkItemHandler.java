@@ -19,6 +19,8 @@ import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 
 /**
+ * No longer in use;
+ * 
  * This class is responsible for generating
  * <ul>
  * <li>System Notification - Synchronous

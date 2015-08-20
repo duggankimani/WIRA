@@ -46,7 +46,7 @@ public class SessionHelper{
 		return getHttpRequest()==null? "Not Defined" :getHttpRequest().getRemoteAddr();
 	}
 	
-	public static String generateDocUrl(Long docId){
+	public static String generateDocUrl(String docRefId){
 		HttpServletRequest request = getHttpRequest();
 		if(request!=null){
 			String requestURL = request.getRequestURL().toString();
@@ -60,7 +60,7 @@ public class SessionHelper{
 				requestURL = requestURL.replace(pathInfo, "");
 			}
 			log.debug("# Remove Path Info = "+requestURL);				
-			requestURL = requestURL.replace(servletPath, "/#search;did="+docId);
+			requestURL = requestURL.replace(servletPath, "/#search;docRefId="+docRefId);
 			log.debug("# Replace ServletPath = "+requestURL);
 			
 			return requestURL;

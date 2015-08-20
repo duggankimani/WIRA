@@ -27,6 +27,8 @@ public class CommentModel extends PO{
 	@Column(nullable=false)
 	private Long documentId;
 	
+	private String docRefId;
+	
 	private Long parentId;
 	
 	public String getComment() {
@@ -58,6 +60,12 @@ public class CommentModel extends PO{
 	}
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
+	}
+	public String getDocRefId() {
+		return docRefId;
+	}
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 	
 }

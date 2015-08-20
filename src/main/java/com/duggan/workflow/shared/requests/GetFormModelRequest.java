@@ -12,6 +12,7 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 	private Long documentId;
 	private Boolean loadChildrenToo;
 	private Long processDefId;
+	private String docRefId;
 
 	@SuppressWarnings("unused")
 	private GetFormModelRequest() {
@@ -27,7 +28,13 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 		this.type = type;
 		this.taskId = taskId;
 	}
+	
+	public GetFormModelRequest(String type, Long taskId,String docRefId){
+		this(type,taskId);
+		this.docRefId = docRefId;
+	}
 
+	@Deprecated
 	public GetFormModelRequest(String type, Long taskId,Long documentId){
 		this(type,taskId);
 		this.documentId = documentId;
@@ -67,6 +74,7 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 		this.taskId = taskId;
 	}
 
+	@Deprecated
 	public Long getDocumentId() {
 		return documentId;
 	}
@@ -77,5 +85,9 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 
 	public void setProcessDefId(Long processDefId) {
 		this.processDefId = processDefId;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
 	}
 }

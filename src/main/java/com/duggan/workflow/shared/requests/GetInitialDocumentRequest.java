@@ -12,6 +12,7 @@ import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
  */
 public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentResponse> {
 
+	private String docRefId;
 	private Long documentId;
 	private Long taskId;
 	private boolean isLoadAsAdmin=false;
@@ -20,12 +21,24 @@ public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentRes
 	private GetInitialDocumentRequest() {
 		// For serialization only
 	}
+	
+	public GetInitialDocumentRequest(String docRefId, Long taskId) {
+		this.docRefId = docRefId;
+		this.taskId = taskId;
+	}
+	
+	public GetInitialDocumentRequest(String docRefId, Long taskId, boolean isLoadAsAdmin) {
+		this(docRefId,taskId);
+		this.isLoadAsAdmin=isLoadAsAdmin;
+	}
 
+	@Deprecated
 	public GetInitialDocumentRequest(Long documentId, Long taskId) {
 		this.documentId = documentId;
 		this.taskId = taskId;
 	}
 	
+	@Deprecated
 	public GetInitialDocumentRequest(Long documentId, Long taskId, boolean isLoadAsAdmin) {
 		this(documentId,taskId);
 		this.isLoadAsAdmin=isLoadAsAdmin;
@@ -34,7 +47,12 @@ public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentRes
 	public BaseResponse createDefaultActionResponse() {
 		return new GetInitialDocumentResponse();
 	}
+	
+	public String getDocRefId() {
+		return docRefId;
+	}
 
+	@Deprecated
 	public Long getDocumentId() {
 		return documentId;
 	}
@@ -49,5 +67,5 @@ public class GetInitialDocumentRequest extends BaseRequest<GetInitialDocumentRes
 
 	public void setLoadAsAdmin(boolean isLoadAsAdmin) {
 		this.isLoadAsAdmin = isLoadAsAdmin;
-	};
+	}
 }

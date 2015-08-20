@@ -232,6 +232,7 @@ public class DocumentDaoHelper {
 			return null;
 		}
 		Document doc = new Document();
+		doc.setRefId(model.getRefId());
 		doc.setCreated(model.getCreated());
 		doc.setDescription(model.getDescription());
 		doc.setDocumentDate(model.getDocumentDate());
@@ -411,6 +412,28 @@ public class DocumentDaoHelper {
 		
 		return getDoc(model);
 	}
+	
+	/**
+	 * 
+	 * @param refId
+	 * @return
+	 */
+	public static Document getDocument(String refId) {
+		return getDocument(refId,false);	
+	}
+	
+	public static Document getDocument(String refId, boolean checkUser){
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		DocumentModel model=null;
+		
+		if(checkUser){
+			model = dao.getDocumentByIdAndUser(refId,SessionHelper.getCurrentUser().getUserId());
+		}else{
+			model = dao.findByRefId(refId, DocumentModel.class);
+		}
+		
+		return getDoc(model);
+	}
 
 	public static Document getDocumentByProcessInstance(Long processInstanceId) {
 		return getDocumentByProcessInstance(processInstanceId, false);
@@ -534,6 +557,12 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		return dao.getProcessInstanceIdByDocumentId(documentId);
+	}
+	
+	public static Long getProcessInstanceIdByDocRefId(String docRefId) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+
+		return dao.getProcessInstanceIdByDocRefId(docRefId);
 	}
 
 	public static List<Document> search(String userId, SearchFilter filter) {
