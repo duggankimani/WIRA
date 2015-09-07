@@ -39,7 +39,7 @@ public class GetInitialDocumentRequestHandler extends
 			GetDocumentResult result = execContext.execute(request);
 			Doc doc = result.getDoc(); 
 			
-			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(action.getDocRefId(), action.getTaskId());
+			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(doc.getDocumentId(), action.getTaskId());
 			GetTaskStepsResponse response = execContext.execute(taskSteps);
 			
 			List<TaskStepDTO> steps = response.getSteps();
