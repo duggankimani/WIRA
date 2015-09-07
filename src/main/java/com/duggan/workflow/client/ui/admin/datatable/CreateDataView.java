@@ -1,23 +1,38 @@
 package com.duggan.workflow.client.ui.admin.datatable;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.OptionControl;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
+import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
+import com.duggan.workflow.client.ui.events.EditCatalogEvent;
 import com.duggan.workflow.client.ui.grid.AggregationGrid;
 import com.duggan.workflow.client.ui.grid.ColumnConfig;
 import com.duggan.workflow.client.ui.grid.DataMapper;
 import com.duggan.workflow.client.ui.grid.DataModel;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
+import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -55,7 +70,7 @@ public class CreateDataView extends Composite {
 			for (CatalogColumn config : configs) {
 
 				Object val = model.get(config.getName());
-				if(val==null){
+				if (val == null) {
 					continue;
 				}
 				Value value = ColumnConfig.getValue(null, config.getName(),
@@ -73,6 +88,9 @@ public class CreateDataView extends Composite {
 	@UiField
 	HasClickHandlers aNew;
 
+	@UiField
+	HasClickHandlers aImport;
+	
 	public CreateDataView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		aNew.addClickHandler(new ClickHandler() {
@@ -82,6 +100,94 @@ public class CreateDataView extends Composite {
 				grid.addRowData(new DataModel());
 			}
 		});
+
+		aImport.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+
+				final StringBuffer uploadedItems = new StringBuffer();
+				UploadContext context = new UploadContext();
+				context.setAction(UPLOADACTION.IMPORTGRIDDATA);
+				context.setAccept(Arrays.asList("csv"));
+				final String message = "This will import data from a CSV file into the grid.";
+				final ImportView view = new ImportView(message, context);
+				view.setAvoidRepeatFiles(false);
+				AppManager.showPopUp("Import Data", view,
+						new OptionControl() {
+
+							@Override
+							public void onSelect(String name) {
+								if (name.equals("Next")) {
+									// AppContext.fireEvent(new ReloadEvent());
+									view.setVisible(false);
+
+									setLines(uploadedItems.toString());
+									EditCatalogEvent event = new EditCatalogEvent(catalog, false, true);
+									event.setLines(getData());
+									AppContext.fireEvent(event);
+									//AppCon
+								} else {
+									view.cancelImport();
+									EditCatalogEvent event = new EditCatalogEvent(catalog, false, true);
+									AppContext.fireEvent(event);
+								}
+							}
+					
+						}, "Next", "Cancel");
+				view.getUploader().addOnFinishUploaderHandler(
+						new OnFinishUploaderHandler() {
+
+							@Override
+							public void onFinish(IUploader uploader) {
+								String msg = uploader.getServerMessage()
+										.getMessage();
+								view.setMessage(message + "<p>" + msg + "</p>");
+								uploadedItems.append(msg);
+							}
+						});
+			}
+		});
+	}
+	
+	private void setLines(String uploadedCSVItems) {
+		if(uploadedCSVItems==null || uploadedCSVItems.trim().isEmpty()){
+			return;
+		}
+		
+		List<DocumentLine> lines = new ArrayList<DocumentLine>();
+		
+		String[] items = uploadedCSVItems.split("\n");
+		for(String item: items){
+			String[] line = item.split(",");
+			lines.add(createLine(line));
+		}
+		
+		setData(lines);
+	}
+	
+	private DocumentLine createLine(String[] lineValues) {
+		
+		DocumentLine docline = new DocumentLine();
+		List<CatalogColumn> columnConfigs = catalog.getColumns();
+		
+		for(int i=0; i<lineValues.length && i<columnConfigs.size(); i++){
+			
+			CatalogColumn col = columnConfigs.get(i);
+			Field field= new Field();
+			field.setCaption(col.getLabel());
+			field.setName(col.getName());
+			field.setFormId(System.currentTimeMillis());
+			field.setType(col.getType().getFieldType());
+			
+			FieldWidget widget = FieldWidget.getWidget(col.getType().getFieldType(),
+					field, false);
+			
+			Value val = widget.from(col.getName(),lineValues[i]);
+			docline.addValue(col.getName(), val);
+		}
+		
+		return docline;
 	}
 
 	public CreateDataView(Catalog catalog) {
@@ -96,7 +202,8 @@ public class CreateDataView extends Composite {
 
 		for (CatalogColumn c : cols) {
 			ColumnConfig config = new ColumnConfig(c.getName(), c.getLabel(), c
-					.getType().getFieldType(), "", "input-medium", !c.isAutoIncrement());
+					.getType().getFieldType(), "", "input-medium",
+					!c.isAutoIncrement());
 			configs.add(config);
 		}
 
@@ -113,7 +220,7 @@ public class CreateDataView extends Composite {
 
 	public List<DocumentLine> getData() {
 		List<DocumentLine> lines = grid.getData(mapper);
-		
+
 		return lines;
 	}
 

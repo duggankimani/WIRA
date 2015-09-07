@@ -138,7 +138,9 @@ public class CreateTableView extends Composite {
 	public Catalog getCatalog() {
 		Catalog catalog = new Catalog();
 		catalog.setId(id);
-		catalog.setName(txtName.getValue().toUpperCase());
+		String name = txtName.getValue().toUpperCase();
+		catalog.setName(name.replaceAll("\\s", "")); //Clear empty space
+		
 		catalog.setDescription(txtDescription.getValue());
 		List<CatalogColumn> columns = grid.getData(mapper);
 		catalog.setColumns(columns);

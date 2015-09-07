@@ -10,6 +10,8 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.EditCatalogEvent;
 import com.duggan.workflow.client.ui.events.EditCatalogEvent.EditCatalogHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -117,36 +119,45 @@ public class DataTablePresenter
 	}
 
 	private void showDataPopup(final Catalog catalog) {
-		final CreateDataView view = new CreateDataView(catalog);
+		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new GetDataRequest(catalog.getId()),
 				new ServiceCallback<GetDataResponse>() {
 					@Override
 					public void processResult(GetDataResponse aResponse) {
-						view.setData(aResponse.getLines());
-
-						AppManager.showPopUp("Data View", view,
-								"create-data-table-popup", new OptionControl() {
-
-									@Override
-									public void onSelect(String name) {
-
-										if (name.equals("Save")) {
-											saveData(catalog, view.getData());
-											hide();
-										} else {
-											hide();
-										}
-									}
-
-
-								}, "Save", "Cancel");
+						showDataPopup(catalog, aResponse.getLines());
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
+		
 
+	}
+	
+	private void showDataPopup(final Catalog catalog,
+			List<DocumentLine> lines) {
+		final CreateDataView view = new CreateDataView(catalog);
+		AppManager.showPopUp("Data View", view,
+				"create-data-table-popup", new OptionControl() {
+
+					@Override
+					public void onSelect(String name) {
+
+						if (name.equals("Save")) {
+							saveData(catalog, view.getData());
+							hide();
+						} else {
+							hide();
+						}
+					}
+
+
+				}, "Save", "Cancel");
+		
+		view.setData(lines);
 	}
 	
 	private void saveData(Catalog catalog,
 			List<DocumentLine> data) {
+		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new InsertDataRequest(catalog, data));
 		action.addRequest(new GetCatalogsRequest());
@@ -157,6 +168,7 @@ public class DataTablePresenter
 				List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 						.get(1)).getCatalogs();
 				getView().bindCatalogs(catalogs);
+				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
 	}
@@ -202,7 +214,12 @@ public class DataTablePresenter
 	@Override
 	public void onEditCatalog(EditCatalogEvent event) {
 		if (event.isEditData()) {
-			showDataPopup(event.getCatalog());
+			if(event.getLines()!=null){
+				showDataPopup(event.getCatalog(), event.getLines());
+			}else{
+				showDataPopup(event.getCatalog());
+			}
+			
 		} else if (event.isDelete()) {
 			deleteCatalog(event.getCatalog());
 		} else {
