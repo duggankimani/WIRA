@@ -20,6 +20,7 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	private String name;
 	private boolean archived;
 	private Long documentid;
+	private String docRefId;
 	private String fieldName;
 	private Long processDefId;
 	private Long size;
@@ -196,6 +197,12 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public String getDocRefId() {
+		return docRefId;
+	}
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 	
 }

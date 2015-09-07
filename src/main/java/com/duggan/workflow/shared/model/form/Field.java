@@ -31,6 +31,7 @@ public class Field extends FormModel{
 	private transient String gridName="";
 	private transient Long lineRefId = null;
 	private transient String docId="";
+	private transient String docRefId="";
 	
 	public Field() {
 		docId="TempD";
@@ -150,6 +151,7 @@ public class Field extends FormModel{
 			field.setId(Id);
 			field.setParentId(parentId);
 			field.setDocId(docId);
+			field.setDocRefId(docRefId);
 		}
 	
 		if(value!=null){
@@ -282,6 +284,7 @@ public class Field extends FormModel{
 		if(fields!=null){
 			for(Field field: fields){
 				field.setDocId(docId);
+				field.setDocRefId(docRefId);
 			}
 		}
 	}
@@ -292,6 +295,14 @@ public class Field extends FormModel{
 
 	public void setGridName(String gridName) {
 		//this.gridName = gridName;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 
 }

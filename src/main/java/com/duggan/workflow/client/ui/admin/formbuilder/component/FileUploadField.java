@@ -1,21 +1,13 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
-import gwtupload.client.IUploader;
-import gwtupload.client.IUploadStatus.Status;
-import gwtupload.client.IUploader.OnCancelUploaderHandler;
-import gwtupload.client.IUploader.OnFinishUploaderHandler;
-import gwtupload.client.IUploader.UploadedInfo;
-
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.component.AttachmentsPanel;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
-import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
-import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent.FileLoadHandler;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
@@ -26,7 +18,6 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
@@ -92,6 +83,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 		UploadContext context = new UploadContext();
 		context.setContext("formFieldName", field.getName());
 		context.setContext("documentId", field.getDocId());
+		context.setContext("docRefId", field.getDocRefId());
 		context.setContext("ACTION", UPLOADACTION.UPLOADDOCFILE.name());
 		String accept = getPropertyValue(ACCEPT);
 		if(accept!=null)
@@ -162,15 +154,15 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	public void onFileLoad(FileLoadEvent event) {
 		Attachment attachment = event.getAttachment();
 		
-		String docId = this.field.getDocId();
+		String docRefId = this.field.getDocRefId();
 		String fieldName = this.field.getName();
 		
-		if(docId==null || fieldName==null){
+		if(docRefId==null || fieldName==null){
 			return;
 		}
 				
 		if(attachment.getFieldName().equals(fieldName) && 
-				docId.equals(attachment.getDocumentid().toString())){
+				docRefId.equals(attachment.getDocRefId())){
 			
 			attachmentsPanel.addAttachment(attachment);
 		}

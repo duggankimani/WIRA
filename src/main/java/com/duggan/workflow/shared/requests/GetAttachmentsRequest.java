@@ -8,18 +8,23 @@ public class GetAttachmentsRequest extends
 
 	private Long documentId;
 	private String userId;
+	private String docRefId;
 
-	@SuppressWarnings("unused")
-	private GetAttachmentsRequest() {
+	public GetAttachmentsRequest() {
 		// For serialization only
+	}
+	
+	public GetAttachmentsRequest with(String userId){
+		this.userId=userId;
+		return this;
 	}
 
 	public GetAttachmentsRequest(Long documentId) {
 		this.documentId = documentId;
 	}
 	
-	public GetAttachmentsRequest(String userId){
-		this.userId= userId;
+	public GetAttachmentsRequest(String docRefId){
+		this.docRefId = docRefId;
 	}
 
 	public Long getDocumentId() {
@@ -33,5 +38,17 @@ public class GetAttachmentsRequest extends
 
 	public String getUserId() {
 		return userId;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }

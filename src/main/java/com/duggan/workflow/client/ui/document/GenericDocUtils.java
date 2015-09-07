@@ -127,8 +127,10 @@ public class GenericDocUtils {
 		
 		Field field = new Field();
 		field.setName(fieldName);
-		if(doc.getId()!=null)
+		if(doc.getId()!=null){
 			field.setDocId(doc.getId()+"");
+			field.setDocRefId(doc.getRefId());
+		}
 		
 		return ENV.getValue(field.getQualifiedName());
 	}

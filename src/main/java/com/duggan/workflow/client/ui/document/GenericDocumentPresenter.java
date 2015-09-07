@@ -938,7 +938,8 @@ public class GenericDocumentPresenter extends
 			
 			requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
-					public void processResult(MultiRequestActionResult results) {					
+					public void processResult(MultiRequestActionResult results) {
+						setFormMode(MODE.VIEW);
 						int i=0;	
 						CreateDocumentResult aResponse = (CreateDocumentResult)results.get(i++);
 						Document saved = aResponse.getDocument();
@@ -947,7 +948,6 @@ public class GenericDocumentPresenter extends
 						
 						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
 						bindAttachments(attachmentsresponse);
-						
 						fireEvent(new ProcessingCompletedEvent());							
 					}
 			});

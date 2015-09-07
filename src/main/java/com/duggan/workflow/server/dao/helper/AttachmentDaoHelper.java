@@ -12,6 +12,7 @@ import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -60,6 +61,14 @@ public class AttachmentDaoHelper{
 		
 	}
 	
+	public static List<Attachment> getAttachmentsByDocRefId(String docRefId) {
+		DocumentModel model = DB.getDocumentDao().findByRefId(docRefId, DocumentModel.class);
+		if(model==null){
+			return new ArrayList<>();
+		}
+		return getAttachments(model.getId());
+	}
+	
 	private static List<Attachment> get(List<LocalAttachment> models, boolean loadDocumentDetails) {
 		List<Attachment> attachments = new ArrayList<>();
 		
@@ -79,7 +88,8 @@ public class AttachmentDaoHelper{
 		attachment.setArchived(model.isArchived());
 		attachment.setContentType(model.getContentType());
 		if(model.getDocument()!=null){
-			attachment.setDocumentid(model.getDocument().getId());			
+			attachment.setDocumentid(model.getDocument().getId());	
+			attachment.setDocRefId(model.getDocument().getRefId());
 		}
 		if(model.getProcessDef()!=null)
 			attachment.setProcessDefId(model.getProcessDef().getId());

@@ -57,7 +57,7 @@ public class DocTreePresenter extends PresenterWidget<DocTreePresenter.IDocTreeV
 	}
 	
 	private void loadTree(){
-		requestHelper.execute(new GetAttachmentsRequest(AppContext.getUserId()),
+		requestHelper.execute(new GetAttachmentsRequest().with(AppContext.getUserId()),
 				new TaskServiceCallback<GetAttachmentsResponse>() {
 			@Override
 			public void processResult(GetAttachmentsResponse aResponse) {

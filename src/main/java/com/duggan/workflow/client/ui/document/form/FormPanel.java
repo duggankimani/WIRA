@@ -130,7 +130,7 @@ public class FormPanel extends Composite {
 		for(Field field: fields){
 			String name = field.getName();
 			field.setDocId(documentId+""); //Add DocId to all field
-			
+			field.setDocRefId(doc.getRefId());
 			if(name==null || name.isEmpty()){
 				continue;
 			}

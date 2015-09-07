@@ -22,6 +22,8 @@ public class GetAttachmentsRequestHandler extends
 		GetAttachmentsResponse response = (GetAttachmentsResponse)actionResult;
 		if(action.getDocumentId()!=null){
 			response.setAttachments(AttachmentDaoHelper.getAttachments(action.getDocumentId()));
+		}else if(action.getDocRefId()!=null){
+			response.setAttachments(AttachmentDaoHelper.getAttachmentsByDocRefId(action.getDocRefId()));
 		}else if(action.getUserId()!=null){
 			response.setAttachments(AttachmentDaoHelper.getAllAttachments(action.getUserId(),true));
 		}else{
