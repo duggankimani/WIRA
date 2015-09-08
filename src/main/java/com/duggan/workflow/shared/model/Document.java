@@ -227,6 +227,7 @@ public class Document extends Doc implements Serializable{
 	public Document clone(boolean fullClone){
 	
 		Document document = new Document();
+		document.setRefId(getRefId());
 		document.setCreated(created);
 		document.setDateDue(dateDue);
 		document.setCaseNo(caseNo);

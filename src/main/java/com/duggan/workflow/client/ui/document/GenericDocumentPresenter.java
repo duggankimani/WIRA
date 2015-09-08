@@ -120,6 +120,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
@@ -212,7 +213,7 @@ public class GenericDocumentPresenter extends
 	}
 	
 	Long taskId;
-	//Long documentId;
+	Long documentId;
 	private String docRefId;
 	
 	Doc doc;
@@ -962,7 +963,7 @@ public class GenericDocumentPresenter extends
 		getView().setComment("");
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
-		//comment.setDocumentId(documentId);
+		comment.setDocumentId(documentId);
 		comment.setDocRefId(docRefId);
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
@@ -1004,6 +1005,7 @@ public class GenericDocumentPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
+		Window.alert("Reveal >> DocRefId= "+docRefId+"; docId= "+documentId);
 		loadData();
 		getView().show((Anchor)getView().getLinkEnv(), AppContext.isCurrentUserAdmin());
 	}
@@ -1090,11 +1092,11 @@ public class GenericDocumentPresenter extends
 		this.form = form;
 		
 		if(doc instanceof Document){
-			//documentId = (Long) doc.getId();
+			documentId = (Long) doc.getId();
 			docRefId = doc.getRefId();
 			taskId=null;
 		}else{
-			//documentId = ((HTSummary)doc).getDocumentRef();
+			documentId = ((HTSummary)doc).getDocumentRef();
 			docRefId = doc.getRefId();
 			taskId = ((HTSummary)doc).getId();
 		}
