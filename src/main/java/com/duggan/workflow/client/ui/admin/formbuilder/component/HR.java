@@ -43,5 +43,15 @@ public class HR extends FieldWidget{
 		lblTitle.setInnerText(caption);
 			
 	}
+
+	@Override
+	public Widget getInputComponent() {
+		return this;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
+	}
 	
 }

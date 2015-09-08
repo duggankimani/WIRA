@@ -97,7 +97,7 @@ public class GridRow extends Composite {
 		//System.err.println(field.getQualifiedName()+"="+field.getValue()+" : detail- "+detailId);
 		FieldWidget fw = FieldWidget.getWidget(field.getType(), field, false);		
 		
-		Widget widget = fw.getComponent(true);
+		Widget widget = fw.createComponent(true);
 		assert widget!=null;
 		
 		cell.add(widget);

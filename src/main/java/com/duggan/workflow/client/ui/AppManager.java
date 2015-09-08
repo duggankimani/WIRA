@@ -113,7 +113,7 @@ public class AppManager {
 		propertyPanel.getView().getPopoverFocus().setFocus(true);
 		mainPagePresenter.addToPopupSlot(propertyPanel, false);
 	}
-
+	
 	public static void showCarouselPanel(Widget widget, int[] position,
 			boolean isLeft) {
 		//propertyPanel.getView().getPopUpContainer().clear();

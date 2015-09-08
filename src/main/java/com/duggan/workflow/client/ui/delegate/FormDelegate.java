@@ -31,7 +31,7 @@ public class FormDelegate {
 			}
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
-			if(!fieldWidget.isValid()){
+			if(!fieldWidget.isValid() && fieldWidget.isVisible()){
 				isValid=false;
 				issues.addError("'"+fieldWidget.getField().getCaption()+"' is Mandatory");
 			}

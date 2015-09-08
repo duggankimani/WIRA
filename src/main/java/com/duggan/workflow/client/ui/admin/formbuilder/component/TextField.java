@@ -196,7 +196,7 @@ public class TextField extends FieldWidget {
 	}
 
 	@Override
-	public Widget getComponent(boolean small) {
+	public Widget createComponent(boolean small) {
 				
 		if(!readOnly)
 		if(small){
@@ -223,6 +223,16 @@ public class TextField extends FieldWidget {
 					ENV.setContext(field, event.getValue());
 			}
 		});
+	}
+
+	@Override
+	public Widget getInputComponent() {
+		return txtComponent;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return lblReadOnly.getElement();
 	}
 	
 }

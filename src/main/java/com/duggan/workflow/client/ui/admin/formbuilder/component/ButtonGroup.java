@@ -51,4 +51,13 @@ public class ButtonGroup extends FieldWidget {
 		return DataType.MULTIBUTTON;
 	}
 
+	@Override
+	public Widget getInputComponent() {
+		return this;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return this.getElement();
+	}
 }

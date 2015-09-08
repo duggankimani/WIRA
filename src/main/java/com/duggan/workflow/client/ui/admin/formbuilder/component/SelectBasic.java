@@ -178,7 +178,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	}
 	
 	@Override
-	public Widget getComponent(boolean small) {
+	public Widget createComponent(boolean small) {
 				
 //		if(!readOnly){
 //			return lstItems;
@@ -196,6 +196,16 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 						ENV.setContext(field, event.getValue()==null? null: event.getValue().getKey());
 				}
 			});
+	}
+
+	@Override
+	public Widget getInputComponent() {
+		return lstItems.getComponent();
+	}
+
+	@Override
+	public Element getViewElement() {
+		return lblComponent.getElement();
 	}
 	
 }

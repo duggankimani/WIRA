@@ -44,4 +44,15 @@ public class FormWidget extends FieldWidget {
 		return DataType.FORM;
 	}
 
+	@Override
+	public Widget getInputComponent() {
+		
+		return txtComponent;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
+	}
+
 }

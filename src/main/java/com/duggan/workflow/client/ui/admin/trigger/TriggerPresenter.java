@@ -13,7 +13,6 @@ import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -41,7 +40,7 @@ implements EditTriggerHandler{
 
 	public interface ITriggerView extends View {
 		HasClickHandlers getAddTriggerLink();
-
+		HasClickHandlers getCloneTriggerLink();
 		void setTriggers(List<Trigger> triggeruments);
 	}
 
@@ -58,6 +57,7 @@ implements EditTriggerHandler{
 	
 	@Inject	SaveTriggerPresenter savePresenter;
 	@Inject DispatchAsync requestHelper;
+	List<Trigger> triggers;//For Cloning
 	
 	@Inject
 	public TriggerPresenter(final EventBus eventBus, final ITriggerView view,
@@ -75,8 +75,36 @@ implements EditTriggerHandler{
 				showEditPopup(null);
 			}
 		});
+		
+		getView().getCloneTriggerLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				showClonePopup();
+			}
+		});
 	}
 	
+	protected void showClonePopup() {
+		savePresenter.clear();
+		savePresenter.setTriggers(triggers);
+		AppManager.showPopUp("Copy Trigger",savePresenter.asWidget(),new OptionControl(){
+			@Override
+			public void onSelect(String name) {						
+				if(name.equals("Save") && savePresenter.isValid()){
+					Trigger trigger = savePresenter.getTrigger();
+					save(trigger);
+					hide();
+				}
+				
+				if(name.equals("Cancel")){
+					hide();
+				}
+			}
+
+		},"Save", "Cancel");
+	}
+
 	protected void showEditPopup(Trigger trigger) {
 		savePresenter.clear();
 		savePresenter.setTrigger(trigger);
@@ -104,7 +132,7 @@ implements EditTriggerHandler{
 		requestHelper.execute(new GetTriggersRequest(), new TaskServiceCallback<GetTriggersResponse>() {
 			@Override
 			public void processResult(GetTriggersResponse aResponse) {
-				getView().setTriggers(aResponse.getTriggers());
+				getView().setTriggers(triggers = aResponse.getTriggers());
 			}
 		});
 	}
@@ -118,7 +146,7 @@ implements EditTriggerHandler{
 			public void processResult(MultiRequestActionResult aResult) {
 				//SaveTriggerResponse aSaveResponse = (SaveTriggerResponse) aResult.get(0);
 				GetTriggersResponse aGetTriggersResult = (GetTriggersResponse) aResult.get(1);
-				getView().setTriggers(aGetTriggersResult.getTriggers());
+				getView().setTriggers(triggers = aGetTriggersResult.getTriggers());
 			}
 		});
 	}

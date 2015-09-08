@@ -102,6 +102,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vGridPanel;
 	@UiField PalettePanel vFileUploadPanel;
 	@UiField PalettePanel vPanelIFrame;
+	@UiField PalettePanel jsPanel;
 	
 	@UiField PalettePanel vHRPanel;
 //	@UiField PalettePanel vGridPanel;
@@ -293,6 +294,7 @@ public class FormBuilderView extends ViewImpl implements
 		vGridPanel.registerDragController(widgetDragController);
 		vFileUploadPanel.registerDragController(widgetDragController);
 		vPanelIFrame.registerDragController(widgetDragController);
+		jsPanel.registerDragController(widgetDragController);
 	}
 	
 	/**

@@ -9,74 +9,70 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-public class StaticText extends FieldWidget {
+public class JSField extends FieldWidget {
 
-	private static LabelFieldUiBinder uiBinder = GWT
-			.create(LabelFieldUiBinder.class);
+	private static JSFieldUiBinder uiBinder = GWT.create(JSFieldUiBinder.class);
 
-	private final Widget widget;
-	
-	interface LabelFieldUiBinder extends UiBinder<Widget, StaticText> {
+	interface JSFieldUiBinder extends UiBinder<Widget, JSField> {
 	}
 
-	@UiField Element lblEl;
-	
-	public StaticText() {
+	private final Widget widget;
+
+	@UiField
+	Element lblEl;
+
+	public JSField() {
 		super();
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 	}
-	
+
 	@Override
 	public void defaultProperties() {
 		addProperty(new Property(NAME, "Name", DataType.STRING, id));
-		addProperty(new Property(STATICCONTENT, "Content", DataType.STRINGLONG, id));
+		addProperty(new Property(JS, "Content", DataType.STRINGLONG,
+				id));
 		addProperty(new Property(HELP, "Help", DataType.STRING, id));
 	}
 
 	@Override
 	public FieldWidget cloneWidget() {
-		return new StaticText();
+		return new JSField();
 	}
 
 	@Override
 	protected DataType getType() {
-		return DataType.LABEL;
+		return DataType.JS;
 	}
-	
+
 	@Override
 	public void setField(Field field) {
 		super.setField(field);
-		String value = getPropertyValue(STATICCONTENT);
+		String value = getPropertyValue(NAME);
 		
 		if(value!=null){
-			lblEl.setInnerHTML(value);
+			lblEl.setInnerText(value);
 		}else{
-			lblEl.setInnerText("Static Text");
+			lblEl.setInnerText("Javascript");
 		}
 	}
-	
-	@Override
-	protected void setStaticContent(String content) {
-		lblEl.setInnerHTML(content);
-	}
-	
+
 	@Override
 	public void setTitle(String title) {
-		if(title!=null)
+		if (title != null)
 			lblEl.setTitle(title);
 	}
-	
+
 	@Override
 	public boolean isMandatory() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isReadOnly() {
 		return true;
 	}
-	
+
 	public Widget getComponent() {
 		return this;
 	}
@@ -90,4 +86,5 @@ public class StaticText extends FieldWidget {
 	public Element getViewElement() {
 		return null;
 	}
+	
 }

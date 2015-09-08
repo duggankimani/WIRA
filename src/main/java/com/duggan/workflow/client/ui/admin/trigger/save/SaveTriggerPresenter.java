@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.admin.trigger.save;
 
+import java.util.List;
+
 import com.duggan.workflow.shared.model.Trigger;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -15,6 +17,8 @@ public class SaveTriggerPresenter extends
 		void clear();
 		void setTrigger(Trigger trigger);
 		boolean isValid();
+		void setTriggers(List<Trigger> triggers);
+		void showTriggers(boolean b);
 	}
 
 	Trigger trigger=null;
@@ -38,6 +42,7 @@ public class SaveTriggerPresenter extends
 	}
 
 	public void clear() {
+		getView().showTriggers(false);
 		getView().clear();
 	}
 
@@ -50,6 +55,11 @@ public class SaveTriggerPresenter extends
 	
 	public boolean isValid(){
 		return getView().isValid();
+	}
+
+	public void setTriggers(List<Trigger> triggers) {
+		getView().showTriggers(true);
+		getView().setTriggers(triggers);
 	}
 	
 	

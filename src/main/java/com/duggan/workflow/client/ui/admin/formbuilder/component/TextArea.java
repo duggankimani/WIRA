@@ -171,7 +171,7 @@ public class TextArea extends FieldWidget {
 	}
 	
 	@Override
-	public Widget getComponent(boolean small){		
+	public Widget createComponent(boolean small){		
 		return panelControls;
 	}
 	
@@ -202,5 +202,15 @@ public class TextArea extends FieldWidget {
 						ENV.setContext(field, event.getValue());
 				}
 			});
+	}
+	
+	@Override
+	public Widget getInputComponent() {
+		return txtComponent;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return lblComponent.getElement();
 	}
 }

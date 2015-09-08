@@ -234,4 +234,14 @@ public class SingleButton extends FieldWidget {
 		return this;
 	}
 
+	@Override
+	public Widget getInputComponent() {
+		return aButton;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
+	}
+
 }

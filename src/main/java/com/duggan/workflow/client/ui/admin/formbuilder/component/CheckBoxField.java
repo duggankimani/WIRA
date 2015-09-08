@@ -111,7 +111,7 @@ public class CheckBoxField extends FieldWidget {
 	}
 	
 	@Override
-	public Widget getComponent(boolean small) {
+	public Widget createComponent(boolean small) {
 		return component;
 	}
 	
@@ -140,4 +140,13 @@ public class CheckBoxField extends FieldWidget {
 			});
 	}
 
+	@Override
+	public Widget getInputComponent() {
+		return component;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
+	}
 }

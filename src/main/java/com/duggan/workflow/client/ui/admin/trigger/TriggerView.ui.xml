@@ -14,6 +14,11 @@
 						<i class="icon-plus"></i>
 						Add Trigger
 					</g:Anchor>
+					<g:Anchor ui:field="aCloneTrigger" styleName="btn btn-primary"
+						title="Copy Trigger">
+						<i class="icon-plus"></i>
+						Copy Trigger
+					</g:Anchor>
 				</div>
 			</div>
 

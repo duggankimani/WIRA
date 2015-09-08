@@ -165,7 +165,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	}
 	
 	@Override
-	public Widget getComponent(boolean small) {
+	public Widget createComponent(boolean small) {
 		return vPanel;
 	}
 	
@@ -179,5 +179,15 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 			btn.setEnabled(!this.readOnly);
 			//btn.set
 		}
+	}
+
+	@Override
+	public Widget getInputComponent() {
+		return this;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
 	}
 }

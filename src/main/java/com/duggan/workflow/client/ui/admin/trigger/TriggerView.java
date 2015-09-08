@@ -28,6 +28,7 @@ public class TriggerView extends ViewImpl implements
 
 	private final Widget widget;
 	@UiField Anchor aNewTrigger;
+	@UiField Anchor aCloneTrigger;
 	@UiField TableView tblView;
 
 	public interface Binder extends UiBinder<Widget, TriggerView> {
@@ -114,6 +115,11 @@ public class TriggerView extends ViewImpl implements
 		Trigger getTrigger(){
 			return trigger;
 		}
+	}
+
+	@Override
+	public HasClickHandlers getCloneTriggerLink() {
+		return aCloneTrigger;
 	}
 	
 }

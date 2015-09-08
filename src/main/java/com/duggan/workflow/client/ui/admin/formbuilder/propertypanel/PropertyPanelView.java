@@ -112,7 +112,7 @@ public class PropertyPanelView extends PopupViewImpl implements
 			if(property.getName().equals(SELECTIONTYPE) && !(isDSAvailable&&isSQLAvailable)){
 				
 				property.setFieldId(model.getId());
-				UIObject.setVisible(fw.getComponent(false).getElement(), false);
+				UIObject.setVisible(fw.createComponent(false).getElement(), false);
 				
 				assert property.getFieldId()!=null;
 				addSelection((Field)model,property);

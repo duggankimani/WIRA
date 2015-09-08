@@ -52,4 +52,14 @@ public class SelectMultiple extends FieldWidget {
 		
 		return DataType.SELECTMULTIPLE;
 	}
+
+	@Override
+	public Widget getInputComponent() {
+		return this;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
+	}
 }

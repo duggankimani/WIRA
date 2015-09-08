@@ -4,6 +4,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.LabelElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -57,6 +58,16 @@ public class IFrameField extends FieldWidget{
 		if(iframe!=null){
 			panelIframe.add(new HTML(iframe.toString()));
 		}
+	}
+
+	@Override
+	public Widget getInputComponent() {
+		return this;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
 	}
 
 

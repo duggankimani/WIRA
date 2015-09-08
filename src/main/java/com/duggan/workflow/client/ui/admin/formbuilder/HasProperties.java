@@ -20,6 +20,7 @@ public interface HasProperties {
 	public static final String SQLDS="SQLDS";
 	public static final String SQLSELECT="SQLSELECT";
 	public static final String STATICCONTENT="STATICCONTENT";
+	public static final String JS="JavaScript";
 	public static final String LABELPOSITION="LABELPOSITION";
 	public static final String FORMULA="FORMULA";
 	public static final String UPLOADERTYPE="UPLOADERTYPE";

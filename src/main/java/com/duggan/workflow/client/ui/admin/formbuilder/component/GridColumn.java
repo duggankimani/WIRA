@@ -69,7 +69,7 @@ PropertyChangedHandler{
 
 	public Widget getInputComponent(){
 		//create a copy of 
-		return fieldWidget.getComponent(true);
+		return fieldWidget.createComponent(true);
 	}
 	
 	@Override

@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class Trigger implements Serializable{
+public class Trigger implements Serializable, Listable{
 
 	/**
 	 * 
@@ -61,5 +61,10 @@ public class Trigger implements Serializable{
 
 	public void setImports(String imports) {
 		this.imports = imports;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return name;
 	}
 }

@@ -141,7 +141,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	}
 
 	@Override
-	public Widget getComponent(boolean small) {
+	public Widget createComponent(boolean small) {
 				
 		if(!readOnly)
 		if(small){
@@ -171,6 +171,16 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	@Override
 	public void onReloadAttachments(ReloadAttachmentsEvent event) {
 		attachmentsPanel.clear();
+	}
+
+	@Override
+	public Widget getInputComponent() {
+		return uploader;
+	}
+
+	@Override
+	public Element getViewElement() {
+		return null;
 	}
 
 }

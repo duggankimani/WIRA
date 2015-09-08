@@ -37,6 +37,7 @@ import com.duggan.workflow.shared.requests.CreateFieldRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.responses.CreateFieldResponse;
 import com.duggan.workflow.shared.responses.DeleteFormModelResponse;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -150,9 +151,16 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		 */
 		int top = 7;
 		int left = 75;
+		
+		if(field.getType()==DataType.JS){
+			left = 55;
+		}
+		
 		//System.err.println("Field ="+field+"\n Properties = "+getProperties());
+		
 		AppManager.showPropertyPanel(field, getProperties(), top, left,
 				arrowPosition);
+		
 	}
 
 	public Field getField() {
@@ -448,6 +456,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void setField(Field field) {
 		this.field = field;
+		this.getElement().setId(field.getName()+"_Field");
+		this.getInputComponent().getElement().setId(field.getName());
+		if(this.getViewElement()!=null){
+			this.getViewElement().setId(field.getName()+"_View");
+		}
+		
 		
 		if(field.getId()!=null)
 			this.id = field.getId();
@@ -651,6 +665,14 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case IFRAME:
 			widget = new IFrameField();
 			break;
+			
+		case JS:
+			widget = new JSField();
+			if(!activatePopup){
+				//hidden field
+				widget.addStyleName("hide");
+			}
+			break;
 		}
 
 		widget.designMode = activatePopup;
@@ -784,7 +806,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		return shim;
 	}
 	
-	public Widget getComponent(boolean small) {
+	public Widget createComponent(boolean small) {
 		return null;
 	}
 	
@@ -1044,4 +1066,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public Value from(String key,String val) {
 		return new StringValue(null,key,val);
 	}
+	
+	public abstract Widget getInputComponent();
+	public abstract Element getViewElement();
+	
 }

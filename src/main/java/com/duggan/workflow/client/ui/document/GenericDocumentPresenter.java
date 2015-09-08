@@ -1005,7 +1005,7 @@ public class GenericDocumentPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		Window.alert("Reveal >> DocRefId= "+docRefId+"; docId= "+documentId);
+		//Window.alert("Reveal >> DocRefId= "+docRefId+"; docId= "+documentId);
 		loadData();
 		getView().show((Anchor)getView().getLinkEnv(), AppContext.isCurrentUserAdmin());
 	}

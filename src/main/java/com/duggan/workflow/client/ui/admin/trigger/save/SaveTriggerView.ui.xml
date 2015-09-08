@@ -10,10 +10,16 @@
 	<g:HTMLPanel styleName="">
 		<d:IssuesPanel ui:field="issues">
 		</d:IssuesPanel>
+	
+		<div class="hide form-group" ui:field="divTriggers">
+			<label for="ProcessName">Triggers:</label>
+			<d:DropDownList ui:field="lstTrigger" styleName="form-control" width="300px"/>
+		</div>	
+	
 		<div class="form-group">
 			<label for="ProcessName">Name:</label>
 			<d:TextField ui:field="txtName" type="text" class="form-control"
-				placeholder="Trigger Name" />
+				placeholder="Trigger Name" width="350px"/>
 				<span ui:field="spnMandatory" style="color:red">*</span>
 		</div>
 		

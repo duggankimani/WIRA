@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.document.form;
 
 import static com.duggan.workflow.client.ui.util.DateUtils.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -32,6 +33,7 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.dom.client.LegendElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -56,241 +58,288 @@ public class FormPanel extends Composite {
 	interface FormPanelUiBinder extends UiBinder<Widget, FormPanel> {
 	}
 
-	@UiField HTMLPanel panelFields;
-	@UiField LegendElement divFormCaption;
-	@UiField SpanElement divFormHelp;
-	@UiField IssuesPanel issues;
-	boolean isReadOnly=true;
+	@UiField
+	HTMLPanel panelFields;
+	@UiField
+	LegendElement divFormCaption;
+	@UiField
+	SpanElement divFormHelp;
+	@UiField
+	IssuesPanel issues;
+	boolean isReadOnly = true;
 
-	@UiField SpanElement spnCreated;
-	@UiField SpanElement spnDeadline;
-	
+	@UiField
+	SpanElement spnCreated;
+	@UiField
+	SpanElement spnDeadline;
+
 	FormDelegate formDelegate = new FormDelegate();
 	MODE mode = MODE.VIEW;
-	
-	public FormPanel(Form form,Doc doc){		
-		this(form,doc, MODE.VIEW);
+	List<String> jsScripts = new ArrayList<String>();
+
+	public FormPanel(Form form, Doc doc) {
+		this(form, doc, MODE.VIEW);
 	}
-	
-	public FormPanel(Form form,Doc doc,MODE mode) {
+
+	public FormPanel(Form form, Doc doc, MODE mode) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.mode = mode;
-		
+
 		form.getCaption();
 		divFormHelp.setInnerText("");
-		if(form.getProperties()!=null)
-		for(Property prop: form.getProperties()){
-			if(prop.getName()!=null){
-				if(prop.getName().equals(HasProperties.CAPTION)){
-					Value val = prop.getValue();
-					if(val!=null){
-						divFormCaption.setInnerHTML(((StringValue)val).getValue());
+		if (form.getProperties() != null)
+			for (Property prop : form.getProperties()) {
+				if (prop.getName() != null) {
+					if (prop.getName().equals(HasProperties.CAPTION)) {
+						Value val = prop.getValue();
+						if (val != null) {
+							divFormCaption.setInnerHTML(((StringValue) val)
+									.getValue());
+						}
+
 					}
-					
-				}
-				if(prop.getName().equals(HasProperties.HELP)){
-					Value val = prop.getValue();
-					if(val!=null){
-						divFormHelp.setInnerHTML(((StringValue)val).getValue());
+					if (prop.getName().equals(HasProperties.HELP)) {
+						Value val = prop.getValue();
+						if (val != null) {
+							divFormHelp.setInnerHTML(((StringValue) val)
+									.getValue());
+						}
 					}
 				}
 			}
-		}
-		
+
 		List<Field> fields = form.getFields();
 		Collections.sort(fields, new Comparator<FormModel>() {
 			public int compare(FormModel o1, FormModel o2) {
-				Field field1 = (Field)o1;
-				Field field2 = (Field)o2;
-				
+				Field field1 = (Field) o1;
+				Field field2 = (Field) o2;
+
 				Integer pos1 = field1.getPosition();
 				Integer pos2 = field2.getPosition();
-				
+
 				return pos1.compareTo(pos2);
 			};
-			
+
 		});
-		
+
 		bind(fields, doc);
-		
+
 	}
-	
-	void bind(List<Field> fields, Doc doc){
+
+	private void execJs() {
+		for (String js : jsScripts) {
+			if (js != null && !js.isEmpty()) {
+				ScriptInjector.fromString(js).inject();
+			}
+		}
+		// + "$wnd.alert('Testing mimi222!!!!');"
+	}
+
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		execJs();
+	}
+
+	@Override
+	protected void onAttach() {
+		// TODO Auto-generated method stub
+		super.onAttach();
+	}
+
+	private native void test() /*-{
+								$wnd.alert('Testing mimi!!!!');
+								}-*/;
+
+	void bind(List<Field> fields, Doc doc) {
+
 		Map<String, Value> values = doc.getValues();
 		Long documentId = null;
 		Long taskId = null;
-		
-		if(doc instanceof Document){
+
+		if (doc instanceof Document) {
 			documentId = (Long) doc.getId();
-			taskId=null;
-		}else{
-			documentId = ((HTSummary)doc).getDocumentRef();
-			taskId = ((HTSummary)doc).getId();
+			taskId = null;
+		} else {
+			documentId = ((HTSummary) doc).getDocumentRef();
+			taskId = ((HTSummary) doc).getId();
 		}
-		for(Field field: fields){
-			String name = field.getName();
-			field.setDocId(documentId+""); //Add DocId to all field
-			field.setDocRefId(doc.getRefId());
-			if(name==null || name.isEmpty()){
+		for (Field field : fields) {
+			if(field.getType()==DataType.JS){
+				jsScripts.add(field.getPropertyValue(HasProperties.JS));
 				continue;
 			}
-						
-			if(field.getType()==DataType.GRID){
-				List<DocumentLine> lines=doc.getDetails().get(field.getName());
-				if(lines!=null){
+			
+			String name = field.getName();
+			field.setDocId(documentId + ""); // Add DocId to all field
+			field.setDocRefId(doc.getRefId());
+			if (name == null || name.isEmpty()) {
+				continue;
+			}
+
+			if (field.getType() == DataType.GRID) {
+				List<DocumentLine> lines = doc.getDetails()
+						.get(field.getName());
+				if (lines != null) {
 					GridValue value = new GridValue();
 					value.setKey(field.getName());
 					value.setCollectionValue(lines);
-					//System.err.println(">>"+lines.size());
+					// System.err.println(">>"+lines.size());
 					field.setValue(value);
 				}
-				
+
 				bind(field);
 				continue;
-				
-			}else if(field.getType()==DataType.BUTTON){
-				String submitType = field.getPropertyValue(SingleButton.SUBMITTYPE);
-				if(submitType!=null){
-					if(submitType.equals("CompleteProcess")){
-						//Override default complete
-						//getView().overrideDefaultCompleteProcess();
-					}else if(submitType.equals("StartProcess")){
-						//Override default start
-						//getView().overrideDefaultStartProcess();
+
+			} else if (field.getType() == DataType.BUTTON) {
+				String submitType = field
+						.getPropertyValue(SingleButton.SUBMITTYPE);
+				if (submitType != null) {
+					if (submitType.equals("CompleteProcess")) {
+						// Override default complete
+						// getView().overrideDefaultCompleteProcess();
+					} else if (submitType.equals("StartProcess")) {
+						// Override default start
+						// getView().overrideDefaultStartProcess();
 					}
-					
+
 				}
-				
-				if(doc instanceof Document){
-					DocStatus status = ((Document)doc).getStatus();
-					if(status==DocStatus.DRAFTED){
-						Property prop = new Property(HasProperties.READONLY, "Read only", DataType.BOOLEAN);
-						prop.setValue(new BooleanValue(null, HasProperties.READONLY, false));
+
+				if (doc instanceof Document) {
+					DocStatus status = ((Document) doc).getStatus();
+					if (status == DocStatus.DRAFTED) {
+						Property prop = new Property(HasProperties.READONLY,
+								"Read only", DataType.BOOLEAN);
+						prop.setValue(new BooleanValue(null,
+								HasProperties.READONLY, false));
 						field.getProperties().add(prop);
 					}
 				}
 			}
-			
+
 			Value value = values.get(name);
 			field.setValue(value);
-			
-			if(value==null){
-				if(name.equals("subject")){
+
+			if (value == null) {
+				if (name.equals("subject")) {
 					value = new StringValue(doc.getCaseNo());
 				}
-				
-				if(name.equals("description")){
+
+				if (name.equals("description")) {
 					value = new StringValue(doc.getDescription());
 				}
-				
-				if(name.equals("docDate")){
+
+				if (name.equals("docDate")) {
 					value = new DateValue(doc.getCreated());
 				}
 				field.setValue(value);
 			}
-		
-			//Bind this field to the form
+
+			// Bind this field to the form
 			bind(field);
 		}
 	}
-	
-	public void bind(Field field){
 
-		FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field, false);
-		if(mode==MODE.VIEW){
-			//set read only 
+	public void bind(Field field) {
+
+		FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field,
+				false);
+		if (mode == MODE.VIEW) {
+			// set read only
 			fieldWidget.setReadOnly(true);
 		}
-		
-		if(fieldWidget instanceof TextArea){
+
+		if (fieldWidget instanceof TextArea) {
 			((TextArea) fieldWidget).getContainer().removeStyleName("hidden");
 		}
-		
+
 		panelFields.add(fieldWidget);
 	}
-	
-	public void setCreated(Date created){
 
-		if (created!= null){
-			//DateUtils.getTimeDifferenceAsString(created);
+	public void setCreated(Date created) {
+
+		if (created != null) {
+			// DateUtils.getTimeDifferenceAsString(created);
 			String timeDiff = getTime(created);
 			spnCreated.setInnerText(timeDiff);
-			//TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
+			// TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
 		}
-			
+
 	}
-	
+
 	private String getTime(Date date) {
 		String timeDiff = "";
-		int days  = CalendarUtil.getDaysBetween(date, new Date());
-		if(days>=1 && days<8){
-			//Jan 18 (2 days ago)
-			 timeDiff = MONTHDAYFORMAT.format(date)+" ("+ DateUtils.getTimeDifferenceAsString(date)+")";
-		}else if(days<0){
-			//future
+		int days = CalendarUtil.getDaysBetween(date, new Date());
+		if (days >= 1 && days < 8) {
+			// Jan 18 (2 days ago)
+			timeDiff = MONTHDAYFORMAT.format(date) + " ("
+					+ DateUtils.getTimeDifferenceAsString(date) + ")";
+		} else if (days < 0) {
+			// future
 			timeDiff = MONTHTIME.format(date);
-		}else if(days<1){
-			//Several hr ago
+		} else if (days < 1) {
+			// Several hr ago
 			timeDiff = TIMEFORMAT12HR.format(date);
-		}else{
-			//More than 8 days
+		} else {
+			// More than 8 days
 			timeDiff = DATEFORMAT.format(date);
 		}
 		return timeDiff;
 	}
 
-	public void setCompletedOn(Date completedOn){
-		if (completedOn!= null){
-			String timeDiff =  getTime(completedOn);//MONTHDAYFORMAT.format(completedOn);//DateUtils.getTimeDifferenceAsString(created);
-			spnDeadline.setInnerText("Done "+timeDiff);
-			//TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
+	public void setCompletedOn(Date completedOn) {
+		if (completedOn != null) {
+			String timeDiff = getTime(completedOn);// MONTHDAYFORMAT.format(completedOn);//DateUtils.getTimeDifferenceAsString(created);
+			spnDeadline.setInnerText("Done " + timeDiff);
+			// TIMEFORMAT12HR.format(created)+" ("+timeDiff+" )");
 		}
 	}
-	
+
 	public void setDeadline(Date endDateDue) {
-		if(endDateDue==null){
+		if (endDateDue == null) {
 			return;
 		}
 
-		String deadline=getTime(endDateDue);
-		//String timeDiff =  DateUtils.getTimeDifferenceAsString(endDateDue);
-		
-//		if(timeDiff != null){
-//			deadline =  MONTHDAYFORMAT.format(endDateDue);
-//					//TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
-//		}
+		String deadline = getTime(endDateDue);
+		// String timeDiff = DateUtils.getTimeDifferenceAsString(endDateDue);
 
-		if(DateUtils.isOverdue(endDateDue)){
+		// if(timeDiff != null){
+		// deadline = MONTHDAYFORMAT.format(endDateDue);
+		// //TIMEFORMAT12HR.format(endDateDue)+" ("+timeDiff+" )";
+		// }
+
+		if (DateUtils.isOverdue(endDateDue)) {
 			spnDeadline.removeClassName("hidden");
 			spnDeadline.getStyle().setColor("#DD4B39");
-		}else if(DateUtils.isDueInMins(30, endDateDue)){
+		} else if (DateUtils.isDueInMins(30, endDateDue)) {
 			spnDeadline.removeClassName("hidden");
 			spnDeadline.getStyle().setColor("#F89406");
 		}
-		
-		spnDeadline.setInnerText("Due "+deadline);
+
+		spnDeadline.setInnerText("Due " + deadline);
 	}
 
-	public boolean isValid(){
-		boolean isValid = formDelegate.isValid(issues, panelFields);;
-		
-		if(!isValid){
+	public boolean isValid() {
+		boolean isValid = formDelegate.isValid(issues, panelFields);
+		;
+
+		if (!isValid) {
 			issues.getElement().scrollIntoView();
 		}
 		return isValid;
 	}
-	
-	public Map<String, Value> getValues(){
-		return formDelegate.getValues(panelFields);		
+
+	public Map<String, Value> getValues() {
+		return formDelegate.getValues(panelFields);
 	}
-	
-	public void setReadOnly(boolean readOnly){
+
+	public void setReadOnly(boolean readOnly) {
 		this.isReadOnly = readOnly;
-		formDelegate.setReadOnly(readOnly, (ComplexPanel)panelFields);
+		formDelegate.setReadOnly(readOnly, (ComplexPanel) panelFields);
 	}
 
 	public boolean isReadOnly() {
 		return isReadOnly;
 	}
-	
+
 }

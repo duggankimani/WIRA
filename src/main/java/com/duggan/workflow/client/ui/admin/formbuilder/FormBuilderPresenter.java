@@ -21,7 +21,6 @@ import com.duggan.workflow.client.ui.events.SaveFormDesignEvent.SaveFormDesignHa
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;

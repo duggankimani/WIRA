@@ -153,4 +153,13 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 	public void setValue(T value, boolean fireEvents) {
 		setValue(value);
 	}
+	
+	@Override
+	public void setWidth(String width) {
+		listBox.setWidth(width);
+	}
+
+	public Widget getComponent() {
+		return listBox;
+	}
 }
