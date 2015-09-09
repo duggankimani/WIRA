@@ -215,6 +215,8 @@ public class NumberField extends FieldWidget{
 			NumberFormat fmt = NumberFormat.getDecimalFormat();
 		    String formatted = fmt.format((Double)value);
 			lblReadOnly.setText(formatted);
+		}else{
+			super.setValue(0.0);
 		}
 
 	}
@@ -242,13 +244,24 @@ public class NumberField extends FieldWidget{
 
 	@Override
 	public Widget getInputComponent() {
-		// TODO Auto-generated method stub
 		return txtComponent;
 	}
 
 	@Override
 	public Element getViewElement() {
 		return lblReadOnly.getElement();
+	}
+	
+	@Override
+	public Object parseValue(String value) {
+		if(value==null){
+			return null;
+		}else if(value.isEmpty()){
+			return null;
+		}else{
+			return Double.parseDouble(value);
+		}
+		
 	}
 	
 	

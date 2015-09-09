@@ -141,16 +141,6 @@ public class FormPanel extends Composite {
 		execJs();
 	}
 
-	@Override
-	protected void onAttach() {
-		// TODO Auto-generated method stub
-		super.onAttach();
-	}
-
-	private native void test() /*-{
-								$wnd.alert('Testing mimi!!!!');
-								}-*/;
-
 	void bind(List<Field> fields, Doc doc) {
 
 		Map<String, Value> values = doc.getValues();
@@ -166,6 +156,7 @@ public class FormPanel extends Composite {
 		}
 		for (Field field : fields) {
 			if(field.getType()==DataType.JS){
+				//Load Scripts
 				jsScripts.add(field.getPropertyValue(HasProperties.JS));
 				continue;
 			}

@@ -53,6 +53,8 @@ public class CurrencyField extends NumberField{
 			}else{
 				lblReadOnly.setText(value.toString());	
 			}
+		}else{
+			super.setValue(0.0);
 		}
 	}
 	
@@ -61,5 +63,7 @@ public class CurrencyField extends NumberField{
 	public FieldWidget cloneWidget() {
 		return new CurrencyField();
 	}
+	
+	
 	
 }

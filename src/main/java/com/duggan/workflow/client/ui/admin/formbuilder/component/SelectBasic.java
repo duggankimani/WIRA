@@ -17,6 +17,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
@@ -189,11 +190,11 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		if(field.getDocId()!=null)
+		if(field.getDocRefId()!=null)
 			lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
 				@Override
 				public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
-						ENV.setContext(field, event.getValue()==null? null: event.getValue().getKey());
+					ENV.setContext(field, event.getValue()==null? null: event.getValue().getKey());
 				}
 			});
 	}
