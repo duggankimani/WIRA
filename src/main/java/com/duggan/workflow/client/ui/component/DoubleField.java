@@ -1,66 +1,17 @@
 package com.duggan.workflow.client.ui.component;
 
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.user.client.ui.DoubleBox;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.text.client.DoubleParser;
+import com.google.gwt.text.shared.AbstractRenderer;
+import com.google.gwt.text.shared.Renderer;
+import com.google.gwt.user.client.ui.ValueBox;
 
-public class DoubleField extends DoubleBox {
+public class DoubleField extends ValueBox<Double> {
 
 	public DoubleField() {
-
-		addKeyPressHandler(new KeyPressHandler() {
-
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				int keyCode = event.getNativeEvent().getKeyCode();
-				
-				switch (keyCode) {
-	            case KeyCodes.KEY_LEFT:
-	            case KeyCodes.KEY_RIGHT:
-	            //case KeyCodes.KEY_BACKSPACE:
-	            case KeyCodes.KEY_DELETE:
-	            case KeyCodes.KEY_TAB:
-	            case KeyCodes.KEY_UP:
-	            case KeyCodes.KEY_DOWN:
-	            case KeyCodes.KEY_ENTER:
-	                return;
-	            }
-				
-				if (!(Character.isDigit(event.getCharCode())) && event.getCharCode() != '.') {
-					cancelKey();
-				}
-
-				if (event.getCharCode() == '.') {
-					if (getValue() != null && getText().indexOf('.') != -1) {
-						cancelKey();
-					}
-				}
-				
-				int index = getCursorPos();
-	            String previousText = getText();
-	            String newText;
-	            if (getSelectionLength() > 0) {
-	                newText = previousText.substring(0, getCursorPos())
-	                        + event.getCharCode()
-	                        + previousText.substring(getCursorPos()
-	                                + getSelectionLength(), previousText.length());
-	            } else {
-	                newText = previousText.substring(0, index)
-	                        + event.getCharCode()
-	                        + previousText.substring(index, previousText.length());
-	            }
-	            cancelKey();
-
-	            Double val = null;
-	            if(newText!=null || !newText.trim().isEmpty()){
-	            	val = new Double(newText.trim().replace(",", ""));
-	            }
-	            setValue(val, true);
-
-				//Window.alert("" + getValue());
-			}
-		});
+		super(Document.get().createTextInputElement(), DoubleField.DoubleRenderer
+				.instance(), DoubleParser.instance());
 	}
 
 	public void setPlaceholder(String placeHolderValue) {
@@ -74,4 +25,29 @@ public class DoubleField extends DoubleBox {
 	public void setType(String type) {
 		getElement().setAttribute("type", type);
 	}
+	
+	static class DoubleRenderer extends AbstractRenderer<Double> {
+		  private static DoubleRenderer INSTANCE;
+
+		  /**
+		   * Returns the instance.
+		   */
+		  public static Renderer<Double> instance() {
+		    if (INSTANCE == null) {
+		      INSTANCE = new DoubleRenderer();
+		    }
+		    return INSTANCE;
+		  }
+
+		  protected DoubleRenderer() {
+		  }
+
+		  public String render(Double object) {
+		    if (object == null) {
+		      return "";
+		    }
+		    return NumberFormat.getFormat("#,##0;(#,##0)").format(object);
+		    //return NumberFormat.getDecimalFormat().format(object);
+		  }
+		}
 }
