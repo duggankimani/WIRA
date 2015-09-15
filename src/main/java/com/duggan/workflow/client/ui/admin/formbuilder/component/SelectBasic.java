@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
@@ -43,13 +46,22 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
 		addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
 		addProperty(new Property(SQLSELECT, "Sql", DataType.STRINGLONG));
-		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));		
+		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
+		
 		widget= uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
 		UIObject.setVisible(lblComponent.getElement(), false);
+		
+		lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
+				execTrigger();
+			}
+		});
 	}
 	
 	public SelectBasic(final Property property){

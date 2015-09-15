@@ -13,6 +13,8 @@ import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.shared.model.DBType;
+import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 
@@ -25,6 +27,17 @@ public class TestCatalogDao {
 	}
 	
 	@Test
+	public void saveData(){
+		//Catalog catalog = CatalogDaoHelper.getCatalog(24L);
+		
+		List<DocumentLine> lines = new ArrayList<>();
+		DocumentLine line = new DocumentLine();
+		line.addValue("administration", new DoubleValue(0.0));
+		lines.add(line);
+		CatalogDaoHelper.saveData(26L, lines);
+	}
+	
+	@Ignore
 	public void createTable(){
 		Catalog catalog = new Catalog();
 		catalog.setDescription("Test Table");

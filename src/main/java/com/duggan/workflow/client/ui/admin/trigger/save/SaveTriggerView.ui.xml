@@ -15,7 +15,8 @@
 			<label for="ProcessName">Triggers:</label>
 			<d:DropDownList ui:field="lstTrigger" styleName="form-control" width="300px"/>
 		</div>	
-	
+		<div class="hide label label-warning">Edit trigger</div>
+		<div class="hide label label-success">Copy Trigger</div>
 		<div class="form-group">
 			<label for="ProcessName">Name:</label>
 			<d:TextField ui:field="txtName" type="text" class="form-control"

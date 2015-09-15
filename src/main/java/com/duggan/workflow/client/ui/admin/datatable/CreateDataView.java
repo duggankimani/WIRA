@@ -10,18 +10,18 @@ import java.util.List;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
-import com.duggan.workflow.client.ui.events.EditCatalogEvent;
+import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
 import com.duggan.workflow.client.ui.grid.AggregationGrid;
 import com.duggan.workflow.client.ui.grid.ColumnConfig;
 import com.duggan.workflow.client.ui.grid.DataMapper;
 import com.duggan.workflow.client.ui.grid.DataModel;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.DBType;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
@@ -123,13 +123,13 @@ public class CreateDataView extends Composite {
 									view.setVisible(false);
 
 									setLines(uploadedItems.toString());
-									EditCatalogEvent event = new EditCatalogEvent(catalog, false, true);
+									EditCatalogDataEvent event = new EditCatalogDataEvent(catalog, false, true);
 									event.setLines(getData());
 									AppContext.fireEvent(event);
 									//AppCon
 								} else {
 									view.cancelImport();
-									EditCatalogEvent event = new EditCatalogEvent(catalog, false, true);
+									EditCatalogDataEvent event = new EditCatalogDataEvent(catalog, false, true);
 									AppContext.fireEvent(event);
 								}
 							}
@@ -184,7 +184,16 @@ public class CreateDataView extends Composite {
 					field, false);
 			
 			Value val = widget.from(col.getName(),lineValues[i]);
-			docline.addValue(col.getName(), val);
+			if((val==null || val.getValue()==null || val.getValue().toString().trim().isEmpty()) 
+					&& col.getType().getFieldType().equals(DataType.DOUBLE)){
+				//Window.alert("Setting default val for: "+col.getName());
+				docline.addValue(col.getName(), new DoubleValue(0.0));
+				
+			}else{
+				//Window.alert("Setting val "+val.getValue()+" for: "+col.getName());
+				docline.addValue(col.getName(), val);
+			}
+			
 		}
 		
 		return docline;

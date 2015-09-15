@@ -8,8 +8,10 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.events.EditCatalogEvent;
-import com.duggan.workflow.client.ui.events.EditCatalogEvent.EditCatalogHandler;
+import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
+import com.duggan.workflow.client.ui.events.EditCatalogDataEvent.EditCatalogDataHandler;
+import com.duggan.workflow.client.ui.events.EditCatalogSchemaEvent;
+import com.duggan.workflow.client.ui.events.EditCatalogSchemaEvent.EditCatalogSchemaHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
@@ -45,7 +47,7 @@ import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 public class DataTablePresenter
 		extends
 		Presenter<DataTablePresenter.IDataTableView, DataTablePresenter.IDataTableProxy>
-		implements EditCatalogHandler {
+		implements EditCatalogDataHandler, EditCatalogSchemaHandler {
 
 	public interface IDataTableView extends View {
 		HasClickHandlers getNewButton();
@@ -83,7 +85,8 @@ public class DataTablePresenter
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(EditCatalogEvent.TYPE, this);
+		addRegisteredHandler(EditCatalogDataEvent.TYPE, this);
+		addRegisteredHandler(EditCatalogSchemaEvent.TYPE, this);
 		getView().getNewButton().addClickHandler(new ClickHandler() {
 
 			@Override
@@ -159,7 +162,7 @@ public class DataTablePresenter
 			List<DocumentLine> data) {
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new InsertDataRequest(catalog, data));
+		action.addRequest(new InsertDataRequest(catalog.getId(), data));
 		action.addRequest(new GetCatalogsRequest());
 		requestHelper.execute(action,  new ServiceCallback<MultiRequestActionResult>() {
 			@Override
@@ -212,7 +215,7 @@ public class DataTablePresenter
 	}
 
 	@Override
-	public void onEditCatalog(EditCatalogEvent event) {
+	public void onEditCatalogData(EditCatalogDataEvent event) {
 		if (event.isEditData()) {
 			if(event.getLines()!=null){
 				showDataPopup(event.getCatalog(), event.getLines());
@@ -223,6 +226,15 @@ public class DataTablePresenter
 		} else if (event.isDelete()) {
 			deleteCatalog(event.getCatalog());
 		} else {
+			showPopup(event.getCatalog());
+		}
+	}
+	
+	@Override
+	public void onEditCatalogSchema(EditCatalogSchemaEvent event) {
+		if (event.isDelete()) {
+			deleteCatalog(event.getCatalog());
+		} else{
 			showPopup(event.getCatalog());
 		}
 	}
@@ -237,7 +249,7 @@ public class DataTablePresenter
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 
-						BaseResponse r = aResponse.get(0);
+						BaseResponse r = aResponse.get(0);//what to do?
 
 						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 								.get(1)).getCatalogs();
@@ -245,4 +257,5 @@ public class DataTablePresenter
 					}
 				});
 	}
+
 }

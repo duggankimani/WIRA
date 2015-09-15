@@ -130,11 +130,13 @@ public class ColumnConfig {
 			break;
 			
 		case DOUBLE:
-			value =new DoubleValue(id, key, ((Number)obj).doubleValue());
+			value =new DoubleValue(id, key, (obj==null||obj.toString().isEmpty())? null:
+					Double.parseDouble(obj.toString()));
 			break;
 			
 		case INTEGER:
-			value = new LongValue(id, key, ((Number)obj).longValue());
+			value = new LongValue(id, key, (obj==null||obj.toString().isEmpty())? null:  
+				Long.parseLong(obj.toString()));
 			break;
 			
 		case STRING:

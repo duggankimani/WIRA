@@ -4,29 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.responses.BaseResponse;
 
 public class InsertDataRequest extends BaseRequest<BaseResponse> {
 
-	private Catalog catalog;
+	private Long catalogId;
 	private List<DocumentLine> lines = new ArrayList<DocumentLine>();
 
 	@SuppressWarnings("unused")
 	private InsertDataRequest() {
 	}
 
-	public InsertDataRequest(Catalog catalog) {
-		this.catalog = catalog;
+	public InsertDataRequest(Long catalogId) {
+		this.catalogId = catalogId;
+		
 	}
 	
-	public InsertDataRequest(Catalog catalog, List<DocumentLine> lines) {
-		this.catalog = catalog;
+	public InsertDataRequest(Long catalogId, List<DocumentLine> lines) {
+		this.catalogId = catalogId;
 		this.lines = lines;
-	}
-
-	public Catalog getCatalog() {
-		return catalog;
 	}
 	
 	@Override
@@ -36,5 +32,9 @@ public class InsertDataRequest extends BaseRequest<BaseResponse> {
 
 	public List<DocumentLine> getLines() {
 		return lines;
+	}
+
+	public Long getCatalogId() {
+		return catalogId;
 	}
 }

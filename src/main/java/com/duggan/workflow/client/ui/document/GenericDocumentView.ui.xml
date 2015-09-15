@@ -65,7 +65,7 @@
 						Stop
 					</d:ActionLink>
 
-					<d:ActionLink ui:field="aForward" styleName="btn btn-success hidden">
+					<d:ActionLink ui:field="aForward" styleName="hidden btn btn-success hidden">
 						<i class="icon-share-alt"></i>
 						Submit <!-- Forward For Approval -->
 					</d:ActionLink>

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
@@ -33,7 +34,7 @@ public class CatalogDaoImpl extends BaseDaoImpl{
 		StringBuffer create = new StringBuffer("CREATE TABLE EXT_"+model.getName()+"(");
 		int i=0;
 		for(CatalogColumn col: model.getColumns()){
-			create.append(col.getName());
+			create.append("\""+col.getName()+"\"");
 			
 			if(col.isAutoIncrement()){
 				create.append(col.isAutoIncrement()?" serial":"");//POSTGRES
@@ -106,7 +107,15 @@ public class CatalogDaoImpl extends BaseDaoImpl{
 					continue;
 				}
 				Value val = line.getValue(col.getName());
-				query.setParameter(col.getName(), val==null? null: val.getValue());
+				
+				//Hardcoded to handle hibernate null
+				if((val==null || val.getValue()==null) 
+						&& col.getType().getFieldType().equals(DataType.DOUBLE)){
+					query.setParameter(col.getName(), 0.0);
+				}else{
+					query.setParameter(col.getName(), val==null? null: val.getValue());
+				}
+				
 			}
 			query.executeUpdate();
 		}

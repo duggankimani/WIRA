@@ -26,6 +26,7 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -33,10 +34,13 @@ import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachme
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
+import com.duggan.workflow.client.ui.events.ExecTriggerEvent.ExecTriggerHandler;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
@@ -134,50 +138,85 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 public class GenericDocumentPresenter extends
-		PresenterWidget<GenericDocumentPresenter.MyView> 
-		implements ReloadDocumentHandler, ActivitiesLoadHandler,
-		ReloadAttachmentsHandler,DeleteAttachmentHandler,DeleteLineHandler, ButtonClickHandler{
+		PresenterWidget<GenericDocumentPresenter.MyView> implements
+		ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler,
+		DeleteAttachmentHandler, DeleteLineHandler, ButtonClickHandler,
+		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler {
 
 	public interface MyView extends View {
-		void setValues(HTUser createdBy, Date created, String type, String subject,
-				Date docDate, String value, String partner, String description, 
-				Integer priority,DocStatus status, String docRefid, String taskDisplayName);
-		
+		void setValues(HTUser createdBy, Date created, String type,
+				String subject, Date docDate, String value, String partner,
+				String description, Integer priority, DocStatus status,
+				String docRefid, String taskDisplayName);
+
 		void showForward(boolean show);
+
 		void setValidTaskActions(List<Actions> actions);
+
 		void show(boolean IsShowapprovalLink, boolean IsShowRejectLink);
+
 		void showEdit(boolean displayed);
-//		void setStates(List<NodeDetail> states);
+
+		// void setStates(List<NodeDetail> states);
 		HasClickHandlers getSimulationBtn();
+
 		HasClickHandlers getSaveButton();
+
 		HasClickHandlers getAssignLink();
+
 		HasClickHandlers getDeleteButton();
-		HasClickHandlers getForwardForApproval();		
+
+		HasClickHandlers getForwardForApproval();
+
 		HasClickHandlers getClaimLink();
+
 		HasClickHandlers getStartLink();
+
 		HasClickHandlers getSuspendLink();
+
 		HasClickHandlers getResumeLink();
+
 		HasClickHandlers getCompleteLink();
+
 		HasClickHandlers getDelegateLink();
+
 		HasClickHandlers getRevokeLink();
+
 		HasClickHandlers getStopLink();
+
 		HasClickHandlers getApproveLink();
+
 		HasClickHandlers getRejectLink();
+
 		HasClickHandlers getSaveCommentButton();
+
 		HasClickHandlers getLinkPrevious();
+
 		HasClickHandlers getLinkNext();
+
 		HasClickHandlers getLinkEnv();
+
 		HasClickHandlers getLinkViewProcessLog();
+
 		Anchor getLinkContinue();
+
 		String getComment();
+
 		Uploader getUploader();
+
 		void setComment(String string);
+
 		SpanElement getSpnAttachmentNo();
+
 		SpanElement getSpnActivityNo();
+
 		DivElement getDivAttachment();
-		void setForm(Form form,Doc doc, MODE mode);
+
+		void setForm(Form form, Doc doc, MODE mode);
+
 		boolean isValid();
-		Map<String,Value> getValues(); //Task Data
+
+		Map<String, Value> getValues(); // Task Data
 
 		void showDefaultFields(boolean b);
 
@@ -206,42 +245,46 @@ public class GenericDocumentPresenter extends
 		void setProcessUrl(Long processInstanceId);
 
 		void bindProcessLog(List<TaskLog> logs);
-		
+
 		void showAttachments(List<Attachment> attachments);
 
 		void setLoadAsAdmin(boolean isLoadAsAdmin);
+
+		void enableSubmit(boolean isEnable);
 	}
-	
+
 	Long taskId;
 	Long documentId;
 	private String docRefId;
-	
+
 	Doc doc;
 	Form form;
-	private int currentStep=0;
+	private int currentStep = 0;
 	private List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
-	
-	private Integer activities=0;
-	
-	@Inject DispatchAsync requestHelper;
-	@Inject PlaceManager placeManager;
-	
+
+	private Integer activities = 0;
+
+	@Inject
+	DispatchAsync requestHelper;
+	@Inject
+	PlaceManager placeManager;
+
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
 	private IndirectProvider<UploadDocumentPresenter> uploaderFactory;
-	private MODE formMode;//Form Mode; can be set on set
-	
-	//@Inject static MainPagePresenter mainPagePresenter;
-	@Inject static GenericPopupPresenter popupPresenter;
-	
+	private MODE formMode;// Form Mode; can be set on set
+
+	// @Inject static MainPagePresenter mainPagePresenter;
+	@Inject
+	static GenericPopupPresenter popupPresenter;
+
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
 	private List<TaskLog> logs = null;
 	private boolean isLoadAsAdmin;
-	
-	
+
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
 			Provider<CreateDocPresenter> docProvider,
@@ -249,77 +292,83 @@ public class GenericDocumentPresenter extends
 			Provider<AttachmentPresenter> attachmentProvider,
 			Provider<NotePresenter> noteProvider,
 			Provider<UploadDocumentPresenter> uploaderProvider) {
-		super(eventBus, view);		
+		super(eventBus, view);
 		ENV.clear();
-		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
-		commentPresenterFactory = new StandardProvider<CommentPresenter>(commentProvider);
-		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(attachmentProvider);
+		createDocProvider = new StandardProvider<CreateDocPresenter>(
+				docProvider);
+		commentPresenterFactory = new StandardProvider<CommentPresenter>(
+				commentProvider);
+		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(
+				attachmentProvider);
 		notePresenterFactory = new StandardProvider<NotePresenter>(noteProvider);
-		uploaderFactory = new StandardProvider<UploadDocumentPresenter>(uploaderProvider);
+		uploaderFactory = new StandardProvider<UploadDocumentPresenter>(
+				uploaderProvider);
 	}
 
 	@Override
 	protected void onBind() {
-		super.onBind();		
-		
+		super.onBind();
+
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
 		addRegisteredHandler(DeleteLineEvent.TYPE, this);
 		addRegisteredHandler(ButtonClickEvent.TYPE, this);
 		addRegisteredHandler(DeleteAttachmentEvent.TYPE, this);
-		
+		addRegisteredHandler(ProcessingEvent.TYPE, this);
+		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
+		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				showUpload();
-			  }
+			}
 		});
-		
+
 		getView().getForwardForApproval().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				forwardForApproval();				
+				forwardForApproval();
 			}
 		});
-		
+
 		getView().getLinkContinue().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				if(steps.size()>currentStep+1){
+				if (steps.size() > currentStep + 1) {
 					navigateToView(true);
-					//last step submits
-				}else if(doc instanceof Document){
+					// last step submits
+				} else if (doc instanceof Document) {
 					forwardForApproval();
-				}else{
+				} else {
 					complete(null, true);
 				}
 			}
 		});
-		
+
 		getView().getSaveButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				save((Document)doc);
+				save((Document) doc);
 			}
 		});
-		
+
 		getView().getDeleteButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				if(doc instanceof Document)
-					if(((Document)doc).getStatus()==DocStatus.DRAFTED){
-						//showEditForm(MODE.EDIT);
-						delete((Document)doc);
+				if (doc instanceof Document)
+					if (((Document) doc).getStatus() == DocStatus.DRAFTED) {
+						// showEditForm(MODE.EDIT);
+						delete((Document) doc);
 					}
 			}
 		});
-		
+
 		getView().getSaveCommentButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				String comment = getView().getComment();
@@ -328,514 +377,592 @@ public class GenericDocumentPresenter extends
 		});
 
 		getView().getClaimLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				//submitRequest(Actions.CLAIM);
+				// submitRequest(Actions.CLAIM);
 				fireEvent(new ExecTaskEvent(taskId, Actions.CLAIM));
 			}
 		});
-		
+
 		getView().getStartLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				//submitRequest(Actions.START);
-				assert taskId!=null;
+				// submitRequest(Actions.START);
+				assert taskId != null;
 				fireEvent(new ExecTaskEvent(taskId, Actions.START));
 			}
 		});
-		
+
 		getView().getSuspendLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				//submitRequest(Actions.SUSPEND);
+				// submitRequest(Actions.SUSPEND);
 				fireEvent(new ExecTaskEvent(taskId, Actions.SUSPEND));
 			}
 		});
-		
+
 		getView().getResumeLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				//submitRequest(Actions.RESUME);
+				// submitRequest(Actions.RESUME);
 				fireEvent(new ExecTaskEvent(taskId, Actions.RESUME));
 			}
 		});
-		
+
 		getView().getDelegateLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				//submitRequest(Actions.DELEGATE);
-				//fireEvent(new ExecTaskEvent(taskId, Actions.DELEGATE));
-				requestHelper.execute(new GetUsersRequest(), new TaskServiceCallback<GetUsersResponse>() {
-					@Override
-					public void processResult(GetUsersResponse result) {
-						showDelegatePopup(result.getUsers());
-					}
-				});
+
+				// submitRequest(Actions.DELEGATE);
+				// fireEvent(new ExecTaskEvent(taskId, Actions.DELEGATE));
+				requestHelper.execute(new GetUsersRequest(),
+						new TaskServiceCallback<GetUsersResponse>() {
+							@Override
+							public void processResult(GetUsersResponse result) {
+								showDelegatePopup(result.getUsers());
+							}
+						});
 			}
 		});
-		
+
 		getView().getRevokeLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				//submitRequest(Actions.REVOKE);
+
+				// submitRequest(Actions.REVOKE);
 				fireEvent(new ExecTaskEvent(taskId, Actions.REVOKE));
 			}
 		});
-		
+
 		getView().getStopLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new ExecTaskEvent(taskId, Actions.STOP));				
+				fireEvent(new ExecTaskEvent(taskId, Actions.STOP));
 			}
 		});
-		
+
 		getView().getApproveLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				final ConfirmAction confirm = new ConfirmAction("Do you want to approve this request?",
+				final ConfirmAction confirm = new ConfirmAction(
+						"Do you want to approve this request?",
 						"Approval comments");
-				
-				AppManager.showPopUp("Approval Comments", confirm, new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Approve")){
-							//create comment
-							Map<String, Value> values= new HashMap<String, Value>();
-							values.put("isApproved", new BooleanValue(true));
-							complete(values, true);	
-							if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
-								save(confirm.getComment());
+
+				AppManager.showPopUp("Approval Comments", confirm,
+						new OnOptionSelected() {
+
+							@Override
+							public void onSelect(String name) {
+								if (name.equals("Approve")) {
+									// create comment
+									Map<String, Value> values = new HashMap<String, Value>();
+									values.put("isApproved", new BooleanValue(
+											true));
+									complete(values, true);
+									if (confirm.getComment() != null
+											&& !confirm.getComment().isEmpty()) {
+										save(confirm.getComment());
+									}
+								}
 							}
-						}						
-					}
-				}, "Approve", "Cancel");		
-				
+						}, "Approve", "Cancel");
+
 			}
 		});
-		
+
 		getView().getRejectLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
-			public void onClick(ClickEvent event) {							
-				final ConfirmAction confirm = new ConfirmAction("Do you want to reject this request?",
+			public void onClick(ClickEvent event) {
+				final ConfirmAction confirm = new ConfirmAction(
+						"Do you want to reject this request?",
 						"Rejection reason or comments");
-				
-				AppManager.showPopUp("Rejection Comments", confirm, new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Reject")){
-							//create comment
-							Map<String, Value> values = new HashMap<String, Value>();
-							values.put("isApproved", new BooleanValue(false));
-							complete(values, false);		
-							
-							if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
-								save(confirm.getComment());
+
+				AppManager.showPopUp("Rejection Comments", confirm,
+						new OnOptionSelected() {
+
+							@Override
+							public void onSelect(String name) {
+								if (name.equals("Reject")) {
+									// create comment
+									Map<String, Value> values = new HashMap<String, Value>();
+									values.put("isApproved", new BooleanValue(
+											false));
+									complete(values, false);
+
+									if (confirm.getComment() != null
+											&& !confirm.getComment().isEmpty()) {
+										save(confirm.getComment());
+									}
+								}
 							}
-						}						
-					}
-				}, "Reject", "Cancel");		
-				
+						}, "Reject", "Cancel");
+
 			}
 		});
-		
-		
+
 		getView().getLinkNext().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				navigateToView(true);
 			}
 		});
-		
+
 		getView().getLinkPrevious().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				navigateToView(false);
 			}
 		});
-		
-		getView().getAssignLink().addClickHandler(new ClickHandler(){
+
+		getView().getAssignLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				requestHelper.execute(new GetUsersRequest(), new TaskServiceCallback<GetUsersResponse>() {
-					@Override
-					public void processResult(GetUsersResponse result) {
-						showAssignPopup(result.getUsers());
-					}
-				});
+				requestHelper.execute(new GetUsersRequest(),
+						new TaskServiceCallback<GetUsersResponse>() {
+							@Override
+							public void processResult(GetUsersResponse result) {
+								showAssignPopup(result.getUsers());
+							}
+						});
 			}
 		});
-		
+
 		getView().getLinkEnv().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-			
+
 				TableView tableEnv = new TableView();
-				tableEnv.setHeaders(Arrays.asList("Key","Value"));
-				
+				tableEnv.setHeaders(Arrays.asList("Key", "Value"));
+
 				List<String> keys = new ArrayList<String>();
 				keys.addAll(ENV.getValues().keySet());
 				Collections.sort(keys);
-				
+
 				String suffix = "";
-				if(taskId!=null){
-					suffix = Field.getSuffix(taskId+"");
-				}else{
-					//suffix = Field.getSuffix(documentId+"");
-					suffix = Field.getSuffix(docRefId+"");
+				if (taskId != null) {
+					suffix = Field.getSuffix(taskId + "");
+				} else {
+					// suffix = Field.getSuffix(documentId+"");
+					suffix = Field.getSuffix(docRefId + "");
 				}
-				
-				for(String key: keys){
+
+				for (String key : keys) {
 					Object value = ENV.getValue(key);
-					tableEnv.addRow(new InlineLabel(key.replace(suffix, "")), 
-							new InlineLabel(value==null? "": value.toString()));
+					tableEnv.addRow(
+							new InlineLabel(key.replace(suffix, "")),
+							new InlineLabel(value == null ? "" : value
+									.toString()));
 				}
-				
-				AppManager.showPopUp("Environment", tableEnv, new OnOptionSelected() {
-					@Override
-					public void onSelect(String name) {}
-				}, "Ok");
+
+				AppManager.showPopUp("Environment", tableEnv,
+						new OnOptionSelected() {
+							@Override
+							public void onSelect(String name) {
+							}
+						}, "Ok");
 			}
 		});
-		
+
 		getView().getLinkViewProcessLog().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				loadProcessLog();
 			}
-		});	
-		
+		});
+
 	}
-	
+
 	protected void loadProcessLog() {
-		
-		if(doc.getProcessInstanceId()!=null){
+
+		if (doc.getProcessInstanceId() != null) {
 			fireEvent(new ProcessingEvent("Loading Log"));
-			requestHelper.execute(new GetProcessLogRequest(doc.getProcessInstanceId()),
+			requestHelper.execute(
+					new GetProcessLogRequest(doc.getProcessInstanceId()),
 					new TaskServiceCallback<GetProcessLogResponse>() {
-				@Override
-				public void processResult(
-						GetProcessLogResponse aResponse) {
-					fireEvent(new ProcessingCompletedEvent());
-					logs = aResponse.getLogs();
-					getView().bindProcessLog(logs);
-				}
-			});
+						@Override
+						public void processResult(
+								GetProcessLogResponse aResponse) {
+							fireEvent(new ProcessingCompletedEvent());
+							logs = aResponse.getLogs();
+							getView().bindProcessLog(logs);
+						}
+					});
 		}
 	}
 
 	protected void showAssignPopup(List<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
-		
-		AppManager.showPopUp("Assign Task", view,
-				new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Ok")){
-							final HTUser user = view.getSelectedUser();
-							if(user!=null && user.getUserId()!=null){
-								
-								DelegationMessageView msgView = 
-										new DelegationMessageView(user, doc.getCaseNo());
-								
-								AppManager.showPopUp("Assign Message",
-										msgView,
-										new OnOptionSelected() {
-											
-											@Override
-											public void onSelect(String name) {
-												
-												if(name.equals("Back")){
-													showDelegatePopup(view);
-												}else{
-													fireEvent(new AssignTaskEvent(taskId, user.getUserId()));
-												}
-												
-											}
 
-										}, "Back", "Done");
-								
-							}
-						}
+		AppManager.showPopUp("Assign Task", view, new OnOptionSelected() {
+
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Ok")) {
+					final HTUser user = view.getSelectedUser();
+					if (user != null && user.getUserId() != null) {
+
+						DelegationMessageView msgView = new DelegationMessageView(
+								user, doc.getCaseNo());
+
+						AppManager.showPopUp("Assign Message", msgView,
+								new OnOptionSelected() {
+
+									@Override
+									public void onSelect(String name) {
+
+										if (name.equals("Back")) {
+											showDelegatePopup(view);
+										} else {
+											fireEvent(new AssignTaskEvent(
+													taskId, user.getUserId()));
+										}
+
+									}
+
+								}, "Back", "Done");
+
 					}
-				}, "Ok", "Cancel");
+				}
+			}
+		}, "Ok", "Cancel");
 	}
-	
-	boolean navigateIndex(boolean isNavigateNext){
-		if(isNavigateNext){
-			if(steps.size()>currentStep+1){
-				currentStep = currentStep+1;
+
+	boolean navigateIndex(boolean isNavigateNext) {
+		if (isNavigateNext) {
+			if (steps.size() > currentStep + 1) {
+				currentStep = currentStep + 1;
 				return true;
-			}//else ignore
-		}else{
-			//Navigate Previous
-			if(currentStep>0){
-				currentStep = currentStep-1;
+			}// else ignore
+		} else {
+			// Navigate Previous
+			if (currentStep > 0) {
+				currentStep = currentStep - 1;
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	protected void navigateToView(boolean isNavigateNext) {
 		boolean navigating = false;
-		//Complete/ Submitted documents should not be validated
-		boolean validate=false;
-		if(doc instanceof HTSummary){
-			HTSummary summ = (HTSummary)doc;
+		// Complete/ Submitted documents should not be validated
+		boolean validate = false;
+		if (doc instanceof HTSummary) {
+			HTSummary summ = (HTSummary) doc;
 			validate = !summ.getStatus().equals(HTStatus.COMPLETED);
-		}else{
-			Document document = (Document)doc;
+		} else {
+			Document document = (Document) doc;
 			validate = !document.getStatus().equals(DocStatus.COMPLETED);
 		}
-		
-		if((!isNavigateNext || !validate || (validate && getView().isValid())) && steps.size()>1){
+
+		if ((!isNavigateNext || !validate || (validate && getView().isValid()))
+				&& steps.size() > 1) {
 
 			// !isNavigateNext -> Going Back
 			navigating = navigateIndex(isNavigateNext);
 		}
-		
+
 		mergeFormValuesWithDoc();
-		
-		if(navigating){
-			navigateToView(steps.get(currentStep),isNavigateNext);
+
+		if (navigating) {
+			navigateToView(steps.get(currentStep), isNavigateNext);
 		}
-		
+
 	}
 
-	protected void navigateToView(TaskStepDTO taskStepDTO, final boolean isNavigateNext) {
-		
-		fireEvent(new ProcessingEvent("Loading form "+(currentStep+1)+"/"+steps.size()));
-		
+	protected void navigateToView(TaskStepDTO taskStepDTO,
+			final boolean isNavigateNext) {
+
+		fireEvent(new ProcessingEvent("Loading form " + (currentStep + 1) + "/"
+				+ steps.size()));
+
 		Long previousStepId = -1L;
 		Long nextStepId = -1L;
-		
-		
-		if(isNavigateNext){
-			//Navigating forward
-			previousStepId = steps.get(currentStep-1).getId();
+
+		if (isNavigateNext) {
+			// Navigating forward
+			previousStepId = steps.get(currentStep - 1).getId();
 			nextStepId = taskStepDTO.getId();
 		}
-		
-		if(taskStepDTO.getFormId()!=null){
-			Long formId = taskStepDTO.getFormId();			
-			
+
+		if (taskStepDTO.getFormId() != null) {
+			Long formId = taskStepDTO.getFormId();
+
 			MultiRequestAction requests = new MultiRequestAction();
-			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL, formId, true));
-			
-			if(isNavigateNext)
-				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
-			
-			requests.addRequest(new GetAttachmentsRequest(docRefId));
-			
-			requestHelper.execute(requests,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					public void processResult(MultiRequestActionResult results) {					
-						int i=0;	
-						GetFormModelResponse aResponse = (GetFormModelResponse)results.get(i++);
-						
-						Doc document=null;
-						if(isNavigateNext){
-							document=((ExecuteTriggersResponse)results.get(i++)).getDocument();
-						}else{
-							document=doc;
-						}
-						
-						Form form = (Form) aResponse.getFormModel().get(0);
-						bindForm(form, document);
-						
-						//Continue, Finish buttons alteration
-						getView().setSteps(steps, currentStep);
-						
-						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
-						bindAttachments(attachmentsresponse);
-						
-						fireEvent(new ProcessingCompletedEvent());							
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						super.onFailure(caught);
-						//Reverse Navigation
-						navigateIndex(!isNavigateNext);
-					}
-			});
-			
-		}else if(taskStepDTO.getOutputDocId()!=null){
-			
-			MultiRequestAction requests = new MultiRequestAction();
-			requests.addRequest(new GetOutputDocumentsRequest(taskStepDTO.getOutputDocId()));
-			if(isNavigateNext){
-				requests.addRequest(new ExecuteTriggersRequest(previousStepId, nextStepId, doc));
+			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,
+					formId, true));
+
+			if (isNavigateNext && isExecuteTriggers(doc)) {
+				// disable based on doc statuses
+				requests.addRequest(new ExecuteTriggersRequest(previousStepId,
+						nextStepId, doc));
 			}
-			requests.addRequest(new GetAttachmentsRequest(docRefId));			
-			
+
+			requests.addRequest(new GetAttachmentsRequest(docRefId));
+
 			requestHelper.execute(requests,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					public void processResult(MultiRequestActionResult results) {					
-						int i=0;	
-						GetOutputDocumentsResponse aResponse = (GetOutputDocumentsResponse)results.get(i++);
-						OutputDocument outDoc = aResponse.getDocuments().get(0);
-						
-						Doc document=null;
-						if(isNavigateNext){
-							document=((ExecuteTriggersResponse)results.get(i++)).getDocument();
-						}else{
-							document=doc;
+					new TaskServiceCallback<MultiRequestActionResult>() {
+						public void processResult(
+								MultiRequestActionResult results) {
+							int i = 0;
+							GetFormModelResponse aResponse = (GetFormModelResponse) results
+									.get(i++);
+
+							Doc document = null;
+							if (isNavigateNext && isExecuteTriggers(doc)) {
+								document = ((ExecuteTriggersResponse) results
+										.get(i++)).getDocument();
+							} else {
+								document = doc;
+							}
+
+							Form form = (Form) aResponse.getFormModel().get(0);
+							bindForm(form, document);
+
+							// Continue, Finish buttons alteration
+							getView().setSteps(steps, currentStep);
+
+							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
+									.get(i++);
+							bindAttachments(attachmentsresponse);
+
+							fireEvent(new ProcessingCompletedEvent());
 						}
-						
-						Form form = GenericDocUtils.generateForm(outDoc,document);
-						bindForm(form,document);
-						
-						getView().setSteps(steps, currentStep);
-						
-						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
-						bindAttachments(attachmentsresponse);
-						
-						fireEvent(new ProcessingCompletedEvent());							
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						super.onFailure(caught);
-						//Reverse Navigation
-						navigateIndex(!isNavigateNext);
-					}
-			});
-		}else{
+
+						@Override
+						public void onFailure(Throwable caught) {
+							super.onFailure(caught);
+							// Reverse Navigation
+							navigateIndex(!isNavigateNext);
+						}
+					});
+
+		} else if (taskStepDTO.getOutputDocId() != null) {
+
+			MultiRequestAction requests = new MultiRequestAction();
+			requests.addRequest(new GetOutputDocumentsRequest(taskStepDTO
+					.getOutputDocId()));
+			if (isNavigateNext && isExecuteTriggers(doc)) {
+				requests.addRequest(new ExecuteTriggersRequest(previousStepId,
+						nextStepId, doc));
+			}
+			requests.addRequest(new GetAttachmentsRequest(docRefId));
+
+			requestHelper.execute(requests,
+					new TaskServiceCallback<MultiRequestActionResult>() {
+						public void processResult(
+								MultiRequestActionResult results) {
+							int i = 0;
+							GetOutputDocumentsResponse aResponse = (GetOutputDocumentsResponse) results
+									.get(i++);
+							OutputDocument outDoc = aResponse.getDocuments()
+									.get(0);
+
+							Doc document = null;
+							if (isNavigateNext && isExecuteTriggers(doc)) {
+								document = ((ExecuteTriggersResponse) results
+										.get(i++)).getDocument();
+							} else {
+								document = doc;
+							}
+
+							Form form = GenericDocUtils.generateForm(outDoc,
+									document);
+							bindForm(form, document);
+
+							getView().setSteps(steps, currentStep);
+
+							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
+									.get(i++);
+							bindAttachments(attachmentsresponse);
+
+							fireEvent(new ProcessingCompletedEvent());
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							super.onFailure(caught);
+							// Reverse Navigation
+							navigateIndex(!isNavigateNext);
+						}
+					});
+		} else {
 			fireEvent(new ProcessingCompletedEvent());
 		}
 	}
 
-	public void complete(Map<String, Value> withValues, boolean validateForm){
-		if(validateForm){
-			if(getView().isValid()){
+	private boolean isExecuteTriggers(Doc document) {
+		boolean isExecute = true;
+		if (document instanceof Document) {
+			isExecute = ((Document) document).getStatus().equals(
+					DocStatus.DRAFTED);
+		} else {
+			isExecute = ((HTSummary) document).getStatus().equals(
+					HTStatus.INPROGRESS);
+		}
+
+		return isExecute;
+	}
+
+	@Override
+	public void onExecTrigger(ExecTriggerEvent event) {
+		TaskStepDTO taskStepDTO = steps.get(currentStep);
+		Long previousStepId = null;
+		if (currentStep != 0) {
+			previousStepId = steps.get(currentStep - 1).getId();
+		}
+
+		Long nextStepId = taskStepDTO.getId();
+		mergeFormValuesWithDoc();
+		ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(
+				previousStepId, nextStepId, doc);
+
+		requestHelper.execute(execTrigger,
+				new TaskServiceCallback<ExecuteTriggersResponse>() {
+					public void processResult(ExecuteTriggersResponse aResponse) {
+						//Updated Form
+						doc = aResponse.getDocument();
+						bindForm(form, doc);
+					}
+				});
+
+	}
+
+	public void complete(Map<String, Value> withValues, boolean validateForm) {
+		if (validateForm) {
+			if (getView().isValid()) {
 				completeIt(withValues);
 			}
-		}else{
+		} else {
 			completeIt(withValues);
 		}
 	}
 
-	private void mergeFormValuesWithDoc(){
-		//Copy all previous values from the task object into the result/values
+	private void mergeFormValuesWithDoc() {
+		// Copy all previous values from the task object into the result/values
 		Map<String, Value> values = doc.getValues();
-		
-		//Get Form Values
+
+		// Get Form Values
 		Map<String, Value> formValues = getView().getValues();
-		if(formValues==null){
+		if (formValues == null) {
 			formValues = new HashMap<String, Value>();
-		}		
-		//Add form field values : to take care of new values
-		for(String key: formValues.keySet()){
+		}
+		// Add form field values : to take care of new values
+		for (String key : formValues.keySet()) {
 			Value val = formValues.get(key);
-			
-			if(val instanceof GridValue){
+
+			if (val instanceof GridValue) {
 				List<DocumentLine> lines = new ArrayList<DocumentLine>();
-				lines.addAll(((GridValue)val).getValue());
-				
+				lines.addAll(((GridValue) val).getValue());
+
 				doc.getDetails().remove(key);
 				doc.getDetails().put(key, lines);
-				
-				/*Grid Value must be written too - otherwise it gets lost if the task is completed
-				 *  Coz complete takes only form values >> Map<String, Value>
+
+				/*
+				 * Grid Value must be written too - otherwise it gets lost if
+				 * the task is completed Coz complete takes only form values >>
+				 * Map<String, Value>
 				 */
 				values.put(key, val);
-			}else{
-				//GridValue is never written here 
+			} else {
+				// GridValue is never written here
 				values.put(key, val);
 			}
 		}
-		 
-		
+
 	}
 
 	private void completeIt(Map<String, Value> withValues) {
-		
-		//Get document Values
+
+		// Get document Values
 		mergeFormValuesWithDoc();
-		
+
 		final Map<String, Value> values = doc.getValues();
-		
-		//Add any programmatic values (Button values e.g isApproved)
-		if(withValues!=null)
+
+		// Add any programmatic values (Button values e.g isApproved)
+		if (withValues != null)
 			values.putAll(withValues);
-		
-		//Remove any null keys
+
+		// Remove any null keys
 		values.remove(null);
-		
-		final ConfirmAction confirm = new ConfirmAction("Are you ready to submit?",
-				"Comments");
-		AppManager.showPopUp("Confirm Action", confirm,
-				new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Yes")){
-							//Fire Event
-							fireEvent(new CompleteDocumentEvent(taskId, values));
-							
-							if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
-								save(confirm.getComment());
-							}
-						}
+
+		final ConfirmAction confirm = new ConfirmAction(
+				"Are you ready to submit?", "Comments");
+		AppManager.showPopUp("Confirm Action", confirm, new OnOptionSelected() {
+
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Yes")) {
+					// Fire Event
+					fireEvent(new CompleteDocumentEvent(taskId, values));
+
+					if (confirm.getComment() != null
+							&& !confirm.getComment().isEmpty()) {
+						save(confirm.getComment());
 					}
-				},"Yes", "Cancel");
-		
+				}
+			}
+		}, "Yes", "Cancel");
+
 	}
 
 	protected void forwardForApproval() {
 		mergeFormValuesWithDoc();
-		if(getView().isValid()){
-			
-			final ConfirmAction confirm = new ConfirmAction("Are you ready to submit?",
-					"Comments/ Processing Advice");
+		if (getView().isValid()) {
+
+			final ConfirmAction confirm = new ConfirmAction(
+					"Are you ready to submit?", "Comments/ Processing Advice");
 			AppManager.showPopUp("Confirm action", confirm,
 					new OnOptionSelected() {
-						
+
 						@Override
 						public void onSelect(String name) {
-							
-							if(name.equals("Yes")){
+
+							if (name.equals("Yes")) {
 								fireEvent(new ProcessingEvent());
-								requestHelper.execute(new ApprovalRequest(AppContext.getUserId(), (Document)doc),
-										new TaskServiceCallback<ApprovalRequestResult>(){
-									@Override
-									public void processResult(ApprovalRequestResult result) {
-										GenericDocumentPresenter.this.getView().asWidget().removeFromParent();
-										fireEvent(new ProcessingCompletedEvent());
-										//clear selected document
-										fireEvent(new AfterSaveEvent());
-										fireEvent(new WorkflowProcessEvent(doc.getCaseNo(), "You have forwarded for Approval",doc));
-									}
-								});
-								
-								//Save comment
-								if(confirm.getComment()!=null && !confirm.getComment().isEmpty()){
+								requestHelper.execute(
+										new ApprovalRequest(AppContext
+												.getUserId(), (Document) doc),
+										new TaskServiceCallback<ApprovalRequestResult>() {
+											@Override
+											public void processResult(
+													ApprovalRequestResult result) {
+												GenericDocumentPresenter.this
+														.getView().asWidget()
+														.removeFromParent();
+												fireEvent(new ProcessingCompletedEvent());
+												// clear selected document
+												fireEvent(new AfterSaveEvent());
+												fireEvent(new WorkflowProcessEvent(
+														doc.getCaseNo(),
+														"You have forwarded for Approval",
+														doc));
+											}
+										});
+
+								// Save comment
+								if (confirm.getComment() != null
+										&& !confirm.getComment().isEmpty()) {
 									save(confirm.getComment());
 								}
 							}
 						}
 					}, "Yes", "Cancel");
-			
+
 		}
 	}
 
@@ -843,123 +970,132 @@ public class GenericDocumentPresenter extends
 		uploaderFactory.get(new ServiceCallback<UploadDocumentPresenter>() {
 			@Override
 			public void processResult(UploadDocumentPresenter result) {
-				
+
 				UploadContext context = new UploadContext();
 				context.setAction(UPLOADACTION.ATTACHDOCUMENT);
-				//context.setContext("documentId", documentId+"");
-				context.setContext("docRefId", docRefId+"");
+				// context.setContext("documentId", documentId+"");
+				context.setContext("docRefId", docRefId + "");
 				context.setContext("userid", AppContext.getUserId());
 				result.setContext(context);
-				addToPopupSlot(result,false);
+				addToPopupSlot(result, false);
 			}
 		});
 	}
 
 	protected void delete(Document document) {
-		AppManager.showPopUp("Confirm Delete", 
-				new InlineLabel("Do you want to delete document '"+document.getCaseNo()+"'"),
-				new OnOptionSelected() {
-					
+		AppManager.showPopUp(
+				"Confirm Delete",
+				new InlineLabel("Do you want to delete document '"
+						+ document.getCaseNo() + "'"), new OnOptionSelected() {
+
 					@Override
 					public void onSelect(String name) {
-						if(name.equals("Yes")){
-							requestHelper.execute(new DeleteDocumentRequest(docRefId),
-									new TaskServiceCallback<DeleteDocumentResponse>() {
-										@Override
-										public void processResult(
-												DeleteDocumentResponse aResponse) {
-											if(aResponse.isDelete()){
-												fireEvent(new ReloadEvent());
-											}
-											
-										}
-									});
+						if (name.equals("Yes")) {
+							requestHelper
+									.execute(
+											new DeleteDocumentRequest(docRefId),
+											new TaskServiceCallback<DeleteDocumentResponse>() {
+												@Override
+												public void processResult(
+														DeleteDocumentResponse aResponse) {
+													if (aResponse.isDelete()) {
+														fireEvent(new ReloadEvent());
+													}
+
+												}
+											});
 						}
 					}
-				}, "Yes","Cancel");
+				}, "Yes", "Cancel");
 	}
 
 	private void showDelegatePopup(final List<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
 		showDelegatePopup(view);
-		
+
 	}
-	
+
 	private void showDelegatePopup(final DelegateTaskView view) {
-		AppManager.showPopUp("Delegate Task", view,
-				new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Ok")){
-							final HTUser user = view.getSelectedUser();
-							if(user!=null && user.getUserId()!=null){
-								
-								DelegationMessageView msgView = new DelegationMessageView(user, doc.getCaseNo());
-								
-								AppManager.showPopUp("Delegation Message",
-										msgView,
-										new OnOptionSelected() {
-											
-											@Override
-											public void onSelect(String name) {
-												
-												if(name.equals("Back")){
-													showDelegatePopup(view);
-												}else{
-													ExecTaskEvent event = new ExecTaskEvent(taskId, Actions.DELEGATE);
-													
-													Map<String, Value> values = new HashMap<String, Value>();
-													
-													StringValue userValue = new StringValue(null, "targetUserId",user.getUserId());
-													values.put(userValue.getKey(), userValue);
-													event.setValues(values);
-													fireEvent(event);
-												}
-												
-											}
-										}, "Back", "Done");
-								
-							}
-						}
+		AppManager.showPopUp("Delegate Task", view, new OnOptionSelected() {
+
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Ok")) {
+					final HTUser user = view.getSelectedUser();
+					if (user != null && user.getUserId() != null) {
+
+						DelegationMessageView msgView = new DelegationMessageView(
+								user, doc.getCaseNo());
+
+						AppManager.showPopUp("Delegation Message", msgView,
+								new OnOptionSelected() {
+
+									@Override
+									public void onSelect(String name) {
+
+										if (name.equals("Back")) {
+											showDelegatePopup(view);
+										} else {
+											ExecTaskEvent event = new ExecTaskEvent(
+													taskId, Actions.DELEGATE);
+
+											Map<String, Value> values = new HashMap<String, Value>();
+
+											StringValue userValue = new StringValue(
+													null, "targetUserId", user
+															.getUserId());
+											values.put(userValue.getKey(),
+													userValue);
+											event.setValues(values);
+											fireEvent(event);
+										}
+
+									}
+								}, "Back", "Done");
+
 					}
-				}, "Ok", "Cancel");
+				}
+			}
+		}, "Ok", "Cancel");
 	}
 
 	protected void save(Document document) {
-		
-		//Incremental/ Page based additions
+
+		// Incremental/ Page based additions
 		mergeFormValuesWithDoc();
-		
+
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new CreateDocumentRequest(document));
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-			
+
 			requestHelper.execute(requests,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					public void processResult(MultiRequestActionResult results) {
-						setFormMode(MODE.VIEW);
-						int i=0;	
-						CreateDocumentResult aResponse = (CreateDocumentResult)results.get(i++);
-						Document saved = aResponse.getDocument();
-						assert saved.getId() != null;
-						bindForm(form, saved);
-						
-						GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
-						bindAttachments(attachmentsresponse);
-						fireEvent(new ProcessingCompletedEvent());							
-					}
-			});
+					new TaskServiceCallback<MultiRequestActionResult>() {
+						public void processResult(
+								MultiRequestActionResult results) {
+							setFormMode(MODE.VIEW);
+							int i = 0;
+							CreateDocumentResult aResponse = (CreateDocumentResult) results
+									.get(i++);
+							Document saved = aResponse.getDocument();
+							assert saved.getId() != null;
+							bindForm(form, saved);
+
+							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
+									.get(i++);
+							bindAttachments(attachmentsresponse);
+							fireEvent(new ProcessingCompletedEvent());
+						}
+					});
 		}
-		
+
 	}
 
 	protected void save(String commenttxt) {
-		if(commenttxt==null || commenttxt.trim().isEmpty())
+		if (commenttxt == null || commenttxt.trim().isEmpty())
 			return;
-		
+
 		getView().setComment("");
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
@@ -967,33 +1103,33 @@ public class GenericDocumentPresenter extends
 		comment.setDocRefId(docRefId);
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
-		//comment.setCreatedBy(AppContext.getUserId());
-		
+		// comment.setCreatedBy(AppContext.getUserId());
+
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCommentRequest(comment));
 		action.addRequest(new GetActivitiesRequest(docRefId));
-		
+
 		requestHelper.execute(action,
-				 new TaskServiceCallback<MultiRequestActionResult>(){
-			@Override
-			public void processResult(MultiRequestActionResult result) {
-				result.get(0);
-				bindActivities((GetActivitiesResponse)result.get(1));
-			}
-		});
-		
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult result) {
+						result.get(0);
+						bindActivities((GetActivitiesResponse) result.get(1));
+					}
+				});
+
 	}
 
 	protected void showEditForm(final MODE mode) {
-		
+
 		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
 			@Override
 			public void processResult(CreateDocPresenter result) {
-				if(mode.equals(MODE.EDIT)){
+				if (mode.equals(MODE.EDIT)) {
 					result.setDocRefId(docRefId);
 				}
-				
-				addToPopupSlot(result, true);				
+
+				addToPopupSlot(result, true);
 			}
 		});
 	}
@@ -1001,362 +1137,380 @@ public class GenericDocumentPresenter extends
 	private void clear() {
 		getView().showEdit(false);
 	}
-	
+
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		//Window.alert("Reveal >> DocRefId= "+docRefId+"; docId= "+documentId);
+		// Window.alert("Reveal >> DocRefId= "+docRefId+"; docId= "+documentId);
 		loadData();
-		getView().show((Anchor)getView().getLinkEnv(), AppContext.isCurrentUserAdmin());
+		getView().show((Anchor) getView().getLinkEnv(),
+				AppContext.isCurrentUserAdmin());
 	}
-	
+
 	private void loadData() {
 		MultiRequestAction requests = new MultiRequestAction();
-		requests.addRequest(new GetInitialDocumentRequest(docRefId, taskId,isLoadAsAdmin));
-		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,taskId,docRefId));
+		requests.addRequest(new GetInitialDocumentRequest(docRefId, taskId,
+				isLoadAsAdmin));
+		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,
+				taskId, docRefId));
 		requests.addRequest(new GetCommentsRequest(docRefId));
 		requests.addRequest(new GetAttachmentsRequest(docRefId));
 		requests.addRequest(new GetActivitiesRequest(docRefId));
-		
+
 		fireEvent(new ProcessingEvent());
-		if(docRefId != null){
-			requestHelper.execute(requests, 
+		if (docRefId != null) {
+			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {
-				
-				public void processResult(MultiRequestActionResult results) {					
-					int i=0;
-					
-					//Document and Task Steps & Trigger before Load
-					GetInitialDocumentResponse compositeResp =  (GetInitialDocumentResponse)results.get(i++);
-					setSteps(compositeResp.getSteps());
-					bindDocumentResult(compositeResp.getDoc());
-					
-					//Form
-					GetFormModelResponse response = (GetFormModelResponse)results.get(i++);					
-					
-					if(!response.getFormModel().isEmpty()){
-						bindForm((Form)response.getFormModel().get(0), compositeResp.getDoc());
-					}else{
-						getView().showDefaultFields(true);
-					}
 
-					//Comments					
-					GetCommentsResponse commentsResult = (GetCommentsResponse)results.get(i++);
-					bindCommentsResult(commentsResult);
-					
-					//Attachments
-					GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse)results.get(i++);
-					bindAttachments(attachmentsresponse);
-					
-					//Activities
-					GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(i++);
-					bindActivities(getActivities);
-										
-					fireEvent(new ProcessingCompletedEvent());
-					
-				}	
-			});
+						public void processResult(
+								MultiRequestActionResult results) {
+							int i = 0;
+
+							// Document and Task Steps & Trigger before Load
+							GetInitialDocumentResponse compositeResp = (GetInitialDocumentResponse) results
+									.get(i++);
+							setSteps(compositeResp.getSteps());
+							bindDocumentResult(compositeResp.getDoc());
+
+							// Form
+							GetFormModelResponse response = (GetFormModelResponse) results
+									.get(i++);
+
+							if (!response.getFormModel().isEmpty()) {
+								bindForm((Form) response.getFormModel().get(0),
+										compositeResp.getDoc());
+							} else {
+								getView().showDefaultFields(true);
+							}
+
+							// Comments
+							GetCommentsResponse commentsResult = (GetCommentsResponse) results
+									.get(i++);
+							bindCommentsResult(commentsResult);
+
+							// Attachments
+							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
+									.get(i++);
+							bindAttachments(attachmentsresponse);
+
+							// Activities
+							GetActivitiesResponse getActivities = (GetActivitiesResponse) results
+									.get(i++);
+							bindActivities(getActivities);
+
+							fireEvent(new ProcessingCompletedEvent());
+
+						}
+					});
 		}
 	}
 
-	protected void executeTriggers(final Form formToBind, Doc loadedDocument) {
-		if(steps==null || steps.isEmpty()){
-			bindForm(formToBind, loadedDocument);
-			return;
-		}
-		
-		Long previousStepId = 0L;
-		Long nextStepId = steps.get(0).getId();
-		
-		requestHelper.execute(new ExecuteTriggersRequest(previousStepId, nextStepId, loadedDocument), 
-				new TaskServiceCallback<ExecuteTriggersResponse>() {
-			@Override
-			public void processResult(ExecuteTriggersResponse aResponse) {
-				bindForm(formToBind, aResponse.getDocument());
-			}
-		});
-	}
+	// protected void executeTriggers(final Form formToBind, Doc loadedDocument)
+	// {
+	// if(steps==null || steps.isEmpty()){
+	// bindForm(formToBind, loadedDocument);
+	// return;
+	// }
+	//
+	// Long previousStepId = 0L;
+	// Long nextStepId = steps.get(0).getId();
+	//
+	// requestHelper.execute(new ExecuteTriggersRequest(previousStepId,
+	// nextStepId, loadedDocument),
+	// new TaskServiceCallback<ExecuteTriggersResponse>() {
+	// @Override
+	// public void processResult(ExecuteTriggersResponse aResponse) {
+	// bindForm(formToBind, aResponse.getDocument());
+	// }
+	// });
+	// }
 
 	protected void setSteps(List<TaskStepDTO> steps) {
 		this.steps = steps;
-		if(steps==null){
+		if (steps == null) {
 			return;
 		}
-		
-		getView().setSteps(steps,currentStep);
-		
+
+		getView().setSteps(steps, currentStep);
+
 	}
 
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
 		this.form = form;
-		
-		if(doc instanceof Document){
+		docRefId = doc.getRefId();
+		if (doc instanceof Document) {
 			documentId = (Long) doc.getId();
-			docRefId = doc.getRefId();
-			taskId=null;
-		}else{
-			documentId = ((HTSummary)doc).getDocumentRef();
-			docRefId = doc.getRefId();
-			taskId = ((HTSummary)doc).getId();
+			taskId = null;
+		} else {
+			documentId = ((HTSummary) doc).getDocumentRef();
+			taskId = ((HTSummary) doc).getId();
 		}
-		
-		if(form.getFields()==null || form.getFields().isEmpty()){
+
+		if (form.getFields() == null || form.getFields().isEmpty()) {
 			getView().showDefaultFields(true);
 			return;
 		}
 
-		//Form Fields
-		if(doc instanceof Document){
-			DocStatus status = ((Document)doc).getStatus();
-			if(status==DocStatus.DRAFTED){
-				getView().showNavigation(true); //Continue button will always be available
+		// Form Fields
+		if (doc instanceof Document) {
+			DocStatus status = ((Document) doc).getStatus();
+			if (status == DocStatus.DRAFTED) {
+				getView().showNavigation(true); // Continue button will always
+												// be available
 			}
 		}
-		
+
 		MODE stepMode = null;
-		if(!steps.isEmpty()){
+		if (!steps.isEmpty()) {
 			TaskStepDTO dto = steps.get(currentStep);
 			stepMode = dto.getMode();
 		}
-		
-		if(formMode!=null && formMode.equals(MODE.EDIT) && doc instanceof Document){
-			getView().setForm(form,doc,stepMode);
-			getView().setEditMode(true && ((Document)doc).getStatus()==DocStatus.DRAFTED);
-			
-		}else{
-			getView().setForm(form,doc,stepMode);
+
+		if (formMode != null && formMode.equals(MODE.EDIT)
+				&& doc instanceof Document) {
+			getView().setForm(form, doc, stepMode);
+			getView().setEditMode(
+					true && ((Document) doc).getStatus() == DocStatus.DRAFTED);
+
+		} else {
+			getView().setForm(form, doc, stepMode);
 		}
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
 		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
-		bindActivities(activitiesMap);		
+		bindActivities(activitiesMap);
 	}
-	
-	public void bindActivities(Map<Activity, List<Activity>> activitiesMap){
+
+	public void bindActivities(Map<Activity, List<Activity>> activitiesMap) {
 		setInSlot(ACTIVITY_SLOT, null);
-		
+
 		Set<Activity> keyset = activitiesMap.keySet();
-		List<Activity> activities= new ArrayList<Activity>();
+		List<Activity> activities = new ArrayList<Activity>();
 		activities.addAll(keyset);
 		Collections.sort(activities);
 		Collections.reverse(activities);
-		
-		for(Activity activity: activities){
-			bind(activity,false);	
-			List<Activity> children = activitiesMap.get(activity);	
-			if(children!=null){
-				for(Activity child: children){
+
+		for (Activity activity : activities) {
+			bind(activity, false);
+			List<Activity> children = activitiesMap.get(activity);
+			if (children != null) {
+				for (Activity child : children) {
 					bind(child, true);
 				}
-				
+
 			}
-		}		
-		this.activities +=activitiesMap.size();
+		}
+		this.activities += activitiesMap.size();
 	}
 
 	private void bind(final Activity child, boolean isChild) {
-				
-		if(child instanceof Comment){
-			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
-				@Override
-				public void processResult(CommentPresenter result) {
-					result.setComment((Comment)child);
-					
-					addToSlot(ACTIVITY_SLOT,result);
-				}
-			});
-			
-		}else if(child instanceof Notification){
-			if(((Notification)child).getNotificationType()==NotificationType.FILE_UPLOADED){
+
+		if (child instanceof Comment) {
+			commentPresenterFactory
+					.get(new ServiceCallback<CommentPresenter>() {
+						@Override
+						public void processResult(CommentPresenter result) {
+							result.setComment((Comment) child);
+
+							addToSlot(ACTIVITY_SLOT, result);
+						}
+					});
+
+		} else if (child instanceof Notification) {
+			if (((Notification) child).getNotificationType() == NotificationType.FILE_UPLOADED) {
 				return;
 			}
-		
-			notePresenterFactory.get(new ServiceCallback<NotePresenter>() {				
+
+			notePresenterFactory.get(new ServiceCallback<NotePresenter>() {
 				@Override
 				public void processResult(NotePresenter result) {
-					result.setNotification((Notification)child, false);
+					result.setNotification((Notification) child, false);
 					addToSlot(ACTIVITY_SLOT, result);
 				}
 			});
 		}
-		
+
 	}
 
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
-		
+
 		List<Attachment> attachments = attachmentsresponse.getAttachments();
 		getView().showAttachments(attachments);
-		
-		if(attachments.size()>0){
-//			getView().getDivAttachment().removeClassName("hidden");
-//			getView().getSpnAttachmentNo().setInnerText("Attachments (" + attachments.size() +")");
+
+		if (attachments.size() > 0) {
+			// getView().getDivAttachment().removeClassName("hidden");
+			// getView().getSpnAttachmentNo().setInnerText("Attachments (" +
+			// attachments.size() +")");
 			fireEvent(new AfterAttachmentReloadedEvent(docRefId));
 		}
-		
-		setInSlot(ATTACHMENTS_SLOT, null);//clear
-		for(final Attachment attachment: attachments){
-			if(attachment.getFieldName()!=null){
+
+		setInSlot(ATTACHMENTS_SLOT, null);// clear
+		for (final Attachment attachment : attachments) {
+			if (attachment.getFieldName() != null) {
 				fireEvent(new FileLoadEvent(attachment));
 				continue;
 			}
-			attachmentPresenterFactory.get(new ServiceCallback<AttachmentPresenter>() {
-				@Override
-				public void processResult(AttachmentPresenter result) {
-					result.setAttachment(attachment);
-					addToSlot(ATTACHMENTS_SLOT, result);
-				}
-			});
+			attachmentPresenterFactory
+					.get(new ServiceCallback<AttachmentPresenter>() {
+						@Override
+						public void processResult(AttachmentPresenter result) {
+							result.setAttachment(attachment);
+							addToSlot(ATTACHMENTS_SLOT, result);
+						}
+					});
 		}
-		
+
 	}
 
 	protected void bindCommentsResult(GetCommentsResponse commentsResult) {
 		setInSlot(ACTIVITY_SLOT, null);
 		List<Comment> comments = commentsResult.getComments();
-		
+
 		this.activities += comments.size();
-		
-		getView().getSpnActivityNo().setInnerText("Activity("+this.activities+")");
-		for(final Comment comment: comments){
-			commentPresenterFactory.get(new ServiceCallback<CommentPresenter>() {
-				@Override
-				public void processResult(CommentPresenter result) {
-					result.setComment(comment);
-					addToSlot(ACTIVITY_SLOT,result);
-				}
-			});
+
+		getView().getSpnActivityNo().setInnerText(
+				"Activity(" + this.activities + ")");
+		for (final Comment comment : comments) {
+			commentPresenterFactory
+					.get(new ServiceCallback<CommentPresenter>() {
+						@Override
+						public void processResult(CommentPresenter result) {
+							result.setComment(comment);
+							addToSlot(ACTIVITY_SLOT, result);
+						}
+					});
 		}
 	}
 
 	protected void bindDocumentResult(Doc result) {
 
 		this.doc = result;
-		Map<String, Value> vals= doc.getValues();
-		
-		long docId=0l;
-		
-		String taskDisplayName="";
-		if(doc instanceof Document){
-			docId = (Long)doc.getId();
-			
-		}else{
-			HTSummary task = ((HTSummary)doc); 
+		Map<String, Value> vals = doc.getValues();
+
+		long docId = 0l;
+		// this.documentId = docId;
+		this.docRefId = result.getRefId();
+
+		String taskDisplayName = "";
+		if (doc instanceof Document) {
+			docId = (Long) doc.getId();
+
+		} else {
+			HTSummary task = ((HTSummary) doc);
 			docId = task.getDocumentRef();
 			this.taskId = task.getId();
-			
-			if(task.getName()!=null)
+
+			if (task.getName() != null)
 				taskDisplayName = task.getName();
-			
-			HTask humantask = (HTask)task;
+
+			HTask humantask = (HTask) task;
 			Delegate delegate = humantask.getDelegate();
-			if(delegate!=null){
+			if (delegate != null) {
 				getView().setDelegate(delegate);
 			}
-			
-			if(!(task.getStatus()==HTStatus.COMPLETED)){
-				if(task.getEndDateDue()!=null){
+
+			if (!(task.getStatus() == HTStatus.COMPLETED)) {
+				if (task.getEndDateDue() != null) {
 					getView().setDeadline(task.getEndDateDue());
-				}else{
-					//default 1 day allowance				
-					getView().setDeadline(DateUtils.addDays(task.getCreated(), 1));
-					
+				} else {
+					// default 1 day allowance
+					getView().setDeadline(
+							DateUtils.addDays(task.getCreated(), 1));
+
 				}
 			}
 		}
-		
-		//this.documentId = docId;
-		this.docRefId = result.getRefId();
-		
+
 		Date created = doc.getCreated();
 		String subject = doc.getCaseNo();
-		
-		Date docDate = doc.getDocumentDate();					
+
+		Date docDate = doc.getDocumentDate();
 		String description = doc.getDescription();
-		Integer priority = doc.getPriority();	
-		
+		Integer priority = doc.getPriority();
+
 		String partner = null;
-		String value= null;
+		String value = null;
 		DocumentType docType = null;
 		DocStatus status = null;
-		
-		String type=null;
-		
-		if(doc instanceof Document){
-			Document d = (Document)doc;
+
+		String type = null;
+
+		if (doc instanceof Document) {
+			Document d = (Document) doc;
 			value = d.getValue();
 			partner = d.getPartner();
-			docType= d.getType();
+			docType = d.getType();
 			type = docType.getDisplayName();
-			
+
 			status = d.getStatus();
-		}else{
-			HTask task = (HTask)doc;
-			type = task.getName();	
+		} else {
+			HTask task = (HTask) doc;
+			type = task.getName();
 			status = task.getDocStatus();
 		}
-		
-		if(value==null){
+
+		if (value == null) {
 			Value val = vals.get("value");
-			if(val!=null){
-				value = val.getValue()==null? null: val.getValue().toString();
+			if (val != null) {
+				value = val.getValue() == null ? null : val.getValue()
+						.toString();
 			}
 		}
-		
-		if(partner==null){
+
+		if (partner == null) {
 			Value val = vals.get("partner");
-			if(val!=null)
-				value = ((StringValue)val).getValue();
+			if (val != null)
+				value = ((StringValue) val).getValue();
 		}
-		
-		
-		getView().setValues(doc.getOwner(),created,
-				type, subject, docDate,  value, partner, description, priority,status, docRefId,
+
+		getView().setValues(doc.getOwner(), created, type, subject, docDate,
+				value, partner, description, priority, status, docRefId,
 				taskDisplayName);
-		
-		if(status==DocStatus.DRAFTED){
+
+		if (status == DocStatus.DRAFTED) {
 			getView().showEdit(true);
-		}else{
+		} else {
 			getView().showEdit(false);
 			clear();
 		}
-		
-		//get document actions - if any
+
+		// get document actions - if any
 		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(docRefId, taskId);
-		fireEvent(e);		
-		if(e.getValidActions()!=null){
+		fireEvent(e);
+		if (e.getValidActions() != null) {
 			getView().setValidTaskActions(e.getValidActions());
-		}	
-		
+		}
+
 		Long processInstanceId = doc.getProcessInstanceId();
-		if(processInstanceId!=null)
+		if (processInstanceId != null)
 			getView().setProcessUrl(processInstanceId);
-//		if(processInstanceId!=null){
-//			//System.err.println("Loading activities for ProcessInstanceId = "+processInstanceId);
-//			requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
-//					new TaskServiceCallback<GetProcessStatusRequestResult>() {
-//				@Override
-//				public void processResult(
-//						GetProcessStatusRequestResult result) {
-//					List<NodeDetail> details = result.getNodes();
-//					setProcessState(details);
-//				}
-//			});
-//		}
+		// if(processInstanceId!=null){
+		// //System.err.println("Loading activities for ProcessInstanceId = "+processInstanceId);
+		// requestHelper.execute(new GetProcessStatusRequest(processInstanceId),
+		// new TaskServiceCallback<GetProcessStatusRequestResult>() {
+		// @Override
+		// public void processResult(
+		// GetProcessStatusRequestResult result) {
+		// List<NodeDetail> details = result.getNodes();
+		// setProcessState(details);
+		// }
+		// });
+		// }
 	}
 
-//	public void setProcessState(List<NodeDetail> states){
-//		getView().setStates(states);
-//	}
+	// public void setProcessState(List<NodeDetail> states){
+	// getView().setStates(states);
+	// }
 
-	public void setDocId(String docRefId,Long taskId,boolean isLoadAsAdmin) {
+	public void setDocId(String docRefId, Long taskId, boolean isLoadAsAdmin) {
 		this.docRefId = docRefId;
 		this.taskId = taskId;
 		this.isLoadAsAdmin = isLoadAsAdmin;
 		getView().setLoadAsAdmin(isLoadAsAdmin);
 	}
-	
+
 	@Override
 	protected void onHide() {
 		super.onHide();
@@ -1365,7 +1519,7 @@ public class GenericDocumentPresenter extends
 
 	@Override
 	public void onReloadDocument(ReloadDocumentEvent event) {
-		if(event.getDocRefId().equals(this.docRefId)){
+		if (event.getDocRefId().equals(this.docRefId)) {
 			loadData();
 		}
 	}
@@ -1383,61 +1537,59 @@ public class GenericDocumentPresenter extends
 	private void reloadAttachments() {
 		requestHelper.execute(new GetAttachmentsRequest(docRefId),
 				new TaskServiceCallback<GetAttachmentsResponse>() {
-			@Override
-			public void processResult(GetAttachmentsResponse result) {
-				bindAttachments(result);
-			}
-		});
+					@Override
+					public void processResult(GetAttachmentsResponse result) {
+						bindAttachments(result);
+					}
+				});
 	}
-	
+
 	/**
-	 * Runtime - Delete Row
-	 * -Enable save/ edit mode
+	 * Runtime - Delete Row -Enable save/ edit mode
 	 */
 	@Override
 	public void onDeleteLine(DeleteLineEvent event) {
 		DocumentLine line = event.getLine();
-		if(line.getId()==null){
+		if (line.getId() == null) {
 			return;
 		}
 		AppContext.fireEvent(new ProcessingEvent("Deleting ..."));
-		requestHelper.execute(new DeleteLineRequest(line), 
+		requestHelper.execute(new DeleteLineRequest(line),
 				new TaskServiceCallback<DeleteLineResponse>() {
-			@Override
-			public void processResult(DeleteLineResponse result) {
-				AppContext.fireEvent(new ProcessingCompletedEvent());
-			}
-		});
+					@Override
+					public void processResult(DeleteLineResponse result) {
+						AppContext.fireEvent(new ProcessingCompletedEvent());
+					}
+				});
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		String requestType = event.getRequestType();
-		
-		if(requestType==null && event.getCustomHandlerClass()==null){
+
+		if (requestType == null && event.getCustomHandlerClass() == null) {
 			return;
 		}
-		
-		if(requestType!=null){
-			if(requestType.equals("StartProcess")){
+
+		if (requestType != null) {
+			if (requestType.equals("StartProcess")) {
 				forwardForApproval();
-			}else if(requestType.equals("CompleteProcess")){
-				complete(event.getValues(),event.isValidateForm());
+			} else if (requestType.equals("CompleteProcess")) {
+				complete(event.getValues(), event.isValidateForm());
 			}
-		}
-		else{
+		} else {
 			executeGenericCode(event.getValues(), event.getCustomHandlerClass());
 		}
 	}
 
 	private void executeGenericCode(Map<String, Value> values,
 			String customHandlerClass) {
-		requestHelper.execute(new GenericRequest(values, customHandlerClass), 
+		requestHelper.execute(new GenericRequest(values, customHandlerClass),
 				new TaskServiceCallback<GenericResponse>() {
-			@Override
-			public void processResult(GenericResponse aResponse) {	
-			}
-		});
+					@Override
+					public void processResult(GenericResponse aResponse) {
+					}
+				});
 	}
 
 	public void setFormMode(MODE mode) {
@@ -1455,20 +1607,31 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onDeleteAttachment(DeleteAttachmentEvent event) {
 		Attachment attachment = event.getAttachment();
-		
+
 		DeleteAttachmentRequest request = null;
-		if(attachment!=null){
+		if (attachment != null) {
 			request = new DeleteAttachmentRequest(attachment.getId());
-		}else{
+		} else {
 			request = new DeleteAttachmentRequest(event.getAttachmentIds());
 		}
-		
+
 		requestHelper.execute(request,
 				new TaskServiceCallback<DeleteAttachmentResponse>() {
 					@Override
 					public void processResult(DeleteAttachmentResponse result) {
-						
+
 					}
 				});
 	}
+
+	@Override
+	public void onProcessingCompleted(ProcessingCompletedEvent event) {
+		getView().enableSubmit(true);
+	}
+
+	@Override
+	public void onProcessing(ProcessingEvent event) {
+		getView().enableSubmit(false);
+	}
+
 }

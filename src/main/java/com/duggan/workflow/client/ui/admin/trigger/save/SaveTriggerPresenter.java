@@ -42,6 +42,7 @@ public class SaveTriggerPresenter extends
 	}
 
 	public void clear() {
+		this.trigger=null;
 		getView().showTriggers(false);
 		getView().clear();
 	}

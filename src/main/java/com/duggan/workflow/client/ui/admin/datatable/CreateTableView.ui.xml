@@ -26,17 +26,30 @@
 							placeholder="Description of the data stored"></d:TextArea>
 					</div>
 				</div>
+
+			</g:HTMLPanel>
+
+			<g:HTMLPanel>
 				<div class="action-buttons">
 					<g:Anchor ui:field="aNew" styleName="btn btn-primary"
 						title="New Form">
 						<i class="icon-plus"></i>
 						Add Column
 					</g:Anchor>
+					<g:Anchor ui:field="aImportCols" styleName="btn btn-primary"
+						title="Import Columns">
+						<i class="icon-plus"></i>
+						Import Columns
+					</g:Anchor>
 				</div>
 
+				<!--  div class="action-buttons">
+					
+				</div-->
 			</g:HTMLPanel>
-
 		</g:HTMLPanel>
+
+
 		<div id="detailed-info detailed-info-table">
 			<div class="form-horizontal">
 				<grid:AggregationGrid ui:field="grid"></grid:AggregationGrid>

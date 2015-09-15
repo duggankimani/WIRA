@@ -4,13 +4,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,8 +52,8 @@ public class ADTaskNotification extends PO{
 	@Column(length=5000)
 	private String notificationTemplate; 
 	
-	@Column(nullable=false)
 	private Long nodeId;//Accommodate initial input form
+	
 	private String stepName;
 	
 	@Column(nullable=false)

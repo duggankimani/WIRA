@@ -20,6 +20,7 @@ import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
+import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ResetFieldValueEvent;
 import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
 import com.duggan.workflow.client.ui.events.ResetFieldValueEvent.ResetFieldValueHandler;
@@ -1117,5 +1118,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public abstract Widget getInputComponent();
 
 	public abstract Element getViewElement();
+	
+	public void execTrigger(){
+		String triggerName = getPropertyValue(CUSTOMTRIGGER);
+		if(triggerName!=null && !triggerName.isEmpty()){
+			AppContext.fireEvent(new ExecTriggerEvent(triggerName));
+		}
+	}
 
 }

@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.ADTrigger;
@@ -14,6 +15,9 @@ import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.mvel.MVELExecutor;
+import com.duggan.workflow.server.sms.SMSIntegration;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.MODE;
 
 public class TestTaskSteps {
@@ -28,6 +32,16 @@ public class TestTaskSteps {
 	}
 	
 	@Test
+	public void excuteStep(){
+		//SMS Step
+		ADTrigger trigger  = dao.getTrigger("chasebank.finance.ExpenseClaim.GenerateOTP");
+		assert trigger!=null;
+		Document doc = DocumentDaoHelper.getDoc(DB.getDocumentDao().getById(1L));
+		new MVELExecutor().execute(trigger, doc);
+		//SMSIntegration.send("0721239821", "Hello");
+	}
+	
+	@Ignore
 	public void testCascadeDelete(){
 		ADTrigger trigger = dao.getById(ADTrigger.class, 3L);
 		

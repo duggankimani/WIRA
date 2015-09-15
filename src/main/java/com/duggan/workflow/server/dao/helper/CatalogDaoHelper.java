@@ -3,6 +3,8 @@ package com.duggan.workflow.server.dao.helper;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -89,12 +91,20 @@ public class CatalogDaoHelper {
 		for (CatalogColumnModel cat : model.getColumns()) {
 			models.add(get(cat));
 		}
+		
+		Collections.sort(models, new Comparator<CatalogColumn>() {
+			@Override
+			public int compare(CatalogColumn o1, CatalogColumn o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+		});
 		catalog.setColumns(models);
 		return catalog;
 	}
 
 	private static CatalogColumn get(CatalogColumnModel colModel) {
 		CatalogColumn cat = new CatalogColumn();
+		cat.setId(colModel.getId());
 		cat.setAutoIncrement(colModel.isAutoIncrement());
 		cat.setLabel(colModel.getLabel());
 		cat.setName(colModel.getName());
@@ -128,7 +138,8 @@ public class CatalogDaoHelper {
 		return catalogs;
 	}
 
-	public static void saveData(Catalog catalog, List<DocumentLine> lines) {
+	public static void saveData(Long id, List<DocumentLine> lines) {
+		Catalog catalog = getCatalog(id);
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines);
 	}
@@ -141,7 +152,7 @@ public class CatalogDaoHelper {
 		int size = catalog.getColumns().size();
 		int i = 0;
 		for (CatalogColumnModel col : catalog.getColumns()) {
-			fieldNames.append(col.getName());
+			fieldNames.append(""+col.getName()+"");
 			if (i + 1 < size) {
 				fieldNames.append(",");
 			}

@@ -27,7 +27,7 @@ public class CatalogColumn implements Serializable,IsCatalogItem{
 	}
 
 	public void setName(String name) {
-		this.name = name.toUpperCase();
+		this.name = name.toLowerCase();
 	}
 
 	public String getLabel() {

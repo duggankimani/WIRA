@@ -27,6 +27,7 @@ public interface HasProperties {
 	public static final String ACCEPT = "ACCEPT";
 	public static final String HREF = "HREF";
 	public static final String IFRAME = "IFRAME";
+	public static String CUSTOMTRIGGER="TRIGGER";
 
 	void addProperty(Property property);
 	

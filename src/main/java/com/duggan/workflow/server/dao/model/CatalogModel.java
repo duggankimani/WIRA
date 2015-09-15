@@ -2,6 +2,7 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -57,7 +58,7 @@ public class CatalogModel extends PO {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "catalog", cascade = {
 			CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE })
 	@Cascade({ org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	private Set<CatalogColumnModel> columns = new HashSet<>();
+	private Set<CatalogColumnModel> columns = new LinkedHashSet<>();
 
 	public CatalogModel() {
 	}

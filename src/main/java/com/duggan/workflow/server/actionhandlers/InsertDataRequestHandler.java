@@ -18,8 +18,7 @@ public class InsertDataRequestHandler extends
 	@Override
 	public void execute(InsertDataRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		Catalog catalog = action.getCatalog();
-		CatalogDaoHelper.saveData(catalog, action.getLines());
+		CatalogDaoHelper.saveData(action.getCatalogId(), action.getLines());
 	}
 
 	@Override

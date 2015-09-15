@@ -2,11 +2,14 @@ package com.duggan.workflow.client.ui.component;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Anchor;
 
 public class ActionLink extends Anchor {
 
 	public ActionLink() {
+		
 		addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -35,5 +38,19 @@ public class ActionLink extends Anchor {
 	
 	public void setDataPlacement(String data){
 		getElement().setAttribute("data-placement", data);
+	}
+	
+	@Override
+	public void onBrowserEvent(Event event) {
+	    switch (DOM.eventGetType(event)) {
+	        case Event.ONDBLCLICK:
+	        case Event.ONFOCUS:
+	        case Event.ONCLICK:
+	            if (!isEnabled()) {
+	                return;
+	            }
+	            break;
+	    }
+	    super.onBrowserEvent(event);
 	}
 }

@@ -7,7 +7,7 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableView;
-import com.duggan.workflow.client.ui.events.EditCatalogEvent;
+import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -77,7 +77,7 @@ public class DataTableView extends ViewImpl implements
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				AppContext.fireEvent(new EditCatalogEvent(data.getCatalog(), true,true));
+				AppContext.fireEvent(new EditCatalogDataEvent(data.getCatalog(), true,true));
 			}
 		});
 
@@ -90,7 +90,7 @@ public class DataTableView extends ViewImpl implements
 
 			@Override
 			public void onClick(ClickEvent event) {
-				AppContext.fireEvent(new EditCatalogEvent(edit.getCatalog()));
+				AppContext.fireEvent(new EditCatalogDataEvent(edit.getCatalog()));
 			}
 		});
 		panel.add(edit);
@@ -110,7 +110,7 @@ public class DataTableView extends ViewImpl implements
 							@Override
 							public void onSelect(String name) {
 								if (name.equals("Yes")) {
-									AppContext.fireEvent(new EditCatalogEvent(
+									AppContext.fireEvent(new EditCatalogDataEvent(
 											delete.getCatalog(), true));
 								}
 							}

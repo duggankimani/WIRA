@@ -48,6 +48,7 @@ public class NumberField extends FieldWidget{
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
 		addProperty(new Property(FORMULA, "Formula", DataType.STRING));
 		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
 				new KeyValuePair("left", "Left"),
@@ -57,6 +58,13 @@ public class NumberField extends FieldWidget{
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Double> event) {
+				execTrigger();
+			}
+		});
 	}
 	
 	public NumberField(final Property property){

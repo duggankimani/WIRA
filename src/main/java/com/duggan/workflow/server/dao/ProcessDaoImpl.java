@@ -319,19 +319,28 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	public ADTaskNotification getTaskNotification(Long nodeId, String stepName,
 			Long processDefId, NotificationCategory category, Actions action) {
 
-		return getSingleResultOrNull(em
-				.createQuery(
-						"from ADTaskNotification t where "
-								+ "t.nodeId=:nodeId and "
-								// + "t.stepName=:stepName and "
-								+ "t.processDefId=:processDefId and "
-								+ "t.action=:action and "
-								+ "t.category=:category")
-				.setParameter("nodeId", nodeId)
-				// .setParameter("stepName", stepName)
+		StringBuffer jpql = new StringBuffer("from ADTaskNotification t where "
+				// + "t.stepName=:stepName and "
+				+ "t.processDefId=:processDefId and "
+				+ "t.action=:action and "
+				+ "t.category=:category");
+		
+		if(nodeId==null){
+			jpql.append(" and t.nodeId is null");
+		}else{
+			jpql.append(" and t.nodeId=:nodeId");
+		}
+		
+		Query query = em.createQuery(jpql.toString())
 				.setParameter("processDefId", processDefId)
 				.setParameter("action", action)
-				.setParameter("category", category));
+				.setParameter("category", category);
+		
+		if(nodeId!=null){
+			query.setParameter("nodeId", nodeId);
+		}
+		
+		return getSingleResultOrNull(query);
 	}
 
 	/**
@@ -544,6 +553,12 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 	public List<ADProcessCategory> getAllProcessCategories() {
 		return getResultList(em.createQuery("FROM ADProcessCategory where isActive=1"));
+	}
+
+	public ADTrigger getTrigger(String triggerName) {
+		
+		return getSingleResultOrNull(em.createQuery("FROM ADTrigger where name=:name")
+				.setParameter("name", triggerName));
 	}
 
 }

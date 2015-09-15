@@ -47,6 +47,7 @@ public class TextField extends FieldWidget {
 				new KeyValuePair("left", "Left"),
 				new KeyValuePair("center", "Center"),
 				new KeyValuePair("right", "Right")));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
 
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);

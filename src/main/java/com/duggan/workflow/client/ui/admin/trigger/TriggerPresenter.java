@@ -22,6 +22,7 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -36,33 +37,37 @@ import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 
 public class TriggerPresenter extends
 		Presenter<TriggerPresenter.ITriggerView, TriggerPresenter.MyProxy>
-implements EditTriggerHandler{
+		implements EditTriggerHandler {
 
 	public interface ITriggerView extends View {
 		HasClickHandlers getAddTriggerLink();
+
 		HasClickHandlers getCloneTriggerLink();
+
 		void setTriggers(List<Trigger> triggeruments);
 	}
 
 	@ProxyCodeSplit
 	@NameToken(NameTokens.triggers)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<TriggerPresenter>{
+	public interface MyProxy extends TabContentProxyPlace<TriggerPresenter> {
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Triggers","icon-wrench",5, adminGatekeeper);
-    }
-	
-	@Inject	SaveTriggerPresenter savePresenter;
-	@Inject DispatchAsync requestHelper;
-	List<Trigger> triggers;//For Cloning
-	
+	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+		return new TabDataExt("Triggers", "icon-wrench", 5, adminGatekeeper);
+	}
+
+	@Inject
+	SaveTriggerPresenter savePresenter;
+	@Inject
+	DispatchAsync requestHelper;
+	List<Trigger> triggers;// For Cloning
+
 	@Inject
 	public TriggerPresenter(final EventBus eventBus, final ITriggerView view,
-			final MyProxy proxy ) {
-		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
+			final MyProxy proxy) {
+		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
 	}
 
 	@Override
@@ -75,98 +80,116 @@ implements EditTriggerHandler{
 				showEditPopup(null);
 			}
 		});
-		
+
 		getView().getCloneTriggerLink().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				showClonePopup();
 			}
 		});
 	}
-	
+
 	protected void showClonePopup() {
 		savePresenter.clear();
 		savePresenter.setTriggers(triggers);
-		AppManager.showPopUp("Copy Trigger",savePresenter.asWidget(),new OptionControl(){
-			@Override
-			public void onSelect(String name) {						
-				if(name.equals("Save") && savePresenter.isValid()){
-					Trigger trigger = savePresenter.getTrigger();
-					save(trigger);
-					hide();
-				}
-				
-				if(name.equals("Cancel")){
-					hide();
-				}
-			}
+		AppManager.showPopUp("Copy Trigger", savePresenter.asWidget(),
+				new OptionControl() {
+					@Override
+					public void onSelect(String name) {
+						if (name.equals("Save") && savePresenter.isValid()) {
+							Trigger trigger = savePresenter.getTrigger();
+							save(trigger);
+							hide();
+						}
 
-		},"Save", "Cancel");
+						if (name.equals("Cancel")) {
+							hide();
+						}
+					}
+
+				}, "Save", "Cancel");
 	}
 
-	protected void showEditPopup(Trigger trigger) {
+	protected void showEditPopup(final Trigger trigger) {
 		savePresenter.clear();
 		savePresenter.setTrigger(trigger);
-		AppManager.showPopUp("Create Trigger",savePresenter.asWidget(),new OptionControl(){
-			@Override
-			public void onSelect(String name) {						
-				if(name.equals("Save") && savePresenter.isValid()){
-					Trigger trigger = savePresenter.getTrigger();
-					save(trigger);
-					hide();
-				}
-				
-				if(name.equals("Cancel")){
-					hide();
-				}
-			}
+		AppManager.showPopUp(trigger != null ? "<i>Edit Trigger</i>"
+				: "Create Trigger", savePresenter.asWidget(),
+				new OptionControl() {
+					@Override
+					public void onSelect(String name) {
+						if (name.equals("Save") && savePresenter.isValid()) {
+							// Window.("Confirm You want to edit trigger", "");
+							// boolean isConfirmed =
+							// Window.confirm("Confirm you want to edit trigger "
+							// + "'"+trigger.getName()+"'?");
+							//
+							// if(isConfirmed){
+							Trigger trigger = savePresenter.getTrigger();
+							save(trigger);
+							hide();
+							// }
 
-		},"Save", "Cancel");
+						}
+
+						if (name.equals("Cancel")) {
+							hide();
+						}
+					}
+
+				}, "Save", "Cancel");
 
 	}
 
 	@Override
 	protected void onReset() {
 		super.onReset();
-		requestHelper.execute(new GetTriggersRequest(), new TaskServiceCallback<GetTriggersResponse>() {
-			@Override
-			public void processResult(GetTriggersResponse aResponse) {
-				getView().setTriggers(triggers = aResponse.getTriggers());
-			}
-		});
+		requestHelper.execute(new GetTriggersRequest(),
+				new TaskServiceCallback<GetTriggersResponse>() {
+					@Override
+					public void processResult(GetTriggersResponse aResponse) {
+						getView().setTriggers(
+								triggers = aResponse.getTriggers());
+					}
+				});
 	}
 
 	private void save(Trigger trigger) {
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new SaveTriggerRequest(trigger));
 		requests.addRequest(new GetTriggersRequest());
-		requestHelper.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResult) {
-				//SaveTriggerResponse aSaveResponse = (SaveTriggerResponse) aResult.get(0);
-				GetTriggersResponse aGetTriggersResult = (GetTriggersResponse) aResult.get(1);
-				getView().setTriggers(triggers = aGetTriggersResult.getTriggers());
-			}
-		});
+		requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResult) {
+						// SaveTriggerResponse aSaveResponse =
+						// (SaveTriggerResponse) aResult.get(0);
+						GetTriggersResponse aGetTriggersResult = (GetTriggersResponse) aResult
+								.get(1);
+						getView().setTriggers(
+								triggers = aGetTriggersResult.getTriggers());
+					}
+				});
 	}
 
 	@Override
 	public void onEditTrigger(EditTriggerEvent event) {
 		final Trigger trigger = event.getTrigger();
-		if(!trigger.isActive()){
-			//deleting
-			AppManager.showPopUp("Delete '"+trigger.getName()+"'", "Do you want to delete this trigger?",
+		if (!trigger.isActive()) {
+			// deleting
+			AppManager.showPopUp("Delete '" + trigger.getName() + "'",
+					"Do you want to delete this trigger?",
 					new OnOptionSelected() {
 						@Override
 						public void onSelect(String name) {
-							if(name.equals("Yes")){
+							if (name.equals("Yes")) {
 								save(trigger);
 							}
 						}
-					}, "Yes","Cancel");
-			
-		}else{
+					}, "Yes", "Cancel");
+
+		} else {
 			showEditPopup(trigger);
 		}
 	}

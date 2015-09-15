@@ -162,7 +162,7 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField
 	Image imgProcess;
 	@UiField
-	Anchor aContinue;
+	ActionLink aContinue;
 	@UiField
 	HTMLPanel divContinue;
 	@UiField
@@ -520,11 +520,11 @@ public class GenericDocumentView extends ViewImpl implements
 		} else {
 			if (status != null) {
 				if (status == DocStatus.INPROGRESS) {
-					divRibbon.addClassName("ribbon-draft");
+					divRibbon.addClassName("ribbon-accepted");
 					spnRibbon.setInnerText("Sent");
 				} else {
 					divRibbon.addClassName("ribbon-draft");
-					spnRibbon.setInnerText("Drafted");
+					spnRibbon.setInnerText("Draft");
 				}
 
 			}
@@ -1142,6 +1142,11 @@ public class GenericDocumentView extends ViewImpl implements
 	public void setLoadAsAdmin(boolean isLoadAsAdmin) {
 		this.isLoadAsAdmin = isLoadAsAdmin;
 		
+	}
+
+	@Override
+	public void enableSubmit(boolean isEnable) {
+		aContinue.setEnabled(isEnable);
 	}
 
 }

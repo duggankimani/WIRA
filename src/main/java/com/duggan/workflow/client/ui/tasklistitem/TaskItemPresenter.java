@@ -52,6 +52,7 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -532,7 +533,7 @@ public class TaskItemPresenter extends
 			
 		}else if(task instanceof HTSummary){
 			HTSummary doc= (HTSummary)task;
-			if(doc.getDocumentRef()==null){
+			if(doc.getDocumentRef()==null || doc.getRefId()==null){
 				//This happens if this task was not loaded correctly.
 				//this should be changed to processinstanceid - documents dont matter; processes do.
 				return;
@@ -540,6 +541,7 @@ public class TaskItemPresenter extends
 			
 			assert doc.getDocumentRef()!=null;
 			assert docRefId!=null;
+			
 			if(doc.getRefId().equals(docRefId)){
 				getView().showAttachmentIcon(true);
 			}

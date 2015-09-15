@@ -149,12 +149,16 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	public void onWorkflowProcess(WorkflowProcessEvent event) {
 		Doc summary = event.getDocument();
 		String url = "";
-		if(summary instanceof Document){
-			url = "#search;did="+summary.getId();
-		}else{
-			long processInstanceId = ((HTSummary)summary).getProcessInstanceId();
-			url = "#search;pid="+processInstanceId;
-		}
+		url = "#search;docRefId="+summary.getRefId();
+		
+//		if(summary instanceof Document){
+//			//url = "#search;did="+summary.getId();
+//			url = "#search;did="+summary.getId();
+//		}else{
+//			long processInstanceId = ((HTSummary)summary).getProcessInstanceId();
+//			url = "#search;pid="+processInstanceId;
+//			
+//		}
 		
 		getView().setAlertVisible(event.getSubject(), event.getAction(),url);
 	}

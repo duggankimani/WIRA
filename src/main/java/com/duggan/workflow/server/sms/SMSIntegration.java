@@ -3,6 +3,8 @@ package com.duggan.workflow.server.sms;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,13 +13,15 @@ import com.duggan.workflow.server.db.DB;
 
 public class SMSIntegration {
 
-	Random random = new Random();
+	static Random random = new Random();
+	static Logger logger = Logger.getLogger(SMSIntegration.class);
+	
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public String execute(Map<String, String> values){
+	public static String execute(Map<String, String> values){
 		String to = values.get("to");
 		String message = values.get("message");
 		
@@ -40,7 +44,11 @@ public class SMSIntegration {
 		return send(to, message);
 	}
 	
-	public String send(String to, String message){
+	public static String send(String to, String message){
+		logger.info("To: "+to+", message: "+message);
+		if(to==null || to.isEmpty() || message==null || message.isEmpty()){
+			
+		}
 		String username="dkimani";
 		String apiKey="4f91e819ea8defb7d14111c51b46769a26856fde6a15cc85545701ca71c38026";
 		
@@ -59,9 +67,9 @@ public class SMSIntegration {
 			if(!status.equals("Success")){
 				throw new RuntimeException("SMS Failed: "+status);
 			}
-			System.err.println(resp);
+			logger.info(resp);
 		}catch(Exception e){
-			throw new RuntimeException(e);
+			throw new RuntimeException(ExceptionUtils.getRootCauseMessage(e));
 		}
 		
 		return null;
