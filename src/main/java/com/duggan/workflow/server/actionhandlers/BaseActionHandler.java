@@ -118,6 +118,7 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 				baseResult.setErrorMessage("An error occurred during processing of your request");
 			}else{
 				log.error("Throwable : "+throwable.getMessage());
+				throwable = getBaseCause(throwable);
 				if(throwable instanceof ConstraintViolationException){
 					baseResult.setErrorMessage("[400] A database error occurred");
 				}else if(throwable instanceof PersistenceException){
@@ -134,6 +135,15 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			}
 		}
 
+	}
+	
+	public Throwable getBaseCause(Throwable caught){
+		
+		if(caught.getCause()!=null && caught.getCause().getMessage()!=null && !caught.getCause().getMessage().isEmpty()){
+			return getBaseCause(caught.getCause());
+		}
+		
+		return caught;
 	}
 
 	private Throwable getFirstThrowableWithMessage(Throwable throwable) {

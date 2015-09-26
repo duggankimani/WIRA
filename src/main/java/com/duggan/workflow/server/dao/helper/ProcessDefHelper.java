@@ -670,4 +670,10 @@ public class ProcessDefHelper {
 		return DB.getProcessDao().getProcessLog(processInstanceId, language);
 	}
 
+	public static void deleteTaskNotification(Long notificationId) {
+		
+		ADTaskNotification notification = DB.getProcessDao().getById(ADTaskNotification.class, notificationId);
+		DB.getProcessDao().delete(notification);
+	}
+
 }

@@ -60,4 +60,10 @@ public class ButtonGroup extends FieldWidget {
 	public Element getViewElement() {
 		return this.getElement();
 	}
+
+	@Override
+	public void setComponentValid(boolean isValid) {
+		// TODO Auto-generated method stub
+		
+	}
 }

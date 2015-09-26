@@ -190,4 +190,9 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	public Element getViewElement() {
 		return null;
 	}
+	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
 }

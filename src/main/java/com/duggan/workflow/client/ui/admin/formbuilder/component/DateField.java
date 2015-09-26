@@ -163,4 +163,10 @@ public class DateField extends FieldWidget {
 	public Element getViewElement() {
 		return lblComponent.getElement();
 	}
+
+	@Override
+	public void setComponentValid(boolean isValid) {
+		// TODO Auto-generated method stub
+		
+	}
 }

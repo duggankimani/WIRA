@@ -19,5 +19,6 @@ public interface ExecutorQueryService {
     List<RequestInfo> getInErrorRequests();
     List<RequestInfo> getCancelledRequests();
     List<ErrorInfo> getAllErrors(); 
-    List<RequestInfo> getAllRequests(); 
+    List<RequestInfo> getAllRequests(int offset, int limit);
+	int getAllRequestCount(); 
 }

@@ -25,27 +25,27 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 		
 		if(caught instanceof ServiceException){
 			String msg = "Cannot connect to server...";
-			if(caught.getMessage()!=null && caught.getMessage().length()>5){
+			if(getBaseMessage(caught)!=null){
 				msg = caught.getMessage();
 			}
-			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg));
+			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg+" <i>[ServiceEx]</i>"));
 			return;
 		}
 		
 		if(caught instanceof InvocationException){
 			String msg = "Cannot connect to server...";
-			if(caught.getMessage()!=null && caught.getMessage().length()>5){
+			if(getBaseMessage(caught)!=null){
 				msg = caught.getMessage();
 			}
 			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
-			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg));
+			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg+" <i>[InvocationEx]</i>"));
 			return;
 		}
 		
 		if(caught instanceof RequestTimeoutException){
 			//HTTP Request Timeout
 			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
-			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent("Cannot connect to server..."));
+			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent("Cannot connect to server... [RequestTimeoutEx]"));
 		}
 		
 		//caught.printStackTrace();
@@ -57,7 +57,7 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 		}
 		
 		AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
-		AppContext.getEventBus().fireEvent(new ErrorEvent(message, 0L));
+		AppContext.getEventBus().fireEvent(new ErrorEvent(message+" <i>[GeneralException]</i>", 0L));
 	}
 
 	@Override
@@ -67,4 +67,12 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 	
 	public abstract void processResult(T aResponse);
 	
+	public String getBaseMessage(Throwable caught){
+		if(caught.getCause()!=null && caught.getCause().getMessage()!=null && !caught.getCause().getMessage().isEmpty()){
+			return getBaseMessage(caught);
+		}
+		
+		
+		return caught.getMessage();
+	}
 }

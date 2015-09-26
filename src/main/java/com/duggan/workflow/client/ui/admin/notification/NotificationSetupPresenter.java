@@ -12,8 +12,10 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.TaskNotification;
+import com.duggan.workflow.shared.requests.DeleteNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.GetNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.SaveNotificationTemplateRequest;
+import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetNotificationTemplateResult;
 import com.duggan.workflow.shared.responses.SaveNotificationTemplateResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -41,6 +43,7 @@ implements NoticationCategoryChangeHandler{
 		HasClickHandlers getHTMLEditorLink();
 		String getHtmlNotification();
 		void setHTMLNotification(String text);
+		HasClickHandlers getDeleteButton();
 	}
 
 	private Long id;
@@ -68,6 +71,14 @@ implements NoticationCategoryChangeHandler{
 			}
 		});
 		
+		getView().getDeleteButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				deleteTemplate();
+			}
+		});
+		
 		getView().getActionsDropdown().addValueChangeHandler(new ValueChangeHandler<Actions>() {
 			
 			@Override
@@ -85,7 +96,7 @@ implements NoticationCategoryChangeHandler{
 			@Override
 			public void onClick(ClickEvent event) {
 				final HTMLEditor editor = new HTMLEditor(getView().getHtmlNotification());
-				AppManager.showPopUp("Edit HTML",editor ,"htmlEditorPopup", new OnOptionSelected() {
+				AppManager.showPopUp("Edit HTML",editor , new OnOptionSelected() {
 					
 					@Override
 					public void onSelect(String name) {
@@ -108,6 +119,21 @@ implements NoticationCategoryChangeHandler{
 		notification.setCategory(category);
 		assert category!=null;
 		saveNotificationTemplate(notification);
+	}
+	
+	protected void deleteTemplate(){
+		
+		if(id==null)
+			return;
+		
+		requestHelper.execute(new DeleteNotificationTemplateRequest(id),
+				new TaskServiceCallback<BaseResponse>() {
+			@Override
+			public void processResult(BaseResponse aResponse) {
+				getView().clear();
+				id=null;
+			}
+		});
 	}
 
 	protected void saveNotificationTemplate(TaskNotification notification) {

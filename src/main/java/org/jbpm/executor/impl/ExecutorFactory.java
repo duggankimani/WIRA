@@ -24,14 +24,7 @@ public class ExecutorFactory {
 	}
 
 	public static ExecutorQueryService getExecutorQueryService() {
-		if (queryService == null) {
-			synchronized (ExecutorFactory.class) {
-				if (queryService == null) {
-					queryService = new ExecutorQueryServiceImpl();
-				}
-			}
-		}
-
+		queryService = new ExecutorQueryServiceImpl();
 		return queryService;
 	}
 

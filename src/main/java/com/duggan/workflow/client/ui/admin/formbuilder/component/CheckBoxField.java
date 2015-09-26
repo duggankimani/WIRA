@@ -149,4 +149,9 @@ public class CheckBoxField extends FieldWidget {
 	public Element getViewElement() {
 		return null;
 	}
+
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
 }

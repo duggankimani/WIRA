@@ -34,9 +34,11 @@ public class TextArea extends FieldWidget {
 	@UiField Element lblEl;
 	@UiField com.duggan.workflow.client.ui.component.TextArea txtComponent;
 	@UiField HTMLPanel panelControls;
+	@UiField HTMLPanel panelGroup;
 	@UiField InlineLabel lblComponent;
 	@UiField SpanElement spnMandatory;
 	@UiField DivElement divControls;
+	@UiField SpanElement spnErrorMsg;
 	
 	public TextArea() {
 		super();
@@ -212,5 +214,16 @@ public class TextArea extends FieldWidget {
 	@Override
 	public Element getViewElement() {
 		return lblComponent.getElement();
+	}
+	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		if(isValid){
+			panelGroup.addStyleName("success");
+			spnErrorMsg.addClassName("hide");
+		}else{
+			panelGroup.addStyleName("error");
+			spnErrorMsg.removeClassName("hide");
+		}
 	}
 }

@@ -62,8 +62,7 @@ public class OutgoingRequestImpl implements OutgoingRequestService {
 	}
 	
 	public OutgoingRequestImpl(Boolean myConfiguration) {
-		DefaultClientConfig config = new DefaultClientConfig(
-				JAXBProviderImpl.class);
+		DefaultClientConfig config = new DefaultClientConfig(JAXBProviderImpl.class);
 		if(myConfiguration){
 			config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);	
 		}

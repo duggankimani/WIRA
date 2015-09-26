@@ -27,7 +27,7 @@ public interface ExecutorServiceEntryPoint {
 
     public List<ErrorInfo> getAllErrors();
 
-    public List<RequestInfo> getAllRequests();
+    public List<RequestInfo> getAllRequests(int offset, int limit);
 
     public int clearAllRequests();
 
@@ -52,4 +52,6 @@ public interface ExecutorServiceEntryPoint {
     public int getThreadPoolSize();
 
     public void setThreadPoolSize(int nroOfThreads);
+
+	public int getAllRequestCount();
 }

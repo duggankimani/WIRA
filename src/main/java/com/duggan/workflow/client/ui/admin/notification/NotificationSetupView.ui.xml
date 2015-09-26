@@ -44,6 +44,7 @@
 		
 		<g:HTMLPanel styleName="control-group">
 			  <div class="controls">
+			  	<d:ActionLink styleName="btn btn-danger" ui:field="aDelete">Delete</d:ActionLink>
 			  	<d:ActionLink styleName="btn btn-success" ui:field="aHtmlEditor" title="Click to Use the HTML Editor">Editor</d:ActionLink>
 			  	<d:ActionLink styleName="btn btn-success" ui:field="aSave">Save</d:ActionLink>
 			  </div>

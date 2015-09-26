@@ -243,5 +243,10 @@ public class SingleButton extends FieldWidget {
 	public Element getViewElement() {
 		return null;
 	}
+	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
 
 }

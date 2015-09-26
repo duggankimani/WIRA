@@ -5,7 +5,7 @@
 	
 	<g:HTMLPanel>
 		<d:TextArea ui:field="txtHTML" 
-			rows="15" width="100%"> 
+			rows="15" width="75%"> 
 		</d:TextArea>
 	</g:HTMLPanel>
 </ui:UiBinder> 

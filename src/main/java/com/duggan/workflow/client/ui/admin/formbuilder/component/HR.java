@@ -54,4 +54,8 @@ public class HR extends FieldWidget{
 		return null;
 	}
 	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
 }

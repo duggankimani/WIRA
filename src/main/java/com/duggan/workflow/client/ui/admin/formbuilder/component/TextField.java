@@ -34,7 +34,9 @@ public class TextField extends FieldWidget {
 	@UiField com.duggan.workflow.client.ui.component.TextField txtComponent;
 	@UiField InlineLabel lblReadOnly;
 	@UiField HTMLPanel panelControls;
+	@UiField HTMLPanel panelGroup;
 	@UiField SpanElement spnMandatory;
+	@UiField SpanElement spnErrorMsg;
 	
 	private final Widget widget;
 	
@@ -234,6 +236,17 @@ public class TextField extends FieldWidget {
 	@Override
 	public Element getViewElement() {
 		return lblReadOnly.getElement();
+	}
+	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		if(isValid){
+			panelGroup.addStyleName("success");
+			spnErrorMsg.addClassName("hide");
+		}else{
+			panelGroup.addStyleName("error");
+			spnErrorMsg.removeClassName("hide");
+		}
 	}
 	
 }

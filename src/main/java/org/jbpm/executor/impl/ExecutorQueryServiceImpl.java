@@ -12,18 +12,17 @@ import org.jbpm.executor.api.ExecutorQueryService;
 import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
 
+import com.duggan.workflow.server.dao.BaseDaoImpl;
 import com.duggan.workflow.server.db.DB;
 
 /**
  *
  * @author salaboy
  */
-public class ExecutorQueryServiceImpl implements ExecutorQueryService{
+public class ExecutorQueryServiceImpl extends BaseDaoImpl implements ExecutorQueryService{
     
-    private EntityManager em;
-
     public ExecutorQueryServiceImpl() {
-    	em = DB.getEntityManager();
+    	super(DB.getEntityManager());
     }
     
     public List<RequestInfo> getQueuedRequests() {
@@ -51,9 +50,16 @@ public class ExecutorQueryServiceImpl implements ExecutorQueryService{
         return resultList;
     }
     
-    public List<RequestInfo> getAllRequests() {
-        List resultList = em.createNamedQuery("GetAllRequests").getResultList();
+    public List<RequestInfo> getAllRequests(int offset, int limit) {
+        List<RequestInfo> resultList = getResultList(em.createNamedQuery("GetAllRequests"),
+        		offset, limit);
         return resultList;
     }
+
+	@Override
+	public int getAllRequestCount() {
+		Number count = getSingleResultOrNull(em.createQuery("select count(*) FROM RequestInfo"));
+		return count.intValue();
+	}
 
 }

@@ -87,4 +87,9 @@ public class JSField extends FieldWidget {
 		return null;
 	}
 	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
+	
 }

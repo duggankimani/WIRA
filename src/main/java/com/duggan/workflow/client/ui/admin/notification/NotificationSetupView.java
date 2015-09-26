@@ -50,6 +50,8 @@ public class NotificationSetupView extends ViewImpl implements
 	@UiField(provided=true) AutoCompleteField<StringListable> autocompleteTargets;
 	@UiField ActionLink aSave;
 	@UiField ActionLink aHtmlEditor;
+	@UiField ActionLink aDelete;
+	
 	
 	@Inject
 	public NotificationSetupView(final Binder binder) {
@@ -227,6 +229,9 @@ public class NotificationSetupView extends ViewImpl implements
 		txtNotification.setValue(text);
 	}
 	
+	public HasClickHandlers getDeleteButton(){
+		return aDelete;
+	}
 	
 	
 }

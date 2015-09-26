@@ -94,7 +94,16 @@ public abstract class Doc extends SerializableObj implements Serializable,Compar
 			//backward compatibility - Changing subject to-> CaseNo
 			setValue("caseNo", value.clone(false));
 		}
-		values.put(name, value);
+		
+		if(values.get(name)!=null && value!=null){
+			//Duggan 15/09/2015- Added this to support Field Triggers that may update a field
+			//value with the previous value's id - This update causes duplication of a field value in 
+			//the db
+			values.get(name).setValue(value.getValue());
+		}else{
+			values.put(name, value);
+		}
+		
 	}
 	
 	public abstract HTUser getOwner();

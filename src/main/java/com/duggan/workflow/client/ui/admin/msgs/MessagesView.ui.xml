@@ -1,0 +1,37 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<div class="content-body">
+			<div class="row-fluid">
+				<div class="action-buttons">
+					<g:Anchor ui:field="aNew" styleName="btn btn-primary"
+						title="New Form">
+						<i class="icon-plus"></i>
+						New Table
+					</g:Anchor>
+					<g:Anchor ui:field="aImport" styleName="btn btn-primary"
+						title="Import Form">
+						<i class="icon-upload-alt"></i>
+						Import Table
+					</g:Anchor>
+					<g:Anchor ui:field="aExport" styleName="btn btn-primary"
+						title="Export Form">
+						<i class="icon-arrow-down"></i>
+						Export Table
+					</g:Anchor>
+				</div>
+				
+				<div class="panel widget">
+					<d:Grid ui:field="grid"></d:Grid>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

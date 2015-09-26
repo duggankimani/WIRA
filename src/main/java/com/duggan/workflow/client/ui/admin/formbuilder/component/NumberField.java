@@ -38,7 +38,9 @@ public class NumberField extends FieldWidget{
 	@UiField DoubleField txtComponent;
 	@UiField InlineLabel lblReadOnly;
 	@UiField HTMLPanel panelControls;
+	@UiField HTMLPanel panelGroup;
 	@UiField SpanElement spnMandatory;
+	@UiField SpanElement spnErrorMsg;
 	
 	private final Widget widget;
 	
@@ -269,8 +271,17 @@ public class NumberField extends FieldWidget{
 		}else{
 			return Double.parseDouble(value);
 		}
-		
 	}
 	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		if(isValid){
+			panelGroup.addStyleName("success");
+			spnErrorMsg.addClassName("hide");
+		}else{
+			panelGroup.addStyleName("error");
+			spnErrorMsg.removeClassName("hide");
+		}
+	}
 	
 }

@@ -23,8 +23,6 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
     
     private Executor executor;
     
-    private ExecutorQueryService queryService;
-    
     private ExecutorRequestAdminService adminService;
 
     public ExecutorServiceEntryPointImpl() {
@@ -38,15 +36,7 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
     public void setExecutor(Executor executor) {
         this.executor = executor;
     }
-
-    public ExecutorQueryService getQueryService() {
-        return queryService;
-    }
-
-    public void setQueryService(ExecutorQueryService queryService) {
-        this.queryService = queryService;
-    }
-
+    
     public ExecutorRequestAdminService getAdminService() {
         return adminService;
     }
@@ -58,28 +48,33 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
     
 
     public List<RequestInfo> getQueuedRequests() {
-        return queryService.getQueuedRequests();
+        return getQueryService().getQueuedRequests();
     }
 
     public List<RequestInfo> getExecutedRequests() {
-        return queryService.getExecutedRequests();
+        return getQueryService().getExecutedRequests();
     }
 
     public List<RequestInfo> getInErrorRequests() {
-        return queryService.getInErrorRequests();
+        return getQueryService().getInErrorRequests();
     }
 
     public List<RequestInfo> getCancelledRequests() {
-        return queryService.getCancelledRequests();
+        return getQueryService().getCancelledRequests();
     }
 
     public List<ErrorInfo> getAllErrors() {
-        return queryService.getAllErrors();
+        return getQueryService().getAllErrors();
     }
 
-    public List<RequestInfo> getAllRequests() {
-        return queryService.getAllRequests();
+    public List<RequestInfo> getAllRequests(int offset, int limit) {
+        return getQueryService().getAllRequests(offset, limit);
     }
+    
+    @Override
+	public int getAllRequestCount() {
+		return getQueryService().getAllRequestCount();
+	}
 
     public int clearAllRequests() {
         return adminService.clearAllRequests();
@@ -103,9 +98,12 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
 
     public void init() {
     	executor = ExecutorFactory.getExecutor();
-    	queryService = ExecutorFactory.getExecutorQueryService();
     	adminService = ExecutorFactory.getExecutorRequestAdminService();
     	       
+    }
+    
+    public ExecutorQueryService getQueryService(){
+    	return ExecutorFactory.getExecutorQueryService();
     }
 
     public void destroy() {
@@ -135,7 +133,6 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
     public void setThreadPoolSize(int nroOfThreads) {
         executor.setThreadPoolSize(nroOfThreads);
     }
-    
-    
+
     
 }

@@ -13,7 +13,9 @@ import com.duggan.workflow.server.actionhandlers.DeleteDSConfigurationEventActio
 import com.duggan.workflow.server.actionhandlers.DeleteDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteNotificationTemplateRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestHandler;
+import com.duggan.workflow.server.actionhandlers.ExecuteTriggerActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteTriggersActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
@@ -37,6 +39,7 @@ import com.duggan.workflow.server.actionhandlers.GetGroupsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetInitialDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetItemActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetMessagesActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationTemplateRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetOutputDocumentsRequestHandler;
@@ -92,7 +95,9 @@ import com.duggan.workflow.shared.requests.DeleteDSConfigurationEvent;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
+import com.duggan.workflow.shared.requests.DeleteNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
+import com.duggan.workflow.shared.requests.ExecuteTriggerRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.requests.ExportFormRequest;
@@ -116,6 +121,7 @@ import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetItemRequest;
 import com.duggan.workflow.shared.requests.GetLongTasksRequest;
+import com.duggan.workflow.shared.requests.GetMessagesRequest;
 import com.duggan.workflow.shared.requests.GetNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
@@ -395,6 +401,12 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetProcessCategoriesRequest.class, GetProcessCategoriesRequestActionHandler.class, SessionValidator.class);
 		
 		bindHandler(SaveProcessCategoryRequest.class, SaveProcessCategoryRequestActionHandler.class, SessionValidator.class);
+		
+		bindHandler(ExecuteTriggerRequest.class, ExecuteTriggerActionHandler.class, SessionValidator.class);
+		
+		bindHandler(DeleteNotificationTemplateRequest.class, DeleteNotificationTemplateRequestHandler.class);
+		
+		bindHandler(GetMessagesRequest.class, GetMessagesActionHandler.class);
 		
 	}
 }

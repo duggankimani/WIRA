@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -55,4 +54,8 @@ public class FormWidget extends FieldWidget {
 		return null;
 	}
 
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
 }

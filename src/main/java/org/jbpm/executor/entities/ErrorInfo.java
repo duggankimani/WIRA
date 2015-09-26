@@ -4,7 +4,6 @@
  */
 package org.jbpm.executor.entities;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,12 +16,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.duggan.workflow.server.dao.model.PO;
+import com.duggan.workflow.shared.model.ErrorInfoDto;
+
 /**
  *
  * @author salaboy
  */
 @Entity
-public class ErrorInfo implements Serializable {
+public class ErrorInfo extends PO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -128,6 +130,17 @@ public class ErrorInfo implements Serializable {
         hash = 37 * hash + (this.requestInfo != null ? this.requestInfo.hashCode() : 0);
         return hash;
     }
+
+	public ErrorInfoDto toDto() {
+		ErrorInfoDto dto = new ErrorInfoDto();
+		
+		dto.setRefId(message);
+		dto.setId(id);
+		dto.setMessage(message);
+		dto.setStacktrace(stacktrace);
+		
+		return dto;
+	}
 
     
     

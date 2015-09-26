@@ -22,9 +22,9 @@ import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.Executor;
 import org.jbpm.executor.entities.RequestInfo;
-import org.jbpm.executor.entities.STATUS;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.ExecutionStatus;
 
 /**
  *	Singleton
@@ -95,7 +95,7 @@ public class ExecutorImpl implements Executor {
         RequestInfo requestInfo = new RequestInfo();
         requestInfo.setCommandName(commandId);
         requestInfo.setKey(businessKey);
-        requestInfo.setStatus(STATUS.QUEUED);
+        requestInfo.setStatus(ExecutionStatus.QUEUED);
         requestInfo.setMessage("Ready to execute");
         if (ctx.getData("retries") != null) {
             requestInfo.setRetries((Integer) ctx.getData("retries"));
@@ -134,7 +134,7 @@ public class ExecutorImpl implements Executor {
         RequestInfo r = (RequestInfo) result.iterator().next();
                 
         em.lock(r, LockModeType.WRITE);
-        r.setStatus(STATUS.CANCELLED);
+        r.setStatus(ExecutionStatus.CANCELLED);
         em.merge(r);
         
         logger.log(Level.INFO, " >>> After - Cancelling Request with Id: {0}", requestId);

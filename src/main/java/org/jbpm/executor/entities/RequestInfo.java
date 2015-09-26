@@ -4,7 +4,6 @@
  */
 package org.jbpm.executor.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,12 +22,17 @@ import javax.persistence.TemporalType;
 
 import org.jbpm.executor.api.CommandCodes;
 
+import com.duggan.workflow.server.dao.model.PO;
+import com.duggan.workflow.shared.model.ErrorInfoDto;
+import com.duggan.workflow.shared.model.ExecutionStatus;
+import com.duggan.workflow.shared.model.RequestInfoDto;
+
 /**
  *
  * @author salaboy
  */
 @Entity(name = "RequestInfo")
-public class RequestInfo implements Serializable{
+public class RequestInfo extends PO{
 
     /**
 	 * 
@@ -41,7 +45,7 @@ public class RequestInfo implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
     @Enumerated(EnumType.STRING)
-    private STATUS status;    
+    private ExecutionStatus status;    
     @Enumerated(EnumType.STRING)
     private CommandCodes commandName;
     private String message;
@@ -119,11 +123,11 @@ public class RequestInfo implements Serializable{
         this.message = message;
     }
 
-    public STATUS getStatus() {
+    public ExecutionStatus getStatus() {
         return status;
     }
 
-    public void setStatus(STATUS status) {
+    public void setStatus(ExecutionStatus status) {
         this.status = status;
     }
 
@@ -209,6 +213,29 @@ public class RequestInfo implements Serializable{
         hash = 79 * hash + (this.errorInfo != null ? this.errorInfo.hashCode() : 0);
         return hash;
     }
-    
+   
+    public RequestInfoDto toDto(){
+    	RequestInfoDto dto = new RequestInfoDto();
+    	dto.setCommandName(commandName.name());
+    	dto.setExecutions(executions);
+    	dto.setId(id);
+    	dto.setMessage(message);
+    	dto.setMessageKey(messageKey);
+    	dto.setRefId(message);
+    	dto.setRetries(retries);
+    	dto.setStatus(status.name());
+    	dto.setTime(time);
+    	dto.setCreated(getCreated());
+    	dto.setUpdated(getUpdated());
+    	
+    	List<ErrorInfoDto> errorDtos = new ArrayList<>();
+    	for(ErrorInfo info: errorInfo){
+    		errorDtos.add(info.toDto());
+    	}
+    	
+    	dto.setErrorInfo(errorDtos);
+    	
+    	return dto;
+    }
     
 }

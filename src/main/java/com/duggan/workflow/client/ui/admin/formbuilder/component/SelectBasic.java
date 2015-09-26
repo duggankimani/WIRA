@@ -38,6 +38,8 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	@UiField HTMLPanel panelControls;
 	@UiField InlineLabel lblComponent;
 	@UiField SpanElement spnMandatory;
+	@UiField SpanElement spnErrorMsg;
+	@UiField HTMLPanel panelGroup;
 	
 	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
 	}
@@ -219,6 +221,17 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	@Override
 	public Element getViewElement() {
 		return lblComponent.getElement();
+	}
+	
+	@Override
+	public void setComponentValid(boolean isValid) {
+		if(isValid){
+			panelGroup.addStyleName("success");
+			spnErrorMsg.addClassName("hide");
+		}else{
+			panelGroup.addStyleName("error");
+			spnErrorMsg.removeClassName("hide");
+		}
 	}
 	
 }

@@ -1093,7 +1093,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 		}
 
-		setComponentValid(isValid);
+		if(this.isVisible() && !isReadOnly()){
+			setComponentValid(isValid);
+		}
 
 		return isValid;
 	}
@@ -1103,9 +1105,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	 * 
 	 * @param isValid
 	 */
-	private void setComponentValid(boolean isValid) {
-		// this.addStyleName();
-	}
+	public abstract void setComponentValid(boolean isValid);
 
 	boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;

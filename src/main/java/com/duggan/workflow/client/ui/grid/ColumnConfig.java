@@ -171,7 +171,7 @@ public class ColumnConfig {
 		return value;
 	}
 	
-	public void setDropDownItems(List<Listable> items){
+	public <T extends Listable> void setDropDownItems(List<T> items){
 		this.dropDownItems.clear();
 		this.dropDownItems.addAll(items);
 	}

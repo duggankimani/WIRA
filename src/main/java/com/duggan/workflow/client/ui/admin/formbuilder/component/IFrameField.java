@@ -70,5 +70,9 @@ public class IFrameField extends FieldWidget{
 		return null;
 	}
 
+	@Override
+	public void setComponentValid(boolean isValid) {
+		
+	}
 
 }

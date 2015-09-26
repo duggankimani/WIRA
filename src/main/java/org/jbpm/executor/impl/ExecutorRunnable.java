@@ -26,9 +26,9 @@ import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.ExecutionResults;
 import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
-import org.jbpm.executor.entities.STATUS;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.ExecutionStatus;
 
 /**
  *
@@ -82,7 +82,7 @@ public class ExecutorRunnable extends Thread {
             Throwable exception = null;
             try {
                 r = (RequestInfo) resultList.get(0);
-                r.setStatus(STATUS.RUNNING);
+                r.setStatus(ExecutionStatus.RUNNING);
                 em.merge(r);
                 logger.log(Level.INFO, " >> Processing Request Id: {0}", r.getId());
                 logger.log(Level.INFO, " >> Request Status ={0}", r.getStatus());
@@ -159,13 +159,13 @@ public class ExecutorRunnable extends Thread {
                 r.getErrorInfo().add(errorInfo);
                 logger.log(Level.SEVERE, " >>> Error Number: {0}", r.getErrorInfo().size());
                 if (r.getRetries() > 0) {
-                    r.setStatus(STATUS.RETRYING);
+                    r.setStatus(ExecutionStatus.RETRYING);
                     r.setRetries(r.getRetries() - 1);
                     r.setExecutions(r.getExecutions() + 1);
                     logger.log(Level.SEVERE, " >>> Retrying ({0}) still available!", r.getRetries());
                 } else {
                     logger.severe(" >>> Error no retries left!");
-                    r.setStatus(STATUS.ERROR);
+                    r.setStatus(ExecutionStatus.ERROR);
                     r.setExecutions(r.getExecutions() + 1);
                 }
 
@@ -177,7 +177,7 @@ public class ExecutorRunnable extends Thread {
 
             } else {
 
-                r.setStatus(STATUS.DONE);
+                r.setStatus(ExecutionStatus.DONE);
                 em.merge(r);
 
             }          

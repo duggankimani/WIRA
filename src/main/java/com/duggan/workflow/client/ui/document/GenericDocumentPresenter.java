@@ -89,6 +89,7 @@ import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
+import com.duggan.workflow.shared.requests.ExecuteTriggerRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
@@ -107,6 +108,7 @@ import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
+import com.duggan.workflow.shared.responses.ExecuteTriggerResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggersResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
@@ -318,6 +320,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
+
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -351,6 +354,7 @@ public class GenericDocumentPresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
+				mergeFormValuesWithDoc();
 				save((Document) doc);
 			}
 		});
@@ -713,7 +717,8 @@ public class GenericDocumentPresenter extends
 			}
 
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-
+			
+			fireEvent(new ProcessingEvent());
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {
 						public void processResult(
@@ -746,6 +751,7 @@ public class GenericDocumentPresenter extends
 						@Override
 						public void onFailure(Throwable caught) {
 							super.onFailure(caught);
+							fireEvent(new ProcessingCompletedEvent());
 							// Reverse Navigation
 							navigateIndex(!isNavigateNext);
 						}
@@ -761,7 +767,8 @@ public class GenericDocumentPresenter extends
 						nextStepId, doc));
 			}
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-
+			
+			fireEvent(new ProcessingEvent());
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {
 						public void processResult(
@@ -796,6 +803,7 @@ public class GenericDocumentPresenter extends
 						@Override
 						public void onFailure(Throwable caught) {
 							super.onFailure(caught);
+							fireEvent(new ProcessingCompletedEvent());
 							// Reverse Navigation
 							navigateIndex(!isNavigateNext);
 						}
@@ -820,23 +828,27 @@ public class GenericDocumentPresenter extends
 
 	@Override
 	public void onExecTrigger(ExecTriggerEvent event) {
-		TaskStepDTO taskStepDTO = steps.get(currentStep);
-		Long previousStepId = null;
-		if (currentStep != 0) {
-			previousStepId = steps.get(currentStep - 1).getId();
+		if (event.getTriggerName() == null
+				|| event.getTriggerName().trim().isEmpty()) {
+			return;
 		}
 
-		Long nextStepId = taskStepDTO.getId();
 		mergeFormValuesWithDoc();
-		ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(
-				previousStepId, nextStepId, doc);
-
-		requestHelper.execute(execTrigger,
-				new TaskServiceCallback<ExecuteTriggersResponse>() {
-					public void processResult(ExecuteTriggersResponse aResponse) {
-						//Updated Form
+		ExecuteTriggerRequest request = new ExecuteTriggerRequest(
+				event.getTriggerName(), doc);
+//		Window.alert("Value on exec= "+(doc.getValues().get("budgetAmount")==null?null:
+//			doc.getValues().get("budgetAmount").getValue()));
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(request,
+				new TaskServiceCallback<ExecuteTriggerResponse>() {
+					public void processResult(ExecuteTriggerResponse aResponse) {
+						// Updated Form
+						
 						doc = aResponse.getDocument();
 						bindForm(form, doc);
+						fireEvent(new ProcessingCompletedEvent());
+//						Window.alert("After exec= "+(doc.getValues().get("budgetAmount")==null?null:
+//							doc.getValues().get("budgetAmount").getValue()));
 					}
 				});
 
@@ -934,31 +946,60 @@ public class GenericDocumentPresenter extends
 
 							if (name.equals("Yes")) {
 								fireEvent(new ProcessingEvent());
-								requestHelper.execute(
-										new ApprovalRequest(AppContext
-												.getUserId(), (Document) doc),
-										new TaskServiceCallback<ApprovalRequestResult>() {
-											@Override
-											public void processResult(
-													ApprovalRequestResult result) {
-												GenericDocumentPresenter.this
-														.getView().asWidget()
-														.removeFromParent();
-												fireEvent(new ProcessingCompletedEvent());
-												// clear selected document
-												fireEvent(new AfterSaveEvent());
-												fireEvent(new WorkflowProcessEvent(
-														doc.getCaseNo(),
-														"You have forwarded for Approval",
-														doc));
-											}
-										});
 
-								// Save comment
-								if (confirm.getComment() != null
-										&& !confirm.getComment().isEmpty()) {
-									save(confirm.getComment());
-								}
+								ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(
+										steps.get(steps.size() - 1).getId(),
+										null, doc);
+								requestHelper
+										.execute(
+												execTrigger,
+												new TaskServiceCallback<ExecuteTriggersResponse>() {
+													@Override
+													public void processResult(
+															ExecuteTriggersResponse aResponse) {
+														doc = aResponse
+																.getDocument();
+														MultiRequestAction requests = new MultiRequestAction();
+														requests.addRequest(new ApprovalRequest(
+																AppContext
+																		.getUserId(),
+																(Document) doc));
+
+														final Comment comment = getComment(confirm
+																.getComment());
+														if (comment != null) {
+															requests.addRequest(new SaveCommentRequest(
+																	comment));
+														}
+														
+														requestHelper
+																.execute(
+																		requests,
+																		new TaskServiceCallback<MultiRequestActionResult>() {
+																			@Override
+																			public void processResult(
+																					MultiRequestActionResult result) {
+
+																				ApprovalRequestResult approvalResp = (ApprovalRequestResult) result
+																						.get(0);
+																				GenericDocumentPresenter.this
+																						.getView()
+																						.asWidget()
+																						.removeFromParent();
+																				fireEvent(new ProcessingCompletedEvent());
+																				// clear
+																				// selected
+																				// document
+																				fireEvent(new AfterSaveEvent());
+																				fireEvent(new WorkflowProcessEvent(
+																						doc.getCaseNo(),
+																						"You have forwarded for Approval",
+																						doc));
+																			}
+																		});
+													}
+
+												});
 							}
 						}
 					}, "Yes", "Cancel");
@@ -1062,14 +1103,16 @@ public class GenericDocumentPresenter extends
 	protected void save(Document document) {
 
 		// Incremental/ Page based additions
-		mergeFormValuesWithDoc();
+		//mergeFormValuesWithDoc();
 
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new CreateDocumentRequest(document));
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-
+//			Window.alert("OnSave Value = "+(document.getValues().get("budgetAmount")==null? null:
+//				document.getValues().get("budgetAmount").getValue()));
+			
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {
 						public void processResult(
@@ -1081,7 +1124,9 @@ public class GenericDocumentPresenter extends
 							Document saved = aResponse.getDocument();
 							assert saved.getId() != null;
 							bindForm(form, saved);
-
+//							Window.alert("OnAfterSave Value = "+(saved.getValues().get("budgetAmount")==null? null:
+//								saved.getValues().get("budgetAmount").getValue()));
+							
 							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
 									.get(i++);
 							bindAttachments(attachmentsresponse);
@@ -1092,9 +1137,9 @@ public class GenericDocumentPresenter extends
 
 	}
 
-	protected void save(String commenttxt) {
+	private Comment getComment(String commenttxt) {
 		if (commenttxt == null || commenttxt.trim().isEmpty())
-			return;
+			return null;
 
 		getView().setComment("");
 		Comment comment = new Comment();
@@ -1104,6 +1149,15 @@ public class GenericDocumentPresenter extends
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
 		// comment.setCreatedBy(AppContext.getUserId());
+
+		return comment;
+	}
+
+	protected void save(String commenttxt) {
+		Comment comment = getComment(commenttxt);
+		if (comment == null) {
+			return;
+		}
 
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCommentRequest(comment));

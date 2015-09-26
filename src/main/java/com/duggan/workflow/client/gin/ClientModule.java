@@ -130,6 +130,8 @@ import com.duggan.workflow.client.util.Definitions;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.duggan.workflow.client.ui.admin.msgs.MessagesPresenter;
+import com.duggan.workflow.client.ui.admin.msgs.MessagesView;
 import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
 import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter.INotificationSetupView;
 import com.duggan.workflow.client.ui.admin.notification.NotificationSetupView;
@@ -350,5 +352,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(DataTablePresenter.class, DataTablePresenter.IDataTableView.class, DataTableView.class, DataTablePresenter.IDataTableProxy.class);
 		
 		bindPresenter(CaseViewPresenter.class, CaseViewPresenter.ICaseView.class, CaseView.class, CaseViewPresenter.ICaseViewProxy.class);
+		
+		bindPresenter(MessagesPresenter.class, MessagesPresenter.IMessagesView.class, 
+				MessagesView.class, MessagesPresenter.IMessagesProxy.class);
 	}
 }

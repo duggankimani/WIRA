@@ -33,7 +33,7 @@ public class FormDelegate {
 			FieldWidget fieldWidget = (FieldWidget)widget;
 			if(!fieldWidget.isValid() && fieldWidget.isVisible()){
 				isValid=false;
-				issues.addError("'"+fieldWidget.getField().getCaption()+"' is Mandatory");
+				//issues.addError("'"+fieldWidget.getField().getCaption()+"' is Mandatory");
 			}
 			
 		}
@@ -60,9 +60,10 @@ public class FormDelegate {
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
 			Field field = fieldWidget.getField();
-			if(fieldWidget.isReadOnly() && !fieldWidget.isFormularField()){
-				continue;
-			}
+			//DISABLED BY DUGGAN 15th/Sep/2015 - Due to Field Triggers that may update a readonly field
+//			if(fieldWidget.isReadOnly() && !fieldWidget.isFormularField()){
+//				continue;
+//			}
 			
 			Value fieldValue = fieldWidget.getFieldValue();
 			if(fieldValue!=null) {

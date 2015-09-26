@@ -183,4 +183,10 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 		return null;
 	}
 
+	@Override
+	public void setComponentValid(boolean isValid) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
