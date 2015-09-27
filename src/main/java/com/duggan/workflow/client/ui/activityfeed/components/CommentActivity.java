@@ -53,14 +53,15 @@ public class CommentActivity extends Composite {
 		setComment(comment.getId(),comment.getDocType(), comment.getSubject(),
 				comment.getComment(), comment.getCreatedBy(),
 				comment.getCreated(), comment.getUpdatedBy(), comment.getUpdated(),
-				comment.getDocumentId(), comment.getParentId()!=null);
+				comment.getDocumentId(),comment.getDocRefId(), comment.getParentId()!=null);
 	}
 
 
 	public void setComment(Long commentId, 
 			String docType, String subject,
 			String comment, HTUser createdBy,
-			Date created, String updatedby, Date updated, long documentId, boolean isChild) {
+			Date created, String updatedby, Date updated, long documentId,
+			String docRefId,boolean isChild) {
 		
 		this.commentid=commentId;
 		if(createdBy!=null){
@@ -75,7 +76,7 @@ public class CommentActivity extends Composite {
 		}
 		
 		aDocument.setText(docType+" "+subject);
-		aDocument.setHref("#search;did="+documentId);
+		aDocument.setHref("#search;docRefId="+docRefId);
 		
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
 		if(moduleUrl.endsWith("/")){

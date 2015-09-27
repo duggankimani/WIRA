@@ -36,7 +36,8 @@ public class TextField extends FieldWidget {
 	@UiField HTMLPanel panelControls;
 	@UiField HTMLPanel panelGroup;
 	@UiField SpanElement spnMandatory;
-	@UiField SpanElement spnErrorMsg;
+	@UiField SpanElement spnMsg;
+	@UiField Element spnIcon;
 	
 	private final Widget widget;
 	
@@ -240,12 +241,17 @@ public class TextField extends FieldWidget {
 	
 	@Override
 	public void setComponentValid(boolean isValid) {
+		spnMsg.removeClassName("hide");
+		spnIcon.removeClassName("icon-ok-circle");
+		spnIcon.removeClassName("icon-remove-circle");
 		if(isValid){
 			panelGroup.addStyleName("success");
-			spnErrorMsg.addClassName("hide");
+			spnIcon.addClassName("icon-ok-circle");
+			panelGroup.removeStyleName("error");
 		}else{
+			panelGroup.removeStyleName("success");
 			panelGroup.addStyleName("error");
-			spnErrorMsg.removeClassName("hide");
+			spnIcon.addClassName("icon-remove-circle");
 		}
 	}
 	

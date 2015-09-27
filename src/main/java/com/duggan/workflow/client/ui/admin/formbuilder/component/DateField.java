@@ -7,8 +7,6 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
-import com.duggan.workflow.shared.model.DoubleValue;
-import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -36,8 +34,11 @@ public class DateField extends FieldWidget {
 	@UiField Element lblEl;
 	@UiField DateInput dateBox;
 	@UiField HTMLPanel panelControls;
+	@UiField HTMLPanel panelGroup;
 	@UiField InlineLabel lblComponent;
 	@UiField SpanElement spnMandatory;
+	@UiField SpanElement spnMsg;
+	@UiField Element spnIcon;
 	
 	public DateField() {
 		super();
@@ -166,7 +167,17 @@ public class DateField extends FieldWidget {
 
 	@Override
 	public void setComponentValid(boolean isValid) {
-		// TODO Auto-generated method stub
-		
+		spnMsg.removeClassName("hide");
+		spnIcon.removeClassName("icon-ok-circle");
+		spnIcon.removeClassName("icon-remove-circle");
+		if(isValid){
+			panelGroup.addStyleName("success");
+			spnIcon.addClassName("icon-ok-circle");
+			panelGroup.removeStyleName("error");
+		}else{
+			panelGroup.removeStyleName("success");
+			panelGroup.addStyleName("error");
+			spnIcon.addClassName("icon-remove-circle");
+		}
 	}
 }

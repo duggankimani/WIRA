@@ -5,8 +5,10 @@
 		<label ui:field="lblEl" class="control-label">List Field:</label>
 		<g:HTMLPanel styleName="controls" ui:field="panelControls">
 			<d:DropDownList ui:field="lstItems" title=""></d:DropDownList>
-			<g:InlineLabel ui:field="lblComponent"></g:InlineLabel>
-			<span ui:field="spnErrorMsg" class="hide help-inline">Mandatory Field</span>
+			<g:InlineLabel ui:field="lblComponent" styleName="help-inline"></g:InlineLabel>
+			<span ui:field="spnMsg" class="hide help-inline">
+					<i class="icon" ui:field="spnIcon"></i>
+				</span>
 			<span ui:field="spnMandatory" style="color:red">*</span>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

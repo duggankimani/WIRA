@@ -8,8 +8,10 @@
 		       <label ui:field="lblEl" for="Username" class="control-label">Number Input:</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 				    <d:DoubleField ui:field="txtComponent" type="text" styleName="input-xlarge"/>
-				    <span ui:field="spnErrorMsg" class="hide help-inline">Mandatory Field</span>
-				    <g:InlineLabel ui:field="lblReadOnly"></g:InlineLabel>
+				    <g:InlineLabel ui:field="lblReadOnly" styleName="help-inline"></g:InlineLabel>
+				    <span ui:field="spnMsg" class="hide help-inline">
+					<i class="icon" ui:field="spnIcon"></i>
+				</span>
 				    <span ui:field="spnMandatory" style="color:red">*</span>
 		    	</g:HTMLPanel>
 	       </g:HTMLPanel>

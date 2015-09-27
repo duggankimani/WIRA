@@ -7,8 +7,10 @@
 			<!-- textarea id="textarea" name="textarea">Some default text</textarea -->
 			<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
 				<d:TextArea ui:field="txtComponent" type="text" class="input-xlarge"></d:TextArea>
-				<g:InlineLabel ui:field="lblComponent"></g:InlineLabel>
-				<span ui:field="spnErrorMsg" class="hide help-inline">Mandatory Field</span>
+				<g:InlineLabel ui:field="lblComponent" styleName="help-inline"></g:InlineLabel>
+				<span ui:field="spnMsg" class="hide help-inline">
+					<i class="icon" ui:field="spnIcon"></i>
+				</span>
 			</g:HTMLPanel>
 			<span ui:field="spnMandatory" style="color:red">*</span>
 		</div>

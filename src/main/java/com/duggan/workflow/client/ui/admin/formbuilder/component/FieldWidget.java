@@ -1093,7 +1093,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 		}
 
-		if(this.isVisible() && !isReadOnly()){
+		if(this.isVisible()){
 			setComponentValid(isValid);
 		}
 

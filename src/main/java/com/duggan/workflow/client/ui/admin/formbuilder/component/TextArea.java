@@ -38,7 +38,8 @@ public class TextArea extends FieldWidget {
 	@UiField InlineLabel lblComponent;
 	@UiField SpanElement spnMandatory;
 	@UiField DivElement divControls;
-	@UiField SpanElement spnErrorMsg;
+	@UiField SpanElement spnMsg;
+	@UiField Element spnIcon;
 	
 	public TextArea() {
 		super();
@@ -218,12 +219,17 @@ public class TextArea extends FieldWidget {
 	
 	@Override
 	public void setComponentValid(boolean isValid) {
+		spnMsg.removeClassName("hide");
+		spnIcon.removeClassName("icon-ok-circle");
+		spnIcon.removeClassName("icon-remove-circle");
 		if(isValid){
 			panelGroup.addStyleName("success");
-			spnErrorMsg.addClassName("hide");
+			spnIcon.addClassName("icon-ok-circle");
+			panelGroup.removeStyleName("error");
 		}else{
+			panelGroup.removeStyleName("success");
 			panelGroup.addStyleName("error");
-			spnErrorMsg.removeClassName("hide");
+			spnIcon.addClassName("icon-remove-circle");
 		}
 	}
 }

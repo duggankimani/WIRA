@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -32,6 +33,9 @@ public class CheckBoxField extends FieldWidget {
 	
 	@UiField CheckBox component;
 	@UiField SpanElement spnMandatory;
+	@UiField SpanElement spnMsg;
+	@UiField Element spnIcon;
+	@UiField HTMLPanel panelGroup;
 	
 	private final Widget widget;
 
@@ -150,8 +154,20 @@ public class CheckBoxField extends FieldWidget {
 		return null;
 	}
 
+
 	@Override
 	public void setComponentValid(boolean isValid) {
-		
+		spnMsg.removeClassName("hide");
+		spnIcon.removeClassName("icon-ok-circle");
+		spnIcon.removeClassName("icon-remove-circle");
+		if(isValid){
+			panelGroup.addStyleName("success");
+			spnIcon.addClassName("icon-ok-circle");
+			panelGroup.removeStyleName("error");
+		}else{
+			panelGroup.removeStyleName("success");
+			panelGroup.addStyleName("error");
+			spnIcon.addClassName("icon-remove-circle");
+		}
 	}
 }
