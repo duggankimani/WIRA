@@ -3,6 +3,7 @@ package com.duggan.workflow.server.helper.email;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,7 +47,10 @@ public class EmailServiceHelper {
 
 	public static void initProperties() {
 		if (session != null) {
+			log.warn(">> Init Reusing javamail session "+session);
 			return;
+		}else{
+			log.warn(">> Init Creating New javamail session "+session);
 		}
 		try {
 			props = new Properties();
@@ -324,7 +328,8 @@ public class EmailServiceHelper {
 	public static void main(String[] args) throws Exception {
 		DBTrxProvider.init();
 		DB.beginTransaction();
-		sendEmail("Hello world", "Test 1", "calcacuervo", null);
+		sendEmail("Hello World", "Test", Arrays.asList(new HTUser("Test User", "mdkimani@gmail.com")),
+				new HTUser("Test User", "mdkimani@gmail.com"));
 		DB.commitTransaction();
 		DB.closeSession();
 	}

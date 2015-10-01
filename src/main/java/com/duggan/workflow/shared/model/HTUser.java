@@ -23,6 +23,11 @@ public class HTUser implements Listable,Serializable {
 		this.userId = id;
 	}
 	
+	public HTUser(String id, String email) {
+		this.userId = id;
+		this.email = email;
+	}
+	
 	
 	public void setName(String name) {
 		this.name = name;
@@ -128,11 +133,11 @@ public class HTUser implements Listable,Serializable {
 		
 		HTUser other =  (HTUser)obj;
 		
-		if(name==null){
+		if(userId==null){
 			return false;
 		}
 		
-		return name.equals(other.name);
+		return userId.equals(other.userId);
 	}
 
 	public int getInbox() {

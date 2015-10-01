@@ -8,8 +8,9 @@ import java.util.List;
 
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
-import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
+
+import com.duggan.workflow.server.dao.model.ErrorLog;
 
 /**
  *
@@ -25,7 +26,7 @@ public interface ExecutorServiceEntryPoint {
 
     public List<RequestInfo> getCancelledRequests();
 
-    public List<ErrorInfo> getAllErrors();
+    public List<ErrorLog> getAllErrors();
 
     public List<RequestInfo> getAllRequests(int offset, int limit);
 
@@ -54,4 +55,6 @@ public interface ExecutorServiceEntryPoint {
     public void setThreadPoolSize(int nroOfThreads);
 
 	public int getAllRequestCount();
+
+	public RequestInfo getRequestById(String refId);
 }

@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.form.HtmlEditor;
 
 public class HTMLEditor extends Composite implements HasText {
 
@@ -15,7 +16,7 @@ public class HTMLEditor extends Composite implements HasText {
 	interface HTMLEditorUiBinder extends UiBinder<Widget, HTMLEditor> {
 	}
 
-	@UiField TextArea txtHTML;
+	@UiField HtmlEditor senchaEditor; 
 	
 	public HTMLEditor() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -28,11 +29,19 @@ public class HTMLEditor extends Composite implements HasText {
 	}
 
 	public void setText(String text) {
-		txtHTML.setValue(text);
+		senchaEditor.setValue(text);
 	}
 
 	public String getText() {
-		return txtHTML.getValue();
+		return senchaEditor.getValue();
+	}
+
+	public String getValue() {
+		return senchaEditor.getValue();
+	}
+
+	public void setValue(String notificationTemplate) {
+		setText(notificationTemplate);
 	}
 
 }

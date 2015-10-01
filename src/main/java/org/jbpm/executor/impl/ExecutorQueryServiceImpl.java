@@ -9,10 +9,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.jbpm.executor.api.ExecutorQueryService;
-import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
 
 import com.duggan.workflow.server.dao.BaseDaoImpl;
+import com.duggan.workflow.server.dao.model.ErrorLog;
 import com.duggan.workflow.server.db.DB;
 
 /**
@@ -45,7 +45,7 @@ public class ExecutorQueryServiceImpl extends BaseDaoImpl implements ExecutorQue
         return resultList;
     }
 
-    public List<ErrorInfo> getAllErrors() {
+    public List<ErrorLog> getAllErrors() {
         List resultList = em.createNamedQuery("GetAllErrors").getResultList();
         return resultList;
     }
@@ -60,6 +60,11 @@ public class ExecutorQueryServiceImpl extends BaseDaoImpl implements ExecutorQue
 	public int getAllRequestCount() {
 		Number count = getSingleResultOrNull(em.createQuery("select count(*) FROM RequestInfo"));
 		return count.intValue();
+	}
+
+	@Override
+	public RequestInfo getRequestById(String refId) {
+		return findByRefId(refId, RequestInfo.class);
 	}
 
 }

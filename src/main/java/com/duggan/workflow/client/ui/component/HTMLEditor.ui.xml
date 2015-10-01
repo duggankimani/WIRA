@@ -1,11 +1,13 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:senchaform="urn:import:com.sencha.gxt.widget.core.client.form">
 	
 	<g:HTMLPanel>
-		<d:TextArea ui:field="txtHTML" 
+		<senchaform:HtmlEditor ui:field="senchaEditor"></senchaform:HtmlEditor>
+		<!-- d:TextArea ui:field="txtHTML" 
 			rows="15" width="75%"> 
-		</d:TextArea>
+		</d:TextArea -->
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -6,8 +6,9 @@ package org.jbpm.executor.api;
 
 import java.util.List;
 
-import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
+
+import com.duggan.workflow.server.dao.model.ErrorLog;
 
 /**
  *
@@ -18,7 +19,8 @@ public interface ExecutorQueryService {
     List<RequestInfo> getExecutedRequests();
     List<RequestInfo> getInErrorRequests();
     List<RequestInfo> getCancelledRequests();
-    List<ErrorInfo> getAllErrors(); 
+    List<ErrorLog> getAllErrors(); 
     List<RequestInfo> getAllRequests(int offset, int limit);
-	int getAllRequestCount(); 
+	int getAllRequestCount();
+	RequestInfo getRequestById(String refId); 
 }

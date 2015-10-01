@@ -99,11 +99,25 @@ public abstract class Doc extends SerializableObj implements Serializable,Compar
 			//Duggan 15/09/2015- Added this to support Field Triggers that may update a field
 			//value with the previous value's id - This update causes duplication of a field value in 
 			//the db
-			values.get(name).setValue(value.getValue());
+			
+			Value v= values.get(name);
+			v.setValue(value.getValue());
+			values.put(name, v);
 		}else{
 			values.put(name, value);
 		}
 		
+	}
+	
+	public void copyValue(String name, Value value){
+		Value previous = values.get(name);
+		if(previous==null){
+			previous = value.clone(false);
+		}
+		
+		previous.setKey(name);
+		previous.setValue(value.getValue());
+		values.put(name, previous);
 	}
 	
 	public abstract HTUser getOwner();

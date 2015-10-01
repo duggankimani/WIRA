@@ -8,7 +8,7 @@
 			<g:HTMLPanel styleName="comment-container" ui:field="panelControls">
 				<d:TextArea ui:field="txtComponent" type="text" class="input-xlarge"></d:TextArea>
 				<g:InlineLabel ui:field="lblComponent" styleName="help-inline"></g:InlineLabel>
-				<span ui:field="spnMsg" class="hide help-inline">
+				<span ui:field="spnMsg" class="hide help-inline helper-font-14">
 					<i class="icon" ui:field="spnIcon"></i>
 				</span>
 			</g:HTMLPanel>

@@ -79,6 +79,7 @@ import com.duggan.workflow.server.actionhandlers.SaveTaskStepTriggerRequestHandl
 import com.duggan.workflow.server.actionhandlers.SaveTriggerRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveUserRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SearchDocumentRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.SendMessageActionHandler;
 import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.UpdateNotificationRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.UpdatePasswordRequestActionHandler;
@@ -161,6 +162,7 @@ import com.duggan.workflow.shared.requests.SaveTaskStepTriggerRequest;
 import com.duggan.workflow.shared.requests.SaveTriggerRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.requests.SearchDocumentRequest;
+import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
@@ -404,9 +406,11 @@ public class ServerModule extends HandlerModule {
 		
 		bindHandler(ExecuteTriggerRequest.class, ExecuteTriggerActionHandler.class, SessionValidator.class);
 		
-		bindHandler(DeleteNotificationTemplateRequest.class, DeleteNotificationTemplateRequestHandler.class);
+		bindHandler(DeleteNotificationTemplateRequest.class, DeleteNotificationTemplateRequestHandler.class, SessionValidator.class);
 		
-		bindHandler(GetMessagesRequest.class, GetMessagesActionHandler.class);
+		bindHandler(GetMessagesRequest.class, GetMessagesActionHandler.class, SessionValidator.class);
+		
+		bindHandler(SendMessageRequest.class, SendMessageActionHandler.class, SessionValidator.class);
 		
 	}
 }

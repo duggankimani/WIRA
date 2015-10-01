@@ -248,10 +248,13 @@ public class DocumentDaoHelper {
 		doc.setProcessInstanceId(model.getProcessInstanceId());
 		
 		if(model.getProcessInstanceId()!=null){
-			ProcessInstanceLog log = JPAProcessInstanceDbLog
-					.findProcessInstance(model.getProcessInstanceId());
-			if(log!=null)
-				doc.setDateSubmitted(log.getStart());
+			try{
+				ProcessInstanceLog log = JPAProcessInstanceDbLog
+						.findProcessInstance(model.getProcessInstanceId());
+				if(log!=null)
+					doc.setDateSubmitted(log.getStart());
+			}catch(Exception e){e.printStackTrace();}
+			
 		}
 		
 		if(model.getProcessInstanceId()!=null){

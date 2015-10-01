@@ -19,6 +19,8 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cascade;
 
+import com.duggan.workflow.shared.model.HTUser;
+
 @Entity(name="BUser")
 @Table(uniqueConstraints={@UniqueConstraint(columnNames="userId")})
 @NamedQuery(name="User.getUserByUserId", query="from BUser u where u.userId=:userId")
@@ -143,5 +145,18 @@ public class User extends PO {
 
 	public void removeProcessDef(ProcessDefModel processDefModel) {
 		processDef.remove(processDefModel);		
+	}
+
+	public HTUser toHTUser() {
+		User user = this;
+		HTUser htuser = new HTUser();
+		htuser.setEmail(user.getEmail());
+		htuser.setUserId(user.getUserId());
+		htuser.setName(user.getFirstName());
+		htuser.setPassword(user.getPassword());
+		htuser.setSurname(user.getLastName());
+		htuser.setId(user.getId());
+		
+		return htuser;
 	}
 }

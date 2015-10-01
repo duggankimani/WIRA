@@ -8,6 +8,7 @@ import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.shared.model.MODE;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -47,6 +48,7 @@ public class DraftsPresenter extends AbstractTaskPresenter<DraftsPresenter.IDraf
 	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType=TaskType.DRAFT;
 		getView().setTaskType(currentTaskType);
+		mode = MODE.EDIT;
 		super.prepareFromRequest(request);
 	}
 

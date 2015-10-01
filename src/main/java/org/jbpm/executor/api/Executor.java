@@ -1,5 +1,7 @@
 package org.jbpm.executor.api;
 
+import com.duggan.workflow.shared.model.RequestInfoDto;
+
 /**
  *
  * @author salaboy
@@ -7,6 +9,8 @@ package org.jbpm.executor.api;
 public interface Executor extends Service {
 
 	public Long scheduleRequest(CommandCodes commandName, CommandContext ctx);
+	
+	public Long updateRequest(RequestInfoDto dto, boolean resend);
 
 	public void cancelRequest(Long requestId);
 

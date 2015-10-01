@@ -12,19 +12,19 @@
 			<div class="row-fluid">
 				<div class="action-buttons">
 					<g:Anchor ui:field="aNew" styleName="btn btn-primary"
-						title="New Form">
+						title="New Email">
 						<i class="icon-plus"></i>
-						New Table
+						New Email
 					</g:Anchor>
-					<g:Anchor ui:field="aImport" styleName="btn btn-primary"
-						title="Import Form">
+					<g:Anchor ui:field="aView" styleName="btn btn-primary hide"
+						title="View Email">
 						<i class="icon-upload-alt"></i>
-						Import Table
+						View Email
 					</g:Anchor>
-					<g:Anchor ui:field="aExport" styleName="btn btn-primary"
-						title="Export Form">
+					<g:Anchor ui:field="aViewError" styleName="btn btn-primary hide"
+						title="View Error">
 						<i class="icon-arrow-down"></i>
-						Export Table
+						View Error
 					</g:Anchor>
 				</div>
 				

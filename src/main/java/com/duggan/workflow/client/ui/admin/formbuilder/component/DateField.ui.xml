@@ -6,7 +6,7 @@
 		<label ui:field="lblEl" class="control-label">Date Box:</label>
 		<g:HTMLPanel styleName="controls" ui:field="panelControls">
 			<d:DateInput ui:field="dateBox"></d:DateInput>
-			<g:InlineLabel ui:field="lblComponent" styleName="help-inline"></g:InlineLabel>
+			<g:InlineLabel ui:field="lblComponent" styleName="help-inline helper-font-14"></g:InlineLabel>
 			<span ui:field="spnMsg" class="hide help-inline">
 				<i class="icon" ui:field="spnIcon"></i>
 			</span>

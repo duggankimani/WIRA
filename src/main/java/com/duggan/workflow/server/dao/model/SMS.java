@@ -27,6 +27,9 @@ public class SMS extends PO{
 	
 	private String telNo;
 
+	public SMS() {
+	}
+	
 	public SMS(String subject, String to, String pin) {
 		this.pin = pin;
 		this.subject = subject;

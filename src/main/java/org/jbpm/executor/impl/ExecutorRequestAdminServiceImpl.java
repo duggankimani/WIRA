@@ -9,9 +9,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.jbpm.executor.api.ExecutorRequestAdminService;
-import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
 
+import com.duggan.workflow.server.dao.model.ErrorLog;
 import com.duggan.workflow.server.db.DB;
 
 /**
@@ -36,9 +36,9 @@ public class ExecutorRequestAdminServiceImpl implements ExecutorRequestAdminServ
     }
 
     public int clearAllErrors() {
-        List<ErrorInfo> errors = em.createQuery("select e from ErrorInfo e").getResultList();
+        List<ErrorLog> errors = em.createQuery("select e from ErrorLog e").getResultList();
 
-        for (ErrorInfo e : errors) {
+        for (ErrorLog e : errors) {
             em.remove(e);
 
         }

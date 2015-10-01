@@ -12,8 +12,9 @@ import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.Executor;
 import org.jbpm.executor.api.ExecutorQueryService;
 import org.jbpm.executor.api.ExecutorRequestAdminService;
-import org.jbpm.executor.entities.ErrorInfo;
 import org.jbpm.executor.entities.RequestInfo;
+
+import com.duggan.workflow.server.dao.model.ErrorLog;
 
 /**
  *
@@ -45,8 +46,6 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
         this.adminService = adminService;
     }
     
-    
-
     public List<RequestInfo> getQueuedRequests() {
         return getQueryService().getQueuedRequests();
     }
@@ -62,8 +61,14 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
     public List<RequestInfo> getCancelledRequests() {
         return getQueryService().getCancelledRequests();
     }
+    
+    @Override
+	public RequestInfo getRequestById(String refId) {
+    	return getQueryService().getRequestById(refId);
+	}
+    
 
-    public List<ErrorInfo> getAllErrors() {
+    public List<ErrorLog> getAllErrors() {
         return getQueryService().getAllErrors();
     }
 
@@ -133,6 +138,5 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
     public void setThreadPoolSize(int nroOfThreads) {
         executor.setThreadPoolSize(nroOfThreads);
     }
-
     
 }

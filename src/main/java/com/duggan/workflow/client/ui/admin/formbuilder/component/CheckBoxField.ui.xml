@@ -6,7 +6,7 @@
 			<label ui:field="lblEl" class="control-label">Checkbox</label>
 			<div class="controls">
 				<g:CheckBox ui:field="component"></g:CheckBox>
-				<span ui:field="spnMsg" class="hide help-inline">
+				<span ui:field="spnMsg" class="hide help-inline helper-font-14">
 					<i class="icon" ui:field="spnIcon"></i>
 				</span>
 				<span ui:field="spnMandatory" style="color:red">*</span>

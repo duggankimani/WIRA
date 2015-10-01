@@ -1,9 +1,12 @@
 package com.duggan.workflow.server.mvel;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import org.mvel2.MVEL;
 import org.mvel2.ParserContext;
+import org.mvel2.integration.VariableResolverFactory;
+import org.mvel2.integration.impl.MapVariableResolverFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +49,11 @@ public class MVELExecutor {
 				
 			}
 		
+		VariableResolverFactory myVarFactory = new MapVariableResolverFactory();
+		//MVEL.eval(script, myVarFactory);
+		
 		Serializable compilexEx = MVEL.compileExpression(script,context);
-		MVEL.executeExpression(compilexEx, doc);
+		MVEL.executeExpression(compilexEx, doc, myVarFactory);
 		
 	}
 }

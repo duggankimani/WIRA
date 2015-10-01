@@ -1,16 +1,26 @@
 package com.duggan.workflow.server.dao.helper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
+import org.jbpm.executor.commands.SendMailCommand;
+import org.jbpm.executor.impl.ExecutorImpl;
 
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 
 public class CommentDaoHelper {
@@ -31,9 +41,38 @@ public class CommentDaoHelper {
 		
 		comment.setId(model.getId());
 		
+		sendEmail(comment);
+		
 		return comment;
 	}
 	
+	private static void sendEmail(Comment comment) {
+		Document doc = DocumentDaoHelper.getDocument(comment.getDocumentId());
+		List<HTUser> recipients= DB.getCommentDao().getEmailRecipients(comment.getDocumentId());
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put(SendMailCommand.SUBJECT, SessionHelper.getCurrentUser().getFullName()+" comment on task "
+				+ doc.getCaseNo());
+		
+		try{
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("comment-email.html");
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			IOUtils.copy(is, bout);
+			String htmlTemplate = new String(bout.toByteArray());
+			
+			params.put("commenter", SessionHelper.getCurrentUser().getFullName());
+			params.put("caseNumber", doc.getCaseNo());
+			params.put("commentDate", new Date());
+			params.put("initiator", SessionHelper.getCurrentUser());
+			new CustomEmailHandler().sendMail(htmlTemplate, doc, recipients, params);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		 
+		
+	}
+
 	public static List<Comment> getAllComments(String userId){
 		CommentDaoImpl dao = DB.getCommentDao();
 		List<CommentModel> models = dao.getAllComments(userId);

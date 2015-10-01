@@ -20,10 +20,11 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 public class Grid<T extends HasKey> extends Composite {
 
@@ -47,7 +48,7 @@ public class Grid<T extends HasKey> extends Composite {
 		}
 	};
 
-	private final SelectionModel<T> selectionModel = new MultiSelectionModel<T>(
+	private final SelectionModel<T> selectionModel = new SingleSelectionModel<T>(
 			KEY_PROVIDER);
 
 //	@UiField
@@ -77,7 +78,6 @@ public class Grid<T extends HasKey> extends Composite {
 			@Override
 			public Boolean getValue(T object) {
 				boolean value = selectionModel.isSelected(object);
-
 				return value;
 			}
 		};
@@ -95,7 +95,8 @@ public class Grid<T extends HasKey> extends Composite {
 		dataGrid.setSize("100%", "75vh");
 		dataGrid.setStyleName("responsive-table");
 		dataGrid.addColumn(checkColumn);
-		dataGrid.setColumnWidth(checkColumn, "12px");
+		dataGrid.setColumnWidth(checkColumn, "30px");
+		dataGrid.setSelectionModel(selectionModel);
 
 		SimplePager.Resources pagerResources = GWT
 				.create(SimplePager.Resources.class);
@@ -137,10 +138,13 @@ public class Grid<T extends HasKey> extends Composite {
 	public Range getVisibleRange() {
 		return dataGrid.getVisibleRange();
 	}
+	
+	public void addSelectionHandler(SelectionChangeEvent.Handler handler){
+		selectionModel.addSelectionChangeHandler(handler);
+	}
 
-	public void refresh() {
-		Window.alert("redraw!");
-		dataGrid.redraw();
+	public T getSelectedModel() {
+		return (T)((SingleSelectionModel<T>)selectionModel).getSelectedObject();
 	}
 		
 }

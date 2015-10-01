@@ -83,7 +83,8 @@ public class CommentActivity extends Composite {
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
 		}
 		String url = moduleUrl.replace("/", "");
-		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+createdBy.getUserId();
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+
+		createdBy==null? "":createdBy.getUserId();
 		img.setUrl(moduleUrl);
 		
 		setComment(comment);

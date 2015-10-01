@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component"
+	xmlns:senchaform="urn:import:com.sencha.gxt.widget.core.client.form">
+
+	<ui:style>
+	
+	.component-margins{
+		margin-bottom:10px;
+	}
+			
+	</ui:style>
+	<g:HTMLPanel styleName="htmlPopup">
+		<div class="{style.component-margins}">
+			<d:AutoCompleteField ui:field="autoUsers"></d:AutoCompleteField>
+		</div>
+		
+		<div class="{style.component-margins}">
+			<d:TextArea width="100%" rows="1" ui:field="txtSubject"></d:TextArea>
+		</div>
+		<senchaform:HtmlEditor ui:field="editor" width="800px" height="400px">
+		</senchaform:HtmlEditor>
+	</g:HTMLPanel>
+</ui:UiBinder> 

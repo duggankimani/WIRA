@@ -3,6 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.Collection;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
@@ -49,6 +50,10 @@ public class ExecuteTriggersActionHandler extends
 					doc.getOwner().equals(SessionHelper.getCurrentUser()) &&
 					((Document)doc).getStatus()==DocStatus.DRAFTED){
 				canExecute=true;
+				
+				//Save this doc -- ADDED BY DUGGAN 27/09/2015  -
+				//Draft Documents should be saved on navigation
+				doc = DocumentDaoHelper.save((Document)doc);
 			}
 		}else{
 			HTSummary summary = (HTSummary)doc;

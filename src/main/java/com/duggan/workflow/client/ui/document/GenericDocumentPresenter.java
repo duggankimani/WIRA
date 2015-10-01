@@ -681,9 +681,39 @@ public class GenericDocumentPresenter extends
 		}
 
 		mergeFormValuesWithDoc();
+		//Save Draft Document
 
 		if (navigating) {
 			navigateToView(steps.get(currentStep), isNavigateNext);
+		}else{
+			//Cannot navigate (invalid form) - Save the document tho' - Duggan 27/09/2015
+			//How do we maintain front end state tho? - call is valid again?
+			//If we do not rebind the saved form, we will end up with multiple db entries
+			//for form field values
+			//
+			if(doc instanceof Document){
+				fireEvent(new ProcessingEvent());
+				MultiRequestAction requests = new MultiRequestAction();
+				requests.addRequest(new CreateDocumentRequest((Document)doc));
+				requests.addRequest(new GetAttachmentsRequest(docRefId));
+				requestHelper.execute(requests,
+						new TaskServiceCallback<MultiRequestActionResult>() {
+							public void processResult(
+									MultiRequestActionResult results) {
+								int i = 0;
+								CreateDocumentResult aResponse = (CreateDocumentResult) results
+										.get(i++);
+								Document saved = aResponse.getDocument();
+								assert saved.getId() != null;
+								bindForm(form, saved);
+								GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
+										.get(i++);
+								bindAttachments(attachmentsresponse);
+								fireEvent(new ProcessingCompletedEvent());
+								getView().isValid();
+							}
+						});
+			}
 		}
 
 	}
@@ -767,7 +797,6 @@ public class GenericDocumentPresenter extends
 						nextStepId, doc));
 			}
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-			
 			fireEvent(new ProcessingEvent());
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {

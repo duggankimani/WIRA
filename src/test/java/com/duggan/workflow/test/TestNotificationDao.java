@@ -5,13 +5,16 @@ import java.util.Date;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -23,12 +26,22 @@ public class TestNotificationDao {
 	@Before
 	public void setup(){
 		DBTrxProvider.init();
-		
 		DB.beginTransaction();
 		dao = DB.getNotificationDao();
 	}
 	
 	@Test
+	public void createComment(){
+		Comment comment = new Comment();
+		comment.setComment("Testing");
+		comment.setDocumentId(24L);
+		comment.setDocRefId("40Uo3sNbskSwkmKw");
+		comment.setSubject("Test Subject");
+		comment.setUserId("Administrator");
+		CommentDaoHelper.saveComment(comment);
+	}
+	
+	@Ignore
 	public void createNotification(){
 		
 		Notification notification = new Notification();
@@ -54,7 +67,7 @@ public class TestNotificationDao {
 	
 	@After
 	public void destroy(){
-		DB.rollback();
+		DB.commitTransaction();
 		DB.closeSession();
 	}
 }

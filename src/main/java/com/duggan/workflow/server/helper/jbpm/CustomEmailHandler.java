@@ -104,8 +104,9 @@ public class CustomEmailHandler {
 		
 	}
 
-	private void sendMail(String htmlTemplate, Document doc,List<HTUser> receipients, Map<String, Object> params) {
+	public void sendMail(String htmlTemplate, Document doc,List<HTUser> receipients, Map<String, Object> params) {
 		
+		log.info("Sending email "+doc.getCaseNo()+" to "+receipients);
 		if(receipients==null || receipients.isEmpty()){
 			return;
 		}

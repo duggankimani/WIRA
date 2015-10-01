@@ -96,7 +96,7 @@ implements NoticationCategoryChangeHandler{
 			@Override
 			public void onClick(ClickEvent event) {
 				final HTMLEditor editor = new HTMLEditor(getView().getHtmlNotification());
-				AppManager.showPopUp("Edit HTML",editor , new OnOptionSelected() {
+				AppManager.showPopUp("Edit HTML",editor, "htmlEditorPopup" , new OnOptionSelected() {
 					
 					@Override
 					public void onSelect(String name) {

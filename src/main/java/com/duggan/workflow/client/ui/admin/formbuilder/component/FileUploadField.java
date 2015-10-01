@@ -86,8 +86,9 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 		context.setContext("docRefId", field.getDocRefId());
 		context.setContext("ACTION", UPLOADACTION.UPLOADDOCFILE.name());
 		String accept = getPropertyValue(ACCEPT);
-		if(accept!=null)
+		if(accept!=null){
 			context.setAccept(accept);
+		}
 		uploader.setContext(context);
 	}
 

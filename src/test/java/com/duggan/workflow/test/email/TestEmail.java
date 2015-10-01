@@ -1,5 +1,7 @@
 package com.duggan.workflow.test.email;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -7,18 +9,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.export.DocumentHTMLMapper;
+import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Document;
+import com.itextpdf.text.DocumentException;
 
 public class TestEmail {
 
@@ -33,6 +42,20 @@ public class TestEmail {
 //		ProcessMigrationHelper.start(4L);
 //		ProcessMigrationHelper.start(17L);
 //		doc = DocumentDaoHelper.getDocument(359L);
+	}
+	
+	
+	@Test
+	public void generateEmail() throws IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
+		doc = DocumentDaoHelper.getDocument(24L);
+		
+		InputStream is = TestEmail.class.getClass().getResourceAsStream("/email.html");
+		String html = IOUtils.toString(is);
+		System.out.println(new DocumentHTMLMapper().map(doc, html));
+		byte[] out= new  HTMLToPDFConvertor().convert(doc, html);
+		
+		IOUtils.write(out, new FileOutputStream(new File("email.pdf")));
+				
 	}
 	
 	@Before
@@ -62,7 +85,7 @@ public class TestEmail {
 		}
 	}	
 	
-	@Test
+	@Ignore
 	public void sendEmailNew() throws IOException, MessagingException{
 		InputStream is = TestEmail.class.getClass().getResourceAsStream("/email.html");
 		String body = IOUtils.toString(is);

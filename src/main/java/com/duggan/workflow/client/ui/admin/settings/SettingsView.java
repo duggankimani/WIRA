@@ -203,7 +203,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 			break;
 		case SMTP_PASSWORD:
 			txtPassword.setValue(settingValue==null?null: settingValue.toString());
-			spnPassword.setInnerText(settingValue==null?null: settingValue.toString());
+			spnPassword.setInnerText(settingValue==null?null: "xxxxxxxxxx");
 			break;
 		case SMTP_PORT:
 			txtPort.setValue(settingValue==null? null: ((Number)settingValue).intValue());

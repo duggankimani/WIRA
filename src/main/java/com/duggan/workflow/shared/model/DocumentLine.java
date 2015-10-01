@@ -20,7 +20,26 @@ public class DocumentLine implements Serializable {
 	private String name;
 	private Map<String, Value> values = new HashMap<String, Value>();
 	
-	public DocumentLine(){}
+	public DocumentLine(){
+	}
+	
+	public DocumentLine(String name,Long id, Long documentId,Value ...valueEn){
+		this.name = name;
+		this.id = id;
+		this.documentId = documentId;
+		
+		if(valueEn!=null){
+			for(Value v: valueEn){
+				if(v==null){
+					continue;
+				}
+				if(values.get(v.getKey())!=null){
+					v.setId(values.get(v.getKey()).getId());
+				}
+				values.put(v.getKey(), v);
+			}
+		}
+	}
 
 	public Long getDocumentId() {
 		return documentId;
@@ -65,7 +84,8 @@ public class DocumentLine implements Serializable {
 	
 	@Override
 	public String toString() {
-		String s="{name:"+getName()+", lineId:"+getId()+", [";
+		String s="{name:"+getName()+", lineId:"+getId()+", docId: "+getDocumentId()
+				+ ", [";
 		
 		for(Value v: values.values()){
 			if(v!=null){
