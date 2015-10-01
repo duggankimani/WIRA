@@ -47,8 +47,14 @@ public class CommentDaoHelper {
 	}
 	
 	private static void sendEmail(Comment comment) {
-		Document doc = DocumentDaoHelper.getDocument(comment.getDocumentId());
-		List<HTUser> recipients= DB.getCommentDao().getEmailRecipients(comment.getDocumentId());
+		Document doc = null;
+		if(comment.getDocRefId()!=null){
+			doc = DocumentDaoHelper.getDocument(comment.getDocRefId());
+		}else if(comment.getDocumentId()!=null){
+			doc = DocumentDaoHelper.getDocument(comment.getDocumentId());
+		}
+		
+		List<HTUser> recipients= DB.getCommentDao().getEmailRecipients(doc.getId());
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put(SendMailCommand.SUBJECT, SessionHelper.getCurrentUser().getFullName()+" comment on task "
@@ -64,6 +70,7 @@ public class CommentDaoHelper {
 			params.put("caseNumber", doc.getCaseNo());
 			params.put("commentDate", new Date());
 			params.put("initiator", SessionHelper.getCurrentUser());
+			params.put("Body", comment.getComment());
 			new CustomEmailHandler().sendMail(htmlTemplate, doc, recipients, params);
 			
 		}catch(Exception e){
