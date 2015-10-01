@@ -1,0 +1,45 @@
+
+/*CREATE THESE TEMPLORARY TABLES - YOU CAN DELETE THEM LATER*/
+CREATE TABLE advalue_forms AS select * from advalue where documentid is null;
+CREATE TABLE localattachment_configs AS select * from localattachment where processDefId is not null or processdefidimage is not null or outputdoc_id is not null;
+
+
+/**pg_dump -U postgres --column-inserts --data-only  workflowmgr1 -t buser -t bgroup -t usergroup -t adform -t adfield -t adproperty -t advalue_forms -t addoctype -t adkeyvaluepair -t adoutputdoc -t adtrigger -t taskstepmodel -t adtasksteptrigger > import.sql**/
+
+---------BEGIN GENERATION import.sql -----
+
+pg_dump -U postgres   workflowmgr1 -t pmt_accounts -t pmt_activity -t pmt_fieldoffice -t pmt_program >> import.sql
+cat create_table_docnums.sql fun_generatedocnum_postgresql.sql create_caseno_seq.sql >> import.sql
+pg_dump -U postgres  workflowmgr1 -t buser >> import.sql
+pg_dump -U postgres   workflowmgr1 -t bgroup >> import.sql
+pg_dump -U postgres   workflowmgr1 -t usergroup >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adform >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adfield >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adproperty >> import.sql
+pg_dump -U postgres   --schema-only  workflowmgr1 -t advalue >> import.sql
+pg_dump -U postgres  --data-only workflowmgr1 -t advalue_forms >> import.sql
+pg_dump -U postgres   workflowmgr1 -t processdefmodel >> import.sql
+pg_dump -U postgres   workflowmgr1 -t addoctype >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adkeyvaluepair >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adoutputdoc >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adtrigger >> import.sql
+pg_dump -U postgres   workflowmgr1 -t taskstepmodel >> import.sql
+pg_dump -U postgres   workflowmgr1 -t adtasksteptrigger >> import.sql
+pg_dump -U postgres   workflowmgr1 -t datasourceconfig >> import.sql
+pg_dump -U postgres   --schema-only  workflowmgr1 -t localattachment >> import.sql
+pg_dump -U postgres  --blobs --data-only workflowmgr1 -t localattachment_configs >> import.sql
+cat proc_updateseq.sql >> import.sql
+
+---END GENERATION ------
+
+-----------Edit import.sql  --------------
+- change the name advalue_forms -> advalue
+:%s/advalue_forms/advalue/g
+
+- change the name localattachment_configs -> localattachment
+:%s/localattachment_configs/localattachment/g
+
+--------- EXECUTE SCRIPT AGAINST NEW DB----------
+psql -U postgres workflowmgr<import.sql
+
+
