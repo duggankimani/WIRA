@@ -53,7 +53,8 @@ public class DocumentHTMLMapper {
 			if(c%2==0){
 				String gridRows = html.substring(start,matcher.start());
 				String gridName = getGridName(matcher.group());
-				log.debug("GridName = "+gridName);
+				log.debug("GridName = "+gridName+" size = "+doc.getDetails().get(gridName).size()+","
+						+", Data >>"+doc.getDetails().get(gridName));
 				List<DocumentLine> gridVals=doc.getDetails().get(gridName);
 				
 				StringBuffer buff = new StringBuffer();
@@ -77,8 +78,12 @@ public class DocumentHTMLMapper {
 		return html;
 	}
 
-	private String parseAndReplaceGridRow(DocumentLine line, String html) {			
-		return parseAndReplace(line.getValues(), html);
+	private String parseAndReplaceGridRow(DocumentLine line, String html) {
+		String replacement = parseAndReplace(line.getValues(), html);
+		
+		log.info("Replacing row "+line+"\n <htmlbegin> "
+				+ "</htmlend>");
+		return replacement;
 	}
 
 	/**

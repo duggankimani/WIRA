@@ -46,6 +46,15 @@ public class CommentDaoHelper {
 		return comment;
 	}
 	
+	/**
+	 * TODO: This mechanism will fail for some email variables that are 
+	 * associated with the current task as opposed to the original document.
+	 * <p>
+	 * This is because the additional metadata captured in the HTask is not
+	 * available in the original document.
+	 * <p> 
+	 * @param comment
+	 */
 	private static void sendEmail(Comment comment) {
 		Document doc = null;
 		if(comment.getDocRefId()!=null){
