@@ -105,8 +105,6 @@ public class TaskItemPresenter extends
 	
 	@Inject PlaceManager placeManager;
 	
-	ExecuteWorkflow workflow;
-	
 	@Inject
 	public TaskItemPresenter(final EventBus eventBus, final ITaskItemView view) {
 		super(eventBus, view);
@@ -121,9 +119,7 @@ public class TaskItemPresenter extends
 		addRegisteredHandler(ExecTaskEvent.TYPE, this);
 		addRegisteredHandler(AfterAttachmentReloadedEvent.TYPE, this);
 		addRegisteredHandler(AfterSearchEvent.TYPE, this);
-//		
-		workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
-		 
+//				 
 		getView().getFocusContainer().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -172,144 +168,145 @@ public class TaskItemPresenter extends
 		});
 
 
-		getView().getClaimLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.CLAIM);
-			}
-		});
+//		getView().getClaimLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.CLAIM);
+//			}
+//		});
+//		
+//		getView().getStartLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.START);
+//			}
+//		});
+//		
+//		getView().getSuspendLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.SUSPEND);
+//			}
+//		});
+//		
+//		getView().getResumeLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.RESUME);
+//			}
+//		});
+//		
+//		getView().getCompleteLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.COMPLETE);
+//			}
+//		});
+//		
+//		getView().getDelegateLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.DELEGATE);
+//			}
+//		});
+//		
+//		getView().getRevokeLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				
+//				submitRequest(Actions.REVOKE);
+//			}
+//		});
+//		
+//		getView().getStopLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.STOP);
+//			}
+//		});
+//		
+//		getView().getForwardLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				submitRequest(Actions.FORWARD);
+//			}
+//		});
 		
-		getView().getStartLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.START);
-			}
-		});
-		
-		getView().getSuspendLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.SUSPEND);
-			}
-		});
-		
-		getView().getResumeLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.RESUME);
-			}
-		});
-		
-		getView().getCompleteLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.COMPLETE);
-			}
-		});
-		
-		getView().getDelegateLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.DELEGATE);
-			}
-		});
-		
-		getView().getRevokeLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				submitRequest(Actions.REVOKE);
-			}
-		});
-		
-		getView().getStopLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.STOP);
-			}
-		});
-		
-		getView().getForwardLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				submitRequest(Actions.FORWARD);
-			}
-		});
-		
-		getView().getApproveLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				HTMLPanel panel = new HTMLPanel("");
-				panel.add(new InlineLabel("Do you want to reject this request?"));
-				TextArea area = new TextArea();
-				area.setPlaceholder("Rejection reason or comments");
-				panel.add(area);
-				
-				AppManager.showPopUp("Rejection Comments", panel, new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Reject")){
-							//create comment
-							completeDocument(true);
-						}						
-					}
-				}, "Reject", "Cancel");				
-			}
-		});
-		
-		getView().getRejectLink().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				HTMLPanel panel = new HTMLPanel("");
-				panel.add(new InlineLabel("Do you want to reject this request?"));
-				TextArea area = new TextArea();
-				area.setPlaceholder("Rejection reason or comments");
-				panel.add(area);
-				
-				AppManager.showPopUp("Rejection Comments", panel, new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Reject")){
-							//create comment
-							completeDocument(false);
-						}						
-					}
-				}, "Reject", "Cancel");				
-			}
-		});
+//		getView().getApproveLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				HTMLPanel panel = new HTMLPanel("");
+//				panel.add(new InlineLabel("Do you want to reject this request?"));
+//				TextArea area = new TextArea();
+//				area.setPlaceholder("Rejection reason or comments");
+//				panel.add(area);
+//				
+//				AppManager.showPopUp("Rejection Comments", panel, new OnOptionSelected() {
+//					
+//					@Override
+//					public void onSelect(String name) {
+//						if(name.equals("Reject")){
+//							//create comment
+//							completeDocument(true);
+//						}						
+//					}
+//				}, "Reject", "Cancel");				
+//			}
+//		});
+//		
+//		getView().getRejectLink().addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				
+//				HTMLPanel panel = new HTMLPanel("");
+//				panel.add(new InlineLabel("Do you want to reject this request?"));
+//				TextArea area = new TextArea();
+//				area.setPlaceholder("Rejection reason or comments");
+//				panel.add(area);
+//				
+//				AppManager.showPopUp("Rejection Comments", panel, new OnOptionSelected() {
+//					
+//					@Override
+//					public void onSelect(String name) {
+//						if(name.equals("Reject")){
+//							//create comment
+//							completeDocument(false);
+//						}						
+//					}
+//				}, "Reject", "Cancel");				
+//			}
+//		});
 		
 	}
 	
-	void completeDocument(boolean approved){
-		Map<String, Value> arguments = new HashMap<String, Value>();	
-		arguments.put("isApproved", new BooleanValue(approved));
-		arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
-		submitRequest(Actions.COMPLETE, arguments);
-	}
+//	void completeDocument(boolean approved){
+//		Map<String, Value> arguments = new HashMap<String, Value>();	
+//		arguments.put("isApproved", new BooleanValue(approved));
+//		arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
+//		submitRequest(Actions.COMPLETE, arguments);
+//	}
 
-	protected void submitRequest(Actions action){
-		submitRequest(action, null);
-	}
+//	protected void submitRequest(Actions action){
+//		submitRequest(action, null);
+//	}
 	
 	protected void submitRequest(final Actions action, final Map<String, Value> values) {
 		
 		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
 		//values.put("DocumentURL", new StringValue(docUrl));
 		fireEvent(new ProcessingEvent());
+		ExecuteWorkflow workflow = new ExecuteWorkflow(0l, AppContext.getUserId(), Actions.START);
 		workflow.setAction(action);
 		workflow.setValues(values);
 				

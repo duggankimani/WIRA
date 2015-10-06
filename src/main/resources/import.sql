@@ -1,24 +1,24 @@
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Demian', false, 'Calcacuervo','calcacuervo','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Mariano', false, 'MM','mariano','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'James', false, 'Omboyo','james','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Admin', false, 'Admin','Administrator','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Esteban', false, 'Ti','esteban','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Salaboy', false, 'Sb','salaboy','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Gatheru', false, 'Joseph','gatheru','tosh0948@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'TomKim', false, 'Tom','Kimani','tosh0948@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Njenga', false, 'Patrick','pnjenga','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Odonya', false, 'Japheth','jodonya','mdkimani@gmail.com','pass');
-insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password) values (now(),'Administrator',now(), 'Administrator', 'Lumumba', false, 'Patrice','plumumba','mdkimani@gmail.com','pass');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Demian', false, 'Calcacuervo','calcacuervo','mdkimani@gmail.com','pass','gNtLJ03iEfS3LCac');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Mariano', false, 'MM','mariano','mdkimani@gmail.com','pass', 'OYfPsqwsz4g8KPTB');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'James', false, 'Omboyo','james','mdkimani@gmail.com','pass', 'omy4w7bRRKEUFP9Z');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Admin', false, 'Admin','Administrator','mdkimani@gmail.com','pass', 's6o5mvPtV57R23db');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Esteban', false, 'Ti','esteban','mdkimani@gmail.com','pass', 'vNVwdr1zhkH3HHWI');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Salaboy', false, 'Sb','salaboy','mdkimani@gmail.com','pass', 'PEz4bCPfLneR1GyZ');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Gatheru', false, 'Joseph','gatheru','tosh0948@gmail.com','pass', 'J54AuidkhgE0T2gT');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'TomKim', false, 'Tom','Kimani','tosh0948@gmail.com','pass', '8Kc7aOyRNJbl1jGN');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Njenga', false, 'Patrick','pnjenga','mdkimani@gmail.com','pass', 'EaTEcSR9jYWykgEd');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Odonya', false, 'Japheth','jodonya','mdkimani@gmail.com','pass', 'nVib9DssqUFhLyGo');
+insert into BUser(created,createdBy,updated,updatedBy,firstName,isArchived,lastName,userId,email,password,refId) values (now(),'Administrator',now(), 'Administrator', 'Lumumba', false, 'Patrice','plumumba','mdkimani@gmail.com','pass', 'TdcSoNg3c08wpHcB');
 
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','User', false, 'USER');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','HOD Development', false, 'HOD_DEV');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','HOD Finance', false, 'HOD_FIN');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','Administrator', false, 'ADMIN');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','CEO', false, 'CEO');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','HOD HR', false, 'HOD_HR');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','HOD Procurement', false, 'HOD_PROC');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','Procurement Officer', false, 'OFF_PROC');
-insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name) values(now(),'Administrator',now(), 'Administrator','HOD Operations', false, 'HOD_OPERATIONS');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','User', false, 'USER', 'CQuyDBuiNLZPwPRX');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','HOD Development', false, 'HOD_DEV','SGNhh6k6EZBwoZve');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','HOD Finance', false, 'HOD_FIN','RNi1OCTOGYjWt1DX');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','Administrator', false, 'ADMIN','ULt0xvgQn0uiMA2m');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','CEO', false, 'CEO','w3zjybRXOjK4yorj');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','HOD HR', false, 'HOD_HR','KxXoIKlen2PmIMIZ');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','HOD Procurement', false, 'HOD_PROC','wWVHshBawH6s9Tx6');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','Procurement Officer', false, 'OFF_PROC','tsaibj3EA1lD2H4k');
+insert into BGroup(created,createdBy,updated,updatedBy,fullName,isArchived,name,refId) values(now(),'Administrator',now(), 'Administrator','HOD Operations', false, 'HOD_OPERATIONS','2nPakBHHHruCD226');
 
 insert into UserGroup(userid,groupid) values(1,1);
 insert into UserGroup(userid,groupid) values(2,2);
@@ -49,6 +49,8 @@ insert into ADDocType(created, createdBy, updated, updatedBy,className, display,
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Terminal Allocation', 'TERMINAL ALLOCATION',0,'Allocation Request #{No}');
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name, lastnum, subjectformat) values (now(),'Administrator',null,null,'color-win8','Terminal De-allocation', 'TERMINAL DEALLOCATION',0,'De-Allocation Request #{No}');
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Asset Finance Application I&M', 'ASSETFINANCEFORMIM');
+
+insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Asset Accession and Publication Workflow', 'ASSETACCESSION');
 
 --Default numbering uses a sequence producing case numbers as: Case-XYZ [this is activated iff subjectformat=null)
 insert into ADDocType(created, createdBy, updated, updatedBy,className, display, name) values (now(),'Administrator',null,null,'color-win8','Procurement To Payment Process', 'PROCURETOPAY');

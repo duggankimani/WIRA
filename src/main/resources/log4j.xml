@@ -17,7 +17,7 @@
         <level value="FATAL"/>
     </logger>
     <logger name="org.jbpm.executor">
-        <level value="FATAL"/>
+        <level value="DEBUG"/>
     </logger>
     <logger name="org.apache">
         <level value="FATAL"/>

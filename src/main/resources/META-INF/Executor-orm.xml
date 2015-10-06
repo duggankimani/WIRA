@@ -5,36 +5,36 @@
                version="1.0">  
       <named-query name="QueuedRequests">
           <query>
-              Select r from RequestInfo as r where r.status ='QUEUED'
+              Select r from RequestInfo as r where r.status ='QUEUED' order by id desc
           </query>
       </named-query>
       <named-query name="ExecutedRequests">
           <query>
-              Select r from RequestInfo as r where r.status ='DONE'
+              Select r from RequestInfo as r where r.status ='DONE' order by id desc
           </query>
       </named-query>
       
        <named-query name="InErrorRequests">
           <query>
-              Select r from RequestInfo as r where r.status ='ERROR'
+              Select r from RequestInfo as r where r.status ='ERROR' order by id desc
           </query>
       </named-query>
       
       <named-query name="CancelledRequests">
           <query>
-              Select r from RequestInfo as r where r.status ='CANCELLED'
+              Select r from RequestInfo as r where r.status ='CANCELLED' order by id desc
           </query>
       </named-query>
       
       <named-query name="GetAllRequests">
           <query>
-              Select r from RequestInfo as r 
+              Select r from RequestInfo as r  order by id desc
           </query>
       </named-query>
       
       <named-query name="GetAllErrors">
           <query>
-              Select e from ErrorInfo as e 
+              Select e from ErrorLog as e  order by id desc
           </query>
       </named-query>
       

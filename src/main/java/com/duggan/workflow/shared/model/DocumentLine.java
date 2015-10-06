@@ -104,12 +104,8 @@ public class DocumentLine implements Serializable {
 		
 		DocumentLine other = (DocumentLine)obj;
 		
-		if(id!=null){
+		if(id!=null && other.id!=null){
 			return id.equals(other.id);
-		}
-		
-		if(other.id!=null){
-			return other.id.equals(id);
 		}
 		
 		return super.equals(obj);

@@ -148,8 +148,41 @@ public abstract class Doc extends SerializableObj implements Serializable,Compar
 			lines = new ArrayList<DocumentLine>();
 			details.put(name, lines);
 		}
-		
 		lines.add(line);
+		
+		
+		/*
+		 * Duggan  06/10/2015
+		 * ExecuteWorkflow action submits a list of Value objects i.e Map<String,Value> ,
+		 * which works ok for all fields except grid fields updated through triggers
+		 * 
+		 * Grid rows updated through a trigger call to addDetail('gridName', DocumentLine) 
+		 * are not added to a GridValue object: they are written directly to a Map<String, List<DocLine>>,
+		 * hence they are left out when ExecuteWorkflow is called.
+		 * 
+		 *  To remedy this issue, We need to loop through the document lines generating a GridValue entry
+		 *  for each document line with no corresponding gridValue. ALTERNATIVELY, override addDetail and
+		 *  generate a GridValue entry there - This may be a better fit since 'after-step' triggers on 
+		 *  the last node will not interact with the interface before calling ExecuteWorkflow.
+		 *  @See Doc.addDetail()
+		 * 
+		 */
+		GridValue value = null;
+		if(values.get(name)==null){
+			value = new GridValue();
+			value.setKey(name);
+		}else if(values.get(name) instanceof GridValue){
+			value = (GridValue) values.get(name);
+		}else{
+			value = new GridValue();
+			value.setKey(name);
+		}
+		
+		if(value.getValue().contains(line)){
+			value.getValue().remove(line);
+		}
+		value.getValue().add(line);
+		values.put(name, value);
 	}
 	
 	public void setDetails(String key, Collection<DocumentLine> values){

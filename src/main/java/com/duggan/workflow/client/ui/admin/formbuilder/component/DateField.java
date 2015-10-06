@@ -28,133 +28,147 @@ public class DateField extends FieldWidget {
 
 	interface DateFieldUiBinder extends UiBinder<Widget, DateField> {
 	}
-	
+
 	private final Widget widget;
-	
-	@UiField Element lblEl;
-	@UiField DateInput dateBox;
-	@UiField HTMLPanel panelControls;
-	@UiField HTMLPanel panelGroup;
-	@UiField InlineLabel lblComponent;
-	@UiField SpanElement spnMandatory;
-	@UiField SpanElement spnMsg;
-	@UiField Element spnIcon;
-	
+
+	@UiField
+	Element lblEl;
+	@UiField
+	DateInput dateBox;
+	@UiField
+	HTMLPanel panelControls;
+	@UiField
+	HTMLPanel panelGroup;
+	@UiField
+	InlineLabel lblComponent;
+	@UiField
+	SpanElement spnMandatory;
+	@UiField
+	SpanElement spnMsg;
+	@UiField
+	Element spnIcon;
+
 	public DateField() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		widget = uiBinder.createAndBindUi(this);	
+		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
 	}
-	
+
 	/**
-	 * This is an edit property field - This is a field
-	 * used to edit a single property
+	 * This is an edit property field - This is a field used to edit a single
+	 * property
 	 * 
 	 * @param property
 	 */
 	public DateField(Property property) {
 		this();
-		
+
 		String caption = property.getCaption();
 		String name = property.getName();
 		Value val = property.getValue();
-		designMode=false;
-		
+		designMode = false;
+
 	}
 
 	@Override
 	public FieldWidget cloneWidget() {
 		return new DateField();
-	}	
-	
+	}
+
 	@Override
 	protected void setCaption(String caption) {
 		lblEl.setInnerHTML(caption);
 	}
-	
+
 	@Override
 	protected void setPlaceHolder(String placeHolder) {
-		//txtComponent.setPlaceholder(placeHolder);
+		// txtComponent.setPlaceholder(placeHolder);
 	}
-	
+
 	@Override
 	protected void setHelp(String help) {
 		dateBox.setTitle(help);
 	}
-	
+
 	@Override
 	protected DataType getType() {
 		return DataType.DATE;
 	}
-	
+
 	@Override
 	public Value getFieldValue() {
 		Date dt = dateBox.getDate();
-		
-		if(dt==null){
+
+		if (dt == null) {
 			return null;
 		}
-		
+
 		return new DateValue(field.getLastValueId(), field.getName(), dt);
 	}
-	
+
 	@Override
 	public void setValue(Object value) {
 		super.setValue(value);
-		if(value!=null){
-			dateBox.setValue((Date)value);
-			lblComponent.setText(DateUtils.DATEFORMAT.format((Date)value));
+		if (value != null && value instanceof Date) {
+			dateBox.setValue((Date) value);
+			lblComponent.setText(DateUtils.DATEFORMAT.format((Date) value));
+		} else if (value != null && value instanceof String) {
+
+			try {
+				dateBox.setValue(DateUtils.DATEFORMAT.parse(value.toString()));
+			} catch (Exception e) {
+			}
 		}
 	}
-	
+
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-		
-		UIObject.setVisible(dateBox.getElement(),!this.readOnly);
+
+		UIObject.setVisible(dateBox.getElement(), !this.readOnly);
 		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
-		
+
 		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
-	
+
 	@Override
 	public Widget createComponent(boolean small) {
-		
-		if(!readOnly)
-			if(small){
+
+		if (!readOnly)
+			if (small) {
 				dateBox.setStyle("input-small");
 			}
-		
+
 		return panelControls;
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		// TODO Auto-generated method stub
 		super.onLoad();
-		
-		if(field.getDocId()!=null)
+
+		if (field.getDocId() != null)
 			dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
 				@Override
 				public void onValueChange(ValueChangeEvent<Date> event) {
-						ENV.setContext(field, event.getValue());
+					ENV.setContext(field, event.getValue());
 				}
 			});
 	}
-	
-	public Value from(String key,String val) {
-		try{
-			return new DateValue(null,key,DateUtils.DATEFORMAT.parse(val));
-		}catch(Exception e){
+
+	public Value from(String key, String val) {
+		try {
+			return new DateValue(null, key, DateUtils.DATEFORMAT.parse(val));
+		} catch (Exception e) {
 		}
-		
+
 		return super.from(key, val);
 	}
-	
+
 	@Override
 	public Widget getInputComponent() {
 		return dateBox;
@@ -170,11 +184,11 @@ public class DateField extends FieldWidget {
 		spnMsg.removeClassName("hide");
 		spnIcon.removeClassName("icon-ok-circle");
 		spnIcon.removeClassName("icon-remove-circle");
-		if(isValid){
+		if (isValid) {
 			panelGroup.addStyleName("success");
 			spnIcon.addClassName("icon-ok-circle");
 			panelGroup.removeStyleName("error");
-		}else{
+		} else {
 			panelGroup.removeStyleName("success");
 			panelGroup.addStyleName("error");
 			spnIcon.addClassName("icon-remove-circle");

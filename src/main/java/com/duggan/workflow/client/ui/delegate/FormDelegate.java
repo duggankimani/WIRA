@@ -60,7 +60,8 @@ public class FormDelegate {
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
 			Field field = fieldWidget.getField();
-			//DISABLED BY DUGGAN 15th/Sep/2015 - Due to Field Triggers that may update a readonly field
+			//DISABLED BY DUGGAN 15th/Sep/2015 - Due to Field Triggers that may update a readonly fields
+			
 //			if(fieldWidget.isReadOnly() && !fieldWidget.isFormularField()){
 //				continue;
 //			}

@@ -35,11 +35,23 @@ public class CustomEmailHandler {
 
 	private static Logger log = Logger.getLogger(CustomEmailHandler.class);
 	
-	public void sendNotification(ADTaskNotification template, Map<String, Object> params){
+//	public void sendNotification(ADTaskNotification template, Map<String, Object> params){
+//		String documentId = (String) params.get("DocumentId");
+//		log.debug("DocumentId : "+documentId);
+//		
+//		Document doc = params.get("document")==null? null : (Document)params.get("document");
+//		try{
+//			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
+//		}catch(Exception e){}
+//		
+//		sendNotification(template, doc, params);
+//	}
+	
+	public void sendNotification(ADTaskNotification template,Document doc, Map<String, Object> params){
 		
 		String caseNo = null;
 		String noteType = null;
-		String documentId= null;
+		
 		String groupId = null;
 		String actorId = null;
 		String ownerId = null;
@@ -50,13 +62,12 @@ public class CustomEmailHandler {
 			html = template.getNotificationTemplate();
 		}
 
-		caseNo = (String) params.get("Subject");
+		caseNo = (String) params.get("caseNo");
 		//noteType = (String) params.get("NotificationType");
 		//NotificationType type = NotificationType.valueOf(noteType);
-		documentId = (String) params.get("DocumentId");
 		groupId = (String) params.get("GroupId");
 		actorId = (String) params.get("ActorId");
-		ownerId = (String) params.get("OwnerId");
+		ownerId = (String) params.get("ownerId");
 		//isApproved = params.get("isApproved");
 
 		String[]groups = null;
@@ -64,15 +75,9 @@ public class CustomEmailHandler {
 			groups = groupId.split(",");
 		}
 		
-		Document doc = params.get("document")==null? null : (Document)params.get("document");
-		try{
-			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
-		}catch(Exception e){}
-		
 		log.debug("Class : "+this.getClass());
 		log.debug("Subject : "+caseNo);
 		log.debug("NotificationType : "+noteType);
-		log.debug("DocumentId : "+documentId);
 		log.debug("GroupId : "+groupId);
 		log.debug("ActorId : "+actorId);
 		log.debug("OwnerId : "+ownerId);	
@@ -101,7 +106,6 @@ public class CustomEmailHandler {
 		sendMail(html,doc,receipients, params);
 		log.info("EMAILSUBJECT = "+emailSubject);
 		log.info("EMAILRECIEPIENTS = "+receipients);
-		
 	}
 
 	public void sendMail(String htmlTemplate, Document doc,List<HTUser> receipients, Map<String, Object> params) {
@@ -137,8 +141,10 @@ public class CustomEmailHandler {
 			
 			//Merge params & doc
 			for(String key: params.keySet()){
-				doc.setValue(key, params.get(key)==null? null :
-					new StringValue(params.get(key).toString()));
+				if(doc.get(key)==null){
+					doc.setValue(key, params.get(key)==null? null :
+						new StringValue(params.get(key).toString()));
+				}
 			}
 			htmlTemplate = parse(htmlTemplate, doc);
 			

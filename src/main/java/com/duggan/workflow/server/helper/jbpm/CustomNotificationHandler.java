@@ -22,11 +22,21 @@ public class CustomNotificationHandler {
 	
 	public void generate(Map<String, Object> params,NotificationType type) {
 		
-		String subject = (String) params.get("Subject");
-		String documentId =  params.get("DocumentId").toString();
+		String subject = (String) params.get("caseNo");
+		String documentId =  params.get("documentId").toString();
 		String groupId = (String) params.get("GroupId");
 		String actorId = (String) params.get("ActorId");
-		String ownerId = (String) params.get("OwnerId");
+		
+		String ownerId=null;
+		if(params.get("ownerId")!=null){
+			Object owner = params.get("ownerId");
+			if(owner instanceof HTUser){
+				ownerId = ((HTUser)owner).getUserId();
+			}else{
+				ownerId = owner.toString();
+			}
+		}
+		
 		String docRefId = null;
 		Object isApproved = params.get("isApproved");
 		String _docTypeDesc = null;

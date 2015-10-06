@@ -5136,7 +5136,8 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 	position: fixed;
 	top: 10%;
 	left: 50%;
-	z-index: 1050;
+	/*z-index: 1050;*/
+	z-index: 900;
 	width: 560px;
 	margin-left: -280px;
 	background-color: #ffffff;
@@ -5183,7 +5184,8 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 
 .modal-body {
 	position: relative;
-	max-height: 400px;
+	/*max-height: 400px;*/
+	max-height: 510px;
 	padding: 15px;
 	overflow-y: auto;
 }

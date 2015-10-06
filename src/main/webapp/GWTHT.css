@@ -334,7 +334,8 @@ div.center {
 
 div.htmlEditorPopup {
 	max-width: 90% !important;
-	width: 90% !important;
+	/*width: 90% !important;*/
+	width:837px !important;
 }
 
 .modal-iframe {

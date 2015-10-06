@@ -6,7 +6,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 	
     <persistence-unit name="org.jbpm.persistence.jpa" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>        
-		<!-- jta-data-source>java:comp/env/jdbc/ebusinessds</jta-data-source -->
+		<!-- jta-data-source>java:comp/env/jdbc/ebusinessds</jta-data-source-->
   		<jta-data-source>jdbc/ebusinessds</jta-data-source>
         <mapping-file>META-INF/Taskorm.xml</mapping-file>
         <mapping-file>META-INF/ProcessInstanceInfo.hbm.xml</mapping-file>
@@ -54,7 +54,6 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
      
         <!-- Async Executor Classes -->
         <class>org.jbpm.executor.entities.RequestInfo</class>
-        <class>org.jbpm.executor.entities.ErrorInfo</class>
                         
         <properties>
             <!-- property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" /-->            

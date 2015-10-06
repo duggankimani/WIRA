@@ -47,8 +47,6 @@ public class ToolbarPresenter extends PresenterWidget<ToolbarPresenter.MyView> i
 		super.onBind();
 		this.addRegisteredHandler(SetStatusEvent.TYPE, this);
 
-		final ExecuteWorkflow workflow = new ExecuteWorkflow(0l, "calcacuervo", Actions.START);
-
 		getView().getClaimLink().addClickHandler(new ClickHandler() {
 			
 			@Override

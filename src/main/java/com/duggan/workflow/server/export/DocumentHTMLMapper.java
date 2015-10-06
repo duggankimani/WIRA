@@ -53,7 +53,8 @@ public class DocumentHTMLMapper {
 			if(c%2==0){
 				String gridRows = html.substring(start,matcher.start());
 				String gridName = getGridName(matcher.group());
-				log.debug("GridName = "+gridName+" size = "+doc.getDetails().get(gridName).size()+","
+				log.debug("GridName = "+gridName+" size = "+(doc.getDetails().get(gridName)==null? "NULL":
+					doc.getDetails().get(gridName).size())+","
 						+", Data >>"+doc.getDetails().get(gridName));
 				List<DocumentLine> gridVals=doc.getDetails().get(gridName);
 				

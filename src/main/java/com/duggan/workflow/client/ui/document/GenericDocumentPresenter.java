@@ -687,8 +687,10 @@ public class GenericDocumentPresenter extends
 			navigateToView(steps.get(currentStep), isNavigateNext);
 		}else{
 			//Cannot navigate (invalid form) - Save the document tho' - Duggan 27/09/2015
-			//How do we maintain front end state tho? - call is valid again?
-			//If we do not rebind the saved form, we will end up with multiple db entries
+			//How do we maintain front end state tho e.g form validation highlights the fields
+			//marking them as valid or invalid. Reloading data on this form removes this highlighting
+			//Temp soln- call is valid again?
+			//Further, If we do not rebind the saved form, we will end up with multiple db entries
 			//for form field values
 			//
 			if(doc instanceof Document){
@@ -908,8 +910,11 @@ public class GenericDocumentPresenter extends
 
 			if (val instanceof GridValue) {
 				List<DocumentLine> lines = new ArrayList<DocumentLine>();
+				/**
+				 * 
+				 * This does not take care of hidden grid fields
+				 */
 				lines.addAll(((GridValue) val).getValue());
-
 				doc.getDetails().remove(key);
 				doc.getDetails().put(key, lines);
 
@@ -924,6 +929,23 @@ public class GenericDocumentPresenter extends
 				values.put(key, val);
 			}
 		}
+		
+		/*
+		 * Duggan  06/10/2015
+		 * ExecuteWorkflow action submits a list of Value objects i.e Map<String,Value> ,
+		 * which works ok for all fields except grid fields updated through triggers
+		 * 
+		 * Grid rows updated through a trigger call to addDetail('gridName', DocumentLine) 
+		 * are not added to a GridValue object: they are written directly to a Map<String, List<DocLine>>,
+		 * hence they are left out when ExecuteWorkflow is called.
+		 * 
+		 *  To remedy this issue, We need to loop through the document lines generating a GridValue entry
+		 *  for each document line with no corresponding gridValue. ALTERNATIVELY, override addDetail and
+		 *  generate a GridValue entry there - This may be a better fit since 'after-step' triggers on 
+		 *  the last node will not interact with the interface before calling ExecuteWorkflow.
+		 *  @See Doc.addDetail()
+		 * 
+		 */
 
 	}
 
@@ -933,7 +955,7 @@ public class GenericDocumentPresenter extends
 		mergeFormValuesWithDoc();
 
 		final Map<String, Value> values = doc.getValues();
-
+		
 		// Add any programmatic values (Button values e.g isApproved)
 		if (withValues != null)
 			values.putAll(withValues);

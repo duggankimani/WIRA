@@ -581,6 +581,7 @@ class BPMSessionManager {
 		}
 		
 		values.put("ActorId", SessionHelper.getCurrentUser().getUserId());
+		values.put("actorId", SessionHelper.getCurrentUser().getUserId());
 		getTaskClient().completeWithResults(taskId, userId, values);
 		return true;
 	}
@@ -717,9 +718,9 @@ class BPMSessionManager {
 				Map<String, Object> newValues = new HashMap<>();
 				for (String key : keys) {
 					Object value = taskData.get(key);
-					if (!key.equals("isApproved"))
-						key = key.substring(0, 1).toUpperCase()
-								+ key.substring(1);
+//					if (!key.equals("isApproved"))
+//						key = key.substring(0, 1).toUpperCase()
+//								+ key.substring(1);
 
 					newValues.put(key, value);
 					logger.debug("NotificationTaskEventListener Task Data " + key + "="+ value);
@@ -742,10 +743,10 @@ class BPMSessionManager {
 				for (String key : keys) {
 					Object value = values.get(key);
 
-					if (!key.equals("isApproved")){
-						key = key.substring(0, 1).toUpperCase()
-								+ key.substring(1); //IsApproved
-					}
+//					if (!key.equals("isApproved")){
+//						key = key.substring(0, 1).toUpperCase()
+//								+ key.substring(1); //IsApproved
+//					}
 
 					if (newValues.get(key) == null) {
 						newValues.put(key, value);
@@ -755,21 +756,21 @@ class BPMSessionManager {
 				}
 
 				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-				Object ownerId = newValues.get("OwnerId");
+				Object ownerId = newValues.get("ownerId");
 				if (ownerId == null) {
 					if (doc != null) {
 						ownerId = doc.getOwner().getUserId();
-						newValues.put("OwnerId", ownerId.toString());
+						newValues.put("ownerId", ownerId.toString());
 					}
 				}				
 				assert doc.getId()!=null;
-				newValues.put("DocumentId", doc.getId());
+				newValues.put("documentId", doc.getId());
 				
 				//
 				taskData.putAll(newValues);
 				new CustomNotificationHandler().generate(taskData, NotificationType.TASKCOMPLETED_OWNERNOTE);
 				new CustomNotificationHandler().generate(taskData, NotificationType.TASKCOMPLETED_APPROVERNOTE);
-				String processId = "aftertask-notification";
+				//String processId = "aftertask-notification";
 				//startProcess(processId, newValues);
 
 			} catch (Exception e) {
@@ -793,7 +794,7 @@ class BPMSessionManager {
 			//or after user was directly assigned the task, he revoked the task, and has re-claimed it again
 			return;
 		}
-		Map<String, Object> taskData = JBPMHelper.getMappedData(task);
+		Map<String, Object> taskData = JBPMHelper.getMappedData(task);//Mapped Data - what is this? Is the doc
 
 		Map<String, Object> values = null;
 		Map<String, Object> newValues = new HashMap<>();
@@ -815,7 +816,8 @@ class BPMSessionManager {
 		for (String key : keys) {
 			Object value = values.get(key);
 
-			key = key.substring(0, 1).toUpperCase() + key.substring(1);
+			//Why am I doing this?
+			//key = key.substring(0, 1).toUpperCase() + key.substring(1);
 			newValues.put(key, value);
 			logger.debug(key+"="+value);
 		}
@@ -824,7 +826,7 @@ class BPMSessionManager {
 		Object actorId = taskData.get("ActorId");
 		logger.debug("BPMSessionManager#onTaskCreated GroupId="+groupId);
 		logger.debug("BPMSessionManager#onTaskCreated ActorId="+actorId);
-		logger.debug("BPMSessionManager#onTaskCreated Priority="+taskData.get("Priority"));
+		logger.debug("BPMSessionManager#onTaskCreated Priority="+taskData.get("priority"));
 		
 		if(actorId==null && groupId==null){
 			throw new IllegalArgumentException("Subsequent Task '"+JBPMHelper.get().getDisplayName(task)+"' has no User or Group defined");
@@ -832,9 +834,9 @@ class BPMSessionManager {
 		
 		newValues.put("GroupId", groupId);
 		newValues.put("ActorId", actorId);
-		newValues.put("Priority", taskData.get("Priority"));
-		if (newValues.get("Priority") == null)
-			newValues.put("Priority", values.get("Priority"));
+		newValues.put("priority", taskData.get("priority"));
+		if (newValues.get("priority") == null)
+			newValues.put("priority", values.get("priority"));
 
 		HumanTaskNode node = (HumanTaskNode)JBPMHelper.get().getNode(task);
 		Long nodeId = node.getId();
@@ -850,7 +852,9 @@ class BPMSessionManager {
 		
 		//Put all New Values into Task Data; This map has all inputs defined to the human task 
 		taskData.putAll(newValues);
-		new CustomEmailHandler().sendNotification(notification, taskData);
+		
+		Document doc = DocumentDaoHelper.getDocument(newValues);
+		new CustomEmailHandler().sendNotification(notification,doc, taskData);
 		new CustomNotificationHandler().generate(taskData, NotificationType.APPROVALREQUEST_OWNERNOTE);
 		new CustomNotificationHandler().generate(taskData, NotificationType.APPROVALREQUEST_APPROVERNOTE);
 		
