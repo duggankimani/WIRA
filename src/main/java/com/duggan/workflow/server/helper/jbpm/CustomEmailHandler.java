@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
+import org.jbpm.executor.commands.SendMailCommand;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
@@ -27,6 +28,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.UserGroup;
@@ -108,7 +110,7 @@ public class CustomEmailHandler {
 		log.info("EMAILRECIEPIENTS = "+receipients);
 	}
 
-	public void sendMail(String htmlTemplate, Document doc,List<HTUser> receipients, Map<String, Object> params) {
+	public void sendMail(String htmlTemplate, Doc doc,List<HTUser> receipients, Map<String, Object> params) {
 		
 		log.info("Sending email "+doc.getCaseNo()+" to "+receipients);
 		if(receipients==null || receipients.isEmpty()){
@@ -126,8 +128,15 @@ public class CustomEmailHandler {
 		params.put("From", params.get("From")==null? "ebpm.mgr@gmail.com": params.get("From"));
 		params.put("docDate", SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(
 				doc.getDocumentDate()==null? doc.getCreated(): doc.getDocumentDate()));
-		DocumentType type = doc.getType();
-		params.put("DocType",type.getDisplayName());
+		
+		String docType = "";
+		if(doc instanceof Document){
+			docType = ((Document)doc).getType().getDisplayName();
+		}else{
+			docType = ((HTask)doc).getProcessName();
+		}
+		
+		params.put("DocType",docType);
 		params.put("DocumentURL", getDocUrl(doc.getRefId()));
 		params.put("ownerId", doc.getOwner());
 		
@@ -147,8 +156,11 @@ public class CustomEmailHandler {
 				}
 			}
 			htmlTemplate = parse(htmlTemplate, doc);
+			String subject = (String)params.get(SendMailCommand.SUBJECT);
+			subject = parse(subject, doc);
+			params.put(SendMailCommand.SUBJECT, subject);
 			
-			params.put("Body", htmlTemplate);						
+			params.put(SendMailCommand.BODY, htmlTemplate);						
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -175,7 +187,7 @@ public class CustomEmailHandler {
 	}
 	
 
-	private String parse(String html, Document doc) {
+	private String parse(String html, Doc doc) {
 		DocumentHTMLMapper mapper = new DocumentHTMLMapper();
 		String result = mapper.map(doc, html);
 		

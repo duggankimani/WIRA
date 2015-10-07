@@ -38,12 +38,11 @@ public class ExecuteWorkflowActionHandler extends
 		
 		Map<String, Object> vals = new HashMap<>();
 		Map<String, Value> values = execAfterStepTriggers(action,execContext);
-		
+
 		if(values!=null){
 			long processInstanceId=0L;
 			Task task = JBPMHelper.get().getTaskClient().getTask(action.getTaskId());
 			processInstanceId = task.getTaskData().getProcessInstanceId();
-						
 			Document document = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,false);
 			//Doc document = JBPMHelper.get().getTask(action.getTaskId());
 			assert document!=null;
@@ -65,7 +64,7 @@ public class ExecuteWorkflowActionHandler extends
 					log.debug("ExecuteWorkflowActionHandler.documentOut "+key+"="+val);
 				}
 			}
-		
+			
 			//ProcessMappings mappings = JBPMHelper.get().getProcessDataMappings(action.getTaskId());
 			//The Task Output Parameter Name mapped to Parameter Name document. 
 			String docOutputName = "documentOut";//mappings.getOutputName("document");
@@ -102,7 +101,7 @@ public class ExecuteWorkflowActionHandler extends
 		Long stepId = lastStep.getId();
 		Long nextStepId = null;
 		
-		HTask task = new HTask(action.getTaskId());
+		HTask task = JBPMHelper.get().getTask(action.getTaskId());
 		Map<String, Value> values  = action.getValues();
 		for(String key: values.keySet()){
 			Value value = values.get(key);	
@@ -111,8 +110,9 @@ public class ExecuteWorkflowActionHandler extends
 				task.setValue(key,value);
 			}
 		}
-		ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(stepId, nextStepId, task);
 		
+		ExecuteTriggersRequest execTrigger = new ExecuteTriggersRequest(stepId, nextStepId, task);
+		execTrigger.setEmbedded(true);
 		Doc rtn = null;
 		try{
 			rtn = execContext.execute(execTrigger).getDocument();

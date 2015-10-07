@@ -43,8 +43,6 @@ public class ExecutorImpl implements Executor {
 	private Logger logger = Logger.getLogger(ExecutorImpl.class
 			.getCanonicalName());
 
-	private EntityManager em;
-
 	private ExecutorRunnable task;
 
 	private ScheduledFuture<?> handle;
@@ -100,7 +98,7 @@ public class ExecutorImpl implements Executor {
 
 	public synchronized Long scheduleRequest(CommandCodes commandId,
 			CommandContext ctx) {
-		em = DB.getEntityManager();
+		EntityManager em = DB.getEntityManager();
 		long start = System.currentTimeMillis();
 		if (ctx == null) {
 			throw new IllegalStateException("A Context Must Be Provided! ");
@@ -147,9 +145,9 @@ public class ExecutorImpl implements Executor {
 				.getExecutorServiceEntryPoint().getRequestById(dto.getRefId());
 
 		CommandContext ctx;
-
+		
 		try {
-			em = DB.getEntityManager();
+			EntityManager em = DB.getEntityManager();
 			ObjectInputStream in = new ObjectInputStream(
 					new ByteArrayInputStream(requestInfo.getRequestData()));
 			ctx = (CommandContext) in.readObject();
@@ -201,7 +199,8 @@ public class ExecutorImpl implements Executor {
 	public void cancelRequest(Long requestId) {
 		logger.log(Level.INFO, " >>> Before - Cancelling Request with Id: {0}",
 				requestId);
-
+		EntityManager em = DB.getEntityManager();
+		
 		String eql = "Select r from RequestInfo as r where (r.status ='QUEUED' or r.status ='RETRYING') and id = :id";
 		List<?> result = em.createQuery(eql).setParameter("id", requestId)
 				.getResultList();

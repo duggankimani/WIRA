@@ -45,18 +45,21 @@ public class ExecuteTriggersActionHandler extends
 		
 		boolean canExecute=false;
 		
+		String status = "DONTKNOW";
 		if(doc instanceof Document){
 			if(doc.getOwner()!=null && 
 					doc.getOwner().equals(SessionHelper.getCurrentUser()) &&
 					((Document)doc).getStatus()==DocStatus.DRAFTED){
 				canExecute=true;
 				
+				status="DRAFTED";
 				//Save this doc -- ADDED BY DUGGAN 27/09/2015  -
 				//Draft Documents should be saved on navigation
 				doc = DocumentDaoHelper.save((Document)doc);
 			}
 		}else{
 			HTSummary summary = (HTSummary)doc;
+			status=summary.getStatus().name();
 			if(
 //					summary.getStatus()==HTStatus.CREATED 
 //					|| summary.getStatus()==HTStatus.READY
@@ -67,6 +70,8 @@ public class ExecuteTriggersActionHandler extends
 		}
 		
 		ProcessDaoImpl dao = DB.getProcessDao();
+		log.warn("CanExecute = "+canExecute+" previousStepId="+action.getPreviousStepId()+
+				"; nextStepId="+action.getNextStepId()+"; status="+status);
 		if(canExecute){
 			
 			//After Step Triggers

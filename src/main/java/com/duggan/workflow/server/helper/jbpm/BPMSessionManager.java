@@ -73,6 +73,7 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NotificationType;
 
 /**
@@ -756,13 +757,18 @@ class BPMSessionManager {
 				}
 
 				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-				Object ownerId = newValues.get("ownerId");
-				if (ownerId == null) {
-					if (doc != null) {
-						ownerId = doc.getOwner().getUserId();
-						newValues.put("ownerId", ownerId.toString());
-					}
-				}				
+				newValues.put("ownerId", doc.getOwner().getUserId());
+//				Object ownerId = newValues.get("ownerId");
+//				
+//				if (ownerId == null) {
+//					if (doc != null) {
+//						ownerId = doc.getOwner().getUserId();
+//						newValues.put("ownerId", ownerId.toString());
+//					}
+//				}else if(ownerId instanceof HTUser){
+//					newValues.put("ownerId", ((HTUser)ownerId).getUserId());
+//				}
+				
 				assert doc.getId()!=null;
 				newValues.put("documentId", doc.getId());
 				

@@ -40,10 +40,21 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
 		@SuppressWarnings("unchecked")
-		B result = (B) action.createDefaultActionResponse();		
-		
+		B result = (B) action.createDefaultActionResponse();
 		log.debug(action.getRequestCode()+": Executing command " + action.getClass().getName());
-
+		if(action.isEmbedded()){
+			/*Embedded calls are calls executed in one command
+			 * to execute another on the server side. As such, a transaction and
+			 * all relevant session information have been initialized. 
+			 * Initializing these again causes a deadline			 
+			*/
+			execute(action, result, execContext);
+			return result;
+		}
+		
+		
+		
+		//NEW SERVER REQUEST
 		if(SessionHelper.getHttpRequest()!=null){
 			//embedded call -- needed when executing multiple commands in one call
 			//not usable when working with servlets
