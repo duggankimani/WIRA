@@ -38,7 +38,7 @@ public class ADValue extends PO{
 	@Enumerated(EnumType.STRING)
 	private SETTINGNAME settingName;
 	
-	@Column(length=2000)
+	@Column(length=5000)
 	private String stringValue;
 	
 	private Boolean booleanValue;
