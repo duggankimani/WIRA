@@ -1,31 +1,38 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator"
+	content="HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+
+<title></title>
+</head>
+
 <body style="margin: 0 0 0 0; padding: 0 0 0 0; font-size: 12px;">
 	<!--Outer Container-->
+
 	<table width="100%" height="300px" cellpadding="0"
 		style="padding: 20px;" bgcolor="#DFDFDF">
 		<tr align="center">
 			<td>
 				<!--Inner container -->
-				<table width="600px" align="center" cellpadding="0"
-					cellspacing="0" bgcolor="#FFFFFF"
+
+				<table width="600px" align="center" cellpadding="0" cellspacing="0"
+					bgcolor="#FFFFFF"
 					style="border-collapse: separate; border-spacing: 3px; color: #000000; padding: 16px 20px; border: 1px solid #ffffff; border-bottom: 2px solid #bcbcbc; border-left: 1px solid #cecece; border-right: 1px solid #cecece; font-family: Helvetica, Arial, sans-serif;">
 					<tr>
 						<td colspan="2"><img class="imgLogo" src="cid:imageLogo"
-							width="180px" style="max-height: 70px;"/></td>
+							width="180px" style="max-height: 70px;" /></td>
 					</tr>
 					<!--spacer -->
+
 					<tr class="spacer" height="10px">
 						<td colspan="2"></td>
 					</tr>
 
 					<tr>
-						<td colspan="2">@@emailSubject &nbsp;&nbsp; <span
-							style="text-decoration: underline; font-weight: bold; color: #000000; cursor: pointer;">
-						</span>
-						</td>
+						<td colspan="2">@@emailSubject &nbsp;&nbsp;</td>
 					</tr>
-
 					<!--spacer -->
+
 					<tr class="spacer" height="10px">
 						<td colspan="2"></td>
 					</tr>
@@ -34,28 +41,43 @@
 						<td style="border-top: 1px dashed #000000; padding-top: 10px;"
 							colspan="2"><a
 							style="text-decoration: underline; font-weight: bold; color: #000000; font-size: 16px;"
-							href="@@DocumentURL"> @@caseNo </a></td>
+							href="@@DocumentURL">@@caseNo</a></td>
 					</tr>
+
 					<tr>
 						<td width="5%" valign="top"><img class="imgLogo"
 							src="cid:imageUser" width="70px" height="70px" /></td>
+
 						<td style="padding-left: 10px">
 							<table>
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"
-										width="95%"><span style="font-weight: bold">
-											Process</span> : @@DocType</td>
+										width="95%"><span style="font-weight: bold">Process</span>
+										: @@docType</td>
 								</tr>
+
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
 										style="font-weight: bold">Initiated By</span> : @@ownerId</td>
 								</tr>
+
 								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
 										style="font-weight: bold">Sent To</span> : @@ActorId @@GroupId</td>
 								</tr>
+								<!--  -->
+
+								<tr>
+									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
+										style="font-weight: bold">Document Date</span> @@docDate</td>
+								</tr>
+
+								<tr>
+									<td style="margin-bottom: 5px; padding-bottom: 5px;">@@description</td>
+								</tr>
+
 								<!-- Review Log -->
-								<!-- tr>
+								<tr>
 									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
 										style="font-weight: bold">Reviews:</span>
 										<table>
@@ -66,33 +88,23 @@
 													<th>Action</th>
 												</tr>
 											</thead>
-											<tbody-->
-												<!--@>approvalLines-->
-												<!-- tr>
-													<td>@@approvalDate</td>
-													<td>@@approvedBy</td>
+											<tbody>
+												<!-- @>approvalLines -->
+												<tr>
+													<td>@@dateApprovedLog</td>
+													<td>@@approvedByLog</td>
 													<td>@@approvalAction</td>
-												</tr-->
-												<!--@<approvalLines-->
-											<!-- /tbody>
+												</tr>
+												<!-- @<approvalLines -->
+											</tbody>
 										</table></td>
-								</tr-->
-								<!--  -->
-								<tr>
-									<td style="margin-bottom: 5px; padding-bottom: 5px;"><span
-										style="font-weight: bold">Document Date</span> @@docDate</td>
-								</tr>
-								<tr>
-									<td style="margin-bottom: 5px; padding-bottom: 5px;">
-										@@description</td>
 								</tr>
 
 								<tr>
 									<td style="padding-top: 10px;"><a
 										style="display: inline-block; padding: 8px 12px; margin-bottom: 0; font-size: 14px; font-weight: 500; line-height: 1.428571429; text-align: center; white-space: nowrap; vertical-align: middle; cursor: pointer; border: 1px solid transparent; border-radius: 4px; color: #ffffff; background-color: #5cb85c; border-color: #5cb85c; text-decoration: none;"
-										href="@@DocumentURL">Click To View</a>
+										href="@@DocumentURL">Click To View</a></td>
 								</tr>
-
 							</table>
 						</td>
 					</tr>
