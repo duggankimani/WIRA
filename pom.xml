@@ -6,8 +6,8 @@
 	<groupId>com.duggan.workflow</groupId>
 	<artifactId>wira</artifactId>
 	<version>0.9</version>
-	<packaging>war</packaging>
-	<name>JBPMHT</name>
+	<packaging>pom</packaging>
+	<name>wira</name>
 	<description>Enterprise Task List</description>
 
 	<properties>
@@ -23,9 +23,22 @@
 		<junit.version>4.11</junit.version>
 		<jukito.version>1.4</jukito.version>
 
+		<!-- Wira Shared -->
+		<wira.shared.artifactId>${project.artifactId}-shared</wira.shared.artifactId>
+		<wira.shared.groupId>${project.groupId}.shared</wira.shared.groupId>
+
+		<wira.requests.artifactId>${project.artifactId}-requests</wira.requests.artifactId>
+		<wira.requests.groupId>${project.groupId}.requests</wira.requests.groupId>
+
+		<wira.server.artifactId>${project.artifactId}-server</wira.server.artifactId>
+		<wira.server.groupId>${project.groupId}.server</wira.server.groupId>
+
+
 		<!-- maven -->
 		<gwt-maven-plugin.version>2.5.1</gwt-maven-plugin.version>
 		<maven-surefire-plugin.version>2.6</maven-surefire-plugin.version>
+		<maven-jar-plugin.version>2.6</maven-jar-plugin.version>
+		<maven-install-plugin.version>2.4</maven-install-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-processor-plugin.version>2.0.5</maven-processor-plugin.version>
@@ -59,12 +72,18 @@
 			</resource>
 			<resource>
 				<directory>src/main/java</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
+				<!-- Duggan 4/11/2015 Commented below to enable packaging wira-models 
+					that need both .class & .java - gwt -->
+				<includes>
+					<include>**/*.java</include>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.index</include>
+				</includes>
+				<!-- excludes> <exclude>**/*.java</exclude> </excludes -->
 			</resource>
 		</resources>
-		
+
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
@@ -73,6 +92,7 @@
 				</excludes>
 			</testResource>
 		</testResources>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -141,6 +161,118 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>generate-wira-shared-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<finalName>${wira.shared.artifactId}-${project.version}</finalName>
+							<includes>
+								<include>**/shared/*.gwt.xml</include>
+								<include>**/shared/**</include>
+							</includes>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-wira-server-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<!-- classifier>jar-with-dependencies</classifier -->
+							<finalName>${wira.server.artifactId}-${project.version}</finalName>
+							<includes>
+								<include>**/server/*</include>
+								<include>**/server/**</include>
+								<include>*.*</include>
+								<include>**/executor/*</include>
+								<include>**/executor/**</include>
+								<include>META-INF/*</include>
+							</includes>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Sources -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-install-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+						<configuration>
+							<finalName>${wira.shared.artifactId}-${project.version}</finalName>
+							<includes>
+								<include>**/shared/*.java</include>
+								<include>**/shared/**.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Install Wira GWT models.jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven-install-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>install-shared</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<packaging>jar</packaging>
+							<artifactId>${wira.shared.artifactId}</artifactId>
+							<groupId>${wira.shared.groupId}</groupId>
+							<version>${project.version}</version>
+							<file>
+								${project.build.directory}/${wira.shared.artifactId}-${project.version}.jar
+							</file>
+							<sources>
+								${project.build.directory}/${wira.shared.artifactId}-${project.version}-sources.jar
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-server</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<packaging>jar</packaging>
+							<artifactId>${wira.server.artifactId}</artifactId>
+							<groupId>${wira.server.groupId}</groupId>
+							<version>${project.version}</version>
+							<file>
+								${project.build.directory}/${wira.server.artifactId}-${project.version}.jar
+							</file>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
 			<!-- Plugin to generate Version information -->
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -160,6 +292,16 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
 			</plugin>
 
 			<!-- plugin> <artifactId>maven-clean-plugin</artifactId> <version>2.5</version> 
@@ -183,7 +325,7 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<!-- GWT-Platform -->
@@ -234,7 +376,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -245,13 +387,13 @@
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>2.7.7</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>3.3</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -272,11 +414,85 @@
 			<version>1.6.8</version>
 		</dependency>
 
+		<!-- JBPM5 - DROOLS DEPENDENCIES -->
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>knowledge-api</artifactId>
+			<version>5.5.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>5.5.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>5.5.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-persistence-jpa</artifactId>
+			<version>5.5.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-bam</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-bpmn2</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow-builder</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-human-task-core</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-persistence-jpa</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-workitems</artifactId>
+			<version>5.4.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mvel</groupId>
+			<artifactId>mvel2</artifactId>
+			<version>2.1.3.Final</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 			<version>2.1.3</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -289,7 +505,7 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -328,18 +544,15 @@
 			<version>2.2</version>
 		</dependency>
 
-		<!-- dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.4</version>
-		</dependency -->
-		
+		<!-- dependency> <groupId>commons-lang</groupId> <artifactId>commons-lang</artifactId> 
+			<version>2.4</version> </dependency -->
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -442,14 +655,14 @@
 			<groupId>org.ow2.util.bundles</groupId>
 			<artifactId>javassist-3.14.0-GA</artifactId>
 			<version>1.0.0</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.4.GA</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -523,7 +736,7 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -551,79 +764,6 @@
 		</dependency>
 
 
-		<!-- JBPM5 - DROOLS DEPENDENCIES -->
-
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>knowledge-api</artifactId>
-			<version>5.5.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-compiler</artifactId>
-			<version>5.5.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-core</artifactId>
-			<version>5.5.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-persistence-jpa</artifactId>
-			<version>5.5.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-bam</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-bpmn2</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-flow</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-flow-builder</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-human-task-core</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-persistence-jpa</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-workitems</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mvel</groupId>
-			<artifactId>mvel2</artifactId>
-			<version>2.1.3.Final</version>
-		</dependency>
 
 		<!-- Geronimo -->
 		<dependency>
@@ -642,14 +782,14 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_3.0_spec</artifactId>
 			<version>1.1.1</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jta_1.1_spec</artifactId>
 			<version>1.1.1</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 
@@ -726,63 +866,63 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>ejb3-persistence</artifactId>
 			<version>1.0.2.GA</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>3.3.2.GA</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>3.4.0.GA</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>3.1.0.GA</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.4.0.GA</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.2-1002-jdbc4</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver 
@@ -816,7 +956,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -830,7 +970,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
