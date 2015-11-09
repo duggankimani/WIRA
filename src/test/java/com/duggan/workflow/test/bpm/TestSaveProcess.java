@@ -11,14 +11,14 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.ProcessDef;
 
 public class TestSaveProcess {
 
 	@Before
 	public void setup() {
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	
@@ -81,6 +81,6 @@ public class TestSaveProcess {
 	@After
 	public void tearDown() {
 		DB.commitTransaction();
-		DBTrxProvider.close();
+		DBTrxProviderImpl.close();
 	}
 }

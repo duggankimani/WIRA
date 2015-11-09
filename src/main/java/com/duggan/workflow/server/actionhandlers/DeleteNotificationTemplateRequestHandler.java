@@ -7,7 +7,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DeleteNotificationTemplateRequestHandler extends
-		BaseActionHandler<DeleteNotificationTemplateRequest, BaseResponse> {
+		AbstractActionHandler<DeleteNotificationTemplateRequest, BaseResponse> {
 
 	@Override
 	public Class<DeleteNotificationTemplateRequest> getActionType() {

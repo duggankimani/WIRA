@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.model;
 
 
+
 public class ErrorInfoDto extends SerializableObj {
 
 	/**

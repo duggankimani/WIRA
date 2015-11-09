@@ -11,7 +11,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetDashBoardDataRequestHandler extends
-		BaseActionHandler<GetDashBoardDataRequest, GetDashBoardDataResponse> {
+		AbstractActionHandler<GetDashBoardDataRequest, GetDashBoardDataResponse> {
 
 	@Inject
 	public GetDashBoardDataRequestHandler() {

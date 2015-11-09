@@ -1,13 +1,11 @@
 package com.duggan.workflow.server.helper.email;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jbpm.executor.commands.SendMailCommand;
 
-import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
-import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.HTUser;

@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetItemActionHandler extends
-		BaseActionHandler<GetItemRequest, GetTaskNodesResponse> {
+		AbstractActionHandler<GetItemRequest, GetTaskNodesResponse> {
 
 	@Inject
 	public GetItemActionHandler() {

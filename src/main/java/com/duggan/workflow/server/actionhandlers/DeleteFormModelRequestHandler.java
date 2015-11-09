@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DeleteFormModelRequestHandler extends
-		BaseActionHandler<DeleteFormModelRequest, DeleteFormModelResponse> {
+		AbstractActionHandler<DeleteFormModelRequest, DeleteFormModelResponse> {
 
 	@Inject
 	public DeleteFormModelRequestHandler() {

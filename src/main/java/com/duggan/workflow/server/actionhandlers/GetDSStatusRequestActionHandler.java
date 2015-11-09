@@ -14,7 +14,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetDSStatusRequestActionHandler extends
-		BaseActionHandler<GetDSStatusRequest, GetDSStatusResponse> {
+		AbstractActionHandler<GetDSStatusRequest, GetDSStatusResponse> {
 
 	@Inject
 	public GetDSStatusRequestActionHandler() {

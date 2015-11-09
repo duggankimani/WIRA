@@ -7,14 +7,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 
 public class TestDocumentDaoImpl {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	

@@ -19,7 +19,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  *
  */
 public class MultiRequestActionHandler extends
-		BaseActionHandler<MultiRequestAction, MultiRequestActionResult> {
+		AbstractActionHandler<MultiRequestAction, MultiRequestActionResult> {
 
 	@Inject
 	public MultiRequestActionHandler() {

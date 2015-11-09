@@ -23,7 +23,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetFormModelRequestActionHandler extends
-		BaseActionHandler<GetFormModelRequest, GetFormModelResponse> {
+		AbstractActionHandler<GetFormModelRequest, GetFormModelResponse> {
 
 	@Inject
 	public GetFormModelRequestActionHandler() {

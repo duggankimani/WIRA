@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class CreateFieldRequestActionHandler extends
-		BaseActionHandler<CreateFieldRequest, CreateFieldResponse> {
+		AbstractActionHandler<CreateFieldRequest, CreateFieldResponse> {
 
 	@Inject
 	public CreateFieldRequestActionHandler() {

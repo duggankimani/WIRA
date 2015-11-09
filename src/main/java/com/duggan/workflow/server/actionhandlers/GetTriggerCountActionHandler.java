@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetTriggerCountActionHandler extends
-		BaseActionHandler<GetTriggerCountRequest, GetTriggerCountResponse> {
+		AbstractActionHandler<GetTriggerCountRequest, GetTriggerCountResponse> {
 
 	@Inject
 	public GetTriggerCountActionHandler() {

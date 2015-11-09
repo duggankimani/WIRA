@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 
@@ -19,7 +19,7 @@ public class TestSettingsDao {
 	
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	

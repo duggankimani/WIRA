@@ -2,7 +2,7 @@ package com.duggan.workflow.server.guice;
 
 import javax.servlet.ServletContextEvent;
 
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.google.inject.Guice;
@@ -21,7 +21,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		// TODO Auto-generated method stub
 		super.contextInitialized(servletContextEvent);
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		JBPMHelper.get();
 		
 //		try{		
@@ -42,7 +42,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		super.contextDestroyed(servletContextEvent);
 		
 		//JBPMHelper.destroy();
-		DBTrxProvider.close();
+		DBTrxProviderImpl.close();
 		try{
 			//close ldap connection
 			LoginHelper.get().close();

@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class LogoutActionHandler extends
-		BaseActionHandler<LogoutAction, LogoutActionResult> {
+		AbstractActionHandler<LogoutAction, LogoutActionResult> {
 
 	private final Provider<HttpServletRequest> httpRequest;
 	

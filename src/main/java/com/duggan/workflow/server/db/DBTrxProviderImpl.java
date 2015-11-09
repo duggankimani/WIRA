@@ -43,17 +43,17 @@ import bitronix.tm.resource.ResourceLoader;
  * @author duggan
  *
  */
-public class DBTrxProvider{
+public class DBTrxProviderImpl{
 
-	static DBTrxProvider provider;
+	static DBTrxProviderImpl provider;
 	
-	Log logger = LogFactory.getLog(DBTrxProvider.class);
+	Log logger = LogFactory.getLog(DBTrxProviderImpl.class);
 	
 	static Properties dbProperties = new Properties();
 	static Boolean isTomcatEnv = Boolean.TRUE;
-	static{
+	void loadProperties(){
 		try{
-			InputStream is = DBTrxProvider.class.getResourceAsStream("/db.properties");
+			InputStream is = DBTrxProviderImpl.class.getResourceAsStream("/db.properties");
 			dbProperties.load(is);
 			String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
 			if(path.contains("webapps") || path.toLowerCase().contains("tomcat")){
@@ -64,12 +64,11 @@ public class DBTrxProvider{
 		}catch(Exception e){e.printStackTrace();}
 	}
 	
-	private DBTrxProvider(){
-		
-//		Object userTrx = null;
-//		try{
-//			userTrx = DB.getUserTrx();
-//		}catch(Exception e){}
+	/**
+	 * Loads db values from db.properties
+	 */
+	private DBTrxProviderImpl(){
+		loadProperties();
 		
 		if(!isTomcatEnv){
 			logger.warn("No Global User Trx Found - Could you be running in development mode?");
@@ -85,12 +84,15 @@ public class DBTrxProvider{
 		
 	}
 	
+	/**
+	 * Initialize EMF
+	 */
 	public static void init(){
 		if(provider==null){
 			
-			synchronized(DBTrxProvider.class){
+			synchronized(DBTrxProviderImpl.class){
 				if(provider==null){
-					provider = new DBTrxProvider();
+					provider = new DBTrxProviderImpl();
 					DB.getEntityManagerFactory();//initialize emf
 				}
 			}
@@ -98,6 +100,9 @@ public class DBTrxProvider{
 		}
 	}
 
+	/**
+	 * Clean shutdown of Bitronix
+	 */
 	public static void close() {
 		if(!isTomcatEnv){
 			TransactionManagerServices.getTransactionManager().shutdown();

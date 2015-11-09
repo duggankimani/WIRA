@@ -10,7 +10,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetTaskNodesActionHandler extends BaseActionHandler<GetTaskNodesRequest, GetTaskNodesResponse> {
+public class GetTaskNodesActionHandler extends AbstractActionHandler<GetTaskNodesRequest, GetTaskNodesResponse> {
 	
 	Logger log = Logger.getLogger(GetTaskNodesActionHandler.class);
 	

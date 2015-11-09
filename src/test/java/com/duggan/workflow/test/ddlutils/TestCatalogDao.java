@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DoubleValue;
@@ -22,7 +22,7 @@ public class TestCatalogDao {
 
 	@Before
 	public void init(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	

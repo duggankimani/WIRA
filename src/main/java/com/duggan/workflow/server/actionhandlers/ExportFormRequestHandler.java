@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class ExportFormRequestHandler extends
-		BaseActionHandler<ExportFormRequest, ExportFormResponse> {
+		AbstractActionHandler<ExportFormRequest, ExportFormResponse> {
 
 	@Inject
 	public ExportFormRequestHandler() {

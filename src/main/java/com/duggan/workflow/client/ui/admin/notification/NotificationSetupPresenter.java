@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.notification;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.HTMLEditor;
 import com.duggan.workflow.client.ui.events.NotificationCategoryChangeEvent;
@@ -11,6 +10,7 @@ import com.duggan.workflow.client.ui.events.NotificationCategoryChangeEvent.Noti
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.TaskNotification;
 import com.duggan.workflow.shared.requests.DeleteNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.GetNotificationTemplateRequest;

@@ -1,6 +1,5 @@
-package com.duggan.workflow.client.ui.admin.processitem;
+package com.duggan.workflow.shared.model;
 
-import com.duggan.workflow.shared.model.Listable;
 
 public enum NotificationCategory implements Listable{
 	

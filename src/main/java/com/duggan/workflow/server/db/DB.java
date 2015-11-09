@@ -1,8 +1,6 @@
 package com.duggan.workflow.server.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -20,9 +18,8 @@ import org.jbpm.bpmn2.xml.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.duggan.workflow.server.actionhandlers.BaseActionHandler;
+import com.duggan.workflow.server.actionhandlers.AbstractActionHandler;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
-import com.duggan.workflow.server.dao.BaseDaoImpl;
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DSConfigDaoImpl;
@@ -58,7 +55,7 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
  * 
  * <p>
  * To mitigate the above error, a {@link UserTransaction} transaction will be started for every
- * request and committed at the end of the request -see {@link BaseActionHandler}  
+ * request and committed at the end of the request -see {@link AbstractActionHandler}  
  * 
  * @author duggan
  *

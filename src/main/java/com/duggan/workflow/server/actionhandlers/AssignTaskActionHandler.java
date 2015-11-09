@@ -8,7 +8,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class AssignTaskActionHandler extends
-		BaseActionHandler<AssignTaskRequest, BaseResponse> {
+		AbstractActionHandler<AssignTaskRequest, BaseResponse> {
 
 	@Inject
 	public AssignTaskActionHandler() {

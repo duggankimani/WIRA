@@ -16,7 +16,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  *
  */
 public class CreateDocumentActionHandler extends
-		BaseActionHandler<CreateDocumentRequest, CreateDocumentResult> {
+		AbstractActionHandler<CreateDocumentRequest, CreateDocumentResult> {
 
 	@Inject
 	public CreateDocumentActionHandler() {

@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 
 public class BTMTrxTest {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	
@@ -26,6 +26,6 @@ public class BTMTrxTest {
 	@After
 	public void destroy(){
 		DB.rollback();
-		DBTrxProvider.close();
+		DBTrxProviderImpl.close();
 	}
 }

@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class CreateFormRequestActionHandler extends
-		BaseActionHandler<CreateFormRequest, CreateFormResponse> {
+		AbstractActionHandler<CreateFormRequest, CreateFormResponse> {
 
 	@Inject
 	public CreateFormRequestActionHandler() {

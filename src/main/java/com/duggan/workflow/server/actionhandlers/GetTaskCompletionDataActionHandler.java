@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetTaskCompletionDataActionHandler extends
-		BaseActionHandler<GetTaskCompletionRequest, GetTaskCompletionResponse> {
+		AbstractActionHandler<GetTaskCompletionRequest, GetTaskCompletionResponse> {
 
 	@Inject
 	public GetTaskCompletionDataActionHandler() {

@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class SaveTriggerRequestHandler extends BaseActionHandler<SaveTriggerRequest, SaveTriggerResponse> {
+public class SaveTriggerRequestHandler extends AbstractActionHandler<SaveTriggerRequest, SaveTriggerResponse> {
 	
 	@Inject
 	public SaveTriggerRequestHandler() {

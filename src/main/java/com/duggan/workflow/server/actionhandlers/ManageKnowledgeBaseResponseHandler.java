@@ -13,7 +13,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class ManageKnowledgeBaseResponseHandler
 		extends
-		BaseActionHandler<ManageKnowledgeBaseRequest, ManageKnowledgeBaseResponse> {
+		AbstractActionHandler<ManageKnowledgeBaseRequest, ManageKnowledgeBaseResponse> {
 
 	@Inject
 	public ManageKnowledgeBaseResponseHandler() {

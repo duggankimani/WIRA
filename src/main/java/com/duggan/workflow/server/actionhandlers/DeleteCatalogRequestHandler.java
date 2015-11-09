@@ -11,7 +11,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DeleteCatalogRequestHandler extends
-		BaseActionHandler<DeleteCatalogRequest, BaseResponse> {
+		AbstractActionHandler<DeleteCatalogRequest, BaseResponse> {
 
 	@Inject
 	public DeleteCatalogRequestHandler() {

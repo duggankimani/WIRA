@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class InsertDataRequestHandler extends
-		BaseActionHandler<InsertDataRequest, BaseResponse> {
+		AbstractActionHandler<InsertDataRequest, BaseResponse> {
 
 	@Inject
 	public InsertDataRequestHandler() {

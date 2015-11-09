@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.shared.model.Document;
 
@@ -23,7 +23,7 @@ public class TestOutputDocs {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	

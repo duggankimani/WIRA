@@ -29,7 +29,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  * @param <A>
  * @param <B>
  */
-public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends BaseResponse>
+public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends BaseResponse>
 		implements ActionHandler<A, B> {
 
 	Logger log = Logger.getLogger(this.getClass());

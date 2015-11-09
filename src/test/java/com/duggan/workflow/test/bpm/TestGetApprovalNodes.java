@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
@@ -16,7 +16,7 @@ public class TestGetApprovalNodes {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		ProcessMigrationHelper.init();
 	}
 	
@@ -46,6 +46,6 @@ public class TestGetApprovalNodes {
 		try{
 			LoginHelper.get().close();
 		}catch(Exception e){}
-		DBTrxProvider.close();		
+		DBTrxProviderImpl.close();		
 	}
 }

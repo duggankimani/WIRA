@@ -25,7 +25,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class ExecuteWorkflowActionHandler extends
-		BaseActionHandler<ExecuteWorkflow, ExecuteWorkflowResult> {
+		AbstractActionHandler<ExecuteWorkflow, ExecuteWorkflowResult> {
 
 	@Inject
 	public ExecuteWorkflowActionHandler() {

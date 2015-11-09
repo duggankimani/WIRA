@@ -20,7 +20,7 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.StringValue;
@@ -31,7 +31,7 @@ public class TestMvel {
 
 	@Before
 	public void setup() {
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		// ProcessMigrationHelper.start(4L);
 	}

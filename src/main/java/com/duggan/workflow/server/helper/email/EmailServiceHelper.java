@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
@@ -326,7 +326,7 @@ public class EmailServiceHelper {
 	}
 
 	public static void main(String[] args) throws Exception {
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		sendEmail("Hello World", "Test", Arrays.asList(new HTUser("Test User", "mdkimani@gmail.com")),
 				new HTUser("Test User", "mdkimani@gmail.com"));

@@ -15,7 +15,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetMessagesActionHandler extends
-		BaseActionHandler<GetMessagesRequest, GetMessagesResponse> {
+		AbstractActionHandler<GetMessagesRequest, GetMessagesResponse> {
 
 	@Inject
 	public GetMessagesActionHandler() {

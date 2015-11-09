@@ -11,7 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
 import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
 import com.duggan.workflow.shared.model.HTUser;
@@ -23,7 +23,7 @@ public class TestDBLoginHelper {
 
 	@Before
 	public void setup() {
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		helper = new DBLoginHelper();
 	}

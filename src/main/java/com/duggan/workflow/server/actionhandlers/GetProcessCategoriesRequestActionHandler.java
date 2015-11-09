@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetProcessCategoriesRequestActionHandler extends
-		BaseActionHandler<GetProcessCategoriesRequest, GetProcessCategoriesResponse> {
+		AbstractActionHandler<GetProcessCategoriesRequest, GetProcessCategoriesResponse> {
 
 	@Inject
 	public GetProcessCategoriesRequestActionHandler() {

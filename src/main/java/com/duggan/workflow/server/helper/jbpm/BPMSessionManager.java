@@ -63,7 +63,6 @@ import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import xtension.workitems.WiseDigitsDocumentIntegration;
 import bitronix.tm.TransactionManagerServices;
 
-import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
@@ -74,6 +73,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.NotificationType;
 
 /**

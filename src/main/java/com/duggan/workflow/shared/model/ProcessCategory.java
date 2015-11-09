@@ -1,5 +1,6 @@
 package com.duggan.workflow.shared.model;
 
+
 public class ProcessCategory extends SerializableObj implements Listable{
 
 	private Long id;

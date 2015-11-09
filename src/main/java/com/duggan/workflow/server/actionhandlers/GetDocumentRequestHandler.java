@@ -16,7 +16,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  *
  */
 public class GetDocumentRequestHandler extends
-		BaseActionHandler<GetDocumentRequest, GetDocumentResult> {
+		AbstractActionHandler<GetDocumentRequest, GetDocumentResult> {
 
 	@Inject
 	public GetDocumentRequestHandler() {

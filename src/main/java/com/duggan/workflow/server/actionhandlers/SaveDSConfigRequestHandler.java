@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveDSConfigRequestHandler extends
-		BaseActionHandler<SaveDSConfigRequest, SaveDSConfigResponse> {
+		AbstractActionHandler<SaveDSConfigRequest, SaveDSConfigResponse> {
 
 	@Inject
 	public SaveDSConfigRequestHandler() {

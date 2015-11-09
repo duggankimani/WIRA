@@ -7,14 +7,14 @@ import org.junit.Test;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 public class TestGetProcessCounts {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	

@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DeleteDSConfigurationEventActionHandler
 		extends
-		BaseActionHandler<DeleteDSConfigurationEvent, BaseResponse> {
+		AbstractActionHandler<DeleteDSConfigurationEvent, BaseResponse> {
 
 	@Inject
 	public DeleteDSConfigurationEventActionHandler() {

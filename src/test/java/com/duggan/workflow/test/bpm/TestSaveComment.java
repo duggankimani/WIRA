@@ -12,7 +12,7 @@ import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
@@ -22,7 +22,7 @@ public class TestSaveComment {
 
 	@Before
 	public void setup() {
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		LoginHelper.get();
 		DB.beginTransaction();
 	}
@@ -59,6 +59,6 @@ public class TestSaveComment {
 			LoginHelper.get().close();
 		} catch (Exception e) {
 		}
-		DBTrxProvider.close();
+		DBTrxProviderImpl.close();
 	}
 }

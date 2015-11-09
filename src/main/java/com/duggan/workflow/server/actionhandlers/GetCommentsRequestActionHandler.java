@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetCommentsRequestActionHandler extends
-		BaseActionHandler<GetCommentsRequest, GetCommentsResponse> {
+		AbstractActionHandler<GetCommentsRequest, GetCommentsResponse> {
 
 	@Inject
 	public GetCommentsRequestActionHandler() {

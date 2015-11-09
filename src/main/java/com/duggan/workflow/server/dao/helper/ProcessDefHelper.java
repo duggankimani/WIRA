@@ -14,7 +14,6 @@ import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
 
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
@@ -37,6 +36,7 @@ import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Listable;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;

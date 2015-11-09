@@ -6,7 +6,7 @@ package org.jbpm.executor;
 
 import org.jbpm.executor.impl.ExecutorServiceEntryPointImpl;
 
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 
 
 /**
@@ -18,7 +18,7 @@ public class ExecutorModule {
     
     public static ExecutorModule getInstance(){
         if(instance == null){
-        	DBTrxProvider.init();
+        	DBTrxProviderImpl.init();
             instance = new ExecutorModule();
         }
         return instance;

@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DeleteDocumentRequestHandler extends
-		BaseActionHandler<DeleteDocumentRequest, DeleteDocumentResponse> {
+		AbstractActionHandler<DeleteDocumentRequest, DeleteDocumentResponse> {
 
 	@Inject
 	public DeleteDocumentRequestHandler() {

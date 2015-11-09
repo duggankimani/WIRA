@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class UpdatePasswordRequestActionHandler extends 
-		BaseActionHandler<UpdatePasswordRequest, UpdatePasswordResponse> {
+		AbstractActionHandler<UpdatePasswordRequest, UpdatePasswordResponse> {
 
 	@Inject
 	public UpdatePasswordRequestActionHandler() {

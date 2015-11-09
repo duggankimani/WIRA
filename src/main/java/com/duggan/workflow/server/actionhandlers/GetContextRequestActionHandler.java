@@ -20,7 +20,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetContextRequestActionHandler extends 
-		BaseActionHandler<GetContextRequest, GetContextRequestResult> {
+		AbstractActionHandler<GetContextRequest, GetContextRequestResult> {
 
 	private final Provider<HttpServletRequest> httpRequest;
 

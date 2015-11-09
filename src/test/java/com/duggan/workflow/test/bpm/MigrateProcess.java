@@ -5,14 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 
 public class MigrateProcess {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
 	
@@ -27,6 +27,6 @@ public class MigrateProcess {
 	public void tearDown(){
 		DB.commitTransaction();
 		DB.closeSession();
-		DBTrxProvider.close();		
+		DBTrxProviderImpl.close();		
 	}
 }

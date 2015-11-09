@@ -11,7 +11,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveCommentRequestActionHandler extends
-		BaseActionHandler<SaveCommentRequest, SaveCommentResponse> {
+		AbstractActionHandler<SaveCommentRequest, SaveCommentResponse> {
 
 	@Inject
 	public SaveCommentRequestActionHandler() {

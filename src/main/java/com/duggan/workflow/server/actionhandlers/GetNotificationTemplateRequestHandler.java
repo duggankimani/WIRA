@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetNotificationTemplateRequestHandler extends
-		BaseActionHandler<GetNotificationTemplateRequest, GetNotificationTemplateResult> {
+		AbstractActionHandler<GetNotificationTemplateRequest, GetNotificationTemplateResult> {
 
 	@Override
 	public Class<GetNotificationTemplateRequest> getActionType() {

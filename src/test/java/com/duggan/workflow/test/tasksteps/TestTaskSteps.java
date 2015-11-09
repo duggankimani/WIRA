@@ -14,7 +14,7 @@ import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.mvel.MVELExecutor;
 import com.duggan.workflow.server.sms.SMSIntegration;
 import com.duggan.workflow.shared.model.Document;
@@ -26,7 +26,7 @@ public class TestTaskSteps {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		dao = DB.getProcessDao();
 	}

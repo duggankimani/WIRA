@@ -19,7 +19,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  *
  */
 public class SendMessageActionHandler extends
-		BaseActionHandler<SendMessageRequest, SendMessageResponse> {
+		AbstractActionHandler<SendMessageRequest, SendMessageResponse> {
 
 	@Inject
 	public SendMessageActionHandler() {

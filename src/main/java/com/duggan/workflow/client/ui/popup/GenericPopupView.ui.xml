@@ -4,7 +4,8 @@
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
     >
     
-    <g:PopupPanel ui:field="popUpPanel" glassEnabled="true" styleName="modal modal-admin generic-popup" modal="true">
+    <g:PopupPanel ui:field="popUpPanel" glassEnabled="true" 
+    styleName="modal modal-admin generic-popup" modal="true">
         <g:HTMLPanel>
 	 		<g:HTMLPanel styleName="modal-header">
 				<h5><i class="icon-cogs"></i>

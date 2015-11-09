@@ -20,7 +20,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetActivitiesRequestHandler extends
-		BaseActionHandler<GetActivitiesRequest, GetActivitiesResponse> {
+		AbstractActionHandler<GetActivitiesRequest, GetActivitiesResponse> {
 
 	@Inject
 	public GetActivitiesRequestHandler() {

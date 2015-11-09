@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -37,7 +37,7 @@ public class TestEmail {
 	boolean isDBProcess = true;
 	
 	public void initDB(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 //		ProcessMigrationHelper.start(4L);
 //		ProcessMigrationHelper.start(17L);

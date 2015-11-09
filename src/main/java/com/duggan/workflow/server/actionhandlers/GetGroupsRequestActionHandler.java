@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetGroupsRequestActionHandler extends
-		BaseActionHandler<GetGroupsRequest, GetGroupsResponse> {
+		AbstractActionHandler<GetGroupsRequest, GetGroupsResponse> {
 
 	@Inject
 	public GetGroupsRequestActionHandler() {

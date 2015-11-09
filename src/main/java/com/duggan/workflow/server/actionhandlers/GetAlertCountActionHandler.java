@@ -11,7 +11,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetAlertCountActionHandler extends
-		BaseActionHandler<GetAlertCount, GetAlertCountResult> {
+		AbstractActionHandler<GetAlertCount, GetAlertCountResult> {
 
 	@Inject
 	public GetAlertCountActionHandler() {

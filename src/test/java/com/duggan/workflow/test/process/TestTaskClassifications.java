@@ -14,7 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 
@@ -22,7 +22,7 @@ public class TestTaskClassifications {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		ProcessMigrationHelper.start(1L);
 //		ProcessMigrationHelper.start(4L);

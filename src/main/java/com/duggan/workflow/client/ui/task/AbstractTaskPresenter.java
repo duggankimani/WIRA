@@ -117,6 +117,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	MODE mode = null;
 	
 	@Inject FilterPresenter filterPresenter;
+	
 	Timer timer = new Timer() {
 		
 		@Override

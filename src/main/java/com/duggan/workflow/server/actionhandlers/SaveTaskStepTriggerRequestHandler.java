@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveTaskStepTriggerRequestHandler 
-	extends BaseActionHandler<SaveTaskStepTriggerRequest, SaveTaskStepTriggerResponse> {
+	extends AbstractActionHandler<SaveTaskStepTriggerRequest, SaveTaskStepTriggerResponse> {
 	
 	@Inject
 	public SaveTaskStepTriggerRequestHandler() {

@@ -15,7 +15,7 @@ import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
@@ -26,7 +26,7 @@ public class TestFormBuilder {
 	
 	@Before
 	public void setup() {
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		dao = DB.getFormDao();
 	}
@@ -86,6 +86,6 @@ public class TestFormBuilder {
 	public void tearDown() {
 		//DB.rollback();
 		DB.commitTransaction();
-		DBTrxProvider.close();
+		DBTrxProviderImpl.close();
 	}
 }

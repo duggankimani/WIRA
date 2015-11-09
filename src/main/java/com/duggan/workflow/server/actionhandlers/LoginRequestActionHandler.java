@@ -17,7 +17,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class LoginRequestActionHandler extends
-		BaseActionHandler<LoginRequest, LoginRequestResult> {
+		AbstractActionHandler<LoginRequest, LoginRequestResult> {
 
 	private final Provider<HttpServletRequest> httpRequest;
 	

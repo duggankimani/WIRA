@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetLongTasksRequestActionHandler extends
-		BaseActionHandler<GetLongTasksRequest, GetLongTasksResponse> {
+		AbstractActionHandler<GetLongTasksRequest, GetLongTasksResponse> {
 
 	@Inject
 	public GetLongTasksRequestActionHandler() {

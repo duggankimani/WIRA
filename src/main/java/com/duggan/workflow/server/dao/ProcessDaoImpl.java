@@ -16,7 +16,6 @@ import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 
-import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
@@ -30,6 +29,7 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.HTStatus;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.model.TaskLog;

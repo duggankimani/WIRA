@@ -10,7 +10,7 @@ import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetOutputDocumentsRequestHandler extends BaseActionHandler<GetOutputDocumentsRequest, GetOutputDocumentsResponse>{
+public class GetOutputDocumentsRequestHandler extends AbstractActionHandler<GetOutputDocumentsRequest, GetOutputDocumentsResponse>{
 
 	@Override
 	public void execute(GetOutputDocumentsRequest action,

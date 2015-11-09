@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetSettingsRequestActionHandler extends
-		BaseActionHandler<GetSettingsRequest, GetSettingsResponse> {
+		AbstractActionHandler<GetSettingsRequest, GetSettingsResponse> {
 
 	@Inject
 	public GetSettingsRequestActionHandler() {

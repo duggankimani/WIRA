@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetTriggersRequestHandler extends BaseActionHandler<GetTriggersRequest, GetTriggersResponse>{
+public class GetTriggersRequestHandler extends AbstractActionHandler<GetTriggersRequest, GetTriggersResponse>{
 
 	@Inject
 	public GetTriggersRequestHandler() {

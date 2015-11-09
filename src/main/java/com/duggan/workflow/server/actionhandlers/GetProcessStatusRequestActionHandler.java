@@ -11,7 +11,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetProcessStatusRequestActionHandler extends
-		BaseActionHandler<GetProcessStatusRequest, GetProcessStatusRequestResult> {
+		AbstractActionHandler<GetProcessStatusRequest, GetProcessStatusRequestResult> {
 
 	static Logger logger = Logger.getLogger(GetProcessStatusRequestActionHandler.class);
 	

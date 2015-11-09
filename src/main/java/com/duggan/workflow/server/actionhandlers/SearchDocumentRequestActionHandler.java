@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SearchDocumentRequestActionHandler extends
-		BaseActionHandler<SearchDocumentRequest, SearchDocumentRequestResult> {
+		AbstractActionHandler<SearchDocumentRequest, SearchDocumentRequestResult> {
 
 	@Inject
 	public SearchDocumentRequestActionHandler() {

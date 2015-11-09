@@ -11,14 +11,14 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
 
 public class TestUserGroupCallback {
 
 	@Before
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		//LoginHelper.get();
 		DB.beginTransaction();
 	}

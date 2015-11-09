@@ -14,7 +14,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class ApprovalRequestActionHandler extends
-		BaseActionHandler<ApprovalRequest, ApprovalRequestResult> {
+		AbstractActionHandler<ApprovalRequest, ApprovalRequestResult> {
 
 	@Inject
 	public ApprovalRequestActionHandler() {

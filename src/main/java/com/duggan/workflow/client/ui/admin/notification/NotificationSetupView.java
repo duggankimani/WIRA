@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.StringListable;
 import com.duggan.workflow.shared.model.TaskNotification;
 import com.google.gwt.dom.client.Element;

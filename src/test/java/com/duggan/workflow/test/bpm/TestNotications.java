@@ -17,7 +17,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
@@ -31,7 +31,7 @@ public class TestNotications {
 
 	@Ignore
 	public void setup(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		LoginHelper.get();
 	}
 	
@@ -207,6 +207,6 @@ public class TestNotications {
 		try{
 			LoginHelper.get().close();
 		}catch(Exception e){}
-		DBTrxProvider.close();		
+		DBTrxProviderImpl.close();		
 	}
 }

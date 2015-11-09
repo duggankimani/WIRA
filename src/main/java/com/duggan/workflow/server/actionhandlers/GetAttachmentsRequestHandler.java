@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetAttachmentsRequestHandler extends
-		BaseActionHandler<GetAttachmentsRequest, GetAttachmentsResponse> {
+		AbstractActionHandler<GetAttachmentsRequest, GetAttachmentsResponse> {
 
 	@Inject
 	public GetAttachmentsRequestHandler() {

@@ -22,7 +22,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  *
  */
 public class GetInitialDocumentRequestHandler extends
-		BaseActionHandler<GetInitialDocumentRequest, GetInitialDocumentResponse> {
+		AbstractActionHandler<GetInitialDocumentRequest, GetInitialDocumentResponse> {
 
 	@Inject
 	public GetInitialDocumentRequestHandler() {

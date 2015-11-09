@@ -13,6 +13,7 @@ import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.MODE;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.google.gwt.dom.client.Element;

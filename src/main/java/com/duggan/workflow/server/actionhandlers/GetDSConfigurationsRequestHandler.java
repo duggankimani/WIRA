@@ -15,7 +15,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetDSConfigurationsRequestHandler
 		extends
-		BaseActionHandler<GetDSConfigurationsRequest, GetDSConfigurationsResponse> {
+		AbstractActionHandler<GetDSConfigurationsRequest, GetDSConfigurationsResponse> {
 
 	@Inject
 	public GetDSConfigurationsRequestHandler() {

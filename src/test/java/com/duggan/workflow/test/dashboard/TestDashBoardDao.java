@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.dao.DashboardDaoImpl;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProvider;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.DocStatus;
 
 public class TestDashBoardDao {
@@ -16,7 +16,7 @@ public class TestDashBoardDao {
 	
 	@Before
 	public void init(){
-		DBTrxProvider.init();
+		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 		dao = DB.getDashboardDao();
 	}

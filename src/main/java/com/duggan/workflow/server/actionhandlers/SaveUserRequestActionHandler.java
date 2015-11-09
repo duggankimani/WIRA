@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class SaveUserRequestActionHandler extends
-		BaseActionHandler<SaveUserRequest, SaveUserResponse> {
+		AbstractActionHandler<SaveUserRequest, SaveUserResponse> {
 
 	@Inject
 	public SaveUserRequestActionHandler() {

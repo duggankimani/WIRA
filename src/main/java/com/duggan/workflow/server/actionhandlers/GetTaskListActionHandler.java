@@ -25,7 +25,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  * 
  */
 public class GetTaskListActionHandler extends
-		BaseActionHandler<GetTaskList, GetTaskListResult> {
+		AbstractActionHandler<GetTaskList, GetTaskListResult> {
 
 	@Inject
 	public GetTaskListActionHandler() {

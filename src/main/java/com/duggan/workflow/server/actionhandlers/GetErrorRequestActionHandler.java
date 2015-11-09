@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class GetErrorRequestActionHandler extends
-		BaseActionHandler<GetErrorRequest, GetErrorRequestResult> {
+		AbstractActionHandler<GetErrorRequest, GetErrorRequestResult> {
 
 	@Inject
 	public GetErrorRequestActionHandler() {

@@ -20,6 +20,7 @@ import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent.SaveTaskStepHandler;
 import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.MODE;
+import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.TaskNode;

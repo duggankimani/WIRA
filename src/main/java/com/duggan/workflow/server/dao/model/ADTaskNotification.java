@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,8 +17,8 @@ import javax.persistence.JoinTable;
 
 import org.hibernate.annotations.CollectionOfElements;
 
-import com.duggan.workflow.client.ui.admin.processitem.NotificationCategory;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.NotificationCategory;
 
 @Entity
 public class ADTaskNotification extends PO{
@@ -43,7 +44,8 @@ public class ADTaskNotification extends PO{
 	private Actions action;
 	private boolean useDefaultNotification;
 	
-	@CollectionOfElements(targetElement=String.class)
+	//@CollectionOfElements(targetElement=String.class)
+	@ElementCollection
 	@JoinTable(name = "notification_targets",
      joinColumns = @JoinColumn(name = "notificationid"))
 	@Column(name = "receipient", nullable = false)

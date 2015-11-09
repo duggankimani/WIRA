@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class CheckPasswordRequestActionHandler extends
-		BaseActionHandler<CheckPasswordRequest, CheckPasswordRequestResult> {
+		AbstractActionHandler<CheckPasswordRequest, CheckPasswordRequestResult> {
 
 	@Inject
 	public CheckPasswordRequestActionHandler() {

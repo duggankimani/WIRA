@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class SaveOuputDocumentRequestHandler extends BaseActionHandler<SaveOutputDocumentRequest, SaveOutputDocumentResponse> {
+public class SaveOuputDocumentRequestHandler extends AbstractActionHandler<SaveOutputDocumentRequest, SaveOutputDocumentResponse> {
 	
 	@Inject
 	public SaveOuputDocumentRequestHandler() {

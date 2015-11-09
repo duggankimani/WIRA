@@ -30,7 +30,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  *
  */
 public class ExecuteTriggersActionHandler extends
-		BaseActionHandler<ExecuteTriggersRequest, ExecuteTriggersResponse> {
+		AbstractActionHandler<ExecuteTriggersRequest, ExecuteTriggersResponse> {
 
 	@Inject
 	public ExecuteTriggersActionHandler() {
