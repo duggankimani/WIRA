@@ -15,7 +15,7 @@ public class LoginGateKeeper implements Gatekeeper {
 	@Override
 	public boolean canReveal() {
 		
-		return AppContext.isValid();
+		return AppContext.isLoggedIn();
 	}
 
 }

@@ -75,13 +75,13 @@
 				<directory>src/main/java</directory>
 				<!-- Duggan 4/11/2015 Commented below to enable packaging wira-models 
 					that need both .class & .java - gwt -->
-				<includes>
+				<!-- includes>
 					<include>**/*.java</include>
 					<include>**/*.xml</include>
 					<include>**/*.properties</include>
 					<include>**/*.index</include>
-				</includes>
-				<!-- excludes> <exclude>**/*.java</exclude> </excludes -->
+				</includes -->
+				<excludes> <exclude>**/*.java</exclude> </excludes>
 			</resource>
 		</resources>
 
@@ -146,7 +146,6 @@
 					<copyWebapp>true</copyWebapp>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
-
 					<runTarget>GWTHT.html</runTarget>
 					<modules>
 						<module>com.duggan.workflow.GWTHT</module>

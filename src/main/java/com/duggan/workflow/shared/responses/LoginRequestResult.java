@@ -1,43 +1,69 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.ActionType;
+import com.duggan.workflow.shared.model.CurrentUserDto;
+import com.duggan.workflow.shared.model.Version;
+import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 
 public class LoginRequestResult extends BaseResponse {
 
-	private Boolean isValid=false;
-	private HTUser user;
-	private String sessionId;
+	private ActionType actionType;
+	private CurrentUserDto currentUserDto;
+	private String loggedInCookie;
+	private REPORTVIEWIMPL reportView;
+	private String organizationName;
+	private Version version;
 
 	@SuppressWarnings("unused")
 	public LoginRequestResult() {
 		// For serialization only
 	}
 
-	public LoginRequestResult(Boolean isValid) {
-		this.isValid = isValid;
+	public void setValues(ActionType actionType, CurrentUserDto currentUserDto,
+			String loggedInCookie) {
+				this.actionType = actionType;
+				this.currentUserDto = currentUserDto;
+				this.loggedInCookie = loggedInCookie;
+		
 	}
 
-	public Boolean isValid() {
-		return isValid;
-	}
-	
-	public void setValid(Boolean isValid){
-		this.isValid = isValid;
+	public ActionType getActionType() {
+		return actionType;
 	}
 
-	public HTUser getUser() {
-		return user;
+	public CurrentUserDto getCurrentUserDto() {
+		return currentUserDto;
 	}
 
-	public void setUser(HTUser user) {
-		this.user = user;
+	public String getLoggedInCookie() {
+		return loggedInCookie;
 	}
 
-	public String getSessionId() {
-		return sessionId;
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+
+	public void setReportViewImpl(REPORTVIEWIMPL reportView) {
+		this.reportView = reportView;
+	}
+
+	public REPORTVIEWIMPL getReportView() {
+		return reportView;
+	}
+
+	public void setReportView(REPORTVIEWIMPL reportView) {
+		this.reportView = reportView;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public Version getVersion() {
+		return version;
 	}
 }

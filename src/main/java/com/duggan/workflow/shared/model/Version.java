@@ -48,4 +48,10 @@ public class Version implements Serializable {
 	public String getDate() {
 		return date;
 	}
+
+	public void from(Version version) {
+		setCreated(version.getCreated());
+		setDate(version.getDate());
+		setVersion(version.getVersion());
+	}
 }
