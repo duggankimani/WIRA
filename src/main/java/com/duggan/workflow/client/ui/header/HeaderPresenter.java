@@ -238,6 +238,11 @@ public class HeaderPresenter extends
 
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
+		HTUser user = currentUser.getUser();
+		getView().setImage(user);
+		getView().showAdminLink(user.isAdmin());
+		getView().setValues(user.getSurname(), user.getGroupsAsString(),
+				AppContext.getOrganizationName());
 		loadAlertCount();
 	}
 
