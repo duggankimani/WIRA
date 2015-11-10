@@ -6,14 +6,14 @@
 	<groupId>com.duggan.workflow</groupId>
 	<artifactId>wira</artifactId>
 	<version>0.9</version>
-	<packaging>pom</packaging>
+	<packaging>war</packaging>
 	<name>wira</name>
 	<description>Enterprise Task List</description>
 
 	<properties>
 		<!-- client -->
-		<gwt.version>2.5.1</gwt.version>
-		<gwtp.version>1.2.1</gwtp.version>
+		<gwt.version>2.7.0</gwt.version>
+		<gwtp.version>1.5.1</gwtp.version>
 		<gin.version>2.1.2</gin.version>
 
 		<!-- server -->
@@ -35,7 +35,8 @@
 
 
 		<!-- maven -->
-		<gwt-maven-plugin.version>2.5.1</gwt-maven-plugin.version>
+		<!-- gwt-maven-plugin.version>2.5.1</gwt-maven-plugin.version -->
+		<gwt-maven-plugin.version>2.7</gwt-maven-plugin.version>
 		<maven-surefire-plugin.version>2.6</maven-surefire-plugin.version>
 		<maven-jar-plugin.version>2.6</maven-jar-plugin.version>
 		<maven-install-plugin.version>2.4</maven-install-plugin.version>
@@ -303,29 +304,16 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
-
-			<!-- plugin> <artifactId>maven-clean-plugin</artifactId> <version>2.5</version> 
-				<configuration> <filesets> <fileset> <directory>src/main/webapp/WEB-INF/classes</directory> 
-				<includes> <include>**/*</include> </includes> <followSymlinks>false</followSymlinks> 
-				</fileset> </filesets> </configuration> </plugin -->
 		</plugins>
 
 	</build>
 
 	<dependencies>
 
-		<!-- dependency> <groupId>org.eclipse.tycho</groupId> <artifactId>org.eclipse.jdt.core</artifactId> 
-			<version>3.8.1.v20120531-0637</version> </dependency -->
-
-		<!-- dependency> <groupId>org.eclipse.jdt.core.compiler</groupId> <artifactId>ecj</artifactId> 
-			<version>3.5.1</version> </dependency -->
-
-		<!-- Google Web Toolkit -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
+			<artifactId>gwt-servlet</artifactId>
 			<version>${gwt.version}</version>
-			<!--scope>provided</scope -->
 		</dependency>
 
 		<!-- GWT-Platform -->
@@ -797,20 +785,13 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava-gwt</artifactId>
-			<version>17.0</version>
+			<version>18.0</version>
 		</dependency>
-
-		<!-- dependency> <groupId>com.google.gwt.inject</groupId> <artifactId>gin</artifactId> 
-			<version>2.1.2</version> </dependency> <dependency> <groupId>com.google.inject</groupId> 
-			<artifactId>guice</artifactId> <version>3.0</version> </dependency> <dependency> 
-			<groupId>com.google.inject.extensions</groupId> <artifactId>guice-assistedinject</artifactId> 
-			<version>3.0</version> </dependency> <dependency> <groupId>com.google.inject.extensions</groupId> 
-			<artifactId>guice-servlet</artifactId> <version>3.0</version> </dependency -->
 
 		<dependency>
 			<groupId>com.allen-sauer.gwt.dnd</groupId>
 			<artifactId>gwt-dnd</artifactId>
-			<version>3.2.3</version>
+			<version>3.3.4</version>
 		</dependency>
 
 		<dependency>
@@ -826,40 +807,29 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>2.5.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gwtplatform</groupId>
-			<artifactId>gwtp-all</artifactId>
-			<version>1.2.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gwtplatform</groupId>
-			<artifactId>gwtp-clients-common</artifactId>
-			<version>1.2.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.sencha.gxt</groupId>
 			<artifactId>gxt</artifactId>
-			<version>3.0.1</version>
+			<version>3.1.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sencha.gxt</groupId>
 			<artifactId>gxt-chart</artifactId>
-			<version>3.0.1</version>
+			<version>3.1.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sencha.gxt</groupId>
 			<artifactId>gxt-legacy</artifactId>
-			<version>3.0.1</version>
+			<version>3.1.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.sencha.gxt</groupId>
+			<artifactId>uibinder-bridge</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
 
 		<!--JTA/ HIBERNATE PERSISTENCE -->
 		<dependency>
@@ -1109,12 +1079,6 @@
 			<groupId>org.antlr</groupId>
 			<artifactId>stringtemplate</artifactId>
 			<version>3.2.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sencha.gxt</groupId>
-			<artifactId>uibinder-bridge</artifactId>
-			<version>2.4.0</version>
 		</dependency>
 
 		<dependency>

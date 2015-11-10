@@ -44,7 +44,7 @@ public class ADTaskNotification extends PO{
 	private Actions action;
 	private boolean useDefaultNotification;
 	
-	//@CollectionOfElements(targetElement=String.class)
+	@CollectionOfElements(targetElement=String.class)
 	@ElementCollection
 	@JoinTable(name = "notification_targets",
      joinColumns = @JoinColumn(name = "notificationid"))

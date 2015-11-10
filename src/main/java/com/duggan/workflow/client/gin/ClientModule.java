@@ -1,7 +1,5 @@
 package com.duggan.workflow.client.gin;
 
-import com.duggan.workflow.client.place.ClientPlaceManager;
-import com.duggan.workflow.client.place.DefaultPlace;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
@@ -35,6 +33,15 @@ import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderView;
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelView;
+import com.duggan.workflow.client.ui.admin.msgs.MessagesPresenter;
+import com.duggan.workflow.client.ui.admin.msgs.MessagesView;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter.INotificationSetupView;
+import com.duggan.workflow.client.ui.admin.notification.NotificationSetupView;
+import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
+import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
+import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
+import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsView;
 import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessView;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
@@ -127,33 +134,33 @@ import com.duggan.workflow.client.ui.user.UserSelectionPresenter;
 import com.duggan.workflow.client.ui.user.UserSelectionView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
+import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
+import com.gwtplatform.mvp.client.annotations.DefaultPlace;
+import com.gwtplatform.mvp.client.annotations.ErrorPlace;
+import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
-import com.duggan.workflow.client.ui.admin.msgs.MessagesPresenter;
-import com.duggan.workflow.client.ui.admin.msgs.MessagesView;
-import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
-import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter.INotificationSetupView;
-import com.duggan.workflow.client.ui.admin.notification.NotificationSetupView;
-import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
-import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
-import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
-import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsView;
 
 public class ClientModule extends AbstractPresenterModule {
 
 	@Override
 	protected void configure() {
 		
-		install(new DefaultModule(ClientPlaceManager.class));
+		install(new RpcDispatchAsyncModule.Builder().build());
+
+		//install(new DefaultModule(ClientPlaceManager.class));
+		install(new DefaultModule.Builder().build());
 		
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
+		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);
+		bindConstant().annotatedWith(UnauthorizedPlace.class).to(
+				NameTokens.login);
 		
 		bindConstant().annotatedWith(SecurityCookie.class).to(Definitions.AUTHENTICATIONCOOKIE);
 		
 		requestStaticInjection(AppContext.class);
 		requestStaticInjection(AppManager.class);
-
 
 		bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class,
 				MainPageView.class, MainPagePresenter.MyProxy.class);
