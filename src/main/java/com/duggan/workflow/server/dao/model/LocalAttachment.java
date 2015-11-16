@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.dao.model;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,10 +17,9 @@ import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
-
 @Entity
-@Table(name="localattachment")
-public class LocalAttachment extends PO{
+@Table(name = "localattachment")
+public class LocalAttachment extends PO {
 
 	/**
 	 * 
@@ -26,57 +27,60 @@ public class LocalAttachment extends PO{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
-	
+
 	private long size;
-	
+
 	private String contentType;
-	
+
 	@Enumerated(EnumType.STRING)
 	private SETTINGNAME settingName;
 
 	@Lob
+	@Basic(fetch = FetchType.LAZY, optional = false)
 	private byte[] attachment;
-	
+
 	private boolean archived;
-	
-	//This is meant for output documents - eg Requisitions/HR/REQ-IPA-009-14.pdf
-	//This will be used to dynamically generate the document tree in the front end
+
+	// This is meant for output documents - eg
+	// Requisitions/HR/REQ-IPA-009-14.pdf
+	// This will be used to dynamically generate the document tree in the front
+	// end
 	private String path;
 
-	//UserId=Username
+	// UserId=Username
 	private String imageUserId;
-	
+
 	@ManyToOne
-	@JoinColumn(name="documentId",referencedColumnName="id")
+	@JoinColumn(name = "documentId", referencedColumnName = "id")
 	private DocumentModel document;
-	
-	//Form Field Name; against which this file was uploaded
+
+	// Form Field Name; against which this file was uploaded
 	private String fieldName;
-	
+
 	@ManyToOne
-	@JoinColumn(name="processDefId", referencedColumnName="id")
+	@JoinColumn(name = "processDefId", referencedColumnName = "id")
 	private ProcessDefModel processDef;
-	
+
 	@ManyToOne
-	@JoinColumn(name="processDefIdImage", referencedColumnName="id")
+	@JoinColumn(name = "processDefIdImage", referencedColumnName = "id")
 	private ProcessDefModel processDefImage;
-	
-	@OneToOne(fetch=FetchType.LAZY)
+
+	@OneToOne(fetch = FetchType.LAZY)
 	private ADOutputDoc outputDoc;
 
-	public LocalAttachment(){
+	public LocalAttachment() {
 		super();
 	}
-	
-	public LocalAttachment(Long id,String name, byte[] attachment){
+
+	public LocalAttachment(Long id, String name, byte[] attachment) {
 		this();
-		this.name=name;
-		this.attachment=attachment;
-		this.id=id;
+		this.name = name;
+		this.attachment = attachment;
+		this.id = id;
 	}
 
 	public Long getId() {

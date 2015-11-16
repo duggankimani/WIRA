@@ -1,52 +1,53 @@
 package com.duggan.workflow.server.guice;
 
-import javax.servlet.ServletContextEvent;
+import org.apache.onami.persist.PersistenceFilter;
 
-import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
+import com.google.inject.servlet.ServletModule;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice
-				.createInjector(new ServerModule(), new DispatchServletModule());
-	}
+		return Guice.createInjector(new ServerModule(), new DatabaseModule(),trxMgtModule,
+				new DispatchServletModule());
+	}	
+
+	/**
+	 *  Enable Transaction Management through this filter
+	 */
+	ServletModule trxMgtModule = new ServletModule() {
+		@Override
+		protected void configureServlets() {
+			filter("/*").through(PersistenceFilter.class);
+		}
+	};
 	
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		// TODO Auto-generated method stub
-		super.contextInitialized(servletContextEvent);
-		DBTrxProviderImpl.init();
-		JBPMHelper.get();
-		
-//		try{		
-//			DB.beginTransaction();
-//			ProcessMigrationHelper.init();
-//			DB.commitTransaction();			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			DB.closeSession();
+	
+	
+	
+	
+	
+
+	//Previous Mechanism 11/11/2015 - Installing new Initialization mechanism as Guice Modules
+	
+//	@Override
+//	public void contextInitialized(ServletContextEvent servletContextEvent) {
+//		super.contextInitialized(servletContextEvent);
+//		DBTrxProviderImpl.init();
+//		JBPMHelper.get();
+//	}
+//
+//	@Override
+//	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+//		super.contextDestroyed(servletContextEvent);
+//		DBTrxProviderImpl.close();
+//		try {
+//			LoginHelper.get().close();
+//		} catch (Exception e) {
 //		}
-		
-	}
-	
-	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		// TODO Auto-generated method stub
-		super.contextDestroyed(servletContextEvent);
-		
-		//JBPMHelper.destroy();
-		DBTrxProviderImpl.close();
-		try{
-			//close ldap connection
-			LoginHelper.get().close();
-		}catch(Exception e){}
-		
-	}
+//
+//	}
 }

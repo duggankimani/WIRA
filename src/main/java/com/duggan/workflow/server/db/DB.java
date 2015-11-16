@@ -5,9 +5,11 @@ import java.sql.Connection;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import org.apache.onami.persist.EntityManagerProvider;
 import org.drools.runtime.Environment;
 import org.hibernate.HibernateException;
 import org.jbpm.bpmn2.xml.TaskHandler;
@@ -28,7 +30,11 @@ import com.duggan.workflow.server.dao.OutputDocumentDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
+import com.duggan.workflow.server.guice.UserTransactionProvider;
+import com.duggan.workflow.server.guice.WiraPU;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 /**
  * <p>
@@ -59,6 +65,7 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
  * @author duggan
  *
  */
+// Statically Injected
 public class DB {
 
 	private static Logger log = LoggerFactory.getLogger(DB.class);
@@ -67,33 +74,22 @@ public class DB {
 
 	private static ThreadLocal<JDBCConnection> jdbcConnectionBot = new ThreadLocal<>();
 
-	private static DBImpl impl = null;
-	
+	@WiraPU
+	@Inject
+	private static EntityManagerProvider emProvider;
+
+	@WiraPU
+	@Inject
+	private static Provider<EntityManagerFactory> emfProvider;
+
+	@Inject
+	static UserTransactionProvider userTransactionProvider;
 
 	private DB() {
 	}
-	
-	public static DBImpl getImpl(){
-		if(impl==null){
-			String className= ApplicationSettings.getInstance().getProperty("db.impl.class");
-			if(className!=null){
-				try {
-					Class<?> implClass = Class.forName(className);
-					impl = (DBImpl)implClass.newInstance();
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
-					return null;
-				}
-			}else{
-				impl = new DBImpl();
-			}
-			
-		}
-		return impl;
-	}
 
 	public static EntityManager getEntityManager() {
-		return getImpl().getEntityManager();
+		return emProvider.get();
 	}
 
 	/**
@@ -102,7 +98,7 @@ public class DB {
 	 * @return
 	 */
 	public static EntityManagerFactory getEntityManagerFactory() {
-		return getImpl().getEntityManagerFactory();
+		return emfProvider.get();
 	}
 
 	public static void closeSession() {
@@ -113,23 +109,9 @@ public class DB {
 			e.printStackTrace();
 		}
 
-		try {
-			if (!getImpl().isEntityManagerAvailable()) {
-				return;
-			}
-		} catch (Exception e) {
+		clearSession();
 
-			try {
-				rollback();
-			} catch (Exception ex) {
-			}
-
-			throw new RuntimeException(e);
-		} finally {
-			clearSession();
-
-			closeFactory();
-		}
+		closeFactory();
 
 	}
 
@@ -139,7 +121,6 @@ public class DB {
 	 * @throws HibernateException
 	 */
 	public static void clearSession() {
-		getImpl().clearSession();
 	}
 
 	/**
@@ -149,7 +130,12 @@ public class DB {
 	 * This is called whenever a new entity manager is requested
 	 */
 	public static void beginTransaction() {
-		getImpl().beginTransaction();
+		try {
+			//getUserTrx().begin();
+		} catch (Exception e) {
+
+		}
+		// getImpl().beginTransaction();
 	}
 
 	/**
@@ -158,18 +144,47 @@ public class DB {
 	 * A transaction is always generated whenever an entity manager is requested
 	 */
 	public static void commitTransaction() {
-		getImpl().commitTransaction();
+		try {
+			// if(entityManagers.get()!=null)
+
+			int status = DB.getUserTrx().getStatus();
+			/*
+			 * STATUS_ACTIVE 0 STATUS_COMMITTED 3 STATUS_COMMITTING 8
+			 * STATUS_MARKED_ROLLBACK 1 STATUS_NO_TRANSACTION 6 STATUS_PREPARED
+			 * 2 STATUS_PREPARING 7 STATUS_ROLLEDBACK 4 STATUS_ROLLING_BACK 9
+			 * STATUS_UNKNOWN 5
+			 */
+
+			// JBPM engine marks transactions for rollback everytime
+			// something goes wrong - it does'nt necessarily throw an exception
+			if (status == 1 || status == 4 || status == 9) {
+				log.warn("Rolling Back Trx with status "+status);
+				//getUserTrx().rollback();
+			} else {
+				log.debug("Commiting Back Trx with status "+status);
+				//getUserTrx().commit();
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		// getImpl().
 	}
 
 	/**
 	 * Rollback a {@link UserTransaction}
 	 */
 	public static void rollback() {
-		getImpl().rollback();
+		try {
+			//getUserTrx().rollback();
+		} catch (Exception e) {
+
+		}
 	}
 
 	public static UserTransaction getUserTrx() throws NamingException {
-		return getImpl().getUserTrx();
+		return userTransactionProvider.get();
 	}
 
 	private static DaoFactory factory() {
@@ -223,7 +238,21 @@ public class DB {
 
 	public static boolean hasActiveTrx() throws SystemException,
 			NamingException {
-		return getImpl().hasActiveTrx();
+		int status = getUserTrx().getStatus();
+
+		boolean active = false;
+
+		switch (status) {
+		case Status.STATUS_NO_TRANSACTION:
+			active = false;
+			break;
+
+		default:
+			active = true;
+			break;
+		}
+
+		return active;
 	}
 
 	public static AttachmentDaoImpl getAttachmentDao() {
@@ -275,5 +304,13 @@ public class DB {
 
 	public static CatalogDaoImpl getCatalogDao() {
 		return factory().getCatalogDaoImp(getEntityManager());
+	}
+
+	public static String getTrxStatus() {
+		try{
+			return getUserTrx().getStatus()+"";
+		}catch(Exception e){}
+		
+		return null;
 	}
 }

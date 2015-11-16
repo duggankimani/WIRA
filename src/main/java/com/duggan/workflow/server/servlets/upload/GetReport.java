@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.onami.persist.Transactional;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
@@ -27,12 +28,17 @@ import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
+import com.duggan.workflow.server.guice.UserTransactionProvider;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.itextpdf.text.DocumentException;
 
+@Singleton
+@Transactional
 public class GetReport extends HttpServlet {
 
 	/**
@@ -41,12 +47,15 @@ public class GetReport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static Logger log = Logger.getLogger(GetReport.class);
+	
+	@Inject UserTransactionProvider userTrx;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		try {
+			log.warn(getClass()+" on entru Trx with status "+userTrx.get().getStatus());
 			// check session
 			//check session
 			SessionHelper.setHttpRequest(req);
@@ -54,7 +63,7 @@ public class GetReport extends HttpServlet {
 			DB.beginTransaction();
 
 			executeGet(req, resp);
-
+			log.warn(getClass()+" on after execute Trx with status "+userTrx.get().getStatus());
 			DB.commitTransaction();
 		} catch (Exception e) {
 			DB.rollback();

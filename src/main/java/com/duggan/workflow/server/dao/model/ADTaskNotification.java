@@ -15,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
-import org.hibernate.annotations.CollectionOfElements;
+//import org.hibernate.annotations.CollectionOfElements;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.NotificationCategory;
@@ -44,7 +44,7 @@ public class ADTaskNotification extends PO{
 	private Actions action;
 	private boolean useDefaultNotification;
 	
-	@CollectionOfElements(targetElement=String.class)
+	//@CollectionOfElements(targetElement=String.class)
 	@ElementCollection
 	@JoinTable(name = "notification_targets",
      joinColumns = @JoinColumn(name = "notificationid"))

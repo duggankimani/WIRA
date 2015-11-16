@@ -12,11 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.onami.persist.Transactional;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.google.inject.Singleton;
 
+@Singleton
+@Transactional
 public class UploadServlet extends UploadAction {
 
 	/**

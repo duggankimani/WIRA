@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.guice.UserTransactionProvider;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -35,13 +36,17 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 	Logger log = Logger.getLogger(this.getClass());
 
 	@Inject	Provider<HttpServletRequest> request;
+	@Inject UserTransactionProvider userTrx;
 	
 	@Override
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
 		@SuppressWarnings("unchecked")
 		B result = (B) action.createDefaultActionResponse();
+		log.warn("AbstractActionHandler on entru Trx with status "+DB.getTrxStatus());
+		
 		log.debug(action.getRequestCode()+": Executing command " + action.getClass().getName());
+		
 		if(action.isEmbedded()){
 			/*Embedded calls are calls executed in one command
 			 * to execute another on the server side. As such, a transaction and
@@ -51,7 +56,6 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			execute(action, result, execContext);
 			return result;
 		}
-		
 		
 		
 		//NEW SERVER REQUEST
@@ -73,7 +77,9 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 				DB.beginTransaction();
 			}
 			
+			
 			execute(action, result, execContext);
+			log.warn("AbstractActionHandler on after execute Trx with status "+userTrx.get().getStatus());
 			
 			DB.commitTransaction();
 		} catch (Exception e) {	
@@ -84,6 +90,7 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 		}finally {
 			DB.closeSession();		
 			logErrors(hasError, throwable, result);
+			
 			SessionHelper.afterRequest();
 		}
 		

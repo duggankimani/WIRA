@@ -140,10 +140,9 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	public Long getProcessInstanceIdByDocRefId(String docRefId) {
-		Object processInstanceId = em.createQuery("select n.processInstanceId FROM DocumentModel n" +
+		Object processInstanceId = getSingleResultOrNull(em.createQuery("select n.processInstanceId FROM DocumentModel n" +
 				" where n.refId=:refId")
-				.setParameter("refId", docRefId)
-				.getSingleResult();
+				.setParameter("refId", docRefId));
 	
 		return processInstanceId==null? null : (Long)processInstanceId;
 	}

@@ -1,20 +1,13 @@
 package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.drools.runtime.process.ProcessInstance;
-import org.hibernate.Hibernate;
-import org.hibernate.SQLQuery;
-import org.hibernate.ejb.QueryImpl;
 import org.jbpm.task.Status;
-import org.jbpm.task.Task;
-import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
@@ -28,9 +21,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.CaseFilter;
-import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.NotificationCategory;
-import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;

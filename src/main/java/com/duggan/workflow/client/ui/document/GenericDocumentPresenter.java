@@ -1259,7 +1259,7 @@ public class GenericDocumentPresenter extends
 		requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,
 				taskId, docRefId));
 		requests.addRequest(new GetCommentsRequest(docRefId));
-		requests.addRequest(new GetAttachmentsRequest(docRefId));
+		//requests.addRequest(new GetAttachmentsRequest(docRefId));
 		requests.addRequest(new GetActivitiesRequest(docRefId));
 
 		fireEvent(new ProcessingEvent());
@@ -1294,9 +1294,9 @@ public class GenericDocumentPresenter extends
 							bindCommentsResult(commentsResult);
 
 							// Attachments
-							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
-									.get(i++);
-							bindAttachments(attachmentsresponse);
+//							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
+//									.get(i++);
+//							bindAttachments(attachmentsresponse);
 
 							// Activities
 							GetActivitiesResponse getActivities = (GetActivitiesResponse) results

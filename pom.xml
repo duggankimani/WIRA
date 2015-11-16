@@ -23,12 +23,15 @@
 		<junit.version>4.11</junit.version>
 		<jukito.version>1.4</jukito.version>
 
+		<!-- hibernate.version>3.4.0.GA</hibernate.version -->
+		<hibernate.version>4.3.9.Final</hibernate.version>
+
 		<!-- Wira Shared -->
 		<wira.shared.artifactId>${project.artifactId}-shared</wira.shared.artifactId>
 		<wira.shared.groupId>${project.groupId}.shared</wira.shared.groupId>
 
-		<wira.requests.artifactId>${project.artifactId}-requests</wira.requests.artifactId>
-		<wira.requests.groupId>${project.groupId}.requests</wira.requests.groupId>
+		<!-- wira.requests.artifactId>${project.artifactId}-requests</wira.requests.artifactId> 
+			<wira.requests.groupId>${project.groupId}.requests</wira.requests.groupId -->
 
 		<wira.server.artifactId>${project.artifactId}-server</wira.server.artifactId>
 		<wira.server.groupId>${project.groupId}.server</wira.server.groupId>
@@ -59,6 +62,11 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
+			<id>apache-onami-snapshots</id>
+			<name>apache-onami-snapshots</name>
+			<url>https://repository.apache.org/content/repositories/snapshots</url>
+		</repository>
+		<repository>
 			<id>jBPM-Process-Image-Processor</id>
 			<url>https://github.com/esteban-aliverti/jBPM-Process-Image-Processor-mvn-repo/raw/master/snapshots</url>
 		</repository>
@@ -75,13 +83,13 @@
 				<directory>src/main/java</directory>
 				<!-- Duggan 4/11/2015 Commented below to enable packaging wira-models 
 					that need both .class & .java - gwt -->
-				<!-- includes>
+				<includes>
 					<include>**/*.java</include>
 					<include>**/*.xml</include>
 					<include>**/*.properties</include>
 					<include>**/*.index</include>
-				</includes -->
-				<excludes> <exclude>**/*.java</exclude> </excludes>
+				</includes>
+				<!-- excludes> <exclude>**/*.java</exclude> </excludes -->
 			</resource>
 		</resources>
 
@@ -638,19 +646,26 @@
 			<version>2.4.4</version>
 		</dependency>
 
-		<dependency>
+		<!-- dependency>
 			<groupId>org.ow2.util.bundles</groupId>
 			<artifactId>javassist-3.14.0-GA</artifactId>
 			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency -->
+
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.18.1-GA</version>
 			<!--scope>provided</scope -->
 		</dependency>
 
-		<dependency>
+		<!-- dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.4.GA</version>
-			<!--scope>provided</scope -->
-		</dependency>
+			<scope>provided</scope>
+		</dependency -->
 
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -830,6 +845,13 @@
 		</dependency>
 
 
+		<!-- Apache Onami Persist -->
+		<dependency>
+			<groupId>org.apache.onami</groupId>
+			<artifactId>org.apache.onami.persist</artifactId>
+			<version>1.0.2-SNAPSHOT</version>
+		</dependency>
+
 		<!--JTA/ HIBERNATE PERSISTENCE -->
 		<dependency>
 			<groupId>javax.transaction</groupId>
@@ -848,16 +870,15 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.3.2.GA</version>
+			<version>${hibernate.version}</version>
+			<!-- version>3.3.2.GA</version -->
 			<!--scope>provided</scope -->
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.4.0.GA</version>
-			<!--scope>provided</scope -->
-		</dependency>
+		<!-- dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-annotations</artifactId> 
+			<version>${hibernate.version}</version -->
+		<!--scope>provided</scope -->
+		<!-- /dependency -->
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -869,7 +890,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.4.0.GA</version>
+			<version>${hibernate.version}</version>
 			<!--scope>provided</scope -->
 		</dependency>
 
@@ -1302,6 +1323,13 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.onami</groupId>
+			<artifactId>org.apache.onami.test</artifactId>
+			<version>1.4.0-incubating</version>
 			<scope>test</scope>
 		</dependency>
 
