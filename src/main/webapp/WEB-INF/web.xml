@@ -61,7 +61,7 @@
 	    <url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 	
-	<servlet>
+	<!-- servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.UploadServlet</servlet-class>
 	    <servlet-name>uploader</servlet-name>
 	</servlet>
@@ -79,7 +79,7 @@
 	<servlet-mapping>
 	    <servlet-name>getReport</servlet-name>
 	    <url-pattern>/getreport</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 	
 	<servlet>
 		<servlet-class>org.wira.pioneer.integration.PioneerMpesaServlet</servlet-class>
