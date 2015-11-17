@@ -12,6 +12,8 @@ import javax.transaction.UserTransaction;
 import org.apache.onami.persist.EntityManagerProvider;
 import org.drools.runtime.Environment;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.internal.SessionImpl;
 import org.jbpm.bpmn2.xml.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +91,30 @@ public class DB {
 	}
 
 	public static EntityManager getEntityManager() {
-		return emProvider.get();
+		EntityManager em = emProvider.get();
+
+		Session session = (Session) em.getDelegate();
+		SessionImpl sessionImpl = (SessionImpl) session;
+//		StackTraceElement[] stackTraceElements = Thread.currentThread()
+//				.getStackTrace();
+//		StackTraceElement el = stackTraceElements[stackTraceElements.length - 2];
+		try {
+			
+			/**
+			 * A hack to fix LOB loading error : Cannot load LOB in autocommit mode - AttachmentDaoImpl
+			 */
+			boolean autoCommit = sessionImpl.connection().getAutoCommit();
+//			log.info(el.getClassName() + "." + el.getMethodName()
+//					+ " EntityManager return  >> " + em + " :: Autocommit = "
+//					+ autoCommit);
+			if(autoCommit){
+				sessionImpl.connection().setAutoCommit(false);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return em;
 	}
 
 	/**
@@ -131,7 +156,7 @@ public class DB {
 	 */
 	public static void beginTransaction() {
 		try {
-			//getUserTrx().begin();
+			// getUserTrx().begin();
 		} catch (Exception e) {
 
 		}
@@ -158,11 +183,11 @@ public class DB {
 			// JBPM engine marks transactions for rollback everytime
 			// something goes wrong - it does'nt necessarily throw an exception
 			if (status == 1 || status == 4 || status == 9) {
-				log.warn("Rolling Back Trx with status "+status);
-				//getUserTrx().rollback();
+				log.warn("Rolling Back Trx with status " + status);
+				// getUserTrx().rollback();
 			} else {
-				log.debug("Commiting Back Trx with status "+status);
-				//getUserTrx().commit();
+				log.debug("Commiting Back Trx with status " + status);
+				// getUserTrx().commit();
 			}
 
 		} catch (Exception e) {
@@ -177,7 +202,7 @@ public class DB {
 	 */
 	public static void rollback() {
 		try {
-			//getUserTrx().rollback();
+			// getUserTrx().rollback();
 		} catch (Exception e) {
 
 		}
@@ -307,10 +332,11 @@ public class DB {
 	}
 
 	public static String getTrxStatus() {
-		try{
-			return getUserTrx().getStatus()+"";
-		}catch(Exception e){}
-		
+		try {
+			return getUserTrx().getStatus() + "";
+		} catch (Exception e) {
+		}
+
 		return null;
 	}
 }

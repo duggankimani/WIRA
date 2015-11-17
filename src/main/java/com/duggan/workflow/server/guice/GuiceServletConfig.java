@@ -2,6 +2,7 @@ package com.duggan.workflow.server.guice;
 
 import org.apache.onami.persist.PersistenceFilter;
 
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -11,7 +12,8 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice.createInjector(new ServerModule(), new DatabaseModule(),trxMgtModule,
+//		PGXADataSource l;
+		return Guice.createInjector(trxMgtModule,new ServerModule(), new DatabaseModule(),
 				new DispatchServletModule());
 	}	
 
@@ -21,13 +23,17 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 	ServletModule trxMgtModule = new ServletModule() {
 		@Override
 		protected void configureServlets() {
+			// Init Trx Provider
+			DBTrxProviderImpl.init();
 			filter("/*").through(PersistenceFilter.class);
 		}
 	};
 	
 	
 	
-	
+	public void contextDestroyed(javax.servlet.ServletContextEvent servletContextEvent) {
+		DBTrxProviderImpl.close();
+	};
 	
 	
 

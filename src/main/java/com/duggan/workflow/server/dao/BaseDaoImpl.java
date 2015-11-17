@@ -10,6 +10,13 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.PO;
 
+/**
+ * No guice injection possible in these classes since initialization is performed manually 
+ * through the DaoFactory class
+ * 
+ * @author duggan
+ *
+ */
 public class BaseDaoImpl {
 
 	protected EntityManager em;

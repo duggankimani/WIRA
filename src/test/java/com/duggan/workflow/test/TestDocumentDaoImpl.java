@@ -19,23 +19,21 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.test.dao.AbstractDaoTest;
 
-public class TestDocumentDaoImpl {
+public class TestDocumentDaoImpl extends AbstractDaoTest{
 
 	DocumentDaoImpl dao;
 	
 	@Before
 	public void setup(){
-		DBTrxProviderImpl.init();
-		DB.beginTransaction();
-		ProcessMigrationHelper.start(4L);
+		ProcessMigrationHelper.init();;
 		dao = DB.getDocumentDao();
 	}
 	
@@ -51,7 +49,7 @@ public class TestDocumentDaoImpl {
 		
 		for(int i=0; i<5;i++){
 			Document clone = doc.clone();
-			clone.setOwner(new HTUser("ewaringa"));
+			clone.setOwner(new HTUser("Administrator"));
 			clone.getValues().put("subject", null);
 			clone.getValues().put("caseNo", null);
 			clone.getValues().put("description", null);
@@ -155,11 +153,4 @@ public class TestDocumentDaoImpl {
 		
 	}
 
-	
-	@After
-	public void close(){
-		DB.commitTransaction();
-		DB.closeSession();
-	}
-	
 }

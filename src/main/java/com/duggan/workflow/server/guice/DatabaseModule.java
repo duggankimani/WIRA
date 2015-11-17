@@ -8,7 +8,6 @@ import org.apache.onami.persist.EntityManagerProvider;
 import org.apache.onami.persist.PersistenceModule;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.google.inject.Key;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -17,9 +16,6 @@ public class DatabaseModule extends PersistenceModule {
 
 	@Override
 	protected void configurePersistence() {
-		// Init Trx Provider
-		DBTrxProviderImpl.init();
-
 		// Entity Manager Factory
 		bindContainerManagedPersistenceUnit(provideEntityManagerFactory())
 				.annotatedWith(WiraPU.class).useGlobalTransactionProvidedBy(
@@ -27,6 +23,7 @@ public class DatabaseModule extends PersistenceModule {
 
 		bind(EntityManager.class).annotatedWith(WiraPU.class).toProvider(
 				Key.get(EntityManagerProvider.class, WiraPU.class));
+
 
 		// DB Class
 		requestStaticInjection(DB.class);

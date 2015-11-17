@@ -432,12 +432,24 @@
 			<groupId>org.drools</groupId>
 			<artifactId>drools-persistence-jpa</artifactId>
 			<version>5.5.0.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.javax.persistence</groupId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-bam</artifactId>
 			<version>5.4.0.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.javax.persistence</groupId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -462,12 +474,24 @@
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-human-task-core</artifactId>
 			<version>5.4.0.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.javax.persistence</groupId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-persistence-jpa</artifactId>
 			<version>5.4.0.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.javax.persistence</groupId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -646,12 +670,8 @@
 			<version>2.4.4</version>
 		</dependency>
 
-		<!-- dependency>
-			<groupId>org.ow2.util.bundles</groupId>
-			<artifactId>javassist-3.14.0-GA</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency -->
+		<!-- dependency> <groupId>org.ow2.util.bundles</groupId> <artifactId>javassist-3.14.0-GA</artifactId> 
+			<version>1.0.0</version> <scope>provided</scope> </dependency -->
 
 		<dependency>
 			<groupId>org.javassist</groupId>
@@ -660,12 +680,8 @@
 			<!--scope>provided</scope -->
 		</dependency>
 
-		<!-- dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.4.GA</version>
-			<scope>provided</scope>
-		</dependency -->
+		<!-- dependency> <groupId>javassist</groupId> <artifactId>javassist</artifactId> 
+			<version>3.4.GA</version> <scope>provided</scope> </dependency -->
 
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -853,19 +869,11 @@
 		</dependency>
 
 		<!--JTA/ HIBERNATE PERSISTENCE -->
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>1.1</version>
-			<!--scope>provided</scope -->
-		</dependency>
+		<!-- dependency> <groupId>javax.transaction</groupId> <artifactId>jta</artifactId> 
+			<version>1.1</version> <scope>provided</scope> </dependency -->
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>ejb3-persistence</artifactId>
-			<version>1.0.2.GA</version>
-			<!--scope>provided</scope -->
-		</dependency>
+		<!-- dependency> <groupId>org.hibernate</groupId> <artifactId>ejb3-persistence</artifactId> 
+			<version>1.0.2.GA</version> <scope>provided</scope> </dependency -->
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -896,8 +904,8 @@
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
 			<!--scope>provided</scope -->
 		</dependency>
 
@@ -911,9 +919,12 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.2-1002-jdbc4</version>
-			<!--scope>provided</scope -->
+			<version>9.4-1205-jdbc42</version>
+			<!-- scope>provided</scope -->
 		</dependency>
+
+		<!-- dependency> <groupId>org.postgresql</groupId> <artifactId>postgresql</artifactId> 
+			<version>9.2-1002-jdbc4</version> <scope>provided</scope> </dependency -->
 
 		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver 
 			-DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
