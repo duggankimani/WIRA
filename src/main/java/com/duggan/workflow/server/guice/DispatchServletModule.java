@@ -1,5 +1,8 @@
 package com.duggan.workflow.server.guice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.duggan.workflow.server.servlets.upload.GetReport;
 import com.duggan.workflow.server.servlets.upload.UploadServlet;
 import com.google.inject.servlet.ServletModule;
@@ -12,7 +15,13 @@ public class DispatchServletModule extends ServletModule {
 	public void configureServlets() {
 		serve("/" + ActionImpl.DEFAULT_SERVICE_NAME + "*").with(
 				DispatchServiceImpl.class);
-		serve("/upload").with(UploadServlet.class);
-		serve("/getreport").with(GetReport.class);
+		
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("loadonstartup", "1");
+        params.put("maxSize", "5000485760");
+        params.put("maxFileSize", "5000485760");
+		serve("/upload").with(UploadServlet.class,params);
+		serve("/getreport").with(GetReport.class,params);
 	}
 }
