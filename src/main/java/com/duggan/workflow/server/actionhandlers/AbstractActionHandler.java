@@ -58,7 +58,7 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 		}
 		
 		
-		//NEW SERVER REQUEST
+		//WIRA - NEW SERVER REQUEST
 		if(SessionHelper.getHttpRequest()!=null){
 			//embedded call -- needed when executing multiple commands in one call
 			//not usable when working with servlets
