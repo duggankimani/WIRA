@@ -67,9 +67,10 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
             <property name="hibernate.connection.autocommit" value="false" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="false" />
-            <property name="hibernate.transaction.manager_lookup_class"
-                value="org.hibernate.transaction.BTMTransactionManagerLookup"/>
-                
+            <!-- property name="hibernate.transaction.manager_lookup_class"
+                value="org.hibernate.transaction.BTMTransactionManagerLookup"/-->
+             <property name="hibernate.transaction.jta.platform" 
+			value="org.hibernate.engine.transaction.jta.platform.internal.BitronixJtaPlatform"/>   
             
             <!-- property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
             <property name="hibernate.cache.use_query_cache" value="true"/>

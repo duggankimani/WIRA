@@ -7,12 +7,13 @@ import gwtupload.server.exceptions.UploadActionException;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.onami.persist.Transactional;
+import org.apache.log4j.Logger;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.server.db.DB;
@@ -20,7 +21,6 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.google.inject.Singleton;
 
 @Singleton
-@Transactional
 public class UploadServlet extends UploadAction {
 
 	/**
@@ -28,6 +28,18 @@ public class UploadServlet extends UploadAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private static Logger log = Logger.getLogger(GetReport.class);
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		log.info("LOADED SERVLET " + getClass() + ": ContextPath= "
+				+ config.getServletContext().getContextPath()
+				+ ", ContextName= "
+				+ config.getServletContext().getServletContextName()
+				+ ", ServletName= " + config.getServletName());
+	}
+	
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {

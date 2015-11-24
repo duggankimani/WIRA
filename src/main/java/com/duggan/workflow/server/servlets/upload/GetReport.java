@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.apache.onami.persist.Transactional;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
@@ -38,7 +38,6 @@ import com.google.inject.Singleton;
 import com.itextpdf.text.DocumentException;
 
 @Singleton
-@Transactional
 public class GetReport extends HttpServlet {
 
 	/**
@@ -50,6 +49,16 @@ public class GetReport extends HttpServlet {
 	
 	@Inject UserTransactionProvider userTrx;
 
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		log.info("LOADED SERVLET " + getClass() + ": ContextPath= "
+				+ config.getServletContext().getContextPath()
+				+ ", ContextName= "
+				+ config.getServletContext().getServletContextName()
+				+ ", ServletName= " + config.getServletName());
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
