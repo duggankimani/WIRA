@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.home;
 
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.shared.model.TaskType;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

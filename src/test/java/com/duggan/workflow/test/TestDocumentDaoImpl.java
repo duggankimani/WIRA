@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -24,6 +23,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.test.dao.AbstractDaoTest;
 

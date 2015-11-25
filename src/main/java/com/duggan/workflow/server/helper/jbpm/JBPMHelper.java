@@ -43,7 +43,6 @@ import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
@@ -68,6 +67,7 @@ import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.TaskNode;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
@@ -91,7 +91,6 @@ public class JBPMHelper implements Closeable {
 
 	private JBPMHelper() {
 		try {
-			Node l;
 			// By Setting the jbpm.usergroup.callback property with the call
 			// back class full name, task service will use this to validate the
 			// user/group exists and its permissions are ok.

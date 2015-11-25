@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.tasklistitem;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
@@ -36,6 +35,7 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;

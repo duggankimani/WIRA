@@ -11,7 +11,6 @@ import java.util.Map;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -35,6 +34,7 @@ import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Value;
 
 /**

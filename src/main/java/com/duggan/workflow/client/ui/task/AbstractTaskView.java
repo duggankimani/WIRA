@@ -2,11 +2,11 @@ package com.duggan.workflow.client.ui.task;
 
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.*;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.task.DraftsPresenter.IDraftsView;
 import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedView;
 import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter.ISuspendedView;
+import com.duggan.workflow.shared.model.TaskType;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;

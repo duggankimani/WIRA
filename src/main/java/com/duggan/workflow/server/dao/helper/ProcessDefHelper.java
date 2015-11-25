@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
@@ -44,6 +43,7 @@ import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskNotification;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
 import com.duggan.workflow.shared.model.UserGroup;

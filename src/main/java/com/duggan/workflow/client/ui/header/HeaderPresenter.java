@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.header;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -20,6 +19,7 @@ import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;

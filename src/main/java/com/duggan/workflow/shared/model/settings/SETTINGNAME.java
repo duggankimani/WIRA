@@ -13,6 +13,7 @@ public enum SETTINGNAME {
 	SMTP_STARTTLS("mail.smtp.starttls.enable", DataType.BOOLEAN),
 	SMTP_ACCOUNT("mail.smtp.from", DataType.STRING),
 	SMTP_PASSWORD("mail.smtp.password", DataType.STRING),
+	RAZUNA_UPLOADS_FOLDERID("folder_id", DataType.STRING),
 	REPORT_VIEW_IMPL("REPORT_VIEW_IMPL", DataType.STRING); //GOOGLE_DOCS, NEW_TAB, IFRAME
 	
 	String key;

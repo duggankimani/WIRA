@@ -1,8 +1,8 @@
 package com.duggan.workflow.client.ui.home;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.admin.AbstractTabItem;
 import com.duggan.workflow.client.ui.component.BulletPanel;
+import com.duggan.workflow.shared.model.TaskType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;

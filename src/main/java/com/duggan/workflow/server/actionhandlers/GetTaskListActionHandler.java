@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -12,6 +11,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;

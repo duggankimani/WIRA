@@ -13,7 +13,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
@@ -26,6 +25,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.TaskType;
 
 public class TestNotications {
 

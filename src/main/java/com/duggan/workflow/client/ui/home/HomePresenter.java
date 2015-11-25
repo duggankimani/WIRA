@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.home;
 
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
@@ -22,6 +21,7 @@ import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.MODE;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.google.gwt.event.dom.client.HasClickHandlers;

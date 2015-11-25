@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
@@ -37,6 +36,7 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;

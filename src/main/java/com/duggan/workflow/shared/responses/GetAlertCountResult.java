@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.shared.model.TaskType;
 
 public class GetAlertCountResult extends BaseResponse {
 

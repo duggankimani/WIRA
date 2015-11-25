@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
@@ -15,6 +14,7 @@ import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.TaskType;
 
 public class TestApprovalRequest {
 

@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.model;
+package com.duggan.workflow.shared.model;
 
 public enum TaskType {
 

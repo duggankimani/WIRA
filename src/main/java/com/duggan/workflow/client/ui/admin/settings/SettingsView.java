@@ -98,7 +98,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 			
 			@Override
 			public void onError(ErrorEvent event) {
-				imgLogo.setUrl("images/logo.png");
+				imgLogo.setUrl("img/wiralogo.png");
 			}
 		});
 		

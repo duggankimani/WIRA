@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.requests;
 
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetAlertCountResult;
 

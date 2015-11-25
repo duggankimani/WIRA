@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.events;
 
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.shared.model.TaskType;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
