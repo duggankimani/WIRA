@@ -10,12 +10,14 @@ import org.junit.Test;
 import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.UserGroup;
@@ -33,6 +35,18 @@ public class TestKNAProcess extends AbstractBPM6Test {
 	
 	private String RPCCOOKIE="AUTHCOOKIEID";
 
+	/**
+	 * 
+	 */
+	@Test
+	public void getCurrentTask(){
+		HTask task = JBPMHelper.get().getCurrentTask(15L);
+		Assert.assertNotNull(task);
+	}
+	
+	/**
+	 * Should be called once to create users and groups for testing
+	 */
 	public void initialize() {
 		
 		// Create user groups
@@ -163,7 +177,7 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		Assert.assertEquals(doc.getStatus(), DocStatus.INPROGRESS);
 	}
 	
-	@Test
+	@Ignore
 	public void startMultiAssigneeProcess() throws ActionException, ServiceException {
 		DocumentType type = new DocumentType();
 		type.setId(3L);

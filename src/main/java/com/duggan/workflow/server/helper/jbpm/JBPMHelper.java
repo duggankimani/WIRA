@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
@@ -697,6 +698,30 @@ public class JBPMHelper implements Closeable {
 		}
 
 		return value;
+	}
+	
+	/**
+	 * Duggan 30/Nov/2015
+	 * @param processInstanceId
+	 * @return
+	 */
+	public HTask getCurrentTask(Long processInstanceId){
+		if(processInstanceId!=null && processInstanceId!=0){
+			EntityManager em = DB.getEntityManager();
+			
+			Number taskId = (Number) em.createNativeQuery("select t.id from task t "
+					+ "inner join taskevent te on (te.taskid=t.id) "
+					+ "where t.processInstanceId=:processInstanceId and te.type!='COMPLETED'")
+			.setParameter("processInstanceId", processInstanceId).getSingleResult();
+			
+			if(taskId==null){
+				return null;
+			}
+			
+			return getTask(taskId.longValue());
+		}
+		
+		return null;
 	}
 
 	/**
