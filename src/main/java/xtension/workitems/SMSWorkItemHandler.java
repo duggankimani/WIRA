@@ -2,9 +2,9 @@ package xtension.workitems;
 
 import java.util.HashMap;
 
-import org.drools.process.instance.WorkItemHandler;
-import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemManager;
+import org.kie.api.runtime.process.WorkItem;
+import org.kie.api.runtime.process.WorkItemHandler;
+import org.kie.api.runtime.process.WorkItemManager;
 
 import com.duggan.workflow.server.sms.SMSIntegration;
 import com.duggan.workflow.shared.model.Document;

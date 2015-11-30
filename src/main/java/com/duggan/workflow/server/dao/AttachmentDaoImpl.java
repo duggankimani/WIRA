@@ -15,12 +15,8 @@ import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class AttachmentDaoImpl extends BaseDaoImpl{
 
-	public AttachmentDaoImpl(EntityManager em) {
-		super(em);
-	}
-	
 	public LocalAttachment getAttachmentById(long id){
-		Object obj = em.createQuery("FROM LocalAttachment d where id= :id").setParameter("id", id).getSingleResult();
+		Object obj = getEntityManager().createQuery("FROM LocalAttachment d where id= :id").setParameter("id", id).getSingleResult();
 		
 		LocalAttachment attachment = null;
 		
@@ -32,7 +28,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	}
 	
 	public List<LocalAttachment> getAttachmentsForDocument(long documentId){
-		List lst  = em.createQuery("FROM LocalAttachment l where documentId= :documentId").setParameter("documentId", documentId).getResultList();
+		List lst  = getEntityManager().createQuery("FROM LocalAttachment l where documentId= :documentId").setParameter("documentId", documentId).getResultList();
 		
 		return lst;
 	}
@@ -40,7 +36,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	public void deactivate(long attachmentId) {
 		LocalAttachment attachment = getAttachmentById(attachmentId);
 		attachment.setArchived(true);
-		em.persist(attachment);
+		getEntityManager().persist(attachment);
 	}	
 	
 	public void delete(long attachmentId){
@@ -71,7 +67,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		}
 		
 		
-		Query query = em.createQuery(sql)
+		Query query = getEntityManager().createQuery(sql)
 			.setParameter("processDef", model);
 			
 		if(name!=null && !isImage){
@@ -89,7 +85,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		if(documentId==null){
 			return false;
 		}
-		Long count = (Long)em.createQuery("Select count(l) FROM LocalAttachment l " +
+		Long count = (Long)getEntityManager().createQuery("Select count(l) FROM LocalAttachment l " +
 				"where l.document= :document")
 		.setParameter("document", DB.getDocumentDao().getById(documentId))
 		.getSingleResult();
@@ -100,7 +96,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	public void deleteUserImage(String userId) {
 		String sql = "update localattachment set isActive=0 where imageUserId=?";
 		
-		Query query = em.createNativeQuery(sql).setParameter(1, userId);
+		Query query = getEntityManager().createNativeQuery(sql).setParameter(1, userId);
 		query.executeUpdate();
 	}
 	
@@ -108,7 +104,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		Object obj = null;
 		
 		try{
-			obj = em.createQuery("FROM LocalAttachment d where imageUserId= :userId and isActive=:isActive")
+			obj = getEntityManager().createQuery("FROM LocalAttachment d where imageUserId= :userId and isActive=:isActive")
 					.setParameter("userId", userId)
 					.setParameter("isActive", 1)
 					.getSingleResult();
@@ -128,7 +124,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	public void deleteSettingImage(String settingName) {
 		String sql = "update localattachment set isActive=0 where settingName=?";
 		
-		Query query = em.createNativeQuery(sql).setParameter(1, settingName);
+		Query query = getEntityManager().createNativeQuery(sql).setParameter(1, settingName);
 		query.executeUpdate();
 	}
 
@@ -137,7 +133,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 		Object obj = null;
 		
 		try{
-			obj = em.createQuery("FROM LocalAttachment d where d.settingName=:settingName and d.isActive=:isActive")
+			obj = getEntityManager().createQuery("FROM LocalAttachment d where d.settingName=:settingName and d.isActive=:isActive")
 					.setParameter("settingName", settingName)
 					.setParameter("isActive", 1)
 					.getSingleResult();
@@ -162,7 +158,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 			return new ArrayList<>();
 		}
 		List<Long> ids = getResultList(
-				em.createQuery("Select t.taskData.processInstanceId from Task t "
+				getEntityManager().createQuery("Select t.taskData.processInstanceId from Task t "
 						+ "where t.id in (:ids)")
 				.setParameter("ids", tasksOwnedIds)); 
 				
@@ -171,7 +167,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 				+ "(l.document.processInstanceId is not null "
 				+ "and l.document.processInstanceId in (:ids)) "
 				+ "or l.document.createdBy=:userId";
-		Query query = em.createQuery(sql).setParameter("ids", ids)
+		Query query = getEntityManager().createQuery(sql).setParameter("ids", ids)
 				.setParameter("userId", userId);
 				
 		return getResultList(query);
@@ -179,7 +175,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 
 	public List<LocalAttachment> getAttachmentsForDocument(Long documentId,
 			String name) {
-		Query query  = em.createQuery("FROM LocalAttachment l where documentId= :documentId and l.name=:name")
+		Query query  = getEntityManager().createQuery("FROM LocalAttachment l where documentId= :documentId and l.name=:name")
 				.setParameter("documentId", documentId)
 				.setParameter("name", name);
 		
@@ -187,7 +183,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 	}
 
 	public void delete(Long[] attachmentIds) {
-		Query query  = em.createQuery("DELETE FROM LocalAttachment where id in (:ids)")
+		Query query  = getEntityManager().createQuery("DELETE FROM LocalAttachment where id in (:ids)")
 				.setParameter("ids", Arrays.asList(attachmentIds));
 		query.executeUpdate();
 	}

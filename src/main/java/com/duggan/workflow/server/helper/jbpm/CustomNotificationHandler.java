@@ -83,7 +83,13 @@ public class CustomNotificationHandler {
 		//notification.setTargetUserId(targetUserId);
 		if(actorId!=null && !actorId.trim().isEmpty()){
 			actors = new ArrayList<>();
-			actors.add(LoginHelper.get().getUser(actorId));
+			
+			//Take care of comma separated list of actors e.g - john.bundi,martin.kamau
+			String[] actorIds = actorId.split(",");
+			for(String id:actorIds){
+				actors.add(LoginHelper.get().getUser(id));
+			}
+			
 		}
 		
 		//potential users
@@ -136,6 +142,7 @@ public class CustomNotificationHandler {
 		
 		for(HTUser user: users){
 			Notification note = notification.clone();
+			logger.debug("Notificaton Target = "+user);
 			note.setTargetUserId(user);
 			note.setRead(false);
 			

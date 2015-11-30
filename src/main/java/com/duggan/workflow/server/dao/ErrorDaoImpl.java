@@ -7,10 +7,6 @@ import com.duggan.workflow.server.dao.model.ErrorLog;
 public class ErrorDaoImpl {
 	EntityManager em;
 	
-	public ErrorDaoImpl(EntityManager em){
-		this.em = em;
-	}
-	
 	public Long saveError(ErrorLog log){
 		em.persist(log);
 		

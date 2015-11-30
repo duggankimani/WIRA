@@ -9,7 +9,7 @@
 		select
   count(*)
 from
-    Task t 
+    TaskImpl t 
     left join t.subjects as subject
     left join t.descriptions as description
     left join t.names as name
@@ -40,7 +40,7 @@ where
 select
   count(*)
 from
-    Task t 
+    TaskImpl t 
     left join t.taskData.createdBy as createdBy
     left join t.taskData.actualOwner as actualOwner
     left join t.subjects as subject
@@ -79,7 +79,7 @@ where
 select
   count(*)
 from
-    Task t 
+    TaskImpl t 
     left join t.taskData.createdBy as createdBy
     left join t.taskData.actualOwner as actualOwner 
     left join t.subjects as subject
@@ -132,7 +132,7 @@ select
     t.taskData.processId,
     t.taskData.processSessionId)
 from
-    Task t 
+    TaskImpl t 
     left join t.taskData.createdBy as createdBy
     left join t.taskData.actualOwner as actualOwner 
     left join t.subjects as subject
@@ -191,7 +191,7 @@ select
     t.taskData.processId,
     t.taskData.processSessionId)
 from
-    Task t 
+    TaskImpl t 
     left join t.taskData.createdBy as createdBy
     left join t.taskData.actualOwner as actualOwner 
     left join t.subjects as subject
@@ -231,7 +231,7 @@ where
 select
   t.id
 from
-    Task t 
+    TaskImpl t 
     left join t.taskData.actualOwner as actualOwner 
     left join t.subjects as subject
     left join t.descriptions as description
@@ -267,7 +267,7 @@ where
 select
   count(*)
 from
-    Task t 
+    TaskImpl t 
     left join t.taskData.createdBy as createdBy
     left join t.taskData.actualOwner as actualOwner
     left join t.subjects as subject

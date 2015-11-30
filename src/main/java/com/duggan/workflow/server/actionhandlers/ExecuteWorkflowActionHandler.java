@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jbpm.task.Task;
+import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
@@ -41,7 +41,7 @@ public class ExecuteWorkflowActionHandler extends
 
 		if(values!=null){
 			long processInstanceId=0L;
-			Task task = JBPMHelper.get().getTaskClient().getTask(action.getTaskId());
+			Task task = JBPMHelper.get().getTaskClient().getTaskById(action.getTaskId());
 			processInstanceId = task.getTaskData().getProcessInstanceId();
 			Document document = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,false);
 			//Doc document = JBPMHelper.get().getTask(action.getTaskId());

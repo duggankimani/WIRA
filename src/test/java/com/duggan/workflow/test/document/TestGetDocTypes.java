@@ -3,9 +3,9 @@ package com.duggan.workflow.test.document;
 import java.io.IOException;
 import java.util.List;
 
-import org.jbpm.task.Task;
 import org.junit.Before;
 import org.junit.Test;
+import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;

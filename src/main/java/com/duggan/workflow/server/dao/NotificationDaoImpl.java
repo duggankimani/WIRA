@@ -16,17 +16,11 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.UserGroup;
 
-public class NotificationDaoImpl {
-
-	EntityManager em;
-	
-	public NotificationDaoImpl(EntityManager em) {
-		this.em = em;
-	}
+public class NotificationDaoImpl extends BaseDaoImpl{
 
 	public NotificationModel getNotification(Long id) {
 		
-		List lst = em.createQuery("FROM NotificationModel n where id= :id").setParameter("id", id).getResultList();
+		List lst = getEntityManager().createQuery("FROM NotificationModel n where id= :id").setParameter("id", id).getResultList();
 		
 		if(lst.size()>0){
 			return (NotificationModel)lst.get(0);
@@ -35,14 +29,14 @@ public class NotificationDaoImpl {
 	}
 
 	public NotificationModel saveOrUpdate(NotificationModel model) {
-		em.persist(model);
+		getEntityManager().persist(model);
 		return model;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<NotificationModel> getAllNotifications(String userId) {
 
-		return em.createQuery("FROM NotificationModel n where "
+		return getEntityManager().createQuery("FROM NotificationModel n where "
 				+ "(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType)) "
 				+ "and n.created>:thirtyDays "
 				+ "order by created desc")
@@ -59,7 +53,7 @@ public class NotificationDaoImpl {
 	}
 
 	public void delete(Long id) {
-		em.remove(getNotification(id));
+		getEntityManager().remove(getNotification(id));
 	}
 
 	/**
@@ -69,7 +63,7 @@ public class NotificationDaoImpl {
 	 */
 	public Integer getAlertCount(String userId) {
 		
-		Long count = (Long)em.createQuery("select count(n) from NotificationModel n where " +
+		Long count = (Long)getEntityManager().createQuery("select count(n) from NotificationModel n where " +
 				"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType))  " +
 				"and n.isRead=:isRead and n.created>:thirtyDays")
 				.setParameter("userId", userId)
@@ -88,7 +82,7 @@ public class NotificationDaoImpl {
 	 */
 	public List getNotification(Long documentId, String owner) {
 
-		List models = em.createQuery("FROM NotificationModel n where documentId= :documentId " +
+		List models = getEntityManager().createQuery("FROM NotificationModel n where documentId= :documentId " +
 				"and notificationType=:notificationType and owner=:owner")
 				.setParameter("documentId", documentId)
 				.setParameter("notificationType", NotificationType.APPROVALREQUEST_OWNERNOTE)
@@ -111,7 +105,7 @@ public class NotificationDaoImpl {
 			notes.add(type);
 		}
 		
-		return em.createQuery("FROM NotificationModel n " +
+		return getEntityManager().createQuery("FROM NotificationModel n " +
 				"where n.documentId=:documentId " +
 				"and n.notificationType in (:notificationType)" +
 				"order by created desc")
@@ -135,7 +129,7 @@ public class NotificationDaoImpl {
 			notes.add(type);
 		}
 		
-		return em.createQuery("FROM NotificationModel n " +
+		return getEntityManager().createQuery("FROM NotificationModel n " +
 				"where n.docRefId=:docRefId " +
 				"and n.notificationType in (:notificationType)" +
 				"order by created desc")
@@ -184,7 +178,7 @@ public class NotificationDaoImpl {
 		"n.created>:thirtyDays"
 		 );
 		
-		Query query = em.createNativeQuery(hql.toString())
+		Query query = getEntityManager().createNativeQuery(hql.toString())
 				.setParameter(1, userId)
 				.setParameter(2, userId)
 				.setParameter(3, userId)
@@ -204,7 +198,7 @@ public class NotificationDaoImpl {
 			return new ArrayList<>();
 		}
 		
-		return em.createQuery("FROM NotificationModel n " +
+		return getEntityManager().createQuery("FROM NotificationModel n " +
 				"where n.id in (:ids) "+		
 				"order by created desc")
 		.setParameter("ids", ids)

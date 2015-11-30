@@ -12,11 +12,7 @@ import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 
 public class DashboardDaoImpl extends BaseDaoImpl{
-
-	public DashboardDaoImpl(EntityManager em) {
-		super(em);
-	}
-
+	
 	public Integer getRequestCount(DocStatus status){
 		return getRequestCount(true, status); 
 	}
@@ -30,7 +26,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 			sql.append("status!=?");
 		}
 		
-		Query query = em.createNativeQuery(sql.toString())
+		Query query = getEntityManager().createNativeQuery(sql.toString())
 				.setParameter(1, status.name());
 		
 		Number number = (Number)query.getSingleResult();
@@ -60,7 +56,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 			")as docdays "+
 			"group by days,cnt order by cnt;");
 		
-		Query query = em.createNativeQuery(sql.toString());
+		Query query = getEntityManager().createNativeQuery(sql.toString());
 		List<?> list= query.getResultList();
 		
 		for(Object c: list){
@@ -77,7 +73,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 		StringBuffer sql = new StringBuffer("select (select display from ADDocType where id=doctype) doctype,ct " +
 				"from (select count(*) ct,doctype from LocalDocument d where status!='DRAFTED' group by doctype) as papa order by ct desc");
 		
-		Query query = em.createNativeQuery(sql.toString());
+		Query query = getEntityManager().createNativeQuery(sql.toString());
 		List<?> list = query.getResultList();
 		for(Object c: list){
 			Object[] row = (Object[])c;
@@ -107,7 +103,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 				"as q1 where days!=0 group by taskname) as avgtasktimes "+
 				"order by avg desc limit 10");
 		
-		Query query = em.createNativeQuery(sql.toString());
+		Query query = getEntityManager().createNativeQuery(sql.toString());
 		List<?> list = query.getResultList();
 		for(Object c: list){
 			Object[] row = (Object[])c;
@@ -138,7 +134,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 				"where i.shorttext=?");
 		
 		
-		Query query = em.createNativeQuery(buffer.toString()).setParameter(1, taskName);
+		Query query = getEntityManager().createNativeQuery(buffer.toString()).setParameter(1, taskName);
 		Long taskId = ((Number)query.getSingleResult()).longValue();
 		
 		return taskId;
@@ -149,7 +145,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 				"where id=(select doctype from localdocument where processinstanceid=" +
 				"(select processinstanceid from task inner join i18ntext on " +
 				"(task.id=i18ntext.task_names_id) where shorttext=? limit 1))");
-		Query query = em.createNativeQuery(buffer.toString()).setParameter(1, taskName);
+		Query query = getEntityManager().createNativeQuery(buffer.toString()).setParameter(1, taskName);
 		String docType = getSingleResultOrNull(query);
 		
 		return docType;
@@ -165,7 +161,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 				"from task where completedon is not null) as monthcompleted group by monthcp) as mcp " +
 				"on (mcr.monthcr = mcp.monthcp))");
 		
-		Query query = em.createNativeQuery(sql.toString());
+		Query query = getEntityManager().createNativeQuery(sql.toString());
 		List<?> list = query.getResultList();
 		String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 		for(Object c: list){

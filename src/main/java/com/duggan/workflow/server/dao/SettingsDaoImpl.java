@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class SettingsDaoImpl extends BaseDaoImpl {
-
-	public SettingsDaoImpl(EntityManager em) {
-		super(em);
-	}
 	
 	public void saveSettings(SETTINGNAME name, ADValue value){
 		deleteName(name);
@@ -25,7 +20,7 @@ public class SettingsDaoImpl extends BaseDaoImpl {
 	private void deleteName(SETTINGNAME name) {
 		assert name!=null;
 		String sql = "delete from advalue where settingName=?";
-		Query query = em.createNativeQuery(sql).setParameter(1, name.name());
+		Query query = getEntityManager().createNativeQuery(sql).setParameter(1, name.name());
 		query.executeUpdate();
 	}
 	
@@ -37,7 +32,7 @@ public class SettingsDaoImpl extends BaseDaoImpl {
 			sql = sql.concat(" and settingName in (:names)");
 		}
 		
-		Query query = em.createQuery(sql);
+		Query query = getEntityManager().createQuery(sql);
 		
 		if(hasNames){
 			query.setParameter("names", EnumSet.copyOf(names));

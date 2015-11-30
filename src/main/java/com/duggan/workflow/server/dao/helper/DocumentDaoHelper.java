@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jbpm.process.audit.JPAProcessInstanceDbLog;
-import org.jbpm.process.audit.ProcessInstanceLog;
+import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
@@ -45,6 +44,8 @@ import com.duggan.workflow.shared.model.Value;
  */
 public class DocumentDaoHelper {
 
+	private static Logger log = Logger.getLogger(DocumentDaoHelper.class);
+	
 	public static List<Doc> getAllDocuments(DocStatus...status) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
@@ -80,7 +81,9 @@ public class DocumentDaoHelper {
 			}
 			
 			if(document.getCaseNo()==null){
+				
 				ADDocType type = dao.getDocumentTypeByName(document.getType().getName());
+				log.debug("Document Type Name = "+document.getType().getName()+", DB type="+type);
 				document.setCaseNo(dao.generateDocumentSubject(type));
 				
 				Value value = document.getValues().get("caseNo");
@@ -233,11 +236,15 @@ public class DocumentDaoHelper {
 		}
 		Document doc = new Document();
 		doc.setRefId(model.getRefId());
+		assert model.getId()!=null;
+		log.debug("Document ID = "+model.getId());
+		
+		doc.setId(model.getId());
 		doc.setCreated(model.getCreated());
 		doc.setDescription(model.getDescription());
 		doc.setDocumentDate(model.getDocumentDate());
-		doc.setId(model.getId());
 		doc.setOwner(LoginHelper.get().getUser(model.getCreatedBy()));
+		log.debug("Case Number = "+model.getId());
 		doc.setCaseNo(model.getSubject());
 		doc.setType(getType(model.getType()));
 		doc.setDocumentDate(model.getDocumentDate());
@@ -247,15 +254,18 @@ public class DocumentDaoHelper {
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
 		
-		if(model.getProcessInstanceId()!=null){
-			try{
-				ProcessInstanceLog log = JPAProcessInstanceDbLog
-						.findProcessInstance(model.getProcessInstanceId());
-				if(log!=null)
-					doc.setDateSubmitted(log.getStart());
-			}catch(Exception e){e.printStackTrace();}
-			
-		}
+		/**
+		 * TODO : Find out how to retrieve date submitted
+		 */
+//		if(model.getProcessInstanceId()!=null){
+//			try{
+//				ProcessInstanceLog log = JPAProcessInstanceDbLog
+//						.findProcessInstance(model.getProcessInstanceId());
+//				if(log!=null)
+//					doc.setDateSubmitted(log.getStart());
+//			}catch(Exception e){e.printStackTrace();}
+//			
+//		}
 		
 		if(model.getProcessInstanceId()!=null){
 			try{

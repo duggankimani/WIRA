@@ -9,36 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.SystemEventListenerFactory;
-import org.drools.agent.KnowledgeAgent;
-import org.drools.agent.KnowledgeAgentFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.definition.process.Process;
-import org.drools.event.process.ProcessCompletedEvent;
-import org.drools.event.process.ProcessEventListener;
-import org.drools.event.process.ProcessNodeLeftEvent;
-import org.drools.event.process.ProcessNodeTriggeredEvent;
-import org.drools.event.process.ProcessStartedEvent;
-import org.drools.event.process.ProcessVariableChangedEvent;
-import org.drools.io.Resource;
-import org.drools.io.ResourceFactory;
-import org.drools.logger.KnowledgeRuntimeLoggerFactory;
-import org.drools.persistence.jpa.JPAKnowledgeService;
-import org.drools.runtime.Environment;
-import org.drools.runtime.EnvironmentName;
-import org.drools.runtime.KnowledgeRuntime;
-import org.drools.runtime.StatefulKnowledgeSession;
-import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.core.context.variable.VariableScope;
 import org.jbpm.process.instance.ContextInstance;
 import org.jbpm.process.instance.context.variable.VariableScopeInstance;
-import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.Status;
@@ -50,6 +24,31 @@ import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.instance.WorkflowProcessInstanceUpgrader;
+import org.kie.api.KieBase;
+import org.kie.api.event.process.ProcessCompletedEvent;
+import org.kie.api.event.process.ProcessEventListener;
+import org.kie.api.event.process.ProcessNodeLeftEvent;
+import org.kie.api.event.process.ProcessNodeTriggeredEvent;
+import org.kie.api.event.process.ProcessStartedEvent;
+import org.kie.api.event.process.ProcessVariableChangedEvent;
+import org.kie.api.io.Resource;
+import org.kie.api.io.ResourceType;
+import org.kie.api.logger.KieLoggers;
+import org.kie.api.runtime.Environment;
+import org.kie.api.runtime.EnvironmentName;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.internal.SystemEventListenerFactory;
+import org.kie.internal.agent.KnowledgeAgent;
+import org.kie.internal.agent.KnowledgeAgentFactory;
+import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.internal.builder.KnowledgeBuilderError;
+import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.internal.io.ResourceFactory;
+import org.kie.internal.logger.KnowledgeRuntimeLoggerFactory;
+import org.kie.internal.persistence.jpa.JPAKnowledgeService;
+import org.kie.internal.runtime.KnowledgeRuntime;
+import org.kie.internal.utils.KieHelper;
 import org.wira.pioneer.integration.PioneerIntegrationWorkitemHandler;
 
 import xtension.workitems.FormValidationWorkItemHandler;
@@ -70,9 +69,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.NotificationType;
 
@@ -81,11 +78,11 @@ import com.duggan.workflow.shared.model.NotificationType;
  * @author duggan
  * 
  */
-class BPMSessionManager {
+class BPMSessionManager implements WiraSessionManager{
 
 	private TaskService service;
 
-	private static final ThreadLocal<Map<Long, StatefulKnowledgeSession>> sessionStore = new ThreadLocal<>();
+	private static final ThreadLocal<Map<Long, KieSession>> sessionStore = new ThreadLocal<>();
 
 	private static final ThreadLocal<LocalTaskService> ltsStore = new ThreadLocal<>();
 	private static final ThreadLocal<GenericHTWorkItemHandler> htHandler = new ThreadLocal<>();
@@ -102,8 +99,8 @@ class BPMSessionManager {
 
 	}
 
-	// processId - KnowledgeBase Map
-	private Map<String, KnowledgeBase> processKnowledgeMap = new HashMap<>();
+	// processId - KieBase Map
+	private Map<String, KieBase> processKnowledgeMap = new HashMap<>();
 
 	private Logger logger = Logger.getLogger(BPMSessionManager.class);
 
@@ -113,9 +110,9 @@ class BPMSessionManager {
 	 *            (ID of the process to be initialized-- e.g invoice-process)
 	 * @return
 	 */
-	private StatefulKnowledgeSession getSession(String processId) {
+	private KieSession getSession(String processId) {
 
-		StatefulKnowledgeSession session = initializeSession(processId);
+		KieSession session = initializeSession(processId);
 
 		logger.debug("GETSESSION RETURNED SESSION: " + session.getId()
 				+ session.toString());
@@ -123,8 +120,8 @@ class BPMSessionManager {
 		return session;
 	}
 
-	private Map<Long, StatefulKnowledgeSession> getSessionStore() {
-		Map<Long, StatefulKnowledgeSession> sessionMap = sessionStore.get();
+	private Map<Long, KieSession> getSessionStore() {
+		Map<Long, KieSession> sessionMap = sessionStore.get();
 		if (sessionMap == null) {
 			synchronized (BPMSessionManager.class) {
 				if (sessionStore.get() == null) {
@@ -145,8 +142,8 @@ class BPMSessionManager {
 	 *            --Id of the session to be retrieved
 	 * @return
 	 */
-	private StatefulKnowledgeSession getSession(Long sessionId, String processId) {
-		StatefulKnowledgeSession session = null;
+	private KieSession getSession(Long sessionId, String processId) {
+		KieSession session = null;
 
 		if (getSessionStore().get(sessionId) != null) {
 			logger.debug("Retrieving from STORE:  session [" + sessionId
@@ -161,10 +158,10 @@ class BPMSessionManager {
 		return session;
 	}
 
-	private void registerWorkItemHandlers(StatefulKnowledgeSession session) {
+	private void registerWorkItemHandlers(KieSession session) {
 		
 		// ConsoleLogger
-		KnowledgeRuntimeLoggerFactory.newConsoleLogger(session);
+		KieLoggers.newConsoleLogger(session);
 
 		// register work item handlers
 		session.getWorkItemManager().registerWorkItemHandler("UpdateLocal",
@@ -196,14 +193,14 @@ class BPMSessionManager {
 		session.getWorkItemManager().registerWorkItemHandler("PioneerIntegration", 
 				new PioneerIntegrationWorkitemHandler());
 		
-		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
-				EmailServiceHelper.getProperty("mail.smtp.host"),
-				EmailServiceHelper.getProperty("mail.smtp.port"),
-				EmailServiceHelper.getProperty("mail.smtp.user"),
-				EmailServiceHelper.getProperty("mail.smtp.password"));
-		emailHandler.getConnection().setStartTls(true);
-		session.getWorkItemManager().registerWorkItemHandler("Email",
-				emailHandler);
+//		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
+//				EmailServiceHelper.getProperty("mail.smtp.host"),
+//				EmailServiceHelper.getProperty("mail.smtp.port"),
+//				EmailServiceHelper.getProperty("mail.smtp.user"),
+//				EmailServiceHelper.getProperty("mail.smtp.password"));
+//		emailHandler.getConnection().setStartTls(true);
+//		session.getWorkItemManager().registerWorkItemHandler("Email",
+//				emailHandler);
 
 		LocalTaskService taskClient = getTaskClient();
 		taskClient.connect();
@@ -250,7 +247,7 @@ class BPMSessionManager {
 	 * </ul>
 	 * <p/>
 	 * This will only change if other processes (e.g. notification processes)
-	 * linked to independent KnowledgeBases & therefore processes are started in
+	 * linked to independent KieBases & therefore processes are started in
 	 * code
 	 * 
 	 * <p/>
@@ -281,23 +278,23 @@ class BPMSessionManager {
 		return lts;
 	}
 
-	private KnowledgeBase getKnowledgeBase(String processId, boolean forceReload) {
+	private KieBase getKieBase(String processId, boolean forceReload) {
 
-		logger.debug("Loading knowledgebase for process: " + processId
+		logger.debug("Loading KieBase for process: " + processId
 				+ "; forceReload= " + forceReload);
-		KnowledgeBase kbase = processKnowledgeMap.get(processId);
+		KieBase kbase = processKnowledgeMap.get(processId);
 		if (kbase != null && !forceReload) {
 			return kbase;
 		}
 
-		throw new RuntimeException("Could not find Knowledgebase for process "
+		throw new RuntimeException("Could not find KieBase for process "
 				+ processId
 				+ ". Kindly report this issue to your administrator.");
 	}
 
 	/**
 	 * Loads multiple process resource files (BPMN, DRL etc)
-	 * within a single KnowledgeBase - and StatefulSession
+	 * within a single KieBase - and StatefulSession
 	 * <p>
 	 * At the moment we do not mix guvnor changesets and manual config files upload
 	 * <p> 
@@ -306,47 +303,49 @@ class BPMSessionManager {
 	 * @param types
 	 * @param rootProcess
 	 */
-	public KnowledgeBase loadKnowledge(List<byte[]> files, List<ResourceType> types,
+	public KieBase loadKnowledge(List<byte[]> files, List<ResourceType> types,
 			String rootProcess) {
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+		
+		KieHelper kieHelper = new KieHelper();
+		//KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		int i=0;
 		for(byte[] file: files){
 			Resource resource = ResourceFactory.newByteArrayResource(file);
-			kbuilder.add(resource, types.get(i));
+			kieHelper.addResource(resource, types.get(i));
 			++i;
 		}
 		
-		if(kbuilder.hasErrors()){
-			StringBuffer errors = new StringBuffer();
-			for(KnowledgeBuilderError error: kbuilder.getErrors()){
-				errors.append(error.getMessage()+"\n");
-			}
-			if(errors.length()>0){
-				throw new RuntimeException(errors.toString());
-			}
-		}
+//		if(kieHelper.hasErrors()){
+//			StringBuffer errors = new StringBuffer();
+//			for(KnowledgeBuilderError error: kbuilder.getErrors()){
+//				errors.append(error.getMessage()+"\n");
+//			}
+//			if(errors.length()>0){
+//				throw new RuntimeException(errors.toString());
+//			}
+//		}
 		
-		KnowledgeBase kbase = kbuilder.newKnowledgeBase();
-		Collection<org.drools.definition.process.Process> processes = kbase
+		KieBase kbase = kieHelper.build();
+		Collection<org.kie.api.definition.process.Process> processes = kbase
 				.getProcesses();
 
-		for (Process process : processes) {
+		for (org.kie.api.definition.process.Process process : processes) {
 			processKnowledgeMap.put(process.getId(), kbase);
 		}
 		
 		return kbase;
 	}
 	
-	public KnowledgeBase loadKnowledge(byte[] bytes, String processName) {
+	public KieBase loadKnowledge(byte[] bytes, String processName) {
 
-		KnowledgeBase kbase = null;
+		KieBase kbase = null;
 
 		Resource resourceset = ResourceFactory.newByteArrayResource(bytes);
 		KnowledgeAgent kagent = KnowledgeAgentFactory
 				.newKnowledgeAgent(processName);
 		kagent.applyChangeSet(resourceset);
 
-		kbase = kagent.getKnowledgeBase();
+		kbase = kagent.getKieBase();
 		
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
@@ -362,7 +361,7 @@ class BPMSessionManager {
 	}
 
 	private Environment getEnvironment() {
-		Environment env = KnowledgeBaseFactory.newEnvironment();
+		Environment env = KieBaseFactory.newEnvironment();
 		env.set(EnvironmentName.ENTITY_MANAGER_FACTORY,
 				DB.getEntityManagerFactory());
 		env.set(EnvironmentName.TRANSACTION_MANAGER,
@@ -372,26 +371,28 @@ class BPMSessionManager {
 	}
 
 	/**
-	 * Creates a StatefulKnowledgeSession
+	 * Creates a KieSession
 	 * 
-	 * @return {@link StatefulKnowledgeSession}
+	 * @return {@link KieSession}
 	 * @throws MalformedURLException
 	 */
-	private StatefulKnowledgeSession initializeSession(String processId) {
+	private KieSession initializeSession(String processId) {
 		return initializeSession(null, processId);
 	}
 
-	private StatefulKnowledgeSession initializeSession(Long sessionId,
+	private KieSession initializeSession(Long sessionId,
 			String processId) {
-		KnowledgeBase kbase = getKnowledgeBase(processId, false);
+		KieBase kbase = getKieBase(processId, false);
 		// Initializing a stateful session from JPAKnowledgeService
 		Environment env = getEnvironment();
 
-		StatefulKnowledgeSession session = null;
+		KieSession session = null;
 
 		if (sessionId == null) {
-			session = JPAKnowledgeService.newStatefulKnowledgeSession(kbase,
-					null, env);
+			session = JPAKnowledgeService.loadStatefulKnowledgeSession(id, kbase, configuration, environment);
+//			newKieSession(kbase,
+//					null, env);
+			
 			logger.debug(Thread.currentThread().getName()
 					+ ": Created new session [" + session.getId()
 					+ "] for process: [" + processId + "]");
@@ -399,7 +400,7 @@ class BPMSessionManager {
 			logger.debug(Thread.currentThread().getName()
 					+ ": Loading previous session [" + sessionId
 					+ "] for process: [" + processId + "]");
-			session = JPAKnowledgeService.loadStatefulKnowledgeSession(
+			session = JPAKnowledgeService.loadKieSession(
 					sessionId.intValue(), kbase, null, env);
 
 		}
@@ -445,7 +446,7 @@ class BPMSessionManager {
 	public void disposeSessions() {
 		logger.debug(Thread.currentThread().getName()
 				+ ": Disposing Sessions..............");
-		Map<Long, StatefulKnowledgeSession> sessionz = getSessionStore();
+		Map<Long, KieSession> sessionz = getSessionStore();
 
 		Set<Long> keys = sessionz.keySet();
 
@@ -484,13 +485,13 @@ class BPMSessionManager {
 	public ProcessInstance startProcess(String processId,
 			Map<String, Object> parameters, Document summary) {
 
-		StatefulKnowledgeSession session = getSession(processId);
+		KieSession session = getSession(processId);
 
 		return startProcess(session, processId, parameters, summary);
 	}
 
-	private ProcessInstance startProcess(StatefulKnowledgeSession session,
-			String processId, Map<String, Object> parameters, Document summary) {
+	private ProcessInstance startProcess(KieSession session,
+			String processId, Map<String, Object> parameters) {
 
 		logger.info(">>> Starting process " + processId + "; Doc=" + summary);
 		
@@ -519,7 +520,7 @@ class BPMSessionManager {
 		Task task = getTaskClient().getTask(taskId);
 
 		// initialize session - Each HT execution must run within an active
-		// StatefulKnowledgeSession
+		// KieSession
 		getSession(new Long(task.getTaskData().getProcessSessionId()), task
 				.getTaskData().getProcessId());
 
@@ -708,7 +709,7 @@ class BPMSessionManager {
 				
 				Long processInstanceId = task.getTaskData().getProcessInstanceId();
 
-				StatefulKnowledgeSession session = getSession(sessionId, task
+				KieSession session = getSession(sessionId, task
 						.getTaskData().getProcessId());
 				Map<String, Object> values = new HashMap<>();
 				org.jbpm.process.instance.ProcessInstance instance = (org.jbpm.process.instance.ProcessInstance) session
@@ -807,7 +808,7 @@ class BPMSessionManager {
 
 		Long sessionId = new Long(task.getTaskData().getProcessSessionId());
 
-		StatefulKnowledgeSession session = getSession(sessionId, task
+		KieSession session = getSession(sessionId, task
 				.getTaskData().getProcessId());
 
 		org.jbpm.process.instance.ProcessInstance instance = (org.jbpm.process.instance.ProcessInstance) session
@@ -869,7 +870,7 @@ class BPMSessionManager {
 	}
 
 	public Process getProcess(String processId) {
-		KnowledgeBase kbase = getKnowledgeBase(processId, false);
+		KieBase kbase = getKieBase(processId, false);
 
 		if (kbase != null) {
 			return kbase.getProcess(processId);
@@ -885,8 +886,8 @@ class BPMSessionManager {
 	 * 
 	 * @param processId
 	 */
-	public void unloadKnowledgeBase(String processId) {
-		KnowledgeBase kbase = processKnowledgeMap.get(processId);
+	public void unloadKieBase(String processId) {
+		KieBase kbase = processKnowledgeMap.get(processId);
 		processKnowledgeMap.remove(processId);
 
 		// other processes loaded with the process are still active and

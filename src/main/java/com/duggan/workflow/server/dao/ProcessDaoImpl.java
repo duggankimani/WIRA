@@ -7,7 +7,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.jbpm.task.Status;
+import org.kie.api.task.model.Status;
+import org.kie.internal.task.api.model.TaskEvent;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
@@ -28,27 +29,22 @@ import com.duggan.workflow.shared.model.TriggerType;
 
 public class ProcessDaoImpl extends BaseDaoImpl {
 
-	public ProcessDaoImpl(EntityManager em) {
-		super(em);
-	}
-
 	public void save(ProcessDefModel model) {
 
 		if (model.getId() != null) {
-			em.merge(model);
+			getEntityManager().merge(model);
 		} else {
-			em.persist(model);
+			getEntityManager().persist(model);
 		}
 
 	}
 
 	public ProcessDefModel getProcessDef(Long processDefId) {
-		return em.find(ProcessDefModel.class, processDefId);
+		return getEntityManager().find(ProcessDefModel.class, processDefId);
 	}
 
 	public ProcessDefModel getProcessDef(String processId) {
-		return getSingleResultOrNull(em
-				.createQuery(
+		return getSingleResultOrNull(getEntityManager().createQuery(
 						"FROM ProcessDefModel p "
 								+ "where p.isArchived=:isArchived "
 								+ "and p.processId=:processId")
@@ -58,8 +54,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 	@SuppressWarnings("unchecked")
 	public List<ProcessDefModel> getAllProcesses() {
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"FROM ProcessDefModel p where p.isArchived=:isArchived order by p.name")
 				.setParameter("isArchived", false).getResultList();
 	}
@@ -72,14 +67,13 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				DB.getAttachmentDao().delete(attachment);
 			}
 		}
-		em.remove(model);
+		getEntityManager().remove(model);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<ProcessDefModel> getProcessesForDocType(ADDocType type) {
 
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"" + "select new ProcessDefModel(" + "p.id,"
 								+ "p.name," + "p.processId,"
 								+ "p.isArchived,"
@@ -91,7 +85,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 								+ "where dt=:docType")
 				.setParameter("docType", type).getResultList();
 
-		// return em.createQuery("select new ProcessDefModel(" +
+		// return getEntityManager().createQuery("select new ProcessDefModel(" +
 		// "p.id," +
 		// "p.name," +
 		// "p.processId," +
@@ -106,7 +100,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	}
 
 	public void createStep(TaskStepModel step) {
-		em.persist(step);
+		getEntityManager().persist(step);
 	}
 
 	public List<TaskStepModel> getTaskSteps(String processId, Long nodeId) {
@@ -119,7 +113,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		hql = hql.concat(" order by sequenceNo");
 
-		Query query = em.createQuery(hql).setParameter("processId", processId);
+		Query query = getEntityManager().createQuery(hql).setParameter("processId", processId);
 
 		if (nodeId != null) {
 			query.setParameter("nodeId", nodeId);
@@ -138,7 +132,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			hql = hql.concat(" and t.nodeId is null");
 		}
 
-		Query query = em.createQuery(hql)
+		Query query = getEntityManager().createQuery(hql)
 				.setParameter("sequenceNo", sequenceNo)
 				.setParameter("processDefId", processDefId);
 
@@ -159,7 +153,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			hql = hql.concat(" and t.nodeId is null");
 		}
 
-		Query query = em.createQuery(hql)
+		Query query = getEntityManager().createQuery(hql)
 				.setParameter("sequenceNo", sequenceNo)
 				.setParameter("processDefId", processDefId);
 
@@ -180,7 +174,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			hql = hql.concat(" and t.nodeId is null");
 		}
 
-		Query query = em.createQuery(hql).setParameter("processDefId",
+		Query query = getEntityManager().createQuery(hql).setParameter("processDefId",
 				processDefId);
 
 		if (nodeId != null) {
@@ -192,15 +186,14 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<ADTrigger> getTriggers() {
-		Query query = em.createQuery("FROM ADTrigger t where isActive=:active")
+		Query query = getEntityManager().createQuery("FROM ADTrigger t where isActive=:active")
 				.setParameter("active", 1);
 
 		return getResultList(query);
 	}
 
 	public int getTaskCount(Long taskStepId, TriggerType type) {
-		Query query = em
-				.createQuery(
+		Query query = getEntityManager().createQuery(
 						"SELECT COUNT(t) from ADTaskStepTrigger t "
 								+ "where t.taskStep.id=:taskStepId "
 								+ "and t.type=:type")
@@ -214,8 +207,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 	public List<ADTaskStepTrigger> getTaskStepTriggers(Long taskStepId,
 			TriggerType type) {
-		Query query = em
-				.createQuery(
+		Query query = getEntityManager().createQuery(
 						"FROM ADTaskStepTrigger t where t.isActive=:active "
 								+ "and t.taskStep.id=:taskStepId and t.type=:type")
 				.setParameter("active", 1)
@@ -227,22 +219,22 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 	public void cascadeDeleteTrigger(ADTrigger po) {
 
-		Query query = em.createQuery(
+		Query query = getEntityManager().createQuery(
 				"delete ADTaskStepTrigger t where t.trigger=:trigger")
 				.setParameter("trigger", po);
 		query.executeUpdate();
 
-		em.remove(po);
+		getEntityManager().remove(po);
 	}
 
 	public void cascadeDelete(TaskStepModel taskStep) {
 
-		Query query = em.createQuery(
+		Query query = getEntityManager().createQuery(
 				"delete ADTaskStepTrigger t where t.taskStep=:taskStep")
 				.setParameter("taskStep", taskStep);
 		query.executeUpdate();
 
-		em.remove(taskStep);
+		getEntityManager().remove(taskStep);
 	}
 
 	public List<Object[]> getCurrentActualOwnersByProcessInstanceId(
@@ -253,7 +245,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				+ " where processinstanceid=? "
 				+ (isEqualToStatus ? " and status=?" : " and status!=?");
 
-		Query query = em.createNativeQuery(sql)
+		Query query = getEntityManager().createNativeQuery(sql)
 				.setParameter(1, processInstanceId)
 				.setParameter(2, targetStatus.name());
 
@@ -269,7 +261,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				+ " where processinstanceid=? "
 				+ (isEqualToStatus ? " and status=?" : " and status!=?");
 
-		Query query = em.createNativeQuery(sql)
+		Query query = getEntityManager().createNativeQuery(sql)
 				.setParameter(1, processInstanceId)
 				.setParameter(2, targetStatus.name());
 
@@ -283,7 +275,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		}
 
 		String sql = "select status from processinstancelog where processinstanceid=:processInstanceId";
-		Number status = getSingleResultOrNull(em.createNativeQuery(sql)
+		Number status = getSingleResultOrNull(getEntityManager().createNativeQuery(sql)
 				.setParameter("processInstanceId", processInstanceId));
 
 		return status == null ? -1 : status.intValue();
@@ -291,7 +283,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 	public ADTaskNotification getTaskNotificationById(Long id) {
 
-		return getSingleResultOrNull(em.createQuery(
+		return getSingleResultOrNull(getEntityManager().createQuery(
 				"from ADTaskNotification t where t.id=:id").setParameter("id",
 				id));
 	}
@@ -322,7 +314,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			jpql.append(" and t.nodeId=:nodeId");
 		}
 		
-		Query query = em.createQuery(jpql.toString())
+		Query query = getEntityManager().createQuery(jpql.toString())
 				.setParameter("processDefId", processDefId)
 				.setParameter("action", action)
 				.setParameter("category", category);
@@ -347,14 +339,14 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		}
 
 		List<TaskLog> logs = new ArrayList<>();
-		String sql = "select t.id,t.status,t.createdon, t.completedon, t.activationtime,t.expirationtime,"
+		String sql = "select t.id,t.status,t.createdon, te.logtime, t.activationtime,t.expirationtime,"
 				+ "t.processinstanceid, "
-				+ "t.actualowner_id, i.text from task t "
+				+ "t.actualowner_id, t.name from task t "
+				+ "inner join taskevent te on (te.taskid=t.id) "
 				//+ "left join peopleassignments_potowners p  on p.task_id=t.id "
-				+ "inner join i18ntext i on i.task_names_id=t.id "
-				+ "where processinstanceid=:processinstanceid order by t.id";
+				+ "and t.processinstanceid=:processinstanceid order by t.id";
 
-		Query query = em.createNativeQuery(sql)
+		Query query = getEntityManager().createNativeQuery(sql)
 				.setParameter("processinstanceid", processInstanceId);
 
 		List<Object[]> rows = getResultList(query);
@@ -470,7 +462,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			
 			sql = sql+ " order by l.processinstanceid desc";
 		
-		Query query = em.createNativeQuery(sql);
+		Query query = getEntityManager().createNativeQuery(sql);
 		if(filter.getProcessId()!=null){
 			query.setParameter("processId", filter.getProcessId());
 		}
@@ -543,12 +535,12 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<ADProcessCategory> getAllProcessCategories() {
-		return getResultList(em.createQuery("FROM ADProcessCategory where isActive=1"));
+		return getResultList(getEntityManager().createQuery("FROM ADProcessCategory where isActive=1"));
 	}
 
 	public ADTrigger getTrigger(String triggerName) {
 		
-		return getSingleResultOrNull(em.createQuery("FROM ADTrigger where name=:name")
+		return getSingleResultOrNull(getEntityManager().createQuery("FROM ADTrigger where name=:name")
 				.setParameter("name", triggerName));
 	}
 

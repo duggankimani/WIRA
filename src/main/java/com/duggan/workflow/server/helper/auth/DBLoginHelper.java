@@ -127,9 +127,12 @@ public class DBLoginHelper implements LoginIntf{
 		
 		User user = new User();
 		
-		if(htuser.getId()!=null){
-			user = dao.getUser(htuser.getUserId());
+		User po = dao.getUser(htuser.getUserId());
+		
+		if(po!=null){
+			user = po;
 		}
+		
 		
 		user.setId(htuser.getId());
 		user.setArchived(false);
@@ -159,11 +162,15 @@ public class DBLoginHelper implements LoginIntf{
 	}
 
 	private Group get(UserGroup usergroup) {
-		
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		Group group = new Group();
 		if(usergroup.getId()!=null){
-			UserGroupDaoImpl dao = DB.getUserGroupDao();
 			group = dao.getGroup(usergroup.getName());
+		}else if(usergroup.getName()!=null){
+			Group po = dao.getGroup(usergroup.getName());
+			if(po!=null){
+				group = po;
+			}
 		}
 		group.setFullName(usergroup.getFullName());
 		group.setName(usergroup.getName());

@@ -8,7 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import com.duggan.workflow.server.dao.model.PO;
+import com.duggan.workflow.server.db.DB;
 
 /**
  * No guice injection possible in these classes since initialization is performed manually 
@@ -18,19 +21,19 @@ import com.duggan.workflow.server.dao.model.PO;
  *
  */
 public class BaseDaoImpl {
-
-	protected EntityManager em;
 	
-	public BaseDaoImpl(EntityManager em){
-		this.em = em;
+	protected Logger log = Logger.getLogger(getClass());
+	
+	public EntityManager getEntityManager(){
+		return DB.getEntityManager();
 	}
 		
 	public void save(PO po){
-		em.persist(po);
+		getEntityManager().persist(po);
 	}
 	
 	public void delete(PO po){
-		em.remove(po);
+		getEntityManager().remove(po);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -72,7 +75,7 @@ public class BaseDaoImpl {
 	
 	public <T> T findByRef(Class<?> clazz, String refId, boolean throwExceptionIfNull) {
 		T po = getSingleResultOrNull(
-				em.createQuery("from "+clazz.getName()+" u where u.refId=:refId")
+				getEntityManager().createQuery("from "+clazz.getName()+" u where u.refId=:refId")
 				.setParameter("refId", refId));
 		
 		return po;
@@ -96,7 +99,7 @@ public class BaseDaoImpl {
 				buff.append(" and "+key+"=:"+key);
 			}
 		}
-		Query query = em.createQuery(buff.toString())
+		Query query = getEntityManager().createQuery(buff.toString())
 				.setParameter("refId", refId);
 		//Params
 		if(params!=null){
@@ -113,6 +116,6 @@ public class BaseDaoImpl {
 	
 	public <T> T getById(Class<T> clazz, long id){
 		
-		return em.find(clazz, id);
+		return getEntityManager().find(clazz, id);
 	}
 }

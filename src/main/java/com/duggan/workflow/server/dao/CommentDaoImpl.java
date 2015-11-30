@@ -5,31 +5,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.CommentModel;
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 
-public class CommentDaoImpl {
-
-	EntityManager em;
-
-	public CommentDaoImpl(EntityManager em) {
-		this.em = em;
-	}
+public class CommentDaoImpl extends BaseDaoImpl {
 
 	public CommentModel getComment(Long id) {
 
-		List lst = em.createQuery("FROM CommentModel n where id= :id")
+		List lst = getEntityManager()
+				.createQuery("FROM CommentModel n where id= :id")
 				.setParameter("id", id).getResultList();
 
 		if (lst.size() > 0) {
@@ -46,21 +38,20 @@ public class CommentDaoImpl {
 			comment.setUpdated(new Date());
 			comment.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
-		em.persist(comment);
+		getEntityManager().persist(comment);
 		return comment;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<CommentModel> getAllComments(String userId) {
 
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"FROM CommentModel n where n.userId=:userId order by created desc")
 				.setParameter("userId", userId).getResultList();
 	}
 
 	public void delete(Long id) {
-		em.remove(getComment(id));
+		getEntityManager().remove(getComment(id));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,8 +61,7 @@ public class CommentDaoImpl {
 			return getAllComments();
 		}
 
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"FROM CommentModel n where n.documentId=:documentId order by created desc")
 				.setParameter("documentId", documentId).getResultList();
 
@@ -84,8 +74,7 @@ public class CommentDaoImpl {
 			return getAllComments();
 		}
 
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"FROM CommentModel n where n.docRefId=:docRefId order by created desc")
 				.setParameter("docRefId", docRefId).getResultList();
 
@@ -121,7 +110,7 @@ public class CommentDaoImpl {
 						+ "( potowners.entity_id = ? or potowners.entity_id in (?) )) "
 						+ "and c.created>? " + " order by c.created desc");
 
-		Query query = em.createNativeQuery(hql.toString())
+		Query query = getEntityManager().createNativeQuery(hql.toString())
 				.setParameter(1, userId).setParameter(2, userId)
 				.setParameter(3, userId).setParameter(4, groupsIds)
 				.setParameter(5, DateUtils.addDays(new Date(), -30));
@@ -139,8 +128,7 @@ public class CommentDaoImpl {
 		}
 
 		@SuppressWarnings("unchecked")
-		List<CommentModel> comments = em
-				.createQuery("FROM CommentModel where id in (:ids)")
+		List<CommentModel> comments = getEntityManager().createQuery("FROM CommentModel where id in (:ids)")
 				.setParameter("ids", ids).getResultList();
 
 		return comments;
@@ -156,7 +144,8 @@ public class CommentDaoImpl {
 				+ "(potowners.task_id=t.id) "
 				+ "where t.archived = 0 and d.id=:documentId";
 
-		Query query = em.createNativeQuery(sql).setParameter("documentId", documentId);
+		Query query = getEntityManager().createNativeQuery(sql).setParameter(
+				"documentId", documentId);
 		List<String> usersIds = query.getResultList();
 
 		List<HTUser> users = new ArrayList<>();
@@ -169,12 +158,14 @@ public class CommentDaoImpl {
 			}
 
 		}
-		
-		String createdBy = (String)em.createNativeQuery("select createdBy from localdocument where id="+documentId).getSingleResult();
-		if(!currentUser.getUserId().equals(createdBy)){
+
+		String createdBy = (String) getEntityManager().createNativeQuery(
+				"select createdBy from localdocument where id=" + documentId)
+				.getSingleResult();
+		if (!currentUser.getUserId().equals(createdBy)) {
 			users.add(new DBLoginHelper().getUser(createdBy));
 		}
-		
+
 		return users;
 
 	}

@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jbpm.task.Task;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
@@ -68,7 +68,7 @@ public class TestGetProcessData {
 		Map<String, Value> values = new HashMap<String, Value>();
 		if(values!=null){
 			long processInstanceId=0L;
-			Task task = JBPMHelper.get().getTaskClient().getTask(taskId);
+			Task task = JBPMHelper.get().getTaskClient().getTaskById(taskId);
 			processInstanceId = task.getTaskData().getProcessInstanceId();
 						
 			Document document = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,false);

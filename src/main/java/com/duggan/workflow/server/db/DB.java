@@ -10,7 +10,6 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.apache.onami.persist.EntityManagerProvider;
-import org.drools.runtime.Environment;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;
@@ -95,18 +94,12 @@ public class DB {
 
 		Session session = (Session) em.getDelegate();
 		SessionImpl sessionImpl = (SessionImpl) session;
-//		StackTraceElement[] stackTraceElements = Thread.currentThread()
-//				.getStackTrace();
-//		StackTraceElement el = stackTraceElements[stackTraceElements.length - 2];
 		try {
 			
 			/**
 			 * A hack to fix LOB loading error : Cannot load LOB in autocommit mode - AttachmentDaoImpl
 			 */
 			boolean autoCommit = sessionImpl.connection().getAutoCommit();
-//			log.info(el.getClassName() + "." + el.getMethodName()
-//					+ " EntityManager return  >> " + em + " :: Autocommit = "
-//					+ autoCommit);
 			if(autoCommit){
 				sessionImpl.connection().setAutoCommit(false);
 			}
@@ -225,33 +218,33 @@ public class DB {
 	}
 
 	public static DocumentDaoImpl getDocumentDao() {
-		return factory().getDocumentDao(getEntityManager());
+		return factory().getDocumentDao();
 	}
 
 	public static ErrorDaoImpl getErrorDao() {
 
-		return factory().getErrorDao(getEntityManager());
+		return factory().getErrorDao();
 	}
 
 	public static NotificationDaoImpl getNotificationDao() {
 
-		return factory().getNotificationDao(getEntityManager());
+		return factory().getNotificationDao();
 	}
 
 	public static CommentDaoImpl getCommentDao() {
-		return factory().getCommentDao(getEntityManager());
+		return factory().getCommentDao();
 	}
 
 	public static ProcessDaoImpl getProcessDao() {
-		return factory().getProcessDao(getEntityManager());
+		return factory().getProcessDao();
 	}
 
 	public static UserGroupDaoImpl getUserGroupDao() {
-		return factory().getUserGroupDaoImpl(getEntityManager());
+		return factory().getUserGroupDaoImpl();
 	}
 
 	public static FormDaoImpl getFormDao() {
-		return factory().getFormDaoImpl(getEntityManager());
+		return factory().getFormDaoImpl();
 	}
 
 	private static void closeFactory() {
@@ -282,12 +275,12 @@ public class DB {
 
 	public static AttachmentDaoImpl getAttachmentDao() {
 
-		return factory().getAttachmentDaoImpl(getEntityManager());
+		return factory().getAttachmentDaoImpl();
 	}
 
 	public static DSConfigDaoImpl getDSConfigDao() {
 
-		return factory().getDSConfigDaoImpl(getEntityManager());
+		return factory().getDSConfigDaoImpl();
 	}
 
 	public static Connection getConnection(String connectionName) {
@@ -316,19 +309,19 @@ public class DB {
 	}
 
 	public static DashboardDaoImpl getDashboardDao() {
-		return factory().getDashboardDaoImpl(getEntityManager());
+		return factory().getDashboardDaoImpl();
 	}
 
 	public static SettingsDaoImpl getSettingsDao() {
-		return factory().getSettingsDaoImpl(getEntityManager());
+		return factory().getSettingsDaoImpl();
 	}
 
 	public static OutputDocumentDao getOutputDocDao() {
-		return factory().getOuputDocDaoImpl(getEntityManager());
+		return factory().getOuputDocDaoImpl();
 	}
 
 	public static CatalogDaoImpl getCatalogDao() {
-		return factory().getCatalogDaoImp(getEntityManager());
+		return factory().getCatalogDaoImp();
 	}
 
 	public static String getTrxStatus() {

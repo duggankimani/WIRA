@@ -2,12 +2,10 @@ package com.duggan.workflow.server.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
@@ -18,13 +16,9 @@ import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 public class CatalogDaoImpl extends BaseDaoImpl{
 
 	Logger log = Logger.getLogger(CatalogDaoImpl.class);
-	
-	public CatalogDaoImpl(EntityManager em) {
-		super(em);
-	}
 
 	public List<CatalogModel> getCatalogs() {
-		return getResultList(em.createQuery("FROM CatalogModel c where c.isActive=1"));
+		return getResultList(getEntityManager().createQuery("FROM CatalogModel c where c.isActive=1"));
 	}
 
 	public void generateTable(Catalog model) {
@@ -57,22 +51,22 @@ public class CatalogDaoImpl extends BaseDaoImpl{
 		log.debug("Exec DDL: "+create);
 		
 		//DROP
-		em.createNativeQuery(drop).executeUpdate();
+		getEntityManager().createNativeQuery(drop).executeUpdate();
 		//CREATE
-		em.createNativeQuery(create.toString()).executeUpdate();
+		getEntityManager().createNativeQuery(create.toString()).executeUpdate();
 		
 	}
 
 	public List<Object[]> getData(String tableName,String comma_Separated_fieldNames) {
 		
-		return getResultList(em.createNativeQuery("select "+comma_Separated_fieldNames+" from "+tableName));
+		return getResultList(getEntityManager().createNativeQuery("select "+comma_Separated_fieldNames+" from "+tableName));
 	}
 
 	public void save(String tableName, List<CatalogColumn> columns,
 			List<DocumentLine> lines) {
 		String delete = "DELETE FROM "+tableName;
 		log.debug("Exec DML: "+delete);
-		em.createNativeQuery(delete).executeUpdate();
+		getEntityManager().createNativeQuery(delete).executeUpdate();
 		
 		StringBuffer buffer = new StringBuffer("INSERT INTO "+tableName+" (");
 		StringBuffer values = new StringBuffer(" VALUES (");
@@ -101,7 +95,7 @@ public class CatalogDaoImpl extends BaseDaoImpl{
 		
 		//Document Line
 		for(DocumentLine line: lines){
-			Query query = em.createNativeQuery(buffer.toString());
+			Query query = getEntityManager().createNativeQuery(buffer.toString());
 			for(CatalogColumn col: columns){
 				if(col.isAutoIncrement()){
 					continue;
@@ -126,7 +120,7 @@ public class CatalogDaoImpl extends BaseDaoImpl{
 	public int getCount(String tableName) {
 		
 		Number number = getSingleResultOrNull(
-				em.createNativeQuery("select count(*) from "+tableName));
+				getEntityManager().createNativeQuery("select count(*) from "+tableName));
 		return number.intValue();
 	}
 }

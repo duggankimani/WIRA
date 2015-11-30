@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.drools.definition.process.Node;
-import org.jbpm.task.Task;
+import org.kie.api.definition.process.Node;
+import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -29,7 +29,6 @@ import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocumentType;

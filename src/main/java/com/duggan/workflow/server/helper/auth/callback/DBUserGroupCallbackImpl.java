@@ -6,14 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jbpm.task.identity.UserGroupCallback;
+import org.kie.internal.task.api.UserGroupCallback;
 
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 
 public class DBUserGroupCallbackImpl implements UserGroupCallback{
-
 	private static Logger logger = Logger.getLogger(DBUserGroupCallbackImpl.class);
 	
 	@Override

@@ -7,14 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.drools.process.instance.WorkItemHandler;
-import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemManager;
+import org.kie.api.runtime.process.WorkItem;
+import org.kie.api.runtime.process.WorkItemHandler;
+import org.kie.api.runtime.process.WorkItemManager;
 
 import com.duggan.workflow.server.rest.service.impl.OutgoingRequestImpl;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.Value;
 

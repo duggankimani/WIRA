@@ -25,14 +25,10 @@ public class FormDaoImpl extends BaseDaoImpl {
 
 	static final Logger logger= Logger.getLogger(FormDaoImpl.class);
 	
-	public FormDaoImpl(EntityManager em) {
-		super(em);
-	}
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<ADForm> getAllForms(Long processDefId){
 		
-		List lst = em.createQuery("from ADForm f where f.processDefId=:processDefId order by f.caption")
+		List lst = getEntityManager().createQuery("from ADForm f where f.processDefId=:processDefId order by f.caption")
 				.setParameter("processDefId", processDefId)
 				.getResultList();
 		
@@ -42,19 +38,19 @@ public class FormDaoImpl extends BaseDaoImpl {
 	
 	public ADForm getForm(Long id){
 		
-		return em.find(ADForm.class, id);
+		return getEntityManager().find(ADForm.class, id);
 	}
 	
 	public ADField getField(Long fieldId){
-		return em.find(ADField.class, fieldId);
+		return getEntityManager().find(ADField.class, fieldId);
 	}
 	
 	public ADValue getValue(Long valueId){
-		return em.find(ADValue.class, valueId);
+		return getEntityManager().find(ADValue.class, valueId);
 	}
 	
 	public ADProperty getProperty(Long propertyId){
-		return em.find(ADProperty.class, propertyId);
+		return getEntityManager().find(ADProperty.class, propertyId);
 	}
 	
 	@Override
@@ -109,7 +105,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 						}
 					}
 				}
-			em.merge(form);
+			getEntityManager().merge(form);
 		}
 	}
 	
@@ -132,7 +128,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	public List<ADField> getFields(Long parentId) {
 		
 		@SuppressWarnings("unchecked")
-		List<ADField> fields = em.createQuery("FROM ADField fld where fld.form.id=:id order by fld.position")
+		List<ADField> fields = getEntityManager().createQuery("FROM ADField fld where fld.form.id=:id order by fld.position")
 				.setParameter("id", parentId).getResultList();
 		
 		return fields;
@@ -163,10 +159,10 @@ public class FormDaoImpl extends BaseDaoImpl {
 		
 		hql = hql.concat(" order by position");
 		
-//		System.err.println("PrevPos = "+previousPos);
-//		System.err.println("NewPos = "+newPos);
-//		System.err.println(hql);
-		fields = em.createQuery(hql)
+//		SystgetEntityManager().err.println("PrevPos = "+previousPos);
+//		SystgetEntityManager().err.println("NewPos = "+newPos);
+//		SystgetEntityManager().err.println(hql);
+		fields = getEntityManager().createQuery(hql)
 				.setParameter("id", fld.getForm().getId())
 				.setParameter("newPos", newPos)
 				.setParameter("prevPos", previousPos)				
@@ -185,7 +181,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 				field.setPosition(newPos+count);
 			}
 			
-//			System.err.println(">>Field :: Id = "+field.getId()+"; Previous = "+previousStr+
+//			SystgetEntityManager().err.println(">>Field :: Id = "+field.getId()+"; Previous = "+previousStr+
 //					" Pos - "+field.getPosition());
 		}		
 		
@@ -195,7 +191,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	public List<ADKeyValuePair> getKeyValuePairs(String type) {
 		
 		@SuppressWarnings("unchecked")
-		List<ADKeyValuePair> pairs = em.createQuery("FROM ADKeyValuePair p where p.referenceType=:type")
+		List<ADKeyValuePair> pairs = getEntityManager().createQuery("FROM ADKeyValuePair p where p.referenceType=:type")
 		.setParameter("type", type).getResultList();
 		
 		return pairs;
@@ -207,7 +203,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 		BigInteger val = null;
 		
 		try{
-			val = (BigInteger)em.createNativeQuery(sql)
+			val = (BigInteger)getEntityManager().createNativeQuery(sql)
 					.setParameter("formName", formName)
 					.getSingleResult();
 			
@@ -220,7 +216,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 
 	public boolean exists(String name) {
 		String sql = "select count(id) from ADForm f where f.name=:formName";
-		Query query = em.createQuery(sql).setParameter("formName", name);
+		Query query = getEntityManager().createQuery(sql).setParameter("formName", name);
 		
 		Long result = (Long)query.getSingleResult();
 		

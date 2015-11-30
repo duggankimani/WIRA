@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class ADProcessCategory extends PO{
 	
 	private String index;
 	
-	@OneToMany
+	@OneToMany(mappedBy="category", fetch=FetchType.LAZY, orphanRemoval=false)
 	private Set<ADDocType> docTypes = new HashSet<>(); 
 
 	public String getName() {

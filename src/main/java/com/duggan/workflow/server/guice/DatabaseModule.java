@@ -4,11 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.onami.persist.EntityManagerProvider;
 import org.apache.onami.persist.PersistenceModule;
 
 import com.duggan.workflow.server.db.DB;
-import com.google.inject.Key;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
@@ -20,10 +18,6 @@ public class DatabaseModule extends PersistenceModule {
 		bindContainerManagedPersistenceUnit(provideEntityManagerFactory())
 				.annotatedWith(WiraPU.class).useGlobalTransactionProvidedBy(
 						UserTransactionProvider.class);
-
-		bind(EntityManager.class).annotatedWith(WiraPU.class).toProvider(
-				Key.get(EntityManagerProvider.class, WiraPU.class));
-
 
 		// DB Class
 		requestStaticInjection(DB.class);
