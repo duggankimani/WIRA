@@ -4,11 +4,19 @@ import org.jbpm.executor.api.Executor;
 import org.jbpm.executor.api.ExecutorQueryService;
 import org.jbpm.executor.api.ExecutorRequestAdminService;
 
+import com.google.inject.Inject;
+
 public class ExecutorFactory {
 
 	private static Executor executor;
 	private static ExecutorQueryService queryService;
 	private static ExecutorRequestAdminService adminService;
+	
+	@Inject static ExecutorTransactionManagementService executorTransactionManagementService;
+
+	public static ExecutorTransactionManagementService getExecutorTransactionManagementService() {
+		return executorTransactionManagementService;
+	}
 
 	public static Executor getExecutor() {
 		if (executor == null) {

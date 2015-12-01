@@ -40,18 +40,17 @@ public class ExecutorRunnable extends Thread {
     	executeInTrx();
     }
 
+    /**
+     * Begin And End Units of work in a transaction
+     */
     private void executeInTrx() {
     	try{
-    		DB.beginTransaction();
+    		ExecutorFactory.getExecutorTransactionManagementService().begin();
     		execute();
-    		DB.commitTransaction();
     	}catch(Exception e){
-    		logger.severe("############[1] Error : "+e.getMessage());
-    		try{
-    			DB.rollback();
-    		}catch(Exception f){logger.severe("############ RollbackError : "+f.getMessage());}
+    		e.printStackTrace();
     	}finally{
-    		DB.closeSession();
+    		ExecutorFactory.getExecutorTransactionManagementService().end();
     	}
 	}
 

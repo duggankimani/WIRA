@@ -21,6 +21,10 @@ public class DatabaseModule extends PersistenceModule {
 
 		// DB Class
 		requestStaticInjection(DB.class);
+		
+//		bind(ExecutorTransactionManagementService.class);
+//		requestStaticInjection(ExecutorFactory.class);
+		
 	}
 
 	/**
