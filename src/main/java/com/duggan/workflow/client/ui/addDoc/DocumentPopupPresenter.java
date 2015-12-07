@@ -1,18 +1,19 @@
 package com.duggan.workflow.client.ui.addDoc;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -34,24 +35,15 @@ public class DocumentPopupPresenter extends
 		void addSeparator(String category);
 
 		void addContent(String string);
+
+		void setData(List<ProcessCategory> categories);
 	}
 	
 	@Inject
 	public DocumentPopupPresenter(final EventBus eventBus, final MyView view, Provider<DocTypeItemPresenter> docTypeProvider) {
 		super(eventBus, view);
 		docTypeFactory = new StandardProvider<DocTypeItemPresenter>(docTypeProvider);
-	}
-
-	@Override
-	protected void onBind() {
-		super.onBind();
-	}
-	
-	@Override
-	protected void onReset() {
-		super.onReset();
-	}
-	
+	}	
 	
 	@Override
 	protected void onReveal() {
@@ -79,6 +71,7 @@ public class DocumentPopupPresenter extends
 						return o1Category.compareTo(o2Category);
 					}
 				});
+				
 				setDocumentItems(types);
 			}
 		});
@@ -87,27 +80,67 @@ public class DocumentPopupPresenter extends
 	public void setDocumentItems(List<DocumentType> types){
 		this.setInSlot(DOCITEM_SLOT, null);
 		
+		List<ProcessCategory> categories  = new ArrayList<ProcessCategory>();
+		
 		String category="";
+		ProcessCategory processCat = new ProcessCategory();
 		for(final DocumentType type : types) {
 			if(type.getCategory()!=null && !category.equals(type.getCategory())){
 				category = type.getCategory();
-				getView().addSeparator(category);
+				//getView().addSeparator(category);
+				processCat = new ProcessCategory();
+				processCat.setName(category);
+				categories.add(processCat);
 			}else if(type.getCategory()==null && !category.equals("NULL")){
-				category="NULL";
-				getView().addSeparator("General");
+				category="General";
+				//getView().addSeparator("General");
+				processCat = new ProcessCategory();
+				processCat.setName(category);
+				categories.add(processCat);
 			}
 			
-			docTypeFactory.get(new ServiceCallback<DocTypeItemPresenter>() {
-				@Override
-				public void processResult(DocTypeItemPresenter result) {
-					result.setDocumentTypes(type);
-					DocumentPopupPresenter.this.addToSlot(DOCITEM_SLOT, result);
-				}
-			});
+			processCat.addChild(type);
+			
+//			docTypeFactory.get(new ServiceCallback<DocTypeItemPresenter>() {
+//				@Override
+//				public void processResult(DocTypeItemPresenter result) {
+//					result.setDocumentTypes(type);
+//					DocumentPopupPresenter.this.addToSlot(DOCITEM_SLOT, result);
+//				}
+//			});
 		}
 		
 		if(types.size()==0){
 			getView().addContent("There are no processes assigned to you.");
+		}else{
+			getView().setData(categories);
 		}
 	}
+	
+//	public void setDocumentItems(List<DocumentType> types){
+//		this.setInSlot(DOCITEM_SLOT, null);
+//		
+//		String category="";
+//		for(final DocumentType type : types) {
+//			if(type.getCategory()!=null && !category.equals(type.getCategory())){
+//				category = type.getCategory();
+//				getView().addSeparator(category);
+//			}else if(type.getCategory()==null && !category.equals("NULL")){
+//				category="NULL";
+//				getView().addSeparator("General");
+//			}
+//			
+//			docTypeFactory.get(new ServiceCallback<DocTypeItemPresenter>() {
+//				@Override
+//				public void processResult(DocTypeItemPresenter result) {
+//					result.setDocumentTypes(type);
+//					DocumentPopupPresenter.this.addToSlot(DOCITEM_SLOT, result);
+//				}
+//			});
+//		}
+//		
+//		if(types.size()==0){
+//			getView().addContent("There are no processes assigned to you.");
+//		}
+//	}
 }

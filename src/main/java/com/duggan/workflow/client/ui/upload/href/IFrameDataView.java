@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.upload.href;
 
-import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,7 +10,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,6 +25,8 @@ public class IFrameDataView extends PopupViewImpl implements
 	public interface Binder extends UiBinder<Widget, IFrameDataView> {
 	}
 
+	final Binder binder = GWT.create(Binder.class);
+	
 //	@UiField Button btnDone;
 //	@UiField Button btnCancel;
 	@UiField PopupPanel uploaderDialog;
@@ -36,9 +36,9 @@ public class IFrameDataView extends PopupViewImpl implements
 	@UiField SpanElement spnHeader;
 		
 	@Inject
-	public IFrameDataView(final EventBus eventBus, final Binder binder) {
+	public IFrameDataView(final EventBus eventBus) {
 		super(eventBus);
-		
+		assert binder!=null;
 		widget = binder.createAndBindUi(this);
 		
 		aClose.addClickHandler(new ClickHandler() {

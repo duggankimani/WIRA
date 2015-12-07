@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.model;
 
 
-public class ProcessCategory extends SerializableObj implements Listable{
+
+public class ProcessCategory extends IsProcessDisplay{
 
 	private Long id;
 	private String name;
@@ -37,5 +38,9 @@ public class ProcessCategory extends SerializableObj implements Listable{
 	@Override
 	public String getDisplayName() {
 		return name;
+	}
+
+	public void addChild(DocumentType type) {
+		children.add(type);
 	}
 }

@@ -1,8 +1,7 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 
-public class DocumentType implements Listable, Serializable{
+public class DocumentType extends IsProcessDisplay{
 
 	/**
 	 * 
