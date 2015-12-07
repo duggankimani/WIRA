@@ -122,7 +122,7 @@ public class HTUser implements Listable,Serializable {
 
 	public boolean isAdmin() {
 
-		return hasGroup("admin");
+		return hasGroup("admin") || hasGroup("Administrator");
 	}
 	
 	@Override

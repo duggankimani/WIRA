@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent.AdminPageLoadHandler;
@@ -34,63 +36,86 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class HeaderPresenter extends PresenterWidget<HeaderPresenter.IHeaderView> 
-implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAlertsHandler{
+public class HeaderPresenter extends
+		PresenterWidget<HeaderPresenter.IHeaderView> implements
+		AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler,
+		LoadAlertsHandler {
 
 	public interface IHeaderView extends View {
 		HasClickHandlers getLogout();
+
 		void setValues(String userNames, String userGroups, String orgName);
+
 		Anchor getNotificationsButton();
+
 		void setPopupVisible();
+
 		void setCount(Integer count);
+
 		HasBlurHandlers getpopupContainer();
+
 		void setLoading(boolean b);
+
 		void setAdminPageLookAndFeel(boolean isAdminPage);
+
 		void changeFocus();
+
 		void showAdminLink(boolean admin);
+
 		void setVersionInfo(Date created, String date, String version);
+
 		void setImage(HTUser currentUser);
 	}
 
-	@Inject DispatchAsync dispatcher;
-	
-	@Inject PlaceManager placeManager;
-	
-	@Inject NotificationsPresenter notifications;
-	
-	boolean onFocus =true;
-	
-	
+	@Inject
+	DispatchAsync dispatcher;
+
+	@Inject
+	PlaceManager placeManager;
+
+	@Inject
+	NotificationsPresenter notifications;
+
+	boolean onFocus = true;
+
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> NOTIFICATIONS_SLOT = new Type<RevealContentHandler<?>>();
 
-	
+	private CurrentUser currentUser;
+
+	private Version version;
+
 	@Inject
-	public HeaderPresenter(final EventBus eventBus, final IHeaderView view) {
+	public HeaderPresenter(final EventBus eventBus, final IHeaderView view,
+			final CurrentUser currentUser, final Version version) {
 		super(eventBus, view);
+		this.currentUser = currentUser;
+		this.version = version;
 		alertTimer.scheduleRepeating(alertReloadInterval);
 	}
 
-	
-	static int alertReloadInterval = 60 * 1000 * 5; //5 mins
-	static long lastLoad=0;
-    private Timer alertTimer = new Timer() {
+	static int alertReloadInterval = 60 * 1000 * 5; // 5 mins
+	static long lastLoad = 0;
+	private Timer alertTimer = new Timer() {
 
-        @Override
-        public void run() {
-            loadAlertCount();
-        }
-    };
-    
+		@Override
+		public void run() {
+			loadAlertCount();
+		}
+	};
+
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -104,90 +129,101 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 				logout();
 			}
 		});
-		
+
 		getView().getNotificationsButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				//Clicks must be atleast 5 min apart
+				// Clicks must be atleast 5 min apart
 				long currentTime = System.currentTimeMillis();
-				if((currentTime-lastLoad)> alertReloadInterval){
-					lastLoad=currentTime;
-				}else{
+				if ((currentTime - lastLoad) > alertReloadInterval) {
+					lastLoad = currentTime;
+				} else {
 					return;
 				}
-				
+
 				loadAlerts();
 			}
 		});
 	}
 
 	protected void loadAlerts() {
-		
+
 		dispatcher.execute(new GetNotificationsAction(AppContext.getUserId()),
 				new TaskServiceCallback<GetNotificationsActionResult>() {
-				
-			@Override
-			public void processResult(
-					GetNotificationsActionResult notificationsResult) {
 
-				assert notificationsResult!=null;
-				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
-				getView().setLoading(false);
-			}
-		});
+					@Override
+					public void processResult(
+							GetNotificationsActionResult notificationsResult) {
+
+						assert notificationsResult != null;
+						fireEvent(new NotificationsLoadEvent(
+								notificationsResult.getNotifications()));
+						getView().setLoading(false);
+					}
+				});
 	}
 
 	/**
-	 * Called too many times - reloading context/ alert counts from here
-	 * slows the application down.
+	 * Called too many times - reloading context/ alert counts from here slows
+	 * the application down.
 	 * 
 	 * TODO: Find Out why
 	 */
 	@Override
-	protected void onReset() {		
+	protected void onReset() {
 		super.onReset();
 		setInSlot(NOTIFICATIONS_SLOT, notifications);
-//		loadAlertCount();
-//		AppContext.reloadContext();
+		// loadAlertCount();
+		// AppContext.reloadContext();
 	}
-	
+
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		HTUser user = currentUser.getUser();
+		getView().setImage(user);
+		getView().showAdminLink(user.isAdmin());
+		getView().setValues(user.getSurname(), user.getGroupsAsString(),
+				AppContext.getOrganizationName());
+		getView().setVersionInfo(version.getCreated(), version.getDate(),
+				version.getVersion());
+
+		loadAlertCount();
+	}
+
 	protected void loadAlertCount() {
 		alertTimer.cancel();
 		getView().setLoading(true);
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetAlertCount());
-		//action.addRequest(new GetNotificationsAction(AppContext.getUserId()));
-		
-		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult results) {
-				
-				
-				GetAlertCountResult result = (GetAlertCountResult)results.get(0);				
-				HashMap<TaskType,Integer> alerts = result.getCounts();				
-				getView().setCount(alerts.get(TaskType.NOTIFICATIONS));				
-				fireEvent(new AlertLoadEvent(alerts));				
-				
-//				GetNotificationsActionResult notificationsResult = (GetNotificationsActionResult)results.get(1);
-//				assert notificationsResult!=null;
-//				fireEvent(new NotificationsLoadEvent(notificationsResult.getNotifications()));
-//				getView().setLoading(false);
-				
-				alertTimer.schedule(alertReloadInterval);
-			}
-		});
-		
+
+		dispatcher.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult results) {
+
+						GetAlertCountResult result = (GetAlertCountResult) results
+								.get(0);
+						HashMap<TaskType, Integer> alerts = result.getCounts();
+						getView().setCount(alerts.get(TaskType.NOTIFICATIONS));
+						fireEvent(new AlertLoadEvent(alerts));
+						alertTimer.schedule(alertReloadInterval);
+					}
+				});
+
 	}
 
 	protected void logout() {
-		dispatcher.execute(new LogoutAction(), new TaskServiceCallback<LogoutActionResult>() {
-			@Override
-			public void processResult(LogoutActionResult result) {
-				AppContext.destroy();
-				placeManager.revealErrorPlace("login");
-			}
-		});
+		dispatcher.execute(new LogoutAction(),
+				new TaskServiceCallback<LogoutActionResult>() {
+					@Override
+					public void processResult(LogoutActionResult result) {
+						AppContext.destroy();
+						placeManager.revealPlace(new PlaceRequest.Builder()
+								.nameToken(NameTokens.login).build());
+					}
+				});
 	}
 
 	@Override
@@ -202,13 +238,11 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
-		HTUser currentUser = event.getCurrentUser();
-		getView().setImage(currentUser);
-		getView().showAdminLink(currentUser.isAdmin());
-		getView().setValues(currentUser.getSurname(), currentUser.getGroupsAsString(), event.getOrganizationName());
-		
-		Version version = event.getVersion();
-		getView().setVersionInfo(version.getCreated(), version.getDate(), version.getVersion());
+		HTUser user = currentUser.getUser();
+		getView().setImage(user);
+		getView().showAdminLink(user.isAdmin());
+		getView().setValues(user.getSurname(), user.getGroupsAsString(),
+				AppContext.getOrganizationName());
 		loadAlertCount();
 	}
 
@@ -216,6 +250,5 @@ implements AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler, LoadAle
 	public void onLoadAlerts(LoadAlertsEvent event) {
 		loadAlertCount();
 	}
-	
-	
+
 }

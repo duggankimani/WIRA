@@ -1,24 +1,17 @@
 package com.duggan.workflow.client.ui.admin.msgs;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
 
 import java.util.List;
 
-import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.component.Emailer;
 import com.duggan.workflow.client.ui.component.Grid;
 import com.duggan.workflow.shared.model.RequestInfoDto;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;

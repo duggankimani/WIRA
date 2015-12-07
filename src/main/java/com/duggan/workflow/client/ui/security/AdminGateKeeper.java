@@ -14,6 +14,6 @@ public class AdminGateKeeper implements Gatekeeper{
 	
 	@Override
 	public boolean canReveal() {
-		return AppContext.isValid() && AppContext.isCurrentUserAdmin();
+		return AppContext.isLoggedIn() && AppContext.isCurrentUserAdmin();
 	}
 }

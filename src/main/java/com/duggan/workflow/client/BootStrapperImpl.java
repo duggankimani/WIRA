@@ -16,11 +16,6 @@ public class BootStrapperImpl implements Bootstrapper {
 
     @Override
     public void onBootstrap() {
-        doSomeCustomLogic();
         placeManager.revealCurrentPlace();
-    }
-
-    private void doSomeCustomLogic() {
-       // ...
     }
 }
