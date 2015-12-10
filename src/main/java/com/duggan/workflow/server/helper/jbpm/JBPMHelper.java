@@ -264,6 +264,10 @@ public class JBPMHelper implements Closeable {
 			groupIds.add(group.getName());
 		}
 
+		if(groupIds.size()==0){
+			groupIds.add("USER"); //At least one group must be specified
+		}
+		
 		Long count = (Long) DB
 				.getEntityManager()
 				.createNamedQuery(

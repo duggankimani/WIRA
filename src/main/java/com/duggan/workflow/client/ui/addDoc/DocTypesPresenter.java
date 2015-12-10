@@ -20,8 +20,8 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
-public class DocumentPopupPresenter extends
-		PresenterWidget<DocumentPopupPresenter.MyView> {
+public class DocTypesPresenter extends
+		PresenterWidget<DocTypesPresenter.MyView> {
 	
 	public static final Object DOCITEM_SLOT = new Object();
 	
@@ -40,7 +40,7 @@ public class DocumentPopupPresenter extends
 	}
 	
 	@Inject
-	public DocumentPopupPresenter(final EventBus eventBus, final MyView view, Provider<DocTypeItemPresenter> docTypeProvider) {
+	public DocTypesPresenter(final EventBus eventBus, final MyView view, Provider<DocTypeItemPresenter> docTypeProvider) {
 		super(eventBus, view);
 		docTypeFactory = new StandardProvider<DocTypeItemPresenter>(docTypeProvider);
 	}	

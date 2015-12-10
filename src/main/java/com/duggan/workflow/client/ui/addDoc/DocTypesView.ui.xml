@@ -11,9 +11,6 @@
 		<g:HTMLPanel styleName="body" ui:field="panelDocTypes">
 			<div style="margin-bottom:5px;">
 			<tree:Tree ui:field="tree"></tree:Tree>
-			<g:HTMLPanel ui:field="divDocItem" styleName="row-fluid">
-			
-			</g:HTMLPanel>
 			</div>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

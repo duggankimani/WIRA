@@ -7,8 +7,8 @@ import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.MainPageView;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupView;
+import com.duggan.workflow.client.ui.addDoc.DocTypesPresenter;
+import com.duggan.workflow.client.ui.addDoc.DocTypesView;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
@@ -280,8 +280,8 @@ public class ClientModule extends AbstractPresenterModule {
 				GenericFormPresenter.ICreateDocView.class,
 				GenericFormView.class);
 
-		bindPresenterWidget(DocumentPopupPresenter.class,
-				DocumentPopupPresenter.MyView.class, DocumentPopupView.class);
+		bindPresenterWidget(DocTypesPresenter.class,
+				DocTypesPresenter.MyView.class, DocTypesView.class);
 
 		bindPresenterWidget(DocTypeItemPresenter.class,
 				DocTypeItemPresenter.MyView.class, DocTypeItemView.class);

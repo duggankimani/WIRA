@@ -140,14 +140,14 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 	}
 	
 	private void loadProcess() {
-		
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new GetProcessCategoriesRequest());
 		requests.addRequest(new GetUsersRequest());
 		requests.addRequest(new GetGroupsRequest());
 		
-		if(processDefId!=null)
+		if(processDefId!=null){
 			requests.addRequest( new GetProcessRequest(processDefId));
+		}
 		
 		
 		requestHelper.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {

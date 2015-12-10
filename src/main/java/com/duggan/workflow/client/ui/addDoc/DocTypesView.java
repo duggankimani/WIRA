@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.addDoc;
 
-import static com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter.DOCITEM_SLOT;
 import static com.duggan.workflow.client.ui.resources.ICONS.INSTANCE;
 
 import java.util.List;
@@ -10,12 +9,14 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.IsProcessDisplay;
 import com.duggan.workflow.shared.model.ProcessCategory;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -27,53 +28,25 @@ import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 
-public class DocumentPopupView extends ViewImpl implements
-		DocumentPopupPresenter.MyView {
+public class DocTypesView extends ViewImpl implements
+		DocTypesPresenter.MyView {
 
 	private final Widget widget;
 	
-	@UiField Tree<IsProcessDisplay, String> tree;
+	@UiField 
+	Tree<IsProcessDisplay, String> tree;
 	
-	@UiField HTMLPanel panelDocTypes;
-	
-	public interface Binder extends UiBinder<Widget, DocumentPopupView> {
+	public interface Binder extends UiBinder<Widget, DocTypesView> {
 	}
 
 	@Inject
-	public DocumentPopupView(final Binder binder) {
+	public DocTypesView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		
-		//tree.getStore().add
 	}
 
 	@Override
 	public Widget asWidget() {
 		return widget;
-	}
-	
-	@Override
-	public void setInSlot(Object slot, IsWidget content) {
-		if(slot == DOCITEM_SLOT){
-			panelDocTypes.clear();
-			if(content!=null){
-				panelDocTypes.add(content);
-			}
-		}else{
-			super.setInSlot(slot, content);
-		}
-		
-	}
-	
-	@Override
-	public void addToSlot(Object slot, IsWidget content) {
-		if(slot == DOCITEM_SLOT){			
-			if(content!=null){
-				panelDocTypes.add(content);
-			}
-		}else{
-			super.addToSlot(slot, content);
-		}
-		
 	}
 	
 	@Override
@@ -86,7 +59,7 @@ public class DocumentPopupView extends ViewImpl implements
 		"<span style=\"padding-left:8px; font-size:12px;font-family:Arial Unicode MS,Arial,sans-serif;\">"+category+"</span>"+
 		"<li style=\"margin:2px 0px;\" role=\"separator\" class=\"divider\"></li>"+
 		"</div>");
-		panelDocTypes.add(html);
+//		panelDocTypes.add(html);
 	}
 
 	@Override
@@ -96,7 +69,7 @@ public class DocumentPopupView extends ViewImpl implements
 				+ "style=\"padding-left:8px; font-size:12px;font-family:Arial Unicode MS,Arial,sans-serif;\">"+
 				content+"</span>"+
 				"</div>");
-				panelDocTypes.add(html);
+//				panelDocTypes.add(html);
 	}
 
 	@Override
@@ -104,14 +77,15 @@ public class DocumentPopupView extends ViewImpl implements
 		if(categories==null){
 			return;
 		}
-		//tree.getStore().addSubTree(0,categories);
+//		Window.alert(">>> "+categories.size()+"; "+categories);
+		tree.getStore().clear();
+		tree.getStore().addSubTree(0,categories);
 	}
 	
 	@UiFactory
 	public Tree<IsProcessDisplay, String> createTree(){
 		
 		final TreeStore<IsProcessDisplay> sourceStore = new TreeStore<IsProcessDisplay>(ModelProperties.key);
-
 	    final Tree<IsProcessDisplay, String> sourceTree = new Tree<IsProcessDisplay, String>(sourceStore, ModelProperties.name){
 	    	@Override
 	    	public boolean isLeaf(IsProcessDisplay model) {
@@ -119,8 +93,8 @@ public class DocumentPopupView extends ViewImpl implements
 	    		return !model.isDirectory();
 	    	}
 	    };
-	    //sourceTree.setHeight(300);
-	    sourceTree.setWidth(160);
+	    sourceTree.setHeight("90%");
+	    sourceTree.setWidth("90%");
 	    
 	    sourceTree.getStyle().setLeafIcon(INSTANCE.text());
 	    sourceTree.setBorders(false);
@@ -166,20 +140,19 @@ public class DocumentPopupView extends ViewImpl implements
 //			}
 //		});
 	    
-	    tree.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<IsProcessDisplay>() {
-	    	@Override
-	    	public void onSelectionChanged(
-	    			SelectionChangedEvent<IsProcessDisplay> event) {
-	    		IsProcessDisplay model = tree.getSelectionModel().getSelectedItem();
+	    sourceTree.getSelectionModel().addSelectionHandler(new SelectionHandler<IsProcessDisplay>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<IsProcessDisplay> event) {
+				IsProcessDisplay model = event.getSelectedItem();
 				if(model.isDirectory()){
 					return;
 				}
 				
 				AppContext.fireEvent(new CreateDocumentEvent((DocumentType)model));
-	    	}
+			}
 		});
 	    
-	
 	    return sourceTree;
 	}
 	
@@ -197,7 +170,7 @@ public class DocumentPopupView extends ViewImpl implements
 
 			@Override
 			public String getValue(IsProcessDisplay object) {
-				return object.getName();
+				return object.getDisplayName();
 			}
 
 			@Override

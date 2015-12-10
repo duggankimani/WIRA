@@ -108,7 +108,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	
 	@Override
 	public void onError(final ErrorEvent event) {
-		addToPopupSlot(null);
+		//addToPopupSlot(null);
 		errorFactory.get(new ServiceCallback<ErrorPresenter>() {
 			@Override
 			public void processResult(ErrorPresenter result) {

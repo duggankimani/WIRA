@@ -36,7 +36,7 @@ public class BaseRequest<T extends BaseResponse> extends ActionImpl<T>{
 	
 	@Override
 	public boolean isSecured() {
-		return false;
+		return true;
 	}
 
 	public boolean isEmbedded() {

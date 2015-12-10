@@ -6,7 +6,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.addDoc.DocumentPopupPresenter;
+import com.duggan.workflow.client.ui.addDoc.DocTypesPresenter;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
@@ -59,6 +59,8 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 		HasClickHandlers getAddButton();
 		void showDocsList();
+		void load();
+		void closeDocTypePopup();
 	}
 	
 	@ProxyStandard
@@ -90,7 +92,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCTREE_SLOT = new Type<RevealContentHandler<?>>();
 		
-	@Inject DocumentPopupPresenter docPopup;
+	@Inject DocTypesPresenter docPopup;
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
 	
@@ -113,6 +115,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	@Override
 	protected void onBind() {
 		super.onBind();
+		getView().load();
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(AlertLoadEvent.TYPE, this);
@@ -163,6 +166,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	
 	@Override
 	public void onCreateDocument(CreateDocumentEvent event) {
+		getView().closeDocTypePopup();
 		Document doc = new Document();
 		doc.setType(event.getDocType());
 		
