@@ -8,12 +8,15 @@
 	ui:generateLocales='default'>
 
 	<ui:style>
-		.create-table-margins{
-		margin:10px 10px 10px 10px;
-		}
+	.create-table-margins {
+		margin: 10px 10px 10px 10px;
+	}
+	
+	.no-margin-left {
+		margin-left: 0px;
+	}
 	</ui:style>
 
-	<!-- g:HTMLPanel styleName="full-page"-->
 	<g:HTMLPanel>
 		<span ui:field="spnWarning"></span>
 		<d:IssuesPanel ui:field="issues">
@@ -60,18 +63,16 @@
 				</div>
 			</div>
 
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
-					<!-- div class="form-group" -->
-					<div class="col-xs-4">
-						<d:DropDownList ui:field="lstFields" 
-						styleName="form-control {style.create-table-margins}">
-							</d:DropDownList>
+					<div class="span3 {style.no-margin-left}">
+						<d:DropDownList ui:field="lstFields"
+							styleName="form-control {style.create-table-margins}">
+						</d:DropDownList>
 					</div>
-					<div class="col-xs-8">
+					<div class="span6 {style.no-margin-left}">
 						<grid:AggregationGrid ui:field="grid"></grid:AggregationGrid>
 					</div>
-					<!-- /div -->
 				</div>
 			</div>
 			<div id="detailed-info detailed-info-table">
