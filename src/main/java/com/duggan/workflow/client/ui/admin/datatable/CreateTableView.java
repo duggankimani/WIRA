@@ -12,6 +12,7 @@ import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
@@ -23,6 +24,7 @@ import com.duggan.workflow.client.ui.grid.DataModel;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.google.gwt.core.client.GWT;
@@ -58,6 +60,8 @@ public class CreateTableView extends Composite {
 	SpanElement spnWarning;
 	@UiField
 	HasClickHandlers aImportCols;
+	
+	@UiField DropDownList<Listable> lstFields;
 
 	DataMapper mapper = new DataMapper() {
 
@@ -105,6 +109,7 @@ public class CreateTableView extends Composite {
 
 	public CreateTableView() {
 		initWidget(uiBinder.createAndBindUi(this));
+		lstFields.setMultiple(true);
 
 		List<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
 		columnConfigs.add(new ColumnConfig("fieldName", "Field Name",
@@ -118,12 +123,12 @@ public class CreateTableView extends Composite {
 		columnConfigs.add(config);
 
 		columnConfigs.add(new ColumnConfig("fieldSize", "Size",
-				DataType.INTEGER, "", "input-small"));
-		columnConfigs.add(new ColumnConfig("fieldNullable", "Nullable",
+				DataType.INTEGER, "", "input-createtable-colsize"));
+		columnConfigs.add(new ColumnConfig("fieldNullable", "Null",
 				DataType.BOOLEAN));
-		columnConfigs.add(new ColumnConfig("fieldPrimary", "Primary Key",
+		columnConfigs.add(new ColumnConfig("fieldPrimary", "PK",
 				DataType.BOOLEAN));
-		columnConfigs.add(new ColumnConfig("fieldAutoInc", "Auto Increment",
+		columnConfigs.add(new ColumnConfig("fieldAutoInc", "Auto Incr",
 				DataType.BOOLEAN));
 		grid.setColumnConfigs(columnConfigs);
 

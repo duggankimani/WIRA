@@ -637,3 +637,7 @@ box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
 .detailed-info-table{
 	width:100% !important;
 }
+
+.input-createtable-colsize{
+	width:35px;
+}

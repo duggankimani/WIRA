@@ -162,4 +162,9 @@ public class DropDownList<T extends Listable> extends Composite implements HasVa
 	public Widget getComponent() {
 		return listBox;
 	}
+	
+	public void setMultiple(boolean multiple){
+		listBox.setMultipleSelect(true);
+		listBox.setHeight("200px");
+	}
 }
