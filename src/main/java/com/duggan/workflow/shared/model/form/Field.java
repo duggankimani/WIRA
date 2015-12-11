@@ -14,7 +14,7 @@ import com.duggan.workflow.shared.model.Value;
  * @author duggan
  *
  */
-public class Field extends FormModel{
+public class Field extends FormModel implements Comparable<Field>{
 
 	/**
 	 * 
@@ -117,8 +117,8 @@ public class Field extends FormModel{
 			return false;
 		}
 		
-		if(Id!=null){
-			return Id.equals(((Field)obj).Id);
+		if(name!=null && ((Field)obj).name!=null){
+			return name.equals(((Field)obj).name);
 		}
 		
 		return super.equals(obj);
@@ -139,34 +139,7 @@ public class Field extends FormModel{
 	
 	public Field clone(boolean fullClone){
 		Field field = new Field();
-		field.setCaption(caption);
-		field.setName(name);
-		field.setPosition(position);
-		field.setType(type);
-		field.setFormId(null);
-		field.setId(null);
-		
-		if(fullClone){
-			field.setFormId(formId);
-			field.setId(Id);
-			field.setParentId(parentId);
-			field.setDocId(docId);
-			field.setDocRefId(docRefId);
-		}
-	
-		if(value!=null){
-			field.setValue(value.clone(fullClone));
-		}
-		
-		field.setSelectionValues(getSelectionValues());
-		
-		for(Field fld: fields){
-			field.addField(fld.clone());
-		}
-		
-		for(Property p: properties){
-			field.addProperty(p.clone(fullClone));
-		}
+		this.copyTo(field, fullClone);
 		
 		return field;
 	}
@@ -303,6 +276,42 @@ public class Field extends FormModel{
 
 	public void setDocRefId(String docRefId) {
 		this.docRefId = docRefId;
+	}
+
+	@Override
+	public int compareTo(Field o) {
+		return getDisplayName().compareTo(o.getDisplayName());
+	}
+
+	public void copyTo(Field field, boolean copyAll) {
+		field.setCaption(caption);
+		field.setName(name);
+		field.setPosition(position);
+		field.setType(type);
+		field.setFormId(null);
+		field.setId(null);
+		
+		if(copyAll){
+			field.setFormId(formId);
+			field.setId(Id);
+			field.setParentId(parentId);
+			field.setDocId(docId);
+			field.setDocRefId(docRefId);
+		}
+	
+		if(value!=null){
+			field.setValue(value.clone(copyAll));
+		}
+		
+		field.setSelectionValues(getSelectionValues());
+		
+		for(Field fld: fields){
+			field.addField(fld.clone());
+		}
+		
+		for(Property p: properties){
+			field.addProperty(p.clone(copyAll));
+		}
 	}
 
 }

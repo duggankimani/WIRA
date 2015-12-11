@@ -23,7 +23,7 @@ public class GetFormsRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		
 		
-		List<Form> forms = FormDaoHelper.getForms(action.getProcessDefId());
+		List<Form> forms = FormDaoHelper.getForms(action.getProcessDefId(),action.isLoadFields());
 		
 		GetFormsResponse response = (GetFormsResponse)actionResult;
 		

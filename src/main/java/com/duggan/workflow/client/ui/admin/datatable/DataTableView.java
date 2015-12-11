@@ -10,6 +10,7 @@ import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -32,6 +33,8 @@ public class DataTableView extends ViewImpl implements
 	TableView tblView;
 	@UiField
 	Anchor aImport;
+	@UiField
+	Anchor aNewReport;
 
 
 	public interface Binder extends UiBinder<Widget, DataTableView> {
@@ -41,7 +44,7 @@ public class DataTableView extends ViewImpl implements
 	public DataTableView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		tblView.setHeaders(Arrays.asList("Name", "Description", "Records",
-				"Last Modified", "Actions"));
+				"Type", "Actions"));
 	}
 
 	@Override
@@ -58,9 +61,12 @@ public class DataTableView extends ViewImpl implements
 	public void bindCatalogs(List<Catalog> catalogs) {
 		tblView.clearRows();
 		for (Catalog c : catalogs) {
+			if(c.getType()==null){
+				c.setType(CatalogType.DATATABLE);
+			}
 			tblView.addRow(new InlineLabel(c.getName()),
 					new InlineLabel(c.getDescription()),
-					new InlineLabel(c.getRecordCount()+""), new InlineLabel(""),
+					new InlineLabel(c.getRecordCount()+""), new InlineLabel(c.getType().getDisplayName()),
 					(HTMLPanel) getActions(c));
 		}
 	}
@@ -138,6 +144,11 @@ public class DataTableView extends ViewImpl implements
 	@Override
 	public HasClickHandlers getImportButton() {
 		return aImport;
+	}
+	
+	@Override
+	public HasClickHandlers getNewReportLink(){
+		return aNewReport;
 	}
 
 }

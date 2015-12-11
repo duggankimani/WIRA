@@ -24,6 +24,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cascade;
 
+import com.duggan.workflow.shared.model.catalog.CatalogType;
+import com.duggan.workflow.shared.model.catalog.FieldSource;
+
 @XmlRootElement(name = "table")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso(CatalogColumnModel.class)
@@ -51,6 +54,21 @@ public class CatalogModel extends PO {
 
 	@XmlTransient
 	private String recordCount;
+	
+	private Long processDefId;
+	
+	private CatalogType type = CatalogType.DATATABLE;
+	
+	private FieldSource fieldSource = FieldSource.FORM;// Field Source
+	
+	public CatalogType getType() {
+		return type;
+	}
+
+	public void setType(CatalogType type) {
+		this.type = type;
+	}
+
 	@XmlTransient
 	private String process;
 
@@ -113,6 +131,22 @@ public class CatalogModel extends PO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getProcessDefId() {
+		return processDefId;
+	}
+
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
+	}
+
+	public FieldSource getFieldSource() {
+		return fieldSource;
+	}
+
+	public void setFieldSource(FieldSource fieldSource) {
+		this.fieldSource = fieldSource;
 	}
 
 }

@@ -16,7 +16,10 @@ public class Catalog implements Serializable,IsCatalogItem{
 	private int recordCount=0;
 	private String process;
 	private List<CatalogColumn> columns = new ArrayList<CatalogColumn>();
-	
+	private CatalogType type = CatalogType.DATATABLE;
+	private FieldSource fieldSource = FieldSource.FORM;// Field Source
+	private Long processDefId;
+
 	public Catalog() {
 	}
 
@@ -66,5 +69,29 @@ public class Catalog implements Serializable,IsCatalogItem{
 
 	public void setRecordCount(int recordCount) {
 		this.recordCount = recordCount;
+	}
+	
+	public CatalogType getType() {
+		return type;
+	}
+
+	public void setType(CatalogType type) {
+		this.type = type;
+	}
+
+	public Long getProcessDefId() {
+		return processDefId;
+	}
+
+	public void setProcessDefId(Long processDefId) {
+		this.processDefId = processDefId;
+	}
+
+	public FieldSource getFieldSource() {
+		return fieldSource;
+	}
+
+	public void setFieldSource(FieldSource fieldSource) {
+		this.fieldSource = fieldSource;
 	}
 }

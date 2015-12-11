@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
@@ -32,15 +33,18 @@ import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
 import com.duggan.workflow.shared.requests.GetDataRequest;
+import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.InsertDataRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCatalogRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetCatalogsResponse;
 import com.duggan.workflow.shared.responses.GetDataResponse;
+import com.duggan.workflow.shared.responses.GetProcessesResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 
@@ -55,6 +59,8 @@ public class DataTablePresenter
 		HasClickHandlers getImportButton();
 
 		void bindCatalogs(List<Catalog> catalogs);
+
+		HasClickHandlers getNewReportLink();
 	}
 
 	@ProxyCodeSplit
@@ -95,12 +101,38 @@ public class DataTablePresenter
 			}
 		});
 
+		getView().getNewReportLink().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				showPopup(CatalogType.REPORTTABLE, null);
+			}
+		});
+
 	}
 
 	protected void showPopup(Catalog catalog) {
-		final CreateTableView view = new CreateTableView(catalog);
-		AppManager.showPopUp((catalog==null || catalog.getId()==null)?
-				"Create Table":"Edit Table", view, "create-data-table-popup",
+		if (catalog == null || catalog.getType() == null) {
+			showPopup(CatalogType.DATATABLE, catalog);
+		} else {
+			showPopup(catalog.getType(), catalog);
+		}
+	}
+
+	private void showPopup(CatalogType type, Catalog catalog) {
+		final CreateTableView view = new CreateTableView(type,catalog);
+		if(type==CatalogType.REPORTTABLE){
+			GetProcessesRequest request = new GetProcessesRequest();
+			requestHelper.execute(request, new TaskServiceCallback<GetProcessesResponse>() {
+				@Override
+				public void processResult(GetProcessesResponse aResponse) {
+					view.setProcesses(aResponse.getProcesses());
+				}
+			});
+		}
+		AppManager.showPopUp(
+				(catalog == null || catalog.getId() == null) ? "Create Table"
+						: "Edit Table", view, "create-data-table-popup",
 				new OptionControl() {
 
 					@Override
@@ -131,15 +163,13 @@ public class DataTablePresenter
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
-		
 
 	}
-	
-	private void showDataPopup(final Catalog catalog,
-			List<DocumentLine> lines) {
+
+	private void showDataPopup(final Catalog catalog, List<DocumentLine> lines) {
 		final CreateDataView view = new CreateDataView(catalog);
-		AppManager.showPopUp("Data View", view,
-				"create-data-table-popup", new OptionControl() {
+		AppManager.showPopUp("Data View", view, "create-data-table-popup",
+				new OptionControl() {
 
 					@Override
 					public void onSelect(String name) {
@@ -152,28 +182,27 @@ public class DataTablePresenter
 						}
 					}
 
-
 				}, "Save", "Cancel");
-		
+
 		view.setData(lines);
 	}
-	
-	private void saveData(Catalog catalog,
-			List<DocumentLine> data) {
+
+	private void saveData(Catalog catalog, List<DocumentLine> data) {
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new InsertDataRequest(catalog.getId(), data));
 		action.addRequest(new GetCatalogsRequest());
-		requestHelper.execute(action,  new ServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResponse) {
-				
-				List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
-						.get(1)).getCatalogs();
-				getView().bindCatalogs(catalogs);
-				fireEvent(new ProcessingCompletedEvent());
-			}
-		});
+		requestHelper.execute(action,
+				new ServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+
+						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+								.get(1)).getCatalogs();
+						getView().bindCatalogs(catalogs);
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
 	}
 
 	@Override
@@ -217,24 +246,24 @@ public class DataTablePresenter
 	@Override
 	public void onEditCatalogData(EditCatalogDataEvent event) {
 		if (event.isEditData()) {
-			if(event.getLines()!=null){
+			if (event.getLines() != null) {
 				showDataPopup(event.getCatalog(), event.getLines());
-			}else{
+			} else {
 				showDataPopup(event.getCatalog());
 			}
-			
+
 		} else if (event.isDelete()) {
 			deleteCatalog(event.getCatalog());
 		} else {
 			showPopup(event.getCatalog());
 		}
 	}
-	
+
 	@Override
 	public void onEditCatalogSchema(EditCatalogSchemaEvent event) {
 		if (event.isDelete()) {
 			deleteCatalog(event.getCatalog());
-		} else{
+		} else {
 			showPopup(event.getCatalog());
 		}
 	}
@@ -249,7 +278,7 @@ public class DataTablePresenter
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 
-						BaseResponse r = aResponse.get(0);//what to do?
+						BaseResponse r = aResponse.get(0);// what to do?
 
 						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 								.get(1)).getCatalogs();

@@ -20,6 +20,7 @@ import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
+import com.duggan.workflow.shared.model.catalog.CatalogType;
 
 public class CatalogDaoHelper {
 
@@ -44,6 +45,9 @@ public class CatalogDaoHelper {
 
 		model.setDescription(catalog.getDescription());
 		model.setName(catalog.getName());
+		model.setType(catalog.getType());
+		model.setProcessDefId(catalog.getProcessDefId());
+		model.setFieldSource(catalog.getFieldSource());
 
 		List<CatalogColumnModel> models = new ArrayList<>();
 		for (CatalogColumn cat : catalog.getColumns()) {
@@ -87,6 +91,9 @@ public class CatalogDaoHelper {
 		catalog.setName(model.getName());
 		catalog.setRecordCount(DB.getCatalogDao().getCount(
 				"EXT_" + model.getName()));
+		catalog.setType(model.getType());
+		catalog.setProcessDefId(model.getProcessDefId());
+		catalog.setFieldSource(model.getFieldSource());
 		List<CatalogColumn> models = new ArrayList<>();
 		for (CatalogColumnModel cat : model.getColumns()) {
 			models.add(get(cat));

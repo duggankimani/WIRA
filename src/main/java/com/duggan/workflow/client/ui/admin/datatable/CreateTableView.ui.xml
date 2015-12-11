@@ -24,7 +24,7 @@
 		<g:HTMLPanel>
 			<!-- g:HTMLPanel styleName="row-fluid" -->
 			<g:HTMLPanel styleName="form-horizontal">
-				<div class="form-group">
+				<div class="form-group hide" ui:field="divProcess">
 					<label for="ProcessName" class="col-sm-2 control-label">Process:</label>
 					<div class="col-sm-10">
 						<d:DropDownList styleName="form-control {style.create-table-margins}"
@@ -38,6 +38,13 @@
 							ui:field="txtName" placeholder="Table Name" width="300px"></d:TextField>
 					</div>
 				</div>
+				<div class="form-group hide"  ui:field="divFieldSource">
+					<label for="ProcessName" class="col-sm-2 control-label">Field Source:</label>
+					<div class="col-sm-10">
+						<d:DropDownList styleName="form-control {style.create-table-margins}"
+							ui:field="lstFieldSources" width="300px"></d:DropDownList>
+					</div>
+				</div>
 				<div class="form-group">
 					<label for="ProcessName" class="col-sm-2 control-label">Description:</label>
 					<div class="col-sm-10">
@@ -45,7 +52,7 @@
 							rows="2" width="400px" placeholder="Description of the data stored"></d:TextArea>
 					</div>
 				</div>
-
+				
 			</g:HTMLPanel>
 
 			<div style="margin-top:10px;">
@@ -63,14 +70,17 @@
 				</div>
 			</div>
 
-			<div class="container">
-				<div class="row">
-					<div class="span3 {style.no-margin-left}">
+			<div class="form-horizontal">
+				<div class="row-fluid">
+					<div class="span3 hide"  ui:field="divAddFields">
+						<label for="ProcessName" class="control-label">Select Form Fields</label>
 						<d:DropDownList ui:field="lstFields"
 							styleName="form-control {style.create-table-margins}">
 						</d:DropDownList>
+						<g:Anchor ui:field="aAddFields" styleName="btn btn-small btn-success">
+						Add Fields</g:Anchor>
 					</div>
-					<div class="span6 {style.no-margin-left}">
+					<div class="span6 {style.no-margin-left}"  ui:field="divGrid">
 						<grid:AggregationGrid ui:field="grid"></grid:AggregationGrid>
 					</div>
 				</div>

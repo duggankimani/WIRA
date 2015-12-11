@@ -85,4 +85,13 @@ public class CatalogColumn implements Serializable,IsCatalogItem{
 	public void setSize(Integer size) {
 		this.size = size;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(name==null || ((CatalogColumn)obj).name==null){
+			return false;
+		}
+		
+		return name.equals(((CatalogColumn)obj).name);
+	}
 }

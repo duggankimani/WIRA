@@ -26,6 +26,11 @@
 						<i class="icon-arrow-down"></i>
 						Export Table
 					</g:Anchor>
+					<g:Anchor ui:field="aNewReport" styleName="btn btn-primary"
+						title="New Form">
+						<i class="icon-plus"></i>
+						New Report Table
+					</g:Anchor>
 				</div>
 				
 				<d:TableView ui:field="tblView"></d:TableView>

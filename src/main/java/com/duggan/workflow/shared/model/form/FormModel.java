@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model.form;
 
 import java.io.Serializable;
 
-public class FormModel implements Serializable {
+import com.duggan.workflow.shared.model.Listable;
+
+public class FormModel implements Serializable, Listable {
 
 	public static final String FORMMODEL = "FORMMODEL";
 	public static final String FIELDMODEL = "FIELDMODEL";
@@ -26,12 +28,21 @@ public class FormModel implements Serializable {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		if(name!=null){
+			this.name = name.trim();
+		}else{
+			this.name = name;
+		}
 	}
 	public String getCaption() {
 		return caption;
 	}
 	public void setCaption(String caption) {
 		this.caption = caption;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return caption;
 	}
 }

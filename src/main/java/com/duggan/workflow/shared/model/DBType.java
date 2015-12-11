@@ -73,6 +73,5 @@ public enum DBType implements Listable,Serializable{
 		break;
 		}
 		return dt;
-	}
-	
+	}	
 }
