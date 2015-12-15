@@ -321,25 +321,24 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		StringBuffer jpql = new StringBuffer("from ADTaskNotification t where "
 				// + "t.stepName=:stepName and "
-				+ "t.processDefId=:processDefId and "
-				+ "t.action=:action and "
+				+ "t.processDefId=:processDefId and " + "t.action=:action and "
 				+ "t.category=:category");
-		
-		if(nodeId==null){
+
+		if (nodeId == null) {
 			jpql.append(" and t.nodeId is null");
-		}else{
+		} else {
 			jpql.append(" and t.nodeId=:nodeId");
 		}
-		
+
 		Query query = em.createQuery(jpql.toString())
 				.setParameter("processDefId", processDefId)
 				.setParameter("action", action)
 				.setParameter("category", category);
-		
-		if(nodeId!=null){
+
+		if (nodeId != null) {
 			query.setParameter("nodeId", nodeId);
 		}
-		
+
 		return getSingleResultOrNull(query);
 	}
 
@@ -359,12 +358,13 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		String sql = "select t.id,t.status,t.createdon, t.completedon, t.activationtime,t.expirationtime,"
 				+ "t.processinstanceid, "
 				+ "t.actualowner_id, i.text from task t "
-				//+ "left join peopleassignments_potowners p  on p.task_id=t.id "
+				// +
+				// "left join peopleassignments_potowners p  on p.task_id=t.id "
 				+ "inner join i18ntext i on i.task_names_id=t.id "
 				+ "where processinstanceid=:processinstanceid order by t.id";
 
-		Query query = em.createNativeQuery(sql)
-				.setParameter("processinstanceid", processInstanceId);
+		Query query = em.createNativeQuery(sql).setParameter(
+				"processinstanceid", processInstanceId);
 
 		List<Object[]> rows = getResultList(query);
 
@@ -373,18 +373,22 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			Object value = null;
 			Long id = (value = row[i++]) == null ? null : new Long(
 					value.toString());
-			String status = (value = row[i++]) == null ? null : value.toString();
-			Date createdon = (value = row[i++]) == null ? null : (Date)value;
-			Date completedon = (value = row[i++]) == null ? null : (Date)value;
-			Date activationtime = (value = row[i++]) == null ? null : (Date)value;
-			Date expirationtime= (value = row[i++]) == null ? null : (Date)value;
-			Long processinstanceid = (value = row[i++]) == null ? null : new Long(
-					value.toString());
+			String status = (value = row[i++]) == null ? null : value
+					.toString();
+			Date createdon = (value = row[i++]) == null ? null : (Date) value;
+			Date completedon = (value = row[i++]) == null ? null : (Date) value;
+			Date activationtime = (value = row[i++]) == null ? null
+					: (Date) value;
+			Date expirationtime = (value = row[i++]) == null ? null
+					: (Date) value;
+			Long processinstanceid = (value = row[i++]) == null ? null
+					: new Long(value.toString());
 			String actualOwner = (value = row[i++]) == null ? null : value
 					.toString();
-			String taskName = (value = row[i++]) == null ? null : value.toString();
-			
-			TaskLog log  = new TaskLog();
+			String taskName = (value = row[i++]) == null ? null : value
+					.toString();
+
+			TaskLog log = new TaskLog();
 			log.setTaskId(id);
 			log.setStatus(status);
 			log.setCreatedon(createdon);
@@ -392,32 +396,32 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			log.setActivationtime(activationtime);
 			log.setExpirationtime(expirationtime);
 			log.setProcessinstanceid(processinstanceid);
-			if(actualOwner!=null){
+			if (actualOwner != null) {
 				log.setActualOwner(JBPMHelper.get().getUser(actualOwner));
-			}else{
+			} else {
 				log.setPotOwner(JBPMHelper.get().getPotentialOwners(id));
 			}
-			
-			try{
+
+			try {
 				log.setTaskName(JBPMHelper.get().getDisplayName(id));
-			}catch(Exception e){
+			} catch (Exception e) {
 				log.setTaskName(taskName);
 				log.setProcessLoaded(false);
-			} 			
-			
+			}
+
 			logs.add(log);
-			
+
 		}
 		return logs;
 	}
-	
-	public List<ProcessLog> getProcessInstances(CaseFilter filter){
-		if(filter==null){
+
+	public List<ProcessLog> getProcessInstances(CaseFilter filter) {
+		if (filter == null) {
 			filter = new CaseFilter();
 		}
-		
+
 		String sql = "select d.id docId, "
-				+ "t.refId "
+				+ "d.refId, "
 				+ "t.id taskid, "
 				+ "l.processinstanceid, "
 				+ "l.processid, "
@@ -441,85 +445,94 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				+ "left join buser u on (u.userid=t.actualowner_id) "
 				+ "left join buser u1 on (u1.userid=d.createdby) "
 				+ "left join i18ntext i on i.task_names_id=t.id ";
-		
-			boolean isFirst = true;
-			
-			if(filter.getProcessId()!=null){
-				if(isFirst){
-					sql = sql +" where ";
-				}else{
-					sql = sql +" and ";
-				}
-				isFirst = false;
-				
-				sql = sql+" l.processid=:processId";
+
+		boolean isFirst = true;
+
+		if (filter.getProcessId() != null) {
+			if (isFirst) {
+				sql = sql + " where ";
+			} else {
+				sql = sql + " and ";
 			}
-			
-			if(filter.getCaseNo()!=null){
-				if(isFirst){
-					sql = sql +" where ";
-				}else{
-					sql = sql +" and ";
-				}
-				isFirst = false;
-				
-				sql = sql+" d.subject ilike :caseNo";
+			isFirst = false;
+
+			sql = sql + " l.processid=:processId";
+		}
+
+		if (filter.getCaseNo() != null) {
+			if (isFirst) {
+				sql = sql + " where ";
+			} else {
+				sql = sql + " and ";
 			}
-			
-			if(filter.getUserId()!=null){
-				if(isFirst){
-					sql = sql +" where ";
-				}else{
-					sql = sql +" and ";
-				}
-				isFirst = false;
-				
-				sql = sql+" (u.userid= :userId or u1.userid= :userId)";
+			isFirst = false;
+
+			sql = sql + " d.subject ilike :caseNo";
+		}
+
+		if (filter.getUserId() != null) {
+			if (isFirst) {
+				sql = sql + " where ";
+			} else {
+				sql = sql + " and ";
 			}
-			
-			sql = sql+ " order by l.processinstanceid desc";
-		
+			isFirst = false;
+
+			sql = sql + " (u.userid= :userId or u1.userid= :userId)";
+		}
+
+		sql = sql + " order by l.processinstanceid desc";
+
+		logger.debug("getProcessInstances processId=" + filter.getProcessId()+", caseNo="+filter.getCaseNo()+", userId="+filter.getUserId()+"; SQL = "+sql);
 		Query query = em.createNativeQuery(sql);
-		if(filter.getProcessId()!=null){
+		if (filter.getProcessId() != null) {
 			query.setParameter("processId", filter.getProcessId());
 		}
-		
-		if(filter.getCaseNo()!=null){
-			query.setParameter("caseNo", "%"+filter.getCaseNo()+"%");
+
+		if (filter.getCaseNo() != null) {
+			query.setParameter("caseNo", "%" + filter.getCaseNo() + "%");
 		}
-		
-		if(filter.getUserId()!=null){
+
+		if (filter.getUserId() != null) {
 			query.setParameter("userId", filter.getUserId());
 		}
-		
+
 		List<Object[]> rows = getResultList(query);
 		List<ProcessLog> logs = new ArrayList<>();
-		
+
 		for (Object[] row : rows) {
 			int i = 0;
 			Object value = null;
 			Long docId = (value = row[i++]) == null ? null : new Long(
 					value.toString());
-			String docRefId = (value = row[i++]) == null ? null : value.toString();
+			String docRefId = (value = row[i++]) == null ? null : value
+					.toString();
 
 			Long taskId = (value = row[i++]) == null ? null : new Long(
 					value.toString());
-			Long processinstanceid = (value = row[i++]) == null ? null : new Long(
-					value.toString());
-			String processId = (value = row[i++]) == null ? null : value.toString();
-			Date startDate = (value = row[i++]) == null ? null : (Date)value;
-			Date endDate = (value = row[i++]) == null ? null : (Date)value;
-			String caseNo = (value = row[i++]) == null ? null : value.toString();
-			int processStatus = (value = row[i++]) == null ? null : new Integer(
-					value.toString());
-			String taskStatus = (value = row[i++]) == null ? null : value.toString();
-			String initiator = (value = row[i++]) == null ? null : value.toString();
-			String taskOwner = (value = row[i++]) == null ? null : value.toString();
-			String taskName = (value = row[i++]) == null ? null : value.toString();
-			
-			String potOwners = (value = row[i++]) == null ? null : value.toString();
-			
-			ProcessLog log  = new ProcessLog();
+			Long processinstanceid = (value = row[i++]) == null ? null
+					: new Long(value.toString());
+			String processId = (value = row[i++]) == null ? null : value
+					.toString();
+			Date startDate = (value = row[i++]) == null ? null : (Date) value;
+			Date endDate = (value = row[i++]) == null ? null : (Date) value;
+			String caseNo = (value = row[i++]) == null ? null : value
+					.toString();
+			int processStatus = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			String taskStatus = (value = row[i++]) == null ? null : value
+					.toString();
+			String initiator = (value = row[i++]) == null ? null : value
+					.toString();
+			String taskOwner = (value = row[i++]) == null ? null : value
+					.toString();
+			String taskName = (value = row[i++]) == null ? null : value
+					.toString();
+
+			String potOwners = (value = row[i++]) == null ? null : value
+					.toString();
+
+			ProcessLog log = new ProcessLog();
 			log.setTaskId(taskId);
 			log.setTaskOwner(taskOwner);
 			log.setCaseNo(caseNo);
@@ -533,32 +546,34 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			log.setProcessState(processStatus);
 			log.setStartDate(startDate);
 			log.setEndDate(endDate);
-			try{
+			try {
 				log.setTaskName(JBPMHelper.get().getDisplayName(taskId));
-			}catch(Exception e){
+			} catch (Exception e) {
 				log.setTaskName(taskName);
-			} 	
-			
-			try{
+			}
+
+			try {
 				log.setProcessName(JBPMHelper.get().getProcessName(processId));
-			}catch(Exception e){
+			} catch (Exception e) {
 				log.setProcessName(processId);
-			} 	
-			
+			}
+
 			logs.add(log);
-			
+
 		}
 		return logs;
 	}
 
 	public List<ADProcessCategory> getAllProcessCategories() {
-		return getResultList(em.createQuery("FROM ADProcessCategory where isActive=1"));
+		return getResultList(em
+				.createQuery("FROM ADProcessCategory where isActive=1"));
 	}
 
 	public ADTrigger getTrigger(String triggerName) {
-		
-		return getSingleResultOrNull(em.createQuery("FROM ADTrigger where name=:name")
-				.setParameter("name", triggerName));
+
+		return getSingleResultOrNull(em.createQuery(
+				"FROM ADTrigger where name=:name").setParameter("name",
+				triggerName));
 	}
 
 }

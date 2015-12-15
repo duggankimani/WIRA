@@ -8,10 +8,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import com.duggan.workflow.server.dao.model.PO;
 
 public class BaseDaoImpl {
 
+	protected Logger logger = Logger.getLogger(getClass());
+	
 	protected EntityManager em;
 	
 	public BaseDaoImpl(EntityManager em){
