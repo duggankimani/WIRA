@@ -171,7 +171,7 @@ public class DateField extends FieldWidget {
 
 	@Override
 	public Widget getInputComponent() {
-		return dateBox;
+		return dateBox.getInputComponent();
 	}
 
 	@Override

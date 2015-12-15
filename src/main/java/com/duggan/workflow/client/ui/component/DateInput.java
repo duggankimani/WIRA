@@ -46,4 +46,8 @@ public class DateInput extends Composite {
 			ValueChangeHandler<Date> valueChangeHandler) {
 		dtInput.addValueChangeHandler(valueChangeHandler);
 	}
+
+	public Widget getInputComponent() {
+		return dtInput;
+	}
 }
