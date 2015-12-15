@@ -116,7 +116,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 				
 				result.setMessage(message, event.getId());
 				
-				MainPagePresenter.this.addToPopupSlot(result);
+				MainPagePresenter.this.addToPopupSlot(result,true);
 				
 			}
 		});

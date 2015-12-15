@@ -88,11 +88,15 @@ public class CreateTableView extends Composite {
 
 	@UiField
 	Anchor aAddFields;
-	
-	@UiField DivElement divProcess;
-	@UiField DivElement divFieldSource;
-	@UiField DivElement divGrid;
-	@UiField DivElement divAddFields;
+
+	@UiField
+	DivElement divProcess;
+	@UiField
+	DivElement divFieldSource;
+	@UiField
+	DivElement divGrid;
+	@UiField
+	DivElement divAddFields;
 
 	DataMapper mapper = new DataMapper() {
 
@@ -146,7 +150,8 @@ public class CreateTableView extends Composite {
 	public CreateTableView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		lstFields.setMultiple(true);
-		lstFieldSources.setItems(Arrays.asList(FieldSource.FORM, FieldSource.GRID));
+		lstFieldSources.setItems(Arrays.asList(FieldSource.FORM,
+				FieldSource.GRID));
 
 		List<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
 		columnConfigs.add(new ColumnConfig("fieldName", "Field Name",
@@ -242,16 +247,20 @@ public class CreateTableView extends Composite {
 					lstFields.setItems(null);
 					return;
 				}
+				grid.setData(new ArrayList<DataModel>());
 				loadFields(event.getValue().getId());
 			}
 		});
-		
-		lstFieldSources.addValueChangeHandler(new ValueChangeHandler<FieldSource>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<FieldSource> event) {
-				loadFields(forms);
-			}
-		});
+
+		lstFieldSources
+				.addValueChangeHandler(new ValueChangeHandler<FieldSource>() {
+					@Override
+					public void onValueChange(
+							ValueChangeEvent<FieldSource> event) {
+						grid.setData(new ArrayList<DataModel>());
+						loadFields(forms);
+					}
+				});
 	}
 
 	protected void loadFields(Long processDefId) {
@@ -268,8 +277,8 @@ public class CreateTableView extends Composite {
 	protected void generateCols(List<Field> values) {
 		// Get Current Columns
 		List<CatalogColumn> columns = grid.getData(mapper);
-		
-		//reset grid
+
+		// reset grid
 		grid.setData(new ArrayList<DataModel>());
 		if (values == null || values.isEmpty()) {
 			return;
@@ -277,10 +286,10 @@ public class CreateTableView extends Composite {
 
 		for (Field field : values) {
 			CatalogColumn col = generateCol(field);
-			if(!columns.contains(col)){
+			if (!columns.contains(col)) {
 				columns.add(col);
 			}
-			
+
 		}
 
 		grid.setData(mapper.getDataModels(columns));
@@ -305,9 +314,9 @@ public class CreateTableView extends Composite {
 
 	private void loadFields(List<Form> forms) {
 		this.forms = forms;
-		if(forms==null)
+		if (forms == null)
 			return;
-		
+
 		FieldSource source = lstFieldSources.getValue();
 		if (source == null) {
 			source = FieldSource.FORM;
@@ -333,7 +342,7 @@ public class CreateTableView extends Composite {
 				}
 		}
 
-		if (source == FieldSource.FORM){
+		if (source == FieldSource.FORM) {
 			Collections.sort(fields);
 		}
 		lstFields.clear();
@@ -418,14 +427,14 @@ public class CreateTableView extends Composite {
 			setCatalog(catalog);
 			id = catalog.getId();
 		}
-	
-		if(type==CatalogType.REPORTTABLE){
+
+		if (type == CatalogType.REPORTTABLE) {
 			divAddFields.removeClassName("hide");
 			divFieldSource.removeClassName("hide");
 			divGrid.removeClassName("hide");
 			divProcess.removeClassName("hide");
 		}
-		
+
 	}
 
 	protected boolean isNullOrEmpty(String name) {
@@ -458,9 +467,10 @@ public class CreateTableView extends Composite {
 
 		txtName.setValue(catalog.getName());
 		txtDescription.setValue(catalog.getDescription());
-		lstFieldSources.setValue(catalog.getFieldSource()==null? FieldSource.FORM: 
-			catalog.getFieldSource());
-		
+		lstFieldSources
+				.setValue(catalog.getFieldSource() == null ? FieldSource.FORM
+						: catalog.getFieldSource());
+
 		grid.setData(mapper.getDataModels(catalog.getColumns()));
 		List<CatalogColumn> cols = grid.getData(mapper);
 	}
@@ -469,11 +479,11 @@ public class CreateTableView extends Composite {
 		issues.clear();
 		boolean isValid = true;
 
-		if(type==CatalogType.REPORTTABLE && lstProcess.getValue()==null){
+		if (type == CatalogType.REPORTTABLE && lstProcess.getValue() == null) {
 			issues.addError("Please select a process");
 			isValid = false;
 		}
-		
+
 		if (txtName.getValue().trim().isEmpty()) {
 			issues.addError("Table Name is mandatory");
 			isValid = false;
@@ -484,8 +494,8 @@ public class CreateTableView extends Composite {
 					+ "Ensure you specify Name, Label and Data Type for each column");
 			isValid = false;
 		}
-		
-		if(!isValid){
+
+		if (!isValid) {
 			issues.getElement().scrollIntoView();
 		}
 
@@ -495,9 +505,9 @@ public class CreateTableView extends Composite {
 	public void setProcesses(List<ProcessDef> processes) {
 		this.processes = processes;
 		lstProcess.setItems(processes);
-		if(catalog!=null && catalog.getProcessDefId()!=null){
-			for(ProcessDef d: processes){
-				if(d.getId().equals(catalog.getProcessDefId())){
+		if (catalog != null && catalog.getProcessDefId() != null && processes!=null) {
+			for (ProcessDef d : processes) {
+				if (d.getId().equals(catalog.getProcessDefId())) {
 					lstProcess.setValue(d);
 					loadFields(d.getId());
 				}

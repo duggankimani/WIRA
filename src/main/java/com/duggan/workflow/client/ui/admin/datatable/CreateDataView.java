@@ -90,7 +90,7 @@ public class CreateDataView extends Composite {
 
 	@UiField
 	HasClickHandlers aImport;
-	
+
 	public CreateDataView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		aNew.addClickHandler(new ClickHandler() {
@@ -113,28 +113,29 @@ public class CreateDataView extends Composite {
 				final String message = "This will import data from a CSV file into the grid.";
 				final ImportView view = new ImportView(message, context);
 				view.setAvoidRepeatFiles(false);
-				AppManager.showPopUp("Import Data", view,
-						new OptionControl() {
+				AppManager.showPopUp("Import Data", view, new OptionControl() {
 
-							@Override
-							public void onSelect(String name) {
-								if (name.equals("Next")) {
-									// AppContext.fireEvent(new ReloadEvent());
-									view.setVisible(false);
+					@Override
+					public void onSelect(String name) {
+						if (name.equals("Next")) {
+							// AppContext.fireEvent(new ReloadEvent());
+							view.setVisible(false);
 
-									setLines(uploadedItems.toString());
-									EditCatalogDataEvent event = new EditCatalogDataEvent(catalog, false, true);
-									event.setLines(getData());
-									AppContext.fireEvent(event);
-									//AppCon
-								} else {
-									view.cancelImport();
-									EditCatalogDataEvent event = new EditCatalogDataEvent(catalog, false, true);
-									AppContext.fireEvent(event);
-								}
-							}
-					
-						}, "Next", "Cancel");
+							setLines(uploadedItems.toString());
+							EditCatalogDataEvent event = new EditCatalogDataEvent(
+									catalog, false, true);
+							event.setLines(getData());
+							AppContext.fireEvent(event);
+							// AppCon
+						} else {
+							view.cancelImport();
+							EditCatalogDataEvent event = new EditCatalogDataEvent(
+									catalog, false, true);
+							AppContext.fireEvent(event);
+						}
+					}
+
+				}, "Next", "Cancel");
 				view.getUploader().addOnFinishUploaderHandler(
 						new OnFinishUploaderHandler() {
 
@@ -149,53 +150,54 @@ public class CreateDataView extends Composite {
 			}
 		});
 	}
-	
+
 	private void setLines(String uploadedCSVItems) {
-		if(uploadedCSVItems==null || uploadedCSVItems.trim().isEmpty()){
+		if (uploadedCSVItems == null || uploadedCSVItems.trim().isEmpty()) {
 			return;
 		}
-		
+
 		List<DocumentLine> lines = new ArrayList<DocumentLine>();
-		
+
 		String[] items = uploadedCSVItems.split("\n");
-		for(String item: items){
+		for (String item : items) {
 			String[] line = item.split(",");
 			lines.add(createLine(line));
 		}
-		
+
 		setData(lines);
 	}
-	
+
 	private DocumentLine createLine(String[] lineValues) {
-		
+
 		DocumentLine docline = new DocumentLine();
 		List<CatalogColumn> columnConfigs = catalog.getColumns();
-		
-		for(int i=0; i<lineValues.length && i<columnConfigs.size(); i++){
-			
+
+		for (int i = 0; i < lineValues.length && i < columnConfigs.size(); i++) {
+
 			CatalogColumn col = columnConfigs.get(i);
-			Field field= new Field();
+			Field field = new Field();
 			field.setCaption(col.getLabel());
 			field.setName(col.getName());
 			field.setFormId(System.currentTimeMillis());
 			field.setType(col.getType().getFieldType());
-			
-			FieldWidget widget = FieldWidget.getWidget(col.getType().getFieldType(),
-					field, false);
-			
-			Value val = widget.from(col.getName(),lineValues[i]);
-			if((val==null || val.getValue()==null || val.getValue().toString().trim().isEmpty()) 
-					&& col.getType().getFieldType().equals(DataType.DOUBLE)){
-				//Window.alert("Setting default val for: "+col.getName());
+
+			FieldWidget widget = FieldWidget.getWidget(col.getType()
+					.getFieldType(), field, false);
+
+			Value val = widget.from(col.getName(), lineValues[i]);
+			if ((val == null || val.getValue() == null || val.getValue()
+					.toString().trim().isEmpty())
+					&& col.getType().getFieldType().equals(DataType.DOUBLE)) {
+				// Window.alert("Setting default val for: "+col.getName());
 				docline.addValue(col.getName(), new DoubleValue(0.0));
-				
-			}else{
-				//Window.alert("Setting val "+val.getValue()+" for: "+col.getName());
+
+			} else {
+				// Window.alert("Setting val "+val.getValue()+" for: "+col.getName());
 				docline.addValue(col.getName(), val);
 			}
-			
+
 		}
-		
+
 		return docline;
 	}
 
@@ -228,8 +230,15 @@ public class CreateDataView extends Composite {
 	}
 
 	public List<DocumentLine> getData() {
-		List<DocumentLine> lines = grid.getData(mapper);
+		List<DocumentLine> lines = new ArrayList<DocumentLine>();
 
+		try {
+			lines = grid.getData(mapper);
+		} catch (Exception e) {
+			Window.alert("Error: "+e.getMessage());
+			GWT.log(e.getMessage());
+			throw new RuntimeException(e);
+		}
 		return lines;
 	}
 

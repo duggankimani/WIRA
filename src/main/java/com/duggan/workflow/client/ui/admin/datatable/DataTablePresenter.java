@@ -141,9 +141,7 @@ public class DataTablePresenter
 						if (name.equals("Save")) {
 							if (view.isValid()) {
 								Catalog cat = view.getCatalog();
-								save(cat);
-
-								hide();
+								save(this,cat);
 							}
 						} else {
 							hide();
@@ -202,6 +200,12 @@ public class DataTablePresenter
 						getView().bindCatalogs(catalogs);
 						fireEvent(new ProcessingCompletedEvent());
 					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						super.onFailure(caught);
+						fireEvent(new ProcessingCompletedEvent());
+					}
 				});
 	}
 
@@ -223,11 +227,13 @@ public class DataTablePresenter
 				});
 	}
 
-	public void save(Catalog catalog) {
+	public void save(final OptionControl ctrl,Catalog catalog) {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCatalogRequest(catalog));
 		action.addRequest(new GetCatalogsRequest());
 
+		fireEvent(new ProcessingEvent());
+		
 		requestHelper.execute(action,
 				new ServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -239,7 +245,10 @@ public class DataTablePresenter
 						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 								.get(1)).getCatalogs();
 						getView().bindCatalogs(catalogs);
+						ctrl.hide();
+						fireEvent(new ProcessingCompletedEvent());
 					}
+					
 				});
 	}
 
