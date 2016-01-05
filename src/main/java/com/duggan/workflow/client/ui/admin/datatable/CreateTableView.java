@@ -460,9 +460,10 @@ public class CreateTableView extends Composite {
 
 		this.catalog = catalog;
 		if (catalog.getRecordCount() > 0) {
-			spnWarning.addClassName("label label-warning");
+			spnWarning.addClassName("label label-danger");
 			spnWarning
-					.setInnerText("Editing this table will lose all your existing data. Consider exporting your data first.");
+					.setInnerText("Editing this table will lose all your existing data. "
+							+ "Back up your data first.");
 		}
 
 		txtName.setValue(catalog.getName());

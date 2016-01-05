@@ -177,7 +177,9 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		filter.setCaseNo(txtCaseNo.getValue().trim().isEmpty()? null: txtCaseNo.getValue().trim());
 		
 		DocumentType type= listProcesses.getValue();
+		
 		filter.setProcessId(type==null? null: type.getProcessId());
+		//Window.alert("ProcessId = "+type+" : "+filter.getProcessId());
 		
 		HTUser user = listUsers.getValue();
 		filter.setUserId(user==null? null: user.getUserId());

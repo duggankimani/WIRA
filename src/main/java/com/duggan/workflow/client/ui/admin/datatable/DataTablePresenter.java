@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.datatable;
 import java.util.List;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
@@ -154,7 +153,7 @@ public class DataTablePresenter
 	private void showDataPopup(final Catalog catalog) {
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new GetDataRequest(catalog.getId()),
-				new ServiceCallback<GetDataResponse>() {
+				new TaskServiceCallback<GetDataResponse>() {
 					@Override
 					public void processResult(GetDataResponse aResponse) {
 						showDataPopup(catalog, aResponse.getLines());
@@ -191,7 +190,7 @@ public class DataTablePresenter
 		action.addRequest(new InsertDataRequest(catalog.getId(), data));
 		action.addRequest(new GetCatalogsRequest());
 		requestHelper.execute(action,
-				new ServiceCallback<MultiRequestActionResult>() {
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 
@@ -218,7 +217,7 @@ public class DataTablePresenter
 
 	private void loadData() {
 		requestHelper.execute(new GetCatalogsRequest(),
-				new ServiceCallback<GetCatalogsResponse>() {
+				new TaskServiceCallback<GetCatalogsResponse>() {
 					@Override
 					public void processResult(GetCatalogsResponse aResponse) {
 						List<Catalog> catalogs = aResponse.getCatalogs();
@@ -235,7 +234,7 @@ public class DataTablePresenter
 		fireEvent(new ProcessingEvent());
 		
 		requestHelper.execute(action,
-				new ServiceCallback<MultiRequestActionResult>() {
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 
@@ -283,7 +282,7 @@ public class DataTablePresenter
 		action.addRequest(new GetCatalogsRequest());
 
 		requestHelper.execute(action,
-				new ServiceCallback<MultiRequestActionResult>() {
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 
