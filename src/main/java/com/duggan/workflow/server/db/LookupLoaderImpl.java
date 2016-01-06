@@ -61,6 +61,8 @@ public class LookupLoaderImpl implements LookupLoader{
 			}
 		}; 
 		
+		logger.debug("Execute SQL: "+sql);
+		
 		List<KeyValuePair> pair = exec.executeDbCall();
 		
 		return pair;

@@ -28,10 +28,12 @@ import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.LookupLoader;
 import com.duggan.workflow.server.db.LookupLoaderImpl;
+import com.duggan.workflow.server.export.AnnotationParserImpl;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
@@ -94,7 +96,13 @@ public class FormDaoHelper {
 		if (loadFields) {
 			Collection<ADField> fields = adform.getFields();
 			for (ADField fld : fields) {
-				form.addField(getField(fld));
+				Field field= getField(fld);
+				
+				if(!field.getDependentFields().isEmpty()){
+					form.addFieldDependency(field.getDependentFields(),field.getName());
+				}
+				
+				form.addField(field);
 			}
 			// form.setFields(getFields());
 		}
@@ -136,48 +144,7 @@ public class FormDaoHelper {
 				.getPosition().intValue());
 
 		if (field.getType().isLookup()) {
-			String type = null;
-			String sqlDS = null;
-			String sqlSelect = null;
-
-			for (Property prop : field.getProperties()) {
-				if (prop.getName().equals("SELECTIONTYPE")) {
-					Object value = prop.getValue() == null ? null : prop
-							.getValue().getValue();
-					type = value == null ? null : value.toString();
-				}
-
-				if (prop.getName().equals("SQLSELECT")) {
-					Object value = prop.getValue() == null ? null : prop
-							.getValue().getValue();
-					sqlSelect = value == null ? null : value.toString();
-				}
-
-				if (prop.getName().equals("SQLDS")) {
-					Object value = prop.getValue() == null ? null : prop
-							.getValue().getValue();
-					sqlDS = value == null ? null : value.toString();
-				}
-
-			}
-
-			if (sqlDS != null && !sqlDS.isEmpty()) {
-				if (sqlSelect != null && !sqlSelect.isEmpty()) {
-					// Takes Precedence
-					try {
-						LookupLoader loader = new LookupLoaderImpl();
-						field.setSelectionValues(loader
-								.getValuesByDataSourceName(sqlDS, sqlSelect));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
-			} else if (type != null) {
-
-				field.setSelectionValues(getDropdownValues(type));
-			}
-
+			loadLookup(null,field);
 		}
 
 		if (adfield.getFields() != null) {
@@ -194,6 +161,58 @@ public class FormDaoHelper {
 		}
 
 		return field;
+	}
+
+	private static void loadLookup(Doc context,Field field) {
+		String type = null;
+		String sqlDS = null;
+		String sqlSelect = null;
+
+		for (Property prop : field.getProperties()) {
+			if (prop.getName().equals("SELECTIONTYPE")) {
+				Object value = prop.getValue() == null ? null : prop
+						.getValue().getValue();
+				type = value == null ? null : value.toString();
+			}
+
+			if (prop.getName().equals("SQLSELECT")) {
+				Object value = prop.getValue() == null ? null : prop
+						.getValue().getValue();
+				sqlSelect = value == null ? null : value.toString();
+			}
+
+			if (prop.getName().equals("SQLDS")) {
+				Object value = prop.getValue() == null ? null : prop
+						.getValue().getValue();
+				sqlDS = value == null ? null : value.toString();
+			}
+
+		}
+
+		if (sqlDS != null && !sqlDS.isEmpty()) {
+			if (sqlSelect != null && !sqlSelect.isEmpty()) {
+				// Takes Precedence
+				try {
+					LookupLoader loader = new LookupLoaderImpl();
+					field.setDependentFields(AnnotationParserImpl.extractAnnotations(sqlSelect));
+					
+					if(context!=null){
+						sqlSelect = AnnotationParserImpl.parseForSQL(context, sqlSelect);
+						logger.debug("SQL Parse: "+sqlSelect);
+					}
+					
+					field.setSelectionValues(loader
+							.getValuesByDataSourceName(sqlDS, sqlSelect));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} else if (type != null) {
+
+			field.setSelectionValues(getDropdownValues(type));
+		}
+
 	}
 
 	public static Collection<? extends FormModel> getFields(Long parentId,
@@ -871,5 +890,16 @@ public class FormDaoHelper {
 		}
 
 		return form;
+	}
+
+	public static List<Field> loadFieldValues(Doc doc, List<Field> fields) {
+		List<Field> reloaded = new ArrayList<Field>();
+		
+		for(Field field:fields){
+			loadLookup(doc, field);
+			reloaded.add(field);
+		}
+		
+		return reloaded;
 	}
 }

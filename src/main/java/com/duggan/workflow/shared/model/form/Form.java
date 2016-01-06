@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model.form;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.duggan.workflow.shared.model.Listable;
 
@@ -15,6 +17,11 @@ public class Form extends FormModel implements Listable, Serializable{
 	private List<Property> properties;
 	private List<Field> fields;
 	private Long processDefId;
+	
+	/**
+	 * Map<Parent,Children> dependency map
+	 */
+	private Map<String, List<String>> dependencies = new HashMap<String, List<String>>();
 	
 	public Form() {
 	}
@@ -99,6 +106,25 @@ public class Form extends FormModel implements Listable, Serializable{
 
 	public void setProcessDefId(Long processDefId) {
 		this.processDefId = processDefId;
+	}
+
+	public void addFieldDependency(List<String> parentFields, String childField) {
+		for(String parentField: parentFields){
+			List<String> children = dependencies.get(parentField);
+			if(children==null){
+				children = new ArrayList<String>();
+			}
+			children.add(childField);
+			dependencies.put(parentField, children);
+		}
+	}
+
+	public Map<String, List<String>> getDependencies() {
+		return dependencies;
+	}
+
+	public void setDependencies(Map<String, List<String>> dependencies) {
+		this.dependencies = dependencies;
 	}
 	
 	

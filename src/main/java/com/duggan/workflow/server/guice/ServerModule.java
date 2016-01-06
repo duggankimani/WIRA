@@ -60,6 +60,7 @@ import com.duggan.workflow.server.actionhandlers.GetTriggersRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetUserRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetUsersRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.InsertDataRequestHandler;
+import com.duggan.workflow.server.actionhandlers.LoadDynamicFieldsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.LoginRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
@@ -143,6 +144,7 @@ import com.duggan.workflow.shared.requests.GetTriggersRequest;
 import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.InsertDataRequest;
+import com.duggan.workflow.shared.requests.LoadDynamicFieldsRequest;
 import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
@@ -412,5 +414,6 @@ public class ServerModule extends HandlerModule {
 		
 		bindHandler(SendMessageRequest.class, SendMessageActionHandler.class, SessionValidator.class);
 		
+		bindHandler(LoadDynamicFieldsRequest.class, LoadDynamicFieldsRequestHandler.class, SessionValidator.class);
 	}
 }

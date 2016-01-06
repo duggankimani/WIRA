@@ -26,7 +26,6 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
-import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -34,13 +33,14 @@ import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachme
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
+import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent.ExecTriggerHandler;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
+import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
@@ -82,8 +82,6 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
-import com.duggan.workflow.shared.model.settings.SETTINGNAME;
-import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
@@ -99,8 +97,8 @@ import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
-import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.shared.requests.LoadDynamicFieldsRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
@@ -118,8 +116,8 @@ import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessLogResponse;
-import com.duggan.workflow.shared.responses.GetSettingsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
+import com.duggan.workflow.shared.responses.LoadDynamicFieldsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
@@ -137,7 +135,6 @@ import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> implements
@@ -255,21 +252,19 @@ public class GenericDocumentPresenter extends
 		void enableSubmit(boolean isEnable);
 	}
 
-	Long taskId;
-	Long documentId;
+	private Long taskId;
+	private Long documentId;
 	private String docRefId;
 
-	Doc doc;
-	Form form;
+	private Doc doc;
+	private Form form;
 	private int currentStep = 0;
 	private List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
 
 	private Integer activities = 0;
 
 	@Inject
-	DispatchAsync requestHelper;
-	@Inject
-	PlaceManager placeManager;
+	private DispatchAsync requestHelper;
 
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
@@ -681,22 +676,26 @@ public class GenericDocumentPresenter extends
 		}
 
 		mergeFormValuesWithDoc();
-		//Save Draft Document
+		// Save Draft Document
 
 		if (navigating) {
 			navigateToView(steps.get(currentStep), isNavigateNext);
-		}else{
-			//Cannot navigate (invalid form) - Save the document tho' - Duggan 27/09/2015
-			//How do we maintain front end state tho e.g form validation highlights the fields
-			//marking them as valid or invalid. Reloading data on this form removes this highlighting
-			//Temp soln- call is valid again?
-			//Further, If we do not rebind the saved form, we will end up with multiple db entries
-			//for form field values
+		} else {
+			// Cannot navigate (invalid form) - Save the document tho' - Duggan
+			// 27/09/2015
+			// How do we maintain front end state tho e.g form validation
+			// highlights the fields
+			// marking them as valid or invalid. Reloading data on this form
+			// removes this highlighting
+			// Temp soln- call is valid again?
+			// Further, If we do not rebind the saved form, we will end up with
+			// multiple db entries
+			// for form field values
 			//
-			if(doc instanceof Document){
+			if (doc instanceof Document) {
 				fireEvent(new ProcessingEvent());
 				MultiRequestAction requests = new MultiRequestAction();
-				requests.addRequest(new CreateDocumentRequest((Document)doc));
+				requests.addRequest(new CreateDocumentRequest((Document) doc));
 				requests.addRequest(new GetAttachmentsRequest(docRefId));
 				requestHelper.execute(requests,
 						new TaskServiceCallback<MultiRequestActionResult>() {
@@ -749,7 +748,7 @@ public class GenericDocumentPresenter extends
 			}
 
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-			
+
 			fireEvent(new ProcessingEvent());
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {
@@ -867,19 +866,19 @@ public class GenericDocumentPresenter extends
 		mergeFormValuesWithDoc();
 		ExecuteTriggerRequest request = new ExecuteTriggerRequest(
 				event.getTriggerName(), doc);
-//		Window.alert("Value on exec= "+(doc.getValues().get("budgetAmount")==null?null:
-//			doc.getValues().get("budgetAmount").getValue()));
+		// Window.alert("Value on exec= "+(doc.getValues().get("budgetAmount")==null?null:
+		// doc.getValues().get("budgetAmount").getValue()));
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<ExecuteTriggerResponse>() {
 					public void processResult(ExecuteTriggerResponse aResponse) {
 						// Updated Form
-						
+
 						doc = aResponse.getDocument();
 						bindForm(form, doc);
 						fireEvent(new ProcessingCompletedEvent());
-//						Window.alert("After exec= "+(doc.getValues().get("budgetAmount")==null?null:
-//							doc.getValues().get("budgetAmount").getValue()));
+						// Window.alert("After exec= "+(doc.getValues().get("budgetAmount")==null?null:
+						// doc.getValues().get("budgetAmount").getValue()));
 					}
 				});
 
@@ -929,22 +928,25 @@ public class GenericDocumentPresenter extends
 				values.put(key, val);
 			}
 		}
-		
+
 		/*
-		 * Duggan  06/10/2015
-		 * ExecuteWorkflow action submits a list of Value objects i.e Map<String,Value> ,
-		 * which works ok for all fields except grid fields updated through triggers
+		 * Duggan 06/10/2015 ExecuteWorkflow action submits a list of Value
+		 * objects i.e Map<String,Value> , which works ok for all fields except
+		 * grid fields updated through triggers
 		 * 
-		 * Grid rows updated through a trigger call to addDetail('gridName', DocumentLine) 
-		 * are not added to a GridValue object: they are written directly to a Map<String, List<DocLine>>,
-		 * hence they are left out when ExecuteWorkflow is called.
+		 * Grid rows updated through a trigger call to addDetail('gridName',
+		 * DocumentLine) are not added to a GridValue object: they are written
+		 * directly to a Map<String, List<DocLine>>, hence they are left out
+		 * when ExecuteWorkflow is called.
 		 * 
-		 *  To remedy this issue, We need to loop through the document lines generating a GridValue entry
-		 *  for each document line with no corresponding gridValue. ALTERNATIVELY, override addDetail and
-		 *  generate a GridValue entry there - This may be a better fit since 'after-step' triggers on 
-		 *  the last node will not interact with the interface before calling ExecuteWorkflow.
-		 *  @See Doc.addDetail()
+		 * To remedy this issue, We need to loop through the document lines
+		 * generating a GridValue entry for each document line with no
+		 * corresponding gridValue. ALTERNATIVELY, override addDetail and
+		 * generate a GridValue entry there - This may be a better fit since
+		 * 'after-step' triggers on the last node will not interact with the
+		 * interface before calling ExecuteWorkflow.
 		 * 
+		 * @See Doc.addDetail()
 		 */
 
 	}
@@ -955,7 +957,7 @@ public class GenericDocumentPresenter extends
 		mergeFormValuesWithDoc();
 
 		final Map<String, Value> values = doc.getValues();
-		
+
 		// Add any programmatic values (Button values e.g isApproved)
 		if (withValues != null)
 			values.putAll(withValues);
@@ -1022,7 +1024,7 @@ public class GenericDocumentPresenter extends
 															requests.addRequest(new SaveCommentRequest(
 																	comment));
 														}
-														
+
 														requestHelper
 																.execute(
 																		requests,
@@ -1154,16 +1156,17 @@ public class GenericDocumentPresenter extends
 	protected void save(Document document) {
 
 		// Incremental/ Page based additions
-		//mergeFormValuesWithDoc();
+		// mergeFormValuesWithDoc();
 
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new CreateDocumentRequest(document));
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-//			Window.alert("OnSave Value = "+(document.getValues().get("budgetAmount")==null? null:
-//				document.getValues().get("budgetAmount").getValue()));
-			
+			// Window.alert("OnSave Value = "+(document.getValues().get("budgetAmount")==null?
+			// null:
+			// document.getValues().get("budgetAmount").getValue()));
+
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {
 						public void processResult(
@@ -1175,9 +1178,10 @@ public class GenericDocumentPresenter extends
 							Document saved = aResponse.getDocument();
 							assert saved.getId() != null;
 							bindForm(form, saved);
-//							Window.alert("OnAfterSave Value = "+(saved.getValues().get("budgetAmount")==null? null:
-//								saved.getValues().get("budgetAmount").getValue()));
-							
+							// Window.alert("OnAfterSave Value = "+(saved.getValues().get("budgetAmount")==null?
+							// null:
+							// saved.getValues().get("budgetAmount").getValue()));
+
 							GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
 									.get(i++);
 							bindAttachments(attachmentsresponse);
@@ -1343,6 +1347,7 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		this.doc = doc;
 		this.form = form;
+
 		docRefId = doc.getRefId();
 		if (doc instanceof Document) {
 			documentId = (Long) doc.getId();
@@ -1381,6 +1386,44 @@ public class GenericDocumentPresenter extends
 		} else {
 			getView().setForm(form, doc, stepMode);
 		}
+
+		/**
+		 * 
+		 */
+		if (!form.getDependencies().isEmpty()) {
+			// Reload
+			loadDynamicFields(form.getDependencies());
+		}
+	}
+
+	private void loadDynamicFields(Map<String, List<String>> dependencies) {
+		List<Field> dependants = new ArrayList<Field>();
+		
+		for(List<String> names: dependencies.values()){
+			
+			for(String name: names){
+				Field f = new Field();
+				f.setName(name);
+				if(form.getFields().contains(f)){
+					dependants.add(form.getFields().get(form.getFields().indexOf(f)));
+				}
+			}
+			
+		}
+		
+		if(dependants.isEmpty()){
+			return;
+		}
+		
+		Window.alert("Fields> "+dependants.size()+" :: "+dependants);
+		
+		requestHelper.execute(new LoadDynamicFieldsRequest(doc, dependants),
+				new TaskServiceCallback<LoadDynamicFieldsResponse>() {
+					@Override
+					public void processResult(
+							LoadDynamicFieldsResponse aResponse) {
+					}
+				});
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {

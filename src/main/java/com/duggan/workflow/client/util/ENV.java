@@ -14,7 +14,7 @@ import com.duggan.workflow.shared.model.form.Field;
  * @author duggan
  *
  */
-public class ENV {
+public class ENV{
 
 	private static Map<String, Long> observableFields= new HashMap<String,Long>(); //Observable Registration
 	private static Map<String, Object> values = new HashMap<String,Object>(); //Field Values

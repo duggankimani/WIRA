@@ -141,7 +141,6 @@ public class CreateTableView extends Composite {
 		}
 	};
 
-	private Long id;
 	private CatalogType type = CatalogType.DATATABLE;
 	private List<Form> forms;
 	private List<ProcessDef> processes;
@@ -425,7 +424,6 @@ public class CreateTableView extends Composite {
 		this.type = type;
 		if (catalog != null) {
 			setCatalog(catalog);
-			id = catalog.getId();
 		}
 
 		if (type == CatalogType.REPORTTABLE) {
@@ -442,18 +440,24 @@ public class CreateTableView extends Composite {
 	}
 
 	public Catalog getCatalog() {
-		Catalog catalog = new Catalog();
-		catalog.setId(id);
-		catalog.setProcessDefId(lstProcess.getValue().getId());
-		catalog.setType(type);
-		catalog.setFieldSource(lstFieldSources.getValue());
+		Catalog cat = new Catalog();
+		if (this.catalog != null) {
+			cat.setId(this.catalog.getId());
+		}
+
+		if (lstProcess.getValue() != null) {
+			cat.setProcessDefId(lstProcess.getValue().getId());
+		}
+		
+		cat.setType(type);
+		cat.setFieldSource(lstFieldSources.getValue());
 		String name = txtName.getValue().toUpperCase();
-		catalog.setName(name.replaceAll("\\s", "")); // Clear empty space
-		catalog.setDescription(txtDescription.getValue());
+		cat.setName(name.replaceAll("\\s", "")); // Clear empty space
+		cat.setDescription(txtDescription.getValue());
 		List<CatalogColumn> columns = grid.getData(mapper);
 
-		catalog.setColumns(columns);
-		return catalog;
+		cat.setColumns(columns);
+		return cat;
 	}
 
 	public void setCatalog(Catalog catalog) {
@@ -506,7 +510,8 @@ public class CreateTableView extends Composite {
 	public void setProcesses(List<ProcessDef> processes) {
 		this.processes = processes;
 		lstProcess.setItems(processes);
-		if (catalog != null && catalog.getProcessDefId() != null && processes!=null) {
+		if (catalog != null && catalog.getProcessDefId() != null
+				&& processes != null) {
 			for (ProcessDef d : processes) {
 				if (d.getId().equals(catalog.getProcessDefId())) {
 					lstProcess.setValue(d);

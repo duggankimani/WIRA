@@ -20,18 +20,49 @@ public class Field extends FormModel implements Comparable<Field>{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	//Field properties - Caption, Length etc
 	private List<Property> properties = new ArrayList<Property>();
+
+	//Drop down/ multiselect selection values
 	private List<KeyValuePair> selectionValues = new ArrayList<KeyValuePair>();
+	
+	//Default field value or current field value
 	private Value value;
+	
+	//Field Data type
 	private DataType type;
+	
+	//Form id
 	private Long formId=-1L;
+	
+	//Index position on the form
 	private int position;
+	
+	//Id of the parent field - for a child field
 	private Long parentId;
+	
+	//List of children fields - for a grid field
 	private List<Field> fields = new ArrayList<Field>();
+	
+	//Front end grid name for grid children fields
 	private transient String gridName="";
+	//Front end rowid/rowno for entries in a grid
 	private transient Long lineRefId = null;
+	//Front end document id for the main doc
 	private transient String docId="";
+	//Front end document refid
 	private transient String docRefId="";
+	
+	/**
+	 * Fields this field depends on. 
+	 * <p>
+	 * This is used for lookups to register for change events in the parent field
+	 * where an sql statement is used in child field.
+	 * <p>
+	 * e.g select id,name from cities where countryid=@@country  
+	 * 
+	 */
+	private List<String> dependentFields = new ArrayList<String>();
 	
 	public Field() {
 		docId="TempD";
@@ -312,6 +343,14 @@ public class Field extends FormModel implements Comparable<Field>{
 		for(Property p: properties){
 			field.addProperty(p.clone(copyAll));
 		}
+	}
+
+	public List<String> getDependentFields() {
+		return dependentFields;
+	}
+
+	public void setDependentFields(List<String> dependentFields) {
+		this.dependentFields = dependentFields;
 	}
 
 }
