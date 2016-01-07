@@ -16,6 +16,9 @@ import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.FieldLoadEvent;
+import com.duggan.workflow.client.ui.events.FieldReloadedEvent;
+import com.duggan.workflow.client.ui.events.FieldReloadedEvent.FieldReloadedHandler;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
@@ -59,7 +62,7 @@ import com.google.gwt.user.client.ui.Widget;
 public abstract class FieldWidget extends AbsolutePanel implements
 		HasDragHandle, PropertyChangedHandler, HasProperties,
 		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler,
-		DeleteLineHandler, ResetFieldValueHandler {
+		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler {
 
 	private FocusPanel shim = new FocusPanel();
 	protected long id = System.currentTimeMillis();
@@ -254,6 +257,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		initShim();
 		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
+		addRegisteredHandler(FieldReloadedEvent.getType(), this);
 
 		if (isObserver) {
 			// System.err.println("Registering observer.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
@@ -281,6 +285,19 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 		// register default events
 
+	}
+	
+	@Override
+	public void onFieldReloaded(FieldReloadedEvent event) {
+		List<Field> fields= event.getFields();
+		if(fields.contains(field)){
+			Value fieldValue = getFieldValue();
+			int idx = fields.indexOf(field);
+			
+			Field reloaded = fields.get(idx);
+			setField(reloaded);
+			setValue(fieldValue);
+		}
 	}
 
 	protected void registerValueChangeHandler() {
@@ -1123,6 +1140,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		String triggerName = getPropertyValue(CUSTOMTRIGGER);
 		if(triggerName!=null && !triggerName.isEmpty()){
 			AppContext.fireEvent(new ExecTriggerEvent(triggerName));
+		}
+		
+		//Window.alert(msg);
+		if(field.isDynamicParent()){
+			AppContext.fireEvent(new FieldLoadEvent(field));
 		}
 	}
 

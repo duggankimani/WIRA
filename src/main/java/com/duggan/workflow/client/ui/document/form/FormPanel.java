@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.document.form;
 import static com.duggan.workflow.client.ui.util.DateUtils.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -122,7 +123,7 @@ public class FormPanel extends Composite {
 
 		});
 
-		bind(fields, doc);
+		bind(fields, doc, form.getDependencies().keySet());
 
 	}
 
@@ -141,8 +142,8 @@ public class FormPanel extends Composite {
 		execJs();
 	}
 
-	void bind(List<Field> fields, Doc doc) {
-
+	void bind(List<Field> fields, Doc doc, Collection<String> parentFields) {
+		
 		Map<String, Value> values = doc.getValues();
 		Long documentId = null;
 		Long taskId = null;
@@ -224,6 +225,10 @@ public class FormPanel extends Composite {
 					value = new DateValue(doc.getCreated());
 				}
 				field.setValue(value);
+			}
+			
+			if(parentFields.contains(field.getName())){
+				field.setDynamicParent(true);
 			}
 
 			// Bind this field to the form

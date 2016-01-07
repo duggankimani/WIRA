@@ -28,6 +28,7 @@ public class LoadDynamicFieldsRequestHandler
 		Doc doc = action.getDoc();
 		List<Field> fields = action.getFieldNames();
 		fields = FormDaoHelper.loadFieldValues(doc,fields);
+		((LoadDynamicFieldsResponse)actionResult).setFields(fields);
 	}
 
 }

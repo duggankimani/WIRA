@@ -26,6 +26,7 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.ui.events.FieldLoadEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -35,6 +36,8 @@ import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent.ExecTriggerHandler;
+import com.duggan.workflow.client.ui.events.FieldLoadEvent.FieldLoadHandler;
+import com.duggan.workflow.client.ui.events.FieldReloadedEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
@@ -140,7 +143,7 @@ public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> implements
 		ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler,
 		DeleteAttachmentHandler, DeleteLineHandler, ButtonClickHandler,
-		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler {
+		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler, FieldLoadHandler {
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type,
@@ -315,6 +318,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
+		addRegisteredHandler(FieldLoadEvent.getType(), this);
 
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override
@@ -1398,7 +1402,6 @@ public class GenericDocumentPresenter extends
 
 	private void loadDynamicFields(Map<String, List<String>> dependencies) {
 		List<Field> dependants = new ArrayList<Field>();
-		
 		for(List<String> names: dependencies.values()){
 			
 			for(String name: names){
@@ -1415,13 +1418,20 @@ public class GenericDocumentPresenter extends
 			return;
 		}
 		
-		Window.alert("Fields> "+dependants.size()+" :: "+dependants);
+		/**
+		 * Bind Form Values with Doc Object
+		 */
+		mergeFormValuesWithDoc();
 		
+		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new LoadDynamicFieldsRequest(doc, dependants),
 				new TaskServiceCallback<LoadDynamicFieldsResponse>() {
 					@Override
 					public void processResult(
 							LoadDynamicFieldsResponse aResponse) {
+						List<Field> fields = aResponse.getFields();
+						fireEvent(new ProcessingCompletedEvent());
+						fireEvent(new FieldReloadedEvent(fields));
 					}
 				});
 	}
@@ -1780,6 +1790,16 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onProcessing(ProcessingEvent event) {
 		getView().enableSubmit(false);
+	}
+
+	@Override
+	public void onFieldLoad(FieldLoadEvent event) {
+		String fieldName = event.getField().getName();
+		Map<String,List<String>> dependencies = form.getDependencies();
+		Map<String,List<String>> toReload = new HashMap<String, List<String>>();
+		
+		toReload.put(fieldName, dependencies.get(fieldName));
+		loadDynamicFields(toReload);
 	}
 
 }

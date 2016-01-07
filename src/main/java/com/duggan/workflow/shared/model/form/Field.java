@@ -64,6 +64,11 @@ public class Field extends FormModel implements Comparable<Field>{
 	 */
 	private List<String> dependentFields = new ArrayList<String>();
 	
+	/**
+	 * This field has dependants
+	 */
+	private boolean isDynamicParent;
+	
 	public Field() {
 		docId="TempD";
 	}
@@ -351,6 +356,14 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	public void setDependentFields(List<String> dependentFields) {
 		this.dependentFields = dependentFields;
+	}
+
+	public boolean isDynamicParent() {
+		return isDynamicParent;
+	}
+
+	public void setDynamicParent(boolean isDynamicParent) {
+		this.isDynamicParent = isDynamicParent;
 	}
 
 }
