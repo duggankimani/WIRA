@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,6 +39,7 @@ public class LocalAttachment extends PO{
 	@Enumerated(EnumType.STRING)
 	private SETTINGNAME settingName;
 
+	@Basic(fetch=FetchType.LAZY)
 	@Lob
 	private byte[] attachment;
 	
