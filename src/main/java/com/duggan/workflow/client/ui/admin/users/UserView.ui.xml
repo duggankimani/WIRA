@@ -27,6 +27,7 @@
 					<ul id="mytab" class="nav nav-tabs">
 					  <li class="active" ui:field="liUser"><g:Anchor ui:field="aUserstab">Users</g:Anchor></li>
 					  <li ui:field="liGroup"><g:Anchor ui:field="aGroupstab">Groups</g:Anchor></li>
+					  <li ui:field="liOrg"><g:Anchor ui:field="aOrgsTab">Organisations/Units</g:Anchor></li>
 					</ul>
 					<div id="usercontent" class="tab-content">
 							<!-- User's Information Tab  -->
@@ -104,6 +105,26 @@
 						
 						    
 						<g:HTMLPanel ui:field="panelGroup" styleName="tbody"><!-- div class="tbody"-->
+						</g:HTMLPanel><!--End Tbody  -->
+						</div><!--End Table  -->  
+			        </div>
+			        
+					<!-- Organisations/units table -->
+					<div ui:field="divOrgContent" class="tab-pane fade">
+				         <div class="table table-hover table-striped table-bordered">
+						    <div class="thead">
+						    	<div class="tr">
+									<div class="th">
+									  <label><input type="checkbox" class="ace"/></label>
+									</div>
+									<div class="th">Code</div>
+									<div class="th">Description</div>	
+									<div class="th">Action</div>
+								</div>						
+							</div>
+						
+						    
+						<g:HTMLPanel ui:field="panelOrg" styleName="tbody"><!-- div class="tbody"-->
 						</g:HTMLPanel><!--End Tbody  -->
 						</div><!--End Table  -->  
 			        </div>

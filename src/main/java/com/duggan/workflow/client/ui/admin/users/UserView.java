@@ -28,6 +28,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	@UiField Anchor aNewGroup;
 	@UiField Anchor aUserstab;
 	@UiField Anchor aGroupstab;
+	@UiField Anchor aOrgsTab;
 	@UiField HTMLPanel panelUsers;
 	@UiField HTMLPanel panelGroup;
 	
@@ -36,6 +37,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	
 	@UiField Element liGroup;
 	@UiField Element liUser;
+	@UiField Element liOrg;
 
 	public interface Binder extends UiBinder<Widget, UserView> {
 	}
@@ -68,6 +70,15 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				placeManager.revealPlace(new PlaceRequest.Builder()
 				.nameToken(NameTokens.usermgt)
 				.with("p", "group").build());
+			}
+		});
+		
+		aOrgsTab.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				placeManager.revealPlace(new PlaceRequest.Builder()
+				.nameToken(NameTokens.usermgt)
+				.with("p", "units").build());
 			}
 		});
 	}
