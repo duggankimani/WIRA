@@ -47,7 +47,7 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 	}
 
 	public enum TYPE{
-		GROUP, USER
+		GROUP, USER , ORGANIZATION
 	}
 	
 	TYPE type;

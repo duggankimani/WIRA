@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.Group;
+import com.duggan.workflow.server.dao.model.Org;
 import com.duggan.workflow.server.dao.model.User;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
@@ -95,6 +96,12 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 			return new ArrayList<>();
 		}
 		return group.getMembers();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Org> getAllOrgs() {
+		Query query = em.createQuery("FROM Org b order by b.fullName");		
+		return query.getResultList();
 	}
 	
 

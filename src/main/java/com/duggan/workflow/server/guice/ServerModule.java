@@ -22,6 +22,7 @@ import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetAllOrganizationsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCatalogsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
@@ -106,6 +107,7 @@ import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAlertCount;
+import com.duggan.workflow.shared.requests.GetAllOganizationsRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
@@ -168,10 +170,8 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
-import com.duggan.workflow.shared.responses.SaveOutputDocumentResponse;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
-import com.sun.tools.xjc.reader.xmlschema.BindGreen;
 
 public class ServerModule extends HandlerModule {
 
@@ -415,5 +415,6 @@ public class ServerModule extends HandlerModule {
 		bindHandler(SendMessageRequest.class, SendMessageActionHandler.class, SessionValidator.class);
 		
 		bindHandler(LoadDynamicFieldsRequest.class, LoadDynamicFieldsRequestHandler.class, SessionValidator.class);
+		bindHandler(GetAllOganizationsRequest.class, GetAllOrganizationsRequestActionHandler.class, SessionValidator.class);
 	}
 }

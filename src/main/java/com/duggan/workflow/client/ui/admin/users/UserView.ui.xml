@@ -22,6 +22,12 @@
 						<i class="icon-plus"></i>
 							Add Group
 					</g:Anchor>
+					
+					<g:Anchor ui:field="aNewOrg" styleName="btn btn-primary hide"
+						title="Add a New Group">
+						<i class="icon-plus"></i>
+							Add Organization/Unit
+					</g:Anchor>
 				</div>
 				
 					<ul id="mytab" class="nav nav-tabs">

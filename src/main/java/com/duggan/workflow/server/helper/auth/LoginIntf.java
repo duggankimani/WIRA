@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Organization;
 import com.duggan.workflow.shared.model.UserGroup;
 
 public interface LoginIntf extends Closeable {
@@ -68,6 +69,8 @@ public interface LoginIntf extends Closeable {
 	public List<HTUser> getUsersForGroups(String[] groups);
 
 	public boolean updatePassword(String username, String password);
+	
+	public List<Organization> getAllOrganizations();
 	
 	
 }

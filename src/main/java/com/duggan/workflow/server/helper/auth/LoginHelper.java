@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Organization;
 import com.duggan.workflow.shared.model.UserGroup;
 
 /**
@@ -152,5 +153,10 @@ public class LoginHelper implements LoginIntf{
 
 	public boolean updatePassword(String username, String password) {
 		return impl.updatePassword(username, password);
+	}
+
+	@Override
+	public List<Organization> getAllOrganizations() {
+		return impl.getAllOrganizations();
 	}
 }
