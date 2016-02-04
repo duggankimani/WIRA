@@ -1,17 +1,20 @@
 package com.duggan.workflow.client.ui.admin.users.orgs;
 
 import com.duggan.workflow.shared.model.Organization;
-import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.Proxy;
 
 public class OrgsPresenter extends PresenterWidget<OrgsPresenter.MyView> {
-	interface MyView extends View {
+	public interface MyView extends View {
+		void setValues(String code, String name);
+
+		HasClickHandlers getEdit();
+
+		HasClickHandlers getDelete();
 	}
 
 	Organization organization;
@@ -19,13 +22,19 @@ public class OrgsPresenter extends PresenterWidget<OrgsPresenter.MyView> {
 	DispatchAsync requestHelper;
 
 	@Inject
-	OrgsPresenter(EventBus eventBus, MyView view) {
+	public OrgsPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 
 	}
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
+		getView().setValues(organization.getName(), organization.getFullName());
+	}
+
+	@Override
+	protected void onBind() {
+		super.onBind();
 	}
 
 }

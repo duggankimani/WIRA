@@ -72,5 +72,9 @@ public interface LoginIntf extends Closeable {
 	
 	public List<Organization> getAllOrganizations();
 	
+	public Organization createOrganization(Organization organization);
+
+	public void deleteOrganizaton(Organization organization);
+	
 	
 }

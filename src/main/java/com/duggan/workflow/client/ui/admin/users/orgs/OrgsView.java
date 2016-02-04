@@ -10,12 +10,13 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-class OrgsView extends ViewImpl implements OrgsPresenter.MyView {
+public class OrgsView extends ViewImpl implements OrgsPresenter.MyView {
+	
+	private final Widget widget;
+	
     interface Binder extends UiBinder<Widget, OrgsView> {
     }
     
-    private final Widget widget;
-
     @UiField HTMLPanel panelName;
 	@UiField HTMLPanel panelFullName;
 	

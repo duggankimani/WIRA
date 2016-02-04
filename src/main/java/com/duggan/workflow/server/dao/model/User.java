@@ -13,7 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -59,12 +61,8 @@ public class User extends PO {
 			org.hibernate.annotations.CascadeType.MERGE })
 	private Collection<Group> groups = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	@JoinTable(name = "UserOrganization", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = {
-			@JoinColumn(name = "orgid") })
-	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.PERSIST,
-			org.hibernate.annotations.CascadeType.MERGE })
-	private Collection<Org> orgs = new HashSet<>();
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	private Org organization;
 
 	@ManyToMany
 	@JoinTable(name = "process_useraccess", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = {
@@ -165,11 +163,12 @@ public class User extends PO {
 		return htuser;
 	}
 
-	public Collection<Org> getOrgs() {
-		return orgs;
+	public Org getOrganization() {
+		return organization;
 	}
 
-	public void setOrgs(Collection<Org> orgs) {
-		this.orgs = orgs;
+	public void setOrganization(Org organization) {
+		this.organization = organization;
 	}
+	
 }

@@ -159,4 +159,14 @@ public class LoginHelper implements LoginIntf{
 	public List<Organization> getAllOrganizations() {
 		return impl.getAllOrganizations();
 	}
+
+	@Override
+	public Organization createOrganization(Organization organization) {
+		return impl.createOrganization(organization);
+	}
+
+	@Override
+	public void deleteOrganizaton(Organization organization) {
+		impl.deleteOrganizaton(organization);
+	}
 }

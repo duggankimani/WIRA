@@ -57,6 +57,7 @@ public class DBLoginHelper implements LoginIntf {
 		htuser.setPassword(user.getPassword());
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
+		htuser.setOrganization(getOrg(user.getOrganization()));
 
 		if (loadGroups) {
 			htuser.setGroups(getFromDb(user.getGroups()));
@@ -142,9 +143,25 @@ public class DBLoginHelper implements LoginIntf {
 		user.setUserId(htuser.getUserId());
 		user.setGroups(get(htuser.getGroups()));
 
+		Org org = dao.getOrganizationByName(htuser.getOrganization().getName());
+
+		user.setOrganization(org);
+
 		dao.saveUser(user);
 
 		return get(user);
+	}
+
+	private Collection<Org> getOrgs(List<Organization> organizations) {
+		Collection<Org> orgs = new ArrayList<>();
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		for (Organization organization : organizations) {
+			Org org = dao.getOrganizationByName(organization.getName());
+			if (org != null) {
+				orgs.add(org);
+			}
+		}
+		return orgs;
 	}
 
 	private List<Group> get(List<UserGroup> userGroups) {
@@ -316,10 +333,51 @@ public class DBLoginHelper implements LoginIntf {
 		List<Org> orgs = dao.getAllOrgs();
 
 		for (Org org : orgs) {
-			organizations.add(org.toDto());
+			organizations.add(getOrg(org));
 		}
-		
+
 		return organizations;
+	}
+
+	public Organization getOrg(Org org) {
+
+		if (org == null) {
+			return null;
+		}
+
+		Organization organization = new Organization();
+		organization.setName(org.getName());
+		organization.setId(org.getId());
+		organization.setFullName(org.getFullName());
+
+		return organization;
+	}
+
+	@Override
+	public Organization createOrganization(Organization organization) {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+
+		Org org = dao.getOrganizationByName(organization.getName());
+
+		if (org == null) {
+			org = new Org();
+		}
+
+		org.setName(organization.getName());
+		org.setFullName(organization.getFullName());
+		dao.save(org);
+
+		return organization;
+	}
+
+	@Override
+	public void deleteOrganizaton(Organization organization) {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		Org org = dao.getOrganizationByName(organization.getName());
+
+		if (org == null) {
+			dao.delete(org);
+		}
 	}
 
 }

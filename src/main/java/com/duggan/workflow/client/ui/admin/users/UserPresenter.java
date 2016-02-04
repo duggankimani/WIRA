@@ -18,6 +18,8 @@ import com.duggan.workflow.client.ui.events.EditUserEvent;
 import com.duggan.workflow.client.ui.events.EditUserEvent.EditUserHandler;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent.LoadGroupsHandler;
+import com.duggan.workflow.client.ui.events.LoadOrganizationsEvent;
+import com.duggan.workflow.client.ui.events.LoadOrganizationsEvent.LoadOrganizationsHandler;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -26,17 +28,18 @@ import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Organization;
 import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.requests.GetAllOganizationsRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.shared.responses.GetAllOrganizationsResponse;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.Window;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -51,7 +54,7 @@ import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter.MyProxy>
-		implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandler {
+		implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandler,LoadOrganizationsHandler {
 
 	public interface MyView extends View {
 
@@ -92,11 +95,12 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 	@Inject
 	public UserPresenter(final EventBus eventBus, final MyView view, MyProxy proxy,
 			Provider<UserSavePresenter> addUserProvider, Provider<UserItemPresenter> itemProvider,
-			Provider<GroupPresenter> groupProvider) {
+			Provider<GroupPresenter> groupProvider , Provider<OrgsPresenter> orgProvider) {
 		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
 		userFactory = new StandardProvider<UserSavePresenter>(addUserProvider);
 		userItemFactory = new StandardProvider<UserItemPresenter>(itemProvider);
 		groupFactory = new StandardProvider<GroupPresenter>(groupProvider);
+		orgFactory = new StandardProvider<OrgsPresenter>(orgProvider);
 	}
 
 	@Override
@@ -106,6 +110,7 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 		addRegisteredHandler(LoadUsersEvent.TYPE, this);
 		addRegisteredHandler(LoadGroupsEvent.TYPE, this);
 		addRegisteredHandler(EditGroupEvent.TYPE, this);
+		addRegisteredHandler(LoadOrganizationsEvent.TYPE, this);
 
 		getView().getaNewUser().addClickHandler(new ClickHandler() {
 			@Override
@@ -129,6 +134,7 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 		});
 	}
 
+
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
@@ -142,7 +148,7 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 		if (type == null) {
 			type = TYPE.USER;
 		}
-
+		
 		setType(type);
 		loadData();
 	}
@@ -172,7 +178,7 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 		}
 
 		if (type == TYPE.ORGANIZATION) {
-			loadGroups();
+			loadOrgs();
 		}
 	}
 
@@ -233,13 +239,13 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 	}
 
 	protected void loadOrgs() {
-		GetUsersRequest request = new GetUsersRequest();
+		GetAllOganizationsRequest request = new GetAllOganizationsRequest();
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(request, new TaskServiceCallback<GetUsersResponse>() {
+		requestHelper.execute(request, new TaskServiceCallback<GetAllOrganizationsResponse>() {
 			@Override
-			public void processResult(GetUsersResponse result) {
-				List<HTUser> users = result.getUsers();
-				loadUsers(users);
+			public void processResult(GetAllOrganizationsResponse result) {
+				List<Organization> organizations = result.getOrganizations();
+				loadOrgs(organizations);
 				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
@@ -247,7 +253,7 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 
 	@SuppressWarnings("deprecation")
 	protected void loadOrgs(List<Organization> organizations) {
-		setInSlot(GROUPSLOT, null);
+		setInSlot(ORGSSLOT, null);
 		for (final Organization organization : organizations) {
 			orgFactory.get(new ServiceCallback<OrgsPresenter>() {
 				@Override
@@ -283,6 +289,11 @@ public class UserPresenter extends Presenter<UserPresenter.MyView, UserPresenter
 	@Override
 	public void onEditGroup(EditGroupEvent event) {
 		showPopup(type, event.getGroup());
+	}
+
+	@Override
+	public void onLoadOrganizations(LoadOrganizationsEvent event) {
+		loadData();
 	}
 
 }

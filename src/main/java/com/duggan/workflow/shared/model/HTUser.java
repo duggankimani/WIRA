@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class HTUser implements Listable,Serializable {
+public class HTUser implements Listable, Serializable {
 
 	private static final long serialVersionUID = -5249516544970187459L;
 	private Long id;
@@ -12,23 +12,23 @@ public class HTUser implements Listable,Serializable {
 	private String email;
 	private String surname;
 	private String password;
-	private List<UserGroup> groups ;
+	private List<UserGroup> groups;
 	private int participated;
 	private int inbox;
-	
+	private Organization organization;
+
 	public HTUser() {
 	}
 
 	public HTUser(String id) {
 		this.userId = id;
 	}
-	
+
 	public HTUser(String id, String email) {
 		this.userId = id;
 		this.email = email;
 	}
-	
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -68,11 +68,11 @@ public class HTUser implements Listable,Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public String getFullName(){
-		return surname+" "+name;
+
+	public String getFullName() {
+		return surname + " " + name;
 	}
-	
+
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
@@ -86,19 +86,19 @@ public class HTUser implements Listable,Serializable {
 	public void setGroups(List<UserGroup> groups) {
 		this.groups = groups;
 	}
-	
-	public String getGroupsAsString(){
+
+	public String getGroupsAsString() {
 		StringBuffer out = new StringBuffer();
-		if(groups!=null){
-			for(UserGroup group: groups){
-				out.append(group.getName()+",");
+		if (groups != null) {
+			for (UserGroup group : groups) {
+				out.append(group.getName() + ",");
 			}
 		}
-		
-		if(out.length()>0){
-			return out.substring(0, out.length()-1);
+
+		if (out.length() > 0) {
+			return out.substring(0, out.length() - 1);
 		}
-		
+
 		return "";
 	}
 
@@ -111,12 +111,12 @@ public class HTUser implements Listable,Serializable {
 	}
 
 	public boolean hasGroup(String groupName) {
-		if(groups!=null)
-		for(UserGroup group:groups){
-			if(group.getName().equalsIgnoreCase(groupName)){
-				return true;
+		if (groups != null)
+			for (UserGroup group : groups) {
+				if (group.getName().equalsIgnoreCase(groupName)) {
+					return true;
+				}
 			}
-		}
 		return false;
 	}
 
@@ -124,19 +124,19 @@ public class HTUser implements Listable,Serializable {
 
 		return hasGroup("admin") || hasGroup("Administrator");
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj==null || !(obj instanceof HTUser)){
+		if (obj == null || !(obj instanceof HTUser)) {
 			return false;
 		}
-		
-		HTUser other =  (HTUser)obj;
-		
-		if(userId==null){
+
+		HTUser other = (HTUser) obj;
+
+		if (userId == null) {
 			return false;
 		}
-		
+
 		return userId.equals(other.userId);
 	}
 
@@ -157,12 +157,21 @@ public class HTUser implements Listable,Serializable {
 	}
 
 	public int getTotal() {
-		
-		return participated+inbox;
+
+		return participated + inbox;
 	}
 
 	@Override
 	public String getDisplayName() {
 		return getFullName();
 	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+	
 }

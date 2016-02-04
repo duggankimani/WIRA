@@ -72,6 +72,7 @@ import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveGroupRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationTemplateRequestHandler;
+import com.duggan.workflow.server.actionhandlers.SaveOrganizationRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveOuputDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveProcessCategoryRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
@@ -157,6 +158,7 @@ import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.requests.SaveNotificationTemplateRequest;
+import com.duggan.workflow.shared.requests.SaveOrganizationRequest;
 import com.duggan.workflow.shared.requests.SaveOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.SaveProcessCategoryRequest;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
@@ -416,5 +418,6 @@ public class ServerModule extends HandlerModule {
 		
 		bindHandler(LoadDynamicFieldsRequest.class, LoadDynamicFieldsRequestHandler.class, SessionValidator.class);
 		bindHandler(GetAllOganizationsRequest.class, GetAllOrganizationsRequestActionHandler.class, SessionValidator.class);
+		bindHandler(SaveOrganizationRequest.class, SaveOrganizationRequestActionHandler.class, SessionValidator.class);
 	}
 }

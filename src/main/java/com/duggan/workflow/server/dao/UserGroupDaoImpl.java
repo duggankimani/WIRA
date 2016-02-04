@@ -49,6 +49,19 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		return (Group)group;
 	}
 	
+	public Org getOrganizationByName(String name){
+		Query query = em.createNamedQuery("Organization.getOrganizationByOrganizationId");
+		query.setParameter("name", name);
+		
+		Object org = null;
+		
+		try{
+			org  = query.getSingleResult();
+		}catch(NoResultException e){}
+		
+		return (Org)org;
+	}
+	
 	public void saveGroup(Group group){
 		save(group);
 	}
@@ -100,9 +113,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	
 	@SuppressWarnings("unchecked")
 	public List<Org> getAllOrgs() {
-		Query query = em.createQuery("FROM Org b order by b.fullName");		
+		Query query = em.createQuery("FROM Organization b order by b.fullName");		
 		return query.getResultList();
 	}
-	
-
 }

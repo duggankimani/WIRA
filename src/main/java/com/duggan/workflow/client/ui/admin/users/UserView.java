@@ -96,7 +96,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			@Override
 			public void onClick(ClickEvent event) {
 				placeManager.revealPlace(
-						new PlaceRequest.Builder().nameToken(NameTokens.usermgt).with("p", "units").build());
+						new PlaceRequest.Builder().nameToken(NameTokens.usermgt).with("p", "organization").build());
 			}
 		});
 	}
@@ -141,7 +141,6 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				panelGroup.add(content);
 			}
 		} else if (slot == ORGSSLOT) {
-
 			if (content != null) {
 				panelOrg.add(content);
 			}

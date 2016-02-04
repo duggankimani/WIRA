@@ -7,7 +7,7 @@ public class GetAllOganizationsRequest extends BaseRequest<GetAllOrganizationsRe
 
 
 	@SuppressWarnings("unused")
-	private GetAllOganizationsRequest() {
+	public GetAllOganizationsRequest() {
 		// For serialization only
 	}
 

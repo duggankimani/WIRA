@@ -28,6 +28,7 @@ import com.duggan.workflow.server.helper.ldap.LDAPService;
 import com.duggan.workflow.server.helper.ldap.LdapQueryHelper;
 import com.duggan.workflow.shared.exceptions.InitializationFailureError;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Organization;
 import com.duggan.workflow.shared.model.UserGroup;
 
 public class LDAPLoginHelper implements LoginIntf{
@@ -399,6 +400,24 @@ public class LDAPLoginHelper implements LoginIntf{
 	public boolean updatePassword(String username, String password) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<Organization> getAllOrganizations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Organization createOrganization(Organization organization) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteOrganizaton(Organization organization) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
