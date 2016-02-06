@@ -133,8 +133,6 @@ public class DBLoginHelper implements LoginIntf{
 			user = po;
 		}
 		
-		
-		user.setId(htuser.getId());
 		user.setArchived(false);
 		user.setEmail(htuser.getEmail());
 		user.setFirstName(htuser.getName());
