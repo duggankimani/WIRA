@@ -3,11 +3,11 @@ package com.duggan.workflow.client.ui.notifications;
 import java.util.List;
 
 import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent;
-import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent.BeforeNotificationsLoadHandler;
-import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
-import com.duggan.workflow.client.ui.events.NotificationsLoadEvent.NotificationsLoadHandler;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
+import com.duggan.workflow.shared.events.BeforeNotificationsLoadEvent;
+import com.duggan.workflow.shared.events.NotificationsLoadEvent;
+import com.duggan.workflow.shared.events.BeforeNotificationsLoadEvent.BeforeNotificationsLoadHandler;
+import com.duggan.workflow.shared.events.NotificationsLoadEvent.NotificationsLoadHandler;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.google.web.bindery.event.shared.EventBus;

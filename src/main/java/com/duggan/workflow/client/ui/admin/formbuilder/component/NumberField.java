@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.client.ui.component.DoubleField;
-import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.events.OperandChangedEvent;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;

@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.admin.users.groups;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.events.EditGroupEvent;
+import com.duggan.workflow.shared.events.EditGroupEvent;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
 import com.duggan.workflow.shared.responses.SaveGroupResponse;

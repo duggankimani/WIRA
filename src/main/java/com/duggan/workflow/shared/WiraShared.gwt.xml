@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
 	<source path="model"/>
-	<source path="event"/>
+	<source path="events"/>
 	<source path="exceptions"/>
 	<source path="requests"/>
 	<source path="responses"/>

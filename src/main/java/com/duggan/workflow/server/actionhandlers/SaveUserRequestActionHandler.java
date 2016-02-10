@@ -27,7 +27,6 @@ public class SaveUserRequestActionHandler extends
 			result.setUser(user);
 		}
 		
-		
 		if(action.isDelete()){
 			LoginHelper.get().deleteUser(user);
 		}

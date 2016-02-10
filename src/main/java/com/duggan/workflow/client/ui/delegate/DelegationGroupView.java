@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.delegate.userDisplay.UserDisplay;
-import com.duggan.workflow.client.ui.events.PresentUserEvent;
-import com.duggan.workflow.client.ui.events.PresentUserEvent.PresentUserHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.PresentUserEvent;
+import com.duggan.workflow.shared.events.PresentUserEvent.PresentUserHandler;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.google.gwt.core.client.GWT;

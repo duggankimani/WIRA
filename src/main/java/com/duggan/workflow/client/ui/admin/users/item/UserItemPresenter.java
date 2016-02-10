@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.admin.users.item;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.events.EditUserEvent;
+import com.duggan.workflow.shared.events.EditUserEvent;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.responses.SaveUserResponse;

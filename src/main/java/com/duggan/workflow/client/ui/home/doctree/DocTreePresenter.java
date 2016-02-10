@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.ContextLoadedEvent;
+import com.duggan.workflow.shared.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
