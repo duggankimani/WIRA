@@ -14,7 +14,10 @@ public enum SETTINGNAME {
 	SMTP_ACCOUNT("mail.smtp.from", DataType.STRING),
 	SMTP_PASSWORD("mail.smtp.password", DataType.STRING),
 	RAZUNA_UPLOADS_FOLDERID("folder_id", DataType.STRING),
-	REPORT_VIEW_IMPL("REPORT_VIEW_IMPL", DataType.STRING); //GOOGLE_DOCS, NEW_TAB, IFRAME
+	REPORT_VIEW_IMPL("REPORT_VIEW_IMPL", DataType.STRING), //GOOGLE_DOCS, NEW_TAB, IFRAME
+	ORG_ADDRESS1("address1" , DataType.STRING),
+	ORG_ADDRESS2("address2" , DataType.STRING),
+	ORG_ADDRESS3("address3" , DataType.STRING);
 	
 	String key;
 	DataType type;
