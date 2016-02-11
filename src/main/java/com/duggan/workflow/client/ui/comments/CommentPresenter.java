@@ -3,8 +3,8 @@ package com.duggan.workflow.client.ui.comments;
 import java.util.Date;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.ActivitiesLoadEvent;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.MODE;

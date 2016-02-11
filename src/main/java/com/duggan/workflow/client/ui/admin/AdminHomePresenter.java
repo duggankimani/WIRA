@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin;
 
 import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.shared.events.ContextLoadedEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;

@@ -4,8 +4,8 @@ package com.duggan.workflow.client.ui.tasklistitem;
 import java.util.Date;
 
 import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.ui.events.PresentTaskEvent;
-import com.duggan.workflow.client.ui.events.PresentTaskEvent.PresentTaskHandler;
+import com.duggan.workflow.shared.events.PresentTaskEvent;
+import com.duggan.workflow.shared.events.PresentTaskEvent.PresentTaskHandler;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.duggan.workflow.client.ui.events.PresentUserEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.PresentUserEvent;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.google.gwt.core.client.GWT;

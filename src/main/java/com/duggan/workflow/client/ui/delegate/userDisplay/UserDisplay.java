@@ -3,9 +3,9 @@ package com.duggan.workflow.client.ui.delegate.userDisplay;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.events.UserSelectedEvent;
-import com.duggan.workflow.client.ui.events.UserSelectedEvent.UserSelectedHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.UserSelectedEvent;
+import com.duggan.workflow.shared.events.UserSelectedEvent.UserSelectedHandler;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;

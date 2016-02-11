@@ -3,7 +3,7 @@ package com.duggan.workflow.client.util;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.shared.events.ContextLoadedEvent;
 import com.duggan.workflow.shared.model.CurrentUserDto;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Version;

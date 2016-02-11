@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.events.AfterSaveEvent;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
+import com.duggan.workflow.shared.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;

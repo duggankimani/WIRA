@@ -93,6 +93,8 @@
 					<include>**/*.xml</include>
 					<include>**/*.properties</include>
 					<include>**/*.index</include>
+					<include>**/*.png</include>
+					<include>**/*.jpg</include>
 				</includes>
 				<!-- excludes> <exclude>**/*.java</exclude> </excludes -->
 			</resource>

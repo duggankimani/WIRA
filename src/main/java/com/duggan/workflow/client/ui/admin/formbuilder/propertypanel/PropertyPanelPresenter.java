@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
 import java.util.List;
 
-import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.shared.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.event.dom.client.ClickEvent;

@@ -3,8 +3,8 @@ package com.duggan.workflow.client.ui.filter;
 import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.home.HomeView;
+import com.duggan.workflow.shared.events.SearchEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;

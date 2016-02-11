@@ -1,8 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
-import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.events.PropertyChangedEvent;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;

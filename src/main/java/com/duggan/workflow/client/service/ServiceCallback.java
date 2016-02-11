@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.service;
 
-import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
-import com.duggan.workflow.client.ui.events.ErrorEvent;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.ClientDisconnectionEvent;
+import com.duggan.workflow.shared.events.ErrorEvent;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.user.client.rpc.AsyncCallback;

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
-import com.duggan.workflow.client.ui.events.ButtonClickEvent;
-import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.events.ButtonClickEvent;
+import com.duggan.workflow.shared.events.ExecTriggerEvent;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;

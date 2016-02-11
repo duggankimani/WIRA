@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.ds.save;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent;
+import com.duggan.workflow.shared.events.LoadDSConfigsEvent;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.RDBMSType;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;

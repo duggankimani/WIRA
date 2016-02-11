@@ -3,8 +3,8 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.PropertyChangedEvent;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;

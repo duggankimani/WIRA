@@ -1,8 +1,8 @@
 package com.duggan.workflow.client.ui.toolbar;
 
-import com.duggan.workflow.shared.event.ExecuteWorkflowEvent;
-import com.duggan.workflow.shared.event.SetStatusEvent;
-import com.duggan.workflow.shared.event.SetStatusEvent.SetStatusHandler;
+import com.duggan.workflow.shared.events.ExecuteWorkflowEvent;
+import com.duggan.workflow.shared.events.SetStatusEvent;
+import com.duggan.workflow.shared.events.SetStatusEvent.SetStatusHandler;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
