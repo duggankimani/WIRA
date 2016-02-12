@@ -49,6 +49,7 @@ import com.duggan.workflow.server.actionhandlers.GetProcessLogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessesRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetRequestCountsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetSettingsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskCompletionDataActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
@@ -132,6 +133,7 @@ import com.duggan.workflow.shared.requests.GetProcessLogRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
+import com.duggan.workflow.shared.requests.GetRequestCountsAction;
 import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
@@ -409,6 +411,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetMessagesRequest.class, GetMessagesActionHandler.class, SessionValidator.class);
 		
 		bindHandler(SendMessageRequest.class, SendMessageActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetRequestCountsAction.class, GetRequestCountsActionHandler.class, SessionValidator.class);
 		
 	}
 }

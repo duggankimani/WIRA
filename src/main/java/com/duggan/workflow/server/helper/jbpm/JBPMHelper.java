@@ -246,13 +246,15 @@ public class JBPMHelper implements Closeable {
 		/**
 		 * 29/11/2015 DUGGAN - HAVE TO CHECK ext-Task-orm.xml after updating
 		 * hibernate(3.6>4.2) + jbpm (5.5>6.0)
+		 * 
+		 * --ext-Task-orm Fixed - Duggan 11/02/2016
 		 */
-		if (true) {
-			counts.put(TaskType.INBOX, 0);
-			counts.put(TaskType.PARTICIPATED, 0);
-			counts.put(TaskType.COMPLETED, 0);
-			return;
-		}
+		// if (true) {
+		// counts.put(TaskType.INBOX, 0);
+		// counts.put(TaskType.PARTICIPATED, 0);
+		// counts.put(TaskType.COMPLETED, 0);
+		// return;
+		// }
 		// Count Tasks
 
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
@@ -260,6 +262,12 @@ public class JBPMHelper implements Closeable {
 		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
 			groupIds.add(group.getName());
+		}
+
+		if (groupIds.isEmpty()) {
+			groupIds.add("User");// Duggan - 11/02/2016 Default group -
+									// Hibernate throws an exception if
+									// groupIds.size==0
 		}
 
 		Long count = (Long) DB
@@ -699,28 +707,35 @@ public class JBPMHelper implements Closeable {
 
 		return value;
 	}
-	
+
 	/**
 	 * Duggan 30/Nov/2015
+	 * 
 	 * @param processInstanceId
 	 * @return
 	 */
-	public HTask getCurrentTask(Long processInstanceId){
-		if(processInstanceId!=null && processInstanceId!=0){
+	public HTask getCurrentTask(Long processInstanceId) {
+		Long taskId = getCurrentTaskId(processInstanceId);
+		return getTask(taskId.longValue());
+	}
+
+	public Long getCurrentTaskId(Long processInstanceId) {
+		if (processInstanceId != null && processInstanceId != 0) {
 			EntityManager em = DB.getEntityManager();
-			
-			Number taskId = (Number) em.createNativeQuery("select t.id from task t "
-					+ "inner join taskevent te on (te.taskid=t.id) "
-					+ "where t.processInstanceId=:processInstanceId and te.type!='COMPLETED'")
-			.setParameter("processInstanceId", processInstanceId).getSingleResult();
-			
-			if(taskId==null){
+			Number taskId = (Number) em
+					.createNativeQuery(
+							"select t.id from task t "
+									+ "inner join taskevent te on (te.taskid=t.id) "
+									+ "where t.processInstanceId=:processInstanceId and te.type!='COMPLETED'")
+					.setParameter("processInstanceId", processInstanceId)
+					.getSingleResult();
+
+			if (taskId == null) {
 				return null;
 			}
 			
-			return getTask(taskId.longValue());
+			return taskId.longValue();
 		}
-		
 		return null;
 	}
 
@@ -1302,7 +1317,8 @@ public class JBPMHelper implements Closeable {
 	 */
 	public String getDisplayName(Task task) {
 		//
-		logger.info("Task Name = "+task.getName()+"; Desc = "+task.getDescription());
+		logger.info("Task Name = " + task.getName() + "; Desc = "
+				+ task.getDescription());
 		return task.getName();
 	}
 
@@ -1310,12 +1326,12 @@ public class JBPMHelper implements Closeable {
 		String processId = task.getTaskData().getProcessId();
 		String taskName = getTaskName(task.getId());
 
-		long processInstanceId =task.getTaskData().getProcessInstanceId();
-//		org.kie.api.definition.process.Process droolsProcess = sessionManager
-//				.getProcess(processId);
+		long processInstanceId = task.getTaskData().getProcessInstanceId();
+		// org.kie.api.definition.process.Process droolsProcess = sessionManager
+		// .getProcess(processId);
 		org.kie.api.definition.process.Process droolsProcess = sessionManager
 				.getProcess(processInstanceId);
-		
+
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 		task.getTaskData().getWorkItemId();
 
@@ -1451,6 +1467,55 @@ public class JBPMHelper implements Closeable {
 	public org.jbpm.process.instance.ProcessInstance getProcessInstance(
 			long processInstanceId) {
 		return sessionManager.getProcessInstance(processInstanceId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void getCounts(String processId, String userId,
+			HashMap<String, Integer> counts) {
+
+		List<Object[]> rows = null;
+
+		if (userId != null) {
+			List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
+					userId);
+			List<String> groupIds = new ArrayList<>();
+			for (UserGroup group : groups) {
+				groupIds.add(group.getName());
+			}
+
+			if (groupIds.isEmpty()) {
+				groupIds.add("User");// Duggan - 11/02/2016 Default group -
+										// Hibernate throws an exception if
+										// groupIds.size==0
+			}
+
+			rows = DB
+					.getEntityManager()
+					.createNamedQuery(
+							"TasksAssignedCountAsPotentialOwner_ByStatus_WithGroups_PerTask")
+					.setParameter("userId", userId)
+					.setParameter("groupIds", groupIds)
+					.setParameter("status",
+							getStatusesForTaskType(TaskType.INBOX))
+					.setParameter("processId", processId).getResultList();
+
+		} else {
+			rows = DB
+					.getEntityManager()
+					.createNamedQuery("TasksCount_ByStatus_PerTask")
+					.setParameter("status",
+							getStatusesForTaskType(TaskType.INBOX))
+					.setParameter("processId", processId).getResultList();
+		}
+
+		for (Object[] row : rows) {
+			if (row[0] == null)
+				continue;
+
+			logger.warn(row[0] + " = " + row[1]);
+			counts.put(row[0].toString(), ((Number) row[1]).intValue());
+		}
+
 	}
 
 }

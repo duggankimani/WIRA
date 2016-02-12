@@ -45,6 +45,8 @@ public class AbstractBPM6Test {
 	protected UserTransactionProvider trxProvider;
 	
 	protected DispatchService dispatchService;
+	
+	public static final String TEST_COOKIE = "AUTHCOOKIE";
 
 	
 	@Before
