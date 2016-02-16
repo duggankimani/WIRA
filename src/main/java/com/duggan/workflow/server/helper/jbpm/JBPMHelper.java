@@ -725,8 +725,7 @@ public class JBPMHelper implements Closeable {
 			Number taskId = (Number) em
 					.createNativeQuery(
 							"select t.id from task t "
-									+ "inner join taskevent te on (te.taskid=t.id) "
-									+ "where t.processInstanceId=:processInstanceId and te.type!='COMPLETED'")
+							+ "where t.processInstanceId=:processInstanceId and t.status!='Completed'")
 					.setParameter("processInstanceId", processInstanceId)
 					.getSingleResult();
 

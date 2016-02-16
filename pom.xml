@@ -96,6 +96,9 @@
 					<include>**/*.png</include>
 					<include>**/*.jpg</include>
 				</includes>
+				<excludes>
+					<exclude>jbpm.usergroup.callback.properties</exclude>
+				</excludes>
 				<!-- excludes> <exclude>**/*.java</exclude> </excludes -->
 			</resource>
 		</resources>
