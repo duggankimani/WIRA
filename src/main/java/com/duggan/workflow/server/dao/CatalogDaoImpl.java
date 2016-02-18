@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,119 +16,147 @@ import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
+import com.duggan.workflow.shared.model.catalog.CatalogType;
 
-public class CatalogDaoImpl extends BaseDaoImpl{
+public class CatalogDaoImpl extends BaseDaoImpl {
 
 	Logger log = Logger.getLogger(CatalogDaoImpl.class);
-	
+
 	public CatalogDaoImpl(EntityManager em) {
 		super(em);
 	}
 
 	public List<CatalogModel> getCatalogs() {
-		return getResultList(em.createQuery("FROM CatalogModel c where c.isActive=1"));
+		return getResultList(em
+				.createQuery("FROM CatalogModel c where c.isActive=1"));
 	}
 
 	public void generateTable(Catalog model) {
-		String drop = "DROP TABLE IF EXISTS EXT_"+model.getName()+";";
-		log.debug("Exec DDL: "+drop);
-		
-		StringBuffer create = new StringBuffer("CREATE TABLE EXT_"+model.getName()+"(");
-		int i=0;
-		for(CatalogColumn col: model.getColumns()){
-			create.append("\""+col.getName()+"\"");
-			
-			if(col.isAutoIncrement()){
-				create.append(col.isAutoIncrement()?" serial":"");//POSTGRES
-			}else{
-				create.append(" " +col.getType().name());
-				create.append((col.getSize()==null|| col.getSize()==0)?"" : "("+col.getSize()+")");
+		String drop = "DROP TABLE IF EXISTS EXT_" + model.getName() + ";";
+		log.debug("Exec DDL: " + drop);
+
+		StringBuffer create = new StringBuffer("CREATE TABLE EXT_"
+				+ model.getName() + "(");
+		int i = 0;
+		for (CatalogColumn col : model.getColumns()) {
+			create.append("\"" + col.getName() + "\"");
+
+			if (col.isAutoIncrement()) {
+				create.append(col.isAutoIncrement() ? " serial" : "");// POSTGRES
+			} else {
+				create.append(" " + col.getType().name());
+				create.append((col.getSize() == null || col.getSize() == 0) ? ""
+						: "(" + col.getSize() + ")");
 			}
-			
-			create.append(col.isPrimaryKey()? " PRIMARY KEY":"");
-			create.append(col.isNullable()? " NULL":" NOT NULL");
-			
-			
-			if(model.getColumns().size()-1!=i){
+
+			create.append(col.isPrimaryKey() ? " PRIMARY KEY" : "");
+			create.append(col.isNullable() ? " NULL" : " NOT NULL");
+
+			if (model.getColumns().size() - 1 != i) {
 				create.append(",");
 			}
-			
+
 			++i;
 		}
 		create.append(")");
-		log.debug("Exec DDL: "+create);
-		
-		//DROP
+		log.debug("Exec DDL: " + create);
+
+		// DROP
 		em.createNativeQuery(drop).executeUpdate();
-		//CREATE
+		// CREATE
 		em.createNativeQuery(create.toString()).executeUpdate();
-		
+
 	}
 
-	public List<Object[]> getData(String tableName,String comma_Separated_fieldNames) {
-		
-		return getResultList(em.createNativeQuery("select "+comma_Separated_fieldNames+" from "+tableName));
+	public List<Object[]> getData(String tableName,
+			String comma_Separated_fieldNames) {
+
+		return getResultList(em.createNativeQuery("select "
+				+ comma_Separated_fieldNames + " from " + tableName));
 	}
 
 	public void save(String tableName, List<CatalogColumn> columns,
 			List<DocumentLine> lines) {
-		String delete = "DELETE FROM "+tableName;
-		log.debug("Exec DML: "+delete);
+		String delete = "DELETE FROM " + tableName;
+		log.debug("Exec DML: " + delete);
 		em.createNativeQuery(delete).executeUpdate();
-		
-		StringBuffer buffer = new StringBuffer("INSERT INTO "+tableName+" (");
+
+		StringBuffer buffer = new StringBuffer("INSERT INTO " + tableName
+				+ " (");
 		StringBuffer values = new StringBuffer(" VALUES (");
-		int i=0;
-		for(CatalogColumn col: columns){
-			if(col.isAutoIncrement()){
+		int i = 0;
+		for (CatalogColumn col : columns) {
+			if (col.isAutoIncrement()) {
 				continue;
 			}
 			buffer.append(col.getName());
-			values.append(":"+col.getName());
-			
-			if(columns.size()-1!=i){
+			values.append(":" + col.getName());
+
+			if (columns.size() - 1 != i) {
 				buffer.append(",");
 				values.append(",");
 			}
-			
+
 			++i;
 		}
-		if(buffer.toString().endsWith(",")){
-			buffer.setCharAt(buffer.length()-1, ' ');
-			values.setCharAt(values.length()-1, ' ');
+		if (buffer.toString().endsWith(",")) {
+			buffer.setCharAt(buffer.length() - 1, ' ');
+			values.setCharAt(values.length() - 1, ' ');
 		}
-		
-		buffer.append(") "+values+")");
-		log.debug("Exec DML: "+buffer.toString());
-		
-		//Document Line
-		for(DocumentLine line: lines){
+
+		buffer.append(") " + values + ")");
+		log.debug("Exec DML: " + buffer.toString());
+
+		// Document Line
+		for (DocumentLine line : lines) {
 			Query query = em.createNativeQuery(buffer.toString());
-			for(CatalogColumn col: columns){
-				if(col.isAutoIncrement()){
+			for (CatalogColumn col : columns) {
+				if (col.isAutoIncrement()) {
 					continue;
 				}
 				Value val = line.getValue(col.getName());
+				Object value = val==null? null: val.getValue();
 				
-				//Hardcoded to handle hibernate null
-				if((val==null || val.getValue()==null) 
-						&& col.getType().getFieldType().equals(DataType.DOUBLE)){
+				log.debug("CatalogDaoImpl.save("+tableName+") sql Parameter "+col.getName()+"::"+col.getType()+" = "+value);
+				
+				// Hardcoded to handle hibernate null
+				if (value==null
+						&& col.getType().getFieldType().equals(DataType.DOUBLE)) {
 					query.setParameter(col.getName(), 0.0);
-				}else{
-					query.setParameter(col.getName(), val==null? null: val.getValue());
+				}else if(val!=null && val.getDataType().isDate()){
+					//String sqlPattern = "";
+					//SimpleDateFormat format = new SimpleDateFormat(sqlPattern);
+					
+					//Date date = dateObj==null? "": format.format(date);
+					//if(date==null){
+						query.setParameter(col.getName(),value);
+					//}
+				}else {
+					query.setParameter(col.getName(),value);
 				}
-				
+
 			}
 			query.executeUpdate();
 		}
-	
-		
+
 	}
 
 	public int getCount(String tableName) {
-		
-		Number number = getSingleResultOrNull(
-				em.createNativeQuery("select count(*) from "+tableName));
+
+		Number number = getSingleResultOrNull(em
+				.createNativeQuery("select count(*) from " + tableName));
 		return number.intValue();
+	}
+
+	public List<CatalogModel> getReportTablesByProcessId(String processId) {
+
+		return getResultList(em.createQuery(
+				"FROM CatalogModel c where c.isActive=1 and c.type=:type "
+				+ " and exists "
+				+ "(select id from ProcessDefModel p"
+				+ " where p.id=c.processDefId and p.processId=:processId and p.isActive=1)")
+				.setParameter("type", CatalogType.REPORTTABLE)
+				.setParameter("processId", processId));
+
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,6 +28,14 @@ public class TestCatalogDao {
 	}
 	
 	@Test
+	public void testGetCatalogsForProcess(){
+		String processId = "chasebank.finance.ExpenseClaim";
+		
+		List<Catalog> cats = CatalogDaoHelper.getCatalogsForProcess(processId);
+		Assert.assertEquals(2, cats.size());
+	}
+	
+	@Ignore
 	public void saveData(){
 		//Catalog catalog = CatalogDaoHelper.getCatalog(24L);
 		

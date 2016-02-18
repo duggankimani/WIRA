@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -58,6 +57,8 @@ public class CatalogModel extends PO {
 	private Long processDefId;
 	
 	private CatalogType type = CatalogType.DATATABLE;
+	
+	private String gridName;
 	
 	private FieldSource fieldSource = FieldSource.FORM;// Field Source
 	
@@ -147,6 +148,14 @@ public class CatalogModel extends PO {
 
 	public void setFieldSource(FieldSource fieldSource) {
 		this.fieldSource = fieldSource;
+	}
+
+	public String getGridName() {
+		return gridName;
+	}
+
+	public void setGridName(String gridName) {
+		this.gridName = gridName;
 	}
 
 }

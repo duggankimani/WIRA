@@ -87,12 +87,17 @@ public class CreateTableView extends Composite {
 	DropDownList<FieldSource> lstFieldSources;
 
 	@UiField
+	DropDownList<Field> lstGridField;
+
+	@UiField
 	Anchor aAddFields;
 
 	@UiField
 	DivElement divProcess;
 	@UiField
 	DivElement divFieldSource;
+	@UiField
+	DivElement divGridField;
 	@UiField
 	DivElement divGrid;
 	@UiField
@@ -257,9 +262,43 @@ public class CreateTableView extends Composite {
 					public void onValueChange(
 							ValueChangeEvent<FieldSource> event) {
 						grid.setData(new ArrayList<DataModel>());
+						lstGridField.clear();
+						if (event.getValue() == FieldSource.GRID) {
+							divGridField.removeClassName("hide");
+						} else {
+							divGridField.addClassName("hide");
+						}
+
 						loadFields(forms);
 					}
 				});
+
+		lstGridField.addValueChangeHandler(new ValueChangeHandler<Field>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Field> event) {
+				grid.setData(new ArrayList<DataModel>());
+				loadFields(event.getValue());
+			}
+		});
+	}
+
+	public CreateTableView(CatalogType type, Catalog catalog) {
+		this();
+		this.type = type;
+		if (catalog != null) {
+			setCatalog(catalog);
+		}
+
+		if (type == CatalogType.REPORTTABLE) {
+			divAddFields.removeClassName("hide");
+			divFieldSource.removeClassName("hide");
+			divGrid.removeClassName("hide");
+			divProcess.removeClassName("hide");
+			if (catalog != null && catalog.getFieldSource() == FieldSource.GRID) {
+				divGridField.removeClassName("hide");
+			}
+		}
+
 	}
 
 	protected void loadFields(Long processDefId) {
@@ -311,17 +350,32 @@ public class CreateTableView extends Composite {
 		return col;
 	}
 
+	private void loadFields(Field gridField) {
+		// Grid
+		List<Field> fields = new ArrayList<Field>();
+		if (gridField != null)
+			for (Field child : gridField.getFields()) {
+				addField(fields, child);
+			}
+		Collections.sort(fields);
+		lstFields.clear();
+		lstFields.setItems(fields);
+	}
+
 	private void loadFields(List<Form> forms) {
 		this.forms = forms;
 		if (forms == null)
 			return;
 
 		FieldSource source = lstFieldSources.getValue();
+
 		if (source == null) {
 			source = FieldSource.FORM;
 		}
 
 		List<Field> fields = new ArrayList<Field>();
+		List<Field> gridFields = new ArrayList<>();
+
 		for (Form form : forms) {
 			if (form.getFields() != null)
 				for (Field field : form.getFields()) {
@@ -331,11 +385,9 @@ public class CreateTableView extends Composite {
 								&& field.getType() != DataType.GRID) {
 							addField(fields, field);
 
-						} else if (source == FieldSource.GRID) {
-							// Grid
-							for (Field child : field.getFields()) {
-								addField(fields, child);
-							}
+						} else if (source == FieldSource.GRID && field.getType()==DataType.GRID) {
+							// This is for lstGridFields Field - First loop
+							gridFields.add(field);
 						}
 					}
 				}
@@ -346,6 +398,12 @@ public class CreateTableView extends Composite {
 		}
 		lstFields.clear();
 		lstFields.setItems(fields);
+
+		lstGridField.setItems(gridFields);
+		if (catalog != null && catalog.getGridName() != null) {
+			lstGridField.setValueByKey(catalog.getGridName());
+			loadFields(lstGridField.getValue());
+		}
 	}
 
 	private void addField(List<Field> fields, Field field) {
@@ -419,22 +477,6 @@ public class CreateTableView extends Composite {
 		return col;
 	}
 
-	public CreateTableView(CatalogType type, Catalog catalog) {
-		this();
-		this.type = type;
-		if (catalog != null) {
-			setCatalog(catalog);
-		}
-
-		if (type == CatalogType.REPORTTABLE) {
-			divAddFields.removeClassName("hide");
-			divFieldSource.removeClassName("hide");
-			divGrid.removeClassName("hide");
-			divProcess.removeClassName("hide");
-		}
-
-	}
-
 	protected boolean isNullOrEmpty(String name) {
 		return name == null || name.trim().isEmpty();
 	}
@@ -448,8 +490,10 @@ public class CreateTableView extends Composite {
 		if (lstProcess.getValue() != null) {
 			cat.setProcessDefId(lstProcess.getValue().getId());
 		}
-		
+
 		cat.setType(type);
+		cat.setGridName(lstGridField.getValue() == null ? null : lstGridField
+				.getValue().getName());
 		cat.setFieldSource(lstFieldSources.getValue());
 		String name = txtName.getValue().toUpperCase();
 		cat.setName(name.replaceAll("\\s", "")); // Clear empty space
@@ -475,7 +519,6 @@ public class CreateTableView extends Composite {
 		lstFieldSources
 				.setValue(catalog.getFieldSource() == null ? FieldSource.FORM
 						: catalog.getFieldSource());
-
 		grid.setData(mapper.getDataModels(catalog.getColumns()));
 		List<CatalogColumn> cols = grid.getData(mapper);
 	}

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
 
@@ -44,6 +45,8 @@ import com.duggan.workflow.shared.model.Value;
  * 
  */
 public class DocumentDaoHelper {
+	
+	static Logger logger = Logger.getLogger(DocumentDaoHelper.class);
 
 	public static List<Doc> getAllDocuments(DocStatus...status) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
@@ -253,7 +256,9 @@ public class DocumentDaoHelper {
 						.findProcessInstance(model.getProcessInstanceId());
 				if(log!=null)
 					doc.setDateSubmitted(log.getStart());
-			}catch(Exception e){e.printStackTrace();}
+			}catch(Exception e){
+				logger.warn("DocumentDaoHelper - getDoc-> findProcessInstance : "+e.getMessage());
+			}
 			
 		}
 		

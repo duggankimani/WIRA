@@ -18,6 +18,7 @@ public class Catalog implements Serializable,IsCatalogItem{
 	private List<CatalogColumn> columns = new ArrayList<CatalogColumn>();
 	private CatalogType type = CatalogType.DATATABLE;
 	private FieldSource fieldSource = FieldSource.FORM;// Field Source
+	private String gridName;
 	private Long processDefId;
 
 	public Catalog() {
@@ -93,5 +94,13 @@ public class Catalog implements Serializable,IsCatalogItem{
 
 	public void setFieldSource(FieldSource fieldSource) {
 		this.fieldSource = fieldSource;
+	}
+
+	public String getGridName() {
+		return gridName;
+	}
+
+	public void setGridName(String gridName) {
+		this.gridName = gridName;
 	}
 }

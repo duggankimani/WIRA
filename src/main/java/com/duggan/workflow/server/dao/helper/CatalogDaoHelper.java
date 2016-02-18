@@ -6,23 +6,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
-import com.duggan.workflow.shared.model.catalog.CatalogType;
+import com.duggan.workflow.shared.model.catalog.FieldSource;
 
 public class CatalogDaoHelper {
+
+	static Logger logger = Logger.getLogger(CatalogDaoHelper.class);
 
 	public static Catalog save(Catalog catalog) {
 
@@ -48,6 +55,7 @@ public class CatalogDaoHelper {
 		model.setType(catalog.getType());
 		model.setProcessDefId(catalog.getProcessDefId());
 		model.setFieldSource(catalog.getFieldSource());
+		model.setGridName(catalog.getGridName());
 
 		List<CatalogColumnModel> models = new ArrayList<>();
 		for (CatalogColumn cat : catalog.getColumns()) {
@@ -84,6 +92,18 @@ public class CatalogDaoHelper {
 		return get(colModel);
 	}
 
+	public static List<Catalog> getCatalogsForProcess(String processId) {
+		CatalogDaoImpl dao = DB.getCatalogDao();
+		List<CatalogModel> catModels = dao
+				.getReportTablesByProcessId(processId);
+
+		List<Catalog> catalogs = new ArrayList<>();
+		for (CatalogModel model : catModels) {
+			catalogs.add(get(model));
+		}
+		return catalogs;
+	}
+
 	private static Catalog get(CatalogModel model) {
 		Catalog catalog = new Catalog();
 		catalog.setId(model.getId());
@@ -94,11 +114,12 @@ public class CatalogDaoHelper {
 		catalog.setType(model.getType());
 		catalog.setProcessDefId(model.getProcessDefId());
 		catalog.setFieldSource(model.getFieldSource());
+		catalog.setGridName(model.getGridName());
 		List<CatalogColumn> models = new ArrayList<>();
 		for (CatalogColumnModel cat : model.getColumns()) {
 			models.add(get(cat));
 		}
-		
+
 		Collections.sort(models, new Comparator<CatalogColumn>() {
 			@Override
 			public int compare(CatalogColumn o1, CatalogColumn o2) {
@@ -147,6 +168,10 @@ public class CatalogDaoHelper {
 
 	public static void saveData(Long id, List<DocumentLine> lines) {
 		Catalog catalog = getCatalog(id);
+		saveData(catalog, lines);
+	}
+
+	private static void saveData(Catalog catalog, List<DocumentLine> lines) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines);
 	}
@@ -159,7 +184,7 @@ public class CatalogDaoHelper {
 		int size = catalog.getColumns().size();
 		int i = 0;
 		for (CatalogColumnModel col : catalog.getColumns()) {
-			fieldNames.append(""+col.getName()+"");
+			fieldNames.append("" + col.getName() + "");
 			if (i + 1 < size) {
 				fieldNames.append(",");
 			}
@@ -176,7 +201,11 @@ public class CatalogDaoHelper {
 			DocumentLine docLine = new DocumentLine();
 			for (Object v : line) {
 				CatalogColumnModel column = columns.get(i);
-				docLine.addValue(column.getName(), getValue(column, v));
+				Value value = getValue(column, v);
+				if(value==null){
+					continue;
+				}
+				docLine.addValue(column.getName(), value);
 				++i;
 			}
 			lines.add(docLine);
@@ -232,6 +261,52 @@ public class CatalogDaoHelper {
 			e.printStackTrace();
 		}
 		return model;
+	}
+
+	public static void mapAndSaveData(Catalog catalog, Doc doc) {
+		List<DocumentLine> documentLines = new ArrayList<>();
+
+		if (catalog.getFieldSource() == FieldSource.FORM) {
+			// Case Insensitive Map
+			Map<String, Value> values = new TreeMap<>(
+					String.CASE_INSENSITIVE_ORDER);
+			values.putAll(doc.getValues());
+
+			DocumentLine row = new DocumentLine();
+			for (CatalogColumn col : catalog.getColumns()) {
+				Value value = values.get(col.getName());
+				if (value != null) {
+					row.addValue(col.getName(), value);
+				}
+			}
+			documentLines.add(row);
+		} else {
+			List<DocumentLine> details = doc.getDetails().get(
+					catalog.getGridName());
+			if (details == null) {
+				String message = "CatalogDaoHelper.ReportTable Error- Catalog "+catalog.getName()+": Grid '"+catalog.getGridName()+"' Not Found";
+				logger.warn(message);
+				throw new RuntimeException(message);
+			}
+			
+			for (DocumentLine detail : details) {
+				DocumentLine row = new DocumentLine();
+				// Case Insensitive Map
+				Map<String, Value> values = new TreeMap<>(
+						String.CASE_INSENSITIVE_ORDER);
+				values.putAll(detail.getValues());
+
+				for (CatalogColumn col : catalog.getColumns()) {
+					Value value = values.get(col.getName());
+					if (value != null) {
+						row.addValue(col.getName(), value);
+					}
+				}
+				documentLines.add(row);
+			}
+		}
+
+		saveData(catalog, documentLines);
 	}
 
 }

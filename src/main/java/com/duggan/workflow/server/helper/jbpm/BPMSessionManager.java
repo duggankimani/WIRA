@@ -65,6 +65,7 @@ import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
+import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
@@ -205,6 +206,9 @@ class BPMSessionManager {
 		session.getWorkItemManager().registerWorkItemHandler("Email",
 				emailHandler);
 
+		//Process Event Listener
+		session.addEventListener(new WiraProcessEventListener());
+
 		LocalTaskService taskClient = getTaskClient();
 		taskClient.connect();
 		assert taskClient != null;
@@ -224,6 +228,7 @@ class BPMSessionManager {
 
 		session.getWorkItemManager().registerWorkItemHandler("Human Task",
 				taskHandler);
+		
 	}
 	
 	public void upgradeProcessInstance(long processInstanceId, String processId){
@@ -756,8 +761,9 @@ class BPMSessionManager {
 					}
 				}
 
-				Document doc = DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-				newValues.put("ownerId", doc.getOwner().getUserId());
+				DocumentModel doc = DB.getDocumentDao().getDocumentByProcessInstanceId(task.getTaskData().getProcessInstanceId(),false);
+				//DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
+				newValues.put("ownerId", doc.getCreatedBy());
 //				Object ownerId = newValues.get("ownerId");
 //				
 //				if (ownerId == null) {
@@ -903,69 +909,6 @@ class BPMSessionManager {
 
 		for (String key : processesToRemove) {
 			processKnowledgeMap.remove(key);
-		}
-	}
-
-	
-	class WiraProcessEventListener implements ProcessEventListener {
-		
-		@Override
-		public void beforeVariableChanged(ProcessVariableChangedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void beforeProcessStarted(ProcessStartedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void beforeProcessCompleted(ProcessCompletedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void beforeNodeTriggered(ProcessNodeTriggeredEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void beforeNodeLeft(ProcessNodeLeftEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void afterVariableChanged(ProcessVariableChangedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void afterProcessStarted(ProcessStartedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void afterProcessCompleted(ProcessCompletedEvent event) {
-			//DB.getDocumentDao().updateStatus(event.getProcessInstance().getId(), DocStatus.COMPLETED);
-		}
-		
-		@Override
-		public void afterNodeTriggered(ProcessNodeTriggeredEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void afterNodeLeft(ProcessNodeLeftEvent event) {
-			// TODO Auto-generated method stub
-			
 		}
 	}
 }
