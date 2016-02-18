@@ -11,7 +11,7 @@
         <level value="FATAL"/>
     </logger>
     <logger name="org.hibernate">
-        <level value="FATAL"/>
+        <level value="INFO"/>
     </logger>
     <logger name="org.apache.directory">
         <level value="FATAL"/>

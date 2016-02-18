@@ -3,6 +3,7 @@ package com.duggan.workflow.shared.exceptions;
 import java.io.Serializable;
 
 import com.duggan.workflow.server.actionvalidator.SessionValidator;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 /**
@@ -11,7 +12,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  * @author duggan
  *
  */
-public class InvalidSessionException extends ActionException implements Serializable{
+public class InvalidSessionException extends ActionException implements Serializable, IsSerializable{
 
 	/**
 	 * 
