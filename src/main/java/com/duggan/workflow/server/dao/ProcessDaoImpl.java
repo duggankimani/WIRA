@@ -274,7 +274,8 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			return -1;
 		}
 
-		String sql = "select status from processinstancelog where processinstanceid=:processInstanceId";
+		//String sql = "select status from processinstancelog where processinstanceid=:processInstanceId";
+		String sql = "select state from processinstanceinfo where instanceid=:processInstanceId";
 		Number status = getSingleResultOrNull(getEntityManager().createNativeQuery(sql)
 				.setParameter("processInstanceId", processInstanceId));
 

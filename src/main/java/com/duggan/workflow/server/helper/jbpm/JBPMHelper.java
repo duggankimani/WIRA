@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
@@ -31,8 +32,10 @@ import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
 import org.kie.api.definition.process.Node;
+import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.task.TaskLifeCycleEventListener;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.I18NText;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -87,7 +90,11 @@ public class JBPMHelper implements Closeable {
 	private static JBPMHelper helper;
 	static Logger logger = Logger.getLogger(JBPMHelper.class);
 
-	private JBPMHelper() {
+
+	private JBPMHelper(
+			List<Class<? extends ProcessEventListener>> processEventListeners,
+			List<Class<? extends TaskLifeCycleEventListener>> taskEventListeners) {
+		
 		// By Setting the jbpm.usergroup.callback property with the call
 		// back class full name, task service will use this to validate the
 		// user/group exists and its permissions are ok.
@@ -96,13 +103,22 @@ public class JBPMHelper implements Closeable {
 
 		System.setProperty("jbpm.usergroup.callback",
 				"org.jbpm.task.identity.DBUserGroupCallbackImpl");
-		sessionManager = new BPM6SessionManager();
+		sessionManager = new BPM6SessionManager(processEventListeners, taskEventListeners);
 	}
 
 	// not thread safe
+	public static JBPMHelper get(List<Class<? extends ProcessEventListener>> processEventListeners,
+			List<Class<? extends TaskLifeCycleEventListener>> taskEventListeners) {
+		if (helper == null) {
+			helper = new JBPMHelper(processEventListeners,taskEventListeners);
+		}
+
+		return helper;
+	}
+	
 	public static JBPMHelper get() {
 		if (helper == null) {
-			helper = new JBPMHelper();
+			helper = new JBPMHelper(null,null);
 		}
 
 		return helper;
@@ -117,6 +133,10 @@ public class JBPMHelper implements Closeable {
 
 	public TaskService getTaskClient() {
 		return sessionManager.getTaskClient();
+	}
+
+	public WiraSessionManager getSessionManager() {
+		return sessionManager;
 	}
 
 	/**
@@ -716,23 +736,31 @@ public class JBPMHelper implements Closeable {
 	 */
 	public HTask getCurrentTask(Long processInstanceId) {
 		Long taskId = getCurrentTaskId(processInstanceId);
+		if(taskId==null){
+			return null;
+		}
 		return getTask(taskId.longValue());
 	}
 
 	public Long getCurrentTaskId(Long processInstanceId) {
 		if (processInstanceId != null && processInstanceId != 0) {
 			EntityManager em = DB.getEntityManager();
-			Number taskId = (Number) em
-					.createNativeQuery(
-							"select t.id from task t "
-							+ "where t.processInstanceId=:processInstanceId and t.status!='Completed'")
-					.setParameter("processInstanceId", processInstanceId)
-					.getSingleResult();
+
+			Number taskId = null;
+			try {
+				taskId = (Number) em
+						.createNativeQuery(
+								"select t.id from task t "
+										+ "where t.processInstanceId=:processInstanceId and t.status!='Completed'")
+						.setParameter("processInstanceId", processInstanceId)
+						.getSingleResult();
+			} catch (NoResultException e) {
+			}
 
 			if (taskId == null) {
 				return null;
 			}
-			
+
 			return taskId.longValue();
 		}
 		return null;

@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.helper.jbpm;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.kie.api.runtime.manager.RuntimeEnvironmentBuilder;
 import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.task.TaskLifeCycleEventListener;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Status;
 import org.kie.api.task.model.Task;
@@ -49,37 +51,78 @@ public class BPM6SessionManager implements WiraSessionManager {
 
 	RuntimeManager manager;
 	KieBase kbase = null;
-	
+
 	Logger logger = Logger.getLogger(getClass());
 
+	List<Class<? extends ProcessEventListener>> processEventListeners = new ArrayList<>();
+	List<Class<? extends TaskLifeCycleEventListener>> taskEventListeners = new ArrayList<>();
+
 	public BPM6SessionManager() {
+		this(new ArrayList<Class<? extends ProcessEventListener>>(),
+				new ArrayList<Class<? extends TaskLifeCycleEventListener>>());
+	}
+
+	public BPM6SessionManager(
+			List<Class<? extends ProcessEventListener>> processEventListeners,
+			List<Class<? extends TaskLifeCycleEventListener>> taskEventListeners) {
+
+		if (processEventListeners != null)
+			this.processEventListeners = processEventListeners;
+
+		if (taskEventListeners != null)
+			this.taskEventListeners = taskEventListeners;
 
 		RuntimeEnvironmentBuilder builder = RuntimeEnvironmentBuilder.Factory
 				.get().newDefaultBuilder();
-		
-		//Add Assets
+
+		// Add Assets
 		addAssets(builder);
-		
+
 		RuntimeEnvironment environment = builder
 				.entityManagerFactory(DB.getEntityManagerFactory())
-				//.knowledgeBase(getKieBase()) - Replaced with add resources above
+				// .knowledgeBase(getKieBase()) - Replaced with add resources
+				// above
 				.userGroupCallback(new DBUserGroupCallbackImpl()).get();
-		//Register WorkItems
+
+		// Register WorkItems
 		SimpleRegisterableItemsFactory registerableItemsFactory = (SimpleRegisterableItemsFactory) environment
 				.getRegisterableItemsFactory();
 		registerWorkItems(registerableItemsFactory);
-		
 
 		manager = RuntimeManagerFactory.Factory.get()
 				.newSingletonRuntimeManager(environment);
-		
+
+	}
+
+	@Override
+	public void addProcessEventListener(
+			Class<? extends ProcessEventListener> listener) {
+		if (!processEventListeners.contains(listener)) {
+			processEventListeners.add(listener);
+		}
+	}
+
+	@Override
+	public void addTaskListener(
+			Class<? extends TaskLifeCycleEventListener> listener) {
+		if (!taskEventListeners.contains(listener)) {
+			taskEventListeners.add(listener);
+		}
 	}
 
 	private void registerWorkItems(
 			SimpleRegisterableItemsFactory registerableItemsFactory) {
-		registerableItemsFactory.addTaskListener(NotificationsTaskEventListener.class);
-		
-		//registerableItemsFactory.add;
+		registerableItemsFactory
+				.addTaskListener(NotificationsTaskEventListener.class);
+		for (Class<? extends TaskLifeCycleEventListener> clazz : taskEventListeners) {
+			registerableItemsFactory.addTaskListener(clazz);
+		}
+
+		for (Class<? extends ProcessEventListener> clazz : processEventListeners) {
+			registerableItemsFactory.addProcessListener(clazz);
+		}
+
+		// registerableItemsFactory.add;
 		// register work item handlers
 		registerableItemsFactory.addWorkItemHandler("UpdateLocal",
 				UpdateApprovalStatusWorkItemHandler.class);
@@ -125,7 +168,7 @@ public class BPM6SessionManager implements WiraSessionManager {
 	public KieSession getSession() {
 		KieSession session = getRuntime().getKieSession();
 		new JPAWorkingMemoryDbLogger(session);
-		//session.addEventListener(new NotificationsTaskEventListener());
+		// session.addEventListener(new NotificationsTaskEventListener());
 		return session;
 	}
 
@@ -142,7 +185,8 @@ public class BPM6SessionManager implements WiraSessionManager {
 
 	@Override
 	public TaskService getTaskClient() {
-		TaskService service = manager.getRuntimeEngine(EmptyContext.get()).getTaskService();
+		TaskService service = manager.getRuntimeEngine(EmptyContext.get())
+				.getTaskService();
 		return service;
 	}
 
@@ -167,20 +211,21 @@ public class BPM6SessionManager implements WiraSessionManager {
 	@Override
 	public ProcessInstance startProcess(String processId,
 			Map<String, Object> initialParams, Document doc) {
-		
+
 		KieSession session = getRuntime().getKieSession();
-		ProcessInstance instance = session.createProcessInstance(processId, initialParams);
+		ProcessInstance instance = session.createProcessInstance(processId,
+				initialParams);
 		doc.setProcessInstanceId(instance.getId());
-		
+
 		if (doc != null) {
-			if(doc.getProcessInstanceId()==null)
+			if (doc.getProcessInstanceId() == null)
 				doc.setProcessInstanceId(instance.getId());
-			
+
 			doc.setSessionId(new Long(session.getId() + ""));
 			logger.debug("## Setting SessionId : " + doc.getSessionId());
 			DocumentDaoHelper.save(doc);
 		}
-		
+
 		return session.startProcessInstance(instance.getId());
 	}
 
@@ -188,9 +233,10 @@ public class BPM6SessionManager implements WiraSessionManager {
 	public org.kie.api.definition.process.Process getProcess(String processId) {
 		return kbase.getProcess(processId);
 	}
-	
+
 	@Override
-	public org.kie.api.definition.process.Process getProcess(long processInstanceId) {
+	public org.kie.api.definition.process.Process getProcess(
+			long processInstanceId) {
 		return getSession().getProcessInstance(processInstanceId).getProcess();
 	}
 
@@ -341,12 +387,12 @@ public class BPM6SessionManager implements WiraSessionManager {
 
 	@Override
 	public boolean isRunning(String processId) {
-		return true;//kbase.getProcess(processId) != null;
+		return true;// kbase.getProcess(processId) != null;
 	}
 
 	@Override
 	public void unloadKnowledgeBase(String processId) {
-		//kbase.removeProcess(processId);
+		// kbase.removeProcess(processId);
 	}
 
 	@Override
@@ -355,11 +401,12 @@ public class BPM6SessionManager implements WiraSessionManager {
 		// WorkflowProcessInstanceUpgrader.upgradeProcessInstance(manager,
 		// processInstanceId, processId, new HashMap<String,Long>());
 	}
-	
+
 	@Override
 	public org.jbpm.process.instance.ProcessInstance getProcessInstance(
 			long processInstanceId) {
-		return (org.jbpm.process.instance.ProcessInstance) getSession().getProcessInstance(processInstanceId);
+		return (org.jbpm.process.instance.ProcessInstance) getSession()
+				.getProcessInstance(processInstanceId);
 	}
 
 }
