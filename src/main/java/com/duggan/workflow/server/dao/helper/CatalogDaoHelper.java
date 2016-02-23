@@ -166,14 +166,14 @@ public class CatalogDaoHelper {
 		return catalogs;
 	}
 
-	public static void saveData(Long id, List<DocumentLine> lines) {
+	public static void saveData(Long id, List<DocumentLine> lines, boolean isClearExisting) {
 		Catalog catalog = getCatalog(id);
-		saveData(catalog, lines);
+		saveData(catalog, lines,isClearExisting);
 	}
 
-	private static void saveData(Catalog catalog, List<DocumentLine> lines) {
+	private static void saveData(Catalog catalog, List<DocumentLine> lines, boolean isClearExisting) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines);
+		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines,isClearExisting);
 	}
 
 	public static List<DocumentLine> getTableData(Long catalogId) {
@@ -263,7 +263,7 @@ public class CatalogDaoHelper {
 		return model;
 	}
 
-	public static void mapAndSaveData(Catalog catalog, Doc doc) {
+	public static void mapAndSaveFormData(Catalog catalog, Doc doc) {
 		List<DocumentLine> documentLines = new ArrayList<>();
 
 		if (catalog.getFieldSource() == FieldSource.FORM) {
@@ -306,7 +306,7 @@ public class CatalogDaoHelper {
 			}
 		}
 
-		saveData(catalog, documentLines);
+		saveData(catalog, documentLines,false);
 	}
 
 }

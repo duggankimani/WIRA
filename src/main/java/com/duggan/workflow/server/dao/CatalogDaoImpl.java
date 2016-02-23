@@ -1,7 +1,5 @@
 package com.duggan.workflow.server.dao;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,7 +7,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
@@ -76,10 +73,13 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	}
 
 	public void save(String tableName, List<CatalogColumn> columns,
-			List<DocumentLine> lines) {
-		String delete = "DELETE FROM " + tableName;
-		log.debug("Exec DML: " + delete);
-		em.createNativeQuery(delete).executeUpdate();
+			List<DocumentLine> lines, boolean isClearExisting) {
+
+		if (isClearExisting) {
+			String delete = "DELETE FROM " + tableName;
+			log.debug("Exec DML: " + delete);
+			em.createNativeQuery(delete).executeUpdate();
+		}
 
 		StringBuffer buffer = new StringBuffer("INSERT INTO " + tableName
 				+ " (");
@@ -115,24 +115,27 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 					continue;
 				}
 				Value val = line.getValue(col.getName());
-				Object value = val==null? null: val.getValue();
-				
-				log.debug("CatalogDaoImpl.save("+tableName+") sql Parameter "+col.getName()+"::"+col.getType()+" = "+value);
-				
+				Object value = val == null ? null : val.getValue();
+
+				log.debug("CatalogDaoImpl.save(" + tableName
+						+ ") sql Parameter " + col.getName() + "::"
+						+ col.getType() + " = " + value);
+
 				// Hardcoded to handle hibernate null
-				if (value==null
+				if (value == null
 						&& col.getType().getFieldType().equals(DataType.DOUBLE)) {
 					query.setParameter(col.getName(), 0.0);
-				}else if(val!=null && val.getDataType().isDate()){
-					//String sqlPattern = "";
-					//SimpleDateFormat format = new SimpleDateFormat(sqlPattern);
-					
-					//Date date = dateObj==null? "": format.format(date);
-					//if(date==null){
-						query.setParameter(col.getName(),value);
-					//}
-				}else {
-					query.setParameter(col.getName(),value);
+				} else if (val != null && val.getDataType().isDate()) {
+					// String sqlPattern = "";
+					// SimpleDateFormat format = new
+					// SimpleDateFormat(sqlPattern);
+
+					// Date date = dateObj==null? "": format.format(date);
+					// if(date==null){
+					query.setParameter(col.getName(), value);
+					// }
+				} else {
+					query.setParameter(col.getName(), value);
 				}
 
 			}
@@ -150,11 +153,12 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 
 	public List<CatalogModel> getReportTablesByProcessId(String processId) {
 
-		return getResultList(em.createQuery(
-				"FROM CatalogModel c where c.isActive=1 and c.type=:type "
-				+ " and exists "
-				+ "(select id from ProcessDefModel p"
-				+ " where p.id=c.processDefId and p.processId=:processId and p.isActive=1)")
+		return getResultList(em
+				.createQuery(
+						"FROM CatalogModel c where c.isActive=1 and c.type=:type "
+								+ " and exists "
+								+ "(select id from ProcessDefModel p"
+								+ " where p.id=c.processDefId and p.processId=:processId and p.isActive=1)")
 				.setParameter("type", CatalogType.REPORTTABLE)
 				.setParameter("processId", processId));
 

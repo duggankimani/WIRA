@@ -43,7 +43,7 @@ public class TestCatalogDao {
 		DocumentLine line = new DocumentLine();
 		line.addValue("administration", new DoubleValue(0.0));
 		lines.add(line);
-		CatalogDaoHelper.saveData(26L, lines);
+		CatalogDaoHelper.saveData(26L, lines,false);
 	}
 	
 	@Ignore

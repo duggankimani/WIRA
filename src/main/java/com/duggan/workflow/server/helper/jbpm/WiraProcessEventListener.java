@@ -67,7 +67,7 @@ public class WiraProcessEventListener implements ProcessEventListener{
 		}
 		
 		for(Catalog catalog: catalogs){
-			CatalogDaoHelper.mapAndSaveData(catalog,doc);
+			CatalogDaoHelper.mapAndSaveFormData(catalog,doc);
 		}
 	}
 
