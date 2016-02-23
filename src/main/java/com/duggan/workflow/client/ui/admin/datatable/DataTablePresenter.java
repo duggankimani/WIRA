@@ -121,7 +121,7 @@ public class DataTablePresenter
 	private void showPopup(CatalogType type, Catalog catalog) {
 		final CreateTableView view = new CreateTableView(type,catalog);
 		if(type==CatalogType.REPORTTABLE){
-			GetProcessesRequest request = new GetProcessesRequest();
+			GetProcessesRequest request = new GetProcessesRequest(false);
 			requestHelper.execute(request, new TaskServiceCallback<GetProcessesResponse>() {
 				@Override
 				public void processResult(GetProcessesResponse aResponse) {
@@ -216,10 +216,12 @@ public class DataTablePresenter
 	}
 
 	private void loadData() {
+		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(new GetCatalogsRequest(),
 				new TaskServiceCallback<GetCatalogsResponse>() {
 					@Override
 					public void processResult(GetCatalogsResponse aResponse) {
+						fireEvent(new ProcessingCompletedEvent());
 						List<Catalog> catalogs = aResponse.getCatalogs();
 						getView().bindCatalogs(catalogs);
 					}

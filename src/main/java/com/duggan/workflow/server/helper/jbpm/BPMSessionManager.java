@@ -409,9 +409,6 @@ class BPMSessionManager {
 
 		}
 		
-		//Process Event Listener
-		session.addEventListener(new WiraProcessEventListener());
-
 		registerWorkItemHandlers(session);
 
 		// Process Logger - to Provide data for querying process status

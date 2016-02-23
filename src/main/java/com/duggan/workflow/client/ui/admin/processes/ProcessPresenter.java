@@ -207,7 +207,7 @@ public class ProcessPresenter extends
 
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetProcessesRequest());
+		action.addRequest(new GetProcessesRequest(true));
 		action.addRequest(new GetProcessCategoriesRequest());
 		
 		requestHelper.execute(action,

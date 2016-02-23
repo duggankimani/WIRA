@@ -14,7 +14,7 @@ public class ProcessDef extends SerializableObj implements Listable{
 	private Long id;
 	private String name;
 	private String processId;
-	private List<DocumentType> docTypes;
+	private List<DocumentType> docTypes = new ArrayList<DocumentType>();
 	private Date lastModified;
 	private Long fileId;
 	private String fileName;

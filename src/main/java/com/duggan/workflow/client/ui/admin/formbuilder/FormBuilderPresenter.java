@@ -345,7 +345,7 @@ public class FormBuilderPresenter extends
 	}
 
 	private void loadProcesses() {
-		GetProcessesRequest request = new GetProcessesRequest();
+		GetProcessesRequest request = new GetProcessesRequest(false);
 		dispatcher.execute(request, new ServiceCallback<GetProcessesResponse>() {
 			@Override
 			public void processResult(GetProcessesResponse aResponse) {
@@ -403,7 +403,7 @@ public class FormBuilderPresenter extends
 	
 	private void loadForms() {
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetProcessesRequest());
+		action.addRequest(new GetProcessesRequest(false));
 		action.addRequest(new GetFormsRequest(processDefId));
 		
 		if(formId!=null){

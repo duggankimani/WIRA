@@ -204,7 +204,7 @@ public class FormDaoHelper {
 					field.setSelectionValues(loader
 							.getValuesByDataSourceName(sqlDS, sqlSelect));
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.warn("#Dropdown Query Failed -  "+e.getMessage());
 				}
 			}
 

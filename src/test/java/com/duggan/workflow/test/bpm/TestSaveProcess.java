@@ -71,7 +71,7 @@ public class TestSaveProcess {
 //		
 //		Assert.assertTrue(docTypes.size()>0);
 		
-		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses();
+		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses(true);
 		Assert.assertNotNull(processes);
 		
 		Assert.assertTrue(processes.size()>0);

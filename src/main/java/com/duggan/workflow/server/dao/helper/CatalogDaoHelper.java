@@ -265,22 +265,24 @@ public class CatalogDaoHelper {
 
 	public static void mapAndSaveFormData(Catalog catalog, Doc doc) {
 		List<DocumentLine> documentLines = new ArrayList<>();
+		// Case Insensitive Map
+		Map<String, Value> formValues = new TreeMap<>(
+				String.CASE_INSENSITIVE_ORDER);
+		formValues.putAll(doc.getValues());
 
+		//Form
 		if (catalog.getFieldSource() == FieldSource.FORM) {
-			// Case Insensitive Map
-			Map<String, Value> values = new TreeMap<>(
-					String.CASE_INSENSITIVE_ORDER);
-			values.putAll(doc.getValues());
 
 			DocumentLine row = new DocumentLine();
 			for (CatalogColumn col : catalog.getColumns()) {
-				Value value = values.get(col.getName());
+				Value value = formValues.get(col.getName());
 				if (value != null) {
 					row.addValue(col.getName(), value);
 				}
 			}
 			documentLines.add(row);
 		} else {
+			//Grid
 			List<DocumentLine> details = doc.getDetails().get(
 					catalog.getGridName());
 			if (details == null) {
@@ -292,12 +294,21 @@ public class CatalogDaoHelper {
 			for (DocumentLine detail : details) {
 				DocumentLine row = new DocumentLine();
 				// Case Insensitive Map
-				Map<String, Value> values = new TreeMap<>(
+				Map<String, Value> gridValues = new TreeMap<>(
 						String.CASE_INSENSITIVE_ORDER);
-				values.putAll(detail.getValues());
+				gridValues.putAll(detail.getValues());
 
 				for (CatalogColumn col : catalog.getColumns()) {
-					Value value = values.get(col.getName());
+					Value value = gridValues.get(col.getName());
+					if(value==null){
+						value = formValues.get(col.getName());
+						if(value!=null){
+							logger.warn("#Report Table Mapping for "+doc.getCaseNo()
+									+" - #Grid '"+catalog.getGridName()
+									+"' uses form value for '"+col.getName()+"'");
+						}
+					}
+					
 					if (value != null) {
 						row.addValue(col.getName(), value);
 					}

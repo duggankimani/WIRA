@@ -22,7 +22,7 @@ public class GetProcessesRequestActionHandler extends
 	public void execute(GetProcessesRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses();
+		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses(action.isLoadDetails());
 		GetProcessesResponse response = (GetProcessesResponse)actionResult;
 		
 		response.setProcesses(processes);

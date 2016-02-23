@@ -81,39 +81,106 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			em.createNativeQuery(delete).executeUpdate();
 		}
 
-		StringBuffer buffer = new StringBuffer("INSERT INTO " + tableName
+		StringBuffer insertBuffer = new StringBuffer("INSERT INTO " + tableName
 				+ " (");
+
+		StringBuffer updateBuffer = new StringBuffer("UPDATE " + tableName
+				+ " SET ");
+
+		StringBuffer whereBuffer = new StringBuffer("WHERE ");
+
+		String primaryKey = null;
+
 		StringBuffer values = new StringBuffer(" VALUES (");
 		int i = 0;
 		for (CatalogColumn col : columns) {
+			if (col.isPrimaryKey()) {
+				primaryKey = col.getName();
+				whereBuffer.append("" + col.getName() + "=:" + col.getName());
+			}
+
 			if (col.isAutoIncrement()) {
 				continue;
 			}
-			buffer.append(col.getName());
+
+			// Insert Statement
+			insertBuffer.append(col.getName());
 			values.append(":" + col.getName());
 
+			// Update Statement
+			if (!col.isPrimaryKey()) {
+				updateBuffer.append(col.getName() + "=:" + col.getName());
+			}
+
 			if (columns.size() - 1 != i) {
-				buffer.append(",");
+				insertBuffer.append(",");
 				values.append(",");
+
+				updateBuffer.append(",");
 			}
 
 			++i;
 		}
-		if (buffer.toString().endsWith(",")) {
-			buffer.setCharAt(buffer.length() - 1, ' ');
+
+		if (insertBuffer.toString().endsWith(",")) {
+			insertBuffer.setCharAt(insertBuffer.length() - 1, ' ');
+			updateBuffer.setCharAt(updateBuffer.length() - 1, ' ');
 			values.setCharAt(values.length() - 1, ' ');
 		}
 
-		buffer.append(") " + values + ")");
-		log.debug("Exec DML: " + buffer.toString());
+		insertBuffer.append(") " + values + ")");
+
+		if (primaryKey != null) {
+			updateBuffer.append(whereBuffer);
+		}
+
+		if(isClearExisting){
+			log.debug("Exec DML: " + insertBuffer.toString());
+		}else{
+			log.debug("Exec DML: " + updateBuffer.toString());
+		}
+		
 
 		// Document Line
 		for (DocumentLine line : lines) {
-			Query query = em.createNativeQuery(buffer.toString());
+			
+			boolean isUpdate = !isClearExisting && primaryKey != null;
+			
+			if (isUpdate) {
+				Value val = line.getValue(primaryKey);
+				if (val != null && val.getValue() != null) {
+					Boolean isExists = (Boolean) em
+							.createNamedQuery(
+									"SELECT exists(select * from " + tableName
+											+ " " + whereBuffer.toString()
+											+ ")")
+							.setParameter(primaryKey, val).getSingleResult();
+					isUpdate = isExists;
+				} else {
+					logger.warn("#Report Table update row cannot be executed. "
+							+ "Primary Key Field  '" + primaryKey
+							+ "' is Null. Record: " + line);
+					isUpdate = false;
+				}
+			}
+
+			Query query = null;
+
+			if (isUpdate) {
+				query = em.createNativeQuery(updateBuffer.toString());
+			} else {
+				query = em.createNativeQuery(insertBuffer.toString());
+			}
+
+			//Set Values
 			for (CatalogColumn col : columns) {
 				if (col.isAutoIncrement()) {
 					continue;
 				}
+				if(isUpdate && col.isPrimaryKey()){
+					continue;
+				}
+				
 				Value val = line.getValue(col.getName());
 				Object value = val == null ? null : val.getValue();
 
@@ -126,20 +193,14 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 						&& col.getType().getFieldType().equals(DataType.DOUBLE)) {
 					query.setParameter(col.getName(), 0.0);
 				} else if (val != null && val.getDataType().isDate()) {
-					// String sqlPattern = "";
-					// SimpleDateFormat format = new
-					// SimpleDateFormat(sqlPattern);
-
-					// Date date = dateObj==null? "": format.format(date);
-					// if(date==null){
 					query.setParameter(col.getName(), value);
-					// }
 				} else {
 					query.setParameter(col.getName(), value);
 				}
 
 			}
 			query.executeUpdate();
+
 		}
 
 	}

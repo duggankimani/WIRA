@@ -542,6 +542,13 @@ public class CreateTableView extends Composite {
 					+ "Ensure you specify Name, Label and Data Type for each column");
 			isValid = false;
 		}
+		
+		if(lstFieldSources.getValue()!=null && lstFieldSources.getValue()==FieldSource.GRID){
+			if(lstGridField.getValue()==null){
+				issues.addError("Please Select at least one Grid");
+				isValid = false;
+			}
+		}
 
 		if (!isValid) {
 			issues.getElement().scrollIntoView();
