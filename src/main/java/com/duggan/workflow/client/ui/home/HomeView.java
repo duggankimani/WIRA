@@ -1,5 +1,8 @@
 package com.duggan.workflow.client.ui.home;
 
+import static com.duggan.workflow.client.ui.home.HomePresenter.DOCPOPUP_SLOT;
+import static com.duggan.workflow.client.ui.home.HomePresenter.DOCTREE_SLOT;
+
 import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.TaskType;
@@ -14,8 +17,6 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.ViewImpl;
-
-import static com.duggan.workflow.client.ui.home.HomePresenter.*;
 
 public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 

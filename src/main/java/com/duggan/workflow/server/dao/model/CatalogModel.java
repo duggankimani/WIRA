@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

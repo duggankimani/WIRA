@@ -3,7 +3,6 @@ package com.duggan.workflow.server.helper.jbpm;
 import java.util.List;
 import java.util.Map;
 
-import org.kie.api.definition.process.Process;
 import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.process.ProcessInstance;

@@ -5,7 +5,6 @@ import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
-import com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.TaskType;

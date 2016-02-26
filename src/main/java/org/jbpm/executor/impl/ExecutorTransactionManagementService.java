@@ -4,7 +4,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
 import org.apache.onami.persist.AllUnitsOfWork;
-import org.apache.onami.persist.EntityManagerProvider;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.guice.UserTransactionProvider;

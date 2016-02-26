@@ -1,8 +1,8 @@
 package com.duggan.workflow.shared.events;
 
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.EventHandler;
 import com.duggan.workflow.shared.model.Attachment;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class FileLoadEvent extends GwtEvent<FileLoadEvent.FileLoadHandler> {

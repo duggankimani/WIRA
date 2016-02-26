@@ -7,7 +7,6 @@ import java.util.List;
 import javax.naming.NamingException;
 import javax.transaction.SystemException;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;

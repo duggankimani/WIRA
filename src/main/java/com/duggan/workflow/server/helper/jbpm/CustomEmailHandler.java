@@ -4,12 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -18,20 +15,15 @@ import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.commands.SendMailCommand;
 
-import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
-import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
-import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.model.StringValue;
-import com.duggan.workflow.shared.model.UserGroup;
 
 public class CustomEmailHandler {
 

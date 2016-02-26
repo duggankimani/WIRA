@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.Iterator;
 
-import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;

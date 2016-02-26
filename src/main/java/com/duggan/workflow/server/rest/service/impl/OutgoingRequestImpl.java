@@ -8,7 +8,6 @@ import java.util.Properties;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.jbpm.executor.api.CommandContext;
 
 import com.duggan.workflow.server.rest.exception.WiraExceptionModel;
 import com.duggan.workflow.server.rest.model.Request;
@@ -17,7 +16,6 @@ import com.duggan.workflow.server.rest.service.OutgoingRequestService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 

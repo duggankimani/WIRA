@@ -4,9 +4,9 @@ import com.duggan.workflow.shared.events.CreateDocumentEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 

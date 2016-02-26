@@ -2,7 +2,6 @@ package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.model.catalog.IsCatalogItem;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.DeleteProcessResponse;
 
 public class DeleteCatalogRequest extends
 		BaseRequest<BaseResponse> {

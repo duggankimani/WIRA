@@ -9,7 +9,6 @@ import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataPresenter;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.dashboard.ChartType;
 import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
 import com.duggan.workflow.shared.responses.GetDashBoardDataResponse;

@@ -3,11 +3,7 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.ProcessLog;
-import com.duggan.workflow.shared.model.TaskLog;
-import com.duggan.workflow.shared.model.UserGroup;
-import com.duggan.workflow.shared.model.Version;
 
 public class GetProcessInstancesResponse extends BaseResponse {
 

@@ -1,8 +1,8 @@
 package com.duggan.workflow.client.ui.component;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.user.client.ui.TextBoxBase;
 
 public class MultipleTextBox extends TextBoxBase {

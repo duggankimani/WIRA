@@ -11,7 +11,6 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.events.EditOutputDocEvent;
 import com.duggan.workflow.shared.events.EditOutputDocEvent.EditOutputDocHandler;
 import com.duggan.workflow.shared.model.OutputDocument;

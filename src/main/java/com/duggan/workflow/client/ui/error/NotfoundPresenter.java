@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.error;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;

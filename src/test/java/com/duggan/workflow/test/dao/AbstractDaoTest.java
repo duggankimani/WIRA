@@ -2,14 +2,11 @@ package com.duggan.workflow.test.dao;
 
 import org.apache.onami.test.OnamiRunner;
 import org.apache.onami.test.annotation.GuiceModules;
-import org.jukito.JukitoRunner;
-import org.jukito.UseModules;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.guice.UserTransactionProvider;
 import com.google.inject.Inject;

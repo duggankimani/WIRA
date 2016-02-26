@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.jbpm.executor.commands.SendMailCommand;
-import org.jbpm.executor.impl.ExecutorImpl;
 
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
