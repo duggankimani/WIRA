@@ -12,9 +12,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -27,6 +29,7 @@ import com.duggan.workflow.shared.model.DataType;
 @XmlRootElement(name="property")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADProperty extends PO{
 
 	/**

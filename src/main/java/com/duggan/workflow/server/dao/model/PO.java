@@ -25,7 +25,6 @@ public abstract class PO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable=false, unique=true, updatable=false, length=45)
-    //@Index(name="idx_ref_id")
 	protected String refId;
 	
 	@XmlTransient

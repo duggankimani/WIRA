@@ -3,6 +3,7 @@ package com.duggan.workflow.test;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.http.entity.mime.content.ContentBody;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,8 @@ public class TestApprovalRequest {
 	String userId="calcacuervo";
 	
 	DocumentDaoImpl dao;
+	
+	ContentBody l;
 	
 	@Before
 	public void setup(){

@@ -14,17 +14,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
-
 import com.duggan.workflow.shared.model.DocStatus;
 
 @Entity
-@Table(name="localdocument")
+@Table(name="localdocument",indexes={@Index(name="idx_ref_id",columnList="refId"),
+		@Index(name="idx_subject",columnList="subject"),
+		@Index(name="idx_docdate",columnList="documentDate")
+		
+})
 public class DocumentModel extends PO{
 
 	/**
@@ -36,7 +39,6 @@ public class DocumentModel extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Index(name="idx_subject")
 	@Column(length=200,nullable=false, unique=true)
 	private String subject;//caseNo
 	
@@ -47,7 +49,6 @@ public class DocumentModel extends PO{
 	@JoinColumn(name="docType", referencedColumnName="id")
 	private ADDocType type;
 	
-	@Index(name="idx_docdate")
 	private Date documentDate;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="document")

@@ -12,15 +12,19 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
 //import org.hibernate.annotations.CollectionOfElements;
 
+import javax.persistence.Table;
+
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.NotificationCategory;
 
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADTaskNotification extends PO{
 
 
@@ -28,6 +32,7 @@ public class ADTaskNotification extends PO{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

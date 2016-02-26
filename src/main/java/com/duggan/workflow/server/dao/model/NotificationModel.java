@@ -6,13 +6,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.NotificationType;
 
 @Entity
-@Table(name="localnotification")
+@Table(name="localnotification",indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class NotificationModel extends PO {
 
 	/**

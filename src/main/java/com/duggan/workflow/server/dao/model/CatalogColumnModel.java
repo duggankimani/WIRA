@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -23,7 +24,7 @@ import com.duggan.workflow.shared.model.DBType;
 @XmlAccessorType(XmlAccessType.FIELD)
 
 @Entity
-@Table(name="catalogcolumn")
+@Table(name="catalogcolumn",indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class CatalogColumnModel extends PO{
 
 	@XmlTransient

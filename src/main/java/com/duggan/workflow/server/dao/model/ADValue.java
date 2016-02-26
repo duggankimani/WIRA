@@ -10,9 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -23,6 +25,7 @@ import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADValue extends PO{
 
 	/**

@@ -29,7 +29,8 @@
 
 		<!-- hibernate.version>3.4.0.GA</hibernate.version -->
 		<!-- hibernate.version>4.3.9.Final</hibernate.version -->
-		<hibernate.version>4.2.21.Final</hibernate.version>
+		<!-- hibernate.version>4.2.21.Final</hibernate.version -->
+		<hibernate.version>4.3.6.Final</hibernate.version>
 
 		<!-- Wira Shared -->
 		<wira.shared.artifactId>${project.artifactId}-shared</wira.shared.artifactId>
@@ -384,7 +385,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -395,13 +396,11 @@
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>2.7.7</version>
-			<!--scope>provided</scope -->
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>3.3</version>
-			<!--scope>provided</scope -->
 		</dependency>
 
 		<dependency>
@@ -445,7 +444,30 @@
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-persistence-jpa</artifactId>
 			<version>${jbpm.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.drools</groupId>
+					<artifactId>drools-persistence-jpa</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-persistence-jpa</artifactId>
+			<version>${jbpm.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-human-task-core</artifactId>
@@ -472,6 +494,13 @@
 			<artifactId>jbpm-shared-services</artifactId>
 			<version>${jbpm.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mvel</groupId>
@@ -484,7 +513,7 @@
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 			<version>2.1.4</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -497,7 +526,7 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -593,7 +622,7 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.18.1-GA</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- dependency> <groupId>javassist</groupId> <artifactId>javassist</artifactId> 
@@ -670,7 +699,7 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -720,6 +749,7 @@
 			<groupId>com.allen-sauer.gwt.dnd</groupId>
 			<artifactId>gwt-dnd</artifactId>
 			<version>3.3.4</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -773,45 +803,23 @@
 		<!-- dependency> <groupId>org.hibernate</groupId> <artifactId>ejb3-persistence</artifactId> 
 			<version>1.0.2.GA</version> <scope>provided</scope> </dependency -->
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-			<!-- version>3.3.2.GA</version -->
-			<!--scope>provided</scope -->
-		</dependency>
 
-		<!-- dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-annotations</artifactId> 
-			<version>${hibernate.version}</version -->
-		<!--scope>provided</scope -->
-		<!-- /dependency -->
+		<!-- dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-commons-annotations</artifactId> 
+			<version>3.1.0.GA</version> <scope>provided</scope> </dependency -->
 
-		<!-- dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.1.0.GA</version>
-			<scope>provided</scope>
-		</dependency-->
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-			<!--scope>provided</scope -->
-		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
-			<!--scope>provided</scope -->
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -855,7 +863,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -869,7 +877,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

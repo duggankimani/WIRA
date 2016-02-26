@@ -7,6 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import com.duggan.workflow.shared.model.RDBMSType;
 import com.duggan.workflow.shared.model.Status;
@@ -17,6 +19,7 @@ import com.duggan.workflow.shared.model.Status;
  *
  */
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class DataSourceConfig extends PO {
 
 	/**
