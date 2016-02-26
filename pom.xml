@@ -6,7 +6,7 @@
 	<groupId>com.duggan.workflow</groupId>
 	<artifactId>wira</artifactId>
 	<version>0.9</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<name>wira</name>
 	<description>Enterprise Task List</description>
 
@@ -380,6 +380,13 @@
 			<artifactId>gin</artifactId>
 			<version>${gin.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+		</dependency>
+		
 
 		<dependency>
 			<groupId>javax</groupId>
