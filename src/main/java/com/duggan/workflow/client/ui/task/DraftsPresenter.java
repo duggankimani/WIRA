@@ -19,33 +19,38 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class DraftsPresenter extends AbstractTaskPresenter<DraftsPresenter.IDraftsView, DraftsPresenter.IDraftsProxy>{
+public class DraftsPresenter
+		extends
+		AbstractTaskPresenter<DraftsPresenter.IDraftsView, DraftsPresenter.IDraftsProxy> {
 
-	public interface IDraftsView extends ITaskView{}
-	
+	public interface IDraftsView extends
+			com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView {
+
+	}
+
 	@ProxyCodeSplit
-	@NameToken({NameTokens.drafts})
+	@NameToken({ NameTokens.drafts })
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface IDraftsProxy extends TabContentProxyPlace<DraftsPresenter> {
 	}
-	
+
 	@TabInfo(container = HomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-        return new HomeTabData(TaskType.DRAFT.name(),"Drafts","",2, adminGatekeeper);
-    }
-	
+	static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+		return new HomeTabData(TaskType.DRAFT.name(), "Drafts", "", 2,
+				adminGatekeeper);
+	}
+
 	@Inject
 	public DraftsPresenter(EventBus eventBus, IDraftsView view,
 			IDraftsProxy proxy,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
-		super(eventBus, view, proxy, docViewProvider,
-				dateGroupProvider);
+		super(eventBus, view, proxy, docViewProvider, dateGroupProvider);
 	}
-	
+
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		currentTaskType=TaskType.DRAFT;
+		currentTaskType = TaskType.DRAFT;
 		getView().setTaskType(currentTaskType);
 		mode = MODE.EDIT;
 		super.prepareFromRequest(request);
