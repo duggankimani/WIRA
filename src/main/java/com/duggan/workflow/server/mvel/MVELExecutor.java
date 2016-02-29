@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.mvel;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import org.mvel2.MVEL;
 import org.mvel2.ParserContext;

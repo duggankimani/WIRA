@@ -2,8 +2,6 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,18 +10,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.duggan.workflow.shared.model.MODE;
-import com.duggan.workflow.shared.model.TaskStepTrigger;
 
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class TaskStepModel extends PO {
 
 	/**

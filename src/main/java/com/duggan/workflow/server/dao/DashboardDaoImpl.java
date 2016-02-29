@@ -3,7 +3,6 @@ package com.duggan.workflow.server.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;

@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.kie.api.task.model.Status;
-import org.kie.internal.task.api.model.TaskEvent;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
@@ -274,7 +272,8 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			return -1;
 		}
 
-		String sql = "select status from processinstancelog where processinstanceid=:processInstanceId";
+		//String sql = "select status from processinstancelog where processinstanceid=:processInstanceId";
+		String sql = "select state from processinstanceinfo where instanceid=:processInstanceId";
 		Number status = getSingleResultOrNull(getEntityManager().createNativeQuery(sql)
 				.setParameter("processInstanceId", processInstanceId));
 

@@ -1,7 +1,5 @@
 package com.duggan.workflow.server.db;
 
-import javax.persistence.EntityManager;
-
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;

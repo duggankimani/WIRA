@@ -3,7 +3,10 @@ package com.duggan.workflow.server.dao.model;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADValueSet extends PO {
 
 	/**

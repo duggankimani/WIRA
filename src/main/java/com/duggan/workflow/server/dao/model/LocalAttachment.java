@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 @Entity
-@Table(name = "localattachment")
+@Table(name = "localattachment",indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class LocalAttachment extends PO {
 
 	/**

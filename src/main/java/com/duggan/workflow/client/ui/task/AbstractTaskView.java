@@ -1,13 +1,14 @@
 package com.duggan.workflow.client.ui.task;
 
-import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.*;
+import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DATEGROUP_SLOT;
+import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DOCUMENT_SLOT;
+import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.FILTER_SLOT;
 
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.task.DraftsPresenter.IDraftsView;
 import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedView;
 import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter.ISuspendedView;
 import com.duggan.workflow.shared.model.TaskType;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.ITaskView, IDraftsView, IParticipatedView, ISuspendedView{
 

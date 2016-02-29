@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 

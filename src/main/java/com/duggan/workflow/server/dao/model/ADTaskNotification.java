@@ -4,23 +4,25 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+
+import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.NotificationCategory;
+//import org.hibernate.annotations.CollectionOfElements;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-
-//import org.hibernate.annotations.CollectionOfElements;
-
-import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.NotificationCategory;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADTaskNotification extends PO{
 
 
@@ -28,6 +30,7 @@ public class ADTaskNotification extends PO{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

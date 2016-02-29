@@ -3,9 +3,10 @@ package com.duggan.workflow.server.helper.jbpm;
 import java.util.List;
 import java.util.Map;
 
-import org.kie.api.definition.process.Process;
+import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.task.TaskLifeCycleEventListener;
 import org.kie.api.task.TaskService;
 
 import com.duggan.workflow.shared.model.Actions;
@@ -40,5 +41,9 @@ public interface WiraSessionManager {
 			long processInstanceId);
 
 	org.kie.api.definition.process.Process getProcess(long processInstanceId);
+
+	void addProcessEventListener(Class<? extends ProcessEventListener> listener);
+
+	void addTaskListener(Class<? extends TaskLifeCycleEventListener> listener);
 
 }

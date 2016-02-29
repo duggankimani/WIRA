@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.duggan.workflow.shared.responses.GetProcessLogResponse;
 
 public class GetProcessLogRequest extends BaseRequest<GetProcessLogResponse> {

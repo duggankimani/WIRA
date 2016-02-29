@@ -11,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.OutputDocumentDao;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
@@ -20,15 +19,10 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.OutputDocument;
-import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.model.form.Field;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
 import com.itextpdf.text.DocumentException;
 
 public class OutputDocumentDaoHelper {

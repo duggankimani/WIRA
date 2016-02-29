@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -12,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,7 +28,7 @@ import org.hibernate.annotations.Cascade;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso(CatalogColumnModel.class)
 @Entity
-@Table(name = "catalog")
+@Table(name = "catalog",indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class CatalogModel extends PO {
 
 	@XmlTransient

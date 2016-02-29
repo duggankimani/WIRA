@@ -1,6 +1,9 @@
 package com.duggan.workflow.client.ui.document.form;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.MONTHDAYFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.MONTHTIME;
+import static com.duggan.workflow.client.ui.util.DateUtils.TIMEFORMAT12HR;
 
 import java.util.ArrayList;
 import java.util.Collections;

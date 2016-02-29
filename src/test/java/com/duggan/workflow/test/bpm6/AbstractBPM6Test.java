@@ -26,7 +26,6 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.gwtplatform.dispatch.rpc.shared.DispatchService;
 

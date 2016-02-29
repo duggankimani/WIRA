@@ -1,8 +1,5 @@
 package com.duggan.workflow.dates;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TestLogic {
 

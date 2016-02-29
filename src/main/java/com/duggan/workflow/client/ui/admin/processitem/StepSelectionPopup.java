@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.processitem;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableHeader;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.shared.model.Listable;

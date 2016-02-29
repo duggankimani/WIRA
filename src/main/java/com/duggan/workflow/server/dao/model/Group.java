@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -19,42 +20,40 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cascade;
 
-@Entity(name="BGroup")
-@Table(uniqueConstraints={@UniqueConstraint(columnNames="name")})
-@NamedQuery(name="Group.getGroupByGroupId", query="from BGroup p where p.name=:name")
+@Entity(name = "BGroup")
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "name") }, indexes = { @Index(name = "idx_ref_id", columnList = "refId") })
+@NamedQuery(name = "Group.getGroupByGroupId", query = "from BGroup p where p.name=:name")
 public class Group extends PO {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String name;
-	
+
 	private String fullName;
-	
-	@ManyToMany(mappedBy="groups", fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,
-			CascadeType.MERGE,CascadeType.REFRESH})
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+
+	@ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY, cascade = {
+			CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private Collection<User> members = new HashSet<>();
-	
+
 	@ManyToMany
-	@JoinTable(name="process_groupaccess", 
-	joinColumns={@JoinColumn(name="groupid")},
-	inverseJoinColumns={@JoinColumn(name="processid")})
+	@JoinTable(name = "process_groupaccess", joinColumns = { @JoinColumn(name = "groupid") }, inverseJoinColumns = { @JoinColumn(name = "processid") })
 	private Collection<ProcessDefModel> processDef = new HashSet<>();
-	
+
 	private boolean isArchived;
-	
-	public Group(){
-		this.isArchived=false;
+
+	public Group() {
+		this.isArchived = false;
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;
@@ -95,20 +94,20 @@ public class Group extends PO {
 	public void setMembers(Collection<User> members) {
 		this.members = members;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return name.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Group)){
+		if (!(obj instanceof Group)) {
 			return false;
 		}
-		
-		Group other = (Group)obj;
-		
+
+		Group other = (Group) obj;
+
 		return name.equals(other.getName());
 	}
 
