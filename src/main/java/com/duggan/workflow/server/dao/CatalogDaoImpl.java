@@ -150,7 +150,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				Value val = line.getValue(primaryKey);
 				if (val != null && val.getValue() != null) {
 					Boolean isExists = (Boolean) em
-							.createNamedQuery(
+							.createNativeQuery(
 									"SELECT exists(select * from " + tableName
 											+ " " + whereBuffer.toString()
 											+ ")")
