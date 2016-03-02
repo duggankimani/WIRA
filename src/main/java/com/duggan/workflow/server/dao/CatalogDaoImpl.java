@@ -124,8 +124,11 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 
 		if (insertBuffer.toString().endsWith(",")) {
 			insertBuffer.setCharAt(insertBuffer.length() - 1, ' ');
-			updateBuffer.setCharAt(updateBuffer.length() - 1, ' ');
 			values.setCharAt(values.length() - 1, ' ');
+		}
+
+		if (updateBuffer.toString().endsWith(",")) {
+			updateBuffer.setCharAt(updateBuffer.length() - 1, ' ');
 		}
 
 		insertBuffer.append(") " + values + ")");
@@ -134,28 +137,20 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			updateBuffer.append(whereBuffer);
 		}
 
-		if(isClearExisting){
-			log.debug("Exec DML: " + insertBuffer.toString());
-		}else{
-			log.debug("Exec DML: " + updateBuffer.toString());
-		}
-		
-
 		// Document Line
 		for (DocumentLine line : lines) {
-			
+
 			boolean isUpdate = !isClearExisting && primaryKey != null;
-			
+
 			if (isUpdate) {
 				Value val = line.getValue(primaryKey);
 				if (val != null && val.getValue() != null) {
-					Boolean isExists = (Boolean) em
-							.createNativeQuery(
-									"SELECT exists(select * from " + tableName
-											+ " " + whereBuffer.toString()
-											+ ")")
-							.setParameter(primaryKey, val).getSingleResult();
-					isUpdate = isExists;
+					String existsQuery = "SELECT exists(select * from "
+							+ tableName + " " + whereBuffer.toString() + ")";
+					log.debug("#CheckExistsQuery: "+existsQuery);
+					isUpdate = (Boolean) em.createNativeQuery(existsQuery)
+							.setParameter(primaryKey, val.getValue())
+							.getSingleResult();
 				} else {
 					logger.warn("#Report Table update row cannot be executed. "
 							+ "Primary Key Field  '" + primaryKey
@@ -166,21 +161,21 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 
 			Query query = null;
 
+
 			if (isUpdate) {
+				log.debug("Exec DML: " + updateBuffer.toString());
 				query = em.createNativeQuery(updateBuffer.toString());
 			} else {
+				log.debug("Exec DML: " + insertBuffer.toString());
 				query = em.createNativeQuery(insertBuffer.toString());
 			}
 
-			//Set Values
+			// Set Values
 			for (CatalogColumn col : columns) {
 				if (col.isAutoIncrement()) {
 					continue;
 				}
-				if(isUpdate && col.isPrimaryKey()){
-					continue;
-				}
-				
+
 				Value val = line.getValue(col.getName());
 				Object value = val == null ? null : val.getValue();
 

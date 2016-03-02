@@ -16,6 +16,7 @@ import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DoubleValue;
+import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 
@@ -27,7 +28,7 @@ public class TestCatalogDao {
 		DB.beginTransaction();
 	}
 	
-	@Test
+	@Ignore
 	public void testGetCatalogsForProcess(){
 		String processId = "chasebank.finance.ExpenseClaim";
 		
@@ -35,15 +36,32 @@ public class TestCatalogDao {
 		Assert.assertEquals(2, cats.size());
 	}
 	
-	@Ignore
+	@Test
 	public void saveData(){
 		//Catalog catalog = CatalogDaoHelper.getCatalog(24L);
 		
+		/**
+		 * 	String query = 
+							"SELECT (case when(exists(select * "
+							+ "from "+tableName+" "
+									+whereBuffer.toString()
+									+ ")='t') then 1 else 0 end)";
+					
+					logger.warn("#Exists query: "+query);
+					int isExists = getSingleResultOrNull(em
+							.createNativeQuery(query)
+							.setParameter(primaryKey, val.getValue()));
+				
+		 */
+		
 		List<DocumentLine> lines = new ArrayList<>();
 		DocumentLine line = new DocumentLine();
+		line.addValue("caseno", new StringValue("case-125"));
 		line.addValue("administration", new DoubleValue(0.0));
+		line.addValue("itemdescription", new DoubleValue(0.0));
+		line.addValue("quantity", new DoubleValue(0.0));
 		lines.add(line);
-		CatalogDaoHelper.saveData(26L, lines,false);
+		CatalogDaoHelper.saveData(39L, lines,false);
 	}
 	
 	@Ignore
