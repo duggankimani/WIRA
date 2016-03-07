@@ -382,6 +382,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-persist</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
@@ -392,7 +398,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -503,7 +509,7 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -517,7 +523,7 @@
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 			<version>2.1.4</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -530,7 +536,7 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -601,7 +607,7 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.18.1-GA</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -675,7 +681,7 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -753,14 +759,6 @@
 			<version>2.4.0</version>
 		</dependency>
 
-
-		<!-- Apache Onami Persist -->
-		<dependency>
-			<groupId>org.apache.onami</groupId>
-			<artifactId>org.apache.onami.persist</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
-		</dependency>
-
 		<!--JTA/ HIBERNATE PERSISTENCE -->
 			<dependency>
 			<groupId>org.hibernate</groupId>
@@ -820,7 +818,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -861,7 +859,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -875,7 +873,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.4</version>
-			<scope>provided</scope>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -1017,14 +1015,7 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.onami</groupId>
-			<artifactId>org.apache.onami.test</artifactId>
-			<version>1.4.0-incubating</version>
-			<scope>test</scope>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.jukito</groupId>
 			<artifactId>jukito</artifactId>

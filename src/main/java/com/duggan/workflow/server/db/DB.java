@@ -9,7 +9,6 @@ import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import org.apache.onami.persist.EntityManagerProvider;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;
@@ -32,7 +31,6 @@ import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.guice.UserTransactionProvider;
-import com.duggan.workflow.server.guice.WiraPU;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -75,23 +73,25 @@ public class DB {
 
 	private static ThreadLocal<JDBCConnection> jdbcConnectionBot = new ThreadLocal<>();
 
-	@WiraPU
-	@Inject
-	private static EntityManagerProvider emProvider;
+	private static Provider<EntityManager> emProvider;
 
-	@WiraPU
-	@Inject
 	private static Provider<EntityManagerFactory> emfProvider;
 
-	@Inject
 	static UserTransactionProvider userTransactionProvider;
 
 	private DB() {
 	}
+	
+	@Inject
+	public static void init(Provider<EntityManagerFactory> emfProvider,Provider<EntityManager> emProvider,
+			UserTransactionProvider userTransactionProvider){
+		DB.emfProvider = emfProvider;
+		DB.emProvider = emProvider;
+		DB.userTransactionProvider = userTransactionProvider;
+	}
 
 	public static EntityManager getEntityManager() {
 		EntityManager em = emProvider.get();
-
 		Session session = (Session) em.getDelegate();
 		SessionImpl sessionImpl = (SessionImpl) session;
 		try {
@@ -99,6 +99,7 @@ public class DB {
 			/**
 			 * A hack to fix LOB loading error : Cannot load LOB in autocommit mode - AttachmentDaoImpl
 			 */
+			em.joinTransaction();
 			boolean autoCommit = sessionImpl.connection().getAutoCommit();
 			if(autoCommit){
 				sessionImpl.connection().setAutoCommit(false);

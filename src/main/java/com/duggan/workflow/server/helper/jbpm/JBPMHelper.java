@@ -22,6 +22,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.jbpm.executor.ExecutorModule;
 import org.jbpm.process.audit.NodeInstanceLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
 import org.jbpm.services.task.impl.model.TaskImpl;

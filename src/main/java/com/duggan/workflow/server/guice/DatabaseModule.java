@@ -1,62 +1,30 @@
 package com.duggan.workflow.server.guice;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import org.apache.onami.persist.PersistenceModule;
+import org.jbpm.executor.impl.ExecutorFactory;
+import org.jbpm.executor.impl.ExecutorTransactionManagementService;
 
 import com.duggan.workflow.server.db.DB;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import com.duggan.workflow.server.db.DBTrxProviderImpl;
+import com.google.inject.AbstractModule;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
-public class DatabaseModule extends PersistenceModule {
+public class DatabaseModule extends AbstractModule {
 
 	@Override
-	protected void configurePersistence() {
-		// Entity Manager Factory
-		bindContainerManagedPersistenceUnit(provideEntityManagerFactory())
-				.annotatedWith(WiraPU.class).useGlobalTransactionProvidedBy(
-						UserTransactionProvider.class);
+	protected void configure(){
+		DBTrxProviderImpl.init();
+
+		bind(UserTransactionProvider.class);
+		bind(TransactionService.class);
+		
+		install(new JpaPersistModule("org.jbpm.persistence.jpa"));
 
 		// DB Class
 		requestStaticInjection(DB.class);
 		
-//		bind(ExecutorTransactionManagementService.class);
-//		requestStaticInjection(ExecutorFactory.class);
+		bind(JPAInitializer.class).asEagerSingleton();
+		bind(ExecutorTransactionManagementService.class).asEagerSingleton();
+		requestStaticInjection(ExecutorFactory.class);
 		
 	}
-
-	/**
-	 * DATA ACCESS INITIALIZATION: EntityManagerFactory, EntityManager,
-	 * UserTransaction
-	 */
-
-	private EntityManagerFactory emf;
-	private static final ThreadLocal<EntityManager> ENTITY_MANAGER_CACHE = new ThreadLocal<EntityManager>();
-
-	@Provides
-	@WiraPU
-	@Singleton
-	public EntityManagerFactory provideEntityManagerFactory() {
-		if (emf == null) {
-			emf = Persistence
-					.createEntityManagerFactory("org.jbpm.persistence.jpa");
-		}
-
-		return emf;
-	}
-
-	// @Provides
-	// @WiraPU
-	// public EntityManager provideEntityManager(
-	// @WiraPU EntityManagerFactory entityManagerFactory) {
-	//
-	// EntityManager entityManager = ENTITY_MANAGER_CACHE.get();
-	// if (entityManager == null) {
-	// ENTITY_MANAGER_CACHE.set(entityManager = entityManagerFactory
-	// .createEntityManager());
-	// }
-	// return entityManager;
-	// }
 }

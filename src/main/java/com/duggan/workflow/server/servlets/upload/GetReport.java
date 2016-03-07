@@ -14,7 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.apache.onami.persist.Transactional;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
@@ -35,6 +34,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
 import com.itextpdf.text.DocumentException;
 
 @Singleton
