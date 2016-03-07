@@ -99,7 +99,6 @@ public class DB {
 			/**
 			 * A hack to fix LOB loading error : Cannot load LOB in autocommit mode - AttachmentDaoImpl
 			 */
-			em.joinTransaction();
 			boolean autoCommit = sessionImpl.connection().getAutoCommit();
 			if(autoCommit){
 				sessionImpl.connection().setAutoCommit(false);
