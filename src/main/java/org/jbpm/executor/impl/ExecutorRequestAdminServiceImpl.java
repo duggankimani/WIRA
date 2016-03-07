@@ -20,13 +20,11 @@ import com.duggan.workflow.server.db.DB;
  */
 public class ExecutorRequestAdminServiceImpl implements ExecutorRequestAdminService {
 
-    private EntityManager em;
-
     public ExecutorRequestAdminServiceImpl(){
-    	em = DB.getEntityManager();
     }
     
     public int clearAllRequests() {
+    	EntityManager em  = DB.getEntityManager();
         List<RequestInfo> requests = em.createQuery("select r from RequestInfo r").getResultList();
         for (RequestInfo r : requests) {
             em.remove(r);
@@ -36,6 +34,7 @@ public class ExecutorRequestAdminServiceImpl implements ExecutorRequestAdminServ
     }
 
     public int clearAllErrors() {
+    	EntityManager em  = DB.getEntityManager();
         List<ErrorLog> errors = em.createQuery("select e from ErrorLog e").getResultList();
 
         for (ErrorLog e : errors) {
