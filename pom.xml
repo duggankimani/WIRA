@@ -382,6 +382,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-persist</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
@@ -753,14 +759,6 @@
 			<version>2.4.0</version>
 		</dependency>
 
-
-		<!-- Apache Onami Persist -->
-		<dependency>
-			<groupId>org.apache.onami</groupId>
-			<artifactId>org.apache.onami.persist</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
-		</dependency>
-
 		<!--JTA/ HIBERNATE PERSISTENCE -->
 			<dependency>
 			<groupId>org.hibernate</groupId>
@@ -785,7 +783,7 @@
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
@@ -1017,14 +1015,7 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.onami</groupId>
-			<artifactId>org.apache.onami.test</artifactId>
-			<version>1.4.0-incubating</version>
-			<scope>test</scope>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.jukito</groupId>
 			<artifactId>jukito</artifactId>

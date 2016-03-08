@@ -1,11 +1,9 @@
 package com.duggan.workflow.test.dao;
 
-import org.apache.onami.persist.AllPersistenceServices;
-import org.apache.onami.persist.AllUnitsOfWork;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.persist.PersistService;
 
 public class PersistenceInitModule extends AbstractModule {
 	
@@ -18,9 +16,8 @@ public class PersistenceInitModule extends AbstractModule {
 	public static class JPAInitializer {
  
 		@Inject 
-		public JPAInitializer(AllPersistenceServices allPersistenceServices,AllUnitsOfWork allUnitsOfWork) {
-			allPersistenceServices.startAllStoppedPersistenceServices();
-			allUnitsOfWork.beginAllInactiveUnitsOfWork();
+		public JPAInitializer(PersistService service) {
+			service.start();
 		}
 		
 	}

@@ -15,7 +15,6 @@ public class BaseModule extends AbstractModule {
 		// get the bootstrapping Properties file
 		DBTrxProviderImpl.init();
 		install(new DatabaseModule());
-		install(new DatabaseInitModule());
 		install(new ServerModule());
 		bind(DispatchService.class).to(StandardDispatchService.class).in(
 				Singleton.class);
