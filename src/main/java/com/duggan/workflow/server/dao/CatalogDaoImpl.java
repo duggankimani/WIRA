@@ -116,7 +116,8 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				insertBuffer.append(",");
 				values.append(",");
 
-				updateBuffer.append(",");
+				if (!col.isPrimaryKey())
+					updateBuffer.append(",");
 			}
 
 			++i;
@@ -134,7 +135,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		insertBuffer.append(") " + values + ")");
 
 		if (primaryKey != null) {
-			updateBuffer.append(" "+whereBuffer.toString());
+			updateBuffer.append(" " + whereBuffer.toString());
 		}
 
 		// Document Line
@@ -147,7 +148,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				if (val != null && val.getValue() != null) {
 					String existsQuery = "SELECT exists(select * from "
 							+ tableName + " " + whereBuffer.toString() + ")";
-					log.debug("#CheckExistsQuery: "+existsQuery);
+					log.debug("#CheckExistsQuery: " + existsQuery);
 					isUpdate = (Boolean) em.createNativeQuery(existsQuery)
 							.setParameter(primaryKey, val.getValue())
 							.getSingleResult();
@@ -160,7 +161,6 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			}
 
 			Query query = null;
-
 
 			if (isUpdate) {
 				log.debug("Exec DML: " + updateBuffer.toString());
