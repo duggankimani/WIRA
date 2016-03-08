@@ -134,7 +134,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		insertBuffer.append(") " + values + ")");
 
 		if (primaryKey != null) {
-			updateBuffer.append(whereBuffer);
+			updateBuffer.append(" "+whereBuffer.toString());
 		}
 
 		// Document Line
