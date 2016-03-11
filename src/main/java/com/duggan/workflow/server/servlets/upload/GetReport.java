@@ -38,7 +38,6 @@ import com.google.inject.persist.Transactional;
 import com.itextpdf.text.DocumentException;
 
 @Singleton
-@Transactional
 public class GetReport extends HttpServlet {
 
 	/**

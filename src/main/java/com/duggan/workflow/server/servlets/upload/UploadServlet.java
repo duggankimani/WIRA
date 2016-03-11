@@ -17,10 +17,8 @@ import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @Singleton
-@Transactional
 public class UploadServlet extends UploadAction {
 
 	/**
