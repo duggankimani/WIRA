@@ -13,6 +13,7 @@ import org.kie.api.KieServices;
 import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.io.Resource;
 import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.EnvironmentName;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeEnvironment;
@@ -38,6 +39,7 @@ import xtension.workitems.SendMailWorkItemHandler;
 import xtension.workitems.UpdateActivityStatus;
 import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
 import xtension.workitems.WiseDigitsDocumentIntegration;
+import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
@@ -80,6 +82,8 @@ public class BPM6SessionManager implements WiraSessionManager {
 
 		RuntimeEnvironment environment = builder
 				.entityManagerFactory(DB.getEntityManagerFactory())
+				.addEnvironmentEntry(EnvironmentName.TRANSACTION_MANAGER, 
+						TransactionManagerServices.getTransactionManager())
 				// .knowledgeBase(getKieBase()) - Replaced with add resources
 				// above
 				.userGroupCallback(new DBUserGroupCallbackImpl()).get();
