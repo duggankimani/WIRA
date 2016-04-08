@@ -5,12 +5,16 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
-		<div class="navbar-inner">
-			<g:Anchor styleName="brand visible-desktop visible-tablet" href="#home" ui:field="aBrand">
-			    Wira BPM |&nbsp;<span ui:field="spnCompanyName">Your Organisation</span></g:Anchor>
-
-			<ul class="nav pull-right">
+	<g:HTMLPanel styleName="navbar navbar-default" ui:field="divNavbar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<g:Anchor styleName="navbar-brand visible-desktop visible-tablet"
+					href="#home" ui:field="aBrand">
+					Wira BPM |&nbsp;
+					<span ui:field="spnCompanyName">Your Organisation</span>
+				</g:Anchor>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
 				<li class="home">
 					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand">
 						<i class="icon-home"> &nbsp; Home</i>
@@ -62,7 +66,8 @@
 						</div>
 						<div class="action-area">
 							<div class="version" ui:field="spnVersion"></div>
-							<g:Anchor styleName="btn btn-primary" ui:field="aProfile" href="#profile">View Profile</g:Anchor>
+							<g:Anchor styleName="btn btn-primary" ui:field="aProfile"
+								href="#profile">View Profile</g:Anchor>
 							<g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
 						</div>
 					</ul>
