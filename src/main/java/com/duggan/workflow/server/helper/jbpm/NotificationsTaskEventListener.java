@@ -16,6 +16,7 @@ import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
+import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;

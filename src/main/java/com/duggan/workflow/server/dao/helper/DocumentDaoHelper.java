@@ -518,6 +518,19 @@ public class DocumentDaoHelper {
 			
 		}
 		
+		DocumentModel model = null;
+		if(doc.getRefId()!=null){
+			model = DB.getDocumentDao().findByRefId(doc.getRefId(), DocumentModel.class);
+		}else if(doc.getId()!=null){
+			model = DB.getDocumentDao().getById(doc.getId());
+		}
+		
+		if(model!=null){
+			doc.setCreated(model.getCreated());
+			doc.setDocumentDate(model.getDocumentDate());
+			doc.setCaseNo(model.getSubject());
+		}
+		
 		return doc;
 	}
 

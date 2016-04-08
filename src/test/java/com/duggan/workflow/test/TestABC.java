@@ -1,13 +1,17 @@
 package com.duggan.workflow.test;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import org.junit.Test;
 
 public class TestABC {
 
-	static Integer y;
 	@Test
-	public void comment(){
+	public void comment() throws UnsupportedEncodingException{
 	
-		System.err.println(new Double(0.1).compareTo(new Double(0.2)));
+		System.out.println(URLEncoder.encode(",", "UTF-8"));
+		System.out.println(URLDecoder.decode("&#44;", "UTF-8"));
 	}
 }
