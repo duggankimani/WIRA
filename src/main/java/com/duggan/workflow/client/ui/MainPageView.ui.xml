@@ -5,7 +5,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="main-body full-page">
+	<g:HTMLPanel styleName="container-fluid">
 		<span ui:field="loadingtext" class="span2 hide">Loading ...</span>
 		<span ui:field="disconnectionText" class="serverdisconnected alert hide"></span>
 		<div class="alert alert-success hidden" ui:field="divAlert">
@@ -14,17 +14,14 @@
 			<g:Anchor styleName="hand muted" ui:field="aView">View Document</g:Anchor>
 		</div>
 
-		<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
-		<!-- g:HTMLPanel ui:field="pContainer"/ -->
-
-		<!-- g:HTMLPanel ui:field="taskHeader"></g:HTMLPanel -->
-
-		<!-- Domain Specific View goes here -->
-		<g:HTMLPanel styleName="full-page">
-			<g:HTMLPanel ui:field="pContainer" styleName="full-page">
-			</g:HTMLPanel>
-			<!-- div class="footer"> A product of Anger Enterprises <span class="copyyear"></span> 
-				</div -->
+		<div class="row">
+			<div class="col-md-8">.col-md-8</div>
+			<div class="col-md-4">.col-md-4</div>
+		</div>
+		<g:HTMLPanel ui:field="pHeader" styleName="row"></g:HTMLPanel>
+		<g:HTMLPanel ui:field="pContainer" styleName="row">
 		</g:HTMLPanel>
+		<div class="row hide"> A product of Anger Enterprises <span class="copyyear"></span> 
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

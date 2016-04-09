@@ -5,14 +5,19 @@
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component' xmlns:tab='urn:import:com.duggan.workflow.client.ui.home'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="row-fluid main-container">
-		<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
-			<div id="sidebar-nav" class="span2 hidden-phone">
+	<g:HTMLPanel ui:field="mainContainer" styleName="container-fluid">
+		<div class="row">
+			<div class="col-md-8">.col-md-8</div>
+			<div class="col-md-4">.col-md-4</div>
+		</div>
+		<div class="row">
+			<div id="sidebar-nav" class="col-md-2 col-lg-2 hidden-phone">
 
 				<!--Button Add Document -->
 				<div class="add-doc">
-					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">
-					Start Process
+					<g:Anchor ui:field="btnAdd"
+						styleName="btn btn-danger btn-large dropdown-toggle">
+						Start Process
 					</g:Anchor>
 
 					<!-- Document Pop-up -->
@@ -20,18 +25,18 @@
 					</g:HTMLPanel>
 
 				</div>
-				
-				<g:HTMLPanel styleName="full-page">
+
+				<g:HTMLPanel styleName="container-fluid">
 					<ul id="dashboard-menu">
 						<li class="active">
-						    <a class="dropdown-toggle" href="#home;type=appreqnew">
+							<a class="dropdown-toggle" href="#home;type=appreqnew">
 								<i class="icon-tasks"></i>
 								<span>My Tasks</span>
 								<i class="icon-chevron-up hidden-tablet"></i>
-							</a>						
+							</a>
 							<tab:HomeTabPanel ui:field="tabPanel"></tab:HomeTabPanel>
 						</li>
-					
+
 						<li class="active">
 							<a class="dropdown-toggle" href="#home">
 								<i class="icon-book"></i>
@@ -39,18 +44,18 @@
 								<i class="icon-chevron-up hidden-tablet"></i>
 							</a>
 							<g:HTMLPanel ui:field="panelDocTree">
-								
+
 							</g:HTMLPanel>
 						</li>
 					</ul>
 				</g:HTMLPanel>
 			</div>
 
-			<g:HTMLPanel ui:field="tabContent" styleName="content-right span10">
+			<g:HTMLPanel ui:field="tabContent" styleName="col-md-10">
 			</g:HTMLPanel>
-		</g:HTMLPanel>
+		</div>
+	</g:HTMLPanel>
 
-	</g:HTMLPanel><!--End of Container -->
 
 
 </ui:UiBinder>

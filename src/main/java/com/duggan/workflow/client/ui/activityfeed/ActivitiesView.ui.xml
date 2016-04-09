@@ -7,8 +7,8 @@
 	ui:generateLocales='default'>
 
 
-	<g:HTMLPanel styleName="no-overflow-x overflow-y">
-		<g:FocusPanel ui:field="parentPanel">
+	<g:HTMLPanel styleName="container-fluid no-overflow-x overflow-y">
+		<g:FocusPanel ui:field="parentPanel" styleName="row">
 			<g:HTMLPanel>
 				<div class="bootcamp js-notice" ui:field="divTutorial">
 					<h1>
@@ -75,7 +75,7 @@
 			</g:HTMLPanel>
 		</g:FocusPanel>
 
-		<div class="news-feed row-fluid">
+		<div class="news-feed row">
 			<h4>News Feed</h4>
 			<d:BulletListPanel ui:field="panelActivity"
 				styleName="chat-box timeline">
