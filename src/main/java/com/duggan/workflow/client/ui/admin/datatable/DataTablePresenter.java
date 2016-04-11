@@ -60,6 +60,8 @@ public class DataTablePresenter
 		void bindCatalogs(List<Catalog> catalogs);
 
 		HasClickHandlers getNewReportLink();
+		
+		HasClickHandlers getNewReportViewLink();
 	}
 
 	@ProxyCodeSplit
@@ -108,6 +110,14 @@ public class DataTablePresenter
 			}
 		});
 
+		getView().getNewReportViewLink().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				showPopup(CatalogType.REPORTVIEW, null);
+			}
+		});
+
 	}
 
 	protected void showPopup(Catalog catalog) {
@@ -126,6 +136,14 @@ public class DataTablePresenter
 				@Override
 				public void processResult(GetProcessesResponse aResponse) {
 					view.setProcesses(aResponse.getProcesses());
+				}
+			});
+		}else if(type==CatalogType.REPORTVIEW){
+			GetCatalogsRequest request = new GetCatalogsRequest(true);
+			requestHelper.execute(request, new TaskServiceCallback<GetCatalogsResponse>() {
+				@Override
+				public void processResult(GetCatalogsResponse aResponse) {
+					view.setViews(aResponse.getCatalogs());
 				}
 			});
 		}
@@ -165,6 +183,12 @@ public class DataTablePresenter
 
 	private void showDataPopup(final Catalog catalog, List<DocumentLine> lines) {
 		final CreateDataView view = new CreateDataView(catalog);
+		
+		String[] actions = new String[]{"Save", "Cancel"}; 
+		if(catalog.getType()==CatalogType.REPORTVIEW){
+			actions = new String[]{"Close"};
+		}
+		
 		AppManager.showPopUp("Data View", view, "create-data-table-popup",
 				new OptionControl() {
 
@@ -179,7 +203,7 @@ public class DataTablePresenter
 						}
 					}
 
-				}, "Save", "Cancel");
+				}, actions);
 
 		view.setData(lines);
 	}
@@ -211,7 +235,6 @@ public class DataTablePresenter
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-
 		loadData();
 	}
 
@@ -287,8 +310,6 @@ public class DataTablePresenter
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
-
-						BaseResponse r = aResponse.get(0);// what to do?
 
 						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 								.get(1)).getCatalogs();

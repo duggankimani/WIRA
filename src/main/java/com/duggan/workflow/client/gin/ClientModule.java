@@ -51,8 +51,6 @@ import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsView;
-import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
-import com.duggan.workflow.client.ui.admin.reports.ReportsView;
 import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 import com.duggan.workflow.client.ui.admin.trigger.TriggerPresenter;
@@ -253,10 +251,7 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(DashboardPresenter.class,
 				DashboardPresenter.IDashboardView.class, DashboardView.class,
 				DashboardPresenter.MyProxy.class);
-
-		bindPresenterWidget(ReportsPresenter.class,
-				ReportsPresenter.MyView.class, ReportsView.class);
-
+		
 		bindPresenterWidget(UserSavePresenter.class,
 				UserSavePresenter.IUserSaveView.class, UserSaveView.class);
 

@@ -1,19 +1,26 @@
 package com.duggan.workflow.server.dao;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.hibernate.impl.SessionImpl;
 
 import com.duggan.workflow.server.dao.model.CatalogModel;
+import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
+import com.duggan.workflow.shared.model.catalog.FieldSource;
 
 public class CatalogDaoImpl extends BaseDaoImpl {
 
@@ -29,6 +36,10 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	}
 
 	public void generateTable(Catalog model) {
+		if(model.getType() == CatalogType.REPORTVIEW){
+			return;
+		}
+		
 		String drop = "DROP TABLE IF EXISTS EXT_" + model.getName() + ";";
 		log.debug("Exec DDL: " + drop);
 
@@ -72,6 +83,16 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				+ comma_Separated_fieldNames + " from " + tableName));
 	}
 
+	/**
+	 * This method saves data into the given table.
+	 * 
+	 * This does should not be called with views!
+	 * 
+	 * @param tableName
+	 * @param columns
+	 * @param lines
+	 * @param isClearExisting
+	 */
 	public void save(String tableName, List<CatalogColumn> columns,
 			List<DocumentLine> lines, boolean isClearExisting) {
 
@@ -218,5 +239,53 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				.setParameter("type", CatalogType.REPORTTABLE)
 				.setParameter("processId", processId));
 
+	}
+
+	public List<Catalog> getViews() {
+		List<Catalog> catalogs = new ArrayList<Catalog>();
+
+		try {
+			Connection conn = ((SessionImpl) (em.getDelegate()))
+					.getJDBCContext().connection();
+			ResultSet rs = null;
+			DatabaseMetaData meta = conn.getMetaData();
+			rs = meta.getTables(null, null, null, new String[] { "VIEW" });
+
+			while (rs.next()) {
+				Catalog catalog = new Catalog();
+				String tableName = rs.getString("TABLE_NAME");
+				catalog.setName(tableName);
+				catalog.setDescription(tableName);
+				catalog.setType(CatalogType.REPORTVIEW);
+				catalog.setRecordCount(getCount(tableName));
+				
+				ResultSet colsRs = meta.getColumns(null, null, tableName, null);
+				
+				List<CatalogColumn> columns = new ArrayList<CatalogColumn>();
+				while(colsRs.next()){
+					CatalogColumn column = new CatalogColumn();
+					String name = colsRs.getString("COLUMN_NAME");
+					column.setName(name);
+					column.setLabel(name);
+					
+					String type = colsRs.getString("TYPE_NAME");
+					column.setType(DBType.valueOf(type.toUpperCase()));
+					
+					int size = colsRs.getInt("COLUMN_SIZE");
+					column.setSize(size);
+					columns.add(column);
+				}
+				colsRs.close();
+
+				catalog.setColumns(columns);
+				catalogs.add(catalog);
+			}
+			rs.close();
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+		return catalogs;
 	}
 }

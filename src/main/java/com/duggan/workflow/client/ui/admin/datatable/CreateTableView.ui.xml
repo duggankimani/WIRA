@@ -24,6 +24,13 @@
 		<g:HTMLPanel>
 			<!-- g:HTMLPanel styleName="row-fluid" -->
 			<g:HTMLPanel styleName="form-horizontal">
+			<div class="form-group hide" ui:field="divViews">
+					<label for="ViewName" class="col-sm-2 control-label">View:</label>
+					<div class="col-sm-10">
+						<d:DropDownList styleName="form-control {style.create-table-margins}"
+							ui:field="lstViews" width="300px"></d:DropDownList>
+					</div>
+				</div>
 				<div class="form-group hide" ui:field="divProcess">
 					<label for="ProcessName" class="col-sm-2 control-label">Process:</label>
 					<div class="col-sm-10">

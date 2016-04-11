@@ -25,6 +25,7 @@ import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
+import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.model.catalog.FieldSource;
 
 public class CatalogDaoHelper {
@@ -109,8 +110,12 @@ public class CatalogDaoHelper {
 		catalog.setId(model.getId());
 		catalog.setDescription(model.getDescription());
 		catalog.setName(model.getName());
-		catalog.setRecordCount(DB.getCatalogDao().getCount(
-				"EXT_" + model.getName()));
+		String catalogName = "EXT_" + model.getName();
+		if(model.getType()==CatalogType.REPORTVIEW){
+			catalogName = model.getName();
+		}
+		catalog.setRecordCount(DB.getCatalogDao().getCount(catalogName));
+		
 		catalog.setType(model.getType());
 		catalog.setProcessDefId(model.getProcessDefId());
 		catalog.setFieldSource(model.getFieldSource());
@@ -179,7 +184,11 @@ public class CatalogDaoHelper {
 	public static List<DocumentLine> getTableData(Long catalogId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.getById(CatalogModel.class, catalogId);
-
+		String catalogName = "EXT_" + catalog.getName();
+		if(catalog.getType()==CatalogType.REPORTVIEW){
+			catalogName = catalog.getName();
+		}
+		
 		StringBuffer fieldNames = new StringBuffer();
 		int size = catalog.getColumns().size();
 		int i = 0;
@@ -192,7 +201,7 @@ public class CatalogDaoHelper {
 		}
 
 		List<CatalogColumnModel> columns = new ArrayList<>(catalog.getColumns());
-		List<Object[]> row = dao.getData("EXT_" + catalog.getName(),
+		List<Object[]> row = dao.getData(catalogName,
 				fieldNames.toString());
 		List<DocumentLine> lines = new ArrayList<>();
 		for (Object[] line : row) {
@@ -318,6 +327,10 @@ public class CatalogDaoHelper {
 		}
 
 		saveData(catalog, documentLines,false);
+	}
+
+	public static List<Catalog> getAllViews() {
+		return DB.getCatalogDao().getViews();
 	}
 
 }

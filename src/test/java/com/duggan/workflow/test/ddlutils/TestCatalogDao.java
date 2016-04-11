@@ -28,6 +28,11 @@ public class TestCatalogDao {
 		DB.beginTransaction();
 	}
 	
+	@Test
+	public void loadViews(){
+		DB.getCatalogDao().getViews();
+	}
+	
 	@Ignore
 	public void testGetCatalogsForProcess(){
 		String processId = "chasebank.finance.ExpenseClaim";
@@ -36,7 +41,7 @@ public class TestCatalogDao {
 		Assert.assertEquals(2, cats.size());
 	}
 	
-	@Test
+	@Ignore
 	public void saveData(){
 		//Catalog catalog = CatalogDaoHelper.getCatalog(24L);
 		

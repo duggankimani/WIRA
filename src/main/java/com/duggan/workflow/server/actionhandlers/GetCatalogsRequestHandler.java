@@ -28,6 +28,8 @@ public class GetCatalogsRequestHandler extends
 		if(action.getCatalogId()!=null){
 			Catalog cat = CatalogDaoHelper.getCatalog(action.getCatalogId());
 			catalogs.add(cat);
+		}else if(action.isLoadViews()){
+			catalogs = CatalogDaoHelper.getAllViews();
 		}else{
 			catalogs = CatalogDaoHelper.getAllCatalogs();
 		}

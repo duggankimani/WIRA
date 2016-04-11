@@ -3,7 +3,8 @@ package com.duggan.workflow.shared.model.catalog;
 public enum CatalogType {
 
 	DATATABLE("Data Table"),
-	REPORTTABLE("Report Table");
+	REPORTTABLE("Report Table"),
+	REPORTVIEW("Report View");
 	
 	private String displayName;
 

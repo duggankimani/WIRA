@@ -108,7 +108,6 @@ CaseRegistryPresenter.ICaseRegistryProxy>{
 	
 	@Override
 	protected void onReveal() {
-		// TODO Auto-generated method stub
 		super.onReveal();
 		getView().onReveal();
 	}

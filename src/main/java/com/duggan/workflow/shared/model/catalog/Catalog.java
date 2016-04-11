@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalog implements Serializable,IsCatalogItem{
+import com.duggan.workflow.shared.model.Listable;
+
+public class Catalog implements Serializable,IsCatalogItem, Listable{
 
 	/**
 	 * 
@@ -102,5 +104,19 @@ public class Catalog implements Serializable,IsCatalogItem{
 
 	public void setGridName(String gridName) {
 		this.gridName = gridName;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return description;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj==null){
+			return false;
+		}
+		
+		return name.equals(((Catalog)(obj)).name);
 	}
 }

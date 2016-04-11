@@ -6,12 +6,17 @@ import com.duggan.workflow.shared.responses.GetCatalogsResponse;
 public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 
 	private Long catalogId;
-
+	private boolean isLoadViews;
+	
 	public GetCatalogsRequest() {
 	}
 	
 	public GetCatalogsRequest(Long catalogId) {
 		this.catalogId = catalogId;
+	}
+	
+	public GetCatalogsRequest(boolean isLoadViews) {
+		this.isLoadViews = isLoadViews;
 	}
 	
 	@Override
@@ -22,4 +27,9 @@ public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 	public Long getCatalogId() {
 		return catalogId;
 	}
+
+	public boolean isLoadViews() {
+		return isLoadViews;
+	}
+
 }
