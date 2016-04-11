@@ -10,6 +10,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
@@ -26,14 +27,16 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class ReportsPresenter extends
 		Presenter<ReportsPresenter.IReportsView, ReportsPresenter.IReportsProxy> {
-	interface IReportsView extends View {
+	public interface IReportsView extends View {
 
 		void bindCatalogs(List<Catalog> catalogs);
 
@@ -41,8 +44,9 @@ public class ReportsPresenter extends
 	}
 
 	@NameToken(NameTokens.reports)
-	@ProxyStandard
-	interface IReportsProxy extends TabContentProxyPlace<ReportsPresenter> {
+	@ProxyCodeSplit
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface IReportsProxy extends TabContentProxyPlace<ReportsPresenter> {
 	}
 
 	@TabInfo(container = HomePresenter.class)
@@ -54,7 +58,7 @@ public class ReportsPresenter extends
 	DispatchAsync requestHelper;
 
 	@Inject
-	ReportsPresenter(EventBus eventBus, IReportsView view, IReportsProxy proxy) {
+	public ReportsPresenter(EventBus eventBus, IReportsView view, IReportsProxy proxy) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 
 	}

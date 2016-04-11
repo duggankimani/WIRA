@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-class ReportsView extends ViewImpl implements ReportsPresenter.IReportsView {
+public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsView {
 	interface Binder extends UiBinder<Widget, ReportsView> {
 	}
 
@@ -34,7 +34,7 @@ class ReportsView extends ViewImpl implements ReportsPresenter.IReportsView {
 	Element divReportView;
 
 	@Inject
-	ReportsView(Binder uiBinder) {
+	public ReportsView(Binder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 

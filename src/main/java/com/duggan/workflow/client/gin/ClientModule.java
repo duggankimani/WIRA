@@ -1,7 +1,8 @@
 package com.duggan.workflow.client.gin;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.reports.ReportsModule;
+import com.duggan.workflow.client.reports.ReportsPresenter;
+import com.duggan.workflow.client.reports.ReportsView;
 import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
@@ -387,7 +388,8 @@ public class ClientModule extends AbstractPresenterModule {
 				MessagesPresenter.IMessagesView.class, MessagesView.class,
 				MessagesPresenter.IMessagesProxy.class);
 		
-		install(new ReportsModule());
+		bindPresenter(ReportsPresenter.class, ReportsPresenter.IReportsView.class,
+				ReportsView.class, ReportsPresenter.IReportsProxy.class);
 
 	}
 }
