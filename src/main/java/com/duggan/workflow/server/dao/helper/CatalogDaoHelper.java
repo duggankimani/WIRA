@@ -16,12 +16,14 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
+import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
@@ -49,6 +51,13 @@ public class CatalogDaoHelper {
 		CatalogModel model = new CatalogModel();
 		if (catalog.getId() != null) {
 			model = dao.getById(CatalogModel.class, catalog.getId());
+		}
+		
+		ProcessCategory category = catalog.getCategory();
+		if (category != null) {
+			ADProcessCategory cat = dao.getById(
+					ADProcessCategory.class, category.getId());
+			model.setCategory(cat);
 		}
 
 		model.setDescription(catalog.getDescription());
@@ -92,6 +101,13 @@ public class CatalogDaoHelper {
 
 		return get(colModel);
 	}
+	
+	public static Catalog getCatalog(String catalogRefId) {
+		CatalogDaoImpl dao = DB.getCatalogDao();
+		CatalogModel colModel = dao.findByRefId(catalogRefId, CatalogModel.class);
+
+		return get(colModel);
+	}
 
 	public static List<Catalog> getCatalogsForProcess(String processId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
@@ -108,6 +124,7 @@ public class CatalogDaoHelper {
 	private static Catalog get(CatalogModel model) {
 		Catalog catalog = new Catalog();
 		catalog.setId(model.getId());
+		catalog.setRefId(model.getRefId());
 		catalog.setDescription(model.getDescription());
 		catalog.setName(model.getName());
 		String catalogName = "EXT_" + model.getName();
@@ -120,6 +137,10 @@ public class CatalogDaoHelper {
 		catalog.setProcessDefId(model.getProcessDefId());
 		catalog.setFieldSource(model.getFieldSource());
 		catalog.setGridName(model.getGridName());
+		if(model.getCategory()!=null){
+			catalog.setCategory(ProcessDefHelper.get(model.getCategory()));
+		}
+		
 		List<CatalogColumn> models = new ArrayList<>();
 		for (CatalogColumnModel cat : model.getColumns()) {
 			models.add(get(cat));
@@ -181,9 +202,21 @@ public class CatalogDaoHelper {
 		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines,isClearExisting);
 	}
 
+	public static List<DocumentLine> getTableData(String catalogRefId) {
+		CatalogDaoImpl dao = DB.getCatalogDao();
+		CatalogModel catalog = dao.findByRefId(catalogRefId, CatalogModel.class);
+		return getTableData(catalog);
+	}
+	
 	public static List<DocumentLine> getTableData(Long catalogId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.getById(CatalogModel.class, catalogId);
+		
+		return getTableData(catalog);
+	}
+	
+	public static List<DocumentLine> getTableData(CatalogModel catalog){	
+		CatalogDaoImpl dao = DB.getCatalogDao();
 		String catalogName = "EXT_" + catalog.getName();
 		if(catalog.getType()==CatalogType.REPORTVIEW){
 			catalogName = catalog.getName();

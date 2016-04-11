@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
@@ -22,7 +23,13 @@ public class GetDataRequestHandler extends
 	public void execute(GetDataRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		List<DocumentLine> lines = CatalogDaoHelper.getTableData(action.getCatalogId());
+		List<DocumentLine> lines = new ArrayList<DocumentLine>();
+		if(action.getCatalogRefId()!=null){
+			lines = CatalogDaoHelper.getTableData(action.getCatalogRefId());
+		}else if(action.getCatalogId()!=null){
+			lines = CatalogDaoHelper.getTableData(action.getCatalogId());
+		}
+		 
 		((GetDataResponse)actionResult).setLines(lines);
 	}
 

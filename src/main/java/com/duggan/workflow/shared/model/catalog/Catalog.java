@@ -1,12 +1,13 @@
 package com.duggan.workflow.shared.model.catalog;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.Listable;
+import com.duggan.workflow.shared.model.ProcessCategory;
+import com.duggan.workflow.shared.model.SerializableObj;
 
-public class Catalog implements Serializable,IsCatalogItem, Listable{
+public class Catalog extends SerializableObj implements IsCatalogItem, Listable{
 
 	/**
 	 * 
@@ -22,6 +23,7 @@ public class Catalog implements Serializable,IsCatalogItem, Listable{
 	private FieldSource fieldSource = FieldSource.FORM;// Field Source
 	private String gridName;
 	private Long processDefId;
+	private ProcessCategory category;
 
 	public Catalog() {
 	}
@@ -118,5 +120,13 @@ public class Catalog implements Serializable,IsCatalogItem, Listable{
 		}
 		
 		return name.equals(((Catalog)(obj)).name);
+	}
+
+	public ProcessCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProcessCategory category) {
+		this.category = category;
 	}
 }

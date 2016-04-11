@@ -24,7 +24,7 @@
 		<g:HTMLPanel>
 			<!-- g:HTMLPanel styleName="row-fluid" -->
 			<g:HTMLPanel styleName="form-horizontal">
-			<div class="form-group hide" ui:field="divViews">
+				<div class="form-group hide" ui:field="divViews">
 					<label for="ViewName" class="col-sm-2 control-label">View:</label>
 					<div class="col-sm-10">
 						<d:DropDownList styleName="form-control {style.create-table-margins}"
@@ -39,20 +39,27 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="ProcessName" class="col-sm-2 control-label">Category:</label>
+					<div class="col-sm-10">
+						<d:DropDownList ui:field="lstCategories"
+							styleName="form-control {style.create-table-margins}"></d:DropDownList>
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="ProcessName" class="col-sm-2 control-label">Name:</label>
 					<div class="col-sm-10">
 						<d:TextField styleName="form-control {style.create-table-margins}"
 							ui:field="txtName" placeholder="Table Name" width="300px"></d:TextField>
 					</div>
 				</div>
-				<div class="form-group hide"  ui:field="divFieldSource">
+				<div class="form-group hide" ui:field="divFieldSource">
 					<label for="ProcessName" class="col-sm-2 control-label">Field Source:</label>
 					<div class="col-sm-10">
 						<d:DropDownList styleName="form-control {style.create-table-margins}"
 							ui:field="lstFieldSources" width="300px"></d:DropDownList>
 					</div>
 				</div>
-				<div class="form-group hide"  ui:field="divGridField">
+				<div class="form-group hide" ui:field="divGridField">
 					<label for="ProcessName" class="col-sm-2 control-label">Grid:</label>
 					<div class="col-sm-10">
 						<d:DropDownList styleName="form-control {style.create-table-margins}"
@@ -66,7 +73,7 @@
 							rows="2" width="400px" placeholder="Description of the data stored"></d:TextArea>
 					</div>
 				</div>
-				
+
 			</g:HTMLPanel>
 
 			<div style="margin-top:10px;">
@@ -86,15 +93,15 @@
 
 			<div class="form-horizontal">
 				<div class="row-fluid">
-					<div class="span3 hide"  ui:field="divAddFields">
+					<div class="span3 hide" ui:field="divAddFields">
 						<label for="ProcessName" class="control-label">Select Form Fields</label>
 						<d:DropDownList ui:field="lstFields"
 							styleName="form-control {style.create-table-margins}">
 						</d:DropDownList>
 						<g:Anchor ui:field="aAddFields" styleName="btn btn-small btn-success">
-						Add Fields</g:Anchor>
+							Add Fields</g:Anchor>
 					</div>
-					<div class="span6 {style.no-margin-left}"  ui:field="divGrid">
+					<div class="span6 {style.no-margin-left}" ui:field="divGrid">
 						<grid:AggregationGrid ui:field="grid"></grid:AggregationGrid>
 					</div>
 				</div>

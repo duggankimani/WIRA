@@ -5,6 +5,6 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 public class ReportsModule extends AbstractPresenterModule {
     @Override
     protected void configure() {
-        bindPresenter(ReportsPresenter.class, ReportsPresenter.MyView.class, ReportsView.class, ReportsPresenter.MyProxy.class);
+        bindPresenter(ReportsPresenter.class, ReportsPresenter.IReportsView.class, ReportsView.class, ReportsPresenter.IReportsProxy.class);
     }
 }

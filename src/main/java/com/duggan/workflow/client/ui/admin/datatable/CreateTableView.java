@@ -27,6 +27,7 @@ import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
@@ -81,6 +82,9 @@ public class CreateTableView extends Composite {
 
 	@UiField
 	DropDownList<Catalog> lstViews;
+	
+	@UiField
+	DropDownList<ProcessCategory> lstCategories;
 
 	@UiField
 	DropDownList<FieldSource> lstFieldSources;
@@ -249,11 +253,16 @@ public class CreateTableView extends Composite {
 			@Override
 			public void onValueChange(ValueChangeEvent<ProcessDef> event) {
 				if (event.getValue() == null) {
-					lstFields.setItems(null);
+					if (type == CatalogType.REPORTTABLE) {
+						lstFields.setItems(null);
+					}
 					return;
 				}
-				grid.setData(new ArrayList<DataModel>());
-				loadFields(event.getValue().getId());
+
+				if (type == CatalogType.REPORTTABLE) {
+					grid.setData(new ArrayList<DataModel>());
+					loadFields(event.getValue().getId());
+				}
 			}
 		});
 
@@ -510,6 +519,7 @@ public class CreateTableView extends Composite {
 		cat.setType(type);
 		cat.setGridName(lstGridField.getValue() == null ? null : lstGridField
 				.getValue().getName());
+		cat.setCategory(lstCategories.getValue());
 		cat.setFieldSource(lstFieldSources.getValue());
 		String name = txtName.getValue().toUpperCase();
 		cat.setName(name.replaceAll("\\s", "")); // Clear empty space
@@ -534,7 +544,7 @@ public class CreateTableView extends Composite {
 						.setInnerText("Editing this table will lose all your existing data. "
 								+ "Back up your data first.");
 			}
-		}else{
+		} else {
 			bindFields(catalog);
 		}
 
@@ -614,10 +624,17 @@ public class CreateTableView extends Composite {
 				&& processes != null) {
 			for (ProcessDef d : processes) {
 				if (d.getId().equals(catalog.getProcessDefId())) {
-					lstProcess.setValue(d);
+					setProcess(d);
 					loadFields(d.getId());
 				}
 			}
+		}
+	}
+
+	private void setProcess(ProcessDef process) {
+		lstProcess.setValue(process);
+		if(process.getCategory()!=null && (catalog==null || catalog.getCategory()==null)){
+			lstCategories.setValue(process.getCategory());
 		}
 	}
 
@@ -626,6 +643,14 @@ public class CreateTableView extends Composite {
 		if (this.catalog != null) {
 			lstViews.setValue(catalog);
 		}
+	}
+
+	public void setCategories(List<ProcessCategory> categories) {
+		lstCategories.setItems(categories);
+		if(catalog!=null){
+			lstCategories.setValue(catalog.getCategory());
+		}
+		
 	}
 
 }

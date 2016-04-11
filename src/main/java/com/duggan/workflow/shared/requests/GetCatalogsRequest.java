@@ -5,14 +5,14 @@ import com.duggan.workflow.shared.responses.GetCatalogsResponse;
 
 public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 
-	private Long catalogId;
+	private String catalogRefId;
 	private boolean isLoadViews;
 	
 	public GetCatalogsRequest() {
 	}
 	
-	public GetCatalogsRequest(Long catalogId) {
-		this.catalogId = catalogId;
+	public GetCatalogsRequest(String catalogRefId) {
+		this.catalogRefId = catalogRefId;
 	}
 	
 	public GetCatalogsRequest(boolean isLoadViews) {
@@ -24,12 +24,12 @@ public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 		return new GetCatalogsResponse();
 	}
 
-	public Long getCatalogId() {
-		return catalogId;
-	}
-
 	public boolean isLoadViews() {
 		return isLoadViews;
+	}
+
+	public String getCatalogRefId() {
+		return catalogRefId;
 	}
 
 }

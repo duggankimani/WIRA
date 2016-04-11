@@ -36,6 +36,7 @@ import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
 import com.duggan.workflow.shared.requests.GetDataRequest;
+import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.InsertDataRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -43,6 +44,7 @@ import com.duggan.workflow.shared.requests.SaveCatalogRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetCatalogsResponse;
 import com.duggan.workflow.shared.responses.GetDataResponse;
+import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
 import com.duggan.workflow.shared.responses.GetProcessesResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveCatalogResponse;
@@ -60,7 +62,7 @@ public class DataTablePresenter
 		void bindCatalogs(List<Catalog> catalogs);
 
 		HasClickHandlers getNewReportLink();
-		
+
 		HasClickHandlers getNewReportViewLink();
 	}
 
@@ -128,25 +130,38 @@ public class DataTablePresenter
 		}
 	}
 
-	private void showPopup(CatalogType type, Catalog catalog) {
-		final CreateTableView view = new CreateTableView(type,catalog);
-		if(type==CatalogType.REPORTTABLE){
-			GetProcessesRequest request = new GetProcessesRequest(false);
-			requestHelper.execute(request, new TaskServiceCallback<GetProcessesResponse>() {
-				@Override
-				public void processResult(GetProcessesResponse aResponse) {
-					view.setProcesses(aResponse.getProcesses());
-				}
-			});
-		}else if(type==CatalogType.REPORTVIEW){
-			GetCatalogsRequest request = new GetCatalogsRequest(true);
-			requestHelper.execute(request, new TaskServiceCallback<GetCatalogsResponse>() {
-				@Override
-				public void processResult(GetCatalogsResponse aResponse) {
-					view.setViews(aResponse.getCatalogs());
-				}
-			});
+	private void showPopup(final CatalogType type, Catalog catalog) {
+		final CreateTableView view = new CreateTableView(type, catalog);
+
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetProcessCategoriesRequest());
+
+		if (type == CatalogType.REPORTTABLE) {
+			action.addRequest(new GetProcessesRequest(false));
+		} else if (type == CatalogType.REPORTVIEW) {
+			action.addRequest(new GetCatalogsRequest(true));
 		}
+
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						GetProcessCategoriesResponse getCategories = (GetProcessCategoriesResponse) aResponse
+								.get(0);
+						view.setCategories(getCategories.getCategories());
+
+						if (type == CatalogType.REPORTTABLE) {
+							GetProcessesResponse getProcesses = (GetProcessesResponse) aResponse
+									.get(1);
+							view.setProcesses(getProcesses.getProcesses());
+						} else if (type == CatalogType.REPORTVIEW) {
+							GetCatalogsResponse getCatalogs = (GetCatalogsResponse) aResponse
+									.get(1);
+							view.setViews(getCatalogs.getCatalogs());
+						}
+					}
+				});
+		
 		AppManager.showPopUp(
 				(catalog == null || catalog.getId() == null) ? "Create Table"
 						: "Edit Table", view, "create-data-table-popup",
@@ -158,7 +173,7 @@ public class DataTablePresenter
 						if (name.equals("Save")) {
 							if (view.isValid()) {
 								Catalog cat = view.getCatalog();
-								save(this,cat);
+								save(this, cat);
 							}
 						} else {
 							hide();
@@ -183,12 +198,12 @@ public class DataTablePresenter
 
 	private void showDataPopup(final Catalog catalog, List<DocumentLine> lines) {
 		final CreateDataView view = new CreateDataView(catalog);
-		
-		String[] actions = new String[]{"Save", "Cancel"}; 
-		if(catalog.getType()==CatalogType.REPORTVIEW){
-			actions = new String[]{"Close"};
+
+		String[] actions = new String[] { "Save", "Cancel" };
+		if (catalog.getType() == CatalogType.REPORTVIEW) {
+			actions = new String[] { "Close" };
 		}
-		
+
 		AppManager.showPopUp("Data View", view, "create-data-table-popup",
 				new OptionControl() {
 
@@ -223,7 +238,7 @@ public class DataTablePresenter
 						getView().bindCatalogs(catalogs);
 						fireEvent(new ProcessingCompletedEvent());
 					}
-					
+
 					@Override
 					public void onFailure(Throwable caught) {
 						super.onFailure(caught);
@@ -251,13 +266,13 @@ public class DataTablePresenter
 				});
 	}
 
-	public void save(final OptionControl ctrl,Catalog catalog) {
+	public void save(final OptionControl ctrl, Catalog catalog) {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new SaveCatalogRequest(catalog));
 		action.addRequest(new GetCatalogsRequest());
 
 		fireEvent(new ProcessingEvent());
-		
+
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -272,7 +287,7 @@ public class DataTablePresenter
 						ctrl.hide();
 						fireEvent(new ProcessingCompletedEvent());
 					}
-					
+
 				});
 	}
 

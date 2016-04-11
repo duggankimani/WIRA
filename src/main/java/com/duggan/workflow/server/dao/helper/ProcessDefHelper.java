@@ -220,7 +220,7 @@ public class ProcessDefHelper {
 		return def;
 	}
 
-	private static ProcessCategory get(ADProcessCategory category) {
+	public static ProcessCategory get(ADProcessCategory category) {
 		if (category == null) {
 			return null;
 		}

@@ -27,7 +27,10 @@ public class ADProcessCategory extends PO{
 	private String index;
 	
 	@OneToMany
-	private Set<ADDocType> docTypes = new HashSet<>(); 
+	private Set<ADDocType> docTypes = new HashSet<>();
+	
+	@OneToMany
+	private Set<CatalogModel> catalogs = new HashSet<>(); 
 
 	public String getName() {
 		return name;

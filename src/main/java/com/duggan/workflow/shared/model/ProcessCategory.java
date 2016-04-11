@@ -43,4 +43,13 @@ public class ProcessCategory extends IsProcessDisplay{
 	public void addChild(DocumentType type) {
 		children.add(type);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj==null){
+			return false;
+		}
+		
+		return name.equals(((ProcessCategory)obj).name);
+	}
 }

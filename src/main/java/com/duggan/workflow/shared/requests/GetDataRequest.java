@@ -6,12 +6,17 @@ import com.duggan.workflow.shared.responses.GetDataResponse;
 public class GetDataRequest extends BaseRequest<GetDataResponse> {
 
 	private Long catalogId;
-
+	private String catalogRefId;
+	
 	public GetDataRequest() {
 	}
 	
 	public GetDataRequest(Long catalogId) {
 		this.catalogId = catalogId;
+	}
+	
+	public GetDataRequest(String catalogRefId){
+		this.catalogRefId = catalogRefId;
 	}
 	
 	@Override
@@ -21,5 +26,9 @@ public class GetDataRequest extends BaseRequest<GetDataResponse> {
 
 	public Long getCatalogId() {
 		return catalogId;
+	}
+
+	public String getCatalogRefId() {
+		return catalogRefId;
 	}
 }
