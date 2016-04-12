@@ -7,10 +7,6 @@
 
 	<g:HTMLPanel ui:field="mainContainer" styleName="container-fluid">
 		<div class="row">
-			<div class="col-md-8">.col-md-8</div>
-			<div class="col-md-4">.col-md-4</div>
-		</div>
-		<div class="row">
 			<div id="sidebar-nav" class="col-md-2 col-lg-2 hidden-phone">
 
 				<!--Button Add Document -->
