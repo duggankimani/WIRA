@@ -14,8 +14,7 @@ import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
-import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter;
-import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
+import com.duggan.workflow.client.ui.admin.users.save.UserSaveView;
 import com.duggan.workflow.client.ui.events.EditGroupEvent;
 import com.duggan.workflow.client.ui.events.EditGroupEvent.EditGroupHandler;
 import com.duggan.workflow.client.ui.events.EditUserEvent;
@@ -51,7 +50,6 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -119,10 +117,6 @@ public class UserPresenter extends
 	public static final Object ITEMSLOT = new Object();
 	public static final Object GROUPSLOT = new Object();
 
-	IndirectProvider<UserSavePresenter> userFactory;
-	IndirectProvider<UserItemPresenter> userItemFactory;
-	IndirectProvider<GroupPresenter> groupFactory;
-
 	TYPE type = TYPE.USER;
 
 	private Object selectedModel;
@@ -132,13 +126,8 @@ public class UserPresenter extends
 
 	@Inject
 	public UserPresenter(final EventBus eventBus, final MyView view,
-			MyProxy proxy, Provider<UserSavePresenter> addUserProvider,
-			Provider<UserItemPresenter> itemProvider,
-			Provider<GroupPresenter> groupProvider) {
+			MyProxy proxy) {
 		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
-		userFactory = new StandardProvider<UserSavePresenter>(addUserProvider);
-		userItemFactory = new StandardProvider<UserItemPresenter>(itemProvider);
-		groupFactory = new StandardProvider<GroupPresenter>(groupProvider);
 	}
 
 	@Override
@@ -160,14 +149,14 @@ public class UserPresenter extends
 		getView().getaNewGroup().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showPopup(UserSavePresenter.TYPE.GROUP);
+				showPopup(TYPE.GROUP);
 			}
 		});
 
 		getView().getEditUser().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showPopup(UserSavePresenter.TYPE.USER, selectedModel);
+				showPopup(TYPE.USER, selectedModel);
 			}
 		});
 
@@ -197,7 +186,7 @@ public class UserPresenter extends
 		getView().getEditGroup().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showPopup(UserSavePresenter.TYPE.GROUP, selectedModel);
+				showPopup(TYPE.GROUP, selectedModel);
 			}
 		});
 
@@ -223,14 +212,14 @@ public class UserPresenter extends
 		getView().getNewOrg().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showPopup(UserSavePresenter.TYPE.ORG, null);
+				showPopup(TYPE.ORG, null);
 			}
 		});
 
 		getView().getEditOrg().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showPopup(UserSavePresenter.TYPE.ORG, selectedModel);
+				showPopup(TYPE.ORG, selectedModel);
 			}
 		});
 
@@ -239,17 +228,17 @@ public class UserPresenter extends
 			public void onClick(ClickEvent event) {
 				final Org org = (Org) selectedModel;
 				AppManager.showPopUp("Confirm Delete", new HTMLPanel(
-						"Do you want to delete org \"" + org.getName()
-								+ "\""), new OnOptionSelected() {
+						"Do you want to delete org \"" + org.getName() + "\""),
+						new OnOptionSelected() {
 
-					@Override
-					public void onSelect(String name) {
-						if (name.equals("Delete")) {
-							delete(org);
-						}
-					}
+							@Override
+							public void onSelect(String name) {
+								if (name.equals("Delete")) {
+									delete(org);
+								}
+							}
 
-				}, "Cancel", "Delete");
+						}, "Cancel", "Delete");
 
 			}
 		});
@@ -274,47 +263,38 @@ public class UserPresenter extends
 		loadData();
 	}
 
-	private void showPopup(final UserSavePresenter.TYPE type) {
+	private void showPopup(final TYPE type) {
 		showPopup(type, null);
 	}
 
-	private void showPopup(final UserSavePresenter.TYPE type, final Object obj) {
-		userFactory.get(new ServiceCallback<UserSavePresenter>() {
+	private void showPopup(final TYPE type, final Object obj) {
+		final UserSaveView view = new  UserSaveView(type,obj);
+		AppManager.showPopUp("Edit " + type.displayName(), view, new OptionControl() {
+
 			@Override
-			public void processResult(final UserSavePresenter result) {
-				result.init(type, obj);
-				
-				AppManager.showPopUp("Edit " + type.displayName(), result
-						.getView().asWidget(), new OptionControl() {
-
-					@Override
-					public void onSelect(String name) {
-						if (name.equals("Save")) {
-							if (result.getView().isValid()) {
-								if (type == TYPE.GROUP) {
-									UserGroup userGroup = result.getView()
-											.getGroup();
-									saveGroup(userGroup);
-								} else if (type == TYPE.USER) {
-									HTUser user = result.getView().getUser();
-									saveUser(user);
-								}else if(type == TYPE.ORG){
-									Org org = result.getView().getOrg();
-									saveOrg(org);
-								}
-								hide();
-							}
-						} else {
-							hide();
+			public void onSelect(String name) {
+				if (name.equals("Save")) {
+					if (view.isValid()) {
+						if (type == TYPE.GROUP) {
+							UserGroup userGroup = view.getGroup();
+							saveGroup(userGroup);
+						} else if (type == TYPE.USER) {
+							HTUser user = view.getUser();
+							saveUser(user);
+						} else if (type == TYPE.ORG) {
+							Org org = view.getOrg();
+							saveOrg(org);
 						}
+						hide();
 					}
-
-				}, "Save", "Cancel");
+				} else {
+					hide();
+				}
 			}
-		});
+
+		}, "Save", "Cancel");
 
 	}
-	
 
 	private void saveOrg(Org org) {
 		MultiRequestAction action = new MultiRequestAction();
@@ -376,7 +356,8 @@ public class UserPresenter extends
 						List<Org> orgs = aResponse.getOrgs();
 						getView().bindOrgs(orgs);
 						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new CheckboxSelectionEvent(selectedModel, true));
+						fireEvent(new CheckboxSelectionEvent(selectedModel,
+								true));
 					}
 				});
 	}
@@ -392,7 +373,8 @@ public class UserPresenter extends
 						getView().bindGroups(groups);
 						// loadGroups(groups);
 						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new CheckboxSelectionEvent(selectedModel, true));
+						fireEvent(new CheckboxSelectionEvent(selectedModel,
+								true));
 					}
 				});
 	}
@@ -408,7 +390,8 @@ public class UserPresenter extends
 						getView().bindUsers(users);
 						// loadUsers(users);
 						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new CheckboxSelectionEvent(selectedModel, true));
+						fireEvent(new CheckboxSelectionEvent(selectedModel,
+								true));
 					}
 				});
 	}
@@ -443,8 +426,8 @@ public class UserPresenter extends
 
 		selectedModel = event.getModel();
 		selectItem(selectedModel, event.getValue());
-		
-		if(!event.getValue()){
+
+		if (!event.getValue()) {
 			selectedModel = null;
 		}
 	}
@@ -455,7 +438,7 @@ public class UserPresenter extends
 			getView().setUserEdit(value);
 		} else if (model instanceof UserGroup) {
 			getView().setGroupEdit(value);
-		}else if(model instanceof Org){
+		} else if (model instanceof Org) {
 			getView().setOrgEdit(value);
 		}
 
@@ -485,8 +468,8 @@ public class UserPresenter extends
 					}
 				});
 	}
-	
-	protected void delete(Org org){
+
+	protected void delete(Org org) {
 		SaveOrgRequest request = new SaveOrgRequest(org);
 		request.setDelete(true);
 		requestHelper.execute(request,

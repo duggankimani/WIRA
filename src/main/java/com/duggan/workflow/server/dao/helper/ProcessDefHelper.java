@@ -124,6 +124,16 @@ public class ProcessDefHelper {
 
 		return def;
 	}
+	
+	public static ProcessDef getProcessDef(String processRefId) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+
+		ProcessDefModel model = dao.findByRefId(processRefId, ProcessDefModel.class);
+
+		ProcessDef def = get(model, true);
+
+		return def;
+	}
 
 	public static List<ProcessDef> getAllProcesses(boolean isLoadDetails) {
 
@@ -149,6 +159,7 @@ public class ProcessDefHelper {
 		def.setName(model.getName());
 		def.setProcessId(model.getProcessId());
 		def.setId(model.getId());
+		def.setRefId(model.getRefId());
 
 		if (isDetailed) {
 			def.setDocTypes(getDocTypes(model.getDocumentTypes()));

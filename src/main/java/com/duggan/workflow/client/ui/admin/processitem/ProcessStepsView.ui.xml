@@ -1,75 +1,82 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
-	xmlns:steps='urn:import:com.duggan.workflow.client.ui.admin.processitem'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:steps='urn:import:com.duggan.workflow.client.ui.admin.processitem'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="tr tr-step" ui:field="divTasks">
+	<g:HTMLPanel styleName="tr-step" ui:field="divTasks">
 		<g:HTMLPanel styleName="center td">
-			<label>				
+			<label>
 			</label>
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="multicolumn">
 			<g:HTMLPanel>
 				<div class="form-group">
 					<label for="ProcessName">Tasks:</label>
-					<d:DropDownList ui:field="tasksDropDown" styleName="form-control"/>
-					<!-- d:ActionLink ui:field="aAddItem" styleName="btn btn-primary">Add</d:ActionLink-->
+					<div ui:field="controls">
+						<d:DropDownList ui:field="tasksDropDown" styleName="form-control" />
+						<d:DropDownList ui:field="listNotificationType"
+							styleName="input-medium hide">
+						</d:DropDownList>
+					</div>
 				</div>
-				
+
 				<div class="content-body">
 					<div class="row-fluid">
-						<!--Action Buttons  -->
+						<!--Action Buttons -->
 						<div class="action-buttons">
 							<g:Anchor ui:field="aNewStep" styleName="btn btn-primary"
 								title="Add a New Step">
 								<i class="icon-plus"></i>
-									Steps
+								Steps
 							</g:Anchor>
-							
+
 							<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary hide"
 								title="Add a New Trigger">
 								<i class="icon-plus"></i>
-									Triggers
+								Triggers
 							</g:Anchor>
-							
-							<d:DropDownList ui:field="listNotificationType" styleName="input-medium hide">
-							</d:DropDownList>
+
 						</div>
-						
-							<ul id="mytab" class="nav nav-tabs">
-							  <li class="active" ui:field="liStep"><g:Anchor ui:field="aStepstab">Steps</g:Anchor></li>
-							  <li ui:field="liTrigger"><g:Anchor ui:field="aTriggerstab">Triggers</g:Anchor></li>
-							  <li ui:field="liNotifications"><g:Anchor ui:field="aNotificationstab">Notifications</g:Anchor></li>
-							</ul>
-							<div id="stepcontent" class="tab-content">
-								<div ui:field="divStepContent" class="tab-pane fade in active">
-									<div class="form-group">
-										<!-- label for="ProcessName">Selected:</label -->
-										<d:TableView ui:field="tblView" striped="false" isGrid="false"
-											bordered="true" autoNumber="false" styleName="table-programs">
-										</d:TableView>
-									</div>
+
+						<ul id="mytab" class="nav nav-tabs">
+							<li class="active" ui:field="liStep">
+								<g:Anchor ui:field="aStepstab">Steps</g:Anchor>
+							</li>
+							<li ui:field="liTrigger">
+								<g:Anchor ui:field="aTriggerstab">Triggers</g:Anchor>
+							</li>
+							<li ui:field="liNotifications">
+								<g:Anchor ui:field="aNotificationstab">Notifications</g:Anchor>
+							</li>
+						</ul>
+						<div id="stepcontent" class="tab-content">
+							<div ui:field="divStepContent" class="tab-pane fade in active">
+								<div class="form-group">
+									<g:FlexTable ui:field="tblView"></g:FlexTable>
+									<!-- d:TableView ui:field="tblView" striped="false" isGrid="false" 
+										bordered="true" autoNumber="false" styleName="table-programs"> </d:TableView -->
 								</div>
-								
-								<!-- Trigger Content -->
-								<div ui:field="divTriggerContent" class="tab-pane fade">
-									<g:HTMLPanel ui:field="panelTriggerContent">
-									</g:HTMLPanel>
-								</div><!--  -->
-								
-								<div ui:field="divNotificationsContent" class="tab-pane fade">
-									<g:HTMLPanel ui:field="panelNotificationsContent">
-									</g:HTMLPanel>
-								</div><!--  -->
 							</div>
+
+							<!-- Trigger Content -->
+							<div ui:field="divTriggerContent" class="tab-pane fade">
+								<g:HTMLPanel ui:field="panelTriggerContent">
+								</g:HTMLPanel>
+							</div><!-- -->
+
+							<div ui:field="divNotificationsContent" class="tab-pane fade">
+								<g:HTMLPanel ui:field="panelNotificationsContent"
+									styleName="row-fluid">
+								</g:HTMLPanel>
+							</div><!-- -->
+						</div>
 					</div>
 				</div>
-				
+
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

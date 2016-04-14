@@ -57,8 +57,6 @@ import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 import com.duggan.workflow.client.ui.admin.trigger.TriggerPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.TriggerView;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerView;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
@@ -67,8 +65,6 @@ import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupView;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemView;
-import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter;
-import com.duggan.workflow.client.ui.admin.users.save.UserSaveView;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
 import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
@@ -254,9 +250,6 @@ public class ClientModule extends AbstractPresenterModule {
 				DashboardPresenter.IDashboardView.class, DashboardView.class,
 				DashboardPresenter.MyProxy.class);
 		
-		bindPresenterWidget(UserSavePresenter.class,
-				UserSavePresenter.IUserSaveView.class, UserSaveView.class);
-
 		bindPresenterWidget(UserItemPresenter.class,
 				UserItemPresenter.MyView.class, UserItemView.class);
 
@@ -355,10 +348,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(TriggerPresenter.class,
 				TriggerPresenter.ITriggerView.class, TriggerView.class,
 				TriggerPresenter.MyProxy.class);
-
-		bindPresenterWidget(SaveTriggerPresenter.class,
-				SaveTriggerPresenter.ISaveTriggerView.class,
-				SaveTriggerView.class);
 
 		bindPresenterWidget(TaskStepTriggerPresenter.class,
 				TaskStepTriggerPresenter.ITaskStepTriggerView.class,

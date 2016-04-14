@@ -54,7 +54,6 @@ public class ProcessStepsPresenter extends
 		PresenterWidget<ProcessStepsPresenter.MyView> implements ProcessSelectedHandler, SaveTaskStepHandler{
 
 	public interface MyView extends View {
-		void show(boolean show);
 		HasClickHandlers getAddItemActionLink();
 		void setTasks(List<TaskNode> values);
 		void displaySteps(List<TaskStepDTO> dtos);
@@ -195,15 +194,15 @@ public class ProcessStepsPresenter extends
 	public void onProcessSelected(ProcessSelectedEvent event) {
 		ProcessDef def = event.getProcessDef();
 		if(def.getId().equals(processDef.getId())){
-			getView().show(event.isSelected());
 			if(event.isSelected()){
-				getView().getTasksDropDown().setNullText("--"+def.getName()+"--");
 				load();
 			}
 		}
 	}
 	
 	public void load(){
+		getView().getTasksDropDown().setNullText("--"+processDef.getName()+"--");
+		
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetFormsRequest(processDef.getId()));
 		action.addRequest(new GetOutputDocumentsRequest());

@@ -1,7 +1,5 @@
 package com.duggan.workflow.client.ui.component;
 
-import com.duggan.workflow.client.event.CheckboxSelectionEvent;
-import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
@@ -15,6 +13,8 @@ import com.google.gwt.user.client.ui.Anchor;
 
 public class ActionLink extends Anchor {
 
+	private Object model;
+
 	public ActionLink() {
 		
 		addClickHandler(new ClickHandler() {
@@ -26,9 +26,11 @@ public class ActionLink extends Anchor {
 		});
 	}
 	
-	public ActionLink(String text) {
-		super();
-		setText(text);
+	public ActionLink(Object model){
+		this.model = model;
+		if(model instanceof String){
+			setText(model.toString());
+		}
 	}
 
 	public void setDataToggle(String data){
@@ -99,5 +101,13 @@ public class ActionLink extends Anchor {
 				setEnabled(true);
 			}
 		});
+	}
+
+	public Object getModel() {
+		return model;
+	}
+
+	public void setModel(Object model) {
+		this.model = model;
 	}
 }

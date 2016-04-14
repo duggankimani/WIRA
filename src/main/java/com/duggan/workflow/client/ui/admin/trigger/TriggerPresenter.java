@@ -9,7 +9,7 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
+import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
@@ -22,7 +22,6 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -58,8 +57,7 @@ public class TriggerPresenter extends
 		return new TabDataExt("Triggers", "icon-wrench", 5, adminGatekeeper);
 	}
 
-	@Inject
-	SaveTriggerPresenter savePresenter;
+
 	@Inject
 	DispatchAsync requestHelper;
 	List<Trigger> triggers;// For Cloning
@@ -91,14 +89,14 @@ public class TriggerPresenter extends
 	}
 
 	protected void showClonePopup() {
-		savePresenter.clear();
-		savePresenter.setTriggers(triggers);
-		AppManager.showPopUp("Copy Trigger", savePresenter.asWidget(),
+		final SaveTriggerView view = new SaveTriggerView();
+		view.setTriggers(triggers);
+		AppManager.showPopUp("Copy Trigger", view,
 				new OptionControl() {
 					@Override
 					public void onSelect(String name) {
-						if (name.equals("Save") && savePresenter.isValid()) {
-							Trigger trigger = savePresenter.getTrigger();
+						if (name.equals("Save") && view.isValid()) {
+							Trigger trigger = view.getTrigger();
 							save(trigger);
 							hide();
 						}
@@ -112,25 +110,17 @@ public class TriggerPresenter extends
 	}
 
 	protected void showEditPopup(final Trigger trigger) {
-		savePresenter.clear();
-		savePresenter.setTrigger(trigger);
-		AppManager.showPopUp(trigger != null ? "<i>Edit Trigger</i>"
-				: "Create Trigger", savePresenter.asWidget(),
+		final SaveTriggerView view = new SaveTriggerView(trigger);
+		
+		AppManager.showPopUp(trigger != null ? "Edit Trigger"
+				: "Create Trigger", view,
 				new OptionControl() {
 					@Override
 					public void onSelect(String name) {
-						if (name.equals("Save") && savePresenter.isValid()) {
-							// Window.("Confirm You want to edit trigger", "");
-							// boolean isConfirmed =
-							// Window.confirm("Confirm you want to edit trigger "
-							// + "'"+trigger.getName()+"'?");
-							//
-							// if(isConfirmed){
-							Trigger trigger = savePresenter.getTrigger();
+						if (name.equals("Save") && view.isValid()) {
+							Trigger trigger = view.getTrigger();
 							save(trigger);
 							hide();
-							// }
-
 						}
 
 						if (name.equals("Cancel")) {
@@ -175,6 +165,10 @@ public class TriggerPresenter extends
 
 	@Override
 	public void onEditTrigger(EditTriggerEvent event) {
+		if(!isVisible()){
+			return;
+		}
+		
 		final Trigger trigger = event.getTrigger();
 		if (!trigger.isActive()) {
 			// deleting

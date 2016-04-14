@@ -8,7 +8,7 @@ import java.util.List;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
+import com.duggan.workflow.client.ui.admin.users.TYPE;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
@@ -30,6 +30,7 @@ import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetOrgsResponse;
 import com.duggan.workflow.shared.responses.GetPermissionsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -37,88 +38,94 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.mvp.client.ViewImpl;
 
-public class UserSaveView extends ViewImpl implements
-		UserSavePresenter.IUserSaveView {
+public class UserSaveView extends Composite {
 
-	@UiField HTMLPanel divUserDetails;
-	@UiField HTMLPanel divGroupDetails;
-	@UiField IssuesPanel issues;
+	@UiField
+	HTMLPanel divUserDetails;
+	@UiField
+	HTMLPanel divGroupDetails;
+	@UiField
+	IssuesPanel issues;
 
-	@UiField TextField txtUserName;
-	@UiField TextField txtFirstname;
-	@UiField TextField txtLastname;
-	@UiField TextField txtEmail;
-	@UiField PasswordField txtPassword;
-	@UiField PasswordField txtConfirmPassword;
-	
-	@UiField TextField txtGroupname;
-	@UiField TextArea txtDescription;
-	//@UiField TextField txtUsers;
+	@UiField
+	TextField txtUserName;
+	@UiField
+	TextField txtFirstname;
+	@UiField
+	TextField txtLastname;
+	@UiField
+	TextField txtEmail;
+	@UiField
+	PasswordField txtPassword;
+	@UiField
+	PasswordField txtConfirmPassword;
 
-	@UiField Anchor aSaveGroup;
-	@UiField Anchor aSaveUser;
+	@UiField
+	TextField txtGroupname;
+	@UiField
+	TextArea txtDescription;
+	// @UiField TextField txtUsers;
 
-	@UiField DivElement divUserSave;
-	@UiField Uploader uploader;
-	//@UiField ListField<UserGroup> lstGroups;
-	@UiField AutoCompleteField<UserGroup> lstGroups;
-	
+	@UiField
+	Anchor aSaveGroup;
+	@UiField
+	Anchor aSaveUser;
+
+	@UiField
+	DivElement divUserSave;
+	@UiField
+	Uploader uploader;
+	// @UiField ListField<UserGroup> lstGroups;
+	@UiField
+	AutoCompleteField<UserGroup> lstGroups;
+
 	@UiField
 	HTMLPanel divUnitDetails;
 
 	@UiField
 	DropDownList<Org> lstOrg;
-	
+
 	@UiField
 	FlexTable tblPermissions;
 	// Organization/ unit
 	@UiField
 	TextField txtUnitName;
 
-	
 	@UiField
 	Element divPermissions;
 
 	TYPE type;
+
 	private UserGroup group;
 	private Org org;
+
+
+	private static Binder binder = GWT
+			.create(Binder.class);
 	
 	public interface Binder extends UiBinder<Widget, UserSaveView> {
 	}
 
-	@Inject
-	public UserSaveView(final EventBus eventBus, final Binder binder) {
+	public UserSaveView() {
 		initWidget(binder.createAndBindUi(this));
 		
-		//----Calculate the Size of Screen; To be Centralized later -----
-		int height = Window.getClientHeight();
-		int width = Window.getClientWidth();
-		
-		/*Percentage to the Height and Width*/
-		double height1=(5.0/100.0)*height;
-		double width1= (50.0/100.0)*width;
-		
-//		AddUserDialog.setPopupPosition((int)width1,(int)height1);
-		
 		txtUserName.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
 				setContext(event.getValue());
 			}
 		});
 	}
-	
-	public void init(TYPE type, Object dto) {
+
+	public UserSaveView(TYPE type, Object dto) {
+		this();
 		this.type = type;
 		setType(type);
 		if (dto != null) {
@@ -134,19 +141,19 @@ public class UserSaveView extends ViewImpl implements
 				setOrg((Org) dto);
 			}
 		}
-	
+
 		if (type == TYPE.GROUP) {
 			loadPermissions();
-		}else if (type == TYPE.USER) {
+		} else if (type == TYPE.USER) {
 			loadGroups();
 		}
-	
+
 	}
-	
+
 	private void loadGroups() {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetGroupsRequest());
-		action.addRequest(new GetOrgsRequest(null,0,100));
+		action.addRequest(new GetOrgsRequest(null, 0, 100));
 
 		AppContext.getDispatcher().execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -174,13 +181,13 @@ public class UserSaveView extends ViewImpl implements
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetPermissionsRequest());
 
-		final String userId = user==null? null :user.getUserId();
-		final String roleName = group==null? null: group.getName(); 
-		
-		if(userId!=null || roleName!=null){
-			action.addRequest(new GetPermissionsRequest(userId,roleName));
+		final String userId = user == null ? null : user.getUserId();
+		final String roleName = group == null ? null : group.getName();
+
+		if (userId != null || roleName != null) {
+			action.addRequest(new GetPermissionsRequest(userId, roleName));
 		}
-		
+
 		AppContext.getDispatcher().execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -189,21 +196,21 @@ public class UserSaveView extends ViewImpl implements
 								.get(0);
 						List<PermissionPOJO> permissions = getPermissions
 								.getPermissions();
-						
-						if(userId!=null || roleName!=null){
+
+						if (userId != null || roleName != null) {
 							GetPermissionsResponse groupPermissionsResp = (GetPermissionsResponse) aResponse
 									.get(1);
 							List<PermissionPOJO> groupPermissions = groupPermissionsResp
 									.getPermissions();
-							
-							for(PermissionPOJO pojo: groupPermissions){
+
+							for (PermissionPOJO pojo : groupPermissions) {
 								int idx = permissions.indexOf(pojo);
 								permissions.remove(idx);
 								permissions.add(idx, pojo);
 							}
-							
+
 						}
-						
+
 						showPermissions(permissions);
 					}
 				});
@@ -235,8 +242,9 @@ public class UserSaveView extends ViewImpl implements
 				header.addStyleName("permission-header");
 				tblPermissions.setWidget(i, col + 1, header);
 				tblPermissions.getFlexCellFormatter().setWidth(i, col, "50px");
-//				tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
-//						"permissions-td-header");
+				// tblPermissions.getFlexCellFormatter().addStyleName(i, col +
+				// 1,
+				// "permissions-td-header");
 
 				++i;
 			} else if (mod != permission.getName().getModule()) {
@@ -252,18 +260,20 @@ public class UserSaveView extends ViewImpl implements
 				header.addStyleName("permission-header");
 				tblPermissions.getFlexCellFormatter().setWidth(i, 0, "50px");
 				tblPermissions.setWidget(i, col + 1, header);
-//				tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
-//						"permissions");
+				// tblPermissions.getFlexCellFormatter().addStyleName(i, col +
+				// 1,
+				// "permissions");
 
 				++i;
 			}
 
-			tblPermissions.setWidget(i, col, new PermissionPanel(permission, type == TYPE.GROUP));
+			tblPermissions.setWidget(i, col, new PermissionPanel(permission,
+					type == TYPE.GROUP));
 			HTMLPanel description = new HTMLPanel(permission.getDescription());
 			description.addStyleName("item");
 			tblPermissions.setWidget(i, col + 1, description);
-//			tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
-//					"permissions");
+			// tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
+			// "permissions");
 
 			++i;
 
@@ -288,7 +298,7 @@ public class UserSaveView extends ViewImpl implements
 			if (isNullOrEmpty(txtUnitName.getValue())) {
 				isValid = false;
 				issues.addError("Unit name is mandatory");
-//				txtUnitName.setValid(false);
+				// txtUnitName.setValid(false);
 			}
 			break;
 		}
@@ -302,32 +312,29 @@ public class UserSaveView extends ViewImpl implements
 		return isValid;
 	}
 
-
-
 	protected void setContext(String value) {
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADUSERIMAGE);
-		context.setContext("userId", value+"");
+		context.setContext("userId", value + "");
 		context.setAccept("png,jpeg,jpg,gif");
 		uploader.setContext(context);
 	}
-	
 
-	public UserGroup getGroup(){
+	public UserGroup getGroup() {
 		UserGroup group = this.group;
-		if(group==null){
+		if (group == null) {
 			group = new UserGroup();
 		}
-		
+
 		group.setFullName(txtDescription.getValue());
 		group.setName(txtGroupname.getValue());
-		
+
 		List<PermissionPOJO> permissions = getPermissions();
 		group.setPermissions(permissions);
-		
+
 		return group;
 	}
-	
+
 	private List<PermissionPOJO> getPermissions() {
 		int rowCount = tblPermissions.getRowCount();
 		List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
@@ -336,9 +343,9 @@ public class UserSaveView extends ViewImpl implements
 			// Col Set 1
 			Widget w = tblPermissions.getWidget(i, 0);
 			PermissionPanel panel = getPermissionPanel(w);
-			if (panel != null){
-				PermissionPOJO permission =panel.getPermission();
-				if(permission.isPermissionGranted()){		
+			if (panel != null) {
+				PermissionPOJO permission = panel.getPermission();
+				if (permission.isPermissionGranted()) {
 					permissions.add(permission);
 				}
 			}
@@ -348,9 +355,9 @@ public class UserSaveView extends ViewImpl implements
 			if (cellCount > 2) {
 				w = tblPermissions.getWidget(i, 3);
 				panel = getPermissionPanel(w);
-				if (panel != null){
-					PermissionPOJO permission =panel.getPermission();
-					if(permission.isPermissionGranted()){		
+				if (panel != null) {
+					PermissionPOJO permission = panel.getPermission();
+					if (permission.isPermissionGranted()) {
 						permissions.add(permission);
 					}
 				}
@@ -366,16 +373,15 @@ public class UserSaveView extends ViewImpl implements
 		return null;
 	}
 
-	
-	public void setGroup(UserGroup group){
+	public void setGroup(UserGroup group) {
 		this.group = group;
 		txtDescription.setValue(group.getFullName());
 		txtGroupname.setValue(group.getName());
 	}
-	
-	public HTUser getUser(){
+
+	public HTUser getUser() {
 		HTUser user = this.user;
-		if(user==null){
+		if (user == null) {
 			user = new HTUser();
 		}
 		user.setEmail(txtEmail.getValue());
@@ -385,10 +391,10 @@ public class UserSaveView extends ViewImpl implements
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
 		user.setOrg(lstOrg.getValue());
-		
+
 		return user;
 	}
-	
+
 	public Org getOrg() {
 		Org org = this.org;
 		if (org == null) {
@@ -397,15 +403,15 @@ public class UserSaveView extends ViewImpl implements
 		org.setName(txtUnitName.getValue());
 		return org;
 	}
-	
+
 	public void setOrg(Org org) {
 		this.org = org;
 		txtUnitName.setValue(org.getName());
 	}
 
-	
 	HTUser user;
-	public void setUser(HTUser user){
+
+	public void setUser(HTUser user) {
 		this.user = user;
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getName());
@@ -420,64 +426,62 @@ public class UserSaveView extends ViewImpl implements
 
 	private boolean isUserValid() {
 		issues.clear();
-		boolean valid=true;
-		
-		if(isNullOrEmpty(txtFirstname.getValue())){
+		boolean valid = true;
+
+		if (isNullOrEmpty(txtFirstname.getValue())) {
 			valid = false;
 			issues.addError("First Name is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtLastname.getValue())){
+
+		if (isNullOrEmpty(txtLastname.getValue())) {
 			valid = false;
 			issues.addError("First Name is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtEmail.getValue())){
+
+		if (isNullOrEmpty(txtEmail.getValue())) {
 			valid = false;
 			issues.addError("Email is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtPassword.getText())){
-			valid=false;
+
+		if (isNullOrEmpty(txtPassword.getText())) {
+			valid = false;
 			issues.addError("Password is mandatory");
-		}else{
-			if(!txtPassword.getValue().equals(txtConfirmPassword.getValue())){
+		} else {
+			if (!txtPassword.getValue().equals(txtConfirmPassword.getValue())) {
 				issues.addError("Password and confirm password fields do not match");
 			}
 		}
-		
-		
-		
+
 		return valid;
 	}
 
 	private boolean isGroupValid() {
-		
+
 		issues.clear();
-		boolean valid=true;
-		
-		if(isNullOrEmpty(txtGroupname.getValue())){
+		boolean valid = true;
+
+		if (isNullOrEmpty(txtGroupname.getValue())) {
 			valid = false;
 			issues.addError("Group Name is mandatory");
 		}
-		
+
 		return valid;
 	}
-	
+
 	boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;
 	}
 
-	public HasClickHandlers getSaveUser(){
+	public HasClickHandlers getSaveUser() {
 		return aSaveUser;
 	}
-	
-	public HasClickHandlers getSaveGroup(){
+
+	public HasClickHandlers getSaveGroup() {
 		return aSaveGroup;
 	}
-	
+
 	private void setType(TYPE type) {
-		this.type=type;
+		this.type = type;
 		this.type = type;
 		divUserDetails.addStyleName("hide");
 		divGroupDetails.addStyleName("hide");
@@ -492,7 +496,6 @@ public class UserSaveView extends ViewImpl implements
 		}
 	}
 
-	@Override
 	public void setGroups(List<UserGroup> groups) {
 		lstGroups.addItems(groups);
 	}

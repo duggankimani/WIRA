@@ -79,6 +79,8 @@ public class ProcessItemPresenter extends
 			}
 		});
 		
+		
+		
 		getView().getActivateButton().addClickHandler(new ClickHandler() {
 			
 			@Override

@@ -25,6 +25,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -42,7 +43,7 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 	@UiField
 	HTMLPanel divTasks;
 	@UiField
-	TableView tblView;
+	FlexTable tblView;
 	@UiField
 	DropDownList<TaskNode> tasksDropDown;
 	// @UiField Anchor aAddItem;
@@ -82,8 +83,6 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 	@Inject
 	public ProcessStepsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		show(false);
-		setTable();
 		aStepstab.getElement().setAttribute("data-toggle", "tab");
 		aTriggerstab.getElement().setAttribute("data-toggle", "tab");
 		aNotificationstab.getElement().setAttribute("data-toggle", "tab");
@@ -136,22 +135,36 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 		}
 	}
 
-	private void setTable() {
-		tblView.setAutoNumber(true);
-		List<TableHeader> th = new ArrayList<TableHeader>();
-		th.add(new TableHeader("Step Name", 40.0, "title"));
-		th.add(new TableHeader("Mode", 20.0));
-		th.add(new TableHeader("Condition", 30.0));
-		th.add(new TableHeader("Action(s)", 10.0));
+	private void setTableHeaders(FlexTable table) {
+		int j = 0;
+		table.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
 
-		tblView.setTableHeaders(th);
+		table.setWidget(0, j++, new HTMLPanel("<strong>Step Name</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "200px");
+		
+		table.setWidget(0, j++, new HTMLPanel("<strong>Mode</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+		
+		table.setWidget(0, j++, new HTMLPanel("<strong>Condition</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "300px");
+		
+		table.setWidget(0, j++, new HTMLPanel("<strong>Actions</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+
+		for (int i = 0; i < table.getCellCount(0); i++) {
+			table.getFlexCellFormatter().setStyleName(0, i, "th");
+		}
 	}
 
 	@Override
 	public void displaySteps(List<TaskStepDTO> dtos) {
-		tblView.clearRows();
-
+		tblView.removeAllRows();
+		setTableHeaders(tblView);
+		
+		int i=1;
 		for (TaskStepDTO dto : dtos) {
+			int j=0;
 			String buttonStyle = "italics";// "btn";
 
 			HTMLPanel actions = new HTMLPanel("");
@@ -181,12 +194,17 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 				mode.addStyleName("input-small");
 				mode.addValueChangeHandler(new ValueChangeHanderEx(dto));
 			}
-
-			tblView.addRow(
-					new InlineLabel(dto.getFormName() == null ? dto
-							.getOutputDocName() : dto.getFormName()),
-					mode == null ? new InlineLabel("") : mode, new InlineLabel(
-							dto.getCondition()), actions);
+			
+			
+			tblView.setWidget(i, j++, new InlineLabel(i+""));
+			tblView.setWidget(i, j++, new InlineLabel(dto.getFormName() == null ? dto
+					.getOutputDocName() : dto.getFormName()));
+			tblView.setWidget(i, j++, mode == null ? new InlineLabel("") : mode);
+			tblView.setWidget(i, j++, new InlineLabel(
+					dto.getCondition()));
+			tblView.setWidget(i, j++, actions);
+			
+			++i;
 		}
 	}
 
@@ -254,16 +272,6 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 	@Override
 	public Widget asWidget() {
 		return widget;
-	}
-
-	public void show(boolean show) {
-		if (show) {
-			divTasks.removeStyleName("hidden");
-			divTasks.addStyleName("tr");
-		} else {
-			divTasks.addStyleName("hidden");
-			divTasks.removeStyleName("tr");
-		}
 	}
 
 	@Override
