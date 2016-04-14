@@ -16,6 +16,7 @@ import com.duggan.workflow.client.ui.admin.processes.category.CreateCategoryPane
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
 import com.duggan.workflow.client.ui.events.EditProcessEvent.EditProcessHandler;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
@@ -60,7 +61,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class ProcessPresenter extends
@@ -100,12 +101,12 @@ public class ProcessPresenter extends
 
 	}
 
-	public static final Object TABLE_SLOT = new Object();
-	
 	public static final String ACTION_CONFIG = "config";
 	
 	@Inject
 	DispatchAsync requestHelper;
+	
+	public static final Object TABLE_SLOT = new Object();
 	
 	@Inject PlaceManager placeManager;
 
@@ -120,13 +121,13 @@ public class ProcessPresenter extends
 	@ProxyCodeSplit
 	@NameToken(NameTokens.processes)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<ProcessPresenter> {
+	public interface MyProxy extends ProxyPlace<ProcessPresenter> {
 	}
 
-	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		return new TabDataExt("Processes", "icon-cogs", 2, adminGatekeeper);
-	}
+//	@TabInfo(container = AdminHomePresenter.class)
+//	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+//		return new TabDataExt("Processes", "icon-cogs", 2, adminGatekeeper);
+//	}
 
 	@Inject
 	public ProcessPresenter(final EventBus eventBus, final IProcessView view,
@@ -134,7 +135,8 @@ public class ProcessPresenter extends
 			Provider<ProcessSavePresenter> addprocessProvider,
 			Provider<ProcessItemPresenter> columnProvider,
 			Provider<ProcessStepsPresenter> taskStepsProvider) {
-		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
+//		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
+		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 		processFactory = new StandardProvider<ProcessSavePresenter>(
 				addprocessProvider);
 		processItemFactory = new StandardProvider<ProcessItemPresenter>(
@@ -285,7 +287,7 @@ public class ProcessPresenter extends
 			}
 		});
 	}
-
+	
 	protected void submit(ManageKnowledgeBaseRequest request) {
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
@@ -365,7 +367,6 @@ public class ProcessPresenter extends
 								aResponse.setProcess(processDef);
 								aResponse.load();
 								setInSlot(TABLE_SLOT, aResponse);
-								
 							}
 						});
 			}
@@ -415,37 +416,6 @@ public class ProcessPresenter extends
 
 					}
 				});
-	}
-
-	protected void bindProcesses(List<ProcessDef> processDefinitions) {
-		setInSlot(TABLE_SLOT, null);
-
-		if (processDefinitions != null) {
-			for (final ProcessDef def : processDefinitions) {
-				processItemFactory
-						.get(new ServiceCallback<ProcessItemPresenter>() {
-							@Override
-							public void processResult(
-									ProcessItemPresenter result) {
-
-								result.setProcess(def);
-								addToSlot(TABLE_SLOT, result);
-
-								// Task Steps
-								taskStepsFactory
-										.get(new ServiceCallback<ProcessStepsPresenter>() {
-											@Override
-											public void processResult(
-													ProcessStepsPresenter aResponse) {
-												aResponse.setProcess(def);
-												addToSlot(TABLE_SLOT, aResponse);
-											}
-										});
-
-							}
-						});
-			}
-		}
 	}
 
 	@Override

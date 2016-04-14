@@ -17,6 +17,7 @@ public class NameTokens {
 	public static final String datasources = "datasources";
 	public static final String formbuilder = "formbuilder";
 	public static final String processes = "processes";
+	public static final String processconf = "processconf";
 	public static final String tasks = "tasks";
 	public static final String drafts = "drafts";
 	public static final String participated = "participated";

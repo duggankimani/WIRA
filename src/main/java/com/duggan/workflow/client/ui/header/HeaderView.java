@@ -49,8 +49,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	HTMLPanel notificationsContainer;
 	@UiField
 	HTMLPanel divNavbar;
-	@UiField
-	Anchor aAdmin;
 
 	@UiField
 	Anchor aProfile;
@@ -71,7 +69,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		widget = binder.createAndBindUi(this);
 		aNotifications.setTabIndex(3);
 		aNotifications.getElement().setAttribute("data-toggle", "dropdown");
-		UIObject.setVisible(aAdmin.getElement(), false);
 
 		imgSmall.addErrorHandler(new ErrorHandler() {
 			@Override
@@ -138,7 +135,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		}
 		
 		if(orgName!=null){
-			spnCompanyName.setInnerText(orgName);
+			spnCompanyName.setInnerHTML("Wira BPM |&nbsp;"+orgName);
 		}
 	}
 
@@ -188,7 +185,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	@Override
 	public void showAdminLink(boolean isAdmin) {
-		UIObject.setVisible(aAdmin.getElement(), isAdmin);
 	}
 
 	@Override

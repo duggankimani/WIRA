@@ -1,45 +1,91 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
-    xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
-    
-    <g:HTMLPanel styleName="row-fluid body-admin">
-			<!--sidebar-->
-			<g:HTMLPanel styleName="span1">
-				<aside id="side-left">
-					<d:BulletListPanel ui:field="linksPanel" styleName="sidebar">
-										
-					</d:BulletListPanel>
-				</aside>
-			</g:HTMLPanel>
-			<!-- End Of Sidebar  -->
-			
-			<!-- Main Content  -->
-				<g:HTMLPanel styleName="span11">
-					<div id="main-content">
-						<div class="content">
-							<!-- Content Header -->
-							<div class="content-header">
-								<h2>
-								<span class="icon-group" ui:field="iconTitle"></span>
-								<span ui:field="spanTitle">Users &amp; Groups</span>
-								</h2>
-							</div>
-							<!--BreadCrumb-->
-							<!--div class="content-breadcrumb">
-									<ul class="breadcrumb">
-	                                <li><a href=""><i class="icofont-home"></i> Dashboard</a> <span class="divider">›</span></li>
-	                                <li><a href="">Users &amp; Groups</a></li>
-	                          	    </ul>
-							</div -->
-							<!-- Content Details -->
-							<g:HTMLPanel  ui:field="tabContent"></g:HTMLPanel>
-						</div>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+
+	<g:HTMLPanel styleName="row-fluid body-admin">
+		<!--sidebar -->
+		<g:HTMLPanel styleName="span1">
+			<aside id="side-left">
+				<d:BulletListPanel ui:field="linksPanel"
+					styleName="sidebar">
+
+				</d:BulletListPanel>
+			</aside>
+		</g:HTMLPanel>
+		<!-- End Of Sidebar -->
+
+		<!-- Main Content -->
+		<g:HTMLPanel styleName="span11">
+			<div id="main-content">
+				<div class="content">
+					<!-- Content Header -->
+					<div class="content-header hide">
+						<h2>
+							<span class="icon-group" ui:field="iconTitle"></span>
+							<span ui:field="spanTitle">Users &amp; Groups</span>
+						</h2>
 					</div>
-				
-				</g:HTMLPanel>
-			<!-- End of Content  -->
+					<div class="content-header">
+						<ul class="breadcrumb">
+							<li>
+								<a href="#processes">Processes</a>
+								<span class="divider">/</span>
+							</li>
+							<li class="active">
+								<span ui:field="spnProcessName">Expense Claim</span>
+								<span class="divider">/</span>
+							</li>
+							<li class="dropdown">
+								<a class="dropdown-toggle" id="drop5" role="button"
+									data-toggle="dropdown" href="#">
+									Form-Builder
+									<b class="caret"></b>
+								</a>
+								<ul id="menu3" class="dropdown-menu" role="menu"
+									aria-labelledby="drop5">
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="#formbuilder">Form Builder</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="#processes;a=config;pd=4uSQJcExcNyBGYED">Processes</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="#">Something else here</a>
+									</li>
+									<li role="presentation" class="divider"></li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="#">Separated link</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<ul class="nav nav-pills">
+							<li class="active">
+								<a href="#">Preview</a>
+							</li>
+							<li>
+								<a href="#">Form Builder</a>
+							</li>
+							<li>
+								<a href="#">Triggers</a>
+							</li>
+							<li>
+								<a href="#">Ouput Docs</a>
+							</li>
+							<li>
+								<a href="#">Process Config</a>
+							</li>
+						</ul>
+					</div>
+
+					<!-- Content Details -->
+					<g:HTMLPanel ui:field="tabContent"></g:HTMLPanel>
+				</div>
+			</div>
+
+		</g:HTMLPanel>
+		<!-- End of Content -->
 	</g:HTMLPanel>
-		
-	
+
+
 </ui:UiBinder>

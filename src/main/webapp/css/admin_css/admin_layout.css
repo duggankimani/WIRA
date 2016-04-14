@@ -137,9 +137,14 @@
 }
 /* content-header */
 #main-content .content>.content-header {
-	padding: 10px 20px 10px 29px;
+	padding: 0px 20px 0px 30px;
 	border-bottom: 1px solid #CDCDCD;
 	color: #626262;
+	background-color: #ededed;
+}
+
+#main-content .content>.content-header .breadcrumb{
+	background-color: transparent;
 }
 
 #main-content .content>.content-header>ul.content-header-action {

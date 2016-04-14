@@ -74,7 +74,7 @@
 		</div>
 
 		<div class="content-body overflow-y hide" ui:field="divProcessConfig">
-			<ul class="breadcrumb">
+			<ul class="breadcrumb hide">
 				<li>
 					<a href="#processes">Processes</a>
 					<span class="divider">/</span>
@@ -83,10 +83,14 @@
 					<span ui:field="spnProcessName"></span>
 				</li>
 			</ul>
-			<div class="row-fluid">
+			
+			<img src="http://127.0.0.1:8888/getreport?docRefId=zUUGMWaRsdSybOkQ&amp;ACTION=GETDOCUMENTPROCESS">
+			</img>
+			<div class="row-fluid hide">
 				<g:HTMLPanel ui:field="processStepsPanel">
 				</g:HTMLPanel>
 			</div>
 		</div>
+		
 	</g:HTMLPanel>
 </ui:UiBinder>

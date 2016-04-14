@@ -53,6 +53,7 @@ import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsView;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessModule;
 import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 import com.duggan.workflow.client.ui.admin.trigger.TriggerPresenter;
@@ -149,6 +150,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		// install(new DefaultModule(ClientPlaceManager.class));
 		install(new DefaultModule.Builder().build());
+		
+		install(new BaseProcessModule());
 
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);

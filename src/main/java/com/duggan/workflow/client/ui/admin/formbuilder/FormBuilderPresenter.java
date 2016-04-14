@@ -13,6 +13,8 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
+import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
@@ -58,6 +60,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
@@ -90,13 +93,15 @@ public class FormBuilderPresenter extends
 	@ProxyCodeSplit
 	@NameToken(NameTokens.formbuilder)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<FormBuilderPresenter> {
+	public interface MyProxy extends ProxyPlace<FormBuilderPresenter> {
 	}
+//	public interface MyProxy extends TabContentProxyPlace<FormBuilderPresenter> {
+//	}
 	
-	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Form Builder","icon-edit",4, adminGatekeeper);
-    }
+//	@TabInfo(container = AdminHomePresenter.class)
+//    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+//        return new TabDataExt("Form Builder","icon-edit",4, adminGatekeeper);
+//    }
 
 	@Inject
 	DispatchAsync dispatcher;
@@ -109,7 +114,8 @@ public class FormBuilderPresenter extends
 	@Inject
 	public FormBuilderPresenter(final EventBus eventBus,
 			final IFormBuilderView view, MyProxy proxy) {
-		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
+		//super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
+		super(eventBus, view, proxy,BaseProcessPresenter.CONTENT_SLOT);
 	}
 	
 	@Override
