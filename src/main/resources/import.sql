@@ -78,3 +78,7 @@ create index idx_documentid on advalue(documentid);
 
 --Case Number Sequence - must always be included
 create sequence caseno_sequence increment by 1 minvalue 1 MaxValue 100000000 start with 1;
+
+create sequence orgmodel_id_seq;
+alter table orgmodel alter id set default nextval('orgmodel_id_seq');
+

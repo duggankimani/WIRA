@@ -1,114 +1,125 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'>
-	
-	<g:HTMLPanel>
-		<div class="content-body">
-			<div class="row-fluid">
-				<!--Action Buttons  -->
-				 <div class="action-buttons">
-					<g:Anchor ui:field="aNewUser" styleName="btn btn-primary"
-						title="Add a New User">
-						<i class="icon-plus"></i>
-							Add User
-					</g:Anchor>
-					
-					<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary hide"
-						title="Add a New Group">
-						<i class="icon-plus"></i>
-							Add Group
-					</g:Anchor>
-				</div>
-				
-					<ul id="mytab" class="nav nav-tabs">
-					  <li class="active" ui:field="liUser"><g:Anchor ui:field="aUserstab">Users</g:Anchor></li>
-					  <li ui:field="liGroup"><g:Anchor ui:field="aGroupstab">Groups</g:Anchor></li>
-					</ul>
-					<div id="usercontent" class="tab-content">
-							<!-- User's Information Tab  -->
-							<div ui:field="divUserContent" class="tab-pane fade in active">
-						        <div class="table table-hover table-striped table-bordered">
-								    <div class="thead">
-								    	<div class="tr">
-											<div class="th">
-											  <label><input type="checkbox" class="ace"/></label>
-											</div>
-											<div class="th">Last Name</div>
-											<div class="th">First Name</div>											
-											<div class="th">Username</div>
-											<div class="th">Email</div>		
-											<div class="th">Group</div>
-											<div class="th" title="Inbox">Inbox</div>
-											<div class="th" title="Participated Tasks">Done</div>
-											<div class="th" title="Total tasks">Total</div>
-											<div class="th">Action</div>	
-										</div>						
-									</div>
-								
-								    
-								<g:HTMLPanel ui:field="panelUsers" styleName="tbody"><!-- div class="tbody"-->
-								    
-								</g:HTMLPanel><!--End Tbody  -->
 
-								</div><!--End Table  -->
+	<g:HTMLPanel>
+		<div class="content-body no-overflow-y">
+			<div class="row-fluid">
+				<ul class="nav nav-tabs" id="usermgt">
+					<li class="active">
+						<d:ActionLink ui:field="aUserstab" href="#users"
+							dataToggle="tab">Users</d:ActionLink>
+					</li>
+					<li>
+						<d:ActionLink ui:field="aGroupstab" href="#groups"
+							dataToggle="tab">Groups</d:ActionLink>
+					</li>
+					<li>
+						<d:ActionLink ui:field="aUnitstab" href="#orgs"
+							dataToggle="tab">Orgs</d:ActionLink>
+					</li>
+				</ul>
+
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="users">
+						<div class="row-fluid">
+							<!--Action Buttons -->
+							<div class="action-buttons">
+								<g:Anchor ui:field="aNewUser" styleName="btn btn-primary"
+									title="Add a New User">
+									<i class="icon-plus"></i>
+									Add User
+								</g:Anchor>
+								<g:Anchor ui:field="aEditUser" styleName="btn btn-success hide"
+									title="Edit User">
+									<i class="icon-pencil"></i>
+									Edit User
+								</g:Anchor>
 								
-								<div class="row-fluid hidden">
-									<div class="span6">
-										<div class="dataTables_info hidden" id="sample-table-2_info">Showing 1 to 10 of 23 entries</div>
-									</div>
-									<div class="span6">
-										<div class="pull-right">
-											<ul class="pagination">
-												<li class="prev disabled">
-													<a href="#">
-														<i class="icon-double-angle-left"></i>
-													</a>
-												</li>
-												<li class="active">
-													<a href="#">1</a>
-												</li>
-												<li>
-													<a href="#">2</a>
-												</li>
-												<li>
-													<a href="#">3</a>
-												</li>
-												<li class="next">
-													<a href="#">
-														<i class="icon-double-angle-right"></i>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-					        </div>
-							
-					<!-- Group's Table  -->
-					<div ui:field="divGroupContent" class="tab-pane fade">
-				         <div class="table table-hover table-striped table-bordered">
-						    <div class="thead">
-						    	<div class="tr">
-									<div class="th">
-									  <label><input type="checkbox" class="ace"/></label>
-									</div>
-									<div class="th">Code</div>
-									<div class="th">Description</div>	
-									<div class="th">Action</div>
-								</div>						
+								<g:Anchor ui:field="aDeleteUser" styleName="btn btn-danger hide"
+									title="Delete User">
+									<i class="icon-trash"></i>
+									Delete User
+								</g:Anchor>
 							</div>
-						
-						    
-						<g:HTMLPanel ui:field="panelGroup" styleName="tbody"><!-- div class="tbody"-->
-						</g:HTMLPanel><!--End Tbody  -->
-						</div><!--End Table  -->  
-			        </div>
+						</div>
+						<section class="">
+							<div class="table-container">
+								<g:FlexTable ui:field="tblUser" styleName="table">
+								</g:FlexTable>
+							</div>
+						</section>
+					</div>
+
+					<div class="tab-pane fade" id="groups">
+						<!-- Group's Table -->
+						<div class="row-fluid">
+							<!--Action Buttons -->
+							<div class="action-buttons">
+								<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary"
+									title="Add a New Group">
+									<i class="icon-plus"></i>
+									Add Group
+								</g:Anchor>
+								<g:Anchor ui:field="aEditGroup" styleName="btn btn-success hide"
+									title="Edit Group">
+									<i class="icon-pencil"></i>
+									Edit Group
+								</g:Anchor>
+								
+								<g:Anchor ui:field="aDeleteGroup" styleName="btn btn-danger hide"
+									title="Delete Group">
+									<i class="icon-trash"></i>
+									Delete Group
+								</g:Anchor>
+							</div>
+						</div>
+
+						<section class="">
+							<div class="table-container">
+								<g:FlexTable ui:field="tblGroup" styleName="table">
+								</g:FlexTable>
+							</div>
+						</section>
+					</div>
+					<div class="tab-pane" id="orgs">
+						<!-- Unit's Table -->
+						<div class="row-fluid">
+							<!--Action Buttons -->
+							<div class="action-buttons">
+								<g:Anchor ui:field="aNewOrg" styleName="btn btn-primary"
+									title="Add a New Org">
+									<i class="icon-plus"></i>
+									Add Org
+								</g:Anchor>
+								<g:Anchor ui:field="aEditOrg" styleName="btn btn-success hide"
+									title="Edit Org">
+									<i class="icon-pencil"></i>
+									Edit Org
+								</g:Anchor>
+								
+								<g:Anchor ui:field="aDeleteOrg" styleName="btn btn-danger hide"
+									title="Delete Org">
+									<i class="icon-trash"></i>
+									Delete Org
+								</g:Anchor>
+							</div>
+						</div>
+
+						<section class="">
+							<div class="table-container">
+								<g:FlexTable ui:field="tblOrgs" styleName="table">
+								</g:FlexTable>
+							</div>
+						</section>
+					</div>
 				</div>
-     		</div>
-   		</div>
+			</div>
+
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

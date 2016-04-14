@@ -4,6 +4,7 @@
 	<g:HTMLPanel styleName="full-page">
 
 		<div ui:field="divReportView" class="hide">
+			
 			<div class="btn-toolbar pull-right">
 				<div class="btn-group">
 					<a class="btn dropdown-toggle" data-toggle="dropdown">

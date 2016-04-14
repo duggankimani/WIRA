@@ -103,11 +103,11 @@ public class MessagesView extends ViewImpl implements
 		grid.addColumn(messageKey,"Message Key");
 		grid.addColumn(status, "Status");
 		
-		grid.addSelectionHandler(new SelectionChangeEvent.Handler() {
+		grid.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				RequestInfoDto dto = grid.getSelectedModel();
+				RequestInfoDto dto = grid.getSelectedValue();
 				aViewError.addStyleName("hide");
 				if(dto==null){
 					aView.addStyleName("hide");

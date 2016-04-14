@@ -18,7 +18,11 @@ public class GetGroupsResponse extends BaseResponse{
 	public List<UserGroup> getGroups() {
 		return groups;
 	}
-
+	
+	public UserGroup getGroup() {
+		return groups.get(0);
+	}
+	
 	public void setGroups(List<UserGroup> groups) {
 		this.groups = groups;
 	}

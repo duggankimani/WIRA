@@ -24,7 +24,9 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.dao.OrganizationDao;
 import com.duggan.workflow.server.dao.OutputDocumentDao;
+import com.duggan.workflow.server.dao.PermissionDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
@@ -275,5 +277,13 @@ public class DB {
 
 	public static CatalogDaoImpl getCatalogDao() {
 		return factory().getCatalogDaoImp(getEntityManager());
+	}
+	
+	public static OrganizationDao getOrganizationDao() {
+		return factory().getOrganizationDao(getEntityManager());
+	}
+	
+	public static PermissionDao getPermissionDao() {
+		return factory().getPermissionDao(getEntityManager());
 	}
 }

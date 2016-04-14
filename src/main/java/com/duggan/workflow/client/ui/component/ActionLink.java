@@ -1,5 +1,12 @@
 package com.duggan.workflow.client.ui.component;
 
+import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
@@ -52,5 +59,45 @@ public class ActionLink extends Anchor {
 	            break;
 	    }
 	    super.onBrowserEvent(event);
+	}
+	
+	public void setLoadingState(boolean isLoading) {
+		if (isLoading) {
+			addStyleName("disabled");
+			getElement().setAttribute("disabled", "disabled");
+			getElement().getStyle().setProperty("pointerEvents", "none");
+		} else {
+			removeStyleName("disabled");
+			getElement().removeAttribute("disabled");
+			getElement().getStyle().setProperty("pointerEvents", "auto");
+		}
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		setLoadingState(!enabled);
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		AppContext.getEventBus().addHandler(ProcessingEvent.TYPE,
+				new ProcessingHandler(){
+			@Override
+			public void onProcessing(ProcessingEvent event) {
+				setEnabled(false);
+			}
+		});
+		
+		
+		AppContext.getEventBus().addHandler(ProcessingCompletedEvent.TYPE,
+				new ProcessingCompletedHandler(){
+			@Override
+			public void onProcessingCompleted(
+					ProcessingCompletedEvent event) {
+				setEnabled(true);
+			}
+		});
 	}
 }

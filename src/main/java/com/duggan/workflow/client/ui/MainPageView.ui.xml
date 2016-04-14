@@ -3,6 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:p='urn:import:com.duggan.workflow.client.ui.popup'
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="main-body full-page">
@@ -26,5 +27,7 @@
 			<!-- div class="footer"> A product of Anger Enterprises <span class="copyyear"></span> 
 				</div -->
 		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="popoverPanel"></g:HTMLPanel>
+		<!-- p:ModalPopup ui:field="popup"></p:ModalPopup -->
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -3,14 +3,18 @@ package com.duggan.workflow.server.helper.auth;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.dao.model.Group;
+import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.duggan.workflow.shared.model.UserGroup;
 
 public class DBLoginHelper implements LoginIntf{
@@ -234,6 +238,12 @@ public class DBLoginHelper implements LoginIntf{
 		group.setFullName(usergroup.getFullName());
 		group.setName(usergroup.getName());
 		group.setArchived(false);
+		
+		Set<PermissionModel> permissions = new HashSet<>();
+		for(PermissionPOJO pojo: usergroup.getPermissions()){
+			permissions.add(DB.getPermissionDao().getPermissionByName(pojo.getName()));
+		}
+		group.setPermissions(permissions);
 		
 		dao.saveGroup(group);
 		

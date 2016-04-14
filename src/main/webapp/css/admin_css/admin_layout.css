@@ -294,6 +294,12 @@
 	overflow-y: auto;
 }
 
+/* User Management No over flow, 100% height */
+#main-content .content .no-overflow-y{
+	height:inherit;
+	overflow-y:none;
+}
+
 .content-body .action-buttons {
 	margin-bottom: 15px;
 }
@@ -312,7 +318,7 @@
 .content-body .tab-content {
 	overflow-x: hidden;
 	overflow-y: auto;
-	height: 392px;
+	/*height: 392px;*/
 }
 
 .content-body .table .action-commands a {

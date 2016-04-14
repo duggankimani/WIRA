@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui;
 
+import com.duggan.workflow.client.ui.popup.ModalPopup;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
@@ -27,8 +28,10 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@UiField SpanElement spnAlertContent;
 	@UiField Anchor aView;
 	@UiField Element spnSubject;
-	
+	@UiField HTMLPanel popoverPanel;
 	@UiField Element disconnectionText;
+	
+	ModalPopup popup = new ModalPopup();
 	
 	Timer timer = new Timer() {
 		
@@ -44,7 +47,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public MainPageView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		loadingtext.setId("loading-text");
-		
+		popoverPanel.add(popup);
 	}
 
 	@Override
@@ -112,6 +115,21 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@Override
 	public void clearDisconnectionMsg() {
 		disconnectionText.addClassName("hide");
+	}
+
+	@Override
+	public ModalPopup getModalPopup() {
+		return getModalPopup(false);
+	}
+	
+	@Override
+	public ModalPopup getModalPopup(boolean reinstantiate) {
+		if(reinstantiate){
+			popup = new ModalPopup();
+			popoverPanel.clear();
+			popoverPanel.add(popup);
+		}
+		return popup;
 	}
 
 }

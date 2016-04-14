@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -19,6 +21,8 @@ public class UserGroup implements Serializable, Listable{
 	private String name;
 	
 	private String fullName;
+	
+	private List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
 	
 	public UserGroup(){
 	}
@@ -77,5 +81,13 @@ public class UserGroup implements Serializable, Listable{
 	public String getDisplayName() {
 		
 		return fullName;
+	}
+
+	public List<PermissionPOJO> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<PermissionPOJO> permissions) {
+		this.permissions = permissions;
 	}
 }

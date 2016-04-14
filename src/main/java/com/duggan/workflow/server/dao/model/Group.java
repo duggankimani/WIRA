@@ -2,6 +2,7 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,6 +49,13 @@ public class Group extends PO {
 	joinColumns={@JoinColumn(name="groupid")},
 	inverseJoinColumns={@JoinColumn(name="processid")})
 	private Collection<ProcessDefModel> processDef = new HashSet<>();
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE,
+			CascadeType.REFRESH, CascadeType.PERSIST })
+	@JoinTable(name = "role_permissions", 
+	joinColumns = @JoinColumn(name = "roleid"), inverseJoinColumns = @JoinColumn(name = "permissionid"))
+	private Set<PermissionModel> permissions = new HashSet<>();
+
 	
 	private boolean isArchived;
 	
@@ -126,6 +134,15 @@ public class Group extends PO {
 
 	public void removeProcessDef(ProcessDefModel processDefModel) {
 		processDef.remove(processDefModel);
+	}
+	
+	public Set<PermissionModel> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<PermissionModel> permissions) {
+		this.permissions.clear();
+		this.permissions.addAll(permissions);
 	}
 
 }

@@ -16,6 +16,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent.WorkflowProcessHandler;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
+import com.duggan.workflow.client.ui.popup.ModalPopup;
 import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
 import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowAttachmentHandler;
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
@@ -53,6 +54,8 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 		void setAlertVisible(String subject, String action, String url);
 		void showDisconnectionMessage(String message);
 		void clearDisconnectionMsg();
+		ModalPopup getModalPopup();
+		ModalPopup getModalPopup(boolean reInstantiate);
 	}
 
 	@ProxyCodeSplit

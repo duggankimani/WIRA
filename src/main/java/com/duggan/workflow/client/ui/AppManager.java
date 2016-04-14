@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
-import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
+import com.duggan.workflow.client.ui.popup.ModalPopup;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Style.Unit;
@@ -22,8 +22,7 @@ public class AppManager {
 
 	@Inject
 	static MainPagePresenter mainPagePresenter;
-	@Inject
-	static GenericPopupPresenter popupPresenter;
+	
 	@Inject
 	static PropertyPanelPresenter propertyPanel;
 
@@ -39,28 +38,28 @@ public class AppManager {
 	
 	public static void showPopUp(String header, Widget widget,final String customPopupStyle,
 			final OnOptionSelected onOptionSelected, String... buttons) {
-		popupPresenter.setHeader(header);
-		popupPresenter.setInSlot(GenericPopupPresenter.BODY_SLOT, null);
-		popupPresenter.setInSlot(GenericPopupPresenter.BUTTON_SLOT, null);
-
-		popupPresenter.getView().setInSlot(GenericPopupPresenter.BODY_SLOT,
-				widget);
+		
+		final ModalPopup modalPopup = mainPagePresenter.getView().getModalPopup(true);
+		modalPopup.clear();
+		
+		modalPopup.setHeader(header);
+		modalPopup.setContent(widget);
 		
 		if(customPopupStyle!=null){
-			popupPresenter.getView().addStyleName(customPopupStyle);
-			//popupPresenter.getView().removeStyleName("modal");
+			modalPopup.addStyleName(customPopupStyle);
 		}
 		
 		for (final String text : buttons) {
-			Anchor aLnk = new Anchor();
-			if (text.equals("Cancel")) {
-				aLnk.setHTML("&nbsp;<i class=\"icon-remove\"></i>" + text);
-				aLnk.setStyleName("btn btn-danger pull-left");
-			} else {
-				aLnk.setHTML(text
-						+ "&nbsp;<i class=\"icon-double-angle-right\"></i>");
-				aLnk.setStyleName("btn btn-primary pull-right");
-			}
+			Anchor aLnk = new Anchor(text);
+			aLnk.setStyleName("btn");
+//			if (text.equals("Cancel")) {
+//				aLnk.setHTML("&nbsp;<i class=\"icon-remove\"></i>" + text);
+//				aLnk.setStyleName("btn btn-danger pull-left");
+//			} else {
+//				aLnk.setHTML(text
+//						+ "&nbsp;<i class=\"icon-double-angle-right\"></i>");
+//				aLnk.setStyleName("btn btn-primary pull-right");
+//			}
 
 			aLnk.addClickHandler(new ClickHandler() {
 
@@ -69,26 +68,23 @@ public class AppManager {
 										
 					if (onOptionSelected instanceof OptionControl) {
 						((OptionControl) onOptionSelected)
-								.setPopupView((PopupView) (popupPresenter
-										.getView()));
+								.setPopupView((PopupView) modalPopup);
 						onOptionSelected.onSelect(text);
 					} else {
-						popupPresenter.getView().hide();
+						modalPopup.hide();
 						onOptionSelected.onSelect(text);
 					}
 					
 					
-					if(!popupPresenter.isVisible() && customPopupStyle!=null){
-						popupPresenter.getView().removeStyleName(customPopupStyle);
+					if(!modalPopup.isVisible() && customPopupStyle!=null){
+						modalPopup.removeStyleName(customPopupStyle);
 					}
 				}
 			});
-			popupPresenter.getView().addToSlot(
-					GenericPopupPresenter.BUTTON_SLOT, aLnk);
+			modalPopup.addButton(aLnk);
 		}
 
-		mainPagePresenter.addToPopupSlot(popupPresenter, false);
-		// popupPresenter.getView().center();
+		modalPopup.show();
 	}
 
 	public static void showPopUp(String header,

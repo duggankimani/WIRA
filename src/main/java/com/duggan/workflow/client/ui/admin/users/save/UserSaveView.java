@@ -1,44 +1,57 @@
 package com.duggan.workflow.client.ui.admin.users.save;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Module;
+import com.duggan.workflow.shared.model.Org;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.requests.GetGroupsRequest;
+import com.duggan.workflow.shared.requests.GetOrgsRequest;
+import com.duggan.workflow.shared.requests.GetPermissionsRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.responses.GetGroupsResponse;
+import com.duggan.workflow.shared.responses.GetOrgsResponse;
+import com.duggan.workflow.shared.responses.GetPermissionsResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.PopupViewImpl;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.mvp.client.ViewImpl;
 
-public class UserSaveView extends PopupViewImpl implements
+public class UserSaveView extends ViewImpl implements
 		UserSavePresenter.IUserSaveView {
 
-	private final Widget widget;
 	@UiField HTMLPanel divUserDetails;
 	@UiField HTMLPanel divGroupDetails;
 	@UiField IssuesPanel issues;
-	@UiField Anchor aClose;
 
 	@UiField TextField txtUserName;
 	@UiField TextField txtFirstname;
@@ -51,33 +64,41 @@ public class UserSaveView extends PopupViewImpl implements
 	@UiField TextArea txtDescription;
 	//@UiField TextField txtUsers;
 
-	@UiField PopupPanel AddUserDialog;
 	@UiField Anchor aSaveGroup;
 	@UiField Anchor aSaveUser;
 
-	@UiField SpanElement header;
-	
 	@UiField DivElement divUserSave;
 	@UiField Uploader uploader;
 	//@UiField ListField<UserGroup> lstGroups;
 	@UiField AutoCompleteField<UserGroup> lstGroups;
 	
+	@UiField
+	HTMLPanel divUnitDetails;
+
+	@UiField
+	DropDownList<Org> lstOrg;
+	
+	@UiField
+	FlexTable tblPermissions;
+	// Organization/ unit
+	@UiField
+	TextField txtUnitName;
+
+	
+	@UiField
+	Element divPermissions;
+
 	TYPE type;
+	private UserGroup group;
+	private Org org;
 	
 	public interface Binder extends UiBinder<Widget, UserSaveView> {
 	}
 
 	@Inject
 	public UserSaveView(final EventBus eventBus, final Binder binder) {
-		super(eventBus);
-		widget = binder.createAndBindUi(this);
-		aClose.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				hide();
-			}
-		});
-				
+		initWidget(binder.createAndBindUi(this));
+		
 		//----Calculate the Size of Screen; To be Centralized later -----
 		int height = Window.getClientHeight();
 		int width = Window.getClientWidth();
@@ -86,7 +107,7 @@ public class UserSaveView extends PopupViewImpl implements
 		double height1=(5.0/100.0)*height;
 		double width1= (50.0/100.0)*width;
 		
-		AddUserDialog.setPopupPosition((int)width1,(int)height1);
+//		AddUserDialog.setPopupPosition((int)width1,(int)height1);
 		
 		txtUserName.addValueChangeHandler(new ValueChangeHandler<String>() {
 			
@@ -95,8 +116,193 @@ public class UserSaveView extends PopupViewImpl implements
 				setContext(event.getValue());
 			}
 		});
-		
 	}
+	
+	public void init(TYPE type, Object dto) {
+		this.type = type;
+		setType(type);
+		if (dto != null) {
+			if (dto instanceof HTUser) {
+				setUser((HTUser) dto);
+				loadPermissions();
+			}
+			if (dto instanceof UserGroup) {
+				setGroup((UserGroup) dto);
+			}
+
+			if (dto instanceof Org) {
+				setOrg((Org) dto);
+			}
+		}
+	
+		if (type == TYPE.GROUP) {
+			loadPermissions();
+		}else if (type == TYPE.USER) {
+			loadGroups();
+		}
+	
+	}
+	
+	private void loadGroups() {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetGroupsRequest());
+		action.addRequest(new GetOrgsRequest(null,0,100));
+
+		AppContext.getDispatcher().execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						GetGroupsResponse getGroups = (GetGroupsResponse) aResponse
+								.get(0);
+						lstGroups.setValues(getGroups.getGroups());
+						if (user != null && user.getGroups() != null) {
+							lstGroups.select(user.getGroups());
+						}
+
+						GetOrgsResponse getOrgs = (GetOrgsResponse) aResponse
+								.get(1);
+						lstOrg.setItems(getOrgs.getOrgs());
+						if (user != null && user.getOrg() != null) {
+							lstOrg.setValue(user.getOrg());
+						}
+					}
+				});
+	}
+
+	private void loadPermissions() {
+
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetPermissionsRequest());
+
+		final String userId = user==null? null :user.getUserId();
+		final String roleName = group==null? null: group.getName(); 
+		
+		if(userId!=null || roleName!=null){
+			action.addRequest(new GetPermissionsRequest(userId,roleName));
+		}
+		
+		AppContext.getDispatcher().execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						GetPermissionsResponse getPermissions = (GetPermissionsResponse) aResponse
+								.get(0);
+						List<PermissionPOJO> permissions = getPermissions
+								.getPermissions();
+						
+						if(userId!=null || roleName!=null){
+							GetPermissionsResponse groupPermissionsResp = (GetPermissionsResponse) aResponse
+									.get(1);
+							List<PermissionPOJO> groupPermissions = groupPermissionsResp
+									.getPermissions();
+							
+							for(PermissionPOJO pojo: groupPermissions){
+								int idx = permissions.indexOf(pojo);
+								permissions.remove(idx);
+								permissions.add(idx, pojo);
+							}
+							
+						}
+						
+						showPermissions(permissions);
+					}
+				});
+
+	}
+
+	protected void showPermissions(List<PermissionPOJO> permissions) {
+		divPermissions.removeClassName("hide");
+		int j = 0;
+		Collections.sort(permissions, new Comparator<PermissionPOJO>() {
+			@Override
+			public int compare(PermissionPOJO pojo1, PermissionPOJO pojo2) {
+				return pojo1.getName().getModule()
+						.compareTo(pojo2.getName().getModule());
+			}
+		});
+
+		Module mod = null;
+		int col = 0;
+		int row1 = 0;
+		int row2 = 0;
+		int i = 0;
+		for (PermissionPOJO permission : permissions) {
+
+			if (mod == null) {
+				i = row1;
+				mod = permission.getName().getModule();
+				HTMLPanel header = new HTMLPanel("" + mod.getDisplayName());
+				header.addStyleName("permission-header");
+				tblPermissions.setWidget(i, col + 1, header);
+				tblPermissions.getFlexCellFormatter().setWidth(i, col, "50px");
+//				tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
+//						"permissions-td-header");
+
+				++i;
+			} else if (mod != permission.getName().getModule()) {
+				if (col == 0) {
+					col = 3;
+					i = row2;
+				} else {
+					col = 0;
+					i = row1;
+				}
+				mod = permission.getName().getModule();
+				HTMLPanel header = new HTMLPanel("" + mod.getDisplayName());
+				header.addStyleName("permission-header");
+				tblPermissions.getFlexCellFormatter().setWidth(i, 0, "50px");
+				tblPermissions.setWidget(i, col + 1, header);
+//				tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
+//						"permissions");
+
+				++i;
+			}
+
+			tblPermissions.setWidget(i, col, new PermissionPanel(permission, type == TYPE.GROUP));
+			HTMLPanel description = new HTMLPanel(permission.getDescription());
+			description.addStyleName("item");
+			tblPermissions.setWidget(i, col + 1, description);
+//			tblPermissions.getFlexCellFormatter().addStyleName(i, col + 1,
+//					"permissions");
+
+			++i;
+
+			if (col == 0) {
+				row1 = i;
+			} else {
+				row2 = i;
+			}
+		}
+	}
+
+	public boolean isValid() {
+		boolean isValid = true;
+		switch (type) {
+		case GROUP:
+			isValid = isGroupValid();
+			break;
+		case USER:
+			isValid = isUserValid();
+			break;
+		case ORG:
+			if (isNullOrEmpty(txtUnitName.getValue())) {
+				isValid = false;
+				issues.addError("Unit name is mandatory");
+//				txtUnitName.setValid(false);
+			}
+			break;
+		}
+
+		if (!isValid) {
+			issues.removeStyleName("hide");
+		} else {
+			issues.addStyleName("hide");
+		}
+
+		return isValid;
+	}
+
+
 
 	protected void setContext(String value) {
 		UploadContext context = new UploadContext();
@@ -105,56 +311,102 @@ public class UserSaveView extends PopupViewImpl implements
 		context.setAccept("png,jpeg,jpg,gif");
 		uploader.setContext(context);
 	}
-
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
 	
-	public boolean isValid(){
-		
-		boolean isValid=true;
-		
-		switch (type) {
-		case GROUP:
-			isValid =  isGroupValid();
-			break;
 
-		default:
-			isValid =  isUserValid();
-			break;
+	public UserGroup getGroup(){
+		UserGroup group = this.group;
+		if(group==null){
+			group = new UserGroup();
 		}
 		
-		return isValid;
-	}
-	
-	public UserGroup getGroup(){
-		UserGroup group = new UserGroup();
 		group.setFullName(txtDescription.getValue());
 		group.setName(txtGroupname.getValue());
+		
+		List<PermissionPOJO> permissions = getPermissions();
+		group.setPermissions(permissions);
 		
 		return group;
 	}
 	
+	private List<PermissionPOJO> getPermissions() {
+		int rowCount = tblPermissions.getRowCount();
+		List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
+		for (int i = 0; i < rowCount; i++) {
+
+			// Col Set 1
+			Widget w = tblPermissions.getWidget(i, 0);
+			PermissionPanel panel = getPermissionPanel(w);
+			if (panel != null){
+				PermissionPOJO permission =panel.getPermission();
+				if(permission.isPermissionGranted()){		
+					permissions.add(permission);
+				}
+			}
+
+			// Col Set 2
+			int cellCount = tblPermissions.getCellCount(i);
+			if (cellCount > 2) {
+				w = tblPermissions.getWidget(i, 3);
+				panel = getPermissionPanel(w);
+				if (panel != null){
+					PermissionPOJO permission =panel.getPermission();
+					if(permission.isPermissionGranted()){		
+						permissions.add(permission);
+					}
+				}
+			}
+		}
+		return permissions;
+	}
+
+	private PermissionPanel getPermissionPanel(Widget w) {
+		if (w instanceof PermissionPanel) {
+			return ((PermissionPanel) w);
+		}
+		return null;
+	}
+
+	
 	public void setGroup(UserGroup group){
+		this.group = group;
 		txtDescription.setValue(group.getFullName());
 		txtGroupname.setValue(group.getName());
 	}
 	
 	public HTUser getUser(){
-		HTUser user = new HTUser();
+		HTUser user = this.user;
+		if(user==null){
+			user = new HTUser();
+		}
 		user.setEmail(txtEmail.getValue());
 		user.setName(txtFirstname.getValue());
 		user.setPassword(txtPassword.getValue());
 		user.setSurname(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
+		user.setOrg(lstOrg.getValue());
 		
 		return user;
 	}
 	
+	public Org getOrg() {
+		Org org = this.org;
+		if (org == null) {
+			org = new Org();
+		}
+		org.setName(txtUnitName.getValue());
+		return org;
+	}
+	
+	public void setOrg(Org org) {
+		this.org = org;
+		txtUnitName.setValue(org.getName());
+	}
+
+	
 	HTUser user;
 	public void setUser(HTUser user){
+		this.user = user;
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getName());
 		txtPassword.setValue(user.getPassword());
@@ -224,19 +476,19 @@ public class UserSaveView extends PopupViewImpl implements
 		return aSaveGroup;
 	}
 	
-	@Override
-	public void setType(TYPE type) {
+	private void setType(TYPE type) {
 		this.type=type;
-		if(type==TYPE.GROUP){
+		this.type = type;
+		divUserDetails.addStyleName("hide");
+		divGroupDetails.addStyleName("hide");
+		divUnitDetails.addStyleName("hide");
+
+		if (type == TYPE.GROUP) {
 			divGroupDetails.removeStyleName("hide");
-			divUserDetails.addStyleName("hide");
-			divUserSave.addClassName("hide");
-			header.setInnerText("New Group");
-		}else{
+		} else if (type == TYPE.USER) {
 			divUserDetails.removeStyleName("hide");
-			divGroupDetails.addStyleName("hide");
-			divUserSave.removeClassName("hide");
-			header.setInnerText("New User");
+		} else {
+			divUnitDetails.removeStyleName("hide");
 		}
 	}
 

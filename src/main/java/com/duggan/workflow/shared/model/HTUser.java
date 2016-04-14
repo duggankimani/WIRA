@@ -1,9 +1,10 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class HTUser implements Listable,Serializable {
+public class HTUser implements Listable,HasKey,Serializable {
 
 	private static final long serialVersionUID = -5249516544970187459L;
 	private Long id;
@@ -15,6 +16,9 @@ public class HTUser implements Listable,Serializable {
 	private List<UserGroup> groups ;
 	private int participated;
 	private int inbox;
+	private int drafts;
+	private List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
+	private Org org;
 	
 	public HTUser() {
 	}
@@ -164,5 +168,34 @@ public class HTUser implements Listable,Serializable {
 	@Override
 	public String getDisplayName() {
 		return getFullName();
+	}
+
+	@Override
+	public String getKey() {
+		return userId;
+	}
+
+	public int getDrafts() {
+		return drafts;
+	}
+
+	public void setDrafts(int drafts) {
+		this.drafts = drafts;
+	}
+
+	public List<PermissionPOJO> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<PermissionPOJO> permissions) {
+		this.permissions = permissions;
+	}
+
+	public Org getOrg() {
+		return org;
+	}
+
+	public void setOrg(Org org) {
+		this.org = org;
 	}
 }

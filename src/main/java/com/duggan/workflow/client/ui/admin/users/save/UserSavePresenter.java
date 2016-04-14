@@ -6,6 +6,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.LoadGroupsEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Org;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
@@ -16,18 +17,16 @@ import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
 
 public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSaveView> {
 
-	public interface IUserSaveView extends PopupView {
+	public interface IUserSaveView extends View {
 
-		void setType(TYPE type);
-		
 		HasClickHandlers getSaveUser();
 		
 		HasClickHandlers getSaveGroup();
@@ -44,13 +43,27 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 
 		void setGroups(List<UserGroup> groups);
 		
+		void init(TYPE type, Object dto);
+
+		Org getOrg();
+		
 	}
 
 	public enum TYPE{
-		GROUP, USER
+		GROUP ("Group"), USER("User"), ORG("Orgs");
+		
+		private String displayName;
+
+		private TYPE(String displayName){
+			this.displayName = displayName;
+		}
+		
+		public String displayName(){
+			return displayName;
+		}
 	}
 	
-	TYPE type;
+//	TYPE type;
 	
 	HTUser user;
 	
@@ -82,7 +95,6 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 						public void processResult(SaveUserResponse result) {
 							user = result.getUser();
 							getView().setUser(user);
-							getView().hide();
 							fireEvent(new LoadUsersEvent());
 						}
 					});
@@ -105,7 +117,6 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 							group = result.getGroup();
 							getView().setGroup(group);
 							fireEvent(new LoadGroupsEvent());
-							getView().hide();
 						}
 					});
 				}
@@ -128,18 +139,7 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 		});
 	}
 	
-	public void setType(TYPE type, Object value){
-		this.type = type;
-		getView().setType(type);
-		if(value!=null){
-			if(type==TYPE.USER){
-				user= (HTUser)value;
-				getView().setUser(user);
-			}else{
-				group= (UserGroup)value;
-				getView().setGroup(group);
-			}
-		}
-		
+	public void init(TYPE type, Object value){
+		getView().init(type, value);
 	}
 }

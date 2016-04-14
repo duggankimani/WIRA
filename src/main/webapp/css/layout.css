@@ -83,7 +83,7 @@ body .alert a {
 }
 
 /*Uploader Modal */
-.modal {
+/*.modal {
 	max-width: 40%;
 }
 
@@ -101,7 +101,6 @@ body .alert a {
 }
 
 .modal-admin .modal-body {
-	/*max-height: 100%;*/
 	
 }
 
@@ -129,7 +128,7 @@ body .alert a {
 
 .modal-footer {
 	padding: 5px 6px 5px 0px;
-}
+}*/
 
 /*Document Modal */
 .dialogTopCenterInner {
