@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 import java.util.Arrays;
 import java.util.List;
 
+import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
@@ -10,10 +11,7 @@ import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
-import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
@@ -53,15 +51,12 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class FormBuilderPresenter extends
@@ -109,7 +104,7 @@ public class FormBuilderPresenter extends
 	@Inject PlaceManager placeManager;
 
 	Long formId=null;
-	Long processDefId = 0L;
+	String processRefId = null;
 	
 	@Inject
 	public FormBuilderPresenter(final EventBus eventBus,
@@ -136,17 +131,11 @@ public class FormBuilderPresenter extends
 						Form form = event.getValue();
 
 						if (form==null || form.getId() == null) {
-							History.newItem("formbuilder;processdefid="+processDefId);
+							History.newItem("formbuilder;p="+processRefId);
 							return;
 						}
 						
-//						placeManager.revealPlace(new PlaceRequest.Builder()
-//						.nameToken(NameTokens.formbuilder)
-//						.with("processdefid", processDefId+"")
-//						.with("formid",form.getId()+"")
-//						.build());
-						
-						History.newItem("formbuilder;processdefid="+processDefId+";formid="+form.getId(), false);
+						History.newItem("formbuilder;p="+processRefId+";formid="+form.getId(), false);
 						
 						loadForm(form.getId());						
 					}
@@ -289,7 +278,7 @@ public class FormBuilderPresenter extends
 
 	protected void processChanged(ProcessDef def) {
 		if(def==null){
-			processDefId=null;
+			processRefId=null;
 			placeManager.revealPlace(new PlaceRequest.Builder()
 			.nameToken(NameTokens.formbuilder)
 			.build());
@@ -297,10 +286,10 @@ public class FormBuilderPresenter extends
 		}
 		
 		
-		processDefId = def.getId();
+		processRefId = def.getRefId();
 		placeManager.revealPlace(new PlaceRequest.Builder()
 		.nameToken(NameTokens.formbuilder)
-		.with("processdefid", processDefId+"")
+		.with("p", processRefId+"")
 		.build());
 	}
 
@@ -309,7 +298,7 @@ public class FormBuilderPresenter extends
 		DeleteFormModelRequest request = new DeleteFormModelRequest(form);
 		action.addRequest(request);
 		
-		GetFormsRequest formsRequest = new GetFormsRequest(processDefId);
+		GetFormsRequest formsRequest = new GetFormsRequest(processRefId);
 		action.addRequest(formsRequest);
 		
 		dispatcher.execute(action,
@@ -329,8 +318,8 @@ public class FormBuilderPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		getView().clear();
-		
-		processDefId = new Long(request.getParameter("processdefid", "0"));
+		fireEvent(new ProcessChildLoadedEvent(this));
+		processRefId = request.getParameter("p",null);
 		
 		String value = request.getParameter("formid", "");	
 		Long formId=null;
@@ -340,7 +329,7 @@ public class FormBuilderPresenter extends
 		}
 		setFormId(formId);
 		
-		boolean isProcessSelected = processDefId!=null || !processDefId.equals(0L);
+		boolean isProcessSelected = processRefId!=null || !processRefId.equals(0L);
 		getView().enableCreateForm(isProcessSelected);		
 		
 		if(isProcessSelected){
@@ -348,20 +337,6 @@ public class FormBuilderPresenter extends
 		}else{
 			loadProcesses();
 		}
-	}
-
-	private void loadProcesses() {
-		GetProcessesRequest request = new GetProcessesRequest(false);
-		dispatcher.execute(request, new ServiceCallback<GetProcessesResponse>() {
-			@Override
-			public void processResult(GetProcessesResponse aResponse) {
-				getView().setProcesses(aResponse.getProcesses());
-				if(processDefId==null && !aResponse.getProcesses().isEmpty()){
-					ProcessDef process = aResponse.getProcesses().get(0);
-					processChanged(process);
-				}
-			}
-		});
 	}
 
 	protected void selectProcess(ProcessDef def) {
@@ -381,16 +356,17 @@ public class FormBuilderPresenter extends
 					}
 				});
 	}
+	
 
 	protected void saveForm(Form form) {
-		form.setProcessDefId(processDefId);
-		assert form.getProcessDefId()!=null;
+		form.setProcessRefId(processRefId);
+		assert form.getProcessRefId()!=null;
 		
 		this.formId=null;
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new CreateFormRequest(form));
 		
-		GetFormsRequest formsRequest = new GetFormsRequest(processDefId);
+		GetFormsRequest formsRequest = new GetFormsRequest(processRefId);
 		action.addRequest(formsRequest);
 		dispatcher.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -410,7 +386,7 @@ public class FormBuilderPresenter extends
 	private void loadForms() {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetProcessesRequest(false));
-		action.addRequest(new GetFormsRequest(processDefId));
+		action.addRequest(new GetFormsRequest(processRefId));
 		
 		if(formId!=null){
 			GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL,
@@ -423,9 +399,9 @@ public class FormBuilderPresenter extends
 			public void processResult(MultiRequestActionResult results) {
 				GetProcessesResponse aResponse = (GetProcessesResponse) results.get(0);
 				getView().setProcesses(aResponse.getProcesses());
-				if(processDefId!=null)
+				if(processRefId!=null)
 				for(ProcessDef d: aResponse.getProcesses()){
-					if(d.getId().equals(processDefId)){
+					if(d.getId().equals(processRefId)){
 						selectProcess(d);
 					}
 				}
@@ -438,6 +414,20 @@ public class FormBuilderPresenter extends
 					GetFormModelResponse response = (GetFormModelResponse)results.get(2);
 					Form form = (Form) response.getFormModel().get(0);
 					getView().setForm(form);
+				}
+			}
+		});
+	}
+	
+	private void loadProcesses() {
+		GetProcessesRequest request = new GetProcessesRequest(false);
+		dispatcher.execute(request, new ServiceCallback<GetProcessesResponse>() {
+			@Override
+			public void processResult(GetProcessesResponse aResponse) {
+				getView().setProcesses(aResponse.getProcesses());
+				if(processRefId==null && !aResponse.getProcesses().isEmpty()){
+					ProcessDef process = aResponse.getProcesses().get(0);
+					processChanged(process);
 				}
 			}
 		});

@@ -30,6 +30,8 @@ public class ADOutputDoc extends PO {
 	@Cascade(value={CascadeType.ALL})
 	private LocalAttachment attachment;
 	
+	private String processRefId;
+	
 	public ADOutputDoc() {
 	}
 	
@@ -72,6 +74,14 @@ public class ADOutputDoc extends PO {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 	
 	

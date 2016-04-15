@@ -17,6 +17,7 @@ public class Form extends FormModel implements Listable, Serializable{
 	private List<Property> properties;
 	private List<Field> fields;
 	private Long processDefId;
+	private String processRefId;
 	
 	/**
 	 * Map<Parent,Children> dependency map
@@ -125,6 +126,14 @@ public class Form extends FormModel implements Listable, Serializable{
 
 	public void setDependencies(Map<String, List<String>> dependencies) {
 		this.dependencies = dependencies;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 	
 	

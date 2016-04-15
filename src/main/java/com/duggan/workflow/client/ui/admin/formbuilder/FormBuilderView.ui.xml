@@ -57,11 +57,11 @@
 			   </div>	
 
 			    <div class="span3 pull-right">
-			    	<div class="span6">
-			    		<d:DropDownList ui:field="processDropdown" styleName="input-medium"></d:DropDownList>
+			    	<div class="hide">
+			    		<d:DropDownList ui:field="processDropdown" styleName="input-medium hide"></d:DropDownList>
 			    	</div>
-			    	<div class="span6">
-			   			<d:DropDownList ui:field="frmDropdown" styleName="input-medium"></d:DropDownList>
+			    	<div class="span12">
+			   			<d:DropDownList ui:field="frmDropdown" styleName="input-xlarge"></d:DropDownList>
 			   		</div>	
 			   </div>															
 			</div>

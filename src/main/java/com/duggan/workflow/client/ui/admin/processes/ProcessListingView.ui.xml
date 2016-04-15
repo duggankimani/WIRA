@@ -1,11 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-
-<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
-	ui:generateLocales='default'>
-
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 		<div class="content-body overflow-y" ui:field="divProcessListing">
 			<div class="row-fluid">
@@ -72,25 +67,5 @@
 				</div>
 			</section>
 		</div>
-
-		<div class="content-body overflow-y hide" ui:field="divProcessConfig">
-			<ul class="breadcrumb hide">
-				<li>
-					<a href="#processes">Processes</a>
-					<span class="divider">/</span>
-				</li>
-				<li class="active">
-					<span ui:field="spnProcessName"></span>
-				</li>
-			</ul>
-			
-			<img src="http://127.0.0.1:8888/getreport?docRefId=zUUGMWaRsdSybOkQ&amp;ACTION=GETDOCUMENTPROCESS">
-			</img>
-			<div class="row-fluid hide">
-				<g:HTMLPanel ui:field="processStepsPanel">
-				</g:HTMLPanel>
-			</div>
-		</div>
-		
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -29,6 +29,8 @@ public class ADTrigger extends PO{
 	
 	private String name;
 	
+	private String processRefId;
+	
 	private String imports;
 	
 	@Column(length=5000)
@@ -78,6 +80,14 @@ public class ADTrigger extends PO{
 
 	public void setImports(String imports) {
 		this.imports = imports;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 	
 }

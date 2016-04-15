@@ -103,7 +103,7 @@ public class SaveTriggerView extends Composite {
 	}
 
 	public void setTriggers(List<Trigger> triggers) {
-
+		showTriggers(true);
 		lstTrigger.setItems(triggers);
 	}
 

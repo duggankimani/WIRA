@@ -17,6 +17,7 @@ public class OutputDocument implements Serializable, Listable {
 	private Long attachmentId;
 	private String attachmentName;
 	private String path;
+	private String processRefId;
 	
 	public OutputDocument() {
 	}
@@ -84,6 +85,14 @@ public class OutputDocument implements Serializable, Listable {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 
 }

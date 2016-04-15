@@ -511,6 +511,19 @@ public class ProcessDefHelper {
 
 		return triggers;
 	}
+	
+	public static List<Trigger> getTriggers(String processRefId) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+
+		List<Trigger> triggers = new ArrayList<>();
+		List<ADTrigger> adTriggers = dao.getTriggers(processRefId);
+
+		for (ADTrigger adtrigger : adTriggers) {
+			triggers.add(getTrigger(adtrigger));
+		}
+
+		return triggers;
+	}
 
 	// public static List<Trigger> getTriggers(Long taskStepId, TriggerType
 	// type) {
@@ -550,6 +563,7 @@ public class ProcessDefHelper {
 		trigger.setName(po.getName());
 		trigger.setScript(po.getScript());
 		trigger.setImports(po.getImports());
+		trigger.setProcessRefId(po.getProcessRefId());
 		return trigger;
 	}
 
@@ -562,6 +576,7 @@ public class ProcessDefHelper {
 			po = dao.getById(ADTrigger.class, trigger.getId());
 		}
 
+		po.setProcessRefId(trigger.getProcessRefId());
 		po.setName(trigger.getName());
 		po.setImports(trigger.getImports());
 		po.setScript(trigger.getScript());

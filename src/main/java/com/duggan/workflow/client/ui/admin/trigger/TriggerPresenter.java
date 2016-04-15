@@ -2,13 +2,13 @@ package com.duggan.workflow.client.ui.admin.trigger;
 
 import java.util.List;
 
+import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
@@ -26,13 +26,12 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class TriggerPresenter extends
 		Presenter<TriggerPresenter.ITriggerView, TriggerPresenter.MyProxy>
@@ -40,32 +39,25 @@ public class TriggerPresenter extends
 
 	public interface ITriggerView extends View {
 		HasClickHandlers getAddTriggerLink();
-
 		HasClickHandlers getCloneTriggerLink();
-
 		void setTriggers(List<Trigger> triggeruments);
 	}
 
 	@ProxyCodeSplit
 	@NameToken(NameTokens.triggers)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<TriggerPresenter> {
+	public interface MyProxy extends ProxyPlace<TriggerPresenter> {
 	}
-
-	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		return new TabDataExt("Triggers", "icon-wrench", 5, adminGatekeeper);
-	}
-
 
 	@Inject
 	DispatchAsync requestHelper;
 	List<Trigger> triggers;// For Cloning
+	private String processRefId;
 
 	@Inject
 	public TriggerPresenter(final EventBus eventBus, final ITriggerView view,
 			final MyProxy proxy) {
-		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
+		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 	}
 
 	@Override
@@ -87,6 +79,14 @@ public class TriggerPresenter extends
 			}
 		});
 	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		fireEvent(new ProcessChildLoadedEvent(this));
+		processRefId = request.getParameter("p",null);
+		load();
+	}
 
 	protected void showClonePopup() {
 		final SaveTriggerView view = new SaveTriggerView();
@@ -97,6 +97,7 @@ public class TriggerPresenter extends
 					public void onSelect(String name) {
 						if (name.equals("Save") && view.isValid()) {
 							Trigger trigger = view.getTrigger();
+							trigger.setId(null);//Generate new
 							save(trigger);
 							hide();
 						}
@@ -132,10 +133,8 @@ public class TriggerPresenter extends
 
 	}
 
-	@Override
-	protected void onReset() {
-		super.onReset();
-		requestHelper.execute(new GetTriggersRequest(),
+	protected void load() {
+		requestHelper.execute(new GetTriggersRequest(processRefId),
 				new TaskServiceCallback<GetTriggersResponse>() {
 					@Override
 					public void processResult(GetTriggersResponse aResponse) {
@@ -146,9 +145,10 @@ public class TriggerPresenter extends
 	}
 
 	private void save(Trigger trigger) {
+		trigger.setProcessRefId(processRefId);
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new SaveTriggerRequest(trigger));
-		requests.addRequest(new GetTriggersRequest());
+		requests.addRequest(new GetTriggersRequest(processRefId));
 		requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -172,8 +172,8 @@ public class TriggerPresenter extends
 		final Trigger trigger = event.getTrigger();
 		if (!trigger.isActive()) {
 			// deleting
-			AppManager.showPopUp("Delete '" + trigger.getName() + "'",
-					"Do you want to delete this trigger?",
+			AppManager.showPopUp("Delete Trigger",
+					"Do you want to delete trigger '"+trigger.getName()+"'?",
 					new OnOptionSelected() {
 						@Override
 						public void onSelect(String name) {

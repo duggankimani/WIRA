@@ -2,8 +2,11 @@ package com.duggan.workflow.client.ui.admin.processes;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.util.DateUtils;
@@ -22,17 +25,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class ProcessView extends ViewImpl implements
-		ProcessPresenter.IProcessView {
+class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyView {
+    interface Binder extends UiBinder<Widget, ProcessListingView> {
+    }
 
-	private final Widget widget;
-	@UiField
+    @UiField
 	Anchor aNewProcess;
 	@UiField
 	Anchor aStartProcesses;
@@ -61,39 +63,13 @@ public class ProcessView extends ViewImpl implements
 	@UiField
 	Anchor aConfigure;
 
-	@UiField
-	Element divProcessListing;
 
-	@UiField
-	Element divProcessConfig;
-
-	@UiField
-	Element spnProcessName;
-
-	@UiField
-	HTMLPanel processStepsPanel;
-
-	public interface Binder extends UiBinder<Widget, ProcessView> {
-	}
-
-	@Inject
-	public ProcessView(final Binder binder) {
-		widget = binder.createAndBindUi(this);
-	}
-
-	@Override
-	public void setInSlot(Object slot, IsWidget content) {
-		if (slot == ProcessPresenter.TABLE_SLOT) {
-			processStepsPanel.clear();
-			if (content != null) {
-				processStepsPanel.add(content);
-			}
-		} else {
-			super.setInSlot(slot, content);
-		}
-	}
-
-	@Override
+    @Inject
+    ProcessListingView(Binder uiBinder) {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+    
+    @Override
 	public void bindProcesses(List<ProcessDef> processDefinitions) {
 		tblProcesses.removeAllRows();
 		setProcessHeaders(tblProcesses);
@@ -124,8 +100,8 @@ public class ProcessView extends ViewImpl implements
 					AppContext.getPlaceManager().revealPlace(
 							new PlaceRequest.Builder()
 									.nameToken(NameTokens.processes)
-									.with("a", ProcessPresenter.ACTION_CONFIG)
-									.with("pd", processDef.getRefId()).build());
+									.with("a", ProcessPresenter.ACTION_PREVIEW)
+									.with("p", processDef.getRefId()).build());
 				}
 			});
 			HTMLPanel namePanel = new HTMLPanel("");
@@ -183,11 +159,6 @@ public class ProcessView extends ViewImpl implements
 		for (int i = 0; i < table.getCellCount(0); i++) {
 			table.getFlexCellFormatter().setStyleName(0, i, "th");
 		}
-	}
-
-	@Override
-	public Widget asWidget() {
-		return widget;
 	}
 
 	public HasClickHandlers getaNewProcess() {
@@ -258,26 +229,5 @@ public class ProcessView extends ViewImpl implements
 		return aConfigure;
 	}
 
-	@Override
-	public void setConfigState(boolean configState) {
-		if (configState) {
-			divProcessListing.addClassName("hide");
-			divProcessConfig.removeClassName("hide");
-		} else {
-			divProcessListing.removeClassName("hide");
-			divProcessConfig.addClassName("hide");
-		}
-	}
-
-	@Override
-	public void setProcess(ProcessDef processDef) {
-		spnProcessName.setInnerText(processDef.getName());
-		if (processDef.getStatus() == Status.RUNNING) {
-			spnProcessName.getStyle().setColor("green");
-		} else {
-			spnProcessName.getStyle().setColor("grey");
-		}
-
-	}
-
+    
 }

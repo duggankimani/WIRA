@@ -206,6 +206,16 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		return getResultList(query);
 	}
+	
+	public List<ADTrigger> getTriggers(String processRefId) {
+		Query query = em.createQuery("FROM ADTrigger t where "
+				+ "(t.processRefId=:processRefId or t.processRefId is null) "
+				+ "and isActive=:active")
+				.setParameter("processRefId", processRefId)
+				.setParameter("active", 1);
+
+		return getResultList(query);
+	}
 
 	public int getTaskCount(Long taskStepId, TriggerType type) {
 		Query query = em
@@ -574,6 +584,19 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		return getSingleResultOrNull(em.createQuery(
 				"FROM ADTrigger where name=:name").setParameter("name",
 				triggerName));
+	}
+
+	public Long getProcessDefId(String processRefId) {
+		
+		String query = "select id from processdefmodel where refid=:refId";
+		Number value =  getSingleResultOrNull(getEntityManager().createNativeQuery(query)
+				.setParameter("refId", processRefId));
+		
+		if(value!=null){
+			return value.longValue();
+		}
+		
+		return null;
 	}
 
 }

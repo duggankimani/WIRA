@@ -136,6 +136,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		
 		if(orgName!=null){
 			spnCompanyName.setInnerHTML("Wira BPM |&nbsp;"+orgName);
+			spnCompanyName.setTitle(orgName);
 		}
 	}
 

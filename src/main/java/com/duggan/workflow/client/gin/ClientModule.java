@@ -45,8 +45,9 @@ import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsView;
-import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
-import com.duggan.workflow.client.ui.admin.processes.ProcessView;
+import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
+import com.duggan.workflow.client.ui.admin.process.ProcessView;
+import com.duggan.workflow.client.ui.admin.processes.ProcessListingModule;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSaveView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
@@ -152,6 +153,7 @@ public class ClientModule extends AbstractPresenterModule {
 		install(new DefaultModule.Builder().build());
 		
 		install(new BaseProcessModule());
+		install(new ProcessListingModule());
 
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);

@@ -23,6 +23,14 @@ public class OutputDocumentDao extends BaseDaoImpl {
 		String query = "FROM ADOutputDoc WHERE isActive=1";
 		return getResultList(em.createQuery(query));
 	}
+	
+	public List<ADOutputDoc> getOutputDocuments(String processRefId) {
+		
+		String query = "FROM ADOutputDoc WHERE (processRefId=:processRefId "
+				+ "or processRefId is null) and isActive=1";
+		return getResultList(em.createQuery(query).setParameter("processRefId", processRefId));
+	}
+
 
 	public byte[] getHTMLTemplate(String templateName) {
 		String sql = "SELECT o.attachment from ADOutputDoc o where o.code=:code";

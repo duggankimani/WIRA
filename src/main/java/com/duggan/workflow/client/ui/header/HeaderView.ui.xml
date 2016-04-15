@@ -78,14 +78,14 @@
 									<a href="#usermgt">Access Management</a>
 								</li>
 								<li>
-									<a href="#processes">
+									<a href="#processlist">
 										Processes</a>
 								</li>
 								<li>
 									<a href="#dashboards">Dashboards</a>
 								</li>
 								<li>
-									<a href="#datatable">Messages</a>
+									<a href="#messages">Messages</a>
 								</li>
 
 								<li class="divider"></li>

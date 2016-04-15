@@ -2,18 +2,17 @@ package com.duggan.workflow.client.ui.admin.outputdocs;
 
 import java.util.List;
 
+import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent.EditOutputDocHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -28,13 +27,12 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class OutPutDocsPresenter extends
 		Presenter<OutPutDocsPresenter.MyView, OutPutDocsPresenter.MyProxy> implements EditOutputDocHandler{
@@ -48,22 +46,18 @@ public class OutPutDocsPresenter extends
 	@ProxyCodeSplit
 	@NameToken(NameTokens.outputdocs)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<OutPutDocsPresenter>{
+	public interface MyProxy extends ProxyPlace<OutPutDocsPresenter>{
 	}
-
-	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Output Documents","icon-copy",6, adminGatekeeper);
-    }
 	
 	@Inject
 	SaveOutPutDocsPresenter saveProvider;
 	@Inject DispatchAsync requestHelper;
+	private String processRefId;
 	
 	@Inject
 	public OutPutDocsPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy ) {
-		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
+		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 	}
 
 	@Override
@@ -76,6 +70,14 @@ public class OutPutDocsPresenter extends
 				showEditPopup(null);
 			}
 		});
+	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		fireEvent(new ProcessChildLoadedEvent(this));
+		processRefId = request.getParameter("p",null);
+		load();
 	}
 	
 	protected void showEditPopup(OutputDocument doc) {
@@ -95,10 +97,9 @@ public class OutPutDocsPresenter extends
 
 	}
 
-	@Override
-	protected void onReset() {
-		super.onReset();
-		requestHelper.execute(new GetOutputDocumentsRequest(), new TaskServiceCallback<GetOutputDocumentsResponse>() {
+	protected void load() {
+		requestHelper.execute(new GetOutputDocumentsRequest(processRefId), 
+				new TaskServiceCallback<GetOutputDocumentsResponse>() {
 			@Override
 			public void processResult(GetOutputDocumentsResponse aResponse) {
 				getView().setOutputDocuments(aResponse.getDocuments());
@@ -108,9 +109,10 @@ public class OutPutDocsPresenter extends
 	
 
 	private void save(OutputDocument doc) {
+		doc.setProcessRefId(processRefId);
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new SaveOutputDocumentRequest(doc));
-		requests.addRequest(new GetOutputDocumentsRequest());
+		requests.addRequest(new GetOutputDocumentsRequest(processRefId));
 		requestHelper.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
 			public void processResult(MultiRequestActionResult aResult) {

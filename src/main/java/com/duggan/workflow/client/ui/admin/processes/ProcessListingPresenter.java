@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.processes;
 import java.util.List;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
@@ -10,12 +11,9 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processes.category.CreateCategoryPanel;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
-import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
-import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
 import com.duggan.workflow.client.ui.events.EditProcessEvent.EditProcessHandler;
@@ -23,13 +21,11 @@ import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent.LoadProcessesHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
-import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -37,7 +33,6 @@ import com.duggan.workflow.shared.requests.SaveProcessCategoryRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
 import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
-import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.GetProcessesResponse;
 import com.duggan.workflow.shared.responses.ManageKnowledgeBaseResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
@@ -54,23 +49,20 @@ import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.TabInfo;
-import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class ProcessPresenter extends
-		Presenter<ProcessPresenter.IProcessView, ProcessPresenter.MyProxy>
+public class ProcessListingPresenter
+		extends
+		Presenter<ProcessListingPresenter.MyView, ProcessListingPresenter.MyProxy>
 		implements LoadProcessesHandler, EditProcessHandler,
 		CheckboxSelectionHandler {
 
-	public interface IProcessView extends View {
-
+	interface MyView extends View {
 		HasClickHandlers getaNewProcess();
 
 		HasClickHandlers getStartAllProcesses();
@@ -92,57 +84,34 @@ public class ProcessPresenter extends
 		HasClickHandlers getEditButton();
 
 		HasClickHandlers getDeleteButton();
-		
+
 		HasClickHandlers getConfigureButton();
-
-		void setConfigState(boolean b);
-
-		void setProcess(ProcessDef processDef);
 
 	}
 
-	public static final String ACTION_CONFIG = "config";
-	
+	@NameToken(NameTokens.processlist)
+	@ProxyStandard
+	interface MyProxy extends ProxyPlace<ProcessListingPresenter> {
+	}
+
 	@Inject
 	DispatchAsync requestHelper;
-	
-	public static final Object TABLE_SLOT = new Object();
-	
-	@Inject PlaceManager placeManager;
+
+	@Inject
+	PlaceManager placeManager;
 
 	IndirectProvider<ProcessSavePresenter> processFactory;
-	IndirectProvider<ProcessItemPresenter> processItemFactory;
-	IndirectProvider<ProcessStepsPresenter> taskStepsFactory;
 
 	private List<ProcessCategory> categories;
 
 	private Object selectedModel;
 
-	@ProxyCodeSplit
-	@NameToken(NameTokens.processes)
-	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends ProxyPlace<ProcessPresenter> {
-	}
-
-//	@TabInfo(container = AdminHomePresenter.class)
-//	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-//		return new TabDataExt("Processes", "icon-cogs", 2, adminGatekeeper);
-//	}
-
 	@Inject
-	public ProcessPresenter(final EventBus eventBus, final IProcessView view,
-			final MyProxy proxy,
-			Provider<ProcessSavePresenter> addprocessProvider,
-			Provider<ProcessItemPresenter> columnProvider,
-			Provider<ProcessStepsPresenter> taskStepsProvider) {
-//		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
+	ProcessListingPresenter(EventBus eventBus, MyView view,
+			Provider<ProcessSavePresenter> addprocessProvider, MyProxy proxy) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 		processFactory = new StandardProvider<ProcessSavePresenter>(
 				addprocessProvider);
-		processItemFactory = new StandardProvider<ProcessItemPresenter>(
-				columnProvider);
-		taskStepsFactory = new StandardProvider<ProcessStepsPresenter>(
-				taskStepsProvider);
 	}
 
 	@Override
@@ -221,16 +190,16 @@ public class ProcessPresenter extends
 				submit(request);
 			}
 		});
-		
 
 		getView().getConfigureButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				ProcessDef processDef = (ProcessDef) selectedModel;
-				placeManager.revealPlace(new PlaceRequest.Builder().nameToken(NameTokens.processes)
-						.with("a", ACTION_CONFIG)
-						.with("pd", processDef.getRefId()).build());
+				placeManager.revealPlace(new PlaceRequest.Builder()
+						.nameToken(NameTokens.processes)
+						.with("a", ProcessPresenter.ACTION_PREVIEW)
+						.with("p", processDef.getRefId()).build());
 			}
 		});
 
@@ -287,7 +256,7 @@ public class ProcessPresenter extends
 			}
 		});
 	}
-	
+
 	protected void submit(ManageKnowledgeBaseRequest request) {
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
@@ -333,45 +302,8 @@ public class ProcessPresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-		
-		String action = request.getParameter("a", null);
-		String processRefId = request.getParameter("pd", null);
-		
-		if(action!=null && processRefId!=null){
-			if(action.equals(ACTION_CONFIG)){
-				getView().setConfigState(true);
-				loadProcess(processRefId);
-			}
-		}else{
-			getView().setConfigState(false);
-			loadProcesses();
-		}
-		
-		
-	}
-
-	private void loadProcess(String processRefId) {
-		GetProcessRequest request  = new GetProcessRequest(processRefId);
-		requestHelper.execute(request, new TaskServiceCallback<GetProcessResponse>() {
-			@Override
-			public void processResult(GetProcessResponse aResponse) {
-				final ProcessDef processDef = aResponse.getProcessDef();
-				getView().setProcess(processDef);
-
-				// Task Steps
-				taskStepsFactory
-						.get(new ServiceCallback<ProcessStepsPresenter>() {
-							@Override
-							public void processResult(
-									ProcessStepsPresenter aResponse) {
-								aResponse.setProcess(processDef);
-								aResponse.load();
-								setInSlot(TABLE_SLOT, aResponse);
-							}
-						});
-			}
-		});
-		
+		fireEvent(new ProcessChildLoadedEvent(this));
+		loadProcesses();
 	}
 
 	private void showAddProcessPopup() {
@@ -411,8 +343,9 @@ public class ProcessPresenter extends
 								.get(1);
 						bindCategories(response.getCategories());
 						fireEvent(new ProcessingCompletedEvent());
-						//deselect
-						fireEvent(new CheckboxSelectionEvent(selectedModel, false));
+						// deselect
+						fireEvent(new CheckboxSelectionEvent(selectedModel,
+								false));
 
 					}
 				});

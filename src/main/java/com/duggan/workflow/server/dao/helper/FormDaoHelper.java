@@ -25,6 +25,7 @@ import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.HasProperties;
 import com.duggan.workflow.server.dao.model.PO;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.LookupLoader;
 import com.duggan.workflow.server.db.LookupLoaderImpl;
@@ -61,6 +62,19 @@ public class FormDaoHelper {
 
 		FormDaoImpl dao = DB.getFormDao();
 		List<ADForm> adforms = dao.getAllForms(processDefId);
+
+		List<Form> forms = new ArrayList<>();
+		for (ADForm adform : adforms) {
+			forms.add(getForm(adform, loadFields));
+		}
+
+		return forms;
+	}
+	
+	public static List<Form> getForms(String processRefId, boolean loadFields) {
+
+		FormDaoImpl dao = DB.getFormDao();
+		List<ADForm> adforms = dao.getAllForms(processRefId);
 
 		List<Form> forms = new ArrayList<>();
 		for (ADForm adform : adforms) {
@@ -110,6 +124,7 @@ public class FormDaoHelper {
 		form.setId(adform.getId());
 		form.setName(adform.getName());
 		form.setProcessDefId(adform.getProcessDefId());
+		form.setProcessRefId(adform.getProcessRefId());
 		form.setProperties(getProperties(adform.getProperties()));
 
 		return form;
@@ -426,6 +441,14 @@ public class FormDaoHelper {
 		adform.setCaption(form.getCaption());
 		adform.setName(form.getName());
 		adform.setProcessDefId(form.getProcessDefId());
+		adform.setProcessRefId(form.getProcessRefId());
+		
+		if(form.getProcessDefId()==null){
+			if(form.getProcessRefId()!=null){
+				adform.setProcessDefId(DB.getProcessDao().getProcessDefId(form.getProcessRefId()));
+			}
+		}
+		
 		getADFields(form.getFields(), adform);
 		getADProperties(form.getProperties(), adform);
 		// adform.setProperties(properties);
