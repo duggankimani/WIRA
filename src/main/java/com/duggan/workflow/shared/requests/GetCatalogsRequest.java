@@ -7,6 +7,7 @@ public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 
 	private String catalogRefId;
 	private boolean isLoadViews;
+	private String searchTerm;
 	
 	public GetCatalogsRequest() {
 	}
@@ -30,6 +31,14 @@ public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 
 	public String getCatalogRefId() {
 		return catalogRefId;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 
 }

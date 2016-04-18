@@ -116,12 +116,17 @@ public class LoginHelper implements LoginIntf{
 
 	public List<HTUser> getAllUsers() {
 
-		return impl.getAllUsers();
+		return impl.getAllUsers(null);
+	}
+	
+	public List<HTUser> getAllUsers(String searchTerm) {
+
+		return impl.getAllUsers(searchTerm);
 	}
 
-	public List<UserGroup> getAllGroups() {
+	public List<UserGroup> getAllGroups(String searchTerm) {
 		
-		return impl.getAllGroups();
+		return impl.getAllGroups(searchTerm);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -21,6 +22,7 @@ import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
+import com.duggan.workflow.server.dao.model.AssignmentPO;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
@@ -34,6 +36,7 @@ import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;
+import com.google.gwt.dev.util.collect.HashMap;
 
 public class ProcessDaoImpl extends BaseDaoImpl {
 
@@ -65,12 +68,33 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				.setParameter("processId", processId));
 	}
 
-	@SuppressWarnings("unchecked")
+
 	public List<ProcessDefModel> getAllProcesses() {
-		return em
-				.createQuery(
-						"FROM ProcessDefModel p where p.isArchived=:isArchived order by p.name")
-				.setParameter("isArchived", false).getResultList();
+		return getAllProcesses(null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProcessDefModel> getAllProcesses(String searchTerm) {
+
+		StringBuffer jpql = new StringBuffer("FROM ProcessDefModel p where p.isArchived=:isArchived ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			jpql.append(" and ( lower(p.name) like :searchTerm or "
+					+ "lower(p.processId) like :searchTerm or "
+					+ "lower(p.description) like :searchTerm ) and p.isActive=1 ");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+		}
+		
+		params.put("isArchived", false);
+		
+		jpql.append(" order by p.name");
+		
+		Query query = em.createQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		return getResultList(query);
 	}
 
 	public void remove(ProcessDefModel model) {
@@ -597,6 +621,14 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		}
 		
 		return null;
+	}
+
+	public AssignmentPO getAssignment(String processRefId, Long nodeId) {
+		return getSingleResultOrNull(
+				getEntityManager().createQuery("FROM AssignmentPO a where "
+						+ "a.processDef.refId=:processRefId and a.nodeId=:nodeId")
+						.setParameter("processRefId", processRefId)
+						.setParameter("nodeId", nodeId));
 	}
 
 }

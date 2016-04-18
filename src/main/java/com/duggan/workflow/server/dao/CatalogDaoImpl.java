@@ -5,6 +5,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -21,6 +22,7 @@ import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.model.catalog.FieldSource;
+import com.google.gwt.dev.util.collect.HashMap;
 
 public class CatalogDaoImpl extends BaseDaoImpl {
 
@@ -30,16 +32,32 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		super(em);
 	}
 
-	public List<CatalogModel> getCatalogs() {
-		return getResultList(em
-				.createQuery("FROM CatalogModel c where c.isActive=1"));
+	public List<CatalogModel> getCatalogs(String searchTerm) {
+		StringBuffer jpql = new StringBuffer(
+				"FROM CatalogModel c where c.isActive=1");
+
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			jpql.append(" and (lower(c.name) like :searchTerm or lower(c.description) like :searchTerm) and c.isActive=1 ");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+		}
+		jpql.append(" order by c.description");
+		
+		Query query = em.createQuery(jpql.toString());
+		
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		
+		return getResultList(query);
 	}
 
 	public void generateTable(Catalog model) {
-		if(model.getType() == CatalogType.REPORTVIEW){
+		if (model.getType() == CatalogType.REPORTVIEW) {
 			return;
 		}
-		
+
 		String drop = "DROP TABLE IF EXISTS EXT_" + model.getName() + ";";
 		log.debug("Exec DDL: " + drop);
 
@@ -258,19 +276,19 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				catalog.setDescription(tableName);
 				catalog.setType(CatalogType.REPORTVIEW);
 				catalog.setRecordCount(getCount(tableName));
-				
+
 				ResultSet colsRs = meta.getColumns(null, null, tableName, null);
-				
+
 				List<CatalogColumn> columns = new ArrayList<CatalogColumn>();
-				while(colsRs.next()){
+				while (colsRs.next()) {
 					CatalogColumn column = new CatalogColumn();
 					String name = colsRs.getString("COLUMN_NAME");
 					column.setName(name);
 					column.setLabel(name);
-					
+
 					String type = colsRs.getString("TYPE_NAME");
 					column.setType(DBType.valueOf(type.toUpperCase()));
-					
+
 					int size = colsRs.getInt("COLUMN_SIZE");
 					column.setSize(size);
 					columns.add(column);
@@ -281,11 +299,11 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				catalogs.add(catalog);
 			}
 			rs.close();
-			
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		return catalogs;
 	}
 }

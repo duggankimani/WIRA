@@ -8,10 +8,13 @@ import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
@@ -44,32 +47,43 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class CaseRegistryPresenter extends Presenter<CaseRegistryPresenter.ICaseRegistryView,
-CaseRegistryPresenter.ICaseRegistryProxy>{
+public class CaseRegistryPresenter
+		extends
+		Presenter<CaseRegistryPresenter.ICaseRegistryView, CaseRegistryPresenter.ICaseRegistryProxy>
+		implements SearchHandler {
 
 	public interface ICaseRegistryView extends View {
 		void bindProcesses(List<DocumentType> documentTypes);
+
 		void bindProcessInstances(List<ProcessLog> logs);
+
 		void onReveal();
+
 		void bindUsers(List<HTUser> users);
+
 		public Anchor getSearch();
+
 		CaseFilter getCaseFilter();
+
 		TextField getTxtCaseNo();
 	}
-	
+
 	@ProxyCodeSplit
-	@NameToken({NameTokens.registry})
+	@NameToken({ NameTokens.registry })
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface ICaseRegistryProxy extends TabContentProxyPlace<CaseRegistryPresenter> {
+	public interface ICaseRegistryProxy extends
+			TabContentProxyPlace<CaseRegistryPresenter> {
 	}
-	
+
 	@TabInfo(container = HomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new HomeTabData("registry","Case Registry","",6, adminGatekeeper);
-    }
-	
-	@Inject DispatchAsync requestHelper;
-	
+	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+		return new HomeTabData("registry", "Case Registry", "", 6,
+				adminGatekeeper);
+	}
+
+	@Inject
+	DispatchAsync requestHelper;
+
 	@Inject
 	public CaseRegistryPresenter(EventBus eventBus, CaseRegistryView view,
 			ICaseRegistryProxy proxy,
@@ -77,78 +91,98 @@ CaseRegistryPresenter.ICaseRegistryProxy>{
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
+		addRegisteredHandler(SearchEvent.getType(), this);
 		getView().getSearch().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				loadData(getView().getCaseFilter());
 			}
 		});
-		
+
 		getView().getTxtCaseNo().addKeyDownHandler(new KeyDownHandler() {
-			
+
 			@Override
 			public void onKeyDown(KeyDownEvent event) {
-				if(event.getNativeKeyCode()==KeyCodes.KEY_ENTER){
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					loadData(getView().getCaseFilter());
 				}
 			}
 		});
 	}
-	
+
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		loadData();
 	}
-	
+
 	@Override
 	protected void onReveal() {
 		super.onReveal();
 		getView().onReveal();
 	}
-	
 
 	private void loadData(CaseFilter filter) {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetProcessInstancesRequest(filter));
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResponse) {
-				int i=0;
-				GetProcessInstancesResponse response = (GetProcessInstancesResponse)aResponse.get(i++);
-				getView().bindProcessInstances(response.getLogs());				
-				fireEvent(new ProcessingCompletedEvent());
-			}
-		});
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
+						GetProcessInstancesResponse response = (GetProcessInstancesResponse) aResponse
+								.get(i++);
+						getView().bindProcessInstances(response.getLogs());
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
 	}
-	
-	private void loadData(){
+
+	private void loadData() {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetDocumentTypesRequest());
 		action.addRequest(new GetProcessInstancesRequest(null));
 		action.addRequest(new GetUsersRequest());
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResponse) {
-				int i=0;
-				getView().bindProcesses(((GetDocumentTypesResponse)aResponse.get(i++)).getDocumentTypes());
-				
-				GetProcessInstancesResponse response = (GetProcessInstancesResponse)aResponse.get(i++);
-				getView().bindProcessInstances(response.getLogs());
-				
-				GetUsersResponse getUsersReponse = (GetUsersResponse)aResponse.get(i++);
-				getView().bindUsers(getUsersReponse.getUsers());
-				
-				fireEvent(new ProcessingCompletedEvent());
-			}
-		});
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
+						getView().bindProcesses(
+								((GetDocumentTypesResponse) aResponse.get(i++))
+										.getDocumentTypes());
+
+						GetProcessInstancesResponse response = (GetProcessInstancesResponse) aResponse
+								.get(i++);
+						getView().bindProcessInstances(response.getLogs());
+
+						GetUsersResponse getUsersReponse = (GetUsersResponse) aResponse
+								.get(i++);
+						getView().bindUsers(getUsersReponse.getUsers());
+
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
 	}
 
+	@Override
+	public void onSearch(SearchEvent event) {
+		if (this.isVisible()) {
+			CaseFilter filter = new CaseFilter();
+			filter.setCaseNo(event.getFilter().getPhrase());
+
+			if (StringUtils.isNullOrEmpty(filter.getCaseNo())) {
+				loadData(null);
+			} else {
+				loadData(filter);
+			}
+		}
+	}
 }

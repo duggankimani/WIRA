@@ -11,10 +11,12 @@
 			<g:HTMLPanel styleName="upper-content">
 				<div class="row-fluid">
 					<div class="pull-right registry">
+						<d:TextField ui:field="txtSearch" placeholder="Search.."
+							styleName="hidden input-medium caseregistry" />
 						<d:DropDownList ui:field="listUsers" styleName="caseregistry" />
 						<d:DropDownList ui:field="listProcesses" styleName="caseregistry" />
-						<d:TextField ui:field="txtSearch" placeholder="Search.."
-							styleName="input-medium caseregistry" />
+						<!-- d:TextField ui:field="txtSearch" placeholder="Search.."
+							styleName="hidden input-medium caseregistry" / -->
 						<div style="display:inline-block">
 							<label ui:field="lblEl" style="display:inline">Case No</label>
 							<d:TextField ui:field="txtCaseNo" placeholder="CaseNo"

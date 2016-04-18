@@ -57,9 +57,9 @@ public interface LoginIntf extends Closeable {
 	
 	public boolean existsUser(String userId);
 
-	public List<HTUser> getAllUsers();
+	public List<HTUser> getAllUsers(String searchTerm);
 
-	public List<UserGroup> getAllGroups();
+	public List<UserGroup> getAllGroups(String searchTerm);
 
 	public UserGroup getGroupById(String groupId);
 
@@ -68,6 +68,5 @@ public interface LoginIntf extends Closeable {
 	public List<HTUser> getUsersForGroups(String[] groups);
 
 	public boolean updatePassword(String username, String password);
-	
 	
 }

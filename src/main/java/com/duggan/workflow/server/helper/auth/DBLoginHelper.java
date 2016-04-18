@@ -36,7 +36,7 @@ public class DBLoginHelper implements LoginIntf{
 	public List<HTUser> retrieveUsers() {
 		List<HTUser> ht_users = new ArrayList<>();
 		
-		List<User> users = DB.getUserGroupDao().getAllUsers();
+		List<User> users = DB.getUserGroupDao().getAllUsers(null);
 		
 		if(users!=null)
 		for(User user: users){
@@ -97,7 +97,7 @@ public class DBLoginHelper implements LoginIntf{
 
 	@Override
 	public List<UserGroup> retrieveGroups() {
-		List<Group> groups = DB.getUserGroupDao().getAllGroups();
+		List<Group> groups = DB.getUserGroupDao().getAllGroups(null);
 		
 		List<UserGroup> userGroups = new ArrayList<>();
 		if(groups!=null){
@@ -191,7 +191,7 @@ public class DBLoginHelper implements LoginIntf{
 	@Override
 	public List<UserGroup> getGroupsForUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Collection<Group> groups = dao.getAllGroups(userId);
+		Collection<Group> groups = dao.getAllGroupsByUserId(userId);
 		
 		List<UserGroup> userGroups = new ArrayList<>();
 		
@@ -206,7 +206,7 @@ public class DBLoginHelper implements LoginIntf{
 	@Override
 	public List<HTUser> getUsersForGroup(String groupName) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Collection<User> users = dao.getAllUsers(groupName);
+		Collection<User> users = dao.getAllUsersByGroupId(groupName);
 		
 		List<HTUser> groupUsers = new ArrayList<>();
 		
@@ -266,9 +266,9 @@ public class DBLoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public List<HTUser> getAllUsers() {
+	public List<HTUser> getAllUsers(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		List<User> users = dao.getAllUsers();
+		List<User> users = dao.getAllUsers(searchTerm);
 		
 		List<HTUser> htusers = new ArrayList<>();
 		
@@ -281,10 +281,10 @@ public class DBLoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public List<UserGroup> getAllGroups() {
+	public List<UserGroup> getAllGroups(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		
-		return getFromDb(dao.getAllGroups());
+		return getFromDb(dao.getAllGroups(searchTerm));
 	}
 
 	@Override

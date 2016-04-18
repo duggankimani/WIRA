@@ -7,15 +7,19 @@ import java.util.List;
 import org.jbpm.task.EmailNotification;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TableHeader;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.AssignmentDto;
+import com.duggan.workflow.shared.model.AssignmentFunction;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.TaskStepDTO;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -24,7 +28,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -33,7 +39,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.MyView {
+public class ProcessStepsView extends ViewImpl implements
+		ProcessStepsPresenter.MyView {
 
 	private final Widget widget;
 
@@ -53,47 +60,45 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 	Anchor aNewStep;
 	@UiField
 	Anchor aNewTrigger;
-	
-	@UiField DropDownList<NotificationCategory> listNotificationType;
-	
+
+	@UiField
+	DropDownList<NotificationCategory> listNotificationType;
+
 	@UiField
 	Anchor aStepstab;
 	@UiField
 	Anchor aTriggerstab;
 	@UiField
 	Anchor aNotificationstab;
+	@UiField
+	Anchor aAssignmentstab;
 
 	@UiField
-	Element divStepContent;
+	HTMLPanel panelTriggerContent;
 	@UiField
-	Element divTriggerContent;
-	@UiField
-	Element divNotificationsContent;
-
-	@UiField HTMLPanel panelTriggerContent;
-	@UiField HTMLPanel panelNotificationsContent;
+	HTMLPanel panelNotificationsContent;
 
 	@UiField
-	Element liTrigger;
+	Element divActorId;
 	@UiField
-	Element liStep;
+	Element divGroupId;
 	@UiField
-	Element liNotifications;
+	Checkbox chkAutoAssignment;
+	@UiField
+	Checkbox chkCyclicAssignment;
+	@UiField
+	Checkbox chkSelfServiceAssignment;
 
+	@UiField Element divAlert;
 	@Inject
 	public ProcessStepsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		aStepstab.getElement().setAttribute("data-toggle", "tab");
-		aTriggerstab.getElement().setAttribute("data-toggle", "tab");
-		aNotificationstab.getElement().setAttribute("data-toggle", "tab");
 
-		divStepContent.setId("steps");
-		divTriggerContent.setId("triggers");
-		divNotificationsContent.setId("notifications");
-		
-		listNotificationType.setNullText(NotificationCategory.EMAILNOTIFICATION.getDisplayName());
-		listNotificationType.setItems(Arrays.asList(NotificationCategory.ACTIVITYFEED));
-		
+		listNotificationType.setNullText(NotificationCategory.EMAILNOTIFICATION
+				.getDisplayName());
+		listNotificationType.setItems(Arrays
+				.asList(NotificationCategory.ACTIVITYFEED));
+
 		aStepstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -112,11 +117,51 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 			@Override
 			public void onClick(ClickEvent event) {
 				setType(3);
+				event.preventDefault();
+				showTab(aNotificationstab.getElement());
 			}
 		});
 
+		aAssignmentstab.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				setType(4);
+			}
+		});
+		
+		ValueChangeHandler<Boolean> vch = new ValueChangeHandler<Boolean>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				clearAssignments();
+				((CheckBox)event.getSource()).setValue(event.getValue());
+			}
+		};
+		
+		chkAutoAssignment.addValueChangeHandler(vch);
+		chkCyclicAssignment.addValueChangeHandler(vch);
+		chkSelfServiceAssignment.addValueChangeHandler(vch);
+
 		setType(1);
 	}
+
+	@Override
+	public void load() {
+		initTabs();
+	}
+
+	public static native void initTabs()/*-{
+										$wnd.jQuery($doc).ready(function(){
+											$wnd.$('#taskStepsTab a').click(function (e) {
+												$wnd.alert('Show clicked');
+												e.preventDefault();
+												$wnd.$(this).tab('show');
+											});
+										});
+										}-*/;
+
+	public static native void showTab(Element anchor)/*-{
+														$wnd.$(anchor).tab('show');
+														}-*/;
 
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {
@@ -125,12 +170,12 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 			if (content != null) {
 				panelTriggerContent.add(content);
 			}
-		}else if(slot == ProcessStepsPresenter.NOTIFICATIONS_SLOT){ 
+		} else if (slot == ProcessStepsPresenter.NOTIFICATIONS_SLOT) {
 			panelNotificationsContent.clear();
-			if(content !=null ){
+			if (content != null) {
 				panelNotificationsContent.add(content);
 			}
-		}else {
+		} else {
 			super.setInSlot(slot, content);
 		}
 	}
@@ -142,13 +187,13 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 
 		table.setWidget(0, j++, new HTMLPanel("<strong>Step Name</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "200px");
-		
+
 		table.setWidget(0, j++, new HTMLPanel("<strong>Mode</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
-		
+
 		table.setWidget(0, j++, new HTMLPanel("<strong>Condition</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "300px");
-		
+
 		table.setWidget(0, j++, new HTMLPanel("<strong>Actions</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 
@@ -161,10 +206,10 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 	public void displaySteps(List<TaskStepDTO> dtos) {
 		tblView.removeAllRows();
 		setTableHeaders(tblView);
-		
-		int i=1;
+
+		int i = 1;
 		for (TaskStepDTO dto : dtos) {
-			int j=0;
+			int j = 0;
 			String buttonStyle = "italics";// "btn";
 
 			HTMLPanel actions = new HTMLPanel("");
@@ -194,16 +239,17 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 				mode.addStyleName("input-small");
 				mode.addValueChangeHandler(new ValueChangeHanderEx(dto));
 			}
-			
-			
-			tblView.setWidget(i, j++, new InlineLabel(i+""));
-			tblView.setWidget(i, j++, new InlineLabel(dto.getFormName() == null ? dto
-					.getOutputDocName() : dto.getFormName()));
+
+			tblView.setWidget(i, j++, new InlineLabel(i + ""));
+			tblView.setWidget(
+					i,
+					j++,
+					new InlineLabel(dto.getFormName() == null ? dto
+							.getOutputDocName() : dto.getFormName()));
 			tblView.setWidget(i, j++, mode == null ? new InlineLabel("") : mode);
-			tblView.setWidget(i, j++, new InlineLabel(
-					dto.getCondition()));
+			tblView.setWidget(i, j++, new InlineLabel(dto.getCondition()));
 			tblView.setWidget(i, j++, actions);
-			
+
 			++i;
 		}
 	}
@@ -281,40 +327,9 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 
 	@Override
 	public void setType(int tab) {
-		
-		divStepContent.removeClassName("in");
-		divStepContent.removeClassName("active");
-		divTriggerContent.removeClassName("in");
-		divTriggerContent.removeClassName("active");
-		divNotificationsContent.removeClassName("in");
-		divNotificationsContent.removeClassName("active");
-		
-		aNewStep.addStyleName("hide");
-		aNewTrigger.addStyleName("hide");
 		listNotificationType.addStyleName("hide");
-
-		liStep.removeClassName("active");
-		liTrigger.removeClassName("active");
-		liNotifications.removeClassName("active");
-
-		if (tab == 1) {
-			aNewStep.removeStyleName("hide");
-			liStep.addClassName("active");
-
-			divStepContent.addClassName("in");
-			divStepContent.addClassName("active");
-		} else if(tab == 2){
-			aNewTrigger.removeStyleName("hide");
-			liTrigger.setClassName("active");
-
-			divTriggerContent.addClassName("in");
-			divTriggerContent.addClassName("active");
-		}else if(tab == 3){
+		if (tab == 3) {
 			listNotificationType.removeStyleName("hide");
-			liNotifications.setClassName("active");
-
-			divNotificationsContent.addClassName("in");
-			divNotificationsContent.addClassName("active");
 		}
 	}
 
@@ -336,8 +351,111 @@ public class ProcessStepsView extends ViewImpl implements ProcessStepsPresenter.
 	public HasClickHandlers getNotificationsTabLink() {
 		return aNotificationstab;
 	}
-	
-	public DropDownList<NotificationCategory> getNotificationCategoryDropdown(){
+
+	public DropDownList<NotificationCategory> getNotificationCategoryDropdown() {
 		return listNotificationType;
+	}
+
+	@Override
+	public void setTaskAssignee(String actorId, String groupId) {
+		divActorId.setInnerText(actorId);
+		divGroupId.setInnerText(groupId);
+
+		clearAssignments();
+		enableAssignments(false);
+		if (actorId != null) {
+			chkAutoAssignment.setValue(true);
+			show(divAlert,true);
+		}
+
+		if (groupId != null) {
+			show(divAlert,false);
+			enableAssignments(true);
+			chkAutoAssignment.setEnabled(false);
+			chkSelfServiceAssignment.setValue(true);
+		}
+
+
+		if(actorId==null && groupId==null){
+			showTab(aStepstab.getElement());
+			// show/hide assignments
+			show(aAssignmentstab.getElement().getParentElement(),false);
+		}else{
+			show(aAssignmentstab.getElement().getParentElement(),true);
+		}
+		
+
+		show(divActorId.getParentElement().getParentElement(), actorId != null);
+		show(divGroupId.getParentElement().getParentElement(), groupId != null);
+
+	}
+
+	private void show(Element el, boolean show) {
+		if (show) {
+			el.removeClassName("hide");
+		} else {
+			el.addClassName("hide");
+		}
+	}
+
+	private void clearAssignments() {
+		chkAutoAssignment.setValue(false);
+		chkCyclicAssignment.setValue(false);
+		chkSelfServiceAssignment.setValue(false);
+	}
+
+	private void enableAssignments(boolean isEnable) {
+		chkAutoAssignment.setEnabled(isEnable);
+		chkCyclicAssignment.setEnabled(isEnable);
+		chkSelfServiceAssignment.setEnabled(isEnable);
+	}
+
+	@Override
+	public void setAssignmentFunction(AssignmentDto assignment) {
+		if(assignment==null){
+			return;
+		}
+		
+		clearAssignments();
+		switch (assignment.getFunction()) {
+		case CYCLIC_ASSIGNMENT:
+			chkCyclicAssignment.setValue(true);
+			break;
+			
+		case DIRECT_ASSIGNMENT:
+			chkAutoAssignment.setValue(true);
+			break;
+			
+		case SELFSERVICE_ASSIGNMENT:
+			chkSelfServiceAssignment.setValue(true);
+			break;
+		}
+	}
+	
+	@Override
+	public AssignmentDto getAssignment() {
+		AssignmentDto dto = new AssignmentDto();
+		
+		if(chkAutoAssignment.getValue()){
+			dto.setFunction(AssignmentFunction.DIRECT_ASSIGNMENT);
+		}
+		
+		if(chkCyclicAssignment.getValue()){
+			dto.setFunction(AssignmentFunction.CYCLIC_ASSIGNMENT);
+		}
+		
+		if(chkSelfServiceAssignment.getValue()){
+			dto.setFunction(AssignmentFunction.SELFSERVICE_ASSIGNMENT);
+		}
+		return dto;
+	}
+	
+	@Override
+	public void addAssignmentValueChangeHandler(
+			ValueChangeHandler<Boolean> valueChangeHandler) {
+
+		chkAutoAssignment.addValueChangeHandler(valueChangeHandler);
+		chkCyclicAssignment.addValueChangeHandler(valueChangeHandler);
+		chkSelfServiceAssignment.addValueChangeHandler(valueChangeHandler);
 	}
 }

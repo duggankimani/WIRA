@@ -9,6 +9,9 @@ public class Checkbox extends CheckBox implements CheckboxSelectionHandler {
 
 	private Object model;
 
+	public Checkbox() {
+	}
+	
 	public Checkbox(Object model) {
 		this.model = model;
 	}

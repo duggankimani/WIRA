@@ -31,7 +31,7 @@ public class GetCatalogsRequestHandler extends
 		}else if(action.isLoadViews()){
 			catalogs = CatalogDaoHelper.getAllViews();
 		}else{
-			catalogs = CatalogDaoHelper.getAllCatalogs();
+			catalogs = CatalogDaoHelper.getAllCatalogs(action.getSearchTerm());
 		}
 		
 		

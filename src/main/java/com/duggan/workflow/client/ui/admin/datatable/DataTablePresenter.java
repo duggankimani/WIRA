@@ -14,6 +14,8 @@ import com.duggan.workflow.client.ui.events.EditCatalogSchemaEvent;
 import com.duggan.workflow.client.ui.events.EditCatalogSchemaEvent.EditCatalogSchemaHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -52,7 +54,7 @@ import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 public class DataTablePresenter
 		extends
 		Presenter<DataTablePresenter.IDataTableView, DataTablePresenter.IDataTableProxy>
-		implements EditCatalogDataHandler, EditCatalogSchemaHandler {
+		implements EditCatalogDataHandler, EditCatalogSchemaHandler, SearchHandler {
 
 	public interface IDataTableView extends View {
 		HasClickHandlers getNewButton();
@@ -96,6 +98,7 @@ public class DataTablePresenter
 		super.onBind();
 		addRegisteredHandler(EditCatalogDataEvent.TYPE, this);
 		addRegisteredHandler(EditCatalogSchemaEvent.TYPE, this);
+		addRegisteredHandler(SearchEvent.getType(), this);
 		getView().getNewButton().addClickHandler(new ClickHandler() {
 
 			@Override
@@ -254,8 +257,15 @@ public class DataTablePresenter
 	}
 
 	private void loadData() {
+		loadData(null);
+	}
+	
+	private void loadData(String searchTerm) {
 		fireEvent(new ProcessingEvent("Loading..."));
-		requestHelper.execute(new GetCatalogsRequest(),
+		GetCatalogsRequest getCats = new GetCatalogsRequest();
+		getCats.setSearchTerm(searchTerm);
+		
+		requestHelper.execute(getCats,
 				new TaskServiceCallback<GetCatalogsResponse>() {
 					@Override
 					public void processResult(GetCatalogsResponse aResponse) {
@@ -333,4 +343,10 @@ public class DataTablePresenter
 				});
 	}
 
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			loadData(event.getFilter().getPhrase());
+		}
+	}
 }

@@ -20,7 +20,7 @@ public class GetUsersRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		GetUsersResponse response = (GetUsersResponse)actionResult;
 		
-		response.setUsers(LoginHelper.get().getAllUsers());
+		response.setUsers(LoginHelper.get().getAllUsers(action.getSearchTerm()));
 	}
 	
 	@Override

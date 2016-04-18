@@ -53,8 +53,10 @@
 
 							</ul>
 						</div><!-- /btn-group -->
-						<input class="span12 search-box" id="prependedDropdownButton"
-							type="text" placeholder="Search here"></input>
+						<!-- input class="span12 search-box" id="prependedDropdownButton"
+							type="text" placeholder="Search here"></input -->
+						<d:TextField ui:field="txtSearch" styleName="span12 search-box"
+							type="text" placeholder="Search here"></d:TextField>
 					</div>
 				</div>
 

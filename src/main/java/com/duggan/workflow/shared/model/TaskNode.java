@@ -13,6 +13,8 @@ public class TaskNode implements Serializable,Listable{
 	private Integer processInstanceId;
 	private String name;
 	private String displayName;
+	private String groupId;
+	private String actorId;
 	
 	public TaskNode() {
 	
@@ -50,5 +52,21 @@ public class TaskNode implements Serializable,Listable{
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getActorId() {
+		return actorId;
+	}
+
+	public void setActorId(String actorId) {
+		this.actorId = actorId;
 	}
 }

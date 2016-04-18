@@ -8,12 +8,18 @@
 
 	<g:HTMLPanel>
 		<div class="content-body overflow-y" ui:field="divProcessConfig">
-			<g:Image ui:field="imgProcess"/>
+			<g:Image ui:field="imgProcess" />
 			<g:HTMLPanel styleName="row-fluid hide" ui:field="processConfigPanel">
+				<div class="alert hide">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Warning!</strong>
+					Please start the process to load the tasks.
+				</div>
+
 				<g:HTMLPanel ui:field="processStepsPanel">
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</div>
-		
+
 	</g:HTMLPanel>
 </ui:UiBinder>

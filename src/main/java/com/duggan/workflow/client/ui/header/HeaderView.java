@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.header;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -30,8 +32,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	public interface Binder extends UiBinder<Widget, HeaderView> {
 	}
 
-	@UiField SpanElement spnCompanyName;
-	
+	@UiField
+	SpanElement spnCompanyName;
+
 	@UiField
 	Image imgSmall;
 	@UiField
@@ -62,11 +65,16 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@UiField
 	DivElement spnVersion;
 
+	@UiField
+	TextField txtSearch;
+
 	boolean isSelected = false;
 
 	@Inject
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		txtSearch.getElement().setId("prependedDropdownButton");
+
 		aNotifications.setTabIndex(3);
 		aNotifications.getElement().setAttribute("data-toggle", "dropdown");
 
@@ -76,7 +84,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 				imgSmall.setUrl("img/blueman(small).png");
 			}
 		});
-		
+
 		// imgSmall.getElement().getStyle().setWidth(30.0, Unit.PX);
 		// imgSmall.getElement().getStyle().setHeight(50.0, Unit.PX);
 
@@ -86,8 +94,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 				img.setUrl("img/blueman.png");
 			}
 		});
-		
-		
+
 		// img.getElement().getStyle().setWidth(70.0, Unit.PX);
 		// img.getElement().getStyle().setHeight(90.0, Unit.PX);
 	}
@@ -133,9 +140,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		if (userGroups != null) {
 			spnUserGroup.setInnerText(userGroups);
 		}
-		
-		if(orgName!=null){
-			spnCompanyName.setInnerHTML("Wira BPM |&nbsp;"+orgName);
+
+		if (orgName != null) {
+			spnCompanyName.setInnerHTML("Wira BPM |&nbsp;" + orgName);
 			spnCompanyName.setTitle(orgName);
 		}
 	}
@@ -215,5 +222,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 				+ "/getreport?ACTION=GetUser&width=70.0&height=70.0&userId="
 				+ user.getUserId();
 		img.setUrl(url2);
+	}
+	
+	public TextBox getSearchField(){
+		return txtSearch;
 	}
 }

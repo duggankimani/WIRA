@@ -22,6 +22,7 @@ import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetAssignmentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCatalogsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
@@ -67,6 +68,7 @@ import com.duggan.workflow.server.actionhandlers.LoginRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
 import com.duggan.workflow.server.actionhandlers.MultiRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.SaveAssignmentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCatalogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
@@ -109,6 +111,7 @@ import com.duggan.workflow.shared.requests.ExportFormRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAlertCount;
+import com.duggan.workflow.shared.requests.GetAssignmentRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
@@ -154,6 +157,7 @@ import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveAssignmentRequest;
 import com.duggan.workflow.shared.requests.SaveCatalogRequest;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
@@ -422,10 +426,18 @@ public class ServerModule extends HandlerModule {
 		
 		bindHandler(SaveOrgRequest.class,
 				SaveOrgRequestHandler.class, SessionValidator.class);
+		
 		bindHandler(GetOrgsRequest.class,
 				GetOrgsRequestHandler.class, SessionValidator.class);
+		
 		bindHandler(GetPermissionsRequest.class,
 				GetPermissionsActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetAssignmentRequest.class,
+				GetAssignmentRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(SaveAssignmentRequest.class,
+				SaveAssignmentRequestHandler.class, SessionValidator.class);
 		
 	}
 }

@@ -22,6 +22,7 @@ import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
+import com.duggan.workflow.server.dao.model.AssignmentPO;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
@@ -30,9 +31,9 @@ import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Listable;
@@ -124,22 +125,23 @@ public class ProcessDefHelper {
 
 		return def;
 	}
-	
+
 	public static ProcessDef getProcessDef(String processRefId) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
-		ProcessDefModel model = dao.findByRefId(processRefId, ProcessDefModel.class);
+		ProcessDefModel model = dao.findByRefId(processRefId,
+				ProcessDefModel.class);
 
 		ProcessDef def = get(model, true);
 
 		return def;
 	}
 
-	public static List<ProcessDef> getAllProcesses(boolean isLoadDetails) {
+	public static List<ProcessDef> getAllProcesses(String searchTerm, boolean isLoadDetails) {
 
 		ProcessDaoImpl dao = DB.getProcessDao();
 
-		List<ProcessDefModel> process = dao.getAllProcesses();
+		List<ProcessDefModel> process = dao.getAllProcesses(searchTerm);
 
 		List<ProcessDef> processDefs = new ArrayList<>();
 
@@ -511,7 +513,7 @@ public class ProcessDefHelper {
 
 		return triggers;
 	}
-	
+
 	public static List<Trigger> getTriggers(String processRefId) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
@@ -723,6 +725,45 @@ public class ProcessDefHelper {
 		ADTaskNotification notification = DB.getProcessDao().getById(
 				ADTaskNotification.class, notificationId);
 		DB.getProcessDao().delete(notification);
+	}
+
+	public static AssignmentDto create(AssignmentDto dto) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		AssignmentPO po = new AssignmentPO();
+		if (po.getRefId() != null) {
+			po = dao.findByRefId(po.getRefId(), AssignmentPO.class);
+		}
+
+		po.setNodeId(dto.getNodeId());
+		po.setStepName(dto.getTaskName());
+		ProcessDefModel model = dao.findByRefId(dto.getProcessRefId(),
+				ProcessDefModel.class);
+		po.setProcessDef(model);
+		po.setAssignmentFunction(dto.getFunction());
+		dao.save(po);
+
+		return getAssignment(po);
+	}
+
+	private static AssignmentDto getAssignment(AssignmentPO po) {
+		AssignmentDto dto = new AssignmentDto();
+		dto.setFunction(po.getAssignmentFunction());
+		dto.setNodeId(po.getNodeId());
+		dto.setProcessRefId(po.getProcessDef().getRefId());
+		dto.setRefId(dto.getRefId());
+		dto.setTaskName(po.getStepName());
+
+		return dto;
+	}
+
+	public static AssignmentDto getAssignment(String processRefId, Long nodeId) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		AssignmentPO po = dao.getAssignment(processRefId, nodeId);
+
+		if (po != null)
+			return getAssignment(po);
+
+		return null;
 	}
 
 }

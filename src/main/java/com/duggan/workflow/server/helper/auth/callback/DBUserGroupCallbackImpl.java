@@ -43,7 +43,7 @@ public class DBUserGroupCallbackImpl implements UserGroupCallback{
 		
 		List<String> groupNames = new ArrayList<>();
 		
-		Collection<Group> groups = DB.getUserGroupDao().getAllGroups(userId);
+		Collection<Group> groups = DB.getUserGroupDao().getAllGroupsByUserId(userId);
 		
 		if(groups!=null){
 			Iterator<Group> iter = groups.iterator();

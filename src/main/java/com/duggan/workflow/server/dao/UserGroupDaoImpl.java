@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
+import com.google.gwt.dev.util.collect.HashMap;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
 
@@ -63,14 +65,45 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers() {
-		Query query = em.createQuery("FROM BUser u order by u.lastName, u.firstName");		
+	public List<User> getAllUsers(String searchTerm) {
+			
+		StringBuffer jpql = new StringBuffer("FROM BUser u ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			jpql.append(" where (lower(u.userId) like :searchTerm or "
+					+ "lower(u.lastName) like :searchTerm or "
+					+ "lower(u.firstName) like :searchTerm or "
+					+ "lower(u.email) like :searchTerm) and u.isActive=1 ");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+		}
+		jpql.append(" order by u.lastName, u.firstName");
+		
+		Query query = em.createQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		
 		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Group> getAllGroups() {
-		Query query = em.createQuery("FROM BGroup b order by b.fullName");		
+	public List<Group> getAllGroups(String searchTerm) {
+		
+		StringBuffer jpql = new StringBuffer("FROM BGroup b ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			jpql.append(" where (lower(b.name) like :searchTerm or lower(b.fullName) like :searchTerm) and b.isActive=1 ");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+		}
+		jpql.append(" order by b.fullName");
+		
+		Query query = em.createQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		
 		return query.getResultList();
 	}
 
@@ -79,7 +112,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		return em.find(User.class, id);
 	}
 
-	public Collection<Group> getAllGroups(String userId) {
+	public Collection<Group> getAllGroupsByUserId(String userId) {
 		
 		User user = getUser(userId);
 		
@@ -88,7 +121,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		return user.getGroups();
 	}
 
-	public Collection<User> getAllUsers(String groupId) {
+	public Collection<User> getAllUsersByGroupId(String groupId) {
 		Group group = getGroup(groupId);
 		if(group==null){
 			return new ArrayList<>();

@@ -10,15 +10,18 @@
 	<g:HTMLPanel styleName="full-page">
 		<!--middle navigation -->
 		<div class="span2" ui:field="divTasks">
-			<div id="nav-top">
+			<div id="nav-top" style="height:auto;">
 				<i class="icon-tag"></i>
 				<h5 ui:field="hCategory">Completed</h5>
 				<br />
-				<div class="search">
+				
+				<!-- div class="search hide" -->
+				<div class="hide">
 					<g:TextBox styleName="search-box" ui:field="txtSearch" />
 					<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
 				</div>
-				<g:Anchor ui:field="aRefresh" styleName="icon-refresh icon-large hand"></g:Anchor>
+				<g:Anchor ui:field="aRefresh" styleName="hide icon-refresh icon-large hand"></g:Anchor>
+				
 				<g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
 			</div>
 

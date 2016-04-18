@@ -42,6 +42,7 @@ import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
+import org.jbpm.workflow.core.node.WorkItemNode;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
@@ -1124,11 +1125,19 @@ public class JBPMHelper implements Closeable {
 			// Ignore all other nodes - Only work pick human Task Nodes
 			if (node instanceof HumanTaskNode) {
 
+				HumanTaskNode humanTask = (HumanTaskNode)node;
+				
 				TaskNode detail = new TaskNode();
 				String name = node.getName();
 				detail.setNodeId(node.getId());
 				detail.setName(name);
 				detail.setDisplayName(name);
+				
+				Object group = humanTask.getWork().getParameter("GroupId");
+				Object actor = humanTask.getWork().getParameter("ActorId");
+				detail.setGroupId(group==null? null: group.toString());
+				detail.setActorId(actor==null? null: actor.toString());
+				
 				details.add(detail);
 			}
 

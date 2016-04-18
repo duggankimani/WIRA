@@ -180,9 +180,9 @@ public class CatalogDaoHelper {
 		dao.delete(dao.getById(CatalogColumnModel.class, columnId));
 	}
 
-	public static List<Catalog> getAllCatalogs() {
+	public static List<Catalog> getAllCatalogs(String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		List<CatalogModel> models = dao.getCatalogs();
+		List<CatalogModel> models = dao.getCatalogs(searchTerm);
 
 		List<Catalog> catalogs = new ArrayList<>();
 		for (CatalogModel m : models) {

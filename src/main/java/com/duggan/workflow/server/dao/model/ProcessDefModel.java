@@ -47,6 +47,9 @@ public class ProcessDefModel extends PO {
 	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
 	private Collection<TaskStepModel> taskSteps = new HashSet<>();
 	
+	@OneToMany(mappedBy="processDef", cascade=CascadeType.ALL)
+	private Collection<AssignmentPO> assignment = new HashSet<>();
+	
 	@ManyToMany(mappedBy="processDef", cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
 	private Set<User> users = new HashSet<>();

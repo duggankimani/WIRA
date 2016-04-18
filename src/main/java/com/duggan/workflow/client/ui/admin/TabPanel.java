@@ -117,8 +117,9 @@ public class TabPanel extends AbstractTabPanel implements
 
 		// Window.alert("Active Tab set "+tab.getText());
 		boolean isProcessesTab = tab.getText().equals("Processes");
-		showDefaultHeader(!isProcessesTab
-				|| (isProcessesTab && isProcessListing));
+//		showDefaultHeader(!isProcessesTab
+//				|| (isProcessesTab && isProcessListing));
+		showDefaultHeader(true);
 	}
 
 	/**

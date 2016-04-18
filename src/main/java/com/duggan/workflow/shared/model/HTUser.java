@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HTUser implements Listable,HasKey,Serializable {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class HTUser implements Listable,HasKey,Serializable,IsSerializable {
 
 	private static final long serialVersionUID = -5249516544970187459L;
 	private Long id;

@@ -5,15 +5,12 @@ import java.util.List;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
-import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
 import com.duggan.workflow.client.ui.admin.users.save.UserSaveView;
 import com.duggan.workflow.client.ui.events.EditGroupEvent;
 import com.duggan.workflow.client.ui.events.EditGroupEvent.EditGroupHandler;
@@ -25,9 +22,12 @@ import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Org;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetOrgsRequest;
@@ -48,9 +48,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
@@ -65,7 +63,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 public class UserPresenter extends
 		Presenter<UserPresenter.MyView, UserPresenter.MyProxy> implements
 		EditUserHandler, LoadUsersHandler, LoadGroupsHandler, EditGroupHandler,
-		CheckboxSelectionHandler {
+		CheckboxSelectionHandler, SearchHandler {
 
 	public interface MyView extends View {
 
@@ -138,6 +136,7 @@ public class UserPresenter extends
 		addRegisteredHandler(LoadGroupsEvent.TYPE, this);
 		addRegisteredHandler(EditGroupEvent.TYPE, this);
 		addRegisteredHandler(CheckboxSelectionEvent.getType(), this);
+		addRegisteredHandler(SearchEvent.getType(), this);
 
 		getView().getaNewUser().addClickHandler(new ClickHandler() {
 			@Override
@@ -363,7 +362,12 @@ public class UserPresenter extends
 	}
 
 	private void loadGroups() {
+		
+	}
+	
+	private void loadGroups(String searchTerm) {
 		GetGroupsRequest request = new GetGroupsRequest();
+		request.setSearchTerm(searchTerm);
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetGroupsResponse>() {
@@ -380,7 +384,11 @@ public class UserPresenter extends
 	}
 
 	private void loadUsers() {
-		GetUsersRequest request = new GetUsersRequest();
+		loadUsers(null);
+	}
+	
+	private void loadUsers(String searchTerm) {
+		GetUsersRequest request = new GetUsersRequest(searchTerm);
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetUsersResponse>() {
@@ -479,5 +487,25 @@ public class UserPresenter extends
 						loadOrgs();
 					}
 				});
+	}
+	
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			SearchFilter filter = event.getFilter();
+			
+			switch (type) {
+			case GROUP:
+				loadGroups(filter.getPhrase());
+				break;
+			case ORG:
+				loadOrgs(filter.getPhrase(),0,100);
+				break;
+			case USER:
+				loadUsers(filter.getPhrase());
+				break;
+			}
+			filter.getPhrase();
+		}
 	}
 }

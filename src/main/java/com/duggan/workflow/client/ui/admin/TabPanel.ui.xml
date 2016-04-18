@@ -19,7 +19,7 @@
 			<div id="main-content">
 				<div class="content">
 					<!-- Content Header -->
-					<div class="content-header" ui:field="divDefaultHeader">
+					<div ui:field="divDefaultHeader" class="content-header" style="padding: 8px 20px 7px 30px;">
 						<h2>
 							<span class="icon-group" ui:field="iconTitle"></span>
 							<span ui:field="spanTitle">Users &amp; Groups</span>

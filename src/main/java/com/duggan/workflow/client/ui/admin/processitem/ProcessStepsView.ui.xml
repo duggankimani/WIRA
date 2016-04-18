@@ -7,6 +7,15 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
+	<ui:style>
+	.task-assignee {
+		font-size: 13px;
+		padding-top: 5px;
+		margin-bottom: 5px;
+		font-weight: bold;
+	}
+	</ui:style>
+
 	<g:HTMLPanel styleName="tr-step" ui:field="divTasks">
 		<g:HTMLPanel styleName="center td">
 			<label>
@@ -26,53 +35,109 @@
 
 				<div class="content-body">
 					<div class="row-fluid">
-						<!--Action Buttons -->
-						<div class="action-buttons">
-							<g:Anchor ui:field="aNewStep" styleName="btn btn-primary"
-								title="Add a New Step">
-								<i class="icon-plus"></i>
-								Steps
-							</g:Anchor>
-
-							<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary hide"
-								title="Add a New Trigger">
-								<i class="icon-plus"></i>
-								Triggers
-							</g:Anchor>
-
-						</div>
-
-						<ul id="mytab" class="nav nav-tabs">
-							<li class="active" ui:field="liStep">
-								<g:Anchor ui:field="aStepstab">Steps</g:Anchor>
+						<ul class="nav nav-tabs" id="taskStepsTab">
+							<li class="active">
+								<d:ActionLink ui:field="aStepstab" href="#steps"
+									dataToggle="tab">Steps</d:ActionLink>
 							</li>
-							<li ui:field="liTrigger">
-								<g:Anchor ui:field="aTriggerstab">Triggers</g:Anchor>
+							<li>
+								<d:ActionLink ui:field="aTriggerstab" href="#triggers"
+									dataToggle="tab">Triggers</d:ActionLink>
 							</li>
-							<li ui:field="liNotifications">
-								<g:Anchor ui:field="aNotificationstab">Notifications</g:Anchor>
+							<li>
+								<d:ActionLink ui:field="aAssignmentstab" href="#assignments"
+									dataToggle="tab">Assignments</d:ActionLink>
+							</li>
+							<li>
+								<d:ActionLink ui:field="aNotificationstab" href="#notifications"
+									dataToggle="tab">Notifications</d:ActionLink>
 							</li>
 						</ul>
-						<div id="stepcontent" class="tab-content">
-							<div ui:field="divStepContent" class="tab-pane fade in active">
+
+						<div class="tab-content">
+							<div id="steps" class="tab-pane fade in active">
+								<div class="row-fluid">
+									<!--Action Buttons -->
+									<div class="action-buttons">
+										<g:Anchor ui:field="aNewStep" styleName="btn btn-primary"
+											title="Add a New Step">
+											<i class="icon-plus"></i>
+											Steps
+										</g:Anchor>
+									</div>
+								</div>
 								<div class="form-group">
 									<g:FlexTable ui:field="tblView"></g:FlexTable>
-									<!-- d:TableView ui:field="tblView" striped="false" isGrid="false" 
-										bordered="true" autoNumber="false" styleName="table-programs"> </d:TableView -->
 								</div>
 							</div>
 
 							<!-- Trigger Content -->
-							<div ui:field="divTriggerContent" class="tab-pane fade">
+							<div id="triggers" class="tab-pane fade">
+								<div class="row-fluid">
+									<!--Action Buttons -->
+									<div class="action-buttons">
+										<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary hide"
+											title="Add a New Trigger">
+											<i class="icon-plus"></i>
+											Triggers
+										</g:Anchor>
+									</div>
+								</div>
 								<g:HTMLPanel ui:field="panelTriggerContent">
 								</g:HTMLPanel>
-							</div><!-- -->
+							</div>
 
-							<div ui:field="divNotificationsContent" class="tab-pane fade">
+							<div id="assignments" class="tab-pane fade">
+								<div class="alert hide" ui:field="divAlert">
+									<button type="button" class="close" data-dismiss="alert">&times;</button>
+									<strong>Note!</strong>
+									Tasks with ActorId are automatically routed to the actors, hence Assignment method is locked. 
+								</div>
+								<div class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">ActorId</label>
+										<div class="controls">
+											<div ui:field="divActorId" class="{style.task-assignee}"></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">GroupId</label>
+										<div class="controls">
+											<div ui:field="divGroupId" class="{style.task-assignee}"></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<label class="checkbox">
+												<d:Checkbox ui:field="chkAutoAssignment"></d:Checkbox>
+												Direct Assignment
+											</label>
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<label class="checkbox" title="A round robin assignment where potential assignees are assigned in turns">
+												<d:Checkbox ui:field="chkCyclicAssignment"></d:Checkbox>
+												Cyclic Assignment
+											</label>
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<label class="checkbox" title="Self service assignment where users pick tasks to work on from a task list">
+												<d:Checkbox ui:field="chkSelfServiceAssignment"></d:Checkbox>
+												Self Service Assignment
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="notifications" class="tab-pane fade">
 								<g:HTMLPanel ui:field="panelNotificationsContent"
 									styleName="row-fluid">
 								</g:HTMLPanel>
-							</div><!-- -->
+							</div>
 						</div>
 					</div>
 				</div>

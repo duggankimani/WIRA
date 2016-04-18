@@ -6,8 +6,18 @@ import com.duggan.workflow.shared.responses.GetProcessesResponse;
 public class GetProcessesRequest extends BaseRequest<GetProcessesResponse> {
 
 	boolean isLoadDetails;
+	private String searchTerm;
 	
 	private GetProcessesRequest() {
+	}
+	
+	public GetProcessesRequest(String searchTerm) {
+		this.searchTerm = searchTerm;
+	}
+	
+	public GetProcessesRequest(String searchTerm, boolean isLoadDetails) {
+		this.searchTerm = searchTerm;
+		this.isLoadDetails = isLoadDetails;
 	}
 	
 	public GetProcessesRequest(boolean isLoadDetails) {
@@ -21,5 +31,13 @@ public class GetProcessesRequest extends BaseRequest<GetProcessesResponse> {
 
 	public boolean isLoadDetails() {
 		return isLoadDetails;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 }

@@ -364,13 +364,13 @@ public class LDAPLoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public List<HTUser> getAllUsers() {
+	public List<HTUser> getAllUsers(String searchTerm) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<UserGroup> getAllGroups() {
+	public List<UserGroup> getAllGroups(String searchTerm) {
 		// TODO Auto-generated method stub
 		return null;
 	}

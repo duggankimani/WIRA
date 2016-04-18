@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * 
  * @author duggan
  *
  */
-public class UserGroup implements Serializable, Listable{
+public class UserGroup implements Serializable,IsSerializable, Listable{
 
 	/**
 	 * 

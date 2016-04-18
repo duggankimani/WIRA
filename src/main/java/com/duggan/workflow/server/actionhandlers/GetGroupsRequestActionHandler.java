@@ -29,7 +29,7 @@ public class GetGroupsRequestActionHandler extends
 			group.setPermissions(DB.getPermissionDao().getPermissionsForRole(action.getGroupName()));
 			response.setGroups(Arrays.asList(group));
 		}else{
-			response.setGroups(LoginHelper.get().getAllGroups());
+			response.setGroups(LoginHelper.get().getAllGroups(action.getSearchTerm()));
 		}
 		
 	}

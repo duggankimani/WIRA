@@ -17,9 +17,11 @@ import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHand
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent.LoadAlertsHandler;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
@@ -33,17 +35,19 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -77,6 +81,8 @@ public class HeaderPresenter extends
 		void setVersionInfo(Date created, String date, String version);
 
 		void setImage(HTUser currentUser);
+
+		TextBox getSearchField();
 	}
 
 	@Inject
@@ -96,6 +102,16 @@ public class HeaderPresenter extends
 	private CurrentUser currentUser;
 
 	private Version version;
+
+	String searchTerm="";
+	
+	Timer timer = new Timer() {
+
+		@Override
+		public void run() {
+			search();
+		}
+	};
 
 	@Inject
 	public HeaderPresenter(final EventBus eventBus, final IHeaderView view,
@@ -145,6 +161,33 @@ public class HeaderPresenter extends
 				loadAlerts();
 			}
 		});
+
+		getView().getSearchField().addKeyUpHandler(new KeyUpHandler() {
+
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				String txt = getView().getSearchField().getValue().trim();
+
+				if (!txt.equals(searchTerm)
+						|| event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					searchTerm = txt;
+					timer.cancel();
+					timer.schedule(400);
+				}
+
+			}
+		});
+
+	}
+	
+	protected void search() {
+		timer.cancel();
+
+		SearchFilter filter = new SearchFilter();
+		filter.setPhrase(searchTerm);
+		filter.setSubject(searchTerm);
+		
+		fireEvent(new SearchEvent(filter));
 	}
 
 	protected void loadAlerts() {

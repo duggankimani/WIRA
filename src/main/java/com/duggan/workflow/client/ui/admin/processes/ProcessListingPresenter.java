@@ -21,6 +21,9 @@ import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent.LoadProcessesHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -52,6 +55,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -60,7 +64,7 @@ public class ProcessListingPresenter
 		extends
 		Presenter<ProcessListingPresenter.MyView, ProcessListingPresenter.MyProxy>
 		implements LoadProcessesHandler, EditProcessHandler,
-		CheckboxSelectionHandler {
+		CheckboxSelectionHandler, SearchHandler {
 
 	interface MyView extends View {
 		HasClickHandlers getaNewProcess();
@@ -91,6 +95,7 @@ public class ProcessListingPresenter
 
 	@NameToken(NameTokens.processlist)
 	@ProxyStandard
+	@UseGatekeeper(AdminGateKeeper.class)
 	interface MyProxy extends ProxyPlace<ProcessListingPresenter> {
 	}
 
@@ -120,7 +125,8 @@ public class ProcessListingPresenter
 		addRegisteredHandler(LoadProcessesEvent.TYPE, this);
 		addRegisteredHandler(EditProcessEvent.TYPE, this);
 		addRegisteredHandler(CheckboxSelectionEvent.getType(), this);
-
+		addRegisteredHandler(SearchEvent.getType(), this);
+		
 		getView().getaNewProcess().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -322,10 +328,14 @@ public class ProcessListingPresenter
 	}
 
 	public void loadProcesses() {
+		loadProcesses("");
+	}
+	
+	public void loadProcesses(String searchTerm) {
 
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetProcessesRequest(true));
+		action.addRequest(new GetProcessesRequest(searchTerm,true));
 		action.addRequest(new GetProcessCategoriesRequest());
 
 		requestHelper.execute(action,
@@ -377,7 +387,12 @@ public class ProcessListingPresenter
 		if (model instanceof ProcessDef) {
 			getView().setProcessEdit((ProcessDef) model, value);
 		}
-
 	}
 
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			loadProcesses(event.getFilter().getPhrase());
+		}
+	}
 }
