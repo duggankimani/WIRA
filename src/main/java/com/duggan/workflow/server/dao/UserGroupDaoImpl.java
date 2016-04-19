@@ -2,6 +2,7 @@ package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -12,7 +13,6 @@ import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
-import com.google.gwt.dev.util.collect.HashMap;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
 

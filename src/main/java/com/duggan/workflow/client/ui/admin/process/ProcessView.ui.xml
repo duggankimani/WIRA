@@ -8,7 +8,12 @@
 
 	<g:HTMLPanel>
 		<div class="content-body overflow-y" ui:field="divProcessConfig">
+			<div class="row-fluid">
+				<a ui:field="aDownloadBPN" target="_blank" class="btn btn-default">Download BPMN <i class="icon-download"></i></a>
+				<a ui:field="aDownloadIMG" target="_blank" class="btn btn-default">Download Image <i class="icon-download"></i></a>
+			</div>
 			<g:Image ui:field="imgProcess" />
+			
 			<g:HTMLPanel styleName="row-fluid hide" ui:field="processConfigPanel">
 				<div class="alert hide">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>

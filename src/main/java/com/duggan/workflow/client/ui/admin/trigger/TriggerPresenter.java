@@ -11,7 +11,9 @@ import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
@@ -35,7 +37,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class TriggerPresenter extends
 		Presenter<TriggerPresenter.ITriggerView, TriggerPresenter.MyProxy>
-		implements EditTriggerHandler {
+		implements EditTriggerHandler, SearchHandler{
 
 	public interface ITriggerView extends View {
 		HasClickHandlers getAddTriggerLink();
@@ -64,6 +66,7 @@ public class TriggerPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(EditTriggerEvent.TYPE, this);
+		addRegisteredHandler(SearchEvent.getType(), this);
 		getView().getAddTriggerLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -85,7 +88,7 @@ public class TriggerPresenter extends
 		super.prepareFromRequest(request);
 		fireEvent(new ProcessChildLoadedEvent(this));
 		processRefId = request.getParameter("p",null);
-		load();
+		load(null);
 	}
 
 	protected void showClonePopup() {
@@ -133,8 +136,10 @@ public class TriggerPresenter extends
 
 	}
 
-	protected void load() {
-		requestHelper.execute(new GetTriggersRequest(processRefId),
+	protected void load(String searchTerm) {
+		GetTriggersRequest request = new GetTriggersRequest(processRefId);
+		request.setSearchTerm(searchTerm);
+		requestHelper.execute(request,
 				new TaskServiceCallback<GetTriggersResponse>() {
 					@Override
 					public void processResult(GetTriggersResponse aResponse) {
@@ -185,6 +190,13 @@ public class TriggerPresenter extends
 
 		} else {
 			showEditPopup(trigger);
+		}
+	}
+	
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			load(event.getFilter().getPhrase());
 		}
 	}
 }

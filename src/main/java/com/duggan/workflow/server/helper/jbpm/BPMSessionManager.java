@@ -19,12 +19,6 @@ import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.definition.process.Process;
-import org.drools.event.process.ProcessCompletedEvent;
-import org.drools.event.process.ProcessEventListener;
-import org.drools.event.process.ProcessNodeLeftEvent;
-import org.drools.event.process.ProcessNodeTriggeredEvent;
-import org.drools.event.process.ProcessStartedEvent;
-import org.drools.event.process.ProcessVariableChangedEvent;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
@@ -71,9 +65,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.NotificationType;
 
@@ -272,6 +264,7 @@ class BPMSessionManager {
 		if (lts == null) {
 			lts = new LocalTaskService(service);
 			NotificationTaskEventListener listener = new NotificationTaskEventListener();
+			lts.addEventListener(new AssignmentTaskEventListener());
 			lts.addEventListener(listener);
 			ltsStore.set(lts);
 			eventListener.set(listener);

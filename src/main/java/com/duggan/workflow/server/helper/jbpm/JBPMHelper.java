@@ -630,6 +630,19 @@ public class JBPMHelper implements Closeable {
 
 		return null;
 	}
+	
+	public List<String> getPotentialOwnersAsList(Task master_task) {
+
+		List<OrganizationalEntity> entitiesList = master_task
+				.getPeopleAssignments().getPotentialOwners();
+		
+		List<String> potOwners = new ArrayList<String>();
+		for (OrganizationalEntity entity : entitiesList) {
+			potOwners.add(entity.getId());
+		}
+
+		return potOwners;
+	}
 
 	public void loadProgressInfo(Doc task, long processInstanceId) {
 		// then how far is the process now?
@@ -1291,7 +1304,6 @@ public class JBPMHelper implements Closeable {
 		org.drools.definition.process.Process droolsProcess = sessionManager
 				.getProcess(processId);
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
-		task.getTaskData().getWorkItemId();
 
 		for (Node node : wfprocess.getNodes()) {
 

@@ -25,7 +25,7 @@ public class GetTriggersRequestHandler extends
 		List<Trigger> triggers = null;
 
 		if (action.getProcessRefId()!=null) {
-			triggers = ProcessDefHelper.getTriggers(action.getProcessRefId());
+			triggers = ProcessDefHelper.getTriggers(action.getProcessRefId(),action.getSearchTerm());
 		} else {
 			triggers = ProcessDefHelper.getTriggers();
 		}

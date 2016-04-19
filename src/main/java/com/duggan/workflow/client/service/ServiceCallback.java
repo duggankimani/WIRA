@@ -35,9 +35,9 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 		
 		if(caught instanceof InvocationException){
 			String msg = "Cannot connect to server...";
-			if(getBaseMessage(caught)!=null ){
-				msg = StringUtils.isNullOrEmpty(caught.getMessage())? msg : msg+" - "+caught.getMessage();
-			}
+//			if(getBaseMessage(caught)!=null ){
+//				msg = StringUtils.isNullOrEmpty(caught.getMessage())? msg : msg+" - "+caught.getMessage();
+//			}
 			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
 			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg));
 			return;

@@ -84,9 +84,13 @@ public class OutputDocumentDaoHelper {
 	}
 
 	public static List<OutputDocument> getDocuments(String processRefId) {
+		return getDocuments(processRefId, null);
+	}
+	
+	public static List<OutputDocument> getDocuments(String processRefId, String searchTerm) {
 		OutputDocumentDao dao = DB.getOutputDocDao();
 		List<OutputDocument> documents = new ArrayList<>();
-		List<ADOutputDoc> docs = dao.getOutputDocuments(processRefId);
+		List<ADOutputDoc> docs = dao.getOutputDocuments(processRefId, searchTerm);
 		for (ADOutputDoc doc : docs) {
 			documents.add(get(doc));
 		}

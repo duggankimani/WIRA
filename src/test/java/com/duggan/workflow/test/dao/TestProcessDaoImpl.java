@@ -1,5 +1,6 @@
 package com.duggan.workflow.test.dao;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -24,6 +25,13 @@ public class TestProcessDaoImpl {
 	}
 	
 	@Test
+	public void getNextAssignee(){
+		String nextAssignee = DB.getProcessDao().getNextAssignee(113L, "ClaimVerification"
+				,"chasebank.finance.ExpenseClaim", Arrays.asList("Admin", "Finance"));
+		System.err.println(nextAssignee);
+	}
+	
+	@Ignore
 	public void loadProcessMetadata(){
 		JBPMHelper.get().getWorkflowProcessNodes("chasebank.finance.ExpenseClaim");
 	}

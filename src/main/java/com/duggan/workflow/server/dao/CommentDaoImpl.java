@@ -10,9 +10,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.CommentModel;
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;

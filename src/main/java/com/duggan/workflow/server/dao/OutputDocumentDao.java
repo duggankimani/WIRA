@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -24,11 +26,28 @@ public class OutputDocumentDao extends BaseDaoImpl {
 		return getResultList(em.createQuery(query));
 	}
 	
-	public List<ADOutputDoc> getOutputDocuments(String processRefId) {
+	public List<ADOutputDoc> getOutputDocuments(String processRefId, String searchTerm) {
 		
-		String query = "FROM ADOutputDoc WHERE (processRefId=:processRefId "
-				+ "or processRefId is null) and isActive=1";
-		return getResultList(em.createQuery(query).setParameter("processRefId", processRefId));
+		StringBuffer query = new StringBuffer("FROM ADOutputDoc WHERE (processRefId=:processRefId "
+				+ "or processRefId is null) and isActive=1 ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			query.append(" and (lower(name) like :searchTerm or "
+					+ "lower(description) like :searchTerm or "
+					+ "lower(code) like :searchTerm or "
+					+ "lower(path) like :searchTerm) ");
+			params.put("searchTerm", "%"+searchTerm+"%");
+		}
+		
+		query.append(" order by name,description");
+		
+		Query emquery = em.createQuery(query.toString()).setParameter("processRefId", processRefId);
+		for(String key:params.keySet()){
+			emquery.setParameter(key, params.get(key));
+		}
+		
+		return getResultList(emquery);
 	}
 
 

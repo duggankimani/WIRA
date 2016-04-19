@@ -25,7 +25,7 @@ public class GetOutputDocumentsRequestHandler
 			((GetOutputDocumentsResponse) actionResult).setDocuments(documents);
 		}else if (action.getProcessRefId()!=null){
 			List<OutputDocument> documents = OutputDocumentDaoHelper
-					.getDocuments(action.getProcessRefId());
+					.getDocuments(action.getProcessRefId(),action.getSearchTerm());
 			((GetOutputDocumentsResponse) actionResult).setDocuments(documents);
 		}
 	}
