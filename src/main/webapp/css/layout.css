@@ -500,6 +500,7 @@ body .dateBoxPopup {
 	max-width: 100%;
 	height: 100%;
 	position: absolute;
+	overflow: hidden;
 }
 
 /* Sidebar */
@@ -635,7 +636,7 @@ body .dateBoxPopup {
 	padding: 0px 0px 5px 0px;
 	padding-right: 0px;
 	border: 1px solid #CCCCCC;
-	height: 89.5%;
+	height: 93.5%;
 	border-right: none;
 	overflow-y: auto;
 }
@@ -1710,4 +1711,31 @@ ul.icons-list.text-xl {
 	padding: 9px 15px 0px !important;
 	line-height: 10px;
 	background: transparent !important;
+}
+
+
+.reports-presenter{
+	overflow:auto;
+	margin-right:0px;
+	width: auto;
+	padding: 15px;
+	height: 87%;
+}
+.reports-presenter .report-head{
+	border-bottom: 1px solid #F3F1F1;
+	margin-bottom: 22px;
+	padding-bottom: 22px;
+}
+
+.reports-presenter .report-head h4{
+	padding: 5px 0px;
+}
+
+.reports-presenter .report-head [class*="span"]{
+	margin: 0px;
+}
+
+.reports-presenter .report-head .btn-toolbar{
+	margin-top:0px;
+	margin-bottom:0px;
 }
