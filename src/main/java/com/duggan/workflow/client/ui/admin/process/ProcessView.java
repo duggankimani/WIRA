@@ -1,7 +1,11 @@
 package com.duggan.workflow.client.ui.admin.process;
 
+import java.util.List;
+
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -26,6 +30,9 @@ public class ProcessView extends ViewImpl implements
 	@UiField Image imgProcess;
 
 	private String actionPreview;
+	
+	@UiField AnchorElement aDownloadBPN;
+	@UiField AnchorElement aDownloadIMG;
 
 	public interface Binder extends UiBinder<Widget, ProcessView> {
 	}
@@ -57,10 +64,18 @@ public class ProcessView extends ViewImpl implements
 	public void setProcess(ProcessDef processDef) {
 //		spnProcessName.setInnerText(processDef.getName());
 		String url = AppContext.getBaseUrl()+"/getreport?attachmentId="+processDef.getImageId()+"&action=getattachment";
+		aDownloadIMG.setHref(url);
 		imgProcess.setUrl(url);
 		if(actionPreview==null || actionPreview.equals(ProcessPresenter.ACTION_PREVIEW)){
 			imgProcess.removeStyleName("hide");
 		}
+		
+		List<Attachment> attachments = processDef.getFiles();
+		if(!attachments.isEmpty()){
+			String bpmnUrl = AppContext.getBaseUrl()+"/getreport?attachmentId="+attachments.get(0).getId()+"&action=getattachment";
+			aDownloadBPN.setHref(bpmnUrl);
+		}
+		
 	}
 	
 	@Override
