@@ -3,44 +3,48 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel styleName="full-page">
 
-		<div ui:field="divReportView" class="hide">
-			
-			<div class="btn-toolbar pull-right">
-				<div class="btn-group">
-					<a class="btn dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-download"></i>
-						Download
-						<span class="caret"></span>
-					</a>
-					<a class="btn">
-						<i class="icon-print"></i>
-						Print
-					</a>
+		<div class="row-fluid">
+			<div class="span12">
+				<div ui:field="divReportView" class="hide">
+					<div>
+						<a class="" href="#reports">
+							<i class="icon-arrow-left"></i>
+						</a>
+						<legend ui:field="divReportName" styleName="hide"></legend>
+					</div>
 
-					<ul class="dropdown-menu" id="dropdown1">
-						<li>
-							<a>Excel</a>
-						</li>
-						<li>
-							<a>Csv</a>
-						</li>
-						<li>
-							<a>PDF</a>
-						</li>
-					</ul>
+					<div class="btn-toolbar pull-right">
+						<div class="btn-group">
+							<a class="btn dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-download"></i>
+								Download
+								<span class="caret"></span>
+							</a>
+							<a class="btn">
+								<i class="icon-print"></i>
+								Print
+							</a>
+
+							<ul class="dropdown-menu" id="dropdown1">
+								<li>
+									<a>Excel</a>
+								</li>
+								<li>
+									<a>Csv</a>
+								</li>
+								<li>
+									<a>PDF</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="">
+					<g:FlexTable ui:field="tableReports" styleName="table">
+					</g:FlexTable>
 				</div>
 			</div>
-			<div>
-				<a class="" href="#reports">
-					<i class="icon-arrow-left"></i>
-				</a>
-				<legend ui:field="divReportName" styleName="hide"></legend>
-			</div>
-		</div>
-
-		<div class="">
-			<g:FlexTable ui:field="tableReports" styleName="table">
-			</g:FlexTable>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
