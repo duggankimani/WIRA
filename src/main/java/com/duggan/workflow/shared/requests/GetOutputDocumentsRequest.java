@@ -7,6 +7,8 @@ public class GetOutputDocumentsRequest extends BaseRequest<GetOutputDocumentsRes
 
 	private Long documentId;
 	private String processRefId;
+	private String searchTerm;
+	
 
 	public GetOutputDocumentsRequest() {
 	}
@@ -34,6 +36,14 @@ public class GetOutputDocumentsRequest extends BaseRequest<GetOutputDocumentsRes
 
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 
 }

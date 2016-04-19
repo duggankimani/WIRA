@@ -6,6 +6,7 @@ import com.duggan.workflow.shared.responses.GetTriggersResponse;
 public class GetTriggersRequest extends BaseRequest<GetTriggersResponse> {
 
 	private String processRefId;
+	private String searchTerm;
 
 	public GetTriggersRequest() {
 	}
@@ -25,6 +26,14 @@ public class GetTriggersRequest extends BaseRequest<GetTriggersResponse> {
 
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 
 }

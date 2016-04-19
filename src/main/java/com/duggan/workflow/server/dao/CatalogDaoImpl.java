@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,6 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
-import com.duggan.workflow.shared.model.catalog.FieldSource;
-import com.google.gwt.dev.util.collect.HashMap;
 
 public class CatalogDaoImpl extends BaseDaoImpl {
 

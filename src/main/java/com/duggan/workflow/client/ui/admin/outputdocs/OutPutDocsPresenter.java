@@ -11,7 +11,9 @@ import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent.EditOutputDocHandler;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
@@ -35,7 +37,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class OutPutDocsPresenter extends
-		Presenter<OutPutDocsPresenter.MyView, OutPutDocsPresenter.MyProxy> implements EditOutputDocHandler{
+		Presenter<OutPutDocsPresenter.MyView, OutPutDocsPresenter.MyProxy>
+		implements EditOutputDocHandler, SearchHandler {
 
 	public interface MyView extends View {
 		HasClickHandlers getDocumentButton();
@@ -46,17 +49,18 @@ public class OutPutDocsPresenter extends
 	@ProxyCodeSplit
 	@NameToken(NameTokens.outputdocs)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends ProxyPlace<OutPutDocsPresenter>{
+	public interface MyProxy extends ProxyPlace<OutPutDocsPresenter> {
 	}
-	
+
 	@Inject
 	SaveOutPutDocsPresenter saveProvider;
-	@Inject DispatchAsync requestHelper;
+	@Inject
+	DispatchAsync requestHelper;
 	private String processRefId;
-	
+
 	@Inject
 	public OutPutDocsPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy ) {
+			final MyProxy proxy) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 	}
 
@@ -64,6 +68,7 @@ public class OutPutDocsPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(EditOutputDocEvent.TYPE, this);
+		addRegisteredHandler(SearchEvent.getType(), this);
 		getView().getDocumentButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -71,77 +76,97 @@ public class OutPutDocsPresenter extends
 			}
 		});
 	}
-	
+
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		fireEvent(new ProcessChildLoadedEvent(this));
-		processRefId = request.getParameter("p",null);
+		processRefId = request.getParameter("p", null);
 		load();
 	}
-	
+
 	protected void showEditPopup(OutputDocument doc) {
 		saveProvider.clear();
 		saveProvider.setOutputDoc(doc);
-		AppManager.showPopUp("Create Output Document",saveProvider.asWidget(),new OptionControl(){
-			@Override
-			public void onSelect(String name) {						
-				if(name.equals("Save")){
-					OutputDocument doc = saveProvider.getOutputDocument();
-					save(doc);
-				}
-				hide();
-			}
+		AppManager.showPopUp("Create Output Document", saveProvider.asWidget(),
+				new OptionControl() {
+					@Override
+					public void onSelect(String name) {
+						if (name.equals("Save")) {
+							OutputDocument doc = saveProvider
+									.getOutputDocument();
+							save(doc);
+						}
+						hide();
+					}
 
-		},"Save", "Cancel");
+				}, "Save", "Cancel");
 
 	}
 
 	protected void load() {
-		requestHelper.execute(new GetOutputDocumentsRequest(processRefId), 
-				new TaskServiceCallback<GetOutputDocumentsResponse>() {
-			@Override
-			public void processResult(GetOutputDocumentsResponse aResponse) {
-				getView().setOutputDocuments(aResponse.getDocuments());
-			}
-		});
+		load(null);
 	}
 	
+	protected void load(String searchTerm) {
+		GetOutputDocumentsRequest request = new GetOutputDocumentsRequest(processRefId);
+		request.setSearchTerm(searchTerm);
+		requestHelper.execute(request,
+				new TaskServiceCallback<GetOutputDocumentsResponse>() {
+					@Override
+					public void processResult(
+							GetOutputDocumentsResponse aResponse) {
+						getView().setOutputDocuments(aResponse.getDocuments());
+					}
+				});
+	}
 
 	private void save(OutputDocument doc) {
 		doc.setProcessRefId(processRefId);
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new SaveOutputDocumentRequest(doc));
 		requests.addRequest(new GetOutputDocumentsRequest(processRefId));
-		requestHelper.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResult) {
-				SaveOutputDocumentResponse aSaveResponse = (SaveOutputDocumentResponse) aResult.get(0);
-				
-				GetOutputDocumentsResponse aGetOutputDocsResult = (GetOutputDocumentsResponse) aResult.get(1);
-				getView().setOutputDocuments(aGetOutputDocsResult.getDocuments());
-			}
-		});
+		requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResult) {
+						SaveOutputDocumentResponse aSaveResponse = (SaveOutputDocumentResponse) aResult
+								.get(0);
+
+						GetOutputDocumentsResponse aGetOutputDocsResult = (GetOutputDocumentsResponse) aResult
+								.get(1);
+						getView().setOutputDocuments(
+								aGetOutputDocsResult.getDocuments());
+					}
+				});
 	}
 
 	@Override
 	public void onEditOutputDoc(EditOutputDocEvent event) {
 		final OutputDocument doc = event.getDoc();
-		if(!doc.isActive()){
-			//deleting
-			AppManager.showPopUp("Delete '"+doc.getName()+"'", "Do you want to delete this document?",
+		if (!doc.isActive()) {
+			// deleting
+			AppManager.showPopUp("Delete '" + doc.getName() + "'",
+					"Do you want to delete this document?",
 					new OnOptionSelected() {
-						
+
 						@Override
 						public void onSelect(String name) {
-							if(name.equals("Yes")){
+							if (name.equals("Yes")) {
 								save(doc);
 							}
 						}
-					}, "Yes","Cancel");
-			
-		}else{
+					}, "Yes", "Cancel");
+
+		} else {
 			showEditPopup(doc);
+		}
+	}
+	
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			load(event.getFilter().getPhrase());
 		}
 	}
 }

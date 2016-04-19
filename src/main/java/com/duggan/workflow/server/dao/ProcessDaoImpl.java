@@ -1,21 +1,15 @@
 package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.drools.runtime.process.ProcessInstance;
-import org.hibernate.Hibernate;
-import org.hibernate.SQLQuery;
-import org.hibernate.ejb.QueryImpl;
 import org.jbpm.task.Status;
-import org.jbpm.task.Task;
-import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
@@ -30,13 +24,10 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.CaseFilter;
-import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.NotificationCategory;
-import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;
-import com.google.gwt.dev.util.collect.HashMap;
 
 public class ProcessDaoImpl extends BaseDaoImpl {
 
@@ -231,16 +222,29 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		return getResultList(query);
 	}
 
-	public List<ADTrigger> getTriggers(String processRefId) {
-		Query query = em
-				.createQuery(
-						"FROM ADTrigger t where "
+	public List<ADTrigger> getTriggers(String processRefId, String searchTerm) {
+		
+		StringBuffer query = new StringBuffer("FROM ADTrigger t where "
 								+ "(t.processRefId=:processRefId or t.processRefId is null) "
-								+ "and isActive=:active")
+								+ "and isActive=:active ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			query.append(" and lower(t.name) like :searchTerm ");
+			params.put("searchTerm", "%"+searchTerm+"%");
+		}
+		
+		query.append(" order by name");
+		
+		Query emquery = em.createQuery(query.toString())
 				.setParameter("processRefId", processRefId)
-				.setParameter("active", 1);
+		.setParameter("active", 1);
 
-		return getResultList(query);
+		for(String key:params.keySet()){
+			emquery.setParameter(key, params.get(key));
+		}
+		
+		return getResultList(emquery);
 	}
 
 	public int getTaskCount(Long taskStepId, TriggerType type) {

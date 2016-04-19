@@ -514,11 +514,11 @@ public class ProcessDefHelper {
 		return triggers;
 	}
 
-	public static List<Trigger> getTriggers(String processRefId) {
+	public static List<Trigger> getTriggers(String processRefId, String searchTerm) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
 		List<Trigger> triggers = new ArrayList<>();
-		List<ADTrigger> adTriggers = dao.getTriggers(processRefId);
+		List<ADTrigger> adTriggers = dao.getTriggers(processRefId, searchTerm);
 
 		for (ADTrigger adtrigger : adTriggers) {
 			triggers.add(getTrigger(adtrigger));
