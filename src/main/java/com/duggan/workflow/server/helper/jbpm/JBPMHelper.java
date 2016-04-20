@@ -329,13 +329,13 @@ public class JBPMHelper implements Closeable {
 		return statuses;
 	}
 
-	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId) {
-		return getTasksForUser(userId, processInstanceId, false);
+	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId, int offset, int length) {
+		return getTasksForUser(userId, processInstanceId, false, offset,length);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<HTSummary> getTasksForUser(String userId,
-			Long processInstanceId, boolean isLoadAsAdmin) {
+			Long processInstanceId, boolean isLoadAsAdmin, int offset, int length) {
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
 		List<String> groupIds = new ArrayList<>();
@@ -352,6 +352,8 @@ public class JBPMHelper implements Closeable {
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
 					.setParameter("processInstanceId", processInstanceId)
+					.setFirstResult(offset)
+					.setMaxResults(length)
 					.getResultList();
 		} else {
 
@@ -360,6 +362,8 @@ public class JBPMHelper implements Closeable {
 					.setParameter("language", "en-UK")
 					.setParameter("groupIds", groupIds)
 					.setParameter("processInstanceId", processInstanceId)
+					.setFirstResult(offset)
+					.setMaxResults(length)
 					.getResultList();
 		}
 

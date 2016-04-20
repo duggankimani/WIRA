@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.Doc;
 
-public class GetTaskListResult extends BaseResponse {
+public class GetTaskListResult extends BaseListResponse {
 
 	private List<Doc> tasks;
 

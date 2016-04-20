@@ -11,8 +11,6 @@ import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.AfterSearchEvent;
-import com.duggan.workflow.client.ui.events.AlertLoadEvent;
-import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent.AssignTaskHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
@@ -33,7 +31,6 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.SearchFilter;
@@ -49,9 +46,13 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.ScrollEvent;
+import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -67,21 +68,32 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>> 
-		extends	Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> 
-		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,SearchHandler, AssignTaskHandler
-		//AlertLoadHandler,
-		{
+public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
+		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> implements
+		AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,
+		SearchHandler, AssignTaskHandler
+// AlertLoadHandler,
+{
 
 	public interface ITaskView extends View {
 		void setHeading(String heading);
+
 		HasClickHandlers getRefreshButton();
+
 		public void setHasItems(boolean hasItems);
+
 		void setTaskType(TaskType currentTaskType);
-		public Anchor getaRefresh() ;
+
+		public Anchor getaRefresh();
+
 		TextBox getSearchBox();
+
 		public void hideFilterDialog();
+
 		public void setSearchBox(String text);
+
+		void addScrollHandler(ScrollHandler scrollHandler);
+
 	}
 
 	@ContentSlot
@@ -90,49 +102,60 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
-	
-	@Inject DispatchAsync dispatcher;
-	@Inject PlaceManager placeManager;
-		
+
+	@Inject
+	DispatchAsync dispatcher;
+	@Inject
+	PlaceManager placeManager;
+
 	public static final Object DATEGROUP_SLOT = new Object();
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
 	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
-	
+
 	protected static TaskType currentTaskType;
-	
+
 	/**
 	 * Url processInstanceId (pid) - required incase the use hits refresh
 	 */
-	private Long processInstanceId=null;
-	
+	private Long processInstanceId = null;
+
 	/**
 	 * Url documentId (did) - required incase the use hits refresh
 	 */
-	//private Long documentId=null;
-	private String docRefId=null;
-	
-	String searchTerm="";
-	
-	//Form Mode - Edit/ View - Applicable for Drafts only
+	// private Long documentId=null;
+	private String docRefId = null;
+
+	String searchTerm = "";
+
+	// Form Mode - Edit/ View - Applicable for Drafts only
 	MODE mode = null;
-	
-	@Inject FilterPresenter filterPresenter;
-	
+
+	@Inject
+	FilterPresenter filterPresenter;
+
 	Timer timer = new Timer() {
-		
+
 		@Override
 		public void run() {
 			search();
 		}
 	};
-	
+
+	protected static final int PAGE_SIZE = 15;
+
+	protected int CURPOS = 0;
+
+	private boolean isLoadingData;
+
 	public AbstractTaskPresenter(final EventBus eventBus, final ITaskView view,
 			final Proxy_ proxy,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
-		docViewFactory  = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
-		dateGroupFactory = new StandardProvider<DateGroupPresenter>(dateGroupProvider);
+		docViewFactory = new StandardProvider<GenericDocumentPresenter>(
+				docViewProvider);
+		dateGroupFactory = new StandardProvider<DateGroupPresenter>(
+				dateGroupProvider);
 	}
 
 	@Override
@@ -142,299 +165,344 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
 		addRegisteredHandler(AssignTaskEvent.TYPE, this);
-		//addRegisteredHandler(AlertLoadEvent.TYPE, this);
-		//addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
-		
+		// addRegisteredHandler(AlertLoadEvent.TYPE, this);
+		// addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		addRegisteredHandler(SearchEvent.TYPE, this);
+
+		getView().addScrollHandler(new ScrollHandler() {
+			@Override
+			public void onScroll(ScrollEvent event) {
+				// Window.alert("Scrolled!");
+				ScrollPanel panel = (ScrollPanel) event.getSource();
+				int max = panel.getMaximumVerticalScrollPosition();
+				int currentPos = panel.getVerticalScrollPosition();
+				if (currentPos == max && !isLoadingData) {
+					loadTasks(currentTaskType, true);
+				}
+			}
+		});
+
 		filterPresenter.addCloseHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				getView().hideFilterDialog();
 			}
 		});
-		
+
 		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
-			
+
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				String txt = getView().getSearchBox().getValue().trim();
-				
-				if(!txt.equals(searchTerm) || event.getNativeKeyCode()==KeyCodes.KEY_ENTER){
+
+				if (!txt.equals(searchTerm)
+						|| event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					searchTerm = txt;
 					timer.cancel();
 					timer.schedule(400);
 				}
-				
+
 			}
 		});
-		
+
 		getView().getRefreshButton().addClickHandler(new ClickHandler() {
 			@Override
-			public void onClick(ClickEvent event) {				
+			public void onClick(ClickEvent event) {
 				loadTasks();
 			}
 		});
-		
+
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-		
-		//fireEvent(new LoadAlertsEvent());
-		clear();		
-		processInstanceId=null;
-		
+		CURPOS = 0;
+
+		// fireEvent(new LoadAlertsEvent());
+		clear();
+		processInstanceId = null;
+
 		String processInstID = request.getParameter("pid", null);
-		//String documentSearchID = request.getParameter("did", null);
+		// String documentSearchID = request.getParameter("did", null);
 		docRefId = request.getParameter("docRefId", null);
-		
-		if(processInstID!=null){
+
+		if (processInstID != null) {
 			processInstanceId = Long.parseLong(processInstID);
 		}
-//		if(documentSearchID!=null){
-//			documentId = Long.parseLong(documentSearchID);
-//		}
-		loadTasks();
-		
-	}	
 
-	
+		loadTasks();
+
+	}
+
 	protected void search() {
 		timer.cancel();
-		if(searchTerm.isEmpty()){
+		if (searchTerm.isEmpty()) {
 			loadTasks();
 			return;
 		}
-		
-		//fireEvent(new ProcessingEvent());
+
+		// fireEvent(new ProcessingEvent());
 		SearchFilter filter = new SearchFilter();
 		filter.setSubject(searchTerm);
-		//filter.setPhrase(searchTerm);
+		// filter.setPhrase(searchTerm);
 		search(filter);
 	}
-	
-	
-	public void search(final SearchFilter filter){
-		
+
+	public void search(final SearchFilter filter) {
+
 		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
+		request.setLength(PAGE_SIZE);
+		request.setOffset(CURPOS=0);
 		fireEvent(new ProcessingEvent());
-		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
-			@Override
-			public void processResult(GetTaskListResult result) {		
-				
-				GetTaskListResult rst = (GetTaskListResult)result;
-				List<Doc> tasks = rst.getTasks();
-				loadLines(tasks);
-				if(tasks.isEmpty())
-					getView().setHasItems(false);
-				else
-					getView().setHasItems(true);
-				
-				fireEvent(new AfterSearchEvent(filter.getSubject(), filter.getPhrase()));
-				fireEvent(new ProcessingCompletedEvent());
-			}
-		});		
+		dispatcher.execute(request,
+				new TaskServiceCallback<GetTaskListResult>() {
+					@Override
+					public void processResult(GetTaskListResult result) {
+
+						GetTaskListResult rst = (GetTaskListResult) result;
+						List<Doc> tasks = rst.getTasks();
+						loadLines(tasks);
+						if (tasks.isEmpty())
+							getView().setHasItems(false);
+						else
+							getView().setHasItems(true);
+
+						fireEvent(new AfterSearchEvent(filter.getSubject(),
+								filter.getPhrase()));
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
 	}
-	
-	private void clear() {		
-		//clear document slot
+
+	private void clear() {
+		// clear document slot
 		setInSlot(DATEGROUP_SLOT, null);
 		setInSlot(DOCUMENT_SLOT, null);
 	}
-	
+
 	private void loadTasks() {
-		loadTasks(currentTaskType);
+		loadTasks(currentTaskType, false);
 	}
 
 	/**
 	 * Load JBPM records
+	 * 
 	 * @param type
 	 */
-	private void loadTasks(final TaskType type) {
-		clear();
-		
+	private void loadTasks(final TaskType type, final boolean isIncremental) {
+		beforeDataLoaded();
+
+		if (!isIncremental)
+			clear();
+
 		getView().setHeading(type.getTitle());
-		
+
 		String userId = AppContext.getUserId();
-		
-		GetTaskList request = new GetTaskList(userId,currentTaskType);
+
+		GetTaskList request = new GetTaskList(userId, currentTaskType);
+		request.setOffset(CURPOS);
+		request.setLength(PAGE_SIZE);
 		request.setProcessInstanceId(processInstanceId);
-		//request.setDocumentId(documentId);
+		// request.setDocumentId(documentId);
 		request.setDocRefId(docRefId);
 		request.setLoadAsAdmin(isLoadAsAdmin());
 		
-		//System.err.println("###### Search:: did="+documentId+"; PID="+processInstanceId+"; TaskType="+type);
-		
+//		Window.alert("Loading - "+currentTaskType+" "+CURPOS+" - "+(PAGE_SIZE+CURPOS));
+
 		fireEvent(new ProcessingEvent());
-		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>(){
-			@Override
-			public void processResult(GetTaskListResult result) {		
-				
-				GetTaskListResult rst = (GetTaskListResult)result;
-				List<Doc> tasks = rst.getTasks();
-				loadLines(tasks);
-				
-				if(tasks.size()>0){
-					getView().setHasItems(true);
-					
-					Doc doc = tasks.get(0);
-					String docRefId=null;
-					DocMode docMode = DocMode.READ;
-					
-					if(doc instanceof Document){
-						docRefId = doc.getRefId();
-						if(((Document)doc).getStatus()==DocStatus.DRAFTED){
-							docMode = DocMode.READWRITE;
+		dispatcher.execute(request,
+				new TaskServiceCallback<GetTaskListResult>() {
+					@Override
+					public void processResult(GetTaskListResult result) {
+						GetTaskListResult rst = (GetTaskListResult) result;
+						List<Doc> tasks = rst.getTasks();
+						loadLines(tasks, isIncremental);
+
+						if (tasks.size() > 0 && !isIncremental) {
+							getView().setHasItems(true);
+
+							Doc doc = tasks.get(0);
+							String docRefId = null;
+							DocMode docMode = DocMode.READ;
+
+							if (doc instanceof Document) {
+								docRefId = doc.getRefId();
+								if (((Document) doc).getStatus() == DocStatus.DRAFTED) {
+									docMode = DocMode.READWRITE;
+								}
+								// Load document
+								fireEvent(new DocumentSelectionEvent(docRefId,
+										null, docMode));
+							} else {
+								docRefId = ((HTSummary) doc).getRefId();
+								long taskId = ((HTSummary) doc).getId();
+								// Load Task
+								fireEvent(new DocumentSelectionEvent(docRefId,
+										taskId, docMode));
+							}
+
+						} else {
+							getView().setHasItems(false);
 						}
-						//Load document
-						fireEvent(new DocumentSelectionEvent(docRefId,null,docMode));
-					}else{
-						docRefId = ((HTSummary)doc).getRefId();
-						long taskId = ((HTSummary)doc).getId(); 
-						//Load Task
-						fireEvent(new DocumentSelectionEvent(docRefId,taskId,docMode));
+						afterDataLoaded();
+						fireEvent(new ProcessingCompletedEvent());
 					}
-					
-				}else{
-					getView().setHasItems(false);
-				}
-				
-				fireEvent(new ProcessingCompletedEvent());
-			}
-			
-		});
+
+				});
 	}
-	
+
+	protected void afterDataLoaded() {
+		isLoadingData = false;
+	}
+
+	protected void beforeDataLoaded() {
+		isLoadingData = true;
+	}
+
 	/**
 	 * 
 	 * @param tasks
 	 */
 	protected void loadLines(final List<Doc> tasks) {
-		setInSlot(DATEGROUP_SLOT, null);
-		final List<Date> dates=new ArrayList<Date>();
-		
-		for(int i=0; i< tasks.size(); i++){
-			//final String dt = DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
+		loadLines(tasks, false);
+	}
+
+	protected void loadLines(final List<Doc> tasks, boolean isIncremental) {
+		CURPOS = CURPOS + PAGE_SIZE;
+		if (!isIncremental) {
+			setInSlot(DATEGROUP_SLOT, null);
+		}
+
+		final List<Date> dates = new ArrayList<Date>();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			// final String dt =
+			// DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
 			final Doc doc = tasks.get(i);
-			
-			Date dateToUse  = doc.getSortDate();
-			
+
+			Date dateToUse = doc.getSortDate();
+
 			final String dt = DateUtils.DATEFORMAT.format(dateToUse);
 			final Date date = DateUtils.DATEFORMAT.parse(dt);
-			
-			if(dates.contains(date)){
+
+			if (dates.contains(date)) {
 				fireEvent(new PresentTaskEvent(doc));
-			}else{
+			} else {
 				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
 					@Override
 					public void processResult(DateGroupPresenter result) {
-						
+
 						result.setDate(date);
-						
-						addToSlot(DATEGROUP_SLOT, result);						
-						fireEvent(new PresentTaskEvent(doc));						
+
+						addToSlot(DATEGROUP_SLOT, result);
+						fireEvent(new PresentTaskEvent(doc));
 						dates.add(date);
 					}
 				});
-				
+
 			}
 		}
-	
+
 	}
-	
+
 	@Override
 	protected void onReset() {
 		super.onReset();
-		setInSlot(FILTER_SLOT, filterPresenter);		
+		setInSlot(FILTER_SLOT, filterPresenter);
 	}
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
-		if(this.isVisible()){
+		if (this.isVisible()) {
+			CURPOS = 0;
 			loadTasks();
 		}
 	}
 
 	/**
-	 * This is fired 3 times - For each Child Presenter
-	 * Add source
+	 * This is fired 3 times - For each Child Presenter Add source
 	 */
 	@Override
 	public void onDocumentSelection(DocumentSelectionEvent event) {
-		if(this.isVisible()){
+		if (this.isVisible()) {
 			displayDocument(event.getDocRefId(), event.getTaskId());
 		}
 	}
-	
+
 	private void displayDocument(final String docRefId, final Long taskId) {
-		if(docRefId==null && taskId==null){
+		if (docRefId == null && taskId == null) {
 			setInSlot(DOCUMENT_SLOT, null);
 			return;
 		}
-		
+
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
 				result.setDocId(docRefId, taskId, isLoadAsAdmin());
 				result.setFormMode(mode);
-				
-				if(currentTaskType==TaskType.UNASSIGNED){
+
+				if (currentTaskType == TaskType.UNASSIGNED) {
 					result.setUnAssignedList(true);
 				}
 				setInSlot(DOCUMENT_SLOT, result);
 			}
 		});
 	}
-	
+
 	@Override
 	public void onReload(ReloadEvent event) {
-		if(this.isVisible()){
-			//only the visible presenter should respond 
+		if (this.isVisible()) {
+			CURPOS = 0;
 			loadTasks();
-		}		
+		}
 	}
 
 	@Override
 	public void onSearch(SearchEvent event) {
-		if(this.isVisible()){
-			SearchFilter filter= event.getFilter();
+		if (this.isVisible()) {
+			CURPOS = 0;
+			SearchFilter filter = event.getFilter();
 			search(filter);
 			getView().hideFilterDialog();
 		}
 	}
-	
+
 	@Override
 	public void onAssignTask(AssignTaskEvent event) {
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new AssignTaskRequest(event.getTaskId(), event.getUserId()));
-		action.addRequest(new GetTaskList(AppContext.getUserId(), TaskType.UNASSIGNED));
-		
-		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResponse) {
-				BaseResponse response = aResponse.get(0);
-				GetTaskListResult listResult = (GetTaskListResult) aResponse.get(1);
-				loadLines(listResult.getTasks());
-			}
-		});
-		
-		
+		action.addRequest(new AssignTaskRequest(event.getTaskId(), event
+				.getUserId()));
+		action.addRequest(new GetTaskList(AppContext.getUserId(),
+				TaskType.UNASSIGNED));
+
+		dispatcher.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						BaseResponse response = aResponse.get(0);
+						GetTaskListResult listResult = (GetTaskListResult) aResponse
+								.get(1);
+						loadLines(listResult.getTasks());
+					}
+				});
+
 	}
-	
+
 	/**
 	 * <p>
-	 * Tells the server to load a Task as Administrator[Business Admin] for Admin Overview &
-	 * Management
+	 * Tells the server to load a Task as Administrator[Business Admin] for
+	 * Admin Overview & Management
 	 * <p>
 	 * Override it in inheriting presenters
+	 * 
 	 * @return
 	 */
-	boolean isLoadAsAdmin(){
+	boolean isLoadAsAdmin() {
 		return false;
 	}
 }

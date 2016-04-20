@@ -5,7 +5,7 @@ import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 
-public class GetTaskList extends BaseRequest<GetTaskListResult> {
+public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 
 	private String userId;
 	private TaskType type;

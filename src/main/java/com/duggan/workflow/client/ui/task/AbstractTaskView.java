@@ -15,12 +15,16 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.ScrollEvent;
+import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,7 +39,7 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 
 	@UiField TextBox txtSearch;
 	//@UiField HTMLPanel divDocPopup;
-	@UiField Element divDocListing;
+	@UiField ScrollPanel divDocListing;
 	@UiField Element divDocView;
 	@UiField Element divTasks;
 	@UiField BulletListPanel ulTaskGroups;
@@ -55,7 +59,7 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 		divTasks.setId("middle-box");
 		ulTaskGroups.setId("navigation-menu");
 		txtSearch.getElement().setAttribute("placeholder", "Search...");
-		divDocListing.setId("middle-nav");
+		divDocListing.getElement().setId("middle-nav");
 		divDocView.setId("detailed-info");
 
 		// InlineLabel l;
@@ -87,6 +91,11 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 			}
 		});
 	}
+	
+	@Override
+	public void addScrollHandler(ScrollHandler scrollHandler) {
+		divDocListing.addScrollHandler(scrollHandler);
+	}
 
 	@Override
 	public Widget asWidget() {
@@ -100,7 +109,6 @@ public class AbstractTaskView extends ViewImpl implements AbstractTaskPresenter.
 			if (content != null) {
 				ulTaskGroups.add(content);
 			}
-
 		} else if (slot == DOCUMENT_SLOT) {
 			docContainer.clear();
 			if (content != null) {

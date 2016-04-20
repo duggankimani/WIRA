@@ -25,13 +25,13 @@
 				<g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
 			</div>
 
-			<div ui:field="divDocListing">
-				<div class="content-nav row-fluid">
+			<g:ScrollPanel ui:field="divDocListing">
+				<g:HTMLPanel styleName="content-nav row-fluid">
 					<d:BulletListPanel ui:field="ulTaskGroups">
 					</d:BulletListPanel>
 					<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
-				</div>
-			</div>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
 		</div>
 
 		<!--Detailed Info Description -->

@@ -25,9 +25,9 @@ public class GetDataRequestHandler extends
 		
 		List<DocumentLine> lines = new ArrayList<DocumentLine>();
 		if(action.getCatalogRefId()!=null){
-			lines = CatalogDaoHelper.getTableData(action.getCatalogRefId());
+			lines = CatalogDaoHelper.getTableData(action.getCatalogRefId(), action.getSearchTerm());
 		}else if(action.getCatalogId()!=null){
-			lines = CatalogDaoHelper.getTableData(action.getCatalogId());
+			lines = CatalogDaoHelper.getTableData(action.getCatalogId(),action.getSearchTerm());
 		}
 		 
 		((GetDataResponse)actionResult).setLines(lines);

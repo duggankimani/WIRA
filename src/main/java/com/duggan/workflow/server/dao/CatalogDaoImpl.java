@@ -35,20 +35,19 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		StringBuffer jpql = new StringBuffer(
 				"FROM CatalogModel c where c.isActive=1");
 
-
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(searchTerm!=null){
+		if (searchTerm != null) {
 			jpql.append(" and (lower(c.name) like :searchTerm or lower(c.description) like :searchTerm) and c.isActive=1 ");
-			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+			params.put("searchTerm", "%" + searchTerm.toLowerCase() + "%");
 		}
 		jpql.append(" order by c.description");
-		
+
 		Query query = em.createQuery(jpql.toString());
-		
-		for(String key: params.keySet()){
+
+		for (String key : params.keySet()) {
 			query.setParameter(key, params.get(key));
 		}
-		
+
 		return getResultList(query);
 	}
 
@@ -94,10 +93,37 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<Object[]> getData(String tableName,
-			String comma_Separated_fieldNames) {
+			String comma_Separated_fieldNames, String searchTerm,
+			List<String> searchCols) {
 
-		return getResultList(em.createNativeQuery("select "
-				+ comma_Separated_fieldNames + " from " + tableName));
+		StringBuffer jpql = new StringBuffer("select "
+				+ comma_Separated_fieldNames + " from " + tableName);
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (searchTerm != null && !searchCols.isEmpty()) {
+			jpql.append(" where (");
+
+			for (int i=0; i<searchCols.size(); i++) {
+				if(i!=0){
+					jpql.append("or ");
+				}
+				String col = searchCols.get(i);
+				jpql.append("lower("+col+") like :searchTerm  ");
+			}
+			
+			jpql.append(" )");
+
+			params.put("searchTerm", "%" + searchTerm.toLowerCase() + "%");
+		}
+		
+		log.debug("Catalog ReportData Query: "+jpql);
+
+		Query query = em.createNativeQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		
+		return getResultList(query);
 	}
 
 	/**

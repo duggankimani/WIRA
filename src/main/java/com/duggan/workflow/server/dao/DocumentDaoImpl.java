@@ -42,13 +42,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DocumentModel> getAllDocuments(DocStatus...status){
+	public List<DocumentModel> getAllDocuments(int offset, int length,DocStatus...status){
 		
-		return em.createQuery("FROM DocumentModel d where status in (:status) and createdBy=:createdBy and isActive=:isActive").
+		return em.createQuery("FROM DocumentModel d where status in (:status) and createdBy=:createdBy and isActive=:isActive order by created desc").
 				setParameter("status", Arrays.asList(status)).
 				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).
-				setParameter("isActive", 1).
-				getResultList();
+				setParameter("isActive", 1)
+				.setFirstResult(offset)
+				.setMaxResults(length)
+				.getResultList();
 	}
 	
 	public DocumentModel getById(Long id){

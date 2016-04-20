@@ -21,6 +21,7 @@ import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
+import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.ProcessCategory;
@@ -202,22 +203,24 @@ public class CatalogDaoHelper {
 		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines,isClearExisting);
 	}
 
-	public static List<DocumentLine> getTableData(String catalogRefId) {
+	public static List<DocumentLine> getTableData(String catalogRefId, String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.findByRefId(catalogRefId, CatalogModel.class);
-		return getTableData(catalog);
+		return getTableData(catalog,searchTerm);
 	}
 	
-	public static List<DocumentLine> getTableData(Long catalogId) {
+	public static List<DocumentLine> getTableData(Long catalogId, String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.getById(CatalogModel.class, catalogId);
 		
-		return getTableData(catalog);
+		return getTableData(catalog, searchTerm);
 	}
 	
-	public static List<DocumentLine> getTableData(CatalogModel catalog){	
+	public static List<DocumentLine> getTableData(CatalogModel catalog, String searchTerm){	
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		String catalogName = "EXT_" + catalog.getName();
+		List<String> searchFields = new ArrayList<String>();
+		
 		if(catalog.getType()==CatalogType.REPORTVIEW){
 			catalogName = catalog.getName();
 		}
@@ -230,12 +233,18 @@ public class CatalogDaoHelper {
 			if (i + 1 < size) {
 				fieldNames.append(",");
 			}
+			
+			//Search field
+			if(col.getType()==DBType.VARCHAR || col.getType()==DBType.LONGVARCHAR){
+				searchFields.add(col.getName());
+			}
 			++i;
 		}
 
 		List<CatalogColumnModel> columns = new ArrayList<>(catalog.getColumns());
 		List<Object[]> row = dao.getData(catalogName,
-				fieldNames.toString());
+				fieldNames.toString(),searchTerm, searchFields);
+		
 		List<DocumentLine> lines = new ArrayList<>();
 		for (Object[] line : row) {
 

@@ -102,11 +102,12 @@ public class TestDocumentDaoImpl {
 	
 	@Ignore
 	public void getEM(){
-		 List<DocumentModel> models = dao.getAllDocuments(DocStatus.DRAFTED);
-		 dao.getAllDocuments(DocStatus.APPROVED);
-		 dao.getAllDocuments(DocStatus.INPROGRESS);
-		 dao.getAllDocuments(DocStatus.REJECTED);
-		 
+		int offset=0;
+		int length=100;
+	 List<DocumentModel> models = dao.getAllDocuments(offset,length,DocStatus.DRAFTED);
+	 dao.getAllDocuments(offset,length,DocStatus.APPROVED);
+	 dao.getAllDocuments(offset,length,DocStatus.INPROGRESS);
+	 dao.getAllDocuments(offset,length,DocStatus.REJECTED);
 		
 		Assert.assertEquals(0,models.size());
 	}
@@ -144,7 +145,7 @@ public class TestDocumentDaoImpl {
 		Document model = DocumentDaoHelper.save(doc);
 		Assert.assertNotNull(model.getId());
 
-		List<Doc> docs = DocumentDaoHelper.getAllDocuments(DocStatus.DRAFTED);
+		List<Doc> docs = DocumentDaoHelper.getAllDocuments(0,100,DocStatus.DRAFTED);
 		Assert.assertEquals(1, docs.size());
 		
 //		dao.delete(doc.getId());

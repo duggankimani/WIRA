@@ -47,7 +47,7 @@ public class GetTaskListActionHandler extends
 		switch (type) {
 		case DRAFT:
 			status = DocStatus.DRAFTED;
-			summary = DocumentDaoHelper.getAllDocuments(status);
+			summary = DocumentDaoHelper.getAllDocuments(action.getOffset(),action.getLength(),status);
 			break;
 //		case APPROVED:
 //			status = DocStatus.APPROVED;
@@ -58,9 +58,9 @@ public class GetTaskListActionHandler extends
 //			summary = DocumentDaoHelper.getAllDocuments(status);
 //			break;
 		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocuments(DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
+			summary = DocumentDaoHelper.getAllDocuments(action.getOffset(),action.getLength(),DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
 					DocStatus.COMPLETED);
-			summary.addAll(getPendingApprovals(userId, type));
+			summary.addAll(getPendingApprovals(userId, type,action.getOffset(),action.getLength()));
 			break;
 //		case REJECTED:
 //			status = DocStatus.REJECTED;
@@ -101,7 +101,7 @@ public class GetTaskListActionHandler extends
 				if(doc!=null)
 					summary.add(doc);
 				
-				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, processInstanceId, action.isLoadAsAdmin());
+				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, processInstanceId, action.isLoadAsAdmin(),action.getOffset(),action.getLength());
 				
 				if(tasks!=null){
 					summary.addAll(tasks);
@@ -112,7 +112,7 @@ public class GetTaskListActionHandler extends
 			
 		default:
 			//Tasks loaded here
-			summary = getPendingApprovals(userId, type);
+			summary = getPendingApprovals(userId, type,action.getOffset(),action.getLength());
 			break;
 		}
 
@@ -124,7 +124,7 @@ public class GetTaskListActionHandler extends
 
 	}
 
-	private List<Doc> getPendingApprovals(String userId, TaskType type) {
+	private List<Doc> getPendingApprovals(String userId, TaskType type, int offset, int length) {
 
 		List<HTSummary> tasks = new ArrayList<>();
 

@@ -3,13 +3,15 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * Build Info
  * 
  * @author duggan
  *
  */
-public class Version implements Serializable {
+public class Version implements Serializable,IsSerializable {
 
 	private static final long serialVersionUID = 4362162629668925874L;
 	private String version;

@@ -8,6 +8,8 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
@@ -33,7 +35,8 @@ import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class ReportsPresenter extends
-		Presenter<ReportsPresenter.IReportsView, ReportsPresenter.IReportsProxy> {
+		Presenter<ReportsPresenter.IReportsView, ReportsPresenter.IReportsProxy> 
+implements SearchHandler{
 	public interface IReportsView extends View {
 
 		void bindCatalogs(List<Catalog> catalogs);
@@ -54,27 +57,40 @@ public class ReportsPresenter extends
 
 	@Inject
 	DispatchAsync requestHelper;
+	String catalogRefId;
 
 	@Inject
 	public ReportsPresenter(EventBus eventBus, IReportsView view, IReportsProxy proxy) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 
 	}
+	
+	@Override
+	protected void onBind() {
+		super.onBind();
+		addRegisteredHandler(SearchEvent.getType(), this);
+	}
 
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 
-		String catalogRefId = request.getParameter("reportRefId", null);
-		loadData(catalogRefId);
+		catalogRefId = request.getParameter("reportRefId", null);
+		loadData(null,catalogRefId);
 	}
 
-	private void loadData(final String catalogRefId) {
+	private void loadData(String searchTerm,final String catalogRefId) {
 		fireEvent(new ProcessingEvent("Loading..."));
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetCatalogsRequest(catalogRefId));
+		
+		GetCatalogsRequest req = new GetCatalogsRequest(catalogRefId);
+		req.setSearchTerm(searchTerm);
+		
+		action.addRequest(req);
 		if(catalogRefId!=null){
-			action.addRequest(new GetDataRequest(catalogRefId));
+			GetDataRequest getDataReq = new GetDataRequest(catalogRefId);
+			getDataReq.setSearchTerm(searchTerm);
+			action.addRequest(getDataReq);
 		}
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -115,6 +131,13 @@ public class ReportsPresenter extends
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
+	}
+	
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			loadData(event.getFilter().getPhrase(),catalogRefId);
+		}
 	}
 
 }

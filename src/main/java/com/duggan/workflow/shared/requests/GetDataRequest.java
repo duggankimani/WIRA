@@ -7,6 +7,7 @@ public class GetDataRequest extends BaseRequest<GetDataResponse> {
 
 	private Long catalogId;
 	private String catalogRefId;
+	private String searchTerm;
 	
 	public GetDataRequest() {
 	}
@@ -30,5 +31,13 @@ public class GetDataRequest extends BaseRequest<GetDataResponse> {
 
 	public String getCatalogRefId() {
 		return catalogRefId;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 }

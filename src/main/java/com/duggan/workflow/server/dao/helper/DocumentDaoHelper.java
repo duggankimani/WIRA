@@ -48,10 +48,10 @@ public class DocumentDaoHelper {
 	
 	static Logger logger = Logger.getLogger(DocumentDaoHelper.class);
 
-	public static List<Doc> getAllDocuments(DocStatus...status) {
+	public static List<Doc> getAllDocuments(int offset, int length,DocStatus...status) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		List<DocumentModel> models = dao.getAllDocuments(status);
+		List<DocumentModel> models = dao.getAllDocuments(offset,length,status);
 
 		List<Doc> lst = new ArrayList<>();
 
