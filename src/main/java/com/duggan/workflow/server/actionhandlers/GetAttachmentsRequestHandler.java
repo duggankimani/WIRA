@@ -28,6 +28,7 @@ public class GetAttachmentsRequestHandler extends
 			response.setAttachments(AttachmentDaoHelper.getAllAttachments(action.getUserId(),true));
 		}else{
 			//TODO: Determine default behavior
+			response.setAttachments(AttachmentDaoHelper.getAllAttachments());
 		}
 		
 	}

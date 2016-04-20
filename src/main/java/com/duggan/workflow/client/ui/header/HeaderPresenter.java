@@ -183,6 +183,10 @@ public class HeaderPresenter extends
 	protected void search() {
 		timer.cancel();
 
+		if(searchTerm!=null && searchTerm.trim().isEmpty()){
+			searchTerm =  null;
+		}
+		
 		SearchFilter filter = new SearchFilter();
 		filter.setPhrase(searchTerm);
 		filter.setSubject(searchTerm);

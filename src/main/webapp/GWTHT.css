@@ -691,3 +691,7 @@ section.positioned {
 	color:grey;
 	font-size:16px;
 }
+
+.hide{
+	display:none !important;
+}

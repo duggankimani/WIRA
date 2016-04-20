@@ -20,7 +20,6 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -48,6 +47,7 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 	@Inject
 	public DocTreeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		tree.setWidth("100%");
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class DocTreeView extends ViewImpl implements DocTreePresenter.IDocTreeVi
 //			parent.setChildren(folders);
 //			tree.getStore().add(parent,folders);
 //		}else{
-			tree.getStore().addSubTree(0,Arrays.asList(attachment));
+			tree.getStore().addSubTree(0,folders);
 		//}
 		
 		

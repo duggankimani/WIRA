@@ -96,8 +96,6 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<GenericFormPresenter> genericFormProvider;
 	
-	@Inject DocTreePresenter documentTreePresenter;
-	
 	@Inject DispatchAsync requestHelper;
 	@Inject PlaceManager placeManager;
 	
@@ -140,8 +138,6 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	protected void onReset() {
 		super.onReset();
 		setInSlot(DOCPOPUP_SLOT, docPopup);
-		documentTreePresenter.initDocuments();
-		setInSlot(DOCTREE_SLOT, documentTreePresenter);
 	}
 	
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {

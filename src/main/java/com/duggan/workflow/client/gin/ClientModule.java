@@ -79,6 +79,7 @@ import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.error.ErrorView;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundView;
+import com.duggan.workflow.client.ui.fileexplorer.FileExplorerModule;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.filter.FilterView;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
@@ -154,6 +155,7 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		install(new BaseProcessModule());
 		install(new ProcessListingModule());
+		install(new FileExplorerModule());
 
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);

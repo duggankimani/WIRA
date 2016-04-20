@@ -2,6 +2,8 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
+	public static final String explorer = "explorer";
+
 	public static final String processlist = "processlist";
 
 	public static final String reports = "reports";
@@ -80,6 +82,10 @@ public class NameTokens {
 
 	public static String getProcesslist() {
 		return processlist;
+	}
+
+	public static String getExplorer() {
+		return explorer;
 	}
 
 }

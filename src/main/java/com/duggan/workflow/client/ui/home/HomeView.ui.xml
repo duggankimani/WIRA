@@ -12,7 +12,7 @@
 				<!--Button Add Document -->
 				<div class="add-doc">
 					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">
-					Start Process
+						Start Process
 					</g:Anchor>
 
 					<!-- Document Pop-up -->
@@ -20,26 +20,41 @@
 					</g:HTMLPanel>
 
 				</div>
-				
+
 				<g:HTMLPanel styleName="full-page">
 					<ul id="dashboard-menu">
 						<li class="active">
-						    <a class="dropdown-toggle" href="#home;type=appreqnew">
+							<a class="dropdown-toggle" href="#home;type=appreqnew">
 								<i class="icon-tasks"></i>
 								<span>My Tasks</span>
 								<i class="icon-chevron-up hidden-tablet"></i>
-							</a>						
+							</a>
 							<tab:HomeTabPanel ui:field="tabPanel"></tab:HomeTabPanel>
 						</li>
-					
+
 						<li class="active">
-							<a class="dropdown-toggle" href="#home">
+							<!-- a class="dropdown-toggle hide" href="#home">
 								<i class="icon-book"></i>
 								<span>My Documents</span>
 								<i class="icon-chevron-up hidden-tablet"></i>
-							</a>
-							<g:HTMLPanel ui:field="panelDocTree">
+							</a -->
+								<legend></legend>
+								<ul class="documents">
+								<li>
+									<i class="icon-archive"></i>
+									<a href="#registry" ui:field="aCaseReg">Case Registry</a>
+								</li>
+								<li>
+									<i class="icon-file-alt"></i>
+									<a href="#reports" ui:field="aReports">Report Registry</a>
+								</li>
+								<li>
+									<i class="icon-folder-open-alt"></i>
+									<a href="#explorer" ui:field="aExplorer">File Explorer</a>
+								</li>
 								
+							</ul>
+							<g:HTMLPanel ui:field="panelDocTree">
 							</g:HTMLPanel>
 						</li>
 					</ul>

@@ -1739,3 +1739,18 @@ ul.icons-list.text-xl {
 	margin-top:0px;
 	margin-bottom:0px;
 }
+
+#dashboard-menu ul.documents a{
+	display:inline-block;
+	font-weight: normal;
+    font-size: 13px;
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 0;
+    padding-right: 15px;
+    padding-bottom: 7px;
+}
+
+#dashboard-menu ul.documents li{
+	list-style-type:none;
+}

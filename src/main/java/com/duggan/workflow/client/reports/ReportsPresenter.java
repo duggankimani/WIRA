@@ -12,6 +12,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
@@ -46,13 +47,13 @@ implements SearchHandler{
 
 	@NameToken(NameTokens.reports)
 	@ProxyCodeSplit
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface IReportsProxy extends TabContentProxyPlace<ReportsPresenter> {
 	}
 
 	@TabInfo(container = HomePresenter.class)
-	static TabData getTabLabel(LoginGateKeeper gateKeeper) {
-		return new HomeTabData("reports", "Report Registry", "", 10, gateKeeper);
+	static TabData getTabLabel(AdminGateKeeper gateKeeper) {
+		return new HomeTabData("reports", "Report Registry", "", 10, gateKeeper,false);
 	}
 
 	@Inject

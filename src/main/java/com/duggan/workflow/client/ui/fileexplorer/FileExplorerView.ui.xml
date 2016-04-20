@@ -1,0 +1,39 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel styleName="no-overflow-x overflow-y">
+		<div class="news-feed file-explorer row-fluid">
+			<h4>File Explorer</h4>
+			<div class="span3" style="margin-left: 16px;width: 227px;">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active">
+						<a href="#files">Files</a>
+					</li>
+					<li>
+						<a href="#processes">Processes</a>
+					</li>
+					<li>
+						<a href="#users">Users</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="files">
+						<g:HTMLPanel ui:field="panelFiles"></g:HTMLPanel>
+					</div>
+					<div class="tab-pane" id="processes">Processes</div>
+					<div class="tab-pane" id="users">Users</div>
+				</div>
+			</div>
+
+
+			<div class="pull-right">
+				<g:FlexTable styleName="table table-hover table-striped table-condensed"
+					ui:field="fileTable" width="100%"></g:FlexTable>
+				<span>No attachments to display</span>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -78,7 +78,7 @@ public class CaseRegistryPresenter
 	@TabInfo(container = HomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
 		return new HomeTabData("registry", "Case Registry", "", 6,
-				adminGatekeeper);
+				adminGatekeeper, false);
 	}
 
 	@Inject

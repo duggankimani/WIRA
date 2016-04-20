@@ -1,5 +1,7 @@
 package com.duggan.workflow.shared.model;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * This is a set of notifications that will be supported
  * by this application
@@ -10,7 +12,7 @@ package com.duggan.workflow.shared.model;
  * @author duggan
  *
  */
-public enum NotificationType {
+public enum NotificationType implements IsSerializable{
 
 	APPROVALREQUEST_APPROVERNOTE("Invoice INV/001/2013 - Request for approval from Calcacuervo. (2 mins ago)"),//for approver
 	APPROVALREQUEST_OWNERNOTE("Invoice INV/001/2013 - succesfully submitted for approval (10 seconds ago)"),//for ownere - request assigned

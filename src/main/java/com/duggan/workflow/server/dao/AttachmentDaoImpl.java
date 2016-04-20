@@ -191,5 +191,9 @@ public class AttachmentDaoImpl extends BaseDaoImpl{
 				.setParameter("ids", Arrays.asList(attachmentIds));
 		query.executeUpdate();
 	}
+
+	public List<LocalAttachment> getAllAttachments() {
+		return getResultList(em.createQuery("FROM LocalAttachment l where l.document is not null"));
+	}
 	
 }
