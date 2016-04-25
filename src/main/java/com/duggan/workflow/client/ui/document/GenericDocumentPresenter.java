@@ -58,6 +58,7 @@ import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.Actions;
@@ -126,6 +127,7 @@ import com.duggan.workflow.shared.responses.GetProcessLogResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.LoadDynamicFieldsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -1355,6 +1357,10 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void bindForm(Form form, Doc doc) {
+		bindForm(form, doc, true);
+	}
+
+	protected void bindForm(Form form, Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		this.form = form;
 
@@ -1400,28 +1406,32 @@ public class GenericDocumentPresenter extends
 		/**
 		 * 
 		 */
-		if (!form.getDependencies().isEmpty()) {
+		if (!form.getDependencies().isEmpty() && loadDynamicFields) {
 			// Reload
-			loadDynamicFields(form.getDependencies());
+			loadDynamicFields(form.getDependencies(), null);
 		}
 	}
 
-	private void loadDynamicFields(Map<String, List<String>> dependencies) {
-		List<Field> dependants = new ArrayList<Field>();
-		for (List<String> names : dependencies.values()) {
+	private void loadDynamicFields(Map<String, List<String>> dependencies,
+			final String triggerName) {
 
-			for (String name : names) {
-				Field f = new Field();
-				f.setName(name);
-				if (form.getFields().contains(f)) {
-					dependants.add(form.getFields().get(
-							form.getFields().indexOf(f)));
+		final List<Field> dependants = new ArrayList<Field>();
+		if (dependencies != null) {
+			for (List<String> names : dependencies.values()) {
+				if (names != null) {
+					for (String name : names) {
+						Field f = new Field();
+						f.setName(name);
+						if (form.getFields().contains(f)) {
+							dependants.add(form.getFields().get(
+									form.getFields().indexOf(f)));
+						}
+					}
 				}
 			}
-
 		}
 
-		if (dependants.isEmpty()) {
+		if (dependants.isEmpty() && StringUtils.isNullOrEmpty(triggerName)) {
 			return;
 		}
 
@@ -1430,15 +1440,49 @@ public class GenericDocumentPresenter extends
 		 */
 		mergeFormValuesWithDoc();
 
+		MultiRequestAction action = new MultiRequestAction();
+
+		// Load dependent fields
+		if (!dependants.isEmpty()) {
+			action.addRequest(new LoadDynamicFieldsRequest(doc, dependants));
+		}
+
+		// Trigger
+		if (!StringUtils.isNullOrEmpty(triggerName)) {
+			action.addRequest(new ExecuteTriggerRequest(triggerName, doc));
+		}
+
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new LoadDynamicFieldsRequest(doc, dependants),
-				new TaskServiceCallback<LoadDynamicFieldsResponse>() {
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
-					public void processResult(
-							LoadDynamicFieldsResponse aResponse) {
-						List<Field> fields = aResponse.getFields();
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
+
+						if (!dependants.isEmpty()) {
+							LoadDynamicFieldsResponse loadDynamicFields = (LoadDynamicFieldsResponse) aResponse
+									.get(i++);
+							List<Field> fields = loadDynamicFields.getFields();
+							for (Field field : fields) {
+								int idx = form.getFields().indexOf(field);
+								if (idx != -1) {
+									form.getFields().remove(idx);
+									form.getFields().add(idx, field);
+								} else {
+									Window.alert("Could not merge dynamic field - "
+											+ field.getCaption());
+								}
+							}
+							fireEvent(new FieldReloadedEvent(fields));
+						}
+
+						if (!StringUtils.isNullOrEmpty(triggerName)) {
+							ExecuteTriggerResponse aTriggerResp = (ExecuteTriggerResponse) aResponse
+									.get(i++);
+							doc = aTriggerResp.getDocument();
+							bindForm(form, doc, false);
+						}
 						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new FieldReloadedEvent(fields));
 					}
 				});
 	}
@@ -1804,18 +1848,24 @@ public class GenericDocumentPresenter extends
 		String fieldName = event.getField().getName();
 		Map<String, List<String>> dependencies = form.getDependencies();
 		Map<String, List<String>> toReload = new HashMap<String, List<String>>();
-
 		toReload.put(fieldName, dependencies.get(fieldName));
-		loadDynamicFields(toReload);
+
+		try {
+			loadDynamicFields(toReload, event.getTriggerName());
+		} catch (Exception e) {
+			GWT.log("Error: " + e.getMessage());
+		}
+
 	}
 
 	@Override
 	public void onUploadEnded(UploadEndedEvent event) {
 		mergeFormValuesWithDoc();
-		Window.alert(">> "+event.getFileFieldNames());
+		// Window.alert(">> "+event.getFileFieldNames());
 		String fieldId = ((Uploader) event.getSource()).getFieldId();
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new GenerateFilePathRequest(doc,new Long(fieldId), event.getFileFieldNames()),
+		requestHelper.execute(new GenerateFilePathRequest(doc,
+				new Long(fieldId), event.getFileFieldNames()),
 				new TaskServiceCallback<GenerateFilePathResponse>() {
 					public void processResult(GenerateFilePathResponse aResponse) {
 						fireEvent(new ProcessingCompletedEvent());

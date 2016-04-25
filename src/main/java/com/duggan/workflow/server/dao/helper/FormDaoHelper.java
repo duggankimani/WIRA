@@ -25,7 +25,6 @@ import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.HasProperties;
 import com.duggan.workflow.server.dao.model.PO;
-import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.LookupLoader;
 import com.duggan.workflow.server.db.LookupLoaderImpl;

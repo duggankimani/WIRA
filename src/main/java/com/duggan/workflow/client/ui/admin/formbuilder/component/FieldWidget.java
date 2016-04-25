@@ -1138,13 +1138,15 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	
 	public void execTrigger(){
 		String triggerName = getPropertyValue(CUSTOMTRIGGER);
-		if(triggerName!=null && !triggerName.isEmpty()){
-			AppContext.fireEvent(new ExecTriggerEvent(triggerName));
-		}
+		boolean hasTrigger = triggerName!=null && !triggerName.isEmpty();
+		
+//		if(){
+//			AppContext.fireEvent(new ExecTriggerEvent(triggerName));
+//		}
 		
 		//Window.alert(msg);
-		if(field.isDynamicParent()){
-			AppContext.fireEvent(new FieldLoadEvent(field));
+		if(field.isDynamicParent() || hasTrigger){
+			AppContext.fireEvent(new FieldLoadEvent(field,triggerName));
 		}
 	}
 
