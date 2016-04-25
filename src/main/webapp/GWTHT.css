@@ -695,3 +695,10 @@ section.positioned {
 .hide{
 	display:none !important;
 }
+
+.truncate div{
+	max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
