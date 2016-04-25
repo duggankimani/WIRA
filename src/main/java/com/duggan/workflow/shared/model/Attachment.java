@@ -136,6 +136,7 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 		if(children==null){
 			children = new ArrayList<Attachment>();
 		}
+		childCount+=child.getChildCount();
 		isDirectory=true;
 		children.add(child);
 		child.setParent(this);

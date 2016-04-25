@@ -25,8 +25,12 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -112,17 +116,24 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	@Override
 	public void onError(final ErrorEvent event) {
 		//addToPopupSlot(null);
-		errorFactory.get(new ServiceCallback<ErrorPresenter>() {
+		
+		HTMLPanel panel = new HTMLPanel(event.getMessage());
+		Anchor anchor = new Anchor("View");
+		anchor.setHref("#error;errorid="+event.getId());
+		panel.add(anchor);
+		anchor.addClickHandler(new ClickHandler() {
+			
 			@Override
-			public void processResult(ErrorPresenter result) {
-				String message = event.getMessage();
-				
-				result.setMessage(message, event.getId());
-				
-				MainPagePresenter.this.addToPopupSlot(result,true);
-				
+			public void onClick(ClickEvent event) {
+				getView().getModalPopup().hide();
 			}
 		});
+		
+		AppManager.showPopUp("Error", panel, new OnOptionSelected() {
+			@Override
+			public void onSelect(String name) {
+			}
+		}, "Ok");
 	}
 
 	@Override

@@ -315,7 +315,7 @@ class FileExplorerView extends ViewImpl implements FileExplorerPresenter.MyView 
 
 			@Override
 			public String getValue(Attachment object) {
-				return object.getName();
+				return object.getName()+"( "+object.getChildCount()+")";
 			}
 
 			@Override

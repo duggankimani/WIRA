@@ -261,7 +261,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 			String name = (value = row[i++]) == null ? null : value.toString();
 			String parentid = (value = row[i++]) == null ? null : value
 					.toString();
-			Integer ct = (value = row[i++]) == null ? null : (Integer) value;
+			Integer ct = (value = row[i++]) == null ? 0 : (Integer) value;
 			String parentRefId = (value = row[i++]) == null ? null : value
 					.toString();
 
@@ -293,7 +293,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 			String name = (value = row[i++]) == null ? null : value.toString();
 			String processId = (value = row[i++]) == null ? null : value
 					.toString();
-			Integer ct = (value = row[i++]) == null ? null : ((Number) value)
+			Integer ct = (value = row[i++]) == null ? 0 : ((Number) value)
 					.intValue();
 
 			attachment.setRefId(refId);
@@ -326,7 +326,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 			String createdBy = (value = row[i++]) == null ? null : value
 					.toString();
 			String name = (value = row[i++]) == null ? null : value.toString();
-			Integer ct = (value = row[i++]) == null ? null : ((Number) value)
+			Integer ct = (value = row[i++]) == null ? 0 : ((Number) value)
 					.intValue();
 
 			attachment.setRefId(refId);

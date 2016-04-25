@@ -111,9 +111,10 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 			tblProcesses.setWidget(i, j++, new HTMLPanel(
 					user.getCategory() == null ? "Other" : user.getCategory()
 							.getDisplayName()));
-			tblProcesses.setWidget(i, j++, new HTMLPanel(user.getFileName()));
-			tblProcesses.setWidget(i, j++, new HTMLPanel(user.getImageName()));
+//			tblProcesses.setWidget(i, j++, new HTMLPanel(user.getFileName()));
+//			tblProcesses.setWidget(i, j++, new HTMLPanel(user.getImageName()));
 			tblProcesses.setWidget(i, j++, new HTMLPanel(user.getProcessId()));
+			tblProcesses.getFlexCellFormatter().setStyleName(i, (j-1), "truncate");
 			String status = "<span class=\"label label-default arrowed-in\">INACTIVE</span>";
 			if (user.getStatus() == Status.RUNNING) {
 				status = "<span class=\"label label-success arrowed-in\">RUNNING</span>";
@@ -139,10 +140,10 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Category</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "110px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>File Name</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Image File</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+//		table.setWidget(0, j++, new HTMLPanel("<strong>File Name</strong>"));
+//		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+//		table.setWidget(0, j++, new HTMLPanel("<strong>Image File</strong>"));
+//		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Process ID</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "200px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Status</strong>"));
