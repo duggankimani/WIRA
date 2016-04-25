@@ -19,6 +19,7 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.TreeType;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -152,7 +153,11 @@ class FileExplorerView extends ViewImpl implements FileExplorerPresenter.MyView 
 				}
 			});
 
-			fileTable.setWidget(i, j++, link);
+			HTMLPanel fileNameDiv = new HTMLPanel("");
+			fileNameDiv.add(link);
+			fileTable.setWidget(i, j++, fileNameDiv);
+			fileNameDiv.getElement().getStyle().setWidth(250, Unit.PX);
+			
 			fileTable.setWidget(i, j++, new InlineLabel(
 					DateUtils.MONTHDAYFORMAT.format(file.getCreated())));
 			fileTable.setWidget(i, j++, new InlineLabel(file.getCreatedBy()
@@ -161,6 +166,7 @@ class FileExplorerView extends ViewImpl implements FileExplorerPresenter.MyView 
 					.setWidget(i, j++, new InlineLabel(file.getType().name()));
 			fileTable.setWidget(i, j++, new InlineLabel(file.getProcessName()+" ["+file.getDocStatus()+"]"));
 			fileTable.setWidget(i, j++, new InlineLabel(file.getCaseNo()));
+			fileTable.getCellFormatter().setWidth(i, j-1, "80px");
 
 			++i;
 		}
@@ -388,6 +394,17 @@ class FileExplorerView extends ViewImpl implements FileExplorerPresenter.MyView 
 		double attachmentTableWidth = clientWidth - (sideBarNav+fileTreeNavWidthAndMargins+tableDivMargins);
 		
 		fileTable.setWidth(attachmentTableWidth+"px");
+		
+		
+		int clientHeight = Window.getClientHeight();
+		int windowHeading = 48;
+		int contentHeading = 26+10;
+		int contentTabs = 38;
+		int margin = 40;
+		int contentHeight = clientHeight - (windowHeading+contentHeading+contentTabs+margin); 
+		userTree.setHeight(contentHeight);
+		fileTree.setHeight(contentHeight+"px");
+		processTree.setHeight(contentHeight+"px");
 	}
 
 }

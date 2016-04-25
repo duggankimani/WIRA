@@ -10,7 +10,7 @@
 	<g:HTMLPanel styleName="dialog document-dialog is-visible">
 		<g:HTMLPanel styleName="body" ui:field="panelDocTypes">
 			<div style="margin-bottom:5px;">
-			<tree:Tree ui:field="tree"></tree:Tree>
+			<tree:Tree ui:field="tree" height="450px"></tree:Tree>
 			</div>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

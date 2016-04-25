@@ -47,6 +47,7 @@ import org.jbpm.workflow.core.node.WorkItemNode;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
@@ -222,27 +223,25 @@ public class JBPMHelper implements Closeable {
 				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
 				.setParameter("language", "en-UK")
 				.setParameter("status", getStatusesForTaskType(TaskType.INBOX))
-				.setParameter("processId", processId)
-				.getSingleResult();
+				.setParameter("processId", processId).getSingleResult();
 		counts.put(TaskType.INBOX, inbox.intValue());
-		
-		Long participated = (Long) DB.getEntityManager()
+
+		Long participated = (Long) DB
+				.getEntityManager()
 				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
 				.setParameter("language", "en-UK")
-				.setParameter("status", getStatusesForTaskType(TaskType.PARTICIPATED))
-				.setParameter("processId", processId)
-				.getSingleResult();
+				.setParameter("status",
+						getStatusesForTaskType(TaskType.PARTICIPATED))
+				.setParameter("processId", processId).getSingleResult();
 		counts.put(TaskType.PARTICIPATED, participated.intValue());
-		
+
 		Long suspended = (Long) DB.getEntityManager()
 				.createNamedQuery("TasksAssignedByProcessIdAndStatus")
 				.setParameter("language", "en-UK")
 				.setParameter("status", Status.Suspended)
-				.setParameter("processId", processId)
-				.getSingleResult();
+				.setParameter("processId", processId).getSingleResult();
 		counts.put(TaskType.SUSPENDED, suspended.intValue());
-		
-		
+
 	}
 
 	/**
@@ -265,10 +264,10 @@ public class JBPMHelper implements Closeable {
 			groupIds.add(group.getName());
 		}
 
-		if(groupIds.size()==0){
-			groupIds.add("USER"); //At least one group must be specified
+		if (groupIds.size() == 0) {
+			groupIds.add("USER"); // At least one group must be specified
 		}
-		
+
 		Long count = (Long) DB
 				.getEntityManager()
 				.createNamedQuery(
@@ -329,13 +328,15 @@ public class JBPMHelper implements Closeable {
 		return statuses;
 	}
 
-	public List<HTSummary> getTasksForUser(String userId, Long processInstanceId, int offset, int length) {
-		return getTasksForUser(userId, processInstanceId, false, offset,length);
+	public List<HTSummary> getTasksForUser(String userId,
+			Long processInstanceId, int offset, int length) {
+		return getTasksForUser(userId, processInstanceId, false, offset, length);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<HTSummary> getTasksForUser(String userId,
-			Long processInstanceId, boolean isLoadAsAdmin, int offset, int length) {
+			Long processInstanceId, boolean isLoadAsAdmin, int offset,
+			int length) {
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
 		List<String> groupIds = new ArrayList<>();
@@ -352,8 +353,7 @@ public class JBPMHelper implements Closeable {
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
 					.setParameter("processInstanceId", processInstanceId)
-					.setFirstResult(offset)
-					.setMaxResults(length)
+					.setFirstResult(offset).setMaxResults(length)
 					.getResultList();
 		} else {
 
@@ -362,8 +362,7 @@ public class JBPMHelper implements Closeable {
 					.setParameter("language", "en-UK")
 					.setParameter("groupIds", groupIds)
 					.setParameter("processInstanceId", processInstanceId)
-					.setFirstResult(offset)
-					.setMaxResults(length)
+					.setFirstResult(offset).setMaxResults(length)
 					.getResultList();
 		}
 
@@ -590,8 +589,11 @@ public class JBPMHelper implements Closeable {
 			task.setValues(doc.getValues());
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
-			task.setDocStatus(DB.getDocumentDao().getById(doc.getId())
-					.getStatus());
+
+			if (doc.getId() != null) {
+				DocumentModel model = DB.getDocumentDao().getById(doc.getId());
+				task.setDocStatus(model == null ? null : model.getStatus());
+			}
 			task.setOwner(doc.getOwner());
 
 			// TaskDelegation taskdelegation =
@@ -634,12 +636,12 @@ public class JBPMHelper implements Closeable {
 
 		return null;
 	}
-	
+
 	public List<String> getPotentialOwnersAsList(Task master_task) {
 
 		List<OrganizationalEntity> entitiesList = master_task
 				.getPeopleAssignments().getPotentialOwners();
-		
+
 		List<String> potOwners = new ArrayList<String>();
 		for (OrganizationalEntity entity : entitiesList) {
 			potOwners.add(entity.getId());
@@ -1142,19 +1144,19 @@ public class JBPMHelper implements Closeable {
 			// Ignore all other nodes - Only work pick human Task Nodes
 			if (node instanceof HumanTaskNode) {
 
-				HumanTaskNode humanTask = (HumanTaskNode)node;
-				
+				HumanTaskNode humanTask = (HumanTaskNode) node;
+
 				TaskNode detail = new TaskNode();
 				String name = node.getName();
 				detail.setNodeId(node.getId());
 				detail.setName(name);
 				detail.setDisplayName(name);
-				
+
 				Object group = humanTask.getWork().getParameter("GroupId");
 				Object actor = humanTask.getWork().getParameter("ActorId");
-				detail.setGroupId(group==null? null: group.toString());
-				detail.setActorId(actor==null? null: actor.toString());
-				
+				detail.setGroupId(group == null ? null : group.toString());
+				detail.setActorId(actor == null ? null : actor.toString());
+
 				details.add(detail);
 			}
 

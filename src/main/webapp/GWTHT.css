@@ -657,7 +657,6 @@ section.positioned {
 
 .table-container{
   overflow-y: auto;
-  height: 400px;
 }
 
 .table-container table {

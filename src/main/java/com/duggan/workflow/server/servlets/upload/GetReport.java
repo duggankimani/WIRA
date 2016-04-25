@@ -13,6 +13,7 @@ import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -58,6 +59,9 @@ public class GetReport extends HttpServlet {
 			DB.commitTransaction();
 		} catch (Exception e) {
 			DB.rollback();
+			
+			resp.setContentType("text/html");
+			writeOut(resp, ("<p><b>"+e.getMessage()+"</b></p>"+ExceptionUtils.getStackTrace(e)).getBytes());
 			e.printStackTrace();
 		} finally {
 			DB.closeSession();

@@ -16,18 +16,12 @@
 		</div>
 
 		<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
-		<!-- g:HTMLPanel ui:field="pContainer"/ -->
-
-		<!-- g:HTMLPanel ui:field="taskHeader"></g:HTMLPanel -->
 
 		<!-- Domain Specific View goes here -->
 		<g:HTMLPanel styleName="full-page">
 			<g:HTMLPanel ui:field="pContainer" styleName="full-page">
 			</g:HTMLPanel>
-			<!-- div class="footer"> A product of Anger Enterprises <span class="copyyear"></span> 
-				</div -->
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="popoverPanel"></g:HTMLPanel>
-		<!-- p:ModalPopup ui:field="popup"></p:ModalPopup -->
 	</g:HTMLPanel>
 </ui:UiBinder>

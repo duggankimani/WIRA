@@ -54,7 +54,7 @@
 								</li>
 								
 							</ul>
-							<g:HTMLPanel ui:field="panelDocTree">
+							<g:HTMLPanel ui:field="panelDocTree" height="500px">
 							</g:HTMLPanel>
 						</li>
 					</ul>

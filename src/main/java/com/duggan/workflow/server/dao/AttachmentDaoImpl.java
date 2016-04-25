@@ -366,7 +366,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 	public List<Attachment> getAttachments(TreeType type, String parentRefId,
 			String searchTerm) {
 		StringBuffer jpql = new StringBuffer(
-				"select a.refid,"
+				"select a.id,a.refid,"
 						+ "a.name,"
 						+ "a.created,"
 						+ "a.createdby,"
@@ -439,6 +439,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 			int i = 0;
 			Attachment attachment = new Attachment();
 			Object value = null;
+			Long id = (value = row[i++]) == null ? -1 : ((Number) value).longValue();
 			String refId = (value = row[i++]) == null ? null : value.toString();
 			String name = (value = row[i++]) == null ? null : value.toString();
 			Date created = (value = row[i++]) == null ? null : (Date) value;
@@ -459,6 +460,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 			String docStatus = (value = row[i++]) == null ? null : value
 					.toString();
 
+			attachment.setId(id);
 			attachment.setRefId(refId);
 			attachment.setName(name);
 			attachment.setType(attachmentType==-1? AttachmentType.UPLOADED:

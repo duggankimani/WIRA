@@ -7,7 +7,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-		<div class="content-body no-overflow-y">
+		<div class="content-body">
 			<div class="row-fluid">
 				<ul class="nav nav-tabs" id="usermgt">
 					<li class="active">

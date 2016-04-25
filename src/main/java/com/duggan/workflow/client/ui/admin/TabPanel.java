@@ -17,6 +17,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -117,8 +118,8 @@ public class TabPanel extends AbstractTabPanel implements
 
 		// Window.alert("Active Tab set "+tab.getText());
 		boolean isProcessesTab = tab.getText().equals("Processes");
-//		showDefaultHeader(!isProcessesTab
-//				|| (isProcessesTab && isProcessListing));
+		// showDefaultHeader(!isProcessesTab
+		// || (isProcessesTab && isProcessListing));
 		showDefaultHeader(true);
 	}
 
@@ -132,6 +133,23 @@ public class TabPanel extends AbstractTabPanel implements
 				this);
 		AppContext.getEventBus().addHandler(ProcessSelectedEvent.getType(),
 				this);
+
+		initHeight();
+	}
+
+	private void initHeight() {
+		int clientHeight = Window.getClientHeight();
+		int windowHeaderHeight = 48;
+		int tabHeaderHeight = 36;
+		int tabActionsHeightAndMargins = 30 + 15;
+
+		int tabContentHeight = clientHeight
+				- (windowHeaderHeight + tabHeaderHeight + tabActionsHeightAndMargins);
+
+		if (tabContent.getWidgetCount() > 0) {
+			Widget content = tabContent.getWidget(0);
+			content.setHeight(tabContentHeight + "px");
+		}
 	}
 
 	@Override
