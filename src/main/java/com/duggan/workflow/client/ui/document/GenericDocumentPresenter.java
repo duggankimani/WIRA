@@ -26,7 +26,6 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
-import com.duggan.workflow.client.ui.events.FieldLoadEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -36,6 +35,7 @@ import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent.ExecTriggerHandler;
+import com.duggan.workflow.client.ui.events.FieldLoadEvent;
 import com.duggan.workflow.client.ui.events.FieldLoadEvent.FieldLoadHandler;
 import com.duggan.workflow.client.ui.events.FieldReloadedEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
@@ -48,6 +48,8 @@ import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachm
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
+import com.duggan.workflow.client.ui.events.UploadEndedEvent;
+import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
@@ -92,6 +94,7 @@ import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggerRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
+import com.duggan.workflow.shared.requests.GenerateFilePathRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
@@ -111,6 +114,7 @@ import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggerResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggersResponse;
+import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
@@ -143,7 +147,8 @@ public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> implements
 		ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler,
 		DeleteAttachmentHandler, DeleteLineHandler, ButtonClickHandler,
-		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler, FieldLoadHandler {
+		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler,
+		FieldLoadHandler, UploadEndedHandler {
 
 	public interface MyView extends View {
 		void setValues(HTUser createdBy, Date created, String type,
@@ -319,6 +324,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
 		addRegisteredHandler(FieldLoadEvent.getType(), this);
+		addRegisteredHandler(UploadEndedEvent.getType(), this);
 
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override
@@ -1402,27 +1408,28 @@ public class GenericDocumentPresenter extends
 
 	private void loadDynamicFields(Map<String, List<String>> dependencies) {
 		List<Field> dependants = new ArrayList<Field>();
-		for(List<String> names: dependencies.values()){
-			
-			for(String name: names){
+		for (List<String> names : dependencies.values()) {
+
+			for (String name : names) {
 				Field f = new Field();
 				f.setName(name);
-				if(form.getFields().contains(f)){
-					dependants.add(form.getFields().get(form.getFields().indexOf(f)));
+				if (form.getFields().contains(f)) {
+					dependants.add(form.getFields().get(
+							form.getFields().indexOf(f)));
 				}
 			}
-			
+
 		}
-		
-		if(dependants.isEmpty()){
+
+		if (dependants.isEmpty()) {
 			return;
 		}
-		
+
 		/**
 		 * Bind Form Values with Doc Object
 		 */
 		mergeFormValuesWithDoc();
-		
+
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new LoadDynamicFieldsRequest(doc, dependants),
 				new TaskServiceCallback<LoadDynamicFieldsResponse>() {
@@ -1795,11 +1802,25 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onFieldLoad(FieldLoadEvent event) {
 		String fieldName = event.getField().getName();
-		Map<String,List<String>> dependencies = form.getDependencies();
-		Map<String,List<String>> toReload = new HashMap<String, List<String>>();
-		
+		Map<String, List<String>> dependencies = form.getDependencies();
+		Map<String, List<String>> toReload = new HashMap<String, List<String>>();
+
 		toReload.put(fieldName, dependencies.get(fieldName));
 		loadDynamicFields(toReload);
+	}
+
+	@Override
+	public void onUploadEnded(UploadEndedEvent event) {
+		mergeFormValuesWithDoc();
+		Window.alert(">> "+event.getFileFieldNames());
+		String fieldId = ((Uploader) event.getSource()).getFieldId();
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(new GenerateFilePathRequest(doc,new Long(fieldId), event.getFileFieldNames()),
+				new TaskServiceCallback<GenerateFilePathResponse>() {
+					public void processResult(GenerateFilePathResponse aResponse) {
+						fireEvent(new ProcessingCompletedEvent());
+					};
+				});
 	}
 
 }

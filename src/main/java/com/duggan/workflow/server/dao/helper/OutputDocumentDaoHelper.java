@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
@@ -17,6 +18,7 @@ import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
+import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
@@ -27,6 +29,8 @@ import com.itextpdf.text.DocumentException;
 
 public class OutputDocumentDaoHelper {
 
+	private static Logger logger = Logger.getLogger(OutputDocumentDaoHelper.class);
+	
 	public static OutputDocument saveOutputDoc(OutputDocument doc) {
 		ADOutputDoc output = get(doc);
 		OutputDocumentDao dao = DB.getOutputDocDao();
@@ -107,9 +111,12 @@ public class OutputDocumentDaoHelper {
 
 	public static Value generateDoc(ADOutputDoc outTemplate, Doc document) {
 		String path = generatePath(outTemplate.getPath(), document);
+		LocalAttachment parent = generateFolders(path);
 		String name = (path == null ? outTemplate.getName() : path
 				.contains("/") ? path.substring(path.lastIndexOf("/") + 1,
 				path.length()) : path);
+		
+		name = name + (name.endsWith(".pdf") ? "" : name+".pdf");
 
 		Long documentId = null;
 
@@ -141,10 +148,12 @@ public class OutputDocumentDaoHelper {
 			attachment.setArchived(false);
 			attachment.setContentType("application/pdf");
 			attachment.setDocument(DB.getDocumentDao().getById(documentId));
-			attachment.setName(name + (name.endsWith(".pdf") ? "" : name));
+			attachment.setName(name);
+			attachment.setType(AttachmentType.GENERATED);
 			attachment.setPath(path);
 			attachment.setSize(pdf.length);
 			attachment.setAttachment(pdf);
+			attachment.setParent(parent);
 			dao.save(attachment);
 
 		} catch (IOException | SAXException | ParserConfigurationException
@@ -160,7 +169,7 @@ public class OutputDocumentDaoHelper {
 		return value;
 	}
 
-	private static String generatePath(String codedPath, Doc doc) {
+	public static String generatePath(String codedPath, Doc doc) {
 
 		if (codedPath == null || codedPath.isEmpty()) {
 			return null;
@@ -176,6 +185,40 @@ public class OutputDocumentDaoHelper {
 
 		String out = buffer.toString();
 		return out.substring(0, out.length() - 1);
+	}
+	
+	/**
+	 * Returns the direct parent of the file whose path is provided
+	 *  
+	 * @param path
+	 * @return Parent folder of the file whose path is provided
+	 */
+	public static LocalAttachment generateFolders(String path){
+		AttachmentDaoImpl dao = DB.getAttachmentDao();
+		if (path == null || path.isEmpty()) {
+			return null;
+		}
+
+		String[] elements = path.split("/");
+		
+		//The last element is the file name
+		LocalAttachment parent = null;
+		for(int i=0; i<elements.length-1; i++){
+			String directoryName = elements[i];
+			LocalAttachment child = dao.getDirectory(parent,directoryName);
+			logger.info("Child {"+child+":"+directoryName+"}, Parent={"+(parent==null? "Null" : parent.getName())+"}");
+			if(child==null){
+				child = new LocalAttachment();
+			}
+			child.setName(directoryName);
+			child.setDirectory(true);
+			child.setParent(parent);
+			dao.save(child);
+			
+			parent = child;
+		}
+
+		return parent;
 	}
 
 	/**

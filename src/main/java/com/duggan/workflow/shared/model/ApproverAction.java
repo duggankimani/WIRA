@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-public enum ApproverAction {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum ApproverAction implements IsSerializable{
 
 	APPROVED("approved"),
 	REJECTED("rejected"),

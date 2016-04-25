@@ -21,6 +21,7 @@ import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -98,7 +99,7 @@ public class Uploader extends Composite {
 		
 		@Override
 		public void onStart(IUploader uploader) {
-			AppContext.fireEvent(new UploadStartedEvent());
+			AppContext.fireEvent(new UploadStartedEvent(Uploader.this));
 		}
 	};
 	
@@ -107,11 +108,13 @@ public class Uploader extends Composite {
 
 		@Override
 		public void onFinish(IUploader uploader) {
-			AppContext.fireEvent(new UploadEndedEvent());
+			AppContext.fireEvent(new UploadEndedEvent(Uploader.this,
+					uploader.getServerMessage().getUploadedFieldNames()));
+			
 			if (uploader.getStatus() == Status.SUCCESS) {
 
 				new PreloadedImage(uploader.fileUrl(), showImage);
-
+				
 				// The server sends useful information to the client by default
 //				UploadedInfo info = uploader.getServerInfo();
 //				System.out.println("File name " + info.name);
@@ -139,6 +142,8 @@ public class Uploader extends Composite {
 			panelImages.add(image);
 		}
 	};
+
+	public static final String FIELD_ID = "fieldId";
 	
 	public void cancel(){
 		List<IUploader> uploaders = new ArrayList<IUploader>();
@@ -172,5 +177,9 @@ public class Uploader extends Composite {
 	
 	public void addOnCancelUploaderHandler(OnCancelUploaderHandler handler){
 		uploader.addOnCancelUploadHandler(handler);
+	}
+	
+	public String getFieldId(){
+		return context.getContext(FIELD_ID);
 	}
 }

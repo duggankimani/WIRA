@@ -19,6 +19,7 @@ import com.duggan.workflow.server.actionhandlers.ExecuteTriggerActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteTriggersActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GenerateFilePathHandler;
 import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
@@ -34,6 +35,7 @@ import com.duggan.workflow.server.actionhandlers.GetDataRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentTypesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetFileTreeRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetFormModelRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetGroupsRequestActionHandler;
@@ -108,6 +110,7 @@ import com.duggan.workflow.shared.requests.ExecuteTriggerRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.requests.ExportFormRequest;
+import com.duggan.workflow.shared.requests.GenerateFilePathRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAlertCount;
@@ -123,6 +126,7 @@ import com.duggan.workflow.shared.requests.GetDataRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
+import com.duggan.workflow.shared.requests.GetFileTreeRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
@@ -178,6 +182,7 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
+import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 
@@ -439,5 +444,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(SaveAssignmentRequest.class,
 				SaveAssignmentRequestHandler.class, SessionValidator.class);
 		
+		bindHandler(GetFileTreeRequest.class, GetFileTreeRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GenerateFilePathRequest.class, GenerateFilePathHandler.class, SessionValidator.class);
 	}
 }

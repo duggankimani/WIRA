@@ -44,7 +44,10 @@
 								<ul id="menu3" class="dropdown-menu" role="menu"
 									aria-labelledby="drop5">
 									<li role="presentation">
-										<a ui:field="aBCPreview" role="menuitem" tabindex="-1" href="#processes;a=config;pd=4uSQJcExcNyBGYED">Preview</a>
+										<a ui:field="aBCPreview" role="menuitem" tabindex="-1" href="#processespreview;">Preview</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" ui:field="aBCProcessConfig" tabindex="-1" href="#processes">Process Config</a>
 									</li>
 									<li role="presentation">
 										<a role="menuitem" ui:field="aBCFormBuilder" tabindex="-1" href="#formbuilder">Form Builder</a>
@@ -55,28 +58,25 @@
 									<li role="presentation">
 										<a role="menuitem" ui:field="aBCOutputs" tabindex="-1" href="#outputdocs">Output Docs</a>
 									</li>
-									<li role="presentation">
-										<a role="menuitem" ui:field="aBCProcessConfig" tabindex="-1" href="#processes">Process Config</a>
-									</li>
-									<li role="presentation" class="divider"></li>
+									<li role="presentation" class="divider hide"></li>
 								</ul>
 							</li>
 						</ul>
 						<ul class="nav nav-pills" ui:field="ulNavPills">
 							<li class="active">
-								<a href="#processes;a=config;pd=4uSQJcExcNyBGYED" ui:field="aPillPreview">Preview</a>
+								<a href="#preview" ui:field="aPillPreview">Preview</a>
 							</li>
 							<li>
-								<a href="#formbuilder;processdefid=2" ui:field="aPillFormBuilder">Form Builder</a>
+								<a href="#processesconf" ui:field="aPillProcessConf">Process Config</a>
+							</li>
+							<li>
+								<a href="#formbuilder" ui:field="aPillFormBuilder">Form Builder</a>
 							</li>
 							<li>
 								<a href="#triggers" ui:field="aPillTriggers">Triggers</a>
 							</li>
 							<li>
 								<a href="#outputdocs" ui:field="aPillOutputDocs">Ouput Docs</a>
-							</li>
-							<li>
-								<a href="#processes;a=config;pd=4uSQJcExcNyBGYED" ui:field="aPillProcessConf">Process Config</a>
 							</li>
 						</ul>
 					</div>

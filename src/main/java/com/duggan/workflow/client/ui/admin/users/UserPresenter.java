@@ -362,7 +362,7 @@ public class UserPresenter extends
 	}
 
 	private void loadGroups() {
-		
+		loadGroups(null);
 	}
 	
 	private void loadGroups(String searchTerm) {

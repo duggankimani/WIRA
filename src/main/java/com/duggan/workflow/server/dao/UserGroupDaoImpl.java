@@ -94,7 +94,8 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		if(searchTerm!=null){
-			jpql.append(" where (lower(b.name) like :searchTerm or lower(b.fullName) like :searchTerm) and b.isActive=1 ");
+			jpql.append(" where (lower(b.name) like :searchTerm "
+					+ "or lower(b.fullName) like :searchTerm) and b.isActive=1 ");
 			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
 		}
 		jpql.append(" order by b.fullName");

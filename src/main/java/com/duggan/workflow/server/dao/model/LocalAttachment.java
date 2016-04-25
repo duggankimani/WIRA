@@ -1,6 +1,13 @@
 package com.duggan.workflow.server.dao.model;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,14 +18,118 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 
+import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 
 @Entity
 @Table(name="localattachment")
+@NamedNativeQueries({
+		@NamedNativeQuery(name="Attachment.GetAllAttachmentsByUser",
+		resultSetMapping="Attachment.GetAllAttachmentsMapping",
+		query="select a.refid,"
+				+ "a.name,"
+				+ "a.created,"
+				+ "a.createdby,"
+				+ "concat(u.firstname,' ',u.lastname) creator,"
+				+ "d.subject,p.name,pinfo.state "
+				+ "from localattachment a "
+				+ "inner join buser u on (u.userid=a.createdby) "
+				+ "inner join localdocument d on (d.id=a.documentid) "
+				+ "inner join addoctype t on (t.id=d.doctype) "
+				+ "inner join processdefmodel p on (p.id=t.processdefid) "
+				+ "left join processinstanceinfo pinfo "
+				+ "on (pinfo.instanceid=d.processinstanceid) "
+				+ "where "
+				+ "a.isActive=1 and (a.createdby=:userId or :isUserAdmin)"),
+				
+			@NamedNativeQuery(name="Attachment.GetDirectoryTree",
+			resultSetMapping="Attachment.GetDirectoryTreeMapping",
+			query="With recursive tree as "
+					+ "("
+					+ "select id,refid,name,parentid, "
+					+ "cast(null as varchar) parentRefId,0 ct,cast(id as text) AS path "
+					+ "from localattachment p where parentid is null and p.isdirectory=1 "
+					+ "union "
+					+ "select f.id,f.refid,f.name,f.parentid,tree.refid as parentRefId,"
+					+ "coalesce(c.ct,0),tree.path || '-' || cast(f.id as text) AS path "
+					+ "from tree "
+					+ "join localattachment f "
+					+ "on (f.parentid=tree.id and f.isDirectory=1) "
+					+ "left join (select cast(count(*) as integer) ct,parentid "
+					+ "from localattachment "
+					+ "where isdirectory=0 "
+					+ "group by parentid) c on c.parentid=f.id"
+					+ ") "
+					+ "select id,refid,name,parentid,parentRefId,ct from tree order by path"),
+					
+				@NamedNativeQuery(name="Attachment.GetProcessTree",
+				resultSetMapping="Attachment.GetProcessTreeMapping",
+				query="select pm.refid,pm.name,pm.processid,c.ct "
+						+ "from processdefmodel pm "
+						+ "inner join addoctype t on t.processdefid=pm.id "
+						+ "left join (select count(*) ct, d.doctype from localdocument d "
+						+ "inner join localattachment f "
+						+ "on (f.documentid=d.id) group by doctype) c on c.doctype=t.id order by pm.name asc"),
+								
+				@NamedNativeQuery(name="Attachment.GetAttachmentOwners",
+				resultSetMapping="Attachment.GetAttachmentOwnersMapping",
+				query="select u.refId,"
+						+ "a.createdby, "
+						+ "concat(u.lastname,' ',u.lastname) as names, "
+						+ "a.ct "
+						+ "from  "
+						+ "(select count(*) ct, createdby from localattachment group by createdby) as a "
+						+ "inner join buser u  on (u.userid=a.createdby) order by names asc"),
+
+})
+
+@SqlResultSetMappings({@SqlResultSetMapping(name="Attachment.GetAllAttachmentsMapping",
+columns={@ColumnResult(name="refid",type=String.class),
+		@ColumnResult(name="name",type=String.class),
+		@ColumnResult(name="created",type=Date.class),
+		@ColumnResult(name="createdby",type=String.class),
+		@ColumnResult(name="creator",type=String.class),
+		@ColumnResult(name="subject",type=String.class),
+		@ColumnResult(name="name",type=String.class),
+		@ColumnResult(name="state",type=Integer.class)
+}),
+
+@SqlResultSetMapping(name="Attachment.GetDirectoryTreeMapping",
+columns={@ColumnResult(name="id",type=Long.class),
+		@ColumnResult(name="refid",type=String.class),
+		@ColumnResult(name="name",type=String.class),
+		@ColumnResult(name="parentid",type=Long.class),
+		@ColumnResult(name="ct",type=Integer.class),
+		@ColumnResult(name="parentRefId",type=String.class)
+}),
+
+@SqlResultSetMapping(name="Attachment.GetProcessTreeMapping",
+columns={
+		@ColumnResult(name="refid",type=String.class),
+		@ColumnResult(name="name",type=String.class),
+		@ColumnResult(name="processid",type=String.class),
+		@ColumnResult(name="ct",type=Integer.class)
+}),
+
+@SqlResultSetMapping(name="Attachment.GetAttachmentOwnersMapping",
+columns={
+		@ColumnResult(name="refid",type=String.class),
+		@ColumnResult(name="createdby",type=String.class),
+		@ColumnResult(name="names",type=String.class),
+		@ColumnResult(name="ct",type=Integer.class)
+})
+
+})
+
 public class LocalAttachment extends PO{
 
 	/**
@@ -32,6 +143,8 @@ public class LocalAttachment extends PO{
 	
 	private String name;
 	
+	private AttachmentType type = AttachmentType.UPLOADED;
+	
 	private long size;
 	
 	private String contentType;
@@ -44,6 +157,8 @@ public class LocalAttachment extends PO{
 	private byte[] attachment;
 	
 	private boolean archived;
+	
+	private Integer isDirectory=0;
 	
 	//This is meant for output documents - eg Requisitions/HR/REQ-IPA-009-14.pdf
 	//This will be used to dynamically generate the document tree in the front end
@@ -69,6 +184,13 @@ public class LocalAttachment extends PO{
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	private ADOutputDoc outputDoc;
+	
+	@ManyToOne
+	@JoinColumn(name="parentid")
+	private LocalAttachment parent;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade= {CascadeType.REMOVE}, mappedBy="parent")
+	private Set<LocalAttachment>  children = new HashSet<LocalAttachment>();
 
 	public LocalAttachment(){
 		super();
@@ -191,6 +313,30 @@ public class LocalAttachment extends PO{
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public AttachmentType getType() {
+		return type;
+	}
+
+	public void setType(AttachmentType type) {
+		this.type = type;
+	}
+
+	public Boolean isDirectory() {
+		return isDirectory==1;
+	}
+
+	public void setDirectory(Boolean isDirectory) {
+		this.isDirectory = isDirectory==null? 0: isDirectory?  1:0;
+	}
+
+	public LocalAttachment getParent() {
+		return parent;
+	}
+
+	public void setParent(LocalAttachment parent) {
+		this.parent = parent;
 	}
 
 }

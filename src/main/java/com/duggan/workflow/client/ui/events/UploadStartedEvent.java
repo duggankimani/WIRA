@@ -9,11 +9,14 @@ public class UploadStartedEvent extends
 
 	public static Type<UploadStartedHandler> TYPE = new Type<UploadStartedHandler>();
 
+	private Object source;
+	
 	public interface UploadStartedHandler extends EventHandler {
 		void onUploadStarted(UploadStartedEvent event);
 	}
 
-	public UploadStartedEvent() {
+	public UploadStartedEvent(Object source) {
+		this.source = source;
 	}
 
 	@Override
@@ -31,6 +34,6 @@ public class UploadStartedEvent extends
 	}
 
 	public static void fire(HasHandlers source) {
-		source.fireEvent(new UploadStartedEvent());
+		source.fireEvent(new UploadStartedEvent(source));
 	}
 }

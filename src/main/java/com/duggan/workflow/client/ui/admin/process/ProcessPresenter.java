@@ -50,8 +50,6 @@ public class ProcessPresenter extends
 	
 	@Inject PlaceManager placeManager;
 
-	IndirectProvider<ProcessSavePresenter> processFactory;
-	IndirectProvider<ProcessItemPresenter> processItemFactory;
 	IndirectProvider<ProcessStepsPresenter> taskStepsFactory;
 
 	@ProxyCodeSplit
@@ -67,10 +65,6 @@ public class ProcessPresenter extends
 			Provider<ProcessItemPresenter> columnProvider,
 			Provider<ProcessStepsPresenter> taskStepsProvider) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
-		processFactory = new StandardProvider<ProcessSavePresenter>(
-				addprocessProvider);
-		processItemFactory = new StandardProvider<ProcessItemPresenter>(
-				columnProvider);
 		taskStepsFactory = new StandardProvider<ProcessStepsPresenter>(
 				taskStepsProvider);
 	}

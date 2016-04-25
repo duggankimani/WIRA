@@ -12,6 +12,7 @@ import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
@@ -103,6 +104,7 @@ public class AttachmentDaoHelper {
 
 		attachment.setId(model.getId());
 		attachment.setName(model.getName());
+		attachment.setType(model.getType()==null? AttachmentType.UPLOADED: model.getType());
 		attachment.setFieldName(model.getFieldName());
 		attachment.setSize(model.getSize());
 		attachment.setSizeStr(getSizeAsStr(model.getSize()));

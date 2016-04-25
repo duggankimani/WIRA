@@ -125,8 +125,8 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@Override
 	public ModalPopup getModalPopup(boolean reinstantiate) {
 		if(reinstantiate){
-			popup = new ModalPopup();
 			popoverPanel.clear();
+			popup = new ModalPopup();
 			popoverPanel.add(popup);
 		}
 		return popup;

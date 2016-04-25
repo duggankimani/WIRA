@@ -283,7 +283,7 @@ public class ProcessStepsPresenter extends
 				"--" + processDef.getName() + "--");
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetFormsRequest(processDef.getId()));
-		action.addRequest(new GetOutputDocumentsRequest());
+		action.addRequest(new GetOutputDocumentsRequest(processDef.getRefId()));
 		action.addRequest(new GetTaskNodesRequest(processDef.getProcessId()));
 		action.addRequest(new GetTaskStepsRequest(processDef.getProcessId(),
 				null));

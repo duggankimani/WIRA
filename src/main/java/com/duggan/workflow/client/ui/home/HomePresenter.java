@@ -16,7 +16,6 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
-import com.duggan.workflow.client.ui.home.doctree.DocTreePresenter;
 import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.shared.model.Document;

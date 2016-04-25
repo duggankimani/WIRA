@@ -126,4 +126,8 @@ public class UploadContext {
 		
 		return rtn ;
 	}
+	
+	public String getContext(String key){
+		return context.get(key);
+	}
 }

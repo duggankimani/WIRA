@@ -59,6 +59,7 @@ public class UploadOutputDocExecutor extends FileExecutor {
 					attachment.setContentType(contentType);					
 					attachment.setName(name);
 					attachment.setSize(size);
+					attachment.setDirectory(false);
 					attachment.setAttachment(item.get());					
 					AttachmentDaoImpl impl = DB.getAttachmentDao();
 					impl.save(attachment);

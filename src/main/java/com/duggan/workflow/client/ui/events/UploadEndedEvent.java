@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.events;
 
+import java.util.List;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -12,8 +14,17 @@ public class UploadEndedEvent extends
 	public interface UploadEndedHandler extends EventHandler {
 		void onUploadEnded(UploadEndedEvent event);
 	}
+	
+	private Object source;
+	private List<String> fileFieldNames;
 
-	public UploadEndedEvent() {
+	public UploadEndedEvent(Object source) {
+		this.source = source;
+	}
+	
+	public UploadEndedEvent(Object source, List<String> fileFieldNames) {
+		this.source = source;
+		this.fileFieldNames = fileFieldNames;
 	}
 
 	@Override
@@ -31,6 +42,14 @@ public class UploadEndedEvent extends
 	}
 
 	public static void fire(HasHandlers source) {
-		source.fireEvent(new UploadEndedEvent());
+		source.fireEvent(new UploadEndedEvent(source));
+	}
+
+	public Object getSource() {
+		return source;
+	}
+
+	public List<String> getFileFieldNames() {
+		return fileFieldNames;
 	}
 }

@@ -1,16 +1,11 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.jbpm.task.EmailNotification;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.DropDownList;
-import com.duggan.workflow.client.ui.component.TableHeader;
-import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.AssignmentDto;
@@ -19,7 +14,6 @@ import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.TaskStepDTO;
-import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,7 +22,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
