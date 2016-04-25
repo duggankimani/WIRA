@@ -82,3 +82,6 @@ create sequence caseno_sequence increment by 1 minvalue 1 MaxValue 100000000 sta
 create sequence orgmodel_id_seq;
 alter table orgmodel alter id set default nextval('orgmodel_id_seq');
 
+alter table localattachment alter column isdirectory int not null default 0; 
+
+update localattachment set type=2 where fieldname is not null;
