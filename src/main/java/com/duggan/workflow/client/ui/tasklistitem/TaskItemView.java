@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
@@ -18,7 +17,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -28,7 +26,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
-//import com.google.gwt.regexp.shared.RegExp;
 
 
 public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskItemView {
@@ -118,6 +115,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		//Several days ago
 		if(CalendarUtil.getDaysBetween(dateToUse, new Date())>=1){
 			spnTime.setText(DateUtils.MONTHDAYFORMAT.format(dateToUse));
+//			spnTime.setText(DateUtils.DATEFORMAT.format(dateToUse));
 		}else{
 			spnTime.setText(DateUtils.TIMEFORMAT12HR.format(dateToUse));
 		}
@@ -189,6 +187,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		if(desc==null){
 			desc = aDoc.get("caseNo")==null? null : aDoc.get("caseNo").toString();
 		}
+		
+		desc = desc.replaceAll("Case-", "#");
 		
 		String taskActualOwner = "";
 		if(aDoc.getProcessStatus()==HTStatus.COMPLETED){
@@ -409,7 +409,8 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 	
 	public void setSelected(boolean selected){
 		if(selected){
-			container.getElement().getStyle().setBackgroundColor("#e3e0e0");
+//			container.getElement().getStyle().setBackgroundColor("#e3e0e0");
+			container.getElement().getStyle().setBackgroundColor("#E9EAED");
 		}else{
 			container.getElement().getStyle().setBackgroundColor("#ffffff");
 		}

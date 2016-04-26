@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public enum HTStatus {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum HTStatus implements IsSerializable{
 	
 	COMPLETED,
 	CREATED,

@@ -18,24 +18,24 @@
 				</div>
 				<div class="action-buttons pull-right">
 					<d:ActionLink ui:field="aDoc" styleName="btn btn-default disabled"
-						title="Show Form">
+						title="View Data Form">
 						<i class="icon-file"></i>
 						<!-- Process -->
 					</d:ActionLink>
 					<d:ActionLink ui:field="aAudit" styleName="btn btn-default disabled"
-						title="Show Process Audit">
+						title="View Process Audit">
 						<i class="icon-time"></i>
 						<!-- Process -->
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aProcess" styleName="btn btn-default disabled"
-						title="Show Process Map">
+						title="View Process Map">
 						<i class="icon-info"></i>
 						<!-- Process -->
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aAttach2" styleName="btn btn-default hidden"
-						title="Attach word, pdf, scanned documents etc">
+						title="View attachments">
 						<i class="icon-upload-alt color-orange"></i>
 					</d:ActionLink>
 					
@@ -154,6 +154,10 @@
 							</li>
 						</ul>
 					</div>
+					<d:ActionLink ui:field="aClose" title="Close" 
+					styleName="btn generic-doc-close">
+						X
+					</d:ActionLink>
 				</div>
 			</div>
 

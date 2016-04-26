@@ -701,3 +701,28 @@ section.positioned {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.table tr .th {
+    color: #263035;
+    background: #f7f7f7;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    -webkit-font-smoothing: antialiased;
+}
+.table tr td {
+	font-family: Helvetica,Arial,sans-serif;
+    /*font-size: 14px;*/
+    color: #222;
+}
+
+.table a{
+	color: #428bca !important;
+    text-decoration: none;	
+}
+
+.generic-doc-close{
+	font-size:25px;
+	padding: 4px 12px;
+	vertical-align: middle;	
+}

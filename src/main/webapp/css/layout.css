@@ -682,8 +682,9 @@ body .dateBoxPopup {
 }
 
 #middle-nav .message-container .spnDescription {
-	font-size: 11px;
+	font-size: 12px;
 	width: 75%;
+	color:#020C15;
 }
 
 #middle-nav .message-container .spnDate {
@@ -721,6 +722,7 @@ body .dateBoxPopup {
 	font-weight: bold;
 	font-size: 12px;
 	width: 70%;
+	color:#444141;
 }
 
 #middle-nav .message-container .clip {
@@ -1476,12 +1478,16 @@ ul.icons-list.text-xl {
 }
 
 #navigation-menu>li>a {
-	background-color: #EDEDED;
+	/*background-color: #EDEDED;*/
+	background-color: #F9F9F9;
 	display: block;
 	margin-left: 0px;
 	padding: 2px 0px 0px 5px;
-	color: #555e64;
+	/*color: #555e64;*/
+	color: #1A1B1B;
 	outline: 0px;
+	font-size: 11px;
+    
 }
 
 #navigation-menu>li {
@@ -1495,7 +1501,7 @@ ul.icons-list.text-xl {
 
 #navigation-menu>li.active a {
 	height: 24px;
-	font-weight: bold;
+	/*font-weight: bold;*/
 }
 
 #navigation-menu>li.active i {

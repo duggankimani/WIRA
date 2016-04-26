@@ -26,6 +26,7 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -204,6 +205,8 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getLinkNext();
 
 		HasClickHandlers getLinkEnv();
+		
+		HasClickHandlers getCloseButton();
 
 		HasClickHandlers getLinkViewProcessLog();
 
@@ -327,6 +330,14 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
 		addRegisteredHandler(FieldLoadEvent.getType(), this);
 		addRegisteredHandler(UploadEndedEvent.getType(), this);
+		
+		getView().getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				fireEvent(new DocumentSelectionEvent(null, null, null));
+			}
+		});
 
 		getView().getUploadLink2().addClickHandler(new ClickHandler() {
 			@Override

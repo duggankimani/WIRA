@@ -50,7 +50,6 @@ import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -62,7 +61,7 @@ import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -71,9 +70,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
 		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> implements
 		AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,
-		SearchHandler, AssignTaskHandler
-// AlertLoadHandler,
-{
+		SearchHandler, AssignTaskHandler {
 
 	public interface ITaskView extends View {
 		void setHeading(String heading);
@@ -94,15 +91,14 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		void addScrollHandler(ScrollHandler scrollHandler);
 
+		void bindTasks(List<Doc> tasks, boolean isIncremental);
+
 	}
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> DOCUMENT_SLOT = new Type<RevealContentHandler<?>>();
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
+	public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
 
+	public static final SingleSlot<GenericDocumentPresenter> FILTER_SLOT = new SingleSlot<GenericDocumentPresenter>();
+	
 	@Inject
 	DispatchAsync dispatcher;
 	@Inject
@@ -165,8 +161,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(ReloadEvent.TYPE, this);
 		addRegisteredHandler(AssignTaskEvent.TYPE, this);
-		// addRegisteredHandler(AlertLoadEvent.TYPE, this);
-		// addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
 		addRegisteredHandler(SearchEvent.TYPE, this);
 
 		getView().addScrollHandler(new ScrollHandler() {
@@ -223,12 +217,10 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		super.prepareFromRequest(request);
 		CURPOS = 0;
 
-		// fireEvent(new LoadAlertsEvent());
 		clear();
 		processInstanceId = null;
 
 		String processInstID = request.getParameter("pid", null);
-		// String documentSearchID = request.getParameter("did", null);
 		docRefId = request.getParameter("docRefId", null);
 
 		if (processInstID != null) {
@@ -246,10 +238,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			return;
 		}
 
-		// fireEvent(new ProcessingEvent());
 		SearchFilter filter = new SearchFilter();
 		filter.setSubject(searchTerm);
-		// filter.setPhrase(searchTerm);
 		search(filter);
 	}
 
@@ -257,7 +247,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
 		request.setLength(PAGE_SIZE);
-		request.setOffset(CURPOS=0);
+		request.setOffset(CURPOS = 0);
 		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request,
 				new TaskServiceCallback<GetTaskListResult>() {
@@ -311,8 +301,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		// request.setDocumentId(documentId);
 		request.setDocRefId(docRefId);
 		request.setLoadAsAdmin(isLoadAsAdmin());
-		
-//		Window.alert("Loading - "+currentTaskType+" "+CURPOS+" - "+(PAGE_SIZE+CURPOS));
+
+		// Window.alert("Loading - "+currentTaskType+" "+CURPOS+" - "+(PAGE_SIZE+CURPOS));
 
 		fireEvent(new ProcessingEvent());
 		dispatcher.execute(request,
@@ -336,14 +326,14 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 									docMode = DocMode.READWRITE;
 								}
 								// Load document
-								fireEvent(new DocumentSelectionEvent(docRefId,
-										null, docMode));
+//								fireEvent(new DocumentSelectionEvent(docRefId,
+//										null, docMode));
 							} else {
 								docRefId = ((HTSummary) doc).getRefId();
 								long taskId = ((HTSummary) doc).getId();
 								// Load Task
-								fireEvent(new DocumentSelectionEvent(docRefId,
-										taskId, docMode));
+//								fireEvent(new DocumentSelectionEvent(docRefId,
+//										taskId, docMode));
 							}
 
 						} else {
@@ -378,6 +368,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			setInSlot(DATEGROUP_SLOT, null);
 		}
 
+		getView().bindTasks(tasks,isIncremental);
+
 		final List<Date> dates = new ArrayList<Date>();
 
 		for (int i = 0; i < tasks.size(); i++) {
@@ -387,8 +379,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 			Date dateToUse = doc.getSortDate();
 
-			final String dt = DateUtils.DATEFORMAT.format(dateToUse);
-			final Date date = DateUtils.DATEFORMAT.parse(dt);
+			final String dt = DateUtils.LONGDATEFORMAT.format(dateToUse);
+			final Date date = DateUtils.LONGDATEFORMAT.parse(dt);
 
 			if (dates.contains(date)) {
 				fireEvent(new PresentTaskEvent(doc));

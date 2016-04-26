@@ -1,27 +1,26 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="full-page">
 		<!--middle navigation -->
-		<div class="span2" ui:field="divTasks">
+		<div class="span2 hide" ui:field="divTasks">
 			<div id="nav-top" style="height:auto;">
 				<i class="icon-tag"></i>
 				<h5 ui:field="hCategory">Completed</h5>
 				<br />
-				
+
 				<!-- div class="search hide" -->
 				<div class="hide">
 					<g:TextBox styleName="search-box" ui:field="txtSearch" />
 					<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
 				</div>
 				<g:Anchor ui:field="aRefresh" styleName="hide icon-refresh icon-large hand"></g:Anchor>
-				
+
 				<g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
 			</div>
 
@@ -35,9 +34,17 @@
 		</div>
 
 		<!--Detailed Info Description -->
-		<div ui:field="divDocView" class="span10">
+		<div ui:field="divDocView" class="span10 hide">
 			<g:HTMLPanel ui:field="docContainer" styleName="full-page">
 			</g:HTMLPanel>
 		</div>
+
+		<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">
+			<!-- div class="no-overflow-y" style="margin-left:0px;" -->
+			<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
+				width="100%"></g:FlexTable>
+			<!-- /div -->
+		</g:ScrollPanel>
+
 	</g:HTMLPanel>
 </ui:UiBinder>

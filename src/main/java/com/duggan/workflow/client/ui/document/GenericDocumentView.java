@@ -128,6 +128,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField
 	Anchor aReject;
 	@UiField
+	Anchor aClose;
+	@UiField
 	HTMLPanel statusContainer;
 	@UiField
 	HTMLPanel auditContainer;
@@ -1147,6 +1149,12 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public void enableSubmit(boolean isEnable) {
 		aContinue.setEnabled(isEnable);
+	}
+	
+	@Override
+	public HasClickHandlers getCloseButton() {
+		
+		return aClose;
 	}
 
 }
