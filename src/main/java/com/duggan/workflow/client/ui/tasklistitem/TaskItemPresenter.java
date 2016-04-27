@@ -44,6 +44,7 @@ import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -425,7 +426,12 @@ public class TaskItemPresenter extends
 	public void setDocSummary(Doc summaryTask) {
 		this.task = summaryTask;
 		if(summaryTask!=null){
-			getView().bind(summaryTask);
+			try{
+				getView().bind(summaryTask);
+			}catch(Exception e){
+				GWT.log(e.getMessage());
+			}
+			
 		}
 		
 		if(task instanceof HTSummary){

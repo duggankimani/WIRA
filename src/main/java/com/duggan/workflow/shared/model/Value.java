@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public interface Value extends Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public interface Value extends Serializable, IsSerializable{
 
 	void setId(Long Id);
 	

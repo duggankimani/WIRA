@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-public enum DataType {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum DataType implements IsSerializable{
 	STRING,
 	STRINGLONG,
 	BOOLEAN,

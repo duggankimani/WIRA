@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Doc extends SerializableObj implements Serializable,Comparable<Doc>{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public abstract class Doc extends SerializableObj implements Serializable,IsSerializable,Comparable<Doc>{
 
 	/**
 	 * 

@@ -411,9 +411,11 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		if(selected){
 //			container.getElement().getStyle().setBackgroundColor("#e3e0e0");
 			container.getElement().getStyle().setBackgroundColor("#E9EAED");
+			this.asWidget().getElement().scrollIntoView();
 		}else{
 			container.getElement().getStyle().setBackgroundColor("#ffffff");
 		}
+		
 	}
 
 	@Override

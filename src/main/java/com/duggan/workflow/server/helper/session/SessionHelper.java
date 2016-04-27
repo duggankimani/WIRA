@@ -85,4 +85,8 @@ public class SessionHelper{
 	public static HttpServletRequest getHttpRequest(){
 		return request.get();
 	}
+	
+	public static void throwException(String message){
+		throw new RuntimeException(message);
+	}
 }

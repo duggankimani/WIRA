@@ -18,6 +18,7 @@ import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedVie
 import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter.ISuspendedView;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -186,7 +187,7 @@ public class AbstractTaskView extends ViewImpl implements
 			if (content != null) {
 				docContainer.add(content);
 				displayTable(false);
-			}else{
+			} else {
 				displayTable(true);
 			}
 		} else if (slot == FILTER_SLOT) {
@@ -202,11 +203,11 @@ public class AbstractTaskView extends ViewImpl implements
 	}
 
 	private void displayTable(boolean isDisplayTable) {
-		if(isDisplayTable){
+		if (isDisplayTable) {
 			divDocView.addClassName("hide");
 			divTasks.addClassName("hide");
 			divTableListing.removeStyleName("hide");
-		}else{
+		} else {
 			divDocView.removeClassName("hide");
 			divTasks.removeClassName("hide");
 			divTableListing.addStyleName("hide");
@@ -272,20 +273,10 @@ public class AbstractTaskView extends ViewImpl implements
 			createHeader(tblTasks);
 		}
 
-		int i = isIncremental? tblTasks.getRowCount(): 1;
-		
+		int i = isIncremental ? tblTasks.getRowCount() : 1;
+
 		for (Doc doc : tasks) {
 			int j = 0;
-
-			Checkbox box = new Checkbox(doc);
-			box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<Boolean> event) {
-					Object model = ((Checkbox) (event.getSource())).getModel();
-					AppContext.fireEvent(new CheckboxSelectionEvent(model,
-							event.getValue()));
-				}
-			});
 
 			Date dateToUse = doc.getSortDate();
 			InlineLabel spnTime = new InlineLabel();
@@ -293,16 +284,8 @@ public class AbstractTaskView extends ViewImpl implements
 			String taskActualOwner = doc.getOwner() == null ? "" : doc
 					.getOwner().getFullName();
 
-			// Several days ago
-			if (CalendarUtil.getDaysBetween(dateToUse, new Date()) >= 1) {
-				spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
-			} else {
-				spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
-			}
-
 			Element spnSubject = DOM.createSpan();
-			spnSubject.setInnerText(doc.getProcessName() == null ? "" : doc
-					.getProcessName());
+			spnSubject.setInnerText("Fill in request form");
 
 			Element spnAttach = DOM.createSpan();
 			spnAttach.addClassName("icon-paper-clip clip hidden");
@@ -321,11 +304,18 @@ public class AbstractTaskView extends ViewImpl implements
 			Element spnDeadlines = DOM.createSpan();
 			spnDeadlines.addClassName("spnDate");
 
-			Element spnTask = DOM.createSpan();
+			Element spnProcessName = DOM.createSpan();
+			spnProcessName.setInnerText(doc.getProcessName());
 
 			InlineLabel spnStatus = new InlineLabel();
 
-			spnDeadlines = setDeadlines(DateUtils.addDays(doc.getCreated(), 1));
+			boolean isCompleted = true;
+			if(doc instanceof Document){
+				isCompleted = ! (((Document)doc).getStatus()==DocStatus.DRAFTED);
+			}
+			
+			spnDeadlines = setDeadlines(DateUtils.addDays(doc.getCreated(), 1),
+					isCompleted);
 
 			if (doc instanceof HTSummary) {
 				HTSummary summ = (HTSummary) doc;
@@ -340,9 +330,11 @@ public class AbstractTaskView extends ViewImpl implements
 																				// missing
 				}
 
+				dateToUse = summ.getCreated();
 				if (status.equals(HTStatus.COMPLETED)) {
 					spnDocIcon.addStyleName("icon-ok");
 					spnDocIcon.setTitle("Completed Task");
+					dateToUse = summ.getCompletedOn();
 				} else if (status.equals(HTStatus.SUSPENDED)) {
 					spnDocIcon.addStyleName("icon-pause");
 					spnDocIcon.setTitle("Task Currently Suspended");
@@ -354,8 +346,10 @@ public class AbstractTaskView extends ViewImpl implements
 					spnDocIcon.setTitle("Task Awaiting your action");
 				}
 
-				if (summ.getName() != null && !summ.getName().isEmpty()) {
+				if (!StringUtils.isNullOrEmpty(summ.getName())) {
 					spnSubject.setInnerText(summ.getName());
+				} else if (!StringUtils.isNullOrEmpty(summ.getNodeName())) {
+					spnSubject.setInnerText(summ.getNodeName());
 				}
 
 				// setTaskAction(summ.getStatus().getValidActions());
@@ -403,7 +397,6 @@ public class AbstractTaskView extends ViewImpl implements
 					// Delegations are also handled here
 					if (doc instanceof HTSummary) {
 						HTSummary summ = (HTSummary) doc;
-						spnTask.setInnerText("Task '" + summ.getId() + "'");
 						if (summ.getDelegate() != null
 								&& summ.getDelegate().getDelegateTo() != null) {
 							taskActualOwner = "Delegated: "
@@ -465,8 +458,27 @@ public class AbstractTaskView extends ViewImpl implements
 				break;
 			}
 
-			tblTasks.setWidget(i, j++, box);
+			// Several days ago
+			if (CalendarUtil.getDaysBetween(dateToUse, new Date()) >= 1) {
+				spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
+			} else {
+				spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
+			}
 
+			/**
+			 * Build Table
+			 */
+			Checkbox box = new Checkbox(doc);
+			box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<Boolean> event) {
+					Object model = ((Checkbox) (event.getSource())).getModel();
+					AppContext.fireEvent(new CheckboxSelectionEvent(model,
+							event.getValue()));
+				}
+			});
+
+			tblTasks.setWidget(i, j++, box);
 			ActionLink link = new ActionLink(doc);
 			if (doc.getCaseNo() != null)
 				link.setText("#" + (doc.getCaseNo().replaceAll("Case-", "")));
@@ -474,10 +486,10 @@ public class AbstractTaskView extends ViewImpl implements
 			HTMLPanel casePanel = new HTMLPanel("");
 			casePanel.add(link);
 			link.addClickHandler(new ClickHandler() {
-				
+
 				@Override
 				public void onClick(ClickEvent event) {
-					Object model = ((ActionLink)event.getSource()).getModel();
+					Object model = ((ActionLink) event.getSource()).getModel();
 					if (model instanceof Document) {
 						Document doc = (Document) model;
 						AppContext.fireEvent(new DocumentSelectionEvent(doc
@@ -493,12 +505,13 @@ public class AbstractTaskView extends ViewImpl implements
 			tblTasks.setWidget(i, j++, casePanel);
 
 			HTMLPanel subject = new HTMLPanel("");
-			subject.getElement().appendChild(spnSubject);
+			subject.getElement().appendChild(spnProcessName);
 			tblTasks.setWidget(i, j++, subject);
 
 			HTMLPanel task = new HTMLPanel("");
-			task.getElement().appendChild(spnTask);
+			task.getElement().appendChild(spnSubject);
 			tblTasks.setWidget(i, j++, task);
+
 			tblTasks.setWidget(i, j++, new HTMLPanel(taskActualOwner));
 			// tblTasks.getFlexCellFormatter().setWidth(i, (j - 1), "150px");
 			tblTasks.setWidget(i, j++, spnTime);
@@ -516,6 +529,10 @@ public class AbstractTaskView extends ViewImpl implements
 	}
 
 	private Element setDeadlines(Date endDateDue) {
+		return setDeadlines(endDateDue, false);
+	}
+
+	private Element setDeadlines(Date endDateDue, boolean isCompleted) {
 		Element spnDeadline = DOM.createSpan();
 		spnDeadline.setInnerText(DateUtils.LONGDATEFORMAT.format(endDateDue));
 
@@ -526,7 +543,9 @@ public class AbstractTaskView extends ViewImpl implements
 			// spnDeadline.setInnerText("Overdue");
 			spnDeadline.setTitle("Overdue " + timeDiff + " Ago");
 			spnDeadline.removeClassName("hidden");
-			spnDeadline.getStyle().setColor("red");
+			if (!isCompleted) {
+				spnDeadline.getStyle().setColor("red");
+			}
 			// spnDeadline.addClassName("label-important");
 		} else if (DateUtils.isDueInMins(30, endDateDue)) {
 
@@ -535,7 +554,9 @@ public class AbstractTaskView extends ViewImpl implements
 			// spnDeadline.setInnerText("Due soon");
 			spnDeadline.setTitle("Due in " + timeDiff);
 			spnDeadline.removeClassName("hidden");
-			spnDeadline.getStyle().setColor("orange");
+			if (!isCompleted) {
+				spnDeadline.getStyle().setColor("orange");
+			}
 			// spnDeadline.addClassName("label-warning");
 		}
 

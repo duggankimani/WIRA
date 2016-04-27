@@ -86,6 +86,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			action = approverAction.getAction();
 		}
 		
+		if(ownerObj==null){
+			ownerObj = new HTUser("");
+			ownerObj.setSurname("");
+			ownerObj.setName("");
+		}
+		
 		String owner = ownerObj.getSurname();
 		if(AppContext.isCurrentUser(ownerObj.getUserId())){
 			owner = "You";

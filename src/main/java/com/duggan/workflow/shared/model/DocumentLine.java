@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  *  
  * @author duggan
  *  Represents document lines/details (e.g invoice details)
  */
-public class DocumentLine implements Serializable {
+public class DocumentLine implements Serializable,IsSerializable {
 
 	/**
 	 * 

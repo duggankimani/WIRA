@@ -1134,7 +1134,8 @@ public class GenericDocumentView extends ViewImpl implements
 			for(Attachment attachment: attachments){
 				tblAttachments.addRow(Arrays.asList("","",""),
 						new AttachmentItem(attachment, true, false),
-						new InlineLabel(attachment.getCreatedBy().getFullName()),
+						new InlineLabel(attachment.getCreatedBy()==null? "":
+							attachment.getCreatedBy().getFullName()),
 						new InlineLabel(DateUtils.CREATEDFORMAT.format(attachment.getCreated())));
 			}
 		}

@@ -52,6 +52,10 @@ public class DateGroupPresenter extends
 	@Override
 	public void onPresentTask(final PresentTaskEvent event) {
 		//Date docDate = event.getDoc().getCreated();
+		if(event.getDoc()==null || event.getDoc().getSortDate()==null){
+			return;
+		}
+		
 		Date dateToUse  = event.getDoc().getSortDate();
 		
 		if(!CalendarUtil.isSameDate(date, dateToUse)){

@@ -419,7 +419,7 @@ public class JBPMHelper implements Closeable {
 	 *         user
 	 * 
 	 */
-	public List<HTSummary> getTasksForUser(String userId, TaskType type) {
+	public List<HTSummary> getTasksForUser(String userId, TaskType type,int offset, int length) {
 
 		if (!LoginHelper.get().existsUser(userId)) {
 			throw new RuntimeException("User " + userId + " Unknown!!");
@@ -457,7 +457,14 @@ public class JBPMHelper implements Closeable {
 			break;
 		}
 
-		return translateSummaries(ts);
+		int toIndex = offset+length;
+		if(offset>ts.size()){
+			return new ArrayList<HTSummary>();
+		}
+		
+		toIndex = Math.min(toIndex, ts.size());
+		
+		return translateSummaries(ts.subList(offset, toIndex));
 
 	}
 

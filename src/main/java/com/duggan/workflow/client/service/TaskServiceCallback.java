@@ -4,7 +4,6 @@ import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.responses.BaseResponse;
-import com.google.gwt.user.client.Window;
 import com.gwtplatform.dispatch.rpc.shared.Result;
 
 /**

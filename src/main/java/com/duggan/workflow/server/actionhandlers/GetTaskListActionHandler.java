@@ -129,7 +129,7 @@ public class GetTaskListActionHandler extends
 		List<HTSummary> tasks = new ArrayList<>();
 
 		try {
-			tasks = JBPMHelper.get().getTasksForUser(userId, type);
+			tasks = JBPMHelper.get().getTasksForUser(userId, type,offset, length);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
