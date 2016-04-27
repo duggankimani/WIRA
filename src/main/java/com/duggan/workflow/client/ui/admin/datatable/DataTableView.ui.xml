@@ -16,6 +16,16 @@
 						<i class="icon-plus"></i>
 						New Table
 					</g:Anchor>
+					<g:Anchor ui:field="aNewReport" styleName="btn btn-primary"
+						title="New Form">
+						<i class="icon-plus"></i>
+						New Report Table
+					</g:Anchor>
+					<g:Anchor ui:field="aNewReportView" styleName="btn btn-primary"
+						title="New Form">
+						<i class="icon-plus"></i>
+						New Report View
+					</g:Anchor>
 					<g:Anchor ui:field="aImport" styleName="btn btn-primary"
 						title="Import Form">
 						<i class="icon-upload-alt"></i>
@@ -25,11 +35,6 @@
 						title="Export Form">
 						<i class="icon-arrow-down"></i>
 						Export Table
-					</g:Anchor>
-					<g:Anchor ui:field="aNewReport" styleName="btn btn-primary"
-						title="New Form">
-						<i class="icon-plus"></i>
-						New Report Table
 					</g:Anchor>
 				</div>
 				

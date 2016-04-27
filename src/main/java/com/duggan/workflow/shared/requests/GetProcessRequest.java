@@ -6,6 +6,7 @@ import com.duggan.workflow.shared.responses.GetProcessResponse;
 public class GetProcessRequest extends BaseRequest<GetProcessResponse> {
 
 	private Long processDefId;
+	private String processRefId;
 
 	@SuppressWarnings("unused")
 	private GetProcessRequest() {
@@ -14,6 +15,11 @@ public class GetProcessRequest extends BaseRequest<GetProcessResponse> {
 
 	public GetProcessRequest(Long processDefId) {
 		this.processDefId = processDefId;
+	}
+	
+	public GetProcessRequest(String processRefId) {
+		this.processRefId = processRefId;
+		
 	}
 
 	public Long getProcessDefId() {
@@ -24,4 +30,9 @@ public class GetProcessRequest extends BaseRequest<GetProcessResponse> {
 	public BaseResponse createDefaultActionResponse() {
 		return new GetProcessResponse();
 	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
 }

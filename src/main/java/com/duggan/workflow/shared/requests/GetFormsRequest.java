@@ -6,6 +6,7 @@ import com.duggan.workflow.shared.responses.GetFormsResponse;
 public class GetFormsRequest extends BaseRequest<GetFormsResponse> {
 
 	private Long processDefId;
+	private String processRefId;
 	private boolean isLoadFields;
 	
 	public boolean isLoadFields() {
@@ -25,6 +26,15 @@ public class GetFormsRequest extends BaseRequest<GetFormsResponse> {
 		this.isLoadFields = isLoadFields;
 	}
 	
+	public GetFormsRequest(String processRefId) {
+		this.processRefId = processRefId;
+	}
+	
+	public GetFormsRequest(String processRefId, boolean isLoadFields) {
+		this.processRefId = processRefId;
+		this.isLoadFields = isLoadFields;
+	}
+	
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		return new GetFormsResponse();
@@ -32,5 +42,9 @@ public class GetFormsRequest extends BaseRequest<GetFormsResponse> {
 
 	public Long getProcessDefId() {
 		return processDefId;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
 	}
 }

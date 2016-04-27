@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
+import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,8 +124,12 @@ public class DropDownList<T extends Listable> extends Composite implements
 	}
 
 	public void setValueByKey(String key) {
+		if (isNullOrEmpty(key)) {
+			setValue(null);
+			return;
+		}
+		
 		for (int i = 0; i < listBox.getItemCount(); i++) {
-
 			if (listBox.getValue(i).equals(key)) {
 				listBox.setSelectedIndex(i);
 				value = items.get(i - 1);
@@ -131,7 +137,6 @@ public class DropDownList<T extends Listable> extends Composite implements
 
 		}
 	}
-
 	@Override
 	public void setTitle(String title) {
 		listBox.setTitle(title);

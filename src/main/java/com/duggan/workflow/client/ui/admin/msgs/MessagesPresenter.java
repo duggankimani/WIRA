@@ -105,7 +105,7 @@ public class MessagesPresenter
 			@Override
 			public void onClick(ClickEvent event) {
 				final Emailer e = new Emailer(getView().getGrid()
-						.getSelectedModel());
+						.getSelectedValue());
 				AppManager.showPopUp("Email", e, "htmlEditorPopup",
 						new OnOptionSelected() {
 
@@ -124,7 +124,7 @@ public class MessagesPresenter
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				RequestInfoDto dto = getView().getGrid().getSelectedModel();
+				RequestInfoDto dto = getView().getGrid().getSelectedValue();
 				Long errorId= null;
 				if(dto.getErrorInfo()!=null && dto.getErrorInfo().size()>0){
 					errorId = dto.getErrorInfo().get(dto.getErrorInfo().size()-1).getId();

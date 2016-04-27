@@ -7,65 +7,69 @@ import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.shared.model.Trigger;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.ViewImpl;
 
-public class SaveTriggerView extends ViewImpl implements
-		SaveTriggerPresenter.ISaveTriggerView {
-
-	private final Widget widget;
+public class SaveTriggerView extends Composite {
 
 	public interface Binder extends UiBinder<Widget, SaveTriggerView> {
 	}
 
-	
-	@UiField TextField txtName;
-	@UiField TextArea txtImports;
-	@UiField TextArea txtScript;
-	@UiField IssuesPanel issues;
-	@UiField DropDownList<Trigger> lstTrigger;
-	@UiField DivElement divTriggers;
-	
-	@Inject
-	public SaveTriggerView(final Binder binder) {
-		widget = binder.createAndBindUi(this);
-		
+	private static Binder binder = GWT.create(Binder.class);
+
+	@UiField
+	TextField txtName;
+	@UiField
+	TextArea txtImports;
+	@UiField
+	TextArea txtScript;
+	@UiField
+	IssuesPanel issues;
+	@UiField
+	DropDownList<Trigger> lstTrigger;
+	@UiField
+	DivElement divTriggers;
+	private Trigger trigger;
+
+	public SaveTriggerView() {
+		initWidget(binder.createAndBindUi(this));
+
 		lstTrigger.addValueChangeHandler(new ValueChangeHandler<Trigger>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<Trigger> event) {
 				Trigger trigger = event.getValue();
 				clear();
-				if(trigger!=null){
+				if (trigger != null) {
 					setTrigger(trigger);
 				}
 			}
 		});
 	}
-	
-	@Override
-	public Trigger getTrigger(){
-		Trigger trigger = new Trigger();
+
+	public SaveTriggerView(Trigger trigger) {
+		this();
+		setTrigger(trigger);
+	}
+
+	public Trigger getTrigger() {
+		Trigger trigger = this.trigger;
+		if (trigger == null) {
+			trigger = new Trigger();
+		}
 		trigger.setName(txtName.getValue());
 		trigger.setScript(txtScript.getValue());
 		trigger.setImports(txtImports.getValue());
-		
+
 		return trigger;
 	}
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
-
-	@Override
 	public void clear() {
 		txtName.setValue(null);
 		txtScript.setValue(null);
@@ -73,43 +77,42 @@ public class SaveTriggerView extends ViewImpl implements
 		issues.clear();
 	}
 
-	@Override
-	public void setTrigger(Trigger doc) {
-		txtName.setValue(doc.getName());
-		txtScript.setValue(doc.getScript());	
-		txtImports.setValue(doc.getImports());
+	public void setTrigger(Trigger trigger) {
+		this.trigger = trigger;
+		if (trigger != null) {
+			txtName.setValue(trigger.getName());
+			txtScript.setValue(trigger.getScript());
+			txtImports.setValue(trigger.getImports());
+		}
 	}
 
-	@Override
 	public boolean isValid() {
 		issues.clear();
 		boolean isValid = true;
-		
-		if(txtName.getValue()==null || txtName.getValue().isEmpty()){
-			isValid=false;
+
+		if (txtName.getValue() == null || txtName.getValue().isEmpty()) {
+			isValid = false;
 			issues.addError("Name is mandatory");
 		}
-		
+
 		return isValid;
 	}
-	
+
 	boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;
 	}
 
-	@Override
 	public void setTriggers(List<Trigger> triggers) {
-		
+		showTriggers(true);
 		lstTrigger.setItems(triggers);
 	}
 
-	@Override
 	public void showTriggers(boolean show) {
-		if(show){
+		if (show) {
 			divTriggers.removeClassName("hide");
-		}else{
+		} else {
 			divTriggers.addClassName("hide");
 		}
 	}
-	
+
 }

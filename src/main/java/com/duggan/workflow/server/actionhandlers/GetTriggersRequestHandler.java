@@ -11,24 +11,28 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetTriggersRequestHandler extends AbstractActionHandler<GetTriggersRequest, GetTriggersResponse>{
+public class GetTriggersRequestHandler extends
+		AbstractActionHandler<GetTriggersRequest, GetTriggersResponse> {
 
 	@Inject
 	public GetTriggersRequestHandler() {
 	}
-	
-	@Override
-	public void execute(GetTriggersRequest action,
-			BaseResponse actionResult, ExecutionContext execContext)
-			throws ActionException {
-		
-		List<Trigger> triggers=null;
 
-		triggers =  ProcessDefHelper.getTriggers();
-		
-		((GetTriggersResponse)actionResult).setTriggers(triggers);
+	@Override
+	public void execute(GetTriggersRequest action, BaseResponse actionResult,
+			ExecutionContext execContext) throws ActionException {
+
+		List<Trigger> triggers = null;
+
+		if (action.getProcessRefId()!=null) {
+			triggers = ProcessDefHelper.getTriggers(action.getProcessRefId(),action.getSearchTerm());
+		} else {
+			triggers = ProcessDefHelper.getTriggers();
+		}
+
+		((GetTriggersResponse) actionResult).setTriggers(triggers);
 	}
-	
+
 	public java.lang.Class<GetTriggersRequest> getActionType() {
 		return GetTriggersRequest.class;
 	};

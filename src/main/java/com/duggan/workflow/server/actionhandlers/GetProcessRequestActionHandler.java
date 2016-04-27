@@ -21,7 +21,12 @@ public class GetProcessRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		Long processDefId = action.getProcessDefId();
 		
-		ProcessDef process = ProcessDefHelper.getProcessDef(processDefId);
+		ProcessDef process = null;
+		if(processDefId!=null){
+			process = ProcessDefHelper.getProcessDef(processDefId);
+		}else if(action.getProcessRefId()!=null){
+			process = ProcessDefHelper.getProcessDef(action.getProcessRefId());
+		}
 		
 		GetProcessResponse response = (GetProcessResponse)actionResult;
 		

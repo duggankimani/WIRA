@@ -46,7 +46,7 @@ public class TestMultipleSessions {
 		
 		//Start Process
 		startTrx();
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver1, document.getProcessInstanceId());
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver1, document.getProcessInstanceId(),0,100);
 		Assert.assertEquals(1, summaries.size());
 		HTSummary summary = summaries.get(0);
 		JBPMHelper.get().execute(summary.getId(), approver1, Actions.CLAIM, null);

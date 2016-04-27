@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<div class="content-body overflow-y" ui:field="divProcessConfig">
+			<div class="row-fluid">
+				<a ui:field="aDownloadBPN" target="_blank" class="btn btn-default">Download BPMN <i class="icon-download"></i></a>
+				<a ui:field="aDownloadIMG" target="_blank" class="btn btn-default">Download Image <i class="icon-download"></i></a>
+			</div>
+			<g:Image ui:field="imgProcess" />
+			
+			<g:HTMLPanel styleName="row-fluid hide" ui:field="processConfigPanel">
+				<div class="alert hide">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Warning!</strong>
+					Please start the process to load the tasks.
+				</div>
+
+				<g:HTMLPanel ui:field="processStepsPanel">
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+		</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -3,6 +3,7 @@ package com.duggan.workflow.shared.model.catalog;
 import java.io.Serializable;
 
 import com.duggan.workflow.shared.model.DBType;
+import com.duggan.workflow.shared.model.form.Field;
 
 public class CatalogColumn implements Serializable,IsCatalogItem{
 
@@ -93,5 +94,14 @@ public class CatalogColumn implements Serializable,IsCatalogItem{
 		}
 		
 		return name.equals(((CatalogColumn)obj).name);
+	}
+
+	public Field toFormField() {
+		Field field = new Field();
+		field.setName(name);
+		field.setCaption(label);
+		field.setType(getType().getFieldType());
+		field.setFormId(System.currentTimeMillis());
+		return field;
 	}
 }

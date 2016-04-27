@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -12,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -59,7 +60,14 @@ public class CatalogModel extends PO {
 	
 	private CatalogType type = CatalogType.DATATABLE;
 	
+	private String gridName;
+	
 	private FieldSource fieldSource = FieldSource.FORM;// Field Source
+	
+
+	@ManyToOne
+	@JoinColumn(name="categoryId")
+	private ADProcessCategory category;
 	
 	public CatalogType getType() {
 		return type;
@@ -147,6 +155,22 @@ public class CatalogModel extends PO {
 
 	public void setFieldSource(FieldSource fieldSource) {
 		this.fieldSource = fieldSource;
+	}
+
+	public String getGridName() {
+		return gridName;
+	}
+
+	public void setGridName(String gridName) {
+		this.gridName = gridName;
+	}
+
+	public ADProcessCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ADProcessCategory category) {
+		this.category = category;
 	}
 
 }

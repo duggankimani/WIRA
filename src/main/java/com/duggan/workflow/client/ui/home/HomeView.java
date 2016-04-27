@@ -6,6 +6,8 @@ import static com.duggan.workflow.client.ui.home.HomePresenter.DOCTREE_SLOT;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -37,7 +39,9 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	HTMLPanel divDocPopup;
 	@UiField
 	HTMLPanel panelDocTree;
-
+	@UiField Element aExplorer;
+	@UiField Element aReports;
+	
 	@Inject
 	public HomeView(final Binder binder, HomeTabPanel panel) {
 		this.tabPanel = panel;
@@ -63,7 +67,25 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@Override
 	public Tab addTab(TabData tabData, String historyToken) {
+		switch (tabData.getLabel()) {
+		case "File Manager":
+//			show(aExplorer,((TabDataExt)tabData).canUserAccess());
+			break;
+		case "Report Registry":
+//			show(aReports,((TabDataExt)tabData).canUserAccess());
+			break;
+		default:
+			break;
+		}
 		return tabPanel.addTab(tabData, historyToken);
+	}
+
+	private void show(Element el, boolean isShow) {
+		if(isShow){
+			el.removeClassName("hide");
+		}else{
+			el.addClassName("hide");
+		}
 	}
 
 	@Override

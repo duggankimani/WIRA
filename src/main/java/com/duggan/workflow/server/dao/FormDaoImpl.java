@@ -15,6 +15,7 @@ import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.PO;
+import com.duggan.workflow.server.db.DB;
 
 /**
  * 
@@ -34,6 +35,20 @@ public class FormDaoImpl extends BaseDaoImpl {
 		
 		List lst = em.createQuery("from ADForm f where f.processDefId=:processDefId order by f.caption")
 				.setParameter("processDefId", processDefId)
+				.getResultList();
+		
+		return lst;
+	}
+	
+	public List<ADForm> getAllForms(String processRefId){
+		
+		Long processDefId = DB.getProcessDao().getProcessDefId(processRefId);
+		
+		List lst = em.createQuery("from ADForm f where "
+				+ "(f.processDefId=:processDefId or f.processRefId=:processRefId)"
+				+ " order by f.caption")
+				.setParameter("processDefId", processDefId)
+				.setParameter("processRefId", processRefId)
 				.getResultList();
 		
 		return lst;

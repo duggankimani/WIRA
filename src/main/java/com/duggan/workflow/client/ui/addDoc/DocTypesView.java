@@ -93,8 +93,6 @@ public class DocTypesView extends ViewImpl implements
 	    		return !model.isDirectory();
 	    	}
 	    };
-	    sourceTree.setHeight("90%");
-	    sourceTree.setWidth("90%");
 	    
 	    sourceTree.getStyle().setLeafIcon(INSTANCE.text());
 	    sourceTree.setBorders(false);

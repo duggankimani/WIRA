@@ -9,12 +9,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.AttachmentType;
 
 public class DocumentAttachmentExecutor extends FileExecutor{
 
+	Logger log = Logger.getLogger(DocumentAttachmentExecutor.class);
+	
 	public String execute(HttpServletRequest request,
 			List<FileItem> sessionFiles) throws UploadActionException {
 		String errorMessage="";
@@ -28,6 +33,7 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 					
 					//Name of the form field against which this file was uploaded 
 					String formFieldName= request.getParameter("formFieldName");
+					String fieldIdStr= request.getParameter("fieldId");
 					String contentType=item.getContentType();					
 					String name = item.getName();
 					long size = item.getSize();
@@ -40,10 +46,12 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 					attachment.setName(name);
 					attachment.setSize(size);
 					attachment.setAttachment(item.get());
+					attachment.setType(AttachmentType.INPUT);
 					attachment.setFieldName(formFieldName);
-					saveAttachment(attachment, request);
 					
+					saveAttachment(attachment, request);
 					receivedFiles.put(fieldName, attachment.getId());
+					
 				} catch (Exception e) {
 					throw new UploadActionException(e);
 				}
@@ -65,6 +73,12 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 		if(docRefId!=null){
 			AttachmentDaoHelper.saveDocument(docRefId, attachment);
 		}
+	}
+
+	public Long getAttachmentId(String fileFieldName) {
+		Hashtable<String, Long> receivedFiles = getSessionFiles(SessionHelper.getHttpRequest(), false);
+		
+		return receivedFiles.get(fileFieldName);
 	}
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -24,7 +25,6 @@ import com.duggan.workflow.shared.model.HTUser;
 @Entity(name="BUser")
 @Table(uniqueConstraints={@UniqueConstraint(columnNames="userId")})
 @NamedQuery(name="User.getUserByUserId", query="from BUser u where u.userId=:userId")
-
 public class User extends PO {
 
 	
@@ -57,7 +57,7 @@ public class User extends PO {
 	@JoinTable(name="UserGroup",
 		joinColumns={@JoinColumn(name="userid")},
 		inverseJoinColumns={@JoinColumn(name="groupid")})
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
+//	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
 	private Collection<Group> groups = new HashSet<>();
 	
 	@ManyToMany
@@ -65,6 +65,10 @@ public class User extends PO {
 	joinColumns={@JoinColumn(name="userid")},
 	inverseJoinColumns={@JoinColumn(name="processid")})
 	private Collection<ProcessDefModel> processDef = new HashSet<>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "orgid")
+	private OrgModel org;
 	
 	public User(){
 		this.isArchived=false;

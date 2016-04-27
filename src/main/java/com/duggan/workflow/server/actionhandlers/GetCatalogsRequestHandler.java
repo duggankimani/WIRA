@@ -25,11 +25,13 @@ public class GetCatalogsRequestHandler extends
 		
 		List<Catalog> catalogs = new ArrayList<>();
 		
-		if(action.getCatalogId()!=null){
-			Catalog cat = CatalogDaoHelper.getCatalog(action.getCatalogId());
+		if(action.getCatalogRefId()!=null){
+			Catalog cat = CatalogDaoHelper.getCatalog(action.getCatalogRefId());
 			catalogs.add(cat);
+		}else if(action.isLoadViews()){
+			catalogs = CatalogDaoHelper.getAllViews();
 		}else{
-			catalogs = CatalogDaoHelper.getAllCatalogs();
+			catalogs = CatalogDaoHelper.getAllCatalogs(action.getSearchTerm());
 		}
 		
 		

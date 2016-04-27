@@ -6,7 +6,7 @@ import java.util.List;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
+import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
 import com.duggan.workflow.client.ui.events.LoadTriggersEvent;
@@ -44,7 +44,6 @@ public class TaskStepTriggerPresenter extends
 	}
 
 	@Inject DispatchAsync dispatcher;
-	@Inject	SaveTriggerPresenter savePresenter;
 	
 	@Inject
 	public TaskStepTriggerPresenter(final EventBus eventBus, final ITaskStepTriggerView view) {
@@ -114,6 +113,9 @@ public class TaskStepTriggerPresenter extends
 	
 	@Override
 	public void onEditTrigger(EditTriggerEvent event) {
+		if(!isVisible()){
+			return;
+		}
 		final Trigger trigger = event.getTrigger();
 		final TreeItem item = event.getItem();
 		
@@ -121,13 +123,12 @@ public class TaskStepTriggerPresenter extends
 	}
 
 	private void showEditPopup(final TreeItem item,Trigger trigger) {
-		savePresenter.clear();
-		savePresenter.setTrigger(trigger);
-		AppManager.showPopUp("Edit Trigger",savePresenter.asWidget(),new OptionControl(){
+		final SaveTriggerView view = new SaveTriggerView(trigger);
+		AppManager.showPopUp("Edit Trigger",view,new OptionControl(){
 			@Override
 			public void onSelect(String name) {						
-				if(name.equals("Save") && savePresenter.isValid()){
-					Trigger trigger = savePresenter.getTrigger();
+				if(name.equals("Save") && view.isValid()){
+					Trigger trigger = view.getTrigger();
 					save(item, trigger);
 					hide();
 				}

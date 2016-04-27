@@ -19,9 +19,11 @@ import com.duggan.workflow.server.actionhandlers.ExecuteTriggerActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteTriggersActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExportFormRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GenerateFilePathHandler;
 import com.duggan.workflow.server.actionhandlers.GenericRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetActivitiesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAlertCountActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetAssignmentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetAttachmentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCatalogsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler;
@@ -33,6 +35,7 @@ import com.duggan.workflow.server.actionhandlers.GetDataRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentTypesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetErrorRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetFileTreeRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetFormModelRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetFormsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetGroupsRequestActionHandler;
@@ -42,7 +45,9 @@ import com.duggan.workflow.server.actionhandlers.GetLongTasksRequestActionHandle
 import com.duggan.workflow.server.actionhandlers.GetMessagesActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationTemplateRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetOrgsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetOutputDocumentsRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetPermissionsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessCategoriesRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessInstancesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessLogRequestHandler;
@@ -65,12 +70,14 @@ import com.duggan.workflow.server.actionhandlers.LoginRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
 import com.duggan.workflow.server.actionhandlers.MultiRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.SaveAssignmentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCatalogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveDSConfigRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveGroupRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveNotificationTemplateRequestHandler;
+import com.duggan.workflow.server.actionhandlers.SaveOrgRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveOuputDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveProcessCategoryRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.SaveProcessRequestActionHandler;
@@ -103,9 +110,11 @@ import com.duggan.workflow.shared.requests.ExecuteTriggerRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
 import com.duggan.workflow.shared.requests.ExportFormRequest;
+import com.duggan.workflow.shared.requests.GenerateFilePathRequest;
 import com.duggan.workflow.shared.requests.GenericRequest;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAlertCount;
+import com.duggan.workflow.shared.requests.GetAssignmentRequest;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
 import com.duggan.workflow.shared.requests.GetCommentsRequest;
@@ -117,6 +126,7 @@ import com.duggan.workflow.shared.requests.GetDataRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
+import com.duggan.workflow.shared.requests.GetFileTreeRequest;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
@@ -126,7 +136,9 @@ import com.duggan.workflow.shared.requests.GetLongTasksRequest;
 import com.duggan.workflow.shared.requests.GetMessagesRequest;
 import com.duggan.workflow.shared.requests.GetNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
+import com.duggan.workflow.shared.requests.GetOrgsRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
+import com.duggan.workflow.shared.requests.GetPermissionsRequest;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.requests.GetProcessInstancesRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
@@ -149,12 +161,14 @@ import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveAssignmentRequest;
 import com.duggan.workflow.shared.requests.SaveCatalogRequest;
 import com.duggan.workflow.shared.requests.SaveCommentRequest;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
 import com.duggan.workflow.shared.requests.SaveNotificationRequest;
 import com.duggan.workflow.shared.requests.SaveNotificationTemplateRequest;
+import com.duggan.workflow.shared.requests.SaveOrgRequest;
 import com.duggan.workflow.shared.requests.SaveOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.SaveProcessCategoryRequest;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
@@ -168,10 +182,9 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
-import com.duggan.workflow.shared.responses.SaveOutputDocumentResponse;
+import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
-import com.sun.tools.xjc.reader.xmlschema.BindGreen;
 
 public class ServerModule extends HandlerModule {
 
@@ -415,5 +428,24 @@ public class ServerModule extends HandlerModule {
 		bindHandler(SendMessageRequest.class, SendMessageActionHandler.class, SessionValidator.class);
 		
 		bindHandler(LoadDynamicFieldsRequest.class, LoadDynamicFieldsRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(SaveOrgRequest.class,
+				SaveOrgRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetOrgsRequest.class,
+				GetOrgsRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetPermissionsRequest.class,
+				GetPermissionsActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetAssignmentRequest.class,
+				GetAssignmentRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(SaveAssignmentRequest.class,
+				SaveAssignmentRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GetFileTreeRequest.class, GetFileTreeRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(GenerateFilePathRequest.class, GenerateFilePathHandler.class, SessionValidator.class);
 	}
 }

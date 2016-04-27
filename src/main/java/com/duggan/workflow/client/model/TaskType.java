@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.model;
 
-public enum TaskType {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum TaskType implements IsSerializable{
 
 	DRAFT("drafts", "Drafts"),
 //	INPROGRESS("inprog", "In Progress"),

@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.jbpm.task.Status;
-import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -44,13 +42,15 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DocumentModel> getAllDocuments(DocStatus...status){
+	public List<DocumentModel> getAllDocuments(int offset, int length,DocStatus...status){
 		
-		return em.createQuery("FROM DocumentModel d where status in (:status) and createdBy=:createdBy and isActive=:isActive").
+		return em.createQuery("FROM DocumentModel d where status in (:status) and createdBy=:createdBy and isActive=:isActive order by created desc").
 				setParameter("status", Arrays.asList(status)).
 				setParameter("createdBy", SessionHelper.getCurrentUser().getUserId()).
-				setParameter("isActive", 1).
-				getResultList();
+				setParameter("isActive", 1)
+				.setFirstResult(offset)
+				.setMaxResults(length)
+				.getResultList();
 	}
 	
 	public DocumentModel getById(Long id){

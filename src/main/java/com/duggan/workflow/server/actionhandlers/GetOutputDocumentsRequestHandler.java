@@ -10,16 +10,26 @@ import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
-public class GetOutputDocumentsRequestHandler extends AbstractActionHandler<GetOutputDocumentsRequest, GetOutputDocumentsResponse>{
+public class GetOutputDocumentsRequestHandler
+		extends
+		AbstractActionHandler<GetOutputDocumentsRequest, GetOutputDocumentsResponse> {
 
 	@Override
 	public void execute(GetOutputDocumentsRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-		List<OutputDocument> documents =  OutputDocumentDaoHelper.getDocuments(action.getDocumentId());
-		((GetOutputDocumentsResponse)actionResult).setDocuments(documents);
+
+		if (action.getDocumentId() != null) {
+			List<OutputDocument> documents = OutputDocumentDaoHelper
+					.getDocuments(action.getDocumentId());
+			((GetOutputDocumentsResponse) actionResult).setDocuments(documents);
+		}else if (action.getProcessRefId()!=null){
+			List<OutputDocument> documents = OutputDocumentDaoHelper
+					.getDocuments(action.getProcessRefId(),action.getSearchTerm());
+			((GetOutputDocumentsResponse) actionResult).setDocuments(documents);
+		}
 	}
-	
+
 	public java.lang.Class<GetOutputDocumentsRequest> getActionType() {
 		return GetOutputDocumentsRequest.class;
 	};

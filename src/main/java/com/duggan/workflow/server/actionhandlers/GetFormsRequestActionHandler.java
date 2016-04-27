@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
@@ -21,14 +22,21 @@ public class GetFormsRequestActionHandler extends
 	@Override
 	public void execute(GetFormsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		
-		
-		List<Form> forms = FormDaoHelper.getForms(action.getProcessDefId(),action.isLoadFields());
-		
-		GetFormsResponse response = (GetFormsResponse)actionResult;
-		
+
+		List<Form> forms = new ArrayList<Form>();
+
+		if (action.getProcessDefId() != null) {
+			forms = FormDaoHelper.getForms(action.getProcessDefId(),
+					action.isLoadFields());
+		} else if(action.getProcessRefId()!=null){
+			forms = FormDaoHelper.getForms(action.getProcessRefId(),
+					action.isLoadFields());
+		}
+
+		GetFormsResponse response = (GetFormsResponse) actionResult;
+
 		response.setForms(forms);
-		
+
 	}
 
 	@Override

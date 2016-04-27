@@ -60,6 +60,9 @@ public class TaskActivity extends Composite {
 
 			@Override
 			public void onError(ErrorEvent event) {
+				if(img.getUrl().equals("img/blueman.png")){
+					return;
+				}
 				img.setUrl("img/blueman.png");
 			}
 		});
@@ -93,7 +96,10 @@ public class TaskActivity extends Composite {
 			owner = "You";
 		}
 		String approver ="";
-		if (createdBy.getSurname() != null) {
+		
+		if(createdBy==null){
+			approver= "null";
+		}else if (createdBy.getSurname() != null) {
 			approver= createdBy.getSurname();
 			if (AppContext.isCurrentUser(createdBy.getUserId())) {
 				approver = "You";
@@ -237,12 +243,19 @@ public class TaskActivity extends Composite {
 	}
 
 	private void setImage(HTUser user) {
+		String userId = null;
+		if(user==null){
+			img.setUrl("img/blueman.png");
+		}else{
+			userId = user.getUserId();
+		}
+		
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
 		if (moduleUrl.endsWith("/")) {
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length() - 1);
 		}
 		moduleUrl = moduleUrl + "/getreport?ACTION=GetUser&userId="
-				+ user.getUserId();
+				+ userId;
 		img.setUrl(moduleUrl);
 	}
 

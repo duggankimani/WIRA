@@ -12,9 +12,11 @@ public class FieldLoadEvent extends GwtEvent<FieldLoadEvent.FieldLoadHandler> {
     }
     
     private final Field field;
+	private String triggerName;
    
-    public FieldLoadEvent(final Field field) {
+    public FieldLoadEvent(final Field field, String triggerName) {
         this.field = field;
+		this.triggerName = triggerName;
     }
 
     public static Type<FieldLoadHandler> getType() {
@@ -34,5 +36,9 @@ public class FieldLoadEvent extends GwtEvent<FieldLoadEvent.FieldLoadHandler> {
 	public Field getField() {
 		return field;
 	}
-    
+
+	public String getTriggerName() {
+		return triggerName;
+	}
+
 }

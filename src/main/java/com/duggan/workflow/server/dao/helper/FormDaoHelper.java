@@ -69,6 +69,19 @@ public class FormDaoHelper {
 
 		return forms;
 	}
+	
+	public static List<Form> getForms(String processRefId, boolean loadFields) {
+
+		FormDaoImpl dao = DB.getFormDao();
+		List<ADForm> adforms = dao.getAllForms(processRefId);
+
+		List<Form> forms = new ArrayList<>();
+		for (ADForm adform : adforms) {
+			forms.add(getForm(adform, loadFields));
+		}
+
+		return forms;
+	}
 
 	/**
 	 * Returns a Form based on ID - with all form details included
@@ -110,6 +123,7 @@ public class FormDaoHelper {
 		form.setId(adform.getId());
 		form.setName(adform.getName());
 		form.setProcessDefId(adform.getProcessDefId());
+		form.setProcessRefId(adform.getProcessRefId());
 		form.setProperties(getProperties(adform.getProperties()));
 
 		return form;
@@ -204,7 +218,7 @@ public class FormDaoHelper {
 					field.setSelectionValues(loader
 							.getValuesByDataSourceName(sqlDS, sqlSelect));
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.warn("#Dropdown Query Failed -  "+e.getMessage());
 				}
 			}
 
@@ -426,6 +440,14 @@ public class FormDaoHelper {
 		adform.setCaption(form.getCaption());
 		adform.setName(form.getName());
 		adform.setProcessDefId(form.getProcessDefId());
+		adform.setProcessRefId(form.getProcessRefId());
+		
+		if(form.getProcessDefId()==null){
+			if(form.getProcessRefId()!=null){
+				adform.setProcessDefId(DB.getProcessDao().getProcessDefId(form.getProcessRefId()));
+			}
+		}
+		
 		getADFields(form.getFields(), adform);
 		getADProperties(form.getProperties(), adform);
 		// adform.setProperties(properties);

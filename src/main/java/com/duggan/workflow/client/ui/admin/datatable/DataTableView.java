@@ -36,6 +36,8 @@ public class DataTableView extends ViewImpl implements
 	@UiField
 	Anchor aNewReport;
 
+	@UiField
+	Anchor aNewReportView;
 
 	public interface Binder extends UiBinder<Widget, DataTableView> {
 	}
@@ -151,4 +153,8 @@ public class DataTableView extends ViewImpl implements
 		return aNewReport;
 	}
 
+	@Override
+	public HasClickHandlers getNewReportViewLink(){
+		return aNewReportView;
+	}
 }

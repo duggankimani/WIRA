@@ -83,7 +83,7 @@ body .alert a {
 }
 
 /*Uploader Modal */
-.modal {
+/*.modal {
 	max-width: 40%;
 }
 
@@ -101,7 +101,6 @@ body .alert a {
 }
 
 .modal-admin .modal-body {
-	/*max-height: 100%;*/
 	
 }
 
@@ -129,7 +128,7 @@ body .alert a {
 
 .modal-footer {
 	padding: 5px 6px 5px 0px;
-}
+}*/
 
 /*Document Modal */
 .dialogTopCenterInner {
@@ -193,9 +192,9 @@ body .dateBoxPopup {
 }
 
 .navbar .brand {
-	color: #1B1464;
+	color: #666;
 	margin-top: 10px;
-	text-shadow: 1px 1px #1B1464;
+	/* text-shadow: 1px 1px #1B1464; */
 }
 /* Login Logo*/
 .login-wrapper .brand {
@@ -212,7 +211,7 @@ body .dateBoxPopup {
 	font-size: 21px;
 }
 
-.navbar .nav .dropdown-toggle .caret {
+.navbar .nav .user-dropdown .dropdown-toggle .caret {
 	margin-top: 15px;
 }
 
@@ -226,7 +225,6 @@ body .dateBoxPopup {
 	border-left: 1px solid #dae1e8;
 	position: relative;
 	padding-top: 5px;
-	font-size: 20px;
 }
 
 /* notification menu with custom dropdown */
@@ -502,6 +500,7 @@ body .dateBoxPopup {
 	max-width: 100%;
 	height: 100%;
 	position: absolute;
+	overflow: hidden;
 }
 
 /* Sidebar */
@@ -637,7 +636,7 @@ body .dateBoxPopup {
 	padding: 0px 0px 5px 0px;
 	padding-right: 0px;
 	border: 1px solid #CCCCCC;
-	height: 89.5%;
+	height: 93.5%;
 	border-right: none;
 	overflow-y: auto;
 }
@@ -683,8 +682,9 @@ body .dateBoxPopup {
 }
 
 #middle-nav .message-container .spnDescription {
-	font-size: 11px;
+	font-size: 12px;
 	width: 75%;
+	color:#020C15;
 }
 
 #middle-nav .message-container .spnDate {
@@ -722,6 +722,7 @@ body .dateBoxPopup {
 	font-weight: bold;
 	font-size: 12px;
 	width: 70%;
+	color:#444141;
 }
 
 #middle-nav .message-container .clip {
@@ -1477,12 +1478,16 @@ ul.icons-list.text-xl {
 }
 
 #navigation-menu>li>a {
-	background-color: #EDEDED;
+	/*background-color: #EDEDED;*/
+	background-color: #F9F9F9;
 	display: block;
 	margin-left: 0px;
 	padding: 2px 0px 0px 5px;
-	color: #555e64;
+	/*color: #555e64;*/
+	color: #1A1B1B;
 	outline: 0px;
+	font-size: 11px;
+    
 }
 
 #navigation-menu>li {
@@ -1496,7 +1501,7 @@ ul.icons-list.text-xl {
 
 #navigation-menu>li.active a {
 	height: 24px;
-	font-weight: bold;
+	/*font-weight: bold;*/
 }
 
 #navigation-menu>li.active i {
@@ -1658,4 +1663,100 @@ ul.icons-list.text-xl {
 	#nav-top .search-box {
 		width: 90%;
 	}
+}
+.company-name{
+	width: 225px;
+}
+
+.navbar .right-navigations i[class*="icon-"]{
+	font-size:20px;
+}
+
+.navbar .header-search{
+	padding-top: 9px;
+}
+.navbar .header-search .input-prepend{
+	width:100%;
+	margin-bottom: 0px;
+}
+
+.header-search .btn-search-dropdown{
+	padding-bottom: 3px;
+	background: #fff;
+	border-radius: 6px 0px 0px 6px !important;
+	border-right: 0px;
+	border: 1px solid #d9d9d9;
+	padding-top: 5px;
+}
+
+.header-search .search-box{
+	border-left: 0px;
+	border-radius: 0px 6px 6px 0px;
+	/* padding-left: 0px; */
+}
+
+.header-search .search-box:hover,
+.header-search .search-box:focus, 
+.header-search .search-box:active,
+.header-search .btn-search-dropdown:hover
+.header-search .btn-search-dropdown:active
+.header-search .btn-search-dropdown:active{
+	border:0px;
+	border: 1px solid #d9d9d9;
+    border-top: 1px solid #c0c0c0;
+    box-shadow:none;
+}
+
+.header-search .search-box:hover,
+.header-search .search-box:focus, 
+.header-search .search-box:active{
+	border-left:0px;
+}
+
+.right-navigations ul.nav-icons>li>a{
+	padding: 9px 15px 0px !important;
+	line-height: 10px;
+	background: transparent !important;
+}
+
+
+.reports-presenter{
+	overflow:auto;
+	margin-right:0px;
+	width: auto;
+	padding: 15px;
+	height: 87%;
+}
+.reports-presenter .report-head{
+	border-bottom: 1px solid #F3F1F1;
+	margin-bottom: 22px;
+	padding-bottom: 22px;
+}
+
+.reports-presenter .report-head h4{
+	padding: 5px 0px;
+}
+
+.reports-presenter .report-head [class*="span"]{
+	margin: 0px;
+}
+
+.reports-presenter .report-head .btn-toolbar{
+	margin-top:0px;
+	margin-bottom:0px;
+}
+
+#dashboard-menu ul.documents a{
+	display:inline-block;
+	font-weight: normal;
+    font-size: 13px;
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 0;
+    padding-right: 15px;
+    padding-bottom: 7px;
+}
+
+#dashboard-menu ul.documents li{
+	list-style-type:none;
 }

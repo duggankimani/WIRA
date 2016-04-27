@@ -58,4 +58,9 @@ public enum DataType {
 		
 		return type;
 	}
+
+	public boolean isDate() {
+		
+		return this.equals(DATE);
+	}
 }

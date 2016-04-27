@@ -11,7 +11,9 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ErrorDaoImpl;
 import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
+import com.duggan.workflow.server.dao.OrganizationDao;
 import com.duggan.workflow.server.dao.OutputDocumentDao;
+import com.duggan.workflow.server.dao.PermissionDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
@@ -31,6 +33,8 @@ class DaoFactory {
 	SettingsDaoImpl settingsDao;
 	OutputDocumentDao outputDao;
 	CatalogDaoImpl catalogDao;
+	OrganizationDao organizationDao;
+	PermissionDao permissionDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -190,5 +194,29 @@ class DaoFactory {
 		}
 		
 		return catalogDao;
+	}
+	
+	public OrganizationDao getOrganizationDao(EntityManager entityManager) {
+		if(organizationDao==null){
+			synchronized (DaoFactory.class) {
+				if(organizationDao==null){
+					organizationDao = new OrganizationDao(entityManager);
+				}
+			}
+		}
+		
+		return organizationDao;
+	}
+
+	public PermissionDao getPermissionDao(EntityManager entityManager) {
+		if(permissionDao==null){
+			synchronized (DaoFactory.class) {
+				if(permissionDao==null){
+					permissionDao = new PermissionDao(entityManager);
+				}
+			}
+		}
+		
+		return permissionDao;
 	}
 }

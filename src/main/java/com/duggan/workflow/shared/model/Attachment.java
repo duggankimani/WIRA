@@ -18,6 +18,7 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	
 	private Long id;
 	private String name;
+	private AttachmentType type = AttachmentType.UPLOADED;
 	private boolean archived;
 	private Long documentid;
 	private String docRefId;
@@ -28,13 +29,19 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	private String contentType;
 	private HTUser createdBy;
 	private Date created;
-	private ArrayList<Attachment> children;
+	private List<Attachment> children;
 	private String documentType;
 	private String subject;
 	private String path;
+	private String caseNo;
+	private String processName;
+	private HTStatus processStatus;
 	private boolean isDirectory;
-
+	private String processRefId;
 	private Attachment parent;
+	private String parentRefId;
+	private DocStatus docStatus;
+	private int childCount;
 	
 	public Long getId() {
 		return id;
@@ -129,13 +136,13 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 		if(children==null){
 			children = new ArrayList<Attachment>();
 		}
+		childCount+=child.getChildCount();
 		isDirectory=true;
 		children.add(child);
 		child.setParent(this);
 	}
 	
-	public void setChildren(ArrayList<Attachment> children){
-		
+	public void setChildren(List<Attachment> children){
 		this.children = children;
 	}
 	
@@ -203,6 +210,54 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	}
 	public void setDocRefId(String docRefId) {
 		this.docRefId = docRefId;
+	}
+	public AttachmentType getType() {
+		return type;
+	}
+	public void setType(AttachmentType type) {
+		this.type = type;
+	}
+	public String getParentRefId() {
+		return parentRefId;
+	}
+	public void setParentRefId(String parentRefId) {
+		this.parentRefId = parentRefId;
+	}
+	public String getCaseNo() {
+		return caseNo;
+	}
+	public void setCaseNo(String caseNo) {
+		this.caseNo = caseNo;
+	}
+	public String getProcessName() {
+		return processName;
+	}
+	public void setProcessName(String processName) {
+		this.processName = processName;
+	}
+	public HTStatus getProcessStatus() {
+		return processStatus;
+	}
+	public void setProcessStatus(HTStatus processStatus) {
+		this.processStatus = processStatus;
+	}
+	public String getProcessRefId() {
+		return processRefId;
+	}
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
+	}
+	public DocStatus getDocStatus() {
+		return docStatus;
+	}
+	public void setDocStatus(DocStatus docStatus) {
+		this.docStatus = docStatus;
+	}
+	public int getChildCount() {
+		return childCount;
+	}
+	public void setChildCount(int childCount) {
+		this.childCount = childCount;
 	}
 	
 }

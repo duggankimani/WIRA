@@ -2,16 +2,18 @@ package com.duggan.workflow.client.ui.admin.trigger;
 
 import java.util.List;
 
+import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
-import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
+import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
@@ -22,58 +24,49 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class TriggerPresenter extends
 		Presenter<TriggerPresenter.ITriggerView, TriggerPresenter.MyProxy>
-		implements EditTriggerHandler {
+		implements EditTriggerHandler, SearchHandler{
 
 	public interface ITriggerView extends View {
 		HasClickHandlers getAddTriggerLink();
-
 		HasClickHandlers getCloneTriggerLink();
-
 		void setTriggers(List<Trigger> triggeruments);
 	}
 
 	@ProxyCodeSplit
 	@NameToken(NameTokens.triggers)
 	@UseGatekeeper(AdminGateKeeper.class)
-	public interface MyProxy extends TabContentProxyPlace<TriggerPresenter> {
+	public interface MyProxy extends ProxyPlace<TriggerPresenter> {
 	}
 
-	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		return new TabDataExt("Triggers", "icon-wrench", 5, adminGatekeeper);
-	}
-
-	@Inject
-	SaveTriggerPresenter savePresenter;
 	@Inject
 	DispatchAsync requestHelper;
 	List<Trigger> triggers;// For Cloning
+	private String processRefId;
 
 	@Inject
 	public TriggerPresenter(final EventBus eventBus, final ITriggerView view,
 			final MyProxy proxy) {
-		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
+		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(EditTriggerEvent.TYPE, this);
+		addRegisteredHandler(SearchEvent.getType(), this);
 		getView().getAddTriggerLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -89,16 +82,25 @@ public class TriggerPresenter extends
 			}
 		});
 	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		fireEvent(new ProcessChildLoadedEvent(this));
+		processRefId = request.getParameter("p",null);
+		load(null);
+	}
 
 	protected void showClonePopup() {
-		savePresenter.clear();
-		savePresenter.setTriggers(triggers);
-		AppManager.showPopUp("Copy Trigger", savePresenter.asWidget(),
+		final SaveTriggerView view = new SaveTriggerView();
+		view.setTriggers(triggers);
+		AppManager.showPopUp("Copy Trigger", view,
 				new OptionControl() {
 					@Override
 					public void onSelect(String name) {
-						if (name.equals("Save") && savePresenter.isValid()) {
-							Trigger trigger = savePresenter.getTrigger();
+						if (name.equals("Save") && view.isValid()) {
+							Trigger trigger = view.getTrigger();
+							trigger.setId(null);//Generate new
 							save(trigger);
 							hide();
 						}
@@ -112,25 +114,17 @@ public class TriggerPresenter extends
 	}
 
 	protected void showEditPopup(final Trigger trigger) {
-		savePresenter.clear();
-		savePresenter.setTrigger(trigger);
-		AppManager.showPopUp(trigger != null ? "<i>Edit Trigger</i>"
-				: "Create Trigger", savePresenter.asWidget(),
+		final SaveTriggerView view = new SaveTriggerView(trigger);
+		
+		AppManager.showPopUp(trigger != null ? "Edit Trigger"
+				: "Create Trigger", view,
 				new OptionControl() {
 					@Override
 					public void onSelect(String name) {
-						if (name.equals("Save") && savePresenter.isValid()) {
-							// Window.("Confirm You want to edit trigger", "");
-							// boolean isConfirmed =
-							// Window.confirm("Confirm you want to edit trigger "
-							// + "'"+trigger.getName()+"'?");
-							//
-							// if(isConfirmed){
-							Trigger trigger = savePresenter.getTrigger();
+						if (name.equals("Save") && view.isValid()) {
+							Trigger trigger = view.getTrigger();
 							save(trigger);
 							hide();
-							// }
-
 						}
 
 						if (name.equals("Cancel")) {
@@ -142,10 +136,10 @@ public class TriggerPresenter extends
 
 	}
 
-	@Override
-	protected void onReset() {
-		super.onReset();
-		requestHelper.execute(new GetTriggersRequest(),
+	protected void load(String searchTerm) {
+		GetTriggersRequest request = new GetTriggersRequest(processRefId);
+		request.setSearchTerm(searchTerm);
+		requestHelper.execute(request,
 				new TaskServiceCallback<GetTriggersResponse>() {
 					@Override
 					public void processResult(GetTriggersResponse aResponse) {
@@ -156,9 +150,10 @@ public class TriggerPresenter extends
 	}
 
 	private void save(Trigger trigger) {
+		trigger.setProcessRefId(processRefId);
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new SaveTriggerRequest(trigger));
-		requests.addRequest(new GetTriggersRequest());
+		requests.addRequest(new GetTriggersRequest(processRefId));
 		requestHelper.execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -175,11 +170,15 @@ public class TriggerPresenter extends
 
 	@Override
 	public void onEditTrigger(EditTriggerEvent event) {
+		if(!isVisible()){
+			return;
+		}
+		
 		final Trigger trigger = event.getTrigger();
 		if (!trigger.isActive()) {
 			// deleting
-			AppManager.showPopUp("Delete '" + trigger.getName() + "'",
-					"Do you want to delete this trigger?",
+			AppManager.showPopUp("Delete Trigger",
+					"Do you want to delete trigger '"+trigger.getName()+"'?",
 					new OnOptionSelected() {
 						@Override
 						public void onSelect(String name) {
@@ -191,6 +190,13 @@ public class TriggerPresenter extends
 
 		} else {
 			showEditPopup(trigger);
+		}
+	}
+	
+	@Override
+	public void onSearch(SearchEvent event) {
+		if(isVisible()){
+			load(event.getFilter().getPhrase());
 		}
 	}
 }

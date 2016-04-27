@@ -5,13 +5,19 @@ import com.duggan.workflow.shared.responses.GetCatalogsResponse;
 
 public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 
-	private Long catalogId;
-
+	private String catalogRefId;
+	private boolean isLoadViews;
+	private String searchTerm;
+	
 	public GetCatalogsRequest() {
 	}
 	
-	public GetCatalogsRequest(Long catalogId) {
-		this.catalogId = catalogId;
+	public GetCatalogsRequest(String catalogRefId) {
+		this.catalogRefId = catalogRefId;
+	}
+	
+	public GetCatalogsRequest(boolean isLoadViews) {
+		this.isLoadViews = isLoadViews;
 	}
 	
 	@Override
@@ -19,7 +25,20 @@ public class GetCatalogsRequest extends BaseRequest<GetCatalogsResponse> {
 		return new GetCatalogsResponse();
 	}
 
-	public Long getCatalogId() {
-		return catalogId;
+	public boolean isLoadViews() {
+		return isLoadViews;
 	}
+
+	public String getCatalogRefId() {
+		return catalogRefId;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
+	}
+
 }

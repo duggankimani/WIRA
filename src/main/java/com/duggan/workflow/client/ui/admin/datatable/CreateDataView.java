@@ -175,11 +175,12 @@ public class CreateDataView extends Composite {
 		for (int i = 0; i < lineValues.length && i < columnConfigs.size(); i++) {
 
 			CatalogColumn col = columnConfigs.get(i);
-			Field field = new Field();
-			field.setCaption(col.getLabel());
-			field.setName(col.getName());
-			field.setFormId(System.currentTimeMillis());
-			field.setType(col.getType().getFieldType());
+			Field field = col.toFormField();
+//			new Field();
+//			field.setCaption(col.getLabel());
+//			field.setName(col.getName());
+//			field.setFormId(System.currentTimeMillis());
+//			field.setType(col.getType().getFieldType());
 
 			FieldWidget widget = FieldWidget.getWidget(col.getType()
 					.getFieldType(), field, false);

@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel ui:field="modalPanel" styleName="modal fade">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 ui:field="elHeader">Modal header</h3>
+		</div>
+		<g:HTMLPanel ui:field="panelContent" styleName="modal-body" >
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="buttonBar" styleName="modal-footer">
+			<!-- button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button -->
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

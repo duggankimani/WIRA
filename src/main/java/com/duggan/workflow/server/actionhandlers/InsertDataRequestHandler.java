@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
-import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.requests.InsertDataRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.google.inject.Inject;
@@ -18,7 +17,7 @@ public class InsertDataRequestHandler extends
 	@Override
 	public void execute(InsertDataRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		CatalogDaoHelper.saveData(action.getCatalogId(), action.getLines());
+		CatalogDaoHelper.saveData(action.getCatalogId(), action.getLines(),true);
 	}
 
 	@Override

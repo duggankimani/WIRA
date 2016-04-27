@@ -3,6 +3,7 @@ package com.duggan.workflow.client.service;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.google.gwt.http.client.RequestTimeoutException;
@@ -34,11 +35,11 @@ public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 		
 		if(caught instanceof InvocationException){
 			String msg = "Cannot connect to server...";
-			if(getBaseMessage(caught)!=null){
-				msg = caught.getMessage();
-			}
+//			if(getBaseMessage(caught)!=null ){
+//				msg = StringUtils.isNullOrEmpty(caught.getMessage())? msg : msg+" - "+caught.getMessage();
+//			}
 			AppContext.getEventBus().fireEvent(new ProcessingCompletedEvent());
-			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg+" <i>[InvocationEx]</i>"));
+			AppContext.getEventBus().fireEvent(new ClientDisconnectionEvent(msg));
 			return;
 		}
 		

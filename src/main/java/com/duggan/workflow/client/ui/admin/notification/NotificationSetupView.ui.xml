@@ -2,53 +2,67 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	xmlns:d='urn:import:com.duggan.workflow.client.ui.component' ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel ui:field="panelContainer" styleName="hide">
+	<g:HTMLPanel ui:field="panelContainer" styleName="hide row-fluid">
 		<!-- g:CheckBox ui:field="chkNotification">Enable Email Notification</g:CheckBox -->
 		<!-- g:CheckBox ui:field="chkDefault">Use Default Notification</g:CheckBox -->
 		<span ui:field="notificationHeader" style="font-size:14px; font=weight:bold;">Email Notification</span>
-		<table>
-		  <tr>
-		     <td><g:CheckBox ui:field="chkNotification"></g:CheckBox></td>
-		     <td><span ui:field="spnNotification">Enable Email Notification</span></td>
-		     <td title="Generate notification on this action">On Action</td>
-		     <td>
-			     <d:DropDownList ui:field="listActions" styleName="input-medium">
-			     </d:DropDownList>
-		     </td>
-		  </tr>
-		  <tr>
-		     <td><g:CheckBox ui:field="chkDefault"/></td>
-		     <td>Use Default Notification</td>
-		     <td></td>
-		     <td></td>
-		  </tr>
-		</table>
-		
-		<g:HTMLPanel styleName="control-group hidden">
-	       <label ui:field="lblEl" class="control-label">To</label>
-		   <g:HTMLPanel styleName="controls" ui:field="panelControls">
-		   	  <d:AutoCompleteField ui:field="autocompleteTargets"></d:AutoCompleteField>
-	       </g:HTMLPanel>
-       </g:HTMLPanel>
-       
-		<div style="margin-top:10px">
-			<d:TextArea ui:field="txtSubject" type="text"
-			 placeholder="Subject" class="input-xlarge" rows="1" width="100%"/>
-			<d:TextArea ui:field="txtNotification" 
-			rows="5" width="100%" placeholder="Custom Notification"> 
-			</d:TextArea>
+		<div class="row-fluid">
+			<table>
+				<tr>
+					<td>
+						<g:CheckBox ui:field="chkNotification"></g:CheckBox>
+					</td>
+					<td>
+						<span ui:field="spnNotification">Enable Email Notification</span>
+					</td>
+					<td title="Generate notification on this action">On Action</td>
+					<td>
+						<d:DropDownList ui:field="listActions" styleName="input-medium">
+						</d:DropDownList>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<g:CheckBox ui:field="chkDefault" />
+					</td>
+					<td>Use Default Notification</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
 		</div>
-		
-		<g:HTMLPanel styleName="control-group">
-			  <div class="controls">
-			  	<d:ActionLink styleName="btn btn-danger" ui:field="aDelete">Delete</d:ActionLink>
-			  	<d:ActionLink styleName="btn btn-success" ui:field="aHtmlEditor" title="Click to Use the HTML Editor">Editor</d:ActionLink>
-			  	<d:ActionLink styleName="btn btn-success" ui:field="aSave">Save</d:ActionLink>
-			  </div>
-	       </g:HTMLPanel>
-		
+
+		<g:HTMLPanel styleName="control-group hide">
+			<label ui:field="lblEl" class="control-label">To</label>
+			<g:HTMLPanel styleName="controls" ui:field="panelControls">
+				<d:AutoCompleteField ui:field="autocompleteTargets"></d:AutoCompleteField>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+
+
+		<div class="row-fluid">
+			<g:HTMLPanel styleName="control-group">
+				<div class="controls">
+					<d:TextArea ui:field="txtSubject" type="text"
+						placeholder="Subject" class="input-xxlarge" rows="1" />
+
+					<d:TextArea ui:field="txtNotification" styleName="input-block-level"
+						rows="5" width="100%" placeholder="Custom Notification">
+					</d:TextArea>
+				</div>
+			</g:HTMLPanel>
+
+			<g:HTMLPanel styleName="action-buttons">
+				<d:ActionLink styleName="btn btn-danger" ui:field="aDelete">Delete</d:ActionLink>
+				<d:ActionLink styleName="btn btn-success" ui:field="aHtmlEditor"
+					title="Click to Use the HTML Editor">Editor</d:ActionLink>
+				<d:ActionLink styleName="btn btn-success" ui:field="aSave">Save</d:ActionLink>
+			</g:HTMLPanel>
+		</div>
+
 	</g:HTMLPanel>
 </ui:UiBinder>

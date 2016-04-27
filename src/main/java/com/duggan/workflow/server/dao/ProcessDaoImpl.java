@@ -1,36 +1,32 @@
 package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.ColumnResult;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.drools.runtime.process.ProcessInstance;
-import org.hibernate.Hibernate;
-import org.hibernate.SQLQuery;
-import org.hibernate.ejb.QueryImpl;
 import org.jbpm.task.Status;
-import org.jbpm.task.Task;
-import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
+import com.duggan.workflow.server.dao.model.AssignmentPO;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.CaseFilter;
-import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.NotificationCategory;
-import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;
@@ -65,12 +61,33 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				.setParameter("processId", processId));
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<ProcessDefModel> getAllProcesses() {
-		return em
-				.createQuery(
-						"FROM ProcessDefModel p where p.isArchived=:isArchived order by p.name")
-				.setParameter("isArchived", false).getResultList();
+		return getAllProcesses(null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProcessDefModel> getAllProcesses(String searchTerm) {
+
+		StringBuffer jpql = new StringBuffer(
+				"FROM ProcessDefModel p where p.isArchived=:isArchived ");
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (searchTerm != null) {
+			jpql.append(" and ( lower(p.name) like :searchTerm or "
+					+ "lower(p.processId) like :searchTerm or "
+					+ "lower(p.description) like :searchTerm ) and p.isActive=1 ");
+			params.put("searchTerm", "%" + searchTerm.toLowerCase() + "%");
+		}
+
+		params.put("isArchived", false);
+
+		jpql.append(" order by p.name");
+
+		Query query = em.createQuery(jpql.toString());
+		for (String key : params.keySet()) {
+			query.setParameter(key, params.get(key));
+		}
+		return getResultList(query);
 	}
 
 	public void remove(ProcessDefModel model) {
@@ -205,6 +222,31 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				.setParameter("active", 1);
 
 		return getResultList(query);
+	}
+
+	public List<ADTrigger> getTriggers(String processRefId, String searchTerm) {
+		
+		StringBuffer query = new StringBuffer("FROM ADTrigger t where "
+								+ "(t.processRefId=:processRefId or t.processRefId is null) "
+								+ "and isActive=:active ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			query.append(" and lower(t.name) like :searchTerm ");
+			params.put("searchTerm", "%"+searchTerm+"%");
+		}
+		
+		query.append(" order by name");
+		
+		Query emquery = em.createQuery(query.toString())
+				.setParameter("processRefId", processRefId)
+		.setParameter("active", 1);
+
+		for(String key:params.keySet()){
+			emquery.setParameter(key, params.get(key));
+		}
+		
+		return getResultList(emquery);
 	}
 
 	public int getTaskCount(Long taskStepId, TriggerType type) {
@@ -483,7 +525,9 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		sql = sql + " order by l.processinstanceid desc";
 
-		logger.debug("getProcessInstances processId=" + filter.getProcessId()+", caseNo="+filter.getCaseNo()+", userId="+filter.getUserId()+"; SQL = "+sql);
+		logger.debug("getProcessInstances processId=" + filter.getProcessId()
+				+ ", caseNo=" + filter.getCaseNo() + ", userId="
+				+ filter.getUserId() + "; SQL = " + sql);
 		Query query = em.createNativeQuery(sql);
 		if (filter.getProcessId() != null) {
 			query.setParameter("processId", filter.getProcessId());
@@ -574,6 +618,52 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		return getSingleResultOrNull(em.createQuery(
 				"FROM ADTrigger where name=:name").setParameter("name",
 				triggerName));
+	}
+
+	public Long getProcessDefId(String processRefId) {
+
+		String query = "select id from processdefmodel where refid=:refId";
+		Number value = getSingleResultOrNull(getEntityManager()
+				.createNativeQuery(query).setParameter("refId", processRefId));
+
+		if (value != null) {
+			return value.longValue();
+		}
+
+		return null;
+	}
+
+	public AssignmentPO getAssignment(String processRefId, Long nodeId) {
+		return getSingleResultOrNull(getEntityManager()
+				.createQuery(
+						"FROM AssignmentPO a where "
+								+ "a.processDef.refId=:processRefId and a.nodeId=:nodeId")
+				.setParameter("processRefId", processRefId)
+				.setParameter("nodeId", nodeId));
+	}
+
+	public String getNextAssignee(Long taskId, String taskName,
+			String processId, List<String> potentialAssignees) {
+		
+		StringBuffer array = new StringBuffer("array[");
+		for(String potAss: potentialAssignees){
+			array.append("'"+potAss+"',");
+		}
+		if(array.toString().endsWith(",")){
+			array = new StringBuffer(array.substring(0, array.length()-1));
+		}
+		
+		array.append("]");
+		
+		String query = "select func_RoundRobinAssignment(:taskId, :taskName, :processId, "+array.toString()+")";
+		logger.info("getNextAssignee Query: "+query);
+		return getSingleResultOrNull(getEntityManager()
+				.createNativeQuery(query)
+				.setParameter("taskId", taskId)
+				.setParameter("taskName", taskName)
+				.setParameter("processId", processId)
+//				.setParameter("potAssignees", potentialAssignees)
+				);
 	}
 
 }

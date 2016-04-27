@@ -13,6 +13,7 @@ public class Trigger implements Serializable, Listable{
 	private String imports;
 	private String script;
 	private boolean isActive=true;
+	private String processRefId;
 	
 	public Trigger() {
 	}
@@ -66,5 +67,13 @@ public class Trigger implements Serializable, Listable{
 	@Override
 	public String getDisplayName() {
 		return name;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 }

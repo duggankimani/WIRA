@@ -3,14 +3,18 @@ package com.duggan.workflow.server.helper.auth;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.dao.model.Group;
+import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.duggan.workflow.shared.model.UserGroup;
 
 public class DBLoginHelper implements LoginIntf{
@@ -32,7 +36,7 @@ public class DBLoginHelper implements LoginIntf{
 	public List<HTUser> retrieveUsers() {
 		List<HTUser> ht_users = new ArrayList<>();
 		
-		List<User> users = DB.getUserGroupDao().getAllUsers();
+		List<User> users = DB.getUserGroupDao().getAllUsers(null);
 		
 		if(users!=null)
 		for(User user: users){
@@ -93,7 +97,7 @@ public class DBLoginHelper implements LoginIntf{
 
 	@Override
 	public List<UserGroup> retrieveGroups() {
-		List<Group> groups = DB.getUserGroupDao().getAllGroups();
+		List<Group> groups = DB.getUserGroupDao().getAllGroups(null);
 		
 		List<UserGroup> userGroups = new ArrayList<>();
 		if(groups!=null){
@@ -187,7 +191,7 @@ public class DBLoginHelper implements LoginIntf{
 	@Override
 	public List<UserGroup> getGroupsForUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Collection<Group> groups = dao.getAllGroups(userId);
+		Collection<Group> groups = dao.getAllGroupsByUserId(userId);
 		
 		List<UserGroup> userGroups = new ArrayList<>();
 		
@@ -202,7 +206,7 @@ public class DBLoginHelper implements LoginIntf{
 	@Override
 	public List<HTUser> getUsersForGroup(String groupName) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Collection<User> users = dao.getAllUsers(groupName);
+		Collection<User> users = dao.getAllUsersByGroupId(groupName);
 		
 		List<HTUser> groupUsers = new ArrayList<>();
 		
@@ -235,6 +239,12 @@ public class DBLoginHelper implements LoginIntf{
 		group.setName(usergroup.getName());
 		group.setArchived(false);
 		
+		Set<PermissionModel> permissions = new HashSet<>();
+		for(PermissionPOJO pojo: usergroup.getPermissions()){
+			permissions.add(DB.getPermissionDao().getPermissionByName(pojo.getName()));
+		}
+		group.setPermissions(permissions);
+		
 		dao.saveGroup(group);
 		
 		return get(group);
@@ -256,9 +266,9 @@ public class DBLoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public List<HTUser> getAllUsers() {
+	public List<HTUser> getAllUsers(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		List<User> users = dao.getAllUsers();
+		List<User> users = dao.getAllUsers(searchTerm);
 		
 		List<HTUser> htusers = new ArrayList<>();
 		
@@ -271,10 +281,10 @@ public class DBLoginHelper implements LoginIntf{
 	}
 
 	@Override
-	public List<UserGroup> getAllGroups() {
+	public List<UserGroup> getAllGroups(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		
-		return getFromDb(dao.getAllGroups());
+		return getFromDb(dao.getAllGroups(searchTerm));
 	}
 
 	@Override

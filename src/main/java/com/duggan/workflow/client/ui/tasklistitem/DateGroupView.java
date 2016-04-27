@@ -64,7 +64,8 @@ public class DateGroupView extends ViewImpl implements
 	}
 	
 	public void setDate(Date date){
-		String dt = DateUtils.FULLDATEFORMAT.format(date);
+		//String dt = DateUtils.FULLDATEFORMAT.format(date);
+		String dt = DateUtils.MIXEDDAYDATEFORMAT.format(date);
 		spnDate.setInnerText(dt);
 	}
 	

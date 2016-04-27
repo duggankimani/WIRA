@@ -51,6 +51,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 				new KeyValuePair("singleupload", "Single Upload"),
 				new KeyValuePair("multiupload", "Multi Upload")));
 		addProperty(new Property(ACCEPT, "Accept", DataType.STRINGLONG));
+		addProperty(new Property(PATH, "File Path", DataType.STRING));
 		
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
@@ -82,6 +83,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	private void initUploader() {
 		UploadContext context = new UploadContext();
 		context.setContext("formFieldName", field.getName());
+		context.setContext(uploader.FIELD_ID, field.getId()+"");
 		context.setContext("documentId", field.getDocId());
 		context.setContext("docRefId", field.getDocRefId());
 		context.setContext("ACTION", UPLOADACTION.UPLOADDOCFILE.name());

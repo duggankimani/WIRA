@@ -9,14 +9,20 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
+import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.TreeType;
 
 public class TestOutputDocs {
 	
@@ -26,8 +32,49 @@ public class TestOutputDocs {
 		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
+
+	@Ignore
+	public void getAttachments(){
+//		List<Attachment> attachments = DB.getAttachmentDao().getAttachments(TreeType.PROCESSES, "kim", null);
+		List<Attachment> attachments = DB.getAttachmentDao().getAttachments(TreeType.FILES, "QAOExWBRU4nbfu7E", null);
+//		List<Attachment> attachments = DB.getAttachmentDao().getAttachments(TreeType.USERS, null , null);
+		print(attachments, 0);
+	}
 	
 	@Test
+	public void retireveFolders(){
+
+		List<Attachment> attachments = DB.getAttachmentDao().getFileTree();
+//		attachments = DB.getAttachmentDao().getFileTree();
+//		attachments = DB.getAttachmentDao().getFileProcessTree();
+		print(attachments, 0);
+	}
+	
+	private void print(List<Attachment> attachments, int i) {
+		if(attachments==null || attachments.isEmpty()){
+			return;
+		}
+		
+		for(Attachment a: attachments){
+			System.out.println(i+" >> "+a.getRefId()+"; "+a.getName()+", "+" : "+a.getProcessRefId());
+			print(a.getChildren(), i+1);
+		}
+	}
+
+	@Ignore
+	public void generateFolders(){
+		LocalAttachment attachment = OutputDocumentDaoHelper.generateFolders("Claims Processing/mdkimani@gmail.com/claim123.pdf");
+		
+		Assert.assertNotNull(attachment);
+		Assert.assertEquals("mdkimani@gmail.com", attachment.getName());
+		
+		attachment = OutputDocumentDaoHelper.generateFolders("BOQ Process/Duggan Kimani/BOQ456.pdf");
+		
+		attachment = OutputDocumentDaoHelper.generateFolders("Procure To Pay/Duggan Kimani/Invoices/Invoice 123.pdf");
+		
+	}
+	
+	@Ignore
 	public void map() throws FileNotFoundException, IOException{
 		long documentId = 187L;
 		Document doc = DocumentDaoHelper.getDocument(documentId);
@@ -45,7 +92,7 @@ public class TestOutputDocs {
 	
 	@After
 	public void close(){
-		DB.rollback();
+		DB.commitTransaction();
 		DB.closeSession();
 	}
 }

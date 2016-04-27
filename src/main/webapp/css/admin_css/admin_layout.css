@@ -137,9 +137,14 @@
 }
 /* content-header */
 #main-content .content>.content-header {
-	padding: 10px 20px 10px 29px;
+	padding: 0px 20px 0px 30px;
 	border-bottom: 1px solid #CDCDCD;
 	color: #626262;
+	background-color: #ededed;
+}
+
+#main-content .content>.content-header .breadcrumb{
+	background-color: transparent;
 }
 
 #main-content .content>.content-header>ul.content-header-action {
@@ -291,6 +296,13 @@
 	font-size: .9em;
 	background: #FFFFFF;
 	height: 505px;
+	overflow-y: auto;
+}
+
+/* User Management No over flow, 100% height */
+#main-content .content .no-overflow-y{
+	height:inherit;
+	overflow-y:none;
 }
 
 .content-body .action-buttons {
@@ -311,7 +323,7 @@
 .content-body .tab-content {
 	overflow-x: hidden;
 	overflow-y: auto;
-	height: 392px;
+	/*height: 392px;*/
 }
 
 .content-body .table .action-commands a {

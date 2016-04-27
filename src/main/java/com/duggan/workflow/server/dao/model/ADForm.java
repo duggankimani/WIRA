@@ -45,6 +45,8 @@ public class ADForm extends PO implements HasProperties{
 	@Column(length=255)
 	private String caption;
 	
+	private String processRefId;
+	
 	@XmlElementWrapper(name="properties")
 	@XmlElement(name="property")
 	@OneToMany(mappedBy="form", cascade=CascadeType.ALL)
@@ -142,5 +144,13 @@ public class ADForm extends PO implements HasProperties{
 
 	public void setProcessDefId(Long processDefId) {
 		this.processDefId = processDefId;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 }

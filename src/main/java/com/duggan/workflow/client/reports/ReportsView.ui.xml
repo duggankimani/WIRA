@@ -1,0 +1,56 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel styleName="container reports-presenter">
+		<div class="row-fluid">
+			<div class="span12">
+				<div ui:field="divReportView" class="hide">
+					<div class="span12 report-head">
+						<div class="span1">
+							<a class="btn btn-default" href="#reports">
+								<i class="icon-arrow-left"></i>
+							</a>
+						</div>
+						<div class="span8">
+							<h4 ui:field="divReportName" styleName="hide"></h4>
+						</div>
+
+
+						<div class="span3">
+							<div class="btn-toolbar pull-right">
+								<div class="btn-group">
+									<a class="btn dropdown-toggle" data-toggle="dropdown">
+										<i class="icon-download"></i>
+										Download
+										<span class="caret"></span>
+									</a>
+									<a class="btn">
+										<i class="icon-print"></i>
+										Print
+									</a>
+
+									<ul class="dropdown-menu" id="dropdown1">
+										<li>
+											<a>Excel</a>
+										</li>
+										<li>
+											<a>Csv</a>
+										</li>
+										<li>
+											<a>PDF</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="">
+					<g:FlexTable ui:field="tableReports" styleName="table">
+					</g:FlexTable>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

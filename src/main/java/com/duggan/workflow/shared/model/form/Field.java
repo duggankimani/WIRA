@@ -148,6 +148,9 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	@Override
 	public boolean equals(Object obj) {
+		if(obj==null){
+			return false;
+		}
 		
 		if (!(obj instanceof Field)) {
 			return false;

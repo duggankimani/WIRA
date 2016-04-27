@@ -21,6 +21,10 @@ public class BaseDaoImpl {
 	public BaseDaoImpl(EntityManager em){
 		this.em = em;
 	}
+	
+	public EntityManager getEntityManager(){
+		return em;
+	}
 		
 	public void save(PO po){
 		em.persist(po);

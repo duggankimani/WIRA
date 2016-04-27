@@ -27,7 +27,7 @@ import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DataType;
-import com.duggan.workflow.shared.model.Listable;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
@@ -39,7 +39,6 @@ import com.duggan.workflow.shared.requests.GetFormsRequest;
 import com.duggan.workflow.shared.responses.GetFormsResponse;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -48,10 +47,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CreateTableView extends Composite {
@@ -84,7 +81,16 @@ public class CreateTableView extends Composite {
 	DropDownList<ProcessDef> lstProcess;
 
 	@UiField
+	DropDownList<Catalog> lstViews;
+	
+	@UiField
+	DropDownList<ProcessCategory> lstCategories;
+
+	@UiField
 	DropDownList<FieldSource> lstFieldSources;
+
+	@UiField
+	DropDownList<Field> lstGridField;
 
 	@UiField
 	Anchor aAddFields;
@@ -92,7 +98,11 @@ public class CreateTableView extends Composite {
 	@UiField
 	DivElement divProcess;
 	@UiField
+	DivElement divViews;
+	@UiField
 	DivElement divFieldSource;
+	@UiField
+	DivElement divGridField;
 	@UiField
 	DivElement divGrid;
 	@UiField
@@ -243,11 +253,16 @@ public class CreateTableView extends Composite {
 			@Override
 			public void onValueChange(ValueChangeEvent<ProcessDef> event) {
 				if (event.getValue() == null) {
-					lstFields.setItems(null);
+					if (type == CatalogType.REPORTTABLE) {
+						lstFields.setItems(null);
+					}
 					return;
 				}
-				grid.setData(new ArrayList<DataModel>());
-				loadFields(event.getValue().getId());
+
+				if (type == CatalogType.REPORTTABLE) {
+					grid.setData(new ArrayList<DataModel>());
+					loadFields(event.getValue().getId());
+				}
 			}
 		});
 
@@ -257,9 +272,57 @@ public class CreateTableView extends Composite {
 					public void onValueChange(
 							ValueChangeEvent<FieldSource> event) {
 						grid.setData(new ArrayList<DataModel>());
+						lstGridField.clear();
+						if (event.getValue() == FieldSource.GRID) {
+							divGridField.removeClassName("hide");
+						} else {
+							divGridField.addClassName("hide");
+						}
+
 						loadFields(forms);
 					}
 				});
+
+		lstGridField.addValueChangeHandler(new ValueChangeHandler<Field>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Field> event) {
+				grid.setData(new ArrayList<DataModel>());
+				loadFields(event.getValue());
+			}
+		});
+
+		lstViews.addValueChangeHandler(new ValueChangeHandler<Catalog>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Catalog> event) {
+				Catalog catalog = event.getValue();
+				bindView(catalog);
+			}
+		});
+	}
+
+	public CreateTableView(CatalogType type, Catalog catalog) {
+		this();
+		this.type = type;
+		if (catalog != null) {
+			setCatalog(catalog);
+		}
+
+		if (type == CatalogType.REPORTTABLE) {
+			divAddFields.removeClassName("hide");
+			divFieldSource.removeClassName("hide");
+			divGrid.removeClassName("hide");
+			divProcess.removeClassName("hide");
+			if (catalog != null && catalog.getFieldSource() == FieldSource.GRID) {
+				divGridField.removeClassName("hide");
+			}
+		} else if (type == CatalogType.REPORTVIEW) {
+			lstProcess.addStyleName("hide");
+			lstFieldSources.addStyleName("hide");
+			divAddFields.removeClassName("hide");
+			divGrid.removeClassName("hide");
+			divViews.removeClassName("hide");
+		}
+
 	}
 
 	protected void loadFields(Long processDefId) {
@@ -311,17 +374,32 @@ public class CreateTableView extends Composite {
 		return col;
 	}
 
+	private void loadFields(Field gridField) {
+		// Grid
+		List<Field> fields = new ArrayList<Field>();
+		if (gridField != null)
+			for (Field child : gridField.getFields()) {
+				addField(fields, child);
+			}
+		Collections.sort(fields);
+		lstFields.clear();
+		lstFields.setItems(fields);
+	}
+
 	private void loadFields(List<Form> forms) {
 		this.forms = forms;
 		if (forms == null)
 			return;
 
 		FieldSource source = lstFieldSources.getValue();
+
 		if (source == null) {
 			source = FieldSource.FORM;
 		}
 
 		List<Field> fields = new ArrayList<Field>();
+		List<Field> gridFields = new ArrayList<>();
+
 		for (Form form : forms) {
 			if (form.getFields() != null)
 				for (Field field : form.getFields()) {
@@ -331,11 +409,10 @@ public class CreateTableView extends Composite {
 								&& field.getType() != DataType.GRID) {
 							addField(fields, field);
 
-						} else if (source == FieldSource.GRID) {
-							// Grid
-							for (Field child : field.getFields()) {
-								addField(fields, child);
-							}
+						} else if (source == FieldSource.GRID
+								&& field.getType() == DataType.GRID) {
+							// This is for lstGridFields Field - First loop
+							gridFields.add(field);
 						}
 					}
 				}
@@ -346,6 +423,12 @@ public class CreateTableView extends Composite {
 		}
 		lstFields.clear();
 		lstFields.setItems(fields);
+
+		lstGridField.setItems(gridFields);
+		if (catalog != null && catalog.getGridName() != null) {
+			lstGridField.setValueByKey(catalog.getGridName());
+			loadFields(lstGridField.getValue());
+		}
 	}
 
 	private void addField(List<Field> fields, Field field) {
@@ -419,22 +502,6 @@ public class CreateTableView extends Composite {
 		return col;
 	}
 
-	public CreateTableView(CatalogType type, Catalog catalog) {
-		this();
-		this.type = type;
-		if (catalog != null) {
-			setCatalog(catalog);
-		}
-
-		if (type == CatalogType.REPORTTABLE) {
-			divAddFields.removeClassName("hide");
-			divFieldSource.removeClassName("hide");
-			divGrid.removeClassName("hide");
-			divProcess.removeClassName("hide");
-		}
-
-	}
-
 	protected boolean isNullOrEmpty(String name) {
 		return name == null || name.trim().isEmpty();
 	}
@@ -448,8 +515,11 @@ public class CreateTableView extends Composite {
 		if (lstProcess.getValue() != null) {
 			cat.setProcessDefId(lstProcess.getValue().getId());
 		}
-		
+
 		cat.setType(type);
+		cat.setGridName(lstGridField.getValue() == null ? null : lstGridField
+				.getValue().getName());
+		cat.setCategory(lstCategories.getValue());
 		cat.setFieldSource(lstFieldSources.getValue());
 		String name = txtName.getValue().toUpperCase();
 		cat.setName(name.replaceAll("\\s", "")); // Clear empty space
@@ -463,11 +533,19 @@ public class CreateTableView extends Composite {
 	public void setCatalog(Catalog catalog) {
 
 		this.catalog = catalog;
-		if (catalog.getRecordCount() > 0) {
-			spnWarning.addClassName("label label-danger");
-			spnWarning
-					.setInnerText("Editing this table will lose all your existing data. "
-							+ "Back up your data first.");
+		if (catalog == null) {
+			return;
+		}
+
+		if (catalog.getType() != CatalogType.REPORTVIEW) {
+			if (catalog.getRecordCount() > 0) {
+				spnWarning.addClassName("label label-danger");
+				spnWarning
+						.setInnerText("Editing this table will lose all your existing data. "
+								+ "Back up your data first.");
+			}
+		} else {
+			bindFields(catalog);
 		}
 
 		txtName.setValue(catalog.getName());
@@ -475,9 +553,33 @@ public class CreateTableView extends Composite {
 		lstFieldSources
 				.setValue(catalog.getFieldSource() == null ? FieldSource.FORM
 						: catalog.getFieldSource());
-
 		grid.setData(mapper.getDataModels(catalog.getColumns()));
 		List<CatalogColumn> cols = grid.getData(mapper);
+	}
+
+	protected void bindView(Catalog viewCatalog) {
+		if (catalog != null) {
+			if (catalog.getName().equals(viewCatalog.getName())) {
+				setCatalog(viewCatalog);
+			}
+		} else {
+			setCatalog(viewCatalog);
+		}
+
+		if (viewCatalog == null) {
+			return;
+		}
+
+		bindFields(viewCatalog);
+	}
+
+	private void bindFields(Catalog viewCatalog) {
+		List<Field> fields = new ArrayList<Field>();
+		for (CatalogColumn col : viewCatalog.getColumns()) {
+			fields.add(col.toFormField());
+		}
+
+		lstFields.setItems(fields);
 	}
 
 	public boolean isValid() {
@@ -500,6 +602,14 @@ public class CreateTableView extends Composite {
 			isValid = false;
 		}
 
+		if (lstFieldSources.getValue() != null
+				&& lstFieldSources.getValue() == FieldSource.GRID) {
+			if (lstGridField.getValue() == null) {
+				issues.addError("Please Select at least one Grid");
+				isValid = false;
+			}
+		}
+
 		if (!isValid) {
 			issues.getElement().scrollIntoView();
 		}
@@ -514,11 +624,33 @@ public class CreateTableView extends Composite {
 				&& processes != null) {
 			for (ProcessDef d : processes) {
 				if (d.getId().equals(catalog.getProcessDefId())) {
-					lstProcess.setValue(d);
+					setProcess(d);
 					loadFields(d.getId());
 				}
 			}
 		}
+	}
+
+	private void setProcess(ProcessDef process) {
+		lstProcess.setValue(process);
+		if(process.getCategory()!=null && (catalog==null || catalog.getCategory()==null)){
+			lstCategories.setValue(process.getCategory());
+		}
+	}
+
+	public void setViews(List<Catalog> catalogs) {
+		lstViews.setItems(catalogs);
+		if (this.catalog != null) {
+			lstViews.setValue(catalog);
+		}
+	}
+
+	public void setCategories(List<ProcessCategory> categories) {
+		lstCategories.setItems(categories);
+		if(catalog!=null){
+			lstCategories.setValue(catalog.getCategory());
+		}
+		
 	}
 
 }

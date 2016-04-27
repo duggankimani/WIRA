@@ -5,11 +5,21 @@ import com.duggan.workflow.shared.responses.GetUsersResponse;
 
 public class GetUsersRequest extends BaseRequest<GetUsersResponse> {
 
+	private String searchTerm;
+
 	public GetUsersRequest() {
+	}
+	
+	public GetUsersRequest(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 	
 	@Override
 	public BaseResponse createDefaultActionResponse() {
 		return new GetUsersResponse();
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
 	}
 }

@@ -5,9 +5,14 @@
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-
   background-color: #eee;
-  background-size: cover; }
+  background-size: cover;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  }
 
 .login-wrapper {
   position: absolute;

@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.gin;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.reports.ReportsPresenter;
+import com.duggan.workflow.client.reports.ReportsView;
 import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.MainPagePresenter;
@@ -43,22 +45,20 @@ import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.outputdocs.OutPutDocsView;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsView;
-import com.duggan.workflow.client.ui.admin.processes.ProcessPresenter;
-import com.duggan.workflow.client.ui.admin.processes.ProcessView;
+import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
+import com.duggan.workflow.client.ui.admin.process.ProcessView;
+import com.duggan.workflow.client.ui.admin.processes.ProcessListingModule;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSaveView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsView;
-import com.duggan.workflow.client.ui.admin.reports.ReportsPresenter;
-import com.duggan.workflow.client.ui.admin.reports.ReportsView;
+import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessModule;
 import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.settings.SettingsView;
 import com.duggan.workflow.client.ui.admin.trigger.TriggerPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.TriggerView;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerPresenter;
-import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerView;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
@@ -67,8 +67,6 @@ import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
 import com.duggan.workflow.client.ui.admin.users.groups.GroupView;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
 import com.duggan.workflow.client.ui.admin.users.item.UserItemView;
-import com.duggan.workflow.client.ui.admin.users.save.UserSavePresenter;
-import com.duggan.workflow.client.ui.admin.users.save.UserSaveView;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
 import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
@@ -81,14 +79,13 @@ import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.error.ErrorView;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundView;
+import com.duggan.workflow.client.ui.fileexplorer.FileExplorerModule;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.filter.FilterView;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.header.HeaderView;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeView;
-import com.duggan.workflow.client.ui.home.doctree.DocTreePresenter;
-import com.duggan.workflow.client.ui.home.doctree.DocTreeView;
 import com.duggan.workflow.client.ui.login.LoginPresenter;
 import com.duggan.workflow.client.ui.login.LoginView;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
@@ -153,6 +150,10 @@ public class ClientModule extends AbstractPresenterModule {
 
 		// install(new DefaultModule(ClientPlaceManager.class));
 		install(new DefaultModule.Builder().build());
+		
+		install(new BaseProcessModule());
+		install(new ProcessListingModule());
+		install(new FileExplorerModule());
 
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);
@@ -253,13 +254,7 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(DashboardPresenter.class,
 				DashboardPresenter.IDashboardView.class, DashboardView.class,
 				DashboardPresenter.MyProxy.class);
-
-		bindPresenterWidget(ReportsPresenter.class,
-				ReportsPresenter.MyView.class, ReportsView.class);
-
-		bindPresenterWidget(UserSavePresenter.class,
-				UserSavePresenter.IUserSaveView.class, UserSaveView.class);
-
+		
 		bindPresenterWidget(UserItemPresenter.class,
 				UserItemPresenter.MyView.class, UserItemView.class);
 
@@ -349,19 +344,12 @@ public class ClientModule extends AbstractPresenterModule {
 				SaveOutPutDocsPresenter.IOutputDocView.class,
 				SaveOutPutDocsView.class);
 
-		bindPresenterWidget(DocTreePresenter.class,
-				DocTreePresenter.IDocTreeView.class, DocTreeView.class);
-
 		bindPresenterWidget(ProcessStepsPresenter.class,
 				ProcessStepsPresenter.MyView.class, ProcessStepsView.class);
 
 		bindPresenter(TriggerPresenter.class,
 				TriggerPresenter.ITriggerView.class, TriggerView.class,
 				TriggerPresenter.MyProxy.class);
-
-		bindPresenterWidget(SaveTriggerPresenter.class,
-				SaveTriggerPresenter.ISaveTriggerView.class,
-				SaveTriggerView.class);
 
 		bindPresenterWidget(TaskStepTriggerPresenter.class,
 				TaskStepTriggerPresenter.ITaskStepTriggerView.class,
@@ -390,5 +378,9 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(MessagesPresenter.class,
 				MessagesPresenter.IMessagesView.class, MessagesView.class,
 				MessagesPresenter.IMessagesProxy.class);
+		
+		bindPresenter(ReportsPresenter.class, ReportsPresenter.IReportsView.class,
+				ReportsView.class, ReportsPresenter.IReportsProxy.class);
+
 	}
 }
