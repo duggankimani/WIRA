@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.dao.helper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -12,17 +14,24 @@ import java.util.TreeMap;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
+import com.duggan.workflow.server.servlets.upload.GetReport;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.Value;
@@ -30,6 +39,8 @@ import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.model.catalog.FieldSource;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.itextpdf.text.DocumentException;
 
 public class CatalogDaoHelper {
 
@@ -53,11 +64,10 @@ public class CatalogDaoHelper {
 		if (catalog.getId() != null) {
 			model = dao.getById(CatalogModel.class, catalog.getId());
 		}
-		
+
 		ProcessCategory category = catalog.getCategory();
 		if (category != null) {
-			ADProcessCategory cat = dao.getById(
-					ADProcessCategory.class, category.getId());
+			ADProcessCategory cat = dao.getById(ADProcessCategory.class, category.getId());
 			model.setCategory(cat);
 		}
 
@@ -102,7 +112,7 @@ public class CatalogDaoHelper {
 
 		return get(colModel);
 	}
-	
+
 	public static Catalog getCatalog(String catalogRefId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel colModel = dao.findByRefId(catalogRefId, CatalogModel.class);
@@ -112,8 +122,7 @@ public class CatalogDaoHelper {
 
 	public static List<Catalog> getCatalogsForProcess(String processId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		List<CatalogModel> catModels = dao
-				.getReportTablesByProcessId(processId);
+		List<CatalogModel> catModels = dao.getReportTablesByProcessId(processId);
 
 		List<Catalog> catalogs = new ArrayList<>();
 		for (CatalogModel model : catModels) {
@@ -124,24 +133,25 @@ public class CatalogDaoHelper {
 
 	private static Catalog get(CatalogModel model) {
 		Catalog catalog = new Catalog();
+
 		catalog.setId(model.getId());
 		catalog.setRefId(model.getRefId());
 		catalog.setDescription(model.getDescription());
 		catalog.setName(model.getName());
 		String catalogName = "EXT_" + model.getName();
-		if(model.getType()==CatalogType.REPORTVIEW){
+		if (model.getType() == CatalogType.REPORTVIEW) {
 			catalogName = model.getName();
 		}
 		catalog.setRecordCount(DB.getCatalogDao().getCount(catalogName));
-		
+
 		catalog.setType(model.getType());
 		catalog.setProcessDefId(model.getProcessDefId());
 		catalog.setFieldSource(model.getFieldSource());
 		catalog.setGridName(model.getGridName());
-		if(model.getCategory()!=null){
+		if (model.getCategory() != null) {
 			catalog.setCategory(ProcessDefHelper.get(model.getCategory()));
 		}
-		
+
 		List<CatalogColumn> models = new ArrayList<>();
 		for (CatalogColumnModel cat : model.getColumns()) {
 			models.add(get(cat));
@@ -195,36 +205,36 @@ public class CatalogDaoHelper {
 
 	public static void saveData(Long id, List<DocumentLine> lines, boolean isClearExisting) {
 		Catalog catalog = getCatalog(id);
-		saveData(catalog, lines,isClearExisting);
+		saveData(catalog, lines, isClearExisting);
 	}
 
 	private static void saveData(Catalog catalog, List<DocumentLine> lines, boolean isClearExisting) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines,isClearExisting);
+		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines, isClearExisting);
 	}
 
 	public static List<DocumentLine> getTableData(String catalogRefId, String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.findByRefId(catalogRefId, CatalogModel.class);
-		return getTableData(catalog,searchTerm);
+		return getTableData(catalog, searchTerm);
 	}
-	
+
 	public static List<DocumentLine> getTableData(Long catalogId, String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.getById(CatalogModel.class, catalogId);
-		
+
 		return getTableData(catalog, searchTerm);
 	}
-	
-	public static List<DocumentLine> getTableData(CatalogModel catalog, String searchTerm){	
+
+	public static List<DocumentLine> getTableData(CatalogModel catalog, String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		String catalogName = "EXT_" + catalog.getName();
 		List<String> searchFields = new ArrayList<String>();
-		
-		if(catalog.getType()==CatalogType.REPORTVIEW){
+
+		if (catalog.getType() == CatalogType.REPORTVIEW) {
 			catalogName = catalog.getName();
 		}
-		
+
 		StringBuffer fieldNames = new StringBuffer();
 		int size = catalog.getColumns().size();
 		int i = 0;
@@ -233,18 +243,17 @@ public class CatalogDaoHelper {
 			if (i + 1 < size) {
 				fieldNames.append(",");
 			}
-			
-			//Search field
-			if(col.getType()==DBType.VARCHAR || col.getType()==DBType.LONGVARCHAR){
+
+			// Search field
+			if (col.getType() == DBType.VARCHAR || col.getType() == DBType.LONGVARCHAR) {
 				searchFields.add(col.getName());
 			}
 			++i;
 		}
 
 		List<CatalogColumnModel> columns = new ArrayList<>(catalog.getColumns());
-		List<Object[]> row = dao.getData(catalogName,
-				fieldNames.toString(),searchTerm, searchFields);
-		
+		List<Object[]> row = dao.getData(catalogName, fieldNames.toString(), searchTerm, searchFields);
+
 		List<DocumentLine> lines = new ArrayList<>();
 		for (Object[] line : row) {
 
@@ -253,7 +262,7 @@ public class CatalogDaoHelper {
 			for (Object v : line) {
 				CatalogColumnModel column = columns.get(i);
 				Value value = getValue(column, v);
-				if(value==null){
+				if (value == null) {
 					continue;
 				}
 				docLine.addValue(column.getName(), value);
@@ -266,8 +275,7 @@ public class CatalogDaoHelper {
 	}
 
 	private static Value getValue(CatalogColumnModel column, Object v) {
-		return FormDaoHelper.getValue(null, column.getName(), v, column
-				.getType().getFieldType());
+		return FormDaoHelper.getValue(null, column.getName(), v, column.getType().getFieldType());
 	}
 
 	public static String exportTable(Long catalogId) {
@@ -281,8 +289,7 @@ public class CatalogDaoHelper {
 	}
 
 	public static String exportTable(CatalogModel model) {
-		JAXBContext context = new JaxbFormExportProviderImpl()
-				.getContext(CatalogModel.class);
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(CatalogModel.class);
 		String out = null;
 		try {
 			Marshaller marshaller = context.createMarshaller();
@@ -301,8 +308,7 @@ public class CatalogDaoHelper {
 	}
 
 	public static CatalogModel importTable(String xml) {
-		JAXBContext context = new JaxbFormExportProviderImpl()
-				.getContext(CatalogModel.class);
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(CatalogModel.class);
 		CatalogModel model = null;
 		try {
 			Unmarshaller marshaller = context.createUnmarshaller();
@@ -317,11 +323,10 @@ public class CatalogDaoHelper {
 	public static void mapAndSaveFormData(Catalog catalog, Doc doc) {
 		List<DocumentLine> documentLines = new ArrayList<>();
 		// Case Insensitive Map
-		Map<String, Value> formValues = new TreeMap<>(
-				String.CASE_INSENSITIVE_ORDER);
+		Map<String, Value> formValues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		formValues.putAll(doc.getValues());
 
-		//Form
+		// Form
 		if (catalog.getFieldSource() == FieldSource.FORM) {
 
 			DocumentLine row = new DocumentLine();
@@ -333,33 +338,31 @@ public class CatalogDaoHelper {
 			}
 			documentLines.add(row);
 		} else {
-			//Grid
-			List<DocumentLine> details = doc.getDetails().get(
-					catalog.getGridName());
+			// Grid
+			List<DocumentLine> details = doc.getDetails().get(catalog.getGridName());
 			if (details == null) {
-				String message = "CatalogDaoHelper.ReportTable Error- Catalog "+catalog.getName()+": Grid '"+catalog.getGridName()+"' Not Found";
+				String message = "CatalogDaoHelper.ReportTable Error- Catalog " + catalog.getName() + ": Grid '"
+						+ catalog.getGridName() + "' Not Found";
 				logger.warn(message);
 				throw new RuntimeException(message);
 			}
-			
+
 			for (DocumentLine detail : details) {
 				DocumentLine row = new DocumentLine();
 				// Case Insensitive Map
-				Map<String, Value> gridValues = new TreeMap<>(
-						String.CASE_INSENSITIVE_ORDER);
+				Map<String, Value> gridValues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 				gridValues.putAll(detail.getValues());
 
 				for (CatalogColumn col : catalog.getColumns()) {
 					Value value = gridValues.get(col.getName());
-					if(value==null){
+					if (value == null) {
 						value = formValues.get(col.getName());
-						if(value!=null){
-							logger.warn("#Report Table Mapping for "+doc.getCaseNo()
-									+" - #Grid '"+catalog.getGridName()
-									+"' uses form value for '"+col.getName()+"'");
+						if (value != null) {
+							logger.warn("#Report Table Mapping for " + doc.getCaseNo() + " - #Grid '"
+									+ catalog.getGridName() + "' uses form value for '" + col.getName() + "'");
 						}
 					}
-					
+
 					if (value != null) {
 						row.addValue(col.getName(), value);
 					}
@@ -368,11 +371,94 @@ public class CatalogDaoHelper {
 			}
 		}
 
-		saveData(catalog, documentLines,false);
+		saveData(catalog, documentLines, false);
 	}
 
 	public static List<Catalog> getAllViews() {
 		return DB.getCatalogDao().getViews();
 	}
 
+	public static byte[] printCatalogue(String refId, String docType) throws IOException, SAXException,
+			ParserConfigurationException, FactoryConfigurationError, DocumentException {
+
+		Catalog catalog = getCatalog(refId);
+
+		List<DocumentLine> documentLines = getTableData(refId, null);
+
+		logger.warn("dOCUMENT LINES SIZE +++++++++++++++++++++++++++ " + documentLines.size());
+
+		/*
+		 * Logic for pdf
+		 */
+
+		HTMLToPDFConvertor convertor = new HTMLToPDFConvertor();
+		InputStream is = CatalogDaoHelper.class.getClassLoader().getResourceAsStream("catalogue.html");
+		String html = IOUtils.toString(is);
+
+		StringBuffer headerbuffer = new StringBuffer(html);
+
+		Document document = new Document();
+
+		document.setDetails("bodyDetails", documentLines);
+
+		StringBuffer bodybuffer = new StringBuffer("<tbody><!--@>bodyDetails--><tr>");
+		headerbuffer.append("<theader>");
+		for (CatalogColumn catCol : catalog.getColumns()) {
+
+			headerbuffer.append("<th>" + catCol.getLabel() + "</th>");
+
+			String body = "<td>@#" + catCol.getName() + "</td>";
+			bodybuffer.append(body);
+		}
+
+		bodybuffer.append("</tr><!--@<bodyDetails--></tbody><tfooter><tr><div>FOOTER</div></tr></tfooter>"
+				+ "</table><!--End of main content area --></body></html>");
+
+		headerbuffer.append("</theader>");
+
+		String table = headerbuffer.append(bodybuffer.toString()).toString();
+
+		return convertor.convert(document, table);
+	}
+
+	public static byte[] toCsv(Catalog catalog, List<DocumentLine> documentLines) {
+
+		StringBuffer stringBuffer = new StringBuffer();
+
+		int size = catalog.getColumns().size();
+
+		for (CatalogColumn catCol : catalog.getColumns()) {
+			size = size - 1;
+			stringBuffer.append(catCol.getLabel());
+
+			if (size > 0)
+				stringBuffer.append(",");
+
+		}
+
+		stringBuffer.append("\n");
+		size = catalog.getColumns().size();
+		for (DocumentLine line : documentLines) {
+
+			for (CatalogColumn catCol : catalog.getColumns()) {
+
+				Value value = line.getValue(catCol.getName());
+
+				stringBuffer.append("" + value.getValue());
+
+				stringBuffer.append(",");
+
+				size--;
+
+			}
+
+			stringBuffer.append("\n");
+		}
+
+		return stringBuffer.toString().getBytes();
+	}
+	
+	public static byte[] toExcel(Catalog catalog, List<DocumentLine> documentLines) {
+		
+	}
 }

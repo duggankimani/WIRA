@@ -31,13 +31,13 @@
 
 									<ul class="dropdown-menu" id="dropdown1">
 										<li>
-											<a>Excel</a>
+											<g:Anchor ui:field="aDExcel">Excel</g:Anchor>
 										</li>
 										<li>
-											<a>Csv</a>
+											<g:Anchor ui:field="aDCsv">Csv</g:Anchor>
 										</li>
 										<li>
-											<a>PDF</a>
+											<g:Anchor ui:field="aDPdf">PDF</g:Anchor>
 										</li>
 									</ul>
 								</div>
