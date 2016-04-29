@@ -25,19 +25,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 
 public class GenerateCatalogueExcel {
 	Logger logger = Logger.getLogger(GenerateCatalogueExcel.class);
-
-	private static final String[] titles = { "ICPAK MEMBER", "MEMBER NO", "ERN NO", "DELEGATE NAMES",
-			"DELEGATE PHONENUMBER", "EMAIL", "BOOKING DATE", "SPONSOR", "CONTACT PERSON", "CONTACT EMAIL",
-			"SPONSOR TEL", "ACCOMODATION", "PAID", "RECEIPT", "LPO NO", "CREDIT", "CLEARANCE NO", "ATTEND" };
 
 	static Map<String, CellStyle> styles = null;
 	static Map<String, Font> fonts = null;
 
 	private List<DocumentLine> documentLines = new ArrayList<>();
-	private Catalog catalog;
+	private static Catalog catalog;
 
 	private Workbook wb = new HSSFWorkbook();
 
@@ -58,7 +55,7 @@ public class GenerateCatalogueExcel {
 		logger.error(" === DATA size === " + documentLines.size());
 
 		// name = eventName + "_Report" + "." + docType;
-		name = name.trim();
+		name = docType.trim();
 		name = name.replaceAll("[/\\:*?<>|\"]", "");
 
 		fonts = createFonts(wb);
@@ -79,7 +76,7 @@ public class GenerateCatalogueExcel {
 		sheetHeadingFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		sheetHeadingFont.setFontHeightInPoints((short) 16);
 		style = createBorderedStyle(wb);
-		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setAlignment(CellStyle.ALIGN_LEFT);
 		style.setFont(sheetHeadingFont);
 		styles.put("sheet_heading", style);
 
@@ -87,15 +84,15 @@ public class GenerateCatalogueExcel {
 		headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		headerFont.setFontHeightInPoints((short) 14);
 		style = createBorderedStyle(wb);
-		style.setAlignment(CellStyle.ALIGN_CENTER);
-		style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
-		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		style.setAlignment(CellStyle.ALIGN_LEFT);
+//		style.setFillForegroundColor(IndexedColors.LIGHT.getIndex());
+//		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		style.setFont(headerFont);
 		styles.put("header", style);
 
 		style = createBorderedStyle(wb);
-		style.setAlignment(CellStyle.ALIGN_CENTER);
-		style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+		style.setAlignment(CellStyle.ALIGN_LEFT);
+//		style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
 		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		style.setFont(headerFont);
 		style.setDataFormat(df.getFormat("d-mmm"));
@@ -175,7 +172,7 @@ public class GenerateCatalogueExcel {
 		styles.put("cell_normal", style);
 
 		style = createBorderedStyle(wb);
-		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setAlignment(CellStyle.ALIGN_LEFT);
 		style.setWrapText(true);
 		styles.put("cell_normal_centered", style);
 
@@ -257,27 +254,22 @@ public class GenerateCatalogueExcel {
 		// sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 7));
 
 		Row headerRow = sheet.createRow(0);
+		
 		headerRow.setHeightInPoints(30f);
-		for (int i = 0; i < titles.length; i++) {
+		for (int i = 0; i < catalog.getColumns().size(); i++) {
 			Cell cell = headerRow.createCell(i);
-			cell.setCellValue(titles[i]);
+			cell.setCellValue(catalog.getColumns().get(i).getLabel());
 			cell.setCellStyle(styles.get("header"));
 		}
-
+		
 		CreationHelper helper = wb.getCreationHelper();
 		int rownum = 1;
 		paintRows(documentLines, rownum, helper, sheet);
 
-		sheet.setColumnWidth(0, 256 * 10);// ICPAK Member
-		sheet.setColumnWidth(1, 256 * 10);// MemberNo
-		sheet.setColumnWidth(2, 256 * 10);// ERN NO
-		sheet.setColumnWidth(3, 256 * 40);// DelegateNames
-		sheet.setColumnWidth(4, 256 * 20);// Delegate Email
-		sheet.setColumnWidth(5, 256 * 20);// Funding/ Estimate
-		sheet.setColumnWidth(6, 256 * 40);// Actual
-		sheet.setColumnWidth(7, 256 * 20);// Status
-		sheet.setColumnWidth(8, 256 * 20);// Remarks
-		sheet.setColumnWidth(9, 256 * 10);// Monitoring test
+		for (int i = 0; i < catalog.getColumns().size(); i++) {
+			sheet.setColumnWidth(i, 256 * 30);
+		}
+		
 		sheet.setZoom(3, 4);
 	}
 
@@ -299,15 +291,13 @@ public class GenerateCatalogueExcel {
 
 	private static void bindData(DocumentLine detail, CreationHelper helper, Sheet sheet, Row row, Integer i) {
 
-		for (int j = 0; j < titles.length; j++) {
+		for (int j = 0; j < catalog.getColumns().size(); j++) {
 			Cell cell = row.createCell(j);
 			String styleName = null;
 
-			// if (j == 0) {
-			// cell.setCellValue((detail.getMemberNo() != null ? "1" : "0"));
-			// }
+			cell.setCellValue(detail.getValues().get(catalog.getColumns().get(j).getName()).getValue()+"");
 
-			styleName = "cell_normal_centered";
+			styleName = "cell_normal";
 			cell.setCellStyle(styles.get(styleName));
 		}
 
@@ -326,5 +316,21 @@ public class GenerateCatalogueExcel {
 		ByteArrayOutputStream byteo = new ByteArrayOutputStream();
 		wb.write(byteo);
 		return byteo.toByteArray();
+	}
+
+	public List<DocumentLine> getDocumentLines() {
+		return documentLines;
+	}
+
+	public void setDocumentLines(List<DocumentLine> documentLines) {
+		this.documentLines = documentLines;
+	}
+
+	public Catalog getCatalog() {
+		return catalog;
+	}
+
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
 	}
 }

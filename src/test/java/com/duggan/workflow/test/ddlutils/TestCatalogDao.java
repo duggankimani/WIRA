@@ -22,6 +22,7 @@ import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
+import com.duggan.workflow.server.servlets.upload.GenerateCatalogueExcel;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DoubleValue;
@@ -128,7 +129,7 @@ public class TestCatalogDao {
 	@Test
 	public void testGenerateCatalogue() throws IOException, SAXException, ParserConfigurationException,
 			FactoryConfigurationError, DocumentException {
-		String refId = "5LHhhsLHcWehOiRh";
+		String refId = "KXcBJKEAIJKJxPsy";
 		
 		logger.debug(" +++++++++ FETCHING CATALOGUE ++++ ");
 		
@@ -136,11 +137,17 @@ public class TestCatalogDao {
 		
 		List<DocumentLine> documentLines = CatalogDaoHelper.getTableData(refId, null);
 		
+		for (CatalogColumn catCol : cat.getColumns()) {
+			System.out.println(" CATALOG NAME "+catCol.getName());
+		}
+		
 		logger.info(" CAtatlogue "+cat.getDisplayName());
 
-		byte[] bytes = CatalogDaoHelper.toCsv(cat, documentLines);
+		byte[] bytes = CatalogDaoHelper.printCatalogue(refId, "pdf");
+//		GenerateCatalogueExcel excel = new GenerateCatalogueExcel(documentLines, "excel", cat);
+//		byte[] bytes  = excel.getBytes();
 
-		IOUtils.write(bytes, new FileOutputStream(new File("/home/wladek/Documents/cataloguecsv.csv")));
+		IOUtils.write(bytes, new FileOutputStream(new File("/home/wladek/Documents/cataloguepdf.pdf")));
 		
 		logger.debug(" PRINT DONE ++++++++++++ ");
 	}

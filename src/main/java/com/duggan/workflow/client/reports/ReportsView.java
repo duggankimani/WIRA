@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.server.servlets.upload.DownloadReportServlet;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.Value;
@@ -46,6 +47,8 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 	@UiField
 	Element divReportView;
 
+	private Catalog catalog;
+
 	@Inject
 	public ReportsView(Binder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -54,7 +57,7 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 
 			@Override
 			public void onClick(ClickEvent arg0) {
-				Window.alert(" Downloading as excel ");
+				downloadReport("xlsx");
 			}
 		});
 
@@ -62,15 +65,15 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 
 			@Override
 			public void onClick(ClickEvent arg0) {
-				Window.alert(" Downloading as Csv ");
+				downloadReport("csv");
 			}
 		});
-		
+
 		aDPdf.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent arg0) {
-				Window.alert(" Downloading as Pdf ");
+				downloadReport("pdf");
 			}
 		});
 	}
@@ -82,6 +85,8 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 		tableReports.removeAllRows();
 		tableReports.addStyleName("table-striped");
 		divReportName.setInnerText("" + catalog.getDescription());
+
+		this.catalog = catalog;
 
 		int col = 0;
 		int i = 0;
@@ -176,4 +181,13 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 		}
 	}
 
+	public void downloadReport(String doctype) {
+		String url = "/downloadreport?reportRefId=" + catalog.getRefId() + "&NAME=" + catalog.getDisplayName()
+				+ "&docType=" + doctype;
+		Window.open(url, null, null);
+	}
+
+	public Catalog getCatalog() {
+		return catalog;
+	}
 }

@@ -68,7 +68,7 @@ public class DownloadReportServlet extends HttpServlet{
 			byte[] data, String name) {
 		if (name.endsWith("png") || name.endsWith("jpg")
 				|| name.endsWith("html") || name.endsWith("htm")
-				|| name.endsWith("svg") || name.endsWith("pdf")) {
+				|| name.endsWith("svg")) {
 			// displayed automatically
 			resp.setHeader("Content-disposition", "inline;filename=\"" + name);
 		} else {
