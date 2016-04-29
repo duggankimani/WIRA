@@ -62,7 +62,7 @@
 
 
 				<div class="pull-right right-navigations">
-					<ul class="nav pull-right nav-icons">
+					<ul ui:field="ulNav" class="nav pull-right nav-icons">
 						<li class="home">
 							<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand">
 								<i class="icon-home"></i>
@@ -77,7 +77,7 @@
 							<ul class="dropdown-menu">
 
 								<li>
-									<a href="#usermgt">Access Management</a>
+									<a href="#usermgt" id="usermgt">Access Management</a>
 								</li>
 								<li>
 									<a href="#processlist">

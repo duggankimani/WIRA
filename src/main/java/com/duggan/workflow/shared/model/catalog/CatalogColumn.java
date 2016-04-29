@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.form.Field;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class CatalogColumn implements Serializable,IsCatalogItem{
+public class CatalogColumn implements Serializable,IsSerializable, IsCatalogItem{
 
 	/**
 	 * 

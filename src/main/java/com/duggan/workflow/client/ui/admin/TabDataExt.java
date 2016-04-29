@@ -41,8 +41,11 @@ public class TabDataExt extends TabDataBasic {
 	}
 	
 
+	public boolean canReveal() {
+		return gateKeeper.canReveal();
+	}
+	
 	public boolean canUserAccess() {
-		
 		return gateKeeper.canReveal() && isDisplayLink;
 	}
 	

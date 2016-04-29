@@ -47,7 +47,7 @@ import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.TreeSelectionModel;
 
-class FileExplorerView extends ViewImpl implements FileExplorerPresenter.MyView {
+public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.MyView {
 	interface Binder extends UiBinder<Widget, FileExplorerView> {
 	}
 

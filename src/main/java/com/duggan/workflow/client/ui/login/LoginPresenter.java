@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
@@ -179,6 +180,7 @@ public class LoginPresenter extends
 		if (currentUserDto.isLoggedIn()) {
 			currentUser.fromCurrentUserDto(currentUserDto);
 			redirectToLoggedOnPage();
+			AppContext.fireEvent(new ContextLoadedEvent(currentUser.getUser(), systemVersion));
 		}
 	}
 
@@ -186,6 +188,7 @@ public class LoginPresenter extends
 		if (currentUserDto.isLoggedIn()) {
 			currentUser.fromCurrentUserDto(currentUserDto);
 			redirectToLoggedOnPage();
+			AppContext.fireEvent(new ContextLoadedEvent(currentUser.getUser(), systemVersion));
 		} else {
 			getView().setError("Wrong username or password");
 		}

@@ -51,9 +51,11 @@ implements SearchHandler{
 	public interface IReportsProxy extends TabContentProxyPlace<ReportsPresenter> {
 	}
 
+	public static final String TABLABEL = "Report Registry";
+
 	@TabInfo(container = HomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper gateKeeper) {
-		return new HomeTabData("reports", "Report Registry", "", 10, gateKeeper,false);
+		return new HomeTabData("reports",TABLABEL , "", 10, gateKeeper,false);
 	}
 
 	@Inject

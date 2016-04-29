@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.ActionType;
@@ -47,6 +48,11 @@ public class LoginRequestActionHandler extends
 		if(result.getCurrentUserDto().isLoggedIn()){
 			//Set Context Info
 			result.setVersion(VersionManager.getVersion());
+			
+			//Permissions
+			HTUser user = result.getCurrentUserDto().getUser();
+			user.setPermissions(DB.getPermissionDao().getPermissionsForUser(user.getUserId()));
+			result.getCurrentUserDto().setUser(user);
 			
 			Setting setting = SettingsDaoHelper.getSetting(SETTINGNAME.ORGNAME);
 			if(setting!=null){

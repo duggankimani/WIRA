@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.admin.processmgt;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Presenter;
@@ -30,19 +30,20 @@ public class BaseProcessPresenter extends
 
 	@ProxyCodeSplit
 	@NameToken(NameTokens.processconf)
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(LoginGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<BaseProcessPresenter> {
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		return new TabDataExt("Processes", "icon-cogs", 2, adminGatekeeper);
+	static TabData getTabLabel(LoginGateKeeper gateKeeper) {
+		return new TabDataExt(TABLABEL, "icon-cogs", 2, gateKeeper);
 	}
+
+	public static final String TABLABEL = "Processes";
 
 	@Inject
 	BaseProcessPresenter(EventBus eventBus, MyView view, MyProxy proxy) {
 		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
-
 	}
 
 	@Override

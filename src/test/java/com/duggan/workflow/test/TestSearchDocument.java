@@ -39,7 +39,7 @@ public class TestSearchDocument {
 		String userId = "mariano";
 		TaskType type = TaskType.INBOX;
 		
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(userId, type);
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(userId, type,0,100);
 		for(HTSummary summary: summaries){
 			System.err.format("%d : %s : %s : %s",
 					summary.getId(), summary.getCreated(), summary.getDocumentRef(), 

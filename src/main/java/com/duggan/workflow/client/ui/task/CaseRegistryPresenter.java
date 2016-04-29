@@ -75,9 +75,11 @@ public class CaseRegistryPresenter
 			TabContentProxyPlace<CaseRegistryPresenter> {
 	}
 
+	public static final String TABLABEL = "Case Registry";
+
 	@TabInfo(container = HomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		return new HomeTabData("registry", "Case Registry", "", 6,
+		return new HomeTabData("registry", TABLABEL, "", 6,
 				adminGatekeeper, false);
 	}
 

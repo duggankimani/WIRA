@@ -63,12 +63,14 @@ public class MessagesPresenter
 
 	@TabInfo(container = AdminHomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		TabDataExt ext = new TabDataExt("Email & SMS Messages", "icon-th", 8,
+		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8,
 				adminGatekeeper);
 		return ext;
 	}
 
 	public static final Object TABLE_SLOT = new Object();
+
+	public static final String TABLABEL = "Email & SMS Messages";
 
 	@Inject
 	DispatchAsync requestHelper;

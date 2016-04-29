@@ -1,9 +1,7 @@
 package com.duggan.workflow.client.ui;
 
 
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
-import com.duggan.workflow.client.ui.error.ErrorPresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent.ClientDisconnectionHandler;
@@ -22,30 +20,24 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowA
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.presenter.slots.IsSlot;
+import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
+import com.gwtplatform.mvp.client.presenter.slots.PermanentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPagePresenter extends
 		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
@@ -66,16 +58,12 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	public interface MyProxy extends Proxy<MainPagePresenter> {
 	}
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> HEADER_content = new Type<RevealContentHandler<?>>();
+	public static final PermanentSlot<HeaderPresenter> HEADER_content = new PermanentSlot<HeaderPresenter>();
 	
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> CONTENT_SLOT = new Type<RevealContentHandler<?>>();
+	public static final NestedSlot CONTENT_SLOT = new NestedSlot();
 
 	@Inject HeaderPresenter headerPresenter;
 		
-	IndirectProvider<ErrorPresenter> errorFactory;
-	
 	@Inject DispatchAsync dispatcher;
 	
 	@Inject PlaceManager placeManager;
@@ -84,14 +72,8 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	
 	@Inject
 	public MainPagePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy,Provider<ErrorPresenter> provider) {
-		super(eventBus, view, proxy);
-		this.errorFactory = new StandardProvider<ErrorPresenter>(provider);
-	}
-
-	@Override
-	protected void revealInParent() {
-		RevealRootContentEvent.fire(this, this);
+			final MyProxy proxy) {
+		super(eventBus, view, proxy,RevealType.Root);
 	}
 
 	@Override
@@ -104,6 +86,8 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 		addRegisteredHandler(ShowAttachmentEvent.TYPE, this);
 		addRegisteredHandler(ClientDisconnectionEvent.TYPE, this);
 	}
+	
+	
 	
 	@Override
 	protected void onReset() {
@@ -137,16 +121,23 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	}
 
 	@Override
-	public void setInSlot(Object slot, PresenterWidget<?> content) {
-		super.setInSlot(slot, content);
-		
+	public <T extends PresenterWidget<?>> void setInSlot(IsSlot<T> slot, T child) {
+		super.setInSlot(slot, child);
+//		Window.alert(">> Called [1]");
 		if(slot==CONTENT_SLOT){
-			if(content!=null && content instanceof AdminHomePresenter){
+			if(child!=null && child instanceof AdminHomePresenter){
 				fireEvent(new AdminPageLoadEvent(true));
 			}else{
 				fireEvent(new AdminPageLoadEvent(false));
 			}
 		}
+	}
+	
+	@Override
+	public <T extends PresenterWidget<?>> void setInSlot(IsSlot<T> slot,
+			T child, boolean performReset) {
+//		Window.alert(">> Called [2]");
+		super.setInSlot(slot, child, performReset);
 	}
 
 	@Override

@@ -155,7 +155,7 @@
 						</ul>
 					</div>
 					<d:ActionLink ui:field="aClose" title="Close" 
-					styleName="btn generic-doc-close">
+					styleName="generic-doc-close">
 						X
 					</d:ActionLink>
 				</div>

@@ -24,7 +24,7 @@
 										Download
 										<span class="caret"></span>
 									</a>
-									<a class="btn">
+									<a class="btn" onclick="javascript(window.print())">
 										<i class="icon-print"></i>
 										Print
 									</a>

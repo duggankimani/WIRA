@@ -16,40 +16,64 @@
 
 package com.duggan.workflow.client.security;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.duggan.workflow.shared.model.CurrentUserDto;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 
 public class CurrentUser {
-    private Boolean loggedIn;
-    private HTUser userDto;
+	private Boolean loggedIn;
+	private HTUser userDto;
 
-    public CurrentUser() {
-        loggedIn = false;
-    }
+	public CurrentUser() {
+		loggedIn = false;
+	}
 
-    public void fromCurrentUserDto(CurrentUserDto currentUserDto) {
-        setLoggedIn(currentUserDto.isLoggedIn());
-        setUser(currentUserDto.getUser());
-    }
+	public void fromCurrentUserDto(CurrentUserDto currentUserDto) {
+		setLoggedIn(currentUserDto.isLoggedIn());
+		setUser(currentUserDto.getUser());
+	}
 
-    public void reset() {
-        setLoggedIn(false);
-        setUser(null);
-    }
+	public void reset() {
+		setLoggedIn(false);
+		setUser(null);
+	}
 
-    public Boolean isLoggedIn() {
-        return loggedIn;
-    }
+	public Boolean isLoggedIn() {
+		return loggedIn;
+	}
 
-    public void setLoggedIn(Boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
+	public void setLoggedIn(Boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
 
-    public HTUser getUser() {
-        return userDto;
-    }
+	public HTUser getUser() {
+		return userDto;
+	}
 
-    public void setUser(HTUser userDto) {
-        this.userDto = userDto;
-    }
+	public void setUser(HTUser userDto) {
+		this.userDto = userDto;
+	}
+
+	public boolean hasPermissions(String... requiredPermissions) {
+
+		List<String> permissions = new ArrayList<String>();
+		if (userDto != null) {
+			if(userDto.getPermissions()!=null)
+			for (PermissionPOJO p : userDto.getPermissions()) {
+				permissions.add(p.getName().name());
+			}
+		}
+		
+		if(requiredPermissions!=null){
+			return permissions.containsAll(Arrays.asList(requiredPermissions));
+		}
+			
+
+		return false;
+	}
+
 }

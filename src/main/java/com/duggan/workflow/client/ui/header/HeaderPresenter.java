@@ -3,6 +3,8 @@ package com.duggan.workflow.client.ui.header;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.duggan.workflow.client.event.TabAddedEvent;
+import com.duggan.workflow.client.event.TabAddedEvent.TabAddedHandler;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.security.CurrentUser;
@@ -46,6 +48,7 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -55,7 +58,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 public class HeaderPresenter extends
 		PresenterWidget<HeaderPresenter.IHeaderView> implements
 		AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler,
-		LoadAlertsHandler {
+		LoadAlertsHandler, TabAddedHandler {
 
 	public interface IHeaderView extends View {
 		HasClickHandlers getLogout();
@@ -83,6 +86,8 @@ public class HeaderPresenter extends
 		void setImage(HTUser currentUser);
 
 		TextBox getSearchField();
+
+		void showTab(Tab tab);
 	}
 
 	@Inject
@@ -139,6 +144,8 @@ public class HeaderPresenter extends
 		this.addRegisteredHandler(AdminPageLoadEvent.TYPE, this);
 		this.addRegisteredHandler(ContextLoadedEvent.TYPE, this);
 		this.addRegisteredHandler(LoadAlertsEvent.TYPE, this);
+		this.addRegisteredHandler(TabAddedEvent.getType(), this);
+		
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -296,6 +303,11 @@ public class HeaderPresenter extends
 	@Override
 	public void onLoadAlerts(LoadAlertsEvent event) {
 		loadAlertCount();
+	}
+	
+	@Override
+	public void onTabAdded(TabAddedEvent event) {
+		getView().showTab(event.getTab());
 	}
 
 }

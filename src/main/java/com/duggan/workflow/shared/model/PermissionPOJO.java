@@ -62,4 +62,10 @@ public class PermissionPOJO implements Serializable, IsSerializable{
 		
 		return ((PermissionPOJO) obj).name.equals(name);
 	}
+	
+	@Override
+	public String toString() {
+		
+		return name.name();
+	}
 }

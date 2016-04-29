@@ -3,7 +3,9 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ProcessLog implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ProcessLog implements Serializable,IsSerializable{
 
 	/**
 	 * 

@@ -50,7 +50,7 @@ public class DashboardPresenter extends
 	
 	@TabInfo(container = AdminHomePresenter.class)
     static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Dashboards","icon-dashboard",1, adminGatekeeper);
+        return new TabDataExt(TABLABEL,"icon-dashboard",1, adminGatekeeper);
     }
 	
 	private IndirectProvider<PieChartPresenter> pieChartFactory;
@@ -65,6 +65,7 @@ public class DashboardPresenter extends
 	public static final Type<RevealContentHandler<?>> LINEGRAPH_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> LONGLASTINGTASKS_SLOT = new Type<RevealContentHandler<?>>();
+	public static final String TABLABEL = "Dashboards";
 	
 	@Inject DispatchAsync requestHelper;
 	

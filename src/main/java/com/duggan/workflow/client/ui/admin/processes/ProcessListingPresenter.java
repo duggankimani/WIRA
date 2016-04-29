@@ -3,8 +3,8 @@ package com.duggan.workflow.client.ui.admin.processes;
 import java.util.List;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
-import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
+import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -23,7 +23,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -92,10 +92,14 @@ public class ProcessListingPresenter
 		HasClickHandlers getConfigureButton();
 
 	}
+	
+
+	public static final String CAN_VIEW_PROCESSES = "PROCESSES_CAN_VIEW_PROCESSES";
 
 	@NameToken(NameTokens.processlist)
 	@ProxyStandard
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(LoginGateKeeper.class)
+//	@GatekeeperParams({CAN_VIEW_PROCESSES})
 	interface MyProxy extends ProxyPlace<ProcessListingPresenter> {
 	}
 

@@ -10,6 +10,7 @@ import com.duggan.workflow.client.ui.addDoc.DocTypesPresenter;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent.CreateDocumentHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -33,27 +34,24 @@ import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ChangeTabHandler;
 import com.gwtplatform.mvp.client.RequestTabsHandler;
-import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.TabContainerPresenter;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.TabView;
 import com.gwtplatform.mvp.client.annotations.ChangeTab;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
+import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
+import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class HomePresenter extends TabContainerPresenter<HomePresenter.IHomeView, HomePresenter.MyProxy> implements
-ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHandler{
+ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHandler, ContextLoadedHandler{
 
 	public interface IHomeView extends TabView {
 		//void bindAlerts(HashMap<TaskType, Integer> alerts);
 		void refreshTabs();
-		void changeTab(Tab tab, TabData tabData, String historyToken);
+//		void changeTab(Tab tab, TabData tabData, String historyToken);
 		void showmask(boolean b);
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 		HasClickHandlers getAddButton();
@@ -81,15 +79,11 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
      */
-    @ContentSlot
-    public static final Type<RevealContentHandler<?>> SLOT_SetTabContent = new Type<RevealContentHandler<?>>();
+    public static final NestedSlot SLOT_SetTabContent = new NestedSlot();
 
+	public static final SingleSlot<CreateDocPresenter> DOCPOPUP_SLOT = new SingleSlot<CreateDocPresenter>();
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
-
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> DOCTREE_SLOT = new Type<RevealContentHandler<?>>();
+	public static final SingleSlot<GenericFormPresenter> DOCTREE_SLOT = new SingleSlot<GenericFormPresenter>();
 		
 	@Inject DocTypesPresenter docPopup;
 	private IndirectProvider<CreateDocPresenter> createDocProvider;
@@ -103,7 +97,6 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 			final MyProxy proxy,
 			Provider<CreateDocPresenter> docProvider,
 			Provider<GenericFormPresenter> formProvider) {
-		
 		super(eventBus, view, proxy,SLOT_SetTabContent,SLOT_RequestTabs, SLOT_ChangeTab,MainPagePresenter.CONTENT_SLOT);
 		createDocProvider = new StandardProvider<CreateDocPresenter>(docProvider);
 		genericFormProvider = new StandardProvider<GenericFormPresenter>(formProvider);
@@ -112,31 +105,18 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	@Override
 	protected void onBind() {
 		super.onBind();
+		setInSlot(DOCPOPUP_SLOT, docPopup);
 		getView().load();
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
 		addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
 		addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		addRegisteredHandler(CreateDocumentEvent.TYPE, this);
-		
-//		getView().getAddButton().addClickHandler(new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				//showEditForm(MODE.CREATE);
-//				//showEditForm();
-//				
-//				getView().showDocsList();
-//			}
-//			
-//		});
-		
-		
+		addRegisteredHandler(ContextLoadedEvent.getType(), this);
 	}
-	
 	
 	@Override
 	protected void onReset() {
 		super.onReset();
-		setInSlot(DOCPOPUP_SLOT, docPopup);
 	}
 	
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
@@ -148,14 +128,13 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		getView().showmask(true);
 	}
 	
-	@ProxyEvent
+	//@ProxyEvent
 	public void onContextLoaded(ContextLoadedEvent event){
-		getView().refreshTabs();
+//		getView().refreshTabs();
 	}
 	
 	@Override
 	public void onAlertLoad(AlertLoadEvent event) {
-		//event.getAlerts();
 		getView().bindAlerts(event.getAlerts());		
 	}
 	

@@ -6,7 +6,10 @@ import static com.duggan.workflow.client.ui.home.HomePresenter.DOCTREE_SLOT;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.ui.fileexplorer.FileExplorerPresenter;
+import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,16 +34,20 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@UiField
 	Anchor btnAdd;
+	
 	@UiField(provided = true)
 	HomeTabPanel tabPanel;
+	
 	@UiField
 	HTMLPanel tabContent;
 	@UiField
 	HTMLPanel divDocPopup;
 	@UiField
 	HTMLPanel panelDocTree;
-	@UiField Element aExplorer;
+	
+	@UiField Element aCaseReg;
 	@UiField Element aReports;
+	@UiField Element aExplorer;
 	
 	@Inject
 	public HomeView(final Binder binder, HomeTabPanel panel) {
@@ -67,19 +74,17 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@Override
 	public Tab addTab(TabData tabData, String historyToken) {
-		switch (tabData.getLabel()) {
-		case "File Manager":
-//			show(aExplorer,((TabDataExt)tabData).canUserAccess());
-			break;
-		case "Report Registry":
-//			show(aReports,((TabDataExt)tabData).canUserAccess());
-			break;
-		default:
-			break;
-		}
-		return tabPanel.addTab(tabData, historyToken);
+		showCustom(tabData);
+		Tab tab =  tabPanel.addTab(tabData, historyToken);
+		return tab;
 	}
 
+	private void showLi(Element el, boolean isShow) {
+		if(el.getParentElement()!=null){
+			show(el.getParentElement(), isShow);
+		}
+	}
+	
 	private void show(Element el, boolean isShow) {
 		if(isShow){
 			el.removeClassName("hide");
@@ -108,9 +113,32 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 		tabPanel.changeTab(tab, tabData, historyToken);
 	}
 
+	private void showCustom(TabData tabData) {
+		if(tabData==null || tabData.getLabel()==null || ! (tabData instanceof TabDataExt)){
+			return;
+		}
+		
+		TabDataExt data = (TabDataExt)tabData;
+		switch (data.getLabel()) {
+		case CaseRegistryPresenter.TABLABEL:
+			showLi(aCaseReg, data.canReveal());
+			break;
+		case ReportsPresenter.TABLABEL:
+			showLi(aReports, data.canReveal());
+			break;
+		case FileExplorerPresenter.TABLABEL:
+			showLi(aExplorer, data.canReveal());
+			break;
+		}
+	}
+
 	@Override
 	public void refreshTabs() {
 		tabPanel.refreshTabs();
+		
+		for(Tab tab: tabPanel.getTabs()){
+			showCustom(((TabItem)tab).getTabData());
+		}
 	}
 
 	@Override

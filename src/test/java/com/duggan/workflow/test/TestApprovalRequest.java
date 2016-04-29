@@ -39,7 +39,7 @@ public class TestApprovalRequest {
 		Document doc = DocumentDaoHelper.getDocument(10L);
 		JBPMHelper.get().createApprovalRequest("calcacuervo",doc);
 		
-		List<HTSummary> lst = JBPMHelper.get().getTasksForUser(userId, TaskType.INBOX);
+		List<HTSummary> lst = JBPMHelper.get().getTasksForUser(userId, TaskType.INBOX,0,100);
 		
 		for(HTSummary summary: lst){
 			System.err.println(summary.getDocumentRef()+" : "+summary.getCaseNo()+" : "+summary.getDescription());

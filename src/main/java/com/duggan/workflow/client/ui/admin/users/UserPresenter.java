@@ -108,12 +108,13 @@ public class UserPresenter extends
 
 	@TabInfo(container = AdminHomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		return new TabDataExt("Users and Groups", "icon-group", 3,
+		return new TabDataExt(TABLABEL, "icon-group", 3,
 				adminGatekeeper);
 	}
 
 	public static final Object ITEMSLOT = new Object();
 	public static final Object GROUPSLOT = new Object();
+	public static final String TABLABEL = "Users and Groups";
 
 	TYPE type = TYPE.USER;
 

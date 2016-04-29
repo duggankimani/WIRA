@@ -7,12 +7,13 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.FileSelectedEvent;
 import com.duggan.workflow.client.ui.events.FileSelectedEvent.FileSelectedHandler;
-import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.HasAllPermissionsGateKeeper;
+import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.TreeType;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
@@ -22,15 +23,15 @@ import com.duggan.workflow.shared.responses.GetFileTreeResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
@@ -40,7 +41,7 @@ import com.sencha.gxt.widget.core.client.tree.Tree;
 public class FileExplorerPresenter extends
 		Presenter<FileExplorerPresenter.MyView, FileExplorerPresenter.MyProxy>
 		implements FileSelectedHandler, SearchHandler {
-	interface MyView extends View {
+	public interface MyView extends View {
 
 		void bindAttachments(List<Attachment> attachments);
 
@@ -57,15 +58,21 @@ public class FileExplorerPresenter extends
 		void onLoad();
 	}
 
-	@NameToken(NameTokens.explorer)
-	@ProxyStandard
-	@UseGatekeeper(AdminGateKeeper.class)
-	interface MyProxy extends TabContentProxyPlace<FileExplorerPresenter> {
+//	public static final String CAN_VIEW_PROCESSES = "PROCESSES_CAN_VIEW_PROCESSES";
+	
+	@ProxyCodeSplit
+	@NameToken({NameTokens.explorer})
+//	@UseGatekeeper(HasAllPermissionsGateKeeper.class)
+//	@GatekeeperParams({"PROCESSES_CAN_VIEW_PROCESSES"})
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface MyProxy extends TabContentProxyPlace<FileExplorerPresenter> {
 	}
+	
+	public static final String TABLABEL = "File Explorer";
 
 	@TabInfo(container = HomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		TabDataExt data = new TabDataExt("File Manager", "icon-dashboard", 12,
+	static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+		TabDataExt data = new TabDataExt(TABLABEL, "icon-dashboard", 12,
 				adminGatekeeper, false);
 		return data;
 	}
@@ -76,7 +83,7 @@ public class FileExplorerPresenter extends
 	private String refId;
 
 	@Inject
-	FileExplorerPresenter(EventBus eventBus, MyView view, MyProxy proxy) {
+	public FileExplorerPresenter(EventBus eventBus, MyView view, MyProxy proxy) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 	}
 
@@ -132,6 +139,7 @@ public class FileExplorerPresenter extends
 	
 	@Override
 	protected void onReveal() {
+		super.onReveal();
 		getView().onLoad();
 	}
 

@@ -75,11 +75,10 @@ import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentView;
 import com.duggan.workflow.client.ui.error.ErrorPagePresenter;
 import com.duggan.workflow.client.ui.error.ErrorPageView;
-import com.duggan.workflow.client.ui.error.ErrorPresenter;
-import com.duggan.workflow.client.ui.error.ErrorView;
 import com.duggan.workflow.client.ui.error.NotfoundPresenter;
 import com.duggan.workflow.client.ui.error.NotfoundView;
-import com.duggan.workflow.client.ui.fileexplorer.FileExplorerModule;
+import com.duggan.workflow.client.ui.fileexplorer.FileExplorerPresenter;
+import com.duggan.workflow.client.ui.fileexplorer.FileExplorerView;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.filter.FilterView;
 import com.duggan.workflow.client.ui.header.HeaderPresenter;
@@ -140,6 +139,7 @@ import com.gwtplatform.mvp.client.annotations.ErrorPlace;
 import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.gwtplatform.mvp.shared.proxy.ParameterTokenFormatter;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -147,14 +147,10 @@ public class ClientModule extends AbstractPresenterModule {
 	protected void configure() {
 
 		install(new RpcDispatchAsyncModule.Builder().build());
-
-		// install(new DefaultModule(ClientPlaceManager.class));
-		install(new DefaultModule.Builder().build());
 		
-		install(new BaseProcessModule());
-		install(new ProcessListingModule());
-		install(new FileExplorerModule());
-
+		// install(new DefaultModule(ClientPlaceManager.class));
+		install(new DefaultModule.Builder().tokenFormatter(ParameterTokenFormatter.class).build());
+		
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);
 		bindConstant().annotatedWith(UnauthorizedPlace.class).to(
@@ -169,6 +165,11 @@ public class ClientModule extends AbstractPresenterModule {
 				
 		requestStaticInjection(AppContext.class);
 		requestStaticInjection(AppManager.class);
+
+
+		install(new BaseProcessModule());
+		install(new ProcessListingModule());
+//		install(new FileExplorerModule());
 
 		bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class,
 				MainPageView.class, MainPagePresenter.MyProxy.class);
@@ -191,9 +192,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(ErrorPagePresenter.class,
 				ErrorPagePresenter.MyView.class, ErrorPageView.class,
 				ErrorPagePresenter.MyProxy.class);
-
-		bindPresenterWidget(ErrorPresenter.class, ErrorPresenter.MyView.class,
-				ErrorView.class);
 
 		bindPresenterWidget(GenericDocumentPresenter.class,
 				GenericDocumentPresenter.MyView.class,
@@ -381,6 +379,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenter(ReportsPresenter.class, ReportsPresenter.IReportsView.class,
 				ReportsView.class, ReportsPresenter.IReportsProxy.class);
+		
+		bindPresenter(FileExplorerPresenter.class, FileExplorerPresenter.MyView.class, FileExplorerView.class, FileExplorerPresenter.MyProxy.class);
 
 	}
 }
