@@ -82,6 +82,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 									// fires an event
 
 	public FieldWidget() {
+		super();
+		getElement().getStyle().setProperty("position", "inherit");
+		getElement().getStyle().setProperty("overflow", "inherit");
 		shim.addStyleName("demo-PaletteWidget-shim");
 		defaultProperties();
 		initField();
@@ -286,14 +289,14 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		// register default events
 
 	}
-	
+
 	@Override
 	public void onFieldReloaded(FieldReloadedEvent event) {
-		List<Field> fields= event.getFields();
-		if(fields.contains(field)){
+		List<Field> fields = event.getFields();
+		if (fields.contains(field)) {
 			Value fieldValue = getFieldValue();
 			int idx = fields.indexOf(field);
-			
+
 			Field reloaded = fields.get(idx);
 			setField(reloaded);
 			setValue(fieldValue);
@@ -454,12 +457,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	@Override
 	public void onResetFieldValue(ResetFieldValueEvent event) {
-		
+
 		if (!event.getFieldName().equals(field.getName())) {
 			return;
 		}
 
-		//Window.alert("FieldName Reset = "+event.getFieldName()+" = "+event.getValue());
+		// Window.alert("FieldName Reset = "+event.getFieldName()+" = "+event.getValue());
 		setValue(parseValue(event.getValue()));
 
 	}
@@ -1110,7 +1113,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 		}
 
-		if(this.isVisible()){
+		if (this.isVisible()) {
 			setComponentValid(isValid);
 		}
 
@@ -1135,18 +1138,18 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public abstract Widget getInputComponent();
 
 	public abstract Element getViewElement();
-	
-	public void execTrigger(){
+
+	public void execTrigger() {
 		String triggerName = getPropertyValue(CUSTOMTRIGGER);
-		boolean hasTrigger = triggerName!=null && !triggerName.isEmpty();
-		
-//		if(){
-//			AppContext.fireEvent(new ExecTriggerEvent(triggerName));
-//		}
-		
-		//Window.alert(msg);
-		if(field.isDynamicParent() || hasTrigger){
-			AppContext.fireEvent(new FieldLoadEvent(field,triggerName));
+		boolean hasTrigger = triggerName != null && !triggerName.isEmpty();
+
+		// if(){
+		// AppContext.fireEvent(new ExecTriggerEvent(triggerName));
+		// }
+
+		// Window.alert(msg);
+		if (field.isDynamicParent() || hasTrigger) {
+			AppContext.fireEvent(new FieldLoadEvent(field, triggerName));
 		}
 	}
 

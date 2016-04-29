@@ -11,6 +11,8 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
  *
  */
 public class DateUtils {
+	
+	static String datepattern_sys = "yyyy-MM-dd";
 	static String datepattern="dd/MM/yyyy";
 	static String mixeddatepattern="EEE dd/MM/yyyy";
 	static String longdatepattern="dd MMM yyyy";
@@ -21,6 +23,7 @@ public class DateUtils {
 	static String Time = "hh:mm a";
 	static String MonthTime = "MMM d, hh:mm a";
 	
+	public static final DateTimeFormat DATEFORMAT_SYS = DateTimeFormat.getFormat(datepattern_sys);
 	public static final DateTimeFormat LONGDATEFORMAT = DateTimeFormat.getFormat(longdatepattern);
 	public static final DateTimeFormat CREATEDFORMAT = DateTimeFormat.getFormat(createdpattern);
 	public static final DateTimeFormat DATEFORMAT = DateTimeFormat.getFormat(datepattern);

@@ -48,7 +48,6 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
-import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -64,7 +63,6 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
@@ -98,7 +96,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
 
 	public static final SingleSlot<GenericDocumentPresenter> FILTER_SLOT = new SingleSlot<GenericDocumentPresenter>();
-	
+
 	@Inject
 	DispatchAsync dispatcher;
 	@Inject
@@ -322,18 +320,22 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 							if (doc instanceof Document) {
 								docRefId = doc.getRefId();
+
 								if (((Document) doc).getStatus() == DocStatus.DRAFTED) {
 									docMode = DocMode.READWRITE;
 								}
 								// Load document
-//								fireEvent(new DocumentSelectionEvent(docRefId,
-//										null, docMode));
+								if (currentTaskType==TaskType.SEARCH && (mode == MODE.EDIT || mode == MODE.CREATE)) {
+									fireEvent(new DocumentSelectionEvent(
+											docRefId, null, docMode));
+								}
 							} else {
 								docRefId = ((HTSummary) doc).getRefId();
 								long taskId = ((HTSummary) doc).getId();
 								// Load Task
-//								fireEvent(new DocumentSelectionEvent(docRefId,
-//										taskId, docMode));
+								// fireEvent(new
+								// DocumentSelectionEvent(docRefId,
+								// taskId, docMode));
 							}
 
 						} else {
@@ -368,7 +370,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			setInSlot(DATEGROUP_SLOT, null);
 		}
 
-		getView().bindTasks(tasks,isIncremental);
+		getView().bindTasks(tasks, isIncremental);
 
 		final List<Date> dates = new ArrayList<Date>();
 

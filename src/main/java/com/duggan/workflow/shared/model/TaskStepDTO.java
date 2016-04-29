@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class TaskStepDTO implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class TaskStepDTO implements Serializable, IsSerializable{
 
 	/**
 	 * 

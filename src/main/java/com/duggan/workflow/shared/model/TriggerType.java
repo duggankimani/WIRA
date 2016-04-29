@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-public enum TriggerType {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum TriggerType implements IsSerializable {
 
 	BEFORESTEP("Before"),
 	AFTERSTEP("After");
