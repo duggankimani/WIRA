@@ -27,9 +27,6 @@ public class DateInput extends Composite implements HasValue<Date> {
 	interface DateInputUiBinder extends UiBinder<Widget, DateInput> {
 	}
 
-	// @UiField
-	// InlineLabel spnCalendar1;
-	// @UiField DateBox dtInput;
 	@UiField
 	TextField txtDate;
 
@@ -41,7 +38,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				Window.alert("Changed!!!");
+				
 			}
 		});
 	}
@@ -135,7 +132,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 																
 																
 																dp.on('dp.change', function() {
-																	$wnd.alert('Changed!!!---');
+																	$wnd.jQuery(dp).find('input:first').change();
 																});
 																
 																}-*/;
