@@ -2,6 +2,8 @@ package com.duggan.workflow.client.ui.admin.datatable;
 
 import java.util.List;
 
+import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
@@ -17,6 +19,26 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.Org;
+import com.duggan.workflow.shared.model.UserGroup;
+import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.duggan.workflow.shared.model.catalog.CatalogType;
+import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
+import com.duggan.workflow.shared.requests.GetCatalogsRequest;
+import com.duggan.workflow.shared.requests.GetDataRequest;
+import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
+import com.duggan.workflow.shared.requests.GetProcessesRequest;
+import com.duggan.workflow.shared.requests.InsertDataRequest;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveCatalogRequest;
+import com.duggan.workflow.shared.responses.GetCatalogsResponse;
+import com.duggan.workflow.shared.responses.GetDataResponse;
+import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
+import com.duggan.workflow.shared.responses.GetProcessesResponse;
+import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -32,29 +54,12 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.model.catalog.Catalog;
-import com.duggan.workflow.shared.model.catalog.CatalogType;
-import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
-import com.duggan.workflow.shared.requests.GetCatalogsRequest;
-import com.duggan.workflow.shared.requests.GetDataRequest;
-import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
-import com.duggan.workflow.shared.requests.GetProcessesRequest;
-import com.duggan.workflow.shared.requests.InsertDataRequest;
-import com.duggan.workflow.shared.requests.MultiRequestAction;
-import com.duggan.workflow.shared.requests.SaveCatalogRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
-import com.duggan.workflow.shared.responses.GetCatalogsResponse;
-import com.duggan.workflow.shared.responses.GetDataResponse;
-import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
-import com.duggan.workflow.shared.responses.GetProcessesResponse;
-import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 
 public class DataTablePresenter
 		extends
 		Presenter<DataTablePresenter.IDataTableView, DataTablePresenter.IDataTableProxy>
-		implements EditCatalogDataHandler, EditCatalogSchemaHandler, SearchHandler {
+		implements EditCatalogDataHandler, EditCatalogSchemaHandler,
+		SearchHandler, CheckboxSelectionHandler {
 
 	public interface IDataTableView extends View {
 		HasClickHandlers getNewButton();
@@ -66,6 +71,14 @@ public class DataTablePresenter
 		HasClickHandlers getNewReportLink();
 
 		HasClickHandlers getNewReportViewLink();
+
+		void setSelected(boolean isSelected);
+
+		HasClickHandlers getViewDataLink();
+
+		HasClickHandlers getEditLink();
+
+		HasClickHandlers getDeleteLink();
 	}
 
 	@ProxyCodeSplit
@@ -77,8 +90,7 @@ public class DataTablePresenter
 
 	@TabInfo(container = AdminHomePresenter.class)
 	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8,
-				adminGatekeeper);
+		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8, adminGatekeeper);
 		return ext;
 	}
 
@@ -88,6 +100,8 @@ public class DataTablePresenter
 
 	@Inject
 	DispatchAsync requestHelper;
+
+	private Object selectedModel;
 
 	@Inject
 	public DataTablePresenter(final EventBus eventBus,
@@ -101,6 +115,8 @@ public class DataTablePresenter
 		addRegisteredHandler(EditCatalogDataEvent.TYPE, this);
 		addRegisteredHandler(EditCatalogSchemaEvent.TYPE, this);
 		addRegisteredHandler(SearchEvent.getType(), this);
+		addRegisteredHandler(CheckboxSelectionEvent.getType(), this);
+
 		getView().getNewButton().addClickHandler(new ClickHandler() {
 
 			@Override
@@ -122,6 +138,32 @@ public class DataTablePresenter
 			@Override
 			public void onClick(ClickEvent event) {
 				showPopup(CatalogType.REPORTVIEW, null);
+			}
+		});
+
+		getView().getEditLink().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				Catalog cat = ((Catalog) selectedModel);
+				showPopup(cat);
+			}
+		});
+
+		getView().getViewDataLink().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				Catalog cat = ((Catalog) selectedModel);
+				showDataPopup(cat);
+			}
+		});
+
+		getView().getDeleteLink().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				deleteCatalog((Catalog) selectedModel);
 			}
 		});
 
@@ -166,7 +208,7 @@ public class DataTablePresenter
 						}
 					}
 				});
-		
+
 		AppManager.showPopUp(
 				(catalog == null || catalog.getId() == null) ? "Create Table"
 						: "Edit Table", view, "create-data-table-popup",
@@ -261,12 +303,12 @@ public class DataTablePresenter
 	private void loadData() {
 		loadData(null);
 	}
-	
+
 	private void loadData(String searchTerm) {
 		fireEvent(new ProcessingEvent("Loading..."));
 		GetCatalogsRequest getCats = new GetCatalogsRequest();
 		getCats.setSearchTerm(searchTerm);
-		
+
 		requestHelper.execute(getCats,
 				new TaskServiceCallback<GetCatalogsResponse>() {
 					@Override
@@ -347,8 +389,23 @@ public class DataTablePresenter
 
 	@Override
 	public void onSearch(SearchEvent event) {
-		if(isVisible()){
+		if (isVisible()) {
 			loadData(event.getFilter().getPhrase());
 		}
+	}
+
+	@Override
+	public void onCheckboxSelection(CheckboxSelectionEvent event) {
+
+		selectedModel = event.getModel();
+		selectItem(selectedModel, event.getValue());
+
+		if (!event.getValue()) {
+			selectedModel = null;
+		}
+	}
+
+	private void selectItem(Object model, boolean isSelected) {
+		getView().setSelected(isSelected);
 	}
 }
