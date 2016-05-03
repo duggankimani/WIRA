@@ -18,6 +18,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,7 +30,7 @@ public class OutPutDocsView extends ViewImpl implements
 
 	private final Widget widget;
 	@UiField Anchor aNewDocument;
-	@UiField TableView tblView;
+	@UiField FlexTable tblView;
 
 	public interface Binder extends UiBinder<Widget, OutPutDocsView> {
 	}
@@ -37,20 +38,20 @@ public class OutPutDocsView extends ViewImpl implements
 	@Inject
 	public OutPutDocsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		setTable();
+//		setTable();
 	}
 
-	private void setTable() {
-		tblView.setAutoNumber(true);
-		List<TableHeader> th = new ArrayList<TableHeader>();
-		th.add(new TableHeader("Name", 20.0,"title"));
-		th.add(new TableHeader("Template Id", 20.0));
-		th.add(new TableHeader("Path", 30.0));
-		th.add(new TableHeader("Attachment(s)", 20.0));
-		th.add(new TableHeader("Action(s)", 10.0));
-		
-		tblView.setTableHeaders(th);
-	}
+//	private void setTable() {
+//		tblView.setAutoNumber(true);
+//		List<TableHeader> th = new ArrayList<TableHeader>();
+//		th.add(new TableHeader("Name", 20.0,"title"));
+//		th.add(new TableHeader("Template Id", 20.0));
+//		th.add(new TableHeader("Path", 30.0));
+//		th.add(new TableHeader("Attachment(s)", 20.0));
+//		th.add(new TableHeader("Action(s)", 10.0));
+//		
+//		tblView.setTableHeaders(th);
+//	}
 
 	@Override
 	public Widget asWidget() {
@@ -63,7 +64,8 @@ public class OutPutDocsView extends ViewImpl implements
 
 	@Override
 	public void setOutputDocuments(List<OutputDocument> documents) {
-		tblView.clearRows();
+		tblView.removeAllRows();
+		setUserHeaders(tblView);
 		Collections.sort(documents, new Comparator<OutputDocument>(){
 			@Override
 			public int compare(OutputDocument o1, OutputDocument o2) {
@@ -72,52 +74,111 @@ public class OutPutDocsView extends ViewImpl implements
 			}
 		});
 		
+		int i = 1;
 		for(OutputDocument doc: documents){
-			createRow(doc);
+			ActionLink link = new ActionLink();
+			if(doc.getAttachmentName()!=null){			
+				link.setText(doc.getAttachmentName());
+				UploadContext context = new UploadContext("getreport");
+				context.setContext("attachmentId", doc.getAttachmentId()+"");
+				context.setContext("ACTION", "GETATTACHMENT");
+				link.setTarget("_blank");
+				link.setHref(context.toUrl());
+			}
+			
+			int j = 0;
+			tblView.setWidget(i, j++ , new HTMLPanel(""+i));
+			tblView.setWidget(i, j++, new HTMLPanel(doc.getCode()));
+			tblView.setWidget(i, j++, new HTMLPanel(doc.getPath()));
+			tblView.setWidget(i, j++, link);
+			
+			final Link edit = new Link("Edit",doc);
+			edit.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					OutputDocument d = edit.getDoc();
+					AppContext.fireEvent(new EditOutputDocEvent(d));
+				}
+			});
+			
+			final Link delete = new Link("Delete", doc);
+			delete.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					OutputDocument d= delete.getDoc();
+					d.setActive(false);
+					AppContext.fireEvent(new EditOutputDocEvent(d));
+				}
+			});
+			
+			
+			HTMLPanel panel = new HTMLPanel("");
+			panel.add(edit);
+			panel.add(new HTMLPanel(""));
+			panel.add(delete);
+			tblView.setWidget(i, j++, panel);
+			
+			++i;
 		}
 	}
 
-	private void createRow(final OutputDocument doc) {
-	
-		ActionLink link = new ActionLink();
-		if(doc.getAttachmentName()!=null){			
-			link.setText(doc.getAttachmentName());
-			UploadContext context = new UploadContext("getreport");
-			context.setContext("attachmentId", doc.getAttachmentId()+"");
-			context.setContext("ACTION", "GETATTACHMENT");
-			link.setTarget("_blank");
-			link.setHref(context.toUrl());
-		}
-		
-		
-		final Link edit = new Link("Edit",doc);
-		edit.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				OutputDocument d = edit.getDoc();
-				AppContext.fireEvent(new EditOutputDocEvent(d));
-			}
-		});
-		
-		final Link delete = new Link("Delete", doc);
-		delete.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				OutputDocument d= delete.getDoc();
-				d.setActive(false);
-				AppContext.fireEvent(new EditOutputDocEvent(d));
-			}
-		});
-		
-		HTMLPanel panel = new HTMLPanel("");
-		panel.add(edit);
-		panel.add(delete);
-		
-		tblView.addRow(new InlineLabel(doc.getName()), new InlineLabel(doc.getCode()), 
-				new InlineLabel(doc.getPath()),link, panel);
+	private void setUserHeaders(FlexTable flexTable) {
+		int j = 0;
+		flexTable.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
+		flexTable.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
+		flexTable.setWidget(0, j++, new HTMLPanel("<strong>Template Id</strong>"));
+		flexTable.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+		flexTable.setWidget(0, j++, new HTMLPanel("<strong>Path</strong>"));
+		flexTable.getFlexCellFormatter().setWidth(0, (j - 1), "110px");
+		flexTable.setWidget(0, j++, new HTMLPanel("<strong>Attachments</strong>"));
+		flexTable.getFlexCellFormatter().setWidth(0, (j - 1), "150px");
+		flexTable.setWidget(0, j++, new HTMLPanel("<strong>Actions</strong>"));
+		flexTable.getFlexCellFormatter().setWidth(0, (j - 1), "110px");
 	}
+
+//	private void createRow(final OutputDocument doc) {
+//	
+//		ActionLink link = new ActionLink();
+//		if(doc.getAttachmentName()!=null){			
+//			link.setText(doc.getAttachmentName());
+//			UploadContext context = new UploadContext("getreport");
+//			context.setContext("attachmentId", doc.getAttachmentId()+"");
+//			context.setContext("ACTION", "GETATTACHMENT");
+//			link.setTarget("_blank");
+//			link.setHref(context.toUrl());
+//		}
+//		
+//		
+//		final Link edit = new Link("Edit",doc);
+//		edit.addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				OutputDocument d = edit.getDoc();
+//				AppContext.fireEvent(new EditOutputDocEvent(d));
+//			}
+//		});
+//		
+//		final Link delete = new Link("Delete", doc);
+//		delete.addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				OutputDocument d= delete.getDoc();
+//				d.setActive(false);
+//				AppContext.fireEvent(new EditOutputDocEvent(d));
+//			}
+//		});
+//		
+//		HTMLPanel panel = new HTMLPanel("");
+//		panel.add(edit);
+//		panel.add(delete);
+//		
+////		tblView.addRow(new InlineLabel(doc.getName()), new InlineLabel(doc.getCode()), 
+////				new InlineLabel(doc.getPath()),link, panel);
+//	}
 	
 	class Link extends ActionLink{
 		OutputDocument document;

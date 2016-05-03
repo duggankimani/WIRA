@@ -17,9 +17,8 @@
 				</div>
 			</div>
 
-			<d:TableView ui:field="tblView" striped="false" isGrid="false"
-				bordered="true" autoNumber="false" styleName="table-programs">
-			</d:TableView>
+			<g:FlexTable ui:field="tblView" styleName="table-programs">
+			</g:FlexTable>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
