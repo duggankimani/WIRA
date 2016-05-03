@@ -25,7 +25,8 @@ public class CatalogColumn implements Serializable,IsSerializable, IsCatalogItem
 	}
 
 	public String getName() {
-		return name;
+		String newName = name.replaceAll("\\s", "_");
+		return newName;
 	}
 
 	public void setName(String name) {

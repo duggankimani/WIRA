@@ -91,6 +91,16 @@
 		<url-pattern>/ipnserv</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+	    <servlet-class>com.duggan.workflow.server.servlets.upload.DownloadReportServlet</servlet-class>
+	    <servlet-name>downloadReport</servlet-name>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>downloadReport</servlet-name>
+	    <url-pattern>/downloadreport</url-pattern>
+	</servlet-mapping>
+	
 	<!-- For Servlet 3.0 -Securing cookies http://www.jtmelton.com/2012/01/17/year-of-security-for-java-week-3-session-cookie-secure-flag/ -->
 	<!-- session-config>
 	  <cookie-config>

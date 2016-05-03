@@ -166,7 +166,8 @@ public class DocumentHTMLMapper {
 			String key = group.substring(2, group.length());
 			Object val = get(values, key);
 			String value = val==null ? "": getValue((Value)val,isNumber);
-			rtn= rtn.replace(matcher.group(), value);
+			//rtn= rtn.replace(matcher.group(), value);
+			rtn= rtn.replaceAll(matcher.group()+"\\b", value);
         }
         	
         return rtn;
