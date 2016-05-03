@@ -89,13 +89,15 @@
 								<li>
 									<a href="#messages">Messages</a>
 								</li>
-
-								<li class="divider"></li>
 								<li>
 									<a href="#datatable">Data tables</a>
 								</li>
+								<li class="divider"></li>
 								<li>
 									<a href="#datasources">Datasources</a>
+								</li>
+								<li>
+									<a href="#settings">Settings</a>
 								</li>
 							</ul>
 						</li>
