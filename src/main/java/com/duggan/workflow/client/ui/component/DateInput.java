@@ -1,11 +1,14 @@
 package com.duggan.workflow.client.ui.component;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.*;
 import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -18,6 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 public class DateInput extends Composite implements HasValue<Date> {
 
@@ -27,18 +31,22 @@ public class DateInput extends Composite implements HasValue<Date> {
 	interface DateInputUiBinder extends UiBinder<Widget, DateInput> {
 	}
 
+	DateBox f;
+
 	@UiField
 	TextField txtDate;
 
 	String id = DOM.createUniqueId();
+
+	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+
 	public DateInput() {
 		initWidget(uiBinder.createAndBindUi(this));
 		getElement().setId(id);
-		txtDate.getElement().setId("input-"+id);
 		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				
+				// Window.alert("Value changed!! -- "+event.getValue());
 			}
 		});
 	}
@@ -50,7 +58,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 			return null;
 		}
 
-		return DATEFORMAT.parse(dateStr);
+		return DATEFORMAT_.parse(dateStr);
 	}
 
 	public HasValueChangeHandlers<String> getDateInput() {
@@ -111,31 +119,32 @@ public class DateInput extends Composite implements HasValue<Date> {
 		Date today = new Date();
 		CalendarUtil.addDaysToDate(today, 1);
 
-		initCollapsable(id);
+		initCollapsable(this, id);
 	}
 
-	public static native void initCollapsable(String id)/*-{
-																var ToEndDate = new Date();
-																 
-																var dp = $wnd.jQuery("#"+id).datetimepicker({
-																icons: {
-																time: "icon-time",
-																date: "icon-calendar",
-																up: "icon-angle-up",
-																down: "icon-angle-down",
-																previous: 'icon-angle-left',
-																next: 'icon-angle-right',
-																},
-																format: 'DD-MM-YYYY',
-																useCurrent:false,
-																});
-																
-																
-																dp.on('dp.change', function() {
-																	$wnd.jQuery(dp).find('input:first').change();
-																});
-																
-																}-*/;
+	public static native void initCollapsable(DateInput parent, String id)/*-{
+																			$wnd.jQuery($doc).ready(function(){
+																			var dp = $wnd.jQuery("#"+id).datetimepicker({
+																			icons: {
+																			time: "icon-time",
+																			date: "icon-calendar",
+																			up: "icon-angle-up",
+																			down: "icon-angle-down",
+																			previous: 'icon-angle-left',
+																			next: 'icon-angle-right',
+																			},
+																			format: 'DD-MM-YYYY',
+																			useCurrent:false,
+																			});
+																			
+																			
+																			dp.on('dp.change', function(e) {
+																				//$wnd.alert('Changed-- '+e.oldDate+' - '+e.date);
+																				parent.@com.duggan.workflow.client.ui.component.DateInput::setDate(Lcom/google/gwt/core/client/JsDate;)(e.date);
+																			});
+																			
+																			});
+																			}-*/;
 
 	public Date getDate() {
 		return getValueDate();
@@ -149,11 +158,35 @@ public class DateInput extends Composite implements HasValue<Date> {
 		txtDate.addStyleName(styleName);
 	}
 
+	public void setValue(Date date) {
+		if (date == null) {
+			txtDate.setValue("");
+		} else {
+			txtDate.setValue(DATEFORMAT_.format(date));
+		}
+	}
+
+	private void setDate(JsDate date) {
+//		Window.alert("New Date - " + date);
+		if (date != null) {
+			setValue(new Date(new Double(date.getTime()).longValue()), true);
+		} else {
+			setValue(null, true);
+		}
+	}
+
+	@Override
+	public void setValue(Date value, boolean fireEvents) {
+		setValue(value);
+		if (fireEvents) {
+			ValueChangeEvent.fire(this, value);
+		}
+	}
+
 	@Override
 	public HandlerRegistration addValueChangeHandler(
 			ValueChangeHandler<Date> handler) {
-
-		return null;
+		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
 	@Override
@@ -161,15 +194,4 @@ public class DateInput extends Composite implements HasValue<Date> {
 		return getValueDate();
 	}
 
-	public void setValue(Date date) {
-		if (date == null) {
-			txtDate.setValue("");
-		} else {
-			txtDate.setValue(DATEFORMAT.format(date));
-		}
-	}
-
-	@Override
-	public void setValue(Date value, boolean fireEvents) {
-	}
 }

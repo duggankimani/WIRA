@@ -14,6 +14,7 @@ public class DateUtils {
 	
 	static String datepattern_sys = "yyyy-MM-dd";
 	static String datepattern="dd/MM/yyyy";
+	static String _datepattern="dd-MM-yyyy";
 	static String mixeddatepattern="EEE dd/MM/yyyy";
 	static String longdatepattern="dd MMM yyyy";
 	static String createdpattern="dd/MM/yyyy HH:mm";
@@ -27,6 +28,7 @@ public class DateUtils {
 	public static final DateTimeFormat LONGDATEFORMAT = DateTimeFormat.getFormat(longdatepattern);
 	public static final DateTimeFormat CREATEDFORMAT = DateTimeFormat.getFormat(createdpattern);
 	public static final DateTimeFormat DATEFORMAT = DateTimeFormat.getFormat(datepattern);
+	public static final DateTimeFormat DATEFORMAT_ = DateTimeFormat.getFormat(_datepattern);
 	public static final DateTimeFormat MIXEDDAYDATEFORMAT = DateTimeFormat.getFormat(mixeddatepattern);
 	public static final DateTimeFormat HALFDATEFORMAT = DateTimeFormat.getFormat(halfPattern);
 	public static final DateTimeFormat FULLDATEFORMAT = DateTimeFormat.getFormat(fullPattern);
