@@ -20,9 +20,6 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Org;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
@@ -313,6 +310,7 @@ public class DataTablePresenter
 				new TaskServiceCallback<GetCatalogsResponse>() {
 					@Override
 					public void processResult(GetCatalogsResponse aResponse) {
+						selectItem(null, false);
 						fireEvent(new ProcessingCompletedEvent());
 						List<Catalog> catalogs = aResponse.getCatalogs();
 						getView().bindCatalogs(catalogs);
@@ -370,22 +368,36 @@ public class DataTablePresenter
 		}
 	}
 
-	private void deleteCatalog(Catalog catalog) {
-		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new DeleteCatalogRequest(catalog));
-		action.addRequest(new GetCatalogsRequest());
+	private void deleteCatalog(final Catalog catalog) {
+		
+		AppManager.showPopUp("Confirm Delete", "Delete catalog '"+catalog.getDescription()+"'", new OptionControl() {
+			
+			@Override
+			public void onSelect(String name) {
+				
+				if(name.equals("Delete")){
+					MultiRequestAction action = new MultiRequestAction();
+					action.addRequest(new DeleteCatalogRequest(catalog));
+					action.addRequest(new GetCatalogsRequest());
 
-		requestHelper.execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult aResponse) {
+					requestHelper.execute(action,
+							new TaskServiceCallback<MultiRequestActionResult>() {
+								@Override
+								public void processResult(MultiRequestActionResult aResponse) {
 
-						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
-								.get(1)).getCatalogs();
-						getView().bindCatalogs(catalogs);
-					}
-				});
-	}
+									List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+											.get(1)).getCatalogs();
+									getView().bindCatalogs(catalogs);
+									hide();
+								}
+							});
+				}else{
+					hide();
+				}
+				
+			}
+		}, "Cancel","Delete");
+			}
 
 	@Override
 	public void onSearch(SearchEvent event) {

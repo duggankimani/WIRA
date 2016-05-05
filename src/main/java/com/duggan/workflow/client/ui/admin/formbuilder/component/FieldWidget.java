@@ -293,13 +293,15 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	@Override
 	public void onFieldReloaded(FieldReloadedEvent event) {
 		List<Field> fields = event.getFields();
-		if (fields.contains(field)) {
-			Value fieldValue = getFieldValue();
-			int idx = fields.indexOf(field);
+		if (fields != null && field != null) {
+			if (fields.contains(field)) {
+				Value fieldValue = getFieldValue();
+				int idx = fields.indexOf(field);
 
-			Field reloaded = fields.get(idx);
-			setField(reloaded);
-			setValue(fieldValue);
+				Field reloaded = fields.get(idx);
+				setField(reloaded);
+				setValue(fieldValue);
+			}
 		}
 	}
 
