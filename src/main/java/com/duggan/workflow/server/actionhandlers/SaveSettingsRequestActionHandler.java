@@ -24,7 +24,7 @@ public class SaveSettingsRequestActionHandler extends
 		response.setSettings(SettingsDaoHelper.getSettings(null));
 		
 		//proactively re-initialize email service incase there was a change
-		EmailServiceHelper.initProperties();
+		EmailServiceHelper.initProperties(true);
 	}
 	
 	@Override

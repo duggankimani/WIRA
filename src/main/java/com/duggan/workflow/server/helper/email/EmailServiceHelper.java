@@ -46,12 +46,22 @@ public class EmailServiceHelper {
 	}
 
 	public static void initProperties() {
-		if (session != null) {
-			log.warn(">> Init Reusing javamail session "+session);
-			return;
-		}else{
-			log.warn(">> Init Creating New javamail session "+session);
+		initProperties(false);
+	}
+
+	public static void initProperties(boolean forceRefresh) {
+
+		if (forceRefresh) {
+			session = null;
 		}
+
+		if (session != null) {
+			log.warn(">> Init Reusing javamail session " + session);
+			return;
+		} else {
+			log.warn(">> Init Creating New javamail session " + session);
+		}
+
 		try {
 			props = new Properties();
 			Object auth = SettingsDaoHelper
@@ -149,7 +159,7 @@ public class EmailServiceHelper {
 
 			String rootFolder = "com/duggan/workflow/server/helper/email";
 
-			{
+			if (body.contains("cid:imageLogo")) {
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getSettingImage(SETTINGNAME.ORGLOGO), "<imageLogo>",
 						rootFolder + "/logo.png");
@@ -158,19 +168,21 @@ public class EmailServiceHelper {
 				}
 			}
 
-			if (initiatorId != null) {
-				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
-						.getUserImage(initiatorId.getUserId()), "<imageUser>",
-						rootFolder + "/blueman(small).png");
-				if (part != null) {
-					multipart.addBodyPart(part);
-				}
-			} else {
-				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
-						.getUserImage("RD2D-doesnt-exist"), "<imageUser>",
-						rootFolder + "/blueman(small).png");
-				if (part != null) {
-					multipart.addBodyPart(part);
+			if (body.contains("cid:imageUser")) {
+				if (initiatorId != null) {
+					MimeBodyPart part = getBodyType(DB.getAttachmentDao()
+							.getUserImage(initiatorId.getUserId()),
+							"<imageUser>", rootFolder + "/blueman(small).png");
+					if (part != null) {
+						multipart.addBodyPart(part);
+					}
+				} else {
+					MimeBodyPart part = getBodyType(DB.getAttachmentDao()
+							.getUserImage("RD2D-doesnt-exist"), "<imageUser>",
+							rootFolder + "/blueman(small).png");
+					if (part != null) {
+						multipart.addBodyPart(part);
+					}
 				}
 			}
 
@@ -243,7 +255,7 @@ public class EmailServiceHelper {
 
 			String rootFolder = "com/duggan/workflow/server/helper/email";
 
-			{
+			if (body.contains("cid:imageLogo")) {
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getSettingImage(SETTINGNAME.ORGLOGO), "<imageLogo>",
 						rootFolder + "/logo.png");
@@ -252,22 +264,23 @@ public class EmailServiceHelper {
 					multipart.addBodyPart(part);
 			}
 
-			if (initiatorId != null) {
-				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
-						.getUserImage(initiatorId), "<imageUser>", rootFolder
-						+ "/blueman(small).png");
+			if (body.contains("cid:imageUser")) {
+				if (initiatorId != null) {
+					MimeBodyPart part = getBodyType(DB.getAttachmentDao()
+							.getUserImage(initiatorId), "<imageUser>",
+							rootFolder + "/blueman(small).png");
 
-				if (part != null)
-					multipart.addBodyPart(part);
+					if (part != null)
+						multipart.addBodyPart(part);
 
-			} else {
-				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
-						.getUserImage(initiatorId), "<imageUser>", rootFolder
-						+ "/blueman(small).png");
+				} else {
+					MimeBodyPart part = getBodyType(DB.getAttachmentDao()
+							.getUserImage(initiatorId), "<imageUser>",
+							rootFolder + "/blueman(small).png");
 
-				if (part != null)
-					multipart.addBodyPart(part);
-
+					if (part != null)
+						multipart.addBodyPart(part);
+				}
 			}
 
 			message.setContent(multipart);
@@ -328,7 +341,8 @@ public class EmailServiceHelper {
 	public static void main(String[] args) throws Exception {
 		DBTrxProviderImpl.init();
 		DB.beginTransaction();
-		sendEmail("Hello World", "Test", Arrays.asList(new HTUser("Test User", "mdkimani@gmail.com")),
+		sendEmail("Hello World", "Test",
+				Arrays.asList(new HTUser("Test User", "mdkimani@gmail.com")),
 				new HTUser("Test User", "mdkimani@gmail.com"));
 		DB.commitTransaction();
 		DB.closeSession();
