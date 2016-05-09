@@ -12,6 +12,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.HasAllPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.Attachment;
@@ -64,14 +65,14 @@ public class FileExplorerPresenter extends
 	@NameToken({NameTokens.explorer})
 //	@UseGatekeeper(HasAllPermissionsGateKeeper.class)
 //	@GatekeeperParams({"PROCESSES_CAN_VIEW_PROCESSES"})
-	@UseGatekeeper(LoginGateKeeper.class)
+	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends TabContentProxyPlace<FileExplorerPresenter> {
 	}
 	
 	public static final String TABLABEL = "File Explorer";
 
 	@TabInfo(container = HomePresenter.class)
-	static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
 		TabDataExt data = new TabDataExt(TABLABEL, "icon-dashboard", 12,
 				adminGatekeeper, false);
 		return data;
