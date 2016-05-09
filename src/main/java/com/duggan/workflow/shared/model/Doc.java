@@ -10,72 +10,72 @@ import java.util.Map;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public abstract class Doc extends SerializableObj implements Serializable,IsSerializable,Comparable<Doc>{
+public abstract class Doc extends SerializableObj implements Serializable,
+		IsSerializable, Comparable<Doc> {
 
 	/**
 	 * 
 	 */
 	protected static final long serialVersionUID = 1L;
 
-	private boolean hasAttachment=false;
+	private boolean hasAttachment = false;
 
 	public abstract String getDescription();
 
 	public abstract Date getCreated();
 
 	public abstract Date getDocumentDate();
-	
+
 	public abstract Integer getPriority();
 
 	public abstract Object getId();
-	
+
 	protected Map<String, Value> values = new HashMap<String, Value>();
-	
+
 	protected Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
-	
+
 	private String processId;
 	private String processName;
 	private String nodeName;
 	private Long nodeId;
 	protected String caseNo;
-	
-	private HTStatus processStatus=HTStatus.INPROGRESS;
-	
+
+	private HTStatus processStatus = HTStatus.INPROGRESS;
+
 	private HTUser taskActualOwner;
 	private String potentialOwners;
-	
-	
+
 	/**
-	 * Sorts document/task elements in descending order
-	 * hence the negative sign (-)
+	 * Sorts document/task elements in descending order hence the negative sign
+	 * (-)
 	 */
 	@Override
 	public int compareTo(Doc o) {
 		Date thisDate = getSortDate(this);
-				
+
 		Date other = getSortDate(o);
-		return (- thisDate.compareTo(other));
+		return (-thisDate.compareTo(other));
 	}
 
-	public Date getSortDate(){
+	public Date getSortDate() {
 		return getSortDate(this);
 	}
-	
+
 	private Date getSortDate(Doc doc) {
-		
+
 		Date dateToUse = doc.getCreated();
-		if(doc instanceof HTSummary){
-			HTSummary summ = (HTSummary)doc;
-			if(summ.getStatus()==HTStatus.COMPLETED){
-				dateToUse  = summ.getCompletedOn();
+		if (doc instanceof HTSummary) {
+			HTSummary summ = (HTSummary) doc;
+			if (summ.getStatus() == HTStatus.COMPLETED) {
+				dateToUse = summ.getCompletedOn();
 			}
-		}else{
-			Document document = (Document)doc;
-			if(!document.getStatus().equals(DocStatus.DRAFTED)){
-				dateToUse  = document.getDateSubmitted();
+		} else {
+			Document document = (Document) doc;
+			if (!document.getStatus().equals(DocStatus.DRAFTED)) {
+				dateToUse = document.getDateSubmitted();
 			}
 		}
-		
+
 		return dateToUse;
 	}
 
@@ -83,49 +83,75 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 		return values;
 	}
 
-	public void setValues(Map<String, Value> values) {		
+	public void setValues(Map<String, Value> values) {
 		this.values = values;
 	}
-	
-	public void setValue(String name, Value value){
-		if(value!=null){
+
+	public void setValue(String name, Value value) {
+		if (value != null) {
 			value.setKey(name);
 		}
-		
-		if(name.equals("subject")){
-			//backward compatibility - Changing subject to-> CaseNo
+
+		if (name.equals("subject")) {
+			// backward compatibility - Changing subject to-> CaseNo
 			setValue("caseNo", value.clone(false));
 		}
-		
-		if(values.get(name)!=null && value!=null){
-			//Duggan 15/09/2015- Added this to support Field Triggers that may update a field
-			//value with the previous value's id - This update causes duplication of a field value in 
-			//the db
-			
-			Value v= values.get(name);
+
+		if (values.get(name) != null && value != null) {
+			// Duggan 15/09/2015- Added this to support Field Triggers that may
+			// update a field
+			// value with the previous value's id - This update causes
+			// duplication of a field value in
+			// the db
+
+			Value v = values.get(name);
 			v.setValue(value.getValue());
 			values.put(name, v);
-		}else{
+		} else {
 			values.put(name, value);
 		}
-		
+
 	}
-	
-	public void copyValue(String name, Value value){
+
+	public void _s(String name, Date value) {
+		setValue(name, new DateValue(value));
+	}
+
+	public void _s(String name, String value) {
+		setValue(name, new StringValue(value));
+	}
+
+	public void _s(String name, Double value) {
+		setValue(name, new DoubleValue(value));
+	}
+
+	public void _s(String name, Integer value) {
+		setValue(name, new IntValue(value));
+	}
+
+	public void _s(String name, Long value) {
+		setValue(name, new LongValue(value));
+	}
+
+	public void _s(String name, Boolean value) {
+		setValue(name, new BooleanValue(value));
+	}
+
+	public void copyValue(String name, Value value) {
 		Value previous = values.get(name);
-		if(previous==null){
+		if (previous == null) {
 			previous = value.clone(false);
 		}
-		
+
 		previous.setKey(name);
 		previous.setValue(value.getValue());
 		values.put(name, previous);
 	}
-	
+
 	public abstract HTUser getOwner();
-	
+
 	public abstract Long getProcessInstanceId();
-	
+
 	public boolean hasAttachment() {
 		return hasAttachment;
 	}
@@ -133,7 +159,7 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 	public void setHasAttachment(boolean hasAttachment) {
 		this.hasAttachment = hasAttachment;
 	}
-	
+
 	public Map<String, List<DocumentLine>> getDetails() {
 		return details;
 	}
@@ -141,56 +167,58 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 	public void setDetails(Map<String, List<DocumentLine>> details) {
 		this.details = details;
 	}
-	
-	public void addDetail(DocumentLine line){
+
+	public void addDetail(DocumentLine line) {
 		String name = line.getName();
-		
+
 		List<DocumentLine> lines = details.get(name);
-		if(lines==null){
+		if (lines == null) {
 			lines = new ArrayList<DocumentLine>();
 			details.put(name, lines);
 		}
 		lines.add(line);
-		
-		
+
 		/*
-		 * Duggan  06/10/2015
-		 * ExecuteWorkflow action submits a list of Value objects i.e Map<String,Value> ,
-		 * which works ok for all fields except grid fields updated through triggers
+		 * Duggan 06/10/2015 ExecuteWorkflow action submits a list of Value
+		 * objects i.e Map<String,Value> , which works ok for all fields except
+		 * grid fields updated through triggers
 		 * 
-		 * Grid rows updated through a trigger call to addDetail('gridName', DocumentLine) 
-		 * are not added to a GridValue object: they are written directly to a Map<String, List<DocLine>>,
-		 * hence they are left out when ExecuteWorkflow is called.
+		 * Grid rows updated through a trigger call to addDetail('gridName',
+		 * DocumentLine) are not added to a GridValue object: they are written
+		 * directly to a Map<String, List<DocLine>>, hence they are left out
+		 * when ExecuteWorkflow is called.
 		 * 
-		 *  To remedy this issue, We need to loop through the document lines generating a GridValue entry
-		 *  for each document line with no corresponding gridValue. ALTERNATIVELY, override addDetail and
-		 *  generate a GridValue entry there - This may be a better fit since 'after-step' triggers on 
-		 *  the last node will not interact with the interface before calling ExecuteWorkflow.
-		 *  @See Doc.addDetail()
+		 * To remedy this issue, We need to loop through the document lines
+		 * generating a GridValue entry for each document line with no
+		 * corresponding gridValue. ALTERNATIVELY, override addDetail and
+		 * generate a GridValue entry there - This may be a better fit since
+		 * 'after-step' triggers on the last node will not interact with the
+		 * interface before calling ExecuteWorkflow.
 		 * 
+		 * @See Doc.addDetail()
 		 */
 		GridValue value = null;
-		if(values.get(name)==null){
+		if (values.get(name) == null) {
 			value = new GridValue();
 			value.setKey(name);
-		}else if(values.get(name) instanceof GridValue){
+		} else if (values.get(name) instanceof GridValue) {
 			value = (GridValue) values.get(name);
-		}else{
+		} else {
 			value = new GridValue();
 			value.setKey(name);
 		}
-		
-		if(value.getValue().contains(line)){
+
+		if (value.getValue().contains(line)) {
 			value.getValue().remove(line);
 		}
 		value.getValue().add(line);
 		values.put(name, value);
 	}
-	
-	public void setDetails(String key, Collection<DocumentLine> values){
-		//Clear previous - Meant to avoid duplicates
+
+	public void setDetails(String key, Collection<DocumentLine> values) {
+		// Clear previous - Meant to avoid duplicates
 		details.remove(key);
-		for(DocumentLine line: values){
+		for (DocumentLine line : values) {
 			line.setName(key);
 			addDetail(line);
 		}
@@ -227,7 +255,7 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 	public void setNodeId(Long nodeId) {
 		this.nodeId = nodeId;
 	}
-	
+
 	public HTUser getTaskActualOwner() {
 		return taskActualOwner;
 	}
@@ -237,7 +265,7 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 	}
 
 	public void setProcessStatus(HTStatus status) {
-		this.processStatus=status;
+		this.processStatus = status;
 	}
 
 	public HTStatus getProcessStatus() {
@@ -251,15 +279,15 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 	public void setPotentialOwners(String potentialOwners) {
 		this.potentialOwners = potentialOwners;
 	}
-	
+
 	public abstract Long getDocumentId();
-	
-	public Object get(String key){
+
+	public Object get(String key) {
 		Value val = values.get(key);
-		if(val==null){
+		if (val == null) {
 			return null;
 		}
-		
+
 		return val.getValue();
 	}
 
@@ -271,4 +299,4 @@ public abstract class Doc extends SerializableObj implements Serializable,IsSeri
 		this.caseNo = caseNo;
 		setValue("caseNo", new StringValue(null, "caseNo", caseNo));
 	}
-}	
+}
