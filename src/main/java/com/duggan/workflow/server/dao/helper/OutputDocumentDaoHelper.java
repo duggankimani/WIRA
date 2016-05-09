@@ -42,6 +42,7 @@ public class OutputDocumentDaoHelper {
 	private static OutputDocument get(ADOutputDoc output) {
 
 		OutputDocument document = new OutputDocument();
+		document.setRefId(output.getRefId());
 		document.setCode(output.getCode());
 		document.setDescription(output.getDescription());
 		document.setId(output.getId());
@@ -106,6 +107,13 @@ public class OutputDocumentDaoHelper {
 
 		OutputDocumentDao dao = DB.getOutputDocDao();
 		byte[] bites = dao.getHTMLTemplate(templateName);
+		return bites == null ? null : new String(bites);
+	}
+	
+	public static String getHTMLTemplateByRefId(String outputRefId) {
+
+		OutputDocumentDao dao = DB.getOutputDocDao();
+		byte[] bites = dao.getHTMLTemplateByOutputId(outputRefId);
 		return bites == null ? null : new String(bites);
 	}
 
@@ -263,5 +271,19 @@ public class OutputDocumentDaoHelper {
 		}
 
 		return value == null ? null : value.getValue();
+	}
+
+	public static OutputDocument getDocument(String outputRefId, boolean loadTemplate) {
+		
+		OutputDocumentDao dao = DB.getOutputDocDao();
+		ADOutputDoc outDoc = dao.findByRefId(outputRefId, ADOutputDoc.class);
+		
+		OutputDocument document= get(outDoc);
+		
+		if(loadTemplate){
+			document.setTemplate(getHTMLTemplateByRefId(outputRefId));
+		}
+		
+		return document;
 	}
 }

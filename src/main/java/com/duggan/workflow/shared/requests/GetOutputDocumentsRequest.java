@@ -8,13 +8,12 @@ public class GetOutputDocumentsRequest extends BaseRequest<GetOutputDocumentsRes
 	private Long documentId;
 	private String processRefId;
 	private String searchTerm;
-	
 
 	public GetOutputDocumentsRequest() {
 	}
 	
-	public GetOutputDocumentsRequest(Long id) {
-		this.documentId = id;
+	public GetOutputDocumentsRequest(Long documentId) {
+		this.documentId = documentId;
 	}
 	
 	public GetOutputDocumentsRequest(String processRefId) {

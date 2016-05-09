@@ -6,8 +6,5 @@
 	
 	<g:HTMLPanel>
 		<senchaform:HtmlEditor ui:field="senchaEditor"></senchaform:HtmlEditor>
-		<!-- d:TextArea ui:field="txtHTML" 
-			rows="15" width="75%"> 
-		</d:TextArea -->
 	</g:HTMLPanel>
 </ui:UiBinder> 

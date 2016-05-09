@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class OutputDocument implements Serializable, Listable {
+public class OutputDocument extends SerializableObj implements Serializable, Listable {
 
 	/**
 	 * 
@@ -18,6 +18,7 @@ public class OutputDocument implements Serializable, Listable {
 	private String attachmentName;
 	private String path;
 	private String processRefId;
+	private String template;
 	
 	public OutputDocument() {
 	}
@@ -93,6 +94,14 @@ public class OutputDocument implements Serializable, Listable {
 
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 
 }

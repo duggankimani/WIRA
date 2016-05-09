@@ -442,8 +442,8 @@ public class CatalogDaoHelper {
 		headerbuffer.append("</theader>");
 
 		String table = headerbuffer.append(bodybuffer.toString()).toString();
-
-		IOUtils.write(table.getBytes(), new FileOutputStream(new File("/home/wladek/Documents/cataloguehtml.html")));
+		
+//		IOUtils.write(table.getBytes(), new FileOutputStream(new File("/home/wladek/Documents/cataloguehtml.html")));
 
 		return convertor.convert(document, table);
 	}

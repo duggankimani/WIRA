@@ -80,6 +80,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 								// OperandChangeEvent
 	boolean isObservable = false;// its value is depended upon by other fields -
 									// fires an event
+	private boolean isShimActivated;
 
 	public FieldWidget() {
 		super();
@@ -148,6 +149,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			return;
 		}
 
+		if(isShimActivated){
+			return;
+		}else{
+			isShimActivated=true;
+		}
+		
 		shim.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -163,17 +170,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		/*
 		 * Position of the pop-over
 		 */
-		int top = 7;
-		int left = 75;
-
-		if (field.getType() == DataType.JS) {
-			left = 55;
-		}
-
-		// System.err.println("Field ="+field+"\n Properties = "+getProperties());
-
-		AppManager.showPropertyPanel(field, getProperties(), top, left,
-				arrowPosition);
+		AppManager.showPropertyPanel(field, getProperties());
 
 	}
 

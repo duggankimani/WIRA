@@ -202,12 +202,7 @@ implements EditLineHandler{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				int top = 20;
-				int left = 70;
-				int arrowPosition = getShim().getAbsoluteTop()-40;
-				
-				AppManager.showPropertyPanel(field, getProperties(), top, left,
-						arrowPosition);
+				AppManager.showPropertyPanel(field, getProperties());
 			}
 		});
 	}

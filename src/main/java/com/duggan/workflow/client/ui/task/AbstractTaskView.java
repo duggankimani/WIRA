@@ -520,7 +520,8 @@ public class AbstractTaskView extends ViewImpl implements
 			tblTasks.setWidget(i, j++, div);
 
 			HTMLPanel status = new HTMLPanel("");
-			status.add(spnStatus);
+			//status.add(spnStatus);
+			status.add(new InlineLabel(doc.getProcessStatus().name()));
 
 			tblTasks.setWidget(i, j++, status);
 			++i;

@@ -634,6 +634,12 @@ box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
 	width:90% !important;
 }
 
+.full-page-popup{
+	left: 30% !important;
+	max-width:1000px !important;
+	width:90% !important;
+}
+
 .detailed-info-table{
 	width:100% !important;
 }

@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.popup.ModalPopup;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
@@ -30,17 +31,37 @@ public class AppManager {
 			final OnOptionSelected onOptionSelected, String... buttons) {
 		showPopUp(header, new InlineLabel(content), onOptionSelected, buttons);
 	}
+	
+	public static void showPopUp(String header, String content,
+			final OnOptionSelected onOptionSelected,PopupType type, String... buttons) {
+		showPopUp(header, new InlineLabel(content), onOptionSelected,type, buttons);
+	}
 
 	public static void showPopUp(String header, Widget widget,
 			final OnOptionSelected onOptionSelected, String... buttons) {
-		showPopUp(header, widget, null, onOptionSelected, buttons);
+		showPopUp(header, widget, null, onOptionSelected,PopupType.DEFAULT, buttons);
+	}
+	
+	public static void showPopUp(String header, Widget widget,
+			final OnOptionSelected onOptionSelected,PopupType type, String... buttons) {
+		showPopUp(header, widget, null, onOptionSelected,type, buttons);
 	}
 	
 	public static void showPopUp(String header, Widget widget,final String customPopupStyle,
 			final OnOptionSelected onOptionSelected, String... buttons) {
+		showPopUp(header, widget, customPopupStyle, onOptionSelected, PopupType.DEFAULT, buttons);
+	}
+	public static void showPopUp(String header, Widget widget,final String customPopupStyle,
+			final OnOptionSelected onOptionSelected,PopupType type, String... buttons) {
 		
 		final ModalPopup modalPopup = mainPagePresenter.getView().getModalPopup(true);
 		modalPopup.clear();
+		
+		if(type== PopupType.FULLPAGE){
+			modalPopup.addStyleName("full-page-popup");
+		}else{
+			modalPopup.removeStyleName("full-page-popup");
+		}
 		
 		modalPopup.setHeader(header);
 		modalPopup.setContent(widget);
@@ -94,20 +115,20 @@ public class AppManager {
 	}
 
 	public static void showPropertyPanel(FormModel parent,
-			List<Property> properties, int top, int left, int arrowposition) {
+			List<Property> properties) {
 		//Bad Fix - For correction 
 		propertyPanel.getView().showBody(false, null);
-		
 		propertyPanel.setProperties(parent, properties);
-		int[] position = calculatePosition(top, left);
-		propertyPanel.getView().getPopUpContainer()
-				.setPopupPosition(position[1], position[0]);
-
-		propertyPanel.getView().getiArrow().getElement().getStyle()
-				.setTop(arrowposition, Unit.PX);
-
 		propertyPanel.getView().getPopoverFocus().setFocus(true);
-		mainPagePresenter.addToPopupSlot(propertyPanel, false);
+		showPopUp("Properties", propertyPanel.getView().asWidget(), new OnOptionSelected() {
+			
+			@Override
+			public void onSelect(String name) {
+				if(name.equals("Save")){
+					propertyPanel.save();
+				}
+			}
+		}, "Save", "Cancel");
 	}
 	
 	public static void showCarouselPanel(Widget widget, int[] position,
@@ -115,21 +136,6 @@ public class AppManager {
 		//propertyPanel.getView().getPopUpContainer().clear();
 		propertyPanel.getView().showBody(true, widget);
 		
-		if (isLeft) {
-			propertyPanel.getView().getPopUpContainer()
-					.removeStyleName("right");
-			propertyPanel.getView().getPopUpContainer().addStyleName("left");
-		} else {
-			propertyPanel.getView().getPopUpContainer()
-					.removeStyleName("left");
-			propertyPanel.getView().getPopUpContainer().addStyleName("right");
-		}
-		
-		propertyPanel.getView().getPopUpContainer()
-				.setPopupPosition(position[1], position[0]);
-		mainPagePresenter.addToPopupSlot(propertyPanel, false);
-
-		// propertyPanel.getView().getPopUpContainer().setModal(true);
 
 	}
 
@@ -156,10 +162,11 @@ public class AppManager {
 		return positions;
 	}
 
-	/*
-	 * Hide the Carousel Output
-	 */
 	public static void hidePopup() {
-		propertyPanel.getView().hide();
+		final ModalPopup modalPopup = mainPagePresenter.getView().getModalPopup(false);
+		if(modalPopup!=null){
+			modalPopup.hide();
+		}
 	}
+
 }

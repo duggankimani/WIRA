@@ -59,5 +59,14 @@ public class OutputDocumentDao extends BaseDaoImpl {
 		
  		return attachment==null? null: attachment.getAttachment();
 	}
+	
+	public byte[] getHTMLTemplateByOutputId(String outputRefId) {
+		String sql = "SELECT o.attachment from ADOutputDoc o where o.refId=:refId";
+		Query query = em.createQuery(sql).setParameter("refId", outputRefId);
+		
+		LocalAttachment attachment = getSingleResultOrNull(query);
+		
+ 		return attachment==null? null: attachment.getAttachment();
+	}
 
 }

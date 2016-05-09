@@ -20,12 +20,12 @@ public class HTMLEditor extends Composite implements HasText {
 	
 	public HTMLEditor() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
 	}
 
 	public HTMLEditor(String html) {
 		initWidget(uiBinder.createAndBindUi(this));
 		setText(html);
+		senchaEditor.setHeight("400px");
 	}
 
 	public void setText(String text) {
@@ -40,8 +40,13 @@ public class HTMLEditor extends Composite implements HasText {
 		return senchaEditor.getValue();
 	}
 
-	public void setValue(String notificationTemplate) {
-		setText(notificationTemplate);
+	public void setValue(String html) {
+		setText(html);
+	}
+	
+	public void setHeight(int height){
+		setHeight(height+"px");
+		senchaEditor.setHeight(height);
 	}
 
 }

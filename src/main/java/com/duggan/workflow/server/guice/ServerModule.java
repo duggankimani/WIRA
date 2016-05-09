@@ -46,6 +46,7 @@ import com.duggan.workflow.server.actionhandlers.GetMessagesActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationTemplateRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetNotificationsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetOrgsRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetOutputDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetOutputDocumentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetPermissionsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessCategoriesRequestActionHandler;
@@ -92,6 +93,7 @@ import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionH
 import com.duggan.workflow.server.actionhandlers.UpdateNotificationRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.UpdatePasswordRequestActionHandler;
 import com.duggan.workflow.server.actionvalidator.SessionValidator;
+import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
@@ -137,6 +139,7 @@ import com.duggan.workflow.shared.requests.GetMessagesRequest;
 import com.duggan.workflow.shared.requests.GetNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.GetOrgsRequest;
+import com.duggan.workflow.shared.requests.GetOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetPermissionsRequest;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
@@ -447,5 +450,7 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetFileTreeRequest.class, GetFileTreeRequestHandler.class, SessionValidator.class);
 		
 		bindHandler(GenerateFilePathRequest.class, GenerateFilePathHandler.class, SessionValidator.class);
+		
+		bindHandler(GetOutputDocumentRequest.class, GetOutputDocumentRequestHandler.class, SessionValidator.class);
 	}
 }

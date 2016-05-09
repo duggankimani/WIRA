@@ -84,7 +84,7 @@
 					      <li ui:field="liLayout"><g:Anchor ui:field="aLayouttab">Layout</g:Anchor></li>
 					    </ul>
 				    
-				    	<div id="myTabContent" class="tab-content">
+				    	<div id="myTabContent" class="tab-content" style="height:initial;">
    						   <g:HTMLPanel styleName="tab-pane in active" ui:field="divInput">
 
 							 <div class="form-horizontal">

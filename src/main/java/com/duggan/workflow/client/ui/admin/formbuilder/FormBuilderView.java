@@ -199,11 +199,7 @@ public class FormBuilderView extends ViewImpl implements
 			public void onClick(ClickEvent event){
 				
 				if(form.getId()!=null){
-					/*set the position of the pop-up to be displayed in % */
-					int top=7;
-					int left=60;
-					int arrowposition =formLabel.getAbsoluteTop()-30;
-					AppManager.showPropertyPanel(form,getProperties(), top, left, arrowposition);
+					AppManager.showPropertyPanel(form,getProperties());
 				}
 			}
 		});	
