@@ -5,12 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
-import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
+import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -87,15 +89,29 @@ public class OutPutDocsView extends ViewImpl implements
 			});
 			tblView.setWidget(i, j++, box);
 
-			ActionLink link = new ActionLink();
+			ActionLink link = new ActionLink(doc);
 			if (doc.getAttachmentName() != null) {
 				link.setText(doc.getAttachmentName());
-				UploadContext context = new UploadContext("getreport");
-				context.setContext("attachmentId", doc.getAttachmentId() + "");
-				context.setContext("ACTION", "GETATTACHMENT");
-				link.setTarget("_blank");
-				link.setHref(context.toUrl());
+			}else{
+				link.setText(doc.getName());
 			}
+			
+			link.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					OutputDocument d = (OutputDocument)((ActionLink)event.getSource()).getModel();
+					AppContext.fireEvent(new EditOutputDocEvent(d));
+				}
+			});
+			
+//			if (doc.getAttachmentName() != null) {
+//				link.setText(doc.getAttachmentName());
+//				UploadContext context = new UploadContext("getreport");
+//				context.setContext("attachmentId", doc.getAttachmentId() + "");
+//				context.setContext("ACTION", "GETATTACHMENT");
+//				link.setTarget("_blank");
+//				link.setHref(context.toUrl());
+//			}
 			//tblView.setWidget(i, j++, new HTMLPanel("" + i));
 			tblView.setWidget(i, j++, new HTMLPanel(doc.getCode()));
 			tblView.setWidget(i, j++, new HTMLPanel(doc.getPath()));

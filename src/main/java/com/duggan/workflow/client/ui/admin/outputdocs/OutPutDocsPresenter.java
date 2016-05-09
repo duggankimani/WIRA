@@ -131,36 +131,43 @@ public class OutPutDocsPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				final OutputDocument doc = (OutputDocument) selectedModel;
-				GetOutputDocumentRequest request = new GetOutputDocumentRequest(
-						doc.getRefId(),true);
-				
-				requestHelper.execute(request,
-						new TaskServiceCallback<GetOutputDocumentResponse>() {
-							@Override
-							public void processResult(
-									GetOutputDocumentResponse aResponse) {
-								String html = aResponse.getDocument()
-										.getTemplate();
-								final HTMLEditor editor = new HTMLEditor(html);
-								int height = Window.getClientHeight()-250;
-								editor.setHeight(height);
-								
-								AppManager.showPopUp("Edit " + doc.getName()
-										+ "", editor, new OnOptionSelected() {
-
-									@Override
-									public void onSelect(String name) {
-										if (name.equals("Yes")) {
-											save(doc);
-										}
-									}
-								}, PopupType.FULLPAGE, "Yes", "Cancel");
-
-							}
-						});
-
+				editOutputDocumentTemplate(doc.getRefId());
 			}
 		});
+	}
+
+	protected void editOutputDocumentTemplate(String refId) {
+		GetOutputDocumentRequest request = new GetOutputDocumentRequest(
+				refId,true);
+		
+		requestHelper.execute(request,
+				new TaskServiceCallback<GetOutputDocumentResponse>() {
+					@Override
+					public void processResult(
+							GetOutputDocumentResponse aResponse) {
+						
+						final OutputDocument doc = aResponse.getDocument();
+						String html = aResponse.getDocument()
+								.getTemplate();
+						final HTMLEditor editor = new HTMLEditor(html);
+						int height = Window.getClientHeight()-250;
+						editor.setHeight(height);
+						
+						AppManager.showPopUp("Edit '" + (doc.getAttachmentName()==null? doc.getName() :doc.getAttachmentName())+"'" 
+								, editor, new OnOptionSelected() {
+
+							@Override
+							public void onSelect(String name) {
+								if (name.equals("Save")) {
+									doc.setTemplate(editor.getText());
+									save(doc);
+								}
+							}
+						}, PopupType.FULLPAGE, "Save", "Cancel");
+
+					}
+				});
+
 	}
 
 	@Override
@@ -247,7 +254,7 @@ public class OutPutDocsPresenter extends
 					}, "Yes", "Cancel");
 
 		} else {
-			showEditPopup(doc);
+			editOutputDocumentTemplate(event.getDoc().getRefId());
 		}
 	}
 
@@ -260,9 +267,7 @@ public class OutPutDocsPresenter extends
 
 	@Override
 	public void onCheckboxSelection(CheckboxSelectionEvent event) {
-
-		selectedModel = event.getModel();
-		selectItem(selectedModel, event.getValue());
+		selectItem(event.getModel(), event.getValue());
 
 		if (!event.getValue()) {
 			selectedModel = null;
@@ -270,6 +275,7 @@ public class OutPutDocsPresenter extends
 	}
 
 	private void selectItem(Object model, boolean value) {
+		selectedModel = model;
 		getView().setModelSelected(value);
 	}
 

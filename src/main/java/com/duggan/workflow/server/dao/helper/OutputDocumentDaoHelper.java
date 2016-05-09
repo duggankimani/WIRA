@@ -70,6 +70,22 @@ public class OutputDocumentDaoHelper {
 		adDoc.setDescription(doc.getDescription());
 		adDoc.setPath(doc.getPath());
 		adDoc.setProcessRefId(doc.getProcessRefId());
+		
+		if(doc.getTemplate()!=null && !doc.getTemplate().isEmpty()){
+			LocalAttachment attachment  = new LocalAttachment();
+			if(adDoc.getAttachment()!=null){
+				attachment = adDoc.getAttachment();
+			}
+			attachment.setOutputDoc(adDoc);
+			
+			attachment.setContentType("text/html");					
+			attachment.setName(doc.getName().endsWith(".html")? doc.getName(): doc.getName()+".html");
+			attachment.setSize(doc.getTemplate().getBytes().length);
+			attachment.setDirectory(false);
+			attachment.setAttachment(doc.getTemplate().getBytes());					
+			AttachmentDaoImpl impl = DB.getAttachmentDao();
+			impl.save(attachment);
+		}
 
 		return adDoc;
 	}
