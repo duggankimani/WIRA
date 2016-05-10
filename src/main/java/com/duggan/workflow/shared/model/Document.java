@@ -9,10 +9,11 @@ import java.util.Map;
 
 /**
  * DTO for {@link com.duggan.workflow.server.dao.model.DocumentModel}
+ * 
  * @author duggan
  *
  */
-public class Document extends Doc implements Serializable{
+public class Document extends Doc implements Serializable {
 
 	/**
 	 * 
@@ -20,38 +21,38 @@ public class Document extends Doc implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	
+
 	private DocumentType type;
-	
+
 	private HTUser owner;
-	
+
 	protected String description;
-	
+
 	protected Date created;
-	
+
 	protected Date dateSubmitted;
-	
+
 	protected Date documentDate;
-	
+
 	protected Integer priority;
-	
+
 	private String partner;
-	
+
 	private String value;
-	
+
 	private DocStatus status;
-	
+
 	private Date dateDue;
-	
+
 	private Long processInstanceId;
-	
+
 	private Long sessionId;
-	
+
 	public Document() {
-		//serialization
-		//super();
+		// serialization
+		// super();
 	}
-	
+
 	public DocumentType getType() {
 		return type;
 	}
@@ -137,16 +138,16 @@ public class Document extends Doc implements Serializable{
 		this.status = status;
 	}
 
-	public HTSummary toTask(){
+	public HTSummary toTask() {
 		HTSummary summary = new HTSummary();
 		summary.setCreated(new Date());
-		//summary.setStartDateDue(dateDue);
+		// summary.setStartDateDue(dateDue);
 		summary.setDescription(description);
 		summary.setDocumentRef(id);
 		summary.setPriority(priority);
 		summary.setCaseNo(caseNo);
-		summary.setTaskName(type.getDisplayName()+" - "+caseNo);
-		
+		summary.setTaskName(type.getDisplayName() + " - " + caseNo);
+
 		return summary;
 	}
 
@@ -165,7 +166,7 @@ public class Document extends Doc implements Serializable{
 	public void setProcessInstanceId(Long processInstanceId) {
 		this.processInstanceId = processInstanceId;
 	}
-	
+
 	public Long getSessionId() {
 		return sessionId;
 	}
@@ -173,59 +174,63 @@ public class Document extends Doc implements Serializable{
 	public void setSessionId(Long sessionId) {
 		this.sessionId = sessionId;
 	}
-	
+
 	@Override
 	public void setValues(Map<String, Value> values) {
-		for(String key: values.keySet()){
-			if(key==null){
+		for (String key : values.keySet()) {
+			if (key == null) {
 				continue;
 			}
 			Object val = null;
-			
-			Value fieldValue  = values.get(key);
-			
-			if(fieldValue!=null){
-				val = fieldValue.getValue();
+
+			Value fieldValue = values.get(key);
+
+			try {
+				if (fieldValue != null) {
+					val = fieldValue.getValue();
+				}
+				if (key.equals("description"))
+					setDescription(val == null ? null : val.toString());
+
+				if (key.equals("dueDate"))
+					setDateDue(val == null ? null : (Date) val);
+
+				if (key.equals("docDate"))
+					setDocumentDate(val == null ? null : (Date) val);
+
+				if (key.equals("partner"))
+					setPartner(val == null ? null : val.toString());
+
+				if (key.equals("subject")) {
+					setCaseNo(val == null ? null : val.toString());
+				}
+
+				if (key.equals("docType"))
+					setType(val == null ? null : (DocumentType) val);
+
+				if (key.equals("value"))
+					setValue(val == null ? null : val.toString());
+			} catch (Exception e) {
 			}
-			if(key.equals("description"))
-				setDescription(val==null? null : val.toString());
-			
-			if(key.equals("dueDate"))
-				setDateDue(val==null? null : (Date)val);
-			
-			if(key.equals("docDate"))
-				setDocumentDate(val==null? null : (Date)val);
-			
-			if(key.equals("partner"))
-				setPartner(val==null? null : val.toString());
-			
-			if(key.equals("subject")){
-				setCaseNo(val==null? null : val.toString());
-			}
-			
-			if(key.equals("docType"))
-				setType(val==null? null : (DocumentType)val);
-			
-			if(key.equals("value"))
-				setValue(val==null? null : val.toString());
-		
+
 			setValue(key, values.get(key));
 		}
-		
-		//super.setValues(values);
+
+		// super.setValues(values);
 	}
 
 	@Override
 	public String toString() {
-	
-		return "DocumentId = "+id+", subject="+caseNo;
+
+		return "DocumentId = " + id + ", subject=" + caseNo;
 	}
-	public Document clone(){
+
+	public Document clone() {
 		return clone(false);
 	}
-	
-	public Document clone(boolean fullClone){
-	
+
+	public Document clone(boolean fullClone) {
+
 		Document document = new Document();
 		document.setRefId(getRefId());
 		document.setCreated(created);
@@ -241,35 +246,36 @@ public class Document extends Doc implements Serializable{
 		document.setStatus(status);
 		document.setType(type);
 		document.setValue(value);
-		
-		Map<String,Value> vals = new HashMap<String,Value>();
-		
+
+		Map<String, Value> vals = new HashMap<String, Value>();
+
 		Map<String, Value> pv = getValues();
-		for(String key: pv.keySet()){
-			Value v = pv.get(key);	
-			if(v!=null)
+		for (String key : pv.keySet()) {
+			Value v = pv.get(key);
+			if (v != null)
 				vals.put(key, v.clone(fullClone));
 		}
 		document.setValues(vals);
-		
-		for(String key: details.keySet()){
+
+		for (String key : details.keySet()) {
 			List<DocumentLine> linez = details.get(key);
 			Collections.reverse(linez);
-			for(DocumentLine line: linez){
+			for (DocumentLine line : linez) {
 				DocumentLine clone = line.clone(fullClone);
 				clone.setName(key);
 				document.addDetail(clone);
 			}
-			
+
 		}
-		
+
 		return document;
 	}
-	//public Map<String, Value> 
-	
+
+	// public Map<String, Value>
+
 	@Override
 	public Long getDocumentId() {
-	
+
 		return id;
 	}
 
