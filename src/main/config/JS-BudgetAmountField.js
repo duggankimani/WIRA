@@ -51,8 +51,12 @@ function highlightBudget() {
 	//$wnd.alert('BudgetAmount='+budgetAmount+' ; totalClaim='+totalClaim);
 	if(budgetAmount<0 || ((budgetAmount==0 || budgetAmount<totalClaim) && selectExpense.value!='')){
 		budgetField.style.background='orange';
-		budgetView.innerText=budgetView.innerText+" Insufficient Budget";
-		budgetField.title='You have insufficient budget for this request';
+		
+		var spnInsBudget = $doc.getElementById('insufficientBudgetStatement');
+		if(spnInsBudget==undefined || spnInsBudget==null){
+			budgetView.innerHTML=budgetView.innerHTML+"<span id='insufficientBudgetStatement'>&nbsp;&nbsp;Insufficient Budget</span>";
+			budgetField.title='You have insufficient budget for this request';
+		}
 	}else{
 		budgetField.style.background='white';
 		budgetField.title='Available Budget';

@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="well">
+					<div id="myCarousel" class="carousel slide">
+						<!-- Carousel items -->
+						<g:HTMLPanel ui:field="carouselPanel" styleName="carousel-inner">
+						</g:HTMLPanel>
+
+						<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+						<a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+					</div><!--/myCarousel -->
+
+				</div><!--/well -->
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

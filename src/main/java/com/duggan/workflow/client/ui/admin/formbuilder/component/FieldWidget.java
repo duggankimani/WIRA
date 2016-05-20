@@ -836,6 +836,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		if (widget != null) {
 			widget.designMode = false;
+			if(widget.getInputComponent()!=null){
+				widget.getInputComponent().addStyleName("input-xlarge");
+			}
 		}
 
 		return widget;

@@ -1,13 +1,20 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnCancelUploaderHandler;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.component.AttachmentsPanel;
+import com.duggan.workflow.client.ui.component.ImageCarousel;
 import com.duggan.workflow.client.ui.events.FileLoadEvent;
 import com.duggan.workflow.client.ui.events.FileLoadEvent.FileLoadHandler;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachmentsHandler;
+import com.duggan.workflow.client.ui.images.ImageResources;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
@@ -19,6 +26,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,10 +44,13 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	@UiField HTMLPanel uploadContainer;
 	
 	@UiField Element lblEl;
-	@UiField InlineLabel lblReadOnly;
+	@UiField InlineLabel lblReadOnly; 
 	@UiField HTMLPanel panelControls;
 	@UiField SpanElement spnMandatory;
+
 	@UiField AttachmentsPanel attachmentsPanel;
+	@UiField ImageCarousel imgCarousel;
+	@UiField Image imgSingleUpload;
 		
 	Uploader uploader = null;
 	
@@ -48,6 +59,9 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(UPLOADERTYPE, "Type", DataType.SELECTBASIC, 
+				new KeyValuePair("fileuploader", "File Upload"),
+				new KeyValuePair("imageuploader", "Image Upload")));
+		addProperty(new Property(UPLOADER, "Uploader", DataType.SELECTBASIC, 
 				new KeyValuePair("singleupload", "Single Upload"),
 				new KeyValuePair("multiupload", "Multi Upload")));
 		addProperty(new Property(ACCEPT, "Accept", DataType.STRINGLONG));
@@ -57,25 +71,63 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 		add(widget);
 		addRegisteredHandler(FileLoadEvent.TYPE, this);
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
+		imgSingleUpload.setResource(ImageResources.IMAGES.img());
+		imgCarousel.registerImage(imgSingleUpload);
 	}
 
 	@Override
 	public void setField(Field field) {
-		String uploaderType = getPropertyValue(UPLOADERTYPE);
-		if(uploaderType==null){
-			uploaderType="multiupload";
+		
+		String uploaderCat = field.getPropertyValue(UPLOADER);
+		if(uploaderCat==null){
+			uploaderCat="multiupload";
 		}
 		
 		uploadContainer.clear();
-		if(uploaderType.equals("singleupload")){			
+		if(uploaderCat.equals("singleupload")){			
 			uploader = new Uploader(true);
 			uploadContainer.add(uploader);
 		}else{
 			uploader = new Uploader();
 			uploadContainer.add(uploader);
 		}
+		uploader.addOnFinishUploaderHandler(new OnFinishUploaderHandler() {
+			
+			@Override
+			public void onFinish(IUploader uploader) {
+				AppContext.fireEvent(new ReloadAttachmentsEvent());
+			}
+		});
+		
+		uploader.addOnCancelUploaderHandler(new OnCancelUploaderHandler() {
+			
+			@Override
+			public void onCancel(IUploader uploader) {
+				AppContext.fireEvent(new ReloadAttachmentsEvent());
+			}
+		});
+		
+		
+		String uploaderType = field.getPropertyValue(UPLOADERTYPE);
+		if(uploaderType==null){
+			uploaderType="fileuploader";
+		}
+		
+		imgCarousel.clear();
+		imgCarousel.addStyleName("hide");
+		imgSingleUpload.addStyleName("hide");
+		attachmentsPanel.removeStyleName("hide");
+		if(uploaderType.equals("imageuploader")){
+			if(uploaderCat.equals("singleupload")){
+				imgSingleUpload.removeStyleName("hide");	
+				attachmentsPanel.addStyleName("hide");
+			}else{
+				imgCarousel.removeStyleName("hide");
+			}
+		}
 		
 		super.setField(field);
+		
 		initUploader();
 	}
 	
@@ -163,16 +215,22 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 		if(docRefId==null || fieldName==null){
 			return;
 		}
-				
+		
+		imgSingleUpload.setUrl("");
 		if(attachment.getFieldName().equals(fieldName) && 
 				docRefId.equals(attachment.getDocRefId())){
-			
+			imgCarousel.addAttachment(attachment);
 			attachmentsPanel.addAttachment(attachment);
+			imgSingleUpload.setUrl(ImageCarousel.getUrl(attachment));
 		}
 	}
 
 	@Override
 	public void onReloadAttachments(ReloadAttachmentsEvent event) {
+		if(uploader!=null){
+			uploader.clear();
+		}
+		imgCarousel.clear();
 		attachmentsPanel.clear();
 	}
 

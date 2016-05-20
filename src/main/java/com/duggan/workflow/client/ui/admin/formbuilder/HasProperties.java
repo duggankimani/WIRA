@@ -24,11 +24,13 @@ public interface HasProperties {
 	public static final String LABELPOSITION="LABELPOSITION";
 	public static final String FORMULA="FORMULA";
 	public static final String UPLOADERTYPE="UPLOADERTYPE";
+	public static final String UPLOADER="UPLOADER";
 	public static final String ACCEPT = "ACCEPT";
 	public static final String PATH = "PATH";
 	public static final String HREF = "HREF";
 	public static final String IFRAME = "IFRAME";
-	public static String CUSTOMTRIGGER="TRIGGER";
+	public static final String CUSTOMTRIGGER="TRIGGER";
+	public static final String WIDTH="WIDTH";
 
 	void addProperty(Property property);
 	

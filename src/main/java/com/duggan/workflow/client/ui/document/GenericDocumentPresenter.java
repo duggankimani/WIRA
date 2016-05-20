@@ -1839,7 +1839,7 @@ public class GenericDocumentPresenter extends
 				new TaskServiceCallback<DeleteAttachmentResponse>() {
 					@Override
 					public void processResult(DeleteAttachmentResponse result) {
-
+						fireEvent(new ReloadAttachmentsEvent());
 					}
 				});
 	}

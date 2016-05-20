@@ -1,18 +1,21 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-     xmlns:g="urn:import:com.google.gwt.user.client.ui"
-     xmlns:d='urn:import:com.duggan.workflow.client.ui.upload.custom'
-     xmlns:c='urn:import:com.duggan.workflow.client.ui.component'>
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+	
 	<g:AbsolutePanel ui:field="container">
-	        <g:HTMLPanel styleName="control-group">
-		       <label ui:field="lblEl" for="Username" class="control-label">File Upload</label>
-		       <span ui:field="spnMandatory" style="color:red">*</span>
-			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
-				    <g:HTMLPanel ui:field="uploadContainer">				        
-				    </g:HTMLPanel>
-				    <g:InlineLabel ui:field="lblReadOnly"></g:InlineLabel>
-				    <c:AttachmentsPanel ui:field="attachmentsPanel"></c:AttachmentsPanel>
-		    	</g:HTMLPanel>
-	       </g:HTMLPanel>
+		<d:ImageCarousel ui:field="imgCarousel" styleName="form-image-viewer hide"></d:ImageCarousel>
+		
+		<g:HTMLPanel styleName="control-group">
+			<label ui:field="lblEl" for="Username" class="control-label">File Upload</label>
+			<span ui:field="spnMandatory" style="color:red">*</span>
+			<g:HTMLPanel styleName="controls" ui:field="panelControls">
+				<g:Image ui:field="imgSingleUpload" width="180px" styleName="hide"></g:Image>
+				<g:HTMLPanel ui:field="uploadContainer">
+				</g:HTMLPanel>
+				<g:InlineLabel ui:field="lblReadOnly"></g:InlineLabel>
+				<d:AttachmentsPanel ui:field="attachmentsPanel"></d:AttachmentsPanel>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
 	</g:AbsolutePanel>
 </ui:UiBinder>

@@ -5,7 +5,7 @@
 	
 	<g:HTMLPanel>
 		<g:Image ui:field="img"></g:Image>
-		<g:InlineLabel styleName="filename" ui:field="lblFileName">456-duggan.pdf</g:InlineLabel>
+		<g:InlineLabel styleName="filename" ui:field="lblFileName"></g:InlineLabel>
 		<g:HTMLPanel styleName="options">
 			<d:ActionLink ui:field="aRemove" styleName="remove">Remove</d:ActionLink>
 			<d:ActionLink ui:field="aDownload" styleName="download">

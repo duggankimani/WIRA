@@ -24,6 +24,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -201,15 +202,47 @@ public class LoginPresenter extends
 		callServerLoginAction(logInAction);
 	}
 
+//	public void redirectToLoggedOnPage() {
+//		String redirect = "";
+//		redirect = NameTokens.getOnLoginDefaultPage();
+//		String token = placeManager.getCurrentPlaceRequest().getParameter(
+//				Definitions.REDIRECT, redirect);
+//		PlaceRequest placeRequest = new Builder().nameToken(token).build();
+//		placeManager.revealPlace(placeRequest);
+//
+//	}
+	
 	public void redirectToLoggedOnPage() {
-		String redirect = "";
-		redirect = NameTokens.getOnLoginDefaultPage();
+		String redirect = NameTokens.getOnLoginDefaultPage();
 		String token = placeManager.getCurrentPlaceRequest().getParameter(
 				Definitions.REDIRECT, redirect);
-		PlaceRequest placeRequest = new Builder().nameToken(token).build();
-		placeManager.revealPlace(placeRequest);
+		
+		
+		String url = "";
+		if(token.lastIndexOf(";")>0){
+			String[] elems = token.split(";");
+			for(int i=0; i<elems.length; i++){
+				String element = ";"+elems[i];
+				
+				if(i==0){
+					url = placeManager.buildHistoryToken(new Builder().
+							nameToken(element).build());
+				}else{
+					url = url.concat(element);
+				}
+			}
+			
+			url = url.substring(1);
+			GWT.log("History item - "+url);
+			History.replaceItem(url, true);
+		}else{
+			PlaceRequest placeRequest = new Builder().
+					nameToken(token).build();
+			placeManager.revealPlace(placeRequest);
+		}
 
 	}
+
 
 	public void setLoggedInCookie(String value) {
 		String path = "/";

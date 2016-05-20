@@ -48,7 +48,13 @@ public class CurrencyField extends NumberField{
 				
 				NumberFormat fmt = NumberFormat.getCurrencyFormat(data);
 			    String formatted = fmt.format((Double)value);
-			    lblReadOnly.setText(formatted);
+			    
+			    if((Double)value<0){
+			    	lblReadOnly.setText("("+formatted.replace("-", "")+")");
+			    }else{
+			    	lblReadOnly.setText(formatted);
+			    }
+			    
 				
 			}else{
 				lblReadOnly.setText(value.toString());	

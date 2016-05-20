@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.gin;
 
+import com.duggan.workflow.client.place.ClientPlaceManager;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.reports.ReportsView;
@@ -149,7 +150,8 @@ public class ClientModule extends AbstractPresenterModule {
 		install(new RpcDispatchAsyncModule.Builder().build());
 		
 		// install(new DefaultModule(ClientPlaceManager.class));
-		install(new DefaultModule.Builder().tokenFormatter(ParameterTokenFormatter.class).build());
+		install(new DefaultModule.Builder().placeManager(ClientPlaceManager.class)
+		.tokenFormatter(ParameterTokenFormatter.class).build());
 		
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);

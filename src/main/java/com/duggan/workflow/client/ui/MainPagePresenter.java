@@ -21,8 +21,11 @@ import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -176,10 +179,27 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 					REPORTVIEWIMPL.getDefaultImplementation(): AppContext.getReportViewImpl();
 		}
 		
+//		IFrameElement iframe = Document.get().createIFrameElement();
+//		iframe.setAttribute("width", "100%");
+//		iframe.setAttribute("height", "100%");
+//		iframe.setAttribute("frameborder","0");
+//		HTMLPanel container = new HTMLPanel("");
+//		container.getElement().appendChild(iframe);
+//		container.addStyleName("modal-iframe-body");
+//		
 		switch (reportView) {
 		case IFRAME:
+			
+//			iframe.setSrc(event.getUri());
+			
 			presenter.setInfo(event.getUri(), event.getTitle());
 			addToPopupSlot(presenter, true);
+//			AppManager.showPopUp(event.getTitle(), container, null,
+//					new OnOptionSelected(){
+//				@Override
+//				public void onSelect(String name) {
+//				}
+//			}, PopupType.FULLPAGE, "Close");
 			break;
 		case NEW_TAB:
 			Window.open(event.getUri(), "_blank", null);

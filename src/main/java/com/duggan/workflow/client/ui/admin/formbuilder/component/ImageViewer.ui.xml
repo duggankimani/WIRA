@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'>
+	<g:HTMLPanel>
+		<div class="control-group">
+			<g:FocusPanel ui:field="uploadPanel">
+				<up:Uploader ui:field="uploader" styleName="custom-file-input hide"></up:Uploader>
+			</g:FocusPanel>
+
+			<g:FocusPanel ui:field="panelPicture">
+				<g:HTMLPanel styleName="control-group">
+					<!-- <g:Image ui:field="img" width="70px" height="90px" /> -->
+					<g:Image ui:field="img" width="179px" />
+				</g:HTMLPanel>
+			</g:FocusPanel>
+
+			<div class="control-group" ui:field="divGroups">
+			</div>
+
+		</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 
