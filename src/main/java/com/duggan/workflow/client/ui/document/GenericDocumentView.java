@@ -469,15 +469,6 @@ public class GenericDocumentView extends ViewImpl implements
 		return widget;
 	}
 
-	public void setForm(Form form) {
-		setForm(form, null, null);
-	}
-
-	public void setForm(Form form, Doc doc, MODE mode) {
-		boolean isFormReadOnly = (mode != null && mode == MODE.VIEW);
-		setForm(form, doc, isFormReadOnly);
-	}
-
 	public void setForm(Form form, Doc doc, boolean isFormReadOnly) {
 		fldForm.clear();
 		if (form == null || form.getFields() == null)

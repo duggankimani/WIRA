@@ -75,6 +75,7 @@ public class ImageCarousel extends Composite {
 			span3.addStyleName("span"+getSize());
 			Anchor a = new ActionLink(attachment);
 			a.addStyleName("thumbnail");
+			a.setTitle(attachment.getName());
 			span3.add(a);
 			registerImage(a);
 

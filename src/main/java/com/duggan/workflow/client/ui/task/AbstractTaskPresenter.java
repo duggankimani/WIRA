@@ -438,7 +438,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
 				result.setDocId(docRefId, taskId, isLoadAsAdmin());
-				result.setFormMode(mode);
+				result.setGlobalFormMode(mode);
 
 				if (currentTaskType == TaskType.UNASSIGNED) {
 					result.setUnAssignedList(true);

@@ -32,6 +32,7 @@ import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -296,6 +297,24 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				int idx = fields.indexOf(field);
 
 				Field reloaded = fields.get(idx);
+				
+				if(event.isFormReadOnly()){
+					List<Property> properties = reloaded.getProperties();
+					int readOnlyIndex = -1;
+					for(Property p: properties){
+						if(p.getName().equals(READONLY)){
+							readOnlyIndex= properties.indexOf(p);
+							break;
+						}
+					}
+					
+					if(readOnlyIndex!=-1){
+						Property prop = properties.get(readOnlyIndex); 
+						BooleanValue value = (BooleanValue)prop.getValue();
+						value.setValue(event.isFormReadOnly());
+					}
+				}
+				
 				setField(reloaded);
 				setValue(fieldValue);
 			}

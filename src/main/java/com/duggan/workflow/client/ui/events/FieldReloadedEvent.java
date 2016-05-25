@@ -13,11 +13,12 @@ public class FieldReloadedEvent extends GwtEvent<FieldReloadedEvent.FieldReloade
         void onFieldReloaded(FieldReloadedEvent event);
     }
     
-    
+    private boolean isFormReadOnly;
     private final List<Field> fields;
    
-    public FieldReloadedEvent(final List<Field> fields) {
+    public FieldReloadedEvent(final List<Field> fields, boolean isFormReadOnly) {
         this.fields = fields;
+		this.isFormReadOnly = isFormReadOnly;
     }
 
     public static Type<FieldReloadedHandler> getType() {
@@ -36,6 +37,14 @@ public class FieldReloadedEvent extends GwtEvent<FieldReloadedEvent.FieldReloade
 
 	public List<Field> getFields() {
 		return fields;
+	}
+
+	public boolean isFormReadOnly() {
+		return isFormReadOnly;
+	}
+
+	public void setFormReadOnly(boolean isFormReadOnly) {
+		this.isFormReadOnly = isFormReadOnly;
 	}
     
 }

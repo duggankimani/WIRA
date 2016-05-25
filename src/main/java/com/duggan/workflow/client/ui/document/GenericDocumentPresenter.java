@@ -205,7 +205,7 @@ public class GenericDocumentPresenter extends
 		HasClickHandlers getLinkNext();
 
 		HasClickHandlers getLinkEnv();
-		
+
 		HasClickHandlers getCloseButton();
 
 		HasClickHandlers getLinkViewProcessLog();
@@ -224,7 +224,7 @@ public class GenericDocumentPresenter extends
 
 		DivElement getDivAttachment();
 
-		void setForm(Form form, Doc doc, MODE mode);
+		void setForm(Form form, Doc doc, boolean isFormReadOnly);
 
 		boolean isValid();
 
@@ -284,7 +284,7 @@ public class GenericDocumentPresenter extends
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
 	private IndirectProvider<UploadDocumentPresenter> uploaderFactory;
-	private MODE formMode;// Form Mode; can be set on set
+	private MODE globalFormMode;// Form Mode; can be set on set
 
 	// @Inject static MainPagePresenter mainPagePresenter;
 	@Inject
@@ -330,9 +330,9 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
 		addRegisteredHandler(FieldLoadEvent.getType(), this);
 		addRegisteredHandler(UploadEndedEvent.getType(), this);
-		
+
 		getView().getCloseButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				fireEvent(new DocumentSelectionEvent(null, null, null));
@@ -1194,7 +1194,7 @@ public class GenericDocumentPresenter extends
 					new TaskServiceCallback<MultiRequestActionResult>() {
 						public void processResult(
 								MultiRequestActionResult results) {
-							setFormMode(MODE.VIEW);
+							setGlobalFormMode(MODE.VIEW);
 							int i = 0;
 							CreateDocumentResult aResponse = (CreateDocumentResult) results
 									.get(i++);
@@ -1398,20 +1398,16 @@ public class GenericDocumentPresenter extends
 			}
 		}
 
-		MODE stepMode = null;
-		if (!steps.isEmpty()) {
-			TaskStepDTO dto = steps.get(currentStep);
-			stepMode = dto.getMode();
-		}
+		MODE stepMode = getCurrentStepMode();
 
-		if (formMode != null && formMode.equals(MODE.EDIT)
+		if (globalFormMode != null && globalFormMode.equals(MODE.EDIT)
 				&& doc instanceof Document) {
-			getView().setForm(form, doc, stepMode);
+			setForm(form, doc, stepMode);
 			getView().setEditMode(
 					true && ((Document) doc).getStatus() == DocStatus.DRAFTED);
 
 		} else {
-			getView().setForm(form, doc, stepMode);
+			setForm(form, doc, stepMode);
 		}
 
 		/**
@@ -1421,6 +1417,38 @@ public class GenericDocumentPresenter extends
 			// Reload
 			loadDynamicFields(form.getDependencies(), null);
 		}
+	}
+
+
+	private MODE getCurrentStepMode() {
+		MODE stepMode = null;
+		if (!steps.isEmpty()) {
+			TaskStepDTO dto = steps.get(currentStep);
+			stepMode = dto.getMode();
+		}
+		
+		return stepMode;
+	}
+	
+	boolean isFormReadOnly(){
+		MODE stepMode = getCurrentStepMode();
+		if (globalFormMode == null){
+			return isFormReadOnly(stepMode);
+		}else if(globalFormMode.equals(MODE.EDIT)){
+			return isFormReadOnly(stepMode);
+		}else if(globalFormMode.equals(MODE.VIEW)){
+			return isFormReadOnly(MODE.VIEW);
+		}
+		return false;
+	}
+
+	boolean isFormReadOnly(MODE mode){
+		boolean isFormReadOnly = (mode != null && mode == MODE.VIEW);
+		return isFormReadOnly;
+	}
+	
+	public void setForm(Form form, Doc doc, MODE mode) {
+		getView().setForm(form, doc, isFormReadOnly(mode));
 	}
 
 	private void loadDynamicFields(Map<String, List<String>> dependencies,
@@ -1484,7 +1512,7 @@ public class GenericDocumentPresenter extends
 											+ field.getCaption());
 								}
 							}
-							fireEvent(new FieldReloadedEvent(fields));
+							fireEvent(new FieldReloadedEvent(fields, isFormReadOnly()));
 						}
 
 						if (!StringUtils.isNullOrEmpty(triggerName)) {
@@ -1812,8 +1840,8 @@ public class GenericDocumentPresenter extends
 				});
 	}
 
-	public void setFormMode(MODE mode) {
-		this.formMode = mode;
+	public void setGlobalFormMode(MODE mode) {
+		this.globalFormMode = mode;
 	}
 
 	/**
