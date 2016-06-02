@@ -232,7 +232,6 @@ public class LoginPresenter extends
 			GWT.log("History item - "+url);
 			History.replaceItem(url, true);
 		}else{
-			Window.alert(">> Token = "+token);
 			PlaceRequest placeRequest = new Builder().
 					nameToken(token).build();
 			placeManager.revealPlace(placeRequest);
