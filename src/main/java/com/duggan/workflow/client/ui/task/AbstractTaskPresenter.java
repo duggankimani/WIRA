@@ -333,9 +333,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 								docRefId = ((HTSummary) doc).getRefId();
 								long taskId = ((HTSummary) doc).getId();
 								// Load Task
-								// fireEvent(new
-								// DocumentSelectionEvent(docRefId,
-								// taskId, docMode));
+//								fireEvent(new
+//								 DocumentSelectionEvent(docRefId,
+//								taskId, docMode));
 							}
 
 						} else {

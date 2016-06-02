@@ -25,6 +25,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -57,7 +58,7 @@ public class LoginPresenter extends
 	}
 
 	@NoGatekeeper
-	@NameToken(NameTokens.login)
+	@NameToken({NameTokens.login,NameTokens.loginWithRedirect})
 	@ProxyStandard
 	public interface MyProxy extends ProxyPlace<LoginPresenter> {
 	}
@@ -116,11 +117,6 @@ public class LoginPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		tryLoggingInWithCookieFirst();
-	}
-
-	@Override
-	public boolean useManualReveal() {
-		return false;
 	}
 
 	protected void onReset() {
@@ -219,10 +215,10 @@ public class LoginPresenter extends
 		
 		
 		String url = "";
-		if(token.lastIndexOf(";")>0){
-			String[] elems = token.split(";");
+		if(token.lastIndexOf("/")>0){
+			String[] elems = token.split("/");
 			for(int i=0; i<elems.length; i++){
-				String element = ";"+elems[i];
+				String element = "/"+elems[i];
 				
 				if(i==0){
 					url = placeManager.buildHistoryToken(new Builder().
@@ -236,6 +232,7 @@ public class LoginPresenter extends
 			GWT.log("History item - "+url);
 			History.replaceItem(url, true);
 		}else{
+			Window.alert(">> Token = "+token);
 			PlaceRequest placeRequest = new Builder().
 					nameToken(token).build();
 			placeManager.revealPlace(placeRequest);

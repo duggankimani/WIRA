@@ -24,7 +24,7 @@
 				<g:HTMLPanel styleName="full-page">
 					<ul id="dashboard-menu">
 						<li class="active">
-							<a class="dropdown-toggle" href="#home;type=appreqnew">
+							<a class="dropdown-toggle" href="#/inbox">
 								<i class="icon-tasks"></i>
 								<span>My Tasks</span>
 								<i class="icon-chevron-up hidden-tablet"></i>
@@ -33,7 +33,7 @@
 						</li>
 
 						<li class="active">
-							<!-- a class="dropdown-toggle hide" href="#home">
+							<!-- a class="dropdown-toggle hide" href="#/home">
 								<i class="icon-book"></i>
 								<span>My Documents</span>
 								<i class="icon-chevron-up hidden-tablet"></i>
@@ -42,15 +42,15 @@
 								<ul class="documents">
 								<li>
 									<i class="icon-archive"></i>
-									<a href="#registry" ui:field="aCaseReg">Case Registry</a>
+									<a href="#/registry" ui:field="aCaseReg">Case Registry</a>
 								</li>
 								<li>
 									<i class="icon-file-alt"></i>
-									<a href="#reports" ui:field="aReports">Report Registry</a>
+									<a href="#/reports" ui:field="aReports">Report Registry</a>
 								</li>
 								<li>
 									<i class="icon-folder-open-alt"></i>
-									<a href="#explorer" ui:field="aExplorer">File Explorer</a>
+									<a href="#/explorer" ui:field="aExplorer">File Explorer</a>
 								</li>
 								
 							</ul>

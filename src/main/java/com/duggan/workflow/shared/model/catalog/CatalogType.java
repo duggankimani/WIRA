@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model.catalog;
 
-public enum CatalogType {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum CatalogType implements IsSerializable{
 
 	DATATABLE("Data Table"),
 	REPORTTABLE("Report Table"),

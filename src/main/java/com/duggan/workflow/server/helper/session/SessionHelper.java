@@ -60,7 +60,7 @@ public class SessionHelper{
 				requestURL = requestURL.replace(pathInfo, "");
 			}
 			log.debug("# Remove Path Info = "+requestURL);				
-			requestURL = requestURL.replace(servletPath, "/#search;docRefId="+docRefId);
+			requestURL = requestURL.replace(servletPath, "/#/search/"+docRefId);
 			log.debug("# Replace ServletPath = "+requestURL);
 			
 			return requestURL;

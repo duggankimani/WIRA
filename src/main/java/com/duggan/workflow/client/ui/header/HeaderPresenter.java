@@ -108,8 +108,8 @@ public class HeaderPresenter extends
 
 	private Version version;
 
-	String searchTerm="";
-	
+	String searchTerm = "";
+
 	Timer timer = new Timer() {
 
 		@Override
@@ -145,7 +145,7 @@ public class HeaderPresenter extends
 		this.addRegisteredHandler(ContextLoadedEvent.TYPE, this);
 		this.addRegisteredHandler(LoadAlertsEvent.TYPE, this);
 		this.addRegisteredHandler(TabAddedEvent.getType(), this);
-		
+
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -186,18 +186,18 @@ public class HeaderPresenter extends
 		});
 
 	}
-	
+
 	protected void search() {
 		timer.cancel();
 
-		if(searchTerm!=null && searchTerm.trim().isEmpty()){
-			searchTerm =  null;
+		if (searchTerm != null && searchTerm.trim().isEmpty()) {
+			searchTerm = null;
 		}
-		
+
 		SearchFilter filter = new SearchFilter();
 		filter.setPhrase(searchTerm);
 		filter.setSubject(searchTerm);
-		
+
 		fireEvent(new SearchEvent(filter));
 	}
 
@@ -236,12 +236,14 @@ public class HeaderPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		HTUser user = currentUser.getUser();
-		getView().setImage(user);
-		getView().showAdminLink(user.isAdmin());
-		getView().setValues(user.getSurname(), user.getGroupsAsString(),
-				AppContext.getOrganizationName());
-		getView().setVersionInfo(version.getCreated(), version.getDate(),
-				version.getVersion());
+		if (user != null) {
+			getView().setImage(user);
+			getView().showAdminLink(user.isAdmin());
+			getView().setValues(user.getSurname(), user.getGroupsAsString(),
+					AppContext.getOrganizationName());
+			getView().setVersionInfo(version.getCreated(), version.getDate(),
+					version.getVersion());
+		}
 
 		loadAlertCount();
 	}
@@ -304,7 +306,7 @@ public class HeaderPresenter extends
 	public void onLoadAlerts(LoadAlertsEvent event) {
 		loadAlertCount();
 	}
-	
+
 	@Override
 	public void onTabAdded(TabAddedEvent event) {
 		getView().showTab(event.getTab());

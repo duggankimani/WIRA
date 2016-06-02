@@ -14,7 +14,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.gwtplatform.mvp.shared.proxy.TokenFormatter;
 
-public class ClientPlaceManager extends PlaceManagerImpl {
+public class WiraPlaceManager extends PlaceManagerImpl {
 
 	private final PlaceRequest defaultPlaceRequest;
 	private final PlaceRequest errorPlaceRequest;
@@ -22,7 +22,7 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 	private CurrentUser currentUser;
 
 	@Inject
-	public ClientPlaceManager(EventBus eventBus,
+	public WiraPlaceManager(EventBus eventBus,
 			TokenFormatter tokenFormatter,
 			@DefaultPlace String defaultPlaceNameToken,
 			@ErrorPlace String errorPlaceNameToken,
@@ -54,9 +54,9 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 		String redirect = unauthorizedHistoryToken;
 		 GWT.log("redirect unauthorizedHistoryToken = " +
 				 redirect);
-		
+		 
 		revealPlace(new PlaceRequest.Builder()
-		.nameToken(NameTokens.login).with(Definitions.REDIRECT, redirect).build(), false);
+		.nameToken(NameTokens.loginWithRedirect).with(Definitions.REDIRECT, redirect).build());
 	}
 
 }

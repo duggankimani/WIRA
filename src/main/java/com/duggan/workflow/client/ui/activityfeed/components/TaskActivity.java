@@ -232,9 +232,9 @@ public class TaskActivity extends Composite {
 		aDocument.setText(subject);
 
 		if (notification.getDocRefId() != null) {
-			aDocument.setHref("#search;docRefId=" + notification.getDocRefId());
+			aDocument.setHref("#/search/" + notification.getDocRefId());
 		} else if (processInstanceId != null) {
-			aDocument.setHref("#search;pid=" + processInstanceId);
+			aDocument.setHref("#/search/" + processInstanceId);
 		}
 
 		spnAction.setInnerText(text);

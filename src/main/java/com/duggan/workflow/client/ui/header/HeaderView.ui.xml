@@ -13,7 +13,7 @@
 
 				<div class="pull-left">
 					<g:Anchor styleName="brand visible-desktop visible-tablet"
-						href="#home" ui:field="aBrand">
+						href="#/home" ui:field="aBrand">
 						<span ui:field="spnCompanyName" class="company-name ellipsis">Your Organisation</span>
 					</g:Anchor>
 				</div>
@@ -29,26 +29,26 @@
 							</button>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="#inbox">
+									<a href="#/inbox">
 										Inbox</a>
 								</li>
 								<li>
-									<a href="#participated">Participated</a>
+									<a href="#/participated">Participated</a>
 								</li>
 								<li>
-									<a href="#processes">Unassigned</a>
+									<a href="#/processes">Unassigned</a>
 								</li>
 								<li>
-									<a href="#processes">
+									<a href="#/processes">
 										<i class="icon-ok"></i>
 										Case Registy
 									</a>
 								</li>
 								<li>
-									<a href="#processes">Reports</a>
+									<a href="#/processes">Reports</a>
 								</li>
 								<li>
-									<a href="#processes">Documents</a>
+									<a href="#/processes">Documents</a>
 								</li>
 
 							</ul>
@@ -64,7 +64,7 @@
 				<div class="pull-right right-navigations">
 					<ul ui:field="ulNav" class="nav pull-right nav-icons">
 						<li class="home">
-							<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand">
+							<g:Anchor href="#/home" ui:field="aHome" styleName="close-icon hand">
 								<i class="icon-home"></i>
 							</g:Anchor>
 						</li>
@@ -77,27 +77,27 @@
 							<ul class="dropdown-menu">
 
 								<li>
-									<a href="#usermgt" id="usermgt">Access Management</a>
+									<a href="#/usermgt" id="usermgt">Access Management</a>
 								</li>
 								<li>
-									<a href="#processlist">
+									<a href="#/processlist">
 										Processes</a>
 								</li>
 								<li>
-									<a href="#dashboards">Dashboards</a>
+									<a href="#/dashboards">Dashboards</a>
 								</li>
 								<li>
-									<a href="#messages">Messages</a>
+									<a href="#/messages">Messages</a>
 								</li>
 								<li>
-									<a href="#datatable">Data tables</a>
+									<a href="#/datatable">Data tables</a>
 								</li>
 								<li class="divider"></li>
 								<li>
-									<a href="#datasources">Datasources</a>
+									<a href="#/datasources">Datasources</a>
 								</li>
 								<li>
-									<a href="#settings">Settings</a>
+									<a href="#/settings">Settings</a>
 								</li>
 							</ul>
 						</li>
@@ -143,7 +143,7 @@
 								<div class="action-area">
 									<div class="version" ui:field="spnVersion"></div>
 									<g:Anchor styleName="btn btn-primary" ui:field="aProfile"
-										href="#profile">View Profile</g:Anchor>
+										href="#/profile">View Profile</g:Anchor>
 									<g:Anchor styleName="btn pull-right" ui:field="aLogout">Logout</g:Anchor>
 								</div>
 							</ul>

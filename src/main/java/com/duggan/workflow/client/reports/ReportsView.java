@@ -166,7 +166,7 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 			ActionLink link = new ActionLink(desc);
 			HTMLPanel description = new HTMLPanel("");
 			description.add(link);
-			link.setHref("#reports;reportRefId=" + catalog.getRefId());
+			link.setHref("#/reports/" + catalog.getRefId());
 			description.addStyleName("item");
 			tableReports.setWidget(i, col + 1, description);
 			tableReports.getFlexCellFormatter().addStyleName(i, col + 1, "permissions");

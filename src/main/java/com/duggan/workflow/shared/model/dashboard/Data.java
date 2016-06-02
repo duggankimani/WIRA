@@ -9,7 +9,9 @@ package com.duggan.workflow.shared.model.dashboard;
 
 import java.io.Serializable;
 
-public class Data implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class Data implements Serializable,IsSerializable{
 
   /**
 	 * 

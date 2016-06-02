@@ -76,15 +76,15 @@ public class CommentActivity extends Composite {
 		}
 		
 		aDocument.setText(docType+" "+subject);
-		aDocument.setHref("#search;docRefId="+docRefId);
+		aDocument.setHref("#/search/"+docRefId);
 		
 		String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
 		if(moduleUrl.endsWith("/")){
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
 		}
 		String url = moduleUrl.replace("/", "");
-		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+
-		createdBy==null? "":createdBy.getUserId();
+		moduleUrl =moduleUrl+"/getreport?ACTION=GetUser&userId="+(createdBy==null? "":createdBy.getUserId());
+		
 		img.setUrl(moduleUrl);
 		
 		setComment(comment);

@@ -69,7 +69,7 @@ public class CaseRegistryPresenter
 	}
 
 	@ProxyCodeSplit
-	@NameToken({ NameTokens.registry })
+	@NameToken({ NameTokens.registry,NameTokens.registryview })
 	@UseGatekeeper(AdminGateKeeper.class)
 	public interface ICaseRegistryProxy extends
 			TabContentProxyPlace<CaseRegistryPresenter> {

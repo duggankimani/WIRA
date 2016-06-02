@@ -13,7 +13,6 @@ import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
@@ -32,7 +31,6 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
@@ -46,7 +44,7 @@ implements SearchHandler{
 		void bind(Catalog catalog, List<DocumentLine> data);
 	}
 
-	@NameToken(NameTokens.reports)
+	@NameToken({NameTokens.reports,NameTokens.reportsview})
 	@ProxyCodeSplit
 	@UseGatekeeper(AdminGateKeeper.class)
 	public interface IReportsProxy extends TabContentProxyPlace<ReportsPresenter> {

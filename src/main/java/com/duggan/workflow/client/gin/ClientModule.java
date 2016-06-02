@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.gin;
 
-import com.duggan.workflow.client.place.ClientPlaceManager;
+import com.duggan.workflow.client.place.WiraPlaceManager;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.reports.ReportsView;
@@ -140,7 +140,7 @@ import com.gwtplatform.mvp.client.annotations.ErrorPlace;
 import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
-import com.gwtplatform.mvp.shared.proxy.ParameterTokenFormatter;
+import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -148,12 +148,12 @@ public class ClientModule extends AbstractPresenterModule {
 	protected void configure() {
 
 		install(new RpcDispatchAsyncModule.Builder().build());
+		install(new DefaultModule.Builder()
+		.placeManager(WiraPlaceManager.class)
+		.tokenFormatter(RouteTokenFormatter.class)
+		.build());
 		
-		// install(new DefaultModule(ClientPlaceManager.class));
-		install(new DefaultModule.Builder().placeManager(ClientPlaceManager.class)
-		.tokenFormatter(ParameterTokenFormatter.class).build());
-		
-		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.login);
+		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);
 		bindConstant().annotatedWith(UnauthorizedPlace.class).to(
 				NameTokens.login);

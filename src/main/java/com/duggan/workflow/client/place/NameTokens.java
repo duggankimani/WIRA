@@ -2,39 +2,38 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
-	public static final String explorer = "explorer";
-
-	public static final String processlist = "processlist";
-
-	public static final String reports = "reports";
-
-	public static final String payment = "payment";
-
-	public static final String home = "home";
-	public static final String error = "error";
-	public static final String login = "login";
-	public static final String error404 = "error404";
-	public static final String profile = "profile";
-	public static final String settings = "settings";
-	public static final String usermgt = "usermgt";
-	public static final String dashboards = "dashboards";
-	public static final String datasources = "datasources";
-	public static final String formbuilder = "formbuilder";
-	public static final String processes = "processes";
-	public static final String processconf = "processconf";
-	public static final String tasks = "tasks";
-	public static final String drafts = "drafts";
-	public static final String participated = "participated";
-	public static final String inbox = "inbox";
-	public static final String suspended = "suspended";
-	public static final String search = "search";
-	public static final String outputdocs = "outputdocs";
-	public static final String triggers = "triggers";
-	public static final String unassigned = "unassigned";
-	public static final String registry = "registry";
-	public static final String datatable = "datatable";
-	public static final String caseview = "caseview";
-	public static final String messages = "messages";
+	public static final String explorer = "/explorer";
+	public static final String processlist = "/processlist";
+	public static final String reports = "/reports";
+	public static final String reportsview = "/reports/{reportRefId}";
+	public static final String payment = "/payment";
+	public static final String home = "/home";
+	public static final String error = "/error";
+	public static final String login = "/login";
+	public static final String loginWithRedirect = "/login/{redirect}";
+	public static final String error404 = "/error404";
+	public static final String profile = "/profile";
+	public static final String settings = "/settings";
+	public static final String usermgt = "/usermgt";
+	public static final String dashboards = "/dashboards";
+	public static final String datasources = "/datasources";
+	public static final String formbuilder = "/formbuilder";
+	public static final String processes = "/processes";
+	public static final String processconf = "/processconf";
+	public static final String tasks = "/tasks";
+	public static final String drafts = "/drafts";
+	public static final String participated = "/participated";
+	public static final String inbox = "/inbox";
+	public static final String suspended = "/suspended";
+	public static final String search = "/search/{docRefId}";
+	public static final String outputdocs = "/outputdocs";
+	public static final String triggers = "/triggers";
+	public static final String unassigned = "/unassigned";
+	public static final String registry = "/registry";
+	public static final String registryview = "/registry/{docRefId}";
+	public static final String datatable = "/datatable";
+	public static final String caseview = "/caseview/{docRefId}";
+	public static final String messages = "/messages";
 
 	public static String getHome() {
 		return home;

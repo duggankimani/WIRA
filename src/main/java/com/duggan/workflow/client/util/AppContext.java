@@ -63,21 +63,6 @@ public class AppContext {
 		if (isValid) {
 			return true;
 		}
-
-		// if(isValid){
-		// Window.alert("####User Logged in!!!!!");
-		// return true;
-		//
-		// }else{
-		// Window.alert("User Not Logged in!!!!!");
-		// }
-
-		PlaceRequest request = placeManager.getCurrentPlaceRequest();
-		PlaceRequest place = new Builder().nameToken(NameTokens.login)
-				.with(Definitions.REDIRECT, request.getNameToken()).build();
-
-		placeManager.revealPlace(place);
-
 		return false;
 	}
 
@@ -99,7 +84,7 @@ public class AppContext {
 	}
 
 	public static String getUserId() {
-		return user.getUser().getUserId();
+		return user.getUser()==null? null: user.getUser().getUserId();
 	}
 
 	public static String getUserNames() {

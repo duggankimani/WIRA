@@ -126,7 +126,7 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		anchor.getElement().setInnerHTML("<i class='icon-th-large'/>");
 		anchor.setTitle("Summary");
 		//anchor.setHref("#caseview;did="+log.getDocId());
-		anchor.setHref("#caseview;docRefId="+log.getDocRefId());
+		anchor.setHref("#/caseview/"+log.getDocRefId());
 		return anchor;
 	}
 
