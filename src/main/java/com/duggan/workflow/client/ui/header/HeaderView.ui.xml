@@ -77,27 +77,40 @@
 							<ul class="dropdown-menu" id="adminSettings">
 
 								<li>
-									<a href="#/usermgt" id="usermgt">Access Management</a>
+									<a href="#/usermgt" id="usermgt">
+									<i class="icon-group"></i>
+									Access Management</a>
 								</li>
 								<li>
 									<a href="#/processlist" id="processes">
+										<i class="icon-cogs"></i>
 										Processes</a>
 								</li>
 								<li>
-									<a href="#/dashboards" id="dashboards">Dashboards</a>
+									<a href="#/dashboards" id="dashboards">
+									<i class="icon-dashboard"></i>
+									Dashboards</a>
 								</li>
 								<li>
-									<a href="#/messages" id="messages">Messages</a>
+									<a href="#/messages" id="messages">
+									<i class="icon-globe"></i>
+									Messages</a>
 								</li>
 								<li>
-									<a href="#/datatable" id="dataTables">Data tables</a>
+									<a href="#/datatable" id="dataTables">
+									<i class="icon-th"></i>
+									Data tables</a>
 								</li>
-								<li class="divider"></li>
+								<li class="divider hide"></li>
 								<li>
-									<a href="#/datasources" id="datasources">Datasources</a>
+									<a href="#/datasources" id="datasources">
+									<i class="icon-th"></i>
+									Datasources</a>
 								</li>
 								<li>
-									<a href="#/settings" id="settings">Settings</a>
+									<a href="#/settings" id="settings">
+									<i class="icon-globe"></i>
+									Settings</a>
 								</li>
 							</ul>
 						</li>

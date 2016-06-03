@@ -49,6 +49,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -325,7 +326,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 									docMode = DocMode.READWRITE;
 								}
 								// Load document
-								if (currentTaskType==TaskType.SEARCH && (mode == MODE.EDIT || mode == MODE.CREATE)) {
+								if (currentTaskType==TaskType.SEARCH 
+										&& (mode == MODE.EDIT || mode == MODE.CREATE)) {
 									fireEvent(new DocumentSelectionEvent(
 											docRefId, null, docMode));
 								}
@@ -428,12 +430,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		}
 	}
 
-	private void displayDocument(final String docRefId, final Long taskId) {
+	protected void displayDocument(final String docRefId, final Long taskId) {
 		if (docRefId == null && taskId == null) {
 			setInSlot(DOCUMENT_SLOT, null);
 			return;
 		}
-
+		
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
@@ -443,6 +445,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 				if (currentTaskType == TaskType.UNASSIGNED) {
 					result.setUnAssignedList(true);
 				}
+//				Window.alert("Display Doc >> "+docRefId+" - "+taskId+" - "+result);
 				setInSlot(DOCUMENT_SLOT, result);
 			}
 		});

@@ -6,7 +6,7 @@
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="full-page">
+	<g:HTMLPanel styleName="full-page" ui:field="container">
 		<!--middle navigation -->
 		<div class="span2 hide" ui:field="divTasks">
 			<div id="nav-top" style="height:auto;">

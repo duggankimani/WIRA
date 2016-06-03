@@ -9,6 +9,7 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.shared.model.MODE;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -49,6 +50,7 @@ public class CaseViewPresenter extends AbstractTaskPresenter<CaseViewPresenter.I
 	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType=TaskType.SEARCH;
 		getView().setTaskType(currentTaskType);
+		mode = MODE.VIEW;
 		super.prepareFromRequest(request);
 	}
 	

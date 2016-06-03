@@ -40,6 +40,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -62,6 +63,8 @@ public class AbstractTaskView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, AbstractTaskView> {
 	}
 
+	@UiField
+	HTMLPanel container;
 	@UiField
 	TextBox txtSearch;
 	// @UiField HTMLPanel divDocPopup;
@@ -202,7 +205,7 @@ public class AbstractTaskView extends ViewImpl implements
 
 	}
 
-	private void displayTable(boolean isDisplayTable) {
+	protected void displayTable(boolean isDisplayTable) {
 		if (isDisplayTable) {
 			divDocView.addClassName("hide");
 			divTasks.addClassName("hide");
