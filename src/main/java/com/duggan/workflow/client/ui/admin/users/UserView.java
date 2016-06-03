@@ -76,7 +76,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			@Override
 			public void onClick(ClickEvent event) {
 				placeManager.revealPlace(new PlaceRequest.Builder()
-						.nameToken(NameTokens.usermgt).with("p", "user")
+						.nameToken(NameTokens.usermgt).with("page", "user")
 						.build());
 			}
 		});
@@ -85,7 +85,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			@Override
 			public void onClick(ClickEvent event) {
 				placeManager.revealPlace(new PlaceRequest.Builder()
-						.nameToken(NameTokens.usermgt).with("p", "group")
+						.nameToken(NameTokens.usermgt).with("page", "group")
 						.build());
 			}
 		});
@@ -94,7 +94,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			@Override
 			public void onClick(ClickEvent event) {
 				placeManager.revealPlace(new PlaceRequest.Builder()
-						.nameToken(NameTokens.usermgt).with("p", "org")
+						.nameToken(NameTokens.usermgt).with("page", "org")
 						.build());
 			}
 		});

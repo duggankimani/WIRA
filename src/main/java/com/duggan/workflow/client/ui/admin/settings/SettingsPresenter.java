@@ -6,7 +6,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetSettingsRequest;
@@ -22,6 +22,7 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
@@ -38,15 +39,32 @@ public class SettingsPresenter extends
 		HasClickHandlers getSaveLink();
 	}
 	
+	public static final String SETTINGS_CAN_VIEW = "SETTINGS_CAN_VIEW";
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.settings)
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({SETTINGS_CAN_VIEW})
 	public interface MyProxy extends TabContentProxyPlace<SettingsPresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt("Settings","icon-globe",7, adminGatekeeper);
+    static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{SETTINGS_CAN_VIEW}); 
+        return new TabDataExt("Settings","icon-globe",7, gateKeeper);
     }
 	
 	

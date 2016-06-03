@@ -21,28 +21,38 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public interface Binder extends UiBinder<Widget, MainPageView> {
 	}
 
-	@UiField HTMLPanel pHeader;
-	@UiField HTMLPanel pContainer;
-	@UiField SpanElement loadingtext;
-	@UiField DivElement divAlert;
-	@UiField SpanElement spnAlertContent;
-	@UiField Anchor aView;
-	@UiField Element spnSubject;
-	@UiField HTMLPanel popoverPanel;
-	@UiField Element disconnectionText;
-	
+	@UiField
+	HTMLPanel pHeader;
+	@UiField
+	HTMLPanel pContainer;
+	@UiField
+	SpanElement loadingtext;
+	@UiField
+	DivElement divAlert;
+	@UiField
+	SpanElement spnAlertContent;
+	@UiField
+	Anchor aView;
+	@UiField
+	Element spnSubject;
+	@UiField
+	HTMLPanel popoverPanel;
+	@UiField
+	Element disconnectionText;
+
+	@UiField
+	Element divGenericAlerts;
+
 	ModalPopup popup = new ModalPopup();
-	
+
 	Timer timer = new Timer() {
-		
+
 		@Override
 		public void run() {
 			hideAlert();
 		}
 	};
 
-	
-	
 	@Inject
 	public MainPageView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -54,58 +64,94 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public Widget asWidget() {
 		return widget;
 	}
-	
+
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {
-		if(slot==MainPagePresenter.HEADER_content){
+		if (slot == MainPagePresenter.HEADER_content) {
 			pHeader.clear();
-			
-			if(content!=null){
+
+			if (content != null) {
 				pHeader.add(content);
-			}			
-		}else if(slot==MainPagePresenter.CONTENT_SLOT){
+			}
+		} else if (slot == MainPagePresenter.CONTENT_SLOT) {
 			pContainer.clear();
-			
-			if(content!=null){
+
+			if (content != null) {
 				pContainer.add(content);
 			}
-			
-		}
-		else{
+
+		} else {
 			super.setInSlot(slot, content);
 		}
 	}
 
 	@Override
-	public void showProcessing(boolean processing,String message) {
-		if(processing){
-			if(message!=null){
+	public void showProcessing(boolean processing, String message) {
+		if (processing) {
+			if (message != null) {
 				loadingtext.setInnerText(message);
 			}
 			loadingtext.removeClassName("hide");
-		}else{
+		} else {
 			loadingtext.setInnerText("Loading ...");
 			loadingtext.addClassName("hide");
 		}
 	}
-	
+
 	@Override
-	public void setAlertVisible(String subject, String statement,String url){
+	public void setAlertVisible(String subject, String statement, String url) {
 		divAlert.removeClassName("hidden");
 		spnAlertContent.setInnerText(statement);
 		spnSubject.setInnerText(subject);
 		aView.setHref(url);
 		timer.cancel();
-		timer.schedule(10000);
+		timer.schedule(5000);
+		aView.setText("View Document");
 	}
-	
-	public void hideAlert(){
+
+	public void setAlertVisible(AlertType alertType, String statement,boolean showDefaultHeading) {
+		divGenericAlerts.removeClassName("hide");
+		divGenericAlerts.removeClassName("alert-success");
+		divGenericAlerts.removeClassName("alert-info");
+		divGenericAlerts.removeClassName("alert-warning");
+		divGenericAlerts.removeClassName("alert-danger");
+
+		switch (alertType) {
+		case DANGER:
+			divGenericAlerts.addClassName("alert-danger");
+			divGenericAlerts.setInnerHTML((showDefaultHeading?"<strong>Danger!</strong> ":"")+
+					statement);
+			break;
+		case SUCCESS:
+			divGenericAlerts.addClassName("alert-success");
+			divGenericAlerts.setInnerHTML((showDefaultHeading?"<strong>Success!</strong> ":"")+
+					statement);
+			break;
+
+		case WARNING:
+			divGenericAlerts.addClassName("alert-warning");
+			divGenericAlerts.setInnerHTML((showDefaultHeading?"<strong>Warning!</strong> ":"")+
+					statement);
+			break;
+
+		default:
+			divGenericAlerts.addClassName("alert-info");
+			divGenericAlerts.setInnerHTML((showDefaultHeading?"<strong>Info!</strong> ":"")+
+			statement);
+			break;
+		}
+		timer.cancel();
+		timer.schedule(3000);
+	}
+
+	public void hideAlert() {
 		divAlert.addClassName("hidden");
+		divGenericAlerts.addClassName("hide");
 	}
 
 	@Override
 	public void showDisconnectionMessage(String message) {
-		if(message==null){
+		if (message == null) {
 			message = "Cannot connect to server....";
 		}
 		disconnectionText.setInnerText(message);
@@ -121,10 +167,10 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public ModalPopup getModalPopup() {
 		return getModalPopup(false);
 	}
-	
+
 	@Override
 	public ModalPopup getModalPopup(boolean reinstantiate) {
-		if(reinstantiate){
+		if (reinstantiate) {
 			popoverPanel.clear();
 			popup = new ModalPopup();
 			popoverPanel.add(popup);

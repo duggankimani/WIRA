@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
+import com.duggan.workflow.client.event.ShowMessageEvent;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AlertType;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
@@ -25,6 +27,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Org;
 import com.duggan.workflow.shared.model.SearchFilter;
@@ -53,6 +56,7 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
@@ -100,16 +104,33 @@ public class UserPresenter extends
 		void setOrgEdit(boolean value);
 	}
 
+	public static final String ACCESSMGT_CAN_VIEW_ACCESSMGT = "ACCESSMGT_CAN_VIEW_ACCESSMGT";
+
 	@ProxyCodeSplit
-	@NameToken(NameTokens.usermgt)
-	@UseGatekeeper(AdminGateKeeper.class)
+	@NameToken({NameTokens.usermgt,NameTokens.usermgtwithparam})
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({ACCESSMGT_CAN_VIEW_ACCESSMGT})
 	public interface MyProxy extends TabContentProxyPlace<UserPresenter> {
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+	static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{ACCESSMGT_CAN_VIEW_ACCESSMGT}); 
 		return new TabDataExt(TABLABEL, "icon-group", 3,
-				adminGatekeeper);
+				gateKeeper);
 	}
 
 	public static final Object ITEMSLOT = new Object();
@@ -249,7 +270,7 @@ public class UserPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 
-		String page = request.getParameter("p", "USER").toUpperCase();
+		String page = request.getParameter("page", "USER").toUpperCase();
 		try {
 			type = TYPE.valueOf(page);
 		} catch (Exception e) {
@@ -305,6 +326,7 @@ public class UserPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 						loadOrgs();
+						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "Organization successfully saved!",true));
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
@@ -316,6 +338,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<SaveUserResponse>() {
 					@Override
 					public void processResult(SaveUserResponse result) {
+						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "User successfully saved!",true));
 						fireEvent(new LoadUsersEvent());
 					}
 				});
@@ -327,6 +350,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<SaveGroupResponse>() {
 					@Override
 					public void processResult(SaveGroupResponse result) {
+						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "Group successfully saved!",true));
 						fireEvent(new LoadGroupsEvent());
 					}
 				});
@@ -461,6 +485,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<SaveUserResponse>() {
 					@Override
 					public void processResult(SaveUserResponse result) {
+						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "User successfully deleted.",false));
 						loadUsers();
 					}
 				});
@@ -473,6 +498,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<SaveGroupResponse>() {
 					@Override
 					public void processResult(SaveGroupResponse result) {
+						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "Group successfully deleted.",false));
 						loadGroups();
 					}
 				});
@@ -485,6 +511,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<SaveOrgResponse>() {
 					@Override
 					public void processResult(SaveOrgResponse result) {
+						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "Organization successfully deleted.",false));
 						loadOrgs();
 					}
 				});

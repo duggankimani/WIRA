@@ -9,7 +9,7 @@ import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.linegraph.LineGraphPresenter;
 import com.duggan.workflow.client.ui.admin.dashboard.table.TableDataPresenter;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.dashboard.ChartType;
 import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
 import com.duggan.workflow.shared.responses.GetDashBoardDataResponse;
@@ -24,6 +24,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
@@ -42,15 +43,32 @@ public class DashboardPresenter extends
 		
 	}
 	
+	public static final String DASHBOARDS_CAN_VIEW_DASHBOARDS = "DASHBOARDS_CAN_VIEW_DASHBOARDS";
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.dashboards)
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({DASHBOARDS_CAN_VIEW_DASHBOARDS})
 	public interface MyProxy extends TabContentProxyPlace<DashboardPresenter> {
 	}
 	
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-        return new TabDataExt(TABLABEL,"icon-dashboard",1, adminGatekeeper);
+    static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{DASHBOARDS_CAN_VIEW_DASHBOARDS}); 
+        return new TabDataExt(TABLABEL,"icon-dashboard",1, gateKeeper);
     }
 	
 	private IndirectProvider<PieChartPresenter> pieChartFactory;

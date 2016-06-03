@@ -2,11 +2,13 @@ package com.duggan.workflow.client.ui.admin;
 
 import com.duggan.workflow.client.ui.MainPagePresenter;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.ChangeTabHandler;
+import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.RequestTabsHandler;
 import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.TabContainerPresenter;
@@ -16,12 +18,13 @@ import com.gwtplatform.mvp.client.annotations.ChangeTab;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
+import com.gwtplatform.mvp.client.presenter.slots.LegacySlotConvertor;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 
 public class AdminHomePresenter
 		extends
-		TabContainerPresenter<AdminHomePresenter.MyView, AdminHomePresenter.MyProxy> {
+		TabContainerPresenter<AdminHomePresenter.MyView, AdminHomePresenter.MyProxy> implements ContextLoadedHandler{
 
 	public interface MyView extends TabView {
 		public void refreshTabs();
@@ -55,12 +58,22 @@ public class AdminHomePresenter
 	public AdminHomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, SLOT_SetTabContent, SLOT_RequestTabs,
-				SLOT_ChangeTab, MainPagePresenter.CONTENT_SLOT);
+				SLOT_ChangeTab,MainPagePresenter.CONTENT_SLOT);
+	}
+	
+	@Override
+	protected void onBind() {
+		super.onBind();
+		addRegisteredHandler(ContextLoadedEvent.getType(), this);
+	}
+	
+	@Override
+	public void setInSlot(Object slot, PresenterWidget<?> content) {
+		setInSlot(LegacySlotConvertor.convert(slot), content);
 	}
 
 	@ProxyEvent
 	public void onContextLoaded(ContextLoadedEvent event) {
-//		Window.alert(">> Admin");
 		getView().refreshTabs();
 	}
 

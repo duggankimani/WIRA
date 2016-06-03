@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.client.ui.component.BulletListPanel;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.gwtplatform.mvp.client.Tab;
@@ -85,6 +87,16 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 	 */
 	public void refreshTabs() {
 		for (Tab tab : tabList) {
+			
+//			if(tab.getText().equals("Processes")){
+//				
+//				TabDataExt ext = ((AbstractTabItem)tab).getTabData();
+//				String[] permissions = ((HasPermissionsGateKeeper)ext.getGateKeeper()).getRequiredRoles();
+//				Window.alert("Refresh! "+tab.getText()+"; "+((HasPermissionsGateKeeper)ext.getGateKeeper())+" Permissions ="+permissions+"; canReveal = "
+//						+ext.canReveal());
+//							
+//			}
+			
 			setTabVisibility(tab);
 		}
 	}

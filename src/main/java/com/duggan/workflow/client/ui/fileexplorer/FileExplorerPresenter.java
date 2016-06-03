@@ -13,8 +13,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.HasAllPermissionsGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.TreeType;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
@@ -59,22 +58,35 @@ public class FileExplorerPresenter extends
 		void onLoad();
 	}
 
-//	public static final String CAN_VIEW_PROCESSES = "PROCESSES_CAN_VIEW_PROCESSES";
+	public static final String REPORTS_CAN_VIEW_REPORTS = "REPORTS_CAN_VIEW_REPORTS";
 	
 	@ProxyCodeSplit
 	@NameToken({NameTokens.explorer})
-//	@UseGatekeeper(HasAllPermissionsGateKeeper.class)
-//	@GatekeeperParams({"PROCESSES_CAN_VIEW_PROCESSES"})
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({REPORTS_CAN_VIEW_REPORTS})
 	public interface MyProxy extends TabContentProxyPlace<FileExplorerPresenter> {
 	}
 	
 	public static final String TABLABEL = "File Explorer";
 
 	@TabInfo(container = HomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+	static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{REPORTS_CAN_VIEW_REPORTS});	
 		TabDataExt data = new TabDataExt(TABLABEL, "icon-dashboard", 12,
-				adminGatekeeper, false);
+				gateKeeper, false);
 		return data;
 	}
 

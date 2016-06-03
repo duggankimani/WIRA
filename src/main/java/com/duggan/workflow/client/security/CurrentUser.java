@@ -27,6 +27,7 @@ import com.duggan.workflow.shared.model.PermissionPOJO;
 public class CurrentUser {
 	private Boolean loggedIn;
 	private HTUser userDto;
+	List<String> permissions = new ArrayList<String>();
 
 	public CurrentUser() {
 		loggedIn = false;
@@ -35,6 +36,10 @@ public class CurrentUser {
 	public void fromCurrentUserDto(CurrentUserDto currentUserDto) {
 		setLoggedIn(currentUserDto.isLoggedIn());
 		setUser(currentUserDto.getUser());
+		
+		for (PermissionPOJO p : userDto.getPermissions()) {
+			permissions.add(p.getName().name());
+		}
 	}
 
 	public void reset() {
@@ -59,19 +64,9 @@ public class CurrentUser {
 	}
 
 	public boolean hasPermissions(String... requiredPermissions) {
-
-		List<String> permissions = new ArrayList<String>();
-		if (userDto != null) {
-			if(userDto.getPermissions()!=null)
-			for (PermissionPOJO p : userDto.getPermissions()) {
-				permissions.add(p.getName().name());
-			}
-		}
-		
 		if(requiredPermissions!=null){
 			return permissions.containsAll(Arrays.asList(requiredPermissions));
 		}
-			
 
 		return false;
 	}

@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui;
 
 
+import com.duggan.workflow.client.event.ShowMessageEvent;
+import com.duggan.workflow.client.event.ShowMessageEvent.ShowMessageHandler;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
@@ -21,11 +23,8 @@ import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -37,6 +36,7 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.presenter.slots.IsSlot;
+import com.gwtplatform.mvp.client.presenter.slots.LegacySlotConvertor;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.presenter.slots.PermanentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -45,7 +45,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 public class MainPagePresenter extends
 		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
 implements ErrorHandler, ProcessingCompletedHandler, 
-ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconnectionHandler{
+ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconnectionHandler, ShowMessageHandler{
 
 	public interface MyView extends View {
 
@@ -55,6 +55,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 		void clearDisconnectionMsg();
 		ModalPopup getModalPopup();
 		ModalPopup getModalPopup(boolean reInstantiate);
+		void setAlertVisible(AlertType alertType, String message,boolean showDefaultHeading);
 	}
 
 	@ProxyCodeSplit
@@ -88,6 +89,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 		addRegisteredHandler(WorkflowProcessEvent.TYPE, this);
 		addRegisteredHandler(ShowAttachmentEvent.TYPE, this);
 		addRegisteredHandler(ClientDisconnectionEvent.TYPE, this);
+		addRegisteredHandler(ShowMessageEvent.getType(), this);
 	}
 	
 	
@@ -126,7 +128,6 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	@Override
 	public <T extends PresenterWidget<?>> void setInSlot(IsSlot<T> slot, T child) {
 		super.setInSlot(slot, child);
-//		Window.alert(">> Called [1]");
 		if(slot==CONTENT_SLOT){
 			if(child!=null && child instanceof AdminHomePresenter){
 				fireEvent(new AdminPageLoadEvent(true));
@@ -137,11 +138,10 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	}
 	
 	@Override
-	public <T extends PresenterWidget<?>> void setInSlot(IsSlot<T> slot,
-			T child, boolean performReset) {
-//		Window.alert(">> Called [2]");
-		super.setInSlot(slot, child, performReset);
+	public void setInSlot(Object slot, PresenterWidget<?> content) {
+		setInSlot(LegacySlotConvertor.convert(slot), content);
 	}
+
 
 	@Override
 	public void onProcessing(ProcessingEvent event) {
@@ -157,7 +157,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	public void onWorkflowProcess(WorkflowProcessEvent event) {
 		Doc summary = event.getDocument();
 		String url = "";
-		url = "#search;docRefId="+summary.getRefId();
+		url = "#/search/"+summary.getRefId();
 		
 //		if(summary instanceof Document){
 //			//url = "#search;did="+summary.getId();
@@ -229,6 +229,11 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	@Override
 	public void onClientDisconnection(ClientDisconnectionEvent event) {
 		getView().showDisconnectionMessage(event.getMessage());
+	}
+
+	@Override
+	public void onShowMessage(ShowMessageEvent event) {
+		getView().setAlertVisible(event.getAlertType(), event.getMessage(),event.isShowDefaultHeading());
 	}
 
 }

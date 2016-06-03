@@ -5,18 +5,19 @@ import com.duggan.workflow.client.util.AppContext;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.proxy.GatekeeperWithParams;
 
-public class HasAllPermissionsGateKeeper implements GatekeeperWithParams {
+public class HasPermissionsGateKeeper implements GatekeeperWithParams {
 
 	private final CurrentUser currentUser;
     private String[] requiredRoles;
 
     @Inject
-    public HasAllPermissionsGateKeeper(CurrentUser currentUser) {
+    public HasPermissionsGateKeeper(CurrentUser currentUser) {
         this.currentUser = currentUser;
     }
 
     @Override
     public GatekeeperWithParams withParams(String[] params) {
+//    	Window.alert(this+" With Permissions = "+requiredRoles);
         requiredRoles = params;
         return this;
     }
@@ -25,5 +26,9 @@ public class HasAllPermissionsGateKeeper implements GatekeeperWithParams {
     public boolean canReveal() {
         return AppContext.isLoggedIn() && currentUser.hasPermissions(requiredRoles);
     }
+
+	public String[] getRequiredRoles() {
+		return requiredRoles;
+	}
 
 }

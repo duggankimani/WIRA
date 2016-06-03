@@ -19,6 +19,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
@@ -45,6 +46,7 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
@@ -78,16 +80,33 @@ public class DataTablePresenter
 		HasClickHandlers getDeleteLink();
 	}
 
+	public static final String DATATABLES_CAN_VIEW_DATATABLES = "DATATABLES_CAN_VIEW_DATATABLES";
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.datatable)
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({DATATABLES_CAN_VIEW_DATATABLES})
 	public interface IDataTableProxy extends
 			TabContentProxyPlace<DataTablePresenter> {
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8, adminGatekeeper);
+	static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{DATATABLES_CAN_VIEW_DATATABLES}); 
+		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8, gateKeeper);
 		return ext;
 	}
 

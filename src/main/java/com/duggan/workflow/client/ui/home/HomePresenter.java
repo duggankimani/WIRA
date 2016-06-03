@@ -37,6 +37,7 @@ import com.gwtplatform.mvp.client.RequestTabsHandler;
 import com.gwtplatform.mvp.client.TabContainerPresenter;
 import com.gwtplatform.mvp.client.TabView;
 import com.gwtplatform.mvp.client.annotations.ChangeTab;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
@@ -128,9 +129,9 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		getView().showmask(true);
 	}
 	
-	//@ProxyEvent
+	@ProxyEvent
 	public void onContextLoaded(ContextLoadedEvent event){
-//		getView().refreshTabs();
+		getView().refreshTabs();
 	}
 	
 	@Override
@@ -185,5 +186,5 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 			}
 		});
 	}
-
+	
 }

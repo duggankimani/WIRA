@@ -115,7 +115,7 @@ public class LoginPresenter extends
 
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		super.prepareFromRequest(request);
+		super.prepareFromRequest(request); 
 		tryLoggingInWithCookieFirst();
 	}
 

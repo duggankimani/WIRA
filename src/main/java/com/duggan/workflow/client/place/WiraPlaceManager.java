@@ -2,7 +2,9 @@ package com.duggan.workflow.client.place;
 
 import javax.inject.Inject;
 
+import com.duggan.workflow.client.event.ShowMessageEvent;
 import com.duggan.workflow.client.security.CurrentUser;
+import com.duggan.workflow.client.ui.AlertType;
 import com.duggan.workflow.client.util.Definitions;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler.Historian;
@@ -54,9 +56,30 @@ public class WiraPlaceManager extends PlaceManagerImpl {
 		String redirect = unauthorizedHistoryToken;
 		 GWT.log("redirect unauthorizedHistoryToken = " +
 				 redirect);
-		 
-		revealPlace(new PlaceRequest.Builder()
-		.nameToken(NameTokens.loginWithRedirect).with(Definitions.REDIRECT, redirect).build());
+		
+
+		/**
+		 * Unauthorized Place is called whenever a user cannot access a presenter (Has no Permissions)
+		 * or the user is not logged in.
+		 * 
+		 * At the same time, WiraPlaceManager appends the last URL(Place) as a redirect parameter
+		 * for the LoginPresenter. This creates a scenario where if a user clicks on a place they
+		 * have no permissions to view, the system navigates as follows: 
+		 * 
+		 * -> UnAuthorizedPresenter -> Login Presenter(already Logged in) -> Back to Unauthorized Presenter -> Login Presenter-> (EndLessLoop!)
+		 * 
+		 * The code below checks if user session already exists and breaks the cycle by removing the redirect parameter from the login placerequest
+		 * 
+		 */
+		if(currentUser.isLoggedIn()){
+			//Ignore redirect - This redirect was caused by an authorized(No permissions) access to a presenter
+			revealPlace(unauthorizedPlaceRequest);
+			getEventBus().fireEvent(new ShowMessageEvent(AlertType.WARNING, "You do not have sufficient rights!",true));
+		}else{
+			revealPlace(new PlaceRequest.Builder()
+			.nameToken(NameTokens.loginWithRedirect).with(Definitions.REDIRECT, redirect).build());
+		}
+		
 	}
 
 }

@@ -12,7 +12,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.shared.model.CaseFilter;
@@ -40,6 +40,7 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
@@ -67,10 +68,13 @@ public class CaseRegistryPresenter
 
 		TextField getTxtCaseNo();
 	}
+	
+	public static final String CASEREGISTRY_CAN_VIEW_CASES = "CASEREGISTRY_CAN_VIEW_CASES";
 
 	@ProxyCodeSplit
 	@NameToken({ NameTokens.registry,NameTokens.registryview })
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({CASEREGISTRY_CAN_VIEW_CASES})
 	public interface ICaseRegistryProxy extends
 			TabContentProxyPlace<CaseRegistryPresenter> {
 	}
@@ -78,9 +82,23 @@ public class CaseRegistryPresenter
 	public static final String TABLABEL = "Case Registry";
 
 	@TabInfo(container = HomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+	static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{CASEREGISTRY_CAN_VIEW_CASES});
 		return new HomeTabData("registry", TABLABEL, "", 6,
-				adminGatekeeper, false);
+				gateKeeper, false);
 	}
 
 	@Inject

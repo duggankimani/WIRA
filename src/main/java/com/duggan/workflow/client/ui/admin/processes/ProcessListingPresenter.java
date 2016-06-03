@@ -24,7 +24,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
-import com.duggan.workflow.client.ui.security.LoginGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -54,6 +54,7 @@ import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
@@ -99,8 +100,8 @@ public class ProcessListingPresenter
 
 	@NameToken(NameTokens.processlist)
 	@ProxyStandard
-	@UseGatekeeper(AdminGateKeeper.class)
-//	@GatekeeperParams({CAN_VIEW_PROCESSES})
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({CAN_VIEW_PROCESSES})
 	interface MyProxy extends ProxyPlace<ProcessListingPresenter> {
 	}
 

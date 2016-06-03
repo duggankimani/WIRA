@@ -13,6 +13,7 @@ import com.duggan.workflow.client.ui.component.Grid;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.RequestInfoDto;
 import com.duggan.workflow.shared.requests.GetMessagesRequest;
 import com.duggan.workflow.shared.requests.SendMessageRequest;
@@ -30,6 +31,7 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.GatekeeperParams;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
@@ -54,17 +56,34 @@ public class MessagesPresenter
 		Anchor getNewLink();
 	}
 
+	public static final String MAILLOG_CAN_VIEW_MAILLOG = "MAILLOG_CAN_VIEW_MAILLOG";
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.messages)
-	@UseGatekeeper(AdminGateKeeper.class)
+	@UseGatekeeper(HasPermissionsGateKeeper.class)
+	@GatekeeperParams({MAILLOG_CAN_VIEW_MAILLOG})
 	public interface IMessagesProxy extends
 			TabContentProxyPlace<MessagesPresenter> {
 	}
 
 	@TabInfo(container = AdminHomePresenter.class)
-	static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
+	static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+		/**
+		 * Manually calling gateKeeper.withParams Method.
+		 * 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
+		 * Presenter.MyProxy->UseGateKeeper & 
+		 * getTabLabel(GateKeeper);
+		 * 
+		 * Test -> 
+		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
+		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
+		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * 
+		 */
+		gateKeeper.withParams(new String[]{MAILLOG_CAN_VIEW_MAILLOG});
 		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8,
-				adminGatekeeper);
+				gateKeeper);
 		return ext;
 	}
 

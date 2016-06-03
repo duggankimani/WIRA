@@ -14,6 +14,11 @@
 			<strong ui:field="spnSubject"></strong>
 			<g:Anchor styleName="hand muted" ui:field="aView">View Document</g:Anchor>
 		</div>
+		
+		<div ui:field="divGenericAlerts" class="alert alert-success hide">
+			<!-- strong>Success!</strong>
+			Indicates a successful or positive action. -->
+		</div>
 
 		<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
 
