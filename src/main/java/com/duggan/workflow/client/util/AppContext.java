@@ -80,6 +80,7 @@ public class AppContext {
 	}
 
 	public static void destroy() {
+		user.clear();
 		CookieManager.clear();
 	}
 

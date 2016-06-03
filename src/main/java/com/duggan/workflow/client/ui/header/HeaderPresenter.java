@@ -20,7 +20,6 @@ import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.events.LoadAlertsEvent.LoadAlertsHandler;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
-import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
@@ -63,7 +62,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 public class HeaderPresenter extends
 		PresenterWidget<HeaderPresenter.IHeaderView> implements
 		AfterSaveHandler, AdminPageLoadHandler, ContextLoadedHandler,
-		LoadAlertsHandler, TabAddedHandler,ChangeTabHandler {
+		LoadAlertsHandler {
 
 	public interface IHeaderView extends View {
 		HasClickHandlers getLogout();
@@ -93,6 +92,8 @@ public class HeaderPresenter extends
 		TextBox getSearchField();
 
 		void showTab(Tab tab);
+
+		void refreshLinks();
 	}
 
 	@Inject
@@ -149,8 +150,6 @@ public class HeaderPresenter extends
 		this.addRegisteredHandler(AdminPageLoadEvent.TYPE, this);
 		this.addRegisteredHandler(ContextLoadedEvent.TYPE, this);
 		this.addRegisteredHandler(LoadAlertsEvent.TYPE, this);
-		this.addRegisteredHandler(HomePresenter.SLOT_ChangeTab, this);
-		this.addRegisteredHandler(TabAddedEvent.getType(), this);
 
 		getView().getLogout().addClickHandler(new ClickHandler() {
 			@Override
@@ -300,6 +299,7 @@ public class HeaderPresenter extends
 
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
+		getView().refreshLinks();
 		HTUser user = currentUser.getUser();
 		getView().setImage(user);
 		getView().showAdminLink(user.isAdmin());
@@ -311,19 +311,6 @@ public class HeaderPresenter extends
 	@Override
 	public void onLoadAlerts(LoadAlertsEvent event) {
 		loadAlertCount();
-	}
-
-	@Override
-	public void onTabAdded(TabAddedEvent event) {
-		getView().showTab(event.getTab());
-	}
-
-	@Override
-	public void onChangeTab(ChangeTabEvent event) {
-		TabContentProxy<?> tabProxy = event.getTabContentProxy();
-		Window.alert("Header>> "+tabProxy.getTab().getText());
-//        getView().changeTab(tabProxy.getTab(), tabProxy.getTabData(),
-//                tabProxy.getTargetHistoryToken());
 	}
 
 }

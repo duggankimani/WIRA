@@ -3,6 +3,8 @@ package com.duggan.workflow.client.ui.header;
 import java.util.Date;
 import java.util.List;
 
+import com.duggan.workflow.client.reports.ReportsPresenter;
+import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.admin.datatable.DataTablePresenter;
@@ -10,9 +12,13 @@ import com.duggan.workflow.client.ui.admin.ds.DataSourcePresenter;
 import com.duggan.workflow.client.ui.admin.msgs.MessagesPresenter;
 import com.duggan.workflow.client.ui.admin.processes.ProcessListingPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
+import com.duggan.workflow.client.ui.admin.settings.SettingsPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.component.TextField;
+import com.duggan.workflow.client.ui.fileexplorer.FileExplorerPresenter;
 import com.duggan.workflow.client.ui.home.TabItem;
+import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
+import com.duggan.workflow.client.ui.task.UnAssignedPresenter;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
@@ -81,13 +87,17 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	@UiField
 	TextField txtSearch;
-	
-	@UiField Element ulNav;
+
+	@UiField
+	Element ulNav;
 
 	boolean isSelected = false;
 
+	private CurrentUser currentUser;
+
 	@Inject
-	public HeaderView(final Binder binder) {
+	public HeaderView(final Binder binder, CurrentUser currentUser) {
+		this.currentUser = currentUser;
 		widget = binder.createAndBindUi(this);
 		txtSearch.getElement().setId("prependedDropdownButton");
 
@@ -239,62 +249,108 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 				+ user.getUserId();
 		img.setUrl(url2);
 	}
-	
-	public TextBox getSearchField(){
+
+	public TextBox getSearchField() {
 		return txtSearch;
 	}
 
 	/**
-	 * This only works on AdminHomePresenter.bind() - meaning it wont be fired unless the user navigates to admin
+	 * This only works on AdminHomePresenter.bind() - meaning it wont be fired
+	 * unless the user navigates to admin
 	 */
 	@Override
 	public void showTab(Tab tab) {
-		Window.alert(">> "+tab.getText());
-		
-		TabData tabData = ((TabItem)tab).getTabData();
-		TabDataExt data = (TabDataExt)tabData;
+		Window.alert(">> " + tab.getText());
+
+		TabData tabData = ((TabItem) tab).getTabData();
+		TabDataExt data = (TabDataExt) tabData;
 		switch (tab.getText()) {
 		case UserPresenter.TABLABEL:
-			
-			//getElement(ulNav, "usermgt")
-			//showLi(getElement(ulNav, "usermgt"), data.canReveal());
+
+			// getElement(ulNav, "usermgt")
+			// showLi(getElement(ulNav, "usermgt"), data.canReveal());
 			break;
 		}
-//		case BaseProcessPresenter.TABLABEL:
-//			showLi(getElement(ulNav, "usermgt"), data.canReveal());
-//			break;
-//		case DashboardPresenter.TABLABEL:
-//			showLi(getElement(ulNav, "usermgt"), data.canReveal());
-//			break;
-//		case MessagesPresenter.TABLABEL:
-//			showLi(getElement(ulNav, "usermgt"), data.canReveal());
-//			break;
-//		case DataTablePresenter.TABLABEL:
-//			showLi(getElement(ulNav, "usermgt"), data.canReveal());
-//			break;
-//		case DataSourcePresenter.TABLABEL:
-//			showLi(getElement(ulNav, "usermgt"), data.canReveal());
-//			break;
-//		}
+		// case BaseProcessPresenter.TABLABEL:
+		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
+		// break;
+		// case DashboardPresenter.TABLABEL:
+		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
+		// break;
+		// case MessagesPresenter.TABLABEL:
+		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
+		// break;
+		// case DataTablePresenter.TABLABEL:
+		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
+		// break;
+		// case DataSourcePresenter.TABLABEL:
+		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
+		// break;
+		// }
 	}
-	
+
 	private static native Element getElement(Element parent, String elementId)/*-{
-		
-		return $wnd.$(parent).find("a[id='"+elementId+"']").next(); 		
-	}-*/;
+																				
+																				return $wnd.$(parent).find("a[id='"+elementId+"']").next(); 		
+																				}-*/;
 
 	private void showLi(Element el, boolean isShow) {
-		if(el.getParentElement()!=null){
+		if (el.getParentElement() != null) {
 			show(el.getParentElement(), isShow);
 		}
 	}
-	
+
 	private void show(Element el, boolean isShow) {
-		if(isShow){
+		if (isShow) {
 			el.removeClassName("hide");
-		}else{
+		} else {
 			el.addClassName("hide");
 		}
+	}
+
+	@Override
+	public void refreshLinks() {
+		boolean hasAdminRight = false;
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{UserPresenter.ACCESSMGT_CAN_VIEW_ACCESSMGT});
+		showLi(getEl("usermgt"), currentUser.hasPermissions(new String[]{UserPresenter.ACCESSMGT_CAN_VIEW_ACCESSMGT}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{BaseProcessPresenter.CAN_VIEW_PROCESSES});
+		showLi(getEl("processes"), currentUser.hasPermissions(new String[]{BaseProcessPresenter.CAN_VIEW_PROCESSES}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{DashboardPresenter.DASHBOARDS_CAN_VIEW_DASHBOARDS});
+		showLi(getEl("dashboards"), currentUser.hasPermissions(new String[]{DashboardPresenter.DASHBOARDS_CAN_VIEW_DASHBOARDS}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{MessagesPresenter.MAILLOG_CAN_VIEW_MAILLOG});
+		showLi(getEl("messages"), currentUser.hasPermissions(new String[]{MessagesPresenter.MAILLOG_CAN_VIEW_MAILLOG}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{DataTablePresenter.DATATABLES_CAN_VIEW_DATATABLES});
+		showLi(getEl("dataTables"), currentUser.hasPermissions(new String[]{DataTablePresenter.DATATABLES_CAN_VIEW_DATATABLES}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{DataSourcePresenter.DATASOURCES_CAN_VIEW_DATASOURCES});
+		showLi(getEl("datasources"), currentUser.hasPermissions(new String[]{DataSourcePresenter.DATASOURCES_CAN_VIEW_DATASOURCES}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{SettingsPresenter.SETTINGS_CAN_VIEW});
+		showLi(getEl("settings"), currentUser.hasPermissions(new String[]{SettingsPresenter.SETTINGS_CAN_VIEW}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{UnAssignedPresenter.UNASSIGNED_CAN_VIEW_UNASSIGNEDTASKS});
+		showLi(getEl("unassignedTasks"),currentUser.hasPermissions(new String[]{UnAssignedPresenter.UNASSIGNED_CAN_VIEW_UNASSIGNEDTASKS}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{CaseRegistryPresenter.CASEREGISTRY_CAN_VIEW_CASES});
+		showLi(getEl("caseRegistry"),currentUser.hasPermissions(new String[]{CaseRegistryPresenter.CASEREGISTRY_CAN_VIEW_CASES}));
+		
+		hasAdminRight = hasAdminRight |  currentUser.hasPermissions(new String[]{ReportsPresenter.REPORTS_CAN_VIEW_REPORTS});
+		showLi(getEl("reports"),currentUser.hasPermissions(new String[]{ReportsPresenter.REPORTS_CAN_VIEW_REPORTS}));
+		
+		hasAdminRight = hasAdminRight | currentUser.hasPermissions(new String[]{FileExplorerPresenter.REPORTS_CAN_VIEW_REPORTS});
+		showLi(getEl("fileExplorer"), currentUser.hasPermissions(new String[]{FileExplorerPresenter.REPORTS_CAN_VIEW_REPORTS}));
+		
+		showLi(getEl("adminSettings"), hasAdminRight);
+	}
+
+	private Element getEl(String id) {
+		Element el = divNavbar.getElementById(id);
+		return el;
 	}
 
 }

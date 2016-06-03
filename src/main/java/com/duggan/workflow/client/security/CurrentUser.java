@@ -35,7 +35,7 @@ public class CurrentUser {
 
 	public void fromCurrentUserDto(CurrentUserDto currentUserDto) {
 		setLoggedIn(currentUserDto.isLoggedIn());
-		setUser(currentUserDto.getUser());
+		userDto = currentUserDto.getUser();
 		
 		for (PermissionPOJO p : userDto.getPermissions()) {
 			permissions.add(p.getName().name());
@@ -44,7 +44,7 @@ public class CurrentUser {
 
 	public void reset() {
 		setLoggedIn(false);
-		setUser(null);
+		
 	}
 
 	public Boolean isLoggedIn() {
@@ -59,16 +59,18 @@ public class CurrentUser {
 		return userDto;
 	}
 
-	public void setUser(HTUser userDto) {
-		this.userDto = userDto;
-	}
-
 	public boolean hasPermissions(String... requiredPermissions) {
 		if(requiredPermissions!=null){
 			return permissions.containsAll(Arrays.asList(requiredPermissions));
 		}
 
 		return false;
+	}
+
+	public void clear() {
+		permissions.clear();
+		userDto=null;
+		loggedIn=false;
 	}
 
 }

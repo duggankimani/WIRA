@@ -36,19 +36,19 @@
 									<a href="#/participated">Participated</a>
 								</li>
 								<li>
-									<a href="#/processes">Unassigned</a>
+									<a href="#/unassigned" id="unassignedTasks">Unassigned</a>
 								</li>
 								<li>
-									<a href="#/processes">
+									<a href="#/registry" id="caseRegistry">
 										<i class="icon-ok"></i>
 										Case Registy
 									</a>
 								</li>
 								<li>
-									<a href="#/processes">Reports</a>
+									<a href="#/reports" id="reports">Reports</a>
 								</li>
 								<li>
-									<a href="#/processes">Documents</a>
+									<a href="#/explorer" id="fileExplorer">File Explorer</a>
 								</li>
 
 							</ul>
@@ -74,30 +74,30 @@
 								<i class="icon-cog"></i>
 								<b class="caret"></b>
 							</a>
-							<ul class="dropdown-menu">
+							<ul class="dropdown-menu" id="adminSettings">
 
 								<li>
 									<a href="#/usermgt" id="usermgt">Access Management</a>
 								</li>
 								<li>
-									<a href="#/processlist">
+									<a href="#/processlist" id="processes">
 										Processes</a>
 								</li>
 								<li>
-									<a href="#/dashboards">Dashboards</a>
+									<a href="#/dashboards" id="dashboards">Dashboards</a>
 								</li>
 								<li>
-									<a href="#/messages">Messages</a>
+									<a href="#/messages" id="messages">Messages</a>
 								</li>
 								<li>
-									<a href="#/datatable">Data tables</a>
+									<a href="#/datatable" id="dataTables">Data tables</a>
 								</li>
 								<li class="divider"></li>
 								<li>
-									<a href="#/datasources">Datasources</a>
+									<a href="#/datasources" id="datasources">Datasources</a>
 								</li>
 								<li>
-									<a href="#/settings">Settings</a>
+									<a href="#/settings" id="settings">Settings</a>
 								</li>
 							</ul>
 						</li>
