@@ -42,7 +42,6 @@ import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
-import org.jbpm.workflow.core.node.WorkItemNode;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
@@ -278,6 +277,28 @@ public class JBPMHelper implements Closeable {
 				.setParameter("status", getStatusesForTaskType(TaskType.INBOX))
 				.getSingleResult();
 		counts.put(TaskType.INBOX, count.intValue());
+		counts.put(TaskType.ALL, count.intValue());
+		
+		Long mine = (Long) DB.getEntityManager()
+				.createNamedQuery("TasksOwnedCount")
+				.setParameter("userId", userId)
+				.setParameter("language", "en-UK")
+				.setParameter("status", getStatusesForTaskType(TaskType.MINE))
+				.getSingleResult();
+		counts.put(TaskType.MINE, mine.intValue());
+		
+		Long queued = (Long) DB
+				.getEntityManager()
+				.createNamedQuery(
+						"TasksAssignedCountAsPotentialOwnerByStatusWithGroups")
+				.setParameter("userId", userId)
+				.setParameter("groupIds", groupIds)
+				.setParameter("language", "en-UK")
+				.setParameter("status", getStatusesForTaskType(TaskType.QUEUED))
+				.getSingleResult();
+		counts.put(TaskType.QUEUED, queued.intValue());
+		
+		
 
 		/**
 		 * If John & James share the Role HOD_DEV John Claims, Starts and
@@ -311,13 +332,26 @@ public class JBPMHelper implements Closeable {
 		List<Status> statuses = new ArrayList<>();
 
 		switch (type) {
-		case INBOX:
-			statuses = Arrays.asList(Status.Created, Status.InProgress,
+		case MINE:
+			statuses = Arrays.asList(Status.InProgress,
 			// Status.Error,
 			// Status.Exited,
 			// Status.Failed,
 			// Status.Obsolete,
-					Status.Ready, Status.Reserved);
+					Status.Reserved);
+			break;
+		case QUEUED:
+			statuses = Arrays.asList(Status.Created,
+							Status.Ready);
+			break;
+		case INBOX:
+		case ALL:
+			statuses = Arrays.asList(Status.Created, Status.InProgress,
+					// Status.Error,
+					// Status.Exited,
+					// Status.Failed,
+					// Status.Obsolete,
+							Status.Ready, Status.Reserved);
 			break;
 		case PARTICIPATED:
 		case COMPLETED:
@@ -421,6 +455,7 @@ public class JBPMHelper implements Closeable {
 	 */
 	public List<HTSummary> getTasksForUser(String userId, TaskType type,int offset, int length) {
 
+		String language = "en-UK";
 		if (!LoginHelper.get().existsUser(userId)) {
 			throw new RuntimeException("User " + userId + " Unknown!!");
 		}
@@ -436,19 +471,25 @@ public class JBPMHelper implements Closeable {
 		case COMPLETED:
 			// approvals - show only items I have approved
 			ts = sessionManager.getTaskClient().getTasksOwned(userId,
-					Arrays.asList(Status.Completed), "en-UK");
+					Arrays.asList(Status.Completed), language);
 
 			break;
 		case INBOX:
-			// ts = sessionManager.getTaskClient()
-			// .getTasksAssignedAsPotentialOwner(userId, "en-UK");
+		case MINE:
+			ts = sessionManager.getTaskClient().getTasksOwned(userId,getStatusesForTaskType(type),language);
+			break;
+		case QUEUED:
+			ts = sessionManager.getTaskClient().getTasksAssignedAsPotentialOwnerByStatus(userId,
+					getStatusesForTaskType(type), language);
+			break;
+		case ALL:
 			ts = sessionManager.getTaskClient()
-					.getTasksAssignedAsPotentialOwnerByStatus(userId,
-							getStatusesForTaskType(type), "en-UK");
+			.getTasksAssignedAsPotentialOwnerByStatus(userId,
+					getStatusesForTaskType(type), "en-UK");
 			break;
 		case SUSPENDED:
 			ts = sessionManager.getTaskClient().getTasksOwned(userId,
-					Arrays.asList(Status.Suspended), "en-UK");
+					Arrays.asList(Status.Suspended), language);
 			break;
 		case UNASSIGNED:
 			ts = DB.getDocumentDao().getUnassignedTasks();

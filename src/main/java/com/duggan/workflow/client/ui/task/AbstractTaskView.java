@@ -5,6 +5,7 @@ import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DOCUMENT_
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.FILTER_SLOT;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
@@ -137,32 +138,33 @@ public class AbstractTaskView extends ViewImpl implements
 		createHeader(tblTasks);
 	}
 
-	private void createHeader(FlexTable table) {
+	protected void createHeader(FlexTable table) {
+		int i = table.getRowCount();
 		int j = 0;
-		table.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "10px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "10px");
 
 		// table.setWidget(0, j++, new HTMLPanel("<strong>Summary</strong>"));
-		// table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Case No</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "40px");
-		// table.setWidget(0, j++, new HTMLPanel("<strong>Case</strong>"));
-		// table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Process</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "200px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Task</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Current User</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "60px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Last Modify</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "60px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Due Date</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "60px");
-		table.setWidget(0, j++, new HTMLPanel("<strong>Status</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "60px");
+		// table.getFlexCellFormatter().setWidth(i, (j - 1), "100px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Case No</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "40px");
+		// table.setWidget(i, j++, new HTMLPanel("<strong>Case</strong>"));
+		// table.getFlexCellFormatter().setWidth(i, (j - 1), "100px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Process</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "200px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Task</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "100px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Current User</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Last Modify</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Due Date</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Status</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
 
-		for (int i = 0; i < table.getCellCount(0); i++) {
-			table.getFlexCellFormatter().setStyleName(0, i, "th");
+		for (int col = 0; col < table.getCellCount(i); col++) {
+			table.getFlexCellFormatter().setStyleName(i, col, "th");
 		}
 
 	}
@@ -276,7 +278,7 @@ public class AbstractTaskView extends ViewImpl implements
 			createHeader(tblTasks);
 		}
 
-		int i = isIncremental ? tblTasks.getRowCount() : 1;
+		int i = tblTasks.getRowCount();
 
 		for (Doc doc : tasks) {
 			int j = 0;
@@ -313,10 +315,10 @@ public class AbstractTaskView extends ViewImpl implements
 			InlineLabel spnStatus = new InlineLabel();
 
 			boolean isCompleted = true;
-			if(doc instanceof Document){
-				isCompleted = ! (((Document)doc).getStatus()==DocStatus.DRAFTED);
+			if (doc instanceof Document) {
+				isCompleted = !(((Document) doc).getStatus() == DocStatus.DRAFTED);
 			}
-			
+
 			spnDeadlines = setDeadlines(DateUtils.addDays(doc.getCreated(), 1),
 					isCompleted);
 
@@ -523,7 +525,7 @@ public class AbstractTaskView extends ViewImpl implements
 			tblTasks.setWidget(i, j++, div);
 
 			HTMLPanel status = new HTMLPanel("");
-			//status.add(spnStatus);
+			// status.add(spnStatus);
 			status.add(new InlineLabel(doc.getProcessStatus().name()));
 
 			tblTasks.setWidget(i, j++, status);
@@ -567,4 +569,7 @@ public class AbstractTaskView extends ViewImpl implements
 		return spnDeadline;
 	}
 
+	@Override
+	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
+	}
 }

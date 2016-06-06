@@ -2,18 +2,22 @@ package com.duggan.workflow.client.ui.error;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class NotfoundPresenter extends
 		Presenter<NotfoundPresenter.MyView, NotfoundPresenter.MyProxy> {
 
+	private PlaceManager placeManager;
 	public interface MyView extends View {
 	}
 
@@ -24,8 +28,9 @@ public class NotfoundPresenter extends
 
 	@Inject
 	public NotfoundPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy) {
+			final MyProxy proxy, PlaceManager placeManager) {
 		super(eventBus, view, proxy);
+		this.placeManager = placeManager;
 	}
 
 	@Override
@@ -33,6 +38,13 @@ public class NotfoundPresenter extends
 		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
 	}
 
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		super.prepareFromRequest(request);
+		if(!AppContext.isLoggedIn()){
+			placeManager.revealPlace(new PlaceRequest.Builder().nameToken(NameTokens.login).build());
+		}
+	}
 	@Override
 	protected void onBind() {
 		super.onBind();

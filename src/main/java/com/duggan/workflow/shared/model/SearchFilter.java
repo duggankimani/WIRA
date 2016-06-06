@@ -3,7 +3,9 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SearchFilter implements Serializable {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class SearchFilter implements Serializable,IsSerializable {
 
 	private static final long serialVersionUID = -8494519116994121416L;
 	private String subject;

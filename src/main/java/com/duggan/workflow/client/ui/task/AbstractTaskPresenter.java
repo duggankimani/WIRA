@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.task;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.duggan.workflow.client.model.TaskType;
@@ -49,7 +50,6 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -92,6 +92,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		void bindTasks(List<Doc> tasks, boolean isIncremental);
 
+		void bindAlerts(HashMap<TaskType, Integer> alerts);
 	}
 
 	public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
@@ -463,7 +464,13 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void onSearch(SearchEvent event) {
 		if (this.isVisible()) {
 			CURPOS = 0;
+			
 			SearchFilter filter = event.getFilter();
+			searchTerm = filter.getPhrase().trim();
+			if (searchTerm==null || searchTerm.isEmpty()) {
+				loadTasks();
+				return;
+			}
 			search(filter);
 			getView().hideFilterDialog();
 		}

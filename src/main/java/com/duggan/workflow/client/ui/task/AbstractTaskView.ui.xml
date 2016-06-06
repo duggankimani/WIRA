@@ -20,7 +20,6 @@
 					<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
 				</div>
 				<g:Anchor ui:field="aRefresh" styleName="hide icon-refresh icon-large hand"></g:Anchor>
-
 				<g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
 			</div>
 
