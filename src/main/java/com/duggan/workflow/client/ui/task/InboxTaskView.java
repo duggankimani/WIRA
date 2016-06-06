@@ -27,15 +27,15 @@ public class InboxTaskView extends AbstractTaskView implements IInboxView {
 		super(binder);
 		this.placeManager = placeManager;
 		searchPanel.addStyleName("header-filter");
-		mine.setText("Mine (10)");
+		mine.setText("Mine");
 		mine.setTitle("Tasks assigned to me");
 		searchPanel.add(mine);
 
-		queued.setText("Queued (5)");
+		queued.setText("Queued");
 		queued.setTitle("Queued items");
 		searchPanel.add(queued);
 
-		all.setText("All (15)");
+		all.setText("All");
 		all.setTitle("All tasks including tasks claimed by others");
 		searchPanel.add(all);
 

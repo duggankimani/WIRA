@@ -166,10 +166,15 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@Override
 	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
+		alerts.put(TaskType.INBOX, getValue(alerts.get(TaskType.MINE) + getValue(alerts.get(TaskType.QUEUED))));
 		for (TaskType type : alerts.keySet()) {
 			String text = (type.getTitle() + " (" + alerts.get(type) + ")");
 			tabPanel.changeTab(type, text);
 		}
+	}
+
+	private Integer getValue(Integer val) {
+		return val==null? 0: val.intValue();
 	}
 
 	@Override
