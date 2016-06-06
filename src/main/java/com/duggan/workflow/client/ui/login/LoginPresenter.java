@@ -248,8 +248,8 @@ public class LoginPresenter extends
 				Definitions.REMEMBER_ME_DAYS);
 		boolean secure = false;
 
-		Cookies.setCookie(Definitions.AUTHENTICATIONCOOKIE, value, expires, domain,
-				path, secure);
+//		Cookies.setCookie(Definitions.AUTHENTICATIONCOOKIE, value, expires, domain,
+//				path, secure);
 	}
 
 	public static String getDomain() {

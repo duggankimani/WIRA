@@ -2,7 +2,9 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -32,6 +34,12 @@ public class LoginRequestActionHandler extends
 	private final Provider<HttpServletRequest> httpRequest;
 
 	Logger logger = Logger.getLogger(LoginRequestActionHandler.class);
+	@Inject
+	Provider<HttpServletRequest> request;
+
+	@Inject
+	Provider<HttpServletResponse> response;
+
 
 	@Inject
 	public LoginRequestActionHandler(
@@ -79,13 +87,30 @@ public class LoginRequestActionHandler extends
 					action.getPassword());
 		}
 
+		String contextPath = getContextPath();
+		logger.info("#Exec Login: Setting context path = " + contextPath);
+
 		isLoggedIn = userDto != null;
 
 		String loggedInCookie = "";
 		if (isLoggedIn) {
+			HttpSession session = request.get().getSession(true);
 			loggedInCookie = createSessionCookie(action.getLoggedInCookie(),
 					userDto);
+			session.setAttribute(ServerConstants.AUTHENTICATIONCOOKIE,
+					loggedInCookie);
+			Cookie xsrfCookie = new Cookie(ServerConstants.AUTHENTICATIONCOOKIE,
+					loggedInCookie);
+			xsrfCookie.setHttpOnly(false);// http only
+			xsrfCookie.setPath(contextPath);
+			xsrfCookie.setMaxAge(3600 * 24 * 30); // Time in seconds (30 days)
+			xsrfCookie.setSecure(false); // http(s) cookie
+			response.get().addCookie(xsrfCookie);
+		} else {
+			// reset headers
+			resetSession();
 		}
+
 
 		CurrentUserDto currentUserDto = new CurrentUserDto(isLoggedIn, userDto);
 
@@ -98,6 +123,31 @@ public class LoginRequestActionHandler extends
 
 		result.setValues(action.getActionType(), currentUserDto, loggedInCookie);
 	}
+
+	private String getContextPath() {
+		String contextPath = request.get().getServletContext().getContextPath();
+
+		if (!contextPath.isEmpty() && !contextPath.equals("/")) {
+			contextPath = (contextPath.startsWith("/") ? "" : "/") + contextPath
+					+ "/";
+		} else {
+			contextPath = "/";
+		}
+		return contextPath;
+	}
+	
+	public void resetSession() {
+
+		HttpSession session = request.get().getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		response.get().setHeader("Set-Cookie",
+				ServerConstants.AUTHENTICATIONCOOKIE + "=deleted; path="
+						+ getContextPath() + "; "
+						+ "expires=Thu, 01 Jan 1970 00:00:00 GMT");
+	}
+
 
 	private String createSessionCookie(String loggedInCookie, HTUser user) {
 
