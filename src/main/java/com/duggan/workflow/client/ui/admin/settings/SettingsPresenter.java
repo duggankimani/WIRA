@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.settings;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -33,8 +33,8 @@ public class SettingsPresenter extends
 		Presenter<SettingsPresenter.ISettingsView,SettingsPresenter.MyProxy> {
 
 	public interface ISettingsView extends View {
-		public void setValues(List<Setting> settings);
-		public List<Setting> getSettings();
+		public void setValues(ArrayList<Setting> settings);
+		public ArrayList<Setting> getSettings();
 		boolean isValid();
 		HasClickHandlers getSaveLink();
 	}

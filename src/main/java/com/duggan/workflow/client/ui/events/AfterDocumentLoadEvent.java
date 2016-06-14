@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.google.gwt.event.shared.EventHandler;
@@ -13,7 +13,7 @@ public class AfterDocumentLoadEvent extends
 	public static Type<AfterDocumentLoadHandler> TYPE = new Type<AfterDocumentLoadHandler>();
 	private String docRefId;
 	private Long taskId;
-	private List<Actions> validActions;
+	private ArrayList<Actions> validActions;
 	
 	public interface AfterDocumentLoadHandler extends EventHandler {
 		void onAfterDocumentLoad(AfterDocumentLoadEvent event);
@@ -46,11 +46,11 @@ public class AfterDocumentLoadEvent extends
 		source.fireEvent(new AfterDocumentLoadEvent(docRefId, taskId));
 	}
 
-	public List<Actions> getValidActions() {
+	public ArrayList<Actions> getValidActions() {
 		return validActions;
 	}
 
-	public void setValidActions(List<Actions> validActions) {
+	public void setValidActions(ArrayList<Actions> validActions) {
 		this.validActions = validActions;
 	}
 

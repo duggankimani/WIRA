@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.component;
 import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.core.client.GWT;
@@ -32,7 +32,7 @@ public class DropDownList<T extends Listable> extends Composite implements
 	@UiField
 	ListBox listBox;
 
-	private List<T> items;
+	private ArrayList<T> items;
 	private String nullText = "--Select--";
 
 	T value = null;
@@ -63,7 +63,7 @@ public class DropDownList<T extends Listable> extends Composite implements
 		});
 	}
 
-	public void setItems(List<T> items) {
+	public void setItems(ArrayList<T> items) {
 		this.items = items;
 
 		listBox.clear();
@@ -75,18 +75,18 @@ public class DropDownList<T extends Listable> extends Composite implements
 	}
 
 	/**
-	 * For single selection list box
+	 * For single selection ArrayList box
 	 */
 	public T getValue() {
 		return value;
 	}
 	
 	/**
-	 * For multi-selection list box
+	 * For multi-selection ArrayList box
 	 * @return
 	 */
-	public List<T> getValues(){
-		List<T> values = new ArrayList<T>();
+	public ArrayList<T> getValues(){
+		ArrayList<T> values = new ArrayList<T>();
 		
 		//Start from one to avoid selecting --Select--
 		for (int i = 1; i < listBox.getItemCount(); i++) {
@@ -148,7 +148,7 @@ public class DropDownList<T extends Listable> extends Composite implements
 		}
 	}
 
-	public List<T> values() {
+	public ArrayList<T> values() {
 		return items;
 	}
 

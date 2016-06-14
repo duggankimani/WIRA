@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard.charts;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.google.gwt.core.client.GWT;
@@ -153,7 +153,7 @@ public class PieChartView extends ViewImpl implements
 
 	}
 
-	public void setData(List<Data> data){
+	public void setData(ArrayList<Data> data){
 		store.addAll(data);
 	}
 

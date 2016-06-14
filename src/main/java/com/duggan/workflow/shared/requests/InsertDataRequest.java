@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -9,7 +9,7 @@ import com.duggan.workflow.shared.responses.BaseResponse;
 public class InsertDataRequest extends BaseRequest<BaseResponse> {
 
 	private Long catalogId;
-	private List<DocumentLine> lines = new ArrayList<DocumentLine>();
+	private ArrayList<DocumentLine> lines = new ArrayList<DocumentLine>();
 
 	@SuppressWarnings("unused")
 	private InsertDataRequest() {
@@ -20,7 +20,7 @@ public class InsertDataRequest extends BaseRequest<BaseResponse> {
 		
 	}
 	
-	public InsertDataRequest(Long catalogId, List<DocumentLine> lines) {
+	public InsertDataRequest(Long catalogId, ArrayList<DocumentLine> lines) {
 		this.catalogId = catalogId;
 		this.lines = lines;
 	}
@@ -30,7 +30,7 @@ public class InsertDataRequest extends BaseRequest<BaseResponse> {
 		return new BaseResponse();
 	}
 
-	public List<DocumentLine> getLines() {
+	public ArrayList<DocumentLine> getLines() {
 		return lines;
 	}
 

@@ -3,7 +3,7 @@ package com.duggan.workflow.test.bpm;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 import junit.framework.Assert;
 
@@ -74,7 +74,7 @@ public class TestMultipleSessions {
 		
 		//Complete process
 		startTrx();
-		Map<String, Object> values = new HashMap<String, Object>(); 
+		HashMap<String, Object> values = new HashMap<String, Object>(); 
 		values.put("isApproved", false);
 		values.put("documentId", documentId);
 		JBPMHelper.get().execute(summary.getId(), approver1, Actions.COMPLETE, values);

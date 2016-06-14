@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.grid;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.RowWidget;
@@ -31,8 +31,8 @@ public class AggregationGridRow extends RowWidget{
 	
 	private Long modelId;
 	private DataModel model;
-	private List<ColumnConfig> configs = null;
-	private Map<ColumnConfig, HasValue> columnWigetMap = new HashMap<ColumnConfig, HasValue>();
+	private ArrayList<ColumnConfig> configs = null;
+	private HashMap<ColumnConfig, HasValue> columnWigetMap = new HashMap<ColumnConfig, HasValue>();
 	
 	private AggregationGrid grid;
 	
@@ -43,7 +43,7 @@ public class AggregationGridRow extends RowWidget{
 	}
 	
 	public AggregationGridRow(AggregationGrid aggregationGrid, DataModel data,
-			List<ColumnConfig> columnConfigs) {
+			ArrayList<ColumnConfig> columnConfigs) {
 		this();
 		this.configs = columnConfigs;
 		this.grid = aggregationGrid;
@@ -54,7 +54,7 @@ public class AggregationGridRow extends RowWidget{
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		List<Widget> widgets = new ArrayList<Widget>();
+		ArrayList<Widget> widgets = new ArrayList<Widget>();
 		
 		if(configs!=null)
 		for(ColumnConfig config: configs){
@@ -115,13 +115,13 @@ public class AggregationGridRow extends RowWidget{
 		return model;
 	}
 	
-	public List<String> getErrors(){
+	public ArrayList<String> getErrors(){
 		DataModel model = getData(); 
 		if(model.isEmpty()){
 			return null;
 		}
 		
-		List<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = new ArrayList<String>();
 		for(ColumnConfig config: configs){
 			if(config.isMandatory() && model.get(config.getKey())==null){
 				String error = "Column "+config.getDisplayName()+" is mandatory";

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
@@ -65,7 +65,7 @@ public class TriggerTypePanel extends Composite{
 							@Override
 							public void onSelect(String name) {
 								if(name.equals("Done")){
-									List<Trigger> selected = popup.getSelectedValues();
+									ArrayList<Trigger> selected = popup.getSelectedValues();
 									save(selected);
 								}
 							}
@@ -79,7 +79,7 @@ public class TriggerTypePanel extends Composite{
 		});
 	}
 	
-	private void save(List<Trigger> selected) {
+	private void save(ArrayList<Trigger> selected) {
 		MultiRequestAction action = new MultiRequestAction();
 		for(Trigger trigger: selected){
 			TaskStepTrigger stepTrigger = new TaskStepTrigger();

@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 public class RequestInfoDto extends SerializableObj implements HasKey{
 
@@ -24,12 +24,12 @@ public class RequestInfoDto extends SerializableObj implements HasKey{
     private int retries = 0;
     //Number of times that this request has been executed
     private int executions = 0;
-    private List<ErrorInfoDto> errorInfo = new ArrayList<ErrorInfoDto>();
+    private ArrayList<ErrorInfoDto> errorInfo = new ArrayList<ErrorInfoDto>();
     
     private String body;
     private String subject;
     private String recipients;
-    private List<HTUser> users = new ArrayList<HTUser>();
+    private ArrayList<HTUser> users = new ArrayList<HTUser>();
     
     public RequestInfoDto() {
 	}
@@ -82,10 +82,10 @@ public class RequestInfoDto extends SerializableObj implements HasKey{
 	public void setExecutions(int executions) {
 		this.executions = executions;
 	}
-	public List<ErrorInfoDto> getErrorInfo() {
+	public ArrayList<ErrorInfoDto> getErrorInfo() {
 		return errorInfo;
 	}
-	public void setErrorInfo(List<ErrorInfoDto> errorInfo) {
+	public void setErrorInfo(ArrayList<ErrorInfoDto> errorInfo) {
 		this.errorInfo = errorInfo;
 	}
 
@@ -134,11 +134,11 @@ public class RequestInfoDto extends SerializableObj implements HasKey{
 		this.recipients = recipients;
 	}
 
-	public List<HTUser> getUsers() {
+	public ArrayList<HTUser> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<HTUser> users) {
+	public void setUsers(ArrayList<HTUser> users) {
 		this.users = users;
 	}
 }

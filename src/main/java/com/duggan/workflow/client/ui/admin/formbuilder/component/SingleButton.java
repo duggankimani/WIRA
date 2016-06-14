@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
@@ -134,9 +134,9 @@ public class SingleButton extends FieldWidget {
 		AppContext.fireEvent(event);
 	}
 	
-	private Map<String, Value> getValues() {
+	private HashMap<String, Value> getValues() {
 
-		Map<String, Value> values = new HashMap<String, Value>();
+		HashMap<String, Value> values = new HashMap<String, Value>();
 		
 		String vals = getPropertyValue(VALUES);
 		if(vals!=null){
@@ -150,7 +150,7 @@ public class SingleButton extends FieldWidget {
 				String key = valueSet[0];
 				String value=valueSet[1];
 				if(key!=null && value!=null){
-					List<String> names = new ArrayList<String>();
+					ArrayList<String> names = new ArrayList<String>();
 					getNames(value, names, 0);
 					
 					if(names.size()>0){
@@ -176,7 +176,7 @@ public class SingleButton extends FieldWidget {
 	}
 	
 
-	private static void getNames(String originalStr, List<String> names, int startPos){
+	private static void getNames(String originalStr, ArrayList<String> names, int startPos){
 		if(startPos==-1){
 			return;
 		}

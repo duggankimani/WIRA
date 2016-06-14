@@ -1,13 +1,13 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.form.FormModel;
 
 public class GetFormModelResponse extends BaseResponse {
 
-	private List<FormModel> formModel = new ArrayList<FormModel>();
+	private ArrayList<FormModel> formModel = new ArrayList<FormModel>();
 
 	public GetFormModelResponse() {
 	}
@@ -16,15 +16,15 @@ public class GetFormModelResponse extends BaseResponse {
 		formModel.add(model);
 	}
 	
-	public GetFormModelResponse(List<FormModel> formModel) {
+	public GetFormModelResponse(ArrayList<FormModel> formModel) {
 		this.formModel = formModel;
 	}
 
-	public List<FormModel> getFormModel() {
+	public ArrayList<FormModel> getFormModel() {
 		return formModel;
 	}
 	
-	public void setFormModel(List<FormModel> formModel){
+	public void setFormModel(ArrayList<FormModel> formModel){
 		this.formModel= formModel;
 	}
 }

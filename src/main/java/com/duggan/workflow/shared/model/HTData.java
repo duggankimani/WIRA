@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 
@@ -15,7 +15,7 @@ public class HTData implements Serializable {
 	private String docType;
 	private Long workId;
 	private HTUser actualOwner;
-	private List<HTComment> comments;
+	private ArrayList<HTComment> comments;
 	private Date completedOn;
 	private HTUser createdBy;
 	private Long contentId;
@@ -54,11 +54,11 @@ public class HTData implements Serializable {
 		this.actualOwner = actualOwner;
 	}
 
-	public List<HTComment> getComments() {
+	public ArrayList<HTComment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<HTComment> comments) {
+	public void setComments(ArrayList<HTComment> comments) {
 		this.comments = comments;
 	}
 

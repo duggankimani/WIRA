@@ -1,9 +1,8 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -40,11 +39,11 @@ public class TableView extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void setHeaders(List<String> names) {
+	public void setHeaders(ArrayList<String> names) {
 		setHeaders(null,names);
 	}
-	public void setHeaders(List<String> tdStyles,List<String> names) {
-		List<Widget> widgets = new ArrayList<Widget>();
+	public void setHeaders(ArrayList<String> tdStyles,ArrayList<String> names) {
+		ArrayList<Widget> widgets = new ArrayList<Widget>();
 
 		for (String name : names) {
 			InlineLabel label = new InlineLabel(name);
@@ -54,7 +53,7 @@ public class TableView extends Composite {
 		setHeaderWidgets(tdStyles,widgets);
 	}
 
-	public void setTableHeaders(List<TableHeader> headers) {
+	public void setTableHeaders(ArrayList<TableHeader> headers) {
 		panelHeader.clear();
 		if (isAutoNumber) {
 			headers.add(0, new TableHeader("#", 1.0));
@@ -89,7 +88,7 @@ public class TableView extends Composite {
 		return super.asWidget();
 	}
 
-	public void setHeaderWidgets(List<String> tdStyles,List<Widget> widgets) {
+	public void setHeaderWidgets(ArrayList<String> tdStyles,ArrayList<Widget> widgets) {
 		panelHeader.clear();
 		if (isAutoNumber) {
 			InlineLabel label = new InlineLabel("#");
@@ -112,18 +111,18 @@ public class TableView extends Composite {
 	}
 
 	public void addRow(Widget... widgets) {
-		addRow(Arrays.asList(widgets));
+		addRow(ArrayUtil.asList(widgets));
 	}
 
-	public void addRow(List<String> tdStyles, Widget... widgets) {
-		addRow(tdStyles, Arrays.asList(widgets));
+	public void addRow(ArrayList<String> tdStyles, Widget... widgets) {
+		addRow(tdStyles, ArrayUtil.asList(widgets));
 	}
 
-	public void addRow(List<Widget> widgets) {
+	public void addRow(ArrayList<Widget> widgets) {
 		addRow(new ArrayList<String>(), widgets);
 	}
 
-	public void addRow(List<String> tdStyles, List<Widget> widgets) {
+	public void addRow(ArrayList<String> tdStyles, ArrayList<Widget> widgets) {
 		HTMLPanel row = new HTMLPanel("");
 		row.addStyleName("tr");
 
@@ -207,7 +206,7 @@ public class TableView extends Composite {
 		this.isAutoNumber = isAutoNumber;
 	}
 
-	public void setFooter(List<Widget> widgets) {
+	public void setFooter(ArrayList<Widget> widgets) {
 		panelFooter.clear();
 		HTMLPanel row = new HTMLPanel("");
 		row.addStyleName("tr");

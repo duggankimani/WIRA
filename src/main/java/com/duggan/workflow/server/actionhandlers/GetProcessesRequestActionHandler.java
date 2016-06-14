@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
@@ -25,7 +26,7 @@ public class GetProcessesRequestActionHandler extends
 		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses(action.getSearchTerm(),action.isLoadDetails());
 		GetProcessesResponse response = (GetProcessesResponse)actionResult;
 		
-		response.setProcesses(processes);
+		response.setProcesses((ArrayList<ProcessDef>) processes);
 	}
 
 	@Override

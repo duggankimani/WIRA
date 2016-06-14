@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.helper.OrganizationDaoHelper;
+import com.duggan.workflow.shared.model.Org;
 import com.duggan.workflow.shared.requests.GetOrgsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetOrgsResponse;
@@ -19,7 +22,7 @@ public class GetOrgsRequestHandler extends
 	public void execute(GetOrgsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		GetOrgsResponse response = (GetOrgsResponse) actionResult;
-		response.setOrgs(OrganizationDaoHelper.getAllOrgModels(action.getSearchText(),
+		response.setOrgs((ArrayList<Org>) OrganizationDaoHelper.getAllOrgModels(action.getSearchText(),
 				action.getOffset(), action.getLength()));
 		response.setTotalCount(OrganizationDaoHelper.getCount(action.getSearchText()));
 	}

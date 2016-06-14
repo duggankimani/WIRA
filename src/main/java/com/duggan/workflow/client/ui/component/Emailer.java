@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.RequestInfoDto;
@@ -38,7 +38,7 @@ public class Emailer extends Composite {
 		txtSubject.setValue(dto.getSubject());
 		editor.setValue(dto.getBody());
 		
-		List<HTUser> users = new ArrayList<HTUser>();
+		ArrayList<HTUser> users = new ArrayList<HTUser>();
 		for(HTUser user: dto.getUsers()){
 			HTUser modified = new HTUser(){
 				public String getDisplayName() {

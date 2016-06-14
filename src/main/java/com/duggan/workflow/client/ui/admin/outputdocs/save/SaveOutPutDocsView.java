@@ -1,13 +1,12 @@
 package com.duggan.workflow.client.ui.admin.outputdocs.save;
 
-import java.util.Arrays;
-
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -83,7 +82,7 @@ public class SaveOutPutDocsView extends ViewImpl implements
 		context.setContext("code", txtDocRef.getValue());
 		context.setContext("description", txtDescription.getValue());
 		context.setContext("name", txtName.getValue());
-		context.setAccept(Arrays.asList("html","htm"));
+		context.setAccept(ArrayUtil.asList("html","htm"));
 		if(id!=null){	
 			context.setContext("id", id.toString());
 		}

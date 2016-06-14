@@ -1,7 +1,8 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Activity;
 import com.google.gwt.event.shared.EventHandler;
@@ -12,17 +13,17 @@ public class ActivitiesLoadEvent extends
 		GwtEvent<ActivitiesLoadEvent.ActivitiesLoadHandler> {
 
 	public static Type<ActivitiesLoadHandler> TYPE = new Type<ActivitiesLoadHandler>();
-	private Map<Activity, List<Activity>> activitiesMap;
+	private HashMap<Activity, ArrayList<Activity>> activitiesMap;
 
 	public interface ActivitiesLoadHandler extends EventHandler {
 		void onActivitiesLoad(ActivitiesLoadEvent event);
 	}
 
-	public ActivitiesLoadEvent(Map<Activity, List<Activity>> activitiesMap) {
+	public ActivitiesLoadEvent(HashMap<Activity, ArrayList<Activity>> activitiesMap) {
 		this.activitiesMap = activitiesMap;
 	}
 
-	public Map<Activity, List<Activity>> getActivitiesMap() {
+	public HashMap<Activity, ArrayList<Activity>> getActivitiesMap() {
 		return activitiesMap;
 	}
 
@@ -40,7 +41,7 @@ public class ActivitiesLoadEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Map<Activity, List<Activity>> activitiesMap) {
+	public static void fire(HasHandlers source, HashMap<Activity, ArrayList<Activity>> activitiesMap) {
 		source.fireEvent(new ActivitiesLoadEvent(activitiesMap));
 	}
 }

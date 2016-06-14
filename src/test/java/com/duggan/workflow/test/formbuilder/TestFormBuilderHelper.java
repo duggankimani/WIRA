@@ -245,9 +245,9 @@ public class TestFormBuilderHelper {
 		
 	}
 		
-	private List<Property> getProperties(Long formId, Long fieldId) {
+	private ArrayList<Property> getProperties(Long formId, Long fieldId) {
 		
-		List<Property> properties = new ArrayList<>();
+		ArrayList<Property> properties = new ArrayList<>();
 		
 		Property prop = new Property();
 		prop.setCaption("Mama Mia");

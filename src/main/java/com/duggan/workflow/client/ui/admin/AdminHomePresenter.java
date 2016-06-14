@@ -15,6 +15,7 @@ import com.gwtplatform.mvp.client.TabContainerPresenter;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.TabView;
 import com.gwtplatform.mvp.client.annotations.ChangeTab;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
@@ -32,7 +33,7 @@ public class AdminHomePresenter
 		void changeTab(Tab tab, TabData tabData, String historyToken);
 	}
 
-	@ProxyStandard
+	@ProxyCodeSplit
 	public interface MyProxy extends Proxy<AdminHomePresenter> {
 	}
 

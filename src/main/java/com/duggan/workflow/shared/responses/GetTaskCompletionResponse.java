@@ -1,23 +1,23 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.dashboard.Data;
 
 public class GetTaskCompletionResponse extends BaseResponse {
 
-	private List<Data> data;
+	private ArrayList<Data> data;
 
 	public GetTaskCompletionResponse() {
 	}
 
 
-	public List<Data> getData() {
+	public ArrayList<Data> getData() {
 		return data;
 	}
 
 
-	public void setData(List<Data> data) {
+	public void setData(ArrayList<Data> data) {
 		this.data = data;
 	}
 }

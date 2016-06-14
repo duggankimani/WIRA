@@ -63,9 +63,9 @@ public class TestGetProcessData {
 		Long taskId=2458L;
 		Actions action = Actions.COMPLETE;
 		
-		Map<String, Object> vals = new HashMap<>();
+		HashMap<String, Object> vals = new HashMap<>();
 		
-		Map<String, Value> values = new HashMap<String, Value>();
+		HashMap<String, Value> values = new HashMap<String, Value>();
 		if(values!=null){
 			long processInstanceId=0L;
 			Task task = JBPMHelper.get().getTaskClient().getTask(taskId);
@@ -131,7 +131,7 @@ public class TestGetProcessData {
 		Long taskId = 1174L;
 		HTask summary = JBPMHelper.get().getTask(taskId);
 		System.err.println(summary);
-		Map<String,Value> vls = summary.getValues();
+		HashMap<String,Value> vls = summary.getValues();
 		for(String key: vls.keySet()){
 			Value v = vls.get(key);
 			
@@ -142,7 +142,7 @@ public class TestGetProcessData {
 			System.err.println(key + " =  "+summary.getDetails().get(key));
 		}
 		
-		Map<String, Value> values = summary.getValues();
+		HashMap<String, Value> values = summary.getValues();
 		Assert.assertNotNull(values);
 		Assert.assertNotSame(values.size(), 0);
 		

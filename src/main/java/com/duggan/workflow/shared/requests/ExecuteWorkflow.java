@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Value;
@@ -18,7 +18,7 @@ public class ExecuteWorkflow extends BaseRequest<ExecuteWorkflowResult> {
 	private Actions action;
 	private Long taskId;
 	private String userId;
-	private Map<String, Value> values = new HashMap<String, Value>();
+	private HashMap<String, Value> values = new HashMap<String, Value>();
 	
 	
 	public ExecuteWorkflow(){
@@ -69,11 +69,11 @@ public class ExecuteWorkflow extends BaseRequest<ExecuteWorkflowResult> {
 		values.clear();
 	}
 	
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return values;
 	}
 
-	public void setValues(Map<String, Value> values) {
+	public void setValues(HashMap<String, Value> values) {
 		this.values = values;
 	}
 }

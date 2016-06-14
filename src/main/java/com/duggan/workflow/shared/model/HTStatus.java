@@ -1,9 +1,8 @@
 package com.duggan.workflow.shared.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public enum HTStatus implements IsSerializable{
@@ -19,40 +18,40 @@ public enum HTStatus implements IsSerializable{
 	RESERVED,
 	SUSPENDED;
 	
-	public List<Actions> getValidActions(){
+	public ArrayList<Actions> getValidActions(){
 		
-		List<Actions> actions=new ArrayList<Actions>();
+		ArrayList<Actions> actions=new ArrayList<Actions>();
 		
 		switch(this){
 		case COMPLETED:
-			actions = Arrays.asList();
+			actions = ArrayUtil.asList();
 			break;
 		case CREATED:
-			actions = Arrays.asList(Actions.CLAIM);
+			actions = ArrayUtil.asList(Actions.CLAIM);
 			break;
 		case ERROR:
-			actions = Arrays.asList();
+			actions = ArrayUtil.asList();
 			break;
 		case EXITED:
-			actions = Arrays.asList();
+			actions = ArrayUtil.asList();
 			break;
 		case FAILED:
-			actions = Arrays.asList();
+			actions = ArrayUtil.asList();
 			break;
 		case INPROGRESS:
-			actions = Arrays.asList(Actions.SUSPEND, Actions.COMPLETE);
+			actions = ArrayUtil.asList(Actions.SUSPEND, Actions.COMPLETE);
 			break;
 		case OBSOLUTE:
-			actions = Arrays.asList();
+			actions = ArrayUtil.asList();
 			break;
 		case READY:
-			actions = Arrays.asList(Actions.CLAIM, Actions.DELEGATE, Actions.START,Actions.SUSPEND);
+			actions = ArrayUtil.asList(Actions.CLAIM, Actions.DELEGATE, Actions.START,Actions.SUSPEND);
 			break;
 		case RESERVED:
-			actions = Arrays.asList(Actions.SUSPEND, Actions.DELEGATE, Actions.START,Actions.REVOKE);
+			actions = ArrayUtil.asList(Actions.SUSPEND, Actions.DELEGATE, Actions.START,Actions.REVOKE);
 			break;
 		case SUSPENDED:
-			actions = Arrays.asList(Actions.RESUME);
+			actions = ArrayUtil.asList(Actions.RESUME);
 			break;
 		}
 		

@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.admin.component.ListItem.OnSelectHandler;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
@@ -32,8 +32,8 @@ public class ListField<T extends Listable> extends Composite {
 	@UiField DivElement sltBox;
 	@UiField FocusPanel sltContainer;
 	
-	List<T> selected = new ArrayList<T>();
-	List<T> others = new ArrayList<T>();
+	ArrayList<T> selected = new ArrayList<T>();
+	ArrayList<T> others = new ArrayList<T>();
 
 	public ListField() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -56,7 +56,7 @@ public class ListField<T extends Listable> extends Composite {
 		
 	}
 	
-	public ListField(List<T> items) {
+	public ListField(ArrayList<T> items) {
 		this();
 		addItems(items);
 	}
@@ -107,7 +107,7 @@ public class ListField<T extends Listable> extends Composite {
 		}
 	}
 
-	public void addItems(List<T> items){		
+	public void addItems(ArrayList<T> items){		
 		items.removeAll(selected);
 		//others
 		for(T item: items){
@@ -115,7 +115,7 @@ public class ListField<T extends Listable> extends Composite {
 		}
 	}
 	
-	public void select(List<T> items){		
+	public void select(ArrayList<T> items){		
 		others.removeAll(selected);
 		
 		//others
@@ -125,7 +125,7 @@ public class ListField<T extends Listable> extends Composite {
 		}
 	}
 	
-	public List<T> getSelectedItems(){
+	public ArrayList<T> getSelectedItems(){
 		return selected;
 	}
 	

@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.HasKey;
 import com.google.gwt.core.client.GWT;
@@ -122,7 +122,7 @@ public class Grid<T extends HasKey> extends Composite {
 		dataProvider.addDataDisplay(dataGrid);
 	}
 
-	public void setData(List<T> data, int totalCount) {
+	public void setData(ArrayList<T> data, int totalCount) {
 		Range range = dataGrid.getVisibleRange();
 		dataProvider.updateRowCount(totalCount, true);
 		dataProvider.updateRowData(range.getStart(), data);

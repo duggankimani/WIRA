@@ -1,21 +1,21 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.UserGroup;
 
 public class GetGroupsResponse extends BaseResponse{
 
-	private List<UserGroup> groups;
+	private ArrayList<UserGroup> groups;
 
 	public GetGroupsResponse() {
 	}
 
-	public GetGroupsResponse(List<UserGroup> groups) {
+	public GetGroupsResponse(ArrayList<UserGroup> groups) {
 		this.groups = groups;
 	}
 
-	public List<UserGroup> getGroups() {
+	public ArrayList<UserGroup> getGroups() {
 		return groups;
 	}
 	
@@ -23,7 +23,7 @@ public class GetGroupsResponse extends BaseResponse{
 		return groups.get(0);
 	}
 	
-	public void setGroups(List<UserGroup> groups) {
+	public void setGroups(ArrayList<UserGroup> groups) {
 		this.groups = groups;
 	}
 }

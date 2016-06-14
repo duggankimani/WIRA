@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.fileexplorer;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -43,11 +43,11 @@ public class FileExplorerPresenter extends
 		implements FileSelectedHandler, SearchHandler {
 	public interface MyView extends View {
 
-		void bindAttachments(List<Attachment> attachments);
+		void bindAttachments(ArrayList<Attachment> attachments);
 
 		Tree<Attachment, String> getTree();
 
-		void setFolders(TreeType type, List<Attachment> folders);
+		void setFolders(TreeType type, ArrayList<Attachment> folders);
 
 		HasClickHandlers getFilesLink();
 
@@ -171,7 +171,7 @@ public class FileExplorerPresenter extends
 					@Override
 					public void processResult(GetAttachmentsResponse aResponse) {
 						fireEvent(new ProcessingCompletedEvent());
-						List<Attachment> attachments = aResponse
+						ArrayList<Attachment> attachments = aResponse
 								.getAttachments();
 						getView().bindAttachments(attachments);
 					}

@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -44,7 +44,7 @@ public class ProcessItemPresenter extends
 		HasClickHandlers getRefreshButton();
 		HasClickHandlers getEditButton();
 		HasClickHandlers getDeleteButton();
-		void setValues(String name, String processId,String description, List<DocumentType> docTypes,
+		void setValues(String name, String processId,String description, ArrayList<DocumentType> docTypes,
 				Date lastModified, Long fileId, String fileName,
 				Status status,  String imageName, Long imageId, 
 				ProcessCategory category, int inbox, int participated);

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.event.shared.EventHandler;
@@ -12,13 +12,13 @@ public class CompleteDocumentEvent extends
 
 	public static Type<CompleteDocumentHandler> TYPE = new Type<CompleteDocumentHandler>();
 	private Long taskId;
-	Map<String, Value> results;
+	HashMap<String, Value> results;
 
 	public interface CompleteDocumentHandler extends EventHandler {
 		void onCompleteDocument(CompleteDocumentEvent event);
 	}
 
-	public CompleteDocumentEvent(Long taskId, Map<String, Value> results) {
+	public CompleteDocumentEvent(Long taskId, HashMap<String, Value> results) {
 		this.taskId = taskId;
 		this.results = results;
 	}
@@ -38,7 +38,7 @@ public class CompleteDocumentEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long taskId, Map<String, Value> results) {
+	public static void fire(HasHandlers source, Long taskId, HashMap<String, Value> results) {
 		source.fireEvent(new CompleteDocumentEvent(taskId, results));
 	}
 
@@ -47,7 +47,7 @@ public class CompleteDocumentEvent extends
 	}
 
 
-	public Map<String, Value> getResults() {
+	public HashMap<String, Value> getResults() {
 		return results;
 	}
 }

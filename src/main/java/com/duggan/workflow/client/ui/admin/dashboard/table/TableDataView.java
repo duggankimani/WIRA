@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.admin.dashboard.table;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.TableView;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -33,13 +33,14 @@ public class TableDataView extends ViewImpl implements
 		
 		if(!initd){
 			initd=true;
-			tableView.setHeaders(Arrays.asList("PROCESS ITEM","DOCUMENT TYPE","TASK COUNT","PROCESS TIME"));
+			ArrayList<String> headers = ArrayUtil.asList("PROCESS ITEM","DOCUMENT TYPE","TASK COUNT","PROCESS TIME");
+			tableView.setHeaders(headers);
 		}
 		return widget;
 	}
 
 	@Override
-	public void setTasks(List<LongTask> longTasks) {
+	public void setTasks(ArrayList<LongTask> longTasks) {
 		tableView.clearRows();
 		if(longTasks==null)
 			return;

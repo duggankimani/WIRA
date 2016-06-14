@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.model.UploadContext;
@@ -21,6 +20,7 @@ import com.duggan.workflow.client.ui.events.SaveFormDesignEvent.SaveFormDesignHa
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateFormRequest;
@@ -74,12 +74,12 @@ public class FormBuilderPresenter extends
 		HasValueChangeHandlers<Form> getFormDropDown();
 		void setForm(Form form);
 		void setProperty(String property, String value);
-		void setForms(List<Form> forms);
+		void setForms(ArrayList<Form> forms);
 		void activatePalette();
 		void registerInputDrag();
 		void clear();
 		String getFormName();
-		void setProcesses(List<ProcessDef> processes);
+		void setProcesses(ArrayList<ProcessDef> processes);
 		DropDownList<ProcessDef> getProcessDropDown();
 		void enableCreateForm(boolean isProcessSelected);
 		
@@ -197,7 +197,8 @@ public class FormBuilderPresenter extends
 
 				UploadContext context = new UploadContext();
 				context.setAction(UPLOADACTION.IMPORTFORM);
-				context.setAccept(Arrays.asList("xml","json"));
+				ArrayList<String> values = ArrayUtil.asList("xml","json");
+				context.setAccept(values);
 				
 				String message = "This will auto import the form, if the form already exists(check based on form name),"
 						+ "the form will be renamed to {formName+formId}";
@@ -406,7 +407,7 @@ public class FormBuilderPresenter extends
 					}
 				}
 				
-				//Forms List
+				//Forms ArrayList
 				getView().setForms(((GetFormsResponse)results.get(1)).getForms());
 				
 				//Form Models

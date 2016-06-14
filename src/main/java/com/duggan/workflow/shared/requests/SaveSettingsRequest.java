@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -8,16 +8,16 @@ import com.duggan.workflow.shared.responses.SaveSettingsResponse;
 
 public class SaveSettingsRequest extends BaseRequest<SaveSettingsResponse> {
 
-	private List<Setting> settings;
+	private ArrayList<Setting> settings;
 
 	public SaveSettingsRequest() {
 	}
 
-	public SaveSettingsRequest(List<Setting> settings) {
+	public SaveSettingsRequest(ArrayList<Setting> settings) {
 		this.settings = settings;
 	}
 
-	public List<Setting> getSettings() {
+	public ArrayList<Setting> getSettings() {
 		return settings;
 	}
 	

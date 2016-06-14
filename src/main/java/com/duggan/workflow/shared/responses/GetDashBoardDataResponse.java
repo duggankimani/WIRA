@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.dashboard.Data;
 
@@ -9,14 +9,14 @@ public class GetDashBoardDataResponse extends BaseResponse {
 	private Integer activeCount;
 	private Integer requestCount;
 	private Integer failureCount;
-	private List<Data> requestAging;
-	private List<Data> documentCounts;
+	private ArrayList<Data> requestAging;
+	private ArrayList<Data> documentCounts;
 
 	public GetDashBoardDataResponse() {
 	}
 
 	public GetDashBoardDataResponse(Integer activeCount, Integer requestCount,
-			Integer failureCount, List<Data> requestAging, List<Data> documentCounts) {
+			Integer failureCount, ArrayList<Data> requestAging, ArrayList<Data> documentCounts) {
 		this.activeCount = activeCount;
 		this.requestCount = requestCount;
 		this.failureCount = failureCount;
@@ -36,11 +36,11 @@ public class GetDashBoardDataResponse extends BaseResponse {
 		return failureCount;
 	}
 
-	public List<Data> getRequestAging() {
+	public ArrayList<Data> getRequestAging() {
 		return requestAging;
 	}
 
-	public List<Data> getDocumentCounts() {
+	public ArrayList<Data> getDocumentCounts() {
 		return documentCounts;
 	}
 
@@ -56,11 +56,11 @@ public class GetDashBoardDataResponse extends BaseResponse {
 		this.failureCount = failureCount;
 	}
 
-	public void setRequestAging(List<Data> requestAging) {
+	public void setRequestAging(ArrayList<Data> requestAging) {
 		this.requestAging = requestAging;
 	}
 
-	public void setDocumentCounts(List<Data> documentCounts) {
+	public void setDocumentCounts(ArrayList<Data> documentCounts) {
 		this.documentCounts = documentCounts;
 	}
 }

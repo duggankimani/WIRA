@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.Doc;
@@ -50,7 +51,7 @@ public class GetInitialDocumentRequestHandler extends
 			}
 			
 			GetInitialDocumentResponse finalResult = (GetInitialDocumentResponse)actionResult;
-			finalResult.setSteps(steps);
+			finalResult.setSteps((ArrayList<TaskStepDTO>) steps);
 			finalResult.setDoc(doc);
 			
 		}catch(Exception e){

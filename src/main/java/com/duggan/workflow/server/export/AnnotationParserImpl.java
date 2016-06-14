@@ -14,8 +14,8 @@ import com.duggan.workflow.shared.model.Value;
 
 public class AnnotationParserImpl {
 
-	public static List<String> extractAnnotations(String operand) {
-		List<String> annotations = new ArrayList<String>();
+	public static ArrayList<String> extractAnnotations(String operand) {
+		ArrayList<String> annotations = new ArrayList<String>();
 		Pattern pattern = Pattern.compile("@[@#]\\w+?\\b");
 		Matcher matcher = pattern.matcher(operand);
 

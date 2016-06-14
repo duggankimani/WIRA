@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -9,13 +9,13 @@ import com.duggan.workflow.shared.responses.SaveTaskStepResponse;
 
 public class SaveTaskStepRequest extends BaseRequest<SaveTaskStepResponse> {
 
-	List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
+	ArrayList<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
 	
 	public SaveTaskStepRequest() {
 		
 	}
 	
-	public SaveTaskStepRequest(List<TaskStepDTO> steps){
+	public SaveTaskStepRequest(ArrayList<TaskStepDTO> steps){
 		this.steps.addAll(steps);
 	}
 	
@@ -25,7 +25,7 @@ public class SaveTaskStepRequest extends BaseRequest<SaveTaskStepResponse> {
 		return new SaveTaskStepResponse();
 	}
 
-	public List<TaskStepDTO> getSteps() {
+	public ArrayList<TaskStepDTO> getSteps() {
 		return steps;
 	}
 }

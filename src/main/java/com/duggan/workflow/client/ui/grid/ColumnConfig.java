@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.grid;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.client.ui.component.DropDownList;
@@ -33,7 +33,7 @@ public class ColumnConfig {
 	private boolean isMandatory;
 	private boolean isEditable = true;
 	private DataType type;
-	private List<Listable> dropDownItems = new ArrayList<Listable>();
+	private ArrayList<Listable> dropDownItems = new ArrayList<Listable>();
 
 	public ColumnConfig(String key, String displayName, DataType type) {
 		this.key = key;
@@ -173,7 +173,7 @@ public class ColumnConfig {
 		return value;
 	}
 
-	public <T extends Listable> void setDropDownItems(List<T> items) {
+	public <T extends Listable> void setDropDownItems(ArrayList<T> items) {
 		this.dropDownItems.clear();
 		this.dropDownItems.addAll(items);
 	}

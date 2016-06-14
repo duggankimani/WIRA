@@ -35,7 +35,7 @@ public class GetMessagesActionHandler extends
 			dtos.add(dto);
 
 		}
-		((GetMessagesResponse) actionResult).setRequests(dtos);
+		((GetMessagesResponse) actionResult).setRequests((ArrayList<RequestInfoDto>) dtos);
 		((GetMessagesResponse) actionResult).setTotalCount(ExecutorModule
 				.getInstance().getExecutorServiceEntryPoint()
 				.getAllRequestCount());

@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder.grid;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
@@ -86,7 +86,7 @@ public class GridRow extends Composite {
 		});
 	}
 	
-	List<FieldWidget> widgets = new ArrayList<FieldWidget>();
+	ArrayList<FieldWidget> widgets = new ArrayList<FieldWidget>();
 	public Widget createCell(Field field){
 		HTMLPanel cell = new HTMLPanel("");
 		cell.setStyleName("td");

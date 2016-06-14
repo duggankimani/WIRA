@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.reports;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -79,7 +79,7 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 	}
 
 	@Override
-	public void bind(Catalog catalog, List<DocumentLine> data) {
+	public void bind(Catalog catalog, ArrayList<DocumentLine> data) {
 		divReportView.removeClassName("hide");
 		tableReports.clear();
 		tableReports.removeAllRows();
@@ -111,7 +111,7 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 	}
 
 	@Override
-	public void bindCatalogs(List<Catalog> catalogs) {
+	public void bindCatalogs(ArrayList<Catalog> catalogs) {
 		divReportView.addClassName("hide");
 		tableReports.clear();
 		tableReports.removeAllRows();

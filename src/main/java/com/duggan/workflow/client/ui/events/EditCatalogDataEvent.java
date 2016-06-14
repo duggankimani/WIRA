@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
@@ -12,7 +12,7 @@ public class EditCatalogDataEvent extends GwtEvent<EditCatalogDataEvent.EditCata
 
 	public static Type<EditCatalogDataHandler> TYPE = new Type<EditCatalogDataHandler>();
 	private Catalog catalog;
-	private List<DocumentLine> lines = null;
+	private ArrayList<DocumentLine> lines = null;
 	private boolean isDelete=false;
 	private boolean isEditData=false;
 	
@@ -67,11 +67,11 @@ public class EditCatalogDataEvent extends GwtEvent<EditCatalogDataEvent.EditCata
 		return isEditData;
 	}
 
-	public List<DocumentLine> getLines() {
+	public ArrayList<DocumentLine> getLines() {
 		return lines;
 	}
 
-	public void setLines(List<DocumentLine> lines) {
+	public void setLines(ArrayList<DocumentLine> lines) {
 		this.lines = lines;
 	}
 }

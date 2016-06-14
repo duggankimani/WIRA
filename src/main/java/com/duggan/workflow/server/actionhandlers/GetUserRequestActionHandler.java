@@ -1,8 +1,11 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetUserRequestResult;
@@ -24,7 +27,7 @@ public class GetUserRequestActionHandler extends
 		GetUserRequestResult result = (GetUserRequestResult)actionResult;
 	
 		result.setUser(user);
-		user.setPermissions(DB.getPermissionDao().getPermissionsForUser(action.getUserId()));
+		user.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForUser(action.getUserId()));
 	}
 	
 	

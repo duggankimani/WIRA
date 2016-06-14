@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.trigger;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
@@ -42,7 +42,7 @@ public class TriggerPresenter extends
 	public interface ITriggerView extends View {
 		HasClickHandlers getAddTriggerLink();
 		HasClickHandlers getCloneTriggerLink();
-		void setTriggers(List<Trigger> triggeruments);
+		void setTriggers(ArrayList<Trigger> triggeruments);
 	}
 
 	@ProxyCodeSplit
@@ -53,7 +53,7 @@ public class TriggerPresenter extends
 
 	@Inject
 	DispatchAsync requestHelper;
-	List<Trigger> triggers;// For Cloning
+	ArrayList<Trigger> triggers;// For Cloning
 	private String processRefId;
 
 	@Inject

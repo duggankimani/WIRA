@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
@@ -30,7 +31,7 @@ public class GetTriggersRequestHandler extends
 			triggers = ProcessDefHelper.getTriggers();
 		}
 
-		((GetTriggersResponse) actionResult).setTriggers(triggers);
+		((GetTriggersResponse) actionResult).setTriggers((ArrayList<Trigger>) triggers);
 	}
 
 	public java.lang.Class<GetTriggersRequest> getActionType() {

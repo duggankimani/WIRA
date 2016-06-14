@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.fileexplorer;
 
 import static com.duggan.workflow.client.ui.resources.ICONS.INSTANCE;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -111,7 +111,7 @@ public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.
 														}-*/;
 
 	@Override
-	public void bindAttachments(List<Attachment> attachments) {
+	public void bindAttachments(ArrayList<Attachment> attachments) {
 		fileTable.removeAllRows();
 		if(attachments.isEmpty()){
 			spnNoAttachments.addClassName("hide");
@@ -336,7 +336,7 @@ public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.
 		};
 	}
 
-	public void setFolders(TreeType type, List<Attachment> folders) {
+	public void setFolders(TreeType type, ArrayList<Attachment> folders) {
 
 		Tree<Attachment, String> tree = null;
 		switch (type) {

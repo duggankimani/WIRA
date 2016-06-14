@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.msgs;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -47,7 +47,7 @@ public class MessagesPresenter
 	public interface IMessagesView extends View {
 		Grid<RequestInfoDto> getGrid();
 
-		void setData(List<RequestInfoDto> data, int totalCount);
+		void setData(ArrayList<RequestInfoDto> data, int totalCount);
 
 		Anchor getViewLink();
 		

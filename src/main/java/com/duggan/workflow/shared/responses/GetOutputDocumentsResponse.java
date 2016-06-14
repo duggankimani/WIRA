@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.OutputDocument;
 
@@ -12,16 +12,16 @@ public class GetOutputDocumentsResponse extends BaseResponse{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	List<OutputDocument> documents = new ArrayList<OutputDocument>();
+	ArrayList<OutputDocument> documents = new ArrayList<OutputDocument>();
 	
 	public GetOutputDocumentsResponse() {
 	}
 
-	public List<OutputDocument> getDocuments() {
+	public ArrayList<OutputDocument> getDocuments() {
 		return documents;
 	}
 
-	public void setDocuments(List<OutputDocument> documents) {
+	public void setDocuments(ArrayList<OutputDocument> documents) {
 		this.documents = documents;
 	}
 	

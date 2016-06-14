@@ -2,7 +2,7 @@ package com.duggan.workflow.client.reports;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -40,9 +40,9 @@ public class ReportsPresenter extends
 implements SearchHandler{
 	public interface IReportsView extends View {
 
-		void bindCatalogs(List<Catalog> catalogs);
+		void bindCatalogs(ArrayList<Catalog> catalogs);
 
-		void bind(Catalog catalog, List<DocumentLine> data);
+		void bind(Catalog catalog, ArrayList<DocumentLine> data);
 	}
 	
 	public static final String REPORTS_CAN_VIEW_REPORTS = "REPORTS_CAN_VIEW_REPORTS";
@@ -120,7 +120,7 @@ implements SearchHandler{
 						
 						
 						GetCatalogsResponse getCatalogs =  (GetCatalogsResponse) aResponse.get(0);
-						List<Catalog> catalogs = getCatalogs.getCatalogs();
+						ArrayList<Catalog> catalogs = getCatalogs.getCatalogs();
 						if (catalogRefId != null && !catalogs.isEmpty()) {
 							GetDataResponse getData = (GetDataResponse) aResponse.get(1);
 							getView().bind(catalogs.get(0), getData.getLines());

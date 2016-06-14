@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.shared.model.Listable;
@@ -42,7 +42,7 @@ public class ListItem<T extends Listable> extends Composite {
 		public void onItemSelected(ListItem source, Listable value, boolean selected);
 	}
 	
-	List<OnSelectHandler> handlers = new ArrayList<OnSelectHandler>();
+	ArrayList<OnSelectHandler> handlers = new ArrayList<OnSelectHandler>();
 	
 	public ListItem(final T value, boolean selected) {
 		initWidget(uiBinder.createAndBindUi(this));

@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
@@ -26,7 +27,7 @@ public class GetTaskStepTriggersRequestHandler extends
 		List<TaskStepTrigger> triggers =  
 				ProcessDefHelper.getTaskStepTriggers(action.getTaskStepId(),action.getTriggerType());
 		
-		((GetTaskStepTriggersResponse)actionResult).setTriggers(triggers);
+		((GetTaskStepTriggersResponse)actionResult).setTriggers((ArrayList<TaskStepTrigger>) triggers);
 	}
 	
 	public java.lang.Class<GetTaskStepTriggersRequest> getActionType() {

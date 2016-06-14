@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.outputdocs;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
@@ -57,7 +57,7 @@ public class OutPutDocsPresenter extends
 
 		HasClickHandlers getDelete();
 
-		void setOutputDocuments(List<OutputDocument> documents);
+		void setOutputDocuments(ArrayList<OutputDocument> documents);
 
 		void setModelSelected(boolean value);
 	}

@@ -1,9 +1,10 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -26,10 +27,13 @@ public class GetGroupsRequestActionHandler extends
 		
 		if(action.getGroupName()!=null){
 			UserGroup group = LoginHelper.get().getGroupById(action.getGroupName());
-			group.setPermissions(DB.getPermissionDao().getPermissionsForRole(action.getGroupName()));
-			response.setGroups(Arrays.asList(group));
+			group.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForRole(action.getGroupName()));
+			
+			ArrayList<UserGroup> groups = new ArrayList<UserGroup>();
+			groups.add(group);
+			response.setGroups(groups);
 		}else{
-			response.setGroups(LoginHelper.get().getAllGroups(action.getSearchTerm()));
+			response.setGroups((ArrayList<UserGroup>) LoginHelper.get().getAllGroups(action.getSearchTerm()));
 		}
 		
 	}

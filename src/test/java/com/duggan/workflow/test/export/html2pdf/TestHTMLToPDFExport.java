@@ -73,7 +73,7 @@ public class TestHTMLToPDFExport {
 	}
 	
 	@Ignore
-	public void map() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
+	public void HashMap() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
 		Doc doc = DocumentDaoHelper.getDocument(4L);//JBPMHelper.get().getTask(JBPMHelper.get().getSysTask(taskId));
 		
 		DocumentHTMLMapper mapper = new DocumentHTMLMapper();

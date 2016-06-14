@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.toolbar;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.HTStatus;
@@ -44,7 +44,7 @@ public class ToolbarView extends ViewImpl implements ToolbarPresenter.MyView {
 	public void setTaskStatus(HTStatus status) {
 		String style="gwt-Anchor";
 		
-		List<Actions> actions = status.getValidActions();
+		ArrayList<Actions> actions = status.getValidActions();
 		
 		if(actions!=null)
 		for(Actions action : actions){

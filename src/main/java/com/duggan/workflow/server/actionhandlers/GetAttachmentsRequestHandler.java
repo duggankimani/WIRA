@@ -1,7 +1,10 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.requests.GetAttachmentsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
@@ -23,20 +26,20 @@ public class GetAttachmentsRequestHandler extends
 		GetAttachmentsResponse response = (GetAttachmentsResponse) actionResult;
 
 		if (action.getType() != null) {
-			response.setAttachments(DB.getAttachmentDao().getAttachments(action.getType(),
+			response.setAttachments((ArrayList<Attachment>) DB.getAttachmentDao().getAttachments(action.getType(),
 					action.getRefId(), action.getSearchTerm()));
 		} else if (action.getDocumentId() != null) {
-			response.setAttachments(AttachmentDaoHelper.getAttachments(action
+			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper.getAttachments(action
 					.getDocumentId()));
 		} else if (action.getDocRefId() != null) {
-			response.setAttachments(AttachmentDaoHelper
+			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper
 					.getAttachmentsByDocRefId(action.getDocRefId()));
 		} else if (action.getUserId() != null) {
-			response.setAttachments(AttachmentDaoHelper.getAllAttachments(
+			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper.getAllAttachments(
 					action.getUserId(), true));
 		} else {
 			// TODO: Determine default behavior
-			response.setAttachments(AttachmentDaoHelper.getAllAttachments());
+			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper.getAllAttachments());
 		}
 
 	}

@@ -1,22 +1,22 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Activity;
 
 public class GetActivitiesResponse extends BaseResponse {
 
-	public Map<Activity, List<Activity>> activityMap;
+	public HashMap<Activity, ArrayList<Activity>> activityMap;
 	
 	public GetActivitiesResponse() {
 	}
 
-	public Map<Activity, List<Activity>> getActivityMap() {
+	public HashMap<Activity, ArrayList<Activity>> getActivityMap() {
 		return activityMap;
 	}
 
-	public void setActivityMap(Map<Activity, List<Activity>> activityMap) {
+	public void setActivityMap(HashMap<Activity, ArrayList<Activity>> activityMap) {
 		this.activityMap = activityMap;
 	}
 }

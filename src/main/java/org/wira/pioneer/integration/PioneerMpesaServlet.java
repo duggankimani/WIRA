@@ -6,7 +6,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -109,9 +109,9 @@ public class PioneerMpesaServlet extends HttpServlet {
 		}
 	}
 
-	private Map<String, Object> createContext(HttpServletRequest req,
+	private HashMap<String, Object> createContext(HttpServletRequest req,
 			RequestType reqType, Request wiraRequest) {
-		Map<String, Object> context = new HashMap<String, Object>();
+		HashMap<String, Object> context = new HashMap<String, Object>();
 		context.put("docType", req.getParameter("docType"));
 		context.put("requestType", req.getParameter("docType"));
 
@@ -148,7 +148,7 @@ public class PioneerMpesaServlet extends HttpServlet {
 
 			Detail detail = new Detail();
 			detail.setName("summaryTable");
-			Map<String, Object> summaryDetails = new HashMap<String, Object>();
+			HashMap<String, Object> summaryDetails = new HashMap<String, Object>();
 
 			if (req.getParameter("allocateeNames") != null) {
 				summaryDetails.put(

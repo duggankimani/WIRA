@@ -1,12 +1,12 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.model.AssignmentFunction;
@@ -89,7 +89,7 @@ public class ProcessStepsView extends ViewImpl implements
 
 		listNotificationType.setNullText(NotificationCategory.EMAILNOTIFICATION
 				.getDisplayName());
-		listNotificationType.setItems(Arrays
+		listNotificationType.setItems(ArrayUtil
 				.asList(NotificationCategory.ACTIVITYFEED));
 
 		aStepstab.addClickHandler(new ClickHandler() {
@@ -196,7 +196,7 @@ public class ProcessStepsView extends ViewImpl implements
 	}
 
 	@Override
-	public void displaySteps(List<TaskStepDTO> dtos) {
+	public void displaySteps(ArrayList<TaskStepDTO> dtos) {
 		tblView.removeAllRows();
 		setTableHeaders(tblView);
 
@@ -227,7 +227,7 @@ public class ProcessStepsView extends ViewImpl implements
 
 			if (dto.getMode() != null) {
 				mode = new DropDownList<MODE>();
-				mode.setItems(Arrays.asList(MODE.EDIT, MODE.VIEW));
+				mode.setItems(ArrayUtil.asList(MODE.EDIT, MODE.VIEW));
 				mode.setValue(dto.getMode());
 				mode.addStyleName("input-small");
 				mode.addValueChangeHandler(new ValueChangeHanderEx(dto));
@@ -300,7 +300,7 @@ public class ProcessStepsView extends ViewImpl implements
 		return aNewStep;
 	}
 
-	public void setTasks(List<TaskNode> values) {
+	public void setTasks(ArrayList<TaskNode> values) {
 		tasksDropDown.setItems(values);
 	}
 

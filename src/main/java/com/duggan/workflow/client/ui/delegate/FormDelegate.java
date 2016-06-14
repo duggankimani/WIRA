@@ -3,8 +3,8 @@ package com.duggan.workflow.client.ui.delegate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
@@ -47,8 +47,8 @@ public class FormDelegate {
 	 * @param panelFields
 	 * @return
 	 */
-	public Map<String, Value> getValues(ComplexPanel panelFields){
-		Map<String,Value> values = new HashMap<String, Value>();
+	public HashMap<String, Value> getValues(ComplexPanel panelFields){
+		HashMap<String,Value> values = new HashMap<String, Value>();
 		
 		int fields = panelFields.getWidgetCount();
 		
@@ -85,7 +85,7 @@ public class FormDelegate {
 	 * @param fields
 	 * @param panelFields
 	 */
-	public void setFields(List<Field> fields, ComplexPanel panelFields) {
+	public void setFields(ArrayList<Field> fields, ComplexPanel panelFields) {
 		Collections.sort(fields, new Comparator<FormModel>() {
 			public int compare(FormModel o1, FormModel o2) {
 				Field field1 = (Field)o1;

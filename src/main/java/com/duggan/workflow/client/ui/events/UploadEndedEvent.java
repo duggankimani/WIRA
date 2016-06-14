@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -16,13 +16,13 @@ public class UploadEndedEvent extends
 	}
 	
 	private Object source;
-	private List<String> fileFieldNames;
+	private ArrayList<String> fileFieldNames;
 
 	public UploadEndedEvent(Object source) {
 		this.source = source;
 	}
 	
-	public UploadEndedEvent(Object source, List<String> fileFieldNames) {
+	public UploadEndedEvent(Object source, ArrayList<String> fileFieldNames) {
 		this.source = source;
 		this.fileFieldNames = fileFieldNames;
 	}
@@ -49,7 +49,7 @@ public class UploadEndedEvent extends
 		return source;
 	}
 
-	public List<String> getFileFieldNames() {
+	public ArrayList<String> getFileFieldNames() {
 		return fileFieldNames;
 	}
 }

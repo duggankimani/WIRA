@@ -71,14 +71,14 @@ public class IntegrationWorkItemHandler implements WorkItemHandler{
 	 * @param parameters
 	 * @return
 	 */
-	private Map<String, Object> getValues(Map<String, Object> parameters) {
-		Map<String,Object> values = new HashMap<>();
+	private HashMap<String, Object> getValues(Map<String, Object> parameters) {
+		HashMap<String,Object> values = new HashMap<>();
 		
 		Set<String> keyset = parameters.keySet();
 		for(String key: keyset){
 			Object value = parameters.get(key);
 			if(value instanceof Document){
-				Map<String, Value> vals = ((Document)value).getValues();
+				HashMap<String, Value> vals = ((Document)value).getValues();
 				Collection<Value> docValues = vals.values();
 				
 				for (Value val : docValues) {

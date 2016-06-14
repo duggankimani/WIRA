@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DSConfiguration;
 
@@ -12,16 +12,16 @@ import com.duggan.workflow.shared.model.DSConfiguration;
  */
 public class GetDSStatusResponse extends BaseResponse {
 
-	private List<DSConfiguration> configs = new ArrayList<DSConfiguration>();
+	private ArrayList<DSConfiguration> configs = new ArrayList<DSConfiguration>();
 
 	public GetDSStatusResponse() {
 	}
 
-	public List<DSConfiguration> getConfigs() {
+	public ArrayList<DSConfiguration> getConfigs() {
 		return configs;
 	}
 
-	public void setConfigs(List<DSConfiguration> configs) {
+	public void setConfigs(ArrayList<DSConfiguration> configs) {
 		this.configs = configs;
 	}
 

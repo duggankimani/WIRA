@@ -8,20 +8,19 @@ import gwtupload.client.IUploader.OnFinishUploaderHandler;
 import gwtupload.client.IUploader.OnStartUploaderHandler;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
-import gwtupload.client.SingleUploader;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
+import gwtupload.client.SingleUploader;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -108,8 +107,11 @@ public class Uploader extends Composite {
 
 		@Override
 		public void onFinish(IUploader uploader) {
+			
+			ArrayList<String> list = ArrayUtil.asList();
+			list.addAll(uploader.getServerMessage().getUploadedFieldNames());
 			AppContext.fireEvent(new UploadEndedEvent(Uploader.this,
-					uploader.getServerMessage().getUploadedFieldNames()));
+					list));
 			
 			if (uploader.getStatus() == Status.SUCCESS) {
 
@@ -146,16 +148,16 @@ public class Uploader extends Composite {
 	public static final String FIELD_ID = "fieldId";
 	
 	public void cancel(){
-		List<IUploader> uploaders = new ArrayList<IUploader>();
+		ArrayList<IUploader> uploaders = new ArrayList<IUploader>();
 		if(uploader instanceof MultiUploader){
-			 uploaders = ((MultiUploader)uploader).getUploaders();
+			 uploaders.addAll(((MultiUploader)uploader).getUploaders());
 		}else{
 			//Single Uploader
 			uploaders.add(uploader);
 		}	
 		
 		if(uploaders!=null){
-			List<IUploader> uplodas = new ArrayList<IUploader>();
+			ArrayList<IUploader> uplodas = new ArrayList<IUploader>();
 			uplodas.addAll(uploaders);
 			for(IUploader uploader: uplodas){
 				uploader.cancel();

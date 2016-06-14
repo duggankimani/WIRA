@@ -1,13 +1,11 @@
 package com.duggan.workflow.client.ui;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
-import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.popup.ModalPopup;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -115,7 +113,7 @@ public class AppManager {
 	}
 
 	public static void showPropertyPanel(FormModel parent,
-			List<Property> properties) {
+			ArrayList<Property> properties) {
 		//Bad Fix - For correction 
 		propertyPanel.getView().showBody(false, null);
 		propertyPanel.setProperties(parent, properties);

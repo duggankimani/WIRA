@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.processes.save;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -55,13 +55,13 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 		ProcessDef getProcess();
 		void setProcessId(Long id);
 		void enable(boolean enableFinish, boolean Cancel);
-		void setValues(Long processDefId,String name, String processId,String description, List<DocumentType> docTypes, List<Attachment> list,ProcessCategory category,
-				List<Listable> usersAndGroups);
-		void setUserGroups(List<Listable> userGroups);
-		void setAttachments(List<Attachment> attachments);
+		void setValues(Long processDefId,String name, String processId,String description, ArrayList<DocumentType> docTypes, ArrayList<Attachment> ArrayList,ProcessCategory category,
+				ArrayList<Listable> usersAndGroups);
+		void setUserGroups(ArrayList<Listable> userGroups);
+		void setAttachments(ArrayList<Attachment> attachments);
 //		void setValues(Long processDefId, String name, String processId,
-//				String description, List<DocumentType> docTypes);
-		void setCategories(List<ProcessCategory> categories);
+//				String description, ArrayList<DocumentType> docTypes);
+		void setCategories(ArrayList<ProcessCategory> categories);
 
 	}
 
@@ -160,7 +160,7 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 				
 				GetUsersResponse usersResp = (GetUsersResponse)results.get(i++);
 				GetGroupsResponse groupsResp = (GetGroupsResponse)results.get(i++);
-				List<Listable> items = new ArrayList<Listable>();
+				ArrayList<Listable> items = new ArrayList<Listable>();
 				for(HTUser user: usersResp.getUsers()){
 					items.add(user);
 				}

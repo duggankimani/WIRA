@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.TaskStepDTO;
@@ -12,7 +12,7 @@ public class GetInitialDocumentResponse extends BaseResponse {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Doc doc;
-	private List<TaskStepDTO> steps;
+	private ArrayList<TaskStepDTO> steps;
 
 	public GetInitialDocumentResponse() {
 	}
@@ -29,11 +29,11 @@ public class GetInitialDocumentResponse extends BaseResponse {
 		this.doc = doc;
 	}
 
-	public List<TaskStepDTO> getSteps() {
+	public ArrayList<TaskStepDTO> getSteps() {
 		return steps;
 	}
 
-	public void setSteps(List<TaskStepDTO> steps) {
+	public void setSteps(ArrayList<TaskStepDTO> steps) {
 		this.steps = steps;
 	}
 }

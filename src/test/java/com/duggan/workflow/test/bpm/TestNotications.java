@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 import junit.framework.Assert;
 
@@ -37,7 +37,7 @@ public class TestNotications {
 	
 	@Test
 	public void load(){
-		Map<String, Object> params = new HashMap<>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("OwnerId", "Calcacuervo");
 		params.put("Description", "This is the description of this description");
 		params.put("documentUrl", "#");
@@ -154,7 +154,7 @@ public class TestNotications {
 		DB.closeSession();
 		
 		DB.beginTransaction();
-		Map<String, Object> values = new HashMap<>();
+		HashMap<String, Object> values = new HashMap<>();
 		values.put("isApproved", true);
 		JBPMHelper.get().execute(taskId, approver, Actions.COMPLETE, values);		
 		DB.commitTransaction();

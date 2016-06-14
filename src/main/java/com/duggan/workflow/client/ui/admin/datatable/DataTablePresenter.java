@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.datatable;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
@@ -65,7 +65,7 @@ public class DataTablePresenter
 
 		HasClickHandlers getImportButton();
 
-		void bindCatalogs(List<Catalog> catalogs);
+		void bindCatalogs(ArrayList<Catalog> catalogs);
 
 		HasClickHandlers getNewReportLink();
 
@@ -259,7 +259,7 @@ public class DataTablePresenter
 
 	}
 
-	private void showDataPopup(final Catalog catalog, List<DocumentLine> lines) {
+	private void showDataPopup(final Catalog catalog, ArrayList<DocumentLine> lines) {
 		final CreateDataView view = new CreateDataView(catalog);
 
 		String[] actions = new String[] { "Save", "Cancel" };
@@ -286,7 +286,7 @@ public class DataTablePresenter
 		view.setData(lines);
 	}
 
-	private void saveData(Catalog catalog, List<DocumentLine> data) {
+	private void saveData(Catalog catalog, ArrayList<DocumentLine> data) {
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new InsertDataRequest(catalog.getId(), data));
@@ -296,7 +296,7 @@ public class DataTablePresenter
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 
-						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+						ArrayList<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 								.get(1)).getCatalogs();
 						getView().bindCatalogs(catalogs);
 						fireEvent(new ProcessingCompletedEvent());
@@ -331,7 +331,7 @@ public class DataTablePresenter
 					public void processResult(GetCatalogsResponse aResponse) {
 						selectItem(null, false);
 						fireEvent(new ProcessingCompletedEvent());
-						List<Catalog> catalogs = aResponse.getCatalogs();
+						ArrayList<Catalog> catalogs = aResponse.getCatalogs();
 						getView().bindCatalogs(catalogs);
 					}
 				});
@@ -352,7 +352,7 @@ public class DataTablePresenter
 						Catalog saved = ((SaveCatalogResponse) aResponse.get(0))
 								.getCatalog();
 
-						List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+						ArrayList<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 								.get(1)).getCatalogs();
 						getView().bindCatalogs(catalogs);
 						ctrl.hide();
@@ -404,7 +404,7 @@ public class DataTablePresenter
 								@Override
 								public void processResult(MultiRequestActionResult aResponse) {
 
-									List<Catalog> catalogs = ((GetCatalogsResponse) aResponse
+									ArrayList<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 											.get(1)).getCatalogs();
 									getView().bindCatalogs(catalogs);
 									hide();

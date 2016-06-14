@@ -2,6 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class GetActivitiesRequestHandler extends
 		activities.addAll(CommentDaoHelper.getAllCommentsByDocRefId(docRefId));	
 		Collections.sort(activities);
 				
-		Map<Activity, List<Activity>> activityMap = new LinkedHashMap<>();
+		HashMap<Activity, ArrayList<Activity>> activityMap = new LinkedHashMap<>();
 		
 		for(Activity activity: activities){
 			if(activity instanceof Notification || !action.isCategorized()){

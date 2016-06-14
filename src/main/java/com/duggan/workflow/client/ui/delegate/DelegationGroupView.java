@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.delegate;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.delegate.userDisplay.UserDisplay;
 import com.duggan.workflow.client.ui.events.PresentUserEvent;
@@ -100,7 +100,7 @@ public class DelegationGroupView extends Composite implements PresentUserHandler
 		handlers.clear();
 	}
 	
-	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
 	@Override
 	public void onPresentUser(PresentUserEvent event) {

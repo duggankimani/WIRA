@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.sencha.gxt.data.shared.TreeStore;
 
@@ -29,7 +29,7 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	private String contentType;
 	private HTUser createdBy;
 	private Date created;
-	private List<Attachment> children;
+	private ArrayList<Attachment> children;
 	private String documentType;
 	private String subject;
 	private String path;
@@ -142,7 +142,7 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 		child.setParent(this);
 	}
 	
-	public void setChildren(List<Attachment> children){
+	public void setChildren(ArrayList<Attachment> children){
 		this.children = children;
 	}
 	
@@ -151,7 +151,7 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 		return children!=null && children.size()>0; 
 	}
 	
-	public List<Attachment> getChildren(){
+	public ArrayList<Attachment> getChildren(){
 		sort();
 		if(children==null || children.size()==0)
 			return null;

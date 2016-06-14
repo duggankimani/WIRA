@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.addDoc;
 
 import static com.duggan.workflow.client.ui.resources.ICONS.INSTANCE;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.util.AppContext;
@@ -73,7 +73,7 @@ public class DocTypesView extends ViewImpl implements
 	}
 
 	@Override
-	public void setData(List<ProcessCategory> categories) {
+	public void setData(ArrayList<ProcessCategory> categories) {
 		if(categories==null){
 			return;
 		}

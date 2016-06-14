@@ -1,12 +1,9 @@
 package com.duggan.workflow.client.ui.document;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.duggan.workflow.client.model.UploadContext;
@@ -26,13 +23,13 @@ import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent.ExecTriggerHandler;
@@ -58,6 +55,7 @@ import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
@@ -161,13 +159,13 @@ public class GenericDocumentPresenter extends
 
 		void showForward(boolean show);
 
-		void setValidTaskActions(List<Actions> actions);
+		void setValidTaskActions(ArrayList<Actions> actions);
 
 		void show(boolean IsShowapprovalLink, boolean IsShowRejectLink);
 
 		void showEdit(boolean displayed);
 
-		// void setStates(List<NodeDetail> states);
+		// void setStates(ArrayList<NodeDetail> states);
 		HasClickHandlers getSimulationBtn();
 
 		HasClickHandlers getSaveButton();
@@ -228,7 +226,7 @@ public class GenericDocumentPresenter extends
 
 		boolean isValid();
 
-		Map<String, Value> getValues(); // Task Data
+		HashMap<String, Value> getValues(); // Task Data
 
 		void showDefaultFields(boolean b);
 
@@ -248,7 +246,7 @@ public class GenericDocumentPresenter extends
 
 		void setEditMode(boolean editMode);
 
-		void setSteps(List<TaskStepDTO> steps, int currentStep);
+		void setSteps(ArrayList<TaskStepDTO> steps, int currentStep);
 
 		void showAssignLink(boolean show);
 
@@ -256,9 +254,9 @@ public class GenericDocumentPresenter extends
 
 		void setProcessUrl(Long processInstanceId);
 
-		void bindProcessLog(List<TaskLog> logs);
+		void bindProcessLog(ArrayList<TaskLog> logs);
 
-		void showAttachments(List<Attachment> attachments);
+		void showAttachments(ArrayList<Attachment> attachments);
 
 		void setLoadAsAdmin(boolean isLoadAsAdmin);
 
@@ -272,7 +270,7 @@ public class GenericDocumentPresenter extends
 	private Doc doc;
 	private Form form;
 	private int currentStep = 0;
-	private List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
+	private ArrayList<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
 
 	private Integer activities = 0;
 
@@ -292,7 +290,7 @@ public class GenericDocumentPresenter extends
 
 	public static final Object ACTIVITY_SLOT = new Object();
 	public static final Object ATTACHMENTS_SLOT = new Object();
-	private List<TaskLog> logs = null;
+	private ArrayList<TaskLog> logs = null;
 	private boolean isLoadAsAdmin;
 
 	@Inject
@@ -485,7 +483,7 @@ public class GenericDocumentPresenter extends
 							public void onSelect(String name) {
 								if (name.equals("Approve")) {
 									// create comment
-									Map<String, Value> values = new HashMap<String, Value>();
+									HashMap<String, Value> values = new HashMap<String, Value>();
 									values.put("isApproved", new BooleanValue(
 											true));
 									complete(values, true);
@@ -515,7 +513,7 @@ public class GenericDocumentPresenter extends
 							public void onSelect(String name) {
 								if (name.equals("Reject")) {
 									// create comment
-									Map<String, Value> values = new HashMap<String, Value>();
+									HashMap<String, Value> values = new HashMap<String, Value>();
 									values.put("isApproved", new BooleanValue(
 											false));
 									complete(values, false);
@@ -566,9 +564,9 @@ public class GenericDocumentPresenter extends
 			public void onClick(ClickEvent event) {
 
 				TableView tableEnv = new TableView();
-				tableEnv.setHeaders(Arrays.asList("Key", "Value"));
+				tableEnv.setHeaders(ArrayUtil.asList("Key", "Value"));
 
-				List<String> keys = new ArrayList<String>();
+				ArrayList<String> keys = new ArrayList<String>();
 				keys.addAll(ENV.getValues().keySet());
 				Collections.sort(keys);
 
@@ -625,7 +623,7 @@ public class GenericDocumentPresenter extends
 		}
 	}
 
-	protected void showAssignPopup(List<HTUser> users) {
+	protected void showAssignPopup(ArrayList<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
 
 		AppManager.showPopUp("Assign Task", view, new OnOptionSelected() {
@@ -907,7 +905,7 @@ public class GenericDocumentPresenter extends
 
 	}
 
-	public void complete(Map<String, Value> withValues, boolean validateForm) {
+	public void complete(HashMap<String, Value> withValues, boolean validateForm) {
 		if (validateForm) {
 			if (getView().isValid()) {
 				completeIt(withValues);
@@ -919,10 +917,10 @@ public class GenericDocumentPresenter extends
 
 	private void mergeFormValuesWithDoc() {
 		// Copy all previous values from the task object into the result/values
-		Map<String, Value> values = doc.getValues();
+		HashMap<String, Value> values = doc.getValues();
 
 		// Get Form Values
-		Map<String, Value> formValues = getView().getValues();
+		HashMap<String, Value> formValues = getView().getValues();
 		if (formValues == null) {
 			formValues = new HashMap<String, Value>();
 		}
@@ -931,7 +929,7 @@ public class GenericDocumentPresenter extends
 			Value val = formValues.get(key);
 
 			if (val instanceof GridValue) {
-				List<DocumentLine> lines = new ArrayList<DocumentLine>();
+				ArrayList<DocumentLine> lines = new ArrayList<DocumentLine>();
 				/**
 				 * 
 				 * This does not take care of hidden grid fields
@@ -943,7 +941,7 @@ public class GenericDocumentPresenter extends
 				/*
 				 * Grid Value must be written too - otherwise it gets lost if
 				 * the task is completed Coz complete takes only form values >>
-				 * Map<String, Value>
+				 * HashMap<String, Value>
 				 */
 				values.put(key, val);
 			} else {
@@ -953,13 +951,13 @@ public class GenericDocumentPresenter extends
 		}
 
 		/*
-		 * Duggan 06/10/2015 ExecuteWorkflow action submits a list of Value
-		 * objects i.e Map<String,Value> , which works ok for all fields except
+		 * Duggan 06/10/2015 ExecuteWorkflow action submits a ArrayList of Value
+		 * objects i.e HashMap<String,Value> , which works ok for all fields except
 		 * grid fields updated through triggers
 		 * 
 		 * Grid rows updated through a trigger call to addDetail('gridName',
 		 * DocumentLine) are not added to a GridValue object: they are written
-		 * directly to a Map<String, List<DocLine>>, hence they are left out
+		 * directly to a HashMap<String, ArrayList<DocLine>>, hence they are left out
 		 * when ExecuteWorkflow is called.
 		 * 
 		 * To remedy this issue, We need to loop through the document lines
@@ -974,12 +972,12 @@ public class GenericDocumentPresenter extends
 
 	}
 
-	private void completeIt(Map<String, Value> withValues) {
+	private void completeIt(HashMap<String, Value> withValues) {
 
 		// Get document Values
 		mergeFormValuesWithDoc();
 
-		final Map<String, Value> values = doc.getValues();
+		final HashMap<String, Value> values = doc.getValues();
 
 		// Add any programmatic values (Button values e.g isApproved)
 		if (withValues != null)
@@ -1126,7 +1124,7 @@ public class GenericDocumentPresenter extends
 				}, "Yes", "Cancel");
 	}
 
-	private void showDelegatePopup(final List<HTUser> users) {
+	private void showDelegatePopup(final ArrayList<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
 		showDelegatePopup(view);
 
@@ -1156,7 +1154,7 @@ public class GenericDocumentPresenter extends
 											ExecTaskEvent event = new ExecTaskEvent(
 													taskId, Actions.DELEGATE);
 
-											Map<String, Value> values = new HashMap<String, Value>();
+											HashMap<String, Value> values = new HashMap<String, Value>();
 
 											StringValue userValue = new StringValue(
 													null, "targetUserId", user
@@ -1357,7 +1355,7 @@ public class GenericDocumentPresenter extends
 	// });
 	// }
 
-	protected void setSteps(List<TaskStepDTO> steps) {
+	protected void setSteps(ArrayList<TaskStepDTO> steps) {
 		this.steps = steps;
 		if (steps == null) {
 			return;
@@ -1451,12 +1449,12 @@ public class GenericDocumentPresenter extends
 		getView().setForm(form, doc, isFormReadOnly(mode));
 	}
 
-	private void loadDynamicFields(Map<String, List<String>> dependencies,
+	private void loadDynamicFields(HashMap<String, ArrayList<String>> dependencies,
 			final String triggerName) {
 
-		final List<Field> dependants = new ArrayList<Field>();
+		final ArrayList<Field> dependants = new ArrayList<Field>();
 		if (dependencies != null) {
-			for (List<String> names : dependencies.values()) {
+			for (ArrayList<String> names : dependencies.values()) {
 				if (names != null) {
 					for (String name : names) {
 						Field f = new Field();
@@ -1501,7 +1499,7 @@ public class GenericDocumentPresenter extends
 						if (!dependants.isEmpty()) {
 							LoadDynamicFieldsResponse loadDynamicFields = (LoadDynamicFieldsResponse) aResponse
 									.get(i++);
-							List<Field> fields = loadDynamicFields.getFields();
+							ArrayList<Field> fields = loadDynamicFields.getFields();
 							for (Field field : fields) {
 								int idx = form.getFields().indexOf(field);
 								if (idx != -1) {
@@ -1527,22 +1525,22 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
-		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
+		HashMap<Activity, ArrayList<Activity>> activitiesMap = response.getActivityMap();
 		bindActivities(activitiesMap);
 	}
 
-	public void bindActivities(Map<Activity, List<Activity>> activitiesMap) {
+	public void bindActivities(HashMap<Activity, ArrayList<Activity>> activitiesMap) {
 		setInSlot(ACTIVITY_SLOT, null);
 
 		Set<Activity> keyset = activitiesMap.keySet();
-		List<Activity> activities = new ArrayList<Activity>();
+		ArrayList<Activity> activities = new ArrayList<Activity>();
 		activities.addAll(keyset);
 		Collections.sort(activities);
 		Collections.reverse(activities);
 
 		for (Activity activity : activities) {
 			bind(activity, false);
-			List<Activity> children = activitiesMap.get(activity);
+			ArrayList<Activity> children = activitiesMap.get(activity);
 			if (children != null) {
 				for (Activity child : children) {
 					bind(child, true);
@@ -1584,7 +1582,7 @@ public class GenericDocumentPresenter extends
 
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
 
-		List<Attachment> attachments = attachmentsresponse.getAttachments();
+		ArrayList<Attachment> attachments = attachmentsresponse.getAttachments();
 		getView().showAttachments(attachments);
 
 		if (attachments.size() > 0) {
@@ -1614,7 +1612,7 @@ public class GenericDocumentPresenter extends
 
 	protected void bindCommentsResult(GetCommentsResponse commentsResult) {
 		setInSlot(ACTIVITY_SLOT, null);
-		List<Comment> comments = commentsResult.getComments();
+		ArrayList<Comment> comments = commentsResult.getComments();
 
 		this.activities += comments.size();
 
@@ -1635,7 +1633,7 @@ public class GenericDocumentPresenter extends
 	protected void bindDocumentResult(Doc result) {
 
 		this.doc = result;
-		Map<String, Value> vals = doc.getValues();
+		HashMap<String, Value> vals = doc.getValues();
 
 		long docId = 0l;
 		// this.documentId = docId;
@@ -1741,14 +1739,14 @@ public class GenericDocumentPresenter extends
 		// @Override
 		// public void processResult(
 		// GetProcessStatusRequestResult result) {
-		// List<NodeDetail> details = result.getNodes();
+		// ArrayList<NodeDetail> details = result.getNodes();
 		// setProcessState(details);
 		// }
 		// });
 		// }
 	}
 
-	// public void setProcessState(List<NodeDetail> states){
+	// public void setProcessState(ArrayList<NodeDetail> states){
 	// getView().setStates(states);
 	// }
 
@@ -1830,7 +1828,7 @@ public class GenericDocumentPresenter extends
 		}
 	}
 
-	private void executeGenericCode(Map<String, Value> values,
+	private void executeGenericCode(HashMap<String, Value> values,
 			String customHandlerClass) {
 		requestHelper.execute(new GenericRequest(values, customHandlerClass),
 				new TaskServiceCallback<GenericResponse>() {
@@ -1885,8 +1883,8 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onFieldLoad(FieldLoadEvent event) {
 		String fieldName = event.getField().getName();
-		Map<String, List<String>> dependencies = form.getDependencies();
-		Map<String, List<String>> toReload = new HashMap<String, List<String>>();
+		HashMap<String, ArrayList<String>> dependencies = form.getDependencies();
+		HashMap<String, ArrayList<String>> toReload = new HashMap<String, ArrayList<String>>();
 		toReload.put(fieldName, dependencies.get(fieldName));
 
 		try {

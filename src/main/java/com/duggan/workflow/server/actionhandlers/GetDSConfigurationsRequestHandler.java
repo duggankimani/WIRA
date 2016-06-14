@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.DSConfigHelper;
@@ -35,7 +36,7 @@ public class GetDSConfigurationsRequestHandler
 				config.setStatus(isActive?Status.RUNNING:Status.INACTIVE);
 			}
 		}
-		response.setConfigurations(configs);
+		response.setConfigurations((ArrayList<DSConfiguration>) configs);
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class InputListWidget extends Composite {
 
-	List<String> itemsSelected = new ArrayList<String>();
+	ArrayList<String> itemsSelected = new ArrayList<String>();
 	FlowPanel panel = new FlowPanel();
 	
     public InputListWidget() {    
@@ -31,15 +31,15 @@ public class InputListWidget extends Composite {
     	super.onLoad();
     	 // 2. Show the following element structure and set the last <div> to display: block
         /*
-        <ul class="token-input-list-facebook">
+        <ul class="token-input-ArrayList-facebook">
             <li class="token-input-input-token-facebook">
                 <input type="text" style="outline-color: -moz-use-text-color; outline-style: none; outline-width: medium;"/>
             </li>
         </ul>
         <div class="token-input-dropdown-facebook" style="display: none;"/>
          */
-        final BulletListPanel list = new BulletListPanel();
-        list.setStyleName("token-input-list-facebook");
+        final BulletListPanel ArrayList = new BulletListPanel();
+        ArrayList.setStyleName("token-input-ArrayList-facebook");
         final BulletPanel item = new BulletPanel();
         item.setStyleName("token-input-input-token-facebook");
         final TextBox itemBox = new TextBox();
@@ -48,7 +48,7 @@ public class InputListWidget extends Composite {
         final SuggestBox box = new SuggestBox(SuggestField.getSuggestions(), itemBox);        
         box.getElement().setId("suggestion_box");
         item.add(box);
-        list.add(item);
+        ArrayList.add(item);
 
         // this needs to be on the itemBox rather than box, or backspace will get executed twice
         itemBox.addKeyDownHandler(new KeyDownHandler() {
@@ -56,19 +56,19 @@ public class InputListWidget extends Composite {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
                     // only allow manual entries with @ signs (assumed email addresses)
                     if (itemBox.getValue().contains("@"))
-                        deselectItem(itemBox, list);
+                        deselectItem(itemBox, ArrayList);
                 }
                 // handle backspace
                 if (event.getNativeKeyCode() == KeyCodes.KEY_BACKSPACE) {
                     if ("".equals(itemBox.getValue().trim())) {
-                        BulletPanel li = (BulletPanel) list.getWidget(list.getWidgetCount() - 2);
+                        BulletPanel li = (BulletPanel) ArrayList.getWidget(ArrayList.getWidgetCount() - 2);
                         Paragraph p = (Paragraph) li.getWidget(0);
                         if (itemsSelected.contains(p.getText())) {
                             itemsSelected.remove(p.getText());
                             GWT.log("Removing selected item '" + p.getText() + "'", null);
                             GWT.log("Remaining: " + itemsSelected, null);
                         }
-                        list.remove(li);
+                        ArrayList.remove(li);
                         itemBox.setFocus(true);
                     }
                 }
@@ -77,16 +77,16 @@ public class InputListWidget extends Composite {
 
         box.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             public void onSelection(SelectionEvent selectionEvent) {
-                deselectItem(itemBox, list);
+                deselectItem(itemBox, ArrayList);
             }
         });
 
-        panel.add(list);
+        panel.add(ArrayList);
 
         panel.getElement().setAttribute("onclick", "document.getElementById('suggestion_box').focus()");
         box.setFocus(true);
         /* Div structure after a few elements have been added:
-            <ul class="token-input-list-facebook">
+            <ul class="token-input-ArrayList-facebook">
                 <li class="token-input-token-facebook">
                     <p>What's New Scooby-Doo?</p>
                     <span class="token-input-delete-token-facebook">x</span>
@@ -102,7 +102,7 @@ public class InputListWidget extends Composite {
          */
 
     }
-    private void deselectItem(final TextBox itemBox, final BulletListPanel list) {
+    private void deselectItem(final TextBox itemBox, final BulletListPanel ArrayList) {
         if (itemBox.getValue() != null && !"".equals(itemBox.getValue().trim())) {
             /** Change to the following structure:
              * <li class="token-input-token-facebook">
@@ -125,7 +125,7 @@ public class InputListWidget extends Composite {
             displayItem.addKeyDownHandler(new KeyDownHandler() {
                 public void onKeyDown(KeyDownEvent event) {
                     if (event.getNativeKeyCode() == KeyCodes.KEY_BACKSPACE) {
-                        removeBulletPanel(displayItem, list);
+                        removeBulletPanel(displayItem, ArrayList);
                     }
                 }
             });
@@ -139,7 +139,7 @@ public class InputListWidget extends Composite {
             Span span = new Span("x");
             span.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent clickEvent) {
-                    removeBulletPanel(displayItem, list);
+                    removeBulletPanel(displayItem, ArrayList);
                 }
             });
 
@@ -151,15 +151,15 @@ public class InputListWidget extends Composite {
             itemsSelected.add(itemBox.getValue());
             GWT.log("Total: " + itemsSelected, null);
 
-            list.insert(displayItem, list.getWidgetCount() - 1);
+            ArrayList.insert(displayItem, ArrayList.getWidgetCount() - 1);
             itemBox.setValue("");
             itemBox.setFocus(true);
         }
     }
 
-    private void removeBulletPanel(BulletPanel displayItem, BulletListPanel list) {
+    private void removeBulletPanel(BulletPanel displayItem, BulletListPanel ArrayList) {
         GWT.log("Removing: " + displayItem.getWidget(0).getElement().getInnerHTML(), null);
         itemsSelected.remove(displayItem.getWidget(0).getElement().getInnerHTML());
-        list.remove(displayItem);
+        ArrayList.remove(displayItem);
     }
 }

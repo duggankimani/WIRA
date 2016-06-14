@@ -1,7 +1,8 @@
 package com.duggan.workflow.test.integration;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -40,7 +41,7 @@ public class TestWiseDigitsIntegration {
 
 	private String getUrlEncoding(String serviceUrl, Document document) {
 		
-		Map<String, Value> values= document.getValues();
+		HashMap<String, Value> values= document.getValues();
 		
 		StringBuffer buffer = new StringBuffer("?action=Save");
 		for(Value value: values.values()){
@@ -55,7 +56,7 @@ public class TestWiseDigitsIntegration {
 		}
 		
 
-		Map<String, List<DocumentLine>> linesMap = document.getDetails();
+		HashMap<String, ArrayList<DocumentLine>> linesMap = document.getDetails();
 	
 		buffer.append("&array(");
 		if(linesMap.values()!=null && !linesMap.values().isEmpty()){

@@ -128,7 +128,7 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		spnHeader.setInnerHTML("Creating New Request");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.adddoc(),
-				"Click on the 'Add Document' Button. Choose the Type of document from the List and Click.");
+				"Click on the 'Add Document' Button. Choose the Type of document from the ArrayList and Click.");
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.leaveapp(),
 				"Fill In the Form, Submit it For Approval");
@@ -144,7 +144,7 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		CarouselItem carousel1 = new CarouselItem(
 				true,
 				ImageResources.IMAGES.business_process(),
-				"Use the Process Map to view the progress of your requests.");
+				"Use the Process HashMap to view the progress of your requests.");
 
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.tasks(),
@@ -182,7 +182,7 @@ public class CarouselPopup extends Composite implements CloseCarouselHandler {
 		spnHeader.setInnerHTML("Reviewing Tasks");
 		CarouselItem carousel1 = new CarouselItem(true,
 				ImageResources.IMAGES.document_action(),
-				"Easily make your decision using a list of Actions displayed on top of each Task");
+				"Easily make your decision using a ArrayList of Actions displayed on top of each Task");
 
 		CarouselItem carousel2 = new CarouselItem(false,
 				ImageResources.IMAGES.activity(),

@@ -5,7 +5,7 @@ import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
@@ -38,7 +38,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 
 	String id = DOM.createUniqueId();
 
-	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
 	public DateInput() {
 		initWidget(uiBinder.createAndBindUi(this));

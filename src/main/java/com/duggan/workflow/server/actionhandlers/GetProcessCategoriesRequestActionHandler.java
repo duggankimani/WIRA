@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
@@ -20,7 +23,7 @@ public class GetProcessCategoriesRequestActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		GetProcessCategoriesResponse response = (GetProcessCategoriesResponse)actionResult;
-		response.setCategories(ProcessDefHelper.getProcessCategories());
+		response.setCategories((ArrayList<ProcessCategory>) ProcessDefHelper.getProcessCategories());
 	}
 	
 	@Override

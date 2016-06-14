@@ -1,22 +1,22 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 
 public class GetLongTasksResponse extends BaseResponse {
 
-	private List<LongTask> longTasks;
+	private ArrayList<LongTask> longTasks;
 
 	public GetLongTasksResponse() {
 		// For serialization only
 	}
 
-	public List<LongTask> getLongTasks() {
+	public ArrayList<LongTask> getLongTasks() {
 		return longTasks;
 	}
 
-	public void setLongTasks(List<LongTask> longTasks) {
+	public void setLongTasks(ArrayList<LongTask> longTasks) {
 		this.longTasks = longTasks;
 	}
 }

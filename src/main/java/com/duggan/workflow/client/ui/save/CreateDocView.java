@@ -4,7 +4,7 @@ import static com.duggan.workflow.client.ui.save.CreateDocPresenter.UPLOAD_SLOT;
 import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
 
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -269,7 +269,7 @@ public class CreateDocView extends PopupViewImpl implements
 	}
 
 	@Override
-	public void setDocTypes(List<DocumentType> types) {
+	public void setDocTypes(ArrayList<DocumentType> types) {
 		lstDocumentType.setItems(types);
 	}
 

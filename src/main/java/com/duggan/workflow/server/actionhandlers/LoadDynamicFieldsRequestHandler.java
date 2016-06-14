@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.shared.model.Doc;
@@ -26,8 +26,8 @@ public class LoadDynamicFieldsRequestHandler
 			throws ActionException {
 		
 		Doc doc = action.getDoc();
-		List<Field> fields = action.getFieldNames();
-		fields = FormDaoHelper.loadFieldValues(doc,fields);
+		ArrayList<Field> fields = action.getFieldNames();
+		fields.addAll(FormDaoHelper.loadFieldValues(doc,fields));
 		((LoadDynamicFieldsResponse)actionResult).setFields(fields);
 	}
 

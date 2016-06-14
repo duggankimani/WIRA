@@ -68,7 +68,7 @@ public class DBLoginHelper implements LoginIntf{
 		return htuser;
 	}
 
-	private List<UserGroup> getFromDb(Collection<Group> groups) {
+	private ArrayList<UserGroup> getFromDb(Collection<Group> groups) {
 		List<UserGroup> userGroups = new ArrayList<>();
 		
 		if(groups!=null)
@@ -76,7 +76,7 @@ public class DBLoginHelper implements LoginIntf{
 				userGroups.add(get(group));
 			}
 		
-		return userGroups;
+		return (ArrayList<UserGroup>) userGroups;
 	}
 
 	@Override

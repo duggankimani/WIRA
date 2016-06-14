@@ -1,21 +1,21 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.settings.Setting;
 
 public class GetSettingsResponse extends BaseResponse {
 
-	private List<Setting> settings;
+	private ArrayList<Setting> settings;
 
 	public GetSettingsResponse() {
 	}
 
-	public List<Setting> getSettings() {
+	public ArrayList<Setting> getSettings() {
 		return settings;
 	}
 
-	public void setSettings(List<Setting> settings) {
+	public void setSettings(ArrayList<Setting> settings) {
 		this.settings = settings;
 	}
 	

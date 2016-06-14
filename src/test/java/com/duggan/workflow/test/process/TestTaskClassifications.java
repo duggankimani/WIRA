@@ -54,7 +54,7 @@ public class TestTaskClassifications {
 		
 		//OrganizationalEntity entity = entities.get(0);
 		System.err.println(" >> :: "+entities.size());
-//		Map<String,Object> data = JBPMHelper.getMappedDataByContentId(outContentId);
+//		HashMap<String,Object> data = JBPMHelper.getMappedDataByContentId(outContentId);
 //		for(String key: data.keySet()){
 //			System.err.println(key+" - "+data.get(key));
 //		}

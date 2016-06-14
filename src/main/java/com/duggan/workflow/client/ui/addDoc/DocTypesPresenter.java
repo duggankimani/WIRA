@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.addDoc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
@@ -36,7 +36,7 @@ public class DocTypesPresenter extends
 
 		void addContent(String string);
 
-		void setData(List<ProcessCategory> categories);
+		void setData(ArrayList<ProcessCategory> categories);
 	}
 	
 	@Inject
@@ -52,7 +52,7 @@ public class DocTypesPresenter extends
 		requestHelper.execute(req,new TaskServiceCallback<GetDocumentTypesResponse>() {
 			@Override
 			public void processResult(GetDocumentTypesResponse result) {
-				List<DocumentType> types=result.getDocumentTypes();
+				ArrayList<DocumentType> types=result.getDocumentTypes();
 				Collections.sort(types, new Comparator<DocumentType>() {
 					@Override
 					public int compare(DocumentType o1, DocumentType o2) {
@@ -77,10 +77,10 @@ public class DocTypesPresenter extends
 		});
 	}
 	
-	public void setDocumentItems(List<DocumentType> types){
+	public void setDocumentItems(ArrayList<DocumentType> types){
 		this.setInSlot(DOCITEM_SLOT, null);
 		
-		List<ProcessCategory> categories  = new ArrayList<ProcessCategory>();
+		ArrayList<ProcessCategory> categories  = new ArrayList<ProcessCategory>();
 		
 		String category="";
 		ProcessCategory processCat = new ProcessCategory();
@@ -117,7 +117,7 @@ public class DocTypesPresenter extends
 		}
 	}
 	
-//	public void setDocumentItems(List<DocumentType> types){
+//	public void setDocumentItems(ArrayList<DocumentType> types){
 //		this.setInSlot(DOCITEM_SLOT, null);
 //		
 //		String category="";

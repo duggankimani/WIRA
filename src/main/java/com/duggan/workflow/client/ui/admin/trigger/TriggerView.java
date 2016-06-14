@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.admin.trigger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableHeader;
@@ -42,7 +42,7 @@ public class TriggerView extends ViewImpl implements
 
 	private void setTable() {
 		tblView.setAutoNumber(true);
-		List<TableHeader> th = new ArrayList<TableHeader>();
+		ArrayList<TableHeader> th = new ArrayList<TableHeader>();
 		th.add(new TableHeader("Name", 50.0,"title"));
 		th.add(new TableHeader("Action(s)", 50.0));
 		
@@ -59,7 +59,7 @@ public class TriggerView extends ViewImpl implements
 	}
 
 	@Override
-	public void setTriggers(List<Trigger> triggers) {
+	public void setTriggers(ArrayList<Trigger> triggers) {
 		tblView.clearRows();
 		Collections.sort(triggers, new Comparator<Trigger>(){
 			@Override

@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Org;
 
@@ -10,20 +10,20 @@ public class GetOrgsResponse extends BaseListResponse{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<Org> orgs;
+	private ArrayList<Org> orgs;
 
 	public GetOrgsResponse() {
 	}
 
-	public GetOrgsResponse(List<Org> orgs) {
+	public GetOrgsResponse(ArrayList<Org> orgs) {
 		this.orgs = orgs;
 	}
 
-	public List<Org> getOrgs() {
+	public ArrayList<Org> getOrgs() {
 		return orgs;
 	}
 
-	public void setOrgs(List<Org> orgs) {
+	public void setOrgs(ArrayList<Org> orgs) {
 		this.orgs = orgs;
 	}
 	

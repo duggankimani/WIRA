@@ -3,8 +3,8 @@ package com.duggan.workflow.shared.model.form;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Listable;
 
@@ -14,15 +14,15 @@ public class Form extends FormModel implements Listable, Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<Property> properties;
-	private List<Field> fields;
+	private ArrayList<Property> properties;
+	private ArrayList<Field> fields;
 	private Long processDefId;
 	private String processRefId;
 	
 	/**
-	 * Map<Parent,Children> dependency map
+	 * HashMap<Parent,Children> dependency HashMap
 	 */
-	private Map<String, List<String>> dependencies = new HashMap<String, List<String>>();
+	private HashMap<String, ArrayList<String>> dependencies = new HashMap<String, ArrayList<String>>();
 	
 	public Form() {
 	}
@@ -33,18 +33,18 @@ public class Form extends FormModel implements Listable, Serializable{
 		setCaption(caption);
 	}
 
-	public List<Property> getProperties() {
+	public ArrayList<Property> getProperties() {
 		return properties;
 	}
-	public void setProperties(List<Property> properties) {
+	public void setProperties(ArrayList<Property> properties) {
 		this.properties = properties;
 	}
 
-	public List<Field> getFields() {
+	public ArrayList<Field> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<Field> fields) {
+	public void setFields(ArrayList<Field> fields) {
 		this.fields = fields;
 	}
 
@@ -109,9 +109,9 @@ public class Form extends FormModel implements Listable, Serializable{
 		this.processDefId = processDefId;
 	}
 
-	public void addFieldDependency(List<String> parentFields, String childField) {
+	public void addFieldDependency(ArrayList<String> parentFields, String childField) {
 		for(String parentField: parentFields){
-			List<String> children = dependencies.get(parentField);
+			ArrayList<String> children = dependencies.get(parentField);
 			if(children==null){
 				children = new ArrayList<String>();
 			}
@@ -120,11 +120,11 @@ public class Form extends FormModel implements Listable, Serializable{
 		}
 	}
 
-	public Map<String, List<String>> getDependencies() {
+	public HashMap<String, ArrayList<String>> getDependencies() {
 		return dependencies;
 	}
 
-	public void setDependencies(Map<String, List<String>> dependencies) {
+	public void setDependencies(HashMap<String, ArrayList<String>> dependencies) {
 		this.dependencies = dependencies;
 	}
 

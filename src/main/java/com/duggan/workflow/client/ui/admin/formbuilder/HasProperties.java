@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
@@ -40,5 +40,5 @@ public interface HasProperties {
 	
 	Value getFieldValue();
 	
-	List<Property> getProperties();
+	ArrayList<Property> getProperties();
 }

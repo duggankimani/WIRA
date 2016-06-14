@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.tasklistitem;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -292,7 +292,7 @@ public class TaskItemPresenter extends
 	}
 	
 //	void completeDocument(boolean approved){
-//		Map<String, Value> arguments = new HashMap<String, Value>();	
+//		HashMap<String, Value> arguments = new HashMap<String, Value>();	
 //		arguments.put("isApproved", new BooleanValue(approved));
 //		arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
 //		submitRequest(Actions.COMPLETE, arguments);
@@ -302,7 +302,7 @@ public class TaskItemPresenter extends
 //		submitRequest(action, null);
 //	}
 	
-	protected void submitRequest(final Actions action, final Map<String, Value> values) {
+	protected void submitRequest(final Actions action, final HashMap<String, Value> values) {
 		
 		//String docUrl = (GWT.getModuleBaseURL()+"/search?");
 		//values.put("DocumentURL", new StringValue(docUrl));
@@ -328,7 +328,7 @@ public class TaskItemPresenter extends
 			public void processResult(ExecuteWorkflowResult result) {
 				Doc doc = result.getDocument();
 				
-				//refresh list
+				//refresh ArrayList
 				fireEvent(new ProcessingCompletedEvent());
 				
 				if(action==Actions.COMPLETE || action==Actions.SUSPEND || action==Actions.RESUME){
@@ -363,7 +363,7 @@ public class TaskItemPresenter extends
 		});
 	}
 
-	private void delegate(ExecuteWorkflow execWorkflow,Actions action, Map<String, Value> values) {
+	private void delegate(ExecuteWorkflow execWorkflow,Actions action, HashMap<String, Value> values) {
 		Notification notification = new Notification();
 		notification.setApproverAction(ApproverAction.DELEGATE);
 		HTSummary summary = (HTSummary)task;
@@ -394,7 +394,7 @@ public class TaskItemPresenter extends
 			
 			@Override
 			public void processResult(MultiRequestActionResult results) {
-				//refresh list
+				//refresh ArrayList
 				fireEvent(new ProcessingCompletedEvent());			
 				
 				ExecuteWorkflowResult result = (ExecuteWorkflowResult)results.get(0);
@@ -494,7 +494,7 @@ public class TaskItemPresenter extends
 		}
 		
 		if(task.getId().equals(event.getTaskId())){
-			Map<String, Value> arguments = event.getResults();
+			HashMap<String, Value> arguments = event.getResults();
 			arguments.put("documentId", new LongValue(((HTSummary)task).getDocumentRef()));
 			submitRequest(Actions.COMPLETE, arguments);
 		}

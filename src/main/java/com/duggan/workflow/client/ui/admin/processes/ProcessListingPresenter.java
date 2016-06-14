@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.processes;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
@@ -73,11 +73,11 @@ public class ProcessListingPresenter
 
 		HasClickHandlers getStartAllProcesses();
 
-		void setCategories(List<ProcessCategory> categories);
+		void setCategories(ArrayList<ProcessCategory> categories);
 
 		HasClickHandlers getAddCategories();
 
-		void bindProcesses(List<ProcessDef> processDefinitions);
+		void bindProcesses(ArrayList<ProcessDef> processDefinitions);
 
 		void setProcessEdit(ProcessDef model, boolean value);
 
@@ -113,7 +113,7 @@ public class ProcessListingPresenter
 
 	IndirectProvider<ProcessSavePresenter> processFactory;
 
-	private List<ProcessCategory> categories;
+	private ArrayList<ProcessCategory> categories;
 
 	private Object selectedModel;
 
@@ -306,7 +306,7 @@ public class ProcessListingPresenter
 				});
 	}
 
-	protected void bindCategories(List<ProcessCategory> categories) {
+	protected void bindCategories(ArrayList<ProcessCategory> categories) {
 		this.categories = categories;
 		getView().setCategories(categories);
 	}
@@ -351,7 +351,7 @@ public class ProcessListingPresenter
 
 						GetProcessesResponse processesResponse = (GetProcessesResponse) result
 								.get(0);
-						List<ProcessDef> processDefinitions = processesResponse
+						ArrayList<ProcessDef> processDefinitions = processesResponse
 								.getProcesses();
 						getView().bindProcesses(processDefinitions);
 

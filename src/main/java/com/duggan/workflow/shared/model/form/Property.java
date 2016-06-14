@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model.form;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
@@ -19,7 +19,7 @@ public class Property extends FormModel{
 	private Long formId; //form property
 	private Value value;
 	private String caption;
-	private List<KeyValuePair> kvp= new ArrayList<KeyValuePair>();
+	private ArrayList<KeyValuePair> kvp= new ArrayList<KeyValuePair>();
 	
 	public Property(){
 	}
@@ -98,14 +98,14 @@ public class Property extends FormModel{
 		return this.name.equals(other.name);
 	}
 	
-	public void setSelectionValues(List<KeyValuePair> pairs){
+	public void setSelectionValues(ArrayList<KeyValuePair> pairs){
 		if(pairs!=null){
 			kvp.clear();
 			kvp.addAll(pairs);
 		}
 	}
 	
-	public List<KeyValuePair> getSelectionValues(){
+	public ArrayList<KeyValuePair> getSelectionValues(){
 		return kvp;
 	}
 	

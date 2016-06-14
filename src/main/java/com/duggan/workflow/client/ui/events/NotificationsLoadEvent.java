@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Notification;
 import com.google.gwt.event.shared.EventHandler;
@@ -11,17 +11,17 @@ public class NotificationsLoadEvent extends
 		GwtEvent<NotificationsLoadEvent.NotificationsLoadHandler> {
 
 	public static Type<NotificationsLoadHandler> TYPE = new Type<NotificationsLoadHandler>();
-	private List notifications;
+	private ArrayList notifications;
 
 	public interface NotificationsLoadHandler extends EventHandler {
 		void onNotificationsLoad(NotificationsLoadEvent event);
 	}
 
-	public NotificationsLoadEvent(List notifications) {
+	public NotificationsLoadEvent(ArrayList notifications) {
 		this.notifications = notifications;
 	}
 
-	public List<Notification> getNotifications() {
+	public ArrayList<Notification> getNotifications() {
 		return notifications;
 	}
 
@@ -39,7 +39,7 @@ public class NotificationsLoadEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, List notifications) {
+	public static void fire(HasHandlers source, ArrayList notifications) {
 		source.fireEvent(new NotificationsLoadEvent(notifications));
 	}
 }

@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
@@ -24,7 +25,7 @@ public class GetCommentsRequestActionHandler extends
 		//List<Comment> comments = CommentDaoHelper.getAllCommentsByDocumentId(action.getDocumentId());
 		List<Comment> comments = CommentDaoHelper.getAllCommentsByDocRefId(action.getDocRefId());
 		
-		((GetCommentsResponse)actionResult).setComments(comments);
+		((GetCommentsResponse)actionResult).setComments((ArrayList<Comment>) comments);
 	}
 
 	@Override

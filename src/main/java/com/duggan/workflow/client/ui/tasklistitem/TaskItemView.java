@@ -1,7 +1,7 @@
  package com.duggan.workflow.client.ui.tasklistitem;
 
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Actions;
@@ -296,7 +296,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 	 * 
 	 * @param actions
 	 */
-	public void setTaskAction(List<Actions> actions){
+	public void setTaskAction(ArrayList<Actions> actions){
 		
 		if(actions!=null)
 		for(Actions action : actions){

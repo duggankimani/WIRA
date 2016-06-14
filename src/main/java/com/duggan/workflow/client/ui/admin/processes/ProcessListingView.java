@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.processes;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -70,7 +70,7 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
     }
     
     @Override
-	public void bindProcesses(List<ProcessDef> processDefinitions) {
+	public void bindProcesses(ArrayList<ProcessDef> processDefinitions) {
 		tblProcesses.removeAllRows();
 		setProcessHeaders(tblProcesses);
 
@@ -177,7 +177,7 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 	}
 
 	@Override
-	public void setCategories(List<ProcessCategory> categories) {
+	public void setCategories(ArrayList<ProcessCategory> categories) {
 		// lstCategories.setItems(categories);
 	}
 

@@ -295,9 +295,9 @@ public class FormDaoHelper {
 		return property;
 	}
 
-	private static List<Property> getProperties(
+	private static ArrayList<Property> getProperties(
 			Collection<ADProperty> properties) {
-		List<Property> props = new ArrayList<>();
+		ArrayList<Property> props = new ArrayList<>();
 		if (properties == null)
 			return props;
 
@@ -728,11 +728,11 @@ public class FormDaoHelper {
 		}
 	}
 
-	public static List<KeyValuePair> getDropdownValues(String type) {
+	public static ArrayList<KeyValuePair> getDropdownValues(String type) {
 		FormDaoImpl dao = DB.getFormDao();
 		List<ADKeyValuePair> adkeyvaluepairs = dao.getKeyValuePairs(type);
 
-		List<KeyValuePair> keyvaluepairs = new ArrayList<>();
+		ArrayList<KeyValuePair> keyvaluepairs = new ArrayList<>();
 		for (ADKeyValuePair adpair : adkeyvaluepairs) {
 			KeyValuePair kvp = new KeyValuePair();
 			kvp.setKey(adpair.getName());

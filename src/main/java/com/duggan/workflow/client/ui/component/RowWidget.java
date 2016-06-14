@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.dom.client.Style.TextAlign;
@@ -22,7 +22,7 @@ public abstract class RowWidget extends Composite {
 	private boolean isAutoNumber;
 	private int rowNum=0;
 	HTMLPanel row;
-	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 	private Object data=null;
 	private boolean isShowRemove;
 	
@@ -47,7 +47,7 @@ public abstract class RowWidget extends Composite {
 	}
 	
 	
-	public void createRow(List<Widget> widgets){
+	public void createRow(ArrayList<Widget> widgets){
 		if(isAutoNumber){
 			row.add(getTd(new InlineLabel(rowNum+"")));
 		}

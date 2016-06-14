@@ -171,7 +171,7 @@ public class CatalogDaoHelper {
 				return o1.getId().compareTo(o2.getId());
 			}
 		});
-		catalog.setColumns(models);
+		catalog.getColumns().addAll(models);
 		return catalog;
 	}
 

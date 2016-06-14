@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
@@ -145,7 +145,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	}
 
 	@Override
-	public void setSelectionValues(List<KeyValuePair> values) {
+	public void setSelectionValues(ArrayList<KeyValuePair> values) {
 		if(designMode && (getPropertyValue(SQLDS)!=null || getPropertyValue(SQLSELECT)!=null)){
 			//design mode
 			values =new ArrayList<KeyValuePair>();
@@ -171,7 +171,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField{
 	}
 
 	@Override
-	public List<KeyValuePair> getValues() {
+	public ArrayList<KeyValuePair> getValues() {
 		return lstItems.values();
 	}
 	

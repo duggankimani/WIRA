@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model.form;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
@@ -21,10 +21,10 @@ public class Field extends FormModel implements Comparable<Field>{
 	 */
 	private static final long serialVersionUID = 1L;
 	//Field properties - Caption, Length etc
-	private List<Property> properties = new ArrayList<Property>();
+	private ArrayList<Property> properties = new ArrayList<Property>();
 
 	//Drop down/ multiselect selection values
-	private List<KeyValuePair> selectionValues = new ArrayList<KeyValuePair>();
+	private ArrayList<KeyValuePair> selectionValues = new ArrayList<KeyValuePair>();
 	
 	//Default field value or current field value
 	private Value value;
@@ -41,8 +41,8 @@ public class Field extends FormModel implements Comparable<Field>{
 	//Id of the parent field - for a child field
 	private Long parentId;
 	
-	//List of children fields - for a grid field
-	private List<Field> fields = new ArrayList<Field>();
+	//ArrayList of children fields - for a grid field
+	private ArrayList<Field> fields = new ArrayList<Field>();
 	
 	//Front end grid name for grid children fields
 	private transient String gridName="";
@@ -62,7 +62,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	 * e.g select id,name from cities where countryid=@@country  
 	 * 
 	 */
-	private List<String> dependentFields = new ArrayList<String>();
+	private ArrayList<String> dependentFields = new ArrayList<String>();
 	
 	/**
 	 * This field has dependants
@@ -73,10 +73,10 @@ public class Field extends FormModel implements Comparable<Field>{
 		docId="TempD";
 	}
 	
-	public List<Property> getProperties() {
+	public ArrayList<Property> getProperties() {
 		return properties;
 	}
-	public void setProperties(List<Property> properties) {
+	public void setProperties(ArrayList<Property> properties) {
 		this.properties = properties;
 	}
 	public Value getValue() {
@@ -118,15 +118,15 @@ public class Field extends FormModel implements Comparable<Field>{
 		this.position = position;
 	}
 
-	public List<KeyValuePair> getSelectionValues() {
+	public ArrayList<KeyValuePair> getSelectionValues() {
 		return selectionValues;
 	}
 
-	public void setSelectionValues(List<KeyValuePair> selectionValues) {
+	public void setSelectionValues(ArrayList<KeyValuePair> selectionValues) {
 		this.selectionValues = selectionValues;
 	}
 
-	public List<Field> getFields() {
+	public ArrayList<Field> getFields() {
 		return fields;
 	}
 
@@ -168,7 +168,7 @@ public class Field extends FormModel implements Comparable<Field>{
 		return fields.contains(retrieved);
 	}
 
-	public void setFields(List<Field> fieldList) {
+	public void setFields(ArrayList<Field> fieldList) {
 		this.fields = fieldList;
 	}
 	
@@ -353,11 +353,11 @@ public class Field extends FormModel implements Comparable<Field>{
 		}
 	}
 
-	public List<String> getDependentFields() {
+	public ArrayList<String> getDependentFields() {
 		return dependentFields;
 	}
 
-	public void setDependentFields(List<String> dependentFields) {
+	public void setDependentFields(ArrayList<String> dependentFields) {
 		this.dependentFields = dependentFields;
 	}
 

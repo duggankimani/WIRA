@@ -25,13 +25,13 @@ public class GetFileTreeRequestHandler extends
 
 		switch (action.getType()) {
 		case FILES:
-			response.setAttachments(DB.getAttachmentDao().getFileTree());
+			response.setAttachments((ArrayList<Attachment>) DB.getAttachmentDao().getFileTree());
 			break;
 		case PROCESSES:
-			response.setAttachments(DB.getAttachmentDao().getFileProcessTree());
+			response.setAttachments((ArrayList<Attachment>) DB.getAttachmentDao().getFileProcessTree());
 			break;
 		case USERS:
-			response.setAttachments(DB.getAttachmentDao().getFileUserTree());
+			response.setAttachments((ArrayList<Attachment>) DB.getAttachmentDao().getFileUserTree());
 			break;
 
 		default:

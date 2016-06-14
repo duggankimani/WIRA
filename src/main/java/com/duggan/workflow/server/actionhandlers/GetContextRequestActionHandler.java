@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +10,7 @@ import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
@@ -44,7 +47,7 @@ public class GetContextRequestActionHandler extends
 		
 		if(result.getIsValid()){
 			result.setUser((HTUser)user);
-			result.setGroups(LoginHelper.get().getGroupsForUser(result.getUser().getUserId()));
+			result.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(result.getUser().getUserId()));
 		}
 		
 		result.setVersion(VersionManager.getVersion());

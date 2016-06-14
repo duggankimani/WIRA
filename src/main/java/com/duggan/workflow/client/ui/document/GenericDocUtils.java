@@ -1,16 +1,13 @@
 package com.duggan.workflow.client.ui.document;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -36,13 +33,13 @@ public class GenericDocUtils {
 		prop.setValue(new StringValue(form.getCaption()));
 		Property help = new Property(HasProperties.HELP, null, DataType.STRING);
 		help.setValue(new StringValue("Click Link To Generate Document"));
-		form.setProperties(Arrays.asList(prop,help));
+		form.setProperties(ArrayUtil.asList(prop,help));
 				
 		Field field = new Field();
 		field.setName(outDoc.getName());
 		field.setType(DataType.LINK);
 		
-		List<Property> properties = new ArrayList<Property>();
+		ArrayList<Property> properties = new ArrayList<Property>();
 		prop = new Property(HasProperties.CAPTION, "Caption", DataType.STRING);
 		prop.setValue(new StringValue(name));
 		properties.add(prop);

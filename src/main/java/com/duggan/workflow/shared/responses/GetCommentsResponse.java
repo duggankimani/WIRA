@@ -1,26 +1,26 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Comment;
 
 public class GetCommentsResponse extends BaseResponse {
 
-	private List<Comment> comments;
+	private ArrayList<Comment> comments;
 
 	public GetCommentsResponse() {
 		// For serialization only
 	}
 
-	public GetCommentsResponse(List<Comment> comments) {
+	public GetCommentsResponse(ArrayList<Comment> comments) {
 		this.comments = comments;
 	}
 
-	public List<Comment> getComments() {
+	public ArrayList<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(ArrayList<Comment> comments) {
 		this.comments = comments;
 	}
 }

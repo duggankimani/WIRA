@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
@@ -39,7 +39,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		
-//		List<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
+//		ArrayList<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
 //		pairs.add(new KeyValuePair("","A"));
 //		pairs.add(new KeyValuePair("","B"));
 //		pairs.add(new KeyValuePair("","C"));
@@ -73,7 +73,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	}
 
 	@Override
-	public void setSelectionValues(List<KeyValuePair> values) {
+	public void setSelectionValues(ArrayList<KeyValuePair> values) {
 		vPanel.clear();
 		if(values==null){
 			return;
@@ -120,9 +120,9 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	}
 
 	@Override
-	public List<KeyValuePair> getValues() {
+	public ArrayList<KeyValuePair> getValues() {
 		int count = vPanel.getWidgetCount();
-		List<KeyValuePair> list = new ArrayList<KeyValuePair>();
+		ArrayList<KeyValuePair> ArrayList = new ArrayList<KeyValuePair>();
 		
 		for(int i=0; i<count; i++){
 			RadioButton txtBox= (RadioButton)vPanel.getWidget(i);
@@ -133,11 +133,11 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 				KeyValuePair pair = new KeyValuePair();
 				pair.setKey(name);
 				pair.setValue(val);
-				list.add(pair);
+				ArrayList.add(pair);
 			}			
 		}
 		
-		return list;
+		return ArrayList;
 	}
 
 	@Override

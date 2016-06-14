@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -8,16 +8,16 @@ import com.duggan.workflow.shared.responses.GetSettingsResponse;
 
 public class GetSettingsRequest extends BaseRequest<GetSettingsResponse> {
 
-	private List<SETTINGNAME> settingNames;
+	private ArrayList<SETTINGNAME> settingNames;
 
 	public GetSettingsRequest() {
 	}
 	
-	public GetSettingsRequest(List<SETTINGNAME> names){
+	public GetSettingsRequest(ArrayList<SETTINGNAME> names){
 		this.settingNames = names;
 	}
 
-	public List<SETTINGNAME> getSettingNames() {
+	public ArrayList<SETTINGNAME> getSettingNames() {
 		return settingNames;
 	}
 	

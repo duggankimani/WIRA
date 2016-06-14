@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
@@ -14,7 +14,7 @@ import com.gwtplatform.mvp.client.TabData;
 public abstract class AbstractTabPanel extends Composite implements com.gwtplatform.mvp.client.TabPanel{
 
 
-	protected final List<Tab> tabList = new ArrayList<Tab>();
+	protected final ArrayList<Tab> tabList = new ArrayList<Tab>();
 	protected Tab currentActiveTab;
 	
 	public AbstractTabPanel(){
@@ -112,7 +112,7 @@ public abstract class AbstractTabPanel extends Composite implements com.gwtplatf
 		item.show(item.getTabData().canUserAccess());
 	}
 	
-	public List<Tab> getTabs(){
+	public ArrayList<Tab> getTabs(){
 		return tabList;
 	}
 

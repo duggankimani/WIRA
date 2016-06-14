@@ -1,8 +1,8 @@
 package xtension.workitems;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.drools.process.instance.WorkItemHandler;
@@ -24,7 +24,7 @@ public class WiseDigitsDocumentIntegration implements WorkItemHandler {
 		//document full
 		
 		Request request = new Request();
-		Map<String, Object> context = new HashMap<String, Object>();
+		HashMap<String, Object> context = new HashMap<String, Object>();
 		context.put("url", targetUrl);
 		context.put("document", document);
 		request.setContext(context);
@@ -34,7 +34,7 @@ public class WiseDigitsDocumentIntegration implements WorkItemHandler {
 	
 	private String getUrlEncoding(Document document) {
 		
-		Map<String, Value> values= document.getValues();
+		HashMap<String, Value> values= document.getValues();
 		
 		StringBuffer buffer = new StringBuffer("?action=Save");
 		for(Value value: values.values()){
@@ -49,7 +49,7 @@ public class WiseDigitsDocumentIntegration implements WorkItemHandler {
 		}
 		
 
-		Map<String, List<DocumentLine>> linesMap = document.getDetails();
+		HashMap<String, ArrayList<DocumentLine>> linesMap = document.getDetails();
 	
 		buffer.append("&array(");
 		if(linesMap.values()!=null && !linesMap.values().isEmpty()){

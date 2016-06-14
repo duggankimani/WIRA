@@ -4,9 +4,7 @@ import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -23,6 +21,7 @@ import com.duggan.workflow.client.ui.grid.AggregationGrid;
 import com.duggan.workflow.client.ui.grid.ColumnConfig;
 import com.duggan.workflow.client.ui.grid.DataMapper;
 import com.duggan.workflow.client.ui.grid.DataModel;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DBType;
@@ -111,8 +110,8 @@ public class CreateTableView extends Composite {
 	DataMapper mapper = new DataMapper() {
 
 		@Override
-		public List<DataModel> getDataModels(List objs) {
-			List<DataModel> models = new ArrayList<DataModel>();
+		public ArrayList<DataModel> getDataModels(ArrayList objs) {
+			ArrayList<DataModel> models = new ArrayList<DataModel>();
 			for (Object o : objs) {
 				CatalogColumn c = (CatalogColumn) o;
 				DataModel model = new DataModel();
@@ -152,17 +151,19 @@ public class CreateTableView extends Composite {
 	};
 
 	private CatalogType type = CatalogType.DATATABLE;
-	private List<Form> forms;
-	private List<ProcessDef> processes;
+	private ArrayList<Form> forms;
+	private ArrayList<ProcessDef> processes;
 	private Catalog catalog;
 
 	public CreateTableView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		lstFields.setMultiple(true);
-		lstFieldSources.setItems(Arrays.asList(FieldSource.FORM,
+		ArrayList<FieldSource> values = new ArrayList<FieldSource>();
+		values.addAll(ArrayUtil.asList(FieldSource.FORM,
 				FieldSource.GRID));
+		lstFieldSources.setItems(values);
 
-		List<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
+		ArrayList<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
 		columnConfigs.add(new ColumnConfig("fieldName", "Field Name",
 				DataType.STRING, "", "input-medium"));
 		columnConfigs.add(new ColumnConfig("fieldLabel", "Field Label",
@@ -207,7 +208,8 @@ public class CreateTableView extends Composite {
 				final StringBuffer uploadedItems = new StringBuffer();
 				UploadContext context = new UploadContext();
 				context.setAction(UPLOADACTION.IMPORTGRIDDATA);
-				context.setAccept(Arrays.asList("csv"));
+				ArrayList<String> values = ArrayUtil.asList("csv");
+				context.setAccept(values);
 				final String message = "This will import data from a CSV file into the grid.<br/>"
 						+ "Expected Values [ColumnName,DataType,Size]";
 				final ImportView view = new ImportView(message, context);
@@ -336,9 +338,9 @@ public class CreateTableView extends Composite {
 				});
 	}
 
-	protected void generateCols(List<Field> values) {
+	protected void generateCols(ArrayList<Field> values) {
 		// Get Current Columns
-		List<CatalogColumn> columns = grid.getData(mapper);
+		ArrayList<CatalogColumn> columns = grid.getData(mapper);
 
 		// reset grid
 		grid.setData(new ArrayList<DataModel>());
@@ -376,7 +378,7 @@ public class CreateTableView extends Composite {
 
 	private void loadFields(Field gridField) {
 		// Grid
-		List<Field> fields = new ArrayList<Field>();
+		ArrayList<Field> fields = new ArrayList<Field>();
 		if (gridField != null)
 			for (Field child : gridField.getFields()) {
 				addField(fields, child);
@@ -386,7 +388,7 @@ public class CreateTableView extends Composite {
 		lstFields.setItems(fields);
 	}
 
-	private void loadFields(List<Form> forms) {
+	private void loadFields(ArrayList<Form> forms) {
 		this.forms = forms;
 		if (forms == null)
 			return;
@@ -397,8 +399,8 @@ public class CreateTableView extends Composite {
 			source = FieldSource.FORM;
 		}
 
-		List<Field> fields = new ArrayList<Field>();
-		List<Field> gridFields = new ArrayList<>();
+		ArrayList<Field> fields = new ArrayList<Field>();
+		ArrayList<Field> gridFields = new ArrayList<>();
 
 		for (Form form : forms) {
 			if (form.getFields() != null)
@@ -431,7 +433,7 @@ public class CreateTableView extends Composite {
 		}
 	}
 
-	private void addField(List<Field> fields, Field field) {
+	private void addField(ArrayList<Field> fields, Field field) {
 		Field clone = new Field() {
 			public String getDisplayName() {
 				return getName();
@@ -442,12 +444,12 @@ public class CreateTableView extends Composite {
 		fields.add(clone);
 	}
 
-	private List<CatalogColumn> setLines(String uploadedCSVItems) {
+	private ArrayList<CatalogColumn> setLines(String uploadedCSVItems) {
 		if (uploadedCSVItems == null || uploadedCSVItems.trim().isEmpty()) {
 			return new ArrayList<CatalogColumn>();
 		}
 
-		List<CatalogColumn> lines = new ArrayList<CatalogColumn>();
+		ArrayList<CatalogColumn> lines = new ArrayList<CatalogColumn>();
 
 		String[] items = uploadedCSVItems.split("\n");
 		for (String item : items) {
@@ -458,8 +460,8 @@ public class CreateTableView extends Composite {
 		return lines;
 	}
 
-	public void setData(List<CatalogColumn> lines) {
-		List<DataModel> models = mapper.getDataModels(lines);
+	public void setData(ArrayList<CatalogColumn> lines) {
+		ArrayList<DataModel> models = mapper.getDataModels(lines);
 		grid.setData(models);
 	}
 
@@ -524,7 +526,7 @@ public class CreateTableView extends Composite {
 		String name = txtName.getValue().toUpperCase();
 		cat.setName(name.replaceAll("\\s", "")); // Clear empty space
 		cat.setDescription(txtDescription.getValue());
-		List<CatalogColumn> columns = grid.getData(mapper);
+		ArrayList<CatalogColumn> columns = grid.getData(mapper);
 
 		cat.setColumns(columns);
 		return cat;
@@ -554,7 +556,7 @@ public class CreateTableView extends Composite {
 				.setValue(catalog.getFieldSource() == null ? FieldSource.FORM
 						: catalog.getFieldSource());
 		grid.setData(mapper.getDataModels(catalog.getColumns()));
-		List<CatalogColumn> cols = grid.getData(mapper);
+		ArrayList<CatalogColumn> cols = grid.getData(mapper);
 	}
 
 	protected void bindView(Catalog viewCatalog) {
@@ -574,7 +576,7 @@ public class CreateTableView extends Composite {
 	}
 
 	private void bindFields(Catalog viewCatalog) {
-		List<Field> fields = new ArrayList<Field>();
+		ArrayList<Field> fields = new ArrayList<Field>();
 		for (CatalogColumn col : viewCatalog.getColumns()) {
 			fields.add(col.toFormField());
 		}
@@ -617,7 +619,7 @@ public class CreateTableView extends Composite {
 		return isValid;
 	}
 
-	public void setProcesses(List<ProcessDef> processes) {
+	public void setProcesses(ArrayList<ProcessDef> processes) {
 		this.processes = processes;
 		lstProcess.setItems(processes);
 		if (catalog != null && catalog.getProcessDefId() != null
@@ -638,14 +640,14 @@ public class CreateTableView extends Composite {
 		}
 	}
 
-	public void setViews(List<Catalog> catalogs) {
+	public void setViews(ArrayList<Catalog> catalogs) {
 		lstViews.setItems(catalogs);
 		if (this.catalog != null) {
 			lstViews.setValue(catalog);
 		}
 	}
 
-	public void setCategories(List<ProcessCategory> categories) {
+	public void setCategories(ArrayList<ProcessCategory> categories) {
 		lstCategories.setItems(categories);
 		if(catalog!=null){
 			lstCategories.setValue(catalog.getCategory());

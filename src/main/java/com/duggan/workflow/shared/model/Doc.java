@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -30,9 +30,9 @@ public abstract class Doc extends SerializableObj implements Serializable,
 
 	public abstract Object getId();
 
-	protected Map<String, Value> values = new HashMap<String, Value>();
+	protected HashMap<String, Value> values = new HashMap<String, Value>();
 
-	protected Map<String, List<DocumentLine>> details = new HashMap<String, List<DocumentLine>>();
+	protected HashMap<String, ArrayList<DocumentLine>> details = new HashMap<String, ArrayList<DocumentLine>>();
 
 	private String processId;
 	private String processName;
@@ -79,11 +79,11 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		return dateToUse;
 	}
 
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return values;
 	}
 
-	public void setValues(Map<String, Value> values) {
+	public void setValues(HashMap<String, Value> values) {
 		this.values = values;
 	}
 
@@ -160,18 +160,18 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		this.hasAttachment = hasAttachment;
 	}
 
-	public Map<String, List<DocumentLine>> getDetails() {
+	public HashMap<String, ArrayList<DocumentLine>> getDetails() {
 		return details;
 	}
 
-	public void setDetails(Map<String, List<DocumentLine>> details) {
+	public void setDetails(HashMap<String, ArrayList<DocumentLine>> details) {
 		this.details = details;
 	}
 
 	public void addDetail(DocumentLine line) {
 		String name = line.getName();
 
-		List<DocumentLine> lines = details.get(name);
+		ArrayList<DocumentLine> lines = details.get(name);
 		if (lines == null) {
 			lines = new ArrayList<DocumentLine>();
 			details.put(name, lines);
@@ -179,13 +179,13 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		lines.add(line);
 
 		/*
-		 * Duggan 06/10/2015 ExecuteWorkflow action submits a list of Value
-		 * objects i.e Map<String,Value> , which works ok for all fields except
+		 * Duggan 06/10/2015 ExecuteWorkflow action submits a ArrayList of Value
+		 * objects i.e HashMap<String,Value> , which works ok for all fields except
 		 * grid fields updated through triggers
 		 * 
 		 * Grid rows updated through a trigger call to addDetail('gridName',
 		 * DocumentLine) are not added to a GridValue object: they are written
-		 * directly to a Map<String, List<DocLine>>, hence they are left out
+		 * directly to a HashMap<String, ArrayList<DocLine>>, hence they are left out
 		 * when ExecuteWorkflow is called.
 		 * 
 		 * To remedy this issue, We need to loop through the document lines

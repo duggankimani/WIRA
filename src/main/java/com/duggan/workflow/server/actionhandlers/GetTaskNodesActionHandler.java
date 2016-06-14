@@ -1,8 +1,11 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.requests.GetTaskNodesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskNodesResponse;
@@ -22,7 +25,7 @@ public class GetTaskNodesActionHandler extends AbstractActionHandler<GetTaskNode
 	public void execute(GetTaskNodesRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		try{
-			((GetTaskNodesResponse)actionResult).setTaskNodes(JBPMHelper.get().getWorkflowProcessNodes(action.getProcessId()));
+			((GetTaskNodesResponse)actionResult).setTaskNodes((ArrayList<TaskNode>) JBPMHelper.get().getWorkflowProcessNodes(action.getProcessId()));
 		}catch(Exception e){
 			log.warn(e.getMessage());
 		}

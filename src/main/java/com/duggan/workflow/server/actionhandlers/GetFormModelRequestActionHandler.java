@@ -107,7 +107,7 @@ public class GetFormModelRequestActionHandler extends
 
 		}
 		
-		response.setFormModel(models);
+		response.setFormModel((ArrayList<FormModel>) models);
 
 	}
 

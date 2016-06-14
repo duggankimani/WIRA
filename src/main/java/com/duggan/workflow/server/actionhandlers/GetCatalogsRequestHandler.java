@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.shared.model.catalog.Catalog;
@@ -23,15 +22,15 @@ public class GetCatalogsRequestHandler extends
 	public void execute(GetCatalogsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		List<Catalog> catalogs = new ArrayList<>();
+		ArrayList<Catalog> catalogs = new ArrayList<>();
 		
 		if(action.getCatalogRefId()!=null){
 			Catalog cat = CatalogDaoHelper.getCatalog(action.getCatalogRefId());
 			catalogs.add(cat);
 		}else if(action.isLoadViews()){
-			catalogs = CatalogDaoHelper.getAllViews();
+			catalogs.addAll(CatalogDaoHelper.getAllViews());
 		}else{
-			catalogs = CatalogDaoHelper.getAllCatalogs(action.getSearchTerm());
+			catalogs.addAll(CatalogDaoHelper.getAllCatalogs(action.getSearchTerm()));
 		}
 		
 		

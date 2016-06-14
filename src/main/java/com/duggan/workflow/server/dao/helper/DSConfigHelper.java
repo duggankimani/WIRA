@@ -85,11 +85,11 @@ public class DSConfigHelper {
 		return true;
 	}
 	
-	public static List<KeyValuePair> getKeyValuePairs(){
+	public static ArrayList<KeyValuePair> getKeyValuePairs(){
 		DSConfigDaoImpl dao = DB.getDSConfigDao();
 		List<KeyValuePair> lst = dao.getKeyValuePairs();
 		
-		return lst;
+		return (ArrayList<KeyValuePair>) lst;
 	}
 
 	public static DSConfiguration getConfigurationByName(String configName) {

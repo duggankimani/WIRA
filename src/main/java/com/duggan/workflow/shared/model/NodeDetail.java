@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 public class NodeDetail implements Serializable {
 
@@ -13,8 +13,8 @@ public class NodeDetail implements Serializable {
 	private boolean isEndNode;
 	private boolean isCurrentNode;
 	private Long nodeId;
-	private List<HTUser> actors = new ArrayList<HTUser>(); //Comma separated list of actor ids
-	private List<UserGroup> groups = new ArrayList<UserGroup>(); //Comma Separated list of group ids
+	private ArrayList<HTUser> actors = new ArrayList<HTUser>(); //Comma separated ArrayList of actor ids
+	private ArrayList<UserGroup> groups = new ArrayList<UserGroup>(); //Comma Separated ArrayList of group ids
 	
 	public NodeDetail() {
 	}
@@ -86,7 +86,7 @@ public class NodeDetail implements Serializable {
 		groups.add(group);
 	}
 
-	public void addAllUsers(List<HTUser> lst) {
+	public void addAllUsers(ArrayList<HTUser> lst) {
 		assert lst!=null;
 		
 		for(HTUser user:lst){
@@ -94,19 +94,19 @@ public class NodeDetail implements Serializable {
 		}
 	}
 
-	public List<HTUser> getActors() {
+	public ArrayList<HTUser> getActors() {
 		return actors;
 	}
 
-	public void setActors(List<HTUser> actors) {
+	public void setActors(ArrayList<HTUser> actors) {
 		this.actors = actors;
 	}
 
-	public List<UserGroup> getGroups() {
+	public ArrayList<UserGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<UserGroup> groups) {
+	public void setGroups(ArrayList<UserGroup> groups) {
 		this.groups = groups;
 	}
 

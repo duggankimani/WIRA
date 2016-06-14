@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.filter;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.SearchEvent;
@@ -30,7 +30,7 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		HasClickHandlers getSearchButton();
 		HasBlurHandlers getFilterDialog();
 		SearchFilter getSearchFilter();
-		void setDocTypes(List<DocumentType> documentTypes);
+		void setDocTypes(ArrayList<DocumentType> documentTypes);
 	}
 	
 	@Inject HomeView homeview;

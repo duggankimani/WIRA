@@ -53,7 +53,7 @@ public class TestDBLoginHelper {
 		user.setPassword(password);
 		user.setSurname(surname);
 		
-		List<UserGroup> groups= new ArrayList<>();
+		ArrayList<UserGroup> groups= new ArrayList<>();
 		UserGroup group = new UserGroup();
 		group.setFullName("Finance Department");
 		group.setName("FIN");		
@@ -87,7 +87,7 @@ public class TestDBLoginHelper {
 		user.setPassword(password);
 		user.setSurname(surname);
 		
-		List<UserGroup> groups= new ArrayList<>();
+		ArrayList<UserGroup> groups= new ArrayList<>();
 		UserGroup group = new UserGroup();
 		group.setFullName("Finance Department");
 		group.setName("FIN");		

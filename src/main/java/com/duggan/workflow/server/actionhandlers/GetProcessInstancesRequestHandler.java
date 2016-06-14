@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.ProcessLog;
 import com.duggan.workflow.shared.requests.GetProcessInstancesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetProcessInstancesResponse;
@@ -21,7 +24,7 @@ public class GetProcessInstancesRequestHandler extends
 			throws ActionException {
 		
 		((GetProcessInstancesResponse)actionResult).setLogs(
-				DB.getProcessDao().getProcessInstances(action.getFilter()));
+				(ArrayList<ProcessLog>) DB.getProcessDao().getProcessInstances(action.getFilter()));
 	}
 
 	@Override

@@ -3,8 +3,6 @@ package com.duggan.workflow.client.ui.admin.settings;
 import gwtupload.client.IUploader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -14,6 +12,7 @@ import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
@@ -85,7 +84,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	public SettingsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		
-		listReportView.setItems(Arrays.asList(REPORTVIEWIMPL.values()));
+		listReportView.setItems(ArrayUtil.asList(REPORTVIEWIMPL.values()));
 		setEdit(false);		
 		panelPicture.addMouseOverHandler(new MouseOverHandler() {
 			@Override
@@ -174,7 +173,7 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	}
 
 	@Override
-	public void setValues(List<Setting> settings) {
+	public void setValues(ArrayList<Setting> settings) {
 		if(settings!=null)
 		for(Setting setting: settings){
 			setValue(setting.getName(), setting.getValue());				
@@ -230,8 +229,8 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	}
 	
 	@Override
-	public List<Setting> getSettings(){
-		List<Setting> lst = new ArrayList<Setting>();
+	public ArrayList<Setting> getSettings(){
+		ArrayList<Setting> lst = new ArrayList<Setting>();
 		
 		Setting setting  = new Setting(SETTINGNAME.SMTP_ACCOUNT, new StringValue(null, SETTINGNAME.SMTP_ACCOUNT.name(), txtAccount.getValue()));
 		lst.add(setting);

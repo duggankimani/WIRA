@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.admin.outputdocs;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.ui.component.ActionLink;
@@ -64,7 +64,7 @@ public class OutPutDocsView extends ViewImpl implements
 	}
 
 	@Override
-	public void setOutputDocuments(List<OutputDocument> documents) {
+	public void setOutputDocuments(ArrayList<OutputDocument> documents) {
 		tblView.removeAllRows();
 		setUserHeaders(tblView);
 		Collections.sort(documents, new Comparator<OutputDocument>() {

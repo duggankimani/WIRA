@@ -1,25 +1,25 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Attachment;
 
 public class GetFileTreeResponse extends BaseResponse {
 
-	private List<Attachment> attachments;
+	private ArrayList<Attachment> attachments;
 
 	public GetFileTreeResponse() {
 	}
 
-	public GetFileTreeResponse(List<Attachment> attachments) {
+	public GetFileTreeResponse(ArrayList<Attachment> attachments) {
 		this.attachments = attachments;
 	}
 
-	public List<Attachment> getAttachments() {
+	public ArrayList<Attachment> getAttachments() {
 		return attachments;
 	}
 
-	public void setAttachments(List<Attachment> attachments) {
+	public void setAttachments(ArrayList<Attachment> attachments) {
 		this.attachments = attachments;
 	}
 }

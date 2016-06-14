@@ -1,25 +1,25 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.NodeDetail;
 
 public class GetProcessStatusRequestResult extends  BaseResponse {
 	
-	private List<NodeDetail> nodes;
+	private ArrayList<NodeDetail> nodes;
 
 	public GetProcessStatusRequestResult() {
 	}
 
-	public GetProcessStatusRequestResult(List<NodeDetail> nodes) {
+	public GetProcessStatusRequestResult(ArrayList<NodeDetail> nodes) {
 		this.nodes = nodes;
 	}
 
-	public List<NodeDetail> getNodes() {
+	public ArrayList<NodeDetail> getNodes() {
 		return nodes;
 	}
 
-	public void setNodes(List<NodeDetail> nodes) {
+	public void setNodes(ArrayList<NodeDetail> nodes) {
 		this.nodes = nodes;
 	}
 }

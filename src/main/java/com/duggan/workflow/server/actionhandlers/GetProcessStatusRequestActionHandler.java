@@ -1,8 +1,11 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
@@ -26,7 +29,7 @@ public class GetProcessStatusRequestActionHandler extends
 		GetProcessStatusRequestResult result = (GetProcessStatusRequestResult)actionResult;
 		
 		try{
-			result.setNodes(JBPMHelper.get().getWorkflowProcessDia(action.getProcessInstanceId()));
+			result.setNodes((ArrayList<NodeDetail>) JBPMHelper.get().getWorkflowProcessDia(action.getProcessInstanceId()));
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Loading Workflow diagram failed cause: "+e.getMessage());

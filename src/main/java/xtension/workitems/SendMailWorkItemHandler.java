@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +70,8 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		log.debug("ActorId : "+actorId);
 		log.debug("OwnerId : "+ownerId);	
 
-		Map<String, Object> params = workItem.getParameters();
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.putAll(workItem.getParameters());
 		
 		List<HTUser> users = null;
 		//notification.setTargetUserId(targetUserId);
@@ -154,7 +155,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		manager.completeWorkItem(workItem.getId(), workItem.getParameters());
 	}
 
-	private void sendMail(Document doc,List<HTUser> users, Map<String, Object> params) {
+	private void sendMail(Document doc,List<HTUser> users, HashMap<String, Object> params) {
 		
 //		StringBuffer recipient=new StringBuffer();
 		

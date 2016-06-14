@@ -1,25 +1,25 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Document;
 
 public class SearchDocumentRequestResult extends BaseResponse {
 
-	private List<Document> document;
+	private ArrayList<Document> document;
 
 	public SearchDocumentRequestResult() {
 	}
 
-	public SearchDocumentRequestResult(List<Document> document) {
+	public SearchDocumentRequestResult(ArrayList<Document> document) {
 		this.document = document;
 	}
 
-	public List<Document> getDocument() {
+	public ArrayList<Document> getDocument() {
 		return document;
 	}
 
-	public void setDocument(List<Document> document) {
+	public void setDocument(ArrayList<Document> document) {
 		this.document = document;
 	}
 }

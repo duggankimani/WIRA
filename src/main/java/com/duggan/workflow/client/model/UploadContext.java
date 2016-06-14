@@ -1,11 +1,10 @@
 package com.duggan.workflow.client.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 
 /**
  * 
@@ -16,9 +15,9 @@ public class UploadContext {
 
 	private String url="/upload";
 	public static final String ACTION="ACTION"; 
-	private List<String> acceptsDocTypes=new ArrayList<String>();
+	private ArrayList<String> acceptsDocTypes=new ArrayList<String>();
 	
-	private Map<String,String> context = new HashMap<String, String>();
+	private HashMap<String,String> context = new HashMap<String, String>();
 	
 	public enum UPLOADACTION{
 		ATTACHDOCUMENT,
@@ -93,7 +92,7 @@ public class UploadContext {
 	 * 
 	 * Comma separated Acceptable file extensions 
 	 * 
-	 * @see UploadContext#setAccept(List)
+	 * @see UploadContext#setAccept(ArrayList)
 	 * 
 	 * @param docTypes
 	 */
@@ -105,10 +104,10 @@ public class UploadContext {
 		}
 		
 		String[] types= commaSeparatedDocTypes.split(",");
-		acceptsDocTypes.addAll(Arrays.asList(types));
+		acceptsDocTypes.addAll(ArrayUtil.asList(types));
 	}
 	
-	public void setAccept(List<String> accept){
+	public void setAccept(ArrayList<String> accept){
 		this.acceptsDocTypes = accept;
 	}
 	

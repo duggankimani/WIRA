@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -24,7 +24,7 @@ public class UserGroup implements Serializable,IsSerializable, Listable{
 	
 	private String fullName;
 	
-	private List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
+	private ArrayList<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
 	
 	public UserGroup(){
 	}
@@ -85,11 +85,11 @@ public class UserGroup implements Serializable,IsSerializable, Listable{
 		return fullName;
 	}
 
-	public List<PermissionPOJO> getPermissions() {
+	public ArrayList<PermissionPOJO> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(List<PermissionPOJO> permissions) {
+	public void setPermissions(ArrayList<PermissionPOJO> permissions) {
 		this.permissions = permissions;
 	}
 }

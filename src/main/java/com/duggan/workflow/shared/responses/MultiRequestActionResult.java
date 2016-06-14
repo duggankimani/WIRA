@@ -1,21 +1,21 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 public class MultiRequestActionResult extends BaseResponse {
 
-	private List<BaseResponse> responses = new ArrayList<BaseResponse>();
+	private ArrayList<BaseResponse> responses = new ArrayList<BaseResponse>();
 
 	@SuppressWarnings("unused")
 	public MultiRequestActionResult() {
 	}
 
-	public MultiRequestActionResult(List<BaseResponse> responses) {
+	public MultiRequestActionResult(ArrayList<BaseResponse> responses) {
 		this.responses = responses;
 	}
 
-	public List<BaseResponse> getReponses() {
+	public ArrayList<BaseResponse> getReponses() {
 		return responses;
 	}
 	

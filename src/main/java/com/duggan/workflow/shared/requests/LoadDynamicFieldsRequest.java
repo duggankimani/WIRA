@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.form.Field;
@@ -16,12 +16,12 @@ import com.duggan.workflow.shared.responses.LoadDynamicFieldsResponse;
 public class LoadDynamicFieldsRequest extends BaseRequest<LoadDynamicFieldsResponse> {
 
 	private Doc doc;
-	private List<Field> fieldNames = new ArrayList<Field>();
+	private ArrayList<Field> fieldNames = new ArrayList<Field>();
 	
 	public LoadDynamicFieldsRequest() {
 	}
 	
-	public LoadDynamicFieldsRequest(Doc doc, List<Field> fields){
+	public LoadDynamicFieldsRequest(Doc doc, ArrayList<Field> fields){
 		this.doc = doc;
 		this.fieldNames = fields;
 	}
@@ -35,7 +35,7 @@ public class LoadDynamicFieldsRequest extends BaseRequest<LoadDynamicFieldsRespo
 		return doc;
 	}
 
-	public List<Field> getFieldNames() {
+	public ArrayList<Field> getFieldNames() {
 		return fieldNames;
 	}
 }

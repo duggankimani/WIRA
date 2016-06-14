@@ -1,7 +1,7 @@
 package com.duggan.workflow.processevents;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 import org.jbpm.task.Status;
 import org.junit.After;
@@ -38,7 +38,7 @@ public class TestWiraProcessEventListener {
 		
 		Long taskId = id.longValue();
 		
-		Map<String,Object> values = new HashMap<>();
+		HashMap<String,Object> values = new HashMap<>();
 		values.put("isHodApproved", "Denied");
 		
 		HTask task = JBPMHelper.get().getTask(taskId);

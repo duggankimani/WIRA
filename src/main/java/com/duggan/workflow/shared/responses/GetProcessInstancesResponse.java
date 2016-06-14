@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.ProcessLog;
@@ -15,16 +15,16 @@ public class GetProcessInstancesResponse extends BaseResponse {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<ProcessLog> logs = new ArrayList<ProcessLog>();
+	private ArrayList<ProcessLog> logs = new ArrayList<ProcessLog>();
 
 	public GetProcessInstancesResponse() {
 	}
 
-	public List<ProcessLog> getLogs() {
+	public ArrayList<ProcessLog> getLogs() {
 		return logs;
 	}
 
-	public void setLogs(List<ProcessLog> logs) {
+	public void setLogs(ArrayList<ProcessLog> logs) {
 		this.logs = logs;
 	}
 

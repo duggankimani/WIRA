@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.profile;
 
 import gwtupload.client.IUploader;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -187,7 +187,7 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 		setContext(user.getUserId());
 		setImage(user);
 		
-		List<UserGroup> groups = user.getGroups();
+		ArrayList<UserGroup> groups = user.getGroups();
 		if(groups!=null){
 			String html = "";
 			for(UserGroup group: groups){

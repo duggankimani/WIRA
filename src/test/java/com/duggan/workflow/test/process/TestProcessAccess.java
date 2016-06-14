@@ -29,7 +29,7 @@ public class TestProcessAccess {
 	@Test
 	public void create() {
 		ProcessDef processDef = ProcessDefHelper.getProcessDef(processDefId);
-		List<Listable> usersAndGroups = new ArrayList<>();
+		ArrayList<Listable> usersAndGroups = new ArrayList<>();
 		usersAndGroups.add(new HTUser("Administrator"));
 		processDef.setUsersAndGroups(usersAndGroups);
 		

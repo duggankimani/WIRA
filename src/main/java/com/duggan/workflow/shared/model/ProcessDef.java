@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 public class ProcessDef extends SerializableObj implements Listable{
 
@@ -14,7 +14,7 @@ public class ProcessDef extends SerializableObj implements Listable{
 	private Long id;
 	private String name;
 	private String processId;
-	private List<DocumentType> docTypes = new ArrayList<DocumentType>();
+	private ArrayList<DocumentType> docTypes = new ArrayList<DocumentType>();
 	private Date lastModified;
 	private Long fileId;
 	private String fileName;
@@ -22,9 +22,9 @@ public class ProcessDef extends SerializableObj implements Listable{
 	private Status status;
 	private Long imageId;
 	private String imageName;
-	private List<Attachment> files = new ArrayList<Attachment>();
+	private ArrayList<Attachment> files = new ArrayList<Attachment>();
 	private ProcessCategory category;
-	private List<Listable> usersAndGroups = new ArrayList<Listable>();
+	private ArrayList<Listable> usersAndGroups = new ArrayList<Listable>();
 	private int participated;
 	private int inbox;
 
@@ -47,11 +47,11 @@ public class ProcessDef extends SerializableObj implements Listable{
 		this.processId = processId;
 	}
 
-	public List<DocumentType> getDocTypes() {
+	public ArrayList<DocumentType> getDocTypes() {
 		return docTypes;
 	}
 
-	public void setDocTypes(List<DocumentType> docTypes) {
+	public void setDocTypes(ArrayList<DocumentType> docTypes) {
 		this.docTypes = docTypes;
 	}
 
@@ -129,11 +129,11 @@ public class ProcessDef extends SerializableObj implements Listable{
 		this.imageName = imageName;
 	}
 
-	public List<Attachment> getFiles() {
+	public ArrayList<Attachment> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<Attachment> files) {
+	public void setFiles(ArrayList<Attachment> files) {
 		this.files = files;
 	}
 
@@ -160,11 +160,11 @@ public class ProcessDef extends SerializableObj implements Listable{
 		this.category = category;
 	}
 
-	public List<Listable> getUsersAndGroups() {
+	public ArrayList<Listable> getUsersAndGroups() {
 		return usersAndGroups;
 	}
 
-	public void setUsersAndGroups(List<Listable> usersAndGroups) {
+	public void setUsersAndGroups(ArrayList<Listable> usersAndGroups) {
 		this.usersAndGroups = usersAndGroups;
 	}
 	

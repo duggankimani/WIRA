@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableHeader;
@@ -32,7 +32,7 @@ public class StepSelectionPopup extends Composite{
 	}
 
 	@UiField TableView tblView;
-	private List<Listable> selected = new ArrayList<Listable>();
+	private ArrayList<Listable> selected = new ArrayList<Listable>();
 	ValueChangeHandler<Boolean> vch = new ValueChangeHandler<Boolean>() {
 		@Override
 		public void onValueChange(ValueChangeEvent<Boolean> event) {
@@ -45,7 +45,7 @@ public class StepSelectionPopup extends Composite{
 		}
 	};
 	
-	public StepSelectionPopup(List<Form> forms, List<OutputDocument> docs) {
+	public StepSelectionPopup(ArrayList<Form> forms, ArrayList<OutputDocument> docs) {
 		initWidget(uiBinder.createAndBindUi(this));
 		setTable();
 		addForms(forms);
@@ -54,7 +54,7 @@ public class StepSelectionPopup extends Composite{
 
 	private void setTable() {
 		//tblView.setAutoNumber(true);
-		List<TableHeader> th = new ArrayList<TableHeader>();
+		ArrayList<TableHeader> th = new ArrayList<TableHeader>();
 		th.add(new TableHeader("#", 10.0));
 		th.add(new TableHeader("Step Name", 40.0,"title"));
 		th.add(new TableHeader("Mode", 10.0));
@@ -64,28 +64,28 @@ public class StepSelectionPopup extends Composite{
 	}
 	
 	
-	private void addForms(List<Form> forms) {
+	private void addForms(ArrayList<Form> forms) {
 		
 		for(Form form: forms){
-			ListBox list = new ListBox();
-			list.addItem(MODE.EDIT.getName(), MODE.EDIT.getName());
-			list.addItem(MODE.VIEW.getName(), MODE.VIEW.getName());
-			list.addStyleName("input-small");
+			ListBox ArrayList = new ListBox();
+			ArrayList.addItem(MODE.EDIT.getName(), MODE.EDIT.getName());
+			ArrayList.addItem(MODE.VIEW.getName(), MODE.VIEW.getName());
+			ArrayList.addStyleName("input-small");
 			TextBox box = new TextBox();
 			box.addStyleName("input-small");
 			
 			tblView.addRow(
 					new DataCheckBox(form),
 					new InlineLabel(form.getCaption()),
-					list, box);
+					ArrayList, box);
 		}
 	}
 	
-	public List<Listable> getSelectedValues(){
+	public ArrayList<Listable> getSelectedValues(){
 		return selected;
 	}
 	
-	private void addDocs(List<OutputDocument> docs) {
+	private void addDocs(ArrayList<OutputDocument> docs) {
 		
 		for(OutputDocument doc:docs){
 			TextBox box = new TextBox();

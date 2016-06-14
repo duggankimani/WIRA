@@ -1,25 +1,25 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.HTUser;
 
 public class GetUsersResponse extends BaseResponse {
 
-	private List<HTUser> users;
+	private ArrayList<HTUser> users;
 
 	public GetUsersResponse() {
 	}
 
-	public GetUsersResponse(List<HTUser> users) {
+	public GetUsersResponse(ArrayList<HTUser> users) {
 		this.users = users;
 	}
 
-	public List<HTUser> getUsers() {
+	public ArrayList<HTUser> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<HTUser> users) {
+	public void setUsers(ArrayList<HTUser> users) {
 		this.users = users;
 	}
 }

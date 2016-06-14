@@ -75,7 +75,7 @@ public class TestOutputDocs {
 	}
 	
 	@Ignore
-	public void map() throws FileNotFoundException, IOException{
+	public void HashMap() throws FileNotFoundException, IOException{
 		long documentId = 187L;
 		Document doc = DocumentDaoHelper.getDocument(documentId);
 		

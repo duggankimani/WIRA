@@ -1,8 +1,11 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.DashboardDaoImpl;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDashBoardDataResponse;
@@ -27,8 +30,8 @@ public class GetDashBoardDataRequestHandler extends
 		response.setActiveCount(dao.getRequestCount(DocStatus.INPROGRESS));
 		response.setRequestCount(dao.getRequestCount(false,DocStatus.DRAFTED));
 		response.setFailureCount(dao.getRequestCount(DocStatus.FAILED));
-		response.setDocumentCounts(dao.getDocumentCounts());
-		response.setRequestAging(dao.getRequestAging());
+		response.setDocumentCounts((ArrayList<Data>) dao.getDocumentCounts());
+		response.setRequestAging((ArrayList<Data>) dao.getRequestAging());
 	}
 
 	@Override

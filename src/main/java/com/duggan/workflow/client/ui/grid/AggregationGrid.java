@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.grid;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.util.NumberUtils;
@@ -33,25 +33,25 @@ public class AggregationGrid extends Composite {
 	@UiField TableView tblView;
 	@UiField SpanElement spnAggregate;
 	
-	Map<String, Number> summaries = new HashMap<String, Number>();
+	HashMap<String, Number> summaries = new HashMap<String, Number>();
 
-	List<ColumnConfig> columnConfigs = null;
+	ArrayList<ColumnConfig> columnConfigs = null;
 	
 	public AggregationGrid() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setData(new ArrayList<DataModel>());
 	}
 	
-	public AggregationGrid(List<ColumnConfig> configs){
+	public AggregationGrid(ArrayList<ColumnConfig> configs){
 		this();
 		setColumnConfigs(configs);
 	}	
 
-	private void createHeaders(List<ColumnConfig> configs) {
+	private void createHeaders(ArrayList<ColumnConfig> configs) {
 		this.columnConfigs = configs;
-		List<Widget> widgets = new ArrayList<Widget>();
+		ArrayList<Widget> widgets = new ArrayList<Widget>();
 		
-		List<String> headers = new ArrayList<String>();
+		ArrayList<String> headers = new ArrayList<String>();
 		if(configs!=null)
 		for(ColumnConfig config: configs){
 			headers.add("generic-header");
@@ -61,7 +61,7 @@ public class AggregationGrid extends Composite {
 		createFooter();
 	}
 
-	public void setData(List<DataModel> models){
+	public void setData(ArrayList<DataModel> models){
 		tblView.clearRows();
 		summaries.clear();
 		
@@ -153,7 +153,7 @@ public class AggregationGrid extends Composite {
 	}
 
 	public void createFooter() {
-		List<Widget> widgets = new ArrayList<Widget>();
+		ArrayList<Widget> widgets = new ArrayList<Widget>();
 		
 		if(columnConfigs!=null)
 		for(ColumnConfig config: columnConfigs){
@@ -176,11 +176,11 @@ public class AggregationGrid extends Composite {
 		createHeaders(columnConfigs);
 	}
 	
-	public List<ColumnConfig> getColumnConfigs() {
+	public ArrayList<ColumnConfig> getColumnConfigs() {
 		return columnConfigs;
 	}
 
-	public void setColumnConfigs(List<ColumnConfig> columnConfigs) {
+	public void setColumnConfigs(ArrayList<ColumnConfig> columnConfigs) {
 		this.columnConfigs= columnConfigs;
 	}
 	
@@ -188,8 +188,8 @@ public class AggregationGrid extends Composite {
 		tblView.setAutoNumber(enable);
 	}
 	
-	public List<DataModel> getData(){
-		List<DataModel> models = new ArrayList<DataModel>();
+	public ArrayList<DataModel> getData(){
+		ArrayList<DataModel> models = new ArrayList<DataModel>();
 		int rows = tblView.getRowCount();
 		if(rows>0){
 			for(int row=0; row<rows; row++){
@@ -204,8 +204,8 @@ public class AggregationGrid extends Composite {
 		return models;
 	}
 	
-	public <T> List<T> getData(DataMapper mapper){
-		List<T> vals = new ArrayList<T>();		
+	public <T> ArrayList<T> getData(DataMapper mapper){
+		ArrayList<T> vals = new ArrayList<T>();		
 		
 		int rows = tblView.getRowCount();
 		if(rows>0){
@@ -250,13 +250,13 @@ public class AggregationGrid extends Composite {
 		setData(new ArrayList<DataModel>());
 	}
 	
-	public List<String> getErrors(){
+	public ArrayList<String> getErrors(){
 		int rowCount = tblView.getRowCount();
 		for(int i=0; i<rowCount; i++){
 			Widget rowWidget = tblView.getRow(i);
 			AggregationGridRow gridRow = (AggregationGridRow)rowWidget;
 			
-			List<String> err = gridRow.getErrors(); 
+			ArrayList<String> err = gridRow.getErrors(); 
 			if(err!=null){
 				return err;
 			}

@@ -151,7 +151,7 @@ public class DocumentDaoHelper {
 	}
 
 	private static void setDetails(DocumentModel model,
-			Map<String, List<DocumentLine>> details) {
+			HashMap<String, ArrayList<DocumentLine>> details) {
 
 		if (details.isEmpty())
 			return;
@@ -322,9 +322,9 @@ public class DocumentDaoHelper {
 
 	}
 
-	private static Map<String, List<DocumentLine>> getDetails(
+	private static HashMap<String, ArrayList<DocumentLine>> getDetails(
 			Collection<DetailModel> details) {
-		Map<String, List<DocumentLine>> lines = new HashMap<>();
+		HashMap<String, ArrayList<DocumentLine>> lines = new HashMap<>();
 
 		for (DetailModel lineModel : details) {
 			DocumentLine line = new DocumentLine();
@@ -337,7 +337,7 @@ public class DocumentDaoHelper {
 				line.addValue(value.getFieldName(), val);
 			}
 
-			List<DocumentLine> detailz = new ArrayList<>();
+			ArrayList<DocumentLine> detailz = new ArrayList<>();
 			if (lines.get(line.getName()) != null) {
 				detailz = lines.get(line.getName());
 			} else {

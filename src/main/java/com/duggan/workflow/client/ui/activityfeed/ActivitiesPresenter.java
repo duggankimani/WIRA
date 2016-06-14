@@ -3,8 +3,8 @@ package com.duggan.workflow.client.ui.activityfeed;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 import com.duggan.workflow.client.place.NameTokens;
@@ -98,9 +98,9 @@ public class ActivitiesPresenter extends
 	protected void bindActivities(GetActivitiesResponse response) {
 		getView().getPanelActivity().clear();
 		
-		Map<Activity, List<Activity>> activitiesMap = response.getActivityMap();
+		HashMap<Activity, ArrayList<Activity>> activitiesMap = response.getActivityMap();
 		Set<Activity> keyset = activitiesMap.keySet();
-		List<Activity> activities= new ArrayList<Activity>();
+		ArrayList<Activity> activities= new ArrayList<Activity>();
 		
 		activities.addAll(keyset);
 		Collections.sort(activities);
@@ -129,7 +129,7 @@ public class ActivitiesPresenter extends
 			}
 			
 			bind(activity,false);
-			List<Activity> children = activitiesMap.get(activity);	
+			ArrayList<Activity> children = activitiesMap.get(activity);	
 			if(children!=null){
 				for(Activity child: children){										
 					bind(child, true);

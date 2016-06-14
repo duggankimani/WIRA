@@ -1,26 +1,26 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
 
 public class GetTaskListResult extends BaseListResponse {
 
-	private List<Doc> tasks;
+	private ArrayList<Doc> tasks;
 
 	@SuppressWarnings("unused")
 	public GetTaskListResult() {
 	}
 
-	public GetTaskListResult(List<Doc> tasks) {
+	public GetTaskListResult(ArrayList<Doc> tasks) {
 		this.tasks = tasks;
 	}
 
-	public List<Doc> getTasks() {
+	public ArrayList<Doc> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(List<Doc> tasks) {
+	public void setTasks(ArrayList<Doc> tasks) {
 		this.tasks = tasks;
 	}
 }

@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 public enum DBType implements Listable,Serializable{
 
@@ -35,8 +35,8 @@ public enum DBType implements Listable,Serializable{
 		return name();
 	}
 	
-	public static List<Listable> getValues(){
-		List<Listable> values = new ArrayList<Listable>();
+	public static ArrayList<Listable> getValues(){
+		ArrayList<Listable> values = new ArrayList<Listable>();
 		for(DBType t: values()){
 			values.add(t);
 		}

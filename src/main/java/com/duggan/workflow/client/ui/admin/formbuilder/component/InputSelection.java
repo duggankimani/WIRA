@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.util.AppContext;
@@ -75,9 +75,9 @@ public class InputSelection extends Composite {
 		vPanel.add(txtBox);
 	}
 
-	public List<KeyValuePair> getValues(){
+	public ArrayList<KeyValuePair> getValues(){
 		int count = vPanel.getWidgetCount();
-		List<KeyValuePair> list = new ArrayList<KeyValuePair>();
+		ArrayList<KeyValuePair> ArrayList = new ArrayList<KeyValuePair>();
 		
 		for(int i=0; i<count; i++){
 			TextBox txtBox= (TextBox)vPanel.getWidget(i);
@@ -91,13 +91,13 @@ public class InputSelection extends Composite {
 			KeyValuePair pair = new KeyValuePair();
 			pair.setKey(name);
 			pair.setValue(val);
-			list.add(pair);
+			ArrayList.add(pair);
 		}
 		
-		return list;
+		return ArrayList;
 	}
 	
-	public void setValues(List<KeyValuePair> values){
+	public void setValues(ArrayList<KeyValuePair> values){
 		vPanel.clear();
 		if(values!=null){
 			

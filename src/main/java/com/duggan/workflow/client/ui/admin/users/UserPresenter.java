@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.users;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
@@ -77,9 +77,9 @@ public class UserPresenter extends
 
 		void setType(TYPE type);
 
-		void bindUsers(List<HTUser> users);
+		void bindUsers(ArrayList<HTUser> users);
 
-		void bindGroups(List<UserGroup> groups);
+		void bindGroups(ArrayList<UserGroup> groups);
 
 		void setUserEdit(boolean value);
 
@@ -99,7 +99,7 @@ public class UserPresenter extends
 
 		HasClickHandlers getDeleteOrg();
 
-		void bindOrgs(List<Org> orgs);
+		void bindOrgs(ArrayList<Org> orgs);
 
 		void setOrgEdit(boolean value);
 	}
@@ -377,7 +377,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<GetOrgsResponse>() {
 					@Override
 					public void processResult(GetOrgsResponse aResponse) {
-						List<Org> orgs = aResponse.getOrgs();
+						ArrayList<Org> orgs = aResponse.getOrgs();
 						getView().bindOrgs(orgs);
 						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new CheckboxSelectionEvent(selectedModel,
@@ -398,7 +398,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<GetGroupsResponse>() {
 					@Override
 					public void processResult(GetGroupsResponse result) {
-						List<UserGroup> groups = result.getGroups();
+						ArrayList<UserGroup> groups = result.getGroups();
 						getView().bindGroups(groups);
 						// loadGroups(groups);
 						fireEvent(new ProcessingCompletedEvent());
@@ -419,7 +419,7 @@ public class UserPresenter extends
 				new TaskServiceCallback<GetUsersResponse>() {
 					@Override
 					public void processResult(GetUsersResponse result) {
-						List<HTUser> users = result.getUsers();
+						ArrayList<HTUser> users = result.getUsers();
 						getView().bindUsers(users);
 						// loadUsers(users);
 						fireEvent(new ProcessingCompletedEvent());

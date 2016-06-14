@@ -120,7 +120,7 @@ public class GetTaskListActionHandler extends
 		
 		Collections.sort(summary);
 		
-		result.setTasks(summary);
+		result.setTasks((ArrayList<Doc>) summary);
 
 	}
 

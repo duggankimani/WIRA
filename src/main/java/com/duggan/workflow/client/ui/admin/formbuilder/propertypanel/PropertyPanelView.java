@@ -4,7 +4,7 @@ import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELE
 import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLDS;
 import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SQLSELECT;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.InputSelection;
@@ -43,7 +43,7 @@ public class PropertyPanelView extends ViewImpl implements
 	}
 
 	@Override
-	public void showProperties(List<Property> properties,FormModel model) {
+	public void showProperties(ArrayList<Property> properties,FormModel model) {
 		clear();
 		boolean isDSAvailable=false;
 		boolean isSQLAvailable=false;

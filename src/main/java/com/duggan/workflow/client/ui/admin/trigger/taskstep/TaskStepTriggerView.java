@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
@@ -82,7 +82,7 @@ public class TaskStepTriggerView extends ViewImpl implements
 	 * Add Triggers to a Before/ After Trigger
 	 */
 	@Override
-	public void setTriggers(TreeItem item, List<TaskStepTrigger> triggers) {
+	public void setTriggers(TreeItem item, ArrayList<TaskStepTrigger> triggers) {
 		item.removeItems();
 		((TriggerTypePanel)item.getWidget()).setCount(triggers.size());
 		for(TaskStepTrigger trigger: triggers){

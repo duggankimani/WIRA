@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.save.form;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
@@ -119,7 +119,7 @@ public class GenericFormView extends PopupViewImpl implements
 		doc.setPriority(getPriority().ordinal());
 		doc.setValue("priority", new IntValue(null,"priority",doc.getPriority()));
 
-		Map<String,Value> values = formDelegate.getValues(panelFields);
+		HashMap<String,Value> values = formDelegate.getValues(panelFields);
 		doc.setValues(values);
 		
 		for(Value val: values.values()){

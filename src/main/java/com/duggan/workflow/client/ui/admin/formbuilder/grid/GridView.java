@@ -4,7 +4,6 @@ import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.duggan.workflow.client.model.UploadContext;
@@ -13,10 +12,8 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
-import com.duggan.workflow.client.ui.events.ReloadEvent;
-import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
@@ -85,7 +82,7 @@ public class GridView extends Composite {
 				final StringBuffer uploadedItems = new StringBuffer();
 				UploadContext context = new UploadContext();
 				context.setAction(UPLOADACTION.IMPORTGRIDDATA);
-				context.setAccept(Arrays.asList("csv"));
+				context.setAccept(ArrayUtil.asList("csv"));
 				
 				final String message = "This will import data from a CSV file into the grid.";
 				final ImportView view = new ImportView(message,context);

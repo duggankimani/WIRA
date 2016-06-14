@@ -217,7 +217,7 @@ public class ProcessDefHelper {
 				def.setImageName(image.get(0).getName());
 			}
 
-			List<DocumentType> docTypes = new ArrayList<>();
+			ArrayList<DocumentType> docTypes = new ArrayList<>();
 
 			Collection<ADDocType> docModels = model.getDocumentTypes();
 
@@ -247,13 +247,13 @@ public class ProcessDefHelper {
 		return cat;
 	}
 
-	private static List<DocumentType> getDocTypes(
+	private static ArrayList<DocumentType> getDocTypes(
 			Collection<ADDocType> processDocuments) {
 		if (processDocuments == null) {
 			return new ArrayList<>();
 		}
 
-		List<DocumentType> docs = new ArrayList<>();
+		ArrayList<DocumentType> docs = new ArrayList<>();
 
 		for (ADDocType model : processDocuments) {
 			docs.add(getType(model));

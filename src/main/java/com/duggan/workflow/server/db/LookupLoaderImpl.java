@@ -15,13 +15,13 @@ public class LookupLoaderImpl implements LookupLoader{
 	Logger logger = Logger.getLogger(LookupLoaderImpl.class);
 	
 	@Override
-	public List<KeyValuePair> getValuesByJNDIName(String jndiName, String sql) {
+	public ArrayList<KeyValuePair> getValuesByJNDIName(String jndiName, String sql) {
 
 		return null;
 	}
 
 	@Override
-	public List<KeyValuePair> getValuesByDataSourceName(final String dataSourceName,
+	public ArrayList<KeyValuePair> getValuesByDataSourceName(final String dataSourceName,
 			final String sql) {
 
 		DBExecute<List<KeyValuePair>> exec = new DBExecute<List<KeyValuePair>>(dataSourceName) {
@@ -65,7 +65,7 @@ public class LookupLoaderImpl implements LookupLoader{
 		
 		List<KeyValuePair> pair = exec.executeDbCall();
 		
-		return pair;
+		return (ArrayList<KeyValuePair>) pair;
 	}
 	
 	public boolean testDatasourceName(String dataSourceName){

@@ -35,7 +35,7 @@ public class GetFormsRequestActionHandler extends
 
 		GetFormsResponse response = (GetFormsResponse) actionResult;
 
-		response.setForms(forms);
+		response.setForms((ArrayList<Form>) forms);
 
 	}
 

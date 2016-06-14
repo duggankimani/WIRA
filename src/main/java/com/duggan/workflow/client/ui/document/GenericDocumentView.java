@@ -4,10 +4,9 @@ import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.AC
 import static com.duggan.workflow.client.ui.document.GenericDocumentPresenter.ATTACHMENTS_SLOT;
 import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AttachmentItem;
@@ -17,8 +16,8 @@ import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
-import com.duggan.workflow.client.ui.wfstatus.ProcessState;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Attachment;
@@ -29,8 +28,6 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.MODE;
-import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskStepDTO;
@@ -40,7 +37,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -48,8 +44,6 @@ import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -214,7 +208,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 	String url = null;
 
-	List<Actions> validActions = null;
+	ArrayList<Actions> validActions = null;
 	boolean isBizProcessDisplayed = true;
 	boolean isEditMode = true;
 	boolean overrideDefaultComplete = false;
@@ -251,12 +245,12 @@ public class GenericDocumentView extends ViewImpl implements
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		imgProcess.setVisible(false);
-		tblAuditLog.setHeaders(Arrays
+		tblAuditLog.setHeaders(ArrayUtil
 				.asList("Task Name", "Assignee", "Status",
 						"Start Date", "Completion Date", "Time Taken"));
-		//Arrays.asList("filename","",""),
+		//ArrayUtil.asList("filename","",""),
 		tblAttachments.setHeaders(
-				Arrays.asList("File Name","Created By","Date Created"));
+				ArrayUtil.asList("File Name","Created By","Date Created"));
 		
 		img.addErrorHandler(new ErrorHandler() {
 
@@ -283,7 +277,7 @@ public class GenericDocumentView extends ViewImpl implements
 		// @Override
 		// public void onClick(ClickEvent event) {
 		// if(url!=null)
-		// Window.open(url, "Process Map", null);
+		// Window.open(url, "Process HashMap", null);
 		// }
 		// });
 
@@ -291,7 +285,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 			@Override
 			public void onError(ErrorEvent event) {
-				statusContainer.add(new InlineLabel("We Could Not Load the Process Map. (Hint, confirm that the process is running)"));
+				statusContainer.add(new InlineLabel("We Could Not Load the Process HashMap. (Hint, confirm that the process is running)"));
 			}
 		});
 
@@ -625,7 +619,7 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 
-	public void setValidTaskActions(List<Actions> actions) {
+	public void setValidTaskActions(ArrayList<Actions> actions) {
 		this.validActions = actions;
 		if(isLoadAsAdmin){
 			disableAll();
@@ -711,7 +705,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	// @Override
-	// public void setStates(List<NodeDetail> states) {
+	// public void setStates(ArrayList<NodeDetail> states) {
 	// statusContainer.clear();
 	// if(states!=null){
 	// NodeDetail detail = null;
@@ -871,7 +865,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	@Override
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		if (formPanel == null) {
 			return null;
 		}
@@ -934,7 +928,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	@Override
-	public void setSteps(List<TaskStepDTO> steps, int currentStep) {
+	public void setSteps(ArrayList<TaskStepDTO> steps, int currentStep) {
 		bulletListPanel.clear();
 		if (steps == null || steps.isEmpty()) {
 			return;
@@ -1023,7 +1017,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	@Override
-	public void bindProcessLog(List<TaskLog> logs) {
+	public void bindProcessLog(ArrayList<TaskLog> logs) {
 		tblAuditLog.clearRows();
 		
 		if (logs != null && !logs.isEmpty()) {
@@ -1118,12 +1112,12 @@ public class GenericDocumentView extends ViewImpl implements
 		auditContainer.add(tblAuditLog);
 	}
 	
-	public void showAttachments(List<Attachment> attachments){
+	public void showAttachments(ArrayList<Attachment> attachments){
 		tblAttachments.clearRows();
 		tblAttachments.addStyleName("file-attach");
 		if(attachments!=null){
 			for(Attachment attachment: attachments){
-				tblAttachments.addRow(Arrays.asList("","",""),
+				tblAttachments.addRow(ArrayUtil.asList("","",""),
 						new AttachmentItem(attachment, true, false),
 						new InlineLabel(attachment.getCreatedBy()==null? "":
 							attachment.getCreatedBy().getFullName()),

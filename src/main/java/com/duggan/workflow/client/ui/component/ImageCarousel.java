@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.images.ImageResources;
@@ -43,7 +43,7 @@ public class ImageCarousel extends Composite {
 	HTMLPanel carouselPanel;
 	HTMLPanel item = null;
 	HTMLPanel row = null;
-	List<Attachment> attachments = new ArrayList<Attachment>();
+	ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 	
 	public ImageCarousel() {
 		initWidget(uiBinder.createAndBindUi(this));

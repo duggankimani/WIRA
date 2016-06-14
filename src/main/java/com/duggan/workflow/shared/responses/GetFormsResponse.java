@@ -1,25 +1,25 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.form.Form;
 
 public class GetFormsResponse extends BaseResponse {
 
-	private List<Form> forms;
+	private ArrayList<Form> forms;
 
 	public GetFormsResponse() {
 	}
 
-	public GetFormsResponse(List<Form> forms) {
+	public GetFormsResponse(ArrayList<Form> forms) {
 		this.forms = forms;
 	}
 
-	public List<Form> getForms() {
+	public ArrayList<Form> getForms() {
 		return forms;
 	}
 
-	public void setForms(List<Form> forms) {
+	public void setForms(ArrayList<Form> forms) {
 		this.forms = forms;
 	}
 }

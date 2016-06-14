@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -104,7 +104,7 @@ public class ProcessItemView extends ViewImpl implements
 
 	@Override
 	public void setValues(String name, String processId,String description,
-			List<DocumentType> docTypes, Date lastModified, Long fileId,
+			ArrayList<DocumentType> docTypes, Date lastModified, Long fileId,
 			String fileName, Status status, String imageName, Long imageId,ProcessCategory category,
 			int inbox, int participated) {
 		

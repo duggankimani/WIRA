@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -15,11 +15,11 @@ public class HTUser implements Listable,HasKey,Serializable,IsSerializable {
 	private String email;
 	private String surname;
 	private String password;
-	private List<UserGroup> groups ;
+	private ArrayList<UserGroup> groups ;
 	private int participated;
 	private int inbox;
 	private int drafts;
-	private List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
+	private ArrayList<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
 	private Org org;
 	
 	public HTUser() {
@@ -85,11 +85,11 @@ public class HTUser implements Listable,HasKey,Serializable,IsSerializable {
 		return getFullName();
 	}
 
-	public List<UserGroup> getGroups() {
+	public ArrayList<UserGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<UserGroup> groups) {
+	public void setGroups(ArrayList<UserGroup> groups) {
 		this.groups = groups;
 	}
 	
@@ -185,11 +185,11 @@ public class HTUser implements Listable,HasKey,Serializable,IsSerializable {
 		this.drafts = drafts;
 	}
 
-	public List<PermissionPOJO> getPermissions() {
+	public ArrayList<PermissionPOJO> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(List<PermissionPOJO> permissions) {
+	public void setPermissions(ArrayList<PermissionPOJO> permissions) {
 		this.permissions = permissions;
 	}
 

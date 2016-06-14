@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.processes.save;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -11,6 +10,7 @@ import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Listable;
@@ -107,8 +107,8 @@ public class ProcessSaveView extends PopupViewImpl implements
 	
 	@Override
 	public void setValues(Long processDefId,
-			String name,String processId,String description, List<DocumentType> docTypes,
-			List<Attachment> attachments, ProcessCategory category,List<Listable> userGroups) {
+			String name,String processId,String description, ArrayList<DocumentType> docTypes,
+			ArrayList<Attachment> attachments, ProcessCategory category,ArrayList<Listable> userGroups) {
 		txtName.setValue(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
@@ -179,12 +179,12 @@ public class ProcessSaveView extends PopupViewImpl implements
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADCHANGESET);
 		context.setContext("processDefId", id+"");
-		context.setAccept(Arrays.asList("xml","bpmn","bpmn2","drl","png","jpeg","jpg","gif","svg"));
+		context.setAccept(ArrayUtil.asList("xml","bpmn","bpmn2","drl","png","jpeg","jpg","gif","svg"));
 		uploader.setContext(context);
 	}
 	
 	@Override
-	public void setAttachments(List<Attachment> attachments){
+	public void setAttachments(ArrayList<Attachment> attachments){
 		currentAttachmentsPanel.clear();
 		if(attachments!=null){
 			for(Attachment attachment: attachments){
@@ -205,12 +205,12 @@ public class ProcessSaveView extends PopupViewImpl implements
 	}
 
 	@Override
-	public void setUserGroups(List<Listable> userGroups) {
+	public void setUserGroups(ArrayList<Listable> userGroups) {
 		lstUserGroups.addItems(userGroups);
 	}
 
 	@Override
-	public void setCategories(List<ProcessCategory> categories) {
+	public void setCategories(ArrayList<ProcessCategory> categories) {
 		lstCategories.setItems(categories);
 	}
 

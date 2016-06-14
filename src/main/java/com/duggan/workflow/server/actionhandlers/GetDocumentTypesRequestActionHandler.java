@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
@@ -20,7 +23,7 @@ public class GetDocumentTypesRequestActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		GetDocumentTypesResponse response = (GetDocumentTypesResponse)actionResult;
-		response.setDocumentTypes(DocumentDaoHelper.getDocumentTypes());
+		response.setDocumentTypes((ArrayList<DocumentType>) DocumentDaoHelper.getDocumentTypes());
 	}
 
 	@Override

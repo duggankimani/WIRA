@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.model.catalog;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessCategory;
@@ -18,7 +18,7 @@ public class Catalog extends SerializableObj implements IsCatalogItem, Listable{
 	private String description;
 	private int recordCount=0;
 	private String process;
-	private List<CatalogColumn> columns = new ArrayList<CatalogColumn>();
+	private ArrayList<CatalogColumn> columns = new ArrayList<CatalogColumn>();
 	private CatalogType type = CatalogType.DATATABLE;
 	private FieldSource fieldSource = FieldSource.FORM;// Field Source
 	private String gridName;
@@ -52,11 +52,11 @@ public class Catalog extends SerializableObj implements IsCatalogItem, Listable{
 		this.process = process;
 	}
 
-	public List<CatalogColumn> getColumns() {
+	public ArrayList<CatalogColumn> getColumns() {
 		return columns;
 	}
 
-	public void setColumns(List<CatalogColumn> columns) {
+	public void setColumns(ArrayList<CatalogColumn> columns) {
 		this.columns = columns;
 	}
 

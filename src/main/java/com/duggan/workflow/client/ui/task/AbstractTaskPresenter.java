@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.task;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.ServiceCallback;
@@ -90,7 +89,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		void addScrollHandler(ScrollHandler scrollHandler);
 
-		void bindTasks(List<Doc> tasks, boolean isIncremental);
+		void bindTasks(ArrayList<Doc> tasks, boolean isIncremental);
 
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 	}
@@ -255,7 +254,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 					public void processResult(GetTaskListResult result) {
 
 						GetTaskListResult rst = (GetTaskListResult) result;
-						List<Doc> tasks = rst.getTasks();
+						ArrayList<Doc> tasks = rst.getTasks();
 						loadLines(tasks);
 						if (tasks.isEmpty())
 							getView().setHasItems(false);
@@ -310,7 +309,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 					@Override
 					public void processResult(GetTaskListResult result) {
 						GetTaskListResult rst = (GetTaskListResult) result;
-						List<Doc> tasks = rst.getTasks();
+						ArrayList<Doc> tasks = rst.getTasks();
 						loadLines(tasks, isIncremental);
 
 						if (tasks.size() > 0 && !isIncremental) {
@@ -363,11 +362,11 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	 * 
 	 * @param tasks
 	 */
-	protected void loadLines(final List<Doc> tasks) {
+	protected void loadLines(final ArrayList<Doc> tasks) {
 		loadLines(tasks, false);
 	}
 
-	protected void loadLines(final List<Doc> tasks, boolean isIncremental) {
+	protected void loadLines(final ArrayList<Doc> tasks, boolean isIncremental) {
 		CURPOS = CURPOS + PAGE_SIZE;
 		if (!isIncremental) {
 			setInSlot(DATEGROUP_SLOT, null);
@@ -375,7 +374,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		getView().bindTasks(tasks, isIncremental);
 
-		final List<Date> dates = new ArrayList<Date>();
+		final ArrayList<Date> dates = new ArrayList<Date>();
 
 		for (int i = 0; i < tasks.size(); i++) {
 			// final String dt =

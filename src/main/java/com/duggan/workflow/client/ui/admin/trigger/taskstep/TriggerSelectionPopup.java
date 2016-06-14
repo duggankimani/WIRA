@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.TableHeader;
 import com.duggan.workflow.client.ui.component.TableView;
@@ -27,7 +27,7 @@ public class TriggerSelectionPopup extends Composite{
 	}
 
 	@UiField TableView tblView;
-	private List<Trigger> selected = new ArrayList<Trigger>();
+	private ArrayList<Trigger> selected = new ArrayList<Trigger>();
 	ValueChangeHandler<Boolean> vch = new ValueChangeHandler<Boolean>() {
 		@Override
 		public void onValueChange(ValueChangeEvent<Boolean> event) {
@@ -40,7 +40,7 @@ public class TriggerSelectionPopup extends Composite{
 		}
 	};
 	
-	public TriggerSelectionPopup(List<Trigger> triggers) {
+	public TriggerSelectionPopup(ArrayList<Trigger> triggers) {
 		initWidget(uiBinder.createAndBindUi(this));
 		setTable();
 		addtriggers(triggers);
@@ -48,7 +48,7 @@ public class TriggerSelectionPopup extends Composite{
 
 	private void setTable() {
 		//tblView.setAutoNumber(true);
-		List<TableHeader> th = new ArrayList<TableHeader>();
+		ArrayList<TableHeader> th = new ArrayList<TableHeader>();
 		th.add(new TableHeader("#", 10.0));
 		th.add(new TableHeader("Trigger Name", 90.0,"title"));
 				
@@ -56,11 +56,11 @@ public class TriggerSelectionPopup extends Composite{
 	}
 	
 	
-	public List<Trigger> getSelectedValues(){
+	public ArrayList<Trigger> getSelectedValues(){
 		return selected;
 	}
 	
-	private void addtriggers(List<Trigger> triggers) {
+	private void addtriggers(ArrayList<Trigger> triggers) {
 		
 		for(Trigger trigger:triggers){
 			TextBox box = new TextBox();

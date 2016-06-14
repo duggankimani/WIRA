@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard.charts;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.dashboard.ChartType;
 import com.duggan.workflow.shared.model.dashboard.Data;
@@ -15,7 +15,7 @@ public class PieChartPresenter extends
 
 	public interface IPieChartView extends View {
 
-		void setData(List<Data> data);
+		void setData(ArrayList<Data> data);
 	}
 	
 	@Inject DispatchAsync requestHelper;
@@ -35,7 +35,7 @@ public class PieChartPresenter extends
 		this.type =type; 		
 	}
 
-	public void setValues(List<Data> data) {
+	public void setValues(ArrayList<Data> data) {
 		getView().setData(data);
 	}
 }

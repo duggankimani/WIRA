@@ -44,7 +44,6 @@ import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.instance.WorkflowProcessInstanceUpgrader;
-import org.wira.pioneer.integration.PioneerIntegrationWorkitemHandler;
 
 import xtension.workitems.FormValidationWorkItemHandler;
 import xtension.workitems.GenerateNotificationWorkItemHandler;
@@ -186,8 +185,8 @@ class BPMSessionManager {
 		session.getWorkItemManager().registerWorkItemHandler("GenerateOutputDoc",
 				new GenerateOutputDocWorkItemHandler());
 
-		session.getWorkItemManager().registerWorkItemHandler("PioneerIntegration", 
-				new PioneerIntegrationWorkitemHandler());
+//		session.getWorkItemManager().registerWorkItemHandler("PioneerIntegration", 
+//				new PioneerIntegrationWorkitemHandler());
 		
 		EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 				EmailServiceHelper.getProperty("mail.smtp.host"),

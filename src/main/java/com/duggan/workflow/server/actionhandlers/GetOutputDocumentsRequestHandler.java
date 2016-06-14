@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
@@ -22,11 +23,11 @@ public class GetOutputDocumentsRequestHandler
 		if (action.getDocumentId() != null) {
 			List<OutputDocument> documents = OutputDocumentDaoHelper
 					.getDocuments(action.getDocumentId());
-			((GetOutputDocumentsResponse) actionResult).setDocuments(documents);
+			((GetOutputDocumentsResponse) actionResult).setDocuments((ArrayList<OutputDocument>) documents);
 		}else if (action.getProcessRefId()!=null){
 			List<OutputDocument> documents = OutputDocumentDaoHelper
 					.getDocuments(action.getProcessRefId(),action.getSearchTerm());
-			((GetOutputDocumentsResponse) actionResult).setDocuments(documents);
+			((GetOutputDocumentsResponse) actionResult).setDocuments((ArrayList<OutputDocument>) documents);
 		}
 	}
 

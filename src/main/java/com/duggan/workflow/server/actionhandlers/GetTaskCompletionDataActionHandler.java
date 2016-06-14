@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskCompletionResponse;
@@ -21,7 +24,7 @@ public class GetTaskCompletionDataActionHandler extends
 			throws ActionException {
 	
 		GetTaskCompletionResponse response = (GetTaskCompletionResponse)actionResult;
-		response.setData(DB.getDashboardDao().getTaskCompletionData());
+		response.setData((ArrayList<Data>) DB.getDashboardDao().getTaskCompletionData());
 	}
 	
 	@Override

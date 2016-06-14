@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.addDoc.doctypeitem;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DocumentType;
 import com.google.gwt.dom.client.SpanElement;
@@ -20,7 +20,7 @@ public class DocTypeItemView extends ViewImpl implements
 	@UiField SpanElement docIcon;
 	@UiField SpanElement spnIcon;
 	
-	List<DocumentType> items;
+	ArrayList<DocumentType> items;
 
 	public interface Binder extends UiBinder<Widget, DocTypeItemView> {
 	}

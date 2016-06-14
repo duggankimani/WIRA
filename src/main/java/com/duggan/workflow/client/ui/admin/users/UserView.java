@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.users;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.place.NameTokens;
@@ -101,7 +101,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 
 	@Override
-	public void bindUsers(List<HTUser> users) {
+	public void bindUsers(ArrayList<HTUser> users) {
 		clearSelections();
 		tblUser.removeAllRows();
 		setUserHeaders(tblUser);
@@ -135,7 +135,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 
 	@Override
-	public void bindGroups(List<UserGroup> groups) {
+	public void bindGroups(ArrayList<UserGroup> groups) {
 		tblGroup.removeAllRows();
 		clearSelections();
 		
@@ -202,7 +202,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 	
 	@Override
-	public void bindOrgs(List<Org> orgs) {
+	public void bindOrgs(ArrayList<Org> orgs) {
 		tblOrgs.clear();
 		tblOrgs.removeAllRows();
 		clearSelections();

@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
@@ -24,7 +25,7 @@ public class GetSettingsRequestActionHandler extends
 		List<Setting> settings = SettingsDaoHelper.getSettings(action.getSettingNames());
 		
 		GetSettingsResponse response = (GetSettingsResponse)actionResult;		
-		response.setSettings(settings);
+		response.setSettings((ArrayList<Setting>) settings);
 	}
 	
 	@Override

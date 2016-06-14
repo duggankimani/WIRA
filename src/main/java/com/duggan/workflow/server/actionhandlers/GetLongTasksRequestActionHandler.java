@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.duggan.workflow.shared.requests.GetLongTasksRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetLongTasksResponse;
@@ -20,7 +23,7 @@ public class GetLongTasksRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		
 		GetLongTasksResponse response = (GetLongTasksResponse)actionResult;
-		response.setLongTasks(DB.getDashboardDao().getLongLivingTasks());
+		response.setLongTasks((ArrayList<LongTask>) DB.getDashboardDao().getLongLivingTasks());
 	}
 	
 	@Override

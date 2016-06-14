@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
@@ -25,7 +26,7 @@ public class GetNotificationsActionHandler extends
 		List<Notification> notifications = NotificationDaoHelper.getAllNotifications(action.getUserId());
 		
 		GetNotificationsActionResult result = (GetNotificationsActionResult)actionResult;
-		result.setNotifications(notifications);
+		result.setNotifications((ArrayList<Notification>) notifications);
 		
 	}
 	

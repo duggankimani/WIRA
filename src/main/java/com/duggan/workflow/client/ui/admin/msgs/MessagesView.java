@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.admin.msgs;
 
 import static com.duggan.workflow.client.ui.util.DateUtils.CREATEDFORMAT;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.Grid;
 import com.duggan.workflow.shared.model.RequestInfoDto;
@@ -139,7 +139,7 @@ public class MessagesView extends ViewImpl implements
 	}
 	
 	@Override
-	public void setData(List<RequestInfoDto> data, int totalCount) {
+	public void setData(ArrayList<RequestInfoDto> data, int totalCount) {
 		grid.setData(data,totalCount);		
 	}
 

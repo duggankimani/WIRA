@@ -1,7 +1,10 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
+import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.SaveSettingsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveSettingsResponse;
@@ -21,7 +24,7 @@ public class SaveSettingsRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		SettingsDaoHelper.save(action.getSettings());
 		SaveSettingsResponse response = (SaveSettingsResponse)actionResult;
-		response.setSettings(SettingsDaoHelper.getSettings(null));
+		response.setSettings((ArrayList<Setting>) SettingsDaoHelper.getSettings(null));
 		
 		//proactively re-initialize email service incase there was a change
 		EmailServiceHelper.initProperties(true);

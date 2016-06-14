@@ -271,7 +271,8 @@ public class RequestInfo extends PO {
 						.get("To");
 
 				if (recipients instanceof List) {
-					List<HTUser> userList = (List<HTUser>) recipients;
+					ArrayList<HTUser> userList = new ArrayList<HTUser>();
+					userList.addAll((List)recipients);
 					dto.setUsers(userList);
 				} else if (recipients instanceof String) {
 					String commaSepList = recipients.toString();
@@ -286,7 +287,7 @@ public class RequestInfo extends PO {
 			}
 		}
 
-		List<ErrorInfoDto> errorDtos = new ArrayList<>();
+		ArrayList<ErrorInfoDto> errorDtos = new ArrayList<>();
 		for (ErrorLog info : errorInfo) {
 			errorDtos.add(info.toDto());
 		}

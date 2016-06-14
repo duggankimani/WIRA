@@ -4,8 +4,6 @@ import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -18,6 +16,7 @@ import com.duggan.workflow.client.ui.grid.AggregationGrid;
 import com.duggan.workflow.client.ui.grid.ColumnConfig;
 import com.duggan.workflow.client.ui.grid.DataMapper;
 import com.duggan.workflow.client.ui.grid.DataModel;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
@@ -47,8 +46,8 @@ public class CreateDataView extends Composite {
 	DataMapper mapper = new DataMapper() {
 
 		@Override
-		public List<DataModel> getDataModels(List objs) {
-			List<DataModel> models = new ArrayList<DataModel>();
+		public ArrayList<DataModel> getDataModels(ArrayList objs) {
+			ArrayList<DataModel> models = new ArrayList<DataModel>();
 			for (Object o : objs) {
 				DocumentLine c = (DocumentLine) o;
 				DataModel model = new DataModel();
@@ -66,7 +65,7 @@ public class CreateDataView extends Composite {
 		public DocumentLine getData(DataModel model) {
 			DocumentLine col = new DocumentLine();
 			col.setId(model.getId());
-			List<CatalogColumn> configs = catalog.getColumns();
+			ArrayList<CatalogColumn> configs = catalog.getColumns();
 			for (CatalogColumn config : configs) {
 
 				Object val = model.get(config.getName());
@@ -109,7 +108,9 @@ public class CreateDataView extends Composite {
 				final StringBuffer uploadedItems = new StringBuffer();
 				UploadContext context = new UploadContext();
 				context.setAction(UPLOADACTION.IMPORTGRIDDATA);
-				context.setAccept(Arrays.asList("csv"));
+				ArrayList<String> values = ArrayUtil.asList("csv");
+				context.setAccept(values);
+				
 				final String message = "This will import data from a CSV file into the grid.";
 				final ImportView view = new ImportView(message, context);
 				view.setAvoidRepeatFiles(false);
@@ -156,7 +157,7 @@ public class CreateDataView extends Composite {
 			return;
 		}
 
-		List<DocumentLine> lines = new ArrayList<DocumentLine>();
+		ArrayList<DocumentLine> lines = new ArrayList<DocumentLine>();
 
 		String[] items = uploadedCSVItems.split("\n");
 		for (String item : items) {
@@ -170,7 +171,7 @@ public class CreateDataView extends Composite {
 	private DocumentLine createLine(String[] lineValues) {
 
 		DocumentLine docline = new DocumentLine();
-		List<CatalogColumn> columnConfigs = catalog.getColumns();
+		ArrayList<CatalogColumn> columnConfigs = catalog.getColumns();
 
 		for (int i = 0; i < lineValues.length && i < columnConfigs.size(); i++) {
 
@@ -209,8 +210,8 @@ public class CreateDataView extends Composite {
 	}
 
 	private void setCatalog(Catalog catalog) {
-		List<CatalogColumn> cols = catalog.getColumns();
-		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+		ArrayList<CatalogColumn> cols = catalog.getColumns();
+		ArrayList<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		for (CatalogColumn c : cols) {
 			ColumnConfig config = new ColumnConfig(c.getName(), c.getLabel(), c
@@ -226,12 +227,12 @@ public class CreateDataView extends Composite {
 		return name == null || name.trim().isEmpty();
 	}
 
-	public void setData(List<DocumentLine> lines) {
+	public void setData(ArrayList<DocumentLine> lines) {
 		grid.setData(mapper.getDataModels(lines));
 	}
 
-	public List<DocumentLine> getData() {
-		List<DocumentLine> lines = new ArrayList<DocumentLine>();
+	public ArrayList<DocumentLine> getData() {
+		ArrayList<DocumentLine> lines = new ArrayList<DocumentLine>();
 
 		try {
 			lines = grid.getData(mapper);

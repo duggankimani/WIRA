@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
@@ -39,7 +39,7 @@ public class TaskStepTriggerPresenter extends
 		void setOpenHandler(OpenHandler<TreeItem> openHandler);
 		void addStep(TaskStepDTO step, HashMap<TriggerType, Integer> counts);
 		void clearTree();
-		void setTriggers(TreeItem item, List<TaskStepTrigger> triggers);
+		void setTriggers(TreeItem item, ArrayList<TaskStepTrigger> triggers);
 
 	}
 
@@ -68,7 +68,7 @@ public class TaskStepTriggerPresenter extends
 		}
 	};
 
-	public void setTaskSteps(final List<TaskStepDTO> steps){
+	public void setTaskSteps(final ArrayList<TaskStepDTO> steps){
 		MultiRequestAction action = new MultiRequestAction();
 		getView().clearTree();
 		
@@ -99,7 +99,7 @@ public class TaskStepTriggerPresenter extends
 			
 			@Override
 			public void processResult(GetTaskStepTriggersResponse aResponse) {
-				List<TaskStepTrigger> triggers = aResponse.getTriggers();
+				ArrayList<TaskStepTrigger> triggers = aResponse.getTriggers();
 				getView().setTriggers(item, triggers);
 			}
 		});

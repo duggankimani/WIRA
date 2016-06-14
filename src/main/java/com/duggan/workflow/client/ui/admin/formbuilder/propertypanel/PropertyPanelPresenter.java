@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.form.FormModel;
@@ -18,7 +18,7 @@ public class PropertyPanelPresenter extends
 
 
 	public interface MyView extends View {
-		void showProperties(List<Property> properties, FormModel model);
+		void showProperties(ArrayList<Property> properties, FormModel model);
 		FocusPanel getPopoverFocus();
 		HTMLPanel getiArrow() ;
 		void showBody(boolean status, Widget w);
@@ -41,7 +41,7 @@ public class PropertyPanelPresenter extends
 		fireEvent(new SavePropertiesEvent(parentModel));
 	}
 
-	public void setProperties(FormModel parentModel, List<Property> properties) {
+	public void setProperties(FormModel parentModel, ArrayList<Property> properties) {
 		this.parentModel = parentModel;
 		getView().showProperties(properties, parentModel);
 	}

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.process;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
@@ -70,7 +70,7 @@ public class ProcessView extends ViewImpl implements
 			imgProcess.removeStyleName("hide");
 		}
 		
-		List<Attachment> attachments = processDef.getFiles();
+		ArrayList<Attachment> attachments = processDef.getFiles();
 		if(!attachments.isEmpty()){
 			String bpmnUrl = AppContext.getBaseUrl()+"/getreport?attachmentId="+attachments.get(0).getId()+"&action=getattachment";
 			aDownloadBPN.setHref(bpmnUrl);

@@ -1,11 +1,9 @@
 package com.duggan.workflow.client.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.form.Field;
 
 /**
@@ -16,9 +14,9 @@ import com.duggan.workflow.shared.model.form.Field;
  */
 public class ENV{
 
-	private static Map<String, Long> observableFields= new HashMap<String,Long>(); //Observable Registration
-	private static Map<String, Object> values = new HashMap<String,Object>(); //Field Values
-	private static Map<String, List<String>> nameToQualifieldNameMap = new HashMap<String, List<String>>();
+	private static HashMap<String, Long> observableFields= new HashMap<String,Long>(); //Observable Registration
+	private static HashMap<String, Object> values = new HashMap<String,Object>(); //Field Values
+	private static HashMap<String, ArrayList<String>> nameToQualifieldNameMap = new HashMap<String, ArrayList<String>>();
 	
 	public static void registerObservable(String fieldName){
 		if(observableFields.keySet().contains(fieldName)){
@@ -27,7 +25,7 @@ public class ENV{
 		observableFields.put(fieldName,null);
 	}
 	
-	public static void registerObservable(List<String> fieldNames){
+	public static void registerObservable(ArrayList<String> fieldNames){
 		for(String fieldName: fieldNames){
 			registerObservable(fieldName);
 		}
@@ -64,7 +62,7 @@ public class ENV{
 		return false;
 	}
 	
-	public static Map<String, Object> getValues(){
+	public static HashMap<String, Object> getValues(){
 		return values;
 	}
 	
@@ -80,7 +78,7 @@ public class ENV{
 		
 		if(!fieldName.equals(qualifiedFieldName)){
 			//For detail values - GridRow col Values
-			List<String> fields = nameToQualifieldNameMap.get(fieldName);
+			ArrayList<String> fields = nameToQualifieldNameMap.get(fieldName);
 			if(fields==null){
 				fields = new ArrayList<String>();
 			}
@@ -103,7 +101,7 @@ public class ENV{
 		values.remove(qualifiedFieldName);
 	}
 	
-	public static List<String> getQualifiedNames(String fieldName){
+	public static ArrayList<String> getQualifiedNames(String fieldName){
 		return nameToQualifieldNameMap.get(fieldName);
 	}
 
@@ -111,7 +109,7 @@ public class ENV{
 		values.remove(qualifiedFieldName);
 	}
 	
-	static List<String> specialNames = Arrays.asList("current_timestamp","current_date","current_time","UserID");
+	static ArrayList<String> specialNames = ArrayUtil.asList("current_timestamp","current_date","current_time","UserID");
 	
 	public static Object getValue(String key) {
 		

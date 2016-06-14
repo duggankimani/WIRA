@@ -1,8 +1,6 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
@@ -18,6 +16,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent.SaveTaskStepHandler;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.MODE;
@@ -62,9 +61,9 @@ public class ProcessStepsPresenter extends
 	public interface MyView extends View {
 		HasClickHandlers getAddItemActionLink();
 
-		void setTasks(List<TaskNode> values);
+		void setTasks(ArrayList<TaskNode> values);
 
-		void displaySteps(List<TaskStepDTO> dtos);
+		void displaySteps(ArrayList<TaskStepDTO> dtos);
 
 		TaskNode getSelectedTask();
 
@@ -102,8 +101,8 @@ public class ProcessStepsPresenter extends
 	ProcessDef processDef;
 	TaskNode selected;
 
-	List<Form> forms;
-	List<OutputDocument> templates;
+	ArrayList<Form> forms;
+	ArrayList<OutputDocument> templates;
 
 	@Inject
 	TaskStepTriggerPresenter presenter;
@@ -151,7 +150,7 @@ public class ProcessStepsPresenter extends
 			public void onClick(ClickEvent event) {
 				TaskStepDTO dto = ((ProcessStepsView.Link) event.getSource()).dto;
 				dto.setActive(false);
-				saveDTOs(Arrays.asList(dto));
+				saveDTOs(ArrayUtil.asList(dto));
 			}
 		});
 
@@ -185,9 +184,9 @@ public class ProcessStepsPresenter extends
 					@Override
 					public void onSelect(String name) {
 						if (name.equals("Save")) {
-							List<Listable> list = popup.getSelectedValues();
-							if (!list.isEmpty()) {
-								saveSelectedSteps(list);
+							ArrayList<Listable> ArrayList = popup.getSelectedValues();
+							if (!ArrayList.isEmpty()) {
+								saveSelectedSteps(ArrayList);
 							}
 						}
 
@@ -305,7 +304,7 @@ public class ProcessStepsPresenter extends
 
 	}
 
-	void bindSteps(List<TaskStepDTO> dtos) {
+	void bindSteps(ArrayList<TaskStepDTO> dtos) {
 		getView().displaySteps(dtos);
 		presenter.setTaskSteps(dtos);
 	}
@@ -336,12 +335,12 @@ public class ProcessStepsPresenter extends
 			}});
 	}
 
-	private void saveSelectedSteps(List<Listable> list) {
+	private void saveSelectedSteps(ArrayList<Listable> ArrayList) {
 
 		Long nodeId = selected == null ? null : selected.getNodeId();
 
-		List<TaskStepDTO> dtos = new ArrayList<TaskStepDTO>();
-		for (Listable l : list) {
+		ArrayList<TaskStepDTO> dtos = new ArrayList<TaskStepDTO>();
+		for (Listable l : ArrayList) {
 			TaskStepDTO dto = new TaskStepDTO();
 			dto.setCondition("");
 
@@ -362,13 +361,13 @@ public class ProcessStepsPresenter extends
 
 	}
 
-	private void saveDTOs(List<TaskStepDTO> dtos) {
+	private void saveDTOs(ArrayList<TaskStepDTO> dtos) {
 		fireEvent(new ProcessingEvent("Saving Task Steps..."));
 		requestHelper.execute(new SaveTaskStepRequest(dtos),
 				new TaskServiceCallback<SaveTaskStepResponse>() {
 					@Override
 					public void processResult(SaveTaskStepResponse aResponse) {
-						List<TaskStepDTO> dtos = aResponse.getList();
+						ArrayList<TaskStepDTO> dtos = aResponse.getList();
 						bindSteps(dtos);
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -377,7 +376,7 @@ public class ProcessStepsPresenter extends
 
 	@Override
 	public void onSaveTaskStep(SaveTaskStepEvent event) {
-		saveDTOs(Arrays.asList(event.getTaskStepDTO()));
+		saveDTOs(ArrayUtil.asList(event.getTaskStepDTO()));
 	}
 
 	@Override

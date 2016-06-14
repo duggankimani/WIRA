@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -28,9 +28,9 @@ import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 
 public class GenerateCatalogueExcel {
 
-	List<CatalogColumn> columns = new ArrayList<CatalogColumn>();
+	ArrayList<CatalogColumn> columns = new ArrayList<CatalogColumn>();
 	
-	List<DocumentLine> docLines = new ArrayList<>();
+	ArrayList<DocumentLine> docLines = new ArrayList<>();
 
 	public GenerateCatalogueExcel() {
 
@@ -38,16 +38,16 @@ public class GenerateCatalogueExcel {
 
 	private Workbook wb = new HSSFWorkbook();
 	
-	static Map<String, CellStyle> styles = null;
-	static Map<String, Font> fonts = null;
+	static HashMap<String, CellStyle> styles = null;
+	static HashMap<String, Font> fonts = null;
 
-	public GenerateCatalogueExcel(Catalog catalog, List<DocumentLine> data) {
+	public GenerateCatalogueExcel(Catalog catalog, ArrayList<DocumentLine> data) {
 		columns = catalog.getColumns();
 		docLines = data;
 	}
 
-	private Map<String, CellStyle> createStyles(Workbook wb) {
-		Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+	private HashMap<String, CellStyle> createStyles(Workbook wb) {
+		HashMap<String, CellStyle> styles = new HashMap<String, CellStyle>();
 		DataFormat df = wb.createDataFormat();
 
 		CellStyle style;
@@ -182,7 +182,7 @@ public class GenerateCatalogueExcel {
 		return style;
 	}
 
-	private Map<String, Font> createFonts(Workbook wb2) {
+	private HashMap<String, Font> createFonts(Workbook wb2) {
 		fonts = new HashMap<>();
 		Font headerFont = wb.createFont();
 		headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -209,7 +209,7 @@ public class GenerateCatalogueExcel {
 		return fonts;
 	}
 
-	private void generate(Workbook workbook, String sheetName, List<DocumentLine> data) {
+	private void generate(Workbook workbook, String sheetName, ArrayList<DocumentLine> data) {
 		Sheet sheet = workbook.createSheet(sheetName);
 
 		// sheet.setDisplayGridlines(false);
@@ -258,7 +258,7 @@ public class GenerateCatalogueExcel {
 		sheet.setZoom(3, 4);
 	}
 
-	private int paintRows(List<DocumentLine> data, int rownum, CreationHelper helper, Sheet sheet) {
+	private int paintRows(ArrayList<DocumentLine> data, int rownum, CreationHelper helper, Sheet sheet) {
 		if (data == null || data.isEmpty()) {
 			return rownum - 1;
 		}

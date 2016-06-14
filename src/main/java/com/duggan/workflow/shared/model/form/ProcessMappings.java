@@ -1,22 +1,22 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 public class ProcessMappings {
 
-	Map<String, String> inputMappings = new HashMap<String, String>();
-	Map<String, String> outMappings = new HashMap<String,String>();
+	HashMap<String, String> inputMappings = new HashMap<String, String>();
+	HashMap<String, String> outMappings = new HashMap<String,String>();
 	
 	public ProcessMappings() {
 		
 	}
 	
-	public void setInputMappings(Map<String, String> inMappings){
+	public void setInputMappings(HashMap<String, String> inMappings){
 		this.inputMappings = inMappings;
 	}
 	
-	public void setOutMappings(Map<String, String> outMappings){
+	public void setOutMappings(HashMap<String, String> outMappings){
 		this.outMappings = outMappings;
 	}
 	

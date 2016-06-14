@@ -34,7 +34,7 @@ public class GetTaskStepsRequestHandler extends
 			steps = ProcessDefHelper.getSteps(action.getProcessId(), action.getNodeId());
 		}
 		
-		((GetTaskStepsResponse)actionResult).setSteps(steps);
+		((GetTaskStepsResponse)actionResult).setSteps((ArrayList<TaskStepDTO>) steps);
 		
 	}
 	

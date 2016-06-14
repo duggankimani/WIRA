@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.shared.model.form.KeyValuePair;
@@ -13,8 +14,8 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
  */
 public interface LookupLoader {
 	
-	public List<KeyValuePair> getValuesByJNDIName(String jndiName, String sql);
+	public ArrayList<KeyValuePair> getValuesByJNDIName(String jndiName, String sql);
 	
-	public List<KeyValuePair> getValuesByDataSourceName(String dataSourceName, String sql);
+	public ArrayList<KeyValuePair> getValuesByDataSourceName(String dataSourceName, String sql);
 
 }

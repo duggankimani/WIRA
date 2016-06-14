@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.notifications;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent;
@@ -55,7 +55,7 @@ public class NotificationsPresenter extends
 	@Override
 	public void onNotificationsLoad(NotificationsLoadEvent event) {
 		
-		List<Notification> notes = event.getNotifications();
+		ArrayList<Notification> notes = event.getNotifications();
 		NotificationsPresenter.this.setInSlot(NOTE_SLOT, null);
 		
 		if(notes!=null)

@@ -320,7 +320,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				}
 				colsRs.close();
 
-				catalog.setColumns(columns);
+				catalog.getColumns().addAll(columns);
 				catalogs.add(catalog);
 			}
 			rs.close();

@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
@@ -20,7 +23,7 @@ public class GetUsersRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		GetUsersResponse response = (GetUsersResponse)actionResult;
 		
-		response.setUsers(LoginHelper.get().getAllUsers(action.getSearchTerm()));
+		response.setUsers((ArrayList<HTUser>) LoginHelper.get().getAllUsers(action.getSearchTerm()));
 	}
 	
 	@Override

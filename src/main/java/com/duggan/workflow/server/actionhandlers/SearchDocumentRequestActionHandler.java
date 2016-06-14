@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
@@ -27,7 +28,7 @@ public class SearchDocumentRequestActionHandler extends
 		
 		List<Document> notes = DocumentDaoHelper.search(action.getSubject());
 		
-		result.setDocument(notes);
+		result.setDocument((ArrayList<Document>) notes);
 		
 	}
 	

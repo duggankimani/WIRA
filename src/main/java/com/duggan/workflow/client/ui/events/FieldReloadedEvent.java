@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.event.shared.EventHandler;
@@ -14,9 +14,9 @@ public class FieldReloadedEvent extends GwtEvent<FieldReloadedEvent.FieldReloade
     }
     
     private boolean isFormReadOnly;
-    private final List<Field> fields;
+    private final ArrayList<Field> fields;
    
-    public FieldReloadedEvent(final List<Field> fields, boolean isFormReadOnly) {
+    public FieldReloadedEvent(final ArrayList<Field> fields, boolean isFormReadOnly) {
         this.fields = fields;
 		this.isFormReadOnly = isFormReadOnly;
     }
@@ -35,7 +35,7 @@ public class FieldReloadedEvent extends GwtEvent<FieldReloadedEvent.FieldReloade
         return TYPE;
     }
 
-	public List<Field> getFields() {
+	public ArrayList<Field> getFields() {
 		return fields;
 	}
 

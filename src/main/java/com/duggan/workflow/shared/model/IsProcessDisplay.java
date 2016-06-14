@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.sencha.gxt.data.shared.TreeStore.TreeNode;
 
@@ -13,10 +13,10 @@ public abstract class IsProcessDisplay extends SerializableObj implements Listab
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected List<IsProcessDisplay> children = new ArrayList<IsProcessDisplay>();
+	protected ArrayList<IsProcessDisplay> children = new ArrayList<IsProcessDisplay>();
 	
 	@Override
-	public List<? extends TreeNode<IsProcessDisplay>> getChildren() {
+	public ArrayList<? extends TreeNode<IsProcessDisplay>> getChildren() {
 		sort();
 		
 		if(children==null || children.size()==0)

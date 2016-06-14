@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Schema implements Serializable{
 
@@ -11,7 +11,7 @@ public class Schema implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private List<Column> columns = new ArrayList<Column>();
+	private ArrayList<Column> columns = new ArrayList<Column>();
 	
 	public Schema() {
 	}
@@ -24,11 +24,11 @@ public class Schema implements Serializable{
 		this.name = name;
 	}
 
-	public List<Column> getColumns() {
+	public ArrayList<Column> getColumns() {
 		return columns;
 	}
 
-	public void setColumns(List<Column> columns) {
+	public void setColumns(ArrayList<Column> columns) {
 		this.columns = columns;
 	}
 	

@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
@@ -36,7 +36,7 @@ public class AttachmentsPanel extends Composite {
 	@UiField Anchor aRemoveAll;
 	@UiField DivElement attachmentsHeader;
 	
-	List<Attachment> attachments = new ArrayList<Attachment>();
+	ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 	private boolean isReadOnly;
 	public AttachmentsPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -75,7 +75,7 @@ public class AttachmentsPanel extends Composite {
 		});
 	}
 	
-	public AttachmentsPanel(List<Attachment> attachments) {
+	public AttachmentsPanel(ArrayList<Attachment> attachments) {
 		this();
 		this.attachments = attachments;
 		for(Attachment attachment: attachments){

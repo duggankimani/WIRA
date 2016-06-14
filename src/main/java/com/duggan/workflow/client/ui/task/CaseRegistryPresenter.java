@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.task;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -54,13 +54,13 @@ public class CaseRegistryPresenter
 		implements SearchHandler {
 
 	public interface ICaseRegistryView extends View {
-		void bindProcesses(List<DocumentType> documentTypes);
+		void bindProcesses(ArrayList<DocumentType> documentTypes);
 
-		void bindProcessInstances(List<ProcessLog> logs);
+		void bindProcessInstances(ArrayList<ProcessLog> logs);
 
 		void onReveal();
 
-		void bindUsers(List<HTUser> users);
+		void bindUsers(ArrayList<HTUser> users);
 
 		public Anchor getSearch();
 

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.datatable;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.ui.AppManager;
@@ -76,7 +76,7 @@ public class DataTableView extends ViewImpl implements
 	}
 
 	@Override
-	public void bindCatalogs(List<Catalog> catalogs) {
+	public void bindCatalogs(ArrayList<Catalog> catalogs) {
 		clearSelections();
 		tblDataTable.removeAllRows();
 		createHeaders(tblDataTable);

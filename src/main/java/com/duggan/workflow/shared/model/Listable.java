@@ -4,7 +4,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * This interface defines an object/POJO that can be 
- * added into a dropdown list/ Combobox
+ * added into a dropdown ArrayList/ Combobox
  * @author duggan
  *
  */

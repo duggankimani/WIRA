@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.delegate.userDisplay;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.events.UserSelectedEvent;
 import com.duggan.workflow.client.ui.events.UserSelectedEvent.UserSelectedHandler;
@@ -101,7 +101,7 @@ public class UserDisplay extends Composite implements UserSelectedHandler {
 		handlers.clear();
 	}
 	
-	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
 	@Override
 	public void onUserSelected(UserSelectedEvent event) {

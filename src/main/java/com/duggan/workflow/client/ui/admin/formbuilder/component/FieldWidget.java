@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.matheclipse.parser.client.eval.ComplexEvaluator;
 import org.matheclipse.parser.client.eval.ComplexVariable;
@@ -67,16 +67,16 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	private FocusPanel shim = new FocusPanel();
 	protected long id = System.currentTimeMillis();
-	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
+	protected HashMap<String, Property> props = new LinkedHashMap<String, Property>();
 
 	Field field = new Field();
 	// Design Mode Properties
 	protected boolean designMode = true;
 	protected boolean readOnly = false;
-	List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
 	// Formula handling properties
-	List<String> dependentFields = new ArrayList<String>();
+	ArrayList<String> dependentFields = new ArrayList<String>();
 	boolean isObserver = false;// depends on other fields - registered for
 								// OperandChangeEvent
 	boolean isObservable = false;// its value is depended upon by other fields -
@@ -290,7 +290,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	@Override
 	public void onFieldReloaded(FieldReloadedEvent event) {
-		List<Field> fields = event.getFields();
+		ArrayList<Field> fields = event.getFields();
 		if (fields != null && field != null) {
 			if (fields.contains(field)) {
 				Value fieldValue = getFieldValue();
@@ -299,7 +299,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				Field reloaded = fields.get(idx);
 				
 				if(event.isFormReadOnly()){
-					List<Property> properties = reloaded.getProperties();
+					ArrayList<Property> properties = reloaded.getProperties();
 					int readOnlyIndex = -1;
 					for(Property p: properties){
 						if(p.getName().equals(READONLY)){
@@ -395,8 +395,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		add(shim, left, top);
 	}
 
-	public List<Property> getProperties() {
-		List<Property> values = new ArrayList<Property>();
+	public ArrayList<Property> getProperties() {
+		ArrayList<Property> values = new ArrayList<Property>();
 		for (Property prop : props.values()) {
 			values.add(prop);
 		}
@@ -434,7 +434,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				&& (this instanceof IsSelectionField)) {
 
 			IsSelectionField fld = (IsSelectionField) this;
-			fld.setSelectionValues((List<KeyValuePair>) event
+			fld.setSelectionValues((ArrayList<KeyValuePair>) event
 					.getPropertyValue());
 		}
 
@@ -620,7 +620,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	}
 
-	private void setProperties(List<Property> properties) {
+	private void setProperties(ArrayList<Property> properties) {
 		if (properties != null) {
 			for (Property prop : properties) {
 				addProperty(prop);
@@ -917,7 +917,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	 * 
 	 * @return
 	 */
-	public List<String> getDependentFields() {
+	public ArrayList<String> getDependentFields() {
 		return dependentFields;
 	}
 
@@ -954,7 +954,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		/*
 		 * Aggregate Functions - operand Substitution
 		 */
-		List<String> paramFields = new ArrayList<String>();
+		ArrayList<String> paramFields = new ArrayList<String>();
 		paramFields.addAll(dependentFields);
 
 		String formular = parseAggregate(paramFields, getPropertyValue(FORMULA));
@@ -1032,7 +1032,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	 * @param formular
 	 * @return
 	 */
-	private String parseAggregate(List<String> paramFields, String formular) {
+	private String parseAggregate(ArrayList<String> paramFields, String formular) {
 		// One of the dependent is a grid detail field - A column in a grid row
 		// eg formular =Plus[row_total]; where row_total is a column in invoice
 		// particulars
@@ -1043,7 +1043,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			for (String fld : dependentFields) {
 				if (ENV.isAggregate(fld)) {
 					// This is a grid field
-					List<String> names = ENV.getQualifiedNames(fld);
+					ArrayList<String> names = ENV.getQualifiedNames(fld);
 					// /System.err.println(fld+" : Aggregated: "+names);
 
 					String nameList = "";

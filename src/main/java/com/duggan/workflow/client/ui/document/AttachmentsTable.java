@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.document;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.TableView;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Attachment;
 import com.google.gwt.core.client.GWT;
@@ -26,10 +26,10 @@ public class AttachmentsTable extends Composite {
 	
 	public AttachmentsTable() {
 		initWidget(uiBinder.createAndBindUi(this));
-		attachmentsTable.setHeaders(Arrays.asList("File Name","Type","Created By","Date Created"));
+		attachmentsTable.setHeaders(ArrayUtil.asList("File Name","Type","Created By","Date Created"));
 	}
 	
-	public void setAttachments(List<Attachment> attachments){
+	public void setAttachments(ArrayList<Attachment> attachments){
 		clear();
 		if(attachments!=null){
 			for(Attachment attachment: attachments){

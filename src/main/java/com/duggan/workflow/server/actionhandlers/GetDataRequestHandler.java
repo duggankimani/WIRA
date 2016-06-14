@@ -30,7 +30,7 @@ public class GetDataRequestHandler extends
 			lines = CatalogDaoHelper.getTableData(action.getCatalogId(),action.getSearchTerm());
 		}
 		 
-		((GetDataResponse)actionResult).setLines(lines);
+		((GetDataResponse)actionResult).setLines((ArrayList<DocumentLine>) lines);
 	}
 
 	@Override

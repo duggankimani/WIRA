@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -10,14 +10,14 @@ public class GenerateFilePathRequest extends BaseRequest<GenerateFilePathRespons
 
 	private Doc doc;
 	private Long fieldId;
-	private List<String> fileFieldNames;
+	private ArrayList<String> fileFieldNames;
 
 	@SuppressWarnings("unused")
 	private GenerateFilePathRequest() {
 		// For serialization only
 	}
 	
-	public GenerateFilePathRequest(Doc doc, Long fieldId, List<String> fileFieldNames) {
+	public GenerateFilePathRequest(Doc doc, Long fieldId, ArrayList<String> fileFieldNames) {
 		// For serialization only
 		this.doc = doc;
 		this.fieldId = fieldId;
@@ -38,7 +38,7 @@ public class GenerateFilePathRequest extends BaseRequest<GenerateFilePathRespons
 		return fieldId;
 	}
 
-	public List<String> getFileFieldNames() {
+	public ArrayList<String> getFileFieldNames() {
 		return fileFieldNames;
 	}
 

@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -8,7 +8,7 @@ import com.duggan.workflow.shared.responses.GenericResponse;
 
 public class GenericRequest extends BaseRequest<GenericResponse> {
 
-	private Map<String, Value> values;
+	private HashMap<String, Value> values;
 	private String handlerClass;
 
 	@SuppressWarnings("unused")
@@ -16,12 +16,12 @@ public class GenericRequest extends BaseRequest<GenericResponse> {
 		// For serialization only
 	}
 
-	public GenericRequest(Map<String, Value> values, String handlerClass) {
+	public GenericRequest(HashMap<String, Value> values, String handlerClass) {
 		this.values = values;
 		this.handlerClass = handlerClass;
 	}
 
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return values;
 	}
 

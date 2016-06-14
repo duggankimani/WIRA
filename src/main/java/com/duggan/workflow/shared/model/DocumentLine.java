@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -20,7 +20,7 @@ public class DocumentLine implements Serializable,IsSerializable {
 	private Long id;
 	private Long documentId;
 	private String name;
-	private Map<String, Value> values = new HashMap<String, Value>();
+	private HashMap<String, Value> values = new HashMap<String, Value>();
 	
 	public DocumentLine(){
 	}
@@ -59,11 +59,11 @@ public class DocumentLine implements Serializable,IsSerializable {
 		this.name = name;
 	}
 
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return values;
 	}
 
-	public void setValues(Map<String, Value> values) {
+	public void setValues(HashMap<String, Value> values) {
 		this.values = values;
 	}
 
@@ -118,7 +118,7 @@ public class DocumentLine implements Serializable,IsSerializable {
 		line.setDocumentId(documentId);
 		line.setName(name);
 		
-		Map<String,Value> vals = new HashMap<String, Value>();
+		HashMap<String,Value> vals = new HashMap<String, Value>();
 		for(String key:values.keySet()){
 			Value val = values.get(key);
 			if(val!=null)

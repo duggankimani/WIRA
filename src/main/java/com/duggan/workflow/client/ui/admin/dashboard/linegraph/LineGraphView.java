@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard.linegraph;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.google.gwt.core.client.GWT;
@@ -219,7 +219,7 @@ public class LineGraphView extends ViewImpl implements
 		series.addColor(slice6);
 	}
 
-	public void setData(List<Data> data) {
+	public void setData(ArrayList<Data> data) {
 		double max = axis.getMaximum();
 		for(Data d: data){
 			double big = Math.max(d.getData1().doubleValue(), d.getData2().doubleValue());

@@ -1,13 +1,13 @@
 package com.duggan.workflow.client.ui.task;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter.ICaseRegistryView;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -48,8 +48,8 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		listUsers.setNullText("--Select Users--");
 		tblRegistry.setAutoNumber(true);
 		tblRegistry.setHeaders(
-				Arrays.asList("icon","icon","date","date","large","user","large","user","",""),
-				Arrays.asList("Case No", 
+				ArrayUtil.asList("icon","icon","date","date","large","user","large","user","",""),
+				ArrayUtil.asList("Case No", 
 				"Summary", 
 				//"Case Notes",
 				"Start",
@@ -75,12 +75,12 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 	}
 
 	@Override
-	public void bindProcesses(List<DocumentType> documentTypes) {
+	public void bindProcesses(ArrayList<DocumentType> documentTypes) {
 		listProcesses.setItems(documentTypes);
 	}
 
 	@Override
-	public void bindProcessInstances(List<ProcessLog> logs) {
+	public void bindProcessInstances(ArrayList<ProcessLog> logs) {
 		tblRegistry.clearRows();
 		if(logs.isEmpty()){
 			spnNoData.removeClassName("hide");
@@ -101,7 +101,7 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 			InlineLabel priority = new InlineLabel("NORMAL");
 			//priority.addStyleName("label label-info");
 			
-			tblRegistry.addRow(Arrays.asList("icon","icon text-center","date","date","large","user","large","user","",""),
+			tblRegistry.addRow(ArrayUtil.asList("icon","icon text-center","date","date","large","user","large","user","",""),
 					new InlineLabel(parse(log.getCaseNo())),
 					getSummaryLink(log),
 //					new InlineLabel(""), -Case Notes
@@ -160,7 +160,7 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 	}
 
 	@Override
-	public void bindUsers(List<HTUser> users) {
+	public void bindUsers(ArrayList<HTUser> users) {
 		listUsers.setItems(users);
 	}
 

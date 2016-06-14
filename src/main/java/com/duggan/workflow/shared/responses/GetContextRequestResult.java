@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.UserGroup;
@@ -15,7 +15,7 @@ public class GetContextRequestResult extends BaseResponse {
 	private static final long serialVersionUID = 1L;
 	private Boolean isValid;
 	private HTUser user;
-	private List<UserGroup> groups;
+	private ArrayList<UserGroup> groups;
 	private Version version;
 	private String organizationName;
 	private REPORTVIEWIMPL reportViewImpl;
@@ -40,11 +40,11 @@ public class GetContextRequestResult extends BaseResponse {
 		this.user = user;
 	}
 
-	public List<UserGroup> getGroups() {
+	public ArrayList<UserGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<UserGroup> groups) {
+	public void setGroups(ArrayList<UserGroup> groups) {
 		this.groups = groups;
 	}
 

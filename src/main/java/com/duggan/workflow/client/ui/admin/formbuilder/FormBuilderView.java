@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
@@ -113,7 +113,7 @@ public class FormBuilderView extends ViewImpl implements
 	boolean IsMinimized;
 	
 	//Form properties
-	protected Map<String, Property> props = new LinkedHashMap<String, Property>();
+	protected HashMap<String, Property> props = new LinkedHashMap<String, Property>();
 	
 	Form form = new Form();
 	
@@ -353,8 +353,8 @@ public class FormBuilderView extends ViewImpl implements
 		divPaletteBody.addClassName("working-request");		
 	}
 
-	private List<Field> getFields() {
-		List<Field> fields = new ArrayList<Field>();
+	private ArrayList<Field> getFields() {
+		ArrayList<Field> fields = new ArrayList<Field>();
 		
 		int fieldCount = vPanel.getWidgetCount();
 		for(int i=0; i<fieldCount; i++){
@@ -453,7 +453,7 @@ public class FormBuilderView extends ViewImpl implements
 		//frmDropdown.setItems(form.getProperties());
 	}
 	
-	private void setFields(List<Field> fields) {
+	private void setFields(ArrayList<Field> fields) {
 		if(fields==null || fields.size()==0)
 			return;
 		
@@ -489,8 +489,8 @@ public class FormBuilderView extends ViewImpl implements
 		props.put(property.getName(), property);
 	}
 
-	public List<Property> getProperties(){
-		List<Property> values = new ArrayList<Property>();
+	public ArrayList<Property> getProperties(){
+		ArrayList<Property> values = new ArrayList<Property>();
 		values.addAll(props.values());
 		return values;
 	}
@@ -535,7 +535,7 @@ public class FormBuilderView extends ViewImpl implements
 	}
 
 	@Override
-	public void setForms(List<Form> forms) {
+	public void setForms(ArrayList<Form> forms) {
 		frmDropdown.setItems(forms);
 		if(form!=null)
 		if(form.getId()!=null){
@@ -547,7 +547,7 @@ public class FormBuilderView extends ViewImpl implements
 	public void clear() {
 		this.form=null;
 		formLabel.setText("");
-		List<Property> properties = getProperties();
+		ArrayList<Property> properties = getProperties();
 		for(Property prop: properties){
 			prop.setValue(null);
 			prop.setId(null);
@@ -586,7 +586,7 @@ public class FormBuilderView extends ViewImpl implements
 	}
 
 	@Override
-	public void setProcesses(List<ProcessDef> processes) {
+	public void setProcesses(ArrayList<ProcessDef> processes) {
 		processDropdown.setNullText("--Process--");
 		processDropdown.setItems(processes);
 	}

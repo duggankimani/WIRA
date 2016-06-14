@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard.linegraph;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.dashboard.ChartType;
@@ -17,7 +17,7 @@ public class LineGraphPresenter extends
 		PresenterWidget<LineGraphPresenter.ILineGraphView> {
 
 	public interface ILineGraphView extends View {
-		void setData(List<Data> data);
+		void setData(ArrayList<Data> data);
 	}
 	
 	@Inject DispatchAsync requestHelper;

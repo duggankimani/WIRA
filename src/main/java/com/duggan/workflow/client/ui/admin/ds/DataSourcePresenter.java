@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.ds;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
@@ -157,7 +157,7 @@ public class DataSourcePresenter extends
 				new TaskServiceCallback<GetDSConfigurationsResponse>() {
 			@Override
 			public void processResult(GetDSConfigurationsResponse result) {
-				List<DSConfiguration> configs = result.getConfigurations();
+				ArrayList<DSConfiguration> configs = result.getConfigurations();
 				bindValues(configs);
 				fireEvent(new ProcessingCompletedEvent());
 				
@@ -165,7 +165,7 @@ public class DataSourcePresenter extends
 		});
 	}
 	
-	private void bindValues(List<DSConfiguration> configs) {
+	private void bindValues(ArrayList<DSConfiguration> configs) {
 		setInSlot(TABLE_SLOT, null);
 		if(configs!=null){
 			for(final DSConfiguration config: configs){

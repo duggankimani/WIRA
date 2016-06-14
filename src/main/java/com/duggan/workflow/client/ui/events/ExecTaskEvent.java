@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Value;
@@ -13,7 +13,7 @@ public class ExecTaskEvent extends GwtEvent<ExecTaskEvent.ExecTaskHandler> {
 	public static Type<ExecTaskHandler> TYPE = new Type<ExecTaskHandler>();
 	private Long taskId;
 	private Actions action;
-	private Map<String, Value> values;
+	private HashMap<String, Value> values;
 	
 	public interface ExecTaskHandler extends EventHandler {
 		void onExecTask(ExecTaskEvent event);
@@ -50,11 +50,11 @@ public class ExecTaskEvent extends GwtEvent<ExecTaskEvent.ExecTaskHandler> {
 		source.fireEvent(new ExecTaskEvent(taskId, action));
 	}
 
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return values;
 	}
 
-	public void setValues(Map<String, Value> values) {
+	public void setValues(HashMap<String, Value> values) {
 		this.values = values;
 	}
 }

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.processes.category;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
@@ -56,7 +56,7 @@ public class CreateCategoryPanel extends Composite {
 	}
 	
 
-	public CreateCategoryPanel(List<ProcessCategory> categories) {
+	public CreateCategoryPanel(ArrayList<ProcessCategory> categories) {
 		this();
 		lstCategories.setItems(categories);
 	}

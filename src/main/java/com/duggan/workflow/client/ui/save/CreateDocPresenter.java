@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.save;
 
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
@@ -50,7 +50,7 @@ public class CreateDocPresenter extends
 
 		boolean isValid();
 
-		void setDocTypes(List<DocumentType> types);
+		void setDocTypes(ArrayList<DocumentType> types);
 
 		void setValues(DocumentType docType, String subject, Date docDate,
 				String partner, String value, String description,

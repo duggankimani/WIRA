@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.events;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.event.shared.EventHandler;
@@ -20,9 +20,9 @@ public class ButtonClickEvent extends
 		void onButtonClick(ButtonClickEvent event);
 	}
 	
-	private Map<String,Value> values = new HashMap<String,Value>();
+	private HashMap<String,Value> values = new HashMap<String,Value>();
 
-	public ButtonClickEvent(String requestType, Map<String,Value> values) {
+	public ButtonClickEvent(String requestType, HashMap<String,Value> values) {
 		this.requestType = requestType;
 		this.values = values;
 	}
@@ -45,15 +45,15 @@ public class ButtonClickEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, String requestType, Map<String,Value> values) {
+	public static void fire(HasHandlers source, String requestType, HashMap<String,Value> values) {
 		source.fireEvent(new ButtonClickEvent(requestType, values));
 	}
 
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return values;
 	}
 
-	public void setValues(Map<String, Value> values) {
+	public void setValues(HashMap<String, Value> values) {
 		this.values = values;
 	}
 

@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
@@ -29,7 +30,7 @@ public class SaveTaskStepRequestHandler extends
 		
 		ProcessDefModel model = DB.getProcessDao().getProcessDef(dto.getProcessDefId());
 		List<TaskStepDTO> allSteps = ProcessDefHelper.getSteps(model.getProcessId(), dto.getNodeId());
-		((SaveTaskStepResponse)actionResult).setList(allSteps);
+		((SaveTaskStepResponse)actionResult).setList((ArrayList<TaskStepDTO>) allSteps);
 	}
 	
 	@Override

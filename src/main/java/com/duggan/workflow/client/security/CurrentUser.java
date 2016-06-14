@@ -17,9 +17,8 @@
 package com.duggan.workflow.client.security;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.CurrentUserDto;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.PermissionPOJO;
@@ -27,7 +26,7 @@ import com.duggan.workflow.shared.model.PermissionPOJO;
 public class CurrentUser {
 	private Boolean loggedIn;
 	private HTUser userDto;
-	List<String> permissions = new ArrayList<String>();
+	ArrayList<String> permissions = new ArrayList<String>();
 
 	public CurrentUser() {
 		loggedIn = false;
@@ -61,7 +60,7 @@ public class CurrentUser {
 
 	public boolean hasPermissions(String... requiredPermissions) {
 		if(requiredPermissions!=null){
-			return permissions.containsAll(Arrays.asList(requiredPermissions));
+			return permissions.containsAll(ArrayUtil.asList(requiredPermissions));
 		}
 
 		return false;

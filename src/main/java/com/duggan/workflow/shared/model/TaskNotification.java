@@ -3,7 +3,7 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.ArrayList;
 
 public class TaskNotification implements Serializable{
 
@@ -17,7 +17,7 @@ public class TaskNotification implements Serializable{
 	private boolean isEnableNotification;
 	private Actions action;
 	private boolean useDefaultNotification;
-	private List<String> targets = new ArrayList<String>();
+	private ArrayList<String> targets = new ArrayList<String>();
 	private String notificationTemplate; 
 	private Long nodeId;//Accommodate initial input form
 	private String stepName;
@@ -67,7 +67,7 @@ public class TaskNotification implements Serializable{
 		this.useDefaultNotification = useDefaultNotification;
 	}
 
-	public List<String> getTargets() {
+	public ArrayList<String> getTargets() {
 		return targets;
 	}
 

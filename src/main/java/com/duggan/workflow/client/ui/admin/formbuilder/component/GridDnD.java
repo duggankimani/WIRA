@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -44,7 +44,7 @@ public class GridDnD extends AbsolutePanel {
 	private PickupDragController columnDragController;
 	private HorizontalPanelDropController columnDropController;
 	
-	public GridDnD(final List<Field> columns) {
+	public GridDnD(final ArrayList<Field> columns) {
 		getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		this.addStyleName("grid-layout");
 		
@@ -101,13 +101,13 @@ public class GridDnD extends AbsolutePanel {
 	 * Save mechanism
 	 */
 	private void save(){
-		List<Field> lst = getFields();
+		ArrayList<Field> lst = getFields();
 		save(lst);
 	}
 	
-	public List<Field> getFields() {
+	public ArrayList<Field> getFields() {
 		
-		List<Field> lst = new ArrayList<Field>();
+		ArrayList<Field> lst = new ArrayList<Field>();
 		int count = hPanel.getWidgetCount();				
 		for(int i=0; i<count; i++){
 			Widget w = ((VerticalPanel)hPanel.getWidget(i)).getWidget(0);
@@ -128,11 +128,11 @@ public class GridDnD extends AbsolutePanel {
 	 * {@link GridLayout#showDesignGrid}
 	 * @param lst
 	 */
-	protected void save(List<Field> lst) {
+	protected void save(ArrayList<Field> lst) {
 		
 	}
 
-	private void createColumns(List<Field> columns) {
+	private void createColumns(ArrayList<Field> columns) {
 		hPanel.getElement().getStyle().setWidth(100, Unit.PCT);
 		
 		for (Field col : columns) {
@@ -172,7 +172,7 @@ public class GridDnD extends AbsolutePanel {
 		hPanel.clear();
 	}
 	
-	public void repaint(List<Field> fields) {
+	public void repaint(ArrayList<Field> fields) {
 		clearCols();
 		createColumns(fields);
 	}

@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard.table;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.dashboard.ChartType;
@@ -18,7 +18,7 @@ public class TableDataPresenter extends
 
 	public interface ITableDataView extends View {
 
-		void setTasks(List<LongTask> longTasks);
+		void setTasks(ArrayList<LongTask> longTasks);
 	}
 	
 	@Inject DispatchAsync requestHelper;

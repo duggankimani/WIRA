@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
@@ -12,7 +12,7 @@ public class EditCatalogSchemaEvent extends GwtEvent<EditCatalogSchemaEvent.Edit
 
 	public static Type<EditCatalogSchemaHandler> TYPE = new Type<EditCatalogSchemaHandler>();
 	private Catalog catalog;
-	private List<CatalogColumn> lines = null;
+	private ArrayList<CatalogColumn> lines = null;
 	private boolean isDelete=false;
 
 	public interface EditCatalogSchemaHandler extends EventHandler {
@@ -55,11 +55,11 @@ public class EditCatalogSchemaEvent extends GwtEvent<EditCatalogSchemaEvent.Edit
 		return isDelete;
 	}
 
-	public List<CatalogColumn> getLines() {
+	public ArrayList<CatalogColumn> getLines() {
 		return lines;
 	}
 
-	public void setLines(List<CatalogColumn> lines) {
+	public void setLines(ArrayList<CatalogColumn> lines) {
 		this.lines = lines;
 	}
 }

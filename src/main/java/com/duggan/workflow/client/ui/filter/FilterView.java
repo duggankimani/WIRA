@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.filter;
 
 import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -98,7 +98,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	@Override
-	public void setDocTypes(List<DocumentType> documentTypes) {
+	public void setDocTypes(ArrayList<DocumentType> documentTypes) {
 		lstDocType.setItems(documentTypes);
 	}
 	

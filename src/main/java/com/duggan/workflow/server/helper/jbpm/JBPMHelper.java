@@ -1239,7 +1239,7 @@ public class JBPMHelper implements Closeable {
 		for (String groupId : groupIds) {
 			UserGroup group = LoginHelper.get().getGroupById(groupId);
 			List<HTUser> lst = LoginHelper.get().getUsersForGroup(groupId);
-			detail.addAllUsers(lst);
+			detail.addAllUsers((ArrayList<HTUser>) lst);
 			detail.addGroup(group);
 		}
 	}
@@ -1415,8 +1415,13 @@ public class JBPMHelper implements Closeable {
 
 				if (nodeTaskName != null)
 					if (nodeTaskName.equals(taskName)) {
-						processData.setInputMappings(htnode.getInMappings());
-						processData.setOutMappings(htnode.getOutMappings());
+						HashMap<String, String> params = new HashMap<String, String>();
+						params.putAll(htnode.getInMappings());
+						processData.setInputMappings(params);
+						
+						params = new HashMap<String, String>();
+						params.putAll(htnode.getOutMappings());
+						processData.setOutMappings(params);
 					}
 
 			}

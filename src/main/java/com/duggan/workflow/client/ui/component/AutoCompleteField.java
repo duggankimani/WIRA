@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.core.client.GWT;
@@ -35,8 +35,8 @@ public class AutoCompleteField<T extends Listable> extends Composite {
 	@UiField BulletPanel liPanel;
 	final TextBox itemBox = new TextBox();
 	
-	List<String> itemsSelected = new ArrayList<String>();
-	Map<String,T> valuesMap = new HashMap<String, T>(); 
+	ArrayList<String> itemsSelected = new ArrayList<String>();
+	HashMap<String,T> valuesMap = new HashMap<String, T>(); 
 	DataOracle<T> oracle = new DataOracle<T>();
 	SuggestBox box=null;
 	
@@ -60,7 +60,7 @@ public class AutoCompleteField<T extends Listable> extends Composite {
 		box.setFocus(true);
 	}
 
-	public void setValues(List<T> values){
+	public void setValues(ArrayList<T> values){
 		valuesMap.clear();
 		if(values==null){
 			return;
@@ -79,7 +79,7 @@ public class AutoCompleteField<T extends Listable> extends Composite {
     	super.onLoad();
     	 // 2. Show the following element structure and set the last <div> to display: block
         /*
-        <ul class="token-input-list-facebook">
+        <ul class="token-input-ArrayList-facebook">
             <li class="token-input-input-token-facebook">
                 <input type="text" style="outline-color: -moz-use-text-color; outline-style: none; outline-width: medium;"/>
             </li>
@@ -113,7 +113,7 @@ public class AutoCompleteField<T extends Listable> extends Composite {
         });
 
         /* Div structure after a few elements have been added:
-            <ul class="token-input-list-facebook">
+            <ul class="token-input-ArrayList-facebook">
                 <li class="token-input-token-facebook">
                     <p>What's New Scooby-Doo?</p>
                     <span class="token-input-delete-token-facebook">x</span>
@@ -130,7 +130,7 @@ public class AutoCompleteField<T extends Listable> extends Composite {
 
     }
 	
-    private void deselectItem(final TextBox itemBox, final BulletListPanel list) {
+    private void deselectItem(final TextBox itemBox, final BulletListPanel ArrayList) {
         if (itemBox.getValue() != null && !"".equals(itemBox.getValue().trim())) {
         	//System.err.println(":::::::: loaded");
             /** Change to the following structure:
@@ -154,7 +154,7 @@ public class AutoCompleteField<T extends Listable> extends Composite {
             displayItem.addKeyDownHandler(new KeyDownHandler() {
                 public void onKeyDown(KeyDownEvent event) {
                     if (event.getNativeKeyCode() == KeyCodes.KEY_BACKSPACE) {
-                        removeBulletPanel(displayItem, list);
+                        removeBulletPanel(displayItem, ArrayList);
                     }
                 }
             });
@@ -168,7 +168,7 @@ public class AutoCompleteField<T extends Listable> extends Composite {
             Span span = new Span("x");
             span.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent clickEvent) {
-                    removeBulletPanel(displayItem, list);
+                    removeBulletPanel(displayItem, ArrayList);
                 }
             });
 
@@ -180,25 +180,25 @@ public class AutoCompleteField<T extends Listable> extends Composite {
             itemsSelected.add(itemBox.getValue());
             GWT.log("Total: " + itemsSelected, null);
 
-            list.insert(displayItem, list.getWidgetCount() - 1);
+            ArrayList.insert(displayItem, ArrayList.getWidgetCount() - 1);
             itemBox.setValue("");
             itemBox.setFocus(true);
         }
     }
 
-    private void removeBulletPanel(BulletPanel displayItem, BulletListPanel list) {
+    private void removeBulletPanel(BulletPanel displayItem, BulletListPanel ArrayList) {
         GWT.log("Removing: " + displayItem.getWidget(0).getElement().getInnerHTML(), null);
         itemsSelected.remove(displayItem.getWidget(0).getElement().getInnerHTML());
-        list.remove(displayItem);
+        ArrayList.remove(displayItem);
     }
     
-    public void addItems(List<T> items){		
+    public void addItems(ArrayList<T> items){		
     	//itemsSelected.clear();
 		//others
 		setValues(items);
 	}
 	
-	public void select(List<T> items){
+	public void select(ArrayList<T> items){
 		clearSelection();
 		//others
 		if(items!=null)
@@ -208,8 +208,8 @@ public class AutoCompleteField<T extends Listable> extends Composite {
 		}
 	}
 	
-	public List<T> getSelectedItems(){
-		List<T> selectedVals = new ArrayList<T>();
+	public ArrayList<T> getSelectedItems(){
+		ArrayList<T> selectedVals = new ArrayList<T>();
 		for(String s: itemsSelected){
 			T val = valuesMap.get(s);
 			if(val==null){

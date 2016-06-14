@@ -1,9 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
@@ -85,7 +83,7 @@ implements EditLineHandler{
 		field.sortFields();
 		grid= new GridDnD(field.getFields()){
 			@Override
-			protected void save(List<Field> fields) {
+			protected void save(ArrayList<Field> fields) {
 				field.setFields(fields);
 				GridLayout.this.save(field);
 			}
@@ -158,8 +156,9 @@ implements EditLineHandler{
 			public void onClick(ClickEvent event) {
 				Field field = new Field();
 				field.setType(DataType.DOUBLE);
-				field.setProperties(
-						Arrays.asList(new Property(CURRENCY, "Currency", DataType.SELECTBASIC)));
+				ArrayList<Property> values = new ArrayList<Property>();
+				values.add(new Property(CURRENCY, "Currency", DataType.SELECTBASIC));
+				field.setProperties(values);
 				addColumn(field);
 			}
 		});
@@ -334,7 +333,7 @@ implements EditLineHandler{
 	
 	/**
 	 * Synchronization of the actual column Field values
-	 * with the list of fields in this Grid's field model.
+	 * with the ArrayList of fields in this Grid's field model.
 	 */
 	@Override
 	public void save() {

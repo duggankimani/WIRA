@@ -22,7 +22,6 @@ import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.servlets.upload.GenerateCatalogueExcel;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DoubleValue;
@@ -86,7 +85,7 @@ public class TestCatalogDao {
 		catalog.setProcess("xxx");
 		catalog.setRecordCount(30);
 
-		List<CatalogColumn> columns = new ArrayList<>();
+		ArrayList<CatalogColumn> columns = new ArrayList<>();
 		CatalogColumn col = new CatalogColumn();
 		col.setAutoIncrement(true);
 		col.setLabel("ID");

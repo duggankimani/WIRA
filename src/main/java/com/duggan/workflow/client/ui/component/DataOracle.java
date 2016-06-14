@@ -1,21 +1,21 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.user.client.ui.SuggestOracle;
 
 public class DataOracle<T extends Listable> extends SuggestOracle {
 
-	private List<Suggestion> suggestions = new ArrayList<Suggestion>();
+	private ArrayList<Suggestion> suggestions = new ArrayList<Suggestion>();
 	
 	@Override
 	public void requestSuggestions(Request request, Callback callback) {
 		Response resp = new Response();
 		
 		String query = request.getQuery();
-		List<Suggestion> sublist = new ArrayList<Suggestion>();
+		ArrayList<Suggestion> sublist = new ArrayList<Suggestion>();
 		for(Suggestion suggest: suggestions){
 			if(suggest.getDisplayString().toLowerCase().contains(query.toLowerCase())){
 				sublist.add(suggest);
@@ -25,7 +25,7 @@ public class DataOracle<T extends Listable> extends SuggestOracle {
 		callback.onSuggestionsReady(request, resp);
 	}
 	
-	public void setValues(List<T> values){
+	public void setValues(ArrayList<T> values){
 		suggestions.clear();
 		if(values==null)
 			return;

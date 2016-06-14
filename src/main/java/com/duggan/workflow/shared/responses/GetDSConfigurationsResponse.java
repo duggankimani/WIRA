@@ -1,21 +1,21 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DSConfiguration;
 
 public class GetDSConfigurationsResponse extends BaseResponse {
 
-	private List<DSConfiguration> configurations;
+	private ArrayList<DSConfiguration> configurations;
 
 	public GetDSConfigurationsResponse() {
 	}
 
-	public List<DSConfiguration> getConfigurations() {
+	public ArrayList<DSConfiguration> getConfigurations() {
 		return configurations;
 	}
 
-	public void setConfigurations(List<DSConfiguration> configurations) {
+	public void setConfigurations(ArrayList<DSConfiguration> configurations) {
 		this.configurations = configurations;
 	}
 }

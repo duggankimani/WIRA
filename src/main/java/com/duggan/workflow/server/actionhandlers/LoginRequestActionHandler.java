@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -17,6 +18,8 @@ import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.ActionType;
 import com.duggan.workflow.shared.model.CurrentUserDto;
 import com.duggan.workflow.shared.model.HTUser;
+import com.duggan.workflow.shared.model.PermissionPOJO;
+import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
@@ -59,7 +62,7 @@ public class LoginRequestActionHandler extends
 			
 			//Permissions
 			HTUser user = result.getCurrentUserDto().getUser();
-			user.setPermissions(DB.getPermissionDao().getPermissionsForUser(user.getUserId()));
+			user.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForUser(user.getUserId()));
 			result.getCurrentUserDto().setUser(user);
 			
 			Setting setting = SettingsDaoHelper.getSetting(SETTINGNAME.ORGNAME);
@@ -180,7 +183,7 @@ public class LoginRequestActionHandler extends
 
 		if (isValid) {
 			user = (HTUser) sessionUser;
-			user.setGroups(LoginHelper.get().getGroupsForUser(user.getUserId()));
+			user.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(user.getUserId()));
 		}
 		
 		logger.info("getUserFromCookie(cookie="+loggedInCookie+") Server sessionId= "+sessionId+", validity = "+isValid+", User = "+user); 

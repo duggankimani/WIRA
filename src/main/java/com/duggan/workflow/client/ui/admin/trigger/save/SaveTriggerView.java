@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin.trigger.save;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
@@ -102,7 +102,7 @@ public class SaveTriggerView extends Composite {
 		return value == null || value.trim().length() == 0;
 	}
 
-	public void setTriggers(List<Trigger> triggers) {
+	public void setTriggers(ArrayList<Trigger> triggers) {
 		showTriggers(true);
 		lstTrigger.setItems(triggers);
 	}

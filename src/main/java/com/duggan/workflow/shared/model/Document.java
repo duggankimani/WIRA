@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * DTO for {@link com.duggan.workflow.server.dao.model.DocumentModel}
@@ -176,7 +176,7 @@ public class Document extends Doc implements Serializable {
 	}
 
 	@Override
-	public void setValues(Map<String, Value> values) {
+	public void setValues(HashMap<String, Value> values) {
 		for (String key : values.keySet()) {
 			if (key == null) {
 				continue;
@@ -247,9 +247,9 @@ public class Document extends Doc implements Serializable {
 		document.setType(type);
 		document.setValue(value);
 
-		Map<String, Value> vals = new HashMap<String, Value>();
+		HashMap<String, Value> vals = new HashMap<String, Value>();
 
-		Map<String, Value> pv = getValues();
+		HashMap<String, Value> pv = getValues();
 		for (String key : pv.keySet()) {
 			Value v = pv.get(key);
 			if (v != null)
@@ -258,7 +258,7 @@ public class Document extends Doc implements Serializable {
 		document.setValues(vals);
 
 		for (String key : details.keySet()) {
-			List<DocumentLine> linez = details.get(key);
+			ArrayList<DocumentLine> linez = details.get(key);
 			Collections.reverse(linez);
 			for (DocumentLine line : linez) {
 				DocumentLine clone = line.clone(fullClone);
@@ -271,7 +271,7 @@ public class Document extends Doc implements Serializable {
 		return document;
 	}
 
-	// public Map<String, Value>
+	// public HashMap<String, Value>
 
 	@Override
 	public Long getDocumentId() {

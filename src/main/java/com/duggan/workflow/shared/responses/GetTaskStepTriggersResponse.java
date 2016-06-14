@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 
@@ -12,16 +12,16 @@ public class GetTaskStepTriggersResponse extends BaseResponse{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	List<TaskStepTrigger> triggers = new ArrayList<TaskStepTrigger>();
+	ArrayList<TaskStepTrigger> triggers = new ArrayList<TaskStepTrigger>();
 	
 	public GetTaskStepTriggersResponse() {
 	}
 
-	public List<TaskStepTrigger> getTriggers() {
+	public ArrayList<TaskStepTrigger> getTriggers() {
 		return triggers;
 	}
 
-	public void setTriggers(List<TaskStepTrigger> triggers) {
+	public void setTriggers(ArrayList<TaskStepTrigger> triggers) {
 		this.triggers = triggers;
 	}
 	

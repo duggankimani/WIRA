@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
@@ -76,7 +76,7 @@ public class FormPanel extends Composite {
 
 	FormDelegate formDelegate = new FormDelegate();
 	MODE mode = MODE.VIEW;
-	List<String> jsScripts = new ArrayList<String>();
+	ArrayList<String> jsScripts = new ArrayList<String>();
 
 	public FormPanel(Form form, Doc doc) {
 		this(form, doc, MODE.VIEW);
@@ -109,7 +109,7 @@ public class FormPanel extends Composite {
 				}
 			}
 
-		List<Field> fields = form.getFields();
+		ArrayList<Field> fields = form.getFields();
 		Collections.sort(fields, new Comparator<FormModel>() {
 			public int compare(FormModel o1, FormModel o2) {
 				Field field1 = (Field) o1;
@@ -142,9 +142,9 @@ public class FormPanel extends Composite {
 		execJs();
 	}
 
-	void bind(List<Field> fields, Doc doc, Collection<String> parentFields) {
+	void bind(ArrayList<Field> fields, Doc doc, Collection<String> parentFields) {
 		
-		Map<String, Value> values = doc.getValues();
+		HashMap<String, Value> values = doc.getValues();
 		Long documentId = null;
 		Long taskId = null;
 
@@ -170,7 +170,7 @@ public class FormPanel extends Composite {
 			}
 
 			if (field.getType() == DataType.GRID) {
-				List<DocumentLine> lines = doc.getDetails()
+				ArrayList<DocumentLine> lines = doc.getDetails()
 						.get(field.getName());
 				if (lines != null) {
 					GridValue value = new GridValue();
@@ -325,7 +325,7 @@ public class FormPanel extends Composite {
 		return isValid;
 	}
 
-	public Map<String, Value> getValues() {
+	public HashMap<String, Value> getValues() {
 		return formDelegate.getValues(panelFields);
 	}
 

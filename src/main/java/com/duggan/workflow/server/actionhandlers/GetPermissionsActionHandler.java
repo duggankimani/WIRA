@@ -1,7 +1,10 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.server.dao.PermissionDao;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.duggan.workflow.shared.requests.GetPermissionsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetPermissionsResponse;
@@ -23,13 +26,13 @@ public class GetPermissionsActionHandler extends
 		GetPermissionsResponse aResponse = (GetPermissionsResponse) actionResult;
 
 		if (action.getUsername() != null) {
-			aResponse.setPermissions(permissionDao.getPermissionsForUser(action
+			aResponse.setPermissions((ArrayList<PermissionPOJO>) permissionDao.getPermissionsForUser(action
 					.getUsername()));
 		} else if (action.getRoleName() != null) {
-			aResponse.setPermissions(permissionDao.getPermissionsForRole(action
+			aResponse.setPermissions((ArrayList<PermissionPOJO>) permissionDao.getPermissionsForRole(action
 					.getRoleName()));
 		} else {
-			aResponse.setPermissions(permissionDao.getAllPermissions(0, 100));
+			aResponse.setPermissions((ArrayList<PermissionPOJO>) permissionDao.getAllPermissions(0, 100));
 		}
 	}
 

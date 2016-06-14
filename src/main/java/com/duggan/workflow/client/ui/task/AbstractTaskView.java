@@ -6,7 +6,7 @@ import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.FILTER_SL
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.model.TaskType;
@@ -271,7 +271,7 @@ public class AbstractTaskView extends ViewImpl implements
 	}
 
 	@Override
-	public void bindTasks(List<Doc> tasks, boolean isIncremental) {
+	public void bindTasks(ArrayList<Doc> tasks, boolean isIncremental) {
 
 		if (!isIncremental) {
 			tblTasks.removeAllRows();

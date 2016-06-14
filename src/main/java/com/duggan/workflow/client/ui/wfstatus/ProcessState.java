@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.wfstatus;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.HTUser;
@@ -51,7 +51,7 @@ public class ProcessState extends Composite {
 	@UiField DivElement divActors;
 	@UiField Element hTitle;
 	
-	List<UserGroup> groups = new ArrayList<UserGroup>();
+	ArrayList<UserGroup> groups = new ArrayList<UserGroup>();
 	
 	NodeDetail node;
 	public ProcessState() {

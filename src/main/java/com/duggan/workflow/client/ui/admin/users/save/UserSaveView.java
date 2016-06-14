@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.admin.users.save;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
@@ -194,13 +194,13 @@ public class UserSaveView extends Composite {
 					public void processResult(MultiRequestActionResult aResponse) {
 						GetPermissionsResponse getPermissions = (GetPermissionsResponse) aResponse
 								.get(0);
-						List<PermissionPOJO> permissions = getPermissions
+						ArrayList<PermissionPOJO> permissions = getPermissions
 								.getPermissions();
 
 						if (userId != null || roleName != null) {
 							GetPermissionsResponse groupPermissionsResp = (GetPermissionsResponse) aResponse
 									.get(1);
-							List<PermissionPOJO> groupPermissions = groupPermissionsResp
+							ArrayList<PermissionPOJO> groupPermissions = groupPermissionsResp
 									.getPermissions();
 
 							for (PermissionPOJO pojo : groupPermissions) {
@@ -217,7 +217,7 @@ public class UserSaveView extends Composite {
 
 	}
 
-	protected void showPermissions(List<PermissionPOJO> permissions) {
+	protected void showPermissions(ArrayList<PermissionPOJO> permissions) {
 		divPermissions.removeClassName("hide");
 		int j = 0;
 		Collections.sort(permissions, new Comparator<PermissionPOJO>() {
@@ -329,15 +329,15 @@ public class UserSaveView extends Composite {
 		group.setFullName(txtDescription.getValue());
 		group.setName(txtGroupname.getValue());
 
-		List<PermissionPOJO> permissions = getPermissions();
+		ArrayList<PermissionPOJO> permissions = getPermissions();
 		group.setPermissions(permissions);
 
 		return group;
 	}
 
-	private List<PermissionPOJO> getPermissions() {
+	private ArrayList<PermissionPOJO> getPermissions() {
 		int rowCount = tblPermissions.getRowCount();
-		List<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
+		ArrayList<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
 		for (int i = 0; i < rowCount; i++) {
 
 			// Col Set 1
@@ -496,7 +496,7 @@ public class UserSaveView extends Composite {
 		}
 	}
 
-	public void setGroups(List<UserGroup> groups) {
+	public void setGroups(ArrayList<UserGroup> groups) {
 		lstGroups.addItems(groups);
 	}
 }

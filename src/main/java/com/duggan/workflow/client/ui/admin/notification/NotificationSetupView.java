@@ -1,13 +1,12 @@
 package com.duggan.workflow.client.ui.admin.notification;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TextArea;
+import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.StringListable;
@@ -57,7 +56,7 @@ public class NotificationSetupView extends ViewImpl implements
 		};
 		widget = binder.createAndBindUi(this);
 		listActions.setNullText("Task Creation");
-		listActions.setItems(Arrays.asList(Actions.COMPLETE));
+		listActions.setItems(ArrayUtil.asList(Actions.COMPLETE));
 		
 		chkDefault.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
@@ -69,7 +68,7 @@ public class NotificationSetupView extends ViewImpl implements
 //			
 //			@Override
 //			public void onValueChange(ValueChangeEvent<Boolean> event) {
-//				List<StringListable> values= autocompleteTargets.getSelectedItems();
+//				ArrayList<StringListable> values= autocompleteTargets.getSelectedItems();
 //				if(values==null){
 //					txtNotification.setValue("Null");
 //					return;
@@ -96,15 +95,15 @@ public class NotificationSetupView extends ViewImpl implements
 		return notification;
 	}
 	
-	private List<String> getTargets() {
-		List<StringListable> values= autocompleteTargets.getSelectedItems();
-		List<String> list  = new ArrayList<String>();
+	private ArrayList<String> getTargets() {
+		ArrayList<StringListable> values= autocompleteTargets.getSelectedItems();
+		ArrayList<String> ArrayList  = new ArrayList<String>();
 		if(values!=null)
 			for(StringListable val: values){
-				list.add(val.getName());
+				ArrayList.add(val.getName());
 			}
 		
-		return list;
+		return ArrayList;
 	}
 
 	@Override
@@ -151,38 +150,38 @@ public class NotificationSetupView extends ViewImpl implements
 		chkNotification.setValue(notification.isEnableNotification());
 		txtNotification.setValue(notification.getNotificationTemplate());
 		txtSubject.setValue(notification.getSubject());
-		List<String> targets = notification.getTargets();
-		List<StringListable> list = new ArrayList<StringListable>();
+		ArrayList<String> targets = notification.getTargets();
+		ArrayList<StringListable> ArrayList = new ArrayList<StringListable>();
 		for(String value : targets){
-			list.add(new StringListable(value));
+			ArrayList.add(new StringListable(value));
 		}
 		
-		setDefaultContextValues(notification.getAction(), list);
-		autocompleteTargets.setValues(list);
-		autocompleteTargets.select(list);
+		setDefaultContextValues(notification.getAction(), ArrayList);
+		autocompleteTargets.setValues(ArrayList);
+		autocompleteTargets.select(ArrayList);
 		
 		chkDefault.setValue(notification.isUseDefaultNotification());
 		setUseDefaultMessage(notification.isUseDefaultNotification());
 	}
 	
 	private void setDefaultContextValues(Actions action,
-			List<StringListable> list) {
+			ArrayList<StringListable> ArrayList) {
 		if(action==null){
 			action = Actions.CREATE;
 		}
 		
-		addIfNotExists(list, "@@UserId");
+		addIfNotExists(ArrayList, "@@UserId");
 		if(action==Actions.CREATE){
-			addIfNotExists(list,"@@GroupId");
-			addIfNotExists(list, "@@ActorId");
-			addIfNotExists(list, "@@OwnerId");
+			addIfNotExists(ArrayList,"@@GroupId");
+			addIfNotExists(ArrayList, "@@ActorId");
+			addIfNotExists(ArrayList, "@@OwnerId");
 		}
 	}
 
-	private void addIfNotExists(List<StringListable> list, String key) {
+	private void addIfNotExists(ArrayList<StringListable> ArrayList, String key) {
 		StringListable listable = new StringListable(key);
-		if(!list.contains(listable)){
-			list.add(listable);
+		if(!ArrayList.contains(listable)){
+			ArrayList.add(listable);
 		}
 	}
 
