@@ -23,11 +23,14 @@ import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -39,13 +42,16 @@ import com.gwtplatform.mvp.client.presenter.slots.IsSlot;
 import com.gwtplatform.mvp.client.presenter.slots.LegacySlotConvertor;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.presenter.slots.PermanentSlot;
+import com.gwtplatform.mvp.client.proxy.LockInteractionEvent;
+import com.gwtplatform.mvp.client.proxy.LockInteractionHandler;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 
 public class MainPagePresenter extends
 		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
 implements ErrorHandler, ProcessingCompletedHandler, 
-ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconnectionHandler, ShowMessageHandler{
+ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, 
+ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 
 	public interface MyView extends View {
 
@@ -79,6 +85,12 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 			final MyProxy proxy) {
 		super(eventBus, view, proxy,RevealType.Root);
 	}
+	
+	@Override
+	protected void revealInParent() {
+		RootPanel.get("loading").getElement().getStyle().setDisplay(Display.NONE);
+		super.revealInParent();
+	}
 
 	@Override
 	protected void onBind() {
@@ -90,6 +102,7 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 		addRegisteredHandler(ShowAttachmentEvent.TYPE, this);
 		addRegisteredHandler(ClientDisconnectionEvent.TYPE, this);
 		addRegisteredHandler(ShowMessageEvent.getType(), this);
+		addRegisteredHandler(LockInteractionEvent.getType(), this);
 	}
 	
 	
@@ -234,6 +247,15 @@ ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, ClientDisconne
 	@Override
 	public void onShowMessage(ShowMessageEvent event) {
 		getView().setAlertVisible(event.getAlertType(), event.getMessage(),event.isShowDefaultHeading());
+	}
+
+	@Override
+	public void onLockInteraction(LockInteractionEvent e) {
+		if(e.shouldLock()){
+			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.INITIAL);
+		}else{
+			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.NONE);
+		}
 	}
 
 }
