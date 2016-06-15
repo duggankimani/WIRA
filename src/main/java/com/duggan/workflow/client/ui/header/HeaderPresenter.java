@@ -3,8 +3,6 @@ package com.duggan.workflow.client.ui.header;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.duggan.workflow.client.event.TabAddedEvent;
-import com.duggan.workflow.client.event.TabAddedEvent.TabAddedHandler;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.security.CurrentUser;
@@ -42,21 +40,17 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.ChangeTabEvent;
-import com.gwtplatform.mvp.client.ChangeTabHandler;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.client.proxy.TabContentProxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class HeaderPresenter extends

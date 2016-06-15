@@ -3,10 +3,7 @@ package com.duggan.workflow.client.ui.header;
 import java.util.Date;
 
 import com.duggan.workflow.client.security.CurrentUser;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.component.TextField;
-import com.duggan.workflow.client.ui.home.TabItem;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.PermissionName;
@@ -20,7 +17,6 @@ import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -30,7 +26,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Tab;
-import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView {
@@ -248,33 +243,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	 */
 	@Override
 	public void showTab(Tab tab) {
-		Window.alert(">> " + tab.getText());
-
-		TabData tabData = ((TabItem) tab).getTabData();
-		TabDataExt data = (TabDataExt) tabData;
-		switch (tab.getText()) {
-		case UserPresenter.TABLABEL:
-
-			// getElement(ulNav, "usermgt")
-			// showLi(getElement(ulNav, "usermgt"), data.canReveal());
-			break;
-		}
-		// case BaseProcessPresenter.TABLABEL:
-		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
-		// break;
-		// case DashboardPresenter.TABLABEL:
-		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
-		// break;
-		// case MessagesPresenter.TABLABEL:
-		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
-		// break;
-		// case DataTablePresenter.TABLABEL:
-		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
-		// break;
-		// case DataSourcePresenter.TABLABEL:
-		// showLi(getElement(ulNav, "usermgt"), data.canReveal());
-		// break;
-		// }
 	}
 
 	private static native Element getElement(Element parent, String elementId)/*-{

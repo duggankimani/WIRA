@@ -39,7 +39,6 @@ import com.gwtplatform.mvp.client.TabView;
 import com.gwtplatform.mvp.client.annotations.ChangeTab;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;

@@ -12,7 +12,6 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.TreeType;
