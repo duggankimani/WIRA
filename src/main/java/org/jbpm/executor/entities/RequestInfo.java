@@ -53,8 +53,8 @@ public class RequestInfo extends PO {
 	private Date time;
 	@Enumerated(EnumType.STRING)
 	private ExecutionStatus status;
-	@Enumerated(EnumType.STRING)
-	private CommandCodes commandName;
+	private String commandName;
+	private String commandClass;
 	private String message;
 	// Business messageKey for callback
 	private String messageKey;
@@ -106,11 +106,11 @@ public class RequestInfo extends PO {
 		this.executions = executions;
 	}
 
-	public CommandCodes getCommandName() {
+	public String getCommandName() {
 		return commandName;
 	}
 
-	public void setCommandName(CommandCodes commandName) {
+	public void setCommandName(String commandName) {
 		this.commandName = commandName;
 	}
 
@@ -237,7 +237,7 @@ public class RequestInfo extends PO {
 
 	public RequestInfoDto toDto() {
 		RequestInfoDto dto = new RequestInfoDto();
-		dto.setCommandName(commandName.name());
+		dto.setCommandName(commandName);
 		dto.setExecutions(executions);
 		dto.setId(id);
 		dto.setMessage(message);
@@ -294,6 +294,14 @@ public class RequestInfo extends PO {
 		dto.setErrorInfo(errorDtos);
 
 		return dto;
+	}
+
+	public String getCommandClass() {
+		return commandClass;
+	}
+
+	public void setCommandClass(String commandClass) {
+		this.commandClass = commandClass;
 	}
 
 }

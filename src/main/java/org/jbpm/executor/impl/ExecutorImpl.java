@@ -25,6 +25,7 @@ import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.Executor;
+import org.jbpm.executor.api.CommandCode;
 import org.jbpm.executor.commands.SendMailCommand;
 import org.jbpm.executor.entities.RequestInfo;
 
@@ -95,7 +96,7 @@ public class ExecutorImpl implements Executor {
 		scheduler.execute(new ExecutorRunnable());
 	}
 
-	public synchronized Long scheduleRequest(CommandCodes commandId,
+	public synchronized Long scheduleRequest(CommandCode commandId,
 			CommandContext ctx) {
 		EntityManager em = DB.getEntityManager();
 		long start = System.currentTimeMillis();
@@ -104,7 +105,8 @@ public class ExecutorImpl implements Executor {
 		}
 		String businessKey = (String) ctx.getData("businessKey");
 		RequestInfo requestInfo = new RequestInfo();
-		requestInfo.setCommandName(commandId);
+		requestInfo.setCommandName(commandId.name());
+		requestInfo.setCommandClass(commandId.getClass().getName());
 		requestInfo.setKey(businessKey);
 		requestInfo.setStatus(ExecutionStatus.QUEUED);
 		requestInfo.setMessage("Ready to execute");
