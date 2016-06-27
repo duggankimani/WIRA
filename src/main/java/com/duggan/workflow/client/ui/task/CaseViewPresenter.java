@@ -5,8 +5,6 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.shared.model.MODE;
@@ -38,8 +36,7 @@ public class CaseViewPresenter extends AbstractTaskPresenter<CaseViewPresenter.I
 	
 	@Inject
 	public CaseViewPresenter(EventBus eventBus, ICaseView view,
-			ICaseViewProxy proxy, Provider<CreateDocPresenter> docProvider,
-			Provider<GenericFormPresenter> formProvider,
+			ICaseViewProxy proxy,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, docViewProvider,

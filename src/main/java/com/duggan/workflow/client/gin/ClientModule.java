@@ -1,19 +1,17 @@
 package com.duggan.workflow.client.gin;
 
-import com.duggan.workflow.client.place.WiraPlaceManager;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.place.WiraPlaceManager;
 import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.reports.ReportsView;
 import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.MainPagePresenter;
-import com.duggan.workflow.client.ui.MainPageView;
+import com.duggan.workflow.client.ui.ApplicationPresenter;
+import com.duggan.workflow.client.ui.ApplicationView;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesPresenter;
 import com.duggan.workflow.client.ui.activityfeed.ActivitiesView;
 import com.duggan.workflow.client.ui.addDoc.DocTypesPresenter;
 import com.duggan.workflow.client.ui.addDoc.DocTypesView;
-import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
-import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemView;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.AdminHomeView;
 import com.duggan.workflow.client.ui.admin.TabPanel;
@@ -51,8 +49,6 @@ import com.duggan.workflow.client.ui.admin.process.ProcessView;
 import com.duggan.workflow.client.ui.admin.processes.ProcessListingModule;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSaveView;
-import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
-import com.duggan.workflow.client.ui.admin.processitem.ProcessItemView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsView;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessModule;
@@ -64,14 +60,8 @@ import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPrese
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerView;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserView;
-import com.duggan.workflow.client.ui.admin.users.groups.GroupPresenter;
-import com.duggan.workflow.client.ui.admin.users.groups.GroupView;
-import com.duggan.workflow.client.ui.admin.users.item.UserItemPresenter;
-import com.duggan.workflow.client.ui.admin.users.item.UserItemView;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
-import com.duggan.workflow.client.ui.docActivity.DocumentActivityPresenter;
-import com.duggan.workflow.client.ui.docActivity.DocumentActivityView;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentView;
 import com.duggan.workflow.client.ui.error.ErrorPagePresenter;
@@ -96,10 +86,6 @@ import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupView;
 import com.duggan.workflow.client.ui.profile.ProfilePresenter;
 import com.duggan.workflow.client.ui.profile.ProfileView;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.save.CreateDocView;
-import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
-import com.duggan.workflow.client.ui.save.form.GenericFormView;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
 import com.duggan.workflow.client.ui.task.CaseRegistryView;
 import com.duggan.workflow.client.ui.task.CaseView;
@@ -120,16 +106,12 @@ import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupView;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemPresenter;
 import com.duggan.workflow.client.ui.tasklistitem.TaskItemView;
-import com.duggan.workflow.client.ui.toolbar.ToolbarPresenter;
-import com.duggan.workflow.client.ui.toolbar.ToolbarView;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentView;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentView;
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.ui.upload.href.IFrameDataView;
-import com.duggan.workflow.client.ui.user.UserSelectionPresenter;
-import com.duggan.workflow.client.ui.user.UserSelectionView;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.shared.model.Version;
@@ -173,8 +155,8 @@ public class ClientModule extends AbstractPresenterModule {
 		install(new ProcessListingModule());
 //		install(new FileExplorerModule());
 
-		bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class,
-				MainPageView.class, MainPagePresenter.MyProxy.class);
+		bindPresenter(ApplicationPresenter.class, ApplicationPresenter.MyView.class,
+				ApplicationView.class, ApplicationPresenter.MyProxy.class);
 
 		bindPresenter(HomePresenter.class, HomePresenter.IHomeView.class,
 				HomeView.class, HomePresenter.MyProxy.class);
@@ -184,12 +166,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);
-
-		bindPresenterWidget(ToolbarPresenter.class,
-				ToolbarPresenter.MyView.class, ToolbarView.class);
-
-		bindPresenterWidget(CreateDocPresenter.class,
-				CreateDocPresenter.ICreateDocView.class, CreateDocView.class);
 
 		bindPresenter(ErrorPagePresenter.class,
 				ErrorPagePresenter.MyView.class, ErrorPageView.class,
@@ -224,9 +200,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(AttachmentPresenter.class,
 				AttachmentPresenter.IAttachmentView.class, AttachmentView.class);
 
-		bindPresenterWidget(UserSelectionPresenter.class,
-				UserSelectionPresenter.MyView.class, UserSelectionView.class);
-
 		bindPresenterWidget(UploadDocumentPresenter.class,
 				UploadDocumentPresenter.MyView.class, UploadDocumentView.class);
 
@@ -241,9 +214,6 @@ public class ClientModule extends AbstractPresenterModule {
 				ProcessSavePresenter.IProcessSaveView.class,
 				ProcessSaveView.class);
 
-		bindPresenterWidget(ProcessItemPresenter.class,
-				ProcessItemPresenter.MyView.class, ProcessItemView.class);
-
 		bindPresenter(ProcessPresenter.class,
 				ProcessPresenter.IProcessView.class, ProcessView.class,
 				ProcessPresenter.MyProxy.class);
@@ -255,12 +225,6 @@ public class ClientModule extends AbstractPresenterModule {
 				DashboardPresenter.IDashboardView.class, DashboardView.class,
 				DashboardPresenter.MyProxy.class);
 		
-		bindPresenterWidget(UserItemPresenter.class,
-				UserItemPresenter.MyView.class, UserItemView.class);
-
-		bindPresenterWidget(GroupPresenter.class, GroupPresenter.MyView.class,
-				GroupView.class);
-
 		bindPresenter(FormBuilderPresenter.class,
 				FormBuilderPresenter.IFormBuilderView.class,
 				FormBuilderView.class, FormBuilderPresenter.MyProxy.class);
@@ -271,19 +235,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(GenericPopupPresenter.class,
 				GenericPopupPresenter.MyView.class, GenericPopupView.class);
 
-		bindPresenterWidget(GenericFormPresenter.class,
-				GenericFormPresenter.ICreateDocView.class,
-				GenericFormView.class);
-
 		bindPresenterWidget(DocTypesPresenter.class,
 				DocTypesPresenter.MyView.class, DocTypesView.class);
-
-		bindPresenterWidget(DocTypeItemPresenter.class,
-				DocTypeItemPresenter.MyView.class, DocTypeItemView.class);
-
-		bindPresenterWidget(DocumentActivityPresenter.class,
-				DocumentActivityPresenter.MyView.class,
-				DocumentActivityView.class);
 
 		bindPresenterWidget(IFrameDataPresenter.class,
 				IFrameDataPresenter.IFrameView.class, IFrameDataView.class);

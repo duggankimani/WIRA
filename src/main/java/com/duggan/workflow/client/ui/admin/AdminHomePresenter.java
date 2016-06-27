@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.admin;
 
-import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -59,7 +59,7 @@ public class AdminHomePresenter
 	public AdminHomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy, SLOT_SetTabContent, SLOT_RequestTabs,
-				SLOT_ChangeTab,MainPagePresenter.CONTENT_SLOT);
+				SLOT_ChangeTab,ApplicationPresenter.CONTENT_SLOT);
 	}
 	
 	@Override

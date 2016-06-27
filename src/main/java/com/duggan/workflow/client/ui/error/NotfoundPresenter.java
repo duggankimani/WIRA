@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.error;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
@@ -35,7 +35,7 @@ public class NotfoundPresenter extends
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
+		RevealContentEvent.fire(this, ApplicationPresenter.CONTENT_SLOT, this);
 	}
 
 	@Override

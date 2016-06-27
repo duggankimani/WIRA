@@ -51,7 +51,6 @@ import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
@@ -277,14 +276,13 @@ public class GenericDocumentPresenter extends
 	@Inject
 	private DispatchAsync requestHelper;
 
-	private IndirectProvider<CreateDocPresenter> createDocProvider;
 	private IndirectProvider<CommentPresenter> commentPresenterFactory;
 	private IndirectProvider<AttachmentPresenter> attachmentPresenterFactory;
 	private IndirectProvider<NotePresenter> notePresenterFactory;
 	private IndirectProvider<UploadDocumentPresenter> uploaderFactory;
 	private MODE globalFormMode;// Form Mode; can be set on set
 
-	// @Inject static MainPagePresenter mainPagePresenter;
+	// @Inject static ApplicationPresenter ApplicationPresenter;
 	@Inject
 	static GenericPopupPresenter popupPresenter;
 
@@ -295,15 +293,12 @@ public class GenericDocumentPresenter extends
 
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
-			Provider<CreateDocPresenter> docProvider,
 			Provider<CommentPresenter> commentProvider,
 			Provider<AttachmentPresenter> attachmentProvider,
 			Provider<NotePresenter> noteProvider,
 			Provider<UploadDocumentPresenter> uploaderProvider) {
 		super(eventBus, view);
 		ENV.clear();
-		createDocProvider = new StandardProvider<CreateDocPresenter>(
-				docProvider);
 		commentPresenterFactory = new StandardProvider<CommentPresenter>(
 				commentProvider);
 		attachmentPresenterFactory = new StandardProvider<AttachmentPresenter>(
@@ -1248,20 +1243,6 @@ public class GenericDocumentPresenter extends
 					}
 				});
 
-	}
-
-	protected void showEditForm(final MODE mode) {
-
-		createDocProvider.get(new ServiceCallback<CreateDocPresenter>() {
-			@Override
-			public void processResult(CreateDocPresenter result) {
-				if (mode.equals(MODE.EDIT)) {
-					result.setDocRefId(docRefId);
-				}
-
-				addToPopupSlot(result, true);
-			}
-		});
 	}
 
 	private void clear() {

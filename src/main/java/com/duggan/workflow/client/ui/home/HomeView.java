@@ -1,8 +1,5 @@
 package com.duggan.workflow.client.ui.home;
 
-import static com.duggan.workflow.client.ui.home.HomePresenter.DOCPOPUP_SLOT;
-import static com.duggan.workflow.client.ui.home.HomePresenter.DOCTREE_SLOT;
-
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
@@ -53,6 +50,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	public HomeView(final Binder binder, HomeTabPanel panel) {
 		this.tabPanel = panel;
 		widget = binder.createAndBindUi(this);
+		bindSlot(HomePresenter.DOCTREE_SLOT, panelDocTree);
 		btnAdd.getElement().setId("startprocess");
 		btnAdd.addClickHandler(new ClickHandler() {
 
@@ -148,17 +146,14 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			if (content != null) {
 				tabContent.add(content);
 			}
-		} else if (slot == DOCPOPUP_SLOT) {
-			divDocPopup.clear();
-			if (content != null) {
-				divDocPopup.add(content);
-			}
-		} else if (slot == DOCTREE_SLOT) {
-			panelDocTree.clear();
-			if (content != null) {
-				panelDocTree.add(content);
-			}
-		} else {
+		} 
+//		else if (slot == DOCPOPUP_SLOT) {
+//			divDocPopup.clear();
+//			if (content != null) {
+//				divDocPopup.add(content);
+//			}
+//		} 
+		else {
 			super.setInSlot(slot, content);
 		}
 

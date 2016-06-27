@@ -20,7 +20,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 public class AppManager {
 
 	@Inject
-	static MainPagePresenter mainPagePresenter;
+	static ApplicationPresenter ApplicationPresenter;
 	
 	@Inject
 	static PropertyPanelPresenter propertyPanel;
@@ -52,7 +52,7 @@ public class AppManager {
 	public static void showPopUp(String header, Widget widget,final String customPopupStyle,
 			final OnOptionSelected onOptionSelected,PopupType type, String... buttons) {
 		
-		final ModalPopup modalPopup = mainPagePresenter.getView().getModalPopup(true);
+		final ModalPopup modalPopup = ApplicationPresenter.getView().getModalPopup(true);
 		modalPopup.clear();
 		
 		if(type== PopupType.FULLPAGE){
@@ -161,7 +161,7 @@ public class AppManager {
 	}
 
 	public static void hidePopup() {
-		final ModalPopup modalPopup = mainPagePresenter.getView().getModalPopup(false);
+		final ModalPopup modalPopup = ApplicationPresenter.getView().getModalPopup(false);
 		if(modalPopup!=null){
 			modalPopup.hide();
 		}

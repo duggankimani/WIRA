@@ -3,19 +3,14 @@ package com.duggan.workflow.client.ui.addDoc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.addDoc.doctypeitem.DocTypeItemPresenter;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.common.client.IndirectProvider;
-import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
@@ -24,8 +19,6 @@ public class DocTypesPresenter extends
 		PresenterWidget<DocTypesPresenter.MyView> {
 	
 	public static final Object DOCITEM_SLOT = new Object();
-	
-	IndirectProvider<DocTypeItemPresenter> docTypeFactory;
 	
 	@Inject
 	DispatchAsync requestHelper;
@@ -40,9 +33,8 @@ public class DocTypesPresenter extends
 	}
 	
 	@Inject
-	public DocTypesPresenter(final EventBus eventBus, final MyView view, Provider<DocTypeItemPresenter> docTypeProvider) {
+	public DocTypesPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
-		docTypeFactory = new StandardProvider<DocTypeItemPresenter>(docTypeProvider);
 	}	
 	
 	@Override

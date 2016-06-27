@@ -14,11 +14,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
+public class ApplicationView extends ViewImpl implements ApplicationPresenter.MyView {
 
 	private final Widget widget;
 
-	public interface Binder extends UiBinder<Widget, MainPageView> {
+	public interface Binder extends UiBinder<Widget, ApplicationView> {
 	}
 
 	@UiField
@@ -54,7 +54,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	};
 
 	@Inject
-	public MainPageView(final Binder binder) {
+	public ApplicationView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		loadingtext.setId("loading-text");
 		popoverPanel.add(popup);
@@ -67,13 +67,13 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {
-		if (slot == MainPagePresenter.HEADER_content) {
+		if (slot == ApplicationPresenter.HEADER_content) {
 			pHeader.clear();
 
 			if (content != null) {
 				pHeader.add(content);
 			}
-		} else if (slot == MainPagePresenter.CONTENT_SLOT) {
+		} else if (slot == ApplicationPresenter.CONTENT_SLOT) {
 			pContainer.clear();
 
 			if (content != null) {

@@ -7,8 +7,6 @@ import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent.AlertLoadHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.save.CreateDocPresenter;
-import com.duggan.workflow.client.ui.save.form.GenericFormPresenter;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.google.inject.Inject;
@@ -46,8 +44,7 @@ public class InboxPresenter
 
 	@Inject
 	public InboxPresenter(EventBus eventBus, IInboxView view,
-			InboxTaskProxy proxy, Provider<CreateDocPresenter> docProvider,
-			Provider<GenericFormPresenter> formProvider,
+			InboxTaskProxy proxy,
 			Provider<GenericDocumentPresenter> docViewProvider,
 			Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, docViewProvider, dateGroupProvider);

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.MainPagePresenter;
+import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.responses.GetErrorRequestResult;
 import com.google.web.bindery.event.shared.EventBus;
@@ -61,7 +61,7 @@ public class ErrorPagePresenter extends
 	@Override
 	protected void revealInParent() {
 		//RevealRootContentEvent.fire(this, this);
-		RevealContentEvent.fire(this, MainPagePresenter.CONTENT_SLOT, this);
+		RevealContentEvent.fire(this, ApplicationPresenter.CONTENT_SLOT, this);
 	}
 
 	@Override

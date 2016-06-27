@@ -5,7 +5,6 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
-import com.duggan.workflow.client.ui.admin.processitem.ProcessItemPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
@@ -62,7 +61,6 @@ public class ProcessPresenter extends
 	public ProcessPresenter(final EventBus eventBus, final IProcessView view,
 			final MyProxy proxy,
 			Provider<ProcessSavePresenter> addprocessProvider,
-			Provider<ProcessItemPresenter> columnProvider,
 			Provider<ProcessStepsPresenter> taskStepsProvider) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 		taskStepsFactory = new StandardProvider<ProcessStepsPresenter>(

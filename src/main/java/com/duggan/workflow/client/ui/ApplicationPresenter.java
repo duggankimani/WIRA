@@ -46,8 +46,8 @@ import com.gwtplatform.mvp.client.proxy.LockInteractionHandler;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 
-public class MainPagePresenter extends
-		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> 
+public class ApplicationPresenter extends
+		Presenter<ApplicationPresenter.MyView, ApplicationPresenter.MyProxy> 
 implements ErrorHandler, ProcessingCompletedHandler, 
 ProcessingHandler ,WorkflowProcessHandler, ShowAttachmentHandler, 
 ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
@@ -64,7 +64,7 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 	}
 
 	@ProxyCodeSplit
-	public interface MyProxy extends Proxy<MainPagePresenter> {
+	public interface MyProxy extends Proxy<ApplicationPresenter> {
 	}
 
 	public static final PermanentSlot<HeaderPresenter> HEADER_content = new PermanentSlot<HeaderPresenter>();
@@ -80,7 +80,7 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 	@Inject IFrameDataPresenter presenter;
 	
 	@Inject
-	public MainPagePresenter(final EventBus eventBus, final MyView view,
+	public ApplicationPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy,RevealType.Root);
 	}
