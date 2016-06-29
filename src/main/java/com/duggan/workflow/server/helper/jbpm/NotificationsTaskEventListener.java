@@ -289,7 +289,7 @@ public class NotificationsTaskEventListener implements
 		taskData.putAll(newValues);
 
 		Document doc = DocumentDaoHelper.getDocument(newValues);
-		new CustomEmailHandler().sendNotification(notification, doc, taskData);
+		JBPMHelper.get().getEmailHandler().sendNotification(notification, doc, taskData);
 		new CustomNotificationHandler().generate(taskData,
 				NotificationType.APPROVALREQUEST_OWNERNOTE);
 		new CustomNotificationHandler().generate(taskData,

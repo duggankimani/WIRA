@@ -25,7 +25,7 @@ import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.StringValue;
 
-public class CustomEmailHandler {
+public class CustomEmailHandler implements EmailHandler {
 
 	private static Logger log = Logger.getLogger(CustomEmailHandler.class);
 	

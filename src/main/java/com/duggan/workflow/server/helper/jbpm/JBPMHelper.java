@@ -89,6 +89,7 @@ public class JBPMHelper implements Closeable {
 
 	private WiraSessionManager sessionManager;
 	private static JBPMHelper helper;
+	private EmailHandler emailHandler = new CustomEmailHandler();
 	static Logger logger = Logger.getLogger(JBPMHelper.class);
 
 
@@ -1544,6 +1545,14 @@ public class JBPMHelper implements Closeable {
 			counts.put(row[0].toString(), ((Number) row[1]).intValue());
 		}
 
+	}
+
+	public EmailHandler getEmailHandler() {
+		return emailHandler;
+	}
+
+	public void setEmailHandler(EmailHandler emailHandler) {
+		this.emailHandler = emailHandler;
 	}
 
 }

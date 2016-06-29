@@ -68,6 +68,8 @@ public class EmailServiceHelper {
 					.getSettingValue(SETTINGNAME.SMTP_PROTOCOL);
 			Object starttls = SettingsDaoHelper
 					.getSettingValue(SETTINGNAME.SMTP_STARTTLS);
+			Object organizationName = SettingsDaoHelper
+					.getSettingValue(SETTINGNAME.ORGNAME);
 
 			props.setProperty(SETTINGNAME.SMTP_AUTH.getKey(),
 					auth == null ? null : auth.toString());
@@ -83,6 +85,8 @@ public class EmailServiceHelper {
 					protocol == null ? null : protocol.toString());
 			props.setProperty(SETTINGNAME.SMTP_STARTTLS.getKey(),
 					starttls == null ? null : starttls.toString());
+			props.setProperty(SETTINGNAME.ORGNAME.getKey(),
+					organizationName == null ? null : organizationName.toString());
 
 			for (Object prop : props.keySet()) {
 				if (prop.equals(SETTINGNAME.SMTP_PASSWORD.getKey())) {
@@ -149,7 +153,7 @@ public class EmailServiceHelper {
 
 			String rootFolder = "com/duggan/workflow/server/helper/email";
 
-			{
+			if(body.contains("imageLogo")){
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getSettingImage(SETTINGNAME.ORGLOGO), "<imageLogo>",
 						rootFolder + "/logo.png");
@@ -158,14 +162,14 @@ public class EmailServiceHelper {
 				}
 			}
 
-			if (initiatorId != null) {
+			if (initiatorId != null && body.contains("imageUser")) {
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getUserImage(initiatorId.getUserId()), "<imageUser>",
 						rootFolder + "/blueman(small).png");
 				if (part != null) {
 					multipart.addBodyPart(part);
 				}
-			} else {
+			} else if(body.contains("imageUser")){
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getUserImage("RD2D-doesnt-exist"), "<imageUser>",
 						rootFolder + "/blueman(small).png");
@@ -223,8 +227,14 @@ public class EmailServiceHelper {
 		initProperties();
 		assert session != null;
 		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress("WIRA BPM", getProperties()
-				.getProperty("mail.smtp.from")));
+//		message.setFrom(new InternetAddress("WIRA BPM", getProperties()
+//				.getProperty("mail.smtp.from")));
+		
+		message.setFrom(new InternetAddress(getProperties().getProperty(
+				"mail.smtp.from"), props.getProperty(SETTINGNAME.ORGNAME
+				.getKey()) == null ? "WIRA BPMS" : props
+				.getProperty(SETTINGNAME.ORGNAME.getKey())));
+
 
 		String[] emails = recipient.split(",");
 		InternetAddress dests[] = new InternetAddress[emails.length];
@@ -243,7 +253,7 @@ public class EmailServiceHelper {
 
 			String rootFolder = "com/duggan/workflow/server/helper/email";
 
-			{
+			if(body.contains("imageLogo")){
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getSettingImage(SETTINGNAME.ORGLOGO), "<imageLogo>",
 						rootFolder + "/logo.png");
@@ -252,7 +262,7 @@ public class EmailServiceHelper {
 					multipart.addBodyPart(part);
 			}
 
-			if (initiatorId != null) {
+			if (initiatorId != null && body.contains("imageUser")) {
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getUserImage(initiatorId), "<imageUser>", rootFolder
 						+ "/blueman(small).png");
@@ -260,7 +270,7 @@ public class EmailServiceHelper {
 				if (part != null)
 					multipart.addBodyPart(part);
 
-			} else {
+			} else if(body.contains("imageUser")){
 				MimeBodyPart part = getBodyType(DB.getAttachmentDao()
 						.getUserImage(initiatorId), "<imageUser>", rootFolder
 						+ "/blueman(small).png");

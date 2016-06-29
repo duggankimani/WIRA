@@ -17,6 +17,7 @@ import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Document;
@@ -79,7 +80,7 @@ public class CommentDaoHelper {
 			params.put("commentDate", new Date());
 			params.put("initiator", SessionHelper.getCurrentUser());
 			params.put("Body", comment.getComment());
-			new CustomEmailHandler().sendMail(htmlTemplate, doc, recipients, params);
+			JBPMHelper.get().getEmailHandler().sendMail(htmlTemplate, doc, recipients, params);
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -18,7 +18,7 @@ import com.duggan.workflow.shared.model.NotificationType;
 
 public class CustomNotificationHandler {
 
-	private static Logger logger = Logger.getLogger(CustomEmailHandler.class);
+	private static Logger logger = Logger.getLogger(CustomNotificationHandler.class);
 	
 	public void generate(Map<String, Object> params,NotificationType type) {
 		
