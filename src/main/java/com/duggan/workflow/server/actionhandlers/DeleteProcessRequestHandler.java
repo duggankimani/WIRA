@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
@@ -19,7 +19,7 @@ public class DeleteProcessRequestHandler extends
 	public void execute(DeleteProcessRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		ProcessDefHelper.delete(action.getProcessId());
+		ProcessDaoHelper.delete(action.getProcessId());
 		
 	}
 	

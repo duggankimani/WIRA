@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class ADProcessCategory extends PO{
@@ -18,17 +20,22 @@ public class ADProcessCategory extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	private String name;
 	
+	@XmlAttribute
 	private String index;
 	
+	@XmlTransient
 	@OneToMany
 	private Set<ADDocType> docTypes = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany
 	private Set<CatalogModel> catalogs = new HashSet<>(); 
 

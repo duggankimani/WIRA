@@ -9,7 +9,7 @@ import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Actions;
@@ -49,7 +49,7 @@ public class AssignmentTaskEventListener implements TaskEventListener {
 			ProcessDefModel model = DB.getProcessDao().getProcessDef(
 					task.getTaskData().getProcessId());
 
-			AssignmentDto assignment = ProcessDefHelper.getAssignment(
+			AssignmentDto assignment = ProcessDaoHelper.getAssignment(
 					model.getRefId(), taskNode.getId());
 			if (assignment == null) {
 				return;

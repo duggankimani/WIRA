@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.requests.SaveAssignmentRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -20,7 +20,7 @@ public class SaveAssignmentRequestHandler extends
 	public void execute(SaveAssignmentRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		AssignmentDto assignment = action.getAssignmentDto();
-		AssignmentDto dto = ProcessDefHelper.create(assignment);
+		AssignmentDto dto = ProcessDaoHelper.create(assignment);
 		((SaveAssignmentResponse)actionResult).setAssignment(assignment);
 	}
 

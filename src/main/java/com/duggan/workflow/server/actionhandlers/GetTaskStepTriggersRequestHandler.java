@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.requests.GetTaskStepTriggersRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -25,7 +25,7 @@ public class GetTaskStepTriggersRequestHandler extends
 			throws ActionException {
 		
 		List<TaskStepTrigger> triggers =  
-				ProcessDefHelper.getTaskStepTriggers(action.getTaskStepId(),action.getTriggerType());
+				ProcessDaoHelper.getTaskStepTriggers(action.getTaskStepId(),action.getTriggerType());
 		
 		((GetTaskStepTriggersResponse)actionResult).setTriggers((ArrayList<TaskStepTrigger>) triggers);
 	}

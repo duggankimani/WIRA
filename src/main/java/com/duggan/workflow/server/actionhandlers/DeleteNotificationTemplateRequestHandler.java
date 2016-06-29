@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.requests.DeleteNotificationTemplateRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
@@ -19,7 +19,7 @@ public class DeleteNotificationTemplateRequestHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		ProcessDefHelper.deleteTaskNotification(action.getNotificationId());
+		ProcessDaoHelper.deleteTaskNotification(action.getNotificationId());
 	}
 
 }

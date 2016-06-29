@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.requests.SaveTaskStepTriggerRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -21,7 +21,7 @@ public class SaveTaskStepTriggerRequestHandler
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		TaskStepTrigger trigger = ProcessDefHelper.saveTaskStepTrigger(action.getTaskStepTrigger());
+		TaskStepTrigger trigger = ProcessDaoHelper.saveTaskStepTrigger(action.getTaskStepTrigger());
 		((SaveTaskStepTriggerResponse)actionResult).setTaskStepTrigger(trigger);
 	}
 	

@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -26,12 +26,12 @@ public class GetTaskStepsRequestHandler extends
 		List<TaskStepDTO> steps = new ArrayList<>();
 		if(action.getProcessId()==null){
 			if(action.getTaskId()!=null){
-				steps = ProcessDefHelper.getTaskStepsByTaskId(action.getTaskId());
+				steps = ProcessDaoHelper.getTaskStepsByTaskId(action.getTaskId());
 			}else if(action.getDocumentId()!=null){
-				steps = ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
+				steps = ProcessDaoHelper.getTaskStepsByDocumentId(action.getDocumentId());
 			}
 		}else{
-			steps = ProcessDefHelper.getSteps(action.getProcessId(), action.getNodeId());
+			steps = ProcessDaoHelper.getSteps(action.getProcessId(), action.getNodeId());
 		}
 		
 		((GetTaskStepsResponse)actionResult).setSteps((ArrayList<TaskStepDTO>) steps);

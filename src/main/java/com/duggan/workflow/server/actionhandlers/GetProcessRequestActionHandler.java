@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -23,9 +23,9 @@ public class GetProcessRequestActionHandler extends
 		
 		ProcessDef process = null;
 		if(processDefId!=null){
-			process = ProcessDefHelper.getProcessDef(processDefId);
+			process = ProcessDaoHelper.getProcessDef(processDefId);
 		}else if(action.getProcessRefId()!=null){
-			process = ProcessDefHelper.getProcessDef(action.getProcessRefId());
+			process = ProcessDaoHelper.getProcessDef(action.getProcessRefId());
 		}
 		
 		GetProcessResponse response = (GetProcessResponse)actionResult;

@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -22,7 +22,7 @@ public class SaveProcessRequestActionHandler extends
 		
 		ProcessDef def = action.getProcessDef();
 		
-		def = ProcessDefHelper.save(def);
+		def = ProcessDaoHelper.save(def);
 		
 		SaveProcessResponse response = (SaveProcessResponse)actionResult;
 		response.setProcessDef(def);

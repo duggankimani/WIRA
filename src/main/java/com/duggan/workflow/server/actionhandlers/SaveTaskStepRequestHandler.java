@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.TaskStepDTO;
@@ -24,12 +24,12 @@ public class SaveTaskStepRequestHandler extends
 	@Override
 	public void execute(SaveTaskStepRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		ProcessDefHelper.createTaskSteps(action.getSteps());
+		ProcessDaoHelper.createTaskSteps(action.getSteps());
 		
 		TaskStepDTO dto = action.getSteps().get(0);
 		
 		ProcessDefModel model = DB.getProcessDao().getProcessDef(dto.getProcessDefId());
-		List<TaskStepDTO> allSteps = ProcessDefHelper.getSteps(model.getProcessId(), dto.getNodeId());
+		List<TaskStepDTO> allSteps = ProcessDaoHelper.getSteps(model.getProcessId(), dto.getNodeId());
 		((SaveTaskStepResponse)actionResult).setList((ArrayList<TaskStepDTO>) allSteps);
 	}
 	

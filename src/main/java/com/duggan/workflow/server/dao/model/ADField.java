@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -45,9 +46,11 @@ public class ADField extends PO implements HasProperties{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
+	@XmlAttribute
 	@Column(length=255)
 	private String name;
 	
+	@XmlAttribute
 	@Column(length=255)
 	private String caption;
 	
@@ -64,10 +67,12 @@ public class ADField extends PO implements HasProperties{
 	@OneToOne(mappedBy="field", cascade=CascadeType.ALL)
 	private ADValue value;
 	
+	@XmlAttribute
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private DataType type;
 	
+	@XmlAttribute
 	private Integer position;
 	
 	@XmlTransient

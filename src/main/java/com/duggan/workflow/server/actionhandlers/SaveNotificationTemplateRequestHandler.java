@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.TaskNotification;
 import com.duggan.workflow.shared.requests.SaveNotificationTemplateRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -21,7 +21,7 @@ public class SaveNotificationTemplateRequestHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		TaskNotification notification = ProcessDefHelper.saveTaskNotification(action.getNotification());
+		TaskNotification notification = ProcessDaoHelper.saveTaskNotification(action.getNotification());
 		((SaveNotificationTemplateResult)actionResult).setNotification(notification);
 	}
 

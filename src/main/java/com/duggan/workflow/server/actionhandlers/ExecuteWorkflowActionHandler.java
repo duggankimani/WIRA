@@ -7,7 +7,7 @@ import java.util.Map;
 import org.jbpm.task.Task;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Doc;
@@ -91,7 +91,7 @@ public class ExecuteWorkflowActionHandler extends
 		
 		
 		//List of steps
-		List<TaskStepDTO> steps = ProcessDefHelper.getTaskStepsByTaskId(action.getTaskId());
+		List<TaskStepDTO> steps = ProcessDaoHelper.getTaskStepsByTaskId(action.getTaskId());
 		if(steps==null || steps.isEmpty()){
 			return action.getValues();
 		}

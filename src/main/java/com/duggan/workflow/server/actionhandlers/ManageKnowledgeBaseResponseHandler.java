@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.ManageProcessAction;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -34,7 +34,7 @@ public class ManageKnowledgeBaseResponseHandler
 			break;
 		}
 		
-		ProcessDef def = ProcessDefHelper.getProcessDef(request.getProcessDefId());
+		ProcessDef def = ProcessDaoHelper.getProcessDef(request.getProcessDefId());
 		
 		ManageKnowledgeBaseResponse response = (ManageKnowledgeBaseResponse)actionResult;
 		response.setProcessDef(def);

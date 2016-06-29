@@ -17,7 +17,7 @@ import org.mvel2.integration.VariableResolverFactory;
 import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
@@ -138,7 +138,7 @@ public class TestMvel {
 	@Ignore
 	public void scriptMvel1() throws FileNotFoundException, IOException {
 		Long taskId = 1090L;
-		List<TaskStepDTO> steps = ProcessDefHelper.getTaskStepsByTaskId(taskId);
+		List<TaskStepDTO> steps = ProcessDaoHelper.getTaskStepsByTaskId(taskId);
 
 		for (TaskStepDTO dto : steps) {
 			System.out.println(dto.getId() + " >> " + dto.getFormName());

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -35,20 +36,27 @@ public class ADValue extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	@Enumerated(EnumType.STRING)
 	private SETTINGNAME settingName;
 	
+	@XmlAttribute
 	@Column(length=5000)
 	private String stringValue;
 	
+	@XmlAttribute
 	private Boolean booleanValue;
 	
+	@XmlAttribute
 	private Long longValue;
 	
+	@XmlAttribute
 	private Double doubleValue;
 	
+	@XmlAttribute
 	private Date dateValue;
 	
+	@XmlAttribute
 	private String fieldName;
 	
 	@XmlTransient

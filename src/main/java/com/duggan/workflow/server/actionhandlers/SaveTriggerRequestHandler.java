@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.requests.SaveTriggerRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -20,7 +20,7 @@ public class SaveTriggerRequestHandler extends AbstractActionHandler<SaveTrigger
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		Trigger trigger = ProcessDefHelper.saveTrigger(action.getTrigger());
+		Trigger trigger = ProcessDaoHelper.saveTrigger(action.getTrigger());
 		((SaveTriggerResponse)actionResult).setTrigger(trigger);
 	}
 	

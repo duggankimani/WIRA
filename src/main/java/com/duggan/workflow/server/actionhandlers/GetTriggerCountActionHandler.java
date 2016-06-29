@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.TriggerType;
 import com.duggan.workflow.shared.requests.GetTriggerCountRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -23,9 +23,9 @@ public class GetTriggerCountActionHandler extends
 
 		GetTriggerCountResponse countResult = (GetTriggerCountResponse)actionResult;
 		countResult.addCount(TriggerType.BEFORESTEP, 
-				ProcessDefHelper.getTriggerCount(action.getTaskStepId(), TriggerType.BEFORESTEP));
+				ProcessDaoHelper.getTriggerCount(action.getTaskStepId(), TriggerType.BEFORESTEP));
 		countResult.addCount(TriggerType.AFTERSTEP, 
-				ProcessDefHelper.getTriggerCount(action.getTaskStepId(), TriggerType.AFTERSTEP));
+				ProcessDaoHelper.getTriggerCount(action.getTaskStepId(), TriggerType.AFTERSTEP));
 		
 	}
 	

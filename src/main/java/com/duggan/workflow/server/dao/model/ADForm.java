@@ -45,6 +45,7 @@ public class ADForm extends PO implements HasProperties{
 	@Column(length=255)
 	private String caption;
 	
+	@XmlAttribute
 	private String processRefId;
 	
 	@XmlElementWrapper(name="properties")

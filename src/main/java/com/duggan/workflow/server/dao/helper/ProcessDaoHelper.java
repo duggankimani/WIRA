@@ -3,12 +3,21 @@ package com.duggan.workflow.server.dao.helper;
 import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getType;
 import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getTypeFromProcess;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
@@ -31,6 +40,7 @@ import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
+import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.AssignmentDto;
@@ -49,9 +59,9 @@ import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
 import com.duggan.workflow.shared.model.UserGroup;
 
-public class ProcessDefHelper {
+public class ProcessDaoHelper {
 
-	static Logger log = Logger.getLogger(ProcessDefHelper.class);
+	static Logger log = Logger.getLogger(ProcessDaoHelper.class);
 
 	public static ProcessDef save(ProcessDef processDef) {
 		ProcessDaoImpl dao = DB.getProcessDao();
@@ -137,7 +147,8 @@ public class ProcessDefHelper {
 		return def;
 	}
 
-	public static List<ProcessDef> getAllProcesses(String searchTerm, boolean isLoadDetails) {
+	public static List<ProcessDef> getAllProcesses(String searchTerm,
+			boolean isLoadDetails) {
 
 		ProcessDaoImpl dao = DB.getProcessDao();
 
@@ -514,7 +525,8 @@ public class ProcessDefHelper {
 		return triggers;
 	}
 
-	public static List<Trigger> getTriggers(String processRefId, String searchTerm) {
+	public static List<Trigger> getTriggers(String processRefId,
+			String searchTerm) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
 		List<Trigger> triggers = new ArrayList<>();
@@ -764,6 +776,123 @@ public class ProcessDefHelper {
 			return getAssignment(po);
 
 		return null;
+	}
+
+	public static void exportProcess(String processRefId) {
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ProcessDefModel model = dao.getProcessDef(dao
+				.getProcessDefId(processRefId));
+		List<LocalAttachment> attachments = DB.getAttachmentDao().getAttachmentsForProcessDef(model);
+		List<LocalAttachment> images = DB.getAttachmentDao().getAttachmentsForProcessDef(model, true);
+		attachments.addAll(images);
+		
+		
+		//Steps
+		Collection<TaskStepModel> taskSteps = model.getTaskSteps();
+
+		String folder = "/home/duggan/Projects/WIRA/jaxbexport/";
+		String processXmlName = model.getName() + ".xml";
+		String attachmentsFolder = folder+"attachments/";
+		String stepsFolder = folder+"steps/";
+		String formsFolder = folder+"forms/";
+		String outputDocsFolder = folder+"outputdocs/";
+		String triggersFolder = folder+"triggers/";
+		
+		try {
+			//Attachments
+			for(LocalAttachment a: attachments){
+				model.addAttachmentName(a.getName());
+			}
+			
+			//Process
+			IOUtils.write(exportObject(model), new FileOutputStream(new File(
+					folder + processXmlName)));
+			
+			//Task Steps
+			for(TaskStepModel step: taskSteps){
+				ADForm form = step.getForm();
+				ADOutputDoc doc = step.getDoc();
+				
+				Collection<ADTaskStepTrigger> stepTriggers = step.getTaskStepTriggers();
+				log.debug("### "+step.getNodeId()+" - "+stepTriggers.size());
+//				dao.getTaskStepTriggers(step.getId(), TriggerType.BEFORESTEP);
+//				stepTriggers.addAll(dao.getTaskStepTriggers(step.getId(), TriggerType.AFTERSTEP));
+				
+				for(ADTaskStepTrigger stepTrigger: stepTriggers){
+					stepTrigger.setTriggerName(stepTrigger.getTrigger().getName());
+					log.warn(">>>"+stepTrigger.getTriggerName());
+				}
+				
+				String name = "ProcessInitiation";
+				if(form!=null){
+					name = form.getName();
+				}
+				
+				if(doc!=null){
+					name = doc.getName();
+				}
+				
+				String stepName=step.getSequenceNo()+"_"+name+".xml";
+				if(step.getNodeId()!=null){
+					stepName = step.getNodeId()+"_"+stepName;
+				}else{
+					stepName = "00"+"_"+stepName;
+				}
+				step.setFormRefId(step.getForm()==null? null:  step.getForm().getRefId());
+				step.setOutputRefId(step.getDoc()==null? null: step.getDoc().getRefId());
+				IOUtils.write(exportObject(step), new FileOutputStream(new File(
+						stepsFolder + stepName)));
+			}
+			
+			//Forms
+			List<ADForm> forms = DB.getFormDao().getAllForms(model.getId());
+			for(ADForm form: forms){
+				String name = form.getName()+".xml";
+				IOUtils.write(exportObject(form), new FileOutputStream(new File(
+						formsFolder + name)));
+			}
+			
+			List<ADOutputDoc> docs = DB.getOutputDocDao().getOutputDocuments(model.getRefId(), null);
+			for(ADOutputDoc doc: docs){
+				String name = doc.getName()+".xml";
+				IOUtils.write(exportObject(doc), new FileOutputStream(new File(
+						outputDocsFolder + name)));
+				if(doc.getAttachment()!=null){
+					attachments.add(doc.getAttachment());
+				}
+			}
+			
+			List<ADTrigger> triggers = DB.getProcessDao().getTriggers(model.getRefId(), null);
+			for(ADTrigger trigger: triggers){
+				String name = trigger.getName()+".xml";
+				IOUtils.write(exportObject(trigger), new FileOutputStream(new File(
+						triggersFolder + name)));
+			}
+			
+			//Attachments
+			for(LocalAttachment a: attachments){
+				IOUtils.write(a.getAttachment(), new FileOutputStream(new File(
+						attachmentsFolder + a.getName())));
+			}
+			
+		} catch (IOException | JAXBException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static byte[] exportObject(Object model) throws JAXBException, IOException {
+		JAXBContext context = new JaxbFormExportProviderImpl()
+				.getContext(model.getClass());
+		String out = null;
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		StringWriter writer = new StringWriter();
+		marshaller.marshal(model, writer);
+
+		out = writer.toString();
+		writer.close();
+		return out.getBytes();
 	}
 
 }

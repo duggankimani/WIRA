@@ -5,10 +5,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+@XmlRootElement(name="output")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADOutputDoc extends PO {
 
@@ -17,19 +24,26 @@ public class ADOutputDoc extends PO {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	private String name;
+	@XmlAttribute
 	private String description;
+	@XmlAttribute
 	private String code;
+	@XmlAttribute
 	private String path;
 	
+	@XmlTransient
 	@OneToOne(mappedBy="outputDoc")
 	@Cascade(value={CascadeType.ALL})
 	private LocalAttachment attachment;
 	
+	@XmlAttribute
 	private String processRefId;
 	
 	public ADOutputDoc() {

@@ -11,10 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+@XmlRootElement(name="trigger")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADTrigger extends PO{
 
@@ -23,19 +30,25 @@ public class ADTrigger extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
+	@Column(unique=true)
 	private String name;
 	
+	@XmlAttribute
 	private String processRefId;
 	
+	@XmlAttribute
 	private String imports;
 	
 	@Column(length=5000)
 	private String script;
 
+	@XmlTransient
 	@OneToMany(fetch=FetchType.LAZY)
 	@Cascade(value={CascadeType.DELETE, CascadeType.DELETE_ORPHAN, CascadeType.REMOVE})
 	Collection<ADTaskStepTrigger> steps = new HashSet<>();

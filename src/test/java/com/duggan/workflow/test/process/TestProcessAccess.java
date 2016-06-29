@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -28,12 +28,12 @@ public class TestProcessAccess {
 
 	@Test
 	public void create() {
-		ProcessDef processDef = ProcessDefHelper.getProcessDef(processDefId);
+		ProcessDef processDef = ProcessDaoHelper.getProcessDef(processDefId);
 		ArrayList<Listable> usersAndGroups = new ArrayList<>();
 		usersAndGroups.add(new HTUser("Administrator"));
 		processDef.setUsersAndGroups(usersAndGroups);
 		
-		ProcessDef processDef1 = ProcessDefHelper.save(processDef);
+		ProcessDef processDef1 = ProcessDaoHelper.save(processDef);
 		System.err.println("Accesses >> "+processDef1.getUsersAndGroups().size());
 	}
 	

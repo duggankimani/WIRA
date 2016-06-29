@@ -157,7 +157,7 @@ public class CatalogDaoHelper {
 		catalog.setFieldSource(model.getFieldSource());
 		catalog.setGridName(model.getGridName());
 		if (model.getCategory() != null) {
-			catalog.setCategory(ProcessDefHelper.get(model.getCategory()));
+			catalog.setCategory(ProcessDaoHelper.get(model.getCategory()));
 		}
 
 		List<CatalogColumn> models = new ArrayList<>();

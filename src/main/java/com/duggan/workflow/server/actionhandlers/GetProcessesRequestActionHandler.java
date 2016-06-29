@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -23,7 +23,7 @@ public class GetProcessesRequestActionHandler extends
 	public void execute(GetProcessesRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		List<ProcessDef> processes = ProcessDefHelper.getAllProcesses(action.getSearchTerm(),action.isLoadDetails());
+		List<ProcessDef> processes = ProcessDaoHelper.getAllProcesses(action.getSearchTerm(),action.isLoadDetails());
 		GetProcessesResponse response = (GetProcessesResponse)actionResult;
 		
 		response.setProcesses((ArrayList<ProcessDef>) processes);

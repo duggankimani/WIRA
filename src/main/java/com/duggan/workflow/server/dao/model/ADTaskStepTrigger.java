@@ -9,9 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.shared.model.TriggerType;
 
+@XmlRootElement(name="steptrigger")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADTaskStepTrigger extends PO{
 	/**
@@ -19,21 +27,29 @@ public class ADTaskStepTrigger extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="taskstepId", referencedColumnName="id",nullable=false)
 	private TaskStepModel taskStep;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="triggerid",referencedColumnName="id",nullable=false)
 	private ADTrigger trigger;
 	
+	@XmlAttribute
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private TriggerType type;
+	
+	@XmlAttribute
+	@Transient
+	private String triggerName;
 	
 	public ADTaskStepTrigger() {
 	}
@@ -69,4 +85,13 @@ public class ADTaskStepTrigger extends PO{
 		return other.trigger.equals(trigger) && other.taskStep.equals(taskStep);
 		
 	}
+
+	public String getTriggerName() {
+		return triggerName;
+	}
+
+	public void setTriggerName(String triggerName) {
+		this.triggerName = triggerName;
+	}
+
 }

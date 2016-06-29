@@ -2,7 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -24,7 +24,7 @@ public class GetProcessLogRequestHandler extends
 			throws ActionException {
 		
 		((GetProcessLogResponse)actionResult).setLogs(
-				(ArrayList<TaskLog>) ProcessDefHelper.getProcessLog(action.getProcessInstanceId(), "en-UK"));
+				(ArrayList<TaskLog>) ProcessDaoHelper.getProcessLog(action.getProcessInstanceId(), "en-UK"));
 	}
 
 	@Override

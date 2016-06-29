@@ -7,7 +7,7 @@ import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
 
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
@@ -51,7 +51,7 @@ public class GetFormModelRequestActionHandler extends
 			}else if(action.getTaskId()!=null){
 				//model = FormDaoHelper.getFormByName(JBPMHelper.get().getTaskName(action.getTaskId()));
 				Long taskId = action.getTaskId();
-				List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByTaskId(taskId);
+				List<TaskStepDTO> steps= ProcessDaoHelper.getTaskStepsByTaskId(taskId);
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
 					model = FormDaoHelper.getForm(step.getFormId(),true);
@@ -64,7 +64,7 @@ public class GetFormModelRequestActionHandler extends
 				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
 				
 				//List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
-				List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocRefId(action.getDocRefId());
+				List<TaskStepDTO> steps= ProcessDaoHelper.getTaskStepsByDocRefId(action.getDocRefId());
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
@@ -76,7 +76,7 @@ public class GetFormModelRequestActionHandler extends
 				
 				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
 				
-				List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
+				List<TaskStepDTO> steps= ProcessDaoHelper.getTaskStepsByDocumentId(action.getDocumentId());
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);

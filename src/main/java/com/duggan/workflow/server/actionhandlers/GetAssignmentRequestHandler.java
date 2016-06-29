@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.requests.GetAssignmentRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -20,7 +20,7 @@ public class GetAssignmentRequestHandler extends
 	public void execute(GetAssignmentRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		AssignmentDto assignment = 
-				ProcessDefHelper.getAssignment(action.getProcessRefId(),action.getNodeId());
+				ProcessDaoHelper.getAssignment(action.getProcessRefId(),action.getNodeId());
 						
 		((GetAssignmentResponse)actionResult).setAssignment(assignment);
 	}

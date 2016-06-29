@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.requests.SaveProcessCategoryRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -20,7 +20,7 @@ public class SaveProcessCategoryRequestActionHandler extends
 	public void execute(SaveProcessCategoryRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-		ProcessCategory category = ProcessDefHelper.save(action.getCategory());
+		ProcessCategory category = ProcessDaoHelper.save(action.getCategory());
 		((SaveProcessCategoryResponse)actionResult).setCategory(category);
 	}
 	

@@ -14,12 +14,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.duggan.workflow.shared.model.MODE;
 
+@XmlSeeAlso(ADTaskStepTrigger.class)
+@XmlRootElement(name="step")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class TaskStepModel extends PO {
 
@@ -27,36 +39,55 @@ public class TaskStepModel extends PO {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	private Long nodeId;//Nullable to Accommodate initial input form
 	
+	@XmlAttribute
 	private String stepName;
 	
+	@XmlAttribute
 	private int sequenceNo;
 	
+	@XmlAttribute
 	@Enumerated(EnumType.STRING)
 	private MODE mode;
 	
+	@XmlAttribute
 	private String condition;
 	
+	@XmlTransient
 	@OneToOne
 	@JoinColumn(name="formid")
 	private ADForm form;
 	
+	@XmlTransient
 	@OneToOne
 	@JoinColumn(name="outputdocid")
 	private ADOutputDoc doc;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="processDefId")
 	private ProcessDefModel processDef;
 	
-	@OneToMany(fetch=FetchType.LAZY)
+	@XmlElementWrapper(name="triggers")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="taskStep")
 	@Cascade(value={CascadeType.DELETE, CascadeType.DELETE_ORPHAN, CascadeType.REMOVE})
 	private Collection<ADTaskStepTrigger> taskStepTriggers = new HashSet<>();
+	
+	@XmlAttribute
+	@Transient
+	private String formRefId;
+	
+	@XmlAttribute
+	@Transient
+	private String outputRefId;
 	
 	public TaskStepModel() {
 	}
@@ -144,5 +175,21 @@ public class TaskStepModel extends PO {
 		taskStepTriggers.remove(trigger);
 		taskStepTriggers.add(trigger);
 	}
-	
+
+	public String getFormRefId() {
+		return formRefId;
+	}
+
+	public void setFormRefId(String formRefId) {
+		this.formRefId = formRefId;
+	}
+
+	public String getOutputRefId() {
+		return outputRefId;
+	}
+
+	public void setOutputRefId(String outputRefId) {
+		this.outputRefId = outputRefId;
+	}
+
 }

@@ -13,7 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlSeeAlso(ADProcessCategory.class)
+@XmlRootElement(name="doctype")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class ADDocType extends PO {
 
@@ -22,28 +31,36 @@ public class ADDocType extends PO {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	@Column(unique=true)
 	private String name;
 	
+	@XmlAttribute
 	private String display;
 	
+	@XmlAttribute
 	private String className;
 	
+	@XmlTransient
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
 	private Collection<DocumentModel> documents = new HashSet<>();
 	
+	@XmlTransient
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="processDefId", referencedColumnName="id")
 	private ProcessDefModel processDef;
 	
 	//last assigned number
 	//add 1 to this to get the next num
+	@XmlTransient
 	private Integer lastNum;
 	
+	@XmlAttribute
 	private String subjectFormat;
 	
 	@ManyToOne

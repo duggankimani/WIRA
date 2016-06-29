@@ -25,6 +25,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
@@ -129,7 +134,8 @@ columns={
 })
 
 })
-
+@XmlRootElement(name="attachment")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LocalAttachment extends PO{
 
 	/**
@@ -137,36 +143,48 @@ public class LocalAttachment extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@XmlAttribute
 	private String name;
 	
+	@XmlAttribute
 	private AttachmentType type = AttachmentType.UPLOADED;
 	
+	@XmlAttribute
 	private long size;
 	
+	@XmlAttribute
 	private String contentType;
 	
+	@XmlAttribute
 	@Enumerated(EnumType.STRING)
 	private SETTINGNAME settingName;
 
+	@XmlTransient
 	@Basic(fetch=FetchType.LAZY)
 	@Lob
 	private byte[] attachment;
 	
+	@XmlAttribute
 	private boolean archived;
 	
+	@XmlAttribute
 	private Integer isDirectory=0;
 	
 	//This is meant for output documents - eg Requisitions/HR/REQ-IPA-009-14.pdf
 	//This will be used to dynamically generate the document tree in the front end
+	@XmlAttribute
 	private String path;
 
 	//UserId=Username
+	@XmlAttribute
 	private String imageUserId;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="documentId",referencedColumnName="id")
 	private DocumentModel document;
@@ -174,21 +192,26 @@ public class LocalAttachment extends PO{
 	//Form Field Name; against which this file was uploaded
 	private String fieldName;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="processDefId", referencedColumnName="id")
 	private ProcessDefModel processDef;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="processDefIdImage", referencedColumnName="id")
 	private ProcessDefModel processDefImage;
 	
+	@XmlTransient
 	@OneToOne(fetch=FetchType.LAZY)
 	private ADOutputDoc outputDoc;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="parentid")
 	private LocalAttachment parent;
 	
+	@XmlTransient
 	@OneToMany(fetch=FetchType.LAZY, cascade= {CascadeType.REMOVE}, mappedBy="parent")
 	private Set<LocalAttachment>  children = new HashSet<LocalAttachment>();
 

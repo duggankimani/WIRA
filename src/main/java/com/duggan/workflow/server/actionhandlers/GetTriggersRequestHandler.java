@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.server.dao.helper.ProcessDefHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
 import com.duggan.workflow.shared.responses.BaseResponse;
@@ -26,9 +26,9 @@ public class GetTriggersRequestHandler extends
 		List<Trigger> triggers = null;
 
 		if (action.getProcessRefId()!=null) {
-			triggers = ProcessDefHelper.getTriggers(action.getProcessRefId(),action.getSearchTerm());
+			triggers = ProcessDaoHelper.getTriggers(action.getProcessRefId(),action.getSearchTerm());
 		} else {
-			triggers = ProcessDefHelper.getTriggers();
+			triggers = ProcessDaoHelper.getTriggers();
 		}
 
 		((GetTriggersResponse) actionResult).setTriggers((ArrayList<Trigger>) triggers);

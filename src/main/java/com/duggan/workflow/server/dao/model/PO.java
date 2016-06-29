@@ -9,6 +9,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -24,8 +26,8 @@ public abstract class PO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlAttribute
 	@Column(nullable=false, unique=true, updatable=false, length=45)
-    //@Index(name="idx_ref_id")
 	protected String refId;
 	
 	@XmlTransient
