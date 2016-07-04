@@ -118,9 +118,9 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 	public void onError(final ErrorEvent event) {
 		//addToPopupSlot(null);
 		
-		HTMLPanel panel = new HTMLPanel(event.getMessage());
-		Anchor anchor = new Anchor("View");
-		anchor.setHref("#error;errorid="+event.getId());
+		HTMLPanel panel = new HTMLPanel(event.getMessage()+"&nbsp;&nbsp;");
+		Anchor anchor = new Anchor("View Detail");
+		anchor.setHref("#/error?errorid="+event.getId());
 		panel.add(anchor);
 		anchor.addClickHandler(new ClickHandler() {
 			

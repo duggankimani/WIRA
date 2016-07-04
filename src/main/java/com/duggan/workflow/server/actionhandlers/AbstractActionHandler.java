@@ -3,6 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -125,7 +126,9 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			baseResult.setErrorCode(1);
 			baseResult.setErrorId(errorId);
 			
-			if(throwable.getMessage()==null){
+			String message = ExceptionUtils.getRootCauseMessage(throwable);
+			
+			if(message==null){
 				baseResult.setErrorMessage("An error occurred during processing of your request");
 			}else{
 				log.error("Throwable : "+throwable.getMessage());
@@ -139,8 +142,11 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 					baseResult.setErrorMessage(e.getMessage());
 				}else{
 					throwable.printStackTrace();
-					baseResult.setErrorMessage("We could not complete your request due to an error: "
-					+throwable.getMessage());
+					if(message!=null && !message.isEmpty()){
+						baseResult.setErrorMessage("We could not complete your request due to an error: <b>"+message+"</b>");
+					}else{
+						baseResult.setErrorMessage("We could not complete your request due to an error");	
+					}
 				}
 				
 			}
