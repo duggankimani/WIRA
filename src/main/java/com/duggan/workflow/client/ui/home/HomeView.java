@@ -50,7 +50,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	public HomeView(final Binder binder, HomeTabPanel panel) {
 		this.tabPanel = panel;
 		widget = binder.createAndBindUi(this);
-		bindSlot(HomePresenter.DOCTREE_SLOT, panelDocTree);
+		bindSlot(HomePresenter.DOCTREE_SLOT, divDocPopup);
 		btnAdd.getElement().setId("startprocess");
 		btnAdd.addClickHandler(new ClickHandler() {
 

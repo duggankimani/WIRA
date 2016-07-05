@@ -9,6 +9,7 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -37,9 +38,7 @@ public class DocTypesPresenter extends
 		super(eventBus, view);
 	}	
 	
-	@Override
-	protected void onReveal() {
-		super.onReveal();
+	public void load(){
 		GetDocumentTypesRequest req=new GetDocumentTypesRequest();
 		requestHelper.execute(req,new TaskServiceCallback<GetDocumentTypesResponse>() {
 			@Override
@@ -67,6 +66,12 @@ public class DocTypesPresenter extends
 				setDocumentItems(types);
 			}
 		});
+	}
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		load();
 	}
 	
 	public void setDocumentItems(ArrayList<DocumentType> types){

@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.home;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.ui.addDoc.DocTypesPresenter;
@@ -33,7 +34,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.RequestTabs;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
-import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
+import com.gwtplatform.mvp.client.presenter.slots.PermanentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -74,7 +75,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
      */
     public static final NestedSlot SLOT_SetTabContent = new NestedSlot();
     
-    public static final SingleSlot<DocTypesPresenter> DOCTREE_SLOT = new SingleSlot<DocTypesPresenter>();
+    public static final PermanentSlot<DocTypesPresenter> DOCTREE_SLOT = new PermanentSlot<DocTypesPresenter>();
 		
 	@Inject DocTypesPresenter docPopup;
 	
@@ -97,11 +98,17 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		addRegisteredHandler(CreateDocumentEvent.TYPE, this);
 		addRegisteredHandler(ContextLoadedEvent.getType(), this);
+		setInSlot(DOCTREE_SLOT, docPopup);
 	}
 	
 	@Override
 	protected void onReset() {
 		super.onReset();
+	}
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
 	}
 	
 	public void onProcessingCompleted(ProcessingCompletedEvent event) {
@@ -134,7 +141,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		requestHelper.execute(request, new TaskServiceCallback<CreateDocumentResult>() {
 			@Override
 			public void processResult(CreateDocumentResult aResponse) {
-				PlaceRequest request = new PlaceRequest.Builder().nameToken("search")
+				PlaceRequest request = new PlaceRequest.Builder().nameToken(NameTokens.search)
 						.with("docRefId", aResponse.getDocument().getRefId())
 						.with("mode", "edit")
 						.build();
