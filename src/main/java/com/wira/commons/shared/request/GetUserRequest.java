@@ -1,8 +1,7 @@
-package com.duggan.workflow.shared.requests;
+package com.wira.commons.shared.request;
 
-import com.duggan.workflow.shared.responses.GetUserRequestResult;
-import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;
+import com.wira.commons.shared.response.GetUserRequestResult;
 
 public class GetUserRequest extends BaseRequest<GetUserRequestResult> {
 

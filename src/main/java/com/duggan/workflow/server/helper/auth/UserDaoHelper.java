@@ -2,23 +2,37 @@ package com.duggan.workflow.server.helper.auth;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
+import org.jbpm.executor.ExecutorModule;
+import org.jbpm.executor.api.CommandCodes;
+import org.jbpm.executor.api.CommandContext;
+import org.jbpm.executor.commands.SendMailCommand;
 
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.UserGroup;
 
-public class DBLoginHelper implements LoginIntf{
+public class UserDaoHelper implements LoginIntf{
 
+	Logger logger = Logger.getLogger(UserDaoHelper.class.getName());
+	
 	@Override
 	public void close() throws IOException {
 		
@@ -59,6 +73,7 @@ public class DBLoginHelper implements LoginIntf{
 		htuser.setPassword(user.getPassword());
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
+		htuser.setRefId(user.getRefId());
 		
 		if(loadGroups){
 			htuser.setGroups(getFromDb(user.getGroups()));
@@ -317,5 +332,95 @@ public class DBLoginHelper implements LoginIntf{
 		
 		return true;
 	}
+
+	public HTUser getUserByEmail(String email) {
+		User user = DB.getUserGroupDao().getUserByEmail(email);
+		if(user==null){
+			return null;
+		}
+		
+		return get(user);
+	}
+	
+	private void sendActivationEmail(User user) {
+		String subject = "Welcome to KNA Editorial Portal!";
+		String link = SessionHelper.getApplicationPath() + "#/activateacc/"
+				+ user.getRefId() + "/default";
+
+		String body = "Dear "
+				+ user.getFullNames()
+				+ ","
+				+ "<p/>An account has been created for you in the KNA Editorial portal. "
+				+ "<a href=" + link + ">Click this link </a>"
+				+ " to create your password." + "<p>Thank you";
+
+		try {
+			HTUser htuser = new HTUser(user.getUserId(), user.getEmail());
+			List<HTUser> recipients = Arrays.asList(htuser);
+			sendMail(subject, recipients, body);
+		} catch (Exception e) {
+			logger.warning("Activation Email for " + user.getEmail()
+					+ " failed. Cause: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+
+	private void sendMail(String subject, List<HTUser> recipients, String body) {
+		CommandContext context = new CommandContext();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("callbacks", CommandCodes.SendEmailCallback.name());
+		params.put("To", recipients);
+		params.put("From", "Head KNA");
+		params.put(SendMailCommand.SUBJECT, subject);
+		params.put(SendMailCommand.BODY, body);
+		context.setData(params);
+		ExecutorModule.getInstance().getExecutorServiceEntryPoint()
+				.scheduleRequest(CommandCodes.SendEmailCommand, context);
+
+	}
+
+	public void sendAccountResetEmail(HTUser user) {
+
+		String subject = "KNA Editorial Portal Password Reset";
+		String link = SessionHelper.getApplicationPath() + "#/activateacc/"
+				+ user.getRefId() + "/reset";
+
+		String body = "Hello "
+				+ user.getFullName()
+				+ ","
+				+ "<br/>We received a request to reset the password for your account."
+				+ "<p>" + "If you requested a reset for " + user.getEmail()
+				+ ", click the button below."
+				+ " If you didn’t make this request, please ignore this email."
+				+ "<p>" + "<a href=" + link + ">Click this link </a>"
+				+ " to reset your password." + "<p>";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("fullNames", user.getFullName());
+		params.put("userEmail", user.getEmail());
+		params.put("ResetUrl", link);
+		params.put("fullNames", user.getFullName());
+		params.put("fullNames", user.getFullName());
+
+		try {
+			body = IOUtils.toString(UserDaoHelper.class.getClassLoader()
+					.getResourceAsStream("ewsWelcomeMsg.html"));
+
+			// System.err.println(">>" + user.getEmail());
+			HTUser htuser = new HTUser(user.getEmail(), user.getEmail());
+			htuser.setName(user.getName());
+			htuser.setSurname(user.getSurname());
+			List<HTUser> recipients = Arrays.asList(htuser);
+
+			new CustomEmailHandler().sendMail(subject, body, recipients, params);
+		} catch (Exception e) {
+			logger.warning("Activation Email for " + user.getEmail()
+					+ " failed. Cause: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+
 	
 }

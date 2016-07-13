@@ -26,7 +26,6 @@ class LoginView extends ViewImpl implements LoginPresenter.ILoginView {
 	PasswordTextBox password;
 	Element loading;
 	HTMLPanel loadingbox;
-	Element spnCompanyName;
 
 	@Inject
 	LoginView(Binder uiBinder) {
@@ -45,7 +44,6 @@ class LoginView extends ViewImpl implements LoginPresenter.ILoginView {
 		username = TextBox.wrap(DOM.getElementById("username"));
 		password = PasswordTextBox.wrap(DOM.getElementById("password"));
 		loading = DOM.getElementById("loading");
-		spnCompanyName = DOM.getElementById("spnCompanyName");
 		
 		loadingbox = HTMLPanel.wrap(DOM.getElementById("loadingbox"));
 
@@ -128,11 +126,9 @@ class LoginView extends ViewImpl implements LoginPresenter.ILoginView {
 	@Override
 	public void showLoginProgress(boolean show) {
 		if (show) {
-			issues.addClassName("hide");
 			loadingbox.addStyleName("loading");
 			loading.removeClassName("hide");
 		} else {
-			issues.removeClassName("hide");
 			loadingbox.removeStyleName("loading");
 			loading.addClassName("hide");
 		}
@@ -150,7 +146,7 @@ class LoginView extends ViewImpl implements LoginPresenter.ILoginView {
 	}
 
 	public void setOrgName(String orgName) {
-		spnCompanyName.setInnerText(orgName);
+//		spnCompanyName.setInnerText(orgName);
 	}
 
 	@Override

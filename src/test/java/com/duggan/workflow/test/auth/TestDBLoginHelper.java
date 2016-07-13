@@ -12,20 +12,20 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.DBLoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
 
 public class TestDBLoginHelper {
 
-	DBLoginHelper helper;
+	UserDaoHelper helper;
 
 	@Before
 	public void setup() {
 		DBTrxProviderImpl.init();
 		DB.beginTransaction();
-		helper = new DBLoginHelper();
+		helper = new UserDaoHelper();
 	}
 	
 	@Test

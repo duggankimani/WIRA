@@ -10,6 +10,7 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 import com.wira.login.client.signin.LoginModule;
+import com.wira.login.client.activateaccount.ActivateAccountModule;
 
 public class LoginClientModule extends AbstractPresenterModule {
 
@@ -22,6 +23,7 @@ public class LoginClientModule extends AbstractPresenterModule {
 		bind(RootPresenter.class).to(LoginRootPresenter.class).asEagerSingleton();
 		
 		install(new LoginModule());
+		install(new ActivateAccountModule());
 		
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.signin);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.signin);

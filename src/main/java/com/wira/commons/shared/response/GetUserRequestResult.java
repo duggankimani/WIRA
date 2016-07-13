@@ -1,7 +1,6 @@
-package com.duggan.workflow.shared.responses;
+package com.wira.commons.shared.response;
 
 import com.wira.commons.shared.models.HTUser;
-import com.wira.commons.shared.response.BaseResponse;
 
 public class GetUserRequestResult extends BaseResponse {
 

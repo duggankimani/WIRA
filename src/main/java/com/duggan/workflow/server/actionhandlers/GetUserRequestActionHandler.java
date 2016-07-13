@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.requests.GetUserRequest;
-import com.duggan.workflow.shared.responses.GetUserRequestResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.PermissionPOJO;
+import com.wira.commons.shared.request.GetUserRequest;
 import com.wira.commons.shared.response.BaseResponse;
+import com.wira.commons.shared.response.GetUserRequestResult;
 
 public class GetUserRequestActionHandler extends
 		AbstractActionHandler<GetUserRequest, GetUserRequestResult> {

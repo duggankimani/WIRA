@@ -9,11 +9,9 @@ import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
-import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
 import com.duggan.workflow.shared.responses.CheckPasswordRequestResult;
-import com.duggan.workflow.shared.responses.GetUserRequestResult;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.duggan.workflow.shared.responses.UpdatePasswordResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,6 +29,8 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.request.GetUserRequest;
+import com.wira.commons.shared.response.GetUserRequestResult;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProfilePresenter extends

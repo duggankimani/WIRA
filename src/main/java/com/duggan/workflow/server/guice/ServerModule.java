@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.guice;
 
 import com.duggan.workflow.server.ServerConstants;
+import com.duggan.workflow.server.actionhandlers.ActivateAccountActionHandler;
 import com.duggan.workflow.server.actionhandlers.ApprovalRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.AssignTaskActionHandler;
 import com.duggan.workflow.server.actionhandlers.CheckPasswordRequestActionHandler;
@@ -71,6 +72,7 @@ import com.duggan.workflow.server.actionhandlers.LoginRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.LogoutActionHandler;
 import com.duggan.workflow.server.actionhandlers.ManageKnowledgeBaseResponseHandler;
 import com.duggan.workflow.server.actionhandlers.MultiRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.ResetAccountRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveAssignmentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCatalogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.SaveCommentRequestActionHandler;
@@ -155,7 +157,6 @@ import com.duggan.workflow.shared.requests.GetTaskStepTriggersRequest;
 import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.requests.GetTriggerCountRequest;
 import com.duggan.workflow.shared.requests.GetTriggersRequest;
-import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.InsertDataRequest;
 import com.duggan.workflow.shared.requests.LoadDynamicFieldsRequest;
@@ -185,7 +186,10 @@ import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
+import com.wira.commons.shared.request.GetUserRequest;
+import com.wira.login.shared.request.ActivateAccountRequest;
 import com.wira.login.shared.request.LoginRequest;
+import com.wira.login.shared.request.ResetAccountRequest;
 
 public class ServerModule extends HandlerModule {
 
@@ -450,5 +454,9 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GenerateFilePathRequest.class, GenerateFilePathHandler.class, SessionValidator.class);
 		
 		bindHandler(GetOutputDocumentRequest.class, GetOutputDocumentRequestHandler.class, SessionValidator.class);
+		
+		bindHandler(ResetAccountRequest.class, ResetAccountRequestHandler.class);
+		
+		bindHandler(ActivateAccountRequest.class, ActivateAccountActionHandler.class);
 	}
 }

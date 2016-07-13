@@ -89,4 +89,26 @@ public class SessionHelper{
 	public static void throwException(String message){
 		throw new RuntimeException(message);
 	}
+
+	public static String getApplicationPath() {
+		HttpServletRequest request = getHttpRequest();
+		if(request!=null){
+			String requestURL = request.getRequestURL().toString();
+			String servletPath = request.getServletPath();
+			String pathInfo = request.getPathInfo();
+			
+			log.debug("# RequestURL = "+requestURL);
+			log.debug("# ServletPath = "+servletPath);
+			log.debug("# Path Info = "+pathInfo);
+			if(pathInfo!=null){
+				requestURL = requestURL.replace(pathInfo, "");
+			}
+			log.debug("# Remove Path Info = "+requestURL);				
+			requestURL = requestURL.replace(servletPath, "");
+			log.debug("# Replace ServletPath = "+requestURL);
+			
+			return requestURL;
+		}
+		return "#";
+	}
 }

@@ -121,6 +121,8 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		
 		return user.getGroups();
 	}
+	
+	
 
 	public Collection<User> getAllUsersByGroupId(String groupId) {
 		Group group = getGroup(groupId);
@@ -128,6 +130,15 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 			return new ArrayList<>();
 		}
 		return group.getMembers();
+	}
+
+	public User getUserByEmail(String email) {
+		StringBuffer jpql = new StringBuffer("FROM BUser u where u.email=:email");
+		
+		return getSingleResultOrNull(getEntityManager()
+				.createNamedQuery(jpql.toString())
+				.setParameter("email", email)
+				);
 	}
 	
 

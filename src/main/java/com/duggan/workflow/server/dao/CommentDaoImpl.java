@@ -11,7 +11,7 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.duggan.workflow.server.dao.model.CommentModel;
-import com.duggan.workflow.server.helper.auth.DBLoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.wira.commons.shared.models.HTUser;
@@ -161,7 +161,7 @@ public class CommentDaoImpl {
 		HTUser currentUser = SessionHelper.getCurrentUser();
 
 		for (String userId : usersIds) {
-			HTUser user = new DBLoginHelper().getUser(userId);
+			HTUser user = new UserDaoHelper().getUser(userId);
 			if (!users.contains(user) && !user.equals(currentUser)) {
 				users.add(user);
 			}
@@ -170,7 +170,7 @@ public class CommentDaoImpl {
 		
 		String createdBy = (String)em.createNativeQuery("select createdBy from localdocument where id="+documentId).getSingleResult();
 		if(!currentUser.getUserId().equals(createdBy)){
-			users.add(new DBLoginHelper().getUser(createdBy));
+			users.add(new UserDaoHelper().getUser(createdBy));
 		}
 		
 		return users;

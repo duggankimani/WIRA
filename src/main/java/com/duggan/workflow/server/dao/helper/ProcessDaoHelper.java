@@ -39,7 +39,7 @@ import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.DBLoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
@@ -184,7 +184,7 @@ public class ProcessDaoHelper {
 
 		if (isDetailed) {
 			// Process Access
-			DBLoginHelper helper = new DBLoginHelper();
+			UserDaoHelper helper = new UserDaoHelper();
 			Collection<User> users = model.getUsers();
 			for (User user : users) {
 				def.addUserOrGroup(helper.get(user, false));
