@@ -1,8 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.model.ManageProcessAction;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.ManageKnowledgeBaseResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class ManageKnowledgeBaseRequest extends
 		BaseRequest<ManageKnowledgeBaseResponse> {

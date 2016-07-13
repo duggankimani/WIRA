@@ -2,6 +2,9 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
+import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.SerializableObj;
+
 public class OutputDocument extends SerializableObj implements Serializable, Listable {
 
 	/**

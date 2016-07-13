@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.LoadTriggersEvent;
 import com.duggan.workflow.client.util.AppContext;
@@ -18,6 +17,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class TriggerItemPanel extends Composite {
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
@@ -15,6 +14,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class DocTypesPresenter extends
 		PresenterWidget<DocTypesPresenter.MyView> {

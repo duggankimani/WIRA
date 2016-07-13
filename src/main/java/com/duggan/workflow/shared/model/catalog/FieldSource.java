@@ -1,6 +1,6 @@
 package com.duggan.workflow.shared.model.catalog;
 
-import com.duggan.workflow.shared.model.Listable;
+import com.wira.commons.shared.models.Listable;
 
 public enum FieldSource implements Listable{
 	

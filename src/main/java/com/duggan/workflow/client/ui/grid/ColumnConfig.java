@@ -13,7 +13,6 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.DoubleValue;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -22,6 +21,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.Listable;
 
 public class ColumnConfig {
 

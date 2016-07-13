@@ -3,6 +3,8 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.wira.commons.shared.models.HTUser;
+
 public class HTSummary extends Doc implements Serializable{
 
 	private static final long serialVersionUID = -3021583190508951117L;

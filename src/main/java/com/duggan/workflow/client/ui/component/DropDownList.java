@@ -5,7 +5,6 @@ import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
-import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -19,6 +18,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.Listable;
 
 public class DropDownList<T extends Listable> extends Composite implements
 		HasValueChangeHandlers<T>, HasValue<T> {

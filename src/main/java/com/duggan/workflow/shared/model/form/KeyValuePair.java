@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.model.form;
 
 import java.io.Serializable;
 
-import com.duggan.workflow.shared.model.Listable;
+import com.wira.commons.shared.models.Listable;
 
 public class KeyValuePair implements Serializable, Listable {
 

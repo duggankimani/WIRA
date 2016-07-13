@@ -1,13 +1,7 @@
 package com.duggan.workflow.client.util;
 
-import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
-import com.duggan.workflow.shared.model.CurrentUserDto;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Version;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.core.client.GWT;
@@ -17,8 +11,13 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest.Builder;
+import com.wira.commons.client.CookieManager;
+import com.wira.commons.client.security.CurrentUser;
+import com.wira.commons.client.util.Definitions;
+import com.wira.commons.shared.models.CurrentUserDto;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.REPORTVIEWIMPL;
+import com.wira.commons.shared.models.Version;
 
 /**
  * 
@@ -174,12 +173,12 @@ public class AppContext {
 					@Override
 					public void processResult(GetContextRequestResult result) {
 						organizationName = result.getOrganizationName();
-						setUserValues(result.getUser());
+						user.fromCurrentUserDto(result.getCurrentUserDto());
 						version.from(result.getVersion());
 						reportViewImpl = result.getReportViewImpl();
 
 						ContextLoadedEvent event = new ContextLoadedEvent(
-								result.getUser(), version);
+								user.getUser(), version);
 						event.setOrganizationName(organizationName);
 						eventBus.fireEvent(event);
 					}

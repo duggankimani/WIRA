@@ -6,11 +6,11 @@ import java.util.List;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.SearchDocumentRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SearchDocumentRequestResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SearchDocumentRequestActionHandler extends
 		AbstractActionHandler<SearchDocumentRequest, SearchDocumentRequestResult> {

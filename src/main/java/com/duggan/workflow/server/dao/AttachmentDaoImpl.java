@@ -21,10 +21,10 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.HTStatus;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TreeType;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.wira.commons.shared.models.HTUser;
 
 public class AttachmentDaoImpl extends BaseDaoImpl {
 

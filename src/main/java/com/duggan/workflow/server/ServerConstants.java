@@ -1,6 +1,6 @@
 package com.duggan.workflow.server;
 
-import com.duggan.workflow.client.util.Definitions;
+import com.wira.commons.client.util.Definitions;
 
 public interface ServerConstants extends Definitions{
 

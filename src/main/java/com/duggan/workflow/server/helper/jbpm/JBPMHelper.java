@@ -62,19 +62,19 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.NodeDetail;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.TaskNode;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.ProcessMappings;
 import com.ilesteban.processimage.ProcessImageProcessor;
 import com.ilesteban.processimage.ProcessImageProcessorConfiguration;
 import com.ilesteban.processimage.transformation.TaskColorTransformationJob;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 
 /**
  * This is a Helper Class for all JBPM associated requests. It provides utility

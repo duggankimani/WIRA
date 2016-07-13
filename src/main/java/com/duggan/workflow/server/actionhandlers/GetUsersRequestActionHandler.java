@@ -3,13 +3,13 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetUsersRequestActionHandler extends
 		AbstractActionHandler<GetUsersRequest, GetUsersResponse> {

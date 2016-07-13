@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
@@ -30,6 +29,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class TaskStepTriggerPresenter extends
 		PresenterWidget<TaskStepTriggerPresenter.ITaskStepTriggerView> implements LoadTriggersHandler,

@@ -9,18 +9,19 @@ import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.UserGroup;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetContextRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.models.CurrentUserDto;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.REPORTVIEWIMPL;
+import com.wira.commons.shared.models.UserGroup;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetContextRequestActionHandler extends 
 		AbstractActionHandler<GetContextRequest, GetContextRequestResult> {
@@ -46,8 +47,10 @@ public class GetContextRequestActionHandler extends
 		result.setIsValid(session!=null && user!=null);
 		
 		if(result.getIsValid()){
-			result.setUser((HTUser)user);
-			result.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(result.getUser().getUserId()));
+			HTUser userDto = (HTUser)user;
+			userDto.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(userDto.getUserId()));
+			CurrentUserDto currentUserDto = new CurrentUserDto(true, userDto);
+			result.setCurrentUserDto(currentUserDto);
 		}
 		
 		result.setVersion(VersionManager.getVersion());

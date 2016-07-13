@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
@@ -37,7 +35,6 @@ import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -64,6 +61,9 @@ import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.client.service.ServiceCallback;
+import com.wira.commons.shared.response.BaseResponse;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
 		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> implements

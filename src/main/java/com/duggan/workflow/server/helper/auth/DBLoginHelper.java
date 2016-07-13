@@ -13,9 +13,9 @@ import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.PermissionPOJO;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.PermissionPOJO;
+import com.wira.commons.shared.models.UserGroup;
 
 public class DBLoginHelper implements LoginIntf{
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.duggan.workflow.client.ui.util.ArrayUtil;
+import com.wira.commons.client.util.ArrayUtil;
 
 /**
  * 

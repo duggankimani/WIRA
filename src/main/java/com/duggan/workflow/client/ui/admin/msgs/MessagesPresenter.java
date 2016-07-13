@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.msgs;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
@@ -39,6 +38,7 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class MessagesPresenter
 		extends

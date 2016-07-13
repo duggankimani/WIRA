@@ -3,9 +3,7 @@ package com.duggan.workflow.client.place;
 import javax.inject.Inject;
 
 import com.duggan.workflow.client.event.ShowMessageEvent;
-import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.AlertType;
-import com.duggan.workflow.client.util.Definitions;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler.Historian;
 import com.google.web.bindery.event.shared.EventBus;
@@ -15,6 +13,8 @@ import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.gwtplatform.mvp.shared.proxy.TokenFormatter;
+import com.wira.commons.client.security.CurrentUser;
+import com.wira.commons.client.util.Definitions;
 
 public class WiraPlaceManager extends PlaceManagerImpl {
 
@@ -77,7 +77,7 @@ public class WiraPlaceManager extends PlaceManagerImpl {
 			getEventBus().fireEvent(new ShowMessageEvent(AlertType.WARNING, "You do not have sufficient rights!",true));
 		}else{
 			revealPlace(new PlaceRequest.Builder()
-			.nameToken(NameTokens.loginWithRedirect).with(Definitions.REDIRECT, redirect).build());
+			.nameToken(NameTokens.splash).with(Definitions.REDIRECT, redirect).build());
 		}
 		
 	}

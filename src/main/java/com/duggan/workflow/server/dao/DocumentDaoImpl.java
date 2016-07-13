@@ -28,7 +28,7 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.SearchFilter;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.UserGroup;
 
 /**
  * 

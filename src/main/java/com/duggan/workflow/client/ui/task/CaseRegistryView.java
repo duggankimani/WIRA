@@ -7,11 +7,9 @@ import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter.ICaseRegistryView;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
@@ -24,6 +22,8 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.HTUser;
 
 public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 

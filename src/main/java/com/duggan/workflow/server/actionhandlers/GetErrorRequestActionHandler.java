@@ -5,11 +5,11 @@ import java.util.Date;
 import com.duggan.workflow.server.dao.model.ErrorLog;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetErrorRequestResult;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetErrorRequestActionHandler extends
 		AbstractActionHandler<GetErrorRequest, GetErrorRequestResult> {

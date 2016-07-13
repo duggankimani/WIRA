@@ -6,7 +6,6 @@ import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TextArea;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.StringListable;
@@ -23,6 +22,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
 
 public class NotificationSetupView extends ViewImpl implements
 		NotificationSetupPresenter.INotificationSetupView {

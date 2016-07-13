@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.error;
 import java.util.Date;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.shared.requests.GetErrorRequest;
 import com.duggan.workflow.shared.responses.GetErrorRequestResult;
@@ -17,6 +16,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ErrorPagePresenter extends
 		Presenter<ErrorPagePresenter.MyView, ErrorPagePresenter.MyProxy> {

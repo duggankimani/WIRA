@@ -2,11 +2,8 @@ package com.duggan.workflow.client.ui.header;
 
 import java.util.Date;
 
-import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.util.DateUtils;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.PermissionName;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -27,6 +24,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.security.CurrentUser;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.PermissionName;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView {
 

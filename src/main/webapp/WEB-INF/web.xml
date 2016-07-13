@@ -32,7 +32,26 @@
 	    <servlet-name>daemon-initializer</servlet-name>
 	    <load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<!--Servlet Filter that handles site authorization.-->
+	<filter>
+	     <filter-name>SecurityFilter</filter-name>
+	     <filter-class>com.duggan.workflow.server.security.SecurityFilter</filter-class>
+	     <description>This Filter authorizes user access to application
+	                  components based upon request URI.</description>
+	     <init-param>
+	        <param-name>login_page</param-name>
+	        <param-value>login.html</param-value>
+	     </init-param>
+	</filter>
+	
+	<filter-mapping>
+	     <filter-name>SecurityFilter</filter-name>
+	     <url-pattern>/GWTHT.html</url-pattern>
+	</filter-mapping>
+	
 
+	<!-- GuiceFilter -->
 	<filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>

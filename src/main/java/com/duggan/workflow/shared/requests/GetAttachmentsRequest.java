@@ -1,8 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.model.TreeType;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetAttachmentsRequest extends
 		BaseRequest<GetAttachmentsResponse> {

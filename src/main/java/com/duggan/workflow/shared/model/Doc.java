@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.SerializableObj;
 
 public abstract class Doc extends SerializableObj implements Serializable,
 		IsSerializable, Comparable<Doc> {

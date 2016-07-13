@@ -24,8 +24,8 @@ import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Value;
+import com.wira.commons.shared.models.HTUser;
 
 public class TestDocumentDaoImpl {
 

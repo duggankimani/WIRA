@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
+import com.wira.commons.shared.models.HTUser;
 
 public class EditUserEvent extends GwtEvent<EditUserEvent.EditUserHandler> {
 

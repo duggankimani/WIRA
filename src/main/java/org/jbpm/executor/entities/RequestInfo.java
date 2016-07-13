@@ -31,8 +31,8 @@ import com.duggan.workflow.server.dao.model.ErrorLog;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.shared.model.ErrorInfoDto;
 import com.duggan.workflow.shared.model.ExecutionStatus;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.RequestInfoDto;
+import com.wira.commons.shared.models.HTUser;
 
 /**
  *

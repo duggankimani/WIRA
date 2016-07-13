@@ -6,11 +6,11 @@ import org.jbpm.executor.impl.ExecutorFactory;
 
 import com.duggan.workflow.shared.model.RequestInfoDto;
 import com.duggan.workflow.shared.requests.SendMessageRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SendMessageResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 /**
  * Create Local Documents

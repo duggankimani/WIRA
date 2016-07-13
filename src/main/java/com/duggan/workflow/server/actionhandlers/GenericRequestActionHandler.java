@@ -6,11 +6,11 @@ import java.util.Map;
 import com.duggan.workflow.server.sms.SMSIntegration;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.requests.GenericRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GenericRequestActionHandler extends
 		AbstractActionHandler<GenericRequest, GenericResponse> {

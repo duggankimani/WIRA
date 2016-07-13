@@ -1,8 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.model.UserGroup;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveGroupResponse;
+import com.wira.commons.shared.models.UserGroup;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveGroupRequest extends BaseRequest<SaveGroupResponse> {
 

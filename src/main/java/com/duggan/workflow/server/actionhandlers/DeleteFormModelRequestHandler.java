@@ -2,11 +2,11 @@ package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.DeleteFormModelResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class DeleteFormModelRequestHandler extends
 		AbstractActionHandler<DeleteFormModelRequest, DeleteFormModelResponse> {

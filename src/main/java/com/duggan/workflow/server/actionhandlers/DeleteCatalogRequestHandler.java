@@ -5,10 +5,10 @@ import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.duggan.workflow.shared.model.catalog.IsCatalogItem;
 import com.duggan.workflow.shared.requests.DeleteCatalogRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class DeleteCatalogRequestHandler extends
 		AbstractActionHandler<DeleteCatalogRequest, BaseResponse> {

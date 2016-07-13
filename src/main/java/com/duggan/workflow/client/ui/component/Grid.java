@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.component;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
-import com.duggan.workflow.shared.model.HasKey;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -26,6 +25,7 @@ import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.wira.commons.shared.models.HasKey;
 
 public class Grid<T extends HasKey> extends Composite {
 

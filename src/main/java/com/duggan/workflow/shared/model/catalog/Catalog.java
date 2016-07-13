@@ -1,11 +1,10 @@
 package com.duggan.workflow.shared.model.catalog;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessCategory;
-import com.duggan.workflow.shared.model.SerializableObj;
+import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.SerializableObj;
 
 public class Catalog extends SerializableObj implements IsCatalogItem, Listable{
 

@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 /**
  * This is a loaded request that loads a document, TaskSteps & 

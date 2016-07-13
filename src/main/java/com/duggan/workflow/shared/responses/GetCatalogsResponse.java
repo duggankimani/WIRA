@@ -3,6 +3,7 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.wira.commons.shared.response.BaseResponse;
 
 
 public class GetCatalogsResponse extends BaseResponse {

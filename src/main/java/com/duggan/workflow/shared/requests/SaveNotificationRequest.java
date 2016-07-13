@@ -1,8 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.model.Notification;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveNotificationResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveNotificationRequest extends BaseRequest<SaveNotificationResponse> {
 

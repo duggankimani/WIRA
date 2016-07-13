@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.ui.events.UserSelectedEvent;
 import com.duggan.workflow.client.ui.events.UserSelectedEvent.UserSelectedHandler;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ErrorEvent;
@@ -23,6 +22,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.HTUser;
 
 public class UserDisplay extends Composite implements UserSelectedHandler {
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.OutputDocument;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetOutputDocumentsResponse extends BaseResponse{
 

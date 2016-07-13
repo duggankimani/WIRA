@@ -1,11 +1,9 @@
 package com.duggan.workflow.shared.responses;
 
-import java.util.ArrayList;
-
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.UserGroup;
-import com.duggan.workflow.shared.model.Version;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
+import com.wira.commons.shared.models.CurrentUserDto;
+import com.wira.commons.shared.models.REPORTVIEWIMPL;
+import com.wira.commons.shared.models.Version;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetContextRequestResult extends BaseResponse {
 
@@ -14,8 +12,7 @@ public class GetContextRequestResult extends BaseResponse {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Boolean isValid;
-	private HTUser user;
-	private ArrayList<UserGroup> groups;
+	private CurrentUserDto currentUserDto;
 	private Version version;
 	private String organizationName;
 	private REPORTVIEWIMPL reportViewImpl;
@@ -30,22 +27,6 @@ public class GetContextRequestResult extends BaseResponse {
 
 	public void setIsValid(Boolean isValid) {
 		this.isValid = isValid;
-	}
-
-	public HTUser getUser() {
-		return user;
-	}
-
-	public void setUser(HTUser user) {
-		this.user = user;
-	}
-
-	public ArrayList<UserGroup> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(ArrayList<UserGroup> groups) {
-		this.groups = groups;
 	}
 
 	public Version getVersion() {
@@ -70,6 +51,14 @@ public class GetContextRequestResult extends BaseResponse {
 
 	public void setReportViewImpl(REPORTVIEWIMPL reportViewImpl) {
 		this.reportViewImpl = reportViewImpl;
+	}
+
+	public CurrentUserDto getCurrentUserDto() {
+		return currentUserDto;
+	}
+
+	public void setCurrentUserDto(CurrentUserDto currentUserDto) {
+		this.currentUserDto = currentUserDto;
 	}
 
 }

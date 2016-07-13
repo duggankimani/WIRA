@@ -93,7 +93,6 @@ import com.duggan.workflow.server.actionhandlers.StartAllProcessesRequestActionH
 import com.duggan.workflow.server.actionhandlers.UpdateNotificationRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.UpdatePasswordRequestActionHandler;
 import com.duggan.workflow.server.actionvalidator.SessionValidator;
-import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
@@ -160,7 +159,6 @@ import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.InsertDataRequest;
 import com.duggan.workflow.shared.requests.LoadDynamicFieldsRequest;
-import com.duggan.workflow.shared.requests.LoginRequest;
 import com.duggan.workflow.shared.requests.LogoutAction;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -185,9 +183,9 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
-import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
+import com.wira.login.shared.request.LoginRequest;
 
 public class ServerModule extends HandlerModule {
 

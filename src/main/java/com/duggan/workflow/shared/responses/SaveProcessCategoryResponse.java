@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.ProcessCategory;
+import com.wira.commons.shared.response.BaseResponse;
 
 
 

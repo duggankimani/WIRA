@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.processes.save;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
@@ -13,11 +12,8 @@ import com.duggan.workflow.client.ui.events.UploadStartedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent.UploadStartedHandler;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
@@ -43,6 +39,10 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.UserGroup;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.IProcessSaveView> 
 	implements UploadStartedHandler, UploadEndedHandler, DeleteAttachmentHandler{

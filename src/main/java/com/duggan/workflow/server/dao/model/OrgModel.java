@@ -12,7 +12,7 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.duggan.workflow.shared.model.Org;
+import com.wira.commons.shared.models.Org;
 
 @Entity
 @Table(name = "orgmodel", indexes={@Index(columnList="refId",name="idx_ref_id"),

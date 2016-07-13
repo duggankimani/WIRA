@@ -29,8 +29,8 @@ import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.wira.commons.shared.models.HTUser;
 
 public class EmailServiceHelper {
 

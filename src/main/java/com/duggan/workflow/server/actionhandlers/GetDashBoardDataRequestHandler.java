@@ -7,11 +7,11 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDashBoardDataResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetDashBoardDataRequestHandler extends
 		AbstractActionHandler<GetDashBoardDataRequest, GetDashBoardDataResponse> {

@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.Document;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class ApprovalRequestResult extends BaseResponse {
 

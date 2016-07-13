@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.upload.attachment;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -13,6 +12,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.wira.commons.shared.models.REPORTVIEWIMPL;
 
 public class AttachmentPresenter extends PresenterWidget<AttachmentPresenter.IAttachmentView> {
 

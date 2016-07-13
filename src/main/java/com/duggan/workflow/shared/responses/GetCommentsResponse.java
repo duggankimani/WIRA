@@ -3,6 +3,7 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Comment;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetCommentsResponse extends BaseResponse {
 

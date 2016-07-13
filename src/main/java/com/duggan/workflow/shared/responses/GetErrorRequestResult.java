@@ -2,6 +2,8 @@ package com.duggan.workflow.shared.responses;
 
 import java.util.Date;
 
+import com.wira.commons.shared.response.BaseResponse;
+
 public class GetErrorRequestResult extends BaseResponse {
 
 	private Date errorDate;

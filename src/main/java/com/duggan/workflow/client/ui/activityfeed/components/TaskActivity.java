@@ -7,7 +7,6 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.google.gwt.core.client.GWT;
@@ -23,6 +22,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.HTUser;
 
 public class TaskActivity extends Composite {
 

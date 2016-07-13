@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.security.CurrentUser;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent.AdminPageLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
@@ -20,9 +18,7 @@ import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.SearchFilter;
-import com.duggan.workflow.shared.model.Version;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.LogoutAction;
@@ -40,6 +36,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
@@ -52,6 +49,10 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.client.security.CurrentUser;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Version;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class HeaderPresenter extends
 		PresenterWidget<HeaderPresenter.IHeaderView> implements
@@ -275,8 +276,9 @@ public class HeaderPresenter extends
 					@Override
 					public void processResult(LogoutActionResult result) {
 						AppContext.destroy();
-						placeManager.revealPlace(new PlaceRequest.Builder()
-								.nameToken(NameTokens.login).build());
+						Window.Location.replace(NameTokens.loginPage);
+//						placeManager.revealPlace(new PlaceRequest.Builder()
+//								.nameToken(NameTokens.splash).build());
 					}
 				});
 	}

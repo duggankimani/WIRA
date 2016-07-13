@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.component;
 
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Unit;
@@ -22,6 +21,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.HTUser;
 
 public class CommentBox extends Composite {
 	

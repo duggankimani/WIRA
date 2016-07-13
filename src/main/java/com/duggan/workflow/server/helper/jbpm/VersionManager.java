@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-import com.duggan.workflow.shared.model.Version;
+import com.wira.commons.shared.models.Version;
 
 public class VersionManager {
 	

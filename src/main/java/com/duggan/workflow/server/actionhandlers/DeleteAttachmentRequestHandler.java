@@ -2,11 +2,11 @@ package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class DeleteAttachmentRequestHandler extends
 		AbstractActionHandler<DeleteAttachmentRequest, DeleteAttachmentResponse> {

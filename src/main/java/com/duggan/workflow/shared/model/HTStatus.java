@@ -2,8 +2,8 @@ package com.duggan.workflow.shared.model;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.client.util.ArrayUtil;
 
 public enum HTStatus implements IsSerializable{
 	

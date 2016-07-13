@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.tasklistitem;
 
 import java.util.Date;
 
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.PresentTaskEvent.PresentTaskHandler;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -18,6 +17,7 @@ import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.wira.commons.client.service.ServiceCallback;
 
 public class DateGroupPresenter extends
 		PresenterWidget<DateGroupPresenter.MyView> implements PresentTaskHandler{

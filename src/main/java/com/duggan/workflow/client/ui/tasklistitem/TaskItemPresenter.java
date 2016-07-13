@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.TextArea;
@@ -32,7 +31,6 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -63,6 +61,8 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.shared.models.HTUser;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 /**
  * This class displays a Task or a Document 

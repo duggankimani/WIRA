@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.model.OrgModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.shared.model.Org;
+import com.wira.commons.shared.models.Org;
 
 public class OrganizationDaoHelper {
 	Logger logger = Logger.getLogger(OrganizationDaoHelper.class);

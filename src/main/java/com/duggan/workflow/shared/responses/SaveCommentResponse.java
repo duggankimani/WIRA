@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
 import com.duggan.workflow.shared.model.Comment;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveCommentResponse extends BaseResponse {
 

@@ -45,8 +45,6 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -57,7 +55,9 @@ import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.UserGroup;
 
 public class ProcessDaoHelper {
 

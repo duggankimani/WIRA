@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.document;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.TableView;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Attachment;
 import com.google.gwt.core.client.GWT;
@@ -12,6 +11,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.client.util.ArrayUtil;
 
 public class AttachmentsTable extends Composite {
 

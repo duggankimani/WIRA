@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.admin.ds.save;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.RDBMSType;
@@ -14,6 +13,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class DSSavePresenter extends PresenterWidget<DSSavePresenter.IDSSaveView>{
 

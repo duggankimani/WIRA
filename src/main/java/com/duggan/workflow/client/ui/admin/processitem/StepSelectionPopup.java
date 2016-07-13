@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableHeader;
 import com.duggan.workflow.client.ui.component.TableView;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.form.Form;
@@ -21,6 +20,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.Listable;
 
 public class StepSelectionPopup extends Composite{
 

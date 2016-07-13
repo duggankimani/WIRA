@@ -14,11 +14,11 @@ import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetActivitiesRequestHandler extends
 		AbstractActionHandler<GetActivitiesRequest, GetActivitiesResponse> {

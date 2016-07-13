@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.duggan.workflow.shared.model.PermissionName;
-import com.duggan.workflow.shared.model.PermissionPOJO;
+import com.wira.commons.shared.models.PermissionName;
+import com.wira.commons.shared.models.PermissionPOJO;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

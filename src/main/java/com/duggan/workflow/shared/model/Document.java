@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.wira.commons.shared.models.HTUser;
+
 /**
  * DTO for {@link com.duggan.workflow.server.dao.model.DocumentModel}
  * 

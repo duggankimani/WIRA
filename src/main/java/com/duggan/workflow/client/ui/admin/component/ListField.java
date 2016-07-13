@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.admin.component.ListItem.OnSelectHandler;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
-import com.duggan.workflow.shared.model.Listable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -17,6 +16,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.Listable;
 
 public class ListField<T extends Listable> extends Composite {
 

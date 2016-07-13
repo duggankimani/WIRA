@@ -3,8 +3,8 @@ package com.duggan.workflow.client.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.form.Field;
+import com.wira.commons.client.util.ArrayUtil;
 
 /**
  * Assumptions - All fields have unique names

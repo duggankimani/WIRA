@@ -3,7 +3,8 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
-import com.duggan.workflow.shared.model.PermissionPOJO;
+import com.wira.commons.shared.models.PermissionPOJO;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetPermissionsResponse extends BaseResponse {
 

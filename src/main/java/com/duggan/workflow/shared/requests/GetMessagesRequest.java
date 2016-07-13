@@ -2,8 +2,8 @@ package com.duggan.workflow.shared.requests;
 
 import java.util.Date;
 
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetMessagesResponse;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetMessagesRequest extends BaseListRequest<GetMessagesResponse> {
 

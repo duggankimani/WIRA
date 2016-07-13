@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.notifications.note;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -16,6 +15,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.shared.models.HTUser;
 
 public class NoteView extends ViewImpl implements NotePresenter.MyView {
 

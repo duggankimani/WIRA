@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.TaskStepDTO;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetInitialDocumentResponse extends BaseResponse {
 

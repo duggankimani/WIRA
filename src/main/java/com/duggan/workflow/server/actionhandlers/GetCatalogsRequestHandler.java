@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetCatalogsResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetCatalogsRequestHandler extends
 		AbstractActionHandler<GetCatalogsRequest, GetCatalogsResponse> {

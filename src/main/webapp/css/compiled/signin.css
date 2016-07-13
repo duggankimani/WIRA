@@ -32,15 +32,14 @@
     }
    .login-wrapper .logo-title{
     margin-top: 3px;
-	margin-bottom: 0;
-	text-transform: uppercase;
-	font-weight: bold;
-	
+    margin-bottom: 0;
+    text-transform: uppercase;
+    font-weight: bold;
     font-size: 29px;
-	max-height: 50px;
-	color: #444444;
-   
+    max-height: 50px;
+    color: #5F5D5D;
     display: inline-block;
+    font-family: serif, sans-serif;
 }
 
 .span4.box {}
@@ -112,15 +111,17 @@
     .login-wrapper .box a.forgot {
       display: block;
       text-align: right;
-      font-style: italic;
-      text-decoration: underline;
+      text-decoration: none;
       color: #3d88ba;
-      font-size: 13px;
-      margin-bottom: 6px; }
+      font-size: 14px;
+      margin-top: 6px;
+      text-align: left;
+      display: block;
+ }
     .login-wrapper .box .remember {
       display: block;
       overflow: hidden;
-      margin-bottom: 20px; }
+      margin-bottom: 15px; }
       .login-wrapper .box .remember input[type="checkbox"] {
         float: left;
         margin-right: 8px; }

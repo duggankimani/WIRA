@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Comment;
-import com.duggan.workflow.shared.model.HTUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
@@ -18,6 +17,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.HTUser;
 
 public class CommentActivity extends Composite {
 

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.duggan.workflow.shared.model.Listable;
+import com.wira.commons.shared.models.Listable;
 
 public class Form extends FormModel implements Listable, Serializable{
 

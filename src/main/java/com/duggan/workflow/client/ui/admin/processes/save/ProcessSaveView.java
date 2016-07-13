@@ -10,10 +10,8 @@ import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,6 +30,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PopupViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.Listable;
 
 public class ProcessSaveView extends PopupViewImpl implements
 		ProcessSavePresenter.IProcessSaveView {

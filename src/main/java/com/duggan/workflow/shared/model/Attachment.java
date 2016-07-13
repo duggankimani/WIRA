@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.ArrayList;
 
 import com.sencha.gxt.data.shared.TreeStore;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.SerializableObj;
 
 public class Attachment extends SerializableObj implements Serializable,TreeStore.TreeNode<Attachment> {
 

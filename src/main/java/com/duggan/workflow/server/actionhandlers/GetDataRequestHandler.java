@@ -6,11 +6,11 @@ import java.util.List;
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.requests.GetDataRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetDataResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetDataRequestHandler extends
 		AbstractActionHandler<GetDataRequest, GetDataResponse> {

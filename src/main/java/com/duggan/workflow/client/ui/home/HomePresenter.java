@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.ui.addDoc.DocTypesPresenter;
 import com.duggan.workflow.client.ui.events.AlertLoadEvent;
@@ -38,6 +37,7 @@ import com.gwtplatform.mvp.client.presenter.slots.PermanentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class HomePresenter extends TabContainerPresenter<HomePresenter.IHomeView, HomePresenter.MyProxy> implements
 ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHandler, ContextLoadedHandler{

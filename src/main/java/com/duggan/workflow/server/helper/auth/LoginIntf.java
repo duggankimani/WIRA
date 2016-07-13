@@ -3,8 +3,8 @@ package com.duggan.workflow.server.helper.auth;
 import java.io.Closeable;
 import java.util.List;
 
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 
 public interface LoginIntf extends Closeable {
 

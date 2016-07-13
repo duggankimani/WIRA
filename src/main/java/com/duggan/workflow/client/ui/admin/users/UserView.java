@@ -6,9 +6,6 @@ import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Org;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -24,6 +21,9 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Org;
+import com.wira.commons.shared.models.UserGroup;
 
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 

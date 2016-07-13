@@ -40,7 +40,6 @@ import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
@@ -49,6 +48,7 @@ import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.model.catalog.FieldSource;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.itextpdf.text.DocumentException;
+import com.wira.commons.shared.models.HTUser;
 
 public class CatalogDaoHelper {
 

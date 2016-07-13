@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.ExecuteWorkflowResult;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 /**
  * 

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DocumentLine;
-import com.duggan.workflow.shared.responses.BaseResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class InsertDataRequest extends BaseRequest<BaseResponse> {
 

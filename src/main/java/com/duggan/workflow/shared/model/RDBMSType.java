@@ -1,5 +1,7 @@
 package com.duggan.workflow.shared.model;
 
+import com.wira.commons.shared.models.Listable;
+
 public enum RDBMSType implements Listable{
 	
 	IBMDB2("IBM DB2",

@@ -20,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cascade;
 
-import com.duggan.workflow.shared.model.HTUser;
+import com.wira.commons.shared.models.HTUser;
 
 @Entity(name="BUser")
 @Table(uniqueConstraints={@UniqueConstraint(columnNames="userId")})

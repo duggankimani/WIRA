@@ -10,10 +10,13 @@
 
 	<!-- Other module inherits -->
 	<inherits name='com.gwtplatform.dispatch.Dispatch' />
+	
 	<inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
 	
+	<inherits name="com.wira.commons.Commons" />
 
 	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd' />
+	
 	<inherits name='com.googlecode.gflot.GFlot' />
 
 	<inherits name="org.matheclipse.parser.Parser" />

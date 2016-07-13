@@ -2,6 +2,8 @@ package com.duggan.workflow.shared.model;
 
 import java.util.Date;
 
+import com.wira.commons.shared.models.HTUser;
+
 public class Comment extends Activity {
 
 	private static final long serialVersionUID = 6882858941033696924L;

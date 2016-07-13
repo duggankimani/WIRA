@@ -2,7 +2,7 @@ package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.shared.model.Org;
+import com.wira.commons.shared.models.Org;
 
 public class GetOrgsResponse extends BaseListResponse{
 

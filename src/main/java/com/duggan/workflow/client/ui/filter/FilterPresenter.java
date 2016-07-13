@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.filter;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.home.HomeView;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -22,6 +21,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 

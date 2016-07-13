@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module rename-to='login'>
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.inject.Inject' />
+
+	<!-- Other module inherits -->
+	<inherits name='com.gwtplatform.dispatch.Dispatch' />
+	<inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+
+	<!-- Other module inherits -->
+	<inherits name="com.wira.commons.Commons" />
+	
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+
+	<!-- Gin Module add -->
+	<extend-configuration-property name="gin.ginjector.modules"
+		value="com.wira.login.client.LoginClientModule" />
+
+</module>

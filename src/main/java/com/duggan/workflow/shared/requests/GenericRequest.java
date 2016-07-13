@@ -3,8 +3,9 @@ package com.duggan.workflow.shared.requests;
 import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GenericRequest extends BaseRequest<GenericResponse> {
 

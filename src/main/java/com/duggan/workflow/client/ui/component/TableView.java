@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -12,6 +11,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.client.util.ArrayUtil;
 
 public class TableView extends Composite {
 

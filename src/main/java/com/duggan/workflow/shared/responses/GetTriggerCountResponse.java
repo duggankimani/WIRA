@@ -3,6 +3,7 @@ package com.duggan.workflow.shared.responses;
 import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.TriggerType;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetTriggerCountResponse extends BaseResponse {
 

@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.dashboard.table;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.TableView;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,6 +10,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
 
 public class TableDataView extends ViewImpl implements
 		TableDataPresenter.ITableDataView {

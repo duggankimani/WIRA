@@ -14,8 +14,8 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.DBLoginHelper;
 import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 
 public class TestDBLoginHelper {
 

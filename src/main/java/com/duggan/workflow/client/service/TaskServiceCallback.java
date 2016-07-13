@@ -3,8 +3,9 @@ package com.duggan.workflow.client.service;
 import com.duggan.workflow.client.ui.events.ErrorEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.gwtplatform.dispatch.rpc.shared.Result;
+import com.wira.commons.client.service.ServiceCallback;
+import com.wira.commons.shared.response.BaseResponse;
 
 /**
  * 

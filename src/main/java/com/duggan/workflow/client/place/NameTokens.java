@@ -2,6 +2,10 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
+	public static final String splash = "/splash";
+
+	public static final String signin = "/signin";
+
 	public static final String explorer = "/explorer";
 	public static final String processlist = "/processlist";
 	public static final String reports = "/reports";
@@ -9,7 +13,6 @@ public class NameTokens {
 	public static final String payment = "/payment";
 	public static final String home = "/home";
 	public static final String error = "/error";
-	public static final String login = "/login";
 	public static final String loginWithRedirect = "/login/{redirect}";
 	public static final String error404 = "/error404";
 	public static final String profile = "/profile";
@@ -37,12 +40,10 @@ public class NameTokens {
 	public static final String caseview = "/caseview/{docRefId}";
 	public static final String messages = "/messages";
 
+	public static final String loginPage = "login.html";
+
 	public static String getHome() {
 		return home;
-	}
-
-	public static String getLogin() {
-		return login;
 	}
 
 	public static String getError404() {
@@ -87,6 +88,14 @@ public class NameTokens {
 
 	public static String getExplorer() {
 		return explorer;
+	}
+
+	public static String getSignin() {
+		return signin;
+	}
+
+	public static String getSplash() {
+		return splash;
 	}
 
 }

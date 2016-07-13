@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.shared.model.PermissionPOJO;
+import com.wira.commons.shared.models.PermissionPOJO;
 
 public class TestPermissionDao {
 

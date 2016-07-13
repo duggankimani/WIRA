@@ -3,11 +3,11 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.dao.helper.DSConfigHelper;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveDSConfigResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveDSConfigRequestHandler extends
 		AbstractActionHandler<SaveDSConfigRequest, SaveDSConfigResponse> {

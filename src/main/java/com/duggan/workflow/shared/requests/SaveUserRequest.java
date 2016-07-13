@@ -1,8 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 /**
  * 

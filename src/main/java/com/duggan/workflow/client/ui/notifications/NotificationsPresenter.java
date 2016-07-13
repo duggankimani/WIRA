@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.notifications;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.service.ServiceCallback;
 import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent;
 import com.duggan.workflow.client.ui.events.BeforeNotificationsLoadEvent.BeforeNotificationsLoadHandler;
 import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
@@ -18,6 +17,7 @@ import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.wira.commons.client.service.ServiceCallback;
 
 public class NotificationsPresenter extends
 		PresenterWidget<NotificationsPresenter.MyView> implements

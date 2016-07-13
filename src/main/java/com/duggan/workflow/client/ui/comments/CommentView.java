@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.MODE;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
@@ -26,6 +25,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.shared.models.HTUser;
 
 public class CommentView extends ViewImpl implements CommentPresenter.ICommentView {
 

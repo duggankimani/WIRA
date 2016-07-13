@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.activityfeed.components.CommentActivity;
 import com.duggan.workflow.client.ui.activityfeed.components.TaskActivity;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
@@ -38,6 +37,7 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ActivitiesPresenter extends
 		Presenter<ActivitiesPresenter.MyView, ActivitiesPresenter.IActivitiesProxy> {

@@ -23,7 +23,7 @@ import com.duggan.workflow.server.rest.model.Detail;
 import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.impl.IncomingRequestImpl;
-import com.duggan.workflow.shared.model.HTUser;
+import com.wira.commons.shared.models.HTUser;
 
 /**
  * This servlet receives php requests from Pioneer IPN app and starts off a new

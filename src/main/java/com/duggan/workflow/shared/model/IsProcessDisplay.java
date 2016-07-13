@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.ArrayList;
 
 import com.sencha.gxt.data.shared.TreeStore.TreeNode;
+import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.SerializableObj;
 
 public abstract class IsProcessDisplay extends SerializableObj implements Listable, TreeNode<IsProcessDisplay>{
  

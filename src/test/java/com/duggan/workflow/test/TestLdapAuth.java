@@ -8,8 +8,8 @@ import org.junit.Assert;
 import org.junit.Ignore;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 
 public class TestLdapAuth {
 	

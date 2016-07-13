@@ -4,10 +4,12 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.NoGatekeeper;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -21,6 +23,7 @@ public class NotfoundPresenter extends
 	public interface MyView extends View {
 	}
 
+	@NoGatekeeper
 	@ProxyCodeSplit
 	@NameToken(NameTokens.error404)
 	public interface MyProxy extends ProxyPlace<NotfoundPresenter> {
@@ -42,7 +45,7 @@ public class NotfoundPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		if(!AppContext.isLoggedIn()){
-			placeManager.revealPlace(new PlaceRequest.Builder().nameToken(NameTokens.login).build());
+			placeManager.revealPlace(new PlaceRequest.Builder().nameToken(NameTokens.splash).build());
 		}
 	}
 	@Override

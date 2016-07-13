@@ -3,10 +3,10 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.GetOutputDocumentRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentResponse;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetOutputDocumentRequestHandler
 		extends

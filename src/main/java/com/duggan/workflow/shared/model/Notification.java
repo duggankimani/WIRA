@@ -2,6 +2,8 @@ package com.duggan.workflow.shared.model;
 
 import java.util.Date;
 
+import com.wira.commons.shared.models.HTUser;
+
 public class Notification extends Activity{
 
 	/**

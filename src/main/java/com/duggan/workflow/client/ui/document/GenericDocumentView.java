@@ -16,7 +16,6 @@ import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Actions;
@@ -27,7 +26,6 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskStepDTO;
@@ -57,6 +55,8 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.HTUser;
 
 public class GenericDocumentView extends ViewImpl implements
 		GenericDocumentPresenter.MyView {

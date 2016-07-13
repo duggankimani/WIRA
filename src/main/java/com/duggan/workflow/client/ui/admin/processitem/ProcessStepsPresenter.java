@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
@@ -16,9 +15,7 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent.SaveTaskStepHandler;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.AssignmentDto;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.OutputDocument;
@@ -53,6 +50,9 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.Listable;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProcessStepsPresenter extends
 		PresenterWidget<ProcessStepsPresenter.MyView> implements

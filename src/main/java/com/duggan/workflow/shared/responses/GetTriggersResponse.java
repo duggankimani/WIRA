@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Trigger;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetTriggersResponse extends BaseResponse{
 

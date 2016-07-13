@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.responses;
 
-import com.duggan.workflow.shared.model.Org;
+import com.wira.commons.shared.models.Org;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveOrgResponse extends BaseResponse {
 

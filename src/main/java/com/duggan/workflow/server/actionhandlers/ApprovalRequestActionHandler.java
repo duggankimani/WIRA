@@ -8,10 +8,10 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class ApprovalRequestActionHandler extends
 		AbstractActionHandler<ApprovalRequest, ApprovalRequestResult> {

@@ -6,8 +6,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.duggan.workflow.server.dao.model.PermissionModel;
-import com.duggan.workflow.shared.model.PermissionName;
-import com.duggan.workflow.shared.model.PermissionPOJO;
+import com.wira.commons.shared.models.PermissionName;
+import com.wira.commons.shared.models.PermissionPOJO;
 
 public class PermissionDao extends BaseDaoImpl {
 

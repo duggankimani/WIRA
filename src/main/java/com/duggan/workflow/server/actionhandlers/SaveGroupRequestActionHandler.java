@@ -1,13 +1,13 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveGroupResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.models.UserGroup;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveGroupRequestActionHandler extends
 		AbstractActionHandler<SaveGroupRequest, SaveGroupResponse> {

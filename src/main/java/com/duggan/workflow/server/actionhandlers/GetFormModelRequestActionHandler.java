@@ -16,11 +16,11 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.requests.GetFormModelRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetFormModelRequestActionHandler extends
 		AbstractActionHandler<GetFormModelRequest, GetFormModelResponse> {

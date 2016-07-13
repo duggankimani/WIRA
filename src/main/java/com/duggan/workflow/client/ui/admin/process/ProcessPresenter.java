@@ -2,8 +2,6 @@ package com.duggan.workflow.client.ui.admin.process;
 
 import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
@@ -26,6 +24,8 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.client.service.ServiceCallback;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProcessPresenter extends
 		Presenter<ProcessPresenter.IProcessView, ProcessPresenter.MyProxy>{

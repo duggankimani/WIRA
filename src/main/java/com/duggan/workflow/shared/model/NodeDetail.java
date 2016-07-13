@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
+
 public class NodeDetail implements Serializable {
 
 	private static final long serialVersionUID = 8764691316633514474L;

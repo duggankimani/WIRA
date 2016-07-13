@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.responses.BaseListResponse;
+import com.wira.commons.shared.request.BaseRequest;
 
 public class BaseListRequest<T extends BaseListResponse> extends BaseRequest<T>{
 

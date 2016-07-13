@@ -11,9 +11,9 @@ import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Listable;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Listable;
 
 public class TestProcessAccess {
 

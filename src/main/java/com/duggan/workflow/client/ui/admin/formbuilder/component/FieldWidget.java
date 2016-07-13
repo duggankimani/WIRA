@@ -10,7 +10,6 @@ import org.matheclipse.parser.client.eval.ComplexVariable;
 import org.matheclipse.parser.client.math.Complex;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
@@ -57,6 +56,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 //import java.util.StringTokenizer;
 

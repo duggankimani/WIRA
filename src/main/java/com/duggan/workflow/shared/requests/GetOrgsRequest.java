@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetOrgsResponse;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetOrgsRequest extends BaseListRequest<GetOrgsResponse> {
 	

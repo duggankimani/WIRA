@@ -1,8 +1,6 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.dashboard.charts.PieChartPresenter;
@@ -32,6 +30,8 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.client.service.ServiceCallback;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class DashboardPresenter extends
 		Presenter<DashboardPresenter.IDashboardView, DashboardPresenter.MyProxy> {

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.duggan.workflow.shared.requests.GetLongTasksRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetLongTasksResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetLongTasksRequestActionHandler extends
 		AbstractActionHandler<GetLongTasksRequest, GetLongTasksResponse> {

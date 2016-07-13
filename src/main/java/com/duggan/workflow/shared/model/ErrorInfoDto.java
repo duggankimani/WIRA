@@ -1,5 +1,7 @@
 package com.duggan.workflow.shared.model;
 
+import com.wira.commons.shared.models.SerializableObj;
+
 
 
 public class ErrorInfoDto extends SerializableObj {

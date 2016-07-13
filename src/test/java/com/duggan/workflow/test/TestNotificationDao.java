@@ -15,9 +15,9 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.Comment;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.wira.commons.shared.models.HTUser;
 
 public class TestNotificationDao {
 

@@ -9,7 +9,7 @@ import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.ExecutionResults;
 
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
-import com.duggan.workflow.shared.model.HTUser;
+import com.wira.commons.shared.models.HTUser;
 
 public class SendMailCommand implements Command{
 

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.users.TYPE;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.DropDownList;
@@ -17,11 +16,6 @@ import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Module;
-import com.duggan.workflow.shared.model.Org;
-import com.duggan.workflow.shared.model.PermissionPOJO;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetOrgsRequest;
 import com.duggan.workflow.shared.requests.GetPermissionsRequest;
@@ -43,6 +37,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Module;
+import com.wira.commons.shared.models.Org;
+import com.wira.commons.shared.models.PermissionPOJO;
+import com.wira.commons.shared.models.UserGroup;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class UserSaveView extends Composite {
 

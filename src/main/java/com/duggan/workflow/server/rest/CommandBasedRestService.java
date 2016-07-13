@@ -20,7 +20,7 @@ import com.duggan.workflow.server.rest.model.Request;
 import com.duggan.workflow.server.rest.model.Response;
 import com.duggan.workflow.server.rest.service.IncomingRequestService;
 import com.duggan.workflow.server.rest.service.impl.IncomingRequestImpl;
-import com.duggan.workflow.shared.model.HTUser;
+import com.wira.commons.shared.models.HTUser;
 
 @Path("/request/")
 public class CommandBasedRestService{

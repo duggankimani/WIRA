@@ -6,7 +6,6 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.RDBMSType;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PopupViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
 
 public class DSSaveView extends PopupViewImpl implements
 		DSSavePresenter.IDSSaveView {

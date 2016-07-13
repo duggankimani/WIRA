@@ -12,12 +12,10 @@ import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.PasswordField;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.google.gwt.core.client.GWT;
@@ -42,6 +40,8 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.REPORTVIEWIMPL;
 
 public class SettingsView extends ViewImpl implements SettingsPresenter.ISettingsView {
 

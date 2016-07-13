@@ -1,13 +1,13 @@
 package com.duggan.workflow.client.ui.admin.users.save;
 
 
-import com.duggan.workflow.shared.model.PermissionPOJO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.shared.models.PermissionPOJO;
 
 public class PermissionPanel extends Composite {
 

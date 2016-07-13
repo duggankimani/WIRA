@@ -3,11 +3,11 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.requests.SaveAssignmentRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveAssignmentResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveAssignmentRequestHandler extends
 		AbstractActionHandler<SaveAssignmentRequest, SaveAssignmentResponse> {

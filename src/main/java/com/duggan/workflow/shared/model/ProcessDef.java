@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ArrayList;
 
+import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.SerializableObj;
+
 public class ProcessDef extends SerializableObj implements Listable{
 
 	/**

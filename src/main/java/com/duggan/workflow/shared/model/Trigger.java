@@ -2,6 +2,8 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
+import com.wira.commons.shared.models.Listable;
+
 public class Trigger implements Serializable, Listable{
 
 	/**

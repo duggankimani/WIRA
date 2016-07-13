@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- The DOCTYPE declaration above will set the    -->
+<!-- browser's rendering engine into               -->
+<!-- "Standards Mode". Replacing this declaration  -->
+<!-- with a "Quirks Mode" doctype may lead to some -->
+<!-- differences in layout.                        -->
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- BootStrap start -->
+<title>WIRA</title>
+<!-- link rel="icon" type="image/png" href="img/briefcase_document.ico"-->
+<link rel="icon" type="image/png" href="img/favicon.ico">
+
+<!-- bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!-- libraries -->
+<link rel="stylesheet" type="text/css" href="css/elements.css">
+
+<!-- global styles -->
+<link rel="stylesheet" type="text/css" href="css/layout.css">
+
+<!-- this page specific styles -->
+<link rel="stylesheet" type="text/css" href="css/compiled/signin.css">
+
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- div id="loading" style="display: none" -->
+	<div id="loading"
+		style="display: inline-block; position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto; width: 350px; height: 100px;">
+		<div style="font-size: 13px; margin: auto; width: 200px;">Wait
+			as the system loads...</div>
+		<div id="progressbar"
+			style="margin: 15px; width: 320px; height: 15px; border: 2px solid black; overflow: hidden; border-radius: 10px;">
+			<div id="progress"
+				style="background: #2299dd; height: 100%; width: 0;"></div>
+			<script type="text/javascript">
+				var loading = document.getElementById('loading');
+				var progress = document.getElementById('progress');
+				var progressbar = document.getElementById('progressbar');
+				function updateProgress() {
+					if (loading.style.display !== 'none') {
+						var width = parseInt(progress.offsetWidth
+								+ ((progressbar.offsetWidth - progress.offsetWidth) * .15));
+						if (width > (progressbar.offsetWidth * .95)) {
+							width = width + ((100 - width) * .5);
+						}
+						progress.style.width = width + 'px';
+						window.setTimeout("updateProgress()", 1000);
+					}
+				}
+				document.body.style.margin = 0;
+				document.body.style.padding = 0;
+				loading.style.display = 'block';
+				updateProgress();
+			</script>
+		</div>
+	</div>
+
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif;">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+	<script type="text/javascript" language="javascript"
+		src="login/login.nocache.js"></script>
+
+
+	<div class="login-bg" id="mainContent">
+		<div class="row-fluid login-wrapper">
+			<img id="logo-image" class="logo-image" src="img/wiralogo.png"
+				alt="Logo"></img> <span class="logo-title">Wira</span> <a
+				class="brand hide" href="#"> Wira BPM |&nbsp; <span
+				id="spnCompanyName">Your Organisation</span>
+			</a>
+			<div class="span4 box" id="loadingbox">
+				<div class="content-wrap">
+					<h6>Log in</h6>
+					<span class="hide loadingtext" id="loading"> <i
+						class="icon-spinner icon-spin icon-large"></i> Logging In...
+					</span>
+					<div id="issues"></div>
+					<input type="text" id="username" name="username" class="span12"></input>
+					<input type="password" id="password" name="password" class="span12"></input>
+					<a href="#" class="forgot hidden">Forgot password?</a>
+					<div  class="remember">
+						<input id="remember-me" type="checkbox"></input> <label
+							for="remember-me">Keep me Signed In</label>
+					</div>
+					<div id="divLogin">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

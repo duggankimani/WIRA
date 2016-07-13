@@ -8,8 +8,6 @@ import java.util.Set;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
-import com.duggan.workflow.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
@@ -54,7 +52,6 @@ import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
@@ -73,7 +70,6 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.Notification;
@@ -142,6 +138,10 @@ import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.wira.commons.client.service.ServiceCallback;
+import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.HTUser;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> implements

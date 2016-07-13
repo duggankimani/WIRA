@@ -14,7 +14,7 @@ import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.NotificationType;
-import com.duggan.workflow.shared.model.UserGroup;
+import com.wira.commons.shared.models.UserGroup;
 
 public class NotificationDaoImpl {
 

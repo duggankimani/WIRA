@@ -3,6 +3,8 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
+import com.wira.commons.shared.response.BaseResponse;
+
 public class MultiRequestActionResult extends BaseResponse {
 
 	private ArrayList<BaseResponse> responses = new ArrayList<BaseResponse>();

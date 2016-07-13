@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetOutputDocumentRequest extends BaseRequest<GetOutputDocumentResponse> {
 

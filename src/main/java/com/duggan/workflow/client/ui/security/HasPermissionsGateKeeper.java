@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.security;
 
-import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.util.AppContext;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.proxy.GatekeeperWithParams;
+import com.wira.commons.client.security.CurrentUser;
 
 public class HasPermissionsGateKeeper implements GatekeeperWithParams {
 

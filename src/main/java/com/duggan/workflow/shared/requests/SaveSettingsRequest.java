@@ -3,8 +3,9 @@ package com.duggan.workflow.shared.requests;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.settings.Setting;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveSettingsResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveSettingsRequest extends BaseRequest<SaveSettingsResponse> {
 

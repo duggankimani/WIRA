@@ -1,8 +1,9 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.model.Org;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.SaveOrgResponse;
+import com.wira.commons.shared.models.Org;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SaveOrgRequest extends BaseRequest<SaveOrgResponse> {
 

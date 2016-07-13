@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.LoadTriggersEvent;
@@ -25,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class TriggerTypePanel extends Composite{
 

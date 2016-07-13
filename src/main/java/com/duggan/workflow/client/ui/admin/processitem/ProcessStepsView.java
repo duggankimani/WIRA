@@ -6,7 +6,6 @@ import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.model.AssignmentFunction;
@@ -31,6 +30,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.ArrayUtil;
 
 public class ProcessStepsView extends ViewImpl implements
 		ProcessStepsPresenter.MyView {

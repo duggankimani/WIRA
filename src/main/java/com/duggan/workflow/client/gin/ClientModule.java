@@ -4,7 +4,6 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.place.WiraPlaceManager;
 import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.reports.ReportsView;
-import com.duggan.workflow.client.security.CurrentUser;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.ui.ApplicationView;
@@ -76,8 +75,6 @@ import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.header.HeaderView;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeView;
-import com.duggan.workflow.client.ui.login.LoginPresenter;
-import com.duggan.workflow.client.ui.login.LoginView;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.ui.notifications.NotificationsView;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
@@ -86,6 +83,7 @@ import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupView;
 import com.duggan.workflow.client.ui.profile.ProfilePresenter;
 import com.duggan.workflow.client.ui.profile.ProfileView;
+import com.duggan.workflow.client.ui.splash.SplashModule;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
 import com.duggan.workflow.client.ui.task.CaseRegistryView;
 import com.duggan.workflow.client.ui.task.CaseView;
@@ -113,8 +111,6 @@ import com.duggan.workflow.client.ui.upload.attachment.AttachmentView;
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.ui.upload.href.IFrameDataView;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.client.util.Definitions;
-import com.duggan.workflow.shared.model.Version;
 import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.gwtplatform.mvp.client.annotations.DefaultPlace;
@@ -123,6 +119,8 @@ import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
+import com.wira.commons.client.util.Definitions;
+import com.wira.commons.shared.models.Version;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -135,22 +133,21 @@ public class ClientModule extends AbstractPresenterModule {
 		.tokenFormatter(RouteTokenFormatter.class)
 		.build());
 		
-		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
+		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.splash);
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error404);
 		bindConstant().annotatedWith(UnauthorizedPlace.class).to(
-				NameTokens.login);
+				NameTokens.splash);
 
 		bindConstant().annotatedWith(SecurityCookie.class).to(
 				Definitions.AUTHENTICATIONCOOKIE);
 
 		// SECURITY
-		bind(CurrentUser.class).asEagerSingleton();
 		bind(Version.class).asEagerSingleton();
 				
 		requestStaticInjection(AppContext.class);
 		requestStaticInjection(AppManager.class);
 
-
+		install(new SplashModule());
 		install(new BaseProcessModule());
 		install(new ProcessListingModule());
 //		install(new FileExplorerModule());
@@ -174,9 +171,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(GenericDocumentPresenter.class,
 				GenericDocumentPresenter.MyView.class,
 				GenericDocumentView.class);
-
-		bindPresenter(LoginPresenter.class, LoginPresenter.ILoginView.class,
-				LoginView.class, LoginPresenter.MyProxy.class);
 
 		bindPresenterWidget(DateGroupPresenter.class,
 				DateGroupPresenter.MyView.class, DateGroupView.class);

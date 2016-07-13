@@ -22,7 +22,6 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowA
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.settings.REPORTVIEWIMPL;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -45,6 +44,7 @@ import com.gwtplatform.mvp.client.proxy.LockInteractionEvent;
 import com.gwtplatform.mvp.client.proxy.LockInteractionHandler;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.wira.commons.shared.models.REPORTVIEWIMPL;
 
 public class ApplicationPresenter extends
 		Presenter<ApplicationPresenter.MyView, ApplicationPresenter.MyProxy> 

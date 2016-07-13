@@ -6,7 +6,6 @@ import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.event.ShowMessageEvent;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AlertType;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
@@ -28,10 +27,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
-import com.duggan.workflow.shared.model.HTUser;
-import com.duggan.workflow.shared.model.Org;
 import com.duggan.workflow.shared.model.SearchFilter;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetOrgsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
@@ -63,6 +59,10 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Org;
+import com.wira.commons.shared.models.UserGroup;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class UserPresenter extends
 		Presenter<UserPresenter.MyView, UserPresenter.MyProxy> implements

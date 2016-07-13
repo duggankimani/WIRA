@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadStartedEvent;
-import com.duggan.workflow.client.ui.util.ArrayUtil;
 import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -25,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wira.commons.client.util.ArrayUtil;
 
 /**
  * 

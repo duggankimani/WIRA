@@ -8,7 +8,7 @@ import org.jbpm.executor.commands.SendMailCommand;
 
 import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.HTUser;
+import com.wira.commons.shared.models.HTUser;
 
 public class EmailUtil {
 

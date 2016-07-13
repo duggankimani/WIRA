@@ -1,7 +1,8 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetFormsResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetFormsRequest extends BaseRequest<GetFormsResponse> {
 

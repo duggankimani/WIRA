@@ -3,8 +3,9 @@ package com.duggan.workflow.shared.requests;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
+import com.wira.commons.shared.request.BaseRequest;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GenerateFilePathRequest extends BaseRequest<GenerateFilePathResponse> {
 

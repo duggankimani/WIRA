@@ -5,7 +5,6 @@ import com.duggan.workflow.client.ui.activityfeed.components.CarouselPopup;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.HR;
 import com.duggan.workflow.client.ui.events.CloseCarouselEvent;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.client.util.Definitions;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.HRElement;
 import com.google.gwt.dom.client.LIElement;
@@ -30,6 +29,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.util.Definitions;
 
 public class ActivitiesView extends ViewImpl implements
 		ActivitiesPresenter.MyView {

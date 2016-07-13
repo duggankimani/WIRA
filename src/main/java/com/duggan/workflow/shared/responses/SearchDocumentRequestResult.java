@@ -3,6 +3,7 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Document;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class SearchDocumentRequestResult extends BaseResponse {
 

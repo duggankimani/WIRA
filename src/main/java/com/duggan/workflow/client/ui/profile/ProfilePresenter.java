@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.profile;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
 import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
@@ -9,7 +8,6 @@ import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
 import com.duggan.workflow.shared.requests.GetUserRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
@@ -32,6 +30,8 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
+import com.wira.commons.shared.models.HTUser;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProfilePresenter extends
 		Presenter<ProfilePresenter.IProfileView, ProfilePresenter.IProfileProxy> implements ContextLoadedHandler {

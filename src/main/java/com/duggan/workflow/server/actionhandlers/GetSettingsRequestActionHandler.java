@@ -6,11 +6,11 @@ import java.util.List;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetSettingsRequest;
-import com.duggan.workflow.shared.responses.BaseResponse;
 import com.duggan.workflow.shared.responses.GetSettingsResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.response.BaseResponse;
 
 public class GetSettingsRequestActionHandler extends
 		AbstractActionHandler<GetSettingsRequest, GetSettingsResponse> {
