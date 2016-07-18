@@ -28,6 +28,12 @@
 	padding-right: 5px;
 }
 
+.login-wrapper img.loading {
+	margin-top: 0px;
+	width: 66px;
+	padding-right: 5px;
+}
+
 .login-wrapper .logo {
 	margin-bottom: 45px;
 	position: relative;

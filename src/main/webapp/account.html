@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- BootStrap start -->
-<title>WIRA</title>
+<title>Password Management</title>
 <!-- link rel="icon" type="image/png" href="img/briefcase_document.ico"-->
 <link rel="icon" type="image/png" href="img/favicon.ico">
 
@@ -27,40 +27,10 @@
 <!-- this page specific styles -->
 <link rel="stylesheet" type="text/css" href="css/compiled/signin.css">
 
-<title>Insert title here</title>
+<title>Password Management</title>
+
 </head>
 <body>
-	<div class="login-bg" id="mainContent">
-		<div class="row-fluid login-wrapper">
-			<a class="brand hide" href="#"></a>
-
-			<div class="span4 box" id="loadingbox">
-				<div class="content-wrap">
-					<img id="logo-image" class="logo-image" src="img/wiralogo.png"
-						alt="Logo"></img> <span class="logo-title">Wira</span>
-					<p
-						style="padding-top: 10px !important; padding-bottom: 10px !important; font-family: Source Sans Pro, sans-serif; color: #656565; font-size: 14px;">
-						PLEASE SIGN IN</p>
-					<span class="hide loadingtext" id="loading"> <i
-						class="icon-spinner icon-spin icon-large"></i> Logging In...
-					</span>
-					<div id="issues" class="hide"></div>
-					<input type="text" id="username" name="username" class="span12"></input>
-					<input type="password" id="password" name="password" class="span12"></input>
-					<div class="remember">
-						<input id="remember-me" type="checkbox"></input> <label
-							for="remember-me">Keep me Signed In</label>
-					</div>
-					<div id="divLogin">
-						<img class="loading" src="img/loading.gif"/>
-					</div>
-					<a href="account.html#/activateacc/acc/forgot" class="forgot">Forgot
-						the password?</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
 		style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
 	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
@@ -72,6 +42,26 @@
 	</noscript>
 	<script type="text/javascript" language="javascript"
 		src="login/login.nocache.js"></script>
+
+
+	<div class="login-bg" id="mainContent">
+		<div class="row-fluid login-wrapper">
+			<div class="span6 accbox" id="loadingbox" style="margin: 0 auto;">
+				<img id="logo-image" class="logo-image" src="img/wiralogo.png"
+					alt="Logo"></img> <span class="logo-title">Wira</span>
+				<div class="content-wrap" id="divAccountsReset" style="margin-top: 15px;">
+					<img class="loading" src="img/loading.gif"/>				
+				</div>
+				<div class="">
+					<span
+						style="font-family: Helvetica Neue, Helvetica, Lucida Grande, tahoma, verdana, arial, sans-serif; font-size: 11px; color: #aaaaaa; line-height: 16px">
+						WIRA Workflow System for Kenya News Agency,
+						Department of Information <br /> Report a Problem <a href="#help">here.</a>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>
