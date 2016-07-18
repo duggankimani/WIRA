@@ -187,11 +187,10 @@ public class AppContext {
 
 	}
 
-	public static void updateContext(HTUser user2, Version version2,
+	public static void updateContext(Version version2,
 			String organizationName2, REPORTVIEWIMPL reportView) {
-		ContextLoadedEvent event = new ContextLoadedEvent(user2, version2);
+		setOrganizationName(organizationName2);
 		reportViewImpl = reportView;
-		event.setOrganizationName(organizationName2);
 		if(version2!=null){
 			version.from(version2);
 		}

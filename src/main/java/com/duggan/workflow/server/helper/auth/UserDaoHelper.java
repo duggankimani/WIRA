@@ -29,42 +29,42 @@ import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.UserGroup;
 
-public class UserDaoHelper implements LoginIntf{
+public class UserDaoHelper implements LoginIntf {
 
 	Logger logger = Logger.getLogger(UserDaoHelper.class.getName());
-	
+
 	@Override
 	public void close() throws IOException {
-		
+
 	}
 
 	@Override
 	public boolean login(String username, String password) {
-		
+
 		User user = DB.getUserGroupDao().getUser(username);
-		
-		return user!=null && user.getPassword().equals(password);
+
+		return user != null && user.getPassword().equals(password);
 	}
 
 	@Override
 	public List<HTUser> retrieveUsers() {
 		List<HTUser> ht_users = new ArrayList<>();
-		
+
 		List<User> users = DB.getUserGroupDao().getAllUsers(null);
-		
-		if(users!=null)
-		for(User user: users){
-			HTUser htuser = get(user);
-			ht_users.add(htuser);
-		}
-		
+
+		if (users != null)
+			for (User user : users) {
+				HTUser htuser = get(user);
+				ht_users.add(htuser);
+			}
+
 		return ht_users;
 	}
 
-	private HTUser get(User user){
+	private HTUser get(User user) {
 		return get(user, false);
 	}
-	
+
 	public HTUser get(User user, boolean loadGroups) {
 		HTUser htuser = new HTUser();
 		htuser.setEmail(user.getEmail());
@@ -74,82 +74,84 @@ public class UserDaoHelper implements LoginIntf{
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
 		htuser.setRefId(user.getRefId());
-		
-		if(loadGroups){
+
+		if (loadGroups) {
 			htuser.setGroups(getFromDb(user.getGroups()));
 			JBPMHelper.get().setCounts(htuser);
 		}
-		
+
 		return htuser;
 	}
 
 	private ArrayList<UserGroup> getFromDb(Collection<Group> groups) {
 		List<UserGroup> userGroups = new ArrayList<>();
-		
-		if(groups!=null)
-			for(Group group: groups){
+
+		if (groups != null)
+			for (Group group : groups) {
 				userGroups.add(get(group));
 			}
-		
+
 		return (ArrayList<UserGroup>) userGroups;
 	}
 
 	@Override
-	public HTUser getUser(String userId){
+	public HTUser getUser(String userId) {
 		return getUser(userId, false);
 	}
-	
+
 	@Override
 	public HTUser getUser(String userId, boolean loadGroups) {
 		User user = DB.getUserGroupDao().getUser(userId);
-		
-		if(user!=null){
+
+		if (user != null) {
 			return get(user, loadGroups);
 		}
-		
+
 		return null;
 	}
 
 	@Override
 	public List<UserGroup> retrieveGroups() {
 		List<Group> groups = DB.getUserGroupDao().getAllGroups(null);
-		
+
 		List<UserGroup> userGroups = new ArrayList<>();
-		if(groups!=null){
-			for(Group group: groups){
+		if (groups != null) {
+			for (Group group : groups) {
 				UserGroup usergroup = get(group);
 				userGroups.add(usergroup);
 			}
 		}
-		
+
 		return userGroups;
 	}
 
 	public UserGroup get(Group group) {
 
-		if(group==null){
+		if (group == null) {
 			return null;
 		}
-		
+
 		UserGroup userGroup = new UserGroup();
 		userGroup.setName(group.getName());
 		userGroup.setId(group.getId());
 		userGroup.setFullName(group.getFullName());
-		
+
 		return userGroup;
 	}
 
 	@Override
 	public HTUser createUser(HTUser htuser, boolean isSendActivationEmail) {
-		
+
+		boolean isNew = htuser.getId() == null;
+
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		
+
 		User user = new User();
-		
-		if(htuser.getId()!=null){
+
+		if (htuser.getId() != null) {
 			user = dao.getUser(htuser.getUserId());
 		}
-		
+
 		user.setId(htuser.getId());
 		user.setArchived(false);
 		user.setEmail(htuser.getEmail());
@@ -158,51 +160,57 @@ public class UserDaoHelper implements LoginIntf{
 		user.setPassword(htuser.getPassword());
 		user.setUserId(htuser.getUserId());
 		user.setGroups(get(htuser.getGroups()));
-		
+
 		dao.saveUser(user);
-		
-		if(isSendActivationEmail){
-			sendActivationEmail(user);
+
+		htuser = get(user);
+		if (isSendActivationEmail) {
+			if (isNew) {
+				sendActivationEmail(user);
+			} else {
+				sendAccountResetEmail(htuser);
+			}
+
 		}
-		
-		return get(user);
+
+		return htuser;
 	}
 
 	private List<Group> get(List<UserGroup> userGroups) {
 		List<Group> groups = new ArrayList<>();
-		
-		if(userGroups!=null){
-			for(UserGroup group: userGroups){
+
+		if (userGroups != null) {
+			for (UserGroup group : userGroups) {
 				groups.add(get(group));
 			}
 		}
-		
+
 		return groups;
 	}
 
 	private Group get(UserGroup usergroup) {
-		
+
 		Group group = new Group();
-		if(usergroup.getId()!=null){
+		if (usergroup.getId() != null) {
 			UserGroupDaoImpl dao = DB.getUserGroupDao();
 			group = dao.getGroup(usergroup.getName());
 		}
 		group.setFullName(usergroup.getFullName());
 		group.setName(usergroup.getName());
 		group.setArchived(false);
-		
+
 		return group;
 	}
 
 	@Override
 	public boolean deleteUser(HTUser htuser) {
-		
-		assert htuser.getId()!=null;
-		
+
+		assert htuser.getId() != null;
+
 		User user = DB.getUserGroupDao().getUser(htuser.getId());
-		
+
 		DB.getUserGroupDao().delete(user);
-		
+
 		return true;
 	}
 
@@ -210,14 +218,14 @@ public class UserDaoHelper implements LoginIntf{
 	public List<UserGroup> getGroupsForUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		Collection<Group> groups = dao.getAllGroupsByUserId(userId);
-		
+
 		List<UserGroup> userGroups = new ArrayList<>();
-		
-		if(groups!=null)
-			for(Group group: groups){
+
+		if (groups != null)
+			for (Group group : groups) {
 				userGroups.add(get(group));
 			}
-		
+
 		return userGroups;
 	}
 
@@ -225,14 +233,14 @@ public class UserDaoHelper implements LoginIntf{
 	public List<HTUser> getUsersForGroup(String groupName) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		Collection<User> users = dao.getAllUsersByGroupId(groupName);
-		
+
 		List<HTUser> groupUsers = new ArrayList<>();
-		
-		if(users!=null)
-			for(User user: users){
+
+		if (users != null)
+			for (User user : users) {
 				groupUsers.add(get(user));
 			}
-		
+
 		return groupUsers;
 	}
 
@@ -240,46 +248,47 @@ public class UserDaoHelper implements LoginIntf{
 	public boolean existsUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		User user = dao.getUser(userId);
-		
-		return user!=null;
+
+		return user != null;
 	}
 
 	@Override
 	public UserGroup createGroup(UserGroup usergroup) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Group group =  dao.getGroup(usergroup.getName());
-		
-		if(group==null){
+		Group group = dao.getGroup(usergroup.getName());
+
+		if (group == null) {
 			group = new Group();
 		}
-		
+
 		group.setFullName(usergroup.getFullName());
 		group.setName(usergroup.getName());
 		group.setArchived(false);
-		
+
 		Set<PermissionModel> permissions = new HashSet<>();
-		for(PermissionPOJO pojo: usergroup.getPermissions()){
-			permissions.add(DB.getPermissionDao().getPermissionByName(pojo.getName()));
+		for (PermissionPOJO pojo : usergroup.getPermissions()) {
+			permissions.add(DB.getPermissionDao().getPermissionByName(
+					pojo.getName()));
 		}
 		group.setPermissions(permissions);
-		
+
 		dao.saveGroup(group);
-		
+
 		return get(group);
 	}
 
 	@Override
 	public boolean deleteGroup(UserGroup userGroup) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		
-		Group group = dao.getGroup(userGroup.getName()); 
-		
-		if(group!=null){
+
+		Group group = dao.getGroup(userGroup.getName());
+
+		if (group != null) {
 			dao.delete(group);
-		}else{
+		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -287,42 +296,42 @@ public class UserDaoHelper implements LoginIntf{
 	public List<HTUser> getAllUsers(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		List<User> users = dao.getAllUsers(searchTerm);
-		
+
 		List<HTUser> htusers = new ArrayList<>();
-		
-		if(users!=null)
-			for(User user: users){
-				htusers.add(get(user,true));
+
+		if (users != null)
+			for (User user : users) {
+				htusers.add(get(user, true));
 			}
-		
+
 		return htusers;
 	}
 
 	@Override
 	public List<UserGroup> getAllGroups(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		
+
 		return getFromDb(dao.getAllGroups(searchTerm));
 	}
 
 	@Override
 	public UserGroup getGroupById(String groupId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		
+
 		return get(dao.getGroup(groupId));
 	}
-	
+
 	@Override
 	public List<HTUser> getUsersForGroups(String[] groups) {
-		if(groups==null || groups.length==0){
+		if (groups == null || groups.length == 0) {
 			return new ArrayList<>();
 		}
-		
+
 		List<HTUser> users = new ArrayList<>();
-		for(String groupId: groups){
+		for (String groupId : groups) {
 			users.addAll(getUsersForGroup(groupId));
 		}
-		
+
 		return users;
 	}
 
@@ -332,23 +341,23 @@ public class UserDaoHelper implements LoginIntf{
 		User user = dao.getUser(username);
 		user.setPassword(password);
 		dao.save(user);
-		
+
 		return true;
 	}
 
 	public HTUser getUserByEmail(String email) {
 		User user = DB.getUserGroupDao().getUserByEmail(email);
-		if(user==null){
+		if (user == null) {
 			return null;
 		}
-		
+
 		return get(user);
 	}
-	
+
 	private void sendActivationEmail(User user) {
 		String subject = "Welcome to KNA Editorial Portal!";
-		String link = SessionHelper.getApplicationPath() + "/account.html#/activateacc/"
-				+ user.getRefId() + "/default";
+		String link = SessionHelper.getApplicationPath()
+				+ "/account.html#/activateacc/" + user.getRefId() + "/default";
 
 		String body = "Dear "
 				+ user.getFullNames()
@@ -356,7 +365,7 @@ public class UserDaoHelper implements LoginIntf{
 				+ "<p/>An account has been created for you in the KNA Editorial portal. "
 				+ "<a href=" + link + ">Click this link </a>"
 				+ " to create your password." + "<p>Thank you";
-		
+
 		try {
 			HTUser htuser = new HTUser(user.getUserId(), user.getEmail());
 			List<HTUser> recipients = Arrays.asList(htuser);
@@ -386,8 +395,8 @@ public class UserDaoHelper implements LoginIntf{
 	public void sendAccountResetEmail(HTUser user) {
 
 		String subject = "WIRA Workflow Password Reset";
-		String link = SessionHelper.getApplicationPath() + "/account.html#/activateacc/"
-				+ user.getRefId() + "/reset";
+		String link = SessionHelper.getApplicationPath()
+				+ "/account.html#/activateacc/" + user.getRefId() + "/reset";
 
 		String body = "Hello "
 				+ user.getFullName()
@@ -416,7 +425,8 @@ public class UserDaoHelper implements LoginIntf{
 			htuser.setSurname(user.getSurname());
 			List<HTUser> recipients = Arrays.asList(htuser);
 
-			new CustomEmailHandler().sendMail(subject, body, recipients, params);
+			new CustomEmailHandler()
+					.sendMail(subject, body, recipients, params);
 		} catch (Exception e) {
 			logger.warning("Activation Email for " + user.getEmail()
 					+ " failed. Cause: " + e.getMessage());
@@ -425,5 +435,4 @@ public class UserDaoHelper implements LoginIntf{
 
 	}
 
-	
 }
