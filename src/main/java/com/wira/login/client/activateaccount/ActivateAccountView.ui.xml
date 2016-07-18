@@ -6,43 +6,6 @@
 	xmlns:password='urn:import:com.wira.login.client.component'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-		<div class="row hide">
-			<div class="col m5 offset-s3" style="margin-left:25%;margin-top: 50px;">
-				<g:HTMLPanel styleName="card wizard-card ct-wizard-gold"
-					ui:field="loadingbox">
-					<div class="row" style="margin-bottom:0px;">
-						<div class="col s10" style="margin-top:15px;text-align:center;">
-							<div>
-								<h5 style="text-shadow:0px 1px;color: #4E4A4A;">Maelezo EWS</h5>
-							</div>
-							<div width="100%">
-								<img style="opacity:0.8"
-									src="getreport?ACTION=GetLogo&amp;width=250&amp;settingName=ORGLOGO"
-									width="170px" height="70px">
-								</img>
-							</div>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:0px;">
-						<password:PasswordView ui:field="panelPasswordWidget"></password:PasswordView>
-					</div>
-					<div class="row">
-						<div class="col s12" style="margin-bottom:15px;margin-top:0px;">
-							<span
-								style="font-family: Helvetica Neue, Helvetica, Lucida Grande, tahoma, verdana, arial, sans-serif; font-size: 11px; color: #aaaaaa; line-height: 16px">
-								Maelezo Editorial Workflow System for Kenya News Agency,
-								Department of
-								Information
-								<br />
-								Report a Problem
-								<a href="#help">here.</a>
-							</span>
-						</div>
-					</div>
-				</g:HTMLPanel>
-			</div>
-		</div>
-
+	<g:HTMLPanel ui:field="container">
 	</g:HTMLPanel>
 </ui:UiBinder>

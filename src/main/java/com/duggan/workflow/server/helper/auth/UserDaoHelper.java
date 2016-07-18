@@ -140,7 +140,7 @@ public class UserDaoHelper implements LoginIntf{
 	}
 
 	@Override
-	public HTUser createUser(HTUser htuser) {
+	public HTUser createUser(HTUser htuser, boolean isSendActivationEmail) {
 		
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		
@@ -161,6 +161,9 @@ public class UserDaoHelper implements LoginIntf{
 		
 		dao.saveUser(user);
 		
+		if(isSendActivationEmail){
+			sendActivationEmail(user);
+		}
 		
 		return get(user);
 	}
@@ -344,7 +347,7 @@ public class UserDaoHelper implements LoginIntf{
 	
 	private void sendActivationEmail(User user) {
 		String subject = "Welcome to KNA Editorial Portal!";
-		String link = SessionHelper.getApplicationPath() + "#/activateacc/"
+		String link = SessionHelper.getApplicationPath() + "/account.html#/activateacc/"
 				+ user.getRefId() + "/default";
 
 		String body = "Dear "
@@ -353,7 +356,7 @@ public class UserDaoHelper implements LoginIntf{
 				+ "<p/>An account has been created for you in the KNA Editorial portal. "
 				+ "<a href=" + link + ">Click this link </a>"
 				+ " to create your password." + "<p>Thank you";
-
+		
 		try {
 			HTUser htuser = new HTUser(user.getUserId(), user.getEmail());
 			List<HTUser> recipients = Arrays.asList(htuser);
@@ -382,8 +385,8 @@ public class UserDaoHelper implements LoginIntf{
 
 	public void sendAccountResetEmail(HTUser user) {
 
-		String subject = "KNA Editorial Portal Password Reset";
-		String link = SessionHelper.getApplicationPath() + "#/activateacc/"
+		String subject = "WIRA Workflow Password Reset";
+		String link = SessionHelper.getApplicationPath() + "/account.html#/activateacc/"
 				+ user.getRefId() + "/reset";
 
 		String body = "Hello "

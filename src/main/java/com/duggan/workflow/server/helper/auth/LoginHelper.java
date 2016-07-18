@@ -80,9 +80,12 @@ public class LoginHelper implements LoginIntf{
 		return impl.retrieveGroups();
 	}
 
-	@Override
 	public HTUser createUser(HTUser user) {
-		return impl.createUser(user);
+		return createUser(user, false);
+	}
+	
+	public HTUser createUser(HTUser user, boolean isSendActivationEmail) {
+		return impl.createUser(user,isSendActivationEmail);
 	}
 
 	@Override

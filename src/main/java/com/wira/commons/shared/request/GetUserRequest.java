@@ -6,9 +6,9 @@ import com.wira.commons.shared.response.GetUserRequestResult;
 public class GetUserRequest extends BaseRequest<GetUserRequestResult> {
 
 	private String userId;
+	private String refId;
 
-	@SuppressWarnings("unused")
-	private GetUserRequest() {
+	public GetUserRequest() {
 		// For serialization only
 	}
 
@@ -24,5 +24,18 @@ public class GetUserRequest extends BaseRequest<GetUserRequestResult> {
 	public BaseResponse createDefaultActionResponse() {
 	
 		return new GetUserRequestResult();
+	}
+	
+	@Override
+	public boolean isSecured() {
+		return false;
+	}
+
+	public String getRefId() {
+		return refId;
+	}
+
+	public void setRefId(String refId) {
+		this.refId = refId;
 	}
 }

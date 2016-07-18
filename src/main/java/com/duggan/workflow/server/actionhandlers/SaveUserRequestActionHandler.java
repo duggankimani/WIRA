@@ -22,7 +22,7 @@ public class SaveUserRequestActionHandler extends
 		HTUser user = action.getUser();
 		
 		if(!action.isDelete()){
-			user = LoginHelper.get().createUser(user);
+			user = LoginHelper.get().createUser(user, action.isSendActivationEmail());
 			SaveUserResponse result = (SaveUserResponse)actionResult;
 			result.setUser(user);
 		}

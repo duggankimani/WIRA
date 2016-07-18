@@ -2,10 +2,12 @@ package com.wira.login.client.activateaccount;
 
 import javax.inject.Inject;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.wira.commons.shared.models.HTUser;
@@ -15,12 +17,23 @@ class ActivateAccountView extends ViewImpl implements ActivateAccountPresenter.I
     interface Binder extends UiBinder<Widget, ActivateAccountView> {
     }
 
-	@UiField
 	PasswordView panelPasswordWidget;
-
+	
     @Inject
     ActivateAccountView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
+
+        panelPasswordWidget  = new PasswordView();
+        
+    	Element divAccountsReset = DOM.getElementById("divAccountsReset");
+        divAccountsReset.removeAllChildren();	
+        HTMLPanel panel = HTMLPanel.wrap(divAccountsReset);
+        panel.add(panelPasswordWidget);
+    }
+    
+    @Override
+    protected void onAttach() {
+    	super.onAttach();
     }
 
 	@Override

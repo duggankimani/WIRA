@@ -13,6 +13,7 @@ import com.wira.commons.shared.response.BaseResponse;
 public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 
 	private HTUser user;
+	private boolean isSendActivationEmail;
 	private boolean isDelete=false;
 
 	@SuppressWarnings("unused")
@@ -21,6 +22,11 @@ public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 
 	public SaveUserRequest(HTUser user) {
 		this.user = user;
+	}
+	
+	public SaveUserRequest(HTUser user, boolean isSendActivationEmail) {
+		this.user = user;
+		this.isSendActivationEmail = isSendActivationEmail;
 	}
 
 	public HTUser getUser() {
@@ -39,5 +45,13 @@ public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 
 	public void setDelete(boolean isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	public boolean isSendActivationEmail() {
+		return isSendActivationEmail;
+	}
+
+	public void setSendActivationEmail(boolean isSendActivationEmail) {
+		this.isSendActivationEmail = isSendActivationEmail;
 	}
 }

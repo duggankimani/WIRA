@@ -136,7 +136,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		StringBuffer jpql = new StringBuffer("FROM BUser u where u.email=:email");
 		
 		return getSingleResultOrNull(getEntityManager()
-				.createNamedQuery(jpql.toString())
+				.createQuery(jpql.toString())
 				.setParameter("email", email)
 				);
 	}

@@ -3,10 +3,10 @@ package com.duggan.workflow.client.ui.admin.users.save;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.users.TYPE;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.DropDownList;
@@ -27,12 +27,14 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -42,7 +44,6 @@ import com.wira.commons.shared.models.Module;
 import com.wira.commons.shared.models.Org;
 import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.UserGroup;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class UserSaveView extends Composite {
 
@@ -105,6 +106,7 @@ public class UserSaveView extends Composite {
 	private UserGroup group;
 	private Org org;
 
+	@UiField CheckBox chkSendEmail;
 
 	private static Binder binder = GWT
 			.create(Binder.class);
@@ -122,6 +124,15 @@ public class UserSaveView extends Composite {
 				setContext(event.getValue());
 			}
 		});
+	}
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		Element label = chkSendEmail.getElement().getElementsByTagName("label").getItem(0);
+		label.getStyle().setDisplay(Display.INLINE_BLOCK);
+		label.getStyle().setProperty("verticalAlign", "sub");
+		label.getStyle().setProperty("paddingLeft", "5px");
 	}
 
 	public UserSaveView(TYPE type, Object dto) {
@@ -386,7 +397,7 @@ public class UserSaveView extends Composite {
 		}
 		user.setEmail(txtEmail.getValue());
 		user.setName(txtFirstname.getValue());
-		user.setPassword(txtPassword.getValue());
+		//user.setPassword(txtPassword.getValue());
 		user.setSurname(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
@@ -443,14 +454,14 @@ public class UserSaveView extends Composite {
 			issues.addError("Email is mandatory");
 		}
 
-		if (isNullOrEmpty(txtPassword.getText())) {
-			valid = false;
-			issues.addError("Password is mandatory");
-		} else {
-			if (!txtPassword.getValue().equals(txtConfirmPassword.getValue())) {
-				issues.addError("Password and confirm password fields do not match");
-			}
-		}
+//		if (isNullOrEmpty(txtPassword.getText())) {
+//			valid = false;
+//			issues.addError("Password is mandatory");
+//		} else {
+//			if (!txtPassword.getValue().equals(txtConfirmPassword.getValue())) {
+//				issues.addError("Password and confirm password fields do not match");
+//			}
+//		}
 
 		return valid;
 	}
@@ -499,4 +510,9 @@ public class UserSaveView extends Composite {
 	public void setGroups(ArrayList<UserGroup> groups) {
 		lstGroups.addItems(groups);
 	}
+
+	public boolean isSendEmail() {
+		return chkSendEmail.getValue()==null? false : chkSendEmail.getValue();
+	}
+	
 }

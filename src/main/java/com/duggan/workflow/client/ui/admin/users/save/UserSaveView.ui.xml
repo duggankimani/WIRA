@@ -46,7 +46,7 @@
 					</div>
 				</div>
 
-				<div class="control-group">
+				<div class="control-group hide">
 					<label for="ProcessName">
 						<b>Password:</b>
 					</label>
@@ -54,7 +54,7 @@
 						class="form-control" placeholder="Password" />
 				</div>
 
-				<div class="control-group">
+				<div class="control-group hide">
 					<label class="control-label">
 						<b>Confirm Password:</b>
 					</label>
@@ -64,9 +64,13 @@
 				
 				<div class="control-group">
 					<label class="control-label">
-						Branch:
+						Organization:
 					</label>
 					<d:DropDownList ui:field="lstOrg" />
+				</div>
+				<div class="control-group">
+					<g:CheckBox ui:field="chkSendEmail" text="Send account activation email" 
+						styleName="form-control"/>
 				</div>
 				
 				<div class="control-group">

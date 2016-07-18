@@ -33,7 +33,7 @@ public interface LoginIntf extends Closeable {
 	/**
 	 * Create/Update New User
 	 */
-	public HTUser createUser(HTUser user);
+	public HTUser createUser(HTUser user, boolean isSendActivationEmail);
 	
 
 	public boolean deleteUser(HTUser user);

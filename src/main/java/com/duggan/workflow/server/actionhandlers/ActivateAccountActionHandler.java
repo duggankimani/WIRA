@@ -22,8 +22,7 @@ public class ActivateAccountActionHandler extends
 			throws ActionException {
 		UserDaoHelper helper = new UserDaoHelper();
 		HTUser user = action.getUser();
-		user = helper.getUser(user.getEmail());
-
+		
 		helper.updatePassword(user.getUserId(), user.getPassword());
 		ActivateAccountResponse result = (ActivateAccountResponse) actionResult;
 		result.setUser(user);

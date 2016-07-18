@@ -61,7 +61,7 @@ public class TestDBLoginHelper {
 		groups.add(g);
 		user.setGroups(groups);
 		
-		user = helper.createUser(user);
+		user = helper.createUser(user,true);
 		Assert.assertTrue(user.getGroups().size()==1);
 
 		List<UserGroup> users = helper.getGroupsForUser(userId);
@@ -95,7 +95,7 @@ public class TestDBLoginHelper {
 		groups.add(g);
 		user.setGroups(groups);
 		
-		user = helper.createUser(user);
+		user = helper.createUser(user,true);
 		Assert.assertTrue(user.getGroups().size()==1);
 	}
 	
@@ -128,7 +128,7 @@ public class TestDBLoginHelper {
 		user.setPassword(password);
 		user.setSurname(surname);
 
-		user = helper.createUser(user);
+		user = helper.createUser(user,true);
 		Assert.assertNotNull(user.getId());
 		Assert.assertNotNull(user.getEmail());
 		Assert.assertNotNull(user.getPassword());

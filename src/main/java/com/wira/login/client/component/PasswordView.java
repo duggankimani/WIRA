@@ -17,10 +17,10 @@ import com.wira.commons.shared.models.HTUser;
 
 public class PasswordView extends Composite {
 
-	private static PasswordWidgetUiBinder uiBinder = GWT
-			.create(PasswordWidgetUiBinder.class);
+	private static PasswordViewUiBinder uiBinder = GWT
+			.create(PasswordViewUiBinder.class);
 
-	interface PasswordWidgetUiBinder extends UiBinder<Widget, PasswordView> {
+	interface PasswordViewUiBinder extends UiBinder<Widget, PasswordView> {
 	}
 
 	@UiField
@@ -181,7 +181,7 @@ public class PasswordView extends Composite {
 			aSendActivation.addStyleName("hide");
 		} else if (reason.equals("activate")) {
 			this.doValidation = false;
-			spnInfo.setInnerText("Enter the email you used to do registration, and email will be sent with activation instructions.");
+			spnInfo.setInnerText("Enter your email address to send the reset instructions.");
 			txtEmail.getElement().removeAttribute("disabled");
 			divConfirmPassword.addClassName("hide");
 			divPassword.addClassName("hide");

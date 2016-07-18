@@ -3,7 +3,6 @@ package com.wira.login.client.activateaccount;
 import java.util.logging.Logger;
 
 import com.duggan.workflow.client.place.NameTokens;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -154,7 +153,7 @@ public class ActivateAccountPresenter
 														"Your account reset instructions have been sent"
 																+ " to your email - '"
 																+ dto.getEmail()
-																+ "'. <a href=\"#/login\">Back to login</a>");
+																+ "'. <a href=\"login.html#/login\">Back to login</a>");
 										getView().getPanelPasswordWidget()
 												.showReset(false);
 										// placeManager.revealPlace(new
@@ -189,8 +188,16 @@ public class ActivateAccountPresenter
 							@Override
 							public void processResult(
 									ActivateAccountResponse aResponse) {
-								Window.alert("Your password has been successfully updated");
-								placeManager.revealDefaultPlace();
+								if (aResponse.getErrorCode() != 0
+										&& aResponse.getErrorMessage() != null) {
+									getView()
+											.setError(
+													"Password update failed due to an error");
+								} else {
+									Window.alert("Your password has been successfully updated");
+									Window.Location.replace("login.html");
+								}
+
 							}
 						});
 			}
@@ -201,27 +208,26 @@ public class ActivateAccountPresenter
 	public void prepareFromRequest(PlaceRequest request) {
 		getView().getPanelPasswordWidget().getIssues().clear();
 		getView().getPanelPasswordWidget().getTxtEmail().setText("");
-		String userId = request.getParameter("uid", null);
+		String refId = request.getParameter("uid", null);
 		String reason = request.getParameter("reason", null);
 		this.reason = reason;
 
-		if (userId == null) {
-			// Window.alert("No User Details found...!");
-			return;
-		}
-
 		if (reason != null) {
 			getView().changeWidget(reason);
-			GetUserRequest action = new GetUserRequest(userId);
-			requestHelper.execute(action,
-					new ServiceCallback<GetUserRequestResult>() {
-						@Override
-						public void processResult(GetUserRequestResult aResponse) {
-							HTUser user = aResponse.getUser();
-							ActivateAccountPresenter.this.user = user;
-							getView().bindUser(user);
-						}
-					});
+			if (!refId.equals("acc")) {
+				GetUserRequest action = new GetUserRequest();
+				action.setRefId(refId);
+				requestHelper.execute(action,
+						new ServiceCallback<GetUserRequestResult>() {
+							@Override
+							public void processResult(
+									GetUserRequestResult aResponse) {
+								HTUser user = aResponse.getUser();
+								ActivateAccountPresenter.this.user = user;
+								getView().bindUser(user);
+							}
+						});
+			}
 		}
 
 	}

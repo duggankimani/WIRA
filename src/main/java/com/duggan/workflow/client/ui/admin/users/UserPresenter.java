@@ -301,7 +301,7 @@ public class UserPresenter extends
 							saveGroup(userGroup);
 						} else if (type == TYPE.USER) {
 							HTUser user = view.getUser();
-							saveUser(user);
+							saveUser(user,view.isSendEmail());
 						} else if (type == TYPE.ORG) {
 							Org org = view.getOrg();
 							saveOrg(org);
@@ -332,8 +332,8 @@ public class UserPresenter extends
 				});
 	}
 
-	private void saveUser(HTUser user) {
-		SaveUserRequest request = new SaveUserRequest(user);
+	private void saveUser(HTUser user, boolean isSendActivationEmail) {
+		SaveUserRequest request = new SaveUserRequest(user,isSendActivationEmail);
 		requestHelper.execute(request,
 				new TaskServiceCallback<SaveUserResponse>() {
 					@Override
