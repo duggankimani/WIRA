@@ -4,15 +4,18 @@ import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DATEGROUP
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DOCUMENT_SLOT;
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.FILTER_SLOT;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.component.Checkbox;
+import com.duggan.workflow.client.ui.component.DateField;
+import com.duggan.workflow.client.ui.component.DateInput;
+import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.task.DraftsPresenter.IDraftsView;
 import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedView;
@@ -27,6 +30,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.dom.client.Style.Unit;
@@ -41,7 +45,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -166,7 +169,47 @@ public class AbstractTaskView extends ViewImpl implements
 		for (int col = 0; col < table.getCellCount(i); col++) {
 			table.getFlexCellFormatter().setStyleName(i, col, "th");
 		}
+		
+		/**
+		++i;
+		j=0;
 
+		table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
+		
+		table.getFlexCellFormatter().setColSpan(i, j, 7);
+		HTMLPanel searchForm = new HTMLPanel("");
+		searchForm.addStyleName("form-inline");
+		TextBox caseSearch = new TextBox();
+		caseSearch.addStyleName("input-medium search-query");
+		caseSearch.getElement().setPropertyString("placeholder", "Case No");
+		searchForm.add(caseSearch);
+		
+		DropDownList process = new DropDownList<ProcessDef>();
+		process.addStyleName("input-medium");
+		process.setNullText("--Process--");
+		process.setItems(new ArrayList<ProcessDef>());
+		searchForm.add(process);
+		
+		DropDownList task = new DropDownList<ProcessDef>();
+		task.addStyleName("input-medium");
+		task.setNullText("--Task--");
+		task.setItems(new ArrayList<ProcessDef>());
+		searchForm.add(task);
+		
+		DropDownList currentUser = new DropDownList<ProcessDef>();
+		currentUser.addStyleName("input-medium");
+		currentUser.setNullText("--Current User--");
+		currentUser.setItems(new ArrayList<ProcessDef>());
+		searchForm.add(currentUser);
+		
+		DropDownList status = new DropDownList<HTStatus>();
+		status.addStyleName("input-medium");
+		status.setNullText("--Status--");
+		status.setItems(new ArrayList<HTStatus>());
+		searchForm.add(status);
+		
+		table.setWidget(i, j, searchForm);*/
+		
 	}
 
 	@Override
@@ -526,6 +569,17 @@ public class AbstractTaskView extends ViewImpl implements
 
 			HTMLPanel status = new HTMLPanel("");
 			// status.add(spnStatus);
+			switch (doc.getProcessStatus()) {
+			case COMPLETED:
+				status.addStyleName("text-success");
+				break;
+			case INPROGRESS:
+				status.addStyleName("text-info");
+				break;
+			
+			default:
+				break;
+			}
 			status.add(new InlineLabel(doc.getProcessStatus().name()));
 
 			tblTasks.setWidget(i, j++, status);

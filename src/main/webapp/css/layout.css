@@ -1479,7 +1479,8 @@ ul.icons-list.text-xl {
 
 #navigation-menu>li>a {
 	/*background-color: #EDEDED;*/
-	background-color: #F9F9F9;
+	/*background-color: #F9F9F9;*/
+	background-image: linear-gradient(to bottom, #FDFEFF,#EAEAEA);
 	display: block;
 	margin-left: 0px;
 	padding: 2px 0px 0px 5px;

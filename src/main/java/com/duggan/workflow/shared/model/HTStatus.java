@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.client.util.ArrayUtil;
+import com.wira.commons.shared.models.Listable;
 
-public enum HTStatus implements IsSerializable{
+public enum HTStatus implements IsSerializable, Listable{
 	
 	COMPLETED,
 	CREATED,
@@ -56,5 +57,15 @@ public enum HTStatus implements IsSerializable{
 		}
 		
 		return actions;
+	}
+
+	@Override
+	public String getName() {
+		return name();
+	}
+
+	@Override
+	public String getDisplayName() {
+		return name();
 	}
 }

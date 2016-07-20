@@ -31,7 +31,7 @@
 				</div>
 			</g:HTMLPanel>
 			<div class="no-overflow-x overflow-y registry-table" ui:field="divTable">
-				<d:TableView ui:field="tblRegistry"></d:TableView>
+				<g:FlexTable ui:field="tblRegistry" styleName="table table-hover table-striped table-condensed"></g:FlexTable>
 				<span ui:field="spnNoData" class="hide label label-info">
 					No Data To Display
 				</span>

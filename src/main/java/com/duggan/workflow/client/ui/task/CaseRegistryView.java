@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.DropDownList;
-import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter.ICaseRegistryView;
 import com.duggan.workflow.client.ui.util.DateUtils;
@@ -18,11 +17,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
-import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.HTUser;
 
 public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
@@ -32,7 +32,7 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 	public interface Binder extends UiBinder<Widget, CaseRegistryView> {
 	}
 	
-	@UiField TableView tblRegistry;
+	@UiField FlexTable tblRegistry;
 	@UiField DropDownList<DocumentType> listProcesses;
 	@UiField DropDownList<HTUser> listUsers;
 	@UiField TextField txtSearch;
@@ -46,22 +46,37 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		widget = binder.createAndBindUi(this);
 		listProcesses.setNullText("--Select Process--");
 		listUsers.setNullText("--Select Users--");
-		tblRegistry.setAutoNumber(true);
-		tblRegistry.setHeaders(
-				ArrayUtil.asList("icon","icon","date","date","large","user","large","user","",""),
-				ArrayUtil.asList("Case No", 
-				"Summary", 
-				//"Case Notes",
-				"Start",
-				"End",
-				"Process", 
-				"Initiated By",
-				"Task", "Current User",
-				"Priority",
-				"Status"));
 		
 	}
 	
+	private void setHeaders(FlexTable table) {
+		
+		int j = 0;
+		table.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
+
+		table.setWidget(0, j++, new HTMLPanel("<strong>Case</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "50px");
+		table.setWidget(0, j++, new HTMLPanel("<strong>Summary</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "40px");
+		table.setWidget(0, j++, new HTMLPanel("<strong>Start</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+		table.setWidget(0, j++, new HTMLPanel("<strong>End</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+		table.setWidget(0, j++, new HTMLPanel("<strong>Process</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+		table.setWidget(0, j++, new HTMLPanel("<strong>Initiated By</strong>"));
+		table.setWidget(0, j++, new HTMLPanel("<strong>Task</strong>"));
+		table.setWidget(0, j++, new HTMLPanel("<strong>Current User</strong>"));
+		table.setWidget(0, j++, new HTMLPanel("<strong>Priority</strong>"));
+		table.setWidget(0, j++, new HTMLPanel("<strong>Status</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "60px");
+		
+		for (int i = 0; i < table.getCellCount(0); i++) {
+			table.getFlexCellFormatter().setStyleName(0, i, "th");
+		}
+	}
+
 	@Override
 	public Widget asWidget() {
 		return widget;
@@ -81,14 +96,18 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 
 	@Override
 	public void bindProcessInstances(ArrayList<ProcessLog> logs) {
-		tblRegistry.clearRows();
+		tblRegistry.removeAllRows();
+		setHeaders(tblRegistry);
 		if(logs.isEmpty()){
 			spnNoData.removeClassName("hide");
 		}else{
 			spnNoData.addClassName("hide");
 		}
 		
+		int row=tblRegistry.getRowCount();
 		for(ProcessLog log: logs){
+			int col=0;
+			
 			String taskOwner = log.getTaskOwner();
 			if(taskOwner==null || taskOwner.trim().isEmpty()){
 				if(log.getPotOwners()!=null){
@@ -100,20 +119,20 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 			
 			InlineLabel priority = new InlineLabel("NORMAL");
 			//priority.addStyleName("label label-info");
+			tblRegistry.setWidget(row, col++, new HTMLPanel("<strong>"+(row)+"</strong>"));
+			tblRegistry.setWidget(row, col++, new InlineLabel(parse(log.getCaseNo())));
+			tblRegistry.setWidget(row, col++, getSummaryLink(log));
+			tblRegistry.setWidget(row, col++, new InlineLabel(DateUtils.DATEFORMAT.format(log.getStartDate())));
+			tblRegistry.setWidget(row, col++, new InlineLabel(log.getEndDate()==null? "--" :
+				DateUtils.DATEFORMAT.format(log.getEndDate())));
+			tblRegistry.setWidget(row, col++, new InlineLabel(log.getProcessName()));
+			tblRegistry.setWidget(row, col++, new InlineLabel(log.getInitiator()));
+			tblRegistry.setWidget(row, col++, new InlineLabel(log.getTaskName()==null? "--": log.getTaskName()));
+			tblRegistry.setWidget(row, col++, new InlineLabel(taskOwner.isEmpty()? "--": taskOwner));
+			tblRegistry.setWidget(row, col++, priority);
+			tblRegistry.setWidget(row, col++, getProcessState(log.getProcessState()));
 			
-			tblRegistry.addRow(ArrayUtil.asList("icon","icon text-center","date","date","large","user","large","user","",""),
-					new InlineLabel(parse(log.getCaseNo())),
-					getSummaryLink(log),
-//					new InlineLabel(""), -Case Notes
-					new InlineLabel(DateUtils.DATEFORMAT.format(log.getStartDate())),
-					new InlineLabel(log.getEndDate()==null? "--" :
-							DateUtils.DATEFORMAT.format(log.getEndDate())),
-					new InlineLabel(log.getProcessName()),
-					new InlineLabel(log.getInitiator()),
-					new InlineLabel(log.getTaskName()==null? "--": log.getTaskName()),
-					new InlineLabel(taskOwner.isEmpty()? "--": taskOwner),
-					priority,
-					getProcessState(log.getProcessState()));
+			++row;
 		}
 	}
 	

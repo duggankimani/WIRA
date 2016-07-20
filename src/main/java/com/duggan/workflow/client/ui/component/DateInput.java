@@ -1,11 +1,10 @@
 package com.duggan.workflow.client.ui.component;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT_;
 import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
@@ -16,7 +15,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;

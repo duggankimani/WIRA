@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -31,6 +32,8 @@ class LoginView extends ViewImpl implements LoginPresenter.ILoginView {
 	LoginView(Binder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
 
+		DOM.getElementById("mainContent").addClassName("hide");
+		
 		this.ulRoot = DOM.createElement("ul");
 
 		// Login Button
@@ -158,5 +161,17 @@ class LoginView extends ViewImpl implements LoginPresenter.ILoginView {
 	public void setLoginButtonEnabled(boolean isEnabled) {
 
 	}
-
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		DOM.getElementById("mainContent").removeClassName("hide");
+	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Window.alert("Detach!");
+		
+	}
 }

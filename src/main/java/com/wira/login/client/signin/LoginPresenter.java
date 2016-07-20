@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
@@ -246,4 +247,10 @@ public class LoginPresenter extends Presenter<LoginPresenter.ILoginView, LoginPr
 
 		return "localhost".equalsIgnoreCase(domain) ? null : domain;
 	}   
+	
+
+	@Override
+	protected void onUnbind() {
+		super.onUnbind();
+	}
 }

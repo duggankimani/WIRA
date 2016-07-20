@@ -729,6 +729,7 @@ public class GenericDocumentPresenter extends
 								fireEvent(new ProcessingCompletedEvent());
 								getView().isValid();
 							}
+
 						});
 			}
 		}
@@ -802,6 +803,17 @@ public class GenericDocumentPresenter extends
 							// Reverse Navigation
 							navigateIndex(!isNavigateNext);
 						}
+						
+						@Override
+						public void onSuccess(
+								MultiRequestActionResult aResponse) {
+							if (aResponse.getErrorCode() == 0) {
+								super.onSuccess(aResponse);
+							}else{
+								navigateIndex(!isNavigateNext);
+								super.onSuccess(aResponse);
+							}
+						}
 					});
 
 		} else if (taskStepDTO.getOutputDocId() != null) {
@@ -852,6 +864,17 @@ public class GenericDocumentPresenter extends
 							fireEvent(new ProcessingCompletedEvent());
 							// Reverse Navigation
 							navigateIndex(!isNavigateNext);
+						}
+						
+						@Override
+						public void onSuccess(
+								MultiRequestActionResult aResponse) {
+							if (aResponse.getErrorCode() == 0) {
+								super.onSuccess(aResponse);
+							}else{
+								navigateIndex(!isNavigateNext);
+								super.onSuccess(aResponse);
+							}
 						}
 					});
 		} else {
@@ -947,13 +970,13 @@ public class GenericDocumentPresenter extends
 
 		/*
 		 * Duggan 06/10/2015 ExecuteWorkflow action submits a ArrayList of Value
-		 * objects i.e HashMap<String,Value> , which works ok for all fields except
-		 * grid fields updated through triggers
+		 * objects i.e HashMap<String,Value> , which works ok for all fields
+		 * except grid fields updated through triggers
 		 * 
 		 * Grid rows updated through a trigger call to addDetail('gridName',
 		 * DocumentLine) are not added to a GridValue object: they are written
-		 * directly to a HashMap<String, ArrayList<DocLine>>, hence they are left out
-		 * when ExecuteWorkflow is called.
+		 * directly to a HashMap<String, ArrayList<DocLine>>, hence they are
+		 * left out when ExecuteWorkflow is called.
 		 * 
 		 * To remedy this issue, We need to loop through the document lines
 		 * generating a GridValue entry for each document line with no
@@ -1398,39 +1421,39 @@ public class GenericDocumentPresenter extends
 		}
 	}
 
-
 	private MODE getCurrentStepMode() {
 		MODE stepMode = null;
 		if (!steps.isEmpty()) {
 			TaskStepDTO dto = steps.get(currentStep);
 			stepMode = dto.getMode();
 		}
-		
+
 		return stepMode;
 	}
-	
-	boolean isFormReadOnly(){
+
+	boolean isFormReadOnly() {
 		MODE stepMode = getCurrentStepMode();
-		if (globalFormMode == null){
+		if (globalFormMode == null) {
 			return isFormReadOnly(stepMode);
-		}else if(globalFormMode.equals(MODE.EDIT)){
+		} else if (globalFormMode.equals(MODE.EDIT)) {
 			return isFormReadOnly(stepMode);
-		}else if(globalFormMode.equals(MODE.VIEW)){
+		} else if (globalFormMode.equals(MODE.VIEW)) {
 			return isFormReadOnly(MODE.VIEW);
 		}
 		return false;
 	}
 
-	boolean isFormReadOnly(MODE mode){
+	boolean isFormReadOnly(MODE mode) {
 		boolean isFormReadOnly = (mode != null && mode == MODE.VIEW);
 		return isFormReadOnly;
 	}
-	
+
 	public void setForm(Form form, Doc doc, MODE mode) {
 		getView().setForm(form, doc, isFormReadOnly(mode));
 	}
 
-	private void loadDynamicFields(HashMap<String, ArrayList<String>> dependencies,
+	private void loadDynamicFields(
+			HashMap<String, ArrayList<String>> dependencies,
 			final String triggerName) {
 
 		final ArrayList<Field> dependants = new ArrayList<Field>();
@@ -1480,7 +1503,8 @@ public class GenericDocumentPresenter extends
 						if (!dependants.isEmpty()) {
 							LoadDynamicFieldsResponse loadDynamicFields = (LoadDynamicFieldsResponse) aResponse
 									.get(i++);
-							ArrayList<Field> fields = loadDynamicFields.getFields();
+							ArrayList<Field> fields = loadDynamicFields
+									.getFields();
 							for (Field field : fields) {
 								int idx = form.getFields().indexOf(field);
 								if (idx != -1) {
@@ -1491,7 +1515,8 @@ public class GenericDocumentPresenter extends
 											+ field.getCaption());
 								}
 							}
-							fireEvent(new FieldReloadedEvent(fields, isFormReadOnly()));
+							fireEvent(new FieldReloadedEvent(fields,
+									isFormReadOnly()));
 						}
 
 						if (!StringUtils.isNullOrEmpty(triggerName)) {
@@ -1506,11 +1531,13 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void bindActivities(GetActivitiesResponse response) {
-		HashMap<Activity, ArrayList<Activity>> activitiesMap = response.getActivityMap();
+		HashMap<Activity, ArrayList<Activity>> activitiesMap = response
+				.getActivityMap();
 		bindActivities(activitiesMap);
 	}
 
-	public void bindActivities(HashMap<Activity, ArrayList<Activity>> activitiesMap) {
+	public void bindActivities(
+			HashMap<Activity, ArrayList<Activity>> activitiesMap) {
 		setInSlot(ACTIVITY_SLOT, null);
 
 		Set<Activity> keyset = activitiesMap.keySet();
@@ -1563,7 +1590,8 @@ public class GenericDocumentPresenter extends
 
 	protected void bindAttachments(GetAttachmentsResponse attachmentsresponse) {
 
-		ArrayList<Attachment> attachments = attachmentsresponse.getAttachments();
+		ArrayList<Attachment> attachments = attachmentsresponse
+				.getAttachments();
 		getView().showAttachments(attachments);
 
 		if (attachments.size() > 0) {
@@ -1864,7 +1892,8 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onFieldLoad(FieldLoadEvent event) {
 		String fieldName = event.getField().getName();
-		HashMap<String, ArrayList<String>> dependencies = form.getDependencies();
+		HashMap<String, ArrayList<String>> dependencies = form
+				.getDependencies();
 		HashMap<String, ArrayList<String>> toReload = new HashMap<String, ArrayList<String>>();
 		toReload.put(fieldName, dependencies.get(fieldName));
 
