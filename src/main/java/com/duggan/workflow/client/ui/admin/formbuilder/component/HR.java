@@ -4,6 +4,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
@@ -18,6 +19,7 @@ public class HR extends FieldWidget{
 	private final Widget widget;
 	
 	@UiField Element lblTitle;
+	@UiField Element lblSubTitle;
 
 	static String SECTION = "SECTION";
 	
@@ -37,11 +39,21 @@ public class HR extends FieldWidget{
 	protected DataType getType() {
 		return DataType.LAYOUTHR;
 	}
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		widget.getElement().getStyle().setMarginBottom(15, Unit.PX);
+	}
 
 	@Override
 	protected void setCaption(String caption) {
 		lblTitle.setInnerText(caption);
-			
+		String subtitle=getPropertyValue(SECTION);
+		if(subtitle!=null){
+			lblSubTitle.setInnerText(subtitle);
+			lblSubTitle.removeClassName("hide");
+		}
 	}
 
 	@Override

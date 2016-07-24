@@ -5,8 +5,10 @@ import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.form.Field;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -43,6 +45,10 @@ PropertyChangedHandler{
 		this.fieldWidget = FieldWidget.getWidget(field.getType(), field, true);
 		fieldWidget.setHeight("1px");
 		fieldWidget.setWidth("1px");//attached but not visible : So it listens to events
+		if(fieldWidget instanceof SelectBasic){
+			//Window.alert(fieldWidget.getField()+"");
+			fieldWidget.getElement().getStyle().setDisplay(Display.NONE);
+		}
 		panel.add(fieldWidget);
 		
 	}

@@ -69,8 +69,10 @@ public class DropDownList<T extends Listable> extends Composite implements
 		listBox.clear();
 		listBox.addItem(nullText, "");
 
-		for (T item : items) {
-			listBox.addItem(item.getDisplayName(), item.getName());
+		if (items != null) {
+			for (T item : items) {
+				listBox.addItem(item.getDisplayName(), item.getName());
+			}
 		}
 	}
 
@@ -80,19 +82,20 @@ public class DropDownList<T extends Listable> extends Composite implements
 	public T getValue() {
 		return value;
 	}
-	
+
 	/**
 	 * For multi-selection ArrayList box
+	 * 
 	 * @return
 	 */
-	public ArrayList<T> getValues(){
+	public ArrayList<T> getValues() {
 		ArrayList<T> values = new ArrayList<T>();
-		
-		//Start from one to avoid selecting --Select--
+
+		// Start from one to avoid selecting --Select--
 		for (int i = 1; i < listBox.getItemCount(); i++) {
-			if(listBox.isItemSelected(i)){
+			if (listBox.isItemSelected(i)) {
 				String key = listBox.getValue(i);
-				values.add(items.get(i-1));
+				values.add(items.get(i - 1));
 			}
 		}
 		return values;
@@ -128,7 +131,7 @@ public class DropDownList<T extends Listable> extends Composite implements
 			setValue(null);
 			return;
 		}
-		
+
 		for (int i = 0; i < listBox.getItemCount(); i++) {
 			if (listBox.getValue(i).equals(key)) {
 				listBox.setSelectedIndex(i);
@@ -137,6 +140,7 @@ public class DropDownList<T extends Listable> extends Composite implements
 
 		}
 	}
+
 	@Override
 	public void setTitle(String title) {
 		listBox.setTitle(title);

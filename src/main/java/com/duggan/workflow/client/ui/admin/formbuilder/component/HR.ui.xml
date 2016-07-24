@@ -4,7 +4,8 @@
 		<!-- label class="control-label">Horizontal Line:</label-->
 		<!-- div class="controls" -->
 		<div>
-		    <label ui:field="lblTitle" class="lead">Sample Text</label>
+		    <label ui:field="lblTitle" class="lead">Title </label>
+		    <label ui:field="lblSubTitle" class="subtitle hide">Subtitle</label>
 			<!--<hr width="99%" style="margin:-2px 0 0px;"></hr> -->
 	    </div>
 	</g:HTMLPanel>

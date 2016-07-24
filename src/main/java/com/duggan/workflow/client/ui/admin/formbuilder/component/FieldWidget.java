@@ -1,15 +1,15 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.matheclipse.parser.client.eval.ComplexEvaluator;
 import org.matheclipse.parser.client.eval.ComplexVariable;
 import org.matheclipse.parser.client.math.Complex;
 
 import com.allen_sauer.gwt.dnd.client.HasDragHandle;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
@@ -22,10 +22,9 @@ import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
-import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
 import com.duggan.workflow.client.ui.events.ResetFieldValueEvent;
-import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
 import com.duggan.workflow.client.ui.events.ResetFieldValueEvent.ResetFieldValueHandler;
+import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
 import com.duggan.workflow.client.ui.events.ResetFormPositionEvent.ResetFormPositionHandler;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
@@ -50,13 +49,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 //import java.util.StringTokenizer;
 
@@ -350,7 +347,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	/**
 	 * 
 	 */
-	private void cleanUpEvents() {
+	protected void cleanUpEvents() {
 		for (HandlerRegistration hr : handlers) {
 			hr.removeHandler();
 		}
@@ -415,6 +412,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			return;
 		}
 
+//		Window.alert("Property change!");
 		String property = event.getPropertyName();
 		Object value = event.getPropertyValue();
 
