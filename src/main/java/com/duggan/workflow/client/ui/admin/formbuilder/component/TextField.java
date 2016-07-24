@@ -30,203 +30,230 @@ public class TextField extends FieldWidget {
 	interface TextFieldUiBinder extends UiBinder<Widget, TextField> {
 	}
 
-	@UiField Element lblEl;
-	@UiField com.duggan.workflow.client.ui.component.TextField txtComponent;
-	@UiField InlineLabel lblReadOnly;
-	@UiField HTMLPanel panelControls;
-	@UiField HTMLPanel panelGroup;
-	@UiField SpanElement spnMandatory;
-	@UiField SpanElement spnMsg;
-	@UiField Element spnIcon;
-	
+	@UiField
+	Element lblEl;
+	@UiField
+	com.duggan.workflow.client.ui.component.TextField txtComponent;
+	@UiField
+	InlineLabel lblReadOnly;
+	@UiField
+	HTMLPanel panelControls;
+	@UiField
+	HTMLPanel panelGroup;
+	@UiField
+	SpanElement spnMandatory;
+	@UiField
+	SpanElement spnMsg;
+	@UiField
+	Element spnIcon;
+
 	private final Widget widget;
-	
+	private Property property;
+
 	public TextField() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
-		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
+				id));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
-				new KeyValuePair("left", "Left"),
-				new KeyValuePair("center", "Center"),
-				new KeyValuePair("right", "Right")));
-		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
+		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC,
+				new KeyValuePair("left", "Left"), new KeyValuePair("center",
+						"Center"), new KeyValuePair("right", "Right")));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
+				DataType.STRING));
 
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
 	}
-	
+
 	public TextField(final Property property) {
 		this();
+		this.property = property;
 		lblEl.setInnerHTML(property.getCaption());
 		txtComponent.setName(property.getName());
-		
+
 		Value textValue = property.getValue();
-		String text = textValue==null? "": 
-			textValue.getValue()==null? "": textValue.getValue().toString();
-		
+		String text = textValue == null ? ""
+				: textValue.getValue() == null ? "" : textValue.getValue()
+						.toString();
+
 		txtComponent.setText(text);
-		txtComponent.setClass("input-large"); //Smaller TextField
-		designMode=true;
-		
+		txtComponent.setClass("input-large"); // Smaller TextField
+		designMode = true;
+
 		final String name = property.getName();
-		
+
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				String value  = event.getValue();
+				String value = event.getValue();
 				Value previousValue = property.getValue();
-				if(previousValue==null){
+				if (previousValue == null) {
 					previousValue = new StringValue();
-				}else{
-					if(event.getValue().equals(previousValue.getValue())){
+				} else {
+					if (event.getValue().equals(previousValue.getValue())) {
 						return;
 					}
 				}
-				
-				
+
 				previousValue.setValue(value);
 				property.setValue(previousValue);
-				
+
 				/**
-				 * This allows visual properties including Caption, Place Holder, help to be 
-				 * Synchronised with the form field, so that the changes are observed immediately
+				 * This allows visual properties including Caption, Place
+				 * Holder, help to be Synchronised with the form field, so that
+				 * the changes are observed immediately
 				 * 
-				 * All other Properties need not be synched this way 
+				 * All other Properties need not be synched this way
 				 */
-				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
+				if (name.equals(CAPTION) || name.equals(PLACEHOLDER)
+						|| name.equals(HELP)) {
 					firePropertyChanged(property, value);
 				}
-				
+
 			}
 		});
-		
-		if(property.getName().equals(NAME)){
-			addRegisteredHandler(PropertyChangedEvent.TYPE,
-					new PropertyChangedEvent.PropertyChangedHandler(){
-				@Override
-				public void onPropertyChanged(PropertyChangedEvent event) {
-					if(event.getPropertyName().equals(CAPTION)){
-						String propertyValue = event.getPropertyValue()==null? null: event.getPropertyValue().toString();
-						
-						if(propertyValue==null || propertyValue.isEmpty()){
-							return;
-						}
-						propertyValue = propertyValue.replaceAll("\\s", "_");
-						Converter<String, String> converter = CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL);
-						propertyValue = converter.convert(propertyValue);
-						txtComponent.setValue(propertyValue);
-						Value value = property.getValue();
-						if(value==null){
-							value = new StringValue(null, NAME,propertyValue);
-						}else{
-							value.setValue(propertyValue);
-						}
-						
-						property.setValue(value);
-						
-					}
-				}
-			});
-		}
-		
-		
-		//name.equals()
+	}
+
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		if (property != null)
+			if (property.getName().equals(NAME)) {
+				addRegisteredHandler(PropertyChangedEvent.TYPE,
+						new PropertyChangedEvent.PropertyChangedHandler() {
+							@Override
+							public void onPropertyChanged(
+									PropertyChangedEvent event) {
+								if (event.getPropertyName().equals(CAPTION)) {
+									String propertyValue = event
+											.getPropertyValue() == null ? null
+											: event.getPropertyValue()
+													.toString();
+
+									if (propertyValue == null
+											|| propertyValue.isEmpty()) {
+										return;
+									}
+									propertyValue = propertyValue.replaceAll(
+											"\\s", "_");
+									Converter<String, String> converter = CaseFormat.UPPER_UNDERSCORE
+											.converterTo(CaseFormat.LOWER_CAMEL);
+									propertyValue = converter
+											.convert(propertyValue);
+									txtComponent.setValue(propertyValue);
+									Value value = property.getValue();
+									if (value == null) {
+										value = new StringValue(null, NAME,
+												propertyValue);
+									} else {
+										value.setValue(propertyValue);
+									}
+
+									property.setValue(value);
+
+								}
+							}
+						});
+			}
 	}
 
 	@Override
 	public FieldWidget cloneWidget() {
 		return new TextField();
 	}
-	
+
 	@Override
 	protected void setCaption(String caption) {
 		lblEl.setInnerHTML(caption);
 	}
-	
+
 	@Override
 	protected void setPlaceHolder(String placeHolder) {
 		txtComponent.setPlaceholder(placeHolder);
 	}
-	
+
 	@Override
 	protected void setHelp(String help) {
 		txtComponent.setTitle(help);
 	}
-	
+
 	@Override
 	protected DataType getType() {
 		return DataType.STRING;
 	}
-	
+
 	@Override
 	public Value getFieldValue() {
 		String value = txtComponent.getValue();
-		
-		if(value==null || value.isEmpty())
+
+		if (value == null || value.isEmpty())
 			return null;
-		
-		//System.err.println("TextField.FieldValue "+field.getName()+"= "+value);
-		return new StringValue(field.getLastValueId(),field.getName(),value);
+
+		// System.err.println("TextField.FieldValue "+field.getName()+"= "+value);
+		return new StringValue(field.getLastValueId(), field.getName(), value);
 	}
-	
+
 	@Override
 	public void setValue(Object value) {
 		super.setValue(value);
-		
-		if(value!=null){
-			if(!(value instanceof String)){
+
+		if (value != null) {
+			if (!(value instanceof String)) {
 				value = value.toString();
 			}
-				
-			txtComponent.setValue((String)value);
-			lblReadOnly.setText((String)value);
-		}else{
+
+			txtComponent.setValue((String) value);
+			lblReadOnly.setText((String) value);
+		} else {
 			txtComponent.setValue(null);
 			lblReadOnly.setText(null);
 		}
 	}
-	
+
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-		
-		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
+
+		UIObject.setVisible(txtComponent.getElement(), !this.readOnly);
 		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
-		
+
 		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
 	public Widget createComponent(boolean small) {
-				
-		if(!readOnly)
-		if(small){
-			txtComponent.setClass("input-medium");
-		}
+
+		if (!readOnly)
+			if (small) {
+				txtComponent.setClass("input-medium");
+			}
 		return panelControls;
 	}
-	
+
 	@Override
-	protected void setAlignment(String alignment) {		
-		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));		
-		panelControls.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
-		
+	protected void setAlignment(String alignment) {
+		txtComponent.getElement().getStyle()
+				.setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
+		panelControls.getElement().getStyle()
+				.setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
+
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
-		if(field.getDocId()!=null)
-		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-					ENV.setContext(field, event.getValue());
-			}
-		});
+
+		if (field.getDocId() != null)
+			txtComponent
+					.addValueChangeHandler(new ValueChangeHandler<String>() {
+						@Override
+						public void onValueChange(ValueChangeEvent<String> event) {
+							ENV.setContext(field, event.getValue());
+						}
+					});
 	}
 
 	@Override
@@ -238,21 +265,21 @@ public class TextField extends FieldWidget {
 	public Element getViewElement() {
 		return lblReadOnly.getElement();
 	}
-	
+
 	@Override
 	public void setComponentValid(boolean isValid) {
 		spnMsg.removeClassName("hide");
 		spnIcon.removeClassName("icon-ok-circle");
 		spnIcon.removeClassName("icon-remove-circle");
-		if(isValid){
+		if (isValid) {
 			panelGroup.addStyleName("success");
 			spnIcon.addClassName("icon-ok-circle");
 			panelGroup.removeStyleName("error");
-		}else{
+		} else {
 			panelGroup.removeStyleName("success");
 			panelGroup.addStyleName("error");
 			spnIcon.addClassName("icon-remove-circle");
 		}
 	}
-	
+
 }
