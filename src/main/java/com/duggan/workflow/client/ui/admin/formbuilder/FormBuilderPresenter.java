@@ -130,12 +130,16 @@ public class FormBuilderPresenter extends
 
 						Form form = event.getValue();
 
+						PlaceRequest.Builder builder = new PlaceRequest.Builder()
+						.nameToken(NameTokens.formbuilder)
+						.with("p", processRefId);
 						if (form==null || form.getId() == null) {
-							History.newItem("formbuilder;p="+processRefId);
+							placeManager.revealPlace(builder.build());
 							return;
 						}
 						
-						History.newItem("formbuilder;p="+processRefId+";formid="+form.getId(), false);
+						builder.with("formid", form.getId()+"");
+						//History.newItem("formbuilder;p="+processRefId+";formid="+form.getId(), false);
 						
 						loadForm(form.getId());						
 					}
