@@ -208,7 +208,11 @@ public class FormBuilderView extends ViewImpl implements
 			@Override
 			public void onValueChange(ValueChangeEvent<Form> event) {
 				
-				Long previousId = form.getId();
+				Long previousId = null;
+				if(form!=null){
+					previousId = form.getId();
+				}
+				
 				Long id = event.getValue()==null? null: event.getValue().getId();
 				
 				if(previousId==null || id==null){
