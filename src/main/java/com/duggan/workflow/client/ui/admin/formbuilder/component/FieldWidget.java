@@ -704,6 +704,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case CHECKBOX:
 			widget = new CheckBoxField();
 			break;
+			
+		case CHECKBOXGROUP:
+			widget = new CheckBoxGroup();
+			break;
 
 		case MULTIBUTTON:
 			widget = new ButtonGroup();

@@ -26,6 +26,8 @@ public class HTMLEditor extends Composite implements HasText {
 		initWidget(uiBinder.createAndBindUi(this));
 		setText(html);
 		senchaEditor.setHeight("400px");
+		senchaEditor.setEnableFormat(false);
+		
 	}
 
 	public void setText(String text) {

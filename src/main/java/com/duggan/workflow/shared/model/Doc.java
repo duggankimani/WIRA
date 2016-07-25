@@ -301,4 +301,12 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		this.caseNo = caseNo;
 		setValue("caseNo", new StringValue(null, "caseNo", caseNo));
 	}
+
+	public HashMap<String, Object> toObjectMap() {
+		HashMap<String, Object> conv = new HashMap<String, Object>(); 
+		for(String key: getValues().keySet()){
+			conv.put(key, get(key));
+		}
+		return conv;
+	}
 }

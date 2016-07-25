@@ -341,6 +341,7 @@ public class FormDaoHelper {
 			break;
 
 		case STRING:
+		case CHECKBOXGROUP:
 			value = new StringValue(id, key, advalue.getStringValue());
 			break;
 
@@ -398,6 +399,7 @@ public class FormDaoHelper {
 			break;
 
 		case STRING:
+		case CHECKBOXGROUP:
 			value = new StringValue(id, key, obj.toString());
 			break;
 
@@ -690,6 +692,7 @@ public class FormDaoHelper {
 			break;
 
 		case STRING:
+		case CHECKBOXGROUP:
 		case STRINGLONG:
 		case MULTIBUTTON:
 		case SELECTBASIC:

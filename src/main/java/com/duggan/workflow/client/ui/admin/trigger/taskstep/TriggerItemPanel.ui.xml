@@ -4,7 +4,19 @@
 	
 	<g:HTMLPanel>
 		<g:InlineLabel ui:field="lblName"></g:InlineLabel>
-		<g:Anchor ui:field="aEdit">Edit</g:Anchor>
-		<g:Anchor ui:field="aDelete">Delete</g:Anchor>
+		<g:Anchor ui:field="aEdit" title="Edit Trigger">
+		    <span class="icon-pencil"></span>
+		    Edit
+		</g:Anchor>
+		<g:Anchor ui:field="aDelete" title="Delete Trigger">
+		    <span class="icon-trash"></span>
+		    Delete
+		</g:Anchor>
+		<span style="margin:0 10px;">|</span>
+		<span ui:field="spnCondition" style="background-color:lightcyan; margin-left:10px;">@@PaymentType=='Mpesa'</span>
+		<g:Anchor ui:field="aEditCondition">
+		    <span class="icon-pencil"></span>
+		    Conditions
+		</g:Anchor>
 	</g:HTMLPanel>
 </ui:UiBinder> 

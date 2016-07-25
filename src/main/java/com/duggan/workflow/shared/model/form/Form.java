@@ -3,8 +3,6 @@ package com.duggan.workflow.shared.model.form;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.wira.commons.shared.models.Listable;
 

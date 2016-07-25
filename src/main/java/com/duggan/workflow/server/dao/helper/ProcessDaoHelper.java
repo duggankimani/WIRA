@@ -411,6 +411,7 @@ public class ProcessDaoHelper {
 		dto.setOutputDocId(model.getDoc() == null ? null : model.getDoc()
 				.getId());
 		dto.setProcessDefId(model.getProcessDef().getId());
+		dto.setProcessRefId(model.getProcessDef().getRefId());
 		dto.setSequenceNo(model.getSequenceNo());
 		dto.setStepName(model.getStepName());
 
@@ -643,6 +644,7 @@ public class ProcessDaoHelper {
 		stepTrigger.setTaskStepId(adTaskStep.getTaskStep().getId());
 		stepTrigger.setType(adTaskStep.getType());
 		stepTrigger.setId(adTaskStep.getId());
+		stepTrigger.setCondition(adTaskStep.getCondition());
 
 		return stepTrigger;
 	}
@@ -662,6 +664,7 @@ public class ProcessDaoHelper {
 		adTaskStep.setTrigger(dao.getById(ADTrigger.class, trigger.getTrigger()
 				.getId()));
 
+		adTaskStep.setCondition(trigger.getCondition());
 		return adTaskStep;
 	}
 

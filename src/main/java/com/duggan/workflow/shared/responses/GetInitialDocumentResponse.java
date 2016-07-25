@@ -14,6 +14,7 @@ public class GetInitialDocumentResponse extends BaseResponse {
 	private static final long serialVersionUID = 1L;
 	private Doc doc;
 	private ArrayList<TaskStepDTO> steps;
+	private ArrayList<String> conditionalFields;
 
 	public GetInitialDocumentResponse() {
 	}
@@ -36,5 +37,13 @@ public class GetInitialDocumentResponse extends BaseResponse {
 
 	public void setSteps(ArrayList<TaskStepDTO> steps) {
 		this.steps = steps;
+	}
+
+	public void setConditionalFields(ArrayList<String> conditionalFields) {
+		this.conditionalFields = conditionalFields;
+	}
+
+	public ArrayList<String> getConditionalFields() {
+		return conditionalFields;
 	}
 }

@@ -41,19 +41,21 @@ public class ProcessView extends ViewImpl implements
 	public ProcessView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		imgProcess.setAltText("Could not load process image. Kindly ensure the svg image for this process has been uploaded");
+		
+		bindSlot(ProcessPresenter.TABLE_SLOT, processStepsPanel); 
 	}
 
-	@Override
-	public void setInSlot(Object slot, IsWidget content) {
-		if (slot == ProcessPresenter.TABLE_SLOT) {
-			processStepsPanel.clear();
-			if (content != null) {
-				processStepsPanel.add(content);
-			}
-		} else {
-			super.setInSlot(slot, content);
-		}
-	}
+//	@Override
+//	public void setInSlot(Object slot, IsWidget content) {
+//		if (slot == ProcessPresenter.TABLE_SLOT) {
+//			processStepsPanel.clear();
+//			if (content != null) {
+//				processStepsPanel.add(content);
+//			}
+//		} else {
+//			super.setInSlot(slot, content);
+//		}
+//	}
 
 	@Override
 	public Widget asWidget() {

@@ -10,6 +10,7 @@ import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -21,6 +22,7 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
+import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -45,7 +47,7 @@ public class ProcessPresenter extends
 	@Inject
 	DispatchAsync requestHelper;
 	
-	public static final Object TABLE_SLOT = new Object();
+	public static final SingleSlot<ProcessStepsPresenter> TABLE_SLOT = new SingleSlot<ProcessStepsPresenter>();
 	
 	@Inject PlaceManager placeManager;
 
@@ -103,14 +105,14 @@ public class ProcessPresenter extends
 							@Override
 							public void processResult(
 									ProcessStepsPresenter aResponse) {
+								setInSlot(TABLE_SLOT, aResponse);
 								aResponse.setProcess(processDef);
 								aResponse.load();
-								setInSlot(TABLE_SLOT, aResponse);
 							}
 						});
 			}
 		});
 		
 	}
-
+	
 }

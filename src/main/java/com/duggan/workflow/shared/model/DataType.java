@@ -19,7 +19,7 @@ public enum DataType implements IsSerializable{
 	GRID,
 	COLUMNPROPERTY, 
 	FILEUPLOAD, FORM, LINK, IFRAME,
-	JS;
+	JS,CHECKBOXGROUP;
 	
 	public boolean isDropdown(){
 		return this.equals(SELECTBASIC);
@@ -27,12 +27,13 @@ public enum DataType implements IsSerializable{
 	//GRID;
 	
 	public boolean isLookup(){
-		return this.equals(SELECTBASIC) || this.equals(SELECTMULTIPLE) || this.equals(BOOLEAN);
+		return this.equals(SELECTBASIC) || this.equals(SELECTMULTIPLE) || this.equals(BOOLEAN) || this.equals(CHECKBOXGROUP);
 	}
 	
 	public DBType toDBType(){
 		DBType type = null;
 		switch (this) {
+		case CHECKBOXGROUP:
 		case STRING:
 		case STRINGLONG:
 		case SELECTBASIC:

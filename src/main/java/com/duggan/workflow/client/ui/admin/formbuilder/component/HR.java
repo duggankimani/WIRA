@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -49,10 +50,26 @@ public class HR extends FieldWidget{
 	@Override
 	protected void setCaption(String caption) {
 		lblTitle.setInnerText(caption);
+	}
+	
+	@Override
+	public void setField(Field field) {
+		super.setField(field);
 		String subtitle=getPropertyValue(SECTION);
-		if(subtitle!=null){
-			lblSubTitle.setInnerText(subtitle);
+		if(subtitle==null){
+			lblSubTitle.addClassName("hide");
+		}else{
 			lblSubTitle.removeClassName("hide");
+			lblSubTitle.setInnerText(subtitle);
+		}
+		
+		String caption = getPropertyValue(CAPTION);
+		if(caption==null){
+			if(subtitle!=null)
+			lblTitle.addClassName("hide");
+		}else{
+			lblTitle.removeClassName("hide");
+			lblTitle.setInnerText(caption);
 		}
 	}
 

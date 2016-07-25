@@ -98,6 +98,7 @@ import com.duggan.workflow.shared.requests.GetFormModelRequest;
 import com.duggan.workflow.shared.requests.GetInitialDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
+import com.duggan.workflow.shared.requests.GetTaskStepsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.LoadDynamicFieldsRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
@@ -118,6 +119,7 @@ import com.duggan.workflow.shared.responses.GetFormModelResponse;
 import com.duggan.workflow.shared.responses.GetInitialDocumentResponse;
 import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessLogResponse;
+import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.LoadDynamicFieldsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
@@ -290,6 +292,7 @@ public class GenericDocumentPresenter extends
 	public static final Object ATTACHMENTS_SLOT = new Object();
 	private ArrayList<TaskLog> logs = null;
 	private boolean isLoadAsAdmin;
+	private ArrayList<String> conditionFields;
 
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
@@ -1300,10 +1303,12 @@ public class GenericDocumentPresenter extends
 								MultiRequestActionResult results) {
 							int i = 0;
 
-							// Document and Task Steps & Trigger before Load
+							//Bind Task Steps & Triggers before load
 							GetInitialDocumentResponse compositeResp = (GetInitialDocumentResponse) results
 									.get(i++);
-							setSteps(compositeResp.getSteps());
+							setSteps(compositeResp.getSteps(), compositeResp.getConditionalFields());
+							
+							//Document/ Task Binding 
 							bindDocumentResult(compositeResp.getDoc());
 
 							// Form
@@ -1359,8 +1364,9 @@ public class GenericDocumentPresenter extends
 	// });
 	// }
 
-	protected void setSteps(ArrayList<TaskStepDTO> steps) {
+	protected void setSteps(ArrayList<TaskStepDTO> steps, ArrayList<String> conditionFields) {
 		this.steps = steps;
+		this.conditionFields = conditionFields;
 		if (steps == null) {
 			return;
 		}
@@ -1376,6 +1382,11 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		this.form = form;
+		for(String conditionField: conditionFields){
+			ArrayList<String> parents = new ArrayList<String>();
+			parents.add(conditionField);
+			form.addFieldDependency(parents, "");
+		}
 
 		docRefId = doc.getRefId();
 		if (doc instanceof Document) {
@@ -1413,14 +1424,18 @@ public class GenericDocumentPresenter extends
 		}
 
 		/**
-		 * 
+		 * Field Dependencies
 		 */
 		if (!form.getDependencies().isEmpty() && loadDynamicFields) {
 			// Reload
-			loadDynamicFields(form.getDependencies(), null);
+			loadDynamicFields(form.getDependencies(), null,false);
 		}
 	}
 
+	/**
+	 * Current Step Form Mode
+	 * @return
+	 */
 	private MODE getCurrentStepMode() {
 		MODE stepMode = null;
 		if (!steps.isEmpty()) {
@@ -1431,6 +1446,10 @@ public class GenericDocumentPresenter extends
 		return stepMode;
 	}
 
+	/**
+	 * Check if form is read only
+	 * @return
+	 */
 	boolean isFormReadOnly() {
 		MODE stepMode = getCurrentStepMode();
 		if (globalFormMode == null) {
@@ -1452,9 +1471,15 @@ public class GenericDocumentPresenter extends
 		getView().setForm(form, doc, isFormReadOnly(mode));
 	}
 
+	/**
+	 * Dropdown Parent->Child Relationship loading 
+	 * 
+	 * @param dependencies
+	 * @param triggerName
+	 */
 	private void loadDynamicFields(
 			HashMap<String, ArrayList<String>> dependencies,
-			final String triggerName) {
+			final String triggerName, final boolean reloadSteps) {
 
 		final ArrayList<Field> dependants = new ArrayList<Field>();
 		if (dependencies != null) {
@@ -1472,7 +1497,7 @@ public class GenericDocumentPresenter extends
 			}
 		}
 
-		if (dependants.isEmpty() && StringUtils.isNullOrEmpty(triggerName)) {
+		if (dependants.isEmpty() && StringUtils.isNullOrEmpty(triggerName) && !reloadSteps) {
 			return;
 		}
 
@@ -1483,6 +1508,11 @@ public class GenericDocumentPresenter extends
 
 		MultiRequestAction action = new MultiRequestAction();
 
+		//Task Steps
+		if(reloadSteps){
+			action.addRequest(new GetTaskStepsRequest(doc));
+		}
+
 		// Load dependent fields
 		if (!dependants.isEmpty()) {
 			action.addRequest(new LoadDynamicFieldsRequest(doc, dependants));
@@ -1492,6 +1522,7 @@ public class GenericDocumentPresenter extends
 		if (!StringUtils.isNullOrEmpty(triggerName)) {
 			action.addRequest(new ExecuteTriggerRequest(triggerName, doc));
 		}
+		
 
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(action,
@@ -1499,6 +1530,10 @@ public class GenericDocumentPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
+						
+						if(reloadSteps){
+							setSteps(((GetTaskStepsResponse)aResponse.get(i++)).getSteps(),conditionFields);
+						}
 
 						if (!dependants.isEmpty()) {
 							LoadDynamicFieldsResponse loadDynamicFields = (LoadDynamicFieldsResponse) aResponse
@@ -1525,17 +1560,26 @@ public class GenericDocumentPresenter extends
 							doc = aTriggerResp.getDocument();
 							bindForm(form, doc, false);
 						}
+						
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}
 
+	/**
+	 * 
+	 * @param response
+	 */
 	protected void bindActivities(GetActivitiesResponse response) {
 		HashMap<Activity, ArrayList<Activity>> activitiesMap = response
 				.getActivityMap();
 		bindActivities(activitiesMap);
 	}
 
+	/**
+	 * Bind Notifications & Comments
+	 * @param activitiesMap
+	 */
 	public void bindActivities(
 			HashMap<Activity, ArrayList<Activity>> activitiesMap) {
 		setInSlot(ACTIVITY_SLOT, null);
@@ -1898,7 +1942,7 @@ public class GenericDocumentPresenter extends
 		toReload.put(fieldName, dependencies.get(fieldName));
 
 		try {
-			loadDynamicFields(toReload, event.getTriggerName());
+			loadDynamicFields(toReload, event.getTriggerName(),conditionFields.contains(fieldName));
 		} catch (Exception e) {
 			GWT.log("Error: " + e.getMessage());
 		}

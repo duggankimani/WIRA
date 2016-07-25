@@ -56,7 +56,8 @@ public class TriggerTypePanel extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				AppContext.getDispatcher().execute(new GetTriggersRequest(), new TaskServiceCallback<GetTriggersResponse>() {
+				AppContext.getDispatcher().execute(new GetTriggersRequest(taskStep.getProcessRefId()), 
+						new TaskServiceCallback<GetTriggersResponse>() {
 					@Override
 					public void processResult(GetTriggersResponse aResponse) {
 						final TriggerSelectionPopup popup = new TriggerSelectionPopup(aResponse.getTriggers());

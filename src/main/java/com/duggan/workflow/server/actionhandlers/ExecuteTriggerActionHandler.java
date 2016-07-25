@@ -46,8 +46,6 @@ public class ExecuteTriggerActionHandler extends
 		}else{
 			HTSummary summary = (HTSummary)doc;
 			if(
-//					summary.getStatus()==HTStatus.CREATED 
-//					|| summary.getStatus()==HTStatus.READY
 					 summary.getStatus()==HTStatus.RESERVED
 					|| summary.getStatus()==HTStatus.INPROGRESS){
 				canExecute=true;

@@ -2,11 +2,15 @@ package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.ArrayList;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.notification.NotificationSetupPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPresenter;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.component.TextField;
+import com.duggan.workflow.client.ui.events.EditConditionsEvent;
+import com.duggan.workflow.client.ui.events.EditConditionsEvent.EditConditionsHandler;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.NotificationCategoryChangeEvent;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
@@ -52,11 +56,10 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.Listable;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProcessStepsPresenter extends
 		PresenterWidget<ProcessStepsPresenter.MyView> implements
-		ProcessSelectedHandler, SaveTaskStepHandler {
+		ProcessSelectedHandler, SaveTaskStepHandler, EditConditionsHandler {
 
 	public interface MyView extends View {
 		HasClickHandlers getAddItemActionLink();
@@ -125,6 +128,7 @@ public class ProcessStepsPresenter extends
 		getView().load();
 		addRegisteredHandler(ProcessSelectedEvent.TYPE, this);
 		addRegisteredHandler(SaveTaskStepEvent.TYPE, this);
+		addRegisteredHandler(EditConditionsEvent.getType(), this);
 
 		getView().addAssignmentValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
@@ -353,6 +357,7 @@ public class ProcessStepsPresenter extends
 
 			dto.setNodeId(nodeId);
 			dto.setProcessDefId(processDef.getId());
+			dto.setProcessRefId(processDef.getRefId());
 			dtos.add(dto);
 		}
 
@@ -383,6 +388,46 @@ public class ProcessStepsPresenter extends
 	protected void onUnbind() {
 		super.onUnbind();
 		Window.alert("Unbind ProcessStepsPresenter " + this);
+	}
+
+	@Override
+	public void onEditConditions(EditConditionsEvent event) {
+		final TaskStepDTO dto = event.getTaskStepDto();
+		if(dto==null){
+			return;
+		}
+		if(!this.isVisible()){
+			/*
+			 * Duggan - 25/07/2016 - Hack to avoid multiple presenters handling this event.
+			 *  - 2 ProcessStepsPresenter instances are bound @ProcessPresenter.prepareOnRequest to display 
+			 *  Process Preview & Process Configs. The former also handles this event resulting to multiple 
+			 *  popups in this method. To handle this, we can use the currently visible presenter. 
+			 */
+			return;
+		}
+		
+		long taskNodeId = selected==null? -1 : selected.getNodeId();
+		long nodeId = dto.getNodeId()==null? -1 : dto.getNodeId();
+		if(taskNodeId!=nodeId){
+			return; //Belongs to a different ProcessStepsPresenter instance;
+		}
+		
+		
+		String stepName = dto.getFormName()==null? dto.getOutputDocName(): dto.getFormName();
+		final TextField txtField = new TextField();
+		txtField.setValue(dto.getCondition());
+		txtField.addStyleName("input-xlarge");
+		AppManager.showPopUp(stepName+" Conditions", txtField, new OnOptionSelected() {
+			
+			@Override
+			public void onSelect(String name) {
+				if(name.equals("OK")){
+					dto.setCondition(txtField.getValue());
+					saveDTOs(ArrayUtil.asList(dto));
+				}
+				
+			}
+		}, "Cancel", "OK");
 	}
 
 }

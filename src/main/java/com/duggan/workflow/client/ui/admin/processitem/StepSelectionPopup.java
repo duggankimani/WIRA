@@ -1,9 +1,7 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
-import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableHeader;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.shared.model.MODE;

@@ -97,6 +97,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vSelectBasicPanel;
 	@UiField PalettePanel vSelectMultiplePanel;
 	@UiField PalettePanel vSingleButtonPanel;
+	@UiField PalettePanel vCheckBoxGroup;
 	@UiField PalettePanel vMultipleButtonPanel;
 	@UiField PalettePanel vLabelPanel;
 	@UiField PalettePanel vGridPanel;
@@ -287,6 +288,7 @@ public class FormBuilderView extends ViewImpl implements
 		
 		//Buttons
 		vSingleButtonPanel.registerDragController(widgetDragController);
+		vCheckBoxGroup.registerDragController(widgetDragController);
 		vMultipleButtonPanel.registerDragController(widgetDragController);
 		
 		//layout

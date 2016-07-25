@@ -51,6 +51,8 @@ public class ADTaskStepTrigger extends PO{
 	@Transient
 	private String triggerName;
 	
+	private String condition;
+	
 	public ADTaskStepTrigger() {
 	}
 	
@@ -92,6 +94,14 @@ public class ADTaskStepTrigger extends PO{
 
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 
 }

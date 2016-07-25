@@ -1,5 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;
@@ -9,8 +10,7 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 	private String processId;
 	private Long nodeId;
 	
-	private Long documentId;
-	private Long taskId;
+	private Doc doc;
 	
 	public GetTaskStepsRequest() {
 	}
@@ -20,9 +20,8 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 		this.nodeId = nodeId;
 	}
 	
-	public GetTaskStepsRequest(Long documentId, Long taskId){
-		this.documentId = documentId;
-		this.taskId = taskId;
+	public GetTaskStepsRequest(Doc doc){
+		this.doc = doc;
 	}
 
 	public String getProcessId() {
@@ -39,12 +38,12 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 		return new GetTaskStepsResponse();
 	}
 
-	public Long getDocumentId() {
-		return documentId;
+	public Doc getDoc() {
+		return doc;
 	}
 
-	public Long getTaskId() {
-		return taskId;
+	public void setDoc(Doc doc) {
+		this.doc = doc;
 	}
 
 }

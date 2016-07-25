@@ -141,6 +141,10 @@
 									 	<f:RadioGroup></f:RadioGroup>
 									</fb:PalettePanel>
 									
+								     <fb:PalettePanel ui:field="vCheckBoxGroup">	
+									 	<f:CheckBoxGroup></f:CheckBoxGroup>
+									</fb:PalettePanel>
+									
 									<fb:PalettePanel ui:field="vSelectMultiplePanel">	
 									    <f:SelectMultiple></f:SelectMultiple>	
 									</fb:PalettePanel>

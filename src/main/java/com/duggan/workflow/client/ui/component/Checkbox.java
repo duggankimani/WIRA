@@ -33,5 +33,10 @@ public class Checkbox extends CheckBox implements CheckboxSelectionHandler {
 			setValue(event.getModel().equals(model) && event.getValue());
 		}
 	}
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+	}
 
 }

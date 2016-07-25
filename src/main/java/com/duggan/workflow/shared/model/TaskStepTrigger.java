@@ -13,6 +13,7 @@ public class TaskStepTrigger implements Serializable{
 	private Trigger trigger;
 	private TriggerType type;
 	private Long taskStepId;
+	private String condition;
 	private boolean isActive=true;
 	
 	public TaskStepTrigger() {
@@ -51,5 +52,13 @@ public class TaskStepTrigger implements Serializable{
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 }

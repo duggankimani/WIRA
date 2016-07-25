@@ -13,6 +13,7 @@ public class GetTaskStepsResponse extends BaseResponse {
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList<TaskStepDTO> steps;
+	private ArrayList<String> conditionalFields;
 	
 	public GetTaskStepsResponse() {
 	}
@@ -23,6 +24,14 @@ public class GetTaskStepsResponse extends BaseResponse {
 
 	public void setSteps(ArrayList<TaskStepDTO> steps) {
 		this.steps = steps;
+	}
+
+	public ArrayList<String> getConditionalFields() {
+		return conditionalFields;
+	}
+
+	public void setConditionalFields(ArrayList<String> conditionalFields) {
+		this.conditionalFields = conditionalFields;
 	}
 	
 }

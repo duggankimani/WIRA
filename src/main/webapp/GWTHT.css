@@ -324,6 +324,10 @@ div.centered {
 	background-color: #F5F5F5;
 }
 
+#detailed-info .subtitle,.form-horizontal .subtitle {
+	background-color: #F9F9F9;
+}
+
 div.num {
 	text-align: right;
 }
@@ -786,4 +790,8 @@ section.positioned {
     font-family: Helvetica,Arial,sans-serif;
     font-size: 14px;
     text-shadow: 1px 1px 2px #ccc;
+}
+
+.taskstep-condition{
+	padding-right:10px;
 }

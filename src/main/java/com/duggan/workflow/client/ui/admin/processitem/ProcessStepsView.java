@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.events.EditConditionsEvent;
 import com.duggan.workflow.client.ui.events.SaveTaskStepEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.AssignmentDto;
@@ -14,6 +15,7 @@ import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -184,11 +186,11 @@ public class ProcessStepsView extends ViewImpl implements
 		table.setWidget(0, j++, new HTMLPanel("<strong>Mode</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 
+		table.setWidget(0, j++, new HTMLPanel("<strong>Actions</strong>"));
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "120px");
+		
 		table.setWidget(0, j++, new HTMLPanel("<strong>Condition</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "300px");
-
-		table.setWidget(0, j++, new HTMLPanel("<strong>Actions</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 
 		for (int i = 0; i < table.getCellCount(0); i++) {
 			table.getFlexCellFormatter().setStyleName(0, i, "th");
@@ -204,15 +206,30 @@ public class ProcessStepsView extends ViewImpl implements
 		for (TaskStepDTO dto : dtos) {
 			int j = 0;
 			String buttonStyle = "italics";// "btn";
+			
+			HTMLPanel conditionsPanel = new HTMLPanel("");
+			InlineLabel label = new InlineLabel(dto.getCondition());
+			label.addStyleName("taskstep-condition");
+			label.getElement().getStyle().setBackgroundColor("lightcyan");
+			label.getElement().getStyle().setMarginLeft(10, Unit.PX);
+			conditionsPanel.add(label);
+			
+			Link updateCondition = new Link("Edit", dto, +1);
+			updateCondition.addClickHandler(new EditConditionsHandler());
+			updateCondition.getElement().setInnerHTML("<span class=\"icon-pencil\"></span> Edit");
+			conditionsPanel.add(updateCondition);
 
 			HTMLPanel actions = new HTMLPanel("");
+			actions.getElement().getStyle().setProperty("minWidth", "120px");
 			Link up = new Link("Up", dto, -1);
+			up.getElement().setInnerHTML("<span class=\"icon-arrow-up\"></span> Up");
 			up.addStyleName(buttonStyle + " "
 					+ (dto.getSequenceNo() == 1 ? "hide" : ""));
 			up.addClickHandler(new SequenceChangeHandler());
 			actions.add(up);
 
 			Link down = new Link("Down", dto, +1);
+			down.getElement().setInnerHTML("<span class=\"icon-arrow-down\"></span> Down");
 			down.addStyleName(buttonStyle + " "
 					+ (dto.getSequenceNo() == dtos.size() ? "hide" : ""));
 			down.addClickHandler(new SequenceChangeHandler());
@@ -220,6 +237,7 @@ public class ProcessStepsView extends ViewImpl implements
 
 			Link link = new Link("Delete", dto, 0);
 			link.addStyleName(buttonStyle);
+			link.getElement().setInnerHTML("<span class=\"icon-trash\"></span> Delete");
 			link.addClickHandler(deleteHandler);
 			actions.add(link);
 
@@ -240,8 +258,8 @@ public class ProcessStepsView extends ViewImpl implements
 					new InlineLabel(dto.getFormName() == null ? dto
 							.getOutputDocName() : dto.getFormName()));
 			tblView.setWidget(i, j++, mode == null ? new InlineLabel("") : mode);
-			tblView.setWidget(i, j++, new InlineLabel(dto.getCondition()));
 			tblView.setWidget(i, j++, actions);
+			tblView.setWidget(i, j++, conditionsPanel);
 
 			++i;
 		}
@@ -280,6 +298,17 @@ public class ProcessStepsView extends ViewImpl implements
 		}
 
 	}
+	
+	class EditConditionsHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			Link link = ((Link) event.getSource());
+			TaskStepDTO dto = link.dto;
+			AppContext.fireEvent(new EditConditionsEvent(dto));
+		}
+
+	}
 
 	class Link extends ActionLink {
 		TaskStepDTO dto;
@@ -289,6 +318,12 @@ public class ProcessStepsView extends ViewImpl implements
 			super(txt);
 			this.dto = dto;
 			this.positionChange = positionChange;
+		}
+		
+		@Override
+		protected void onAttach() {
+			super.onAttach();
+			getElement().getStyle().setMarginRight(3, Unit.PX);
 		}
 	}
 

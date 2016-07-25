@@ -19,6 +19,7 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 	private MODE mode;
 	private String condition;
 	private Long processDefId;
+	private String processRefId;
 	
 	private String formName;
 	private Long formId;
@@ -123,10 +124,17 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 		dto.setOutputDocId(outputDocId);
 		dto.setOutputDocName(outputDocName);
 		dto.setProcessDefId(processDefId);
+		dto.setProcessRefId(processRefId);
 		dto.setSequenceNo(sequenceNo);
 		dto.setStepName(stepName);
 		dto.setTriggerType(triggerType);
 		
 		return dto;
+	}
+	public String getProcessRefId() {
+		return processRefId;
+	}
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 }

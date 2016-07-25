@@ -43,15 +43,16 @@ public class GetFormModelRequestActionHandler extends
 		FormModel model = null;
 
 		List<FormModel> models = new ArrayList<>();
+		
+		List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
 		switch (requestFor) {
 		case FormModel.FORMMODEL:
 			if(id!=null){
 				model = FormDaoHelper.getForm(id, loadChildrenInfo);
 				models.add(model);
 			}else if(action.getTaskId()!=null){
-				//model = FormDaoHelper.getFormByName(JBPMHelper.get().getTaskName(action.getTaskId()));
 				Long taskId = action.getTaskId();
-				List<TaskStepDTO> steps= ProcessDaoHelper.getTaskStepsByTaskId(taskId);
+				steps= ProcessDaoHelper.getTaskStepsByTaskId(taskId);
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
 					model = FormDaoHelper.getForm(step.getFormId(),true);
@@ -60,11 +61,7 @@ public class GetFormModelRequestActionHandler extends
 				if(model!=null)
 					models.add(model);
 			}else if(action.getDocRefId()!=null){
-				
-				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
-				
-				//List<TaskStepDTO> steps= ProcessDefHelper.getTaskStepsByDocumentId(action.getDocumentId());
-				List<TaskStepDTO> steps= ProcessDaoHelper.getTaskStepsByDocRefId(action.getDocRefId());
+				steps= ProcessDaoHelper.getTaskStepsByDocRefId(action.getDocRefId());
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
@@ -73,10 +70,7 @@ public class GetFormModelRequestActionHandler extends
 				}
 												
 			}else if(action.getDocumentId()!=null){
-				
-				//ADDocType type = DB.getDocumentDao().getDocumentTypeByDocumentId(action.getDocumentId());
-				
-				List<TaskStepDTO> steps= ProcessDaoHelper.getTaskStepsByDocumentId(action.getDocumentId());
+				steps= ProcessDaoHelper.getTaskStepsByDocumentId(action.getDocumentId());
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
@@ -87,6 +81,8 @@ public class GetFormModelRequestActionHandler extends
 			}else if(action.getProcessDefId()!=null){
 				models.addAll(FormDaoHelper.getForms(action.getProcessDefId()));
 			}
+			
+			
 			break;
 
 		case FormModel.FIELDMODEL:

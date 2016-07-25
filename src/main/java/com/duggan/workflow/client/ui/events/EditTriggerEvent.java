@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
+import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -12,6 +13,7 @@ public class EditTriggerEvent extends
 	public static Type<EditTriggerHandler> TYPE = new Type<EditTriggerHandler>();
 	private Trigger trigger;
 	private TreeItem item;
+	private TaskStepTrigger stepTrigger;
 
 	public interface EditTriggerHandler extends EventHandler {
 		void onEditTrigger(EditTriggerEvent event);
@@ -19,6 +21,11 @@ public class EditTriggerEvent extends
 
 	public EditTriggerEvent(Trigger trigger) {
 		this.trigger = trigger;
+	}
+	
+	public EditTriggerEvent(TreeItem item,TaskStepTrigger stepTrigger) {
+		this.item=item;
+		this.stepTrigger = stepTrigger;
 	}
 	
 	public EditTriggerEvent(TreeItem item,Trigger trigger) {
@@ -50,5 +57,9 @@ public class EditTriggerEvent extends
 
 	public TreeItem getItem() {
 		return item;
+	}
+
+	public TaskStepTrigger getStepTrigger() {
+		return stepTrigger;
 	}
 }

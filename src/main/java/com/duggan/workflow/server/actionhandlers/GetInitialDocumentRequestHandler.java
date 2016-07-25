@@ -40,7 +40,7 @@ public class GetInitialDocumentRequestHandler extends
 			GetDocumentResult result = execContext.execute(request);
 			Doc doc = result.getDoc(); 
 			
-			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(doc.getDocumentId(), action.getTaskId());
+			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(doc);
 			GetTaskStepsResponse response = execContext.execute(taskSteps);
 			
 			List<TaskStepDTO> steps = response.getSteps();
@@ -52,6 +52,7 @@ public class GetInitialDocumentRequestHandler extends
 			
 			GetInitialDocumentResponse finalResult = (GetInitialDocumentResponse)actionResult;
 			finalResult.setSteps((ArrayList<TaskStepDTO>) steps);
+			finalResult.setConditionalFields(response.getConditionalFields());
 			finalResult.setDoc(doc);
 			
 		}catch(Exception e){

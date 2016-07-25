@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
@@ -8,6 +9,7 @@ import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.server.mvel.MVELExecutor;
 import com.duggan.workflow.shared.model.Doc;
@@ -78,14 +80,20 @@ public class ExecuteTriggersActionHandler extends
 			Collection<ADTaskStepTrigger> adTriggers= dao.getTaskStepTriggers(action.getPreviousStepId(),
 					TriggerType.AFTERSTEP);
 			for(ADTaskStepTrigger stepTrigger: adTriggers){
-				new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+				boolean isExecuteTrigger = isExecutorTrigger(stepTrigger.getTrigger().getName(),stepTrigger.getCondition(),doc);
+				if(isExecuteTrigger){
+					new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+				}
 			}
 			
 			//Before Next Step Triggers
 			if(action.getNextStepId()!=null){
 				adTriggers= dao.getTaskStepTriggers(action.getNextStepId(), TriggerType.BEFORESTEP);
 				for(ADTaskStepTrigger stepTrigger: adTriggers){
-					new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+					boolean isExecuteTrigger = isExecutorTrigger(stepTrigger.getTrigger().getName(),stepTrigger.getCondition(),doc);
+					if(isExecuteTrigger){
+						new MVELExecutor().execute(stepTrigger.getTrigger(), doc);
+					}
 				}
 			}
 		}
@@ -103,6 +111,24 @@ public class ExecuteTriggersActionHandler extends
 				
 	}
 	
+	/**
+	 * 
+	 * @param doc
+	 * @param condition
+	 * @return
+	 */
+	private boolean isExecutorTrigger(String triggerName,String condition,Doc doc) {
+		if(condition==null || condition.trim().isEmpty()){
+			return true;
+		}
+		
+		HashMap<String,Object> values = doc.toObjectMap();
+		condition = new DocumentHTMLMapper().map(values, condition, true);
+		Boolean value = new MVELExecutor().executeBoolean(condition, doc);
+		log.info("IsExecute Trigger Eval:  "+triggerName+ " ; Executed = "+value);
+		
+		return value==null? true : value.booleanValue();
+	}
 
 	@Override
 	public void undo(ExecuteTriggersRequest action, ExecuteTriggersResponse result,

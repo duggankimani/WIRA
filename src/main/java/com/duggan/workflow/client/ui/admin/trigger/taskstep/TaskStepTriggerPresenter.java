@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
+import com.duggan.workflow.client.ui.component.TextArea;
+import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
 import com.duggan.workflow.client.ui.events.LoadTriggersEvent;
@@ -17,6 +20,7 @@ import com.duggan.workflow.shared.model.TriggerType;
 import com.duggan.workflow.shared.requests.GetTaskStepTriggersRequest;
 import com.duggan.workflow.shared.requests.GetTriggerCountRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveTaskStepTriggerRequest;
 import com.duggan.workflow.shared.requests.SaveTriggerRequest;
 import com.duggan.workflow.shared.responses.GetTaskStepTriggersResponse;
 import com.duggan.workflow.shared.responses.GetTriggerCountResponse;
@@ -117,9 +121,48 @@ public class TaskStepTriggerPresenter extends
 			return;
 		}
 		final Trigger trigger = event.getTrigger();
+		final TaskStepTrigger stepTrigger = event.getStepTrigger();
 		final TreeItem item = event.getItem();
 		
-		showEditPopup(item,trigger);
+		if(trigger!=null){
+			showEditPopup(item,trigger);
+		}
+		
+		if(stepTrigger!=null){
+			showEditStepConditions(item, stepTrigger);
+		}
+		
+	}
+
+	private void showEditStepConditions(final TreeItem item,
+			final TaskStepTrigger stepTrigger) {
+		final TextField condition = new TextField();
+		condition.addStyleName("input-xlarge");
+		condition.setValue(stepTrigger.getCondition());
+		AppManager.showPopUp("Edit Condition", condition, new OnOptionSelected() {
+			
+			@Override
+			public void onSelect(String name) {
+				if(name.equals("Save")){
+					stepTrigger.setCondition(condition.getValue());
+					save(item, stepTrigger);
+				}
+			}
+
+		}, "Save", "Cancel");
+	}
+
+	protected void save(final TreeItem item, TaskStepTrigger stepTrigger) {
+		MultiRequestAction requests = new MultiRequestAction();
+		requests.addRequest(new SaveTaskStepTriggerRequest(stepTrigger));
+		dispatcher.execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResult) {
+				if(item!=null){
+					loadItems(item);
+				}
+			}
+		});
 	}
 
 	private void showEditPopup(final TreeItem item,Trigger trigger) {
