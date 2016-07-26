@@ -52,6 +52,8 @@ public class Field extends FormModel implements Comparable<Field>{
 	private transient String docId="";
 	//Front end document refid
 	private transient String docRefId="";
+	//Uploaded File ID - Uploaded files on the server side are assigned unique Ids in the current user session. this is the Id of the last uploaded file
+	private String uploadedFileId = null;
 	
 	/**
 	 * Fields this field depends on. 
@@ -367,6 +369,14 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	public void setDynamicParent(boolean isDynamicParent) {
 		this.isDynamicParent = isDynamicParent;
+	}
+
+	public String getUploadedFileId() {
+		return uploadedFileId;
+	}
+
+	public void setUploadedFileId(String uploadedFileId) {
+		this.uploadedFileId = uploadedFileId;
 	}
 
 }

@@ -35,6 +35,8 @@ public abstract class Doc extends SerializableObj implements Serializable,
 	protected HashMap<String, Value> values = new HashMap<String, Value>();
 
 	protected HashMap<String, ArrayList<DocumentLine>> details = new HashMap<String, ArrayList<DocumentLine>>();
+	
+	private String uploadedFileId;
 
 	private String processId;
 	private String processName;
@@ -309,4 +311,13 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		}
 		return conv;
 	}
+
+	public String getUploadedFileId() {
+		return uploadedFileId;
+	}
+
+	public void setUploadedFileId(String uploadedFileId) {
+		this.uploadedFileId = uploadedFileId;
+	}
+
 }

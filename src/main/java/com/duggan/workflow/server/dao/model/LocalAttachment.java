@@ -175,6 +175,7 @@ public class LocalAttachment extends PO{
 	@XmlAttribute
 	private Integer isDirectory=0;
 	
+	
 	//This is meant for output documents - eg Requisitions/HR/REQ-IPA-009-14.pdf
 	//This will be used to dynamically generate the document tree in the front end
 	@XmlAttribute

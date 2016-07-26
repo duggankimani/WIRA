@@ -45,13 +45,15 @@ import com.duggan.workflow.shared.model.Value;
  * 
  */
 public class DocumentDaoHelper {
-	
+
 	static Logger logger = Logger.getLogger(DocumentDaoHelper.class);
 
-	public static List<Doc> getAllDocuments(int offset, int length,DocStatus...status) {
+	public static List<Doc> getAllDocuments(int offset, int length,
+			DocStatus... status) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		List<DocumentModel> models = dao.getAllDocuments(offset,length,status);
+		List<DocumentModel> models = dao
+				.getAllDocuments(offset, length, status);
 
 		List<Doc> lst = new ArrayList<>();
 
@@ -68,42 +70,45 @@ public class DocumentDaoHelper {
 	 * @param document
 	 * 
 	 * @return Document
-	 * @throws InvalidSubjectExeption 
+	 * @throws InvalidSubjectExeption
 	 */
-	public static Document save(Document document) throws InvalidSubjectExeption {
+	public static Document save(Document document)
+			throws InvalidSubjectExeption {
 
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		// save
-		if(document.getId()==null){
-			if(exists(document.getCaseNo())){
-				throw new InvalidSubjectExeption("Case '"+
-						document.getCaseNo()+"' already exists, this number cannot be reused");
-				
+		if (document.getId() == null) {
+			if (exists(document.getCaseNo())) {
+				throw new InvalidSubjectExeption("Case '"
+						+ document.getCaseNo()
+						+ "' already exists, this number cannot be reused");
+
 			}
-			
-			if(document.getCaseNo()==null){
-				ADDocType type = dao.getDocumentTypeByName(document.getType().getName());
+
+			if (document.getCaseNo() == null) {
+				ADDocType type = dao.getDocumentTypeByName(document.getType()
+						.getName());
 				document.setCaseNo(dao.generateDocumentSubject(type));
-				
+
 				Value value = document.getValues().get("caseNo");
-				if(value==null){
+				if (value == null) {
 					value = new StringValue(null, "caseNo", "");
 				}
 				value.setValue(document.getCaseNo());
 				document.setValue("caseNo", value);
 			}
-	
-			if(document.getDescription()==null){
+
+			if (document.getDescription() == null) {
 				document.setDescription(document.getCaseNo());
 				Value value = document.getValues().get("description");
-				if(value==null){
-					value = new StringValue(null, "description", "");					
+				if (value == null) {
+					value = new StringValue(null, "description", "");
 				}
 				value.setValue(document.getCaseNo());
 				document.getValues().put("description", value);
 			}
-		
+
 		}
 		DocumentModel model = getDoc(document);
 
@@ -207,19 +212,21 @@ public class DocumentDaoHelper {
 
 		return adtype;
 	}
-	
+
 	public static ADDocType getTypeFromProcess(ProcessDef processDef) {
 		DocumentDaoImpl docDao = DB.getDocumentDao();
-		ADDocType adtype = docDao.getDocumentTypeByName(processDef.getProcessId().toUpperCase());
-		if(adtype==null){
+		ADDocType adtype = docDao.getDocumentTypeByName(processDef
+				.getProcessId().toUpperCase());
+		if (adtype == null) {
 			adtype = new ADDocType(null, processDef.getDisplayName(),
 					processDef.getDisplayName());
 		}
-		
+
 		ProcessCategory category = processDef.getCategory();
-		if(category!=null){
+		if (category != null) {
 			ProcessDaoImpl dao = DB.getProcessDao();
-			ADProcessCategory cat = dao.getById(ADProcessCategory.class, category.getId());
+			ADProcessCategory cat = dao.getById(ADProcessCategory.class,
+					category.getId());
 			adtype.setCategory(cat);
 		}
 		return adtype;
@@ -249,37 +256,43 @@ public class DocumentDaoHelper {
 		doc.setValue(model.getValue());
 		doc.setStatus(model.getStatus());
 		doc.setProcessInstanceId(model.getProcessInstanceId());
-		
-		if(model.getProcessInstanceId()!=null){
-			try{
+
+		if (model.getProcessInstanceId() != null) {
+			try {
 				ProcessInstanceLog log = JPAProcessInstanceDbLog
 						.findProcessInstance(model.getProcessInstanceId());
-				if(log!=null)
+				if (log != null)
 					doc.setDateSubmitted(log.getStart());
-			}catch(Exception e){
-				logger.warn("DocumentDaoHelper - getDoc-> findProcessInstance : "+e.getMessage());
+			} catch (Exception e) {
+				logger.warn("DocumentDaoHelper - getDoc-> findProcessInstance : "
+						+ e.getMessage());
 			}
-			
+
 		}
-		
-		if(model.getProcessInstanceId()!=null){
-			try{
-			JBPMHelper.get().loadProgressInfo(doc, model.getProcessInstanceId());
-			}catch(Exception e){e.printStackTrace();}
+
+		if (model.getProcessInstanceId() != null) {
+			try {
+				JBPMHelper.get().loadProgressInfo(doc,
+						model.getProcessInstanceId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		
-		if(model.getProcessId()==null && model.getType()!=null){
+
+		if (model.getProcessId() == null && model.getType() != null) {
 			doc.setProcessId(model.getType().getProcessDef().getProcessId());
-		}else{
+		} else {
 			doc.setProcessId(model.getProcessId());
 		}
-		
-		if(doc.getProcessId()!=null){
-			doc.setProcessName(JBPMHelper.get().getProcessName(doc.getProcessId()));
+
+		if (doc.getProcessId() != null) {
+			doc.setProcessName(JBPMHelper.get().getProcessName(
+					doc.getProcessId()));
 		}
-		
+
 		doc.setSessionId(model.getSessionId());
-		doc.setHasAttachment(DB.getAttachmentDao().getHasAttachment(model.getId()));
+		doc.setHasAttachment(DB.getAttachmentDao().getHasAttachment(
+				model.getId()));
 		Collection<ADValue> values = model.getValues();
 		if (values != null) {
 			for (ADValue val : values) {
@@ -289,7 +302,7 @@ public class DocumentDaoHelper {
 				doc.setValue(val.getFieldName(), getValue(val, type));
 			}
 		}
-		
+
 		doc.setDetails(getDetails(model.getDetails()));
 
 		return doc;
@@ -351,9 +364,8 @@ public class DocumentDaoHelper {
 
 		return lines;
 	}
-	
-	
-	public static DocumentType getType(ADDocType adtype){
+
+	public static DocumentType getType(ADDocType adtype) {
 		return getType(adtype, false);
 	}
 
@@ -361,19 +373,19 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(),
 				adtype.getDisplay(), adtype.getClassName());
-		
-		if(loadDetails){
+
+		if (loadDetails) {
 			type.setFormId(dao.getFormId(adtype.getId()));
 		}
-		
-		if(adtype.getProcessDef()!=null){
+
+		if (adtype.getProcessDef() != null) {
 			type.setProcessId(adtype.getProcessDef().getProcessId());
 		}
-		
-		if(adtype.getCategory()!=null){
+
+		if (adtype.getCategory() != null) {
 			type.setCategory(adtype.getCategory().getName());
 		}
-		
+
 		return type;
 	}
 
@@ -405,57 +417,61 @@ public class DocumentDaoHelper {
 	 * @return
 	 */
 	public static Document getDocument(Long id) {
-		return getDocument(id,false);	
+		return getDocument(id, false);
 	}
-	
-	public static Document getDocument(Long id, boolean checkUser){
+
+	public static Document getDocument(Long id, boolean checkUser) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		DocumentModel model=null;
-		
-		if(checkUser){
-			model = dao.getDocumentByIdAndUser(id,SessionHelper.getCurrentUser().getUserId());
-		}else{
+		DocumentModel model = null;
+
+		if (checkUser) {
+			model = dao.getDocumentByIdAndUser(id, SessionHelper
+					.getCurrentUser().getUserId());
+		} else {
 			model = dao.getById(id);
 		}
-		
+
 		return getDoc(model);
 	}
-	
+
 	/**
 	 * 
 	 * @param refId
 	 * @return
 	 */
 	public static Document getDocument(String refId) {
-		return getDocument(refId,false);	
+		return getDocument(refId, false);
 	}
-	
-	public static Document getDocument(String refId, boolean checkUser){
+
+	public static Document getDocument(String refId, boolean checkUser) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		DocumentModel model=null;
-		
-		if(checkUser){
-			model = dao.getDocumentByIdAndUser(refId,SessionHelper.getCurrentUser().getUserId());
-		}else{
+		DocumentModel model = null;
+
+		if (checkUser) {
+			model = dao.getDocumentByIdAndUser(refId, SessionHelper
+					.getCurrentUser().getUserId());
+		} else {
 			model = dao.findByRefId(refId, DocumentModel.class);
 		}
-		
+
 		return getDoc(model);
 	}
 
 	public static Document getDocumentByProcessInstance(Long processInstanceId) {
 		return getDocumentByProcessInstance(processInstanceId, false);
 	}
+
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public static Document getDocumentByProcessInstance(Long processInstanceId, boolean checkUser) {
+	public static Document getDocumentByProcessInstance(Long processInstanceId,
+			boolean checkUser) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		DocumentModel model = dao
-				.getDocumentByProcessInstanceId(processInstanceId, checkUser);
+		DocumentModel model = dao.getDocumentByProcessInstanceId(
+				processInstanceId, checkUser);
 
 		return getDoc(model);
 	}
@@ -467,25 +483,25 @@ public class DocumentDaoHelper {
 	 */
 	public static Document getDocument(Map<String, Object> content) {
 		Document doc = new Document();
-		if(content.get("documentOut") != null){
-			
+		if (content.get("documentOut") != null) {
+
 			doc = (Document) content.get("documentOut");
-			System.out.println("(1) ::"+doc.getCaseNo());
-		}else if (content.get("document") != null) {
-			
+			System.out.println("(1) ::" + doc.getCaseNo());
+		} else if (content.get("document") != null) {
+
 			doc = (Document) content.get("document");
-			System.out.println("(2) :: "+doc.getCaseNo());
-			
+			System.out.println("(2) :: " + doc.getCaseNo());
+
 		} else {
-			//System.err.println("DocumentDaoHelper.getDocument says Document is null!!");
+			// System.err.println("DocumentDaoHelper.getDocument says Document is null!!");
 			String description = content.get("description") == null ? null
 					: (String) content.get("description");
-			
+
 			String subject = content.get("subject") == null ? null
 					: (String) content.get("subject");
-			if(subject==null){
+			if (subject == null) {
 				subject = content.get("caseNo") == null ? null
-							: (String) content.get("caseNo");
+						: (String) content.get("caseNo");
 			}
 
 			String value = content.get("value") == null ? null
@@ -498,21 +514,21 @@ public class DocumentDaoHelper {
 			doc.setCaseNo(subject);
 			doc.setValue(value);
 			doc.setPriority(priority);
-			System.out.println("(3) :: "+doc.getCaseNo());
+			System.out.println("(3) :: " + doc.getCaseNo());
 
 		}
-		
-		if(doc.getId()==null){
-			
+
+		if (doc.getId() == null) {
+
 			Object idStr = content.get("documentId");
 			if (idStr == null || idStr.equals("null")) {
 				idStr = null;
 			}
 			Long id = idStr == null ? null : new Long(idStr.toString());
 			doc.setId(id);
-			
+
 		}
-		
+
 		return doc;
 	}
 
@@ -534,18 +550,21 @@ public class DocumentDaoHelper {
 		dao.saveDocument(model);
 	}
 
-	public static void getCounts(String userId,Map<TaskType, Integer> counts) {
+	public static void getCounts(String userId, Map<TaskType, Integer> counts) {
 		getCounts(null, userId, counts);
 	}
-	
-	public static void getCounts(String processId,String userId,Map<TaskType, Integer> counts) {
+
+	public static void getCounts(String processId, String userId,
+			Map<TaskType, Integer> counts) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		counts.put(TaskType.DRAFT, dao.count(processId,userId,DocStatus.DRAFTED));
-//		counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
-//		counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
-//		counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
-		counts.put(TaskType.PARTICIPATED, dao.count(processId, userId,DocStatus.DRAFTED,false));
+		counts.put(TaskType.DRAFT,
+				dao.count(processId, userId, DocStatus.DRAFTED));
+		// counts.put(TaskType.INPROGRESS, dao.count(DocStatus.INPROGRESS));
+		// counts.put(TaskType.APPROVED, dao.count(DocStatus.APPROVED));
+		// counts.put(TaskType.REJECTED, dao.count(DocStatus.REJECTED));
+		counts.put(TaskType.PARTICIPATED,
+				dao.count(processId, userId, DocStatus.DRAFTED, false));
 		// counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 
@@ -566,7 +585,7 @@ public class DocumentDaoHelper {
 
 		return dao.getProcessInstanceIdByDocumentId(documentId);
 	}
-	
+
 	public static Long getProcessInstanceIdByDocRefId(String docRefId) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
@@ -593,10 +612,10 @@ public class DocumentDaoHelper {
 	}
 
 	public static List<DocumentType> getDocumentTypes() {
-		
+
 		return getDocumentTypes(SessionHelper.getCurrentUser().getUserId());
 	}
-	
+
 	public static List<DocumentType> getDocumentTypes(String userId) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
@@ -606,7 +625,7 @@ public class DocumentDaoHelper {
 
 		if (adtypes != null)
 			for (ADDocType adtype : adtypes) {
-				types.add(getType(adtype,true));
+				types.add(getType(adtype, true));
 			}
 
 		return types;
@@ -614,11 +633,14 @@ public class DocumentDaoHelper {
 
 	public static void delete(DocumentLine line) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		DetailModel model = dao.getDetailById(line.getId());
-		dao.delete(model);
+		if (line.getId() != null) {
+			//Check for nulls
+			DetailModel model = dao.getDetailById(line.getId());
+			dao.delete(model);
+		}
 	}
-	
-	public static boolean exists(String subject){
+
+	public static boolean exists(String subject) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		return dao.exists(subject);
 	}

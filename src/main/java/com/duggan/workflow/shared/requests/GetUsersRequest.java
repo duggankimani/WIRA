@@ -23,4 +23,5 @@ public class GetUsersRequest extends BaseRequest<GetUsersResponse> {
 	public String getSearchTerm() {
 		return searchTerm;
 	}
+
 }

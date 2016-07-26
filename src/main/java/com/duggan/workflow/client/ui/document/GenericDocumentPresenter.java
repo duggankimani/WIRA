@@ -61,6 +61,7 @@ import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Delegate;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -1470,6 +1471,8 @@ public class GenericDocumentPresenter extends
 	public void setForm(Form form, Doc doc, MODE mode) {
 		getView().setForm(form, doc, isFormReadOnly(mode));
 	}
+	
+	
 
 	/**
 	 * Dropdown Parent->Child Relationship loading 
@@ -1480,7 +1483,7 @@ public class GenericDocumentPresenter extends
 	private void loadDynamicFields(
 			HashMap<String, ArrayList<String>> dependencies,
 			final String triggerName, final boolean reloadSteps) {
-
+		
 		final ArrayList<Field> dependants = new ArrayList<Field>();
 		if (dependencies != null) {
 			for (ArrayList<String> names : dependencies.values()) {
@@ -1935,6 +1938,12 @@ public class GenericDocumentPresenter extends
 
 	@Override
 	public void onFieldLoad(FieldLoadEvent event) {
+		Field uploadField = null;
+		if(event.getField().getType()==DataType.FILEUPLOAD){
+			uploadField = event.getField();
+			doc.setUploadedFileId(uploadField.getUploadedFileId());
+		}
+		
 		String fieldName = event.getField().getName();
 		HashMap<String, ArrayList<String>> dependencies = form
 				.getDependencies();
@@ -1942,7 +1951,7 @@ public class GenericDocumentPresenter extends
 		toReload.put(fieldName, dependencies.get(fieldName));
 
 		try {
-			loadDynamicFields(toReload, event.getTriggerName(),conditionFields.contains(fieldName));
+			loadDynamicFields(toReload,event.getTriggerName(),conditionFields.contains(fieldName));
 		} catch (Exception e) {
 			GWT.log("Error: " + e.getMessage());
 		}

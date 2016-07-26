@@ -11,12 +11,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.FileItem;
 
 import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 
 public abstract class FileExecutor {
 
 	abstract String execute(HttpServletRequest request, List<FileItem> sessionFiles) throws UploadActionException;
 
-	protected Hashtable<String, Long> getSessionFiles(HttpServletRequest request, boolean createNewIfNone){
+	public static Hashtable<String, Long> getSessionFiles(HttpServletRequest request, boolean createNewIfNone){
 
 		//fieldName - DocNo
 		Hashtable<String, Long> receivedFiles = new Hashtable<String, Long>();
@@ -30,6 +31,10 @@ public abstract class FileExecutor {
 		}
 		
 		return receivedFiles;
+	}
+	
+	public static Long getFileId(String fieldName){
+		return getSessionFiles(SessionHelper.getHttpRequest(),false).get(fieldName);
 	}
 	
 	void registerFile(HttpServletRequest req, String fieldName, Long id){

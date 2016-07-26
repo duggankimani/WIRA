@@ -25,6 +25,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -66,6 +67,8 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 				new KeyValuePair("multiupload", "Multi Upload")));
 		addProperty(new Property(ACCEPT, "Accept", DataType.STRINGLONG));
 		addProperty(new Property(PATH, "File Path", DataType.STRING));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
+				DataType.STRING));
 		
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
@@ -95,6 +98,11 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 			
 			@Override
 			public void onFinish(IUploader uploader) {
+				String UploadedFileId = uploader.getServerInfo().getField();
+				getField().setUploadedFileId(UploadedFileId);
+				
+				execTrigger();
+				
 				AppContext.fireEvent(new ReloadAttachmentsEvent());
 			}
 		});

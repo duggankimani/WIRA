@@ -1,5 +1,8 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.db.DB;
@@ -56,12 +59,12 @@ public class ExecuteTriggerActionHandler extends
 		if(canExecute){
 			ADTrigger trigger = dao.getTrigger(action.getTriggerName());
 			new MVELExecutor().execute(trigger, doc);
+			
 		}
 		
 		((ExecuteTriggerResponse)actionResult).setDocument(doc);
 				
 	}
-	
 
 	@Override
 	public void undo(ExecuteTriggerRequest action, ExecuteTriggerResponse result,
