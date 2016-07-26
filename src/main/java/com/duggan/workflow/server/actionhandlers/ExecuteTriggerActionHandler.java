@@ -62,6 +62,8 @@ public class ExecuteTriggerActionHandler extends
 			
 		}
 		
+		//Reset Uploaded File Up
+		doc.setUploadedFileId(null);
 		((ExecuteTriggerResponse)actionResult).setDocument(doc);
 				
 	}

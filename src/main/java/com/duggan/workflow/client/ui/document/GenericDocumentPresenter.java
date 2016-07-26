@@ -1524,6 +1524,7 @@ public class GenericDocumentPresenter extends
 		// Trigger
 		if (!StringUtils.isNullOrEmpty(triggerName)) {
 			action.addRequest(new ExecuteTriggerRequest(triggerName, doc));
+			action.addRequest(new GetAttachmentsRequest(docRefId));
 		}
 		
 
@@ -1562,6 +1563,9 @@ public class GenericDocumentPresenter extends
 									.get(i++);
 							doc = aTriggerResp.getDocument();
 							bindForm(form, doc, false);
+							
+							GetAttachmentsResponse getAttachments = (GetAttachmentsResponse)aResponse.get(i++);
+							bindAttachments(getAttachments);
 						}
 						
 						fireEvent(new ProcessingCompletedEvent());

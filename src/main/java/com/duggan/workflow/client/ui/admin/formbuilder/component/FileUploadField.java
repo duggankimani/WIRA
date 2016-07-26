@@ -101,9 +101,13 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 				String UploadedFileId = uploader.getServerInfo().getField();
 				getField().setUploadedFileId(UploadedFileId);
 				
-				execTrigger();
-				
-				AppContext.fireEvent(new ReloadAttachmentsEvent());
+				String triggerName = getPropertyValue(CUSTOMTRIGGER);
+				boolean hasTrigger = triggerName != null && !triggerName.isEmpty();
+				if(hasTrigger){
+					execTrigger();
+				}else{
+					AppContext.fireEvent(new ReloadAttachmentsEvent());
+				}
 			}
 		});
 		
