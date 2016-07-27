@@ -65,6 +65,13 @@ public class TextField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				execTrigger();
+			}
+		});
 	}
 
 	public TextField(final Property property) {

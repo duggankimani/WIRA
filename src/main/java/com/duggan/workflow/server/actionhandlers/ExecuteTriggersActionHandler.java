@@ -53,11 +53,7 @@ public class ExecuteTriggersActionHandler extends
 					doc.getOwner().equals(SessionHelper.getCurrentUser()) &&
 					((Document)doc).getStatus()==DocStatus.DRAFTED){
 				canExecute=true;
-				
 				status="DRAFTED";
-				//Save this doc -- ADDED BY DUGGAN 27/09/2015  -
-				//Draft Documents should be saved on navigation
-				doc = DocumentDaoHelper.save((Document)doc);
 			}
 		}else{
 			HTSummary summary = (HTSummary)doc;
@@ -104,6 +100,25 @@ public class ExecuteTriggersActionHandler extends
 			if(model.getDoc()!=null){
 				Value value = OutputDocumentDaoHelper.generateDoc(model.getDoc(), doc);
 				doc.setValue(value.getKey(), value);
+			}
+		}
+
+		/**
+		 * SAVE document After trigger execution.
+		 * 
+		 * Duggan -- 27/07/2016
+		 * This is to handle a scenario where a trigger deletes a value/ documentline 
+		 * while this save mechanism attempts to persist the same value.
+		 * 
+		 *  Hibernate throws an exception in this instance (Persist/ Delete requests in the same session)
+		 */
+		if(doc instanceof Document){
+			if(doc.getOwner()!=null && 
+					doc.getOwner().equals(SessionHelper.getCurrentUser()) &&
+					((Document)doc).getStatus()==DocStatus.DRAFTED){
+				//Save this doc -- ADDED BY DUGGAN 27/09/2015  -
+				//Draft Documents should be saved on navigation
+				doc = DocumentDaoHelper.save((Document)doc);
 			}
 		}
 		

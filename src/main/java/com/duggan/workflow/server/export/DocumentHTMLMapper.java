@@ -206,15 +206,27 @@ public class DocumentHTMLMapper {
 			String key = group.substring(2, group.length());
 			Object val = get(values, key, quoteStrings);
 			String value = val == null ? "" : val.toString();
-
+			
 			if (quoteStrings) {
-				//Required in Conditional Evaluations in TaskSteps/ TaskTriggers
+				boolean isNumber = group.startsWith("@#");
+				//Required in MVEL Conditional Evaluations in TaskSteps/ TaskTriggers
 				if (val != null) {
-					if (val instanceof String) {
+					if(isNumber){
+						//MVEL number
+						value = val.toString();
+					}else if (val instanceof String) {
+						//Insert MVEL String quotations
 						value = "'" + val.toString() + "'";
 					}
 				} else {
-					value="''";
+					if(isNumber){
+						//MVEL number
+						value = "0";
+					}else{
+						//MVEL String
+						value="''";
+					}
+					
 				}
 			}
 			rtn = rtn.replace(matcher.group(), value);

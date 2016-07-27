@@ -27,7 +27,7 @@ public class HR extends FieldWidget{
 	public HR() {
 		super();
 		widget = uiBinder.createAndBindUi(this);	
-		addProperty(new Property(SECTION, "Section Name", DataType.STRING));
+		addProperty(new Property(SECTION, "Section Description", DataType.STRING));
 		add(widget);
 	}
 

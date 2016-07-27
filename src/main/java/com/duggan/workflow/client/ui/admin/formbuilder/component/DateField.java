@@ -56,6 +56,13 @@ public class DateField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		
+		dateBox.getDateInput().addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				execTrigger();
+			}
+		});
 	}
 
 	/**
