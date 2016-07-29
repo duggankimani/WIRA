@@ -220,7 +220,13 @@ public class HTMLForm extends FieldWidget {
 				.getElementsByTagName("input");
 		NodeList<Element> textAreas = htmlContent.getElement()
 				.getElementsByTagName("textarea");
+		
+		wrapElements(nodes);
+		wrapElements(textAreas);
 
+	}
+
+	private void wrapElements(NodeList<Element> nodes) {
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Element element = nodes.getItem(i);
 			FieldWidget widget = FieldWidget.wrap(element, designMode);
@@ -245,7 +251,6 @@ public class HTMLForm extends FieldWidget {
 				fieldWidgets.add(widget);
 			}
 		}
-
 	}
 
 	/**

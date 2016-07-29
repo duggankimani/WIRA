@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.component;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class TextField extends TextBox{

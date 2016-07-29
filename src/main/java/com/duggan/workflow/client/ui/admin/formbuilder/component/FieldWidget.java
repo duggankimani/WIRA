@@ -13,7 +13,6 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
-import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.FieldLoadEvent;
@@ -51,7 +50,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -1237,6 +1235,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					widget = new TextField(element, designMode);
 				}else if(type.equals("number")){
 					widget = new NumberField(element, designMode);
+				}else if(type.equals("date")){
+					widget = new DateField(element, designMode);
 				}
 				break;
 			case "textarea":

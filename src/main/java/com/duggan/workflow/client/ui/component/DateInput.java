@@ -8,6 +8,8 @@ import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -17,9 +19,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.google.gwt.user.datepicker.client.DateBox;
 
 public class DateInput extends Composite implements HasValue<Date> {
 
@@ -28,8 +30,6 @@ public class DateInput extends Composite implements HasValue<Date> {
 
 	interface DateInputUiBinder extends UiBinder<Widget, DateInput> {
 	}
-
-	DateBox f;
 
 	@UiField
 	TextField txtDate;
@@ -41,6 +41,42 @@ public class DateInput extends Composite implements HasValue<Date> {
 	public DateInput() {
 		initWidget(uiBinder.createAndBindUi(this));
 		getElement().setId(id);
+		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				// Window.alert("Value changed!! -- "+event.getValue());
+			}
+		});
+	}
+		
+	public DateInput(Element element) {
+		id=element.getId();
+		Element parent = element.getParentElement();
+		int idx = DOM.getChildIndex(parent, element);
+		element.removeFromParent();
+		
+		Element controlGroup = DOM.createDiv();
+		controlGroup.addClassName("control-group");
+		
+		Element controls = DOM.createDiv();
+		controls.addClassName("controls");
+		controlGroup.appendChild(controls);
+		
+		Element div = DOM.createDiv();
+		div.addClassName("input-group date datepicker");
+		div.appendChild(element);
+		
+		Element span = DOM.createSpan();
+		span.addClassName("input-group-addon");
+		span.setInnerHTML("<span class=\"icon-calendar\"></span>");
+		div.appendChild(span);
+		
+		controls.appendChild(div);
+		DOM.insertChild(parent, controlGroup, idx);
+		txtDate = TextField.wrap(element);
+		//initWidget(txtDate);
+		initCollapsable(this, id);
+		
 		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
@@ -190,6 +226,10 @@ public class DateInput extends Composite implements HasValue<Date> {
 	@Override
 	public Date getValue() {
 		return getValueDate();
+	}
+
+	public void addClickHandler(ClickHandler clickHandler) {
+		txtDate.addClickHandler(clickHandler);
 	}
 
 }

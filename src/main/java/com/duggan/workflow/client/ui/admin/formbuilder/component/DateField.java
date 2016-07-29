@@ -5,6 +5,7 @@ import java.util.Date;
 import com.duggan.workflow.client.ui.component.DateInput;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Value;
@@ -12,6 +13,8 @@ import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -56,13 +59,65 @@ public class DateField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
-		
-		dateBox.getDateInput().addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				execTrigger();
-			}
-		});
+
+		dateBox.getDateInput().addValueChangeHandler(
+				new ValueChangeHandler<String>() {
+					@Override
+					public void onValueChange(ValueChangeEvent<String> event) {
+						execTrigger();
+					}
+				});
+
+	}
+
+	public DateField(Element elementDate, boolean designMode) {
+		super();
+		this.designMode = designMode;
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+
+		// Wrap
+		elementDate.setAttribute("type", "text");
+		dateBox = new DateInput(elementDate);
+		widget = dateBox;
+		assert elementDate.getId() != null;
+
+		// Set
+		setProperty(NAME, elementDate.getId());
+		field.setName(elementDate.getId());
+		lblEl = findLabelFor(elementDate);
+		if (lblEl != null) {
+			field.setCaption(lblEl.getInnerHTML());
+			setProperty(CAPTION, lblEl.getInnerHTML());
+		}
+
+		setProperty(HELP, elementDate.getTitle());
+		setProperty(MANDATORY,
+				new BooleanValue(elementDate.hasAttribute("required")));
+		setProperty(READONLY,
+				new BooleanValue(elementDate.hasAttribute("readonly")));
+
+		// field Properties update
+		field.setProperties(getProperties());
+
+		dateBox.getDateInput().addValueChangeHandler(
+				new ValueChangeHandler<String>() {
+					@Override
+					public void onValueChange(ValueChangeEvent<String> event) {
+						execTrigger();
+					}
+				});
+
+		if (designMode) {
+			dateBox.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					showProperties(0);
+				}
+			});
+		}
 	}
 
 	/**
@@ -122,7 +177,9 @@ public class DateField extends FieldWidget {
 		super.setValue(value);
 		if (value != null && value instanceof Date) {
 			dateBox.setValue((Date) value);
-			lblComponent.setText(DateUtils.DATEFORMAT.format((Date) value));
+
+			if (lblComponent != null)
+				lblComponent.setText(DateUtils.DATEFORMAT.format((Date) value));
 		} else if (value != null && value instanceof String) {
 
 			try {

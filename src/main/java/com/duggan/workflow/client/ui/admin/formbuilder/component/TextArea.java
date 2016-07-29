@@ -94,10 +94,6 @@ public class TextArea extends FieldWidget {
 			setProperty(CAPTION, lblEl.getInnerHTML());
 		}
 
-		txtComponent.getElement().setAttribute("id", "textarea");
-		add(widget);
-		UIObject.setVisible(spnMandatory, false);
-
 		if (designMode) {
 			txtComponent.addClickHandler(new ClickHandler() {
 
