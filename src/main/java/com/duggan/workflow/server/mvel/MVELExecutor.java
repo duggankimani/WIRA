@@ -18,6 +18,9 @@ public class MVELExecutor {
 	private static Logger log = LoggerFactory.getLogger(DB.class);
 
 	public void execute(ADTrigger trigger, Doc doc) {
+		if(trigger==null){
+			throw new RuntimeException("Trigger Cannot be null!");
+		}
 		String script = trigger.getScript();
 		String imports = "com.duggan.workflow.shared.model;"
 				+ "com.duggan.workflow.server.db;"

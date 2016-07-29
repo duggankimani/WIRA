@@ -565,7 +565,8 @@ body .dateBoxPopup {
 }
 
 .main-container .content-right #middle-box {
-	width: 25%;
+	/*width: 25%;*/
+	width: 0px;
 	height: 92.6%;
 }
 
@@ -762,7 +763,7 @@ body .dateBoxPopup {
 	background-color: #ffffff;
 	margin-left: 0px;
 	border: 1px solid #CCCCCC;
-	width: 74.8%;
+	/*width: 74.8%;*/
 	height: 92%;
 }
 

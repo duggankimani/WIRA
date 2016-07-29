@@ -1,13 +1,15 @@
 package com.duggan.workflow.client.ui.document.form;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.*;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.MONTHDAYFORMAT;
+import static com.duggan.workflow.client.ui.util.DateUtils.MONTHTIME;
+import static com.duggan.workflow.client.ui.util.DateUtils.TIMEFORMAT12HR;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
@@ -133,7 +135,6 @@ public class FormPanel extends Composite {
 				ScriptInjector.fromString(js).inject();
 			}
 		}
-		// + "$wnd.alert('Testing mimi222!!!!');"
 	}
 
 	@Override
@@ -141,8 +142,12 @@ public class FormPanel extends Composite {
 		super.onLoad();
 		execJs();
 	}
-
+	
 	void bind(ArrayList<Field> fields, Doc doc, Collection<String> parentFields) {
+		bind(fields, doc, parentFields,false);
+	}
+	
+	void bind(ArrayList<Field> fields, Doc doc, Collection<String> parentFields, boolean isRawHTMLFormFields) {
 		
 		HashMap<String, Value> values = doc.getValues();
 		Long documentId = null;
@@ -156,6 +161,8 @@ public class FormPanel extends Composite {
 			taskId = ((HTSummary) doc).getId();
 		}
 		for (Field field : fields) {
+			field.setHTMLWrappedField(isRawHTMLFormFields);
+			
 			if(field.getType()==DataType.JS){
 				//Load Scripts
 				jsScripts.add(field.getPropertyValue(HasProperties.JS));
@@ -183,7 +190,11 @@ public class FormPanel extends Composite {
 				bind(field);
 				continue;
 
-			} else if (field.getType() == DataType.BUTTON) {
+			}else if(field.getType()==DataType.FORM){ 
+				
+				bind(field.getFields(), doc,parentFields, true);
+				
+			}else if (field.getType() == DataType.BUTTON) {
 				String submitType = field
 						.getPropertyValue(SingleButton.SUBMITTYPE);
 				if (submitType != null) {
@@ -237,7 +248,15 @@ public class FormPanel extends Composite {
 	}
 
 	public void bind(Field field) {
-
+		if(field.isHTMLWrappedField()){
+			//HTML Field - Do not instanciate field widget
+			if (mode == MODE.VIEW) {
+				//SET READONLY
+			}
+			return;
+		}
+		
+		
 		FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field,
 				false);
 		if (mode == MODE.VIEW) {

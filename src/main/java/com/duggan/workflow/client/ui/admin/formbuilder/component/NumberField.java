@@ -4,6 +4,7 @@ import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
@@ -14,6 +15,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.TextAlign;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
@@ -68,6 +71,65 @@ public class NumberField extends FieldWidget{
 				execTrigger();
 			}
 		});
+	}
+	
+	public NumberField(Element numberInput, boolean designMode){
+		super();
+		this.designMode = designMode;
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
+		addProperty(new Property(FORMULA, "Formula", DataType.STRING));
+		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
+				new KeyValuePair("left", "Left"),
+				new KeyValuePair("center", "Center"),
+				new KeyValuePair("right", "Right")));
+
+		
+		// Wrap
+		txtComponent = com.duggan.workflow.client.ui.component.DoubleField
+				.wrap(numberInput);
+		widget = txtComponent;
+		assert numberInput.getId() != null;
+
+		// Set
+		setProperty(NAME, numberInput.getId());
+		field.setName(numberInput.getId());
+		lblEl = findLabelFor(numberInput);
+		if (lblEl != null) {
+			field.setCaption(lblEl.getInnerHTML());
+			setProperty(CAPTION, lblEl.getInnerHTML());
+		}
+
+		setProperty(HELP, numberInput.getTitle());
+		setProperty(MANDATORY,
+				new BooleanValue(numberInput.hasAttribute("required")));
+		setProperty(READONLY,
+				new BooleanValue(numberInput.hasAttribute("readonly")));
+		
+
+		// field Properties update
+		field.setProperties(getProperties());
+
+		
+		
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Double> event) {
+				execTrigger();
+			}
+		});
+		
+		if (designMode) {
+			txtComponent.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					showProperties(0);
+				}
+			});
+		}
 	}
 	
 	public NumberField(final Property property){
@@ -225,6 +287,7 @@ public class NumberField extends FieldWidget{
 			
 			NumberFormat fmt = NumberFormat.getDecimalFormat();
 		    String formatted = fmt.format((Double)value);
+		    if(lblReadOnly!=null)
 			lblReadOnly.setText(formatted);
 		}else{
 			super.setValue(0.0);

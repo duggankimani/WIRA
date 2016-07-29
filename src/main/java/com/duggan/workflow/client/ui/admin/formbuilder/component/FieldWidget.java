@@ -13,6 +13,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
+import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.FieldLoadEvent;
@@ -43,12 +44,14 @@ import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.responses.CreateFieldResponse;
 import com.duggan.workflow.shared.responses.DeleteFormModelResponse;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -62,7 +65,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler,
 		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler {
 
-	private FocusPanel shim = new FocusPanel();
+	protected FocusPanel shim = new FocusPanel();
 	protected long id = System.currentTimeMillis();
 	protected HashMap<String, Property> props = new LinkedHashMap<String, Property>();
 
@@ -78,7 +81,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 								// OperandChangeEvent
 	boolean isObservable = false;// its value is depended upon by other fields -
 									// fires an event
-	private boolean isShimActivated;
+	protected boolean isShimActivated;
 
 	public FieldWidget() {
 		super();
@@ -147,12 +150,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			return;
 		}
 
-		if(isShimActivated){
+		if (isShimActivated) {
 			return;
-		}else{
-			isShimActivated=true;
+		} else {
+			isShimActivated = true;
 		}
-		
+
 		shim.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -189,6 +192,24 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			return null;
 
 		return value.getValue() == null ? null : value.getValue().toString();
+	}
+
+	public void setProperty(String propertyName, String value) {
+		Property prop = props.get(propertyName);
+		if (prop == null) {
+			return;
+		}
+
+		prop.setValue(new StringValue(value));
+	}
+
+	protected void setProperty(String propertyName, Value value) {
+		Property prop = props.get(propertyName);
+		if (prop == null) {
+			return;
+		}
+
+		prop.setValue(value);
 	}
 
 	@Override
@@ -294,24 +315,24 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				int idx = fields.indexOf(field);
 
 				Field reloaded = fields.get(idx);
-				
-				if(event.isFormReadOnly()){
+
+				if (event.isFormReadOnly()) {
 					ArrayList<Property> properties = reloaded.getProperties();
 					int readOnlyIndex = -1;
-					for(Property p: properties){
-						if(p.getName().equals(READONLY)){
-							readOnlyIndex= properties.indexOf(p);
+					for (Property p : properties) {
+						if (p.getName().equals(READONLY)) {
+							readOnlyIndex = properties.indexOf(p);
 							break;
 						}
 					}
-					
-					if(readOnlyIndex!=-1){
-						Property prop = properties.get(readOnlyIndex); 
-						BooleanValue value = (BooleanValue)prop.getValue();
+
+					if (readOnlyIndex != -1) {
+						Property prop = properties.get(readOnlyIndex);
+						BooleanValue value = (BooleanValue) prop.getValue();
 						value.setValue(event.isFormReadOnly());
 					}
 				}
-				
+
 				setField(reloaded);
 				setValue(fieldValue);
 			}
@@ -412,7 +433,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			return;
 		}
 
-//		Window.alert("Property change!");
+		// Window.alert("Property change!");
 		String property = event.getPropertyName();
 		Object value = event.getPropertyValue();
 
@@ -531,10 +552,14 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void setField(Field field) {
 		this.field = field;
-		this.getElement().setId(field.getName() + "_Field");
-		this.getInputComponent().getElement().setId(field.getName());
-		if (this.getViewElement() != null) {
-			this.getViewElement().setId(field.getName() + "_View");
+
+		// Not Raw HTML
+		if (!field.isHTMLWrappedField()) {
+			this.getElement().setId(field.getName() + "_Field");
+			this.getInputComponent().getElement().setId(field.getName());
+			if (this.getViewElement() != null) {
+				this.getViewElement().setId(field.getName() + "_View");
+			}
 		}
 
 		if (field.getId() != null)
@@ -547,47 +572,56 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		setProperties(field.getProperties());
 
-		String caption = getPropertyValue(CAPTION);
-		if (caption != null && !caption.isEmpty()) {
-			setCaption(caption);
-		} else {
+		// Not Raw HTML
+		if (!field.isHTMLWrappedField()) {
+			String caption = getPropertyValue(CAPTION);
+			if (caption != null && !caption.isEmpty()) {
+				setCaption(caption);
+			} else {
 
-			// field widgets created from FieldModels - see GridColumn
-			Property prop = props.get(CAPTION);
-			if (prop != null) {
-				prop.setValue(new StringValue(field.getCaption()));
+				// field widgets created from FieldModels - see GridColumn
+				Property prop = props.get(CAPTION);
+				if (prop != null) {
+					prop.setValue(new StringValue(field.getCaption()));
+				}
 			}
-		}
 
-		// set place holder
-		String placeHolder = getPropertyValue(PLACEHOLDER);
-		if (placeHolder != null && !placeHolder.isEmpty()) {
-			setPlaceHolder(placeHolder);
-		}
+			// set place holder
+			String placeHolder = getPropertyValue(PLACEHOLDER);
+			if (placeHolder != null && !placeHolder.isEmpty()) {
+				setPlaceHolder(placeHolder);
+			}
 
-		// set help
-		String help = getPropertyValue(HELP);
-		if (help != null) {
-			setHelp(help);
-		}
+			// set help
+			String help = getPropertyValue(HELP);
+			if (help != null) {
+				setHelp(help);
+			}
 
-		// Set Read only
-		boolean readOnly = false;
-		Object val = getValue(READONLY);
-		if (val != null && val instanceof Boolean) {
-			readOnly = (Boolean) val;
-		}
-		setReadOnly(readOnly);
+			// Set Read only
+			boolean readOnly = false;
+			Object val = getValue(READONLY);
+			if (val != null && val instanceof Boolean) {
+				readOnly = (Boolean) val;
+			}
+			setReadOnly(readOnly);
 
-		String alignment = getPropertyValue(ALIGNMENT);
-		if (alignment != null) {
-			setAlignment(alignment);
-		}
+			String alignment = getPropertyValue(ALIGNMENT);
+			if (alignment != null) {
+				setAlignment(alignment);
+			}
 
-		// set dropdown choices
-		if (this instanceof IsSelectionField) {
-			((IsSelectionField) this).setSelectionValues(field
-					.getSelectionValues());
+			// set dropdown choices
+			if (this instanceof IsSelectionField) {
+				((IsSelectionField) this).setSelectionValues(field
+						.getSelectionValues());
+			}
+
+			String labelPosition = getPropertyValue(LABELPOSITION);
+			if (labelPosition != null) {
+				setLabelPosition(labelPosition.equals("top"));
+			}
+
 		}
 
 		// Set Value
@@ -601,11 +635,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		String formula = getPropertyValue(FORMULA);
 		if (formula != null) {
 			setFormula(formula);
-		}
-
-		String labelPosition = getPropertyValue(LABELPOSITION);
-		if (labelPosition != null) {
-			setLabelPosition(labelPosition.equals("top"));
 		}
 
 	}
@@ -630,13 +659,17 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	public void onSaveProperties(SavePropertiesEvent event) {
 		FormModel model = event.getParent();
 
-		if (model == null) {
+		if (model == null || !(model instanceof Field)) {
 			return;
 		}
 
 		if (model.equals(field)) {
-			save((Field) model);
+			// Ignore metadata save for Wrapped fields - They will be saved by {HTMLForm}
+			if (!((Field) model).isHTMLWrappedField()) {
+				save((Field) model);
+			}
 		}
+
 	}
 
 	public void save() {
@@ -704,7 +737,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		case CHECKBOX:
 			widget = new CheckBoxField();
 			break;
-			
+
 		case CHECKBOXGROUP:
 			widget = new CheckBoxGroup();
 			break;
@@ -750,6 +783,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				// hidden field
 				widget.addStyleName("hide");
 			}
+			break;
+		case FORM:
+			widget = new HTMLForm();
 			break;
 		}
 
@@ -857,7 +893,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		if (widget != null) {
 			widget.designMode = false;
-			if(widget.getInputComponent()!=null){
+			if (widget.getInputComponent() != null) {
 				widget.getInputComponent().addStyleName("input-xlarge");
 			}
 		}
@@ -1150,7 +1186,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	 */
 	public abstract void setComponentValid(boolean isValid);
 
-	boolean isNullOrEmpty(String value) {
+	static boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;
 	}
 
@@ -1174,6 +1210,65 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		if (field.isDynamicParent() || hasTrigger) {
 			AppContext.fireEvent(new FieldLoadEvent(field, triggerName));
 		}
+	}
+
+	public FieldWidget get(Element element) {
+		return null;// TextField.wrap(element);
+	}
+
+	/**
+	 * Handle any logic necessary after widget has been dragged into the form in
+	 * this method
+	 */
+	public void onDragEnd() {
+
+	}
+
+	public static FieldWidget wrap(Element element, boolean designMode) {
+
+		assert !isNullOrEmpty(element.getId());
+		String tag = element.getTagName().toLowerCase();
+		
+		FieldWidget widget = null;
+		switch(tag){
+			case "input":
+				String type =element.getAttribute("type"); 
+				if (type.equals("text")) {
+					widget = new TextField(element, designMode);
+				}else if(type.equals("number")){
+					widget = new NumberField(element, designMode);
+				}
+				break;
+			case "textarea":
+				widget = new TextArea(element, designMode);
+				break;
+		}
+		
+
+		return widget;
+	}
+
+	/**
+	 * JQuery Element search by attribute - e.g label[for='userName']
+	 * 
+	 * @return
+	 */
+	protected Element findLabelFor(Element input) {
+
+		if (input == null && input.getId() != null) {
+			return null;
+		}
+
+		NodeList<Element> labels = input.getParentElement()
+				.getElementsByTagName("label");
+		for (int i = 0; i < labels.getLength(); i++) {
+			Element e = labels.getItem(i);
+			String labelFor = e.getAttribute("for");
+			if (labelFor != null && labelFor.equals(input.getId())) {
+				return e;
+			}
+		}
+		return null;
 	}
 
 }

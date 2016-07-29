@@ -1,17 +1,39 @@
 package com.duggan.workflow.client.ui.component;
 
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.text.client.DoubleParser;
 import com.google.gwt.text.shared.AbstractRenderer;
+import com.google.gwt.text.shared.Parser;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.ui.ValueBox;
 
 public class DoubleField extends ValueBox<Double> {
 
 	public DoubleField() {
-		super(Document.get().createTextInputElement(), DoubleField.DoubleRenderer
+		this(Document.get().createTextInputElement(), DoubleField.DoubleRenderer
 				.instance(), DoubleParser.instance());
+	}
+	
+	private DoubleField(Element element, Renderer<Double> renderer, Parser<Double> parser) {
+		super(element, renderer, parser);
+	}
+
+	
+	public static DoubleField wrap(Element numberEl) {
+	    // Assert that the element is attached.
+	    assert Document.get().getBody().isOrHasChild(numberEl);
+
+	    numberEl.setAttribute("type", "text");
+		DoubleField numberBox = new DoubleField(numberEl, DoubleField.DoubleRenderer
+				.instance(), DoubleParser.instance());
+		
+	    // Mark it attached and remember it for cleanup.
+		numberBox.onAttach();
+	   // RootPanel.detachOnWindowClose(textBox);
+
+		return numberBox;
 	}
 
 	public void setPlaceholder(String placeHolderValue) {

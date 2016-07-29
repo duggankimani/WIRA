@@ -3,7 +3,6 @@ package com.duggan.workflow.shared.model.form;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
@@ -19,6 +18,7 @@ public class Property extends FormModel{
 	private Long formId; //form property
 	private Value value;
 	private String caption;
+	private transient boolean showInPropertyPanel = true;
 	private ArrayList<KeyValuePair> kvp= new ArrayList<KeyValuePair>();
 	
 	public Property(){
@@ -141,6 +141,14 @@ public class Property extends FormModel{
 			prop.setValue(value.clone(fullClone));
 		
 		return prop;
+	}
+
+	public boolean isShowInPropertyPanel() {
+		return showInPropertyPanel;
+	}
+
+	public void setShowInPropertyPanel(boolean showInPropertyPanel) {
+		this.showInPropertyPanel = showInPropertyPanel;
 	}
 	
 }

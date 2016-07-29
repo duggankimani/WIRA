@@ -49,6 +49,9 @@ public class PropertyPanelView extends ViewImpl implements
 		boolean isSQLAvailable=false;
 		for(Property property: properties){
 			assert property!=null;
+			if(!property.isShowInPropertyPanel()){
+				continue;
+			}
 			FieldWidget fw = FieldWidget.getWidget(property);
 			add(fw);
 			

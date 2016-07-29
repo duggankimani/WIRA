@@ -33,7 +33,7 @@
 		</div>
 
 		<!--Detailed Info Description -->
-		<div ui:field="divDocView" class="span10 hide">
+		<div ui:field="divDocView" class="span12 hide">
 			<g:HTMLPanel ui:field="docContainer" styleName="full-page">
 			</g:HTMLPanel>
 		</div>

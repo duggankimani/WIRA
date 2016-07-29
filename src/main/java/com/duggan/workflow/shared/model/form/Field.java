@@ -55,6 +55,9 @@ public class Field extends FormModel implements Comparable<Field>{
 	//Uploaded File ID - Uploaded files on the server side are assigned unique Ids in the current user session. this is the Id of the last uploaded file
 	private String uploadedFileId = null;
 	
+	//Fields wrapped from raw HTML 
+	private transient boolean isHTMLWrappedField = false; 
+	
 	/**
 	 * Fields this field depends on. 
 	 * <p>
@@ -145,6 +148,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	}
 
 	public void addField(Field field) {
+		field.setParentId(Id);
 		fields.add(field);
 	}
 
@@ -377,6 +381,14 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	public void setUploadedFileId(String uploadedFileId) {
 		this.uploadedFileId = uploadedFileId;
+	}
+
+	public boolean isHTMLWrappedField() {
+		return isHTMLWrappedField;
+	}
+
+	public void setHTMLWrappedField(boolean isHTMLWrappedField) {
+		this.isHTMLWrappedField = isHTMLWrappedField;
 	}
 
 }

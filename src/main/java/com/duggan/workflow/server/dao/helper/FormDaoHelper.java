@@ -102,12 +102,14 @@ public class FormDaoHelper {
 		if (adform == null) {
 			return null;
 		}
+		
+		FormDaoImpl dao = DB.getFormDao();
 
 		Form form = new Form();
 		form.setCaption(adform.getCaption());
 
 		if (loadFields) {
-			Collection<ADField> fields = adform.getFields();
+			Collection<ADField> fields = dao.getFields(adform);
 			for (ADField fld : fields) {
 				Field field= getField(fld);
 				

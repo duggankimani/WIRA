@@ -1,7 +1,10 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import com.duggan.workflow.client.ui.admin.formbuilder.FormBuilderPresenter;
+import com.duggan.workflow.client.ui.admin.formbuilder.propertypanel.PropertyPanelPresenter;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -13,6 +16,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.TextAlign;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -50,6 +55,9 @@ public class TextField extends FieldWidget {
 	private final Widget widget;
 	private Property property;
 
+	/**
+	 * Default FormBuilder Text Field
+	 */
 	public TextField() {
 		super();
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
@@ -65,7 +73,7 @@ public class TextField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
-		
+
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
@@ -74,6 +82,77 @@ public class TextField extends FieldWidget {
 		});
 	}
 
+	/**
+	 * Wrapped Text Field input - These are text fields generated from raw html
+	 * forms. see {@link HTMLForm}
+	 * 
+	 * @param textInput
+	 * @param designMode
+	 */
+	public TextField(Element textInput, boolean designMode) {
+		super();
+		this.designMode = designMode;
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
+				id));
+		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC,
+				new KeyValuePair("left", "Left"), new KeyValuePair("center",
+						"Center"), new KeyValuePair("right", "Right")));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
+				DataType.STRING));
+
+		// Wrap
+		txtComponent = com.duggan.workflow.client.ui.component.TextField
+				.wrap(textInput);
+		widget = txtComponent;
+		assert textInput.getId() != null;
+
+		// Set
+		setProperty(NAME, textInput.getId());
+		field.setName(textInput.getId());
+		lblEl = findLabelFor(textInput);
+		if (lblEl != null) {
+			field.setCaption(lblEl.getInnerHTML());
+			setProperty(CAPTION, lblEl.getInnerHTML());
+		}
+
+		setProperty(HELP, textInput.getTitle());
+		setProperty(MANDATORY,
+				new BooleanValue(textInput.hasAttribute("required")));
+		setProperty(READONLY,
+				new BooleanValue(textInput.hasAttribute("readonly")));
+		
+
+		// field Properties update
+		field.setProperties(getProperties());
+
+		
+		// Events
+		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				execTrigger();
+			}
+		});
+
+		if (designMode) {
+			txtComponent.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					showProperties(0);
+				}
+			});
+		}
+	}
+	
+	/**
+	 * Text Fields generated for {@link FormBuilderPresenter} Field Properties
+	 * {@link PropertyPanelPresenter}
+	 * 
+	 * @param property
+	 */
 	public TextField(final Property property) {
 		this();
 		this.property = property;
@@ -123,7 +202,7 @@ public class TextField extends FieldWidget {
 			}
 		});
 	}
-
+	
 	@Override
 	protected void onAttach() {
 		super.onAttach();
@@ -213,10 +292,17 @@ public class TextField extends FieldWidget {
 			}
 
 			txtComponent.setValue((String) value);
-			lblReadOnly.setText((String) value);
+			if (lblReadOnly != null) {
+				// Raw HTML Fields may be null
+				lblReadOnly.setText((String) value);
+			}
+
 		} else {
 			txtComponent.setValue(null);
-			lblReadOnly.setText(null);
+			if (lblReadOnly != null) {
+				// Raw HTML Fields may be null
+				lblReadOnly.setText(null);
+			}
 		}
 	}
 

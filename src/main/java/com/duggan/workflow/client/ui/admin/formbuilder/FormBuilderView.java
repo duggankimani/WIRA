@@ -3,9 +3,8 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
@@ -104,6 +103,7 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField PalettePanel vFileUploadPanel;
 	@UiField PalettePanel vPanelIFrame;
 	@UiField PalettePanel jsPanel;
+	@UiField PalettePanel vHTMLFormPanel;
 	
 	@UiField PalettePanel vHRPanel;
 //	@UiField PalettePanel vGridPanel;
@@ -146,7 +146,7 @@ public class FormBuilderView extends ViewImpl implements
 					draggable.setFormId(form.getId());		
 					draggable.getField().setPosition(idx);
 					draggable.save();			
-
+					draggable.onDragEnd();
 				}
 			}
 		};
@@ -156,6 +156,7 @@ public class FormBuilderView extends ViewImpl implements
 		 *  */
 		widgetDragController = new PickupDragController(
 				container, false){
+			
 			@Override
 			protected void restoreSelectedWidgetsLocation() {
 				//do nothing -- Dont drop the widget back to the palette menu if target was missed;
@@ -184,8 +185,8 @@ public class FormBuilderView extends ViewImpl implements
 					hPaletetitle.removeClassName("hidden");
 					IsMinimized=false;
 				}else{
-					divPalettePanel.getElement().getStyle().setWidth(10.0, Unit.PCT);
-					divFormContent.getElement().getStyle().setWidth(89.0, Unit.PCT);
+					divPalettePanel.getElement().getStyle().setWidth(5, Unit.PCT);
+					divFormContent.getElement().getStyle().setWidth(94.0, Unit.PCT);
 					divPaletteBody.addClassName("hidden");
 					aMinimize.setStyleName("minimize minimize-right");
 					hPaletetitle.addClassName("hidden");
@@ -295,8 +296,10 @@ public class FormBuilderView extends ViewImpl implements
 		vHRPanel.registerDragController(widgetDragController);
 		vGridPanel.registerDragController(widgetDragController);
 		vFileUploadPanel.registerDragController(widgetDragController);
+		vHTMLFormPanel.registerDragController(widgetDragController);
 		vPanelIFrame.registerDragController(widgetDragController);
 		jsPanel.registerDragController(widgetDragController);
+		
 	}
 	
 	/**

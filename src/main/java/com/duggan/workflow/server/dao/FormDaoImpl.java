@@ -16,6 +16,7 @@ import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.form.Form;
 
 /**
  * 
@@ -240,5 +241,12 @@ public class FormDaoImpl extends BaseDaoImpl {
 		Long result = (Long)query.getSingleResult();
 		
 		return result>0;
+	}
+
+	public Collection<ADField> getFields(ADForm form) {
+		
+		return getResultList(getEntityManager()
+				.createQuery("from ADField f where f.form=:form and f.parentField is null")
+				.setParameter("form", form));
 	}
 }

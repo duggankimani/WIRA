@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.HTMLForm;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -60,7 +61,7 @@ public class FormDelegate {
 			
 			FieldWidget fieldWidget = (FieldWidget)widget;
 			Field field = fieldWidget.getField();
-			//DISABLED BY DUGGAN 15th/Sep/2015 - Due to Field Triggers that may update a readonly fields
+			//DISABLED BY DUGGAN 15th/Sep/2015 - Due to Field Triggers that may update readonly fields
 			
 //			if(fieldWidget.isReadOnly() && !fieldWidget.isFormularField()){
 //				continue;
@@ -71,7 +72,15 @@ public class FormDelegate {
 				assert field.getName()!=null;
 				assert !field.getName().isEmpty();
 				fieldValue.setKey(field.getName());
-			}			
+			}		
+			
+			//HTML Forms
+			if(fieldWidget instanceof HTMLForm){
+				ArrayList<Value> htmlFormValues = ((HTMLForm)fieldWidget).getFieldValues();
+				for(Value v: htmlFormValues){
+					values.put(v.getKey(), v);
+				}
+			}
 			values.put(field.getName(), fieldValue);
 		}
 		
