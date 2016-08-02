@@ -22,7 +22,8 @@ public enum DBType implements Listable,Serializable{
 	SMALLINT,
 	TIME,
 	TINYINT,
-	VARCHAR;
+	VARCHAR,
+	TEXT;
 
 	private DBType() {
 	}

@@ -37,6 +37,7 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TextValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
@@ -364,7 +365,13 @@ public class FormDaoHelper {
 			break;
 
 		case STRINGLONG:
-			value = new StringValue(id, key, advalue.getStringValue());
+			if(advalue.getTextValue()!=null){
+				value = new TextValue(id, key, advalue.getTextValue());	
+			}else{
+				//For backward compatibility
+				value = new TextValue(id, key, advalue.getStringValue());
+			}
+			
 			break;
 		}
 
@@ -422,7 +429,7 @@ public class FormDaoHelper {
 			break;
 
 		case STRINGLONG:
-			value = new StringValue(id, key, obj.toString());
+			value = new TextValue(id, key, obj.toString());
 			break;
 		}
 
@@ -695,12 +702,15 @@ public class FormDaoHelper {
 
 		case STRING:
 		case CHECKBOXGROUP:
-		case STRINGLONG:
 		case MULTIBUTTON:
 		case SELECTBASIC:
 		case SELECTMULTIPLE:
 			// System.err.println("Save Value >> "+value.getValue());
 			advalue.setStringValue((String) value.getValue());
+			break;
+			
+		case STRINGLONG:
+			advalue.setTextValue((String) value.getValue());
 			break;
 
 		case FILEUPLOAD:

@@ -42,6 +42,8 @@ import com.duggan.workflow.shared.requests.CreateFieldRequest;
 import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.responses.CreateFieldResponse;
 import com.duggan.workflow.shared.responses.DeleteFormModelResponse;
+import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
@@ -1210,10 +1212,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 	}
 
-	public FieldWidget get(Element element) {
-		return null;// TextField.wrap(element);
-	}
-
 	/**
 	 * Handle any logic necessary after widget has been dragged into the form in
 	 * this method
@@ -1223,16 +1221,26 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	public static FieldWidget wrap(Element element, boolean designMode) {
-
-		assert !isNullOrEmpty(element.getId());
+		
+		if(isNullOrEmpty(element.getId())){
+			GWT.log("Cannot create element with no Id");
+			return null;
+		};
+		
 		String tag = element.getTagName().toLowerCase();
+		Element parent = element.getParentElement();
 		
 		FieldWidget widget = null;
 		switch(tag){
 			case "input":
 				String type =element.getAttribute("type"); 
 				if (type.equals("text")) {
-					widget = new TextField(element, designMode);
+					if(parent.hasClassName("date")){
+						widget = new DateField(element, designMode);
+					}else{
+						widget = new TextField(element, designMode);
+					}
+					
 				}else if(type.equals("number")){
 					widget = new NumberField(element, designMode);
 				}else if(type.equals("date")){
@@ -1241,6 +1249,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				break;
 			case "textarea":
 				widget = new TextArea(element, designMode);
+				break;
+			case "select":
+				widget = new SelectBasic(element, designMode);
 				break;
 		}
 		
@@ -1271,4 +1282,53 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		return null;
 	}
 
+	public static native void getAllInputs(String parentId,JsArrayString elementIds)/*-{
+		var div = $doc.getElementById(parentId);
+		$wnd.jQuery(div).find(':input:not(.grid_template *)')
+		        .each(function() {
+		            var el = $wnd.jQuery(this);
+		            if(el.prop('id') !=null){
+		           	   elementIds.push(el.prop('id'));
+		           	}
+		           	if(el.prop('title')!=null){
+	           			$wnd.jQuery(el).popover({
+	           				trigger: 'focus'
+	           			});
+		           	}
+		        });
+		 
+		
+		$wnd.jQuery(div).find('.grid_template :input')
+		        .each(function() {
+		            var el = $wnd.jQuery(this);
+		            if(el.prop('id') !=null){
+//		            	alert('Elements in Grid >> '+el.prop('id'));
+		           	}
+		        });
+		
+		
+//		$wnd.jQuery(div).children(':not(table.grid)').find('input:text, input:password, select, textarea')
+//		        .each(function() {
+//		            var el = $wnd.jQuery(this);
+//		            if(el.prop('id') !=null){
+//		           	   alert('Found -> '+el.prop('id'));
+//		           	}
+//		        });
+		        
+//		$wnd.jQuery(div).find('input:radio, input:checkbox').each(function() {
+//		    //$(this).removeAttr('checked');
+//		    //$(this).removeAttr('selected');
+//		     
+//		     var el = $wnd.jQuery(this); 
+//		     
+//		     if(el.prop('id')!=null){
+//		     	alert('>>id = '+el.prop('id'));
+//		     }else if(el.prop('name') !=null){
+//		     	alert('>>Name = '+el.prop('name'));
+//		     }else{
+//		     	alert('>>No id or name '+el.prop('type'));
+//		     }
+//		     
+//		});
+	}-*/;
 }

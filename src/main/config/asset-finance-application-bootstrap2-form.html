@@ -1,0 +1,450 @@
+<!-- bootstrap -->
+<link href="../webapp/css/bootstrap.css" rel="stylesheet">
+<link href="../webapp/css/select2.css" rel="stylesheet">
+<link href="../webapp/css/google/google-bootstrap.css" rel="stylesheet">
+
+<link href="../webapp/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="../webapp/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+
+<!-- libraries -->
+<link rel="stylesheet" type="text/css" href="../webapp/css/elements.css">
+<link href="../webapp/css/font-awesome/css/font-awesome.min.css"
+	type="text/css" rel="stylesheet">
+
+<!-- global styles -->
+<link rel="stylesheet" type="text/css" href="../webapp/css/layout.css">
+<link rel="stylesheet" type="text/css" href="../webapp/css/elements.css">
+<link rel="stylesheet" type="text/css" href="../webapp/css/icons.css">
+<link rel="stylesheet" type="text/css" href="../webapp/css/Upload.css">
+
+<!--Admin Fonts  -->
+<link rel="stylesheet" type="text/css"
+	href="../webapp/css/admin_css/admin_layout.css">
+<link rel="stylesheet" type="text/css"
+	href="../webapp/css/admin_css/stilearn-helper.css">
+
+<!-- Bootstrap end -->
+
+<!-- this page specific styles -->
+<link rel="stylesheet" type="text/css"
+	href="../webapp/css/compiled/signin.css">
+<!-- <link rel="stylesheet" type="text/css" href="css/compiled/index.css"> -->
+
+<style type="text/css">
+.header-bg {
+	/*background-color: #1B3C73;*/
+	height: 63px;
+}
+
+.header-heading {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-left: 100px;
+	line-height: 63px;
+	color: #1B3C73;
+	text-align: center !important;
+}
+
+#detailed-info .form-horizontal .asset-fin legend {
+	font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: left;
+    border-bottom: none;
+    text-decoration: underline;
+    line-height: 26px;
+    margin-top: 12px;
+}
+
+.asset-fin input[type="text"],input[type="number"] {
+	border: none;
+	border-bottom: 1px dotted #cccccc;
+}
+
+.asset-fin input[type="text"]:hover, .asset-fin input[type="text"]:focus
+	{
+	box-shadow: none;
+	border-bottom: 1px solid green;
+}
+.asset-fin .border-section{
+	border:1px solid black;
+	padding:10px;
+}
+
+.asset-fin .row-fluid{
+	margin-bottom: 10px;
+}
+.asset-fin .row-fluid{
+	margin-bottom: 10px;
+}
+.asset-fin input[type="text"]{
+	font-weight: initial !important;
+}
+
+.asset-fin input[type="text"]::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-weight: initial !important;
+}
+.asset-fin input[type="text"]::-moz-placeholder { /* Firefox 19+ */
+  font-weight: initial !important;
+}
+.asset-fin input[type="text"]:-ms-input-placeholder { /* IE 10+ */
+  font-weight: initial !important;
+}
+.asset-fin input[type="text"]:-moz-placeholder { /* Firefox 18- */
+  font-weight: initial !important;
+}
+</style>
+<div class="asset-fin">
+	<div class="row-fluid header-bg">
+		<div class="span2">
+			<img src="http://127.0.0.1:8888/getreport?ACTION=GetLogo&amp;width=171&amp;height=57&amp;settingName=ORGLOGO">
+		</div>
+			<fieldset class="span3 pull-right form-inline">
+				<label class="inline" for="applicationNo">Application Number</label>
+				<input class="span6" type="text" id="applicationNo" title="Application Number" data-content="Auto-generated reference number for this application" data-placement="bottom">
+			</fieldset>
+	</div>
+  
+	<div class="row-fluid">
+		<div class="span9">
+			<fieldset class="span4 form-inline">
+				<label>Branch:</label> 
+                <select id="branch" class="span9" title="Branch" data-trigger="hover" 
+                data-content="Select your I&M branch">
+					<option>--Select--</option>
+					<option>Harambee Avenue</option>
+					<option>City Center</option>
+					<option>Baricho</option>
+				</select>
+			</fieldset>
+			<fieldset  class="span4 form-inline">
+				<label>Applicant Type:</label> 
+				<select class="span8" id="applicantType" title="Applicant" data-trigger="hover"
+				data-content="Select applicant type. Your form will be filtered based on the selection"> 
+					<option>--Select--</option>
+					<option>Company</option>
+					<option>Individual</option>
+				</select>
+			</fieldset>
+			<fieldset class="span4 form-inline">
+				<label>Account No:</label>
+				<input class="span8" type="text" id="accountNumber" title="Account Number" 
+				data-content="Enter your I&M Account Number and we'll retrieve your data for you."
+				data-placement="right">
+			</fieldset>
+		</div>
+		<div class="span3 pull-right">
+			<fieldset class="span12 form-inline">
+				<label class="inline" for="proposalNumber">Proposal Number</label>
+                <input class="span6" type="text" id="proposalNumber" title="Proposal Number" 
+				data-content="Proposal Number" data-placement="bottom">
+			</fieldset>
+		</div>
+	</div>
+
+	<legend>APPLICANT</legend>
+	<div class="border-section">
+		<div class="row-fluid">
+			<fieldset class="span6">
+				<label>NAME</label> <input type="text" id="applicantName" class="span12" placeholder="Name" title="Name" data-content="Full names in the sequence: Last Name, First Name, Other Names">
+			</fieldset>
+			<fieldset class="span3">
+				<label>ID/PASSPORT/INC/CERT.OF REG NO</label> <input type="text" id="identifier" class="span12" placeholder="ID/Passport">
+			</fieldset>
+			<fieldset class="span3">
+				<label>PIN NO</label> <input type="text" id="pinNo" class="span12" placeholder="PIN No">
+			</fieldset>
+		</div>
+
+		<div class="row-fluid">
+			<fieldset class="span4">
+				<label>P.O BOX</label> <input id="postalAdd" type="text" class="span12" placeholder="Name">
+			</fieldset>
+			<fieldset class="span2">
+				<label>POSTAL CODE </label> <input id="postalCode" type="text" class="span12" placeholder="ID/Passport">
+			</fieldset>
+			<fieldset class="span2">
+				<label>CITY/TOWN</label> <input type="text" class="span12" placeholder="PIN No">
+			</fieldset>
+			<fieldset class="span4">
+				<label>PHYSICAL ADDRESS (<small>Location /Road</small>)
+				</label> <input type="text" id="physicalAdd" class="span12" placeholder="PIN No">
+			</fieldset>
+		</div>
+
+		<div class="row-fluid">
+			<fieldset class="span3">
+				<label>TEL. MOBILE </label> <input id="telephoneNumber" type="text" class="span12" placeholder="07...">
+			</fieldset>
+			<fieldset class="span3">
+				<label>TEL. HOME/ OFFICE NO. </label> <input id="homeOfficeNumber" type="text" class="span12" placeholder="Home/Office number">
+			</fieldset>
+			<fieldset class="span3">
+				<label>E-MAIL ADDRESS</label> <input id="email" type="text" class="span12" placeholder="eMail">
+			</fieldset>
+			<fieldset class="span3">
+				<label>INTRODUCED BY (<small>Location /Road</small>)
+				</label> <input id="introducedBy" type="text" class="span12" placeholder="Introduced By">
+			</fieldset>
+		</div>
+
+		<div class="row-fluid">
+			<fieldset class="span2">
+				<label>Home Ownership </label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+				Owner <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Tenant
+			</fieldset>
+			<fieldset class="span3 hide">
+				<label>IF TENANT; NAME OF LANDLORD</label> <input type="text" class="span12" placeholder="ID/Passport">
+			</fieldset>
+			<fieldset class="span3 hide">
+				<label>P.O BOX</label> <input type="text" class="span12" placeholder="PIN No">
+			</fieldset>
+			<fieldset class="span2 hide">
+				<label>POSTAL CODE</label> <input type="text" class="span12" placeholder="PIN No">
+			</fieldset>
+			<fieldset class="span2 hide">
+				<label>PHONE NO.</label> <input type="text" class="span12" placeholder="PIN No">
+			</fieldset>
+		</div>
+
+		<div class="row-fluid">
+			<fieldset class="span4">
+				<label>NATURE OF BUSINESS</label> <input type="text" class="span12" placeholder="Name">
+			</fieldset>
+			<fieldset class="span2">
+				<label>YEAR ESTABLISHED</label> <input type="text" class="span12" placeholder="ID/Passport">
+			</fieldset>
+			<fieldset class="span6">
+				<label>PURPOSE OF ASSET BEING PURCHASED</label> <input type="text" class="span12" placeholder="PIN No">
+			</fieldset>
+		</div>
+	</div>
+
+	<legend>APPLICANT’S BANK DETAILS</legend>
+	<div class="border-section">
+		<a class="btn btn-success"><i class="icon-plus"></i></a>
+		<div class="row-fluid">
+			<table class="grid_template table-condensed span12">
+				<thead>
+					<tr>
+						<td class="span3">BANK NAME</td>
+						<td class="span2">BRANCH</td>
+						<td class="span2">A/C NUMBER</td>
+						<td class="span2">OD LIMIT</td>
+						<td class="span2">OUTSTANDING LOANS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="grid_row_template">
+						<td class="span3"><input type="text" class="span12"></td>
+						<td class="span2"><input type="text" class="span12"></td>
+						<td class="span2"><input type="text" class="span12"></td>
+						<td class="span2"><input type="text" class="span12" placeholder="KSH"></td>
+						<td class="span2"><input type="text" class="span12" placeholder="KSH"></td>
+						<td class="span1"><a class="btn btn-danger"><i class="icon-trash"></i></a></td>
+				</tr></tbody>
+			</table>
+		</div>
+	</div>
+
+	<legend>EXISTING VEHICLES / PROPERTIES</legend>
+	<div class="border-section">
+	<a class="btn btn-success"><i class="icon-plus"></i></a>
+	<div class="row-fluid">
+		<table class="grid_template table-condensed span12">
+			<thead>
+				<tr>
+					<td class="span2">VEHICLE REG NO.</td>
+					<td class="span2">MAKE</td>
+					<td class="span2">MODEL</td>
+					<td class="span2">BALANCE OF LOAN <small>(If any)</small>
+					</td>
+					<td class="span3">FINANCED BY</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="grid_row_template">
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12" placeholder="KSH"></td>
+					<td class="span3"><input type="text" class="span12"></td>
+					<td class="span1"><a class="btn btn-danger"><i class="icon-trash"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<a class="btn btn-success"><i class="icon-plus"></i></a>
+		<div class="row-fluid">
+			<table class="grid_template table-condensed span12">
+				<thead>
+					<tr>
+						<td class="span2">PROPERTY (RESIDENTIAL/COMMERCIAL)</td>
+						<td class="span2">SIZE</td>
+						<td class="span2">TOWN/AREA</td>
+						<td class="span2">LR NO</td>
+						<td class="span3">APPROXIMATE VALUE</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="grid_row_template">
+						<td class="span2"><select>
+								<option>--Select--</option>
+								<option>Residential</option>
+								<option>Commercial</option>
+						</select></td>
+						<td class="span2"><input type="text" class="span12"></td>
+						<td class="span2"><input type="text" class="span12"></td>
+						<td class="span2"><input type="text" class="span12"></td>
+						<td class="span2"><input type="text" class="span12"></td>
+						<td class="span1"><a class="btn btn-danger"><i class="icon-trash"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<legend>ADDITIONAL INFORMATION - COMPANIES AND PARTNERSHIPS
+		ONLY:</legend>
+	<div class="border-section">
+	<a class="btn btn-success"><i class="icon-plus"></i></a>
+	<div class="row-fluid">
+		<table class="grid_template table-condensed span6">
+			<thead>
+				<tr>
+					<td class="span6">NAMES OF SHAREHOLDERS/ DIRECTORS / PARTNERS
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="grid_row_template">
+					<td class="span11"><input type="text" class="span12">
+					</td>
+					<td class="span1"><a class="btn btn-danger"><i class="icon-trash"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row-fluid">
+		<label class="span3"> Annual Turnover <input type="text" class="span8" placeholder="KES">
+		</label> <label class="span3">Annual Net Profit <input type="number" step="0.01" class="span8"  placeholder="KES">
+		</label>
+	</div>
+	
+	<div class="row-fluid">
+		<label class="span6"> Associate Companies (Where applicable) <textarea type="text" class="span12"></textarea>
+		</label>
+	</div>
+	</div>
+	
+	<legend>DEALER /SUPPLIER:</legend>
+	<div class="border-section">
+		<div class="row-fluid">
+		<table class="grid_template table-condensed span12">
+			<thead>
+				<tr>
+					<td class="span3">DEALER NAME</td>
+					<td class="span2">POSTAL ADDRESS</td>
+					<td class="span2">TEL NO.</td>
+					<td class="span2">INVOICE NO/DATE</td>
+					<td class="span2">SALES PERSON.</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="grid_row_template">
+					<td class="span3"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span2"><input type="text" class="span12"></td>
+					<td class="span1"><a class="btn btn-danger"><i class="icon-trash"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	
+	<legend>ASSET DETAILS / FACILITY:</legend>
+	<div class="border-section">
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span4">Make</label>
+				<input id="make" type="text" class="span8">
+			</div>
+			<div class="span2">
+				<label class="span6">
+				<input id="newMachinery" name="newUsed" type="radio"  class="span3">
+				New
+				</label>
+				<label class="span6">
+				<input id="UsedMachinery" name="newUsed" type="radio"  class="span3">
+				Used
+				</label>
+			</div>
+			<div class="span4 pull-right">
+				<label class="span6">Invoice Price</label>
+				<input id="invoicePrice" type="number" step="0.01" class="span6"  placeholder="KES">
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span4">Model / CC Rating</label>
+				<input id="model" type="text" class="span8">
+			</div>
+			
+			<div class="span4 pull-right">
+				<label class="span6">Less: Discounts</label>
+				<input id="discounts" type="number" step="0.01" class="span6" placeholder="KES">
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span4">Year of manufacture</label>
+				<input id="year" type="text" class="span8">
+			</div>
+			
+			<div class="span4 pull-right">
+				<label class="span6"><strong>Net Cost</strong></label>
+				<input id="netCost" type="number" step="0.01" class="span6"  placeholder="KES">
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span4">Valuation Amount</label>
+				<input id="valuation" type="text" class="span6" title="Valuation Amount" data-html="true" data-content="Valuation amount if Applicable">
+			</div>
+			
+			<div class="span4 pull-right">
+				<label class="span6">Add: Accessories/ Other</label>
+				<input id="accessories" type="number" step="0.01" class="span6"  placeholder="KES">
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span4 pull-right">
+				<label class="span6"><strong>Total Cost</strong></label>
+				<input id="totalCost" type="number" step="0.01" class="span6"  placeholder="KES">
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span4">Proposed Insurer</label>
+				<input id="insurer" type="text" class="span8" title="Proposed Insurer" data-html="true" data-content="Proposed Insurer">
+			</div>
+			
+			<div class="span4 pull-right">
+				<label class="span6">Less: Deposit</label>
+				<input id="deposit" type="number" step="0.01" class="span6"  placeholder="KES">
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span4 pull-right">
+				<label class="span6"><strong>Balance of Cost</strong></label>
+				<input id="totalCost" type="number" step="0.01"  class="span6" placeholder="KES">
+			</div>
+		</div>
+	</div>
+</div>

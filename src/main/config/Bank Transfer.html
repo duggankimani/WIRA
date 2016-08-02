@@ -1,0 +1,168 @@
+
+
+<style type="text/css">
+    	
+   		body {
+			margin:50px 0px; padding:0px;
+			text-align:left;
+			font-family:Arial, Helvetica, sans-serif;
+			font-size:11px;
+		}
+		
+		#content {
+			width:780px;
+			margin:0px auto;
+			text-align:left;
+			padding:15px;
+		}
+   	
+    	table{
+    		font-size:11px;
+			font-family:Arial, Helvetica, sans-serif;
+    	}
+    	thead, th{
+    		text-align:center;
+    		border-bottom:1px solid;
+    	}
+    	
+    	table.clientdetails td{
+    		padding:4px;
+    		min-width:100px;
+    	}
+    	
+    	.detail th,td{
+    		padding:4px;
+    		/*min-width:100px;*/
+    		border:1px solid grey;
+    	}
+    	
+    	.detail{
+    		width:100%;
+    	}
+    	
+    	.detail .num{
+    		text-align:right;
+    	}
+    	
+    	.maindetails td{
+    		font-weight:bold;
+    	}
+    </style>
+
+
+<center><img align="middle" data-mce-src="http://eaprocessmaker.org/EA_logo.jpg" src="http://eaprocessmaker.org/EA_logo.jpg" height="69" width="153"></center>
+<h2>Payment Request - Bank Transfer | Case #: @#CaseNumber</h2>
+<hr>
+<p><b>SECTION 1: Bank Transfer Details</b></p>
+<table class="mceItemTable" style="font-family:Arial, Helvetica, sans-serif;" border="0">
+<tbody>
+<tr>
+<td><strong>Bank Account Number:</strong></td>
+<td><font face="courier new">@#BankAccountNumber</font></td>
+</tr>
+<tr>
+<td><strong>Bank Account Name:</strong></td>
+<td><font face="courier new">@#BankAccountName</font></td>
+</tr>
+<tr>
+<td><strong>Bank Name:</strong></td>
+<td><font face="courier new">@#BankName</font></td>
+</tr>
+<tr>
+<td><strong>Bank Branch:</strong></td>
+<td><font face="courier new">@#BankBranch</font></td>
+</tr>
+<tr>
+<td><strong>Bank SwiftCode:</strong></td>
+<td><font face="courier new">@#BankSwift</font></td>
+</tr>
+</tbody>
+</table>
+<p><b>Total Amount: Kshs @#CalcAmount </b></p>
+<hr>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td><b>Expense Lines</b><br>
+<table class="mceItemTable" style="width: 100%;font-family:Arial, Helvetica, sans-serif; font-size:10px" border="0">
+<tbody>
+<tr bgcolor="#E0E0E0"><th>GL</th><th>Grant</th><th>Program</th><th>Sub Program</th><th>Location</th><th>Field Office</th><th>Department</th><th>Activity</th><th>Memo</th><th>Amount</th></tr>
+<!--@>PRDetailsGrid-->
+<tr bgcolor="#F3F3F3">
+<td style="width:10%">@#ExpenseAccount</td>
+<td style="width:10%;word-wrap:break-word">@#ProjectCombination_Split</td>
+<td style="width:10%">@#Program</td>
+<td style="width:10%">@#SubProgram</td>
+<td style="width:10%">@#Location</td>
+<td style="width:10%">@#SubSegment</td>
+<td style="width:10%">@#Department</td>
+<td style="width:10%">@#Segment</td>
+<td style="width:10%">@#Memo</td>
+<td style="width:10%">@#Amount</td>
+</tr>
+<!--@<PRDetailsGrid--></tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="mceItemTable">
+<tbody>
+<tr></tr>
+</tbody>
+<tbody>
+<tr>
+<td><strong>Submitted By:</strong></td>
+<td>@#Submitter</td>
+<td><strong>Date Submitted:</strong></td>
+<td>@#DateSubmitted</td>
+<td><strong>UID:</strong>@#OriginatorUserID</td>
+</tr>
+<tr>
+<td><strong>Approved By:</strong></td>
+<td>@#ApproverName</td>
+<td><strong>Date Approved:</strong></td>
+<td>@#ApprovalDate</td>
+<td><strong>UID:</strong>@#ApproverUserID</td>
+</tr>
+</tbody>
+</table>
+<p><b>SECTION 2: Accounts</b></p>
+<table class="mceItemTable">
+<tbody>
+<tr>
+<td>Bank Transfer Number:</td>
+<td>____________________</td>
+<td></td>
+<td>Bank Account: @#BankAccount</td>
+</tr>
+<tr></tr>
+<tr>
+<td>Finance Approver:</td>
+<td>@#FinanceApproverName</td>
+<td>Date:</td>
+<td>@#FinanceApprovalDate</td>
+</tr>
+<tr>
+<td>Signature:</td>
+<td>____________________</td>
+<td>UID:</td>
+<td>@#FinanceApproverUserID</td>
+</tr>
+<tr>
+<td>Final Approved by:</td>
+<td>____________________</td>
+<td>Signature:</td>
+<td>____________________</td>
+<td>Date:</td>
+<td>_____________</td>
+</tr>
+<tr></tr>
+</tbody>
+</table>
+<hr><!--footer starts-->
+<div style="position: fixed; bottom: 5mm;left 30mm" class="mceItemVisualAid mceItemLayer">Evidence Action | Document generated: @#GenDate</div>
+<!--footer ends-->
+<p></p>
+
+

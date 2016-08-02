@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.component;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class TextField extends TextBox{
@@ -32,7 +33,7 @@ public class TextField extends TextBox{
 		}
 	}
 	
-	public static TextField wrap(Element element) {
+	public static TextField wrap(Element element, boolean ishtmlFormElement) {
 	    // Assert that the element is attached.
 	    assert Document.get().getBody().isOrHasChild(element);
 
@@ -40,7 +41,10 @@ public class TextField extends TextBox{
 
 	    // Mark it attached and remember it for cleanup.
 	    textBox.onAttach();
-	   // RootPanel.detachOnWindowClose(textBox);
+	    if(!ishtmlFormElement){
+	    	RootPanel.detachOnWindowClose(textBox);
+	    }
+	   // 
 
 	    return textBox;
 	}

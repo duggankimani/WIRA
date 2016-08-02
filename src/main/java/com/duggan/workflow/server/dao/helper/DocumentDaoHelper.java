@@ -330,6 +330,10 @@ public class DocumentDaoHelper {
 		if (val.getStringValue() != null) {
 			type = DataType.STRING;
 		}
+		
+		if (val.getTextValue() != null) {
+			type = DataType.STRINGLONG;
+		}
 
 		return type;
 

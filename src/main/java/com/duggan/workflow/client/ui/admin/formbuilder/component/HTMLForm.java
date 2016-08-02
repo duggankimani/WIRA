@@ -6,12 +6,13 @@ import java.util.List;
 
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.DataType;
-import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TextValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Unit;
@@ -19,6 +20,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -114,9 +116,8 @@ public class HTMLForm extends FieldWidget {
 			super.save();
 			return;
 		} else {
-			prop.setValue(new StringValue(txtComponent.getValue()));
+			prop.setValue(new TextValue(txtComponent.getValue()));
 			props.put(HTMLCONTENT, prop);
-
 			wrapHTML();
 			super.save();
 		}
@@ -157,7 +158,7 @@ public class HTMLForm extends FieldWidget {
 				children.put(child.getName(), child);
 			}
 		}
-		
+
 		String html = getPropertyValue(HTMLCONTENT);
 		bindHTML(html);
 
@@ -213,43 +214,99 @@ public class HTMLForm extends FieldWidget {
 			GWT.log("HTMLForm not attached, ignoring FieldWidget attachment");
 			assert isAttached();// Let it fail here
 		}
-
 		
-		//inputs
-		NodeList<Element> nodes = htmlContent.getElement()
-				.getElementsByTagName("input");
-		NodeList<Element> textAreas = htmlContent.getElement()
-				.getElementsByTagName("textarea");
+		String parentId = getElement().getId();
+		JsArrayString elementArray = (JsArrayString)JsArrayString.createArray();
+		getAllInputs(parentId, elementArray);
 		
-		wrapElements(nodes);
-		wrapElements(textAreas);
+		for(int i=0; i<elementArray.length(); i++){
+			String id = elementArray.get(i);
+			if(id==null || id.isEmpty() || id.equals(parentId)){
+				continue;
+			}
+			
+			Element element = htmlContent.getElementById(id);
+			wrapElement(element);
+		}
+		
+//		// inputs
+//		NodeList<Element> nodes = htmlContent.getElement()
+//				.getElementsByTagName("input");
+//		NodeList<Element> textAreas = htmlContent.getElement()
+//				.getElementsByTagName("textarea");
+//		NodeList<Element> select = htmlContent.getElement()
+//				.getElementsByTagName("select");
+//
+//		ArrayList<Element> checkboxes = new ArrayList<Element>();
+//		wrapElements(nodes,checkboxes);
+//		wrapElements(textAreas);
+//		wrapElements(select);
+//		HashMap<String, ArrayList<Element>> groupings = wrapRadios(checkboxes);
+//		Window.alert("groupings count- "+groupings.size());
+	}
+	
 
+	private HashMap<String, ArrayList<Element>> wrapRadios(ArrayList<Element> checkboxes) {
+		HashMap<String, ArrayList<Element>> elements = new HashMap<String, ArrayList<Element>>();
+		
+		for(Element checkbox: checkboxes){
+			String name = checkbox.getAttribute("name");
+			if(name==null){
+				continue;
+			}
+			
+			ArrayList<Element> groupedElements = new ArrayList<Element>();
+			if(elements.get(name)!=null){
+				groupedElements = elements.get(name);
+			}
+
+			groupedElements.add(checkbox);
+			elements.put(name, groupedElements);
+		}
+		
+		return elements;
 	}
 
 	private void wrapElements(NodeList<Element> nodes) {
+		wrapElements(nodes, null);
+	}
+
+	private void wrapElements(NodeList<Element> nodes,
+			ArrayList<Element> radios) {
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Element element = nodes.getItem(i);
-			FieldWidget widget = FieldWidget.wrap(element, designMode);
-			if (widget != null) {
-				Field child = widget.getField();
-				// Copy General Metadata Fields from the Parent
-				child.setFormId(field.getFormId());
-				child.setParentId(field.getId());
-				assert field.getId() != null;
-
-				child.setDocId(field.getDocId());
-				child.setDocRefId(field.getDocRefId());
-				child.setHTMLWrappedField(true);
-
-				if (children.containsKey(element.getId())) {
-					Field dbEl = children.get(element.getId());
-					copy(child, dbEl);
-					widget.setField(child);
+			if (radios != null) {
+				if (element.getAttribute("type") != null
+						&& "radio".equals(element.getAttribute("type"))) {
+					radios.add(element);
+					continue;
 				}
-
-				field.addField(child);
-				fieldWidgets.add(widget);
 			}
+			wrapElement(element);
+		}
+	}
+
+	private void wrapElement(Element element) {
+		FieldWidget widget = FieldWidget.wrap(element, designMode);
+		if (widget != null) {
+			Field child = widget.getField();
+			// Copy General Metadata Fields from the Parent
+			child.setFormId(field.getFormId());
+			child.setParentId(field.getId());
+			assert field.getId() != null;
+
+			child.setDocId(field.getDocId());
+			child.setDocRefId(field.getDocRefId());
+			child.setHTMLWrappedField(true);
+
+			if (children.containsKey(element.getId())) {
+				Field dbEl = children.get(element.getId());
+				copy(child, dbEl);
+				widget.setField(child);
+			}
+
+			field.addField(child);
+			fieldWidgets.add(widget);
 		}
 	}
 
@@ -265,7 +322,7 @@ public class HTMLForm extends FieldWidget {
 		}
 
 		feField.setId(dbField.getId());
-		// Name, Caption, my be ignored - User FE
+		// Name, Caption, my be ignored - Use Front end values
 		feField.setDependentFields(dbField.getDependentFields());
 		feField.setDocRefId(dbField.getDocRefId());
 		feField.setDynamicParent(dbField.isDynamicParent());
@@ -292,13 +349,13 @@ public class HTMLForm extends FieldWidget {
 		if (model == null || !(model instanceof Field)) {
 			return;
 		}
-		
-		Field fieldModel = (Field)model;
+
+		Field fieldModel = (Field) model;
 		if (!fieldModel.isHTMLWrappedField()) {
-			if(field.equals(fieldModel)){
+			if (field.equals(fieldModel)) {
 				super.save(fieldModel);
 			}
-			
+
 			return;
 		}
 
@@ -307,11 +364,8 @@ public class HTMLForm extends FieldWidget {
 			return;
 		}
 
-		
-//		Window.alert("SaveAChild >>> " + fieldModel.getName());
-		
 		children.put(fieldModel.getName(), fieldModel);
-		
+
 		ArrayList<Field> list = new ArrayList<Field>();
 		list.addAll(children.values());
 		field.setFields(list);
@@ -321,15 +375,16 @@ public class HTMLForm extends FieldWidget {
 
 	/**
 	 * Get All Field Values
+	 * 
 	 * @return
 	 */
 	public ArrayList<Value> getFieldValues() {
 		ArrayList<Value> values = new ArrayList<Value>();
-		for(FieldWidget w: fieldWidgets){
+		for (FieldWidget w : fieldWidgets) {
 			Field target = w.getField();
 			Value fieldValue = w.getFieldValue();
-			if(fieldValue!=null) {
-				assert target.getName()!=null;
+			if (fieldValue != null) {
+				assert target.getName() != null;
 				assert !target.getName().isEmpty();
 				fieldValue.setKey(target.getName());
 				values.add(fieldValue);
@@ -337,5 +392,5 @@ public class HTMLForm extends FieldWidget {
 		}
 		return values;
 	}
-	
+
 }

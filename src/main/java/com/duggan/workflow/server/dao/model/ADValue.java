@@ -45,6 +45,10 @@ public class ADValue extends PO{
 	private String stringValue;
 	
 	@XmlAttribute
+	@Column(columnDefinition="text")
+	private String textValue;
+	
+	@XmlAttribute
 	private Boolean booleanValue;
 	
 	@XmlAttribute
@@ -255,6 +259,14 @@ public class ADValue extends PO{
 
 	public void setSettingname(SETTINGNAME settingName) {
 		this.settingName = settingName;
+	}
+
+	public String getTextValue() {
+		return textValue;
+	}
+
+	public void setTextValue(String textValue) {
+		this.textValue = textValue;
 	}
 
 }

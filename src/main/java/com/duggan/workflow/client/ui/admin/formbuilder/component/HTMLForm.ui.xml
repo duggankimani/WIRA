@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
 	<ui:style>
 	</ui:style>
-	<g:HTMLPanel styleName="control-group">
+	<g:HTMLPanel styleName="">
 		<div class="form-inline" ui:field="designHeader">
 			<div class="lead span10" style="display:inline-block;">
 				<label ui:field="lblTitle" class="lead" for="username1">HTML Form</label>
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		
-		<g:HTMLPanel ui:field="htmlContent" styleName="form-horizontal span12 hide">
+		<g:HTMLPanel ui:field="htmlContent" styleName="form-horizontal hide">
 			Content goes here
 		</g:HTMLPanel>
 		<g:HTMLPanel>

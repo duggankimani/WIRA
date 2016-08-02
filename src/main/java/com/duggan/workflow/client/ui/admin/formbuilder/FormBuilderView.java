@@ -126,7 +126,7 @@ public class FormBuilderView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 		addProperty(new Property(NAME, "Form ID", DataType.STRING));
 		addProperty(new Property(CAPTION, "Caption", DataType.STRING));
-		addProperty(new Property(HELP, "Help", DataType.STRINGLONG));
+		addProperty(new Property(HELP, "Help", DataType.STRING));
 		
 		
 		//Vertical Panel Display

@@ -104,7 +104,7 @@ public class TextField extends FieldWidget {
 
 		// Wrap
 		txtComponent = com.duggan.workflow.client.ui.component.TextField
-				.wrap(textInput);
+				.wrap(textInput,true);
 		widget = txtComponent;
 		assert textInput.getId() != null;
 

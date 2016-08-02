@@ -34,7 +34,7 @@ public class TextArea extends com.google.gwt.user.client.ui.TextArea {
 		getElement().setAttribute("type", type);
 	}
 
-	public static TextArea wrap(Element element) {
+	public static TextArea wrap(Element element, boolean isHTMLFormElement) {
 		// Assert that the element is attached.
 		assert Document.get().getBody().isOrHasChild(element);
 
@@ -42,7 +42,10 @@ public class TextArea extends com.google.gwt.user.client.ui.TextArea {
 
 		// Mark it attached and remember it for cleanup.
 		textArea.onAttach();
-		//RootPanel.detachOnWindowClose(textArea);
+		if(!isHTMLFormElement){
+			RootPanel.detachOnWindowClose(textArea);
+		}
+		//
 
 		return textArea;
 	}

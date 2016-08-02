@@ -7,6 +7,7 @@ import com.google.gwt.text.client.DoubleParser;
 import com.google.gwt.text.shared.AbstractRenderer;
 import com.google.gwt.text.shared.Parser;
 import com.google.gwt.text.shared.Renderer;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ValueBox;
 
 public class DoubleField extends ValueBox<Double> {
@@ -21,7 +22,7 @@ public class DoubleField extends ValueBox<Double> {
 	}
 
 	
-	public static DoubleField wrap(Element numberEl) {
+	public static DoubleField wrap(Element numberEl,boolean ishtmlFormElement) {
 	    // Assert that the element is attached.
 	    assert Document.get().getBody().isOrHasChild(numberEl);
 
@@ -31,7 +32,10 @@ public class DoubleField extends ValueBox<Double> {
 		
 	    // Mark it attached and remember it for cleanup.
 		numberBox.onAttach();
-	   // RootPanel.detachOnWindowClose(textBox);
+		if(!ishtmlFormElement){
+			RootPanel.detachOnWindowClose(numberBox);
+		}
+	   // 
 
 		return numberBox;
 	}

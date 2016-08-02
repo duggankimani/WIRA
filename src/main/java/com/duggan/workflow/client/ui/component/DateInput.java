@@ -9,6 +9,7 @@ import java.util.Date;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -19,7 +20,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 
@@ -48,35 +48,41 @@ public class DateInput extends Composite implements HasValue<Date> {
 			}
 		});
 	}
-		
+
 	public DateInput(Element element) {
-		id=element.getId();
+		
 		Element parent = element.getParentElement();
-		int idx = DOM.getChildIndex(parent, element);
-		element.removeFromParent();
+
+		if (!(parent.hasClassName("input-group") && parent
+				.hasClassName("date"))) {
+			int idx = DOM.getChildIndex(parent, element);
+			element.removeFromParent();
+
+			Element controlGroup = DOM.createDiv();
+			controlGroup.addClassName("form-group span3");
+
+			id = element.getId()+ "_Field";
+			Element div = DOM.createDiv();
+			div.addClassName("input-group date datepicker");
+			div.setId(id);
+			element.addClassName("form-control");
+			div.appendChild(element);
+
+			Element span = DOM.createSpan();
+			span.addClassName("input-group-addon");
+			span.getStyle().setPaddingLeft(26, Unit.PX);
+			span.setInnerHTML("<span class=\"icon-calendar\"></span>");
+			div.appendChild(span);
+
+			controlGroup.appendChild(div);
+			DOM.insertChild(parent, controlGroup, idx);
+			// initWidget(txtDate);
+		}else{
+			id = parent.getId();
+		}
 		
-		Element controlGroup = DOM.createDiv();
-		controlGroup.addClassName("control-group");
-		
-		Element controls = DOM.createDiv();
-		controls.addClassName("controls");
-		controlGroup.appendChild(controls);
-		
-		Element div = DOM.createDiv();
-		div.addClassName("input-group date datepicker");
-		div.appendChild(element);
-		
-		Element span = DOM.createSpan();
-		span.addClassName("input-group-addon");
-		span.setInnerHTML("<span class=\"icon-calendar\"></span>");
-		div.appendChild(span);
-		
-		controls.appendChild(div);
-		DOM.insertChild(parent, controlGroup, idx);
-		txtDate = TextField.wrap(element);
-		//initWidget(txtDate);
+		txtDate = TextField.wrap(element,true);
 		initCollapsable(this, id);
-		
 		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
@@ -174,7 +180,8 @@ public class DateInput extends Composite implements HasValue<Date> {
 																			
 																			dp.on('dp.change', function(e) {
 																				//$wnd.alert('Changed-- '+e.oldDate+' - '+e.date);
-																				parent.@com.duggan.workflow.client.ui.component.DateInput::setDate(Lcom/google/gwt/core/client/JsDate;)(e.date);
+																				var value = new $wnd.Date(e.date);
+																				parent.@com.duggan.workflow.client.ui.component.DateInput::setDate(Lcom/google/gwt/core/client/JsDate;)(value);
 																			});
 																			
 																			});
@@ -201,7 +208,6 @@ public class DateInput extends Composite implements HasValue<Date> {
 	}
 
 	private void setDate(JsDate date) {
-//		Window.alert("New Date - " + date);
 		if (date != null) {
 			setValue(new Date(new Double(date.getTime()).longValue()), true);
 		} else {

@@ -3,9 +3,11 @@ package com.duggan.workflow.client.ui.component;
 import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
@@ -13,14 +15,15 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.wira.commons.shared.models.Listable;
 
-public class DropDownList<T extends Listable> extends Composite implements
+public class DropDownList<T extends Listable> extends ListBox implements
 		HasValueChangeHandlers<T>, HasValue<T> {
 
 	private static DropDownListUiBinder uiBinder = GWT
@@ -29,8 +32,8 @@ public class DropDownList<T extends Listable> extends Composite implements
 	interface DropDownListUiBinder extends UiBinder<Widget, DropDownList> {
 	}
 
-	@UiField
-	ListBox listBox;
+	// @UiField
+	// ListBox listBox;
 
 	private ArrayList<T> items;
 	private String nullText = "--Select--";
@@ -38,18 +41,23 @@ public class DropDownList<T extends Listable> extends Composite implements
 	T value = null;
 
 	public DropDownList() {
-		initWidget(uiBinder.createAndBindUi(this));
+		super();
+		initComponents();
+	}
+
+	public DropDownList(Element select) {
+		super(select);
 		initComponents();
 	}
 
 	void initComponents() {
-		listBox.addChangeHandler(new ChangeHandler() {
+		addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
-				int selectedIndex = listBox.getSelectedIndex();
+				int selectedIndex = getSelectedIndex();
 
-				String code = listBox.getValue(selectedIndex);
+				String code = getValue(selectedIndex);
 				value = null;
 				if (code.isEmpty()) {
 					// setting null
@@ -64,14 +72,13 @@ public class DropDownList<T extends Listable> extends Composite implements
 	}
 
 	public void setItems(ArrayList<T> items) {
+		clear();
 		this.items = items;
-
-		listBox.clear();
-		listBox.addItem(nullText, "");
+		addItem(nullText, "");
 
 		if (items != null) {
 			for (T item : items) {
-				listBox.addItem(item.getDisplayName(), item.getName());
+				addItem(item.getDisplayName(), item.getName());
 			}
 		}
 	}
@@ -92,9 +99,9 @@ public class DropDownList<T extends Listable> extends Composite implements
 		ArrayList<T> values = new ArrayList<T>();
 
 		// Start from one to avoid selecting --Select--
-		for (int i = 1; i < listBox.getItemCount(); i++) {
-			if (listBox.isItemSelected(i)) {
-				String key = listBox.getValue(i);
+		for (int i = 1; i < getItemCount(); i++) {
+			if (isItemSelected(i)) {
+				String key = getValue(i);
 				values.add(items.get(i - 1));
 			}
 		}
@@ -110,15 +117,15 @@ public class DropDownList<T extends Listable> extends Composite implements
 
 	public void setValue(T value) {
 		if (value == null) {
-			listBox.setSelectedIndex(0);
+			setSelectedIndex(0);
 			this.value = null;
 			return;
 		}
 
-		for (int i = 0; i < listBox.getItemCount(); i++) {
+		for (int i = 0; i < getItemCount(); i++) {
 
-			if (listBox.getValue(i).equals(value.getName())) {
-				listBox.setSelectedIndex(i);
+			if (getValue(i).equals(value.getName())) {
+				setSelectedIndex(i);
 				this.value = items.get(i - 1);
 			}
 
@@ -132,23 +139,18 @@ public class DropDownList<T extends Listable> extends Composite implements
 			return;
 		}
 
-		for (int i = 0; i < listBox.getItemCount(); i++) {
-			if (listBox.getValue(i).equals(key)) {
-				listBox.setSelectedIndex(i);
+		for (int i = 0; i < getItemCount(); i++) {
+			if (getValue(i).equals(key)) {
+				setSelectedIndex(i);
 				value = items.get(i - 1);
 			}
 
 		}
 	}
 
-	@Override
-	public void setTitle(String title) {
-		listBox.setTitle(title);
-	}
-
 	public void setReadOnly(boolean readOnly) {
 		if (readOnly) {
-			listBox.setEnabled(false);
+			setEnabled(false);
 		}
 	}
 
@@ -156,23 +158,8 @@ public class DropDownList<T extends Listable> extends Composite implements
 		return items;
 	}
 
-	@Override
-	public void addStyleName(String style) {
-		listBox.addStyleName(style);
-	}
-
-	@Override
-	public void removeStyleName(String style) {
-		listBox.removeStyleName(style);
-	}
-
 	public String getNullText() {
 		return nullText;
-	}
-
-	@Override
-	public void setStyleName(String style) {
-		listBox.setStyleName(style);
 	}
 
 	public void setNullText(String nullText) {
@@ -184,25 +171,51 @@ public class DropDownList<T extends Listable> extends Composite implements
 		setValue(value);
 	}
 
-	@Override
-	public void setWidth(String width) {
-		listBox.setWidth(width);
-	}
-
 	public Widget getComponent() {
-		return listBox;
+		return this;
 	}
 
 	public void setMultiple(boolean multiple) {
-		listBox.setMultipleSelect(true);
-		listBox.setHeight("200px");
+		setMultipleSelect(true);
+		setHeight("200px");
 	}
 
 	public void clear() {
 		value = null;
-		listBox.clear();
+		super.clear();
 		if (items != null) {
 			items.clear();
 		}
+	}
+
+	public static DropDownList<KeyValuePair> wrap(Element select,
+			boolean ishtmlFormChild) {
+
+		// Assert that the element is attached.
+		assert Document.get().getBody().isOrHasChild(select);
+
+		DropDownList<KeyValuePair> listBox = new DropDownList<KeyValuePair>(
+				select);
+		int options = DOM.getChildCount(select);
+		ArrayList<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
+		for (int i = 0; i < options; i++) {
+			Element option = (Element) select.getChild(i);
+			String text = option.getInnerText();
+			pairs.add(new KeyValuePair(text, text));	
+		}
+		listBox.items = pairs;
+
+		// Mark it attached and remember it for cleanup.
+		listBox.onAttach();
+
+		if (!ishtmlFormChild){
+			RootPanel.detachOnWindowClose(listBox);
+		}
+
+		return listBox;
+	}
+
+	public ArrayList<T> getItems() {
+		return items;
 	}
 }

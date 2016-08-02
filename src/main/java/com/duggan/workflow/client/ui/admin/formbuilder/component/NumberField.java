@@ -89,7 +89,7 @@ public class NumberField extends FieldWidget{
 		
 		// Wrap
 		txtComponent = com.duggan.workflow.client.ui.component.DoubleField
-				.wrap(numberInput);
+				.wrap(numberInput,true);
 		widget = txtComponent;
 		assert numberInput.getId() != null;
 

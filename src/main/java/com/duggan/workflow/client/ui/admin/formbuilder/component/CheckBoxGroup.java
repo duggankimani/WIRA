@@ -44,6 +44,14 @@ public class CheckBoxGroup extends FieldWidget implements IsSelectionField {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 	}
+	
+	public CheckBoxGroup(ArrayList<Element> checkboxes) {
+		super();
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
+		widget = uiBinder.createAndBindUi(this);
+		add(widget);
+	}
 
 	@Override
 	public FieldWidget cloneWidget() {

@@ -81,7 +81,7 @@ public class TextArea extends FieldWidget {
 
 		// Wrap
 		txtComponent = com.duggan.workflow.client.ui.component.TextArea
-				.wrap(textInput);
+				.wrap(textInput,true);
 		widget = txtComponent;
 		assert textInput.getId() != null;
 

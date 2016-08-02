@@ -35,12 +35,13 @@ public enum DataType implements IsSerializable{
 		switch (this) {
 		case CHECKBOXGROUP:
 		case STRING:
-		case STRINGLONG:
 		case SELECTBASIC:
 		case LINK:
 		case LABEL:
 			type = DBType.VARCHAR;
 			break;
+		case STRINGLONG:
+			type = DBType.TEXT;
 		case INTEGER:
 		case FILEUPLOAD:
 			type = DBType.INTEGER;
