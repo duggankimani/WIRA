@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 public class DetailModel extends PO {
 
@@ -34,6 +37,7 @@ public class DetailModel extends PO {
 	private DocumentModel document;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="detail")
+	@Fetch(FetchMode.JOIN)
 	private Collection<ADValue> values = new HashSet<>();
 
 	public Long getId() {

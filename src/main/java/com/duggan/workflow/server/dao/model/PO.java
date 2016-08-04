@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Index;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -19,6 +20,8 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 @MappedSuperclass
+@Table(name = "story", indexes = {
+		@Index(name = "idx_ref_id", columnList = "refId")})
 public abstract class PO implements Serializable{
 
 	/**

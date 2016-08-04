@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +56,7 @@ public class FormDaoHelper {
 	 *         no fields & Form properties are included)
 	 */
 	public static List<Form> getForms(Long processDefId) {
-		return getForms(processDefId,false);
+		return getForms(processDefId, false);
 	}
 
 	public static List<Form> getForms(Long processDefId, boolean loadFields) {
@@ -70,7 +71,7 @@ public class FormDaoHelper {
 
 		return forms;
 	}
-	
+
 	public static List<Form> getForms(String processRefId, boolean loadFields) {
 
 		FormDaoImpl dao = DB.getFormDao();
@@ -103,7 +104,7 @@ public class FormDaoHelper {
 		if (adform == null) {
 			return null;
 		}
-		
+
 		FormDaoImpl dao = DB.getFormDao();
 
 		Form form = new Form();
@@ -112,12 +113,13 @@ public class FormDaoHelper {
 		if (loadFields) {
 			Collection<ADField> fields = dao.getFields(adform);
 			for (ADField fld : fields) {
-				Field field= getField(fld);
-				
-				if(!field.getDependentFields().isEmpty()){
-					form.addFieldDependency(field.getDependentFields(),field.getName());
+				Field field = getField(fld);
+
+				if (!field.getDependentFields().isEmpty()) {
+					form.addFieldDependency(field.getDependentFields(),
+							field.getName());
 				}
-				
+
 				form.addField(field);
 			}
 			// form.setFields(getFields());
@@ -127,7 +129,7 @@ public class FormDaoHelper {
 		form.setName(adform.getName());
 		form.setProcessDefId(adform.getProcessDefId());
 		form.setProcessRefId(adform.getProcessRefId());
-		form.setProperties(getProperties(adform.getProperties()));
+		form.setProperties(getProperties(dao.getProperties(adform)));
 
 		return form;
 	}
@@ -141,7 +143,6 @@ public class FormDaoHelper {
 	public static Field getField(Long id) {
 		FormDaoImpl dao = DB.getFormDao();
 		ADField adfield = dao.getField(id);
-
 		Field field = getField(adfield);
 
 		return field;
@@ -154,19 +155,20 @@ public class FormDaoHelper {
 				.getId());
 		field.setId(adfield.getId());
 		field.setName(adfield.getName());
-		field.setProperties(getProperties(adfield.getProperties()));
+		field.setProperties(getProperties(DB.getFormDao()
+				.getProperties(adfield)));
 		field.setType(adfield.getType());
 		field.setValue(getValue(adfield.getValue(), adfield.getType()));
 		field.setPosition(adfield.getPosition() == null ? 0 : adfield
 				.getPosition().intValue());
 
 		if (field.getType().isLookup()) {
-			loadLookup(null,field);
+			loadLookup(null, field);
 		}
 
-		if (adfield.getFields() != null) {
+		if (field.getType().hasChildren()) {
 
-			Collection<ADField> flds = adfield.getFields();
+			Collection<ADField> flds = DB.getFormDao().getFields(adfield);
 
 			for (ADField fld : flds) {
 				Field retrieved = getField(fld);
@@ -180,27 +182,27 @@ public class FormDaoHelper {
 		return field;
 	}
 
-	private static void loadLookup(Doc context,Field field) {
+	private static void loadLookup(Doc context, Field field) {
 		String type = null;
 		String sqlDS = null;
 		String sqlSelect = null;
 
 		for (Property prop : field.getProperties()) {
 			if (prop.getName().equals("SELECTIONTYPE")) {
-				Object value = prop.getValue() == null ? null : prop
-						.getValue().getValue();
+				Object value = prop.getValue() == null ? null : prop.getValue()
+						.getValue();
 				type = value == null ? null : value.toString();
 			}
 
 			if (prop.getName().equals("SQLSELECT")) {
-				Object value = prop.getValue() == null ? null : prop
-						.getValue().getValue();
+				Object value = prop.getValue() == null ? null : prop.getValue()
+						.getValue();
 				sqlSelect = value == null ? null : value.toString();
 			}
 
 			if (prop.getName().equals("SQLDS")) {
-				Object value = prop.getValue() == null ? null : prop
-						.getValue().getValue();
+				Object value = prop.getValue() == null ? null : prop.getValue()
+						.getValue();
 				sqlDS = value == null ? null : value.toString();
 			}
 
@@ -211,17 +213,19 @@ public class FormDaoHelper {
 				// Takes Precedence
 				try {
 					LookupLoader loader = new LookupLoaderImpl();
-					field.setDependentFields(AnnotationParserImpl.extractAnnotations(sqlSelect));
-					
-					if(context!=null){
-						sqlSelect = AnnotationParserImpl.parseForSQL(context, sqlSelect);
-						logger.debug("SQL Parse: "+sqlSelect);
+					field.setDependentFields(AnnotationParserImpl
+							.extractAnnotations(sqlSelect));
+
+					if (context != null) {
+						sqlSelect = AnnotationParserImpl.parseForSQL(context,
+								sqlSelect);
+						logger.debug("SQL Parse: " + sqlSelect);
 					}
-					
-					field.setSelectionValues(loader
-							.getValuesByDataSourceName(sqlDS, sqlSelect));
+
+					field.setSelectionValues(loader.getValuesByDataSourceName(
+							sqlDS, sqlSelect));
 				} catch (Exception e) {
-					logger.warn("#Dropdown Query Failed -  "+e.getMessage());
+					logger.warn("#Dropdown Query Failed -  " + e.getMessage());
 				}
 			}
 
@@ -365,13 +369,13 @@ public class FormDaoHelper {
 			break;
 
 		case STRINGLONG:
-			if(advalue.getTextValue()!=null){
-				value = new TextValue(id, key, advalue.getTextValue());	
-			}else{
-				//For backward compatibility
+			if (advalue.getTextValue() != null) {
+				value = new TextValue(id, key, advalue.getTextValue());
+			} else {
+				// For backward compatibility
 				value = new TextValue(id, key, advalue.getStringValue());
 			}
-			
+
 			break;
 		}
 
@@ -452,13 +456,14 @@ public class FormDaoHelper {
 		adform.setName(form.getName());
 		adform.setProcessDefId(form.getProcessDefId());
 		adform.setProcessRefId(form.getProcessRefId());
-		
-		if(form.getProcessDefId()==null){
-			if(form.getProcessRefId()!=null){
-				adform.setProcessDefId(DB.getProcessDao().getProcessDefId(form.getProcessRefId()));
+
+		if (form.getProcessDefId() == null) {
+			if (form.getProcessRefId() != null) {
+				adform.setProcessDefId(DB.getProcessDao().getProcessDefId(
+						form.getProcessRefId()));
 			}
 		}
-		
+
 		getADFields(form.getFields(), adform);
 		getADProperties(form.getProperties(), adform);
 		// adform.setProperties(properties);
@@ -502,7 +507,8 @@ public class FormDaoHelper {
 		adfield.setId(field.getId());
 
 		// for a grid - Grid Columns
-		adfield.getFields().clear();
+		//adfield.getFields().clear();
+		adfield.setFields(new HashSet<ADField>());
 		if (field.getFields() != null) {
 			List<Field> children = field.getFields();
 
@@ -513,7 +519,7 @@ public class FormDaoHelper {
 		}
 
 		// copy
-		adfield.getProperties().size();// force load?
+//		adfield.getProperties().size();// force load?
 		getADProperties(field.getProperties(), adfield);
 
 		adfield.setType(field.getType());
@@ -708,7 +714,7 @@ public class FormDaoHelper {
 			// System.err.println("Save Value >> "+value.getValue());
 			advalue.setStringValue((String) value.getValue());
 			break;
-			
+
 		case STRINGLONG:
 			advalue.setTextValue((String) value.getValue());
 			break;
@@ -808,7 +814,7 @@ public class FormDaoHelper {
 	public static String exportForm(Long formId) {
 		FormDaoImpl dao = DB.getFormDao();
 		ADForm form = dao.getForm(formId);
-		Collection<ADField> fields = form.getFields();
+		Collection<ADField> fields = dao.getFields(form);
 
 		if (fields != null)
 			for (ADField field : fields) {
@@ -858,7 +864,7 @@ public class FormDaoHelper {
 			form.setCaption(caption + "0000");
 		}
 
-		Collection<ADProperty> properties = form.getProperties();
+		Collection<ADProperty> properties = dao.getProperties(form);
 		for (ADProperty prop : properties) {
 			prop.setForm(form);
 
@@ -867,11 +873,12 @@ public class FormDaoHelper {
 			}
 		}
 
-		for (ADField field : form.getFields()) {
+		Collection<ADField> formFields = dao.getFields(form); 
+		for (ADField field : formFields) {
 			field.setForm(form);
-
-			if (field.getProperties() != null)
-				for (ADProperty prop : field.getProperties()) {
+			Collection<ADProperty> fieldProps = dao.getProperties(field);
+			if (fieldProps != null)
+				for (ADProperty prop : fieldProps) {
 					prop.setField(field);
 					if (prop.getValue() != null) {
 						prop.getValue().setProperty(prop);
@@ -886,8 +893,9 @@ public class FormDaoHelper {
 					}
 				}
 
-			if (field.getFields() != null)
-				for (ADField child : field.getFields()) {
+			Collection<ADField> children = dao.getFields(field);
+			if (children != null)
+				for (ADField child : children) {
 					child.setParentField(field);
 				}
 
@@ -931,12 +939,12 @@ public class FormDaoHelper {
 
 	public static List<Field> loadFieldValues(Doc doc, List<Field> fields) {
 		List<Field> reloaded = new ArrayList<Field>();
-		
-		for(Field field:fields){
+
+		for (Field field : fields) {
 			loadLookup(doc, field);
 			reloaded.add(field);
 		}
-		
+
 		return reloaded;
 	}
 }

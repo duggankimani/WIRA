@@ -5,6 +5,7 @@ import static com.duggan.workflow.server.dao.helper.FormDaoHelper.getValue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -126,7 +127,8 @@ public class DocumentDaoHelper {
 			model.setSessionId(document.getSessionId());
 		}
 
-		model.getValues().clear();
+		//model.getValues().clear();
+		model.setValues(new HashSet<ADValue>());
 		Map<String, Value> vals = document.getValues();
 		Collection<Value> values = vals.values();
 		for (Value val : values) {
@@ -293,7 +295,7 @@ public class DocumentDaoHelper {
 		doc.setSessionId(model.getSessionId());
 		doc.setHasAttachment(DB.getAttachmentDao().getHasAttachment(
 				model.getId()));
-		Collection<ADValue> values = model.getValues();
+		Collection<ADValue> values = DB.getDocumentDao().getValues(model);//model.getValues();
 		if (values != null) {
 			for (ADValue val : values) {
 				// val.
@@ -303,7 +305,7 @@ public class DocumentDaoHelper {
 			}
 		}
 
-		doc.setDetails(getDetails(model.getDetails()));
+		doc.setDetails(getDetails(DB.getDocumentDao().getDetails(model)));
 
 		return doc;
 	}

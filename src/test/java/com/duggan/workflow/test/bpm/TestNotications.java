@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.HashMap;
 
 import junit.framework.Assert;
 

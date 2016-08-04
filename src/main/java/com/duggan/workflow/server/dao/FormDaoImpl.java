@@ -87,7 +87,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 				form.setCaption("Untitled"+form.getId());
 			}
 			
-			Collection<ADProperty> props = form.getProperties();
+			Collection<ADProperty> props = getProperties(form);
 			if(props!=null)
 				for(ADProperty prop: props){
 					if(prop.getName().equals("NAME")){
@@ -248,5 +248,20 @@ public class FormDaoImpl extends BaseDaoImpl {
 		return getResultList(getEntityManager()
 				.createQuery("from ADField f where f.form=:form and f.parentField is null")
 				.setParameter("form", form));
+	}
+
+	public Collection<ADProperty> getProperties(ADForm form) {
+		return getResultList(getEntityManager().createQuery("from ADProperty p where p.form=:form")
+				.setParameter("form", form));
+	}
+
+	public Collection<ADProperty> getProperties(ADField adfield) {
+		return getResultList(getEntityManager().createQuery("from ADProperty p where p.field=:field")
+				.setParameter("field", adfield));
+	}
+
+	public Collection<ADField> getFields(ADField adfield) {
+		return getResultList(getEntityManager().createQuery("from ADField f where f.parentField=:field")
+				.setParameter("field", adfield));
 	}
 }

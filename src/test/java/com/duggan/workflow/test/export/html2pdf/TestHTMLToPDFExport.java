@@ -25,7 +25,6 @@ import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;

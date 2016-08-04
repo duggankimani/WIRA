@@ -82,7 +82,7 @@ public class ADField extends PO implements HasProperties{
 	
 	@XmlElementWrapper(name="grid-columns")
 	@XmlElement(name="field")
-	@OneToMany(mappedBy="parentField", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="parentField", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Collection<ADField> fields = new HashSet<>();
 	
 	@Transient
@@ -112,10 +112,6 @@ public class ADField extends PO implements HasProperties{
 
 	public void setCaption(String caption) {
 		this.caption = caption;
-	}
-
-	public Collection<ADProperty> getProperties() {
-		return properties;
 	}
 
 	public ADValue getValue() {
@@ -156,10 +152,6 @@ public class ADField extends PO implements HasProperties{
 
 	public void setPosition(Integer position) {
 		this.position = position;
-	}
-
-	public Collection<ADField> getFields() {
-		return fields;
 	}
 
 	public void setFields(Collection<ADField> fields) {
@@ -247,14 +239,6 @@ public class ADField extends PO implements HasProperties{
 		return hashcode;
 	}
 
-	public Collection<KeyValuePair> getKeyValuePairs() {
-		return keyValuePairs;
-	}
-
-	public void setKeyValuePairs(Collection<KeyValuePair> keyValuePairs) {
-		this.keyValuePairs = keyValuePairs;
-	}
-
 	public ADProperty getProperty(String propName) {
 		if(properties!=null)
 		for(ADProperty prop: properties){
@@ -263,6 +247,14 @@ public class ADField extends PO implements HasProperties{
 			}
 		}
 		return null;
+	}
+
+	public void setKeyValuePairs(Collection<KeyValuePair> keyValuePairs) {
+		this.keyValuePairs = keyValuePairs;
+	}
+
+	public Collection<KeyValuePair> getKeyValuePairs() {
+		return keyValuePairs;
 	}
 
 	

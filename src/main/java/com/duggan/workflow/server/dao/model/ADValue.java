@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -24,6 +25,11 @@ import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@Table(indexes = {
+@javax.persistence.Index(name = "idx_value_settingName", columnList = "settingName"),
+@javax.persistence.Index(name = "idx_value_stringValue", columnList = "stringValue"),
+@javax.persistence.Index(name = "idx_value_stringValue", columnList = "fieldName")
+})
 public class ADValue extends PO{
 
 	/**

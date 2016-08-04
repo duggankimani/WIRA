@@ -1304,6 +1304,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		            if(el.prop('id') !=null){
 //		            	alert('Elements in Grid >> '+el.prop('id'));
 		           	}
+		           	
+		           	if(el.prop('title')!=null){
+	           			$wnd.jQuery(el).popover({
+	           				trigger: 'focus'
+	           			});
+		           	}
 		        });
 		
 		

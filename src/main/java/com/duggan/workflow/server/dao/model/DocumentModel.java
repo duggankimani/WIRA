@@ -19,12 +19,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
-
 import com.duggan.workflow.shared.model.DocStatus;
 
 @Entity
-@Table(name="localdocument")
+@Table(name="localdocument", indexes = {
+		@javax.persistence.Index(name = "idx_subject", columnList = "subject"),
+		@javax.persistence.Index(name = "idx_docdate", columnList = "documentDate")
+		})
 public class DocumentModel extends PO{
 
 	/**
@@ -36,7 +37,6 @@ public class DocumentModel extends PO{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Index(name="idx_subject")
 	@Column(length=200,nullable=false, unique=true)
 	private String subject;//caseNo
 	
@@ -47,7 +47,6 @@ public class DocumentModel extends PO{
 	@JoinColumn(name="docType", referencedColumnName="id")
 	private ADDocType type;
 	
-	@Index(name="idx_docdate")
 	private Date documentDate;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="document")
@@ -68,10 +67,10 @@ public class DocumentModel extends PO{
 	
 	private Long sessionId;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="document",cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="document",cascade={CascadeType.REMOVE,CascadeType.PERSIST})
 	private Collection<ADValue> values = new HashSet<>(); 
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="document", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="document", cascade={CascadeType.REMOVE,CascadeType.PERSIST})
 	private Collection<DetailModel> details = new HashSet<>();
 	
 	public DocumentModel(){
@@ -177,11 +176,6 @@ public class DocumentModel extends PO{
 	public void setSessionId(Long sessionId) {
 		this.sessionId = sessionId;
 	}
-
-	public Collection<ADValue> getValues() {
-		return values;
-	}
-
 	
 	public void addValue(ADValue value){
 		if(value!=null){
@@ -189,10 +183,6 @@ public class DocumentModel extends PO{
 		}
 		
 		values.add(value);
-	}
-
-	public Collection<DetailModel> getDetails() {
-		return details;
 	}
 	
 	public void addDetail(DetailModel model){
@@ -207,4 +197,9 @@ public class DocumentModel extends PO{
 	public void setProcessId(String processId) {
 		this.processId = processId;
 	}
+
+	public void setValues(Collection<ADValue> values) {
+		this.values = values;
+	}
+
 }

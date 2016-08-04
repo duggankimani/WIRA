@@ -85,16 +85,8 @@ public class ADForm extends PO implements HasProperties{
 		this.caption = caption;
 	}
 
-	public Collection<ADProperty> getProperties() {
-		return properties;
-	}
-
 	public void setProperties(Collection<ADProperty> properties) {
 		this.properties = properties;
-	}
-
-	public Collection<ADField> getFields() {
-		return fields;
 	}
 	
 	public void addProperty(ADProperty property){

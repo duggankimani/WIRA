@@ -22,7 +22,7 @@ import org.hibernate.annotations.Cascade;
 
 @Entity(name="BGroup")
 @Table(uniqueConstraints={@UniqueConstraint(columnNames="name")})
-@NamedQuery(name="Group.getGroupByGroupId", query="from BGroup p where p.name=:name")
+@NamedQuery(name="Group.getGroupByGroupId", query="SELECT p from BGroup p where p.name=:name")
 public class Group extends PO {
 
 	/**

@@ -40,9 +40,9 @@ public class TestFormBuilderHelper {
 		String str= FileUtils.readFileToString(new File(path));		
 		
 		ADForm form = FormDaoHelper.transform(str);
-		assert form.getProperties()!=null && form.getProperties().size()>0;
-		assert form.getFields()!=null && form.getFields().size()>0;
-		
+//		assert form.getProperties()!=null && form.getProperties().size()>0;
+//		assert form.getFields()!=null && form.getFields().size()>0;
+//		
 		Long id = FormDaoHelper.importForm(str);
 		System.err.println("id = "+id);
 	}

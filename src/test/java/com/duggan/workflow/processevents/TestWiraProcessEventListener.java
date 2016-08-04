@@ -1,7 +1,6 @@
 package com.duggan.workflow.processevents;
 
 import java.util.HashMap;
-import java.util.HashMap;
 
 import org.jbpm.task.Status;
 import org.junit.After;

@@ -67,4 +67,8 @@ public enum DataType implements IsSerializable{
 		
 		return this.equals(DATE);
 	}
+
+	public boolean hasChildren() {
+		return this.equals(GRID) || this.equals(FORM);
+	}
 }

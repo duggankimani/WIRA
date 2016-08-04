@@ -3,7 +3,6 @@ package com.duggan.workflow.test.bpm;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.HashMap;
 
 import junit.framework.Assert;
 

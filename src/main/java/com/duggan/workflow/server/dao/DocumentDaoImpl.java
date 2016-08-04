@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.jbpm.task.Status;
 import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.Group;
@@ -851,6 +853,17 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		}
 		
 		return DB.getDocumentDao().searchTasks(ids);
+	}
+
+	public Collection<ADValue> getValues(DocumentModel model) {
+	
+		return getResultList(getEntityManager().createQuery("FROM ADValue a where a.document=:document")
+				.setParameter("document", model));
+	}
+
+	public Collection<DetailModel> getDetails(DocumentModel model) {
+		return getResultList(getEntityManager().createQuery("FROM DetailModel a where a.document=:document")
+				.setParameter("document", model));
 	}
 	
 }

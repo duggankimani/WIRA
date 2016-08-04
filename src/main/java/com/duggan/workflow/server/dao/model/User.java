@@ -24,7 +24,7 @@ import com.wira.commons.shared.models.HTUser;
 
 @Entity(name = "BUser")
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = "userId") })
-@NamedQuery(name = "User.getUserByUserId", query = "from BUser u where u.userId=:userId")
+@NamedQuery(name = "User.getUserByUserId", query = "SELECT u from BUser u where u.userId=:userId")
 public class User extends PO {
 
 	/**

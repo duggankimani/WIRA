@@ -18,10 +18,14 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -163,7 +167,7 @@ public class HTMLForm extends FieldWidget {
 		bindHTML(html);
 
 		if (isAttached()) {
-			wrapHTML();
+			initHTMLWidgets();
 		}
 	}
 
@@ -172,7 +176,8 @@ public class HTMLForm extends FieldWidget {
 			return;
 		}
 		txtComponent.setValue(html);
-		htmlContent.getElement().setInnerHTML(txtComponent.getValue());
+		SafeHtml safeHTML = SafeHtmlUtils.fromSafeConstant(html);
+		htmlContent.add(new HTML(safeHTML));
 	}
 
 	@Override
@@ -199,7 +204,22 @@ public class HTMLForm extends FieldWidget {
 	@Override
 	protected void onAttach() {
 		super.onAttach();
-		wrapHTML();
+		initHTMLWidgets();
+	}
+
+	private void initHTMLWidgets() {
+		Window.alert(">>");
+		for (Field field : children.values()) {
+			if (field.getName() != null) {
+				Element element = htmlContent.getElementById(field.getName());
+				if(field.getName().equals(txtComponent.getElement().getId())){
+					continue;
+				}
+				if (element != null){
+					wrapElement(element);
+				}
+			}
+		}
 	}
 
 	/**
@@ -214,56 +234,61 @@ public class HTMLForm extends FieldWidget {
 			GWT.log("HTMLForm not attached, ignoring FieldWidget attachment");
 			assert isAttached();// Let it fail here
 		}
-		
+
 		String parentId = getElement().getId();
-		JsArrayString elementArray = (JsArrayString)JsArrayString.createArray();
+		String textAreaId = getPropertyValue(NAME);
+
+		JsArrayString elementArray = (JsArrayString) JsArrayString
+				.createArray();
 		getAllInputs(parentId, elementArray);
-		
-		for(int i=0; i<elementArray.length(); i++){
+
+		for (int i = 0; i < elementArray.length(); i++) {
 			String id = elementArray.get(i);
-			if(id==null || id.isEmpty() || id.equals(parentId)){
+			if (id == null || id.isEmpty() || id.equals(parentId)
+					|| (textAreaId != null && id.equals(textAreaId))) {
 				continue;
 			}
-			
+
 			Element element = htmlContent.getElementById(id);
 			wrapElement(element);
 		}
-		
-//		// inputs
-//		NodeList<Element> nodes = htmlContent.getElement()
-//				.getElementsByTagName("input");
-//		NodeList<Element> textAreas = htmlContent.getElement()
-//				.getElementsByTagName("textarea");
-//		NodeList<Element> select = htmlContent.getElement()
-//				.getElementsByTagName("select");
-//
-//		ArrayList<Element> checkboxes = new ArrayList<Element>();
-//		wrapElements(nodes,checkboxes);
-//		wrapElements(textAreas);
-//		wrapElements(select);
-//		HashMap<String, ArrayList<Element>> groupings = wrapRadios(checkboxes);
-//		Window.alert("groupings count- "+groupings.size());
-	}
-	
 
-	private HashMap<String, ArrayList<Element>> wrapRadios(ArrayList<Element> checkboxes) {
+		// // inputs
+		// NodeList<Element> nodes = htmlContent.getElement()
+		// .getElementsByTagName("input");
+		// NodeList<Element> textAreas = htmlContent.getElement()
+		// .getElementsByTagName("textarea");
+		// NodeList<Element> select = htmlContent.getElement()
+		// .getElementsByTagName("select");
+		//
+		// ArrayList<Element> checkboxes = new ArrayList<Element>();
+		// wrapElements(nodes,checkboxes);
+		// wrapElements(textAreas);
+		// wrapElements(select);
+		// HashMap<String, ArrayList<Element>> groupings =
+		// wrapRadios(checkboxes);
+		// Window.alert("groupings count- "+groupings.size());
+	}
+
+	private HashMap<String, ArrayList<Element>> wrapRadios(
+			ArrayList<Element> checkboxes) {
 		HashMap<String, ArrayList<Element>> elements = new HashMap<String, ArrayList<Element>>();
-		
-		for(Element checkbox: checkboxes){
+
+		for (Element checkbox : checkboxes) {
 			String name = checkbox.getAttribute("name");
-			if(name==null){
+			if (name == null) {
 				continue;
 			}
-			
+
 			ArrayList<Element> groupedElements = new ArrayList<Element>();
-			if(elements.get(name)!=null){
+			if (elements.get(name) != null) {
 				groupedElements = elements.get(name);
 			}
 
 			groupedElements.add(checkbox);
 			elements.put(name, groupedElements);
 		}
-		
+
 		return elements;
 	}
 
@@ -271,8 +296,7 @@ public class HTMLForm extends FieldWidget {
 		wrapElements(nodes, null);
 	}
 
-	private void wrapElements(NodeList<Element> nodes,
-			ArrayList<Element> radios) {
+	private void wrapElements(NodeList<Element> nodes, ArrayList<Element> radios) {
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Element element = nodes.getItem(i);
 			if (radios != null) {
