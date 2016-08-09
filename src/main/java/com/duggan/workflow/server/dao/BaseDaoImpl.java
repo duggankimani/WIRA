@@ -1,5 +1,10 @@
 package com.duggan.workflow.server.dao;
 
+import java.io.ByteArrayInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +14,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.impl.SessionImpl;
 
+import com.duggan.workflow.server.dao.hibernate.JsonType;
 import com.duggan.workflow.server.dao.model.PO;
+import com.sun.jersey.api.json.JSONUnmarshaller;
 
 public class BaseDaoImpl {
 
@@ -116,4 +125,121 @@ public class BaseDaoImpl {
 		
 		return em.find(clazz, id);
 	}
+	
+	public <T>T getSingleResultJson(String sql,
+			Map<String, String> parameters, Class<T> clazz) {
+		
+		if(parameters!=null){
+			for(String key: parameters.keySet()){
+				if(key.startsWith(":")){
+					sql = sql.replace(key, parameters.get(key));
+				}else{
+					sql = sql.replace(":"+key, parameters.get(key));
+				}
+			}
+		}
+		logger.info("GetSingleResultJson Query = " + sql);
+		Session session = (Session) getEntityManager().getDelegate();
+		Connection connection = ((SessionImpl) session).getJDBCContext()
+				.getConnectionManager().getConnection();
+
+		T value = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			 ps = connection.prepareStatement(sql);
+			 rs = ps.executeQuery();
+			if (rs.next()) {
+				String jsonContent = rs.getString(1);
+
+				JSONUnmarshaller unmarshaller = JsonType.getJaxbContext()
+						.createJSONUnmarshaller();
+				value = unmarshaller
+						.unmarshalFromJSON(
+								new ByteArrayInputStream(jsonContent
+										.getBytes("UTF-8")), clazz);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally{
+			close(rs);
+			close(ps);
+		}
+
+		return value;
+	}
+	
+	public <T> List<T> getResultListJson(String sql, Map<String, String> parameters,
+			Class<T> clazz) {
+		
+		if(parameters!=null){
+			for(String key: parameters.keySet()){
+				if(key.startsWith(":")){
+					sql = sql.replace(key, parameters.get(key));
+				}else{
+					sql = sql.replace(":"+key, parameters.get(key));
+				}
+			}
+		}
+
+		logger.info("GetResultListJson Query = " + sql);
+		Session session = (Session) getEntityManager().getDelegate();
+		Connection connection = ((SessionImpl) session).getJDBCContext()
+				.getConnectionManager().getConnection();
+
+		ArrayList<T> values = new ArrayList<T>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			 ps = connection.prepareStatement(sql);
+			 rs = ps.executeQuery();
+			while (rs.next()) {
+				String jsonContent = rs.getString(1);
+
+				JSONUnmarshaller unmarshaller = JsonType.getJaxbContext()
+						.createJSONUnmarshaller();
+				T value = unmarshaller
+						.unmarshalFromJSON(
+								new ByteArrayInputStream(jsonContent
+										.getBytes("UTF-8")), clazz);
+				values.add(value);
+
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally{
+			close(rs);
+			close(ps);
+		}
+
+		return values;
+
+		
+	}
+	
+	private void close(PreparedStatement ps) {
+		if(ps==null){
+			return;
+		}
+		
+		try{
+			ps.close();
+		}catch(Exception e){
+			logger.warn("Failed to close PreparedStatement cause: "+e.getMessage());
+		}
+	}
+
+	private void close(ResultSet rs) {
+		if(rs==null){
+			return;
+		}
+		
+		try{
+			rs.close();
+		}catch(Exception e){
+			logger.warn("Failed to close PreparedStatement cause: "+e.getMessage());
+		}
+	}
+
+
 }

@@ -2,8 +2,14 @@ package com.duggan.workflow.shared.model.form;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
 import com.wira.commons.shared.models.Listable;
 
+@XmlType(name="keyvalue")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class KeyValuePair implements Serializable, Listable {
 
 	private static final long serialVersionUID = -5161552354221706835L;
@@ -42,6 +48,12 @@ public class KeyValuePair implements Serializable, Listable {
 	@Override
 	public String getDisplayName() {
 		return value;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		KeyValuePair other = (KeyValuePair)obj;
+		return other.key.equals(key);
 	}
 	
 	@Override

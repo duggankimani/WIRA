@@ -143,7 +143,7 @@ public class FormBuilderView extends ViewImpl implements
 				if(idx==-1){
 					draggable.delete();
 				}else{
-					draggable.setFormId(form.getId());		
+					draggable.setFormId(form.getId(),form.getRefId());		
 					draggable.getField().setPosition(idx);
 					draggable.save();			
 					draggable.onDragEnd();

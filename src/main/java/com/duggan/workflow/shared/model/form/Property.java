@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
 
+@XmlRootElement(name="property")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Property extends FormModel{
 
 	/**
@@ -16,6 +23,7 @@ public class Property extends FormModel{
 	private DataType type;
 	private Long fieldId;//field property
 	private Long formId; //form property
+	@XmlTransient
 	private Value value;
 	private String caption;
 	private transient boolean showInPropertyPanel = true;

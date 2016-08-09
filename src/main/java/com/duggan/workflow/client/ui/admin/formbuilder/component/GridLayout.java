@@ -178,7 +178,7 @@ implements EditLineHandler{
 		assert field.getFields()!=null;
 		
 		field.sortFields();
-		GridView view = new GridView(field.getFields(),field.getId(), field.getName());
+		GridView view = new GridView(field);
 		view.setData(doclines);
 		divControls.add(view);
 		view.setReadOnly(isReadOnly());
@@ -232,7 +232,7 @@ implements EditLineHandler{
 	}
 	
 	private void addColumn(Field child) {
-		child.setParentId(field.getId());	
+		child.setParent(field.getId(),field.getRefId());	
 		int pos = field.getFields().size();
 		child.setPosition(pos);				
 		child.setCaption("Column "+(pos));

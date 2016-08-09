@@ -44,6 +44,8 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 	    <class>org.jbpm.process.audit.VariableInstanceLog</class>
     	<class>org.jbpm.persistence.processinstance.ProcessInstanceInfo</class>
     	
+    	<class> com.duggan.workflow.server.dao.model.ADFieldJson</class>
+    	<class> com.duggan.workflow.server.dao.model.ADFormJson</class>
         <class>com.duggan.workflow.server.dao.model.DocumentModel</class>
         <class>com.duggan.workflow.server.dao.model.NotificationModel</class>
         <class>com.duggan.workflow.server.dao.model.ErrorLog</class>
@@ -58,7 +60,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
         <properties>
             <!-- property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" /-->            
             <!-- property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" /-->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.dialect" value="com.duggan.workflow.server.dao.hibernate.WiraPostgreSQL94Dialect"/>
             <!-- property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/workflowmgr" />
             <property name="hibernate.connection.username" value="root" />
@@ -66,7 +68,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
             <property name="hibernate.max_fetch_depth" value="3" /-->
             <!-- property name="hibernate.connection.autocommit" value="false" /-->
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.transaction.manager_lookup_class"
                 value="org.hibernate.transaction.BTMTransactionManagerLookup"/>
                 

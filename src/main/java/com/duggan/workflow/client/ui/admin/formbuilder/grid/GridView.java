@@ -45,7 +45,11 @@ public class GridView extends Composite {
 	Collection<Field> columnConfigs = new ArrayList<Field>();
 	private String gridName="";
 	
-	public GridView(Collection<Field> columns, Long parentId, String gridName) {	
+	public GridView(Field parent) {
+		Collection<Field> columns = parent.getFields();
+		Long parentId = parent.getParentId();
+		String gridName = parent.getName();
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		this.gridName = gridName;
 		
@@ -54,7 +58,7 @@ public class GridView extends Composite {
 		if(columns!=null){
 			columnConfigs = columns;		
 			for(Field field:columns){
-				field.setParentId(parentId);
+				field.setParent(parentId,parent.getRefId());
 				header.add(createHeader(field));
 			}
 		}

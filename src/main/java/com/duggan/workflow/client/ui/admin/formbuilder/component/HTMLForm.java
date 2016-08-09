@@ -23,7 +23,6 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -208,7 +207,6 @@ public class HTMLForm extends FieldWidget {
 	}
 
 	private void initHTMLWidgets() {
-		Window.alert(">>");
 		for (Field field : children.values()) {
 			if (field.getName() != null) {
 				Element element = htmlContent.getElementById(field.getName());
@@ -315,8 +313,8 @@ public class HTMLForm extends FieldWidget {
 		if (widget != null) {
 			Field child = widget.getField();
 			// Copy General Metadata Fields from the Parent
-			child.setFormId(field.getFormId());
-			child.setParentId(field.getId());
+			child.setForm(field.getFormId(),field.getRefId());
+			child.setParent(field.getId(),field.getRefId());
 			assert field.getId() != null;
 
 			child.setDocId(field.getDocId());
@@ -351,7 +349,7 @@ public class HTMLForm extends FieldWidget {
 		feField.setDocRefId(dbField.getDocRefId());
 		feField.setDynamicParent(dbField.isDynamicParent());
 		feField.setFields(dbField.getFields());
-		feField.setFormId(dbField.getFormId());
+		feField.setForm(dbField.getFormId(),dbField.getRefId());
 		feField.setGridName(dbField.getGridName());
 		feField.setLineRefId(dbField.getLineRefId());
 

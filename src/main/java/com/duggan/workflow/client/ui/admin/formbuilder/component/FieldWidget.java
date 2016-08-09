@@ -518,8 +518,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 										
 										}-*/;
 
-	public void setFormId(Long formId) {
-		field.setFormId(formId);
+	public void setFormId(Long formId, String formRefId) {
+		field.setForm(formId,formRefId);
 	}
 
 	protected void save(Field model) {

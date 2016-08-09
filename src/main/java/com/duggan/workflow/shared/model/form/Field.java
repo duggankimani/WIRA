@@ -3,7 +3,12 @@ package com.duggan.workflow.shared.model.form;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Value;
@@ -14,6 +19,9 @@ import com.duggan.workflow.shared.model.Value;
  * @author duggan
  *
  */
+@XmlSeeAlso({KeyValuePair.class,Property.class})
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Field extends FormModel implements Comparable<Field>{
 
 	/**
@@ -21,27 +29,34 @@ public class Field extends FormModel implements Comparable<Field>{
 	 */
 	private static final long serialVersionUID = 1L;
 	//Field properties - Caption, Length etc
+	@XmlTransient
 	private ArrayList<Property> properties = new ArrayList<Property>();
 
 	//Drop down/ multiselect selection values
 	private ArrayList<KeyValuePair> selectionValues = new ArrayList<KeyValuePair>();
 	
 	//Default field value or current field value
+	@XmlTransient
 	private Value value;
 	
 	//Field Data type
 	private DataType type;
 	
 	//Form id
+	@XmlTransient
 	private Long formId=-1L;
 	
 	//Index position on the form
 	private int position;
 	
 	//Id of the parent field - for a child field
+	@XmlTransient
 	private Long parentId;
 	
+	private String parentRef;
+	
 	//ArrayList of children fields - for a grid field
+	@XmlTransient
 	private ArrayList<Field> fields = new ArrayList<Field>();
 	
 	//Front end grid name for grid children fields
@@ -73,6 +88,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	 * This field has dependants
 	 */
 	private boolean isDynamicParent;
+	private String formRef;
 	
 	public Field() {
 		docId="TempD";
@@ -83,6 +99,9 @@ public class Field extends FormModel implements Comparable<Field>{
 	}
 	public void setProperties(ArrayList<Property> properties) {
 		this.properties = properties;
+		for(Property property: properties){
+			addValue(new KeyValuePair(property.getName(), getStringValue(property.getValue())));
+		}
 	}
 	public Value getValue() {
 		return value;
@@ -333,13 +352,13 @@ public class Field extends FormModel implements Comparable<Field>{
 		field.setName(name);
 		field.setPosition(position);
 		field.setType(type);
-		field.setFormId(null);
+		field.setForm(null,null);
 		field.setId(null);
 		
 		if(copyAll){
-			field.setFormId(formId);
+			field.setForm(formId,formRef);
 			field.setId(Id);
-			field.setParentId(parentId);
+			field.setParent(parentId,getRefId());
 			field.setDocId(docId);
 			field.setDocRefId(docRefId);
 		}
@@ -389,6 +408,33 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	public void setHTMLWrappedField(boolean isHTMLWrappedField) {
 		this.isHTMLWrappedField = isHTMLWrappedField;
+	}
+
+	public String getParentRef() {
+		return parentRef;
+	}
+
+	public void setParentRef(String parentRef) {
+		this.parentRef = parentRef;
+	}
+
+	public void setParent(Long id, String parentRef) {
+		setParentId(id);
+		setParentRef(parentRef);
+	}
+
+	public void setForm(Long formId, String formRef) {
+		setFormId(formId);
+		this.formRef = formRef;
+		
+	}
+
+	public String getFormRef() {
+		return formRef;
+	}
+
+	public void setFormRef(String formRef) {
+		this.formRef = formRef;
 	}
 
 }

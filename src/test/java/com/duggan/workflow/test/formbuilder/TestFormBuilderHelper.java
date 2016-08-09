@@ -59,7 +59,7 @@ public class TestFormBuilderHelper {
 		
 		Field child = new Field();		
 		child.setType(DataType.LABEL);		
-		child.setParentId(field.getId());	
+		child.setParent(field.getId(),field.getRefId());	
 		
 		int pos = field.getFields().size();
 		child.setPosition(pos);
