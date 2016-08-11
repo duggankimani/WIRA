@@ -66,6 +66,9 @@ public class TaskStepModel extends PO {
 	@JoinColumn(name="formid")
 	private ADForm form;
 	
+	@XmlAttribute
+	private String formRef;
+	
 	@XmlTransient
 	@OneToOne
 	@JoinColumn(name="outputdocid")
@@ -80,10 +83,6 @@ public class TaskStepModel extends PO {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="taskStep")
 	@Cascade(value={CascadeType.DELETE, CascadeType.DELETE_ORPHAN, CascadeType.REMOVE})
 	private Collection<ADTaskStepTrigger> taskStepTriggers = new HashSet<>();
-	
-	@XmlAttribute
-	@Transient
-	private String formRefId;
 	
 	@XmlAttribute
 	@Transient
@@ -176,20 +175,20 @@ public class TaskStepModel extends PO {
 		taskStepTriggers.add(trigger);
 	}
 
-	public String getFormRefId() {
-		return formRefId;
-	}
-
-	public void setFormRefId(String formRefId) {
-		this.formRefId = formRefId;
-	}
-
 	public String getOutputRefId() {
 		return outputRefId;
 	}
 
 	public void setOutputRefId(String outputRefId) {
 		this.outputRefId = outputRefId;
+	}
+
+	public String getFormRef() {
+		return formRef;
+	}
+
+	public void setFormRef(String formRef) {
+		this.formRef = formRef;
 	}
 
 }

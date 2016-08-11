@@ -29,8 +29,7 @@ public class GetFormsRequestActionHandler extends
 			forms = FormDaoHelper.getForms(action.getProcessDefId(),
 					action.isLoadFields());
 		} else if(action.getProcessRefId()!=null){
-			forms = FormDaoHelper.getForms(action.getProcessRefId(),
-					action.isLoadFields());
+			forms = FormDaoHelper.getFormsJson(action.getProcessRefId(), false);
 		}
 
 		GetFormsResponse response = (GetFormsResponse) actionResult;

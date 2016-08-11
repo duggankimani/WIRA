@@ -78,10 +78,10 @@ public class PropertyPanelView extends ViewImpl implements
 			
 			if(property.getName().equals(SELECTIONTYPE) && !(isDSAvailable&&isSQLAvailable)){
 				
-				property.setFieldId(model.getId());
+				property.setFieldRefId(model.getRefId());
 				UIObject.setVisible(fw.createComponent(false).getElement(), false);
 				
-				assert property.getFieldId()!=null;
+				assert property.getFieldRefId()!=null;
 				addSelection((Field)model,property);
 			}
 		}

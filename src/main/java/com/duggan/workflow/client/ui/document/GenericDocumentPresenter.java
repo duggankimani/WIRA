@@ -755,12 +755,12 @@ public class GenericDocumentPresenter extends
 			nextStepId = taskStepDTO.getId();
 		}
 
-		if (taskStepDTO.getFormId() != null) {
-			Long formId = taskStepDTO.getFormId();
+		if (taskStepDTO.getFormRefId() != null) {
+			String formRef = taskStepDTO.getFormRefId();
 
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new GetFormModelRequest(FormModel.FORMMODEL,
-					formId, true));
+					formRef, true));
 
 			if (isNavigateNext && isExecuteTriggers(doc)) {
 				// disable based on doc statuses

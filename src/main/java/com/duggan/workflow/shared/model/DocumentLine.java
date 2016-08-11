@@ -2,24 +2,45 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.duggan.workflow.server.dao.hibernate.ListValuesAdapter;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
+import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.SerializableObj;
 
 /**
  *  
  * @author duggan
  *  Represents document lines/details (e.g invoice details)
  */
-public class DocumentLine implements Serializable,IsSerializable {
+
+@XmlSeeAlso({KeyValuePair.class,Property.class,Field.class})
+@XmlRootElement(name="docline")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DocumentLine extends SerializableObj{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long id;
+	private String docRefId;
+	@XmlTransient
+	private Long id;	
+	@XmlTransient
 	private Long documentId;
 	private String name;
+	
+	@XmlTransient
 	private HashMap<String, Value> values = new HashMap<String, Value>();
 	
 	public DocumentLine(){
@@ -138,4 +159,13 @@ public class DocumentLine implements Serializable,IsSerializable {
 	public Long getTempId(){
 		return tempId;
 	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
+	}
+
 }

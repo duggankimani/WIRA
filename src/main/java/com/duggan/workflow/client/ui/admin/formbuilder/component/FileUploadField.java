@@ -57,7 +57,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	
 	public FileUploadField() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(UPLOADERTYPE, "Type", DataType.SELECTBASIC, 
 				new KeyValuePair("fileuploader", "File Upload"),
@@ -147,7 +147,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	private void initUploader() {
 		UploadContext context = new UploadContext();
 		context.setContext("formFieldName", field.getName());
-		context.setContext(uploader.FIELD_ID, field.getId()+"");
+		context.setContext(uploader.FIELD_REFID, field.getRefId()+"");
 		context.setContext("documentId", field.getDocId());
 		context.setContext("docRefId", field.getDocRefId());
 		context.setContext("ACTION", UPLOADACTION.UPLOADDOCFILE.name());

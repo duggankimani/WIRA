@@ -41,7 +41,7 @@ public class CheckBoxField extends FieldWidget {
 
 	public CheckBoxField() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);

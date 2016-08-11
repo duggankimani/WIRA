@@ -5,14 +5,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.duggan.workflow.server.dao.hibernate.ListValuesAdapter;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.SerializableObj;
 
-public abstract class Doc extends SerializableObj implements Serializable,
+@XmlType
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Doc extends SerializableObj implements Serializable,
 		IsSerializable, Comparable<Doc> {
 
 	/**
@@ -22,20 +33,14 @@ public abstract class Doc extends SerializableObj implements Serializable,
 
 	private boolean hasAttachment = false;
 
-	public abstract String getDescription();
-
-	public abstract Date getCreated();
-
-	public abstract Date getDocumentDate();
-
-	public abstract Integer getPriority();
-
-	public abstract Object getId();
-
+//	@XmlJavaTypeAdapter(MapValuesAdapter.class)
+//	@XmlElement(name="docvals")
+	@XmlTransient
 	protected HashMap<String, Value> values = new HashMap<String, Value>();
-
-	protected HashMap<String, ArrayList<DocumentLine>> details = new HashMap<String, ArrayList<DocumentLine>>();
 	
+	@XmlTransient
+	protected HashMap<String, ArrayList<DocumentLine>> details = new HashMap<String, ArrayList<DocumentLine>>();
+
 	private String uploadedFileId;
 
 	private String processId;
@@ -49,6 +54,29 @@ public abstract class Doc extends SerializableObj implements Serializable,
 	private HTUser taskActualOwner;
 	private String potentialOwners;
 
+	public Doc() {
+	}
+
+	public String getDescription() {
+		return null;
+	}
+
+	public Date getCreated() {
+		return null;
+	}
+
+	public Date getDocumentDate() {
+		return null;
+	}
+
+	public Integer getPriority() {
+		return null;
+	}
+
+	public Object getId() {
+		return null;
+	}
+	
 	/**
 	 * Sorts document/task elements in descending order hence the negative sign
 	 * (-)
@@ -152,9 +180,13 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		values.put(name, previous);
 	}
 
-	public abstract HTUser getOwner();
+	public HTUser getOwner() {
+		return null;
+	}
 
-	public abstract Long getProcessInstanceId();
+	public Long getProcessInstanceId() {
+		return null;
+	}
 
 	public boolean hasAttachment() {
 		return hasAttachment;
@@ -184,13 +216,13 @@ public abstract class Doc extends SerializableObj implements Serializable,
 
 		/*
 		 * Duggan 06/10/2015 ExecuteWorkflow action submits a ArrayList of Value
-		 * objects i.e HashMap<String,Value> , which works ok for all fields except
-		 * grid fields updated through triggers
+		 * objects i.e HashMap<String,Value> , which works ok for all fields
+		 * except grid fields updated through triggers
 		 * 
 		 * Grid rows updated through a trigger call to addDetail('gridName',
 		 * DocumentLine) are not added to a GridValue object: they are written
-		 * directly to a HashMap<String, ArrayList<DocLine>>, hence they are left out
-		 * when ExecuteWorkflow is called.
+		 * directly to a HashMap<String, ArrayList<DocLine>>, hence they are
+		 * left out when ExecuteWorkflow is called.
 		 * 
 		 * To remedy this issue, We need to loop through the document lines
 		 * generating a GridValue entry for each document line with no
@@ -284,7 +316,9 @@ public abstract class Doc extends SerializableObj implements Serializable,
 		this.potentialOwners = potentialOwners;
 	}
 
-	public abstract Long getDocumentId();
+	public Long getDocumentId() {
+		return null;
+	}
 
 	public Object get(String key) {
 		Value val = values.get(key);
@@ -305,8 +339,8 @@ public abstract class Doc extends SerializableObj implements Serializable,
 	}
 
 	public HashMap<String, Object> toObjectMap() {
-		HashMap<String, Object> conv = new HashMap<String, Object>(); 
-		for(String key: getValues().keySet()){
+		HashMap<String, Object> conv = new HashMap<String, Object>();
+		for (String key : getValues().keySet()) {
 			conv.put(key, get(key));
 		}
 		return conv;

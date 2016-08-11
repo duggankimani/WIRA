@@ -22,7 +22,7 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 	private String processRefId;
 	
 	private String formName;
-	private Long formId;
+	private String formRefId;
 	
 	private String outputDocName;
 	private Long outputDocId;
@@ -86,12 +86,7 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 	public void setOutputDocName(String outputDocName) {
 		this.outputDocName = outputDocName;
 	}
-	public Long getFormId() {
-		return formId;
-	}
-	public void setFormId(Long formId) {
-		this.formId = formId;
-	}
+	
 	public Long getOutputDocId() {
 		return outputDocId;
 	}
@@ -116,7 +111,7 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 		TaskStepDTO dto = new TaskStepDTO();
 		dto.setActive(isActive);
 		dto.setCondition(condition);
-		dto.setFormId(formId);
+		dto.setFormRefId(formRefId);
 		dto.setFormName(formName);
 		dto.setId(id);
 		dto.setMode(mode);
@@ -136,5 +131,11 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 	}
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
+	}
+	public String getFormRefId() {
+		return formRefId;
+	}
+	public void setFormRefId(String formRefId) {
+		this.formRefId = formRefId;
 	}
 }

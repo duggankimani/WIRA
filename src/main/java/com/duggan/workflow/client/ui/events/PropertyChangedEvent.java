@@ -8,7 +8,7 @@ public class PropertyChangedEvent extends
 		GwtEvent<PropertyChangedEvent.PropertyChangedHandler> {
 
 	public static Type<PropertyChangedHandler> TYPE = new Type<PropertyChangedHandler>();
-	private Long componentId;
+	private String componentId;
 	private String propertyName;
 	private Object propertyValue;
 	private boolean isForField;
@@ -17,14 +17,14 @@ public class PropertyChangedEvent extends
 		void onPropertyChanged(PropertyChangedEvent event);
 	}
 
-	public PropertyChangedEvent(Long componentId,String propertyName, Object propertyValue, boolean isForField ) {
+	public PropertyChangedEvent(String componentId,String propertyName, Object propertyValue, boolean isForField ) {
 		this.componentId = componentId;
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;
 		this.isForField = isForField;
 	}
 
-	public Long getComponentId() {
+	public String getComponentId() {
 		return componentId;
 	}
 
@@ -46,7 +46,7 @@ public class PropertyChangedEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, Long componentId,String propertyName, Object propertyValue, boolean isForField) {
+	public static void fire(HasHandlers source, String componentId,String propertyName, Object propertyValue, boolean isForField) {
 		source.fireEvent(new PropertyChangedEvent(componentId,propertyName, propertyValue, isForField));
 	}
 

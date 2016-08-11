@@ -20,7 +20,7 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 @MappedSuperclass
-@Table(name = "story", indexes = {
+@Table(indexes = {
 		@Index(name = "idx_ref_id", columnList = "refId")})
 public abstract class PO implements Serializable{
 

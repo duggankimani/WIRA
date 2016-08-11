@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -14,10 +15,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
-import com.duggan.workflow.server.dao.model.ADFormJson;
 import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
@@ -31,7 +32,7 @@ import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.sun.jersey.api.json.JSONConfiguration;
@@ -45,7 +46,7 @@ public class TestJsonType {
 		DB.beginTransaction();
 	}
 	
-	@Test
+	@Ignore
 	public void getJsonForm(){
 		String formRefId = "8fpbo0WvWAuqo0hV";
 		Form dbJsonForm = FormDaoHelper.getFormJson(formRefId,true);
@@ -53,21 +54,31 @@ public class TestJsonType {
 		Assert.assertNotNull(dbJsonForm);
 		Assert.assertNotNull(dbJsonForm.getRefId());
 		Assert.assertFalse(dbJsonForm.getFields().isEmpty());
-		
-		Form form = DB.getFormDao().getSingleResultJson(
-				"select form from adform_json where "
-				+ "form @> '{\"refId\":\"8fpbo0WvWAuqo0hV\"}'",null, Form.class);
-		
-		Assert.assertNotNull(form);
 	}
 	
 	@Ignore
+	public void migrateForms(){
+		List<ProcessDef> processes = ProcessDaoHelper.getAllProcesses(null, false);
+		for(ProcessDef p: processes){
+			List<Form> adforms = FormDaoHelper.getForms(p.getRefId(),true);
+			for(Form form: adforms){
+				form.setProcessRefId(p.getRefId());
+				Form jsonForm = FormDaoHelper.createJson(form);
+				Assert.assertNotNull(jsonForm.getRefId());
+			}
+		}
+		
+		//update taskstepmodels
+		DB.getEntityManager().createNativeQuery("update taskstepmodel t set formref=(select refid from adform where id=t.formid) where t.formid is not null and formref is null").executeUpdate();
+	}
+	
+	@Test
 	public void saveJsonForm(){
 		long id = 40l;//27l
 		Form form = FormDaoHelper.getForm(id,true);//Current storage
 		
-		ADFormJson jsonForm = FormDaoHelper.createJson(form);
-		Assert.assertNotNull(jsonForm.getId());
+		Form jsonForm = FormDaoHelper.createJson(form);
+		Assert.assertNotNull(jsonForm.getRefId());
 		
 //		Field field = FormDaoHelper.getField(106l);
 //		FormDaoHelper.createJson(field);

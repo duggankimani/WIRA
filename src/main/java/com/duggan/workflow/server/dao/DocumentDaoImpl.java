@@ -20,16 +20,22 @@ import org.jbpm.task.query.TaskSummary;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DetailModel;
+import com.duggan.workflow.server.dao.model.DocumentLineJson;
 import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.dao.model.DocumentModelJson;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.Value;
 import com.wira.commons.shared.models.UserGroup;
 
 /**
@@ -865,5 +871,52 @@ public class DocumentDaoImpl extends BaseDaoImpl{
 		return getResultList(getEntityManager().createQuery("FROM DetailModel a where a.document=:document")
 				.setParameter("document", model));
 	}
+
+	public DocumentLineJson findDocumentLinesJson(String docRefId,
+			String name) {
+		
+		return getSingleResultOrNull(getEntityManager().createQuery("From DocumentLineJson j "
+				+ "where j.docRefId=:docRefId and j.name=:name")
+				.setParameter("docRefId", docRefId)
+				.setParameter("name", name));
+	}
+
+	public void deleteJsonDoc(String docRefId) {
+		String docSql = "delete from documentjson where refId=:docRefId";
+		String docLineSql = "delete from documentlinejson where docRefId=:docRefId";
+		
+		getEntityManager().createNativeQuery(docSql).setParameter("docRefId", docRefId);
+		getEntityManager().createNativeQuery(docLineSql).setParameter("docRefId", docRefId);
+	}
+
+	public void deleteJsonDocLine(String lineRefId) {
+		String docLineSql = "delete from documentlinejson where refId=:refId";
+		
+		getEntityManager().createNativeQuery(docLineSql).setParameter("refId", docLineSql);
+	}
+
+	public Doc getDocJson(String docRefId) {
+		
+		DocumentModelJson json = findByRefId(docRefId, DocumentModelJson.class);
+		Document document = json.getDocument();
+		document.setValues(json.getData()==null? new HashMap<String, Value>() : json.getData().getValueMap());
+		
+		addDocLinesJson(document);
+		return document;
+	}
+
+	private void addDocLinesJson(Document document) {
+		
+		List<DocumentLineJson> lines = getResultList(
+				getEntityManager().createQuery("from DocumentLineJson l where l.docRefId=:docRefId")
+				.setParameter("docRefId", document.getRefId()));
+		
+		for(DocumentLineJson json: lines){
+			DocumentLine line = json.getDocumentLine();
+			line.setValues(json.getData()==null? new HashMap<String, Value>() : json.getData().getValueMap());
+			document.addDetail(line);
+		}
+	}
+
 	
 }

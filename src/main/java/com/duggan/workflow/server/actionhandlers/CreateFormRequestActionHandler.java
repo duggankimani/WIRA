@@ -21,7 +21,8 @@ public class CreateFormRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		
 		Form form = action.getForm();
-		form =  FormDaoHelper.createForm(form, true);
+		//form =  FormDaoHelper.createForm(form, true);
+		form =  FormDaoHelper.createJson(form);
 		
 		CreateFormResponse response = (CreateFormResponse)actionResult;
 		response.setForm(form);

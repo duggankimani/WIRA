@@ -114,7 +114,7 @@ public class HTMLForm extends FieldWidget {
 
 	@Override
 	public void save() {
-		Property prop = field.getProperty(HTMLCONTENT);
+		Property prop = props.get(HTMLCONTENT);
 		if (prop == null) {
 			super.save();
 			return;
@@ -314,8 +314,8 @@ public class HTMLForm extends FieldWidget {
 			Field child = widget.getField();
 			// Copy General Metadata Fields from the Parent
 			child.setForm(field.getFormId(),field.getRefId());
-			child.setParent(field.getId(),field.getRefId());
-			assert field.getId() != null;
+			child.setParent(null,field.getRefId());
+			assert field.getRefId() != null;
 
 			child.setDocId(field.getDocId());
 			child.setDocRefId(field.getDocRefId());
@@ -343,7 +343,8 @@ public class HTMLForm extends FieldWidget {
 			return;
 		}
 
-		feField.setId(dbField.getId());
+//		feField.setId(dbField.getId());
+		feField.setRefId(dbField.getRefId());
 		// Name, Caption, my be ignored - Use Front end values
 		feField.setDependentFields(dbField.getDependentFields());
 		feField.setDocRefId(dbField.getDocRefId());
@@ -353,12 +354,7 @@ public class HTMLForm extends FieldWidget {
 		feField.setGridName(dbField.getGridName());
 		feField.setLineRefId(dbField.getLineRefId());
 
-		for (Property dbProp : dbField.getProperties()) {
-			Property feProperty = feField.getProperty(dbProp.getName());
-			if (feProperty != null) {
-				feProperty.setValue(dbProp.getValue());
-			}
-		}
+		feField.setProps(dbField.getProps());
 
 		feField.setSelectionValues(dbField.getSelectionValues());
 		feField.setValue(dbField.getValue());

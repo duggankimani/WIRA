@@ -17,10 +17,14 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
+import com.duggan.workflow.server.dao.model.ADFormJson;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DetailModel;
+import com.duggan.workflow.server.dao.model.DocumentLineJson;
 import com.duggan.workflow.server.dao.model.DocumentModel;
+import com.duggan.workflow.server.dao.model.DocumentModelJson;
+import com.duggan.workflow.server.dao.model.IDUtils;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
@@ -38,6 +42,7 @@ import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
 
 /**
  * This class is Dao Helper for persisting all document related entities.
@@ -349,6 +354,7 @@ public class DocumentDaoHelper {
 			DocumentLine line = new DocumentLine();
 			line.setDocumentId(lineModel.getDocument().getId());
 			line.setId(lineModel.getId());
+			line.setRefId(lineModel.getRefId());
 			line.setName(lineModel.getName());
 
 			for (ADValue value : lineModel.getValues()) {
@@ -469,7 +475,7 @@ public class DocumentDaoHelper {
 
 	/**
 	 * 
-	 * @param id
+	 * @param refId
 	 * @return
 	 */
 	public static Document getDocumentByProcessInstance(Long processInstanceId,
@@ -649,6 +655,83 @@ public class DocumentDaoHelper {
 	public static boolean exists(String subject) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		return dao.exists(subject);
+	}
+	
+	public static Document createJson(Document doc){
+		DocumentModelJson jsonDoc = new DocumentModelJson(doc);
+		
+		if (doc.getRefId() != null) {
+			jsonDoc = DB.getDocumentDao().findByRefId(doc.getRefId(),
+					DocumentModelJson.class);
+			
+			assert jsonDoc!=null;
+			
+			if (jsonDoc == null) {
+				jsonDoc = new DocumentModelJson(doc);
+			} else {
+				jsonDoc.setDocument(doc);
+			}
+		}else{
+			//Generate Ref
+			doc.setRefId(IDUtils.generateId());
+			jsonDoc.setRefId(doc.getRefId());
+		}
+
+		DB.getDocumentDao().save(jsonDoc);
+		
+		//Save Lines
+		createJsonLines(doc);
+
+		return doc;
+	}
+
+	private static void createJsonLines(Document doc) {
+		
+		HashMap<String, ArrayList<DocumentLine>> grids = doc.getDetails();
+		
+		for(String key: grids.keySet()){
+			ArrayList<DocumentLine> lines = grids.get(key);
+			for(DocumentLine line: lines){
+				line.setDocRefId(doc.getRefId());//Doc
+				line.setName(key);
+				createJsonLine(line);
+			}
+		}
+	}
+
+	private static void createJsonLine(DocumentLine line) {
+		DocumentLineJson jLine = null;
+		
+		if(line.getRefId()!=null){
+			jLine = DB.getDocumentDao().findByRefId(line.getRefId(), DocumentLineJson.class);
+			if(jLine==null){
+				jLine = new DocumentLineJson(line);
+			}else{
+				jLine.setDocumentLine(line);
+			}
+		}else{
+			line.setRefId(IDUtils.generateId());
+			jLine = new DocumentLineJson(line);
+		}
+		
+		logger.info("Saving line: "+line);
+		
+		DB.getDocumentDao().save(jLine);
+		
+	}
+
+	public static void deleteJsonDoc(String docRefId) {
+		
+		DB.getDocumentDao().deleteJsonDoc(docRefId);
+	}
+
+	public static void deleteJsonDocLine(String lineRefId) {
+		DB.getDocumentDao().deleteJsonDocLine(lineRefId);
+	}
+
+	public static Doc getDocJson(String docRefId) {
+		
+		return DB.getDocumentDao().getDocJson(docRefId);
 	}
 
 }

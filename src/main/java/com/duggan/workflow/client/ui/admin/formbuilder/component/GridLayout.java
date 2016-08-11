@@ -50,7 +50,7 @@ implements EditLineHandler{
 	
 	public GridLayout() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		
 		widget= uiBinder.createAndBindUi(this);
@@ -232,7 +232,7 @@ implements EditLineHandler{
 	}
 	
 	private void addColumn(Field child) {
-		child.setParent(field.getId(),field.getRefId());	
+		child.setParent(null,field.getRefId());	
 		int pos = field.getFields().size();
 		child.setPosition(pos);				
 		child.setCaption("Column "+(pos));

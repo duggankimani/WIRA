@@ -27,8 +27,8 @@ public class GetFormModelRequestActionHandler extends
 
 		String requestFor = action.getType();
 		Boolean loadChildrenInfo = action.getLoadChildrenToo();
-		Long id = action.getId();
-		Long parentId = action.getParentId();
+		String formModelRefId = action.getFormRefId();
+		String parentRefId = action.getParentRefId();
 
 		GetFormModelResponse response = (GetFormModelResponse) actionResult;
 
@@ -39,15 +39,15 @@ public class GetFormModelRequestActionHandler extends
 		List<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
 		switch (requestFor) {
 		case FormModel.FORMMODEL:
-			if(id!=null){
-				model = FormDaoHelper.getForm(id, loadChildrenInfo);
+			if(formModelRefId!=null){
+				model = FormDaoHelper.getFormJson(formModelRefId, loadChildrenInfo);
 				models.add(model);
 			}else if(action.getTaskId()!=null){
 				Long taskId = action.getTaskId();
 				steps= ProcessDaoHelper.getTaskStepsByTaskId(taskId);
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
-					model = FormDaoHelper.getForm(step.getFormId(),true);
+					model = FormDaoHelper.getFormJson(step.getFormRefId(),true);
 				}
 				
 				if(model!=null)
@@ -57,7 +57,7 @@ public class GetFormModelRequestActionHandler extends
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
-					model = FormDaoHelper.getForm(step.getFormId(),true);
+					model = FormDaoHelper.getFormJson(step.getFormRefId(),true);
 					models.add(model);
 				}
 												
@@ -66,7 +66,7 @@ public class GetFormModelRequestActionHandler extends
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);
-					model = FormDaoHelper.getForm(step.getFormId(),true);
+					model = FormDaoHelper.getFormJson(step.getFormRefId(),true);
 					models.add(model);
 				}
 												
@@ -79,19 +79,19 @@ public class GetFormModelRequestActionHandler extends
 
 		case FormModel.FIELDMODEL:
 			
-			if(id!=null){
-				model = FormDaoHelper.getField(id);
+			if(formModelRefId!=null){
+				model = FormDaoHelper.getFieldJson(formModelRefId,true);
 				models.add(model);
-			}else if(parentId!=null){
-				models.addAll(FormDaoHelper.getFields(parentId,true));
+			}else if(parentRefId!=null){
+				models.addAll(FormDaoHelper.getFieldsForParent(parentRefId));
 			}
 			
 			break;
 
-		case FormModel.PROPERTYMODEL:
-			model = FormDaoHelper.getProperty(id);
-			models.add(model);
-			break;
+//		case FormModel.PROPERTYMODEL:
+//			model = FormDaoHelper.getProperty(id);
+//			models.add(model);
+//			break;
 
 		}
 		

@@ -129,7 +129,7 @@ public class FormDaoHelper {
 			// form.setFields(getFields());
 		}
 
-		form.setId(adform.getId());
+		form.setRefId(adform.getRefId());
 		form.setRefId(adform.getRefId());
 		form.setName(adform.getName());
 		form.setProcessDefId(adform.getProcessDefId());
@@ -161,7 +161,6 @@ public class FormDaoHelper {
 					.getRefId());
 		}
 
-		field.setId(adfield.getId());
 		field.setRefId(adfield.getRefId());
 		field.setName(adfield.getName());
 		field.setProperties(getProperties(DB.getFormDao()
@@ -196,23 +195,17 @@ public class FormDaoHelper {
 		String sqlDS = null;
 		String sqlSelect = null;
 
-		for (Property prop : field.getProperties()) {
+		for (KeyValuePair prop : field.getProps()) {
 			if (prop.getName().equals("SELECTIONTYPE")) {
-				Object value = prop.getValue() == null ? null : prop.getValue()
-						.getValue();
-				type = value == null ? null : value.toString();
+				type = prop.getValue();
 			}
 
 			if (prop.getName().equals("SQLSELECT")) {
-				Object value = prop.getValue() == null ? null : prop.getValue()
-						.getValue();
-				sqlSelect = value == null ? null : value.toString();
+				sqlSelect = prop.getValue();
 			}
 
 			if (prop.getName().equals("SQLDS")) {
-				Object value = prop.getValue() == null ? null : prop.getValue()
-						.getValue();
-				sqlDS = value == null ? null : value.toString();
+				sqlDS = prop.getValue();
 			}
 
 		}
@@ -288,14 +281,14 @@ public class FormDaoHelper {
 		property.setCaption(adproperty.getCaption());
 
 		ADField field = adproperty.getField();
-		property.setFieldId(field == null ? null : field.getId());
+		property.setFieldRefId(field == null ? null : field.getRefId());
 
 		ADForm form = adproperty.getForm();
-		property.setFormId(form == null ? null : form.getId());
+		property.setFormRefId(form == null ? null : form.getRefId());
 
 		assert form == null ^ field == null; // XOR
 
-		property.setId(adproperty.getId());
+		property.setRefId(adproperty.getRefId());
 		property.setName(adproperty.getName());
 		property.setType(adproperty.getType());
 
@@ -458,8 +451,8 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 
 		ADForm adform = new ADForm();
-		if (form.getId() != null) {
-			adform = dao.getForm(form.getId());
+		if (form.getRefId() != null) {
+			adform = dao.findByRefId(form.getRefId(),ADForm.class);
 		}
 		adform.setCaption(form.getCaption());
 		adform.setName(form.getName());
@@ -474,7 +467,7 @@ public class FormDaoHelper {
 		}
 
 		getADFields(form.getFields(), adform);
-		getADProperties(form.getProperties(), adform);
+		//getADProperties(form.getProperties(), adform); --Method replaced with getXXXJson
 		// adform.setProperties(properties);
 		dao.save(adform);
 
@@ -501,8 +494,8 @@ public class FormDaoHelper {
 		ADField adfield = new ADField();
 		int previous = -1;
 
-		if (field.getId() != null) {
-			adfield = dao.getField(field.getId());
+		if (field.getRefId() != null) {
+			adfield = dao.findByRefId(field.getRefId(), ADField.class);
 			previous = adfield.getPosition() == null ? -1 : adfield
 					.getPosition();
 		}
@@ -512,8 +505,6 @@ public class FormDaoHelper {
 
 		if (field.getFormId() != null)
 			adfield.setForm(dao.getForm(field.getFormId()));
-
-		adfield.setId(field.getId());
 
 		// for a grid - Grid Columns
 		// adfield.getFields().clear();
@@ -529,7 +520,7 @@ public class FormDaoHelper {
 
 		// copy
 		// adfield.getProperties().size();// force load?
-		getADProperties(field.getProperties(), adfield);
+		//getADProperties(field.getProperties(), adfield); -- Replaced with json method
 
 		adfield.setType(field.getType());
 		adfield.setValue(getValue(adfield.getValue(), field.getValue()));
@@ -556,39 +547,39 @@ public class FormDaoHelper {
 			}
 		}
 
-		for (Property prop : field.getProperties()) {
-			if (field.getType() == DataType.GRID && prop.getName().equals(NAME)) {
-				// mostly for grids
-				Value value = prop.getValue();
-				String name = null;
-				if (value != null) {
-					name = value.getValue() == null ? null : value.getValue()
-							.toString();
-				}
-
-				if (name == null || name.isEmpty()) {
-					prop.setValue(new StringValue(null, NAME, field.getName()));
-				}
-			}
-
-			if (prop.getName().equals(SELECTIONTYPE)) {
-				Value value = prop.getValue();
-				if (value != null) {
-					selectionKey = value.getValue() == null ? null : value
-							.getValue().toString();
-				}
-
-				if (selectionKey == null || selectionKey.trim().isEmpty()) {
-					selectionKey = UUID.randomUUID().toString();
-					prop.setValue(new StringValue(
-							null,
-							com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE,
-							selectionKey));
-				}
-				break;
-
-			}
-		}
+//		for (Property prop : field.getProperties()) {  --Replaced with findXXXJsonMethods 
+//			if (field.getType() == DataType.GRID && prop.getName().equals(NAME)) {
+//				// mostly for grids
+//				Value value = prop.getValue();
+//				String name = null;
+//				if (value != null) {
+//					name = value.getValue() == null ? null : value.getValue()
+//							.toString();
+//				}
+//
+//				if (name == null || name.isEmpty()) {
+//					prop.setValue(new StringValue(null, NAME, field.getName()));
+//				}
+//			}
+//
+//			if (prop.getName().equals(SELECTIONTYPE)) {
+//				Value value = prop.getValue();
+//				if (value != null) {
+//					selectionKey = value.getValue() == null ? null : value
+//							.getValue().toString();
+//				}
+//
+//				if (selectionKey == null || selectionKey.trim().isEmpty()) {
+//					selectionKey = UUID.randomUUID().toString();
+//					prop.setValue(new StringValue(
+//							null,
+//							com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE,
+//							selectionKey));
+//				}
+//				break;
+//
+//			}
+//		}
 
 		FormDaoImpl dao = DB.getFormDao();
 
@@ -632,20 +623,22 @@ public class FormDaoHelper {
 
 		ADProperty adprop = new ADProperty();
 
-		if (property.getId() != null) {
-			adprop = dao.getProperty(property.getId());
+		if (property.getRefId() != null) {
+			adprop = dao.findByRefId(property.getRefId(), ADProperty.class);
 		}
 
-		if (property.getFormId() != null) {
-			adprop.setForm(dao.getForm(property.getFormId()));
+		if (property.getFormRefId() != null) {
+			ADForm form = dao.findByRefId(property.getFormRefId(), ADForm.class);
+			adprop.setForm(form);
 		}
 
-		if (property.getFieldId() != null) {
-			adprop.setField(dao.getField(property.getFieldId()));
+		if (property.getFieldRefId() != null) {
+			ADField field = dao.findByRefId(property.getFieldRefId(),ADField.class);
+			adprop.setField(field);
 		}
 
 		adprop.setCaption(property.getCaption());
-		adprop.setId(property.getId());
+		adprop.setRefId(property.getRefId());
 		adprop.setName(property.getName());
 		adprop.setType(property.getType());
 
@@ -741,16 +734,16 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		PO po = null;
 		if (model instanceof Form) {
-			po = dao.getForm(model.getId());
+			po = dao.findByRefId(model.getRefId(), ADForm.class);
 		}
 
 		if (model instanceof Field) {
-			po = dao.getField(model.getId());
+			po = dao.findByRefId(model.getRefId(), ADField.class);
 
 		}
 
 		if (model instanceof Property) {
-			po = dao.getProperty(model.getId());
+			po = dao.findByRefId(model.getRefId(), ADProperty.class);
 		}
 
 		if (po != null) {
@@ -957,7 +950,7 @@ public class FormDaoHelper {
 		return reloaded;
 	}
 
-	public static ADFormJson createJson(Form form) {
+	public static Form createJson(Form form) {
 		ADFormJson jsonForm = new ADFormJson(form);
 		if (form.getRefId() != null) {
 			jsonForm = DB.getFormDao().findByRefId(form.getRefId(),
@@ -974,9 +967,6 @@ public class FormDaoHelper {
 		}
 
 		DB.getFormDao().save(jsonForm);
-		// after save
-		form.setId(jsonForm.getId());
-		form.setRefId(jsonForm.getRefId());
 
 		if (form.getFields() != null) {
 			for (Field field : form.getFields()) {
@@ -985,10 +975,10 @@ public class FormDaoHelper {
 			}
 		}
 
-		return jsonForm;
+		return form;
 	}
 
-	public static ADFieldJson createJson(Field field) {
+	public static Field createJson(Field field) {
 		ADFieldJson jsonField = new ADFieldJson(field);
 		if (field.getRefId() != null) {
 			jsonField = DB.getFormDao().findByRefId(field.getRefId(),
@@ -1010,7 +1000,22 @@ public class FormDaoHelper {
 			}
 		}
 
-		return jsonField;
+		return field;
+	}
+
+	public static Field getFieldJson(String refId) {
+		return getFieldJson(refId,true);
+	}
+	
+	public static Field getFieldJson(String refId, boolean loadChildren) {
+		
+		Field field = DB.getFormDao().findJsonField(refId);
+		
+		if(field.getType().hasChildren() && loadChildren){
+			field.setFields(DB.getFormDao().findJsonFieldsForField(field.getRefId()));
+		}
+		
+		return field;
 	}
 
 	public static Form getFormJson(String refId, boolean loadFields) {
@@ -1019,7 +1024,6 @@ public class FormDaoHelper {
 
 		Form form = jsonForm.getForm();
 		form.setRefId(refId);
-		form.setId(jsonForm.getId());
 
 		if (loadFields) {
 			// Retrieve fields
@@ -1031,6 +1035,28 @@ public class FormDaoHelper {
 
 	private static ArrayList<Field> getFormFields(String formRef) {
 		ArrayList<Field> fields = DB.getFormDao().findJsonFieldsForForm(formRef);
+		
+		for(Field field:fields){
+			if(field.getType().hasChildren()){
+				field.setFields(getFieldsForParent(field.getRefId()));
+			}
+		}
 		return fields;
+	}
+
+	public static ArrayList<Field> getFieldsForParent(String refId) {
+		ArrayList<Field> children = DB.getFormDao().findJsonFieldsForField(refId);
+		return children;
+	}
+
+	public static List<Form> getFormsJson(String processRefId, boolean loadChildren) {
+		
+		List<Form> forms = DB.getFormDao().findJsonFormsForProcess(processRefId);
+		if(loadChildren){
+			for(Form form: forms){
+				form.setFields(getFormFields(form.getRefId()));
+			}
+		}
+		return forms;
 	}
 }

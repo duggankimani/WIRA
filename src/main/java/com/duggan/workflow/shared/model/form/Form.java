@@ -23,12 +23,10 @@ public class Form extends FormModel implements Listable, Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
-	private ArrayList<Property> properties;
-	@XmlTransient
 	private ArrayList<Field> fields;
 	@XmlTransient
 	private Long processDefId;
-	@XmlTransient
+	
 	private String processRefId;
 	
 	/**
@@ -40,17 +38,13 @@ public class Form extends FormModel implements Listable, Serializable{
 	public Form() {
 	}
 	
-	public Form(Long id, String formId, String caption) {
-		setId(id);
+	public Form(String refId, String formId, String caption) {
+		setRefId(refId);
 		setName(formId);
 		setCaption(caption);
 	}
 
-	public ArrayList<Property> getProperties() {
-		return properties;
-	}
 	public void setProperties(ArrayList<Property> properties) {
-		this.properties = properties;
 		for(Property property: properties){
 			addValue(new KeyValuePair(property.getName(), getStringValue(property.getValue())));
 		}
@@ -75,13 +69,8 @@ public class Form extends FormModel implements Listable, Serializable{
 	
 	public Form clone(boolean fullClone){
 		Form form = new Form(null, null, null);
-				
-		if(properties!=null)
-		for(Property prop: properties){
-			Property clone = prop.clone(fullClone);
-			clone.setValue(null);
-			form.addProperty(clone);
-		}
+		
+		form.setProps(getProps());
 		
 		if(fields!=null)
 		for(Field field: fields){
@@ -101,18 +90,10 @@ public class Form extends FormModel implements Listable, Serializable{
 		
 		fields.add(field);
 	}
-
-	private void addProperty(Property prop) {
-		if(properties==null){
-			properties = new ArrayList<Property>();
-		}
-		
-		properties.add(prop);
-	}
 	
 	@Override
 	public String toString() {
-		return "[Form Id="+Id
+		return "[Form Id="+getRefId()
 				+",Name="+name
 				+",caption="+caption+"]";
 	}

@@ -21,8 +21,8 @@ public class Property extends FormModel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private DataType type;
-	private Long fieldId;//field property
-	private Long formId; //form property
+	private String fieldRefId;//field property
+	private String formRefId; //form property
 	@XmlTransient
 	private Value value;
 	private String caption;
@@ -52,9 +52,9 @@ public class Property extends FormModel{
 		this.kvp.add(pair);
 	}
 	
-	public Property(String name, String caption, DataType type, Long fieldId){
+	public Property(String name, String caption, DataType type, String fieldRefId){
 		this(name, caption, type);
-		this.fieldId = fieldId;
+		this.fieldRefId = fieldRefId;
 	}
 	
 	
@@ -67,20 +67,20 @@ public class Property extends FormModel{
 		this.type = type;
 	}
 
-	public Long getFieldId() {
-		return fieldId;
+	public String getFieldRefId() {
+		return fieldRefId;
 	}
 
-	public void setFieldId(Long fieldId) {
-		this.fieldId = fieldId;
+	public void setFieldRefId(String fieldRefId) {
+		this.fieldRefId = fieldRefId;
 	}
 
-	public Long getFormId() {
-		return formId;
+	public String getFormRefId() {
+		return formRefId;
 	}
 
-	public void setFormId(Long formId) {
-		this.formId = formId;
+	public void setFormRefId(String formRefId) {
+		this.formRefId = formRefId;
 	}
 
 	public Value getValue() {
@@ -119,7 +119,7 @@ public class Property extends FormModel{
 	
 	@Override
 	public String toString() {
-		return "{id="+getId()+
+		return "{id="+getRefId()+
 				";Name="+getName()+
 				";Value="+(getValue()==null? null: getValue().getValue())+
 				"}"
@@ -142,7 +142,7 @@ public class Property extends FormModel{
 		prop.setSelectionValues(getSelectionValues());
 		prop.setType(type);
 		if(fullClone){
-			prop.setId(Id);
+			prop.setRefId(getRefId());
 		}
 		
 		if(value!=null)

@@ -60,9 +60,9 @@ public class TextField extends FieldWidget {
 	 */
 	public TextField() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
-				id));
+				refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC,
 				new KeyValuePair("left", "Left"), new KeyValuePair("center",
@@ -92,9 +92,9 @@ public class TextField extends FieldWidget {
 	public TextField(Element textInput, boolean designMode) {
 		super();
 		this.designMode = designMode;
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
-				id));
+				refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC,
 				new KeyValuePair("left", "Left"), new KeyValuePair("center",

@@ -49,7 +49,7 @@ public class ImageField extends FieldWidget implements FileLoadHandler, ReloadAt
 	public ImageField() {
 		super();
 		addProperty(new Property(WIDTH, "Width", DataType.STRING));
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(ACCEPT, "Accept", DataType.STRINGLONG));
 		addProperty(new Property(PATH, "File Path", DataType.STRING));
@@ -98,7 +98,7 @@ public class ImageField extends FieldWidget implements FileLoadHandler, ReloadAt
 	private void initUploader() {
 		UploadContext context = new UploadContext();
 		context.setContext("formFieldName", field.getName());
-		context.setContext(uploader.FIELD_ID, field.getId() + "");
+		context.setContext(uploader.FIELD_REFID, field.getRefId() + "");
 		context.setContext("documentId", field.getDocId());
 		context.setContext("docRefId", field.getDocRefId());
 		context.setContext("ACTION", UPLOADACTION.UPLOADDOCFILE.name());

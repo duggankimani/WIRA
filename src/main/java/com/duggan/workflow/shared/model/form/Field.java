@@ -29,8 +29,8 @@ public class Field extends FormModel implements Comparable<Field>{
 	 */
 	private static final long serialVersionUID = 1L;
 	//Field properties - Caption, Length etc
-	@XmlTransient
-	private ArrayList<Property> properties = new ArrayList<Property>();
+//	@XmlTransient
+//	private ArrayList<Property> properties = new ArrayList<Property>();
 
 	//Drop down/ multiselect selection values
 	private ArrayList<KeyValuePair> selectionValues = new ArrayList<KeyValuePair>();
@@ -94,15 +94,21 @@ public class Field extends FormModel implements Comparable<Field>{
 		docId="TempD";
 	}
 	
-	public ArrayList<Property> getProperties() {
-		return properties;
-	}
+//	public ArrayList<Property> getProperties() {
+//		return properties;
+//	}
+	
 	public void setProperties(ArrayList<Property> properties) {
-		this.properties = properties;
 		for(Property property: properties){
 			addValue(new KeyValuePair(property.getName(), getStringValue(property.getValue())));
 		}
 	}
+	
+
+	public void addProperty(Property prop) {
+		addValue(new KeyValuePair(prop.getName(), getStringValue(prop.getValue())));
+	}
+	
 	public Value getValue() {
 		return value;
 	}
@@ -124,7 +130,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	
 	@Override
 	public String toString() {
-		String str = "[Id= "+getId()+";" +
+		String str = "[Id= "+getRefId()+";" +
 				" FormId = "+getFormId()+";"+
 				" Name = "+getName()+";"+
 				" Caption = "+getCaption()+";"+
@@ -167,7 +173,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	}
 
 	public void addField(Field field) {
-		field.setParentId(Id);
+		field.setParentRef(getRefId());
 		fields.add(field);
 	}
 
@@ -208,10 +214,6 @@ public class Field extends FormModel implements Comparable<Field>{
 		return field;
 	}
 
-	private void addProperty(Property prop) {
-		properties.add(prop);
-	}
-	
 	public void sortFields(){
 		if(fields!=null && fields.size()>1){
 			//Grid Field order Fields
@@ -234,32 +236,8 @@ public class Field extends FormModel implements Comparable<Field>{
 		}
 	}
 
-	public Property getProperty(String propertyName) {
-		
-		Property property=null;
-		for(Property prop: properties){
-			if(prop.getName()!=null)
-			if(prop.getName().equals(propertyName)){
-				property = prop;
-				break;
-			}
-		}
-		
-		return property;
-	}
-	
 	public String getPropertyValue(String key) {
-
-		Property property = getProperty(key);
-
-		if (property == null)
-			return null;
-
-		Value value = property.getValue();
-		if (value == null)
-			return null;
-
-		return value.getValue() == null ? null : value.getValue().toString();
+		return getProperty(key);
 	}
 	
 	public Long getLastValueId(){
@@ -353,11 +331,11 @@ public class Field extends FormModel implements Comparable<Field>{
 		field.setPosition(position);
 		field.setType(type);
 		field.setForm(null,null);
-		field.setId(null);
+		field.setRefId(null);
 		
 		if(copyAll){
 			field.setForm(formId,formRef);
-			field.setId(Id);
+			field.setRefId(getRefId());
 			field.setParent(parentId,getRefId());
 			field.setDocId(docId);
 			field.setDocRefId(docRefId);
@@ -373,9 +351,7 @@ public class Field extends FormModel implements Comparable<Field>{
 			field.addField(fld.clone());
 		}
 		
-		for(Property p: properties){
-			field.addProperty(p.clone(copyAll));
-		}
+		field.setProps(getProps());
 	}
 
 	public ArrayList<String> getDependentFields() {

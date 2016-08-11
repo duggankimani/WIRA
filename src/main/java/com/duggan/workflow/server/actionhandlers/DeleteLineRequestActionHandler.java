@@ -19,7 +19,12 @@ public class DeleteLineRequestActionHandler extends
 	public void execute(DeleteLineRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		DocumentDaoHelper.delete(action.getLine());
+		//DocumentDaoHelper.delete(action.getLine());
+		
+		if(action.getLine().getRefId()!=null){
+			DocumentDaoHelper.deleteJsonDocLine(action.getLine().getRefId());
+		}
+		
 		DeleteLineResponse response = (DeleteLineResponse)actionResult;
 		response.setDelete(true);
 	}

@@ -29,7 +29,8 @@ public class CreateDocumentActionHandler extends
 				
 		Document doc = action.getDocument();
 		
-		doc = DocumentDaoHelper.save(doc);
+		//doc = DocumentDaoHelper.save(doc);
+		doc = DocumentDaoHelper.createJson(doc);
 				
 		CreateDocumentResult result = (CreateDocumentResult)actionResult;
 		result.setDocument(doc);

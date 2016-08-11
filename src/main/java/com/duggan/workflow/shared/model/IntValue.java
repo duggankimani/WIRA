@@ -1,5 +1,14 @@
 package com.duggan.workflow.shared.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement
+@XmlType(propOrder={"key","value"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class IntValue implements Value{
 
 	/**
@@ -8,6 +17,7 @@ public class IntValue implements Value{
 	private static final long serialVersionUID = 1L;
 	private Integer value;
 	private String key;
+	@XmlTransient
 	private Long id;
 	
 	public IntValue() {

@@ -7,21 +7,22 @@ import com.wira.commons.shared.response.BaseResponse;
 public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 
 	private String type;
-	private Long id;
-	private Long parentId;
+	private String formRefId;
+	private String parentRefId;
 	private Long taskId;
 	private Long documentId;
 	private Boolean loadChildrenToo;
 	private Long processDefId;
 	private String docRefId;
+	
 
 	@SuppressWarnings("unused")
 	private GetFormModelRequest() {
 	}
 
-	public GetFormModelRequest(String type, Long id, Boolean loadChildrenToo) {
+	public GetFormModelRequest(String type, String formRefId, Boolean loadChildrenToo) {
 		this.type = type;
-		this.id = id;
+		this.formRefId = formRefId;
 		this.loadChildrenToo = loadChildrenToo;
 	}
 	
@@ -45,10 +46,6 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 		return type;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
 	public Boolean getLoadChildrenToo() {
 		return loadChildrenToo;
 	}
@@ -57,14 +54,6 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 	public BaseResponse createDefaultActionResponse() {
 	
 		return new GetFormModelResponse();
-	}
-
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
 	}
 
 	public Long getTaskId() {
@@ -91,4 +80,21 @@ public class GetFormModelRequest extends BaseRequest<GetFormModelResponse> {
 	public String getDocRefId() {
 		return docRefId;
 	}
+
+	public String getFormRefId() {
+		return formRefId;
+	}
+
+	public void setFormRefId(String formRefId) {
+		this.formRefId = formRefId;
+	}
+
+	public String getParentRefId() {
+		return parentRefId;
+	}
+
+	public void setParentRefId(String parentRefId) {
+		this.parentRefId = parentRefId;
+	}
+
 }

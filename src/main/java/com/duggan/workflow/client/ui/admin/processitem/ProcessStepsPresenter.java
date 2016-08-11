@@ -349,7 +349,7 @@ public class ProcessStepsPresenter extends
 			dto.setCondition("");
 
 			if (l instanceof Form) {
-				dto.setFormId(((Form) l).getId());
+				dto.setFormRefId(((Form) l).getRefId());
 				dto.setMode(MODE.EDIT);
 			} else {
 				dto.setOutputDocId(((OutputDocument) l).getId());

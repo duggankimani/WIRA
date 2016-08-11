@@ -66,7 +66,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler {
 
 	protected FocusPanel shim = new FocusPanel();
-	protected long id = System.currentTimeMillis();
+	protected String refId = System.currentTimeMillis()+"";
 	protected HashMap<String, Property> props = new LinkedHashMap<String, Property>();
 
 	Field field = new Field();
@@ -94,9 +94,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	public void defaultProperties() {
-		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, id));
-		addProperty(new Property(NAME, "Name", DataType.STRING, id));
-		addProperty(new Property(HELP, "Help", DataType.STRING, id));
+		addProperty(new Property(CAPTION, "Label Text", DataType.STRING, refId));
+		addProperty(new Property(NAME, "Name", DataType.STRING, refId));
+		addProperty(new Property(HELP, "Help", DataType.STRING, refId));
 	}
 
 	private void initField() {
@@ -317,9 +317,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				Field reloaded = fields.get(idx);
 
 				if (event.isFormReadOnly()) {
-					ArrayList<Property> properties = reloaded.getProperties();
+					ArrayList<KeyValuePair> properties = reloaded.getProps();
 					int readOnlyIndex = -1;
-					for (Property p : properties) {
+					for (KeyValuePair p : properties) {
 						if (p.getName().equals(READONLY)) {
 							readOnlyIndex = properties.indexOf(p);
 							break;
@@ -327,9 +327,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					}
 
 					if (readOnlyIndex != -1) {
-						Property prop = properties.get(readOnlyIndex);
-						BooleanValue value = (BooleanValue) prop.getValue();
-						value.setValue(event.isFormReadOnly());
+						KeyValuePair prop = properties.get(readOnlyIndex);
+						prop.setValue(event.isFormReadOnly()+"");
 					}
 				}
 
@@ -429,7 +428,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 
 		assert event.getComponentId() != null;
-		if (this.id != event.getComponentId()) {
+		if (this.refId != event.getComponentId()) {
 			return;
 		}
 
@@ -562,15 +561,15 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 		}
 
-		if (field.getId() != null)
-			this.id = field.getId();
+		if (field.getRefId() != null)
+			this.refId = field.getRefId();
 
 		// reset all fieldids in previous properties
 		for (Property prop : props.values()) {
-			prop.setFieldId(id);
+			prop.setFieldRefId(refId);
 		}
 
-		setProperties(field.getProperties());
+		setProperties(field.getProps());
 
 		// Not Raw HTML
 		if (!field.isHTMLWrappedField()) {
@@ -647,10 +646,23 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	}
 
-	private void setProperties(ArrayList<Property> properties) {
+	private void setProperties(ArrayList<KeyValuePair> properties) {
 		if (properties != null) {
-			for (Property prop : properties) {
-				addProperty(prop);
+			for (KeyValuePair prop : properties) {
+				Property p = props.get(prop.getKey());
+				
+				Value value = null;
+				switch (p.getType()) {
+				case CHECKBOX:
+					value = new BooleanValue(prop.getValue().equals("true"));
+					break;
+				default:
+					value = new StringValue(prop.getValue());
+					break;
+				}
+				
+				p.setValue(value);
+				addProperty(p);
 			}
 		}
 	}
@@ -687,10 +699,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	 *            Boolean, Double
 	 */
 	protected void firePropertyChanged(Property property, Object value) {
-		boolean isForField = property.getFieldId() != null;
+		boolean isForField = property.getFieldRefId() != null;
 
-		Long componentId = property.getFieldId() != null ? property
-				.getFieldId() : property.getFormId();
+		String componentId = property.getFieldRefId() != null ? property
+				.getFieldRefId() : property.getFormRefId();
 
 		AppContext.getEventBus().fireEventFromSource(
 				new PropertyChangedEvent(componentId, property.getName(),
@@ -801,7 +813,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	public void delete() {
-		if (field.getId() != null) {
+		if (field.getRefId() != null) {
 			AppContext.getDispatcher().execute(
 					new DeleteFormModelRequest(field),
 					new TaskServiceCallback<DeleteFormModelResponse>() {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.duggan.workflow.shared.model.Value;
@@ -19,8 +18,6 @@ public class FormModel implements Serializable, Listable {
 	public static final String FIELDMODEL = "FIELDMODEL";
 	public static final String PROPERTYMODEL = "PROPERTYMODEL";
 	
-	@XmlTransient
-	protected Long Id;
 	private String refId;
 	protected String name;
 	protected String caption;
@@ -30,12 +27,6 @@ public class FormModel implements Serializable, Listable {
 		
 	}
 	
-	public Long getId() {
-		return Id;
-	}
-	public void setId(Long id) {
-		Id = id;
-	}
 	public String getName() {
 		return name;
 	}
@@ -89,5 +80,33 @@ public class FormModel implements Serializable, Listable {
 
 	public void setRefId(String refId) {
 		this.refId = refId;
+	}
+
+	public ArrayList<KeyValuePair> getProps() {
+		return props;
+	}
+
+	public void setProps(ArrayList<KeyValuePair> props) {
+		this.props = props;
+	}
+	
+	public String getProperty(String propertyName) {
+		for(KeyValuePair pair: props){
+			if(pair.getKey().equals(propertyName)){
+				return pair.getValue();
+			}
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		FormModel other = (FormModel)obj;
+		
+		if(refId!=null && other.refId!=null){
+			return refId.equals(other.FORMMODEL);
+		}
+		return super.equals(obj);
 	}
 }

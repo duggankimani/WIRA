@@ -17,7 +17,14 @@ import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
+import com.duggan.workflow.shared.model.BooleanValue;
+import com.duggan.workflow.shared.model.DoubleValue;
+import com.duggan.workflow.shared.model.IntValue;
+import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
+import com.duggan.workflow.shared.model.form.Property;
 
 public class JaxbFormExportProviderImpl implements ContextResolver<JAXBContext> {
 
@@ -31,7 +38,10 @@ public class JaxbFormExportProviderImpl implements ContextResolver<JAXBContext> 
 		}
 		
 		try{
-			context = JAXBContext.newInstance(ProcessDefModel.class,TaskStepModel.class,ADTaskStepTrigger.class, ADTrigger.class, ADDocType.class, 
+			context = JAXBContext.newInstance(
+					Form.class, Field.class, Property.class, 
+					StringValue.class,DoubleValue.class,IntValue.class,BooleanValue.class,
+					ProcessDefModel.class,TaskStepModel.class,ADTaskStepTrigger.class, ADTrigger.class, ADDocType.class, 
 					ADProcessCategory.class,ADForm.class, ADOutputDoc.class, ADField.class, ADProperty.class,ADValue.class, 
 					ADKeyValuePair.class, KeyValuePair.class, CatalogModel.class, CatalogColumnModel.class);
 			return context;

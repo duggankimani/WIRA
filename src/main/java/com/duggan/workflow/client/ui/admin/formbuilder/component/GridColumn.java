@@ -85,7 +85,7 @@ PropertyChangedHandler{
 		}
 
 		assert event.getComponentId()!=null;
-		if (!fieldWidget.getField().getId().equals(event.getComponentId())) {
+		if (!fieldWidget.getField().getRefId().equals(event.getComponentId())) {
 			return;
 		}
 

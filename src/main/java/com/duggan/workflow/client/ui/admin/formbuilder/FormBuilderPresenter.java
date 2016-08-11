@@ -105,6 +105,8 @@ public class FormBuilderPresenter extends
 
 	Long formId=null;
 	String processRefId = null;
+
+	private String formRefId;
 	
 	@Inject
 	public FormBuilderPresenter(final EventBus eventBus,
@@ -133,15 +135,16 @@ public class FormBuilderPresenter extends
 						PlaceRequest.Builder builder = new PlaceRequest.Builder()
 						.nameToken(NameTokens.formbuilder)
 						.with("p", processRefId);
-						if (form==null || form.getId() == null) {
+						if (form==null || form.getRefId() == null) {
 							placeManager.revealPlace(builder.build());
 							return;
 						}
 						
-						builder.with("formid", form.getId()+"");
+						builder.with("formRefId", form.getRefId()+"");
+						
 						//History.newItem("formbuilder;p="+processRefId+";formid="+form.getId(), false);
 						
-						loadForm(form.getId());						
+						loadForm(form.getRefId());						
 					}
 				});
 
@@ -156,7 +159,7 @@ public class FormBuilderPresenter extends
 				Form form = getView().getForm();
 				form.setCaption(null);
 				form.setName(null);
-				form.setId(null);
+				form.setRefId(null);
 				saveForm(form);
 			}
 		});
@@ -326,13 +329,8 @@ public class FormBuilderPresenter extends
 		fireEvent(new ProcessChildLoadedEvent(this));
 		processRefId = request.getParameter("p",null);
 		
-		String value = request.getParameter("formid", "");	
-		Long formId=null;
-		
-		if(!value.isEmpty() && value.matches("[0-9]+")){
-			formId = new Long(value);
-		}
-		setFormId(formId);
+		String value = request.getParameter("formRefId", null);	
+		setFormRefId(value);
 		
 		boolean isProcessSelected = processRefId!=null || !processRefId.equals(0L);
 		getView().enableCreateForm(isProcessSelected);		
@@ -348,10 +346,10 @@ public class FormBuilderPresenter extends
 		getView().getProcessDropDown().setValue(def);
 	}
 
-	protected void loadForm(Long id) {
+	protected void loadForm(String formRef) {
 		GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL,
-				id, true);
-		setFormId(id);
+				formRef, true);
+		setFormRefId(formRef);
 		dispatcher.execute(request,
 				new TaskServiceCallback<GetFormModelResponse>() {
 					@Override
@@ -379,7 +377,7 @@ public class FormBuilderPresenter extends
 					public void processResult(MultiRequestActionResult result) {
 						CreateFormResponse createResp = (CreateFormResponse)result.get(0);
 						Form form=createResp.getForm();
-						setFormId(form.getId());
+						setFormRefId(form.getRefId());
 						getView().setForm(form);
 						
 						GetFormsResponse response = (GetFormsResponse)result.get(1);
@@ -393,9 +391,9 @@ public class FormBuilderPresenter extends
 		action.addRequest(new GetProcessesRequest(false));
 		action.addRequest(new GetFormsRequest(processRefId));
 		
-		if(formId!=null){
+		if(formRefId!=null){
 			GetFormModelRequest request = new GetFormModelRequest(Form.FORMMODEL,
-					formId, true);
+					formRefId, true);
 			action.addRequest(request);
 		}
 		
@@ -463,8 +461,8 @@ public class FormBuilderPresenter extends
 		saveForm(getView().getForm());
 	}
 
-	public void setFormId(Long formId) {
-		this.formId = formId;
+	public void setFormRefId(String formRefId) {
+		this.formRefId = formRefId;
 	}
 
 }

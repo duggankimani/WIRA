@@ -291,7 +291,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 				"field", adfield));
 	}
 	
-	public Field getJsonField(String refId){
+	public Field findJsonField(String refId){
 		String sql = "select field from adfieldjson where field @> '{\"refId\":\":refId\"}'";
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("refId", refId);
@@ -302,7 +302,9 @@ public class FormDaoImpl extends BaseDaoImpl {
 
 	
 	public ArrayList<Field> findJsonFieldsForForm(String formRef) {
-		String sql = "select field from adfieldjson where field @> '{\"formRef\":\":formRef\"}'";
+		String sql = "select field from adfieldjson where "
+				+ "field @> '{\"formRef\":\":formRef\"}' "
+				+ "and not field ?? 'parentRef'";//no parent field -ie. load direct children of form
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("formRef", formRef);
 		
@@ -311,4 +313,23 @@ public class FormDaoImpl extends BaseDaoImpl {
 		return fields;
 	}
 
+	public ArrayList<Field> findJsonFieldsForField(String parentRef) {
+		String sql ="select field from adfieldjson where field @> '{\"parentRef\":\":parentRef\"}'";
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("parentRef", parentRef);
+		
+		ArrayList<Field> fields = (ArrayList<Field>)getResultListJson(sql,parameters,Field.class);
+		
+		return fields;
+	}
+
+	public List<Form> findJsonFormsForProcess(String processRefId) {
+		String sql ="select form from adform_json where form @> '{\"processRefId\":\":processRefId\"}'";
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("processRefId", processRefId);
+		
+		ArrayList<Form> forms = (ArrayList<Form>)getResultListJson(sql,parameters,Form.class);
+		
+		return forms;
+	}
 }

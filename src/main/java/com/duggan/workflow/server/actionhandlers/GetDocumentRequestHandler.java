@@ -29,7 +29,8 @@ public class GetDocumentRequestHandler extends
 		
 		Doc doc = null;
 		if(action.getTaskId()==null){
-			doc = DocumentDaoHelper.getDocument(action.getDocRefId());
+			doc = DocumentDaoHelper.getDocJson(action.getDocRefId());
+			//doc = DocumentDaoHelper.getDocument(action.getDocRefId());
 		}else{
 			doc = JBPMHelper.get().getTask(action.getTaskId());
 		}

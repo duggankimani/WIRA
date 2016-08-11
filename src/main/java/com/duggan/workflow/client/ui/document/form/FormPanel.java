@@ -34,6 +34,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.ScriptInjector;
@@ -90,22 +91,20 @@ public class FormPanel extends Composite {
 
 		form.getCaption();
 		divFormHelp.setInnerText("");
-		if (form.getProperties() != null)
-			for (Property prop : form.getProperties()) {
+		if (form.getProps() != null)
+			for (KeyValuePair prop : form.getProps()) {
 				if (prop.getName() != null) {
+					String val = prop.getValue();
 					if (prop.getName().equals(HasProperties.CAPTION)) {
-						Value val = prop.getValue();
+						
 						if (val != null) {
-							divFormCaption.setInnerHTML(((StringValue) val)
-									.getValue());
+							divFormCaption.setInnerHTML(val);
 						}
 
 					}
 					if (prop.getName().equals(HasProperties.HELP)) {
-						Value val = prop.getValue();
 						if (val != null) {
-							divFormHelp.setInnerHTML(((StringValue) val)
-									.getValue());
+							divFormHelp.setInnerHTML(val);
 						}
 					}
 				}
@@ -215,7 +214,7 @@ public class FormPanel extends Composite {
 								"Read only", DataType.BOOLEAN);
 						prop.setValue(new BooleanValue(null,
 								HasProperties.READONLY, false));
-						field.getProperties().add(prop);
+						field.addProperty(prop);
 					}
 				}
 			}

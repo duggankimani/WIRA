@@ -145,7 +145,7 @@ public class Uploader extends Composite {
 		}
 	};
 
-	public static final String FIELD_ID = "fieldId";
+	public static final String FIELD_REFID = "fieldRefId";
 	
 	public void cancel(){
 		ArrayList<IUploader> uploaders = new ArrayList<IUploader>();
@@ -182,6 +182,6 @@ public class Uploader extends Composite {
 	}
 	
 	public String getFieldId(){
-		return context.getContext(FIELD_ID);
+		return context.getContext(FIELD_REFID);
 	}
 }

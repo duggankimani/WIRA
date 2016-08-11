@@ -34,7 +34,7 @@ public class RadioGroup extends FieldWidget implements IsSelectionField{
 	
 	public RadioGroup() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget= uiBinder.createAndBindUi(this);
 		

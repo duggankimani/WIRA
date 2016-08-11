@@ -51,8 +51,8 @@ public class NumberField extends FieldWidget{
 	
 	public NumberField(){
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
-		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
 		addProperty(new Property(FORMULA, "Formula", DataType.STRING));
@@ -76,8 +76,8 @@ public class NumberField extends FieldWidget{
 	public NumberField(Element numberInput, boolean designMode){
 		super();
 		this.designMode = designMode;
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
-		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
+		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
 		addProperty(new Property(FORMULA, "Formula", DataType.STRING));

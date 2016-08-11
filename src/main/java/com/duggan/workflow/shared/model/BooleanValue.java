@@ -2,6 +2,15 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement
+@XmlType(propOrder={"key","value"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BooleanValue implements Value, Serializable{
 
 	/**
@@ -11,6 +20,7 @@ public class BooleanValue implements Value, Serializable{
 	
 	private Boolean value;
 	private String key;
+	@XmlTransient
 	private Long id;
 	
 	public BooleanValue(){		

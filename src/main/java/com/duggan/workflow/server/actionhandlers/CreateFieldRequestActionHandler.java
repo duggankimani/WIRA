@@ -21,7 +21,8 @@ public class CreateFieldRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		Field field = action.getField();
 		
-		Field rtnfield = FormDaoHelper.createField(field);
+		//Field rtnfield = FormDaoHelper.createField(field);
+		Field rtnfield = FormDaoHelper.createJson(field);
 		
 		CreateFieldResponse response = (CreateFieldResponse)actionResult;
 		

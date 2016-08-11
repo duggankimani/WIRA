@@ -24,18 +24,6 @@ public class TestDeleteForm {
 		dao = DB.getFormDao();
 	}
 	
-	@Test
-	public void delete(){
-		Form form = FormDaoHelper.getForm(47L, true);
-		Property p=form.getProperties().get(1);
-		Value v = p.getValue();
-		
-		Assert.assertNotNull(v);
-		Assert.assertNotNull(v.getValue());
-		System.err.println(p.getCaption()+" :: "+v.getValue());
-		//FormDaoHelper.delete(form);
-	}
-	
 	@After
 	public void close(){
 		DB.commitTransaction();

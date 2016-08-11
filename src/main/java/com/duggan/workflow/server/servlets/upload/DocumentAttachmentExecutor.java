@@ -33,7 +33,7 @@ public class DocumentAttachmentExecutor extends FileExecutor{
 					
 					//Name of the form field against which this file was uploaded 
 					String formFieldName= request.getParameter("formFieldName");
-					String fieldIdStr= request.getParameter("fieldId");
+					String fieldIdStr= request.getParameter("fieldRefId");
 					String contentType=item.getContentType();					
 					String name = item.getName();
 					long size = item.getSize();

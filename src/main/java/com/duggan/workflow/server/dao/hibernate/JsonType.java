@@ -32,8 +32,13 @@ import com.duggan.workflow.server.dao.model.CatalogModel;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.shared.model.BooleanValue;
+import com.duggan.workflow.shared.model.DateValue;
+import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.IntValue;
+import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
@@ -109,8 +114,9 @@ public abstract class JsonType implements UserType {
 			
 			return mapper.createJSONUnmarshaller().unmarshalFromJSON(new ByteArrayInputStream(cellContent.getBytes("UTF-8")), returnedClass());
 		} catch (final Exception ex) {
-			throw new RuntimeException("Failed to convert String to "
-					+ returnedClass() + ex.getMessage(), ex);
+			ex.printStackTrace();
+			throw new RuntimeException("Failed to convert String \" "+cellContent+" \" to "
+					+ returnedClass() +" "+ ex.getMessage(), ex);
 		}
 	}
 
@@ -142,8 +148,12 @@ public abstract class JsonType implements UserType {
 	public static JSONJAXBContext getJaxbContext() throws JAXBException {
 
 		JSONJAXBContext context = new JSONJAXBContext(JSONConfiguration
-				.natural().build(),Form.class, Field.class, Property.class, 
-				StringValue.class,DoubleValue.class,IntValue.class,BooleanValue.class,
+				.natural().build(),
+				DocValues.class,
+				Form.class, Field.class, Property.class, 
+				StringValue.class,DoubleValue.class,IntValue.class, LongValue.class,
+				BooleanValue.class,DateValue.class,
+				Document.class,DocumentLine.class,Doc.class,
 				ProcessDefModel.class, TaskStepModel.class,
 				ADTaskStepTrigger.class, ADTrigger.class, ADDocType.class,
 				ADProcessCategory.class, ADForm.class, ADOutputDoc.class,

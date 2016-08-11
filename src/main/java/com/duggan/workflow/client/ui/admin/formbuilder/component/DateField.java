@@ -53,7 +53,7 @@ public class DateField extends FieldWidget {
 
 	public DateField() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		widget = uiBinder.createAndBindUi(this);
@@ -73,7 +73,7 @@ public class DateField extends FieldWidget {
 	public DateField(Element elementDate, boolean designMode) {
 		super();
 		this.designMode = designMode;
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 

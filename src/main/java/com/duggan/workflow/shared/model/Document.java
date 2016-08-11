@@ -7,7 +7,17 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
+import com.duggan.workflow.shared.model.form.Property;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.SerializableObj;
 
 /**
  * DTO for {@link com.duggan.workflow.server.dao.model.DocumentModel}
@@ -15,6 +25,11 @@ import com.wira.commons.shared.models.HTUser;
  * @author duggan
  *
  */
+@XmlSeeAlso({Document.class,DocumentLine.class,StringValue.class,DoubleValue.class,
+	IntValue.class,BooleanValue.class,DateValue.class,Doc.class,SerializableObj.class
+	})
+@XmlRootElement(name="document")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Document extends Doc implements Serializable {
 
 	/**
@@ -22,10 +37,12 @@ public class Document extends Doc implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	private Long id;
 
 	private DocumentType type;
 
+	@XmlTransient
 	private HTUser owner;
 
 	protected String description;

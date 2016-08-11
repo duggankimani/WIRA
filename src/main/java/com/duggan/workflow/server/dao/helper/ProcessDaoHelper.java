@@ -55,6 +55,7 @@ import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
+import com.duggan.workflow.shared.model.form.Form;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.Listable;
 import com.wira.commons.shared.models.UserGroup;
@@ -402,7 +403,7 @@ public class ProcessDaoHelper {
 		dto.setCondition(model.getCondition());
 		dto.setFormName(model.getForm() == null ? null : model.getForm()
 				.getCaption());
-		dto.setFormId(model.getForm() == null ? null : model.getForm().getId());
+		dto.setFormRefId(model.getFormRef());
 		dto.setId(model.getId());
 		dto.setMode(model.getMode());
 		dto.setNodeId(model.getNodeId());
@@ -426,8 +427,7 @@ public class ProcessDaoHelper {
 			model = dao.getById(TaskStepModel.class, step.getId());
 		}
 		model.setCondition(step.getCondition());
-		model.setForm(step.getFormId() == null ? null : dao.getById(
-				ADForm.class, step.getFormId()));
+		model.setFormRef(step.getFormRefId());
 		model.setDoc(step.getOutputDocId() == null ? null : dao.getById(
 				ADOutputDoc.class, step.getOutputDocId()));
 		model.setMode(step.getMode());
@@ -813,7 +813,8 @@ public class ProcessDaoHelper {
 			
 			//Task Steps
 			for(TaskStepModel step: taskSteps){
-				ADForm form = step.getForm();
+				//ADForm form = step.getForm();
+				Form form = FormDaoHelper.getFormJson(step.getRefId(), false); 
 				ADOutputDoc doc = step.getDoc();
 				
 				Collection<ADTaskStepTrigger> stepTriggers = step.getTaskStepTriggers();
@@ -841,15 +842,16 @@ public class ProcessDaoHelper {
 				}else{
 					stepName = "00"+"_"+stepName;
 				}
-				step.setFormRefId(step.getForm()==null? null:  step.getForm().getRefId());
+				//step.setFormRefId(step.getForm()==null? null:  step.getForm().getRefId());
 				step.setOutputRefId(step.getDoc()==null? null: step.getDoc().getRefId());
 				IOUtils.write(exportObject(step), new FileOutputStream(new File(
 						stepsFolder + stepName)));
 			}
 			
 			//Forms
-			List<ADForm> forms = DB.getFormDao().getAllForms(model.getId());
-			for(ADForm form: forms){
+			//List<ADForm> forms = DB.getFormDao().getAllForms(model.getId());
+			List<Form> forms = FormDaoHelper.getFormsJson(model.getRefId(),true);
+			for(Form form: forms){
 				String name = form.getName()+".xml";
 				IOUtils.write(exportObject(form), new FileOutputStream(new File(
 						formsFolder + name)));

@@ -29,10 +29,10 @@ public class JSField extends FieldWidget {
 
 	@Override
 	public void defaultProperties() {
-		addProperty(new Property(NAME, "Name", DataType.STRING, id));
+		addProperty(new Property(NAME, "Name", DataType.STRING, refId));
 		addProperty(new Property(JS, "Content", DataType.STRINGLONG,
-				id));
-		addProperty(new Property(HELP, "Help", DataType.STRING, id));
+				refId));
+		addProperty(new Property(HELP, "Help", DataType.STRING, refId));
 	}
 
 	@Override

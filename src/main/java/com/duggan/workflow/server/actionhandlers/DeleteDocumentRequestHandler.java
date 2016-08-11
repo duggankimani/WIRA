@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.shared.requests.DeleteDocumentRequest;
 import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.google.inject.Inject;
@@ -21,10 +21,11 @@ public class DeleteDocumentRequestHandler extends
 			throws ActionException {
 		String docRefId = action.getDocRefId();
 		assert docRefId!=null;
-		boolean deleted = DB.getDocumentDao().deleteDocument(docRefId);
+//		boolean deleted = DB.getDocumentDao().deleteDocument(docRefId);
+		DocumentDaoHelper.deleteJsonDoc(docRefId);
 		
 		DeleteDocumentResponse response = (DeleteDocumentResponse)actionResult;
-		response.setDelete(deleted);
+		response.setDelete(true);
 	}
 
 	@Override

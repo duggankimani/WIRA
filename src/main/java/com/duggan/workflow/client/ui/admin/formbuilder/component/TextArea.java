@@ -54,9 +54,9 @@ public class TextArea extends FieldWidget {
 
 	public TextArea() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
-				id));
+				refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(LABELPOSITION, "Label Position",
 				DataType.SELECTBASIC, new KeyValuePair("top", "Top"),
@@ -71,9 +71,9 @@ public class TextArea extends FieldWidget {
 
 	public TextArea(Element textInput, boolean designMode) {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
-				id));
+				refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(LABELPOSITION, "Label Position",
 				DataType.SELECTBASIC, new KeyValuePair("top", "Top"),

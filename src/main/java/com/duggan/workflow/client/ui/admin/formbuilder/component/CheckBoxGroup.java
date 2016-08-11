@@ -39,7 +39,7 @@ public class CheckBoxGroup extends FieldWidget implements IsSelectionField {
 
 	public CheckBoxGroup() {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
@@ -47,7 +47,7 @@ public class CheckBoxGroup extends FieldWidget implements IsSelectionField {
 	
 	public CheckBoxGroup(ArrayList<Element> checkboxes) {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, id));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);

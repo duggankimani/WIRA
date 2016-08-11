@@ -46,7 +46,7 @@ public class InputSelection extends Composite {
 			public void onValueChange(ValueChangeEvent<String> event) {
 				String val = event.getValue();
 
-				PropertyChangedEvent evt = new PropertyChangedEvent(property.getFieldId(), property.getName(), getValues(), true);
+				PropertyChangedEvent evt = new PropertyChangedEvent(property.getFieldRefId(), property.getName(), getValues(), true);
 				AppContext.getEventBus().fireEventFromSource(evt, this);
 				
 				if(val.isEmpty()){

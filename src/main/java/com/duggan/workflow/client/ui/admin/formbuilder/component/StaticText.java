@@ -29,9 +29,9 @@ public class StaticText extends FieldWidget {
 	
 	@Override
 	public void defaultProperties() {
-		addProperty(new Property(NAME, "Name", DataType.STRING, id));
-		addProperty(new Property(STATICCONTENT, "Content", DataType.STRINGLONG, id));
-		addProperty(new Property(HELP, "Help", DataType.STRING, id));
+		addProperty(new Property(NAME, "Name", DataType.STRING, refId));
+		addProperty(new Property(STATICCONTENT, "Content", DataType.STRINGLONG, refId));
+		addProperty(new Property(HELP, "Help", DataType.STRING, refId));
 	}
 
 	@Override

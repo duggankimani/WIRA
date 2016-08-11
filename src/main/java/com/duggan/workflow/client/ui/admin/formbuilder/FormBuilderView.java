@@ -21,6 +21,7 @@ import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -143,7 +144,7 @@ public class FormBuilderView extends ViewImpl implements
 				if(idx==-1){
 					draggable.delete();
 				}else{
-					draggable.setFormId(form.getId(),form.getRefId());		
+					draggable.setFormId(null,form.getRefId());		
 					draggable.getField().setPosition(idx);
 					draggable.save();			
 					draggable.onDragEnd();
@@ -200,7 +201,7 @@ public class FormBuilderView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event){
 				
-				if(form.getId()!=null){
+				if(form.getRefId()!=null){
 					AppManager.showPropertyPanel(form,getProperties());
 				}
 			}
@@ -210,16 +211,16 @@ public class FormBuilderView extends ViewImpl implements
 			@Override
 			public void onValueChange(ValueChangeEvent<Form> event) {
 				
-				Long previousId = null;
+				String previousRefId = null;
 				if(form!=null){
-					previousId = form.getId();
+					previousRefId = form.getRefId();
 				}
 				
-				Long id = event.getValue()==null? null: event.getValue().getId();
+				String formRefId = event.getValue()==null? null: event.getValue().getRefId();
 				
-				if(previousId==null || id==null){
+				if(previousRefId==null || formRefId==null){
 					clear();
-				}else if(previousId!=null && previousId.equals(id)){
+				}else if(previousRefId!=null && previousRefId.equals(formRefId)){
 					return;
 				}
 					
@@ -265,7 +266,7 @@ public class FormBuilderView extends ViewImpl implements
 		form.setCaption(caption);
 		form.setProperties(getProperties());
 		form.setFields(getFields());
-		form.setId(form.getId());
+		form.setRefId(form.getRefId());
 		return form;
 	}
 	
@@ -405,7 +406,7 @@ public class FormBuilderView extends ViewImpl implements
 		registerInputDrag();
 		activatePalette();
 		
-		if(form==null || form.getId()==null){
+		if(form==null || form.getRefId()==null){
 			aDeleteForm.setVisible(false);
 			aCloneForm.setVisible(false);
 			aExportForm.setVisible(false);
@@ -420,17 +421,11 @@ public class FormBuilderView extends ViewImpl implements
 			return;
 		}
 		
-		if(form.getProperties()!=null)
-		for(Property prop: form.getProperties()){
-			addProperty(prop);
-			
-			Value val = prop.getValue();
-			if(val!=null){
-				setProperty(prop.getName(), ((StringValue)val).getValue());
-			}else{
-				setProperty(prop.getName(), null);
-			}
-			
+		if(form.getProps()!=null)
+		for(KeyValuePair prop: form.getProps()){
+			Property property=props.get(prop.getKey());
+			property.setValue(new StringValue(prop.getValue()));
+			addProperty(property);
 		}
 
 		String caption = getPropertyValue(CAPTION);
@@ -547,7 +542,7 @@ public class FormBuilderView extends ViewImpl implements
 	public void setForms(ArrayList<Form> forms) {
 		frmDropdown.setItems(forms);
 		if(form!=null)
-		if(form.getId()!=null){
+		if(form.getRefId()!=null){
 			frmDropdown.setValue(form);
 		}
 	}
@@ -559,7 +554,7 @@ public class FormBuilderView extends ViewImpl implements
 		ArrayList<Property> properties = getProperties();
 		for(Property prop: properties){
 			prop.setValue(null);
-			prop.setId(null);
+			prop.setRefId(null);
 		}
 		
 		vPanel.clear();
