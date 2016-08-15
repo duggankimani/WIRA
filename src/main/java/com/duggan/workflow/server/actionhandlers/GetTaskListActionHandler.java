@@ -47,7 +47,7 @@ public class GetTaskListActionHandler extends
 		switch (type) {
 		case DRAFT:
 			status = DocStatus.DRAFTED;
-			summary = DocumentDaoHelper.getAllDocuments(action.getOffset(),action.getLength(),status);
+			summary = DocumentDaoHelper.getAllDocumentsJson(action.getOffset(),action.getLength(),false,status);
 			break;
 //		case APPROVED:
 //			status = DocStatus.APPROVED;
@@ -58,7 +58,7 @@ public class GetTaskListActionHandler extends
 //			summary = DocumentDaoHelper.getAllDocuments(status);
 //			break;
 		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocuments(action.getOffset(),action.getLength(),DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
+			summary = DocumentDaoHelper.getAllDocumentsJson(action.getOffset(),action.getLength(),false,DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
 					DocStatus.COMPLETED);
 			summary.addAll(getPendingApprovals(userId, type,action.getOffset(),action.getLength()));
 			break;
@@ -95,7 +95,8 @@ public class GetTaskListActionHandler extends
 					//ensure current user has rights to view
 					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,true);
 				}else if(action.getDocRefId()!=null){
-					doc = DocumentDaoHelper.getDocument(action.getDocRefId(),true);
+					//doc = DocumentDaoHelper.getDocument(action.getDocRefId(),true);
+					doc = DocumentDaoHelper.getDocJson(action.getDocRefId(),true);
 				}
 				
 				if(doc!=null)

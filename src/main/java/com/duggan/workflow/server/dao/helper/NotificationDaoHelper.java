@@ -40,7 +40,8 @@ public class NotificationDaoHelper {
 		}
 		
 		if(notification.getNotificationType()==NotificationType.TASKDELEGATED){
-			Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
+			Document doc = (Document)DocumentDaoHelper.getDocJson(notification.getDocRefId());
+			//Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
 			DocumentType type = doc.getType();
 			notification.setDocumentType(type);
 			notification.setOwner(doc.getOwner());

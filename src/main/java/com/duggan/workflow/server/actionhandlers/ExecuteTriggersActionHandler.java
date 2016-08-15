@@ -118,7 +118,7 @@ public class ExecuteTriggersActionHandler extends
 					((Document)doc).getStatus()==DocStatus.DRAFTED){
 				//Save this doc -- ADDED BY DUGGAN 27/09/2015  -
 				//Draft Documents should be saved on navigation
-				doc = DocumentDaoHelper.save((Document)doc);
+				doc = DocumentDaoHelper.createJson((Document)doc);
 			}
 		}
 		

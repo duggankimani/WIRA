@@ -44,7 +44,10 @@ public class CustomNotificationHandler {
 		
 		Document doc = params.get("document")==null? null : (Document)params.get("document");
 		try{
-			doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
+			/*
+			 * Duggan 12/08/2016
+			 * doc = DocumentDaoHelper.getDocument(Long.parseLong(documentId));
+			 */
 			docRefId = doc.getRefId();
 		}catch(Exception e){}
 		

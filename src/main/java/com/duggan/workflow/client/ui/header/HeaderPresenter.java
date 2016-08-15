@@ -165,7 +165,7 @@ public class HeaderPresenter extends
 					return;
 				}
 
-				loadAlerts();
+				//loadAlerts();
 			}
 		});
 

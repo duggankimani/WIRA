@@ -3,22 +3,39 @@ package com.wira.commons.shared.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+@XmlRootElement(name="user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HTUser extends SerializableObj implements Listable,HasKey,Serializable,IsSerializable {
 
 	private static final long serialVersionUID = -5249516544970187459L;
+	@XmlTransient
 	private Long id;
+
 	private String name;
 	private String userId;
 	private String email;
 	private String surname;
+	
+	@XmlTransient
 	private String password;
+	@XmlTransient
 	private ArrayList<UserGroup> groups ;
+	@XmlTransient
 	private int participated;
+	@XmlTransient
 	private int inbox;
+	@XmlTransient
 	private int drafts;
+	@XmlTransient
 	private ArrayList<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
+	@XmlTransient
 	private Org org;
 	
 	public HTUser() {

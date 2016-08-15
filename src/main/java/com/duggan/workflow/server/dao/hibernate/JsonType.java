@@ -14,6 +14,7 @@ import java.sql.Types;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
 
@@ -49,6 +50,8 @@ import com.sun.jersey.api.json.JSONJAXBContext;
 
 public abstract class JsonType implements UserType {
 
+	Logger logger = Logger.getLogger(getClass());
+	
 	@Override
 	public int[] sqlTypes() {
 		return new int[] { Types.JAVA_OBJECT };
@@ -152,7 +155,7 @@ public abstract class JsonType implements UserType {
 				DocValues.class,
 				Form.class, Field.class, Property.class, 
 				StringValue.class,DoubleValue.class,IntValue.class, LongValue.class,
-				BooleanValue.class,DateValue.class,
+				BooleanValue.class,DateValue.class,KeyValue.class,
 				Document.class,DocumentLine.class,Doc.class,
 				ProcessDefModel.class, TaskStepModel.class,
 				ADTaskStepTrigger.class, ADTrigger.class, ADDocType.class,

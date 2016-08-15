@@ -28,7 +28,6 @@ public class CreateDocumentActionHandler extends
 			throws ActionException {
 				
 		Document doc = action.getDocument();
-		
 		//doc = DocumentDaoHelper.save(doc);
 		doc = DocumentDaoHelper.createJson(doc);
 				

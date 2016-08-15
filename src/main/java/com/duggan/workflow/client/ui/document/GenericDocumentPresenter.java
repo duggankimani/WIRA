@@ -266,7 +266,6 @@ public class GenericDocumentPresenter extends
 	}
 
 	private Long taskId;
-	private Long documentId;
 	private String docRefId;
 
 	private Doc doc;
@@ -1242,7 +1241,6 @@ public class GenericDocumentPresenter extends
 		getView().setComment("");
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
-		comment.setDocumentId(documentId);
 		comment.setDocRefId(docRefId);
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
@@ -1391,10 +1389,8 @@ public class GenericDocumentPresenter extends
 
 		docRefId = doc.getRefId();
 		if (doc instanceof Document) {
-			documentId = (Long) doc.getId();
 			taskId = null;
 		} else {
-			documentId = ((HTSummary) doc).getDocumentRef();
 			taskId = ((HTSummary) doc).getId();
 		}
 
@@ -1695,17 +1691,14 @@ public class GenericDocumentPresenter extends
 		this.doc = result;
 		HashMap<String, Value> vals = doc.getValues();
 
-		long docId = 0l;
 		// this.documentId = docId;
 		this.docRefId = result.getRefId();
 
 		String taskDisplayName = "";
 		if (doc instanceof Document) {
-			docId = (Long) doc.getId();
 
 		} else {
 			HTSummary task = ((HTSummary) doc);
-			docId = task.getDocumentRef();
 			this.taskId = task.getId();
 
 			if (task.getName() != null)

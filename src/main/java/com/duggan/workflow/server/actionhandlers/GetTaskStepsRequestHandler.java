@@ -37,7 +37,8 @@ public class GetTaskStepsRequestHandler extends
 			if(action.getDoc() instanceof HTask){
 				steps = ProcessDaoHelper.getTaskStepsByTaskId(((HTask)action.getDoc()).getId());
 			}else{
-				steps = ProcessDaoHelper.getTaskStepsByDocumentId(((Document)action.getDoc()).getDocumentId());
+				//steps = ProcessDaoHelper.getTaskStepsByDocumentId(((Document)action.getDoc()).getDocumentId());
+				steps = ProcessDaoHelper.getTaskStepsByDocumentJson(((Document)action.getDoc()).getRefId());
 			}
 			
 			((GetTaskStepsResponse)actionResult).setConditionalFields(getConditionalFields(steps));

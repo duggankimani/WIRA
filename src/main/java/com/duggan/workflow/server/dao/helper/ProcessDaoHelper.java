@@ -44,6 +44,7 @@ import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.AssignmentDto;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessCategory;
@@ -475,7 +476,32 @@ public class ProcessDaoHelper {
 		}
 		return steps;
 	}
+	
+	public static List<TaskStepDTO> getTaskStepsByDocumentJson(String docRefId) {
+		Document docModel = DB.getDocumentDao().getDocJson(docRefId, false);
 
+		String processId = docModel.getProcessId();
+		if (processId == null && docModel.getType() != null) {
+			processId = docModel.getType()==null? docModel.getProcessId(): docModel.getType().getProcessId();
+		}
+		List<TaskStepModel> models = DB.getProcessDao().getTaskSteps(processId,
+				null);
+
+		List<TaskStepDTO> steps = new ArrayList<>();
+		for (TaskStepModel m : models) {
+			steps.add(getStep(m));
+		}
+		return steps;
+	}
+
+	/**
+	 * Please use {@link #getTaskStepsByDocumentJson(String)}
+	 * 
+	 * 
+	 * @param documentId
+	 * @return
+	 */
+	@Deprecated
 	public static List<TaskStepDTO> getTaskStepsByDocumentId(Long documentId) {
 
 		DocumentModel docModel = DB.getDocumentDao().getById(documentId);
@@ -496,12 +522,14 @@ public class ProcessDaoHelper {
 
 	public static List<TaskStepDTO> getTaskStepsByDocRefId(String docRefId) {
 
-		DocumentModel docModel = DB.getDocumentDao().findByRefId(docRefId,
-				DocumentModel.class);
+//		DocumentModel docModel = DB.getDocumentDao().findByRefId(docRefId,
+//				DocumentModel.class);
+		
+		Document docModel = DB.getDocumentDao().getDocJson(docRefId,false);
 
 		String processId = docModel.getProcessId();
 		if (processId == null && docModel.getType() != null) {
-			processId = docModel.getType().getProcessDef().getProcessId();
+			processId = docModel.getType().getProcessId();
 		}
 		List<TaskStepModel> models = DB.getProcessDao().getTaskSteps(processId,
 				null);

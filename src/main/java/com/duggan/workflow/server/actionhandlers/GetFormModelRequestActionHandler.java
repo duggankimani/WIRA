@@ -61,8 +61,8 @@ public class GetFormModelRequestActionHandler extends
 					models.add(model);
 				}
 												
-			}else if(action.getDocumentId()!=null){
-				steps= ProcessDaoHelper.getTaskStepsByDocumentId(action.getDocumentId());
+			}else if(action.getDocRefId()!=null){
+				steps= ProcessDaoHelper.getTaskStepsByDocumentJson(action.getDocRefId());
 				
 				if(steps.size()>0){
 					TaskStepDTO step = steps.get(0);

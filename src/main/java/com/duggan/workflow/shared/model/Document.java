@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.duggan.workflow.server.dao.hibernate.JsonType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
@@ -42,7 +43,6 @@ public class Document extends Doc implements Serializable {
 
 	private DocumentType type;
 
-	@XmlTransient
 	private HTUser owner;
 
 	protected String description;
@@ -241,7 +241,7 @@ public class Document extends Doc implements Serializable {
 	@Override
 	public String toString() {
 
-		return "DocumentId = " + id + ", subject=" + caseNo;
+		return "DocRefId = " + getRefId() + ", subject=" + caseNo;
 	}
 
 	public Document clone() {
@@ -304,5 +304,28 @@ public class Document extends Doc implements Serializable {
 
 	public void setDateSubmitted(Date dateSubmitted) {
 		this.dateSubmitted = dateSubmitted;
+	}
+	
+	@Override
+	public String getProcessName() {
+		if(super.getProcessName()==null && type!=null){
+			return type.getDisplayName();
+		}
+		return super.getProcessName();
+	}
+	
+	/**
+	 * Duggan - 12-08-2016
+	 * This method has an impact on {@link JsonType} equality 
+	 * and influences when Hibernate auto updates rows.
+	 * 
+	 * This therefore means the method should be all encompassing (Include more/ all fields) to enable hibernate 
+	 * determine when the object has changed.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		Document other = (Document)obj;
+		return other.getRefId().equals(getRefId());
 	}
 }

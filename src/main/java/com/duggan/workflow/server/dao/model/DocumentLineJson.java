@@ -13,6 +13,7 @@ import com.duggan.workflow.server.dao.hibernate.DocValues;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 
+@org.hibernate.annotations.Entity(dynamicUpdate=true)
 @Entity
 @Table(name="documentlinejson")
 public class DocumentLineJson extends PO{

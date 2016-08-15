@@ -70,8 +70,8 @@ public class ADDocType extends PO {
 	public ADDocType() {
 	}
 	
-	public ADDocType(Long id, String name, String display){
-		this.id = id;
+	public ADDocType(String refId, String name, String display){
+		this.refId = refId;
 		if(name!=null)
 			name = name.toUpperCase();
 		
@@ -79,13 +79,18 @@ public class ADDocType extends PO {
 		this.display= display;
 	}
 	
-	public ADDocType(Long id, String name, String display, String className){
-		this(id,name,display);
+	public ADDocType(String refId, String name, String display, String className){
+		this.refId = refId;
+		if(name!=null)
+			name = name.toUpperCase();
+		
+		this.name = name;
+		this.display= display;
 		this.className = className;
 	}
 	
-	public ADDocType(Long id, String name, String display, String className, ADProcessCategory category){
-		this(id,name,display,className);
+	public ADDocType(String refId, String name, String display, String className, ADProcessCategory category){
+		this(refId,name,display,className);
 		this.category = category;
 	}
 	

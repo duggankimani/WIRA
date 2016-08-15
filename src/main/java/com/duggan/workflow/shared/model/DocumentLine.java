@@ -127,8 +127,8 @@ public class DocumentLine extends SerializableObj{
 		
 		DocumentLine other = (DocumentLine)obj;
 		
-		if(id!=null && other.id!=null){
-			return id.equals(other.id);
+		if(getRefId()!=null && other.getRefId()!=null){
+			return getRefId().equals(other.getRefId());
 		}
 		
 		return super.equals(obj);

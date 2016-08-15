@@ -4,6 +4,7 @@ import static com.duggan.workflow.server.dao.helper.FormDaoHelper.getValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -93,6 +94,7 @@ public class DocumentDaoHelper {
 			}
 
 			if (document.getCaseNo() == null) {
+				/* Generate document number */
 				ADDocType type = dao.getDocumentTypeByName(document.getType()
 						.getName());
 				document.setCaseNo(dao.generateDocumentSubject(type));
@@ -132,7 +134,7 @@ public class DocumentDaoHelper {
 			model.setSessionId(document.getSessionId());
 		}
 
-		//model.getValues().clear();
+		// model.getValues().clear();
 		model.setValues(new HashSet<ADValue>());
 		Map<String, Value> vals = document.getValues();
 		Collection<Value> values = vals.values();
@@ -208,10 +210,10 @@ public class DocumentDaoHelper {
 	public static ADDocType getType(DocumentType type) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		ADDocType adtype = new ADDocType(type.getId(), type.getName(),
+		ADDocType adtype = new ADDocType(type.getRefId(), type.getName(),
 				type.getDisplayName());
 
-		if (type.getId() != null) {
+		if (type.getRefId() != null) {
 			adtype = dao.getDocumentTypeById(type.getId());
 			adtype.setName(type.getName());
 			adtype.setDisplay(type.getDisplayName());
@@ -300,7 +302,7 @@ public class DocumentDaoHelper {
 		doc.setSessionId(model.getSessionId());
 		doc.setHasAttachment(DB.getAttachmentDao().getHasAttachment(
 				model.getId()));
-		Collection<ADValue> values = DB.getDocumentDao().getValues(model);//model.getValues();
+		Collection<ADValue> values = DB.getDocumentDao().getValues(model);// model.getValues();
 		if (values != null) {
 			for (ADValue val : values) {
 				// val.
@@ -337,7 +339,7 @@ public class DocumentDaoHelper {
 		if (val.getStringValue() != null) {
 			type = DataType.STRING;
 		}
-		
+
 		if (val.getTextValue() != null) {
 			type = DataType.STRINGLONG;
 		}
@@ -385,9 +387,10 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(),
 				adtype.getDisplay(), adtype.getClassName());
+		type.setRefId(adtype.getRefId());
 
 		if (loadDetails) {
-			type.setFormId(dao.getFormId(adtype.getId()));
+//			type.setFormId(dao.getFormId(adtype.getId()));
 		}
 
 		if (adtype.getProcessDef() != null) {
@@ -646,7 +649,7 @@ public class DocumentDaoHelper {
 	public static void delete(DocumentLine line) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		if (line.getId() != null) {
-			//Check for nulls
+			// Check for nulls
 			DetailModel model = dao.getDetailById(line.getId());
 			dao.delete(model);
 		}
@@ -656,43 +659,81 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		return dao.exists(subject);
 	}
-	
-	public static Document createJson(Document doc){
+
+	public static Document createJson(Document doc) {
 		DocumentModelJson jsonDoc = new DocumentModelJson(doc);
-		
+		DocumentDaoImpl dao = DB.getDocumentDao();
+
 		if (doc.getRefId() != null) {
 			jsonDoc = DB.getDocumentDao().findByRefId(doc.getRefId(),
 					DocumentModelJson.class);
-			
-			assert jsonDoc!=null;
-			
+
+			assert jsonDoc != null;
+
 			if (jsonDoc == null) {
 				jsonDoc = new DocumentModelJson(doc);
 			} else {
 				jsonDoc.setDocument(doc);
 			}
 		}else{
-			//Generate Ref
+			// Generate Ref
 			doc.setRefId(IDUtils.generateId());
+			doc.setStatus(DocStatus.DRAFTED);
 			jsonDoc.setRefId(doc.getRefId());
+			jsonDoc.setStatus(DocStatus.DRAFTED);
+			doc.setOwner(SessionHelper.getCurrentUser());
 		}
 
-		DB.getDocumentDao().save(jsonDoc);
+		/* Generate document number */
+		if (doc.getCaseNo() == null) {
+			ADDocType type = dao.getDocumentTypeByName(doc.getType().getName());
+			doc.setCaseNo(dao.generateDocumentSubject(type));
+			doc.setProcessId(type.getProcessDef().getProcessId());
+			jsonDoc.setProcessId(type.getProcessDef().getProcessId());
+			jsonDoc.setCaseNo(doc.getCaseNo());
+			
+			Value caseNo = doc.getValues().get("caseNo");
+			if (caseNo == null) {
+				caseNo = new StringValue(null, "caseNo", "");
+			}
+			caseNo.setValue(doc.getCaseNo());
+			doc.setValue("caseNo", caseNo);
+			
+			if (doc.getDescription() == null) {
+				doc.setDescription(doc.getCaseNo());
+				Value description = doc.getValues().get("description");
+				if (description == null) {
+					description = new StringValue(null, "description", "");
+				}
+				description.setValue(doc.getCaseNo());
+				doc.getValues().put("description", description);
+			}
+			
+			if (exists(doc.getCaseNo())) {
+				throw new InvalidSubjectExeption("Case '"
+						+ doc.getCaseNo()
+						+ "' already exists, this number cannot be reused");
+			}
+
+		}
 		
-		//Save Lines
+
+		dao.save(jsonDoc);
+
+		// Save Lines
 		createJsonLines(doc);
 
 		return doc;
 	}
 
 	private static void createJsonLines(Document doc) {
-		
+
 		HashMap<String, ArrayList<DocumentLine>> grids = doc.getDetails();
-		
-		for(String key: grids.keySet()){
+
+		for (String key : grids.keySet()) {
 			ArrayList<DocumentLine> lines = grids.get(key);
-			for(DocumentLine line: lines){
-				line.setDocRefId(doc.getRefId());//Doc
+			for (DocumentLine line : lines) {
+				line.setDocRefId(doc.getRefId());// Doc
 				line.setName(key);
 				createJsonLine(line);
 			}
@@ -701,37 +742,61 @@ public class DocumentDaoHelper {
 
 	private static void createJsonLine(DocumentLine line) {
 		DocumentLineJson jLine = null;
-		
-		if(line.getRefId()!=null){
-			jLine = DB.getDocumentDao().findByRefId(line.getRefId(), DocumentLineJson.class);
-			if(jLine==null){
+
+		if (line.getRefId() != null) {
+			jLine = DB.getDocumentDao().findByRefId(line.getRefId(),
+					DocumentLineJson.class);
+			if (jLine == null) {
 				jLine = new DocumentLineJson(line);
-			}else{
+			} else {
 				jLine.setDocumentLine(line);
 			}
-		}else{
+		} else {
 			line.setRefId(IDUtils.generateId());
 			jLine = new DocumentLineJson(line);
 		}
-		
-		logger.info("Saving line: "+line);
-		
+
+		logger.info("Saving line: " + line);
+
 		DB.getDocumentDao().save(jLine);
-		
+
 	}
 
 	public static void deleteJsonDoc(String docRefId) {
-		
+
 		DB.getDocumentDao().deleteJsonDoc(docRefId);
+	}
+	
+	public static void deleteJsonDocLine(DocumentLine line) {
+		DocumentDaoImpl dao = DB.getDocumentDao();
+		if (line.getRefId() != null) {
+			// Check for nulls
+			deleteJsonDocLine(line.getRefId());
+		}
 	}
 
 	public static void deleteJsonDocLine(String lineRefId) {
 		DB.getDocumentDao().deleteJsonDocLine(lineRefId);
 	}
 
-	public static Doc getDocJson(String docRefId) {
+	public static Document getDocJson(String docRefId) {
+		return getDocJson(docRefId, true);
+	}
+	public static Document getDocJson(String docRefId, boolean checkUser) {
 		
+		if (checkUser) {
+			return DB.getDocumentDao().getDocJsonByUserRef(docRefId, SessionHelper
+					.getCurrentUser().getUserId(),true);
+		}
+
 		return DB.getDocumentDao().getDocJson(docRefId);
+	}
+
+	public static List<Doc> getAllDocumentsJson(int offset, int length,
+			boolean loadDetails, DocStatus... status) {
+
+		return DB.getDocumentDao().getAllDocumentsJson(offset, length,
+				loadDetails, status);
 	}
 
 }

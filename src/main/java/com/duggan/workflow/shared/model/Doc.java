@@ -8,14 +8,10 @@ import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.duggan.workflow.server.dao.hibernate.ListValuesAdapter;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.SerializableObj;
@@ -136,9 +132,13 @@ public class Doc extends SerializableObj implements Serializable,
 			// duplication of a field value in
 			// the db
 
-			Value v = values.get(name);
-			v.setValue(value.getValue());
-			values.put(name, v);
+			//Duggan 12/08/2016 - The above problem is no longer an issue. Document storage has now been upgraded to postgres jsonb format
+			//A new issue has arisen due to json storage, which uses duck typing to determine a number class to use i.e Integer, double, long etc
+			//This means the frontend might have a double field (DoubleValue) mapped (incorrectly) to an integer value (IntValue) on the server side.
+			//Overwriting the value in the document is an easier option to storing types being written
+//			Value v = values.get(name);
+//			v.setValue(value.getValue());
+			values.put(name, value);
 		} else {
 			values.put(name, value);
 		}
