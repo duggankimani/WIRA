@@ -133,5 +133,8 @@ public class Form extends FormModel implements Listable, Serializable{
 		this.processRefId = processRefId;
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
 }

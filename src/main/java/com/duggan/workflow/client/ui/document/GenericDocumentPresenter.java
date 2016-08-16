@@ -724,7 +724,7 @@ public class GenericDocumentPresenter extends
 								CreateDocumentResult aResponse = (CreateDocumentResult) results
 										.get(i++);
 								Document saved = aResponse.getDocument();
-								assert saved.getId() != null;
+								assert saved.getRefId() != null;
 								bindForm(form, saved);
 								GetAttachmentsResponse attachmentsresponse = (GetAttachmentsResponse) results
 										.get(i++);

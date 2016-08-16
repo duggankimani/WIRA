@@ -61,7 +61,7 @@
 				</div>
 
 
-				<div class="pull-right right-navigations">
+				<div class="pull-right right-navigations hidden-phone">
 					<ul ui:field="ulNav" class="nav pull-right nav-icons">
 						<li class="home">
 							<g:Anchor href="#/home" ui:field="aHome" styleName="close-icon hand">

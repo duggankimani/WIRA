@@ -7,7 +7,7 @@
 
 	<g:HTMLPanel styleName="row-fluid main-container">
 		<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
-			<div id="sidebar-nav" class="span2 hidden-phone">
+			<div id="sidebar-nav" class="span2">
 
 				<!--Button Add Document -->
 				<div class="add-doc">
@@ -61,7 +61,7 @@
 				</g:HTMLPanel>
 			</div>
 
-			<g:HTMLPanel ui:field="tabContent" styleName="content-right span10">
+			<g:HTMLPanel ui:field="tabContent" styleName="content-right">
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 

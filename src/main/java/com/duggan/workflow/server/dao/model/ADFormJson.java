@@ -38,9 +38,6 @@ public class ADFormJson extends PO{
 	@XmlAttribute
 	private String processRefId;
 	
-	@Column(nullable=false)
-	private Long processDefId;
-
 	@Column
 	@Type(type="JsonForm")
 	private Form form;
@@ -86,7 +83,6 @@ public class ADFormJson extends PO{
 		setRefId(form.getRefId());
 		this.caption = form.getCaption();
 		this.name = form.getName();
-		this.processDefId= form.getProcessDefId();
 		this.processRefId= form.getProcessRefId();
 	}
 

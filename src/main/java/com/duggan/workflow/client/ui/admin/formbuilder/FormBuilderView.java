@@ -23,6 +23,7 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.LIElement;
@@ -34,6 +35,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -132,6 +135,11 @@ public class FormBuilderView extends ViewImpl implements
 		
 		//Vertical Panel Display
 		vPanel.getElement().getStyle().setWidth(100, Unit.PCT);
+		Element tbody = vPanel.getElement().getElementsByTagName("tbody").getItem(0);
+		Element row = DOM.createTR();
+		Element td = DOM.createTD();
+		row.appendChild(td);
+		tbody.appendChild(row);
 		
 			
 		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()){
@@ -424,10 +432,16 @@ public class FormBuilderView extends ViewImpl implements
 		if(form.getProps()!=null)
 		for(KeyValuePair prop: form.getProps()){
 			Property property=props.get(prop.getKey());
-			property.setValue(new StringValue(prop.getValue()));
-			addProperty(property);
+			if(property==null){
+				GWT.log("Null Form property -> "+prop.getKey());
+			}else{
+				property.setValue(new StringValue(prop.getValue()));
+				addProperty(property);
+				GWT.log("Setting Form Value {"+prop.getKey()+":"+prop.getValue()+"}");
+			}
+			
 		}
-
+		
 		String caption = getPropertyValue(CAPTION);
 		
 		Property captionProperty = props.get(CAPTION);

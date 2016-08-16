@@ -1,10 +1,6 @@
 package com.duggan.workflow.server.dao;
 
-import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,10 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.impl.SessionImpl;
 
-import com.duggan.workflow.server.dao.hibernate.JsonType;
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADKeyValuePair;
@@ -26,10 +19,9 @@ import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
-import com.sun.jersey.api.json.JSONJAXBContext;
-import com.sun.jersey.api.json.JSONUnmarshaller;
 
 /**
  * 
@@ -331,5 +323,48 @@ public class FormDaoImpl extends BaseDaoImpl {
 		ArrayList<Form> forms = (ArrayList<Form>)getResultListJson(sql,parameters,Form.class);
 		
 		return forms;
+	}
+
+	public void deleteJsonForm(String formRefId) {
+		String sql = "delete from adform_json where refId=:formRefId";
+		getEntityManager().createNativeQuery(sql).setParameter("formRefId", formRefId).executeUpdate();
+		
+		deleteJsonFormFields(formRefId);
+	}
+
+	private int deleteJsonFormFields(String formRefId) {
+		StringBuffer parentFields = new StringBuffer("select refid from adfieldjson where field @> '{\"formRef\":\":formRefId\"}' ");
+		Map<String,String> parameters = new HashMap<String, String>();
+		parameters.put("formRefId", formRefId);
+		
+		boolean first = true;
+		for(DataType type : DataType.values()){
+			if(type.hasChildren()){
+				parentFields.append(first? " and (":" or");
+				parentFields.append(" field@> '{\"props\":[{\"key\":\""+type.name()+"\"}]}'");
+				first = false;
+			}
+		}
+		
+		if(!first){
+			parentFields.append(")");
+		}else{
+			parentFields.append("true)");
+		}
+		
+		List<String> parentRefIds = getResultListJson(parentFields.toString(), parameters, String.class);
+		for(String parentRef: parentRefIds){
+			deleteJsonField(parentRef);
+		}
+		
+		String sql = "delete from adfieldjson where field @> '{\"formRef\":\":formRefId\"}'";
+		return executeJsonUpdate(sql, parameters);
+	}
+
+	public void deleteJsonField(String fieldRefId) {
+		String sql = "delete from adfieldjson where refId=':fieldRefId' or field@> '{\"parentRef\":\":fieldRefId\"}'";
+		Map<String,String> parameters = new HashMap<String, String>();
+		parameters.put("fieldRefId", fieldRefId);
+		executeJsonUpdate(sql, parameters);		
 	}
 }

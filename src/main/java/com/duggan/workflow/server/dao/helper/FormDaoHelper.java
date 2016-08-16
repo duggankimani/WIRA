@@ -30,7 +30,6 @@ import com.duggan.workflow.server.dao.model.HasProperties;
 import com.duggan.workflow.server.dao.model.IDUtils;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBUtil;
 import com.duggan.workflow.server.db.LookupLoader;
 import com.duggan.workflow.server.db.LookupLoaderImpl;
 import com.duggan.workflow.server.export.AnnotationParserImpl;
@@ -452,7 +451,7 @@ public class FormDaoHelper {
 
 		ADForm adform = new ADForm();
 		if (form.getRefId() != null) {
-			adform = dao.findByRefId(form.getRefId(),ADForm.class);
+			adform = dao.findByRefId(form.getRefId(), ADForm.class);
 		}
 		adform.setCaption(form.getCaption());
 		adform.setName(form.getName());
@@ -467,7 +466,8 @@ public class FormDaoHelper {
 		}
 
 		getADFields(form.getFields(), adform);
-		//getADProperties(form.getProperties(), adform); --Method replaced with getXXXJson
+		// getADProperties(form.getProperties(), adform); --Method replaced with
+		// getXXXJson
 		// adform.setProperties(properties);
 		dao.save(adform);
 
@@ -520,7 +520,8 @@ public class FormDaoHelper {
 
 		// copy
 		// adfield.getProperties().size();// force load?
-		//getADProperties(field.getProperties(), adfield); -- Replaced with json method
+		// getADProperties(field.getProperties(), adfield); -- Replaced with
+		// json method
 
 		adfield.setType(field.getType());
 		adfield.setValue(getValue(adfield.getValue(), field.getValue()));
@@ -547,39 +548,41 @@ public class FormDaoHelper {
 			}
 		}
 
-//		for (Property prop : field.getProperties()) {  --Replaced with findXXXJsonMethods 
-//			if (field.getType() == DataType.GRID && prop.getName().equals(NAME)) {
-//				// mostly for grids
-//				Value value = prop.getValue();
-//				String name = null;
-//				if (value != null) {
-//					name = value.getValue() == null ? null : value.getValue()
-//							.toString();
-//				}
-//
-//				if (name == null || name.isEmpty()) {
-//					prop.setValue(new StringValue(null, NAME, field.getName()));
-//				}
-//			}
-//
-//			if (prop.getName().equals(SELECTIONTYPE)) {
-//				Value value = prop.getValue();
-//				if (value != null) {
-//					selectionKey = value.getValue() == null ? null : value
-//							.getValue().toString();
-//				}
-//
-//				if (selectionKey == null || selectionKey.trim().isEmpty()) {
-//					selectionKey = UUID.randomUUID().toString();
-//					prop.setValue(new StringValue(
-//							null,
-//							com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE,
-//							selectionKey));
-//				}
-//				break;
-//
-//			}
-//		}
+		// for (Property prop : field.getProperties()) { --Replaced with
+		// findXXXJsonMethods
+		// if (field.getType() == DataType.GRID && prop.getName().equals(NAME))
+		// {
+		// // mostly for grids
+		// Value value = prop.getValue();
+		// String name = null;
+		// if (value != null) {
+		// name = value.getValue() == null ? null : value.getValue()
+		// .toString();
+		// }
+		//
+		// if (name == null || name.isEmpty()) {
+		// prop.setValue(new StringValue(null, NAME, field.getName()));
+		// }
+		// }
+		//
+		// if (prop.getName().equals(SELECTIONTYPE)) {
+		// Value value = prop.getValue();
+		// if (value != null) {
+		// selectionKey = value.getValue() == null ? null : value
+		// .getValue().toString();
+		// }
+		//
+		// if (selectionKey == null || selectionKey.trim().isEmpty()) {
+		// selectionKey = UUID.randomUUID().toString();
+		// prop.setValue(new StringValue(
+		// null,
+		// com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE,
+		// selectionKey));
+		// }
+		// break;
+		//
+		// }
+		// }
 
 		FormDaoImpl dao = DB.getFormDao();
 
@@ -628,12 +631,14 @@ public class FormDaoHelper {
 		}
 
 		if (property.getFormRefId() != null) {
-			ADForm form = dao.findByRefId(property.getFormRefId(), ADForm.class);
+			ADForm form = dao
+					.findByRefId(property.getFormRefId(), ADForm.class);
 			adprop.setForm(form);
 		}
 
 		if (property.getFieldRefId() != null) {
-			ADField field = dao.findByRefId(property.getFieldRefId(),ADField.class);
+			ADField field = dao.findByRefId(property.getFieldRefId(),
+					ADField.class);
 			adprop.setField(field);
 		}
 
@@ -734,16 +739,14 @@ public class FormDaoHelper {
 		FormDaoImpl dao = DB.getFormDao();
 		PO po = null;
 		if (model instanceof Form) {
-			po = dao.findByRefId(model.getRefId(), ADForm.class);
+			deleteJsonForm(model.getRefId());
+			// po = dao.findByRefId(model.getRefId(), ADForm.class);
 		}
 
 		if (model instanceof Field) {
-			po = dao.findByRefId(model.getRefId(), ADField.class);
+			deleteJsonField(model.getRefId());
+			// po = dao.findByRefId(model.getRefId(), ADField.class);
 
-		}
-
-		if (model instanceof Property) {
-			po = dao.findByRefId(model.getRefId(), ADProperty.class);
 		}
 
 		if (po != null) {
@@ -960,13 +963,23 @@ public class FormDaoHelper {
 			} else {
 				jsonForm.setForm(form);
 			}
-		}else{
-			//Generate Ref
+		} else {
+			// Generate Ref
 			form.setRefId(IDUtils.generateId());
 			jsonForm.setRefId(form.getRefId());
 		}
 
+		boolean isNew = false;
+		if (jsonForm.getId() == null) {
+			isNew = true;
+		}
+
+		// Save
 		DB.getFormDao().save(jsonForm);
+		if (isNew) {
+			// Set Default values
+			setDefaultValues(jsonForm);
+		}
 
 		if (form.getFields() != null) {
 			for (Field field : form.getFields()) {
@@ -975,7 +988,59 @@ public class FormDaoHelper {
 			}
 		}
 
-		return form;
+		return jsonForm.getForm();
+	}
+
+	private static void setDefaultValues(ADFormJson jsonForm) {
+		Form form = jsonForm.getForm();
+		if (jsonForm.getName() == null || jsonForm.getName().isEmpty()
+				|| jsonForm.getName().equals("Untitled")) {
+			jsonForm.setName("Untitled" + jsonForm.getId());
+			form.setName(jsonForm.getName());
+		}
+
+		if (jsonForm.getCaption() == null
+				|| jsonForm.getCaption().equals("Untitled")) {
+			jsonForm.setCaption("Untitled" + jsonForm.getId());
+			form.setCaption(jsonForm.getCaption());
+		}
+
+		ArrayList<KeyValuePair> props = new ArrayList<KeyValuePair>();
+		props.add(new KeyValuePair("NAME", ""));
+		props.add(new KeyValuePair("CAPTION", ""));
+//		props.add(new KeyValuePair("DESCRIPTION", ""));
+
+		for (KeyValuePair prop : props) {
+			if (prop.getName().equals("NAME")) {
+
+				if (prop.getValue() == null
+						|| (prop.getValue() == null || !prop.getValue().equals(
+								jsonForm.getName()))) {
+					prop.setValue(jsonForm.getName());
+				}
+			}
+
+			if (prop.getName().equals("CAPTION")) {
+
+				if (prop.getValue() == null
+						|| (prop.getValue() == null || !prop.getValue().equals(
+								jsonForm.getCaption()))) {
+					prop.setValue(jsonForm.getCaption());
+				}
+			}
+
+			if (prop.getName().equals("DESCRIPTION")) {
+				if (prop.getValue() == null) {
+					prop.setValue(jsonForm.getName());
+				}
+			}
+		}
+
+		form.setProps(props);
+		jsonForm.setForm(form);
+
+		DB.getFormDao().save(jsonForm);
+
 	}
 
 	public static Field createJson(Field field) {
@@ -986,8 +1051,8 @@ public class FormDaoHelper {
 			if (jsonField == null) {
 				jsonField = new ADFieldJson(field);
 			}
-		}else{
-			//Generate Ref
+		} else {
+			// Generate Ref
 			field.setRefId(IDUtils.generateId());
 			jsonField.setRefId(field.getRefId());
 		}
@@ -1004,17 +1069,18 @@ public class FormDaoHelper {
 	}
 
 	public static Field getFieldJson(String refId) {
-		return getFieldJson(refId,true);
+		return getFieldJson(refId, true);
 	}
-	
+
 	public static Field getFieldJson(String refId, boolean loadChildren) {
-		
+
 		Field field = DB.getFormDao().findJsonField(refId);
-		
-		if(field.getType().hasChildren() && loadChildren){
-			field.setFields(DB.getFormDao().findJsonFieldsForField(field.getRefId()));
+
+		if (field.getType().hasChildren() && loadChildren) {
+			field.setFields(DB.getFormDao().findJsonFieldsForField(
+					field.getRefId()));
 		}
-		
+
 		return field;
 	}
 
@@ -1034,10 +1100,11 @@ public class FormDaoHelper {
 	}
 
 	private static ArrayList<Field> getFormFields(String formRef) {
-		ArrayList<Field> fields = DB.getFormDao().findJsonFieldsForForm(formRef);
-		
-		for(Field field:fields){
-			if(field.getType().hasChildren()){
+		ArrayList<Field> fields = DB.getFormDao()
+				.findJsonFieldsForForm(formRef);
+
+		for (Field field : fields) {
+			if (field.getType().hasChildren()) {
 				field.setFields(getFieldsForParent(field.getRefId()));
 			}
 		}
@@ -1045,18 +1112,32 @@ public class FormDaoHelper {
 	}
 
 	public static ArrayList<Field> getFieldsForParent(String refId) {
-		ArrayList<Field> children = DB.getFormDao().findJsonFieldsForField(refId);
+		ArrayList<Field> children = DB.getFormDao().findJsonFieldsForField(
+				refId);
 		return children;
 	}
 
-	public static List<Form> getFormsJson(String processRefId, boolean loadChildren) {
-		
-		List<Form> forms = DB.getFormDao().findJsonFormsForProcess(processRefId);
-		if(loadChildren){
-			for(Form form: forms){
+	public static List<Form> getFormsJson(String processRefId,
+			boolean loadChildren) {
+
+		List<Form> forms = DB.getFormDao()
+				.findJsonFormsForProcess(processRefId);
+		if (loadChildren) {
+			for (Form form : forms) {
 				form.setFields(getFormFields(form.getRefId()));
 			}
 		}
 		return forms;
+	}
+
+	private static void deleteJsonField(String fieldRefId) {
+		FormDaoImpl dao = DB.getFormDao();
+		dao.deleteJsonField(fieldRefId);
+		;
+	}
+
+	private static void deleteJsonForm(String fieldRefId) {
+		FormDaoImpl dao = DB.getFormDao();
+		dao.deleteJsonForm(fieldRefId);
 	}
 }

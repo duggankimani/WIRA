@@ -115,7 +115,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		Query query = em
 				.createQuery(
-						"select count(d) FROM DocumentModel d "
+						"select count(d) FROM DocumentModelJson d "
 								+ "where "
 								+ (isEqualTo ? "status=:status "
 										: "status!=:status ")
@@ -897,8 +897,17 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	public void deleteJsonDocLines(String docRefId) {
 		String docLineSql = "delete from documentlinejson where docRefId=:docRefId";
 		getEntityManager().createNativeQuery(docLineSql).setParameter(
-				"docRefId", docRefId);
+				"docRefId", docRefId).executeUpdate();
 	}
+	
+	public void deleteJsonDocLine(String docRefId, String gridName) {
+		String docLineSql = "delete from documentlinejson where docRefId=:docRefId and name=:name";
+		getEntityManager().createNativeQuery(docLineSql)
+		.setParameter("docRefId", docRefId)
+		.setParameter("name", gridName)
+		.executeUpdate();
+	}
+
 
 	public void deleteJsonDocLine(String lineRefId) {
 		String docLineSql = "delete from documentlinejson where refId=:refId";

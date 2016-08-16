@@ -778,6 +778,10 @@ public class DocumentDaoHelper {
 	public static void deleteJsonDocLine(String lineRefId) {
 		DB.getDocumentDao().deleteJsonDocLine(lineRefId);
 	}
+	
+	public static void deleteJsonDocLine(String docRefId, String gridName) {
+		DB.getDocumentDao().deleteJsonDocLine(docRefId,gridName);
+	}
 
 	public static Document getDocJson(String docRefId) {
 		return getDocJson(docRefId, true);
