@@ -44,6 +44,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 	    <class>org.jbpm.process.audit.VariableInstanceLog</class>
     	<class>org.jbpm.persistence.processinstance.ProcessInstanceInfo</class>
     	
+    	<class> com.duggan.workflow.server.dao.model.DocumentModelJson</class>
     	<class> com.duggan.workflow.server.dao.model.ADFieldJson</class>
     	<class> com.duggan.workflow.server.dao.model.ADFormJson</class>
         <class>com.duggan.workflow.server.dao.model.DocumentModel</class>
