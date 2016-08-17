@@ -88,8 +88,13 @@ public class DocValues implements Serializable{
 	public boolean equals(Object Obj) {
 		
 		DocValues other = (DocValues)Obj;
-		if(other.getValuesMap().size()!= getValuesMap().size()){
-			return false;
+		int otherSize = other.getValuesMap().size();
+		int thisSize = getValuesMap().size();
+		
+		boolean isEqual = true;
+		if(otherSize!= thisSize){
+			logger.debug("DocValues assertion failed this.size="+thisSize +" NOT Equal to other.size="+otherSize);
+			isEqual=false;
 		}
 		
 		for(String key: other.getValuesMap().keySet()){
@@ -98,14 +103,20 @@ public class DocValues implements Serializable{
 			
 			if(otherObj!=null && obj!=null){
 				if(!otherObj.equals(obj)){
-					return false;
+					logger.debug("DocValues values NOT Equal "
+							+ "{this."+key+":"+obj+"} != "
+							+"{other."+key+":"+otherObj+"}");
+					isEqual=false;
 				}
 			}else if(!(otherObj==null && obj==null)){
-				return false;
+				logger.debug("DocValues values NULL comparison failed "
+						+ "{this."+key+":"+obj+"} != "
+						+"{other."+key+":"+otherObj+"}");
+				isEqual=false;
 			}
 		}
 		
-		return true;
+		return isEqual;
 	}
 	
 	@Override

@@ -326,6 +326,11 @@ public class Document extends Doc implements Serializable {
 	public boolean equals(Object obj) {
 		
 		Document other = (Document)obj;
-		return other.getRefId().equals(getRefId());
+		
+		if(getRefId()!=null && other.getRefId()!=null){
+			return other.getRefId().equals(getRefId());
+		}
+		
+		return super.equals(obj);
 	}
 }

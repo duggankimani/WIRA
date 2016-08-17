@@ -105,7 +105,7 @@ public class FormModel implements Serializable, Listable {
 		FormModel other = (FormModel)obj;
 		
 		if(refId!=null && other.refId!=null){
-			return refId.equals(other.FORMMODEL);
+			return refId.equals(other.refId);
 		}
 		return super.equals(obj);
 	}
