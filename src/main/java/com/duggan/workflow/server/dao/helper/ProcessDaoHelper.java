@@ -405,6 +405,9 @@ public class ProcessDaoHelper {
 		dto.setFormName(model.getForm() == null ? null : model.getForm()
 				.getCaption());
 		dto.setFormRefId(model.getFormRef());
+		if(dto.getFormRefId()!=null){
+			dto.setFormName(DB.getFormDao().getFormNameJson(dto.getFormRefId()));
+		}
 		dto.setId(model.getId());
 		dto.setMode(model.getMode());
 		dto.setNodeId(model.getNodeId());

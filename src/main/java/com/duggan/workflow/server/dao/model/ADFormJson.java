@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
@@ -14,7 +15,11 @@ import org.hibernate.annotations.Type;
 import com.duggan.workflow.shared.model.form.Form;
 
 @Entity
-@Table(name="adform_json")
+@Table(name="adform_json", indexes={
+		@Index(name="idx_adformjson_name", columnList="name"),
+		@Index(name="idx_adformjson_caption", columnList="caption"),
+		@Index(name="idx_adformjson_processRefId", columnList="processRefId")
+})
 public class ADFormJson extends PO{
 
 	/**

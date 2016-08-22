@@ -27,8 +27,9 @@
 			Content goes here
 		</g:HTMLPanel>
 		<g:HTMLPanel>
-			<d:TextArea ui:field="txtComponent" rows="10" styleName="span12 hide">HTML Goes
-				here</d:TextArea>
+			<d:TextArea ui:field="txtComponent" rows="10" styleName="span12 hide">
+			    HTML Goes here
+			</d:TextArea>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

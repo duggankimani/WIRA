@@ -141,6 +141,16 @@ public class BaseDaoImpl {
 				}
 			}
 		}
+		
+		boolean includeId = false;
+		if(!(clazz.equals(String.class)) && !sql.contains(" id ")){
+			sql = sql.trim();
+			//generate select id,field from adjsonfield where ... 
+			sql = "select id,"+sql.substring(6);
+			includeId=true;
+		}
+
+		
 		logger.info("GetSingleResultJson Query = " + sql);
 		Session session = (Session) getEntityManager().getDelegate();
 		Connection connection = ((SessionImpl) session).getJDBCContext()
@@ -153,7 +163,13 @@ public class BaseDaoImpl {
 			ps = connection.prepareStatement(sql);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				String jsonContent = rs.getString(1);
+				int col= 1;
+				
+				Long id = null;
+				if(includeId){
+					id = rs.getLong(col++);
+				}
+				String jsonContent = rs.getString(col++);
 
 				JSONUnmarshaller unmarshaller = JsonType.getJaxbContext()
 						.createJSONUnmarshaller();
@@ -161,6 +177,10 @@ public class BaseDaoImpl {
 						.unmarshalFromJSON(
 								new ByteArrayInputStream(jsonContent
 										.getBytes("UTF-8")), clazz);
+				//Set ID
+				if(includeId){
+					clazz.getMethod("setId", Long.class).invoke(value, id);
+				}
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -184,6 +204,14 @@ public class BaseDaoImpl {
 				}
 			}
 		}
+		
+		boolean includeId = false;
+		if(!(clazz.equals(String.class)) && !sql.contains(" id ")){
+			sql = sql.trim();
+			//generate select id,field from adjsonfield where ... 
+			sql = "select id,"+sql.substring(6);
+			includeId=true;
+		}
 
 		logger.info("GetResultListJson Query = " + sql);
 		Session session = (Session) getEntityManager().getDelegate();
@@ -197,7 +225,14 @@ public class BaseDaoImpl {
 			ps = connection.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				String jsonContent = rs.getString(1);
+				int col= 1;
+				
+				Long id = null;
+				if(includeId){
+					id = rs.getLong(col++);
+				}
+				
+				String jsonContent = rs.getString(col++);
 
 				if (clazz.equals(String.class)) {
 					values.add((T) jsonContent);
@@ -208,6 +243,12 @@ public class BaseDaoImpl {
 					T value = unmarshaller.unmarshalFromJSON(
 							new ByteArrayInputStream(jsonContent
 									.getBytes("UTF-8")), clazz);
+					
+					//Set ID
+					if(includeId){
+						clazz.getMethod("setId", Long.class).invoke(value, id);
+					}
+					
 					values.add(value);
 				}
 

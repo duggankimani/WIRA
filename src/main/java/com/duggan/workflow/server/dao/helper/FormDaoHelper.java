@@ -1,6 +1,5 @@
 package com.duggan.workflow.server.dao.helper;
 
-import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.NAME;
 import static com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE;
 
 import java.io.StringReader;
@@ -547,43 +546,6 @@ public class FormDaoHelper {
 				field.setName(UUID.randomUUID().toString());
 			}
 		}
-
-		// for (Property prop : field.getProperties()) { --Replaced with
-		// findXXXJsonMethods
-		// if (field.getType() == DataType.GRID && prop.getName().equals(NAME))
-		// {
-		// // mostly for grids
-		// Value value = prop.getValue();
-		// String name = null;
-		// if (value != null) {
-		// name = value.getValue() == null ? null : value.getValue()
-		// .toString();
-		// }
-		//
-		// if (name == null || name.isEmpty()) {
-		// prop.setValue(new StringValue(null, NAME, field.getName()));
-		// }
-		// }
-		//
-		// if (prop.getName().equals(SELECTIONTYPE)) {
-		// Value value = prop.getValue();
-		// if (value != null) {
-		// selectionKey = value.getValue() == null ? null : value
-		// .getValue().toString();
-		// }
-		//
-		// if (selectionKey == null || selectionKey.trim().isEmpty()) {
-		// selectionKey = UUID.randomUUID().toString();
-		// prop.setValue(new StringValue(
-		// null,
-		// com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.SELECTIONTYPE,
-		// selectionKey));
-		// }
-		// break;
-		//
-		// }
-		// }
-
 		FormDaoImpl dao = DB.getFormDao();
 
 		ADField adfield = getField(field);
@@ -604,8 +566,6 @@ public class FormDaoHelper {
 			for (Property prop : propertiesFrom) {
 
 				ADProperty property = get(prop);
-				// System.err.println("Save: "+property);
-
 				formComponent.addProperty(property);
 			}
 		}
@@ -1008,7 +968,7 @@ public class FormDaoHelper {
 		ArrayList<KeyValuePair> props = new ArrayList<KeyValuePair>();
 		props.add(new KeyValuePair("NAME", ""));
 		props.add(new KeyValuePair("CAPTION", ""));
-//		props.add(new KeyValuePair("DESCRIPTION", ""));
+		// props.add(new KeyValuePair("DESCRIPTION", ""));
 
 		for (KeyValuePair prop : props) {
 			if (prop.getName().equals("NAME")) {
@@ -1044,12 +1004,20 @@ public class FormDaoHelper {
 	}
 
 	public static Field createJson(Field field) {
+		// Save Parent
 		ADFieldJson jsonField = new ADFieldJson(field);
 		if (field.getRefId() != null) {
 			jsonField = DB.getFormDao().findByRefId(field.getRefId(),
 					ADFieldJson.class);
 			if (jsonField == null) {
 				jsonField = new ADFieldJson(field);
+			} else {
+				jsonField.setField(field);
+				if (field.getType() == DataType.FORM) {
+//					logger.info("Form HTML = "
+//							+ field.getProperty("HTMLCONTENT"));
+				}
+
 			}
 		} else {
 			// Generate Ref
@@ -1058,11 +1026,12 @@ public class FormDaoHelper {
 		}
 
 		DB.getFormDao().save(jsonField);
-		if (field.getFields() != null) {
-			for (Field child : field.getFields()) {
-				child.setParent(jsonField.getId(), jsonField.getRefId());
-				createJson(child);
-			}
+//		logger.info("After save field!!! - " + field.getName()+": "+field.getRefId());
+
+		for (Field child : field.getFields()) {
+			Field clone = child.clone(true);
+			clone.setParent(jsonField.getId(), jsonField.getRefId());
+			createJson(clone);
 		}
 
 		return field;

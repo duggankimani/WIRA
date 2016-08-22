@@ -107,7 +107,8 @@ public class SplashPresenter extends Presenter<SplashPresenter.MyView, SplashPre
 		}else{
 			PlaceRequest placeRequest = new Builder().
 					nameToken(token).build();
-			placeManager.revealPlace(placeRequest);
+			History.replaceItem(token, true);
+			//placeManager.revealPlace(placeRequest);
 		}
 	}
         

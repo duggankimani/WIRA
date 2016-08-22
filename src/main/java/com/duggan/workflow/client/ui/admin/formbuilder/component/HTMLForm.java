@@ -18,18 +18,13 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLForm extends FieldWidget {
-
-	private static final String HTMLCONTENT = "HTMLCONTENT";
 
 	private static HTMLFormUiBinder uiBinder = GWT
 			.create(HTMLFormUiBinder.class);
@@ -72,6 +67,13 @@ public class HTMLForm extends FieldWidget {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				htmlContent.getElement().setInnerHTML(txtComponent.getValue());
+				Property prop = props.get(HTMLCONTENT);
+				if (prop == null) {
+					prop  = new Property(HTMLCONTENT, "HTML Content", DataType.STRINGLONG);
+				}
+				prop.setValue(new TextValue(txtComponent.getValue()));
+				props.put(HTMLCONTENT, prop);
 				showView(true);
 			}
 		});
@@ -88,6 +90,13 @@ public class HTMLForm extends FieldWidget {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				htmlContent.getElement().setInnerHTML(txtComponent.getValue());
+				Property prop = props.get(HTMLCONTENT);
+				if (prop == null) {
+					prop  = new Property(HTMLCONTENT, "HTML Content", DataType.STRINGLONG);
+				}
+				prop.setValue(new TextValue(txtComponent.getValue()));
+				props.put(HTMLCONTENT, prop);
 				showView(true);
 				save();
 			}
@@ -101,7 +110,6 @@ public class HTMLForm extends FieldWidget {
 
 			aEdit.removeStyleName("hide");
 			htmlContent.removeStyleName("hide");
-			htmlContent.getElement().setInnerHTML(txtComponent.getValue());
 		} else {
 			aEdit.addStyleName("hide");
 			htmlContent.addStyleName("hide");
@@ -113,16 +121,8 @@ public class HTMLForm extends FieldWidget {
 
 	@Override
 	public void save() {
-		Property prop = props.get(HTMLCONTENT);
-		if (prop == null) {
-			super.save();
-			return;
-		} else {
-			prop.setValue(new TextValue(txtComponent.getValue()));
-			props.put(HTMLCONTENT, prop);
-			wrapHTML();
-			super.save();
-		}
+		wrapHTML();
+		super.save();
 	}
 
 	@Override
@@ -174,8 +174,9 @@ public class HTMLForm extends FieldWidget {
 			return;
 		}
 		txtComponent.setValue(html);
-		SafeHtml safeHTML = SafeHtmlUtils.fromSafeConstant(html);
-		htmlContent.add(new HTML(safeHTML));
+		//SafeHtml safeHTML = SafeHtmlUtils.fromSafeConstant(html);
+		//htmlContent.clear();
+		htmlContent.getElement().setInnerHTML(html);
 	}
 
 	@Override
@@ -213,7 +214,17 @@ public class HTMLForm extends FieldWidget {
 					continue;
 				}
 				if (element != null){
-					wrapElement(element);
+					if(field.getType()==DataType.CHECKBOXGROUP){
+						wrapElement(element,"checkbox");
+					}else if(field.getType()==DataType.BOOLEAN){
+						wrapElement(element,"radio");
+					}else if(field.getType()==DataType.GRID){
+						wrapElement(element,"grid");
+					}
+					else{
+						wrapElement(element);
+					}
+					
 				}
 			}
 		}
@@ -234,11 +245,21 @@ public class HTMLForm extends FieldWidget {
 
 		String parentId = getElement().getId();
 		String textAreaId = getPropertyValue(NAME);
+		
+		/**
+		 * Grids
+		 */
+		wrapGrid(parentId);
 
+		/**
+		 * Inputs
+		 */
 		JsArrayString elementArray = (JsArrayString) JsArrayString
 				.createArray();
 		getAllInputs(parentId, elementArray);
-
+		
+		List<String> inputGroups = new ArrayList<String>();
+		
 		for (int i = 0; i < elementArray.length(); i++) {
 			String id = elementArray.get(i);
 			if (id == null || id.isEmpty() || id.equals(parentId)
@@ -247,24 +268,41 @@ public class HTMLForm extends FieldWidget {
 			}
 
 			Element element = htmlContent.getElementById(id);
-			wrapElement(element);
+			
+			String type = element.getAttribute("type");
+			if(type!=null && (type.equals("radio") || type.equals("checkbox"))){
+				String name = element.getAttribute("name");
+				if(name!=null){
+					if(inputGroups.contains(name)){
+						continue;
+					}
+					
+					inputGroups.add(name);
+					
+					//Parent has the same id as the name of the children
+					Element parentElement = htmlContent.getElementById(name);
+					if(parentElement!=null){
+						wrapElement(parentElement,type);
+					}
+					
+					//find an element whose ID= NameOfInputs
+				}
+			}else{
+				wrapElement(element);
+			}
 		}
+		
+	}
 
-		// // inputs
-		// NodeList<Element> nodes = htmlContent.getElement()
-		// .getElementsByTagName("input");
-		// NodeList<Element> textAreas = htmlContent.getElement()
-		// .getElementsByTagName("textarea");
-		// NodeList<Element> select = htmlContent.getElement()
-		// .getElementsByTagName("select");
-		//
-		// ArrayList<Element> checkboxes = new ArrayList<Element>();
-		// wrapElements(nodes,checkboxes);
-		// wrapElements(textAreas);
-		// wrapElements(select);
-		// HashMap<String, ArrayList<Element>> groupings =
-		// wrapRadios(checkboxes);
-		// Window.alert("groupings count- "+groupings.size());
+	private void wrapGrid(String parentId) {
+		JsArrayString grids = (JsArrayString) JsArrayString
+				.createArray();
+		getAllGrids(parentId, grids);
+		
+		for (int i = 0; i < grids.length(); i++) {
+			Element element = htmlContent.getElementById(grids.get(i));
+			wrapElement(element, "grid");
+		}
 	}
 
 	private HashMap<String, ArrayList<Element>> wrapRadios(
@@ -277,7 +315,7 @@ public class HTMLForm extends FieldWidget {
 				continue;
 			}
 
-			ArrayList<Element> groupedElements = new ArrayList<Element>();
+			ArrayList<Element> groupedElements = new ArrayList<Element>();	
 			if (elements.get(name) != null) {
 				groupedElements = elements.get(name);
 			}
@@ -308,7 +346,11 @@ public class HTMLForm extends FieldWidget {
 	}
 
 	private void wrapElement(Element element) {
-		FieldWidget widget = FieldWidget.wrap(element, designMode);
+		wrapElement(element,element.getAttribute("type"));
+	}
+	
+	private void wrapElement(Element element, String type) {
+		FieldWidget widget = FieldWidget.wrap(element,type, designMode);
 		if (widget != null) {
 			Field child = widget.getField();
 			// Copy General Metadata Fields from the Parent
@@ -361,7 +403,7 @@ public class HTMLForm extends FieldWidget {
 
 	@Override
 	public void onSaveProperties(SavePropertiesEvent event) {
-		super.onSaveProperties(event);
+		//super.onSaveProperties(event);
 		FormModel model = event.getParent();
 		if (model == null || !(model instanceof Field)) {
 			return;

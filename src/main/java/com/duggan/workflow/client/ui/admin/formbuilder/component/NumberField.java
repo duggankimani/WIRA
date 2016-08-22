@@ -9,6 +9,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
@@ -24,6 +25,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
@@ -47,6 +49,7 @@ public class NumberField extends FieldWidget{
 	@UiField Element spnIcon;
 	
 	private final Widget widget;
+	private boolean isWrappedField;
 	
 	
 	public NumberField(){
@@ -75,6 +78,7 @@ public class NumberField extends FieldWidget{
 	
 	public NumberField(Element numberInput, boolean designMode){
 		super();
+		isWrappedField=true;
 		this.designMode = designMode;
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
@@ -112,8 +116,6 @@ public class NumberField extends FieldWidget{
 		// field Properties update
 		field.setProperties(getProperties());
 
-		
-		
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Double> event) {
@@ -131,7 +133,7 @@ public class NumberField extends FieldWidget{
 			});
 		}
 	}
-	
+		
 	public NumberField(final Property property){
 		this();
 		lblEl.setInnerHTML(property.getCaption());
@@ -183,6 +185,13 @@ public class NumberField extends FieldWidget{
 
 	}
 
+	@Override
+	public void setField(Field field) {
+		super.setField(field);
+		if(isWrappedField){
+			registerHandlers();
+		}
+	}
 	
 	protected void registerValueChangeHandler(){
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {

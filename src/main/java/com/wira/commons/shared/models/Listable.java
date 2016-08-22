@@ -1,5 +1,7 @@
 package com.wira.commons.shared.models;
 
+import java.io.Serializable;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -8,7 +10,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author duggan
  *
  */
-public interface Listable extends IsSerializable{
+public interface Listable extends IsSerializable,Serializable{
 
 	/**
 	 * This is the Key Value of the Object

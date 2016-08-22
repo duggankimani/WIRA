@@ -55,8 +55,10 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.wira.commons.client.security.CurrentUser;
 import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.PermissionName;
 
 public class GenericDocumentView extends ViewImpl implements
 		GenericDocumentPresenter.MyView {
@@ -205,6 +207,8 @@ public class GenericDocumentView extends ViewImpl implements
 	@UiField Element spnAttachmentsEmpty;
 	@UiField TableView tblAttachments;
 	@UiField HTMLPanel divAttachmentPanel;
+	
+	@UiField Anchor aConfigure;
 
 	String url = null;
 
@@ -229,11 +233,14 @@ public class GenericDocumentView extends ViewImpl implements
 	private boolean isLoadAsAdmin;
 
 	@Inject
-	public GenericDocumentView(final Binder binder) {
+	public GenericDocumentView(final Binder binder, CurrentUser user) {
 		widget = binder.createAndBindUi(this);
 		createNavigationButtons();
 
 		UIObject.setVisible(aEdit.getElement(), false);
+		UIObject.setVisible(aConfigure.getElement(), 
+				user.hasPermissions(PermissionName.PROCESSES_CAN_EDIT_PROCESSES.name()));
+		
 		aEdit.getElement().setAttribute("type", "button");
 		aEdit.getElement().setAttribute("data-toggle", "tooltip");
 		aProcess.getElement().setAttribute("data-toggle", "button");
@@ -477,6 +484,10 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 
 		formPanel = new FormPanel(form, doc);
+		
+		//Configure
+		aConfigure.setHref("#/formbuilder?p=rOSplNWnmiCZMws4&formRefId="+form.getRefId());
+		aConfigure.setTarget("_blank");
 
 		if (validActions != null) {
 			if (validActions.contains(Actions.COMPLETE)) {

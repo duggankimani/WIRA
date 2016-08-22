@@ -10,10 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,6 +35,7 @@ import com.duggan.workflow.shared.model.MODE;
 @XmlRootElement(name="step")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@Table(indexes={@Index(name="idx_taskstepmodel_formref", columnList="formRef")})
 public class TaskStepModel extends PO {
 
 	/**

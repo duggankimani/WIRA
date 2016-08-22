@@ -124,10 +124,8 @@ public class TextField extends FieldWidget {
 		setProperty(READONLY,
 				new BooleanValue(textInput.hasAttribute("readonly")));
 		
-
 		// field Properties update
 		field.setProperties(getProperties());
-
 		
 		// Events
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {

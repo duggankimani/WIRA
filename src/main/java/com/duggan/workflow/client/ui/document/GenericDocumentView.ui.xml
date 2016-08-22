@@ -43,6 +43,12 @@
 						title="Attach word, pdf, scanned documents etc">
 						<i class="icon-paper-clip color-black"></i>
 					</d:ActionLink>
+					
+					
+					<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
+						title="Configure">
+						<i class="icon-cogs color-black"></i>
+					</d:ActionLink>
 
 					<d:ActionLink ui:field="aStart" styleName="btn btn-success hidden"
 						title="Start working on the task">

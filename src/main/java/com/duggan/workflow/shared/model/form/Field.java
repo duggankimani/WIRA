@@ -177,23 +177,6 @@ public class Field extends FormModel implements Comparable<Field>{
 		fields.add(field);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj==null){
-			return false;
-		}
-		
-		if (!(obj instanceof Field)) {
-			return false;
-		}
-		
-		if(name!=null && ((Field)obj).name!=null){
-			return name.equals(((Field)obj).name);
-		}
-		
-		return super.equals(obj);
-	}
-
 	public boolean contains(Field retrieved) {
 
 		return fields.contains(retrieved);
@@ -336,7 +319,8 @@ public class Field extends FormModel implements Comparable<Field>{
 		if(copyAll){
 			field.setForm(formId,formRef);
 			field.setRefId(getRefId());
-			field.setParent(parentId,getRefId());
+			field.setId(getId());
+			field.setParent(parentId,getParentRef());
 			field.setDocId(docId);
 			field.setDocRefId(docRefId);
 		}
@@ -412,5 +396,4 @@ public class Field extends FormModel implements Comparable<Field>{
 	public void setFormRef(String formRef) {
 		this.formRef = formRef;
 	}
-
 }

@@ -3,8 +3,11 @@ package com.duggan.workflow.client.ui.admin.formbuilder.propertypanel;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,6 +28,7 @@ public class PropertyPanelPresenter extends
 	}
 	
 	FormModel parentModel; //
+	private ArrayList<Property> properties;
 
 	
 	@Inject
@@ -38,11 +42,17 @@ public class PropertyPanelPresenter extends
 	}
 	
 	public void save(){
+		if(parentModel instanceof Field){
+			((Field)parentModel).setProperties(properties);
+		}else{
+			((Form)parentModel).setProperties(properties);
+		}
 		fireEvent(new SavePropertiesEvent(parentModel));
 	}
 
 	public void setProperties(FormModel parentModel, ArrayList<Property> properties) {
 		this.parentModel = parentModel;
+		this.properties = properties;
 		getView().showProperties(properties, parentModel);
 	}
 	

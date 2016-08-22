@@ -20,6 +20,8 @@ import com.duggan.workflow.client.ui.events.FieldReloadedEvent;
 import com.duggan.workflow.client.ui.events.FieldReloadedEvent.FieldReloadedHandler;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.ui.events.OperandChangedEvent.OperandChangedHandler;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.ui.events.ResetFieldValueEvent;
@@ -52,6 +54,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -274,6 +277,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	protected void onLoad() {
 		super.onLoad();
 		initShim();
+		registerHandlers();
+		// register default events
+
+	}
+
+	protected void registerHandlers() {
 		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
 		addRegisteredHandler(FieldReloadedEvent.getType(), this);
@@ -293,7 +302,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			// isObservable =
 			// ENV.containsObservable(field.getName(),field.getParentId());
 			isObservable = ENV.containsObservable(field.getDocSpecificName(),
-					field.getParentId());
+					field.getParentId()) || true;
 			if (isObservable) {
 				// System.err.println("Registering observable.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
 				registerValueChangeHandler();
@@ -302,8 +311,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 
 		}
-		// register default events
-
 	}
 
 	@Override
@@ -532,7 +539,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		model.setName(getPropertyValue(NAME));
 		model.setCaption(getPropertyValue(CAPTION));
-
+		AppContext.fireEvent(new ProcessingEvent("Saving field..."));
 		AppContext.getDispatcher().execute(new CreateFieldRequest(model),
 				new TaskServiceCallback<CreateFieldResponse>() {
 					@Override
@@ -540,6 +547,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 						Field savedfield = result.getField();
 						savedfield.sortFields();
 						setField(savedfield);
+						AppContext.fireEvent(new ProcessingCompletedEvent());
 						onAfterSave();
 					}
 				});
@@ -551,7 +559,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public void setField(Field field) {
 		this.field = field;
-
+		
 		// Not Raw HTML
 		if (!field.isHTMLWrappedField()) {
 			this.getElement().setId(field.getName() + "_Field");
@@ -1233,6 +1241,14 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	public static FieldWidget wrap(Element element, boolean designMode) {
+		return wrap(element, element.getAttribute("type"), designMode);
+	}
+	
+	public static FieldWidget wrap(Element element, String type, boolean designMode) {
+
+		if(type==null){
+			type = element.getAttribute("type");
+		}
 		
 		if(isNullOrEmpty(element.getId())){
 			GWT.log("Cannot create element with no Id");
@@ -1240,13 +1256,18 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		};
 		
 		String tag = element.getTagName().toLowerCase();
-		Element parent = element.getParentElement();
+		if(type!=null && type.equals("radio")){
+			/*
+			 * DivElement enclosing radio buttons
+			 */
+			tag = "input";
+		}
 		
 		FieldWidget widget = null;
 		switch(tag){
 			case "input":
-				String type =element.getAttribute("type"); 
 				if (type.equals("text")) {
+					Element parent = element.getParentElement();
 					if(parent.hasClassName("date")){
 						widget = new DateField(element, designMode);
 					}else{
@@ -1257,6 +1278,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					widget = new NumberField(element, designMode);
 				}else if(type.equals("date")){
 					widget = new DateField(element, designMode);
+				}else if(type.equals("radio")){
+					widget = new RadioGroup(element,designMode);
 				}
 				break;
 			case "textarea":
@@ -1264,6 +1287,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				break;
 			case "select":
 				widget = new SelectBasic(element, designMode);
+				break;
+			default:
+				widget = new GridLayout(element, designMode);
 				break;
 		}
 		
@@ -1296,57 +1322,58 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	public static native void getAllInputs(String parentId,JsArrayString elementIds)/*-{
 		var div = $doc.getElementById(parentId);
+		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
+		
 		$wnd.jQuery(div).find(':input:not(.grid_template *)')
 		        .each(function() {
 		            var el = $wnd.jQuery(this);
 		            if(el.prop('id') !=null){
 		           	   elementIds.push(el.prop('id'));
 		           	}
-		           	if(el.prop('title')!=null){
+		           	if(el.prop('title')!=null && !isDesignMode){
 	           			$wnd.jQuery(el).popover({
 	           				trigger: 'focus'
 	           			});
 		           	}
 		        });
-		 
 		
+	}-*/;
+	
+	protected native void getAllGrids(String parentId, JsArrayString elementIds) /*-{
+		var div = $doc.getElementById(parentId);
+		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
+		
+		$wnd.jQuery(div).find('.grid_template')
+        .each(function() {
+            var el = $wnd.jQuery(this);
+            var id = el.prop('id');
+            if(id !=null && id != ''){
+            	elementIds.push(id);
+           	}
+        });
+        
+        
 		$wnd.jQuery(div).find('.grid_template :input')
-		        .each(function() {
-		            var el = $wnd.jQuery(this);
-		            if(el.prop('id') !=null){
-//		            	alert('Elements in Grid >> '+el.prop('id'));
-		           	}
-		           	
-		           	if(el.prop('title')!=null){
-	           			$wnd.jQuery(el).popover({
-	           				trigger: 'focus'
-	           			});
-		           	}
-		        });
-		
-		
-//		$wnd.jQuery(div).children(':not(table.grid)').find('input:text, input:password, select, textarea')
-//		        .each(function() {
-//		            var el = $wnd.jQuery(this);
-//		            if(el.prop('id') !=null){
-//		           	   alert('Found -> '+el.prop('id'));
-//		           	}
-//		        });
-		        
-//		$wnd.jQuery(div).find('input:radio, input:checkbox').each(function() {
-//		    //$(this).removeAttr('checked');
-//		    //$(this).removeAttr('selected');
-//		     
-//		     var el = $wnd.jQuery(this); 
-//		     
-//		     if(el.prop('id')!=null){
-//		     	alert('>>id = '+el.prop('id'));
-//		     }else if(el.prop('name') !=null){
-//		     	alert('>>Name = '+el.prop('name'));
-//		     }else{
-//		     	alert('>>No id or name '+el.prop('type'));
-//		     }
-//		     
-//		});
+        .each(function() {
+            var el = $wnd.jQuery(this);
+            if(el.prop('id') !=null){
+            	//alert('Elements in Grid >> '+el.prop('id'));
+            	//elementIds.push(el.prop('id'));
+           	}
+           	
+           	if(el.prop('title')!=null){
+       			$wnd.jQuery(el).popover({
+       				trigger: 'focus'
+       			});
+           	}
+        });
+        
+      }-*/;
+	
+	protected native void showPropertiesOnClick(String id) /*-{
+		var that = this;
+		$wnd.jQuery("#"+id).click(function(e){
+			that.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::showProperties(I)(0);
+		});
 	}-*/;
 }

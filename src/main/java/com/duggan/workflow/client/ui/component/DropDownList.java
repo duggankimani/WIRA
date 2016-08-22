@@ -8,6 +8,8 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
@@ -63,7 +65,10 @@ public class DropDownList<T extends Listable> extends ListBox implements
 					// setting null
 					value = null;
 				} else {
-					value = items.get(selectedIndex - 1);
+					if(selectedIndex>0){
+						value = items.get(selectedIndex - 1);
+					}
+					
 				}
 
 				ValueChangeEvent.fire(DropDownList.this, value);
@@ -197,12 +202,26 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		DropDownList<KeyValuePair> listBox = new DropDownList<KeyValuePair>(
 				select);
 		int options = DOM.getChildCount(select);
+		NodeList<Node> nodes = select.getChildNodes();
+		
 		ArrayList<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
-		for (int i = 0; i < options; i++) {
-			Element option = (Element) select.getChild(i);
-			String text = option.getInnerText();
-			pairs.add(new KeyValuePair(text, text));	
+		
+		int length = nodes.getLength();
+		for (int i = 0; i < length; i++) {
+			Element option = (Element) nodes.getItem(i);
+			String text = option.getInnerHTML();
+			
+			String optionStr = option.toString(); 
+			if(optionStr.contains("option")){
+				if(text.startsWith("--")){
+					listBox.setNullText(text);
+					//pairs.add(new KeyValuePair(text, ""));
+				}else{
+					pairs.add(new KeyValuePair(text, text));
+				}
+			}
 		}
+		
 		listBox.items = pairs;
 
 		// Mark it attached and remember it for cleanup.

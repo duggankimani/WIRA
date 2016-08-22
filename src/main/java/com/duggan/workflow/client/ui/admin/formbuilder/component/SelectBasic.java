@@ -54,6 +54,8 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 	@UiField
 	Element spnIcon;
 
+	private boolean isWrappedField;
+
 	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
 	}
 
@@ -82,6 +84,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 
 	public SelectBasic(Element select, boolean designMode) {
 		super();
+		this.isWrappedField = true;
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
@@ -107,6 +110,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 			setProperty(CAPTION, lblEl.getInnerHTML());
 		}
 
+		//DB Persistence - necessary? unless dev wants to override properties
 		setProperty(HELP, select.getTitle());
 		setProperty(MANDATORY,
 				new BooleanValue(select.hasAttribute("required")));
@@ -115,20 +119,20 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		// field Properties update
 		field.setProperties(getProperties());
 
-		// Events
-		lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
-				execTrigger();
-			}
-		});
-
 		if (designMode) {
 			lstItems.addClickHandler(new ClickHandler() {
 
 				@Override
 				public void onClick(ClickEvent event) {
 					showProperties(0);
+				}
+			});
+		}else{
+			// Events
+			lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
+					execTrigger();
 				}
 			});
 		}
@@ -195,9 +199,12 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		if (value != null) {
 			return new StringValue(field.getLastValueId(), field.getName(),
 					value);
+		}else{
+			return new StringValue(field.getLastValueId(), field.getName(),
+					null);
 		}
 
-		return null;
+//		return null;
 	}
 
 	@Override
@@ -216,6 +223,11 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 
 	@Override
 	public void setSelectionValues(ArrayList<KeyValuePair> values) {
+		//Wrapped fields
+		if(isWrappedField){
+			return;
+		}
+		
 		if (designMode
 				&& (getPropertyValue(SQLDS) != null || getPropertyValue(SQLSELECT) != null)) {
 			// design mode
@@ -239,7 +251,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 
 		// design mode values set here before save is called
 		// iff these we manually entered/ not referenced from another ds
-
 		field.setSelectionValues(values);
 
 	}
@@ -255,7 +266,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		if (value == null) {
 			return;
 		}
-
+		
 		String key = (String) value;
 		lstItems.setValueByKey(key);
 

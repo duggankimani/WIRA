@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ArrayList;
 
-public class TaskNotification implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class TaskNotification implements Serializable, IsSerializable{
 
 	/**
 	 * 

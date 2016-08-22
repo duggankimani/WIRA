@@ -1,6 +1,8 @@
 package com.duggan.workflow.client.ui.admin.processitem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
@@ -188,9 +190,9 @@ public class ProcessStepsPresenter extends
 					@Override
 					public void onSelect(String name) {
 						if (name.equals("Save")) {
-							ArrayList<Listable> ArrayList = popup.getSelectedValues();
-							if (!ArrayList.isEmpty()) {
-								saveSelectedSteps(ArrayList);
+							ArrayList<Listable> selectedValues = popup.getSelectedValues();
+							if (!selectedValues.isEmpty()) {
+								saveSelectedSteps(selectedValues);
 							}
 						}
 
@@ -285,7 +287,7 @@ public class ProcessStepsPresenter extends
 		getView().getTasksDropDown().setNullText(
 				"--" + processDef.getName() + "--");
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetFormsRequest(processDef.getId()));
+		action.addRequest(new GetFormsRequest(processDef.getRefId()));
 		action.addRequest(new GetOutputDocumentsRequest(processDef.getRefId()));
 		action.addRequest(new GetTaskNodesRequest(processDef.getProcessId()));
 		action.addRequest(new GetTaskStepsRequest(processDef.getProcessId(),
@@ -296,6 +298,7 @@ public class ProcessStepsPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult results) {
 						forms = ((GetFormsResponse) results.get(0)).getForms();
+						sort(forms);
 						templates = ((GetOutputDocumentsResponse) results
 								.get(1)).getDocuments();
 						getView().setTasks(
@@ -306,6 +309,15 @@ public class ProcessStepsPresenter extends
 					}
 				});
 
+	}
+
+	protected void sort(ArrayList<Form> forms) {
+		Collections.sort(forms, new Comparator<Form>() { 
+			@Override
+			public int compare(Form o1, Form o2) {
+				return o1.getCaption().compareTo(o2.getCaption());
+			}
+		});
 	}
 
 	void bindSteps(ArrayList<TaskStepDTO> dtos) {
@@ -385,12 +397,6 @@ public class ProcessStepsPresenter extends
 	}
 
 	@Override
-	protected void onUnbind() {
-		super.onUnbind();
-		Window.alert("Unbind ProcessStepsPresenter " + this);
-	}
-
-	@Override
 	public void onEditConditions(EditConditionsEvent event) {
 		final TaskStepDTO dto = event.getTaskStepDto();
 		if(dto==null){
@@ -399,8 +405,8 @@ public class ProcessStepsPresenter extends
 		if(!this.isVisible()){
 			/*
 			 * Duggan - 25/07/2016 - Hack to avoid multiple presenters handling this event.
-			 *  - 2 ProcessStepsPresenter instances are bound @ProcessPresenter.prepareOnRequest to display 
-			 *  Process Preview & Process Configs. The former also handles this event resulting to multiple 
+			 *  - 2 ProcessStepsPresenter instances may be bound {see @ProcessPresenter.prepareOnRequest}
+			 *  to display  Process Preview & Process Configs. The former also handles this event resulting to multiple 
 			 *  popups in this method. To handle this, we can use the currently visible presenter. 
 			 */
 			return;

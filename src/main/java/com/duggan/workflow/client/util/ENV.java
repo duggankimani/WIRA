@@ -14,8 +14,11 @@ import com.wira.commons.client.util.ArrayUtil;
  */
 public class ENV{
 
+	//<FieldName, FieldId>
 	private static HashMap<String, Long> observableFields= new HashMap<String,Long>(); //Observable Registration
+	//<FieldName,Value>
 	private static HashMap<String, Object> values = new HashMap<String,Object>(); //Field Values
+	//<FieldName,QualifiedName>
 	private static HashMap<String, ArrayList<String>> nameToQualifieldNameMap = new HashMap<String, ArrayList<String>>();
 	
 	public static void registerObservable(String fieldName){

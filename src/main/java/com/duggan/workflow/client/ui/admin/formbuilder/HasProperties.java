@@ -31,6 +31,7 @@ public interface HasProperties {
 	public static final String IFRAME = "IFRAME";
 	public static final String CUSTOMTRIGGER="TRIGGER";
 	public static final String WIDTH="WIDTH";
+	public static final String HTMLCONTENT = "HTMLCONTENT";
 
 	void addProperty(Property property);
 	

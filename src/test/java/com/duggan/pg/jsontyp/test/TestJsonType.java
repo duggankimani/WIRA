@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -33,6 +34,7 @@ import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.sun.jersey.api.json.JSONConfiguration;
@@ -47,10 +49,71 @@ public class TestJsonType {
 	}
 	
 	@Ignore
+	public void updateBasicJsonField(){
+		String fieldRefId=  "VEXVP06omY0ASCDi";
+		Field field = FormDaoHelper.getFieldJson(fieldRefId);
+		String caption = field.getProperty(HasProperties.CAPTION);
+		caption=caption+" XX";
+		field.addValue(new KeyValuePair(HasProperties.CAPTION, caption));
+		FormDaoHelper.createJson(field);
+		
+		//email: YVhlqZsUbwZ3gSq7
+		fieldRefId="YVhlqZsUbwZ3gSq7";
+		field = FormDaoHelper.getFieldJson(fieldRefId);
+		caption = field.getProperty(HasProperties.CAPTION);
+		caption=caption+" XX";
+		field.addValue(new KeyValuePair(HasProperties.CAPTION, caption));
+		FormDaoHelper.createJson(field);
+		
+		//introducedBy: 6jXixv6v4SRXsW45
+		fieldRefId="6jXixv6v4SRXsW45";
+		field.addValue(new KeyValuePair(HasProperties.CAPTION, caption));
+		caption = field.getProperty(HasProperties.CAPTION);
+		caption=caption+" XX";
+		field = FormDaoHelper.getFieldJson(fieldRefId);
+		FormDaoHelper.createJson(field);
+		
+		//postalAdd
+		fieldRefId="Z7TwHEsoyRgv3his";
+		caption = field.getProperty(HasProperties.CAPTION);
+		caption=caption+" XX";
+		field.addValue(new KeyValuePair(HasProperties.CAPTION, caption));
+		field = FormDaoHelper.getFieldJson(fieldRefId);
+		
+		FormDaoHelper.createJson(field);
+	}
+	
+	@Ignore
+	public void updateJsonField(){
+		String fieldRefId="3iiLV0B4ietZizVY";
+		Field field = FormDaoHelper.getFieldJson(fieldRefId);
+		
+		System.err.println("Fields >> "+field.getFields().size());
+		String suffix = " 1234Test";
+		String html = field.getProperty(HasProperties.HTMLCONTENT);
+		//html = html.replace(suffix, "");
+		html = html+suffix;
+		field.addValue(new KeyValuePair(HasProperties.HTMLCONTENT, html));
+		FormDaoHelper.createJson(field);
+		
+//		Field saved = FormDaoHelper.getFieldJson(fieldRefId);
+//		String htmlContent = saved.getProperty(HasProperties.HTMLCONTENT);
+//		Assert.assertTrue(htmlContent.endsWith(suffix));
+	}
+	
+	@Test
 	public void getJsonForm(){
-		String formRefId = "8fpbo0WvWAuqo0hV";
+		String formRefId = "BzQwh3HgnmQUsqTW";
 		Form dbJsonForm = FormDaoHelper.getFormJson(formRefId,true);
 		
+		for(Field field: dbJsonForm.getFields()){
+			System.err.println(field.getId()+" : "+field.getName());
+			if(field.getType().hasChildren()){
+				for(Field f: field.getFields()){
+					System.err.println(f.getId()+" : "+f.getName());
+				}
+			}
+		}
 		Assert.assertNotNull(dbJsonForm);
 		Assert.assertNotNull(dbJsonForm.getRefId());
 		Assert.assertFalse(dbJsonForm.getFields().isEmpty());
@@ -72,7 +135,7 @@ public class TestJsonType {
 		DB.getEntityManager().createNativeQuery("update taskstepmodel t set formref=(select refid from adform where id=t.formid) where t.formid is not null and formref is null").executeUpdate();
 	}
 	
-	@Test
+	@Ignore
 	public void saveJsonForm(){
 		long id = 40l;//27l
 		Form form = FormDaoHelper.getForm(id,true);//Current storage

@@ -367,4 +367,9 @@ public class FormDaoImpl extends BaseDaoImpl {
 		parameters.put("fieldRefId", fieldRefId);
 		executeJsonUpdate(sql, parameters);		
 	}
+
+	public String getFormNameJson(String formRefId) {
+		String sql = "select caption from adform_json where refid=:refId";
+		return getSingleResultOrNull(getEntityManager().createNativeQuery(sql).setParameter("refId", formRefId));
+	}
 }

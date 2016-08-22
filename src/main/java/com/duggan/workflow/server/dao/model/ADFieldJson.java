@@ -20,6 +20,7 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@org.hibernate.annotations.Entity(dynamicInsert=true, dynamicUpdate=true)
 public class ADFieldJson extends PO{
 
 	/**
@@ -67,7 +68,7 @@ public class ADFieldJson extends PO{
 			}
 		}
 		
-		return true;
+		return super.equals(obj);
 	}
 	
 	@Override
