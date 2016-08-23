@@ -168,4 +168,8 @@ public class DocumentLine extends SerializableObj{
 		this.docRefId = docRefId;
 	}
 
+	public boolean isEmpty() {
+		return values.isEmpty();
+	}
+
 }

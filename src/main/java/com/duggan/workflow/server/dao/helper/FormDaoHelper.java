@@ -1013,11 +1013,6 @@ public class FormDaoHelper {
 				jsonField = new ADFieldJson(field);
 			} else {
 				jsonField.setField(field);
-				if (field.getType() == DataType.FORM) {
-//					logger.info("Form HTML = "
-//							+ field.getProperty("HTMLCONTENT"));
-				}
-
 			}
 		} else {
 			// Generate Ref
@@ -1026,12 +1021,12 @@ public class FormDaoHelper {
 		}
 
 		DB.getFormDao().save(jsonField);
+		field.setId(jsonField.getId());
 //		logger.info("After save field!!! - " + field.getName()+": "+field.getRefId());
 
 		for (Field child : field.getFields()) {
-			Field clone = child.clone(true);
-			clone.setParent(jsonField.getId(), jsonField.getRefId());
-			createJson(clone);
+			child.setParent(jsonField.getId(), jsonField.getRefId());
+			createJson(child);
 		}
 
 		return field;
@@ -1046,8 +1041,9 @@ public class FormDaoHelper {
 		Field field = DB.getFormDao().findJsonField(refId);
 
 		if (field.getType().hasChildren() && loadChildren) {
-			field.setFields(DB.getFormDao().findJsonFieldsForField(
-					field.getRefId()));
+			field.setFields(getFieldsForParent(refId));
+//			field.setFields(DB.getFormDao().findJsonFieldsForField(
+//					field.getRefId()));
 		}
 
 		return field;
@@ -1074,7 +1070,8 @@ public class FormDaoHelper {
 
 		for (Field field : fields) {
 			if (field.getType().hasChildren()) {
-				field.setFields(getFieldsForParent(field.getRefId()));
+				ArrayList<Field> children = getFieldsForParent(field.getRefId());
+				field.setFields(children);
 			}
 		}
 		return fields;
@@ -1083,6 +1080,11 @@ public class FormDaoHelper {
 	public static ArrayList<Field> getFieldsForParent(String refId) {
 		ArrayList<Field> children = DB.getFormDao().findJsonFieldsForField(
 				refId);
+		for(Field child : children){
+			if(child.getType().hasChildren()){
+				child.setFields(getFieldsForParent(child.getRefId()));
+			}
+		}
 		return children;
 	}
 

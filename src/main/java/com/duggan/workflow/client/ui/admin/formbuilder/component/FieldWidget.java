@@ -1289,7 +1289,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				widget = new SelectBasic(element, designMode);
 				break;
 			default:
-				widget = new GridLayout(element, designMode);
+				if(type.equals("grid")){
+					widget = new HTMLGrid(element, designMode);
+				}
 				break;
 		}
 		

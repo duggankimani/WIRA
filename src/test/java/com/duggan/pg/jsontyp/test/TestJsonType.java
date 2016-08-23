@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -83,6 +84,34 @@ public class TestJsonType {
 		FormDaoHelper.createJson(field);
 	}
 	
+	@Test
+	public void updateHTMLForms(){
+		String fieldRefId="3iiLV0B4ietZizVY";
+		Field field = FormDaoHelper.getFieldJson(fieldRefId);
+		int initialSize = field.getFields().size();
+		
+		HashMap<String, Integer> sizes = new HashMap<String, Integer>();
+		for(Field child: field.getFields()){
+			if(child.getType().hasChildren()){
+				sizes.put(child.getName(), child.getFields().size());
+			}
+		}
+ 		FormDaoHelper.createJson(field);
+ 		System.err.println("Initial Sizes : "+sizes);
+ 		
+ 		
+ 		//After Save
+ 		Field savedField = FormDaoHelper.getFieldJson(fieldRefId);
+ 		int savedHTMLFormSize = savedField.getFields().size();
+ 		Assert.assertEquals(initialSize, savedHTMLFormSize);
+		for(Field child: field.getFields()){
+			if(child.getType().hasChildren()){
+				Assert.assertEquals(sizes.get(child.getName()).intValue(), child.getFields().size());
+			}
+		}
+ 		
+	}
+	
 	@Ignore
 	public void updateJsonField(){
 		String fieldRefId="3iiLV0B4ietZizVY";
@@ -101,7 +130,7 @@ public class TestJsonType {
 //		Assert.assertTrue(htmlContent.endsWith(suffix));
 	}
 	
-	@Test
+	@Ignore
 	public void getJsonForm(){
 		String formRefId = "BzQwh3HgnmQUsqTW";
 		Form dbJsonForm = FormDaoHelper.getFormJson(formRefId,true);

@@ -727,17 +727,31 @@ public class DocumentDaoHelper {
 	}
 
 	private static void createJsonLines(Document doc) {
-
+		DocumentDaoImpl dao = DB.getDocumentDao();
 		HashMap<String, ArrayList<DocumentLine>> grids = doc.getDetails();
 
 		for (String key : grids.keySet()) {
+			List<String> refIds = new ArrayList<String>();
+			List<String> dbLineRefIds = dao.getDocumentLinesRefs(doc.getRefId(),key);
+			
 			ArrayList<DocumentLine> lines = grids.get(key);
 			for (DocumentLine line : lines) {
+				if(line==null){
+					continue;
+				}
 				line.setDocRefId(doc.getRefId());// Doc
 				line.setName(key);
 				createJsonLine(line);
+				refIds.add(line.getRefId());
 			}
+			
+			
+			//Remove all IDs from the front-end to remain with those deleted on the front-end
+			dbLineRefIds.removeAll(refIds);
+			dao.deleteJsonDocLine(dbLineRefIds);
+			
 		}
+		
 	}
 
 	private static void createJsonLine(DocumentLine line) {

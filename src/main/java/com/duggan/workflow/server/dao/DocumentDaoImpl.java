@@ -900,12 +900,38 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				"docRefId", docRefId).executeUpdate();
 	}
 	
+	public void deleteJsonDocLine(List<String> lineRefIds) {
+		if(lineRefIds.isEmpty()){
+			return;
+		}
+		
+		String sql = "delete from DocumentLineJson where refId in (:refIds)";
+		logger.info("DeleteJsonDocLine "+sql.replace(":refIds", lineRefIds.toString()));
+		
+		getEntityManager()
+			.createQuery(sql)
+			.setParameter("refIds", lineRefIds)
+			.executeUpdate();
+		
+	}
+	
 	public void deleteJsonDocLine(String docRefId, String gridName) {
 		String docLineSql = "delete from documentlinejson where docRefId=:docRefId and name=:name";
 		getEntityManager().createNativeQuery(docLineSql)
 		.setParameter("docRefId", docRefId)
 		.setParameter("name", gridName)
 		.executeUpdate();
+	}
+	
+	public List<String> getDocumentLinesRefs(String docRefId, String key) {
+		
+		String sql = "select refId from documentlinejson where docRefId=:docRefId and name=:name";
+		
+		List<String> refIds = getResultList(getEntityManager().createNativeQuery(sql)
+				.setParameter("docRefId", docRefId)
+				.setParameter("name", key));
+		
+		return refIds;
 	}
 
 

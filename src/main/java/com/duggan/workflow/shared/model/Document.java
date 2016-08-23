@@ -1,10 +1,9 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,9 +13,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.server.dao.hibernate.JsonType;
-import com.duggan.workflow.shared.model.form.Field;
-import com.duggan.workflow.shared.model.form.KeyValuePair;
-import com.duggan.workflow.shared.model.form.Property;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.SerializableObj;
 

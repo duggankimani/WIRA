@@ -1,6 +1,7 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -182,8 +183,9 @@ public class Field extends FormModel implements Comparable<Field>{
 		return fields.contains(retrieved);
 	}
 
-	public void setFields(ArrayList<Field> fieldList) {
-		this.fields = fieldList;
+	public void setFields(Collection<Field> fieldList) {
+		this.fields.clear();
+		this.fields.addAll(fieldList);
 	}
 	
 	public Field clone(){
