@@ -282,10 +282,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 
 	@Override
 	public Widget createComponent(boolean small) {
-
-		// if(!readOnly){
-		// return lstItems;
-		// }
 		return panelControls;
 	}
 

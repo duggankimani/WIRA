@@ -1271,21 +1271,25 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					if(parent.hasClassName("date")){
 						widget = new DateField(element, designMode);
 					}else{
+						//Works in Production - Duggan 24/08/2016
 						widget = new TextField(element, designMode);
 					}
 					
 				}else if(type.equals("number")){
+					//Works in Production - Duggan 24/08/2016
 					widget = new NumberField(element, designMode);
 				}else if(type.equals("date")){
-					widget = new DateField(element, designMode);
+//					widget = new DateField(element, designMode);
 				}else if(type.equals("radio")){
 					widget = new RadioGroup(element,designMode);
 				}
 				break;
 			case "textarea":
+				//Works in Production - Duggan 24/08/2016
 				widget = new TextArea(element, designMode);
 				break;
 			case "select":
+				//Works in Production - Duggan 24/08/2016
 				widget = new SelectBasic(element, designMode);
 				break;
 			default:

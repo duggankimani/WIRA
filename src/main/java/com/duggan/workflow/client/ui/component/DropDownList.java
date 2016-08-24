@@ -17,7 +17,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ListBox;
@@ -37,7 +36,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 	// @UiField
 	// ListBox listBox;
 
-	private ArrayList<T> items;
+	private ArrayList<T> items = new ArrayList<T>();
 	private String nullText = "--Select--";
 
 	T value = null;
@@ -51,7 +50,12 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		super(select);
 		initComponents();
 	}
-
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+	}
+	
 	void initComponents() {
 		addChangeHandler(new ChangeHandler() {
 
@@ -65,10 +69,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 					// setting null
 					value = null;
 				} else {
-					if(selectedIndex>0){
-						value = items.get(selectedIndex - 1);
-					}
-					
+					value = getItem(selectedIndex - 1);
 				}
 
 				ValueChangeEvent.fire(DropDownList.this, value);
@@ -107,10 +108,22 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		for (int i = 1; i < getItemCount(); i++) {
 			if (isItemSelected(i)) {
 				String key = getValue(i);
-				values.add(items.get(i - 1));
+				T item = getItem(i - 1);
+				if(item!=null){
+					values.add(item);
+				}
 			}
 		}
 		return values;
+	}
+
+	private T getItem(int idx) {
+		
+		if(idx<items.size()){
+			return items.get(idx);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -131,7 +144,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 
 			if (getValue(i).equals(value.getName())) {
 				setSelectedIndex(i);
-				this.value = items.get(i - 1);
+				this.value = getItem(i - 1);
 			}
 
 		}
@@ -147,7 +160,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		for (int i = 0; i < getItemCount(); i++) {
 			if (getValue(i).equals(key)) {
 				setSelectedIndex(i);
-				value = items.get(i - 1);
+				value = getItem(i - 1);
 			}
 
 		}
@@ -198,21 +211,19 @@ public class DropDownList<T extends Listable> extends ListBox implements
 
 		// Assert that the element is attached.
 		assert Document.get().getBody().isOrHasChild(select);
-
+		
 		DropDownList<KeyValuePair> listBox = new DropDownList<KeyValuePair>(
 				select);
-		int options = DOM.getChildCount(select);
+		
 		NodeList<Node> nodes = select.getChildNodes();
-		
 		ArrayList<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
-		
 		int length = nodes.getLength();
 		for (int i = 0; i < length; i++) {
 			Element option = (Element) nodes.getItem(i);
 			String text = option.getInnerHTML();
 			
-			String optionStr = option.toString(); 
-			if(optionStr.contains("option")){
+			String optionStr = option.getTagName(); 
+			if(optionStr!=null && optionStr.toLowerCase().equals("option")){
 				if(text.startsWith("--")){
 					listBox.setNullText(text);
 					//pairs.add(new KeyValuePair(text, ""));
@@ -221,9 +232,8 @@ public class DropDownList<T extends Listable> extends ListBox implements
 				}
 			}
 		}
-		
 		listBox.items = pairs;
-
+		
 		// Mark it attached and remember it for cleanup.
 		listBox.onAttach();
 

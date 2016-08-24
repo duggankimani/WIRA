@@ -42,6 +42,8 @@ import com.google.gwt.dom.client.LegendElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AttachDetachException;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -142,6 +144,30 @@ public class FormPanel extends Composite {
 		execJs();
 	}
 	
+	@Override
+	protected void onAttach() {
+		try{
+			super.onAttach();
+		}catch(AttachDetachException e){
+			StringBuffer buffer = new StringBuffer();
+			getTrace(e,buffer);
+			Window.alert(e.getMessage()+"<p>"+buffer.toString());
+		}
+	}
+	
+	private void getTrace(Throwable e, StringBuffer buffer) {
+		if(e==null){
+			return;
+		}
+		
+		for(StackTraceElement elem: e.getStackTrace()){
+			buffer.append(elem.toString()+"\r\n");
+		}
+		buffer.append("--------------------------------------------------------- \r\n");
+		getTrace(e.getCause(), buffer);
+		
+	}
+
 	void bind(ArrayList<Field> fields, Doc doc, Collection<String> parentFields) {
 		bind(fields, doc, parentFields,false);
 	}
