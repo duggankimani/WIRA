@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent;
+import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -17,6 +23,7 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,6 +31,7 @@ public class HTMLGrid extends HTMLParent {
 
 	private Element templateRow = null;
 	private ArrayList<HTMLLine> htmlLines = new ArrayList<HTMLGrid.HTMLLine>();
+	long rowCount=0;
 
 	public HTMLGrid() {
 		super();
@@ -49,7 +57,7 @@ public class HTMLGrid extends HTMLParent {
 
 		final String id = element.getId();
 		String addLineId = element.getId() + "_Add";
-
+		
 		JavaScriptObject row = getGridRowTemplate(id);
 		if (row != null) {
 			templateRow = Element.as(row);
@@ -104,8 +112,10 @@ public class HTMLGrid extends HTMLParent {
 	public void setField(Field field) {
 		super.setField(field);
 		if(designMode){
+			assert templateRow!=null;
 			HTMLLine line = new HTMLLine(templateRow,true);
 		}
+		
 	}
 
 	private ArrayList<FieldWidget> parseInputs(Element newRow) {
@@ -180,18 +190,10 @@ public class HTMLGrid extends HTMLParent {
 			addLine(line);
 		}
 	}
-
-	@Override
-	public void save() {
-		// if (grid != null) {
-		// field.setFields(grid.getFields());
-		// }
-		super.save();
-	}
-
+	
 	@Override
 	public FieldWidget cloneWidget() {
-		return new HTMLGrid();
+		return new HTMLGrid(templateRow,designMode);
 	}
 
 	@Override
@@ -238,7 +240,7 @@ public class HTMLGrid extends HTMLParent {
 				}
 			}
 
-			if (delete != null) {
+			if (delete != null && !parseFields) {
 				ActionLink deleteLink = ActionLink.wrap(delete, true);
 				deleteLink.setModel(line);
 				deleteLink.addClickHandler(new ClickHandler() {
@@ -248,6 +250,12 @@ public class HTMLGrid extends HTMLParent {
 						Element elementRow = (Element) ((ActionLink) event
 								.getSource()).getModel();
 						elementRow.removeFromParent();
+						AppContext.fireEvent(new DeleteLineEvent(documentLine));
+						for (FieldWidget widget : inputs) {
+							Field child = widget.getField();
+							ENV.removeContext(child);
+							widget.onUnload();//disable listeners
+						}
 						htmlLines.remove(HTMLLine.this);
 					}
 				});
@@ -256,24 +264,24 @@ public class HTMLGrid extends HTMLParent {
 			if (parseFields) {
 				// Parse Inputs	
 				inputs = parseInputs(line);
-				field.getFields().clear();
 				for (FieldWidget widget : inputs) {
 					Field child = widget.getField();
 					child = initializeChild(widget);
-					children.put(child.getName(), child);
+					children.put(child.getName(), child);//overwrite fields
 				}
 				field.setFields(children.values());
-//				Window.alert("Grid_Config '"+field.getName()+"' - "+field.getFields());
 			} else {
-//				Window.alert("Grid_View '"+field.getName()+"' - "+field.getFields());
-				//Parent Grid Field already initialized.
 				for(Field child: field.getFields()){
 					Element input = getElementById(line, child.getName());
 					if(input!=null){
 						FieldWidget widget = wrap(input,getElementType(child,input), designMode);
-						initializeChild(widget);
+						child = initializeChild(widget);
+//						Window.alert("Original "+child.getName()+"; "+child.getProperty(FORMULA) 
+//								+"; isObserver="+widget.isObserver+"; isObserverable="+widget.isObservable);
+						//Window.alert(child.getName()+" - "+child.getProperty(FORMULA));
 						inputs.add(widget);
 					}
+					
 				}
 			}
 		}
@@ -293,11 +301,21 @@ public class HTMLGrid extends HTMLParent {
 
 		public void setDocument(DocumentLine documentLine) {
 			this.documentLine = documentLine;
+			documentLine.setTempId(++rowCount);
+			documentLine.setDocRefId(field.getDocRefId());
+			documentLine.setId(field.getId());
+			documentLine.setName(field.getName());
 			for (FieldWidget widget : inputs) {
 				Field child = widget.getField();
+				child.setGridName(field.getName());
+				child.setDocId(field.getDocId());
+				child.setDocRefId(field.getDocRefId());
+				child.setLineRefId(documentLine.getTempId());
 				child.setValue(documentLine.getValue(child.getName()));
+				
 				widget.setField(child);
 			}
+
 		}
 
 		public Element getElement() {

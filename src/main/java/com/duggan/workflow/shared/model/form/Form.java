@@ -24,6 +24,7 @@ public class Form extends FormModel implements Listable, Serializable{
 
 	@XmlTransient
 	private ArrayList<Field> fields;
+	
 	@XmlTransient
 	private Long processDefId;
 	
@@ -34,6 +35,9 @@ public class Form extends FormModel implements Listable, Serializable{
 	 */
 	@XmlTransient
 	private HashMap<String, ArrayList<String>> dependencies = new HashMap<String, ArrayList<String>>();
+	
+	@XmlTransient
+	private ArrayList<String> formulae = new ArrayList<String>();
 	
 	public Form() {
 	}
@@ -136,6 +140,14 @@ public class Form extends FormModel implements Listable, Serializable{
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);
+	}
+
+	public ArrayList<String> getFormulae() {
+		return formulae;
+	}
+
+	public void setFormulae(ArrayList<String> formulae) {
+		this.formulae = formulae;
 	}
 	
 }

@@ -670,6 +670,8 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 								+ "where (u.userId=:userId "
 								+ "or (g.id in (:groupIds) "
 								+ "and g in elements (t.processDef.groups))) "
+								+ "and t.isActive=1 "
+								+ "and def.isActive=1 "
 								+ "order by t.display")
 				.setParameter("userId", userId)
 				.setParameter("groupIds", groupIds));
@@ -965,6 +967,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		if(loadDetails){
 			document.setValues(json.getData() == null ? new HashMap<String, Value>()
 					: json.getData().getValuesMap());
+			document.setId(json.getId());
 			addDocLinesJson(document);
 		}
 		return document;
@@ -979,6 +982,8 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		for (DocumentLineJson json : lines) {
 			DocumentLine line = json.getDocumentLine();
+			line.setDocumentId(document.getId());
+			line.setDocRefId(document.getRefId());
 			line.setValues(json.getData() == null ? new HashMap<String, Value>()
 					: json.getData().getValuesMap());
 			document.addDetail(line);

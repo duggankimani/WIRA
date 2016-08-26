@@ -40,13 +40,27 @@ public class ENV{
 		nameToQualifieldNameMap.clear();
 	}
 
-	public static boolean containsObservable(String name){
+	/**
+	 * 
+	 * @param name Qualified name of a field, for a gridfield the name will be gridname_fieldname
+	 * e.g Particularsgrid_unitPrice otherwise, the name of the field is used
+	 * </p>
+	 * @return true if fieldName is registered as observable (i.e field is an operand in a formula).
+	 * This is necessary to manage the number of events fired while interacting with the form
+	 */
+	public static boolean containsObservable(String fieldName){
 		
-		boolean contained = observableFields.keySet().contains(name);
+		boolean contained = observableFields.keySet().contains(fieldName);
 		//System.err.println("Contains : "+name+" : "+contained);
 		return contained;
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param parentId  - Grid Id
+	 * @return
+	 */
 	public static boolean containsObservable(String name, Long parentId) {
 		boolean contained = observableFields.keySet().contains(name);
 		if(contained){
@@ -55,6 +69,12 @@ public class ENV{
 		return contained;
 	}
 
+	/**
+	 * 
+	 * @param fieldName
+	 * @param parentId
+	 * @return true if ParentId is the parent(grid) of fieldName
+	 */
 	public static boolean isParent(String fieldName, Long parentId) {
 		
 		Long id1 = observableFields.get(fieldName);

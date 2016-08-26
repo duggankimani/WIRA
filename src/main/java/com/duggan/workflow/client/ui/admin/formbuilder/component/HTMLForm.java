@@ -3,12 +3,10 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.TextValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
-import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArrayString;
@@ -18,7 +16,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -95,6 +92,7 @@ public class HTMLForm extends HTMLParent {
 				prop.setValue(new TextValue(txtComponent.getValue()));
 				props.put(HTMLCONTENT, prop);
 				showView(true);
+				wrapHTML();
 				save();
 			}
 		});
@@ -117,12 +115,6 @@ public class HTMLForm extends HTMLParent {
 	}
 
 	@Override
-	public void save() {
-		wrapHTML();
-		super.save();
-	}
-
-	@Override
 	public FieldWidget cloneWidget() {
 		return new HTMLForm();
 	}
@@ -140,23 +132,33 @@ public class HTMLForm extends HTMLParent {
 
 	@Override
 	public Element getViewElement() {
-		return null;
+		return htmlContent.getElement();
 	}
 
 	@Override
 	public void setComponentValid(boolean isValid) {
 
 	}
+	
 
+	boolean bindHTMLWidgets = false;
+	
 	@Override
 	public void setField(Field aField) {
 		super.setField(aField);
+		bindHTMLWidgets = false;
 		
 		String html = getPropertyValue(HTMLCONTENT);
 		bindHTML(html);
+		
+//		if(field.getName().equals("academicqualification")){
+//			Window.alert(" >> SETField! "+field.getName());
+//		}
 
 		if (isAttached()) {
 			bindHTMLWidgets(htmlContent.getElement());
+		}else{
+			bindHTMLWidgets = true;
 		}
 	}
 
@@ -172,7 +174,7 @@ public class HTMLForm extends HTMLParent {
 
 	@Override
 	public void onDragEnd() {
-		divActions.removeClassName("hide");
+		//divActions.removeClassName("hide");
 	}
 
 	@Override
@@ -189,14 +191,42 @@ public class HTMLForm extends HTMLParent {
 			htmlContent.getElement().getStyle().setMarginBottom(12, Unit.PX); // margin-bottom:
 																				// 15px;
 		}
+//		if(field.getName().equals("academicqualification")){
+//			Window.alert(" >> onLoad! "+field.getName());
+//		}
+		
 	}
 
 	@Override
 	protected void onAttach() {
 		super.onAttach();
-		bindHTMLWidgets(htmlContent.getElement());
+		
+		if(bindHTMLWidgets){
+			bindHTMLWidgets(htmlContent.getElement());
+			bindHTMLWidgets=false;
+		}
+		
+//		if(field.getName().equals("academicqualification")){
+//			Window.alert(" >> onAttach! "+field.getName());
+//		}
 	}
 	
+	/**
+	 * Bind HTML Widgets.
+	 * 
+	 * HTML Widgets have to be bound on setField, but after onAttach has been called.
+	 * The sequence of calls in different scenarios is as follows
+	 * </br>
+	 * Form INITIALIZATION: setField  -> onLoad -> on Attach <br>
+	 * HTML Form DragStart: onLoad  -> onAttach <br>
+	 * HTML Form DragEnd:  onLoad -> onAttach -> setField <br>
+	 * 
+	 * As such, a flag has to be maintained to ensure this method is called in the correct instances only,
+	 * otherwise, the application throws exceptions
+	 *  <p>
+	 * 
+	 * @param parent
+	 */
 	protected void bindHTMLWidgets(Element parent) {
 		for (Field child : children.values()) {
 			if (child.getName() != null) {
@@ -212,7 +242,6 @@ public class HTMLForm extends HTMLParent {
 			}
 		}
 	}
-	
 
 
 	/**
@@ -290,36 +319,52 @@ public class HTMLForm extends HTMLParent {
 		}
 	}
 	
-	@Override
-	public void onSaveProperties(SavePropertiesEvent event) {
-		//super.onSaveProperties(event);
-		FormModel model = event.getParent();
-		if (model == null || !(model instanceof Field)) {
-			return;
-		}
-
-		Field fieldModel = (Field) model;
-		if (!fieldModel.isHTMLWrappedField()) {
-			if (field.equals(fieldModel)) {
-				super.save(fieldModel);
-			}
-
-			return;
-		}
-
-		if (children.get(fieldModel.getName()) == null) {
-			// not a child of this HTMLForm - Ignore
-			return;
-		}
-
-		children.put(fieldModel.getName(), fieldModel);
-
-		ArrayList<Field> list = new ArrayList<Field>();
-		list.addAll(children.values());
-		field.setFields(list);
-		super.save(field);
-
+	protected void wrapElement(Element element) {
+		wrapElement(element,element.getAttribute("type"));
 	}
+	
+	protected void wrapElement(Element element, String type) {
+		FieldWidget widget = FieldWidget.wrap(element,type, designMode);
+		
+		if (widget != null) {
+			Field child = initializeChild(widget);
+			children.put(child.getName(), child);
+			fieldWidgets.add(widget);
+		}
+		
+		field.setFields(children.values());
+	}
+
+//	@Override
+//	public void onSaveProperties(SavePropertiesEvent event) {
+//		//super.onSaveProperties(event);
+//		FormModel model = event.getParent();
+//		if (model == null || !(model instanceof Field)) {
+//			return;
+//		}
+//
+//		Field fieldModel = (Field) model;
+//		if (!fieldModel.isHTMLWrappedField()) {
+//			if (field.equals(fieldModel)) {
+//				super.save(fieldModel);
+//			}
+//
+//			return;
+//		}
+//
+//		if (children.get(fieldModel.getName()) == null) {
+//			// not a child of this HTMLForm - Ignore
+//			return;
+//		}
+//
+//		children.put(fieldModel.getName(), fieldModel);
+//
+//		ArrayList<Field> list = new ArrayList<Field>();
+//		list.addAll(children.values());
+//		field.setFields(list);
+//		super.save(field);
+//
+//	}
 
 	/**
 	 * Get All Field Values

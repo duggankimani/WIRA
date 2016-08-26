@@ -1,12 +1,8 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
-import com.duggan.workflow.client.ui.events.ButtonClickEvent;
-import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
-import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
@@ -14,78 +10,25 @@ import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SelectBasic extends FieldWidget implements IsSelectionField {
-
-	private static SelectBasicUiBinder uiBinder = GWT
-			.create(SelectBasicUiBinder.class);
+public class HTMLSelectBasic extends FieldWidget implements IsSelectionField {
 
 	private final Widget widget;
 
-	@UiField
 	Element lblEl;
-	@UiField
 	DropDownList<KeyValuePair> lstItems;
-	@UiField
-	HTMLPanel panelControls;
-	@UiField
-	InlineLabel lblComponent;
-	@UiField
-	SpanElement spnMandatory;
-	@UiField
-	HTMLPanel panelGroup;
-	@UiField
-	SpanElement spnMsg;
-	@UiField
-	Element spnIcon;
-
-	private boolean isWrappedField;
-
-	interface SelectBasicUiBinder extends UiBinder<Widget, SelectBasic> {
-	}
-
-	public SelectBasic() {
+	private Element select;
+	
+	public HTMLSelectBasic(Element select, boolean designMode) {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
-		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
-				DataType.STRING));
-		addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
-		addProperty(new Property(SQLSELECT, "Sql", DataType.STRINGLONG));
-		addProperty(new Property(SELECTIONTYPE, "Reference", DataType.STRING));
-
-		widget = uiBinder.createAndBindUi(this);
-		add(widget);
-		UIObject.setVisible(spnMandatory, false);
-		UIObject.setVisible(lblComponent.getElement(), false);
-
-		lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
-				execTrigger();
-			}
-		});
-	}
-
-	@Deprecated
-	public SelectBasic(Element select, boolean designMode) {
-		super();
-		this.isWrappedField = true;
+		this.select = select;
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
@@ -140,41 +83,14 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 
 	}
 
-	public SelectBasic(final Property property) {
-		this();
-		lblEl.setInnerText(property.getCaption());
-
-		setSelectionValues(property.getSelectionValues());
-		Value val = property.getValue();
-		if (val != null)
-			setValue(val.getValue());
-
-		lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
-
-			@Override
-			public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
-				KeyValuePair p = event.getValue();
-				if (p == null) {
-					property.setValue(null);
-				} else {
-					Value value = new StringValue(null, property.getName(),
-							p == null ? null : p.getKey());
-					property.setValue(value);
-				}
-
-			}
-		});
-
-	}
-
 	@Override
 	public FieldWidget cloneWidget() {
-		return new SelectBasic();
+		return new HTMLSelectBasic(select,designMode);
 	}
 
 	@Override
 	protected void setCaption(String caption) {
-		lblEl.setInnerHTML(caption);
+//		lblEl.setInnerHTML(caption);
 	}
 
 	@Override
@@ -216,19 +132,11 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-
 		UIObject.setVisible(lstItems.getElement(), !this.readOnly);
-		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
 	public void setSelectionValues(ArrayList<KeyValuePair> values) {
-		//Wrapped fields
-		if(isWrappedField){
-			return;
-		}
-		
 		if (designMode
 				&& (getPropertyValue(SQLDS) != null || getPropertyValue(SQLSELECT) != null)) {
 			// design mode
@@ -246,7 +154,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 			// as new data provided manually
 		}
 
-		if (values != null) {
+		if (values != null && !values.isEmpty()) {
 			lstItems.setItems(values);
 		}
 
@@ -270,20 +178,11 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		
 		String key = (String) value;
 		lstItems.setValueByKey(key);
-
-		if (lblComponent != null) {
-			KeyValuePair keyValuePair = lstItems.getValue();
-			if (keyValuePair != null) {
-				lblComponent.setText(keyValuePair.getValue());
-			} else {
-				lblComponent.setText(value.toString());
-			}
-		}
 	}
 
 	@Override
 	public Widget createComponent(boolean small) {
-		return panelControls;
+		return null;
 	}
 
 	@Override
@@ -306,23 +205,11 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 
 	@Override
 	public Element getViewElement() {
-		return lblComponent.getElement();
+		return null;
 	}
 
 	@Override
 	public void setComponentValid(boolean isValid) {
-		spnMsg.removeClassName("hide");
-		spnIcon.removeClassName("icon-ok-circle");
-		spnIcon.removeClassName("icon-remove-circle");
-		if (isValid) {
-			panelGroup.addStyleName("success");
-			spnIcon.addClassName("icon-ok-circle");
-			panelGroup.removeStyleName("error");
-		} else {
-			panelGroup.removeStyleName("success");
-			panelGroup.addStyleName("error");
-			spnIcon.addClassName("icon-remove-circle");
-		}
 	}
 
 }

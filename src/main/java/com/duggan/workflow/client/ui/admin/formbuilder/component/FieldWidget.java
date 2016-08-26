@@ -302,7 +302,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			// isObservable =
 			// ENV.containsObservable(field.getName(),field.getParentId());
 			isObservable = ENV.containsObservable(field.getDocSpecificName(),
-					field.getParentId()) || true;
+					field.getParentId());
 			if (isObservable) {
 				// System.err.println("Registering observable.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
 				registerValueChangeHandler();
@@ -524,10 +524,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 										
 										}-*/;
 
-	public void setFormId(Long formId, String formRefId) {
-		field.setForm(formId,formRefId);
-	}
-
 	protected void save(Field model) {
 
 		model.setType(getType());
@@ -675,6 +671,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 	}
 
+	/**
+	 * Save field properties. For HTML Fields (Fields generated from a html template), the field
+	 */
 	@Override
 	public void onSaveProperties(SavePropertiesEvent event) {
 		FormModel model = event.getParent();
@@ -685,9 +684,11 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 		if (model.equals(field)) {
 			// Ignore metadata save for Wrapped fields - They will be saved by {HTMLForm}
-			if (!((Field) model).isHTMLWrappedField()) {
-				save((Field) model);
-			}
+//			if (!((Field) model).isHTMLWrappedField()) {
+//				save((Field) model);
+//			}
+			
+			save((Field) model);
 		}
 
 	}
@@ -955,6 +956,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 
 		isObserver = true;
+		
 		// System.err.println(formula);
 		String regex = "[(\\+)+|(\\*)+|(\\/)+|(\\-)+|(\\=)+|(\\s)+(\\[)+|(\\])+|(,)+]";
 		String[] tokens = formula.split(regex);
@@ -963,11 +965,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		for (String token : tokens) {
 			if (token != null && !token.isEmpty()
 					&& !token.matches(digitsOnlyRegex)) {
-				dependentFields.add(token + field.getDocId() + "D");
+				//dependentFields.add(token + field.getDocId() + "D");
+				dependentFields.add(token);
 			}
 		}
 
-		ENV.registerObservable(dependentFields);
+		//Registration now done by @see FormPanel.bindFormulae()
+		//ENV.registerObservable(dependentFields);
 	}
 
 	/**
@@ -1026,9 +1030,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			Object val = ENV.getValue(fld);
 			String formularFieldName = "";
 
-			if (field.getParentId() != null && val == null) {
-				// Current Field is a detail field, and no value was found for
-				// dependent field
+			if (field.getLineRefId() != null && fld.startsWith(Field.getGridPrefix())) {
+				// Current Field is a detail field, and operand (fld)
+				// starts with GRID_; All grid fields begin with the prefix GRID
 
 				val = ENV.getValue(formularFieldName = fld
 						+ Field.getSeparator() + field.getLineRefId());
@@ -1040,35 +1044,37 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			if (val != null && (val instanceof Double)) {
 
 				/*
-				 * Dependent Fields== fieldName-DocId-D Event Source FieldName==
-				 * FieldName-DocId-D
+				 * grid field = GRID_particulars_unitPrice
+				 * general field = grandTotal
 				 * 
 				 * >
 				 */
-				formularFieldName = fld.substring(0,
-						fld.indexOf(field.getDocId()));
-				if (!fld.endsWith("D")) {
-					formularFieldName = fld;
+				formularFieldName = fld;
+				if(field.getName().equals("subtotal")){
+					GWT.log("var "+formularFieldName+" = "+val +" [Handler-"+field.getName()+"]");
 				}
-
-				// System.out.println(formularFieldName+" = "+val);
-
 				ComplexVariable dv = new ComplexVariable((Double) val);
-				engine.defineVariable(formularFieldName, dv);
+				
+				engine.defineVariable(mathEclipseEscape(formularFieldName), dv);
 			}
 		}
 
+		
 		if (formular.startsWith("=")) {
 			formular = formular.substring(1, formular.length());
 		}
-
+		
 		Double result = null;
 		try {
 			// System.err.println("Calculating> "+field.getName()+" = "+formular);
-			Complex x = engine.evaluate(formular);
+			if(field.getName().equals("subtotal")){
+				GWT.log("Formula "+formular+"; [Handler-"+field.getName()+"]");
+			}
+			Complex x = engine.evaluate(mathEclipseEscape(formular));
 			result = x.abs();
 			setValue(result);
 		} catch (Exception e) {
+			GWT.log(e.getMessage());
 			e.printStackTrace();
 			setValue(result = new Double(0.0));
 		} finally {
@@ -1084,6 +1090,28 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	/**
+	 * MathEclipse treats underscores (_) as special characters.
+	 * throwing the error: Syntax error in line: 1 - End-of-file not reached.
+	 * <p>
+	 * This method removes underscores from the variables as well as 
+	 * the formular so that 
+	 * =GRID_particularsgrid_qty*GRID_particularsgrid_unitPrice <br/> 
+	 * becomes  <br/>
+	 * =GRIDparticularsgridqty*GRIDparticularsgridunitPrice 
+	 * 
+	 * </>
+	 * 
+	 * @param formularFieldName
+	 * @return
+	 */
+	private String mathEclipseEscape(String variable) {
+		if(variable==null){
+			return null;
+		}
+		return variable.replace("_", "");
+	}
+
+	/**
 	 * Replace all aggregate fields with comma separated actuals<br>
 	 * i.e =Plus[total] becomes =Plus[1|total,2|total,3|total,....,RowN|Total]
 	 * 
@@ -1094,16 +1122,20 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		// One of the dependent is a grid detail field - A column in a grid row
 		// eg formular =Plus[row_total]; where row_total is a column in invoice
 		// particulars
-
+		if(field.getName().equals("subtotal")){
+			GWT.log(field.getName()+" isAggregate field = "+field.isAggregate()+"; QN="+field.getQualifiedName());
+		}
 		if (!field.isAggregate()) {
 			// Target/ result field is not an aggregate/grid field
-
+			if(field.getName().equals("subtotal")){
+				GWT.log("Aggregate field = "+field.getName()+" Dependent Fields = "+dependentFields);
+			}
 			for (String fld : dependentFields) {
-				if (ENV.isAggregate(fld)) {
+				if (fld.startsWith(Field.getGridPrefix())) {
 					// This is a grid field
 					ArrayList<String> names = ENV.getQualifiedNames(fld);
 					// /System.err.println(fld+" : Aggregated: "+names);
-
+					GWT.log("Field ["+fld+"] QNames = "+names);
 					String nameList = "";
 					if (names != null) {
 						for (String n : names) {
@@ -1118,8 +1150,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 						// Formula is Document independent
 						// make it dependent on doc
-						String rootName = fld.substring(0,
-								fld.indexOf(field.getDocId()));
+						String rootName = fld;
 
 						// String regex="/^"+fld+"$/";
 						// System.out.println("["+rootName+"] >> ["+nameList+"]");
@@ -1135,10 +1166,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	@Override
 	public void onDeleteLine(DeleteLineEvent event) {
 		if (isObservable && field.getLineRefId() != null) {
-			Long sourceDetailId = event.getLine().getId();
-			if (sourceDetailId == null) {
-				sourceDetailId = event.getLine().getTempId();
-			}
+			Long sourceDetailId = event.getLine().getTempId();
 			if (!field.getLineRefId().equals(sourceDetailId)) {
 				return;
 			}
@@ -1246,6 +1274,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	
 	public static FieldWidget wrap(Element element, String type, boolean designMode) {
 
+		if(element==null){
+			return null;
+		}
+		
 		if(type==null){
 			type = element.getAttribute("type");
 		}
@@ -1269,28 +1301,28 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				if (type.equals("text")) {
 					Element parent = element.getParentElement();
 					if(parent.hasClassName("date")){
-						widget = new DateField(element, designMode);
+						widget = new HTMLDateField(element, designMode);
 					}else{
 						//Works in Production - Duggan 24/08/2016
-						widget = new TextField(element, designMode);
+						widget = new HTMLTextField(element, designMode);
 					}
 					
 				}else if(type.equals("number")){
 					//Works in Production - Duggan 24/08/2016
-					widget = new NumberField(element, designMode);
+					widget = new HTMLNumberField(element, designMode);
 				}else if(type.equals("date")){
 //					widget = new DateField(element, designMode);
 				}else if(type.equals("radio")){
-					widget = new RadioGroup(element,designMode);
+					widget = new HTMLRadioGroup(element,designMode);
 				}
 				break;
 			case "textarea":
 				//Works in Production - Duggan 24/08/2016
-				widget = new TextArea(element, designMode);
+				widget = new HTMLTextArea(element, designMode);
 				break;
 			case "select":
 				//Works in Production - Duggan 24/08/2016
-				widget = new SelectBasic(element, designMode);
+				widget = new HTMLSelectBasic(element, designMode);
 				break;
 			default:
 				if(type.equals("grid")){
@@ -1299,7 +1331,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				break;
 		}
 		
-
 		return widget;
 	}
 

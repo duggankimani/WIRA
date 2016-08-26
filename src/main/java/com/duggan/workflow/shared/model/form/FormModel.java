@@ -20,6 +20,9 @@ public class FormModel implements Serializable, Listable {
 	public static final String PROPERTYMODEL = "PROPERTYMODEL";
 	
 	@XmlTransient
+	private ArrayList<String> formulae = new ArrayList<String>();
+	
+	@XmlTransient
 	private Long id;
 	private String refId;
 	protected String name;

@@ -83,7 +83,7 @@ public class GetFormModelRequestActionHandler extends
 				model = FormDaoHelper.getFieldJson(formModelRefId,true);
 				models.add(model);
 			}else if(parentRefId!=null){
-				models.addAll(FormDaoHelper.getFieldsForParent(parentRefId));
+				models.addAll(FormDaoHelper.getFieldJson(parentRefId).getFields());
 			}
 			
 			break;

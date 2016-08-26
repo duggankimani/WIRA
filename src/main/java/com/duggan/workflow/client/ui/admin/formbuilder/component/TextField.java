@@ -90,6 +90,7 @@ public class TextField extends FieldWidget {
 	 * @param textInput
 	 * @param designMode
 	 */
+	@Deprecated
 	public TextField(Element textInput, boolean designMode) {
 		super();
 		this.designMode = designMode;

@@ -112,9 +112,6 @@ public class ProcessDaoHelper {
 		// Check if there are any docs linked to the process
 		// if not, delete
 		ProcessDefModel model = dao.getProcessDef(processDefId);
-		Map<TaskType, Integer> counts = new HashMap<>();
-		DocumentDaoHelper.getCounts(model.getProcessId(), null, counts);
-
 		model.setArchived(true);
 		model.setIsActive(0);
 

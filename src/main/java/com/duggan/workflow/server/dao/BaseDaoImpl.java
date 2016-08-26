@@ -192,7 +192,7 @@ public class BaseDaoImpl {
 		return value;
 	}
 
-	public <T> List<T> getResultListJson(String sql,
+	public <T> ArrayList<T> getResultListJson(String sql,
 			Map<String, String> parameters, Class<T> clazz) {
 
 		if (parameters != null) {

@@ -89,6 +89,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	 * This field has dependants
 	 */
 	private boolean isDynamicParent;
+	
 	private String formRef;
 	
 	public Field() {
@@ -234,11 +235,11 @@ public class Field extends FormModel implements Comparable<Field>{
 	}
 
 	public String getDocSpecificName(){
-		return (gridName.isEmpty()? "" : gridName+"_")+name+getSuffix(docId);
+		return (gridName.isEmpty()? "" : getGridPrefix()+gridName+"_")+name;//+getSeparator()+getSuffix(docId);
 	}
 	
 	public static String getSuffix(String documentId){
-		return documentId+"D";//Delimited with a D
+		return "";//documentId;
 	}
 	
 	public String getQualifiedName() {
@@ -266,12 +267,13 @@ public class Field extends FormModel implements Comparable<Field>{
 	 * @return
 	 */
 	public boolean isAggregate(){
-		return this.parentId!=null;
+		//return this.parentId!=null; //HTMLForm children have parentId as well
+		return this.gridName!=null && !this.gridName.isEmpty();
 	}
 
 	public static String getSeparator() {
 		
-		return "";
+		return "_";
 	}
 
 	public String getDocId() {
@@ -294,7 +296,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	}
 
 	public void setGridName(String gridName) {
-		//this.gridName = gridName;
+		this.gridName = gridName;
 	}
 
 	public String getDocRefId() {
@@ -394,8 +396,30 @@ public class Field extends FormModel implements Comparable<Field>{
 	public String getFormRef() {
 		return formRef;
 	}
-
-	public void setFormRef(String formRef) {
-		this.formRef = formRef;
+	
+	@Override
+	public boolean equals(Object obj) {
+		boolean equal = super.equals(obj);
+		Field other = (Field)obj;
+		//take into consideration this class non-transient fields
+		if(equal){
+			if(this.parentRef!=null){
+				equal = this.parentRef.equals(other.parentRef);
+			}
+		}
+		
+		if(equal){
+			if(this.formRef!=null){
+				equal = this.formRef.equals(other.formRef);
+			}
+		}
+		
+		return equal;
+		
 	}
+
+	public static String getGridPrefix() {
+		return "GRID_";
+	}
+
 }

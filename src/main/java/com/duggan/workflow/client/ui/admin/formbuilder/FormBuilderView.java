@@ -7,12 +7,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
+import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.allen_sauer.gwt.dnd.client.util.DragClientBundle;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.HTMLForm;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.ProcessDef;
@@ -144,6 +146,14 @@ public class FormBuilderView extends ViewImpl implements
 			
 		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()){
 			@Override
+			public void onDragStart(DragStartEvent event) {
+				FieldWidget draggable = (FieldWidget)event.getContext().draggable;
+				if(draggable instanceof HTMLForm && draggable.getViewElement()!=null){
+					draggable.getViewElement().addClassName("dragview");
+				}
+				super.onDragStart(event);
+			}
+			@Override
 			public void onDragEnd(DragEndEvent event) {
 				super.onDragEnd(event);
 				FieldWidget draggable = (FieldWidget)event.getContext().draggable;
@@ -152,9 +162,18 @@ public class FormBuilderView extends ViewImpl implements
 				if(idx==-1){
 					draggable.delete();
 				}else{
-					draggable.setFormId(null,form.getRefId());		
+					/* Cannot use Window.alert here - Generates and Exception
+					 * 
+					 * com.google.gwt.event.shared.UmbrellaException: 
+					 * Exception caught: (TypeError) : 
+					 * Cannot read property 'getElement_23_g$' of null
+					 */
+					if(draggable instanceof HTMLForm && draggable.getViewElement()!=null){
+						draggable.getViewElement().removeClassName("dragview");
+					}
+					draggable.getField().setForm(form.getId(),form.getRefId());		
 					draggable.getField().setPosition(idx);
-					draggable.save();			
+					draggable.save();	
 					draggable.onDragEnd();
 				}
 			}
@@ -492,6 +511,9 @@ public class FormBuilderView extends ViewImpl implements
 		
 		
 		for(Field field: fields){
+			if(field==null){
+				continue;
+			}
 			FieldWidget widget = FieldWidget.getWidget(field.getType(),field,true);
 			widgetDragController.makeDraggable(widget);
 			vPanel.add(widget);

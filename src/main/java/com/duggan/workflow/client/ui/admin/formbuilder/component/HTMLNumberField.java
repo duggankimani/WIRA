@@ -7,14 +7,10 @@ import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
-import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,63 +19,19 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class NumberField extends FieldWidget{
+public class HTMLNumberField extends FieldWidget{
 	
-	private static NumberFieldUiBinder uiBinder = GWT
-			.create(NumberFieldUiBinder.class);
-
-	interface NumberFieldUiBinder extends UiBinder<Widget, NumberField> {
-	}
-
-	@UiField Element lblEl;
-	@UiField DoubleField txtComponent;
-	@UiField InlineLabel lblReadOnly;
-	@UiField HTMLPanel panelControls;
-	@UiField HTMLPanel panelGroup;
-	@UiField SpanElement spnMandatory;
-	@UiField SpanElement spnMsg;
-	@UiField Element spnIcon;
+	Element lblEl;
+	DoubleField txtComponent;
 	
 	private final Widget widget;
-	private boolean isWrappedField;
-	
-	
-	public NumberField(){
-		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
-		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
-		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class", DataType.STRING));
-		addProperty(new Property(FORMULA, "Formula", DataType.STRING));
-		addProperty(new Property(ALIGNMENT, "Alignment", DataType.SELECTBASIC, 
-				new KeyValuePair("left", "Left"),
-				new KeyValuePair("center", "Center"),
-				new KeyValuePair("right", "Right")));
-
-		widget = uiBinder.createAndBindUi(this);
-		add(widget);
-		UIObject.setVisible(spnMandatory, false);
+	private Element numberInput;
 		
-		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<Double> event) {
-				execTrigger();
-			}
-		});
-	}
-	
-	@Deprecated
-	public NumberField(Element numberInput, boolean designMode){
+	public HTMLNumberField(Element numberInput, boolean designMode){
 		super();
-		isWrappedField=true;
+		this.numberInput = numberInput;
 		this.designMode = designMode;
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
@@ -120,6 +72,7 @@ public class NumberField extends FieldWidget{
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Double> event) {
+				ENV.setContext(field, event.getValue());
 				execTrigger();
 			}
 		});
@@ -132,65 +85,6 @@ public class NumberField extends FieldWidget{
 					showProperties(0);
 				}
 			});
-		}
-	}
-		
-	public NumberField(final Property property){
-		this();
-		lblEl.setInnerHTML(property.getCaption());
-		txtComponent.setName(property.getName());
-		//txtComponent.set
-				
-		Value textValue = property.getValue();
-		String text = textValue==null? "": 
-			textValue.getValue()==null? "": textValue.getValue().toString();
-		
-		txtComponent.setText(text);
-		txtComponent.setClass("input-large"); //Smaller TextField
-		designMode=true;
-		
-		final String name = property.getName();
-		
-		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<Double> event) {
-				Double value  = event.getValue();
-				Value previousValue = property.getValue();
-				if(previousValue==null){
-					previousValue = new StringValue();
-				}else{
-					if(event.getValue().equals(previousValue.getValue())){
-						return;
-					}
-				}
-				
-				
-				previousValue.setValue(value);
-				property.setValue(previousValue);
-				
-				/**
-				 * This allows visual properties including Caption, Place Holder, help to be 
-				 * Synchronised with the form field, so that the changes are observed immediately
-				 * 
-				 * All other Properties need not be synched this way 
-				 */
-				if(name.equals(CAPTION) || name.equals(PLACEHOLDER) || name.equals(HELP)){				
-					firePropertyChanged(property, value);
-				}
-				
-			}
-		});
-		
-		//name.equals()
-
-	}
-
-	@Override
-	public void setField(Field field) {
-		super.setField(field);
-		if(isWrappedField){
-			registerHandlers();
 		}
 	}
 	
@@ -220,7 +114,7 @@ public class NumberField extends FieldWidget{
 	
 	@Override
 	public FieldWidget cloneWidget() {
-		return new NumberField();
+		return new HTMLNumberField(numberInput,designMode);
 	}
 	
 	@Override
@@ -241,11 +135,6 @@ public class NumberField extends FieldWidget{
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-		
-		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
-		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
-		
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
@@ -255,14 +144,12 @@ public class NumberField extends FieldWidget{
 		if(small){
 			txtComponent.setClass("input-medium");
 		}
-		return panelControls;
+		return null;
 	}
 	
 	@Override
 	protected void setAlignment(String alignment) {		
 		txtComponent.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));		
-		panelControls.getElement().getStyle().setTextAlign(TextAlign.valueOf(alignment.toUpperCase()));
-		
 	}
 
 	
@@ -297,8 +184,6 @@ public class NumberField extends FieldWidget{
 			
 			NumberFormat fmt = NumberFormat.getDecimalFormat();
 		    String formatted = fmt.format((Double)value);
-		    if(lblReadOnly!=null)
-			lblReadOnly.setText(formatted);
 		}else{
 			super.setValue(0.0);
 		}
@@ -314,17 +199,17 @@ public class NumberField extends FieldWidget{
 		return super.from(key, val);
 	}
 	
-	@Override
-	protected void onLoad() {
-		super.onLoad();
-		if(field.getDocId()!=null)
-			txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<Double> event) {
-						ENV.setContext(field, event.getValue());
-				}
-			});
-	}
+//	@Override
+//	protected void onLoad() {
+//		super.onLoad();
+//		if(field.getDocId()!=null)
+//			txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
+//				@Override
+//				public void onValueChange(ValueChangeEvent<Double> event) {
+//						ENV.setContext(field, event.getValue());
+//				}
+//			});
+//	}
 
 	@Override
 	public Widget getInputComponent() {
@@ -333,7 +218,7 @@ public class NumberField extends FieldWidget{
 
 	@Override
 	public Element getViewElement() {
-		return lblReadOnly.getElement();
+		return null;
 	}
 	
 	@Override
@@ -349,18 +234,6 @@ public class NumberField extends FieldWidget{
 	
 	@Override
 	public void setComponentValid(boolean isValid) {
-		spnMsg.removeClassName("hide");
-		spnIcon.removeClassName("icon-ok-circle");
-		spnIcon.removeClassName("icon-remove-circle");
-		if(isValid){
-			panelGroup.addStyleName("success");
-			spnIcon.addClassName("icon-ok-circle");
-			panelGroup.removeStyleName("error");
-		}else{
-			panelGroup.removeStyleName("success");
-			panelGroup.addStyleName("error");
-			spnIcon.addClassName("icon-remove-circle");
-		}
 	}
 	
 }

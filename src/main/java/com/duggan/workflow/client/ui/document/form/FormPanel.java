@@ -19,6 +19,7 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.TextArea;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.delegate.FormDelegate;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
@@ -126,8 +127,40 @@ public class FormPanel extends Composite {
 
 		});
 
+		//Bind formulae
+		bindFormula(form.getFormulae());
+		//Bind Fields
 		bind(fields, doc, form.getDependencies().keySet());
 
+	}
+	
+	private void bindFormula(ArrayList<String> formulae) {
+		ArrayList<String> dependentFields = new ArrayList<String>();
+		for(String formula: formulae){
+			setFormula(formula, dependentFields);
+		}
+		ENV.registerObservable(dependentFields);
+	}
+	
+	protected void setFormula(String formula,ArrayList<String> dependentFields) {
+
+		if (formula == null || formula.isEmpty()) {
+			return;
+		}
+
+		// System.err.println(formula);
+		String regex = "[(\\+)+|(\\*)+|(\\/)+|(\\-)+|(\\=)+|(\\s)+(\\[)+|(\\])+|(,)+]";
+		String[] tokens = formula.split(regex);
+
+		String digitsOnlyRegex = "[-+]?[0-9]*\\.?[0-9]+";// isNot a number
+		for (String token : tokens) {
+			if (token != null && !token.isEmpty()
+					&& !token.matches(digitsOnlyRegex)) {
+				//dependentFields.add(token + field.getDocId() + "D");
+				dependentFields.add(token);
+			}
+		}
+		
 	}
 
 	private void execJs() {
@@ -186,6 +219,9 @@ public class FormPanel extends Composite {
 			taskId = ((HTSummary) doc).getId();
 		}
 		for (Field field : fields) {
+			if(field==null){
+				continue;
+			}
 			field.setHTMLWrappedField(isRawHTMLFormFields);
 			
 			if(field.getType()==DataType.JS){
@@ -273,6 +309,10 @@ public class FormPanel extends Composite {
 	}
 
 	public void bind(Field field) {
+		if(field==null){
+			return;
+		}
+		
 		if(field.isHTMLWrappedField()){
 			//HTML Field - Do not instanciate field widget
 			if (mode == MODE.VIEW) {

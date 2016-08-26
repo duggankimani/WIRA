@@ -8,88 +8,60 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Window;
 
-public abstract class HTMLParent extends FieldWidget{
-
+public abstract class HTMLParent extends FieldWidget {
 
 	HashMap<String, Field> children = new HashMap<String, Field>();
 	List<FieldWidget> fieldWidgets = new ArrayList<FieldWidget>();
-	
+
 	public HTMLParent() {
 		super();
 	}
-	
+
 	@Override
 	public void setField(Field aField) {
+		for (Field child : aField.getFields()) {
+			child.setForm(aField.getFormId(), aField.getFormRef());
+			children.put(child.getName(), child);
+		}
 		super.setField(aField);
-		if (aField.getFields() != null) {
-			for (Field child : aField.getFields()) {
-				child.setForm(aField.getFormId(), aField.getFormRef());
-				children.put(child.getName(), child);
-			}
-		}
-
 	}
-	
-	protected void bindHTMLWidgets(Element parent) {
-		for (Field child : children.values()) {
-			if (child.getName() != null) {
-				
-				Element element = getElementById(parent,child.getName());
 
-				if (element != null){
-					wrapElement(element,getElementType(child, element));
-				}
-			}
-		}
-	}
-	
 	public String getElementType(Field fld, Element element) {
-		if(fld.getType()==DataType.CHECKBOXGROUP){
-			return "checkbox";
-		}else if(fld.getType()==DataType.BOOLEAN){
-			return "radio";
-		}else if(fld.getType()==DataType.GRID){
-			return "grid";
+		if(fld==null){
+			Window.alert("getElementType [1] - Null field");
 		}
-		else{
+		if (fld.getType() == DataType.CHECKBOXGROUP) {
+			return "checkbox";
+		} else if (fld.getType() == DataType.BOOLEAN) {
+			return "radio";
+		} else if (fld.getType() == DataType.GRID) {
+			return "grid";
+		} else {
 			return element.getAttribute("type");
 		}
 	}
-	
-	public Element getElementById(Element parent, String id){
+
+	public Element getElementById(Element parent, String id) {
 		JavaScriptObject el = getNativeElementById(parent, id);
-		if(el==null){
+		if (el == null) {
 			return null;
 		}
-		
+
 		Element element = Element.as(el);
 		return element;
 	}
-	
-	public native JavaScriptObject getNativeElementById(Element parent, String id)/*-{
-		var el = $wnd.jQuery(parent).find('#'+id).get(0);
-		return el;
-	}-*/;
-	
-	protected void wrapElement(Element element) {
-		wrapElement(element,element.getAttribute("type"));
-	}
-	
-	protected void wrapElement(Element element, String type) {
-		FieldWidget widget = FieldWidget.wrap(element,type, designMode);
-		
-		if (widget != null) {
-			Field child = initializeChild(widget);
-			children.put(child.getName(), child);
-			fieldWidgets.add(widget);
-		}
-		
-		field.setFields(children.values());
-	}
+
+	public native JavaScriptObject getNativeElementById(Element parent,
+			String id)/*-{
+						var el = $wnd.jQuery(parent).find('#'+id).get(0);
+						return el;
+						}-*/;
 
 	/**
-	 * Merge server side Field properties (e.g. Formula or Triggers) with generated Front End Field
+	 * Merge server side Field properties (e.g. Formula or Triggers) with
+	 * generated Front End Field
 	 * 
 	 * @param widget
 	 * @return Merged Fields
@@ -97,13 +69,17 @@ public abstract class HTMLParent extends FieldWidget{
 	protected Field initializeChild(FieldWidget widget) {
 		Field child = widget.getField();
 		// Copy General Metadata Fields from the Parent
-		child.setForm(field.getFormId(),field.getRefId());
-		child.setParent(null,field.getRefId());
-		//assert field.getRefId() != null; - HTML Grids may not have been saved, yet they have children as well
+		child.setForm(field.getFormId(), field.getFormRef());
+		child.setParent(field.getId(), field.getRefId());
+		// assert field.getRefId() != null; - HTML Grids may not have been
+		// saved, yet they have children as well
 
 		child.setDocId(field.getDocId());
 		child.setDocRefId(field.getDocRefId());
 		child.setHTMLWrappedField(true);
+		if (field.getType() == DataType.GRID) {
+			child.setGridName(field.getName());
+		}
 
 		String name = child.getName();
 		if (children.containsKey(name)) {
@@ -111,6 +87,9 @@ public abstract class HTMLParent extends FieldWidget{
 			copy(child, dbEl);
 		}
 		widget.setField(child);
+
+		// register handlers
+		widget.registerHandlers();
 		
 		return child;
 	}
@@ -126,19 +105,15 @@ public abstract class HTMLParent extends FieldWidget{
 			return;
 		}
 
-//		feField.setId(dbField.getId());
+		// feField.setId(dbField.getId());
 		feField.setRefId(dbField.getRefId());
+		feField.setId(dbField.getId());
 		// Name, Caption, my be ignored - Use Front end values
 		feField.setDependentFields(dbField.getDependentFields());
-		feField.setDocRefId(dbField.getDocRefId());
 		feField.setDynamicParent(dbField.isDynamicParent());
 		feField.setFields(dbField.getFields());
-		feField.setForm(dbField.getFormId(),dbField.getRefId());
-		feField.setGridName(dbField.getGridName());
-		feField.setLineRefId(dbField.getLineRefId());
-
+		// feField.setLineRefId(dbField.getLineRefId());
 		feField.setProps(dbField.getProps());
-
 		feField.setSelectionValues(dbField.getSelectionValues());
 		feField.setValue(dbField.getValue());
 	}

@@ -24,13 +24,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class DateField extends FieldWidget {
-
-	private static DateFieldUiBinder uiBinder = GWT
-			.create(DateFieldUiBinder.class);
-
-	interface DateFieldUiBinder extends UiBinder<Widget, DateField> {
-	}
+public class HTMLDateField extends FieldWidget {
 
 	private final Widget widget;
 
@@ -38,41 +32,12 @@ public class DateField extends FieldWidget {
 	Element lblEl;
 	@UiField
 	DateInput dateBox;
-	@UiField
-	HTMLPanel panelControls;
-	@UiField
-	HTMLPanel panelGroup;
-	@UiField
-	InlineLabel lblComponent;
-	@UiField
-	SpanElement spnMandatory;
-	@UiField
-	SpanElement spnMsg;
-	@UiField
-	Element spnIcon;
 
-	public DateField() {
+	private Element elementDate;
+
+	public HTMLDateField(Element elementDate, boolean designMode) {
 		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
-		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
-		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		widget = uiBinder.createAndBindUi(this);
-		add(widget);
-		UIObject.setVisible(spnMandatory, false);
-
-		dateBox.getDateInput().addValueChangeHandler(
-				new ValueChangeHandler<String>() {
-					@Override
-					public void onValueChange(ValueChangeEvent<String> event) {
-						execTrigger();
-					}
-				});
-
-	}
-
-	@Deprecated
-	public DateField(Element elementDate, boolean designMode) {
-		super();
+		this.elementDate = elementDate;
 		this.designMode = designMode;
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
@@ -121,25 +86,9 @@ public class DateField extends FieldWidget {
 		}
 	}
 
-	/**
-	 * This is an edit property field - This is a field used to edit a single
-	 * property
-	 * 
-	 * @param property
-	 */
-	public DateField(Property property) {
-		this();
-
-		String caption = property.getCaption();
-		String name = property.getName();
-		Value val = property.getValue();
-		designMode = false;
-
-	}
-
 	@Override
 	public FieldWidget cloneWidget() {
-		return new DateField();
+		return new HTMLDateField(elementDate,designMode);
 	}
 
 	@Override
@@ -179,8 +128,6 @@ public class DateField extends FieldWidget {
 		if (value != null && value instanceof Date) {
 			dateBox.setValue((Date) value);
 
-			if (lblComponent != null)
-				lblComponent.setText(DateUtils.DATEFORMAT.format((Date) value));
 		} else if (value != null && value instanceof String) {
 
 			try {
@@ -193,11 +140,6 @@ public class DateField extends FieldWidget {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-
-		UIObject.setVisible(dateBox.getElement(), !this.readOnly);
-		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
-
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
@@ -208,7 +150,7 @@ public class DateField extends FieldWidget {
 				dateBox.setStyle("input-small");
 			}
 
-		return panelControls;
+		return null;
 	}
 
 	@Override
@@ -241,22 +183,10 @@ public class DateField extends FieldWidget {
 
 	@Override
 	public Element getViewElement() {
-		return lblComponent.getElement();
+		return null;
 	}
 
 	@Override
 	public void setComponentValid(boolean isValid) {
-		spnMsg.removeClassName("hide");
-		spnIcon.removeClassName("icon-ok-circle");
-		spnIcon.removeClassName("icon-remove-circle");
-		if (isValid) {
-			panelGroup.addStyleName("success");
-			spnIcon.addClassName("icon-ok-circle");
-			panelGroup.removeStyleName("error");
-		} else {
-			panelGroup.removeStyleName("success");
-			panelGroup.addStyleName("error");
-			spnIcon.addClassName("icon-remove-circle");
-		}
 	}
 }

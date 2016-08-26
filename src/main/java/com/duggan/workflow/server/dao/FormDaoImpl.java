@@ -372,4 +372,16 @@ public class FormDaoImpl extends BaseDaoImpl {
 		String sql = "select caption from adform_json where refid=:refId";
 		return getSingleResultOrNull(getEntityManager().createNativeQuery(sql).setParameter("refId", formRefId));
 	}
+	
+	public ArrayList<String> getFormulae(String formRefId){
+		String sql = "select elem->>'value' formula from adfieldjson,jsonb_array_elements(field->'props') as elem "
+				+ "where  field@>'{\"formRef\":\":formRefId\"}' "
+				+ "and field@>'{\"props\":[{\"key\":\"FORMULA\"}]}' "
+				+ "and elem@> '{\"key\":\"FORMULA\"}' ";
+		Map<String,String> parameters = new HashMap<String, String>();
+		parameters.put("formRefId", formRefId);
+		ArrayList<String> formulae = getResultListJson(sql, parameters, String.class);
+		
+		return formulae;
+	}
 }

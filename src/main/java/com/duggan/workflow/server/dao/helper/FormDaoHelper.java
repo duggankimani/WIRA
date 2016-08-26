@@ -1026,6 +1026,7 @@ public class FormDaoHelper {
 
 		for (Field child : field.getFields()) {
 			child.setParent(jsonField.getId(), jsonField.getRefId());
+			child.setForm(field.getFormId(), field.getFormRef());
 			createJson(child);
 		}
 
@@ -1041,9 +1042,7 @@ public class FormDaoHelper {
 		Field field = DB.getFormDao().findJsonField(refId);
 
 		if (field.getType().hasChildren() && loadChildren) {
-			field.setFields(getFieldsForParent(refId));
-//			field.setFields(DB.getFormDao().findJsonFieldsForField(
-//					field.getRefId()));
+			loadFieldsForParent(field);
 		}
 
 		return field;
@@ -1052,40 +1051,45 @@ public class FormDaoHelper {
 	public static Form getFormJson(String refId, boolean loadFields) {
 		ADFormJson jsonForm = DB.getFormDao().findByRefId(refId,
 				ADFormJson.class);
+		if(jsonForm==null){
+			return null;
+		}
 
 		Form form = jsonForm.getForm();
 		form.setRefId(refId);
 
 		if (loadFields) {
+			form.setFormulae(DB.getFormDao().getFormulae(refId));
 			// Retrieve fields
-			ArrayList<Field> fields = getFormFields(refId);
-			form.setFields(fields);
+			loadFormFields(form);
+			
 		}
 		return form;
 	}
 
-	private static ArrayList<Field> getFormFields(String formRef) {
+	private static void loadFormFields(Form form) {
 		ArrayList<Field> fields = DB.getFormDao()
-				.findJsonFieldsForForm(formRef);
+				.findJsonFieldsForForm(form.getRefId());
 
 		for (Field field : fields) {
+			form.addFieldDependency(field.getDependentFields(),
+					field.getName());
 			if (field.getType().hasChildren()) {
-				ArrayList<Field> children = getFieldsForParent(field.getRefId());
-				field.setFields(children);
+				loadFieldsForParent(field);
 			}
 		}
-		return fields;
+		form.setFields(fields);
 	}
 
-	public static ArrayList<Field> getFieldsForParent(String refId) {
+	public static void loadFieldsForParent(Field parentField) {
 		ArrayList<Field> children = DB.getFormDao().findJsonFieldsForField(
-				refId);
+				parentField.getRefId());
 		for(Field child : children){
 			if(child.getType().hasChildren()){
-				child.setFields(getFieldsForParent(child.getRefId()));
+				loadFieldsForParent(child);
 			}
 		}
-		return children;
+		parentField.setFields(children);
 	}
 
 	public static List<Form> getFormsJson(String processRefId,
@@ -1095,7 +1099,7 @@ public class FormDaoHelper {
 				.findJsonFormsForProcess(processRefId);
 		if (loadChildren) {
 			for (Form form : forms) {
-				form.setFields(getFormFields(form.getRefId()));
+				loadFormFields(form);
 			}
 		}
 		return forms;
@@ -1104,7 +1108,6 @@ public class FormDaoHelper {
 	private static void deleteJsonField(String fieldRefId) {
 		FormDaoImpl dao = DB.getFormDao();
 		dao.deleteJsonField(fieldRefId);
-		;
 	}
 
 	private static void deleteJsonForm(String fieldRefId) {
