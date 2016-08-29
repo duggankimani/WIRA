@@ -31,6 +31,7 @@ import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.itextpdf.text.DocumentException;
 
@@ -88,16 +89,11 @@ public class GetReport extends HttpServlet {
 			}
 			//Long documentId = new Long(docId);
 			
-			DocumentModel model = DB.getDocumentDao().findByRefId(docRefId, DocumentModel.class);
+//			DocumentModel model = DB.getDocumentDao().findByRefId(docRefId, DocumentModel.class);
+			Document model = DocumentDaoHelper.getDocJson(docRefId);
 			assert model!=null;
 			
-			ADDocType type = model.getType();
-			
-			if(type==null){
-				return ;
-			}
-			
-			ProcessDefModel processDefnition = type.getProcessDef();
+			ProcessDefModel processDefnition = DB.getProcessDao().getProcessDef(model.getProcessId());
 			
 			if(processDefnition==null)
 				return;

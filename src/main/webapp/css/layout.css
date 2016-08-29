@@ -505,11 +505,13 @@ body .dateBoxPopup {
 
 /* Sidebar */
 #sidebar-nav {
-	width: 12%;
+	/*width: 12%;*/
 	min-height: 100%;
 	padding: 10px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
-	position: relative;
+	/*position: relative;*/
+	width: 200px;
+    position: absolute;
 }
 
 #sidebar-nav .add-doc {
@@ -556,16 +558,16 @@ body .dateBoxPopup {
 
 /*---Middle-Pane--- */
 .main-container .content-right {
-	margin-left: 0px;
-	width: 88%;
+	width: auto;
+    position: absolute;
+    right: 0px;
+    left: 200px;
 	height: 100%;
-	position: relative;
 	background-color: #ffffff;
 	border: 1px solid #CCCCCC;
 }
 
 .main-container .content-right #middle-box {
-	/*width: 25%;*/
 	width: 0px;
 	height: 92.6%;
 }
@@ -1297,6 +1299,7 @@ ul.icons-list.text-xl {
 
 /*--Dashboard Menu--*/
 #dashboard-menu {
+	width:100%;
 	list-style: none;
 	padding-right: 0px;
 	padding-left: 0px;
@@ -1422,7 +1425,7 @@ ul.icons-list.text-xl {
 	list-style-type: none;
 	margin-top: 5px;
 	margin-bottom: 10px;
-	margin: 0px 10px;
+	margin: 0px 0px;
 	padding-left: 1px;
 	box-shadow: 0 2px 1px -1px #FFFFFF;
 	padding-bottom: 0px;
@@ -1761,4 +1764,10 @@ ul.icons-list.text-xl {
 
 #dashboard-menu ul.documents li{
 	list-style-type:none;
+}
+
+.dragview{
+	zoom:50%;
+	max-height:300px;
+	overflow-y:hidden;
 }

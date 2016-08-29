@@ -32,6 +32,7 @@ public interface HasProperties {
 	public static final String CUSTOMTRIGGER="TRIGGER";
 	public static final String WIDTH="WIDTH";
 	public static final String HTMLCONTENT = "HTMLCONTENT";
+	public static final String NUMBERFORMAT = "NUMBERFORMAT";
 
 	void addProperty(Property property);
 	

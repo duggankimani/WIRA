@@ -990,7 +990,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	@Override
 	public void onOperandChanged(OperandChangedEvent event) {
 		String fieldName = event.getSourceField(); // Raw fieldName without
-													// detailid
+													// detailId
 
 		if (!dependentFields.contains(fieldName)) {
 			return;
@@ -1050,9 +1050,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				 * >
 				 */
 				formularFieldName = fld;
-				if(field.getName().equals("subtotal")){
-					GWT.log("var "+formularFieldName+" = "+val +" [Handler-"+field.getName()+"]");
-				}
+//				if(field.getName().equals("subtotal")){
+//					GWT.log("var "+formularFieldName+" = "+val +" [Handler-"+field.getName()+"]");
+//				}
 				ComplexVariable dv = new ComplexVariable((Double) val);
 				
 				engine.defineVariable(mathEclipseEscape(formularFieldName), dv);
@@ -1067,9 +1067,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		Double result = null;
 		try {
 			// System.err.println("Calculating> "+field.getName()+" = "+formular);
-			if(field.getName().equals("subtotal")){
-				GWT.log("Formula "+formular+"; [Handler-"+field.getName()+"]");
-			}
+//			if(field.getName().equals("subtotal")){
+//				GWT.log("Formula "+formular+"; [Handler-"+field.getName()+"]");
+//			}
 			Complex x = engine.evaluate(mathEclipseEscape(formular));
 			result = x.abs();
 			setValue(result);
@@ -1122,20 +1122,22 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		// One of the dependent is a grid detail field - A column in a grid row
 		// eg formular =Plus[row_total]; where row_total is a column in invoice
 		// particulars
-		if(field.getName().equals("subtotal")){
-			GWT.log(field.getName()+" isAggregate field = "+field.isAggregate()+"; QN="+field.getQualifiedName());
-		}
+		
+//		if(field.getName().equals("subtotal")){
+//			GWT.log(field.getName()+" isAggregate field = "+field.isAggregate()+"; QN="+field.getQualifiedName());
+//		}
+		
 		if (!field.isAggregate()) {
 			// Target/ result field is not an aggregate/grid field
-			if(field.getName().equals("subtotal")){
-				GWT.log("Aggregate field = "+field.getName()+" Dependent Fields = "+dependentFields);
-			}
+//			if(field.getName().equals("subtotal")){
+//				GWT.log("Aggregate field = "+field.getName()+" Dependent Fields = "+dependentFields);
+//			}
 			for (String fld : dependentFields) {
 				if (fld.startsWith(Field.getGridPrefix())) {
 					// This is a grid field
 					ArrayList<String> names = ENV.getQualifiedNames(fld);
 					// /System.err.println(fld+" : Aggregated: "+names);
-					GWT.log("Field ["+fld+"] QNames = "+names);
+//					GWT.log("Field ["+fld+"] QNames = "+names);
 					String nameList = "";
 					if (names != null) {
 						for (String n : names) {
@@ -1170,6 +1172,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			if (!field.getLineRefId().equals(sourceDetailId)) {
 				return;
 			}
+			Window.alert("Delete line - "+field.getName()+"="+field.getValue());
 			ENV.setContext(field, new Double(0.0));
 			AppContext.fireEvent(new OperandChangedEvent(field
 					.getDocSpecificName(), new Double(0.0), field

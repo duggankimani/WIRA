@@ -33,14 +33,6 @@ public class HTMLGrid extends HTMLParent {
 	private ArrayList<HTMLLine> htmlLines = new ArrayList<HTMLGrid.HTMLLine>();
 	long rowCount=0;
 
-	public HTMLGrid() {
-		super();
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX,
-				refId));
-		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		DOM.setStyleAttribute(getElement(), "overflow", "auto");
-	}
-
 	public HTMLGrid(Element element, boolean designMode) {
 		super();
 		this.designMode = designMode;

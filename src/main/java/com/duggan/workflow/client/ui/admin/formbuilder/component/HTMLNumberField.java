@@ -8,8 +8,10 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,6 +21,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLNumberField extends FieldWidget{
@@ -33,6 +36,8 @@ public class HTMLNumberField extends FieldWidget{
 		super();
 		this.numberInput = numberInput;
 		this.designMode = designMode;
+		addProperty(new Property(NUMBERFORMAT, "Format", DataType.STRING));
+		setProperty(NUMBERFORMAT, "#,###.##;(#,###.##)");
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
@@ -42,6 +47,7 @@ public class HTMLNumberField extends FieldWidget{
 				new KeyValuePair("left", "Left"),
 				new KeyValuePair("center", "Center"),
 				new KeyValuePair("right", "Right")));
+		
 
 		
 		// Wrap
@@ -102,6 +108,15 @@ public class HTMLNumberField extends FieldWidget{
 			}
 			
 		});
+		
+	}
+	
+	@Override
+	public void setField(Field field) {
+		super.setField(field);
+		if(field.getProperty(NUMBERFORMAT)!=null){
+			txtComponent.setFormat(field.getProperty(NUMBERFORMAT));
+		}
 		
 	}
 	
@@ -172,16 +187,24 @@ public class HTMLNumberField extends FieldWidget{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
-			
+//			if(field.getName().equals("lineTotal")){
+//				GWT.log("# "+field.getName()+" - "+value);
+//			}
 			if(!(value instanceof Double)){
 				try{
 					value = new Double(value.toString());
-				}catch(Exception e){return;}
+				}catch(Exception e){
+					GWT.log("Invalid value for NumberField: Field= "+field.getName()+"; Value= "+value);
+					return;
+				}
 			}
 			
 			ENV.setContext(field, (Double)value);
 			txtComponent.setValue((Double)value);
-			
+
+			if(field.getName().equals("lineTotal")){
+				GWT.log("# "+field.getName()+" - "+value);
+			}
 			NumberFormat fmt = NumberFormat.getDecimalFormat();
 		    String formatted = fmt.format((Double)value);
 		}else{

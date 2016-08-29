@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.component;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.text.client.DoubleParser;
 import com.google.gwt.text.shared.AbstractRenderer;
@@ -12,30 +13,33 @@ import com.google.gwt.user.client.ui.ValueBox;
 
 public class DoubleField extends ValueBox<Double> {
 
+	private DoubleRenderer doubleRenderer;
+
 	public DoubleField() {
-		this(Document.get().createTextInputElement(), DoubleField.DoubleRenderer
-				.instance(), DoubleParser.instance());
+		this(Document.get().createTextInputElement(),
+				DoubleField.DoubleRenderer.instance(), DoubleParser.instance());
 	}
-	
-	private DoubleField(Element element, Renderer<Double> renderer, Parser<Double> parser) {
+
+	private DoubleField(Element element, Renderer<Double> renderer,
+			Parser<Double> parser) {
 		super(element, renderer, parser);
+		doubleRenderer = (DoubleRenderer)renderer;
 	}
 
-	
-	public static DoubleField wrap(Element numberEl,boolean ishtmlFormElement) {
-	    // Assert that the element is attached.
-	    assert Document.get().getBody().isOrHasChild(numberEl);
+	public static DoubleField wrap(Element numberEl, boolean ishtmlFormElement) {
+		// Assert that the element is attached.
+		assert Document.get().getBody().isOrHasChild(numberEl);
 
-	    numberEl.setAttribute("type", "text");
-		DoubleField numberBox = new DoubleField(numberEl, DoubleField.DoubleRenderer
-				.instance(), DoubleParser.instance());
-		
-	    // Mark it attached and remember it for cleanup.
+		numberEl.setAttribute("type", "text");
+		DoubleField numberBox = new DoubleField(numberEl,
+				DoubleField.DoubleRenderer.instance(), DoubleParser.instance());
+
+		// Mark it attached and remember it for cleanup.
 		numberBox.onAttach();
-		if(!ishtmlFormElement){
+		if (!ishtmlFormElement) {
 			RootPanel.detachOnWindowClose(numberBox);
 		}
-	   // 
+		//
 
 		return numberBox;
 	}
@@ -52,28 +56,44 @@ public class DoubleField extends ValueBox<Double> {
 		getElement().setAttribute("type", type);
 	}
 	
-	static class DoubleRenderer extends AbstractRenderer<Double> {
-		  private static DoubleRenderer INSTANCE;
-
-		  /**
-		   * Returns the instance.
-		   */
-		  public static Renderer<Double> instance() {
-		    if (INSTANCE == null) {
-		      INSTANCE = new DoubleRenderer();
-		    }
-		    return INSTANCE;
-		  }
-
-		  protected DoubleRenderer() {
-		  }
-
-		  public String render(Double object) {
-		    if (object == null) {
-		      return "";
-		    }
-		    return NumberFormat.getFormat("#,##0;(#,##0)").format(object);
-		    //return NumberFormat.getDecimalFormat().format(object);
-		  }
+	public void setFormat(String format){
+		if(format.equalsIgnoreCase("Integer")){
+			doubleRenderer.setFormat("#,###;(#,###)");
+		}else if(format.equalsIgnoreCase("Double")){
+			doubleRenderer.setFormat("#,###.##;(#,###.##)");
+		}else{
+			doubleRenderer.setFormat(format);
 		}
+		
+	}
+
+	static class DoubleRenderer extends AbstractRenderer<Double> {
+
+		String format = "#,###.##;(#,###.##)";
+
+		/**
+		 * Returns the instance.
+		 */
+		public static Renderer<Double> instance() {
+			return new DoubleRenderer();
+		}
+
+		protected DoubleRenderer() {
+		}
+
+		public String render(Double object) {
+			if (object == null) {
+				return "";
+			}
+			return NumberFormat.getFormat(getFormat()).format(object);
+		}
+
+		public String getFormat() {
+			return format;
+		}
+
+		public void setFormat(String format) {
+			this.format = format;
+		}
+	}
 }

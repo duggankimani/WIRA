@@ -347,7 +347,7 @@ public class GenericDocumentView extends ViewImpl implements
 		});
 		
 		changeView(SHOWITEMS.FORM);
-		UIObject.setVisible(aSave.getElement(), false);
+//		UIObject.setVisible(aSave.getElement(), false);
 
 	}
 

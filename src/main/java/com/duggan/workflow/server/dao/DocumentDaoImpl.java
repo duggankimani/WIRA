@@ -885,7 +885,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return getSingleResultOrNull(getEntityManager()
 				.createQuery(
 						"From DocumentLineJson j "
-								+ "where j.docRefId=:docRefId and j.name=:name")
+								+ "where j.docRefId=:docRefId and j.name=:name order by id")
 				.setParameter("docRefId", docRefId).setParameter("name", name));
 	}
 
@@ -977,7 +977,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		List<DocumentLineJson> lines = getResultList(getEntityManager()
 				.createQuery(
-						"from DocumentLineJson l where l.docRefId=:docRefId")
+						"from DocumentLineJson l where l.docRefId=:docRefId order by id")
 				.setParameter("docRefId", document.getRefId()));
 
 		for (DocumentLineJson json : lines) {

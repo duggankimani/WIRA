@@ -115,13 +115,25 @@ public class ENV{
 		
 		values.put(qualifiedFieldName, value);
 	}
-	
+	/**
+	 * Removes the field and its value from ENV
+	 * @param field
+	 */
 	public static void removeContext(Field field){
-		String fieldName=field.getDocSpecificName();
-		nameToQualifieldNameMap.remove(fieldName);
-		
 		String qualifiedFieldName=field.getQualifiedName();
 		values.remove(qualifiedFieldName);
+		
+		String fieldName=field.getDocSpecificName();
+		if(field.isAggregate()){
+			//eg. GRID_particulars_qty_1
+			ArrayList<String> qualifiedNames = getQualifiedNames(fieldName);
+			qualifiedNames.remove(qualifiedFieldName);
+		}else{
+			//eg. total
+			nameToQualifieldNameMap.remove(fieldName);
+		}
+		
+		
 	}
 	
 	public static ArrayList<String> getQualifiedNames(String fieldName){

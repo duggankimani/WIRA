@@ -44,6 +44,10 @@
 						<i class="icon-paper-clip color-black"></i>
 					</d:ActionLink>
 					
+					<d:ActionLink ui:field="aSave" styleName="btn btn-default">
+						<i class="icon-save"></i>
+						Save
+					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
 						title="Configure">
@@ -75,11 +79,7 @@
 						<i class="icon-share-alt"></i>
 						Submit <!-- Forward For Approval -->
 					</d:ActionLink>
-					<d:ActionLink ui:field="aSave" styleName="btn btn-success">
-						<i class="icon-save"></i>
-						Save
-					</d:ActionLink>
-
+					
 					<d:ActionLink ui:field="aApprove" styleName="btn btn-success"
 						title="Approve document">
 						<i class="icon-ok"></i>
