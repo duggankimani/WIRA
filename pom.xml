@@ -148,7 +148,7 @@
 					<runTarget>login.html</runTarget>
 					<modules>
 						<module>com.duggan.workflow.GWTHT</module>
-						<module>com.wira.login.Login</module>
+						<!-- module>com.wira.login.Login</module -->
 					</modules>
 				</configuration>
 				<executions>

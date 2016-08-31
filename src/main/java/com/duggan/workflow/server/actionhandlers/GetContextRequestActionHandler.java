@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
@@ -19,6 +20,7 @@ import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.wira.commons.shared.models.CurrentUserDto;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.REPORTVIEWIMPL;
 import com.wira.commons.shared.models.UserGroup;
 import com.wira.commons.shared.response.BaseResponse;
@@ -49,11 +51,13 @@ public class GetContextRequestActionHandler extends
 		if(result.getIsValid()){
 			HTUser userDto = (HTUser)user;
 			userDto.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(userDto.getUserId()));
+			userDto.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForUser(userDto.getUserId()));
+			
 			CurrentUserDto currentUserDto = new CurrentUserDto(true, userDto);
 			result.setCurrentUserDto(currentUserDto);
+			result.setVersion(VersionManager.getVersion());
+			
 		}
-		
-		result.setVersion(VersionManager.getVersion());
 		
 		Setting setting = SettingsDaoHelper.getSetting(SETTINGNAME.ORGNAME);
 		if(setting!=null){
