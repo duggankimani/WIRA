@@ -27,6 +27,7 @@ import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.DocumentLoadedEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
 import com.duggan.workflow.client.ui.events.ExecTriggerEvent;
@@ -1219,7 +1220,7 @@ public class GenericDocumentPresenter extends
 									.get(i++);
 							Document saved = aResponse.getDocument();
 							assert saved.getId() != null;
-							bindForm(form, saved);
+							bindData(saved,false);
 							// Window.alert("OnAfterSave Value = "+(saved.getValues().get("budgetAmount")==null?
 							// null:
 							// saved.getValues().get("budgetAmount").getValue()));
@@ -1377,7 +1378,7 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		bindForm(form, doc, true);
 	}
-
+	
 	protected void bindForm(Form form, Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		this.form = form;
@@ -1420,6 +1421,44 @@ public class GenericDocumentPresenter extends
 			setForm(form, doc, stepMode);
 		}
 
+		/**
+		 * Field Dependencies
+		 */
+		if (!form.getDependencies().isEmpty() && loadDynamicFields) {
+			// Reload
+			loadDynamicFields(form.getDependencies(), null,false);
+		}
+	}
+	
+	void bindData(Doc doc,boolean loadDynamicFields){
+		this.doc = doc;
+		docRefId = doc.getRefId();
+		if (doc instanceof Document) {
+			taskId = null;
+		} else {
+			taskId = ((HTSummary) doc).getId();
+		}
+
+		// Form Fields
+		if (doc instanceof Document) {
+			DocStatus status = ((Document) doc).getStatus();
+			if (status == DocStatus.DRAFTED) {
+				getView().showNavigation(true); // Continue button will always
+												// be available
+			}
+		}
+
+		MODE stepMode = getCurrentStepMode();
+
+		if (globalFormMode != null && globalFormMode.equals(MODE.EDIT)
+				&& doc instanceof Document) {
+			getView().setEditMode(
+					true && ((Document) doc).getStatus() == DocStatus.DRAFTED);
+
+		}
+		
+		fireEvent(new DocumentLoadedEvent(doc));
+		
 		/**
 		 * Field Dependencies
 		 */

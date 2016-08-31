@@ -162,7 +162,11 @@ public class Field extends FormModel implements Comparable<Field>{
 		return fields;
 	}
 
-	public boolean isDetailField() {
+	/**
+	 * 
+	 * @return true if the field is a Grid
+	 */
+	public boolean isGrid() {
 		return type == DataType.GRID;
 	}
 
@@ -264,9 +268,9 @@ public class Field extends FormModel implements Comparable<Field>{
 	/**
 	 * Aggregatable field
 	 * 
-	 * @return
+	 * @return true if the field is a grid column
 	 */
-	public boolean isAggregate(){
+	public boolean isGridColumn(){
 		//return this.parentId!=null; //HTMLForm children have parentId as well
 		return this.gridName!=null && !this.gridName.isEmpty();
 	}

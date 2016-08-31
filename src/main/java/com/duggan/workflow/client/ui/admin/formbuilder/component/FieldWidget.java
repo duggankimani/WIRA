@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -15,6 +16,8 @@ import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.DocumentLoadedEvent;
+import com.duggan.workflow.client.ui.events.DocumentLoadedEvent.DocumentLoadedHandler;
 import com.duggan.workflow.client.ui.events.FieldLoadEvent;
 import com.duggan.workflow.client.ui.events.FieldReloadedEvent;
 import com.duggan.workflow.client.ui.events.FieldReloadedEvent.FieldReloadedHandler;
@@ -34,6 +37,8 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -66,7 +71,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 public abstract class FieldWidget extends AbsolutePanel implements
 		HasDragHandle, PropertyChangedHandler, HasProperties,
 		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler,
-		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler {
+		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler, DocumentLoadedHandler {
 
 	protected FocusPanel shim = new FocusPanel();
 	protected String refId = System.currentTimeMillis()+"";
@@ -286,6 +291,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		addRegisteredHandler(PropertyChangedEvent.TYPE, this);
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
 		addRegisteredHandler(FieldReloadedEvent.getType(), this);
+		addRegisteredHandler(DocumentLoadedEvent.getType(), this);
 
 		if (isObserver) {
 			// System.err.println("Registering observer.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
@@ -311,6 +317,23 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			}
 
 		}
+	}
+	
+	@Override
+	public void onDocumentLoaded(DocumentLoadedEvent event) {
+		Doc doc = event.getDoc();
+		
+		String name = field.getName();
+		Value val = null;
+		if(!field.isGrid() || field.isGridColumn()){
+			val = doc.getValues().get(name);
+			setValue(val);
+		}else if(field.isGrid()){
+			//clear previous first
+//			Collection<DocumentLine> lines =  doc.getDetails().get(name);
+//			setValue(lines);
+		}
+		
 	}
 
 	@Override
@@ -1127,7 +1150,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 //			GWT.log(field.getName()+" isAggregate field = "+field.isAggregate()+"; QN="+field.getQualifiedName());
 //		}
 		
-		if (!field.isAggregate()) {
+		if (!field.isGridColumn()) {
 			// Target/ result field is not an aggregate/grid field
 //			if(field.getName().equals("subtotal")){
 //				GWT.log("Aggregate field = "+field.getName()+" Dependent Fields = "+dependentFields);

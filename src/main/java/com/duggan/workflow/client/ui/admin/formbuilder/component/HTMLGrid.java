@@ -143,6 +143,7 @@ public class HTMLGrid extends HTMLParent {
 
 	@Override
 	public void setValue(Object value) {
+		deleteLines();
 		if (value != null) {
 			// System.err.println("lines");
 			@SuppressWarnings("unchecked")
@@ -153,6 +154,12 @@ public class HTMLGrid extends HTMLParent {
 			Collection<DocumentLine> lines = new ArrayList<DocumentLine>();
 			lines.add(new DocumentLine());
 			setLines(lines);
+		}
+	}
+
+	private void deleteLines() {
+		for(HTMLLine line: htmlLines){
+			//line.deleteLine();
 		}
 	}
 
@@ -239,16 +246,7 @@ public class HTMLGrid extends HTMLParent {
 
 					@Override
 					public void onClick(ClickEvent event) {
-						Element elementRow = (Element) ((ActionLink) event
-								.getSource()).getModel();
-						elementRow.removeFromParent();
-						AppContext.fireEvent(new DeleteLineEvent(documentLine));
-						for (FieldWidget widget : inputs) {
-							Field child = widget.getField();
-							ENV.removeContext(child);
-							widget.onUnload();//disable listeners
-						}
-						htmlLines.remove(HTMLLine.this);
+						deleteLine();
 					}
 				});
 			}
@@ -276,6 +274,20 @@ public class HTMLGrid extends HTMLParent {
 					
 				}
 			}
+		}
+
+		protected void deleteLine() {
+//			Element elementRow = (Element) ((ActionLink) event
+//					.getSource()).getModel();
+			Element elementRow = line;
+			elementRow.removeFromParent();
+			AppContext.fireEvent(new DeleteLineEvent(documentLine));
+			for (FieldWidget widget : inputs) {
+				Field child = widget.getField();
+				ENV.removeContext(child);
+				widget.onUnload();//disable listeners
+			}
+			htmlLines.remove(HTMLLine.this);
 		}
 
 		public DocumentLine getDocument() {

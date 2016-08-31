@@ -124,7 +124,7 @@ public class ENV{
 		values.remove(qualifiedFieldName);
 		
 		String fieldName=field.getDocSpecificName();
-		if(field.isAggregate()){
+		if(field.isGridColumn()){
 			//eg. GRID_particulars_qty_1
 			ArrayList<String> qualifiedNames = getQualifiedNames(fieldName);
 			qualifiedNames.remove(qualifiedFieldName);
