@@ -44,6 +44,11 @@
 						<i class="icon-paper-clip color-black"></i>
 					</d:ActionLink>
 					
+					<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
+							title="Edit">
+						<i class="icon-pencil color-black"></i>
+					</d:ActionLink>
+					
 					<d:ActionLink ui:field="aSave" styleName="btn btn-default">
 						<i class="icon-save"></i>
 						Save
@@ -98,11 +103,6 @@
 					</d:ActionLink>
 
 					<div class="btn-group" ui:field="btnGroup">
-
-						<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
-							title="Edit">
-							<i class="icon-pencil color-black"></i>
-						</d:ActionLink>
 
 						<d:ActionLink ui:field="aClaim" styleName="btn btn-default"
 							title="Claim this task. Other users in your group cannot work on this task if claimed">

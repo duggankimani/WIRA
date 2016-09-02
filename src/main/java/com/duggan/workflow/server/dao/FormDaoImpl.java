@@ -368,13 +368,26 @@ public class FormDaoImpl extends BaseDaoImpl {
 		executeJsonUpdate(sql, parameters);		
 	}
 
+	/**
+	 * Get the caption of a form
+	 * 
+	 * @param formRefId
+	 * @return
+	 */
 	public String getFormNameJson(String formRefId) {
 		String sql = "select caption from adform_json where refid=:refId";
 		return getSingleResultOrNull(getEntityManager().createNativeQuery(sql).setParameter("refId", formRefId));
 	}
 	
+	/**
+	 * Get all formulae from all fields in this form 
+	 * 
+	 * @param formRefId
+	 * @return
+	 */
 	public ArrayList<String> getFormulae(String formRefId){
-		String sql = "select elem->>'value' formula from adfieldjson,jsonb_array_elements(field->'props') as elem "
+		String sql = "select elem->>'value' formula from adfieldjson,"
+				+ "jsonb_array_elements(field->'props') as elem "
 				+ "where  field@>'{\"formRef\":\":formRefId\"}' "
 				+ "and field@>'{\"props\":[{\"key\":\"FORMULA\"}]}' "
 				+ "and elem@> '{\"key\":\"FORMULA\"}' ";
@@ -383,5 +396,27 @@ public class FormDaoImpl extends BaseDaoImpl {
 		ArrayList<String> formulae = getResultListJson(sql, parameters, String.class);
 		
 		return formulae;
+	}
+
+	public ArrayList<Field> getFormFieldsByPosition(String formRef,
+			int previous_pos, int current_pos) {
+		
+		boolean up = previous_pos>current_pos; //Moving up
+		
+		String sql = "select field from adfieldjson f,"
+				+ "jsonb_to_record(f.field) as fields(name varchar(255),position int) "
+				+ "where not field ?? 'parentRef' "
+				+ "and f.field @> '{\"formRef\":\":formRef\"}' "
+				+ "and fields.position"+(up? "<":">")+":previous_pos "
+				+ "and fields.position"+(up? ">=":"<=")+":current_pos";
+				
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("formRef", formRef);
+		parameters.put("previous_pos", previous_pos+"");
+		parameters.put("current_pos", current_pos+"");
+		
+		ArrayList<Field> fields = (ArrayList<Field>)getResultListJson(sql,parameters,Field.class);
+		
+		return fields;
 	}
 }

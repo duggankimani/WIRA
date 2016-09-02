@@ -10,6 +10,7 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.InputSelection;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.FormModel;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -43,7 +44,8 @@ public class PropertyPanelView extends ViewImpl implements
 	}
 
 	@Override
-	public void showProperties(ArrayList<Property> properties,FormModel model) {
+	public void showProperties(ArrayList<Property> properties, FormModel model,
+			ArrayList<KeyValuePair> datasources) {
 		clear();
 		boolean isDSAvailable=false;
 		boolean isSQLAvailable=false;
@@ -52,9 +54,7 @@ public class PropertyPanelView extends ViewImpl implements
 			if(!property.isShowInPropertyPanel()){
 				continue;
 			}
-			FieldWidget fw = FieldWidget.getWidget(property);
-			add(fw);
-			
+
 			/**
 			 * This is an input component for providing
 			 * possible values/answers for choice boxes
@@ -68,13 +68,19 @@ public class PropertyPanelView extends ViewImpl implements
 				if(property.getValue()!=null && property.getValue().getValue()!=null){
 					isDSAvailable=true;
 				}
+				property.setSelectionValues(datasources);
 			}
+			
 			
 			if(property.getName().equals(SQLSELECT)){
 				if(property.getValue()!=null && property.getValue().getValue()!=null){
 					isSQLAvailable=true;
 				}
 			}
+			
+			FieldWidget fw = FieldWidget.getWidget(property);
+			add(fw);
+			
 			
 			if(property.getName().equals(SELECTIONTYPE) && !(isDSAvailable&&isSQLAvailable)){
 				

@@ -149,5 +149,5 @@ public class Form extends FormModel implements Listable, Serializable{
 	public void setFormulae(ArrayList<String> formulae) {
 		this.formulae = formulae;
 	}
-	
+
 }

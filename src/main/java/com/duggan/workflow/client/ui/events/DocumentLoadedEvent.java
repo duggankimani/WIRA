@@ -13,7 +13,7 @@ public class DocumentLoadedEvent extends GwtEvent<DocumentLoadedEvent.DocumentLo
 
     private final Doc doc;
    
-    public DocumentLoadedEvent(final Doc doc) {
+    public DocumentLoadedEvent(Doc doc) {
 		this.doc = doc;
     }
 

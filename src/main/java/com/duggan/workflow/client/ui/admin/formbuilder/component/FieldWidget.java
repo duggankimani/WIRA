@@ -61,7 +61,9 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -325,13 +327,16 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		String name = field.getName();
 		Value val = null;
-		if(!field.isGrid() || field.isGridColumn()){
+		if(!(field.isGrid() || field.isGridColumn())){
 			val = doc.getValues().get(name);
-			setValue(val);
-		}else if(field.isGrid()){
+			if(val!=null){
+				setValue(val.getValue());
+			}
+		}
+		else if(field.isGrid()){
 			//clear previous first
-//			Collection<DocumentLine> lines =  doc.getDetails().get(name);
-//			setValue(lines);
+			Collection<DocumentLine> lines =  doc.getDetails().get(name);
+			setValue(lines);
 		}
 		
 	}
@@ -549,6 +554,18 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	protected void save(Field model) {
 
+		if(model.getParentRef()==null){
+			//Child of FormPanel 
+			Widget parent = getParent();
+			if(parent instanceof ComplexPanel){
+				int idx=((ComplexPanel)parent).getWidgetIndex(this);
+				GWT.log(model.getName()+" Index = "+idx+"; modelIdx ="+model.getPosition());
+				if(idx!=-1){
+					model.setPosition(idx);
+				}
+			}
+			
+		}
 		model.setType(getType());
 		model.setProperties(getProperties());
 

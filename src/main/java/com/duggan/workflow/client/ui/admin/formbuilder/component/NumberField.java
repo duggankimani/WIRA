@@ -285,6 +285,9 @@ public class NumberField extends FieldWidget{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
+			if(value instanceof Value){
+				value= ((Value) value).getValue();
+			}
 			
 			if(!(value instanceof Double)){
 				try{

@@ -185,6 +185,8 @@ public class LocalAttachment extends PO{
 	@XmlAttribute
 	private String imageUserId;
 	
+	private String docRefId;
+	
 	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="documentId",referencedColumnName="id")
@@ -361,6 +363,14 @@ public class LocalAttachment extends PO{
 
 	public void setParent(LocalAttachment parent) {
 		this.parent = parent;
+	}
+
+	public String getDocRefId() {
+		return docRefId;
+	}
+
+	public void setDocRefId(String docRefId) {
+		this.docRefId = docRefId;
 	}
 
 }

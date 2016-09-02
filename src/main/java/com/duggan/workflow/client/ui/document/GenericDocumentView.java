@@ -237,7 +237,7 @@ public class GenericDocumentView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 		createNavigationButtons();
 
-		UIObject.setVisible(aEdit.getElement(), false);
+		//UIObject.setVisible(aEdit.getElement(), false);
 		UIObject.setVisible(aConfigure.getElement(), 
 				user.hasPermissions(PermissionName.PROCESSES_CAN_EDIT_PROCESSES.name()));
 		
@@ -1152,6 +1152,11 @@ public class GenericDocumentView extends ViewImpl implements
 	public HasClickHandlers getCloseButton() {
 		
 		return aClose;
+	}
+
+	@Override
+	public void forceExecJs() {
+		formPanel.forceReloadJs();
 	}
 
 }

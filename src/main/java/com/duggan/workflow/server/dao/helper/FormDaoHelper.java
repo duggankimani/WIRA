@@ -6,6 +6,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -1006,12 +1008,14 @@ public class FormDaoHelper {
 	public static Field createJson(Field field) {
 		// Save Parent
 		ADFieldJson jsonField = new ADFieldJson(field);
+		int previousIdx = -1;
 		if (field.getRefId() != null) {
 			jsonField = DB.getFormDao().findByRefId(field.getRefId(),
 					ADFieldJson.class);
 			if (jsonField == null) {
 				jsonField = new ADFieldJson(field);
 			} else {
+				previousIdx = jsonField.getField().getPosition();
 				jsonField.setField(field);
 			}
 		} else {
@@ -1019,10 +1023,14 @@ public class FormDaoHelper {
 			field.setRefId(IDUtils.generateId());
 			jsonField.setRefId(field.getRefId());
 		}
-
+		
 		DB.getFormDao().save(jsonField);
 		field.setId(jsonField.getId());
-//		logger.info("After save field!!! - " + field.getName()+": "+field.getRefId());
+
+		if(field.getParentRef()==null){
+			//shift form fields incase there was a change
+			shiftPositions(field,previousIdx, field.getPosition());
+		}
 
 		for (Field child : field.getFields()) {
 			child.setParent(jsonField.getId(), jsonField.getRefId());
@@ -1031,6 +1039,49 @@ public class FormDaoHelper {
 		}
 
 		return field;
+	}
+
+	private static void shiftPositions(Field updatedField, int previousPos,
+			int newPosition) {
+		if(previousPos==-1 || previousPos==newPosition){
+			return;
+		}
+		boolean up = previousPos>newPosition;
+		
+		logger.debug("Shifting field "+updatedField.getName()+" position from index "+previousPos+" to index "+newPosition);
+		ArrayList<Field> affectedFields = DB.getFormDao().getFormFieldsByPosition(updatedField.getFormRef(), previousPos, newPosition);
+		Collections.sort(affectedFields, new Comparator<FormModel>() {
+			public int compare(FormModel o1, FormModel o2) {
+				Field field1 = (Field) o1;
+				Field field2 = (Field) o2;
+
+				Integer pos1 = field1.getPosition();
+				Integer pos2 = field2.getPosition();
+
+				return pos1.compareTo(pos2);
+			};
+
+		});
+		
+		
+		for(Field shift: affectedFields){
+			if(up){
+				//Shift every field one step down from this field's new  position
+				shift.setPosition(++newPosition);
+			}else{
+				/*
+				 * Shift every field one step up from the field's previous position with the first field in the list 
+				 * taking the field's previous position
+				 */
+				shift.setPosition(previousPos++);
+			}
+			
+			//Save field
+			ADFieldJson jsonField = DB.getFormDao().findByRefId(shift.getRefId(),
+					ADFieldJson.class);
+			jsonField.setField(shift);
+			DB.getFormDao().save(jsonField);
+		}
 	}
 
 	public static Field getFieldJson(String refId) {
@@ -1074,6 +1125,11 @@ public class FormDaoHelper {
 		for (Field field : fields) {
 			form.addFieldDependency(field.getDependentFields(),
 					field.getName());
+			//Load selection values
+			if(field.getType().isLookup()){
+				loadLookupJson(null, field);
+			}
+			
 			if (field.getType().hasChildren()) {
 				loadFieldsForParent(field);
 			}
@@ -1085,6 +1141,11 @@ public class FormDaoHelper {
 		ArrayList<Field> children = DB.getFormDao().findJsonFieldsForField(
 				parentField.getRefId());
 		for(Field child : children){
+			//Load selection values
+			if(child.getType().isLookup()){
+				loadLookupJson(null, child);
+			}
+			
 			if(child.getType().hasChildren()){
 				loadFieldsForParent(child);
 			}
@@ -1103,6 +1164,54 @@ public class FormDaoHelper {
 			}
 		}
 		return forms;
+	}
+	
+	private static void loadLookupJson(Doc context, Field field) {
+		String type = null;
+		String sqlDS = null;
+		String sqlSelect = null;
+
+		for (KeyValuePair prop : field.getProps()) {
+			if (prop.getName().equals("SELECTIONTYPE")) {
+				type = prop.getValue();
+			}
+
+			if (prop.getName().equals("SQLSELECT")) {
+				sqlSelect = prop.getValue();
+			}
+
+			if (prop.getName().equals("SQLDS")) {
+				sqlDS = prop.getValue();
+			}
+
+		}
+
+		if (sqlDS != null && !sqlDS.isEmpty()) {
+			if (sqlSelect != null && !sqlSelect.isEmpty()) {
+				// Takes Precedence
+				try {
+					LookupLoader loader = new LookupLoaderImpl();
+					field.setDependentFields(AnnotationParserImpl
+							.extractAnnotations(sqlSelect));
+
+					if (context != null) {
+						sqlSelect = AnnotationParserImpl.parseForSQL(context,
+								sqlSelect);
+						logger.debug("SQL Parse: " + sqlSelect);
+					}
+
+					field.setSelectionValues(loader.getValuesByDataSourceName(
+							sqlDS, sqlSelect));
+				} catch (Exception e) {
+					logger.warn("#Dropdown Query Failed -  " + e.getMessage());
+				}
+			}
+
+		} else if (type != null) {
+			//No longer required in json, since selection values are stored as a json array in the field
+			//field.setSelectionValues(getDropdownValues(type));
+		}
+
 	}
 
 	private static void deleteJsonField(String fieldRefId) {

@@ -239,7 +239,7 @@ public class GridLayout extends FieldWidget implements EditLineHandler {
 		int pos = field.getFields().size();
 		child.setPosition(pos);
 		child.setCaption("Column " + (pos));
-
+		child.setParent(field.getFormId(), field.getFormRef());
 		field.addField(child); // child has not properties
 		save(field);
 	}

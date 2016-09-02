@@ -10,25 +10,13 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
  * @author duggan
  *
  */
-public class DateUtils {
-	
-	static String datepattern_sys = "yyyy-MM-dd";
-	static String datepattern="dd/MM/yyyy";
-	static String _datepattern="dd-MM-yyyy";
-	static String mixeddatepattern="EEE dd/MM/yyyy";
-	static String longdatepattern="dd MMM yyyy";
-	static String createdpattern="dd/MM/yyyy HH:mm";
-	static String fullPattern = "EEE MMM d,yyyy";
-	static String halfPattern = "EEEE, MMM d";
-	static String monthDayPattern = "MMM d";
-	static String Time = "hh:mm a";
-	static String MonthTime = "MMM d, hh:mm a";
+public class DateUtils implements Formats{
 	
 	public static final DateTimeFormat DATEFORMAT_SYS = DateTimeFormat.getFormat(datepattern_sys);
 	public static final DateTimeFormat LONGDATEFORMAT = DateTimeFormat.getFormat(longdatepattern);
 	public static final DateTimeFormat CREATEDFORMAT = DateTimeFormat.getFormat(createdpattern);
 	public static final DateTimeFormat DATEFORMAT = DateTimeFormat.getFormat(datepattern);
-	public static final DateTimeFormat DATEFORMAT_ = DateTimeFormat.getFormat(_datepattern);
+//	public static final DateTimeFormat DATEFORMAT_ = DateTimeFormat.getFormat(_datepattern);
 	public static final DateTimeFormat MIXEDDAYDATEFORMAT = DateTimeFormat.getFormat(mixeddatepattern);
 	public static final DateTimeFormat HALFDATEFORMAT = DateTimeFormat.getFormat(halfPattern);
 	public static final DateTimeFormat FULLDATEFORMAT = DateTimeFormat.getFormat(fullPattern);

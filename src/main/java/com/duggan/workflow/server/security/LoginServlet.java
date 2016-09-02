@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +32,15 @@ public class LoginServlet extends HttpServlet {
 	ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
 	ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
 	Logger logger = Logger.getLogger(LoginServlet.class);
+	String app_page = null;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		if (config != null) {
+			app_page = config.getInitParameter("app_page");
+		}
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -59,6 +69,18 @@ public class LoginServlet extends HttpServlet {
 		
 		execLogin(action, result);
 		
+		if(result.getCurrentUserDto()!=null && result.getCurrentUserDto().isLoggedIn()){
+			logger.debug("#LoginServlet redirecting to "+app_page);
+			redirectToApp();
+		}else{
+			logger.debug("#LoginServlet failed to login in; invalidating session");
+			req.getSession().invalidate();
+		}
+		
+	}
+
+	private void redirectToApp() throws ServletException, IOException {
+		request.get().getRequestDispatcher(app_page).forward(request.get(), response.get());
 	}
 
 	public void execLogin(LoginRequest action, LoginRequestResult result) {

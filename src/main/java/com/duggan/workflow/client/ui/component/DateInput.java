@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.component;
 
-import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT_;
+import static com.duggan.workflow.client.ui.util.DateUtils.DATEFORMAT_SYS;
 import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
@@ -31,9 +32,8 @@ public class DateInput extends Composite implements HasValue<Date> {
 	interface DateInputUiBinder extends UiBinder<Widget, DateInput> {
 	}
 
-	@UiField
 	TextField txtDate;
-
+	@UiField HTMLPanel panelContainer;
 	String id = DOM.createUniqueId();
 
 	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
@@ -41,6 +41,9 @@ public class DateInput extends Composite implements HasValue<Date> {
 	public DateInput() {
 		initWidget(uiBinder.createAndBindUi(this));
 		getElement().setId(id);
+		Element textBox = panelContainer.getElementById("appendedInput");
+		txtDate = new TextField(textBox);
+		
 		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
@@ -98,7 +101,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 			return null;
 		}
 
-		return DATEFORMAT_.parse(dateStr);
+		return DATEFORMAT_SYS.parse(dateStr);
 	}
 
 	public HasValueChangeHandlers<String> getDateInput() {
@@ -203,7 +206,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 		if (date == null) {
 			txtDate.setValue("");
 		} else {
-			txtDate.setValue(DATEFORMAT_.format(date));
+			txtDate.setValue(DATEFORMAT_SYS.format(date));
 		}
 	}
 

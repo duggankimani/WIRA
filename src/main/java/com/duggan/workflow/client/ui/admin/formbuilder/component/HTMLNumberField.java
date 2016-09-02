@@ -190,6 +190,10 @@ public class HTMLNumberField extends FieldWidget{
 //			if(field.getName().equals("lineTotal")){
 //				GWT.log("# "+field.getName()+" - "+value);
 //			}
+			if(value instanceof Value){
+				value= ((Value) value).getValue();
+			}
+			
 			if(!(value instanceof Double)){
 				try{
 					value = new Double(value.toString());

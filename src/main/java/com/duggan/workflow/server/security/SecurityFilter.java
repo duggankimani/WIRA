@@ -71,6 +71,7 @@ public class SecurityFilter implements Filter {
 							+ "expires=Thu, 01 Jan 1970 00:00:00 GMT");
 			returnError(request, response, "Invalid request cookie found");
 		}else {
+			logger.debug("#Security Filter - Authentication success! - forwarding request");
 			chain.doFilter(request, response);
 		}
 	}
@@ -92,6 +93,7 @@ public class SecurityFilter implements Filter {
 	private void returnError(ServletRequest request, ServletResponse response,
 			String errorString) throws ServletException, IOException {
 		request.setAttribute("error", errorString);
+		((HttpServletResponse)response).setStatus(403);
 		request.getRequestDispatcher(loginPage).forward(request, response);
 	}
 

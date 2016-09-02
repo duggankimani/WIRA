@@ -63,6 +63,20 @@
 	</filter-mapping>
 	
 	<servlet>
+	    <servlet-name>LoginServlet</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.security.LoginServlet</servlet-class>
+	    <init-param>
+	        <param-name>app_page</param-name>
+	        <param-value>GWTHT.html</param-value>
+	     </init-param>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>LoginServlet</servlet-name>
+	    <url-pattern>auth</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	    <servlet-name>RestService</servlet-name>
 	    <servlet-class>com.duggan.workflow.server.rest.servlet.JerseyServletContainer</servlet-class>
 	    <init-param>

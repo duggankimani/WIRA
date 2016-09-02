@@ -4,11 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,11 +42,14 @@ import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
+import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
 
 public class TestJsonType {
+	
+	Logger logger = Logger.getLogger(TestJsonType.class);
 
 	@Before
 	public void setup() {
@@ -49,6 +57,85 @@ public class TestJsonType {
 		DB.beginTransaction();
 	}
 	
+	@Ignore
+	public void getFieldsByPosition(){
+		String formRef = "pqzUSiph5GF9Moof";
+		ArrayList<Field> fields = DB.getFormDao().getFormFieldsByPosition(formRef, 5, 2);
+		Collections.sort(fields, new Comparator<FormModel>() {
+			public int compare(FormModel o1, FormModel o2) {
+				Field field1 = (Field) o1;
+				Field field2 = (Field) o2;
+
+				Integer pos1 = field1.getPosition();
+				Integer pos2 = field2.getPosition();
+
+				return pos1.compareTo(pos2);
+			};
+
+		});
+		
+		for (Field field : fields) {
+			System.err.println("{name:" + field.getName() + ",position:"
+					+ field.getPosition() + "}");
+		}
+	}
+	
+	@Test
+	public void updateFieldPositions(){
+		String formRef = "pqzUSiph5GF9Moof";
+		Form form = FormDaoHelper.getFormJson(formRef, true);
+		List<Field> fields = form.getFields();
+		sort(fields);
+		
+		//alter the first field position by moving it 3 positions down 
+		Field alterField = fields.get(4);
+		int previousIdx = alterField.getPosition();
+		int newPosition = 2;
+		boolean shiftingUp= previousIdx>newPosition;
+		System.err.println("SHIFTING "+(shiftingUp? "Up":"Down")+" FIELD {name:"+alterField.getName()+", position:"+alterField.getPosition()+", newPosition:"+newPosition+"}");
+		
+		
+		List<Field> fieldsToShift = DB.getFormDao().getFormFieldsByPosition(formRef, previousIdx, newPosition);
+		Map<String,Field> fieldsToShiftMap = new HashMap<String, Field>();
+		sort(fieldsToShift);
+		for(Field field: fieldsToShift){
+			fieldsToShiftMap.put(field.getRefId(), field);
+			System.err.println("Affected field {name:"+field.getName()+",position:"+field.getPosition()+"}");
+		}
+		
+		alterField.setPosition(newPosition);
+		assert alterField.getRefId()!=null;
+		FormDaoHelper.createJson(alterField);//Update field position
+		
+		//Test 
+		List<Field> shiftedFields = DB.getFormDao().getFormFieldsByPosition(formRef, previousIdx, newPosition);
+		sort(shiftedFields);
+		for(Field field: shiftedFields){
+			Field previous = fieldsToShiftMap.get(field.getRefId());
+			if(previous!=null){
+				System.err.println("Shifted Field {name:"+field.getName()+", position:"+field.getPosition()+"}");
+			}else{
+				System.err.println("Field not found on affected fields list - "+field.getName());
+			}
+		}
+
+	}
+	
+	private void sort(List<Field> fields) {
+		Collections.sort(fields, new Comparator<FormModel>() {
+			public int compare(FormModel o1, FormModel o2) {
+				Field field1 = (Field) o1;
+				Field field2 = (Field) o2;
+
+				Integer pos1 = field1.getPosition();
+				Integer pos2 = field2.getPosition();
+
+				return pos1.compareTo(pos2);
+			};
+
+		});
+	}
+
 	@Ignore
 	public void updateBasicJsonField(){
 		String fieldRefId=  "VEXVP06omY0ASCDi";
@@ -84,7 +171,7 @@ public class TestJsonType {
 		FormDaoHelper.createJson(field);
 	}
 	
-	@Test
+	@Ignore
 	public void updateHTMLForms(){
 		String fieldRefId="3iiLV0B4ietZizVY";
 		Field field = FormDaoHelper.getFieldJson(fieldRefId);

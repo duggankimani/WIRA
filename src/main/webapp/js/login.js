@@ -1,12 +1,12 @@
-var count = 0;
-$(document).ready(function(){
-
-	var authCookie = Cookies.get('AUTHCOOKIEID');
-	if(authCookie && count<1){
-		count=count+1;
-		loginWithCookie();
-	}
-});
+//var count = 0;
+//$(document).ready(function(){
+//
+//	var authCookie = Cookies.get('AUTHCOOKIEID');
+//	if(authCookie && count<1){
+//		count=count+1;
+//		loginWithCookie();
+//	}
+//});
 
 function loginWithCookie(){
 	var str = "loginmethod=VIA_COOKIE"

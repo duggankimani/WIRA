@@ -409,13 +409,21 @@ public class Field extends FormModel implements Comparable<Field>{
 		if(equal){
 			if(this.parentRef!=null){
 				equal = this.parentRef.equals(other.parentRef);
+			}else if(other.parentRef!=null){
+				equal=false;//Both parentRefs must be null
 			}
 		}
 		
 		if(equal){
 			if(this.formRef!=null){
 				equal = this.formRef.equals(other.formRef);
+			}else if(other.formRef!=null){
+				equal=false;//Both formRef's must be null
 			}
+		}
+		
+		if(equal){
+			equal = this.position==other.position;
 		}
 		
 		return equal;

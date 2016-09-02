@@ -1,13 +1,17 @@
 package com.duggan.workflow.server.dao.hibernate;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
 
+import com.duggan.workflow.client.ui.util.Formats;
 import com.duggan.workflow.shared.model.BooleanValue;
+import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.IntValue;
@@ -42,7 +46,14 @@ public class DocValues implements Serializable{
 			}
 
 			val.setKey(key);
-			rawValues.put(key, val.getValue());
+			
+			if(val.getValue() instanceof Date){
+				SimpleDateFormat format = new SimpleDateFormat(Formats.datepattern_sys);
+				rawValues.put(key, format.format((Date)val.getValue()));
+			}else{
+				rawValues.put(key, val.getValue());
+			}
+			
 		}
 
 	}
@@ -67,6 +78,8 @@ public class DocValues implements Serializable{
 			value = new LongValue(null,name,(Long)object);
 		}else if(object instanceof Boolean){
 			value = new BooleanValue(null,name,(Boolean)object);
+		}else if(object instanceof Date){
+			value = new DateValue(null,name,(Date)object);
 		}else{
 			value = new StringValue(null,name,(String)object);
 		}

@@ -99,7 +99,7 @@ public class FormPanel extends Composite {
 				if (prop.getName() != null) {
 					String val = prop.getValue();
 					if (prop.getName().equals(HasProperties.CAPTION)) {
-						
+
 						if (val != null) {
 							divFormCaption.setInnerHTML(val);
 						}
@@ -114,6 +114,7 @@ public class FormPanel extends Composite {
 			}
 
 		ArrayList<Field> fields = form.getFields();
+		// Sort fields based on their positions
 		Collections.sort(fields, new Comparator<FormModel>() {
 			public int compare(FormModel o1, FormModel o2) {
 				Field field1 = (Field) o1;
@@ -127,22 +128,22 @@ public class FormPanel extends Composite {
 
 		});
 
-		//Bind formulae
+		// Bind formulae
 		bindFormula(form.getFormulae());
-		//Bind Fields
+		// Bind Fields
 		bind(fields, doc, form.getDependencies().keySet());
 
 	}
-	
+
 	private void bindFormula(ArrayList<String> formulae) {
 		ArrayList<String> dependentFields = new ArrayList<String>();
-		for(String formula: formulae){
+		for (String formula : formulae) {
 			setFormula(formula, dependentFields);
 		}
 		ENV.registerObservable(dependentFields);
 	}
-	
-	protected void setFormula(String formula,ArrayList<String> dependentFields) {
+
+	protected void setFormula(String formula, ArrayList<String> dependentFields) {
 
 		if (formula == null || formula.isEmpty()) {
 			return;
@@ -156,11 +157,11 @@ public class FormPanel extends Composite {
 		for (String token : tokens) {
 			if (token != null && !token.isEmpty()
 					&& !token.matches(digitsOnlyRegex)) {
-				//dependentFields.add(token + field.getDocId() + "D");
+				// dependentFields.add(token + field.getDocId() + "D");
 				dependentFields.add(token);
 			}
 		}
-		
+
 	}
 
 	private void execJs() {
@@ -176,37 +177,44 @@ public class FormPanel extends Composite {
 		super.onLoad();
 		execJs();
 	}
-	
-	@Override
-	protected void onAttach() {
-		try{
-			super.onAttach();
-		}catch(AttachDetachException e){
-			StringBuffer buffer = new StringBuffer();
-			getTrace(e,buffer);
-			Window.alert(e.getMessage()+"<p>"+buffer.toString());
+
+	public void forceReloadJs() {
+		if (isAttached()) {
+			execJs();
 		}
 	}
-	
+
+	@Override
+	protected void onAttach() {
+		try {
+			super.onAttach();
+		} catch (AttachDetachException e) {
+			StringBuffer buffer = new StringBuffer();
+			getTrace(e, buffer);
+			Window.alert(e.getMessage() + "<p>" + buffer.toString());
+		}
+	}
+
 	private void getTrace(Throwable e, StringBuffer buffer) {
-		if(e==null){
+		if (e == null) {
 			return;
 		}
-		
-		for(StackTraceElement elem: e.getStackTrace()){
-			buffer.append(elem.toString()+"\r\n");
+
+		for (StackTraceElement elem : e.getStackTrace()) {
+			buffer.append(elem.toString() + "\r\n");
 		}
 		buffer.append("--------------------------------------------------------- \r\n");
 		getTrace(e.getCause(), buffer);
-		
+
 	}
 
 	void bind(ArrayList<Field> fields, Doc doc, Collection<String> parentFields) {
-		bind(fields, doc, parentFields,false);
+		bind(fields, doc, parentFields, false);
 	}
-	
-	void bind(ArrayList<Field> fields, Doc doc, Collection<String> parentFields, boolean isRawHTMLFormFields) {
-		
+
+	void bind(ArrayList<Field> fields, Doc doc,
+			Collection<String> parentFields, boolean isRawHTMLFormFields) {
+
 		HashMap<String, Value> values = doc.getValues();
 		Long documentId = null;
 		Long taskId = null;
@@ -219,17 +227,17 @@ public class FormPanel extends Composite {
 			taskId = ((HTSummary) doc).getId();
 		}
 		for (Field field : fields) {
-			if(field==null){
+			if (field == null) {
 				continue;
 			}
 			field.setHTMLWrappedField(isRawHTMLFormFields);
-			
-			if(field.getType()==DataType.JS){
-				//Load Scripts
+
+			if (field.getType() == DataType.JS) {
+				// Load Scripts
 				jsScripts.add(field.getPropertyValue(HasProperties.JS));
 				continue;
 			}
-			
+
 			String name = field.getName();
 			field.setDocId(documentId + ""); // Add DocId to all field
 			field.setDocRefId(doc.getRefId());
@@ -238,8 +246,8 @@ public class FormPanel extends Composite {
 			}
 
 			if (field.getType() == DataType.GRID) {
-				ArrayList<DocumentLine> lines = doc.getDetails()
-						.get(field.getName());
+				ArrayList<DocumentLine> lines = doc.getDetails().get(
+						field.getName());
 				if (lines != null) {
 					GridValue value = new GridValue();
 					value.setKey(field.getName());
@@ -251,11 +259,11 @@ public class FormPanel extends Composite {
 				bind(field);
 				continue;
 
-			}else if(field.getType()==DataType.FORM){ 
-				
-				bind(field.getFields(), doc,parentFields, true);
-				
-			}else if (field.getType() == DataType.BUTTON) {
+			} else if (field.getType() == DataType.FORM) {
+
+				bind(field.getFields(), doc, parentFields, true);
+
+			} else if (field.getType() == DataType.BUTTON) {
 				String submitType = field
 						.getPropertyValue(SingleButton.SUBMITTYPE);
 				if (submitType != null) {
@@ -298,8 +306,8 @@ public class FormPanel extends Composite {
 				}
 				field.setValue(value);
 			}
-			
-			if(parentFields.contains(field.getName())){
+
+			if (parentFields.contains(field.getName())) {
 				field.setDynamicParent(true);
 			}
 
@@ -309,19 +317,18 @@ public class FormPanel extends Composite {
 	}
 
 	public void bind(Field field) {
-		if(field==null){
+		if (field == null) {
 			return;
 		}
-		
-		if(field.isHTMLWrappedField()){
-			//HTML Field - Do not instanciate field widget
+
+		if (field.isHTMLWrappedField()) {
+			// HTML Field - Do not instanciate field widget
 			if (mode == MODE.VIEW) {
-				//SET READONLY
+				// SET READONLY
 			}
 			return;
 		}
-		
-		
+
 		FieldWidget fieldWidget = FieldWidget.getWidget(field.getType(), field,
 				false);
 		if (mode == MODE.VIEW) {

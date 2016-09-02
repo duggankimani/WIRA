@@ -264,6 +264,8 @@ public class GenericDocumentPresenter extends
 		void setLoadAsAdmin(boolean isLoadAsAdmin);
 
 		void enableSubmit(boolean isEnable);
+
+		void forceExecJs();
 	}
 
 	private Long taskId;
@@ -909,8 +911,6 @@ public class GenericDocumentPresenter extends
 		mergeFormValuesWithDoc();
 		ExecuteTriggerRequest request = new ExecuteTriggerRequest(
 				event.getTriggerName(), doc);
-		// Window.alert("Value on exec= "+(doc.getValues().get("budgetAmount")==null?null:
-		// doc.getValues().get("budgetAmount").getValue()));
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<ExecuteTriggerResponse>() {
@@ -918,10 +918,9 @@ public class GenericDocumentPresenter extends
 						// Updated Form
 
 						doc = aResponse.getDocument();
-						bindForm(form, doc);
+//						bindForm(form, doc);
+						bindData(doc, false);
 						fireEvent(new ProcessingCompletedEvent());
-						// Window.alert("After exec= "+(doc.getValues().get("budgetAmount")==null?null:
-						// doc.getValues().get("budgetAmount").getValue()));
 					}
 				});
 
@@ -1458,6 +1457,7 @@ public class GenericDocumentPresenter extends
 		}
 		
 		fireEvent(new DocumentLoadedEvent(doc));
+		getView().forceExecJs();
 		
 		/**
 		 * Field Dependencies
@@ -1597,7 +1597,8 @@ public class GenericDocumentPresenter extends
 							ExecuteTriggerResponse aTriggerResp = (ExecuteTriggerResponse) aResponse
 									.get(i++);
 							doc = aTriggerResp.getDocument();
-							bindForm(form, doc, false);
+//							bindForm(form, doc, false);
+							bindData(doc, false);
 							
 							GetAttachmentsResponse getAttachments = (GetAttachmentsResponse)aResponse.get(i++);
 							bindAttachments(getAttachments);
@@ -2000,13 +2001,13 @@ public class GenericDocumentPresenter extends
 		// Window.alert(">> "+event.getFileFieldNames());
 		String fieldId = ((Uploader) event.getSource()).getFieldId();
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new GenerateFilePathRequest(doc,
-				new Long(fieldId), event.getFileFieldNames()),
-				new TaskServiceCallback<GenerateFilePathResponse>() {
-					public void processResult(GenerateFilePathResponse aResponse) {
-						fireEvent(new ProcessingCompletedEvent());
-					};
-				});
+//		requestHelper.execute(new GenerateFilePathRequest(doc,
+//				new Long(fieldId), event.getFileFieldNames()),
+//				new TaskServiceCallback<GenerateFilePathResponse>() {
+//					public void processResult(GenerateFilePathResponse aResponse) {
+//						fireEvent(new ProcessingCompletedEvent());
+//					};
+//				});
 	}
 
 }

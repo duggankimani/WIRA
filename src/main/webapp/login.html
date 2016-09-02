@@ -26,36 +26,47 @@
 
 <!-- this page specific styles -->
 <link rel="stylesheet" type="text/css" href="css/compiled/signin.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/js.cookie.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
 
 <title>Insert title here</title>
 </head>
 <body>
+
 	<div class="login-bg" id="mainContent">
 		<div class="row-fluid login-wrapper">
 			<a class="brand hide" href="#"></a>
 
 			<div class="span4 box" id="loadingbox">
-				<div class="content-wrap">
-					<img id="logo-image" class="logo-image" src="img/wiralogo.png"
-						alt="Logo"></img> <span class="logo-title">Wira</span>
-					<p
-						style="padding-top: 10px !important; padding-bottom: 10px !important; font-family: Source Sans Pro, sans-serif; color: #656565; font-size: 14px;">
-						PLEASE SIGN IN</p>
-					<span class="hide loadingtext" id="loading"> <i
-						class="icon-spinner icon-spin icon-large"></i> Logging In...
-					</span>
-					<div id="issues" class="hide"></div>
-					<input type="text" id="username" name="username" class="span12"></input>
-					<input type="password" id="password" name="password" class="span12"></input>
-					<div class="remember">
-						<input id="remember-me" type="checkbox"></input> <label
-							for="remember-me">Keep me Signed In</label>
-					</div>
-					<div id="divLogin">
-						<img class="loading" src="img/loading.gif"/>
-					</div>
-					<a href="account.html#/activateacc/acc/forgot" class="forgot">Forgot
-						the password?</a>
+				<div id="status" class="content-wrap">
+					<form id="login" action="javascript:doFormSubmit();">
+						<img id="logo-image" class="logo-image" src="img/wiralogo.png"
+							alt="Logo"></img> <span class="logo-title">Wira</span>
+						<p
+							style="padding-top: 10px !important; padding-bottom: 10px !important; font-family: Source Sans Pro, sans-serif; color: #656565; font-size: 14px;">
+							PLEASE SIGN IN</p>
+						<span class="hide loadingtext" id="loading"> <i
+							class="icon-spinner icon-spin icon-large"></i> Logging In...
+						</span>
+						<div id="issues" class="hide alert alert-danger">Wrong username or password</div>
+						<input type="text" id="username" name="username" class="span12"></input>
+						<input type="password" id="password" name="password"
+							class="span12"></input>
+						<div class="remember">
+							<input id="remember-me" type="checkbox"></input> <label
+								for="remember-me">Keep me Signed In</label>
+						</div>
+						<div id="divLogin">
+							<img class="loading hide" src="img/loading.gif" /> 
+							<input
+								value="Login" name="Login" id="submit"
+								 class="btn-glow btn-block primary login" type="submit" 
+								 />
+						</div>
+						<a href="account.html#/activateacc/acc/forgot" class="hide forgot">Forgot
+							the password?</a>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -70,8 +81,5 @@
 			Your web browser must have JavaScript enabled in order for this
 			application to display correctly.</div>
 	</noscript>
-	<script type="text/javascript" language="javascript"
-		src="login/login.nocache.js"></script>
-
 </body>
 </html>
