@@ -80,7 +80,8 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	private void redirectToApp() throws ServletException, IOException {
-		request.get().getRequestDispatcher(app_page).forward(request.get(), response.get());
+		response.get().sendRedirect(app_page);
+//		request.get().getRequestDispatcher(app_page).forward(request.get(), response.get());
 	}
 
 	public void execLogin(LoginRequest action, LoginRequestResult result) {

@@ -373,15 +373,16 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 						+ "a.type,"
 						+ "u.firstname,"
 						+ "u.lastname,"
-						+ "d.subject,"
+						+ "d.caseNo,"
 						+ "p.refId,"
 						+ "p.name processName,"
 						+ "pinfo.state,"
 						+ "d.status "
 						+ "from localattachment a "
 						+ "inner join buser u on (u.userid=a.createdby) "
-						+ "inner join localdocument d on (d.id=a.documentid) "
-						+ "inner join addoctype t on (t.id=d.doctype) "
+						//+ "inner join localdocument d on (d.id=a.documentid) "
+						+ "inner join documentjson d on (d.refId=a.docRefId) "
+						+ "inner join addoctype t on (t.refId=d.docTypeRefId) "
 						+ "inner join processdefmodel p on (p.id=t.processdefid) "
 						+ "left join localattachment parent on (parent.id=a.parentid) "
 						+ "left join processinstanceinfo pinfo "
@@ -389,6 +390,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 						+ "where a.isActive=1 ");
 
 		Map<String, String> params = new HashMap<String, String>();
+		if(type!=null)
 		switch (type) {
 		case FILES:
 			if (parentRefId != null) {
@@ -487,6 +489,73 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 						state==3? HTStatus.EXITED:
 							state==4? HTStatus.SUSPENDED: null);
 			attachment.setDocStatus(docStatus==null? null: DocStatus.valueOf(docStatus));
+			attachment.setDirectory(false);
+			files.add(attachment);
+		}
+
+		return files;
+
+	}
+
+	public List<Attachment> getAttachments(String docRefId) {
+
+		StringBuffer jpql = new StringBuffer(
+				"select a.id,a.refid,"
+						+ "a.name,"
+						+ "a.created,"
+						+ "a.createdby,"
+						+ "a.type,"
+						+ "a.size,"
+						+ "a.fieldName,"
+						+ "a.path,"
+						+ "u.firstname,"
+						+ "u.lastname "
+						+ "from localattachment a "
+						+ "inner join buser u on (u.userid=a.createdby) "
+						//+ "inner join localdocument d on (d.id=a.documentid) "
+						+ "inner join documentjson d on (d.refId=a.docRefId) "
+						+ "where d.refId =:docRefId and a.isActive=1 ");
+		
+		Query query = getEntityManager().createNativeQuery(jpql.toString())
+				.setParameter("docRefId", docRefId);
+
+		List<Object[]> rows = getResultList(query);
+		List<Attachment> files = new ArrayList<Attachment>();
+
+		for (Object[] row : rows) {
+			int i = 0;
+			Attachment attachment = new Attachment();
+			Object value = null;
+			Long id = (value = row[i++]) == null ? -1 : ((Number) value).longValue();
+			String refId = (value = row[i++]) == null ? null : value.toString();
+			String name = (value = row[i++]) == null ? null : value.toString();
+			Date created = (value = row[i++]) == null ? null : (Date) value;
+			String createdBy = (value = row[i++]) == null ? null : value
+					.toString();
+			int attachmentType = (value = row[i++]) == null ? -1 : (Integer) value;
+			Long size = (value = row[i++]) == null ? -1 : ((Number) value).longValue();
+			String fieldName = (value = row[i++]) == null ? null : value
+					.toString();
+			String path = (value = row[i++]) == null ? null : value
+					.toString();
+			String firstName = (value = row[i++]) == null ? null : value
+					.toString();
+			String lastName = (value = row[i++]) == null ? null : value
+					.toString();
+
+			attachment.setId(id);
+			attachment.setRefId(refId);
+			attachment.setName(name);
+			attachment.setType(attachmentType==-1? AttachmentType.UPLOADED:
+				AttachmentType.values()[attachmentType]);
+			attachment.setPath(path);
+			attachment.setFieldName(fieldName);
+			attachment.setSize(size);
+			attachment.setCreated(created);
+			HTUser user = new HTUser(createdBy);
+			user.setName(firstName);
+			user.setSurname(lastName);
+			attachment.setCreatedBy(user);
 			attachment.setDirectory(false);
 			files.add(attachment);
 		}

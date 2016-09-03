@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
+import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,6 +58,23 @@ public class TestJsonType {
 		DB.beginTransaction();
 	}
 	
+	@Test
+	public void checkExists(){
+		String actorId = "mutuku.ian";
+		String groupId="Administrator";
+		boolean exists = false;
+		
+		if(actorId!=null){
+			exists = DB.getUserGroupDao().userExists(actorId.toString());
+		}
+		
+		if(groupId!=null){
+			exists = DB.getUserGroupDao().usersExist(groupId.toString());
+		}
+		
+		Assert.assertTrue(exists);
+	}
+	
 	@Ignore
 	public void getFieldsByPosition(){
 		String formRef = "pqzUSiph5GF9Moof";
@@ -80,7 +98,7 @@ public class TestJsonType {
 		}
 	}
 	
-	@Test
+	@Ignore
 	public void updateFieldPositions(){
 		String formRef = "pqzUSiph5GF9Moof";
 		Form form = FormDaoHelper.getFormJson(formRef, true);

@@ -323,10 +323,48 @@ public class Document extends Doc implements Serializable {
 		
 		Document other = (Document)obj;
 		
-		if(getRefId()!=null && other.getRefId()!=null){
-			return other.getRefId().equals(getRefId());
+		if(this.description!=null && !this.description.equals(other.description)){
+			return false;
 		}
 		
-		return super.equals(obj);
+		if(this.created!=null && !this.created.equals(other.created)){
+			return false;
+		}
+		
+		if(this.dateSubmitted!=null && !this.dateSubmitted.equals(other.dateSubmitted)){
+			return false;
+		}
+		
+		if(this.documentDate!=null && !this.documentDate.equals(other.documentDate)){
+			return false;
+		}
+		
+		if(this.priority!=null && !this.priority.equals(other.priority)){
+			return false;
+		}
+		
+		if(this.partner!=null && !this.partner.equals(other.partner)){
+			return false;
+		}
+		
+		if(this.status!=null && !this.status.equals(other.status)){
+			return false;
+		}
+		
+		if(this.dateDue!=null && !this.dateDue.equals(other.dateDue)){
+			return false;
+		}
+		
+		if(this.processInstanceId!=null && !this.processInstanceId.equals(other.processInstanceId)){
+			return false;
+		}
+		
+		if(this.sessionId!=null && !this.sessionId.equals(other.sessionId)){
+			return false;
+		}
+		
+		boolean equal = super.equals(obj);
+				
+		return equal;
 	}
 }

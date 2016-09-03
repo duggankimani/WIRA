@@ -45,6 +45,7 @@ import org.jbpm.workflow.core.node.SubProcessNode;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
@@ -161,9 +162,9 @@ public class JBPMHelper implements Closeable {
 		initialParams.put("ownerId", userId);
 		initialParams.put("priority", summary.getPriority());
 
-		Document clone = summary.clone(); // Not sure why we clone here
-		clone.setId(summary.getId());
-		initialParams.put("document", clone);
+//		Document clone = summary.clone(); // Not sure why we clone here
+//		clone.setId(summary.getId());
+		initialParams.put("document", summary);
 
 		Map<String, Value> vals = summary.getValues();
 		Collection<Value> values = vals.values();
@@ -174,42 +175,14 @@ public class JBPMHelper implements Closeable {
 			}
 		}
 
+		assert summary.getProcessId()!=null;
+		String processId = summary.getProcessId();
+		ProcessMigrationHelper.start(processId);
+
 		ProcessInstance processInstance = sessionManager.startProcess(
-				getProcessId(summary.getType()), initialParams, summary);
+				summary.getProcessId(), initialParams, summary);
 		assert (ProcessInstance.STATE_ACTIVE == processInstance.getState());
 
-	}
-
-	public String getProcessId(DocumentType type) {
-
-		ADDocType adtype = DocumentDaoHelper.getType(type);
-		List<ProcessDefModel> processDefs = DB.getProcessDao()
-				.getProcessesForDocType(adtype);
-
-		if (processDefs == null || processDefs.isEmpty()) {
-			throw new ProcessInitializationException(
-					"Could not start process: "
-							+ "No process definition found for DocType= ["
-							+ type + "]");
-		}
-
-		if (processDefs.size() > 1) {
-			throw new ProcessInitializationException(
-					"Could not start process: More than 1 process definition "
-							+ "found for document [" + type + "]");
-		}
-
-		Iterator<ProcessDefModel> iter = processDefs.iterator();
-		ProcessDefModel model = null;
-		while (iter.hasNext()) {
-			model = iter.next();
-		}
-
-		String processId = model.getProcessId();
-
-		ProcessMigrationHelper.start(model, false);
-
-		return processId;
 	}
 
 	public Task getSysTask(Long taskId) {

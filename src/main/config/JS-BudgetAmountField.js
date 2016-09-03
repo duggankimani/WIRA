@@ -1,6 +1,3 @@
-/*$doc.getElementById('budgetAmount_Field').style.visibility='hidden';*/
-
-
 
 var totalClaim= 0.0;
 var selectExpense = $doc.getElementById('selectExpense');

@@ -44,6 +44,11 @@ public class ProcessMigrationHelper {
 		start(processDefId, false);
 	}
 	
+	public static void start(String processId){
+		ProcessDefModel model = DB.getProcessDao().getProcessDef(processId);
+		start(model, false);
+	}
+	
 	public static void start(Long processDefId, boolean force){
 		ProcessDefModel model = DB.getProcessDao().getProcessDef(processDefId);
 		start(model, force);

@@ -183,6 +183,7 @@ public class DateField extends FieldWidget {
 				lblComponent.setText(DateUtils.DATEFORMAT_SYS.format((Date) value));
 		} else if (value != null && value instanceof String) {
 
+			lblComponent.setText(value.toString());
 			try {
 				dateBox.setValue(DateUtils.DATEFORMAT_SYS.parse(value.toString()));
 			} catch (Exception e) {

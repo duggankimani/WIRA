@@ -58,8 +58,9 @@ public class GetTaskListActionHandler extends
 //			summary = DocumentDaoHelper.getAllDocuments(status);
 //			break;
 		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocumentsJson(action.getOffset(),action.getLength(),false,DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
-					DocStatus.COMPLETED);
+			summary = DocumentDaoHelper.getAllDocumentsJson(action.getOffset(),action.getLength(),false,
+					DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
+					 DocStatus.COMPLETED);//Current users sent requests
 			summary.addAll(getPendingApprovals(userId, type,action.getOffset(),action.getLength()));
 			break;
 //		case REJECTED:
@@ -80,15 +81,6 @@ public class GetTaskListActionHandler extends
 							DocumentDaoHelper.getProcessInstanceIdByDocRefId(action.getDocRefId());
 				}
 								
-				//Document doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
-			
-//				if(action.getDocumentId()!=null){
-//					doc = DocumentDaoHelper.getDocument(action.getDocumentId());
-//				}else if(processInstanceId!=null){
-//					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId);
-//				}
-				
-	
 				Document doc = null;
 				
 				if(processInstanceId!=null){

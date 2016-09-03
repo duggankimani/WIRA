@@ -26,7 +26,7 @@ public class ApprovalRequestActionHandler extends
 			throws ActionException {
 		Document doc= action.getDocument();
 		doc.setStatus(DocStatus.INPROGRESS);
-		doc = DocumentDaoHelper.save(doc);
+		doc = DocumentDaoHelper.createJson(doc);
 		
 		if(doc.getProcessInstanceId()!=null){
 			throw new IllegalApprovalRequestException(doc);

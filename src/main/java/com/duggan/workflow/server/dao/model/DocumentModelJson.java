@@ -198,4 +198,10 @@ public class DocumentModelJson extends PO{
 		super.onPrePersist();
 		document.setCreated(getCreated());
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		return super.equals(obj);
+	}
 }

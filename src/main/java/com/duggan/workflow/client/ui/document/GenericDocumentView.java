@@ -74,6 +74,9 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnSubject;
 
 	@UiField
+	Element elAttachmentsCount;
+	
+	@UiField
 	SpanElement spnDate;
 
 	@UiField
@@ -534,8 +537,12 @@ public class GenericDocumentView extends ViewImpl implements
 
 		if (doc instanceof HTSummary) {
 			formPanel.setCompletedOn(((HTSummary) doc).getCompletedOn());
+			show(aEdit, false);
+			show(aSave, false);
 		}else{
 			Document document = (Document)doc;
+			show(aEdit, document.getStatus()==DocStatus.DRAFTED);
+			show(aSave, document.getStatus()==DocStatus.DRAFTED);
 			if(document.getDateSubmitted()!=null){
 				formPanel.setCreated(document.getDateSubmitted());
 			}
@@ -1157,6 +1164,14 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public void forceExecJs() {
 		formPanel.forceReloadJs();
+	}
+	
+	@Override
+	public void setAttachmentsCount(int size) {
+		elAttachmentsCount.setInnerText("");
+		if(size>0){
+			elAttachmentsCount.setInnerText(""+size);	
+		}
 	}
 
 }

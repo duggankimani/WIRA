@@ -496,7 +496,7 @@ class BPMSessionManager {
 			
 			summary.setSessionId(new Long(session.getId() + ""));
 			logger.debug("## Setting SessionId : " + summary.getSessionId());
-			DocumentDaoHelper.save(summary);
+			DocumentDaoHelper.createJson(summary);
 		}
 
 		
@@ -829,7 +829,14 @@ class BPMSessionManager {
 		logger.debug("BPMSessionManager#onTaskCreated ActorId="+actorId);
 		logger.debug("BPMSessionManager#onTaskCreated Priority="+taskData.get("priority"));
 		
-		if(actorId==null && groupId==null){
+		boolean actorExists = false;
+		if(actorId!=null){
+			actorExists = DB.getUserGroupDao().userExists(actorId.toString());
+		}else if(groupId!=null){
+			actorExists = DB.getUserGroupDao().usersExist(groupId.toString());
+		}
+		
+		if(!actorExists){
 			throw new IllegalArgumentException("Subsequent Task '"+JBPMHelper.get().getDisplayName(task)+"' has no User or Group defined");
 		}
 		

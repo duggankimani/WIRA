@@ -72,7 +72,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		Document doc = createDocument(request);
 
 		doc.setStatus(DocStatus.INPROGRESS);
-		doc = DocumentDaoHelper.save(doc);
+		doc = DocumentDaoHelper.createJson(doc);
 
 		if (doc.getProcessInstanceId() != null) {
 			response.setError("500",

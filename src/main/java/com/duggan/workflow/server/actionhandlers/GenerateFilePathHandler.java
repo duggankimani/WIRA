@@ -1,12 +1,14 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADField;
 import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.servlets.upload.DocumentAttachmentExecutor;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.requests.GenerateFilePathRequest;
 import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.google.inject.Inject;
@@ -30,15 +32,11 @@ public class GenerateFilePathHandler
 		GenerateFilePathResponse aResp = (GenerateFilePathResponse) actionResult;
 		String error = null;
 		String path = null;
-		if (action.getFieldId() != null) {
-			ADField field = DB.getFormDao().getById(ADField.class,
-					action.getFieldId());
-			ADProperty property = field.getProperty(HasProperties.PATH);
-			if (property != null && property.getValue() != null
-					&& property.getValue().getStringValue() != null
-					&& !property.getValue().getStringValue().trim().isEmpty()) {
-				path = OutputDocumentDaoHelper.generatePath(property.getValue()
-						.getStringValue(), action.getDoc());
+		if (action.getFieldRefId() != null) {
+			Field field = FormDaoHelper.getFieldJson(action.getFieldRefId());
+			String pathTemplate = field.getProperty(HasProperties.PATH);
+			if (pathTemplate!=null) {
+				path = OutputDocumentDaoHelper.generatePath(pathTemplate, action.getDoc());
 			} else {
 				log.warn(error = "Attachment Failed: Could not find file path for Upload Field '"
 						+ field.getCaption()
@@ -46,7 +44,7 @@ public class GenerateFilePathHandler
 			}
 		} else {
 			log.warn(error = "Attachment Failed: Could not find file path for Upload Field ID='"
-					+ action.getFieldId()
+					+ action.getFieldRefId()
 					+ "'. Please inform your Administrator");
 		}
 

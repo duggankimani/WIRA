@@ -44,6 +44,9 @@ public class CustomEmailHandler {
 		if (template != null && !template.isUseDefaultNotification()
 				&& template.getNotificationTemplate() != null) {
 			html = template.getNotificationTemplate();
+		}else{
+			//Do not send default emails
+			return;
 		}
 
 		caseNo = (String) params.get("caseNo");

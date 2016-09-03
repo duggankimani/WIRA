@@ -46,6 +46,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -292,7 +293,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		getView().setHeading(type.getTitle());
 
 		String userId = AppContext.getUserId();
-
+		
 		GetTaskList request = new GetTaskList(userId, currentTaskType);
 		request.setOffset(CURPOS);
 		request.setLength(PAGE_SIZE);

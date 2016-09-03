@@ -10,7 +10,7 @@ import com.wira.commons.shared.response.BaseResponse;
 public class GenerateFilePathRequest extends BaseRequest<GenerateFilePathResponse> {
 
 	private Doc doc;
-	private Long fieldId;
+	private String fieldRefId;
 	private ArrayList<String> fileFieldNames;
 
 	@SuppressWarnings("unused")
@@ -18,10 +18,10 @@ public class GenerateFilePathRequest extends BaseRequest<GenerateFilePathRespons
 		// For serialization only
 	}
 	
-	public GenerateFilePathRequest(Doc doc, Long fieldId, ArrayList<String> fileFieldNames) {
+	public GenerateFilePathRequest(Doc doc, String fieldRefId, ArrayList<String> fileFieldNames) {
 		// For serialization only
 		this.doc = doc;
-		this.fieldId = fieldId;
+		this.fieldRefId = fieldRefId;
 		this.fileFieldNames = fileFieldNames;
 		
 	}
@@ -35,8 +35,8 @@ public class GenerateFilePathRequest extends BaseRequest<GenerateFilePathRespons
 		return doc;
 	}
 
-	public Long getFieldId() {
-		return fieldId;
+	public String getFieldRefId() {
+		return fieldRefId;
 	}
 
 	public ArrayList<String> getFileFieldNames() {

@@ -68,12 +68,8 @@ public class AttachmentDaoHelper {
 	}
 
 	public static List<Attachment> getAttachmentsByDocRefId(String docRefId) {
-		DocumentModel model = DB.getDocumentDao().findByRefId(docRefId,
-				DocumentModel.class);
-		if (model == null) {
-			return new ArrayList<>();
-		}
-		return getAttachments(model.getId());
+		
+		return DB.getAttachmentDao().getAttachments(docRefId);
 	}
 
 	private static List<Attachment> get(List<LocalAttachment> models,

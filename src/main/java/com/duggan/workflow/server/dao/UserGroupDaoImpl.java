@@ -140,6 +140,27 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 				.setParameter("email", email)
 				);
 	}
+
+	public boolean userExists(String actorId) {
+		String sql = "select count(*) from buser where userid=:userId";
+		Number count = getSingleResultOrNull(getEntityManager()
+				.createNativeQuery(sql)
+				.setParameter("userId", actorId));
+		return count.intValue()>0;
+	}
+
+	public boolean usersExist(String groupId) {
+		String sql = "select count(*) from buser u "
+				+ "inner join usergroup ug on (u.id=ug.userid) "
+				+ "inner join bgroup g on (g.id=ug.groupid) "
+				+ "where g.name=:groupId";
+		
+		Number count = getSingleResultOrNull(getEntityManager()
+				.createNativeQuery(sql)
+				.setParameter("groupId", groupId));
+		
+		return count.intValue()>0;
+	}
 	
 
 }

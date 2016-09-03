@@ -28,10 +28,12 @@ public class GetAttachmentsRequestHandler extends
 		if (action.getType() != null) {
 			response.setAttachments((ArrayList<Attachment>) DB.getAttachmentDao().getAttachments(action.getType(),
 					action.getRefId(), action.getSearchTerm()));
-		} else if (action.getDocumentId() != null) {
-			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper.getAttachments(action
-					.getDocumentId()));
-		} else if (action.getDocRefId() != null) {
+		} 
+//		else if (action.getDocumentId() != null) {
+//			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper.getAttachments(action
+//					.getDocumentId()));
+//		}
+		else if (action.getDocRefId() != null) {
 			response.setAttachments((ArrayList<Attachment>)AttachmentDaoHelper
 					.getAttachmentsByDocRefId(action.getDocRefId()));
 		} else if (action.getUserId() != null) {

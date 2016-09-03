@@ -45,6 +45,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -506,11 +507,14 @@ public class AbstractTaskView extends ViewImpl implements
 				break;
 			}
 
+			
 			// Several days ago
-			if (CalendarUtil.getDaysBetween(dateToUse, new Date()) >= 1) {
-				spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
-			} else {
-				spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
+			if(dateToUse!=null){
+				if (CalendarUtil.getDaysBetween(dateToUse, new Date()) >= 1) {
+					spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
+				} else {
+					spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
+				}
 			}
 
 			/**

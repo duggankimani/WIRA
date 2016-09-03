@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
@@ -112,7 +113,6 @@ import com.duggan.workflow.shared.responses.DeleteDocumentResponse;
 import com.duggan.workflow.shared.responses.DeleteLineResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggerResponse;
 import com.duggan.workflow.shared.responses.ExecuteTriggersResponse;
-import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.duggan.workflow.shared.responses.GenericResponse;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAttachmentsResponse;
@@ -123,6 +123,7 @@ import com.duggan.workflow.shared.responses.GetOutputDocumentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessLogResponse;
 import com.duggan.workflow.shared.responses.GetTaskStepsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
+import com.duggan.workflow.shared.responses.GenerateFilePathResponse;
 import com.duggan.workflow.shared.responses.LoadDynamicFieldsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.core.shared.GWT;
@@ -145,7 +146,6 @@ import com.gwtplatform.mvp.client.View;
 import com.wira.commons.client.service.ServiceCallback;
 import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.HTUser;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class GenericDocumentPresenter extends
 		PresenterWidget<GenericDocumentPresenter.MyView> implements
@@ -266,6 +266,8 @@ public class GenericDocumentPresenter extends
 		void enableSubmit(boolean isEnable);
 
 		void forceExecJs();
+
+		void setAttachmentsCount(int size);
 	}
 
 	private Long taskId;
@@ -684,10 +686,10 @@ public class GenericDocumentPresenter extends
 		boolean validate = false;
 		if (doc instanceof HTSummary) {
 			HTSummary summ = (HTSummary) doc;
-			validate = !summ.getStatus().equals(HTStatus.COMPLETED);
+			validate = summ.getStatus().equals(HTStatus.INPROGRESS);
 		} else {
 			Document document = (Document) doc;
-			validate = !document.getStatus().equals(DocStatus.COMPLETED);
+			validate = document.getStatus().equals(DocStatus.DRAFTED);
 		}
 
 		if ((!isNavigateNext || !validate || (validate && getView().isValid()))
@@ -1681,19 +1683,21 @@ public class GenericDocumentPresenter extends
 				.getAttachments();
 		getView().showAttachments(attachments);
 
+		getView().setAttachmentsCount(attachments.size());
 		if (attachments.size() > 0) {
-			// getView().getDivAttachment().removeClassName("hidden");
-			// getView().getSpnAttachmentNo().setInnerText("Attachments (" +
-			// attachments.size() +")");
 			fireEvent(new AfterAttachmentReloadedEvent(docRefId));
 		}
 
 		setInSlot(ATTACHMENTS_SLOT, null);// clear
 		for (final Attachment attachment : attachments) {
+			
 			if (attachment.getFieldName() != null) {
+				attachment.setDocRefId(doc.getRefId());
 				fireEvent(new FileLoadEvent(attachment));
 				continue;
 			}
+			
+			//For attachments with no field
 			attachmentPresenterFactory
 					.get(new ServiceCallback<AttachmentPresenter>() {
 						@Override
@@ -1998,16 +2002,16 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onUploadEnded(UploadEndedEvent event) {
 		mergeFormValuesWithDoc();
-		// Window.alert(">> "+event.getFileFieldNames());
-		String fieldId = ((Uploader) event.getSource()).getFieldId();
+
+		String fieldRefId = ((Uploader) event.getSource()).getFieldId();
 		fireEvent(new ProcessingEvent());
-//		requestHelper.execute(new GenerateFilePathRequest(doc,
-//				new Long(fieldId), event.getFileFieldNames()),
-//				new TaskServiceCallback<GenerateFilePathResponse>() {
-//					public void processResult(GenerateFilePathResponse aResponse) {
-//						fireEvent(new ProcessingCompletedEvent());
-//					};
-//				});
+		requestHelper.execute(new GenerateFilePathRequest(doc,
+				fieldRefId, event.getFileFieldNames()),
+				new TaskServiceCallback<GenerateFilePathResponse>() {
+					public void processResult(GenerateFilePathResponse aResponse) {
+						fireEvent(new ProcessingCompletedEvent());
+					};
+				});
 	}
 
 }

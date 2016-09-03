@@ -40,8 +40,9 @@
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aViewAttachments" styleName="btn btn-default"
-						title="Attach word, pdf, scanned documents etc">
+						title="View attachments">
 						<i class="icon-paper-clip color-black"></i>
+						<sup ui:field="elAttachmentsCount" class="pull-right text-info" style="line-height:20px;"></sup>
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
@@ -180,7 +181,8 @@
 					<strong>
 						<span ui:field="eOwner"></span>
 					</strong>
-					<span ui:field="eTitle"></span>
+					<span ui:field="eTitle">
+					</span>
 					<br />
 				</div>
 

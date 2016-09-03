@@ -82,6 +82,15 @@ public class Doc extends SerializableObj implements Serializable,
 		Date thisDate = getSortDate(this);
 
 		Date other = getSortDate(o);
+		
+		if(thisDate!=null && other==null){
+			return -1;
+		}else if(thisDate==null && other!=null){
+			return 1;
+		}else if(thisDate==null && other==null){
+			return 0;
+		}
+		
 		return (-thisDate.compareTo(other));
 	}
 
@@ -97,12 +106,20 @@ public class Doc extends SerializableObj implements Serializable,
 			if (summ.getStatus() == HTStatus.COMPLETED) {
 				dateToUse = summ.getCompletedOn();
 			}
+			if(dateToUse==null){
+				dateToUse = summ.getCreated();
+			}
 		} else {
 			Document document = (Document) doc;
 			if (!document.getStatus().equals(DocStatus.DRAFTED)) {
 				dateToUse = document.getDateSubmitted();
 			}
+			if(dateToUse==null){
+				dateToUse = doc.getCreated();
+			}
 		}
+		
+		
 
 		return dateToUse;
 	}
@@ -352,6 +369,70 @@ public class Doc extends SerializableObj implements Serializable,
 
 	public void setUploadedFileId(String uploadedFileId) {
 		this.uploadedFileId = uploadedFileId;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		Doc other = (Doc)obj;
+		if(getRefId()!=null && !getRefId().equals(other.getRefId())){
+			return false;
+		}
+		
+		if(processId!=null && !processId.equals(other.processId)){
+			return false;
+		}
+		
+		if(caseNo!=null && !caseNo.equals(caseNo)){
+			return false;
+		}
+		
+		if(processStatus!=null && !processStatus.equals(other.processStatus)){
+			return false;
+		}
+		
+		if(taskActualOwner!=null && !taskActualOwner.equals(other.taskActualOwner)){
+			return false;
+		}
+		
+		if(potentialOwners!=null && !potentialOwners.equals(other.potentialOwners)){
+			return false;
+		}
+		
+		if(taskActualOwner!=null && !taskActualOwner.equals(other.taskActualOwner)){
+			return false;
+		}
+		
+		if(values.size()!= other.values.size()){
+			return false;
+		}
+		
+		if(details.size()!=other.details.size()){
+			return false;
+		}
+		
+//		for(Value val: values.values()){
+//			Value otherValue = other.values.get(val.getKey());
+//			if(otherValue==null){
+//				return false;
+//			}
+//			
+//			Object v = val.getValue();
+//			Object v1 = otherValue.getValue();
+//			if(v!=null){
+//				if(v1!=null){
+//					if(!v.equals(v1)){
+//						return false;
+//					}
+//				}else{
+//					return false;
+//				}
+//				
+//			}
+//		}
+		
+
+		return true;
 	}
 
 }

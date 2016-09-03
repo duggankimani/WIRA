@@ -90,11 +90,13 @@ public class SecurityFilter implements Filter {
 
 
 	/** Accepts error string, forwards to error page with error. */
-	private void returnError(ServletRequest request, ServletResponse response,
+	private void returnError(ServletRequest request, ServletResponse aResponse,
 			String errorString) throws ServletException, IOException {
-		request.setAttribute("error", errorString);
-		((HttpServletResponse)response).setStatus(403);
-		request.getRequestDispatcher(loginPage).forward(request, response);
+		HttpServletResponse response = ((HttpServletResponse)aResponse); 
+		response.setStatus(403);
+		response.setContentType("text/html");
+		response.getWriter().print(errorString);
+		response.sendRedirect(loginPage);
 	}
 
 	@Override
