@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.helper.jbpm;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class CustomEmailHandler {
 	private static Logger log = Logger.getLogger(CustomEmailHandler.class);
 
 	public void sendNotification(ADTaskNotification template, Document doc,
-			Map<String, Object> params) {
+			Map<String, Object> params) throws IOException {
 
 		String caseNo = null;
 		String noteType = null;
@@ -41,11 +42,20 @@ public class CustomEmailHandler {
 		Object isApproved = null;
 		String html = null;
 
-		if (template != null && !template.isUseDefaultNotification()
-				&& template.getNotificationTemplate() != null) {
-			html = template.getNotificationTemplate();
-		}else{
-			//Do not send default emails
+		if (template != null && template.getNotificationTemplate() != null) {
+
+			if (template.isUseDefaultNotification()) {
+				InputStream is = Thread.currentThread().getContextClassLoader()
+						.getResourceAsStream("email.html");
+				ByteArrayOutputStream bout = new ByteArrayOutputStream();
+				IOUtils.copy(is, bout);
+				html = new String(bout.toByteArray());
+			} else {
+				html = template.getNotificationTemplate();
+			}
+
+		} else {
+			// Do not send default emails
 			return;
 		}
 
@@ -110,13 +120,17 @@ public class CustomEmailHandler {
 		CommandContext context = new CommandContext();
 		params.put("callbacks", CommandCodes.SendEmailCallback.name());
 		params.put("To", receipients);
-		params.put("From", params.get("From") == null ? "ebpm.mgr@gmail.com"
-				: params.get("From"));
-		params.put(
-				"docDate",
-				SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM)
-						.format(doc.getDocumentDate() == null ? doc
-								.getCreated() : doc.getDocumentDate()));
+				
+		if(htmlTemplate==null){
+			throw new IllegalArgumentException("Cannot send Email - Email Template is null");
+		}
+		
+		log.debug("CustomEmailHandler [1] - Basic validation done!");		
+//		params.put(
+//				"docDate",
+//				SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM)
+//						.format(doc.getDocumentDate() == null ? doc
+//								.getCreated() : doc.getDocumentDate()));
 
 		String docType = "";
 		if (doc instanceof Document) {
@@ -130,13 +144,6 @@ public class CustomEmailHandler {
 		params.put("ownerId", doc.getOwner());
 
 		try {
-			if (htmlTemplate == null) {
-				InputStream is = Thread.currentThread().getContextClassLoader()
-						.getResourceAsStream("email.html");
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				IOUtils.copy(is, bout);
-				htmlTemplate = new String(bout.toByteArray());
-			}
 
 			// Merge params & doc
 			for (String key : params.keySet()) {
@@ -179,13 +186,6 @@ public class CustomEmailHandler {
 				: params.get("From"));
 
 		try {
-			if (htmlTemplate == null) {
-				InputStream is = Thread.currentThread().getContextClassLoader()
-						.getResourceAsStream("email.html");
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				IOUtils.copy(is, bout);
-				htmlTemplate = new String(bout.toByteArray());
-			}
 			htmlTemplate = parse(htmlTemplate, params);
 			params.put(SendMailCommand.SUBJECT, subject);
 			params.put(SendMailCommand.BODY, htmlTemplate);

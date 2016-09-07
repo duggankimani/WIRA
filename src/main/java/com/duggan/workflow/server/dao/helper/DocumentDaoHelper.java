@@ -485,10 +485,10 @@ public class DocumentDaoHelper {
 			boolean checkUser) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
-		DocumentModel model = dao.getDocumentByProcessInstanceId(
+		Document model = dao.getDocumentJsonByProcessInstanceId(
 				processInstanceId, checkUser);
 
-		return getDoc(model);
+		return model;
 	}
 
 	/**

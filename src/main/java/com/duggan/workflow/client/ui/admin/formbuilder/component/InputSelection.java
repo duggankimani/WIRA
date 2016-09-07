@@ -81,7 +81,6 @@ public class InputSelection extends Composite {
 		
 		for(int i=0; i<count; i++){
 			TextBox txtBox= (TextBox)vPanel.getWidget(i);
-			String name = txtBox.getName();
 			String val = txtBox.getValue();
 			
 			if(val.isEmpty()){
@@ -89,7 +88,7 @@ public class InputSelection extends Composite {
 			}
 			
 			KeyValuePair pair = new KeyValuePair();
-			pair.setKey(name);
+			pair.setKey(val);
 			pair.setValue(val);
 			ArrayList.add(pair);
 		}

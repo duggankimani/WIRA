@@ -1,6 +1,10 @@
 package com.duggan.workflow.shared.model;
 
-public enum AssignmentFunction {
+import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum AssignmentFunction implements Serializable, IsSerializable{
 
 	DIRECT_ASSIGNMENT,
 	CYCLIC_ASSIGNMENT,

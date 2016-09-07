@@ -1,6 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-public enum ManageProcessAction {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum ManageProcessAction implements IsSerializable{
 
 	ACTIVATE,
 	DEACTIVATE

@@ -142,15 +142,15 @@ public class OutputDocumentDaoHelper {
 		
 		name = name + (name.endsWith(".pdf") ? "" : name+".pdf");
 
-		Long documentId = null;
+		String docRefId = document.getRefId();
 
-		if (document instanceof HTSummary) {
-			documentId = ((HTSummary) document).getDocumentRef();
-		} else {
-			documentId = ((Document) document).getId();
-		}
+//		if (document instanceof HTSummary) {
+//			documentId = ((HTSummary) document).getDocumentRef();
+//		} else {
+//			documentId = ((Document) document).getId();
+//		}
 
-		if (documentId == null) {
+		if (docRefId == null) {
 			throw new NullPointerException(
 					"Cannot generate output document - Document ID not found");
 		}
@@ -159,19 +159,22 @@ public class OutputDocumentDaoHelper {
 		try {
 			String template = new String(outTemplate.getAttachment()
 					.getAttachment());
+			
+			template = tidyTemplate(template);
 
 			byte[] pdf = new HTMLToPDFConvertor().convert(document, template);
 
 			AttachmentDaoImpl dao = DB.getAttachmentDao();
 			List<LocalAttachment> attachments = dao.getAttachmentsForDocument(
-					documentId, name);
+					docRefId, name);
 			if (!attachments.isEmpty()) {
 				attachment = attachments.get(0);
 			}
 
 			attachment.setArchived(false);
 			attachment.setContentType("application/pdf");
-			attachment.setDocument(DB.getDocumentDao().getById(documentId));
+			//attachment.setDocument(DB.getDocumentDao().getById(documentId));
+			attachment.setDocRefId(docRefId);
 			attachment.setName(name);
 			attachment.setType(AttachmentType.GENERATED);
 			attachment.setPath(path);
@@ -184,13 +187,37 @@ public class OutputDocumentDaoHelper {
 				| FactoryConfigurationError | DocumentException e) {
 
 			e.printStackTrace();
-
+			throw new RuntimeException("Failed to generate output document '"+name+"', Cause: "+e.getMessage(),e);
 		}
 
 		LongValue value = new LongValue(null, "_" + outTemplate.getCode(),
 				attachment.getId());
 
 		return value;
+	}
+
+	/**
+	 * 
+	 * <p>
+	 * Flying Saucer iText library expects a fully-formed html document.
+	 * <p>
+	 * The Front-end uses tinymce, which at the moment strips off all html/head/body tags 
+	 * which could be based on the assumption that the content will end up as part of an existing
+	 * html page (Still researching)
+	 * <p>
+	 * As a hack, we will manually add these missing elements to make the html complete.  
+	 * <p>
+	 * @param template
+	 * @return tidy HTML
+	 * 
+	 * @author Duggan - 6/09/2016
+	 */
+	public static String tidyTemplate(String template) {
+		if(template.contains("<html>") && template.contains("<body>")){
+			return template;
+		}
+		
+		return "<html><head></head><body>"+template+"</body></html>";
 	}
 
 	public static String generatePath(String codedPath, Doc doc) {

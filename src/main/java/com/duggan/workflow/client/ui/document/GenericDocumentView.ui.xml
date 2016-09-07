@@ -42,7 +42,7 @@
 					<d:ActionLink ui:field="aViewAttachments" styleName="btn btn-default"
 						title="View attachments">
 						<i class="icon-paper-clip color-black"></i>
-						<sup ui:field="elAttachmentsCount" class="pull-right text-info" style="line-height:20px;"></sup>
+						<sup ui:field="elAttachmentsCount" class="text-info" style="line-height:20px;"></sup>
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aEdit" styleName="btn btn-default"

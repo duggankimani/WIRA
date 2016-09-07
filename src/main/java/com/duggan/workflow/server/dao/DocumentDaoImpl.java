@@ -203,6 +203,31 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		return null;
 	}
+	
+	public Document getDocumentJsonByProcessInstanceId(Long processInstanceId,
+			boolean checkUser) {
+		Query query = em
+				.createQuery(
+						"FROM DocumentModelJson d where processInstanceId= :processInstanceId "
+								+ (checkUser ? "and createdBy=:createdBy " : "")
+								+ " and isActive=:isActive")
+				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("isActive", 1);
+
+		if (checkUser) {
+			query = query.setParameter("createdBy", SessionHelper
+					.getCurrentUser().getUserId());
+		}
+
+		List lst = query.getResultList();
+
+		if (lst.size() > 0) {
+			return ((DocumentModelJson) lst.get(0)).getDocument();
+		}
+
+		return null;
+	}
+
 
 	public List<DocumentModel> search(String userId, SearchFilter filter) {
 
@@ -627,11 +652,11 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return type;
 	}
 
-	public String getDocumentTypeDisplayNameByDocumentId(Long documentId) {
+	public String getDocumentTypeDisplayNameByDocumentId(String docRefId) {
 		String sql = "select display from ADDocType d "
-				+ "where id=(select doctype from localdocument where id=?)";
+				+ "where refid=(select docTypeRefId from documentjson where refId=?)";
 
-		Query query = em.createNativeQuery(sql).setParameter(1, documentId);
+		Query query = em.createNativeQuery(sql).setParameter(1, docRefId);
 
 		String type = null;
 

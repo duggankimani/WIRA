@@ -6,6 +6,7 @@ import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter.IAtta
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -68,7 +69,13 @@ public class AttachmentView extends ViewImpl implements IAttachmentView{
 		}
 		spnName.setInnerText(shortName);
 		spnName.setTitle(name);
-		spnSize.setInnerText(""+size);
+		if(size==null){
+			spnSize.addClassName("hide");
+			aDownload.getElement().getStyle().setMarginLeft(0, Unit.PX);
+		}else{
+			spnSize.setInnerText(""+size);
+		}
+		
 		
 		UploadContext context = new UploadContext("getreport");
 		context.setContext("attachmentId", id+"");

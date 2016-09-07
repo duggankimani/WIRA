@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.helper.jbpm;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -750,9 +751,10 @@ class BPMSessionManager {
 					}
 				}
 
-				DocumentModel doc = DB.getDocumentDao().getDocumentByProcessInstanceId(task.getTaskData().getProcessInstanceId(),false);
+				Document doc = DB.getDocumentDao().getDocumentJsonByProcessInstanceId(task.getTaskData().getProcessInstanceId(),false);
 				//DocumentDaoHelper.getDocumentByProcessInstance(task.getTaskData().getProcessInstanceId());
-				newValues.put("ownerId", doc.getCreatedBy());
+				newValues.put("ownerId", doc.getOwner().getUserId());
+				
 //				Object ownerId = newValues.get("ownerId");
 //				
 //				if (ownerId == null) {
@@ -766,6 +768,10 @@ class BPMSessionManager {
 				
 				assert doc.getId()!=null;
 				newValues.put("documentId", doc.getId());
+				newValues.put("docRefId", doc.getRefId());
+				if(newValues.get("document")==null){
+					newValues.put("document", doc);
+				}
 				
 				//
 				taskData.putAll(newValues);
@@ -862,7 +868,12 @@ class BPMSessionManager {
 		taskData.putAll(newValues);
 		
 		Document doc = DocumentDaoHelper.getDocument(newValues);
-		new CustomEmailHandler().sendNotification(notification,doc, taskData);
+		try{
+			new CustomEmailHandler().sendNotification(notification,doc, taskData);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
+		
 		new CustomNotificationHandler().generate(taskData, NotificationType.APPROVALREQUEST_OWNERNOTE);
 		new CustomNotificationHandler().generate(taskData, NotificationType.APPROVALREQUEST_APPROVERNOTE);
 		

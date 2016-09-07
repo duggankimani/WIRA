@@ -13,6 +13,7 @@ import com.duggan.workflow.client.ui.PopupType;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.component.HTMLEditor;
+import com.duggan.workflow.client.ui.component.TinyMceHTMLEditor;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
 import com.duggan.workflow.client.ui.events.EditOutputDocEvent.EditOutputDocHandler;
 import com.duggan.workflow.client.ui.events.SearchEvent;
@@ -149,7 +150,7 @@ public class OutPutDocsPresenter extends
 						final OutputDocument doc = aResponse.getDocument();
 						String html = aResponse.getDocument()
 								.getTemplate();
-						final HTMLEditor editor = new HTMLEditor(html);
+						final TinyMceHTMLEditor editor = new TinyMceHTMLEditor(html);
 						int height = Window.getClientHeight()-250;
 						editor.setHeight(height);
 						

@@ -46,7 +46,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		initComponents();
 	}
 
-	public DropDownList(Element select) {
+	private DropDownList(Element select) {
 		super(select);
 		initComponents();
 	}
@@ -71,7 +71,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 				} else {
 					value = getItem(selectedIndex - 1);
 				}
-
+				
 				ValueChangeEvent.fire(DropDownList.this, value);
 			}
 		});

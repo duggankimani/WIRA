@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class TaskStepTrigger implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class TaskStepTrigger implements Serializable,IsSerializable{
 
 	/**
 	 * 

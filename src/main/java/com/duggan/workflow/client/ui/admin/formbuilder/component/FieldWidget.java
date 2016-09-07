@@ -1252,11 +1252,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				val = fieldValue.getValue();
 			}
 
+			if(field.getName()!=null && field.getName().equals("supervisorApproval")){
+				GWT.log("Field Value = "+val);
+			}
 			if (val == null) {
 				isValid = false;
-			}
-
-			if (val instanceof String) {
+			}else if (val instanceof String) {
 				if (isNullOrEmpty(val.toString())) {
 					isValid = false;
 				}

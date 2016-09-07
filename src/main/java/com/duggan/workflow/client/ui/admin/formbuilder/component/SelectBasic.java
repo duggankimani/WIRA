@@ -82,64 +82,6 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		});
 	}
 
-	@Deprecated
-	public SelectBasic(Element select, boolean designMode) {
-		super();
-		this.isWrappedField = true;
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
-		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
-				DataType.STRING));
-		addProperty(new Property(SQLDS, "Data Source", DataType.SELECTBASIC));
-		addProperty(new Property(SQLSELECT, "Sql", DataType.STRINGLONG));
-
-		// Wrap
-		lstItems = com.duggan.workflow.client.ui.component.DropDownList
-				.wrap(select,true);
-		
-		//setSelectionValues(lstItems.getValues());
-		
-		widget = lstItems;
-		assert select.getId() != null;
-
-		// Set
-		setProperty(NAME, select.getId());
-		field.setName(select.getId());
-		lblEl = findLabelFor(select);
-		if (lblEl != null) {
-			field.setCaption(lblEl.getInnerHTML());
-			setProperty(CAPTION, lblEl.getInnerHTML());
-		}
-
-		//DB Persistence - necessary? unless dev wants to override properties
-		setProperty(HELP, select.getTitle());
-		setProperty(MANDATORY,
-				new BooleanValue(select.hasAttribute("required")));
-		setProperty(READONLY, new BooleanValue(select.hasAttribute("readonly")));
-
-		// field Properties update
-		field.setProperties(getProperties());
-
-		if (designMode) {
-			lstItems.addClickHandler(new ClickHandler() {
-
-				@Override
-				public void onClick(ClickEvent event) {
-					showProperties(0);
-				}
-			});
-		}else{
-			// Events
-			lstItems.addValueChangeHandler(new ValueChangeHandler<KeyValuePair>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<KeyValuePair> event) {
-					execTrigger();
-				}
-			});
-		}
-
-	}
-
 	public SelectBasic(final Property property) {
 		this();
 		lblEl.setInnerText(property.getCaption());

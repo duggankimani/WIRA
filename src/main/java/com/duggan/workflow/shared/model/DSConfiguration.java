@@ -3,7 +3,9 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class DSConfiguration implements Serializable {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class DSConfiguration implements Serializable,IsSerializable {
 
 	private static final long serialVersionUID = -2679092191650300187L;
 	private Long id;

@@ -249,6 +249,7 @@ public class ProcessStepsPresenter extends
 
 	protected void save(AssignmentDto dto) {
 		SaveAssignmentRequest req = new SaveAssignmentRequest(dto);
+		fireEvent(new ProcessingEvent("Saving assignment..."));
 		requestHelper.execute(req, new TaskServiceCallback<SaveAssignmentResponse>(){
 			@Override
 			public void processResult(SaveAssignmentResponse aResponse) {
@@ -256,6 +257,7 @@ public class ProcessStepsPresenter extends
 					assignment = aResponse.getAssignment();
 					getView().setAssignmentFunction(assignment);
 				}
+				fireEvent(new ProcessingCompletedEvent());
 			}
 		});
 	}

@@ -107,7 +107,6 @@ public class NotificationDaoHelper {
 				notificationTo.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
 		
-		notificationTo.setDocumentId(modelFrom.getDocumentId());
 		notificationTo.setDocRefId(modelFrom.getDocRefId());
 		notificationTo.setOwner(modelFrom.getOwner().getUserId());
 		if(modelFrom.getTargetUserId()!=null)
@@ -149,7 +148,7 @@ public class NotificationDaoHelper {
 //		notificationTo.setDocumentType(getType(documentType));
 		
 		DocumentType type = new DocumentType();
-		type.setDisplayName(DB.getDocumentDao().getDocumentTypeDisplayNameByDocumentId(documentId));
+		type.setDisplayName(DB.getDocumentDao().getDocumentTypeDisplayNameByDocumentId(notificationTo.getDocRefId()));
 		notificationTo.setDocumentType(type);
 		notificationTo.setDocumentTypeDesc(modelFrom.getDocumentTypeDesc());
 		

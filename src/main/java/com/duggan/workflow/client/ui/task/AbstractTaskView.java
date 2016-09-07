@@ -371,7 +371,7 @@ public class AbstractTaskView extends ViewImpl implements
 				HTStatus status = summ.getStatus();
 				spnStatus.setText(status.name());
 
-				if (summ.getDocumentRef() == null) {
+				if (summ.getRefId() == null) {
 					spnSubject.getStyle().setColor("red");
 					spnSubject
 							.setTitle("This request was not loaded correctly.");// documentId

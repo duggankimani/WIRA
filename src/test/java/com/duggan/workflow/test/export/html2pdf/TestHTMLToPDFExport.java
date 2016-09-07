@@ -40,7 +40,7 @@ public class TestHTMLToPDFExport {
 		//ProcessMigrationHelper.start(2L);
 	}
 	
-	@Test
+	@Ignore
 	public void mapTaskToHTML() throws IOException{
 		Long taskid = 130L;
 		HTask task = JBPMHelper.get().getTask(taskid);
@@ -71,24 +71,28 @@ public class TestHTMLToPDFExport {
 		
 	}
 	
-	@Ignore
+	@Test
 	public void HashMap() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
-		Doc doc = DocumentDaoHelper.getDocument(4L);//JBPMHelper.get().getTask(JBPMHelper.get().getSysTask(taskId));
+		String docRefId = "rtvTJAj81gmzoHYd";
+		Doc doc = DocumentDaoHelper.getDocJson(docRefId);//JBPMHelper.get().getTask(JBPMHelper.get().getSysTask(taskId));
 		
+//		String file = "/home/duggan/Downloads/ChequePaymentOutput.html";
+		String file = "/home/duggan/Downloads/ChequePaymentOutputWithoutTags.html";
 		DocumentHTMLMapper mapper = new DocumentHTMLMapper();
 		List<String> vals=IOUtils.readLines(
-				new FileInputStream("/home/duggan/Projects/EntryPermit/entrypermit.html"));
+				new FileInputStream(file));
 		StringBuffer input = new StringBuffer();
 		for(String in:vals){
 			input.append(in);
 		}
 		
-		String html = input.toString();
+		String html = OutputDocumentDaoHelper.tidyTemplate(input.toString());
 		mapper.map(doc, html);
 		System.err.println(html);
+		
 
-		byte[] bites = new HTMLToPDFConvertor().convert(doc, input.toString());
-		IOUtils.write(bites, new FileOutputStream("permit.pdf"));		
+		byte[] bites = new HTMLToPDFConvertor().convert(doc,OutputDocumentDaoHelper.tidyTemplate(input.toString()));
+		IOUtils.write(bites, new FileOutputStream("ChequePaymentOutput.pdf"));		
 	}
 	
 	@After

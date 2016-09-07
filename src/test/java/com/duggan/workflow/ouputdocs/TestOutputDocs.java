@@ -16,12 +16,14 @@ import org.junit.Test;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
+import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.TreeType;
 
 public class TestOutputDocs {
@@ -32,6 +34,17 @@ public class TestOutputDocs {
 		DBTrxProviderImpl.init();
 		DB.beginTransaction();
 	}
+	
+	@Test
+	public void generateOutput(){
+		String docRefId = "";
+		Document doc = DocumentDaoHelper.getDocJson(docRefId);
+		
+		String outputRefId = "";
+		ADOutputDoc outputTemplate = DB.getOutputDocDao().findByRefId(outputRefId, ADOutputDoc.class);
+		OutputDocumentDaoHelper.generateDoc(outputTemplate, doc);
+		
+	}
 
 	@Ignore
 	public void getAttachments(){
@@ -41,7 +54,7 @@ public class TestOutputDocs {
 		print(attachments, 0);
 	}
 	
-	@Test
+	@Ignore
 	public void retireveFolders(){
 
 		List<Attachment> attachments = DB.getAttachmentDao().getFileTree();

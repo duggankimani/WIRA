@@ -3,9 +3,10 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.shared.models.HTUser;
 
-public class TaskLog implements Serializable{
+public class TaskLog implements Serializable, IsSerializable{
 
 	/**
 	 * 

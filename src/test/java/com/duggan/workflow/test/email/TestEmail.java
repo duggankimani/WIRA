@@ -18,16 +18,22 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
+import com.duggan.workflow.server.helper.email.EmailUtil;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.mvel.MVELExecutor;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.itextpdf.text.DocumentException;
+import com.wira.commons.shared.models.HTUser;
 
 public class TestEmail {
 
@@ -39,13 +45,22 @@ public class TestEmail {
 	public void initDB(){
 		DBTrxProviderImpl.init();
 		DB.beginTransaction();
-//		ProcessMigrationHelper.start(4L);
-//		ProcessMigrationHelper.start(17L);
-//		doc = DocumentDaoHelper.getDocument(359L);
+	}
+	
+	@Test
+	public void testEmailUtil(){
+		String triggerName = "chasebank.finance.ExpenseClaim.SendFinanceApprovalEmail";
+		ADTrigger trigger = DB.getProcessDao().getTrigger(triggerName);
+		
+		Doc doc = DocumentDaoHelper.getDocJson("xnDsIlNV5Q8mN5Nm");
+		doc._s("paymentMade", "Yes");
+	
+		new MVELExecutor().execute(trigger, doc);
+		
 	}
 	
 	
-	@Test
+	@Ignore
 	public void generateEmail() throws IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
 		doc = DocumentDaoHelper.getDocument(24L);
 		

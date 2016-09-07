@@ -206,6 +206,17 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 
 		return getResultList(query);
 	}
+	
+	public List<LocalAttachment> getAttachmentsForDocument(String docRefId,
+			String name) {
+		Query query = em
+				.createQuery(
+						"FROM LocalAttachment l where docRefId= :docRefId and l.name=:name")
+				.setParameter("docRefId", docRefId)
+				.setParameter("name", name);
+
+		return getResultList(query);
+	}
 
 	public void delete(Long[] attachmentIds) {
 		Query query = em.createQuery(
