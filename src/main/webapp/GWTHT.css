@@ -304,6 +304,8 @@ span.tasktimelines {
 	display: block;
 	font-size: 11px;
 	padding-right: 5px;
+    margin-bottom: 0px;
+    line-height: 20px;
 }
 
 div.multicolumn {
@@ -794,4 +796,8 @@ section.positioned {
 
 .taskstep-condition{
 	padding-right:10px;
+}
+
+.controls .checkbox, .radio{
+	padding-left:0px;
 }
