@@ -2,6 +2,8 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
+	public static final String landing = "/landing";
+
 	public static final String activateacc = "/activateacc/{uid}/{reason}";
 
 	public static final String splash = "/splash";
@@ -102,6 +104,10 @@ public class NameTokens {
 
 	public static String getAcc() {
 		return activateacc;
+	}
+
+	public static String getLanding() {
+		return landing;
 	}
 
 }
