@@ -54,7 +54,7 @@ public class BaseProcessPresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{CAN_VIEW_PROCESSES}); 
-		return new TabDataExt(TABLABEL, "icon-cogs", 2, gateKeeper);
+		return new TabDataExt(TABLABEL, "glyphicon glyphicon-cogs", 2, gateKeeper);
 	}
 
 	public static final String TABLABEL = "Processes";

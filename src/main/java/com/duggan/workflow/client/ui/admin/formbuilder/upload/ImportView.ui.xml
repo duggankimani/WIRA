@@ -6,7 +6,7 @@
 	<g:HTMLPanel>   
 	   <span ui:field="spnMessage">This will auto import the form, if the form already exists(check based on form name),
 	       the form will be renamed to {formName+formId}</span>   
-       <g:HTMLPanel styleName="control-group">
+       <g:HTMLPanel styleName="form-group">
 		    <g:HTMLPanel styleName="controls" ui:field="panelUpload">
 			    
 	    	</g:HTMLPanel>

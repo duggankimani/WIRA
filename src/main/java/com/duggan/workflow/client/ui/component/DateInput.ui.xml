@@ -12,12 +12,12 @@
 	}
 	</ui:style>
 
-	<g:HTMLPanel styleName="input-append input-group date datepicker"
+	<g:HTMLPanel styleName="input-group input-group date datepicker"
 		ui:field="panelContainer">
 		<input id="appendedInput" type="text"/>
 		<!-- d:TextField ui:field="txtDate" class="{style.actual-text-box}"></d:TextField -->
-		<span class="input-group-addon add-on">
-			<span class="icon-calendar"></span>
+		<span class="input-group-addon input-group-addon">
+			<span class="glyphicon glyphicon-calendar"></span>
 		</span>
 	</g:HTMLPanel>
 

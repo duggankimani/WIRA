@@ -197,8 +197,8 @@
 }
 .btn-flat.icon i {font-size: 14px;}
 
-.btn-flat [class^="icon-"],
-.btn-flat [class*=" icon-"] {
+.btn-flat [class^="glyphicon glyphicon-"],
+.btn-flat [class*=" glyphicon glyphicon-"] {
 	margin-right: 3px;
 }
 
@@ -250,8 +250,8 @@
 	-moz-box-shadow:0 1px 0 rgba(0,0,0,0.2) inset !important;
 	box-shadow:0 1px 0 rgba(0,0,0,0.2) inset !important;
 }
-.btn-glow [class^="icon-"],
-.btn-glow [class*=" icon-"] {
+.btn-glow [class^="glyphicon glyphicon-"],
+.btn-glow [class*=" glyphicon glyphicon-"] {
 	margin-right: 3px;
 }
 .btn-glow i.shuffle {top: 2px;}

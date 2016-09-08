@@ -5,13 +5,13 @@
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component' xmlns:tab='urn:import:com.duggan.workflow.client.ui.home'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="row-fluid main-container">
+	<g:HTMLPanel styleName="row main-container">
 		<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
-			<div id="sidebar-nav" class="span2">
+			<div id="sidebar-nav" class="col-md-2">
 
 				<!--Button Add Document -->
 				<div class="add-doc">
-					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-large dropdown-toggle">
+					<g:Anchor ui:field="btnAdd" styleName="btn-danger btn-lg dropdown-toggle">
 						Start Process
 					</g:Anchor>
 
@@ -25,31 +25,31 @@
 					<ul id="dashboard-menu">
 						<li class="active">
 							<a class="dropdown-toggle" href="#/inbox">
-								<i class="icon-tasks"></i>
+								<i class="glyphicon glyphicon-tasks"></i>
 								<span>My Tasks</span>
-								<i class="icon-chevron-up hidden-tablet"></i>
+								<i class="glyphicon glyphicon-chevron-up hidden-sm"></i>
 							</a>
 							<tab:HomeTabPanel ui:field="tabPanel"></tab:HomeTabPanel>
 						</li>
 
 						<li class="active">
 							<!-- a class="dropdown-toggle hide" href="#/home">
-								<i class="icon-book"></i>
+								<i class="glyphicon glyphicon-book"></i>
 								<span>My Documents</span>
-								<i class="icon-chevron-up hidden-tablet"></i>
+								<i class="glyphicon glyphicon-chevron-up hidden-sm"></i>
 							</a -->
 								<legend></legend>
 								<ul class="documents">
 								<li>
-									<i class="icon-archive"></i>
+									<i class="glyphicon glyphicon-archive"></i>
 									<a href="#/registry" ui:field="aCaseReg">Case Registry</a>
 								</li>
 								<li>
-									<i class="icon-file-alt"></i>
+									<i class="glyphicon glyphicon-file-alt"></i>
 									<a href="#/reports" ui:field="aReports">Report Registry</a>
 								</li>
 								<li>
-									<i class="icon-folder-open-alt"></i>
+									<i class="glyphicon glyphicon-folder-open-alt"></i>
 									<a href="#/explorer" ui:field="aExplorer">File Explorer</a>
 								</li>
 								

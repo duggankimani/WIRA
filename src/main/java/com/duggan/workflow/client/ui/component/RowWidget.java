@@ -60,7 +60,7 @@ public abstract class RowWidget extends Composite {
 		if(isShowRemove){
 			ActionLink anchor = new ActionLink();
 			anchor.setTitle("Remove Line");
-			anchor.getElement().setInnerHTML("<i class=\"icon-trash\"></i>");
+			anchor.getElement().setInnerHTML("<i class=\"glyphicon glyphicon-trash\"></i>");
 			anchor.addClickHandler(new ClickHandler() {
 				
 				@Override

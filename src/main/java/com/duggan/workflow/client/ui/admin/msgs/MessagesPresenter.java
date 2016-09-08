@@ -82,7 +82,7 @@ public class MessagesPresenter
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{MAILLOG_CAN_VIEW_MAILLOG});
-		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8,
+		TabDataExt ext = new TabDataExt(TABLABEL, "glyphicon glyphicon-th", 8,
 				gateKeeper);
 		return ext;
 	}

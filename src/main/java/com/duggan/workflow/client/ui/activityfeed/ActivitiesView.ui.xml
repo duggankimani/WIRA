@@ -15,7 +15,7 @@
 						Welcome to Wira BPM
 						<span>Here is a Walk-through to get you started</span>
 						<g:Anchor ui:field="aClose">
-							<span class="icon-remove-sign pull-right"></span>
+							<span class="glyphicon glyphicon-remove-sign pull-right"></span>
 						</g:Anchor>
 					</h1>
 					<div class="bootcamp-body">
@@ -23,7 +23,7 @@
 							<li ui:field="liCreate">
 								<g:Anchor ui:field="aCreate">
 									<div class="image">
-										<span class='icon-file'></span>
+										<span class='glyphicon glyphicon-file'></span>
 									</div>
 									<div class="desc">
 										<h2>Create Request</h2>
@@ -35,7 +35,7 @@
 							<li ui:field="liFollowUp">
 								<g:Anchor ui:field="aFollowUp">
 									<div class="image">
-										<span class='icon-eye-open'></span>
+										<span class='glyphicon glyphicon-eye-open'></span>
 									</div>
 									<div class="desc">
 										<h2>Follow-Up Requests</h2>
@@ -47,7 +47,7 @@
 							<li ui:field="liReceive">
 								<g:Anchor ui:field="aReceive">
 									<div class="image" ui:field="imgReceive">
-										<span class='icon-tasks'></span>
+										<span class='glyphicon glyphicon-tasks'></span>
 									</div>
 									<div class="desc">
 										<h2>Manage Tasks</h2>
@@ -59,7 +59,7 @@
 							<li ui:field="liReview">
 								<g:Anchor ui:field="aReview">
 									<div class="image" ui:field="imgReview">
-										<span class='icon-ok-circle'></span>
+										<span class='glyphicon glyphicon-ok-circle'></span>
 									</div>
 									<div class="desc">
 										<h2>Review Tasks</h2>
@@ -75,7 +75,7 @@
 			</g:HTMLPanel>
 		</g:FocusPanel>
 
-		<div class="news-feed row-fluid">
+		<div class="news-feed row">
 			<h4>News Feed</h4>
 			<d:BulletListPanel ui:field="panelActivity"
 				styleName="chat-box timeline">

@@ -7,7 +7,7 @@
 	ui:generateLocales='default'>
 	<g:HTMLPanel ui:field="root" styleName="feed-item feed-item-comment">
 		
-	    <div class="span1 image feed-image">
+	    <div class="col-md-1 image feed-image">
 	        <g:Image styleName="avatar-small" ui:field="img"/>
 			<!-- img src="img/blueman.png" data-src="img/blueman.png" width="40px" height="70px"/ -->
 		</div>
@@ -31,7 +31,7 @@
 			<g:Anchor ui:field="aReply" styleName="pull-left">Reply</g:Anchor>
 		
 		</div>
-		<div class="hidden row-fluid comment-box" ui:field="divSave">
+		<div class="hidden row comment-box" ui:field="divSave">
 			<d:CommentBox ui:field="txtCommentBox"></d:CommentBox>
 		</div>
 	</g:HTMLPanel>

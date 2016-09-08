@@ -140,8 +140,8 @@ public class TaskActivity extends Composite {
 
 		case TASKCOMPLETED_APPROVERNOTE:
 			// safeHtml = Template3.render(subject, owner, time, action,
-			// ApproverAction.APPROVED.equals(approverAction)? "icon-check":
-			// "icon-remove-sign");
+			// ApproverAction.APPROVED.equals(approverAction)? "glyphicon glyphicon-check":
+			// "glyphicon glyphicon-remove-sign");
 
 			spnUser.setInnerText(owner);
 			text = action + " ";
@@ -152,12 +152,12 @@ public class TaskActivity extends Composite {
 		case TASKCOMPLETED_OWNERNOTE:
 			// if(isNotification)
 			// safeHtml = Template4.render(subject, approver, time, action,
-			// ApproverAction.APPROVED.equals(approverAction)? "icon-check":
-			// "icon-remove-sign");
+			// ApproverAction.APPROVED.equals(approverAction)? "glyphicon glyphicon-check":
+			// "glyphicon glyphicon-remove-sign");
 			// else
 			// safeHtml2 =Template5.render(subject, approver, time,
-			// ApproverAction.APPROVED.equals(approverAction)? "icon-check":
-			// "icon-remove-sign",action)
+			// ApproverAction.APPROVED.equals(approverAction)? "glyphicon glyphicon-check":
+			// "glyphicon glyphicon-remove-sign",action)
 			spnUser.setInnerText(approver);
 			text = action + " ";
 
@@ -168,7 +168,7 @@ public class TaskActivity extends Composite {
 
 			// if(isNotification){
 			// safeHtml = Template9.render(subject, owner, target, time,
-			// action,"icon-signin");
+			// action,"glyphicon glyphicon-signin");
 			// }else{
 			// safeHtml2 = Template8.render(approver,subject, target, time);
 			// }

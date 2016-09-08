@@ -262,7 +262,7 @@
 	display: -moz-compact;
 }
 
-.control-group .controls .comment-container {
+.form-group .controls .comment-container {
 	display: inline-block;
 	width: 95%;
 	max-width: 95%;
@@ -277,15 +277,15 @@
 	background-color: yellow;
 }
 
-.control-group .controls .gwt-RadioButton-disabled {
+.form-group .controls .gwt-RadioButton-disabled {
 	color: #000000;
 }
 
-.control-group .controls .radiobtns {
+.form-group .controls .radiobtns {
 	display: block;
 }
 
-.control-group .controls .radiobtns label {
+.form-group .controls .radiobtns label {
 	display: inline-block !important;
 	padding: 0 10px 0px 3px;
 	vertical-align: text-top;
@@ -775,7 +775,7 @@ section.positioned {
     min-height: 100px;
 }
 
-#adminSettings i[class*="icon-"] {
+#adminSettings i[class*="glyphicon glyphicon-"] {
     font-size: 14px;
 }
 

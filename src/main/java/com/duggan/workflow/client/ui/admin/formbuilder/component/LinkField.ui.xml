@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
 	<g:AbsolutePanel ui:field="container">
-	        <g:HTMLPanel styleName="control-group">
+	        <g:HTMLPanel styleName="form-group">
 		       <label ui:field="lblEl" for="Username" class="control-label">Download</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 				    <d:ActionLink ui:field="aLink"></d:ActionLink>

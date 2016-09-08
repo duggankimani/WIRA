@@ -6,11 +6,11 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel ui:field="panelContainer" styleName="hide row-fluid">
+	<g:HTMLPanel ui:field="panelContainer" styleName="hide row">
 		<!-- g:CheckBox ui:field="chkNotification">Enable Email Notification</g:CheckBox -->
 		<!-- g:CheckBox ui:field="chkDefault">Use Default Notification</g:CheckBox -->
 		<span ui:field="notificationHeader" style="font-size:14px; font=weight:bold;">Email Notification</span>
-		<div class="row-fluid">
+		<div class="row">
 			<table>
 				<tr>
 					<td>
@@ -36,7 +36,7 @@
 			</table>
 		</div>
 
-		<g:HTMLPanel styleName="control-group hide">
+		<g:HTMLPanel styleName="form-group hide">
 			<label ui:field="lblEl" class="control-label">To</label>
 			<g:HTMLPanel styleName="controls" ui:field="panelControls">
 				<d:AutoCompleteField ui:field="autocompleteTargets"></d:AutoCompleteField>
@@ -44,13 +44,13 @@
 		</g:HTMLPanel>
 
 
-		<div class="row-fluid">
-			<g:HTMLPanel styleName="control-group">
+		<div class="row">
+			<g:HTMLPanel styleName="form-group">
 				<div class="controls">
 					<d:TextArea ui:field="txtSubject" type="text"
 						placeholder="Subject" class="input-xxlarge" rows="1" />
 
-					<d:TextArea ui:field="txtNotification" styleName="input-block-level"
+					<d:TextArea ui:field="txtNotification" styleName="form-control"
 						rows="5" width="100%" placeholder="Custom Notification">
 					</d:TextArea>
 				</div>

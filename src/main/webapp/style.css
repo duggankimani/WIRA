@@ -286,7 +286,7 @@ blockquote {
 .header .main-nav button:focus {
   outline: none;
 }
-.header .main-nav button .icon-bar {
+.header .main-nav button .glyphicon glyphicon-bar {
   background-color: #fff;
 }
 .header .main-nav .nav .nav-item {

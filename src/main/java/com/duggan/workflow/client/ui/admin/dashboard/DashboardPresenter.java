@@ -68,7 +68,7 @@ public class DashboardPresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{DASHBOARDS_CAN_VIEW_DASHBOARDS}); 
-        return new TabDataExt(TABLABEL,"icon-dashboard",1, gateKeeper);
+        return new TabDataExt(TABLABEL,"glyphicon glyphicon-dashboard",1, gateKeeper);
     }
 	
 	private IndirectProvider<PieChartPresenter> pieChartFactory;

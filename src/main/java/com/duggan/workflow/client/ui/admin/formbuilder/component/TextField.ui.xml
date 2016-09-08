@@ -4,13 +4,13 @@
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
     >
 	<g:AbsolutePanel ui:field="container">
-	        <g:HTMLPanel styleName="control-group" ui:field="panelGroup">
+	        <g:HTMLPanel styleName="form-group" ui:field="panelGroup">
 		       <label ui:field="lblEl" for="Username" class="control-label">Text Input:</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 				    <d:TextField ui:field="txtComponent" type="text" class="input-xlarge"/>
 				    <g:InlineLabel ui:field="lblReadOnly" styleName="help-inline"></g:InlineLabel>
 				    <span ui:field="spnMsg" class="hide help-inline helper-font-14">
-				    	<i class="icon icon-ok" ui:field="spnIcon"></i>
+				    	<i class="icon glyphicon glyphicon-ok" ui:field="spnIcon"></i>
 				    </span>
 				    <span ui:field="spnMandatory" style="color:red">*</span>
 		    	</g:HTMLPanel>

@@ -9,22 +9,22 @@
 
 	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
 		<div class="navbar-inner">
-			<div class="row-fluid">
+			<div class="row">
 
 				<div class="pull-left">
-					<g:Anchor styleName="brand visible-desktop visible-tablet"
+					<g:Anchor styleName="navbar-brand visible-md visible-lg visible-sm"
 						href="#/home" ui:field="aBrand">
 						<span ui:field="spnCompanyName" class="company-name ellipsis">Your Organisation</span>
 					</g:Anchor>
 				</div>
 
 
-				<div class="span4 header-search">
-					<div class="input-prepend">
+				<div class="col-md-4 header-search">
+					<div class="input-group">
 						<div class="btn-group">
 							<button class="btn dropdown-toggle btn-search-dropdown"
 								data-toggle="dropdown">
-								<i class="icon-search"></i>
+								<i class="glyphicon glyphicon-search"></i>
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
@@ -40,7 +40,7 @@
 								</li>
 								<li>
 									<a href="#/registry" id="caseRegistry">
-										<i class="icon-ok"></i>
+										<i class="glyphicon glyphicon-ok"></i>
 										Case Registy
 									</a>
 								</li>
@@ -53,71 +53,71 @@
 
 							</ul>
 						</div><!-- /btn-group -->
-						<!-- input class="span12 search-box" id="prependedDropdownButton"
+						<!-- input class="col-md-12 search-box" id="prependedDropdownButton"
 							type="text" placeholder="Search here"></input -->
-						<d:TextField ui:field="txtSearch" styleName="span12 search-box"
+						<d:TextField ui:field="txtSearch" styleName="col-md-12 search-box"
 							type="text" placeholder="Search here"></d:TextField>
 					</div>
 				</div>
 
 
-				<div class="pull-right right-navigations hidden-phone">
+				<div class="pull-right right-navigations hidden-xs">
 					<ul ui:field="ulNav" class="nav pull-right nav-icons">
 						<li class="home">
 							<g:Anchor href="#/home" ui:field="aHome" styleName="close-icon hand">
-								<i class="icon-home"></i>
+								<i class="glyphicon glyphicon-home"></i>
 							</g:Anchor>
 						</li>
 						<li class="home dropdown">
 							<a class="dropdown-toggle" id="drop5" role="button"
 								data-toggle="dropdown" href="#">
-								<i class="icon-cog"></i>
+								<i class="glyphicon glyphicon-cog"></i>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu" id="adminSettings">
 
 								<li>
 									<a href="#/usermgt" id="usermgt">
-									<i class="icon-group"></i>
+									<i class="glyphicon glyphicon-group"></i>
 									Access Management</a>
 								</li>
 								<li>
 									<a href="#/processlist" id="processes">
-										<i class="icon-cogs"></i>
+										<i class="glyphicon glyphicon-cogs"></i>
 										Processes</a>
 								</li>
 								<li>
 									<a href="#/dashboards" id="dashboards">
-									<i class="icon-dashboard"></i>
+									<i class="glyphicon glyphicon-dashboard"></i>
 									Dashboards</a>
 								</li>
 								<li>
 									<a href="#/messages" id="messages">
-									<i class="icon-globe"></i>
+									<i class="glyphicon glyphicon-globe"></i>
 									Messages</a>
 								</li>
 								<li>
 									<a href="#/datatable" id="dataTables">
-									<i class="icon-th"></i>
+									<i class="glyphicon glyphicon-th"></i>
 									Data tables</a>
 								</li>
 								<li class="divider hide"></li>
 								<li>
 									<a href="#/datasources" id="datasources">
-									<i class="icon-th"></i>
+									<i class="glyphicon glyphicon-th"></i>
 									Datasources</a>
 								</li>
 								<li>
 									<a href="#/settings" id="settings">
-									<i class="icon-globe"></i>
+									<i class="glyphicon glyphicon-globe"></i>
 									Settings</a>
 								</li>
 							</ul>
 						</li>
 						<li class="notification-dropdown">
 							<g:Anchor ui:field="aNotifications" styleName="close-icon hand dropdown-toggle">
-								<i class="icon-bell"></i>
-								<span ui:field="lblCount" class="label label-important"></span>
+								<i class="glyphicon glyphicon-bell"></i>
+								<span ui:field="lblCount" class="label label-danger"></span>
 							</g:Anchor>
 
 							<g:FocusPanel ui:field="popupContainer"
@@ -131,7 +131,7 @@
 						</li>
 
 						<li class="user-dropdown dropdown">
-							<a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+							<a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown">
 								<span ui:field="spnUser"></span>
 								<g:Image styleName="avatar-small" ui:field="imgSmall"
 									width="30px" height="50px" />
@@ -140,13 +140,13 @@
 							</a>
 
 							<ul class="dropdown-menu">
-								<div class="user-details row-fluid">
-									<div class="span1">
+								<div class="user-details row">
+									<div class="col-md-1">
 										<g:Image ui:field="img" width="70px" height="90px" />
 										<!-- img class="" data-src="img/blueman.png" src="img/blueman.png" 
 											width="70px" height="90px"/ -->
 									</div>
-									<div class="span2">
+									<div class="col-md-2">
 										<span class="text" ui:field="spnUserPull"></span>
 										<br />
 										<span class="ellipsis" style="width: 90%;" ui:field="spnUserGroup"></span>

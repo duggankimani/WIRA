@@ -6,9 +6,9 @@
 	
 	</ui:style>
 	<g:HTMLPanel styleName="no-overflow-x overflow-y">
-		<div class="news-feed file-explorer row-fluid">
+		<div class="news-feed file-explorer row">
 			<h4>File Explorer</h4>
-			<div class="span3" style="margin-left: 16px;width: 227px;">
+			<div class="col-md-3" style="margin-left: 16px;width: 227px;">
 				<ul class="nav nav-tabs" id="myTab">
 					<li class="active">
 						<d:ActionLink ui:field="aFileTree" href="#files">Files</d:ActionLink>

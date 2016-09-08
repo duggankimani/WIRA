@@ -4,7 +4,7 @@
     xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
     >
 	<g:AbsolutePanel ui:field="container">
-	        <g:HTMLPanel styleName="control-group" ui:field="panelGroup">
+	        <g:HTMLPanel styleName="form-group" ui:field="panelGroup">
 		       <label ui:field="lblEl" for="Username" class="control-label">Number Input:</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 				    <d:DoubleField ui:field="txtComponent" type="text" styleName="input-xlarge"/>

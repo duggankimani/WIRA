@@ -72,11 +72,11 @@ public class AppManager {
 			Anchor aLnk = new Anchor(text);
 			aLnk.setStyleName("btn");
 //			if (text.equals("Cancel")) {
-//				aLnk.setHTML("&nbsp;<i class=\"icon-remove\"></i>" + text);
+//				aLnk.setHTML("&nbsp;<i class=\"glyphicon glyphicon-remove\"></i>" + text);
 //				aLnk.setStyleName("btn btn-danger pull-left");
 //			} else {
 //				aLnk.setHTML(text
-//						+ "&nbsp;<i class=\"icon-double-angle-right\"></i>");
+//						+ "&nbsp;<i class=\"glyphicon glyphicon-double-angle-right\"></i>");
 //				aLnk.setStyleName("btn btn-primary pull-right");
 //			}
 

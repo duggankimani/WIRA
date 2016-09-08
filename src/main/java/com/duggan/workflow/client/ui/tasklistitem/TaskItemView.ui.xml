@@ -22,14 +22,14 @@
 	
 	<g:HTMLPanel styleName="message-container">
          <g:FocusPanel styleName="read" ui:field="container">
-           <g:HTMLPanel styleName="row-fluid">
-				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel> 
+           <g:HTMLPanel styleName="row">
+				<g:HTMLPanel styleName="col-md-1 priority" ui:field="spnPriority"></g:HTMLPanel> 
 	           
-	            <g:HTMLPanel ui:field="spnDocIcon" styleName="span1 doc-status"></g:HTMLPanel>
+	            <g:HTMLPanel ui:field="spnDocIcon" styleName="col-md-1 doc-status"></g:HTMLPanel>
 	            
-	            <g:HTMLPanel ui:field="insidecontainer" styleName="span10">
+	            <g:HTMLPanel ui:field="insidecontainer" styleName="col-md-10">
 		       	    <div ui:field="spnSubject" class="bluename ellipsis"></div> 
-		       	    <g:InlineLabel ui:field="spnAttach" styleName="icon-paper-clip clip hidden"></g:InlineLabel>
+		       	    <g:InlineLabel ui:field="spnAttach" styleName="glyphicon glyphicon-paper-clip clip hidden"></g:InlineLabel>
 				    <g:InlineLabel ui:field="spnTime" styleName="spnTime"></g:InlineLabel>
 		            <d:Break/>
 		            <g:InlineLabel ui:field="spnDescription" styleName="spnDescription ellipsis"></g:InlineLabel> 
@@ -37,8 +37,8 @@
 	           </g:HTMLPanel>
 	           
 	            <g:HTMLPanel ui:field="wfactions" styleName="hidden">
-				    <g:Anchor ui:field="aClaim" styleName="icon-arrow-down hidden"></g:Anchor>
-				    <g:Anchor ui:field="aStart"  styleName="icon-play hidden"></g:Anchor>						    
+				    <g:Anchor ui:field="aClaim" styleName="glyphicon glyphicon-arrow-down hidden"></g:Anchor>
+				    <g:Anchor ui:field="aStart"  styleName="glyphicon glyphicon-play hidden"></g:Anchor>						    
 					<g:Anchor ui:field="aResume"  styleName="hidden">Resume</g:Anchor>
 					<g:Anchor ui:field="aComplete"  styleName="hidden">Complete</g:Anchor>
 					<g:Anchor ui:field="aSuspend"  styleName="hidden">Suspend</g:Anchor>
@@ -46,12 +46,12 @@
 					<g:Anchor ui:field="aDelegate"  styleName="hidden">Delegate</g:Anchor>
 					<g:Anchor ui:field="aRevoke"  styleName="hidden">Revoke</g:Anchor>
 					<g:Anchor ui:field="aStop"  styleName="hidden">Stop</g:Anchor>
-					<g:Anchor ui:field="aForward"  styleName="icon-share-alt"></g:Anchor>
+					<g:Anchor ui:field="aForward"  styleName="glyphicon glyphicon-share-alt"></g:Anchor>
 					<g:Anchor ui:field="aView" styleName="{style.link} hidden">View Task</g:Anchor>		
-					<g:Anchor ui:field="aForwardForApproval" styleName="{style.link}icon-share-alt"></g:Anchor>
+					<g:Anchor ui:field="aForwardForApproval" styleName="{style.link}glyphicon glyphicon-share-alt"></g:Anchor>
 					
-					<g:Anchor ui:field="aApprove"  styleName="icon-ok"></g:Anchor>
-					<g:Anchor ui:field="aReject"  styleName="icon-ban-circle"></g:Anchor>
+					<g:Anchor ui:field="aApprove"  styleName="glyphicon glyphicon-ok"></g:Anchor>
+					<g:Anchor ui:field="aReject"  styleName="glyphicon glyphicon-ban-circle"></g:Anchor>
 			   </g:HTMLPanel>
            </g:HTMLPanel>
          </g:FocusPanel>

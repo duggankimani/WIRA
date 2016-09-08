@@ -31,7 +31,7 @@ public class LandingPagePresenter extends Presenter<LandingPagePresenter.MyView,
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-		TabDataExt data = new TabDataExt("Landing","icon-landing",10, adminGatekeeper,false);
+		TabDataExt data = new TabDataExt("Landing","glyphicon glyphicon-landing",10, adminGatekeeper,false);
         return data;
     }
 

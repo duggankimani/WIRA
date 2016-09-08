@@ -124,20 +124,20 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 
 		case TASKCOMPLETED_APPROVERNOTE:
 			safeHtml = Template3.render(subject, owner, time, action, 
-					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
+					ApproverAction.APPROVED.equals(approverAction)? "glyphicon glyphicon-check": "icon-remove-sign");
 			break;
 		case TASKCOMPLETED_OWNERNOTE:
 			if(isNotification)
 			safeHtml = Template4.render(subject, approver, time, action, 
-					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign");
+					ApproverAction.APPROVED.equals(approverAction)? "glyphicon glyphicon-check": "icon-remove-sign");
 			else
 			safeHtml2 =Template5.render(subject, approver, time, 
-					ApproverAction.APPROVED.equals(approverAction)? "icon-check": "icon-remove-sign",action);
+					ApproverAction.APPROVED.equals(approverAction)? "glyphicon glyphicon-check": "icon-remove-sign",action);
 			break;
 		case TASKDELEGATED:
 			
 			if(isNotification){
-				safeHtml = Template9.render(subject, owner, target, time, action,"icon-signin");
+				safeHtml = Template9.render(subject, owner, target, time, action,"glyphicon glyphicon-signin");
 			}else{
 				safeHtml2 = Template8.render(approver,subject, target, time);
 			}
@@ -175,22 +175,22 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	interface APPROVALREQUEST_APPROVERNOTE_TEMPLATE extends SafeHtmlTemplates {
-		@Template("<i class=\"icon-signin\"></i>"+
+		@Template("<i class=\"glyphicon glyphicon-signin\"></i>"+
 				"<span class=\"bluename\" >{0}</span>"+
 				
 				" Request for approval from <span class=\"bluename\">{1}</span>"
 				+ "."
-				+ "<span class=\"time\" ><i class=\"icon-time\"> {2}</i></span>")
+				+ "<span class=\"time\" ><i class=\"glyphicon glyphicon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time);
 		// eg Request for approval - Invoice INV/001/2013 from Calcacuervo. (2
 		// mins ago)
 	}
 	
 	interface APPROVALREQUEST_OWNERNOTE_TEMPATE extends SafeHtmlTemplates {
-		@Template("<i class=\"icon-signin\"></i>"+
+		@Template("<i class=\"glyphicon glyphicon-signin\"></i>"+
 				"<span class=\"bluename\">{1}</span>"+
 				" submitted for approval by <span class=\"bluename\">{0}</span>"
-				+ " <span class=\"time\"><i class=\"icon-time\">{2}</i></span>")
+				+ " <span class=\"time\"><i class=\"glyphicon glyphicon-time\">{2}</i></span>")
 		public SafeHtml render(String owner, String subject, String time);
 
 		// e.g You have successfuly submitted Invoice INV/001/2013 for approval
@@ -198,12 +198,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 	
 	interface APPROVALREQUEST_OWNERNOTE_ACTIVITY_TEMPATE extends SafeHtmlTemplates {
-		@Template("<div class=\"feed-icon\"><i class=\"icon-signin\"></i></div>"+
+		@Template("<div class=\"feed-icon\"><i class=\"glyphicon glyphicon-signin\"></i></div>"+
 				"<div class=\"feed-subject\"><a><span>{0}</span></a>" +
 				" submitted <a><span>{1}</span></a>" +
 				" for approval</div>"+
 				"<div class=\"feed-actions\">" +
-				"<span class=\"time\"><i class=\"icon-time\">{2}</span>" +
+				"<span class=\"time\"><i class=\"glyphicon glyphicon-time\">{2}</span>" +
 				"</div>")
 		public SafeHtml render(String owner,String subject, String time);
 
@@ -216,7 +216,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 				"<span class=\"bluename\">{0}</span>"+
 				" has been {3}. "+
 				" (requested by <span class=\"bluename\">{1}</span>.) "
-				+ " <span class=\"time\"><i class=\"icon-time\"> {2}</i></span>")
+				+ " <span class=\"time\"><i class=\"glyphicon glyphicon-time\"> {2}</i></span>")
 		public SafeHtml render(String subject, String owner, String time,
 				String action, String styleName);
 		// e.g You approved/denied Invoice INV/001/2013 from calcacuervo (20mins
@@ -228,7 +228,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		@Template("<i class=\"{4}\"></i>"+
 				"<span class=\"bluename\">{0}</span>"
 				+ " {3} by <span class=\"bluename\">{1}</span>"
-				+ " <span class=\"time\"><i class=\"icon-time\">{2}</i></span>")
+				+ " <span class=\"time\"><i class=\"glyphicon glyphicon-time\">{2}</i></span>")
 		public SafeHtml render(String subject, String approver, String time,
 				String action, String style);
 
@@ -241,7 +241,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 				"<div class=\"feed-subject\"><a>{1}</a>"+
 				" {4} "+"<a>{0}</a></div>"+
 				"<div class=\"feed-actions\">" +
-				"<span class=\"time\"><i class=\"icon-time\">{2}</i></span>" +
+				"<span class=\"time\"><i class=\"glyphicon glyphicon-time\">{2}</i></span>" +
 				"</div>"
 				)
 		public SafeHtml render(String subject, String approver, String time, String style ,String action);
@@ -250,12 +250,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 	}
 
 	interface TASKDELEGATED_TEMPATE extends SafeHtmlTemplates {
-		@Template("<div class=\"feed-icon\"><i class=\"icon-signin\"></i></div>"+
+		@Template("<div class=\"feed-icon\"><i class=\"glyphicon glyphicon-signin\"></i></div>"+
 				"<div class=\"feed-subject\"><a><span>{0}</span></a>" +
 				" delegated <a><span>{1}</span></a>" +
 				" to <a><span>{2}</span></a></div>"+
 				"<div class=\"feed-actions\">" +
-				"<span class=\"time\"><i class=\"icon-time\">{3}</span>" +
+				"<span class=\"time\"><i class=\"glyphicon glyphicon-time\">{3}</span>" +
 				"</div>")
 		public SafeHtml render(String approver, String subject,
 				String targetUser, String time);
@@ -270,7 +270,7 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 				" {4}  "+
 				" to <span class=\"bluename\">{2}</span> " +
 				" by <span class=\"bluename\">{1}</span>."
-				+ " <span class=\"time\"><i class=\"icon-time\"> {3}</i></span>")
+				+ " <span class=\"time\"><i class=\"glyphicon glyphicon-time\"> {3}</i></span>")
 		public SafeHtml render(String subject, String targetUser, String createdBy,  String time,
 				String action, String styleName);
 		// e.g You approved/denied Invoice INV/001/2013 from calcacuervo (20mins

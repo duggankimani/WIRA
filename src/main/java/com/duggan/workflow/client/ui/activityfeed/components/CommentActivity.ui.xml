@@ -18,7 +18,7 @@
 					</strong>
 				</span>
 				<span class="time">
-					<i class="icon-time"></i>
+					<i class="glyphicon glyphicon-time"></i>
 					<span ui:field="spnTime">6 minutes ago</span>
 				</span>
 			</div>
@@ -26,7 +26,7 @@
 				<blockquote>
 					<span ui:field="commentText"> comment Text </span>
 				</blockquote>
-				<!-- <div> <a href="#"> <i class="icon-paper-clip"></i> <b>project_news.docx</b> 
+				<!-- <div> <a href="#"> <i class="glyphicon glyphicon-paper-clip"></i> <b>project_news.docx</b> 
 					</a> </div> -->
 			</div>
 		</g:HTMLPanel>

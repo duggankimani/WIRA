@@ -8,19 +8,19 @@
 
 		<g:HTMLPanel ui:field="innerContainer">
 			<div class="carousel">
-				<div class="row-fluid">
-					<div class='offset-2 span11 text-center'>
+				<div class="row">
+					<div class='offset-2 col-md-11 text-center'>
 						<h2>
 							<span ui:field="spnHeader">Creating New Request</span>
 						</h2>
 					</div>
 					<g:Anchor ui:field="aClose" styleName="helper-font-16 color-silver-dark">
-						<span class="icon-remove-sign pull-right"></span>
+						<span class="glyphicon glyphicon-remove-sign pull-right"></span>
 					</g:Anchor>
 					
 				</div>
-				<div class='row-fluid'>
-					<div class='offset-2 span12'>
+				<div class='row'>
+					<div class='offset-2 col-md-12'>
 						<div class="carousel" data-ride="carousel" data-interval="false"
 							id="quote-carousel">
 							<!-- Bottom Indicators -->
@@ -35,10 +35,10 @@
 							<!-- Carousel Buttons Next/Prev -->
 							<g:HTMLPanel ui:field="panelControls">
 								<a data-slide="prev" href="#quote-carousel" class="left carousel-control">
-									<i class="icon-chevron-left"></i>
+									<i class="glyphicon glyphicon-chevron-left"></i>
 								</a>
 								<a data-slide="next" href="#quote-carousel" class="right carousel-control">
-									<i class="icon-chevron-right"></i>
+									<i class="glyphicon glyphicon-chevron-right"></i>
 								</a>
 							</g:HTMLPanel>
 						</div>

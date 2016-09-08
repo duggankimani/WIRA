@@ -12,7 +12,7 @@
 	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin" modal="true" ui:field="divPopUp">
 		<g:HTMLPanel>
 	 		<g:HTMLPanel styleName="modal-header">
-					<h5><i class="icon-cogs"></i>New Data Source<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+					<h5><i class="glyphicon glyphicon-cogs"></i>New Data Source<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
 			 </g:HTMLPanel>
 			 <d:IssuesPanel ui:field="issues">
 	    	</d:IssuesPanel>
@@ -75,9 +75,9 @@
 
 		 	
 		 	  <div class="form-actions">
-				<g:Anchor styleName="btn btn-success pull-right" ui:field="aSave">Save &nbsp; <i class="icon-double-angle-right"></i></g:Anchor>
+				<g:Anchor styleName="btn btn-success pull-right" ui:field="aSave">Save &nbsp; <i class="glyphicon glyphicon-double-angle-right"></i></g:Anchor>
 				<g:Anchor styleName="btn btn-danger pull-left" ui:field="aCancel">
-				    &nbsp; <i class="icon-remove"></i>Cancel 
+				    &nbsp; <i class="glyphicon glyphicon-remove"></i>Cancel 
 				    </g:Anchor>
 			  </div>
 		  </g:HTMLPanel>

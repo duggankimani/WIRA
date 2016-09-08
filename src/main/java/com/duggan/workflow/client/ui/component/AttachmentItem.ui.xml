@@ -10,7 +10,7 @@
 			<d:ActionLink ui:field="aRemove" styleName="remove">Remove</d:ActionLink>
 			<d:ActionLink ui:field="aDownload" styleName="download">
 				Download
-				<i class="icon icon-chevron-down" aria-haspopup="true"></i>
+				<i class="icon glyphicon glyphicon-chevron-down" aria-haspopup="true"></i>
 			</d:ActionLink>
 		</g:HTMLPanel>
 		<!-- div class="progress-bar">

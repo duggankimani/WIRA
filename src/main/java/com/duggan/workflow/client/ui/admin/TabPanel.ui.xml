@@ -2,9 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
 
-	<g:HTMLPanel styleName="row-fluid body-admin">
+	<g:HTMLPanel styleName="row body-admin">
 		<!--sidebar -->
-		<g:HTMLPanel styleName="span1">
+		<g:HTMLPanel styleName="col-md-1">
 			<aside id="side-left">
 				<d:BulletListPanel ui:field="linksPanel"
 					styleName="sidebar">
@@ -15,13 +15,13 @@
 		<!-- End Of Sidebar -->
 
 		<!-- Main Content -->
-		<g:HTMLPanel styleName="span11">
+		<g:HTMLPanel styleName="col-md-11">
 			<div id="main-content">
 				<div class="content">
 					<!-- Content Header -->
 					<div ui:field="divDefaultHeader" class="content-header" style="padding: 8px 20px 7px 30px;">
 						<h2>
-							<span class="icon-group" ui:field="iconTitle"></span>
+							<span class="glyphicon glyphicon-group" ui:field="iconTitle"></span>
 							<span ui:field="spanTitle">Users &amp; Groups</span>
 						</h2>
 					</div>

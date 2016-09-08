@@ -9,15 +9,15 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="profile-page">
-		<div class="row-fluid">
+		<div class="row">
 			<h3>Profile Information</h3>
 			<hr />
 		</div>
 		<d:IssuesPanel ui:field="issues">
 	    </d:IssuesPanel>
-		<div class="row-fluid">
-			<g:HTMLPanel styleName="span6">
-				<div class="control-group">
+		<div class="row">
+			<g:HTMLPanel styleName="col-md-6">
+				<div class="form-group">
 					<div class="controls">
 						<label for="Names">
 							<b>Names:</b>
@@ -29,7 +29,7 @@
 					</div>
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					<div class="controls">
 						<label for="Username">
 							<b>Username:</b>
@@ -39,7 +39,7 @@
 					</div>
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					<div class="controls">
 						<label for="Email">
 							<b>Email:</b>
@@ -49,13 +49,13 @@
 					</div>
 				</div>
 
-				<div class="control-group hide">
+				<div class="form-group hide">
 					<label class="control-label">
 						<b>Roles</b>
 					</label>
 				</div>
 
-				<div class="control-group" ui:field="divPassword">
+				<div class="form-group" ui:field="divPassword">
 					<label class="control-label">
 						<b>Password</b>
 					</label>
@@ -73,7 +73,7 @@
 				</div>
 
 				<g:HTMLPanel ui:field="panelPassword" styleName="hide">
-					<div class="control-group">
+					<div class="form-group">
 						<label for="ProcessName">
 							<b>Previous Password:</b>
 						</label>
@@ -81,7 +81,7 @@
 							class="form-control" placeholder=" PrevousPassword" />
 					</div>
 
-					<div class="control-group">
+					<div class="form-group">
 						<label for="ProcessName">
 							<b>New Password:</b>
 						</label>
@@ -89,7 +89,7 @@
 							class="form-control" placeholder="New Password" />
 					</div>
 
-					<div class="control-group">
+					<div class="form-group">
 						<label class="control-label">
 							<b>Confirm Password:</b>
 						</label>
@@ -97,7 +97,7 @@
 							type="password" class="form-control" placeholder="Confirm Password" />
 					</div>
 
-					<div class="control-group">
+					<div class="form-group">
 						<g:Button styleName="btn btn-primary" text="Save"
 							ui:field="btnSavePassword"></g:Button>
 						<g:Button styleName="btn btn-primary" text="Cancel"
@@ -107,20 +107,20 @@
 
 			</g:HTMLPanel>
 
-			<g:HTMLPanel styleName="span5">
-				<div class="control-group">
+			<g:HTMLPanel styleName="col-md-5">
+				<div class="form-group">
 					<g:FocusPanel ui:field="uploadPanel">
 						<up:Uploader ui:field="uploader" styleName="hide"></up:Uploader>
 					</g:FocusPanel>
 
 					<g:FocusPanel ui:field="panelPicture">
-						<g:HTMLPanel styleName="control-group">
+						<g:HTMLPanel styleName="form-group">
 							<!-- <g:Image ui:field="img" width="70px" height="90px" /> -->
 							<g:Image ui:field="imgUser" width="179px" />
 						</g:HTMLPanel>
 					</g:FocusPanel>
 
-					<div class="control-group" ui:field="divGroups">
+					<div class="form-group" ui:field="divGroups">
 					</div>
 
 				</div>

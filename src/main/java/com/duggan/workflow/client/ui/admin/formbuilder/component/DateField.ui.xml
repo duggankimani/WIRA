@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
 
-	<g:HTMLPanel styleName="control-group" ui:field="panelGroup">
+	<g:HTMLPanel styleName="form-group" ui:field="panelGroup">
 		<label ui:field="lblEl" class="control-label">Date Box:</label>
 		<g:HTMLPanel styleName="controls" ui:field="panelControls">
 			<d:DateInput ui:field="dateBox"></d:DateInput>

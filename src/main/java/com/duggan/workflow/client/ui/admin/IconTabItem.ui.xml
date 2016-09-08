@@ -5,7 +5,7 @@
 	<d:BulletPanel ui:field="liContainter">
 		<g:Anchor ui:field="aLink" styleName="hand">
 			<div class="helper-font-24">
-                 <i class="icon-dashboard" ui:field="icon"></i>
+                 <i class="glyphicon glyphicon-dashboard" ui:field="icon"></i>
              </div>
 			<span class="sidebar-text" ui:field="spnName"></span>
 		</g:Anchor>

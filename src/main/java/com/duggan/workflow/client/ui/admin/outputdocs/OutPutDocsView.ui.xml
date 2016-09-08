@@ -8,11 +8,11 @@
 
 	<g:HTMLPanel>
 		<div class="content-body overflow-y">
-			<div class="row-fluid">
+			<div class="row">
 				<div class="action-buttons" ui:field="divGeneralActions">
 					<g:Anchor ui:field="aNewDocument" styleName="btn btn-primary"
 						title="Add a New Process">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Add Document
 					</g:Anchor>
 				</div>
@@ -20,18 +20,18 @@
 				<div class="action-buttons hide" ui:field="divModelActions">
 					<g:Anchor ui:field="aEdit" styleName="btn btn-primary"
 						title="Edit Properties">
-						<i class="icon-pencil"></i>
+						<i class="glyphicon glyphicon-pencil"></i>
 						Document Properties
 					</g:Anchor>
 					<g:Anchor ui:field="aEditDoc" styleName="btn btn-success"
 						title="Edit Document">
-						<i class="icon-pencil"></i>
+						<i class="glyphicon glyphicon-pencil"></i>
 						Edit Document
 					</g:Anchor>
 
 					<g:Anchor ui:field="aDelete" styleName="btn btn-danger"
 						title="Delete User">
-						<i class="icon-trash"></i>
+						<i class="glyphicon glyphicon-trash"></i>
 						Delete Document
 					</g:Anchor>
 				</div>

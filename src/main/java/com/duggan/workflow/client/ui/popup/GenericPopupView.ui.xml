@@ -8,9 +8,9 @@
     styleName="modal modal-admin generic-popup" modal="true">
         <g:HTMLPanel>
 	 		<g:HTMLPanel styleName="modal-header">
-				<h5><i class="icon-cogs"></i>
+				<h5><i class="glyphicon glyphicon-cogs"></i>
 				    <span ui:field="spnHeader"/>
-				<g:Anchor ui:field="aClose"><i class="icon-remove pull-right"/></g:Anchor></h5>
+				<g:Anchor ui:field="aClose"><i class="glyphicon glyphicon-remove pull-right"/></g:Anchor></h5>
 			</g:HTMLPanel>
 			<d:IssuesPanel ui:field="issues">
 	    	</d:IssuesPanel>
@@ -20,7 +20,7 @@
 			</g:HTMLPanel>
 			
 			<g:HTMLPanel styleName="form-actions">
-			    <g:HTMLPanel ui:field="panelButtons" styleName="row-fluid">
+			    <g:HTMLPanel ui:field="panelButtons" styleName="row">
 			    </g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:HTMLPanel>

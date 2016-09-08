@@ -77,10 +77,10 @@
 	padding:10px;
 }
 
-.asset-fin .row-fluid{
+.asset-fin .row{
 	margin-bottom: 10px;
 }
-.asset-fin .row-fluid{
+.asset-fin .row{
 	margin-bottom: 10px;
 }
 .asset-fin input[type="text"]{
@@ -101,21 +101,21 @@
 }
 </style>
 <div class="asset-fin">
-	<div class="row-fluid header-bg">
-		<div class="span2">
+	<div class="row header-bg">
+		<div class="col-md-2">
 			<img src="http://127.0.0.1:8888/getreport?ACTION=GetLogo&amp;width=171&amp;height=57&amp;settingName=ORGLOGO">
 		</div>
-			<fieldset class="span3 pull-right form-inline">
+			<fieldset class="col-md-3 pull-right form-inline">
 				<label class="inline" for="applicationNo">Application Number</label>
-				<input class="span6" type="text" id="applicationNo" title="Application Number" data-content="Auto-generated reference number for this application" data-placement="bottom">
+				<input class="col-md-6" type="text" id="applicationNo" title="Application Number" data-content="Auto-generated reference number for this application" data-placement="bottom">
 			</fieldset>
 	</div>
   
-	<div class="row-fluid">
-		<div class="span9">
-			<fieldset class="span4 form-inline">
+	<div class="row">
+		<div class="col-md-9">
+			<fieldset class="col-md-4 form-inline">
 				<label>Branch:</label> 
-                <select id="branch" class="span9" title="Branch" data-trigger="hover" 
+                <select id="branch" class="col-md-9" title="Branch" data-trigger="hover" 
                 data-content="Select your I&M branch">
 					<option>--Select--</option>
 					<option>Harambee Avenue</option>
@@ -123,26 +123,26 @@
 					<option>Baricho</option>
 				</select>
 			</fieldset>
-			<fieldset  class="span4 form-inline">
+			<fieldset  class="col-md-4 form-inline">
 				<label>Applicant Type:</label> 
-				<select class="span8" id="applicantType" title="Applicant" data-trigger="hover"
+				<select class="col-md-8" id="applicantType" title="Applicant" data-trigger="hover"
 				data-content="Select applicant type. Your form will be filtered based on the selection"> 
 					<option>--Select--</option>
 					<option>Company</option>
 					<option>Individual</option>
 				</select>
 			</fieldset>
-			<fieldset class="span4 form-inline">
+			<fieldset class="col-md-4 form-inline">
 				<label>Account No:</label>
-				<input class="span8" type="text" id="accountNumber" title="Account Number" 
+				<input class="col-md-8" type="text" id="accountNumber" title="Account Number" 
 				data-content="Enter your I&M Account Number and we'll retrieve your data for you."
 				data-placement="right">
 			</fieldset>
 		</div>
-		<div class="span3 pull-right">
-			<fieldset class="span12 form-inline">
+		<div class="col-md-3 pull-right">
+			<fieldset class="col-md-12 form-inline">
 				<label class="inline" for="proposalNumber">Proposal Number</label>
-                <input class="span6" type="text" id="proposalNumber" title="Proposal Number" 
+                <input class="col-md-6" type="text" id="proposalNumber" title="Proposal Number" 
 				data-content="Proposal Number" data-placement="bottom">
 			</fieldset>
 		</div>
@@ -150,107 +150,107 @@
 
 	<legend>APPLICANT</legend>
 	<div class="border-section">
-		<div class="row-fluid">
-			<fieldset class="span6">
-				<label>NAME</label> <input type="text" id="applicantName" class="span12" placeholder="Full Names" title="Name" data-content="Full Names as they appear in your ID">
+		<div class="row">
+			<fieldset class="col-md-6">
+				<label>NAME</label> <input type="text" id="applicantName" class="col-md-12" placeholder="Full Names" title="Name" data-content="Full Names as they appear in your ID">
 			</fieldset>
-			<fieldset class="span3">
-				<label>ID/PASSPORT/INC/CERT.OF REG NO</label> <input type="text" id="identifier" class="span12" placeholder="Your ID or Company registration number">
+			<fieldset class="col-md-3">
+				<label>ID/PASSPORT/INC/CERT.OF REG NO</label> <input type="text" id="identifier" class="col-md-12" placeholder="Your ID or Company registration number">
 			</fieldset>
-			<fieldset class="span3">
-				<label>PIN NO</label> <input type="text" id="pinNo" class="span12" placeholder="KRA PIN No">
+			<fieldset class="col-md-3">
+				<label>PIN NO</label> <input type="text" id="pinNo" class="col-md-12" placeholder="KRA PIN No">
 			</fieldset>
 		</div>
 
-		<div class="row-fluid">
-			<fieldset class="span4">
-				<label>P.O BOX</label> <input id="postalAdd" type="text" class="span12" placeholder="Name">
+		<div class="row">
+			<fieldset class="col-md-4">
+				<label>P.O BOX</label> <input id="postalAdd" type="text" class="col-md-12" placeholder="Name">
 			</fieldset>
-			<fieldset class="span2">
-				<label>POSTAL CODE </label> <input id="postalCode" type="text" class="span12" placeholder="Postal Code">
+			<fieldset class="col-md-2">
+				<label>POSTAL CODE </label> <input id="postalCode" type="text" class="col-md-12" placeholder="Postal Code">
 			</fieldset>
-			<fieldset class="span2">
-				<label>CITY/TOWN</label> <input type="text" class="span12" placeholder="City or Town">
+			<fieldset class="col-md-2">
+				<label>CITY/TOWN</label> <input type="text" class="col-md-12" placeholder="City or Town">
 			</fieldset>
-			<fieldset class="span4">
+			<fieldset class="col-md-4">
 				<label>PHYSICAL ADDRESS (<small>Location /Road</small>)
-				</label> <input type="text" id="physicalAdd" class="span12" placeholder="e.g Embarkment Plaza,Kitui rd">
+				</label> <input type="text" id="physicalAdd" class="col-md-12" placeholder="e.g Embarkment Plaza,Kitui rd">
 			</fieldset>
 		</div>
 
-		<div class="row-fluid">
-			<fieldset class="span3">
-				<label>TEL. MOBILE </label> <input id="telephoneNumber" type="text" class="span12" placeholder="07...">
+		<div class="row">
+			<fieldset class="col-md-3">
+				<label>TEL. MOBILE </label> <input id="telephoneNumber" type="text" class="col-md-12" placeholder="07...">
 			</fieldset>
-			<fieldset class="span3">
-				<label>TEL. HOME/ OFFICE NO. </label> <input id="homeOfficeNumber" type="text" class="span12" placeholder="Home or Office number">
+			<fieldset class="col-md-3">
+				<label>TEL. HOME/ OFFICE NO. </label> <input id="homeOfficeNumber" type="text" class="col-md-12" placeholder="Home or Office number">
 			</fieldset>
-			<fieldset class="span3">
-				<label>E-MAIL ADDRESS</label> <input id="email" type="text" class="span12" placeholder="eMail address">
+			<fieldset class="col-md-3">
+				<label>E-MAIL ADDRESS</label> <input id="email" type="text" class="col-md-12" placeholder="eMail address">
 			</fieldset>
-			<fieldset class="span3">
+			<fieldset class="col-md-3">
 				<label>INTRODUCED BY (<small>Location /Road</small>)
-				</label> <input id="introducedBy" type="text" class="span12" title="Introduced By" placeholder="Name of the person who introduced you to I&M">
+				</label> <input id="introducedBy" type="text" class="col-md-12" title="Introduced By" placeholder="Name of the person who introduced you to I&M">
 			</fieldset>
 		</div>
 
-		<div class="row-fluid">
-			<fieldset class="span2">
+		<div class="row">
+			<fieldset class="col-md-2">
 				<label>Home Ownership </label> 
 				<div id="optionsRadios">
 				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
 				Owner <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Tenant
 				</div>
 			</fieldset>
-			<fieldset class="span3 hide">
-				<label>IF TENANT; NAME OF LANDLORD</label> <input type="text" class="span12" placeholder="Landlord Name">
+			<fieldset class="col-md-3 hide">
+				<label>IF TENANT; NAME OF LANDLORD</label> <input type="text" class="col-md-12" placeholder="Landlord Name">
 			</fieldset>
-			<fieldset class="span3 hide">
-				<label>P.O BOX</label> <input type="text" class="span12" placeholder="Address of the Landlord">
+			<fieldset class="col-md-3 hide">
+				<label>P.O BOX</label> <input type="text" class="col-md-12" placeholder="Address of the Landlord">
 			</fieldset>
-			<fieldset class="span2 hide">
-				<label>POSTAL CODE</label> <input type="text" class="span12" placeholder="Postal Code of the Landlord">
+			<fieldset class="col-md-2 hide">
+				<label>POSTAL CODE</label> <input type="text" class="col-md-12" placeholder="Postal Code of the Landlord">
 			</fieldset>
-			<fieldset class="span2 hide">
-				<label>PHONE NO.</label> <input type="text" class="span12" placeholder="Phone number of the Landlord">
+			<fieldset class="col-md-2 hide">
+				<label>PHONE NO.</label> <input type="text" class="col-md-12" placeholder="Phone number of the Landlord">
 			</fieldset>
 		</div>
 
-		<div class="row-fluid">
-			<fieldset class="span4">
-				<label>NATURE OF BUSINESS</label> <input type="text" class="span12" placeholder="Type of Business">
+		<div class="row">
+			<fieldset class="col-md-4">
+				<label>NATURE OF BUSINESS</label> <input type="text" class="col-md-12" placeholder="Type of Business">
 			</fieldset>
-			<fieldset class="span2">
-				<label>YEAR ESTABLISHED</label> <input type="text" class="span12" placeholder="Year established">
+			<fieldset class="col-md-2">
+				<label>YEAR ESTABLISHED</label> <input type="text" class="col-md-12" placeholder="Year established">
 			</fieldset>
-			<fieldset class="span6">
-				<label>PURPOSE OF ASSET BEING PURCHASED</label> <input type="text" class="span12" placeholder="Purpose of asset">
+			<fieldset class="col-md-6">
+				<label>PURPOSE OF ASSET BEING PURCHASED</label> <input type="text" class="col-md-12" placeholder="Purpose of asset">
 			</fieldset>
 		</div>
 	</div>
 
 	<legend>APPLICANT’S BANK DETAILS</legend>
 	<div class="border-section">
-		<a id="bankgrid_Add" class="btn btn-small btn-primary"><i class="icon-plus"></i></a>
-		<div class="row-fluid">
-			<table id="bankgrid" class="grid_template table-condensed span12">
+		<a id="bankgrid_Add" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+		<div class="row">
+			<table id="bankgrid" class="grid_template table-condensed col-md-12">
 				<thead>
 					<tr>
-						<td class="span3">BANK NAME</td>
-						<td class="span2">BRANCH</td>
-						<td class="span2">A/C NUMBER</td>
-						<td class="span2">OD LIMIT</td>
-						<td class="span2">OUTSTANDING LOANS</td>
+						<td class="col-md-3">BANK NAME</td>
+						<td class="col-md-2">BRANCH</td>
+						<td class="col-md-2">A/C NUMBER</td>
+						<td class="col-md-2">OD LIMIT</td>
+						<td class="col-md-2">OUTSTANDING LOANS</td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="grid_row_template">
-						<td class="span3"><input id="bankName" type="text" class="span12"/></td>
-						<td class="span2"><input id="branchName" type="text" class="span12"/></td>
-						<td class="span2"><input id="accNo" type="text" class="span12"/></td>
-						<td class="span2"><input id="odLimit" type="text" class="span12" placeholder="KSH"/></td>
-						<td class="span2"><input id="outstandingLoans" type="text" class="span12" placeholder="KSH"/></td>
-						<td class="span1"><a id="bankgrid_Delete" class="btn btn-small "><i class="icon-trash"></i></a></td>
+						<td class="col-md-3"><input id="bankName" type="text" class="col-md-12"/></td>
+						<td class="col-md-2"><input id="branchName" type="text" class="col-md-12"/></td>
+						<td class="col-md-2"><input id="accNo" type="text" class="col-md-12"/></td>
+						<td class="col-md-2"><input id="odLimit" type="text" class="col-md-12" placeholder="KSH"/></td>
+						<td class="col-md-2"><input id="outstandingLoans" type="text" class="col-md-12" placeholder="KSH"/></td>
+						<td class="col-md-1"><a id="bankgrid_Delete" class="btn btn-sm "><i class="glyphicon glyphicon-trash"></i></a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -259,56 +259,56 @@
 
 	<legend>EXISTING VEHICLES / PROPERTIES</legend>
 	<div class="border-section">
-	<a id="vehicle_Add" class="btn btn-small btn-primary"><i class="icon-plus"></i></a>
-	<div class="row-fluid">
-		<table id="vehicle" class="grid_template table-condensed span12">
+	<a id="vehicle_Add" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+	<div class="row">
+		<table id="vehicle" class="grid_template table-condensed col-md-12">
 			<thead>
 				<tr>
-					<td class="span2">VEHICLE REG NO.</td>
-					<td class="span2">MAKE</td>
-					<td class="span2">MODEL</td>
-					<td class="span2">BALANCE OF LOAN <small>(If any)</small>
+					<td class="col-md-2">VEHICLE REG NO.</td>
+					<td class="col-md-2">MAKE</td>
+					<td class="col-md-2">MODEL</td>
+					<td class="col-md-2">BALANCE OF LOAN <small>(If any)</small>
 					</td>
-					<td class="span3">FINANCED BY</td>
+					<td class="col-md-3">FINANCED BY</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr class="grid_row_template">
-					<td class="span2"><input id="vehicleReg" type="text" class="span12"></td>
-					<td class="span2"><input id="vehicleMake" type="text" class="span12"></td>
-					<td class="span2"><input id="vehicleModel" type="text" class="span12"></td>
-					<td class="span2"><input id="loanBal" type="text" class="span12" placeholder="KSH"></td>
-					<td class="span3"><input id="financier" type="text" class="span12"></td>
-					<td class="span1"><a id="vehicle_Delete" class="btn btn-small "><i class="icon-trash"></i></a></td>
+					<td class="col-md-2"><input id="vehicleReg" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="vehicleMake" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="vehicleModel" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="loanBal" type="text" class="col-md-12" placeholder="KSH"></td>
+					<td class="col-md-3"><input id="financier" type="text" class="col-md-12"></td>
+					<td class="col-md-1"><a id="vehicle_Delete" class="btn btn-sm "><i class="glyphicon glyphicon-trash"></i></a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 	
-	<a id="properties_Add" class="btn btn-small btn-primary"><i class="icon-plus"></i></a>
-		<div class="row-fluid">
-			<table id="properties" class="grid_template table-condensed span12">
+	<a id="properties_Add" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+		<div class="row">
+			<table id="properties" class="grid_template table-condensed col-md-12">
 				<thead>
 					<tr>
-						<td class="span2">PROPERTY (RESIDENTIAL/COMMERCIAL)</td>
-						<td class="span2">SIZE</td>
-						<td class="span2">TOWN/AREA</td>
-						<td class="span2">LR NO</td>
-						<td class="span3">APPROXIMATE VALUE</td>
+						<td class="col-md-2">PROPERTY (RESIDENTIAL/COMMERCIAL)</td>
+						<td class="col-md-2">SIZE</td>
+						<td class="col-md-2">TOWN/AREA</td>
+						<td class="col-md-2">LR NO</td>
+						<td class="col-md-3">APPROXIMATE VALUE</td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="grid_row_template">
-						<td class="span2"><select id="propertyType">
+						<td class="col-md-2"><select id="propertyType">
 								<option>--Select--</option>
 								<option>Residential</option>
 								<option>Commercial</option>
 						</select></td>
-						<td class="span2"><input id="propertySize" type="text" class="span12"></td>
-						<td class="span2"><input id="propertyLocation" type="text" class="span12"></td>
-						<td class="span2"><input id="propertyLRNo" type="text" class="span12"></td>
-						<td class="span2"><input id="propertyValue" type="text" class="span12"></td>
-						<td class="span1"><a id="properties_Delete" class="btn btn-small "><i class="icon-trash"></i></a></td>
+						<td class="col-md-2"><input id="propertySize" type="text" class="col-md-12"></td>
+						<td class="col-md-2"><input id="propertyLocation" type="text" class="col-md-12"></td>
+						<td class="col-md-2"><input id="propertyLRNo" type="text" class="col-md-12"></td>
+						<td class="col-md-2"><input id="propertyValue" type="text" class="col-md-12"></td>
+						<td class="col-md-1"><a id="properties_Delete" class="btn btn-sm "><i class="glyphicon glyphicon-trash"></i></a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -318,58 +318,58 @@
 	<legend>ADDITIONAL INFORMATION - COMPANIES AND PARTNERSHIPS
 		ONLY:</legend>
 	<div class="border-section">
-	<a id="shareholders_Add" class="btn btn-small btn-primary"><i class="icon-plus"></i></a>
-	<div class="row-fluid">
-		<table id="shareholders" class="grid_template table-condensed span6">
+	<a id="shareholders_Add" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+	<div class="row">
+		<table id="shareholders" class="grid_template table-condensed col-md-6">
 			<thead>
 				<tr>
-					<td class="span6">NAMES OF SHAREHOLDERS/ DIRECTORS / PARTNERS
+					<td class="col-md-6">NAMES OF SHAREHOLDERS/ DIRECTORS / PARTNERS
 					</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr class="grid_row_template">
-					<td class="span11"><input id="namesOfShareholders" type="text" class="span12"/>
+					<td class="col-md-11"><input id="namesOfShareholders" type="text" class="col-md-12"/>
 					</td>
-					<td class="span1"><a id="shareholders_Delete" class="btn btn-small "><i class="icon-trash"></i></a></td>
+					<td class="col-md-1"><a id="shareholders_Delete" class="btn btn-sm "><i class="glyphicon glyphicon-trash"></i></a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div class="row-fluid">
-		<label class="span3"> Annual Turnover <input type="text" class="span8" placeholder="KES">
-		</label> <label class="span3">Annual Net Profit <input type="number" step="0.01" class="span8"  placeholder="KES">
+	<div class="row">
+		<label class="col-md-3"> Annual Turnover <input type="text" class="col-md-8" placeholder="KES">
+		</label> <label class="col-md-3">Annual Net Profit <input type="number" step="0.01" class="col-md-8"  placeholder="KES">
 		</label>
 	</div>
 	
-	<div class="row-fluid">
-		<label class="span6"> Associate Companies (Where applicable) <textarea type="text" class="span12"></textarea>
+	<div class="row">
+		<label class="col-md-6"> Associate Companies (Where applicable) <textarea type="text" class="col-md-12"></textarea>
 		</label>
 	</div>
 	</div>
 	
 	<legend>DEALER /SUPPLIER:</legend>
 	<div class="border-section">
-		<a id="dealers_Add" class="btn btn-small btn-primary"><i class="icon-plus"></i></a>
-		<div class="row-fluid">
-		<table id="dealers" class="grid_template table-condensed span12">
+		<a id="dealers_Add" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+		<div class="row">
+		<table id="dealers" class="grid_template table-condensed col-md-12">
 			<thead>
 				<tr>
-					<td class="span3">DEALER NAME</td>
-					<td class="span2">POSTAL ADDRESS</td>
-					<td class="span2">TEL NO.</td>
-					<td class="span2">INVOICE NO/DATE</td>
-					<td class="span2">SALES PERSON.</td>
+					<td class="col-md-3">DEALER NAME</td>
+					<td class="col-md-2">POSTAL ADDRESS</td>
+					<td class="col-md-2">TEL NO.</td>
+					<td class="col-md-2">INVOICE NO/DATE</td>
+					<td class="col-md-2">SALES PERSON.</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr class="grid_row_template">
-					<td class="span3"><input id="dealerName" type="text" class="span12"></td>
-					<td class="span2"><input id="dealerAddress" type="text" class="span12"></td>
-					<td class="span2"><input id="dealerTel" type="text" class="span12"></td>
-					<td class="span2"><input id="dealerInvoice" type="text" class="span12"></td>
-					<td class="span2"><input id="dealerSalesPerson" type="text" class="span12"></td>
-					<td class="span1"><a id="dealers_Delete" class="btn btn-small "><i class="icon-trash"></i></a></td>
+					<td class="col-md-3"><input id="dealerName" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="dealerAddress" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="dealerTel" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="dealerInvoice" type="text" class="col-md-12"></td>
+					<td class="col-md-2"><input id="dealerSalesPerson" type="text" class="col-md-12"></td>
+					<td class="col-md-1"><a id="dealers_Delete" class="btn btn-sm "><i class="glyphicon glyphicon-trash"></i></a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -378,82 +378,82 @@
 	
 	<legend>ASSET DETAILS / FACILITY:</legend>
 	<div class="border-section">
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span4">Make</label>
-				<input id="make" type="text" class="span8">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="col-md-4">Make</label>
+				<input id="make" type="text" class="col-md-8">
 			</div>
-			<div class="span2" id="newUsed">
-				<label class="span6">
-				<input id="newMachinery" name="newUsed" type="radio"  value="newMachinery" class="span3">
+			<div class="col-md-2" id="newUsed">
+				<label class="col-md-6">
+				<input id="newMachinery" name="newUsed" type="radio"  value="newMachinery" class="col-md-3">
 				New
 				</label>
-				<label class="span6">
-				<input id="UsedMachinery" name="newUsed" type="radio" value="usedMachinery"  class="span3">
+				<label class="col-md-6">
+				<input id="UsedMachinery" name="newUsed" type="radio" value="usedMachinery"  class="col-md-3">
 				Used
 				</label>
 			</div>
-			<div class="span4 pull-right">
-				<label class="span6">Invoice Price</label>
-				<input id="invoicePrice" type="number" step="0.01" class="span6"  placeholder="KES">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6">Invoice Price</label>
+				<input id="invoicePrice" type="number" step="0.01" class="col-md-6"  placeholder="KES">
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span4">Model / CC Rating</label>
-				<input id="model" type="text" class="span8">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="col-md-4">Model / CC Rating</label>
+				<input id="model" type="text" class="col-md-8">
 			</div>
 			
-			<div class="span4 pull-right">
-				<label class="span6">Less: Discounts</label>
-				<input id="discounts" type="number" step="0.01" class="span6" placeholder="KES">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6">Less: Discounts</label>
+				<input id="discounts" type="number" step="0.01" class="col-md-6" placeholder="KES">
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span4">Year of manufacture</label>
-				<input id="year" type="text" class="span8">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="col-md-4">Year of manufacture</label>
+				<input id="year" type="text" class="col-md-8">
 			</div>
 			
-			<div class="span4 pull-right">
-				<label class="span6"><strong>Net Cost</strong></label>
-				<input id="netCost" type="number" step="0.01" class="span6"  placeholder="KES">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6"><strong>Net Cost</strong></label>
+				<input id="netCost" type="number" step="0.01" class="col-md-6"  placeholder="KES">
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span4">Valuation Amount</label>
-				<input id="valuation" type="text" class="span6" title="Valuation Amount" data-html="true" data-content="Valuation amount if Applicable">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="col-md-4">Valuation Amount</label>
+				<input id="valuation" type="text" class="col-md-6" title="Valuation Amount" data-html="true" data-content="Valuation amount if Applicable">
 			</div>
 			
-			<div class="span4 pull-right">
-				<label class="span6">Add: Accessories/ Other</label>
-				<input id="accessories" type="number" step="0.01" class="span6"  placeholder="KES">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6">Add: Accessories/ Other</label>
+				<input id="accessories" type="number" step="0.01" class="col-md-6"  placeholder="KES">
 			</div>
 		</div>
 		
-		<div class="row-fluid">
-			<div class="span4 pull-right">
-				<label class="span6"><strong>Total Cost</strong></label>
-				<input id="totalCost" type="number" step="0.01" class="span6"  placeholder="KES">
+		<div class="row">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6"><strong>Total Cost</strong></label>
+				<input id="totalCost" type="number" step="0.01" class="col-md-6"  placeholder="KES">
 			</div>
 		</div>
 		
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span4">Proposed Insurer</label>
-				<input id="insurer" type="text" class="span8" title="Proposed Insurer" data-html="true" data-content="Proposed Insurer">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="col-md-4">Proposed Insurer</label>
+				<input id="insurer" type="text" class="col-md-8" title="Proposed Insurer" data-html="true" data-content="Proposed Insurer">
 			</div>
 			
-			<div class="span4 pull-right">
-				<label class="span6">Less: Deposit</label>
-				<input id="deposit" type="number" step="0.01" class="span6"  placeholder="KES">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6">Less: Deposit</label>
+				<input id="deposit" type="number" step="0.01" class="col-md-6"  placeholder="KES">
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span4 pull-right">
-				<label class="span6"><strong>Balance of Cost</strong></label>
-				<input id="totalNetCost" type="number" step="0.01"  class="span6" placeholder="KES">
+		<div class="row">
+			<div class="col-md-4 pull-right">
+				<label class="col-md-6"><strong>Balance of Cost</strong></label>
+				<input id="totalNetCost" type="number" step="0.01"  class="col-md-6" placeholder="KES">
 			</div>
 		</div>
 	</div>

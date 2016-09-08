@@ -66,13 +66,13 @@ public class ImageCarousel extends Composite {
 				}
 
 				row = new HTMLPanel("");
-				row.addStyleName("row-fluid");
+				row.addStyleName("row");
 				item.add(row);
 				carouselPanel.add(item);
 			}
 
 			HTMLPanel span3 = new HTMLPanel("");
-			span3.addStyleName("span"+getSize());
+			span3.addStyleName("col-md-"+getSize());
 			Anchor a = new ActionLink(attachment);
 			a.addStyleName("thumbnail");
 			a.setTitle(attachment.getName());

@@ -3,14 +3,14 @@
 			 xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 			 xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
-		    <div class="span2 image">
+		    <div class="col-md-2 image">
 		        	<g:Image ui:field="img" width="45px"/>
 					<!-- img src="img/blueman.png" width="45px"/ -->
 			</div>
 				
 			<span ui:field="spnArrow" class="arrow"></span>
 				
-		   <div class="span10 textbox">
+		   <div class="col-md-10 textbox">
 			   <g:FocusPanel ui:field="commentPanel">
 					<g:HTMLPanel styleName="comment-container comment-small" ui:field="commentContainer">
 						<g:TextArea ui:field="commentBox" styleName="textarea-box textarea-small"></g:TextArea>

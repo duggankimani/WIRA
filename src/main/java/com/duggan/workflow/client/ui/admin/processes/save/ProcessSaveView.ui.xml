@@ -14,10 +14,10 @@
 		<g:HTMLPanel>
 			<g:HTMLPanel styleName="modal-header">
 				<h5>
-					<i class="icon-cogs"></i>
+					<i class="glyphicon glyphicon-cogs"></i>
 					New Process Wizard
 					<g:Anchor ui:field="aClose">
-						<i class="icon-remove pull-right" />
+						<i class="glyphicon glyphicon-remove pull-right" />
 					</g:Anchor>
 				</h5>
 			</g:HTMLPanel>
@@ -56,7 +56,7 @@
 				<div class="form-actions">
 					<g:Anchor styleName="btn btn-success pull-right" ui:field="aNext">Next
 						&nbsp;
-						<i class="icon-double-angle-right"></i>
+						<i class="glyphicon glyphicon-double-angle-right"></i>
 					</g:Anchor>
 				</div>
 			</g:HTMLPanel>
@@ -80,12 +80,12 @@
 				<g:HTMLPanel styleName="form-actions">
 					<div class="pull-right">
 						<g:Anchor styleName="btn btn-default" ui:field="aBack">
-							<i class="icon-double-angle-left"></i>
+							<i class="glyphicon glyphicon-double-angle-left"></i>
 							&nbsp; Back
 						</g:Anchor>
 						<g:Anchor styleName="btn btn-success" ui:field="aFinish">Finish
 							&nbsp;
-							<i class="icon-double-angle-right"></i>
+							<i class="glyphicon glyphicon-double-angle-right"></i>
 						</g:Anchor>
 					</div>
 				</g:HTMLPanel>

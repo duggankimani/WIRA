@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
-	<g:HTMLPanel styleName="control-group" ui:field="panelGroup">
+	<g:HTMLPanel styleName="form-group" ui:field="panelGroup">
 		<label ui:field="lblEl" class="control-label">List Field:</label>
 		<g:HTMLPanel styleName="controls" ui:field="panelControls">
 			<d:DropDownList ui:field="lstItems" styleName="input-xlarge" title=""></d:DropDownList>

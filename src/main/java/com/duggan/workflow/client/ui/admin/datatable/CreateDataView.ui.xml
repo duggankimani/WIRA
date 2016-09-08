@@ -17,12 +17,12 @@
 					
 					<g:Anchor ui:field="aNew" styleName="btn btn-primary"
 						title="New Form">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Add Record
 					</g:Anchor>
 					<g:Anchor ui:field="aImport" styleName="btn btn-primary"
 						title="New Form">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Import Records
 					</g:Anchor>
 				</g:HTMLPanel>

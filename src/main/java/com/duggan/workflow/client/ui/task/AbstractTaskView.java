@@ -337,7 +337,7 @@ public class AbstractTaskView extends ViewImpl implements
 			spnSubject.setInnerText("Fill in request form");
 
 			Element spnAttach = DOM.createSpan();
-			spnAttach.addClassName("icon-paper-clip clip hidden");
+			spnAttach.addClassName("glyphicon glyphicon-paper-clip clip hidden");
 			if (doc.hasAttachment()) {
 				spnAttach.removeClassName("hidden");
 			}
@@ -381,17 +381,17 @@ public class AbstractTaskView extends ViewImpl implements
 
 				dateToUse = summ.getCreated();
 				if (status.equals(HTStatus.COMPLETED)) {
-					spnDocIcon.addStyleName("icon-ok");
+					spnDocIcon.addStyleName("glyphicon glyphicon-ok");
 					spnDocIcon.setTitle("Completed Task");
 					dateToUse = summ.getCompletedOn();
 				} else if (status.equals(HTStatus.SUSPENDED)) {
-					spnDocIcon.addStyleName("icon-pause");
+					spnDocIcon.addStyleName("glyphicon glyphicon-pause");
 					spnDocIcon.setTitle("Task Currently Suspended");
 				} else if (status.equals(HTStatus.INPROGRESS)) {
-					spnDocIcon.addStyleName("icon-forward");
+					spnDocIcon.addStyleName("glyphicon glyphicon-forward");
 					spnDocIcon.setTitle("Task Currently in Progress");
 				} else {
-					spnDocIcon.addStyleName("icon-play");
+					spnDocIcon.addStyleName("glyphicon glyphicon-play");
 					spnDocIcon.setTitle("Task Awaiting your action");
 				}
 
@@ -416,10 +416,10 @@ public class AbstractTaskView extends ViewImpl implements
 				Document document = (Document) doc;
 				spnStatus.setText(document.getStatus().name());
 				if (document.getStatus() != DocStatus.DRAFTED) {
-					spnDocIcon.addStyleName("icon-ok");
+					spnDocIcon.addStyleName("glyphicon glyphicon-ok");
 					spnDocIcon.setTitle("Completed Task");
 				} else {
-					spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
+					spnDocIcon.addStyleName("glyphicon glyphicon-file-alt color-silver-dark");
 				}
 			}
 
@@ -495,7 +495,7 @@ public class AbstractTaskView extends ViewImpl implements
 			spnPriority.addStyleName("priority");
 			switch (priority) {
 			case CRITICAL:
-				spnPriority.addStyleName("label-important");
+				spnPriority.addStyleName("label-danger");
 				break;
 
 			case HIGH:
@@ -610,7 +610,7 @@ public class AbstractTaskView extends ViewImpl implements
 			if (!isCompleted) {
 				spnDeadline.getStyle().setColor("red");
 			}
-			// spnDeadline.addClassName("label-important");
+			// spnDeadline.addClassName("label-danger");
 		} else if (DateUtils.isDueInMins(30, endDateDue)) {
 
 			String timeDiff = DateUtils.getTimeDifference(endDateDue);

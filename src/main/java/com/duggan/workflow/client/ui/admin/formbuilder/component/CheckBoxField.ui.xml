@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:AbsolutePanel ui:field="container">
-		<g:HTMLPanel styleName="control-group" ui:field="panelGroup">
+		<g:HTMLPanel styleName="form-group" ui:field="panelGroup">
 			<label ui:field="lblEl" class="control-label">Checkbox</label>
 			<div class="controls">
 				<g:CheckBox ui:field="component"></g:CheckBox>

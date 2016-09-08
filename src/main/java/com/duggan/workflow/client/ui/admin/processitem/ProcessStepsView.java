@@ -216,20 +216,20 @@ public class ProcessStepsView extends ViewImpl implements
 			
 			Link updateCondition = new Link("Edit", dto, +1);
 			updateCondition.addClickHandler(new EditConditionsHandler());
-			updateCondition.getElement().setInnerHTML("<span class=\"icon-pencil\"></span> Edit");
+			updateCondition.getElement().setInnerHTML("<span class=\"glyphicon glyphicon-pencil\"></span> Edit");
 			conditionsPanel.add(updateCondition);
 
 			HTMLPanel actions = new HTMLPanel("");
 			actions.getElement().getStyle().setProperty("minWidth", "120px");
 			Link up = new Link("Up", dto, -1);
-			up.getElement().setInnerHTML("<span class=\"icon-arrow-up\"></span> Up");
+			up.getElement().setInnerHTML("<span class=\"glyphicon glyphicon-arrow-up\"></span> Up");
 			up.addStyleName(buttonStyle + " "
 					+ (dto.getSequenceNo() == 1 ? "hide" : ""));
 			up.addClickHandler(new SequenceChangeHandler());
 			actions.add(up);
 
 			Link down = new Link("Down", dto, +1);
-			down.getElement().setInnerHTML("<span class=\"icon-arrow-down\"></span> Down");
+			down.getElement().setInnerHTML("<span class=\"glyphicon glyphicon-arrow-down\"></span> Down");
 			down.addStyleName(buttonStyle + " "
 					+ (dto.getSequenceNo() == dtos.size() ? "hide" : ""));
 			down.addClickHandler(new SequenceChangeHandler());
@@ -237,7 +237,7 @@ public class ProcessStepsView extends ViewImpl implements
 
 			Link link = new Link("Delete", dto, 0);
 			link.addStyleName(buttonStyle);
-			link.getElement().setInnerHTML("<span class=\"icon-trash\"></span> Delete");
+			link.getElement().setInnerHTML("<span class=\"glyphicon glyphicon-trash\"></span> Delete");
 			link.addClickHandler(deleteHandler);
 			actions.add(link);
 

@@ -361,7 +361,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aPrevious = new ActionLink();
 		aPrevious.getElement().setInnerSafeHtml(
 				new SafeHtmlBuilder().appendHtmlConstant(
-						"<i class=\"icon-double-angle-left\"></i>")
+						"<i class=\"glyphicon glyphicon-double-angle-left\"></i>")
 						.toSafeHtml());
 		liPrevious.add(aPrevious);
 		// Added on setTaskSteps/ Form Steps
@@ -371,7 +371,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aNext = new ActionLink();
 		aNext.getElement().setInnerSafeHtml(
 				new SafeHtmlBuilder().appendHtmlConstant(
-						"<i class=\"icon-double-angle-right\"></i>")
+						"<i class=\"glyphicon glyphicon-double-angle-right\"></i>")
 						.toSafeHtml());
 		liNext.add(aNext);
 		// Added after all steps have been
@@ -616,7 +616,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 			switch (prty) {
 			case CRITICAL:
-				spnPriority.addStyleName("label-important");
+				spnPriority.addStyleName("label-danger");
 				// spnPriority.setInnerText("Urgent");
 				break;
 

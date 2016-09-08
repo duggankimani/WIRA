@@ -138,18 +138,18 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			}
 			
 			if(status.equals(HTStatus.COMPLETED)){
-				spnDocIcon.addStyleName("icon-ok");
+				spnDocIcon.addStyleName("glyphicon glyphicon-ok");
 				spnDocIcon.setTitle("Completed Task");
 			}
 			else if(status.equals(HTStatus.SUSPENDED)){
-				spnDocIcon.addStyleName("icon-pause");
+				spnDocIcon.addStyleName("glyphicon glyphicon-pause");
 				spnDocIcon.setTitle("Task Currently Suspended");
 			}else if(status.equals(HTStatus.INPROGRESS)){
-				spnDocIcon.addStyleName("icon-forward");
+				spnDocIcon.addStyleName("glyphicon glyphicon-forward");
 				spnDocIcon.setTitle("Task Currently in Progress");
 			}
 			else {
-				spnDocIcon.addStyleName("icon-play");
+				spnDocIcon.addStyleName("glyphicon glyphicon-play");
 				spnDocIcon.setTitle("Task Awaiting your action");
 			}
 			
@@ -172,10 +172,10 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			Document doc =(Document)aDoc;
 			setDocumentActions(doc.getStatus());
 			if(doc.getStatus()!=DocStatus.DRAFTED){
-				spnDocIcon.addStyleName("icon-ok");
+				spnDocIcon.addStyleName("glyphicon glyphicon-ok");
 				spnDocIcon.setTitle("Completed Task");
 			}else{
-				spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
+				spnDocIcon.addStyleName("glyphicon glyphicon-file-alt color-silver-dark");
 			}	
 		}
 		
@@ -235,7 +235,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 		
 		switch (priority) {
 		case CRITICAL:
-			spnPriority.addStyleName("label-important");
+			spnPriority.addStyleName("label-danger");
 			break;
 
 		case HIGH:
@@ -259,7 +259,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 			spnDeadline.setInnerText("Overdue");			
 			spnDeadline.setTitle("Overdue "+timeDiff+" Ago");
 			spnDeadline.removeClassName("hidden");
-			spnDeadline.addClassName("label-important");
+			spnDeadline.addClassName("label-danger");
 		}else if(DateUtils.isDueInMins(30, endDateDue)){
 			
 			String timeDiff = DateUtils.getTimeDifference(endDateDue);
@@ -421,7 +421,7 @@ public class TaskItemView extends ViewImpl implements TaskItemPresenter.ITaskIte
 	@Override
 	public void setTask(boolean isTask) {
 		if(isTask){
-			spnDocIcon.addStyleName("icon-ok");
+			spnDocIcon.addStyleName("glyphicon glyphicon-ok");
 		}
 	}
 

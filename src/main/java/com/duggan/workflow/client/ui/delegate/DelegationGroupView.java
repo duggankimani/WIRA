@@ -53,9 +53,9 @@ public class DelegationGroupView extends Composite implements PresentUserHandler
 	
 	
 	private void setAccordion() {
-		divContainer.setAttribute("id", "accordion"+groupCounter);
+		divContainer.setAttribute("id", "panel-group"+groupCounter);
 		aAccordion.getElement().setAttribute("data-toggle", "collapse");
-		aAccordion.getElement().setAttribute("data-parent", "#accordion"+groupCounter);
+		aAccordion.getElement().setAttribute("data-parent", "#panel-group"+groupCounter);
 		aAccordion.setHref("#collapse"+groupCounter);
 		divAccordion.setAttribute("id", "collapse"+groupCounter);
 		if(groupCounter==1){

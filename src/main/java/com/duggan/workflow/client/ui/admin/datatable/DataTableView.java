@@ -137,7 +137,7 @@ public class DataTableView extends ViewImpl implements
 
 		final Anka data = new Anka("Data", c);
 		data.addStyleName("btn btn-primary");
-		data.getElement().setInnerHTML("<i class=\"icon-hdd\"></i>");
+		data.getElement().setInnerHTML("<i class=\"glyphicon glyphicon-hdd\"></i>");
 		panel.add(data);
 		data.addClickHandler(new ClickHandler() {
 
@@ -151,7 +151,7 @@ public class DataTableView extends ViewImpl implements
 		final Anka edit = new Anka("", c);
 		edit.addStyleName("btn btn-success");
 		edit.getElement().setInnerHTML(
-				"<i class=\"icon-pencil helper-14\"></i>");
+				"<i class=\"glyphicon glyphicon-pencil helper-14\"></i>");
 		edit.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -163,7 +163,7 @@ public class DataTableView extends ViewImpl implements
 
 		final Anka delete = new Anka("", c);
 		delete.addStyleName("btn btn-danger");
-		delete.getElement().setInnerHTML("<i class=\"icon-trash\"></i>");
+		delete.getElement().setInnerHTML("<i class=\"glyphicon glyphicon-trash\"></i>");
 		delete.addClickHandler(new ClickHandler() {
 
 			@Override

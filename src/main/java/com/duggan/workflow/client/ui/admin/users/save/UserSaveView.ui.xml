@@ -15,7 +15,7 @@
 
 		<g:HTMLPanel styleName="">
 			<g:HTMLPanel styleName="hide" ui:field="divUserDetails">
-				<div class="control-group">
+				<div class="form-group">
 					<div class="controls">
 						<label for="Names">
 							<b>Names:</b>
@@ -27,7 +27,7 @@
 					</div>
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					<div class="controls">
 						<label for="Username">
 							<b>Username:</b>
@@ -36,7 +36,7 @@
 							placeholder="" />
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="form-group">
 					<div class="controls">
 						<label for="Email">
 							<b>Email:</b>
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 
-				<div class="control-group hide">
+				<div class="form-group hide">
 					<label for="ProcessName">
 						<b>Password:</b>
 					</label>
@@ -54,7 +54,7 @@
 						class="form-control" placeholder="Password" />
 				</div>
 
-				<div class="control-group hide">
+				<div class="form-group hide">
 					<label class="control-label">
 						<b>Confirm Password:</b>
 					</label>
@@ -62,24 +62,24 @@
 						type="password" class="form-control" placeholder="Confirm Password" />
 				</div>
 				
-				<div class="control-group">
+				<div class="form-group">
 					<label class="control-label">
 						Organization:
 					</label>
 					<d:DropDownList ui:field="lstOrg" />
 				</div>
-				<div class="control-group">
+				<div class="form-group">
 					<g:CheckBox ui:field="chkSendEmail" text="Send account activation email" 
 						styleName="form-control"/>
 				</div>
 				
-				<div class="control-group">
+				<div class="form-group">
 					<label class="control-label">
 						<b>Group:</b>
 					</label>
 					<d:AutoCompleteField ui:field="lstGroups" />
 				</div>
-				<div class="control-group hide">
+				<div class="form-group hide">
 					<label class="control-label">
 						<b>User Image</b>
 					</label>
@@ -93,12 +93,12 @@
 		<div class="form-actions hide" ui:field="divUserSave">
 			<g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
 				Save&nbsp;
-				<i class="icon-double-angle-right"></i>
+				<i class="glyphicon glyphicon-double-angle-right"></i>
 			</g:Anchor>
 		</div>
 
 		<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
-			<g:HTMLPanel styleName="control-group">
+			<g:HTMLPanel styleName="form-group">
 				<div class="form-group">
 					<label for="ProcessName">Group Name:</label>
 					<d:TextField ui:field="txtGroupname" class="form-control"
@@ -119,17 +119,17 @@
 			<div class="form-actions hide">
 				<g:Anchor ui:field="aSaveGroup" styleName="btn btn-primary pull-left">
 					Save&nbsp;
-					<i class="icon-double-angle-right"></i>
+					<i class="glyphicon glyphicon-double-angle-right"></i>
 				</g:Anchor>
 			</div>
 		</g:HTMLPanel>
 		
-		<div class="row-fluid hide" ui:field="divPermissions">
+		<div class="row hide" ui:field="divPermissions">
 			<label style="display:block; padding-bottom:5px">Permissions</label>
 			<g:FlexTable styleName="table" ui:field="tblPermissions"></g:FlexTable>
 		</div>
 
-		<g:HTMLPanel ui:field="divUnitDetails" styleName="row-fluid hide">
+		<g:HTMLPanel ui:field="divUnitDetails" styleName="row hide">
 			<g:HTMLPanel styleName="form-control">
 				<div class="form-group">
 					<label for="txtUnitName">Name:</label>

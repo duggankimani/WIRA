@@ -35,10 +35,10 @@
 <body>
 
 	<div class="login-bg" id="mainContent">
-		<div class="row-fluid login-wrapper">
-			<a class="brand hide" href="#"></a>
+		<div class="row login-wrapper">
+			<a class="navbar-brand hide" href="#"></a>
 
-			<div class="span4 box" id="loadingbox">
+			<div class="col-md-4 box" id="loadingbox">
 				<div id="status" class="content-wrap">
 					<form id="login" action="javascript:doFormSubmit();">
 						<img id="logo-image" class="logo-image" src="img/wiralogo.png"
@@ -47,12 +47,12 @@
 							style="padding-top: 10px !important; padding-bottom: 10px !important; font-family: Source Sans Pro, sans-serif; color: #656565; font-size: 14px;">
 							PLEASE SIGN IN</p>
 						<span class="hide loadingtext" id="loading"> <i
-							class="icon-spinner icon-spin icon-large"></i> Logging In...
+							class="glyphicon glyphicon-spinner icon-spin icon-large"></i> Logging In...
 						</span>
 						<div id="issues" class="hide alert alert-danger">Wrong username or password</div>
-						<input type="text" id="username" name="username" class="span12"></input>
+						<input type="text" id="username" name="username" class="col-md-12"></input>
 						<input type="password" id="password" name="password"
-							class="span12"></input>
+							class="col-md-12"></input>
 						<div class="remember">
 							<input id="remember-me" type="checkbox"></input> <label
 								for="remember-me">Keep me Signed In</label>

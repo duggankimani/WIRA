@@ -24,18 +24,18 @@
   <body>     
 
     <!--Main Container-->
-    <div class="row-fluid main-container">    
-      <div id="sidebar-nav" class="span2">
+    <div class="row main-container">    
+      <div id="sidebar-nav" class="col-md-2">
         <!--Button Add Document -->
-        <div class="add-doc"><button class="btn-danger btn-large" type="button">Add Document</button></div>
+        <div class="add-doc"><button class="btn-danger btn-lg" type="button">Add Document</button></div>
         
 
         <ul id="dashboard-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-book"></i>
+                    <i class="glyphicon glyphicon-book"></i>
                     <span>My Documents</span>
-                    <i class="icon-chevron-up"></i>
+                    <i class="glyphicon glyphicon-chevron-up"></i>
                 </a>
                 <ul class="submenu">
                     <li><a href="user-list.html">In Progress(2)</a></li>
@@ -47,9 +47,9 @@
 
             <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-tasks"></i>
+                    <i class="glyphicon glyphicon-tasks"></i>
                     <span>Approval Request</span>
-                    <i class="icon-chevron-up"></i>
+                    <i class="glyphicon glyphicon-chevron-up"></i>
                 </a>
                 <ul class="submenu second-menu">
                     <li><a href="user-list.html">New Request(2)</a></li>
@@ -60,13 +60,13 @@
         </ul>
       </div>
       <!--middle navigation-->
-      <div id="middle-nav" class="span4">
-        <div class="row-fluid nav-top">
+      <div id="middle-nav" class="col-md-4">
+        <div class="row nav-top">
           <input class="search" type="text">
-          <i class="icon-refresh icon-large"></i>
+          <i class="glyphicon glyphicon-refresh icon-large"></i>
         </div>
 
-          <div class="header-nav row-fluid">
+          <div class="header-nav row">
                <h5>IN PROGRESS</h5>         
                <div class="ui-dropdown">
                   <div class="head">
@@ -108,12 +108,12 @@
                </div>
           </div>
 
-        <div class="content-nav row-fluid">
+        <div class="content-nav row">
 
         <ul id="navigation-menu">
            <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-caret-right"></i>
+                    <i class="glyphicon glyphicon-caret-right"></i>
                     <span>Today</span>
                 </a>
                 <ul class="submenu">
@@ -128,7 +128,7 @@
                    <div class="message-container">
                       <div class="unread">
                         <p>
-                         <span class="label label-important">Urgent</span>                       	
+                         <span class="label label-danger">Urgent</span>                       	
                           <b>Inv / Fin / 023 / 2013<br/>Licence and Support payments for the ERP</b></p>
                        </div>
                   </div>
@@ -141,7 +141,7 @@
 
             <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-caret-right"></i>
+                    <i class="glyphicon glyphicon-caret-right"></i>
                     <span>Wednesday</span>
                 </a>
                 <ul class="submenu">
@@ -162,7 +162,7 @@
 
             <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-caret-right"></i>
+                    <i class="glyphicon glyphicon-caret-right"></i>
                     <span>Tuesday</span>
                 </a>
                 <ul class="submenu">
@@ -183,7 +183,7 @@
 
             <li class="active">
                 <a class="dropdown-toggle" href="#">
-                    <i class="icon-caret-right"></i>
+                    <i class="glyphicon glyphicon-caret-right"></i>
                     <span>Monday</span>
                 </a>
                 <ul class="submenu">
@@ -206,20 +206,20 @@
         </div>
       </div>
       <!--Detailed Panel Description-->
-      <div id="detailed-info" class="span5">
+      <div id="detailed-info" class="col-md-5">
           <br/>
-          <div class="action-area row-fluid">            
-                <a class="btn-success btn-large" type="button"><i class="icon-share-alt"></i>Forward for Approval</a>
-                <a class="btn-success btn-large" type="button"><i class="icon-ok"></i>Approve</a>
-                <a class="btn-danger btn-large" type="button"><i class="icon-remove"></i>Disapprove</a>     
+          <div class="action-area row">            
+                <a class="btn-success btn-lg" type="button"><i class="glyphicon glyphicon-share-alt"></i>Forward for Approval</a>
+                <a class="btn-success btn-lg" type="button"><i class="glyphicon glyphicon-ok"></i>Approve</a>
+                <a class="btn-danger btn-lg" type="button"><i class="glyphicon glyphicon-remove"></i>Disapprove</a>     
           </div>
 
              
-           <div class="well personal_info row-fluid">
-                 <div class="span1">
+           <div class="well personal_info row">
+                 <div class="col-md-1">
                  <img data-src="img/tom_pass.jpg" src="img/tom_pass.jpg" width="50px" height="100px">
                 </div>
-                <div class="span4">
+                <div class="col-md-4">
                   <address>
                   <strong>Tom Kimani</strong><br/>
                   22nd Aug 2013
@@ -227,7 +227,7 @@
                 </div>
           </div>
 
-          <div class="row-fluid content-area">       
+          <div class="row content-area">       
            <h5><strong>LPO/JK/0106/13</strong></h5>
            Value: Ksh 556,000<br/>
            Purchase Order for the Purchase of Daily Cows.<br>
@@ -238,9 +238,9 @@
            Purchase Order for the Purchase of Daily Cows
            <div>
 
-           <div class="attachment-section row-fluid">
+           <div class="attachment-section row">
              <strong>Attatchments:</strong><br/>
-             <i class="icon-paper-clip icon-large"></i>
+             <i class="glyphicon glyphicon-paper-clip icon-large"></i>
                <img src="img/image_holder.png" class="img-polaroid" height="50px" width="50px">
                 Scanned_Invoince.jpg
                <a href="#">View</a>
@@ -248,19 +248,19 @@
             </div>
 
 
-            <div class="status-section row-fluid">
+            <div class="status-section row">
               <strong>Document Status:</strong><br/>
-              <span class="label label-success"><i class="icon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
-              <span class="label label-default"><i class="icon-remove-circle"></i>CEO APPROVAL</span>
+              <span class="label label-success"><i class="glyphicon glyphicon-ok-circle"></i>CREATED</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="glyphicon glyphicon-remove-circle"></i>HOD APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="glyphicon glyphicon-remove-circle"></i>FINANCE APPROVAL</span><i class="icon-chevron-right"></i>
+              <span class="label label-default"><i class="glyphicon glyphicon-remove-circle"></i>CEO APPROVAL</span>
             </div>
             <hr/>
 
-             <div class="row-fluid comment-section">
+             <div class="row comment-section">
             <strong>Comments:</strong><br/>
             <textarea name="comments"></textarea>
-            <div class="well"><a class="btn-success btn-large pull-right" type="button">Save</a></div>
+            <div class="well"><a class="btn-success btn-lg pull-right" type="button">Save</a></div>
              </div>  
 
       </div>
@@ -268,15 +268,15 @@
       <!--Footer-->
       <!--div class="container"> 
         <hr>
-            <div class="row-fluid">
-              <div class="span12">
-                <div class="span8">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-8">
                   <a href="#">Terms of Service</a>    
                   <a href="#">Privacy</a>    
                   <a href="#">Security</a>
                 </div>
-                <div class="span4">
-                  <p class="muted pull-right">© MD-Kimani Inc. All rights reserved</p>
+                <div class="col-md-4">
+                  <p class="text-muted pull-right">© MD-Kimani Inc. All rights reserved</p>
                 </div>
               </div>
             </div>

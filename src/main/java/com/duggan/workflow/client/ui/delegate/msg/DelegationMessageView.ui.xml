@@ -6,7 +6,7 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-	    <div class="row-fluid comment-box">
+	    <div class="row comment-box">
 	        <span>Email To:</span>
 	        <g:InlineLabel ui:field="lblEmailTo"></g:InlineLabel>
 	        <p></p>

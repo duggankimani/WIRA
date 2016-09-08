@@ -7,7 +7,7 @@
 	ui:generateLocales='default'>
 	<d:BulletPanel styleName="active" ui:field="lstGroup">
        <g:Anchor styleName="dropdown-toggle">
-           <i class="icon-caret-right"></i>
+           <i class="glyphicon glyphicon-caret-right"></i>
            <span ui:field="spnDate"></span>
        </g:Anchor>
 	   <d:BulletListPanel styleName="submenu" ui:field="ulItemsContainer">

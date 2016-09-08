@@ -4,8 +4,8 @@
 	<g:HTMLPanel>
 		<v:IssuesPanel ui:field="issues">
 		</v:IssuesPanel>
-		<div class="row-fluid item">
-			<div class="span12">
+		<div class="row item">
+			<div class="col-md-12">
 				<legend>
 				    <span ui:field="spnFormCaption"></span>
 					<div style="float:right; text-align:right;font-weight: initial;">
@@ -15,7 +15,7 @@
 				</legend>
 			</div>
 		</div>
-		<div class="row-fluid item">
+		<div class="row item">
 			<span ui:field="divFormHelp" styleName="text-info"></span>
 		</div>
 		<g:HTMLPanel styleName="form-horizontal" ui:field="panelFields">

@@ -254,16 +254,16 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 	@Override
 	public void setComponentValid(boolean isValid) {
 		spnMsg.removeClassName("hide");
-		spnIcon.removeClassName("icon-ok-circle");
-		spnIcon.removeClassName("icon-remove-circle");
+		spnIcon.removeClassName("glyphicon glyphicon-ok-circle");
+		spnIcon.removeClassName("glyphicon glyphicon-remove-circle");
 		if (isValid) {
 			panelGroup.addStyleName("success");
-			spnIcon.addClassName("icon-ok-circle");
+			spnIcon.addClassName("glyphicon glyphicon-ok-circle");
 			panelGroup.removeStyleName("error");
 		} else {
 			panelGroup.removeStyleName("success");
 			panelGroup.addStyleName("error");
-			spnIcon.addClassName("icon-remove-circle");
+			spnIcon.addClassName("glyphicon glyphicon-remove-circle");
 		}
 	}
 

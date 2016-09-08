@@ -8,21 +8,21 @@
 
 	<g:HTMLPanel>
 		<div class="content-body overflow-y">
-			<div class="row-fluid">
+			<div class="row">
 				<div class="action-buttons">
 					<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary"
 						title="Add a New Trigger">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Add Trigger
 					</g:Anchor>
 					<g:Anchor ui:field="aCloneTrigger" styleName="btn btn-primary"
 						title="Copy Trigger">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Copy Trigger
 					</g:Anchor>
 				</div>
 			</div>
-			<div class="row-fluid">
+			<div class="row">
 			    Triggers use MVEL language. See 
 			    <a href="https://en.wikisource.org/wiki/MVEL_Language_Guide" target="_blank">MVEl wiki here</a>
 			</div>

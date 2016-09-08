@@ -66,7 +66,7 @@ public class ProfilePresenter extends
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-		TabDataExt data = new TabDataExt("Profile","icon-dashboard",11,adminGatekeeper, false);
+		TabDataExt data = new TabDataExt("Profile","glyphicon glyphicon-dashboard",11,adminGatekeeper, false);
         return data;
     }
 

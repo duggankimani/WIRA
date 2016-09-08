@@ -2,30 +2,30 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel styleName="container reports-presenter">
-		<div class="row-fluid">
-			<div class="span12">
+		<div class="row">
+			<div class="col-md-12">
 				<div ui:field="divReportView" class="hide">
-					<div class="span12 report-head">
-						<div class="span1">
+					<div class="col-md-12 report-head">
+						<div class="col-md-1">
 							<a class="btn btn-default" href="#reports">
-								<i class="icon-arrow-left"></i>
+								<i class="glyphicon glyphicon-arrow-left"></i>
 							</a>
 						</div>
-						<div class="span8">
+						<div class="col-md-8">
 							<h4 ui:field="divReportName" styleName="hide"></h4>
 						</div>
 
 
-						<div class="span3">
+						<div class="col-md-3">
 							<div class="btn-toolbar pull-right">
 								<div class="btn-group">
 									<a class="btn dropdown-toggle" data-toggle="dropdown">
-										<i class="icon-download"></i>
+										<i class="glyphicon glyphicon-download"></i>
 										Download
 										<span class="caret"></span>
 									</a>
 									<a class="btn" onclick="javascript(window.print())">
-										<i class="icon-print"></i>
+										<i class="glyphicon glyphicon-print"></i>
 										Print
 									</a>
 

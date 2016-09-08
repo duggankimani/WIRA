@@ -62,7 +62,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 			element.removeFromParent();
 
 			Element controlGroup = DOM.createDiv();
-			controlGroup.addClassName("form-group span3");
+			controlGroup.addClassName("form-group col-md-3");
 
 			id = element.getId()+ "_Field";
 			Element div = DOM.createDiv();
@@ -74,7 +74,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 			Element span = DOM.createSpan();
 			span.addClassName("input-group-addon");
 			span.getStyle().setPaddingLeft(26, Unit.PX);
-			span.setInnerHTML("<span class=\"icon-calendar\"></span>");
+			span.setInnerHTML("<span class=\"glyphicon glyphicon-calendar\"></span>");
 			div.appendChild(span);
 
 			controlGroup.appendChild(div);
@@ -169,12 +169,12 @@ public class DateInput extends Composite implements HasValue<Date> {
 																			$wnd.jQuery($doc).ready(function(){
 																			var dp = $wnd.jQuery("#"+id).datetimepicker({
 																			icons: {
-																			time: "icon-time",
-																			date: "icon-calendar",
-																			up: "icon-angle-up",
-																			down: "icon-angle-down",
-																			previous: 'icon-angle-left',
-																			next: 'icon-angle-right',
+																			time: "glyphicon glyphicon-time",
+																			date: "glyphicon glyphicon-calendar",
+																			up: "glyphicon glyphicon-angle-up",
+																			down: "glyphicon glyphicon-angle-down",
+																			previous: 'glyphicon glyphicon-angle-left',
+																			next: 'glyphicon glyphicon-angle-right',
 																			},
 																			format: 'DD-MM-YYYY',
 																			useCurrent:false,

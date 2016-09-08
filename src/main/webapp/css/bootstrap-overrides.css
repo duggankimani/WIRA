@@ -17,8 +17,8 @@ h1,h2,h3,h4,h5,h6{
 }
 
 /* alerts */
-.alert [class^="icon-"], 
-.alert [class*=" icon-"] {
+.alert [class^="glyphicon glyphicon-"], 
+.alert [class*=" glyphicon glyphicon-"] {
 	font-size: 27px;
 	position: relative;
 	top: 4px;
@@ -27,16 +27,16 @@ h1,h2,h3,h4,h5,h6{
 	display: inline-block;
 	color: #f1c359;
 }
-.alert-success [class^="icon-"], 
-.alert-success [class*=" icon-"] {
+.alert-success [class^="glyphicon glyphicon-"], 
+.alert-success [class*=" glyphicon glyphicon-"] {
 	color: #81ad53;
 }
-.alert-info [class^="icon-"], 
-.alert-info [class*=" icon-"] {
+.alert-info [class^="glyphicon glyphicon-"], 
+.alert-info [class*=" glyphicon glyphicon-"] {
 	color: #4993c6;
 }
-.alert-error [class^="icon-"], 
-.alert-error [class*=" icon-"] {
+.alert-error [class^="glyphicon glyphicon-"], 
+.alert-error [class*=" glyphicon glyphicon-"] {
 	color: #d5393e;
 }
 
@@ -165,14 +165,14 @@ textarea::-webkit-input-placeholder {
 
 
 /* PREPEND & APPEND INPUT */
-.input-append input, 
-.input-prepend input, 
-.input-append .uneditable-input, 
-.input-prepend .uneditable-input {
+.input-group input, 
+.input-group input, 
+.input-group .uneditable-input, 
+.input-group .uneditable-input {
 	border: 1px solid #d6e2eb;
 }
-.input-append .add-on, 
-.input-prepend .add-on {
+.input-group .input-group-addon, 
+.input-group .input-group-addon {
 	background-color: #f2f5f9;
 	border: 1px solid #d6e2eb;
 	padding: 4px 8px;
@@ -201,13 +201,13 @@ textarea::-webkit-input-placeholder {
 	float: left;
 	margin-top: 10px;
 }
-.navbar-inverse .brand {
+.navbar-inverse .navbar-brand {
 	color: #ffffff;
 	text-transform: uppercase;
 	font-weight: lighter;
 	padding: 12px 20px 12px;
 }
-.navbar-inverse .brand strong {
+.navbar-inverse .navbar-brand strong {
 	font-weight: normal;
 }
 .navbar-inverse .nav > li > a {

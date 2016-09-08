@@ -106,7 +106,7 @@ public class DataTablePresenter
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{DATATABLES_CAN_VIEW_DATATABLES}); 
-		TabDataExt ext = new TabDataExt(TABLABEL, "icon-th", 8, gateKeeper);
+		TabDataExt ext = new TabDataExt(TABLABEL, "glyphicon glyphicon-th", 8, gateKeeper);
 		return ext;
 	}
 

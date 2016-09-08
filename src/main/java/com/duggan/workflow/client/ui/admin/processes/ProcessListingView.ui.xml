@@ -3,21 +3,21 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 		<div class="content-body overflow-y" ui:field="divProcessListing">
-			<div class="row-fluid">
+			<div class="row">
 				<div ui:field="divGeneralActions" class="action-buttons">
 					<g:Anchor ui:field="aNewProcess" styleName="btn btn-primary"
 						title="Add a New Process">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Add Process
 					</g:Anchor>
 					<g:Anchor ui:field="aStartProcesses" styleName="btn btn-success"
 						title="Start All Processes">
-						<i class="icon-ok"></i>
+						<i class="glyphicon glyphicon-ok"></i>
 						Start All Processes
 					</g:Anchor>
 					<g:Anchor ui:field="aAddCategory" styleName="btn btn-primary"
 						title="Add Process Category">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						Add/Edit Categories
 					</g:Anchor>
 				</div>
@@ -26,35 +26,35 @@
 
 					<g:Anchor styleName="btn btn-success" ui:field="aConfigure">
 						Configure Process
-						<i class="icon-cogs"></i>
+						<i class="glyphicon glyphicon-cogs"></i>
 					</g:Anchor>
 
 					<g:Anchor styleName="btn btn-warning" ui:field="aEdit">
 						Edit
-						<i class="icon-pencil helper-14"></i>
+						<i class="glyphicon glyphicon-pencil helper-14"></i>
 					</g:Anchor>
 
 					<g:Anchor ui:field="aActivate" styleName="btn btn-success"
 						title="Activate Process">
 						Start
-						<i class="icon-play"></i>
+						<i class="glyphicon glyphicon-play"></i>
 					</g:Anchor>
 
 					<g:Anchor ui:field="aRefresh" styleName="btn btn-info"
 						title="Refresh Process">
 						Refresh
-						<i class="icon-undo"></i>
+						<i class="glyphicon glyphicon-undo"></i>
 					</g:Anchor>
 
 					<g:Anchor ui:field="aDeactivate" styleName="btn btn-inverse"
 						title="De-activate Process">
 						Stop
-						<i class="icon-minus-sign"></i>
+						<i class="glyphicon glyphicon-minus-sign"></i>
 					</g:Anchor>
 
 					<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
 						Delete
-						<i class="icon-trash"></i>
+						<i class="glyphicon glyphicon-trash"></i>
 					</g:Anchor>
 
 				</div>

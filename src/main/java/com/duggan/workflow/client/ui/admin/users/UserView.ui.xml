@@ -8,7 +8,7 @@
 
 	<g:HTMLPanel>
 		<div class="content-body no-overflow-y">
-			<div class="row-fluid">
+			<div class="row">
 				<ul class="nav nav-tabs" id="usermgt">
 					<li class="active">
 						<d:ActionLink ui:field="aUserstab" href="#users"
@@ -26,23 +26,23 @@
 
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="users">
-						<div class="row-fluid">
+						<div class="row">
 							<!--Action Buttons -->
 							<div class="action-buttons">
 								<g:Anchor ui:field="aNewUser" styleName="btn btn-primary"
 									title="Add a New User">
-									<i class="icon-plus"></i>
+									<i class="glyphicon glyphicon-plus"></i>
 									Add User
 								</g:Anchor>
 								<g:Anchor ui:field="aEditUser" styleName="btn btn-success hide"
 									title="Edit User">
-									<i class="icon-pencil"></i>
+									<i class="glyphicon glyphicon-pencil"></i>
 									Edit User
 								</g:Anchor>
 								
 								<g:Anchor ui:field="aDeleteUser" styleName="btn btn-danger hide"
 									title="Delete User">
-									<i class="icon-trash"></i>
+									<i class="glyphicon glyphicon-trash"></i>
 									Delete User
 								</g:Anchor>
 							</div>
@@ -57,23 +57,23 @@
 
 					<div class="tab-pane fade" id="groups">
 						<!-- Group's Table -->
-						<div class="row-fluid">
+						<div class="row">
 							<!--Action Buttons -->
 							<div class="action-buttons">
 								<g:Anchor ui:field="aNewGroup" styleName="btn btn-primary"
 									title="Add a New Group">
-									<i class="icon-plus"></i>
+									<i class="glyphicon glyphicon-plus"></i>
 									Add Group
 								</g:Anchor>
 								<g:Anchor ui:field="aEditGroup" styleName="btn btn-success hide"
 									title="Edit Group">
-									<i class="icon-pencil"></i>
+									<i class="glyphicon glyphicon-pencil"></i>
 									Edit Group
 								</g:Anchor>
 								
 								<g:Anchor ui:field="aDeleteGroup" styleName="btn btn-danger hide"
 									title="Delete Group">
-									<i class="icon-trash"></i>
+									<i class="glyphicon glyphicon-trash"></i>
 									Delete Group
 								</g:Anchor>
 							</div>
@@ -88,23 +88,23 @@
 					</div>
 					<div class="tab-pane" id="orgs">
 						<!-- Unit's Table -->
-						<div class="row-fluid">
+						<div class="row">
 							<!--Action Buttons -->
 							<div class="action-buttons">
 								<g:Anchor ui:field="aNewOrg" styleName="btn btn-primary"
 									title="Add a New Org">
-									<i class="icon-plus"></i>
+									<i class="glyphicon glyphicon-plus"></i>
 									Add Org
 								</g:Anchor>
 								<g:Anchor ui:field="aEditOrg" styleName="btn btn-success hide"
 									title="Edit Org">
-									<i class="icon-pencil"></i>
+									<i class="glyphicon glyphicon-pencil"></i>
 									Edit Org
 								</g:Anchor>
 								
 								<g:Anchor ui:field="aDeleteOrg" styleName="btn btn-danger hide"
 									title="Delete Org">
-									<i class="icon-trash"></i>
+									<i class="glyphicon glyphicon-trash"></i>
 									Delete Org
 								</g:Anchor>
 							</div>

@@ -9,9 +9,9 @@
 
 	<g:HTMLPanel styleName="full-page">
 		<g:HTMLPanel styleName="upper-content">
-			<div class="action-area row-fluid">
-				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel>
-				<div class="generic-doc-title span6">
+			<div class="action-area row">
+				<g:HTMLPanel styleName="col-md-1 priority" ui:field="spnPriority"></g:HTMLPanel>
+				<div class="generic-doc-title col-md-6">
 					<span ui:field="spnDocType"></span>
 					-&nbsp;
 					<span ui:field="spnSubject"></span>
@@ -19,87 +19,87 @@
 				<div class="action-buttons pull-right">
 					<d:ActionLink ui:field="aDoc" styleName="btn btn-default disabled"
 						title="View Data Form">
-						<i class="icon-file"></i>
+						<i class="glyphicon glyphicon-file"></i>
 						<!-- Process -->
 					</d:ActionLink>
 					<d:ActionLink ui:field="aAudit" styleName="btn btn-default disabled"
 						title="View Process Audit">
-						<i class="icon-time"></i>
+						<i class="glyphicon glyphicon-time"></i>
 						<!-- Process -->
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aProcess" styleName="btn btn-default disabled"
 						title="View Process Map">
-						<i class="icon-info"></i>
+						<i class="glyphicon glyphicon-info"></i>
 						<!-- Process -->
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aAttach2" styleName="btn btn-default hidden"
 						title="View attachments">
-						<i class="icon-upload-alt color-orange"></i>
+						<i class="glyphicon glyphicon-upload-alt color-orange"></i>
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aViewAttachments" styleName="btn btn-default"
 						title="View attachments">
-						<i class="icon-paper-clip color-black"></i>
+						<i class="glyphicon glyphicon-paper-clip color-black"></i>
 						<sup ui:field="elAttachmentsCount" class="text-info" style="line-height:20px;"></sup>
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
 							title="Edit">
-						<i class="icon-pencil color-black"></i>
+						<i class="glyphicon glyphicon-pencil color-black"></i>
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aSave" styleName="btn btn-default">
-						<i class="icon-save"></i>
+						<i class="glyphicon glyphicon-save"></i>
 						Save
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
 						title="Configure">
-						<i class="icon-cogs color-black"></i>
+						<i class="glyphicon glyphicon-cogs color-black"></i>
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aStart" styleName="btn btn-success hidden"
 						title="Start working on the task">
-						<i class="icon-play"></i>
+						<i class="glyphicon glyphicon-play"></i>
 						Start
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aResume" styleName="btn btn-success hidden">
-						<i class="icon-play"></i>
+						<i class="glyphicon glyphicon-play"></i>
 						Resume
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aComplete" styleName="btn btn-success hidden">
-						<i class="icon-ok"></i>
+						<i class="glyphicon glyphicon-ok"></i>
 						Complete
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aStop" styleName="btn btn-default hidden">
-						<i class="icon-stop"></i>
+						<i class="glyphicon glyphicon-stop"></i>
 						Stop
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aForward" styleName="hidden btn btn-success hidden">
-						<i class="icon-share-alt"></i>
+						<i class="glyphicon glyphicon-share-alt"></i>
 						Submit <!-- Forward For Approval -->
 					</d:ActionLink>
 					
 					<d:ActionLink ui:field="aApprove" styleName="btn btn-success"
 						title="Approve document">
-						<i class="icon-ok"></i>
+						<i class="glyphicon glyphicon-ok"></i>
 						Approve
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aReject" styleName="btn btn-danger"
 						title="Reject document">
-						<i class="icon-ban-circle"></i>
+						<i class="glyphicon glyphicon-ban-circle"></i>
 						Reject
 					</d:ActionLink>
 
 					<d:ActionLink ui:field="aSimulate" styleName="btn btn-default hidden">
-						<i class="icon-play"></i>
+						<i class="glyphicon glyphicon-play"></i>
 						Simulate
 					</d:ActionLink>
 
@@ -107,7 +107,7 @@
 
 						<d:ActionLink ui:field="aClaim" styleName="btn btn-default"
 							title="Claim this task. Other users in your group cannot work on this task if claimed">
-							<i class="icon-arrow-down color-black"></i>
+							<i class="glyphicon glyphicon-arrow-down color-black"></i>
 						</d:ActionLink>
 
 						<button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -118,14 +118,14 @@
 							<li>
 								<d:ActionLink ui:field="aRevoke" styleName="btn hidden"
 									title="Revoke this task so that its re-assignable to other users in your group">
-									<i class="icon-minus"></i>
+									<i class="glyphicon glyphicon-minus"></i>
 									Revoke
 								</d:ActionLink>
 							</li>
 
 							<li>
 								<d:ActionLink ui:field="aSuspend" title="Suspend this task">
-									<i class="icon-pause color-black"></i>
+									<i class="glyphicon glyphicon-pause color-black"></i>
 									Suspend
 								</d:ActionLink>
 							</li>
@@ -133,7 +133,7 @@
 							<li>
 								<d:ActionLink ui:field="aAssign" styleName="hidden"
 									title="Assign this task">
-									<i class="icon-group"></i>
+									<i class="glyphicon glyphicon-group"></i>
 									Assign
 								</d:ActionLink>
 							</li>
@@ -141,21 +141,21 @@
 							<li>
 								<d:ActionLink ui:field="aDelegate" styleName="hidden"
 									title="Delegate this task">
-									<i class="icon-group"></i>
+									<i class="glyphicon glyphicon-group"></i>
 									Delegate
 								</d:ActionLink>
 							</li>
 
 							<li>
 								<d:ActionLink ui:field="aEnv" title="View Env Variables">
-									<i class="icon-group"></i>
+									<i class="glyphicon glyphicon-group"></i>
 									Env
 								</d:ActionLink>
 							</li>
 
 							<li>
 								<d:ActionLink ui:field="aDelete">
-									<i class="icon-trash"></i>
+									<i class="glyphicon glyphicon-trash"></i>
 									Delete
 								</d:ActionLink>
 							</li>
@@ -171,9 +171,9 @@
 		</g:HTMLPanel>
 
 		<g:HTMLPanel styleName="overflow-y">
-			<div class="personal_info row-fluid span12">
-				<div class="span9">
-					<div class="span2 image">
+			<div class="personal_info row col-md-12">
+				<div class="col-md-9">
+					<div class="col-md-2 image">
 						<g:Image ui:field="img" width="32px" />
 						<!-- img src="img/blueman.png" data-src="img/blueman.png" width="32px" 
 							/ -->
@@ -186,11 +186,11 @@
 					<br />
 				</div>
 
-				<!-- div class="span3"> <i class="icon-user icon-large delegate"></i> 
+				<!-- div class="col-md-3"> <i class="glyphicon glyphicon-user icon-large delegate"></i> 
 					<span ui:field="eDelegate"></span> <br /> </div -->
 
-				<div class="span3">
-					<!-- <i class="icon-calendar icon-large"></i> -->
+				<div class="col-md-3">
+					<!-- <i class="glyphicon glyphicon-calendar icon-large"></i> -->
 					<div style="float:right; text-align:right">
 						<span ui:field="spnCreated" class="tasktimelines"></span>
 						<span ui:field="spnDeadline" class="tasktimelines hidden"></span>
@@ -198,30 +198,30 @@
 
 				</div>
 
-				<!-- <div class="span3"> <span>Priority:</span> <span ui:field="spnPriority" 
-					class="label"></span> </div> -->
+				<!-- <div class="col-md-3"> <span>Priority:</span> <span ui:field="spnPriority" 
+					label .label-default></span> </div> -->
 
-				<!-- <div class="span3"> <span>Current Status:</span> <span class="label 
-					label-info" ui:field="spnStatusBody"> <i class="icon-edit"></i> <span ui:field="spnStatus"></span> 
+				<!-- <div class="col-md-3"> <span>Current Status:</span> <span class="label 
+					label-info" ui:field="spnStatusBody"> <i class="glyphicon glyphicon-edit"></i> <span ui:field="spnStatus"></span> 
 					</span> </div> -->
 
 			</div>
 
 
-			<div class="row-fluid content-area span12" ui:field="divContent">
-				<div class="row-fluid item" ui:field="divDate">
+			<div class="row content-area col-md-12" ui:field="divContent">
+				<div class="row item" ui:field="divDate">
 					<strong>Document Date:</strong>
 					<span ui:field="spnDate" class="subject"></span>
 				</div>
-				<div class="row-fluid item" ui:field="divValue">
+				<div class="row item" ui:field="divValue">
 					<strong>Value:</strong>
 					<span ui:field="spnValue" class="subject"></span>
 				</div>
-				<div class="row-fluid item" ui:field="divPartner">
+				<div class="row item" ui:field="divPartner">
 					<strong>Business Partner:</strong>
 					<span ui:field="spnPartner" class="subject"></span>
 				</div>
-				<div class="row-fluid item" ui:field="divDesc">
+				<div class="row item" ui:field="divDesc">
 					<strong>Description:</strong>
 					<span ui:field="spnDescription"></span>
 				</div>
@@ -247,7 +247,7 @@
 				<g:HTMLPanel ui:field="divContinue" styleName="centered hide">
 					<hr />
 					<d:ActionLink ui:field="aContinue" styleName="btn btn-success">Finish</d:ActionLink>
-					<i class="icon-double-angle-right" />
+					<i class="glyphicon glyphicon-double-angle-right" />
 				</g:HTMLPanel>
 
 				<div class="title attachment hidden" ui:field="divAttachment">
@@ -257,14 +257,14 @@
 					<g:Anchor styleName="hand hidden">- Download All</g:Anchor>
 				</div>
 
-				<g:HTMLPanel ui:field="panelAttachments" styleName="attachment-panel row-fluid">
+				<g:HTMLPanel ui:field="panelAttachments" styleName="attachment-panel row">
 				</g:HTMLPanel>
 
 				<div class="uploader hidden">
 					<up:Uploader ui:field="uploader"></up:Uploader>
 				</div>
 
-				<g:HTMLPanel styleName="row-fluid recent-activity"
+				<g:HTMLPanel styleName="row recent-activity"
 					ui:field="divActivity">
 					<div class="title">
 						<h4>
@@ -272,7 +272,7 @@
 						</h4>
 					</div>
 
-					<div class="row-fluid comment-box">
+					<div class="row comment-box">
 						<d:CommentBox ui:field="commentPanel"></d:CommentBox>
 					</div>
 
@@ -282,9 +282,9 @@
 				</g:HTMLPanel>
 			</div>
 
-			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
+			<g:HTMLPanel styleName="row content-area col-md-12 hide"
 				ui:field="divProcess">
-				<div class="row-fluid">
+				<div class="row">
 					<h5>Process Map</h5>
 					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
 				</div>
@@ -293,9 +293,9 @@
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			
-			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
+			<g:HTMLPanel styleName="row content-area col-md-12 hide"
 				ui:field="divAuditLog">
-				<div class="row-fluid">
+				<div class="row">
 					<h5>Process Audit <span ui:field="spnTimeTaken"></span></h5>
 					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
 				</div>
@@ -307,9 +307,9 @@
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			
-			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
+			<g:HTMLPanel styleName="row content-area col-md-12 hide"
 				ui:field="divAttachmentPanel">
-				<div class="row-fluid">
+				<div class="row">
 					<h5>Documents</h5>
 					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
 				</div>
@@ -321,9 +321,9 @@
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 			
-			<!-- g:HTMLPanel styleName="status-section span3 pull-right row-fluid well"
+			<!-- g:HTMLPanel styleName="status-section col-md-3 pull-right row well"
 				ui:field="divProcess">
-				<div class="row-fluid">
+				<div class="row">
 					<h5>Process Map</h5>
 				</div>
 				<g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>

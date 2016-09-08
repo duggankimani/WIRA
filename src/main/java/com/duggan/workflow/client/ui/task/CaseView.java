@@ -13,7 +13,7 @@ public class CaseView extends AbstractTaskView implements ICaseView{
 		super(binder);
 		
 //		container.getElementById("")
-//		divDocView.removeClassName("span10");
+//		divDocView.removeClassName("col-md-10");
 //		divDocView.addClassName("full-page");
 //		divDocView.getStyle().setWidth(99.9, Unit.PCT);
 		divTasks.addClassName("hide");
@@ -26,7 +26,7 @@ public class CaseView extends AbstractTaskView implements ICaseView{
 			divTableListing.removeStyleName("hide");
 		} else {
 			divTableListing.addStyleName("hide");
-			divDocView.removeClassName("span10");
+			divDocView.removeClassName("col-md-10");
 			divDocView.removeClassName("hide");
 			divDocView.addClassName("full-page");
 			divDocView.getStyle().setWidth(99.9, Unit.PCT);

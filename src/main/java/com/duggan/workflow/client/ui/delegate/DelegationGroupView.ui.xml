@@ -5,13 +5,13 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<div class="accordion"  ui:field="divContainer">
-		  <div class="accordion-group">
-				<div class="accordion-heading">
-					<g:Anchor ui:field="aAccordion" styleName="collapsed accordion-toggle"></g:Anchor>
+		<div class="panel-group"  ui:field="divContainer">
+		  <div class="panel-group-group">
+				<div class="panel-group-heading">
+					<g:Anchor ui:field="aAccordion" styleName="collapsed panel-group-toggle"></g:Anchor>
 				</div>
-				<div class="accordion-body collapse" ui:field="divAccordion">
-					<div class="accordion-inner">
+				<div class="panel-group-body collapse" ui:field="divAccordion">
+					<div class="panel-group-inner">
 						<g:HTMLPanel ui:field="divNames"></g:HTMLPanel>
 					</div>
 				</div>

@@ -7,12 +7,12 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="main-body full-page">
-		<span ui:field="loadingtext" class="span2 hide">Loading ...</span>
+		<span ui:field="loadingtext" class="col-md-2 hide">Loading ...</span>
 		<span ui:field="disconnectionText" class="serverdisconnected alert hide"></span>
 		<div class="alert alert-success hidden" ui:field="divAlert">
 			<span ui:field="spnAlertContent"></span>
 			<strong ui:field="spnSubject"></strong>
-			<g:Anchor styleName="hand muted" ui:field="aView">View Document</g:Anchor>
+			<g:Anchor styleName="hand text-muted" ui:field="aView">View Document</g:Anchor>
 		</div>
 		
 		<div ui:field="divGenericAlerts" class="alert alert-success hide">

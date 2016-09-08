@@ -64,7 +64,7 @@ public class SettingsPresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{SETTINGS_CAN_VIEW}); 
-        return new TabDataExt("Settings","icon-globe",7, gateKeeper);
+        return new TabDataExt("Settings","glyphicon glyphicon-globe",7, gateKeeper);
     }
 	
 	

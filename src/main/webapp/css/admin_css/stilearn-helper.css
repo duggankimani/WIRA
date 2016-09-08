@@ -160,18 +160,18 @@ body .breadcrumb a,a:hover{
 	margin-bottom:10px;
 }
 
-.action-buttons a i.icon-button{
+.action-buttons a i.glyphicon glyphicon-button{
 	font-size: 15px;
 	padding-left: 20px;
 	padding-right: 20px;
 	opacity: 0.6;
 }
 
-.action-buttons a:hover i.icon-button{
+.action-buttons a:hover i.glyphicon glyphicon-button{
 	opacity: 1;
 }
 
-.main-container .action-buttons .span3{
+.main-container .action-buttons .col-md-3{
 	margin-right: 20px;
 	width: initial;
 	margin-left: 0px;
@@ -621,7 +621,7 @@ input[type="color"]:focus,
 }
 
 /** nav-pills active **/
-.accordion-heading .accordion-toggle.bg-black:hover,.accordion-heading .accordion-toggle.bg-blue:hover,.accordion-heading .accordion-toggle.bg-green:hover,.accordion-heading .accordion-toggle.bg-orange:hover,.accordion-heading .accordion-toggle.bg-purple:hover,.accordion-heading .accordion-toggle.bg-purple-dark:hover,.accordion-heading .accordion-toggle.bg-red:hover,.accordion-heading .accordion-toggle.bg-sky:hover,.accordion-heading .accordion-toggle.bg-teal:hover,.accordion-heading .accordion-toggle.bg-win8:hover
+.panel-group-heading .panel-group-toggle.bg-black:hover,.panel-group-heading .panel-group-toggle.bg-blue:hover,.panel-group-heading .panel-group-toggle.bg-green:hover,.panel-group-heading .panel-group-toggle.bg-orange:hover,.panel-group-heading .panel-group-toggle.bg-purple:hover,.panel-group-heading .panel-group-toggle.bg-purple-dark:hover,.panel-group-heading .panel-group-toggle.bg-red:hover,.panel-group-heading .panel-group-toggle.bg-sky:hover,.panel-group-heading .panel-group-toggle.bg-teal:hover,.panel-group-heading .panel-group-toggle.bg-win8:hover
 	{
 	color: #f1f1f1;
 }
@@ -629,14 +629,14 @@ input[type="color"]:focus,
 
 
 /*Google Icons */
-.icon-google-back{
+.glyphicon glyphicon-google-back{
 	background: no-repeat url(../img/gmail-icons.png) 12px -393px;
 	height: 21px;
 	padding-right: 2px;
 	width: 13px;
 }
 
-.icon-google-share{
+.glyphicon glyphicon-google-share{
 	background: no-repeat url(../img/drive-icons.png) -36px -195px;
 	background-size: 220px 241px;
 	width: 21px;

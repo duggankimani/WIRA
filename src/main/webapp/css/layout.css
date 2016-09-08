@@ -187,17 +187,17 @@ body .dateBoxPopup {
 	border-radius: 0px;
 }
 
-.navbar-inverse .navbar-inner .brand {
+.navbar-inverse .navbar-inner .navbar-brand {
 	color: #ffffff;
 }
 
-.navbar .brand {
+.navbar .navbar-brand {
 	color: #666;
 	margin-top: 10px;
 	/* text-shadow: 1px 1px #1B1464; */
 }
 /* Login Logo*/
-.login-wrapper .brand {
+.login-wrapper .navbar-brand {
 	text-decoration: none;
 	font-size: 2em;
 	color: #ffffff;
@@ -341,7 +341,7 @@ body .dateBoxPopup {
 	top: 11px;
 }
 
-.navbar  .notification-dialog .notifications .item>i.icon-user {
+.navbar  .notification-dialog .notifications .item>i.glyphicon glyphicon-user {
 	left: 18px;
 }
 
@@ -470,12 +470,12 @@ body .dateBoxPopup {
 	width: 225px;
 }
 
-.navbar .dropdown-menu .user-details .span1 {
+.navbar .dropdown-menu .user-details .col-md-1 {
 	width: 70px;
 	/* height:70px; */
 }
 
-.navbar .dropdown-menu .user-details .span2 {
+.navbar .dropdown-menu .user-details .col-md-2 {
 	width: 130px;
 	/* height:70px; */
 	padding-left: 10px;
@@ -534,18 +534,18 @@ body .dateBoxPopup {
 	padding: 0px;
 }
 
-#sidebar-nav .document-dialog .span6, #sidebar-nav .document-dialog .span12 {
+#sidebar-nav .document-dialog .col-md-6, #sidebar-nav .document-dialog .col-md-12 {
 	min-height: 40px;
 	margin-left: 0px;
 	padding: 5px 16px;
 }
 
-#sidebar-nav .document-dialog .span6, #sidebar-nav .document-dialog .span12 {
+#sidebar-nav .document-dialog .col-md-6, #sidebar-nav .document-dialog .col-md-12 {
 	font-size: 12px;
 	color: #000;
 }
 
-#sidebar-nav .document-dialog .span6:hover, #sidebar-nav .document-dialog .span12:hover {
+#sidebar-nav .document-dialog .col-md-6:hover, #sidebar-nav .document-dialog .col-md-12:hover {
 	background: #f0f0f0;
 	cursor: pointer;
 }
@@ -603,12 +603,12 @@ body .dateBoxPopup {
 	display: inline-block;
 }
 
-#nav-top .search a.icon-caret-down {
+#nav-top .search a.glyphicon glyphicon-caret-down {
 	color: grey;
 	opacity: .7;
 }
 
-#nav-top .search a.icon-caret-down:hover {
+#nav-top .search a.glyphicon glyphicon-caret-down:hover {
 	opacity: 1;
 }
 
@@ -628,7 +628,7 @@ body .dateBoxPopup {
 	border-color: transparent;
 }
 
-#nav-top .search-box .icon-caret-down {
+#nav-top .search-box .glyphicon glyphicon-caret-down {
 	opacity: .7;
 	cursor: pointer;
 }
@@ -739,11 +739,11 @@ body .dateBoxPopup {
 	display: inline;
 }
 
-#middle-nav .icon-refresh {
+#middle-nav .glyphicon glyphicon-refresh {
 	text-decoration: none;
 }
 
-#middle-nav .icon-book {
+#middle-nav .glyphicon glyphicon-book {
 	font-size: 12px;
 	padding-left: 5px;
 	position: relative;
@@ -836,7 +836,7 @@ body .dateBoxPopup {
 	width: 40px;
 }
 
-#detailed-info .personal_info .icon-large {
+#detailed-info .personal_info .glyphicon glyphicon-large {
 	/* opacity:.7; */
 	color: #928E8E;
 }
@@ -863,7 +863,7 @@ body .dateBoxPopup {
 	text-align:center;
 }
 
-#detailed-info .form-horizontal .control-group {
+#detailed-info .form-horizontal .form-group {
 	margin-bottom: 2px;
 }
 
@@ -956,7 +956,7 @@ body .dateBoxPopup {
 	font-size: 14px;
 }
 
-#detailed-info .status-section .panel-heading .icon-briefcase {
+#detailed-info .status-section .panel-heading .glyphicon glyphicon-briefcase {
 	font-size: 14px;
 }
 
@@ -1061,13 +1061,13 @@ body .dateBoxPopup {
 	border-color: #1b7fcc;
 }
 
-#detailed-info .recent-activity .span1 {
+#detailed-info .recent-activity .col-md-1 {
 	padding-top: 4px;
 	width: 52px;
 	height: 50px;
 }
 
-#detailed-info .recent-activity .span8 {
+#detailed-info .recent-activity .col-md-8 {
 	margin-left: 3px;
 }
 
@@ -1113,7 +1113,7 @@ body .dateBoxPopup {
 	font-size: 11px;
 }
 
-#detailed-info .panel-activity .feed-item .icon-time {
+#detailed-info .panel-activity .feed-item .glyphicon glyphicon-time {
 	margin-right: 5px;
 }
 
@@ -1261,7 +1261,7 @@ ul.icons-list>li {
 	line-height: 1.65em;
 }
 
-ul.icons-list>li>.icon-li {
+ul.icons-list>li>.glyphicon glyphicon-li {
 	position: absolute;
 	top: .15em;
 	left: 0;
@@ -1325,7 +1325,7 @@ ul.icons-list.text-xl {
 }
 
 /***Dashboard Menu||font awesome icon */
-#dashboard-menu>li .icon-group {
+#dashboard-menu>li .glyphicon glyphicon-group {
 	font-size: 22px;
 }
 
@@ -1390,7 +1390,7 @@ ul.icons-list.text-xl {
 	padding: 5px 0px 0px 5px;
 }
 
-#dashboard-menu a i.icon-chevron-up {
+#dashboard-menu a i.glyphicon glyphicon-chevron-up {
 	position: relative;
 	top: 0px;
 	font-size: 11px;
@@ -1514,7 +1514,7 @@ ul.icons-list.text-xl {
 }
 
 /* font awesome icon */
-#navigation-menu>li .icon-group {
+#navigation-menu>li .glyphicon glyphicon-group {
 	font-size: 22px;
 }
 
@@ -1656,7 +1656,7 @@ ul.icons-list.text-xl {
 	#dashboard-menu ul.submenu {
 		margin: 0px 2px
 	}
-	.btn-large {
+	.btn-lg {
 		padding: 10px 14px;
 		font-size: 11px;
 	}
@@ -1673,14 +1673,14 @@ ul.icons-list.text-xl {
 	width: 225px;
 }
 
-.navbar .right-navigations i[class*="icon-"]{
+.navbar .right-navigations i[class*="glyphicon glyphicon-"]{
 	font-size:20px;
 }
 
 .navbar .header-search{
 	padding-top: 9px;
 }
-.navbar .header-search .input-prepend{
+.navbar .header-search .input-group{
 	width:100%;
 	margin-bottom: 0px;
 }

@@ -8,23 +8,23 @@
 
 	<g:HTMLPanel styleName="full-page" ui:field="container">
 		<!--middle navigation -->
-		<div class="span2 hide" ui:field="divTasks">
+		<div class="col-md-2 hide" ui:field="divTasks">
 			<div id="nav-top" style="height:auto;">
-				<i class="icon-tag"></i>
+				<i class="glyphicon glyphicon-tag"></i>
 				<h5 ui:field="hCategory">Completed</h5>
 				<br />
 
 				<!-- div class="search hide" -->
 				<div class="hide">
 					<g:TextBox styleName="search-box" ui:field="txtSearch" />
-					<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
+					<g:Anchor styleName="glyphicon glyphicon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
 				</div>
-				<g:Anchor ui:field="aRefresh" styleName="hide icon-refresh icon-large hand"></g:Anchor>
+				<g:Anchor ui:field="aRefresh" styleName="hide glyphicon glyphicon-refresh icon-large hand"></g:Anchor>
 				<g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
 			</div>
 
 			<g:ScrollPanel ui:field="divDocListing">
-				<g:HTMLPanel styleName="content-nav row-fluid">
+				<g:HTMLPanel styleName="content-nav row">
 					<d:BulletListPanel ui:field="ulTaskGroups">
 					</d:BulletListPanel>
 					<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
@@ -33,12 +33,12 @@
 		</div>
 
 		<!--Detailed Info Description -->
-		<div ui:field="divDocView" class="span12 hide">
+		<div ui:field="divDocView" class="col-md-12 hide">
 			<g:HTMLPanel ui:field="docContainer" styleName="full-page">
 			</g:HTMLPanel>
 		</div>
 
-		<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">
+		<g:ScrollPanel ui:field="divTableListing" styleName="col-md-12 overflow-y">
 			<!-- div class="no-overflow-y" style="margin-left:0px;" -->
 			<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
 				width="100%"></g:FlexTable>

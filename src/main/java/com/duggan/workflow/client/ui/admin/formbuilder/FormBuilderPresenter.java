@@ -95,7 +95,7 @@ public class FormBuilderPresenter extends
 	
 //	@TabInfo(container = AdminHomePresenter.class)
 //    static TabData getTabLabel(AdminGateKeeper adminGatekeeper) {
-//        return new TabDataExt("Form Builder","icon-edit",4, adminGatekeeper);
+//        return new TabDataExt("Form Builder","glyphicon glyphicon-edit",4, adminGatekeeper);
 //    }
 
 	@Inject

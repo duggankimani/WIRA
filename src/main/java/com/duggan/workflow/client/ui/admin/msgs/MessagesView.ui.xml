@@ -9,21 +9,21 @@
 
 	<g:HTMLPanel>
 		<div class="content-body">
-			<div class="row-fluid">
+			<div class="row">
 				<div class="action-buttons">
 					<g:Anchor ui:field="aNew" styleName="btn btn-primary"
 						title="New Email">
-						<i class="icon-plus"></i>
+						<i class="glyphicon glyphicon-plus"></i>
 						New Email
 					</g:Anchor>
 					<g:Anchor ui:field="aView" styleName="btn btn-primary hide"
 						title="View Email">
-						<i class="icon-upload-alt"></i>
+						<i class="glyphicon glyphicon-upload-alt"></i>
 						View Email
 					</g:Anchor>
 					<g:Anchor ui:field="aViewError" styleName="btn btn-primary hide"
 						title="View Error">
-						<i class="icon-arrow-down"></i>
+						<i class="glyphicon glyphicon-arrow-down"></i>
 						View Error
 					</g:Anchor>
 				</div>

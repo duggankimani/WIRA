@@ -75,7 +75,7 @@ public class DataSourcePresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{DATASOURCES_CAN_VIEW_DATASOURCES});
-        return new TabDataExt(TABLABEL,"icon-briefcase",9, gateKeeper);
+        return new TabDataExt(TABLABEL,"glyphicon glyphicon-briefcase",9, gateKeeper);
     }
 	
 	public static final Object TABLE_SLOT = new Object();

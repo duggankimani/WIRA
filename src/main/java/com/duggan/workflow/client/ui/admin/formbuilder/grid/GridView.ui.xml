@@ -4,17 +4,17 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-	    <div class="row-fluid">
+	    <div class="row">
 			<!--Action Buttons  -->
 			 <div class="action-buttons">
-				<g:Anchor ui:field="aNewRecord" styleName="btn btn-primary btn-small"
+				<g:Anchor ui:field="aNewRecord" styleName="btn btn-primary btn-sm"
 					title="Add a New Record">
-					<i class="icon-plus"></i>
+					<i class="glyphicon glyphicon-plus"></i>
 						<span ui:field="spnNewRecordHandlerText"></span>
 				</g:Anchor>
-				<g:Anchor ui:field="aImport" styleName="btn btn-primary btn-small"
+				<g:Anchor ui:field="aImport" styleName="btn btn-primary btn-sm"
 					title="Import CSV">
-					<i class="icon-upload-alt"></i>
+					<i class="glyphicon glyphicon-upload-alt"></i>
 					Import
 				</g:Anchor>
 			</div>

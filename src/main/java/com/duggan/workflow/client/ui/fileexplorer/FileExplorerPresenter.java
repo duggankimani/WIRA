@@ -84,7 +84,7 @@ public class FileExplorerPresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{REPORTS_CAN_VIEW_REPORTS});	
-		TabDataExt data = new TabDataExt(TABLABEL, "icon-dashboard", 12,
+		TabDataExt data = new TabDataExt(TABLABEL, "glyphicon glyphicon-dashboard", 12,
 				gateKeeper, false);
 		return data;
 	}

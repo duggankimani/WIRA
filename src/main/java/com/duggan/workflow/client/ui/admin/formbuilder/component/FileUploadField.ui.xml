@@ -6,7 +6,7 @@
 	<g:AbsolutePanel ui:field="container">
 		<d:ImageCarousel ui:field="imgCarousel" styleName="form-image-viewer hide"></d:ImageCarousel>
 		
-		<g:HTMLPanel styleName="control-group">
+		<g:HTMLPanel styleName="form-group">
 			<label ui:field="lblEl" for="Username" class="control-label">File Upload</label>
 			<span ui:field="spnMandatory" style="color:red">*</span>
 			<g:HTMLPanel styleName="controls" ui:field="panelControls">

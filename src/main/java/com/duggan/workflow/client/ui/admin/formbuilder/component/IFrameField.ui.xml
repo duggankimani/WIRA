@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
 	<g:AbsolutePanel ui:field="container">
-	        <g:HTMLPanel styleName="control-group" ui:field="panelIframe">
+	        <g:HTMLPanel styleName="form-group" ui:field="panelIframe">
 		       <label ui:field="lblTitle" class="lead">IFRAME</label>
 	       </g:HTMLPanel>
 	</g:AbsolutePanel>

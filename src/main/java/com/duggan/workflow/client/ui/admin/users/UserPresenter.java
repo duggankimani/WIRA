@@ -129,7 +129,7 @@ public class UserPresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{ACCESSMGT_CAN_VIEW_ACCESSMGT}); 
-		return new TabDataExt(TABLABEL, "icon-group", 3,
+		return new TabDataExt(TABLABEL, "glyphicon glyphicon-group", 3,
 				gateKeeper);
 	}
 

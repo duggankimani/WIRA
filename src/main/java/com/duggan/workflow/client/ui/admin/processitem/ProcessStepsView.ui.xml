@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="content-body">
-					<div class="row-fluid">
+					<div class="row">
 						<ul class="nav nav-tabs" id="taskStepsTab">
 							<li class="active">
 								<d:ActionLink ui:field="aStepstab" href="#steps"
@@ -56,12 +56,12 @@
 
 						<div class="tab-content">
 							<div id="steps" class="tab-pane fade in active">
-								<div class="row-fluid">
+								<div class="row">
 									<!--Action Buttons -->
 									<div class="action-buttons">
 										<g:Anchor ui:field="aNewStep" styleName="btn btn-primary"
 											title="Add a New Step">
-											<i class="icon-plus"></i>
+											<i class="glyphicon glyphicon-plus"></i>
 											Steps
 										</g:Anchor>
 									</div>
@@ -73,12 +73,12 @@
 
 							<!-- Trigger Content -->
 							<div id="triggers" class="tab-pane fade">
-								<div class="row-fluid">
+								<div class="row">
 									<!--Action Buttons -->
 									<div class="action-buttons">
 										<g:Anchor ui:field="aNewTrigger" styleName="btn btn-primary hide"
 											title="Add a New Trigger">
-											<i class="icon-plus"></i>
+											<i class="glyphicon glyphicon-plus"></i>
 											Triggers
 										</g:Anchor>
 									</div>
@@ -94,19 +94,19 @@
 									Tasks with ActorId are automatically routed to the actors, hence Assignment method is locked. 
 								</div>
 								<div class="form-horizontal">
-									<div class="control-group">
+									<div class="form-group">
 										<label class="control-label">ActorId</label>
 										<div class="controls">
 											<div ui:field="divActorId" class="{style.task-assignee}"></div>
 										</div>
 									</div>
-									<div class="control-group">
+									<div class="form-group">
 										<label class="control-label">GroupId</label>
 										<div class="controls">
 											<div ui:field="divGroupId" class="{style.task-assignee}"></div>
 										</div>
 									</div>
-									<div class="control-group">
+									<div class="form-group">
 										<div class="controls">
 											<label class="checkbox">
 												<d:Checkbox ui:field="chkAutoAssignment"></d:Checkbox>
@@ -114,7 +114,7 @@
 											</label>
 										</div>
 									</div>
-									<div class="control-group">
+									<div class="form-group">
 										<div class="controls">
 											<label class="checkbox" title="A round robin assignment where potential assignees are assigned in turns">
 												<d:Checkbox ui:field="chkCyclicAssignment"></d:Checkbox>
@@ -122,7 +122,7 @@
 											</label>
 										</div>
 									</div>
-									<div class="control-group">
+									<div class="form-group">
 										<div class="controls">
 											<label class="checkbox" title="Self service assignment where users pick tasks to work on from a task list">
 												<d:Checkbox ui:field="chkSelfServiceAssignment"></d:Checkbox>
@@ -135,7 +135,7 @@
 
 							<div id="notifications" class="tab-pane fade">
 								<g:HTMLPanel ui:field="panelNotificationsContent"
-									styleName="row-fluid">
+									styleName="row">
 								</g:HTMLPanel>
 							</div>
 						</div>

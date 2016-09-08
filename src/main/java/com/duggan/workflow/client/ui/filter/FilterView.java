@@ -48,8 +48,8 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		dateInput1.setFormat(new DateBox.DefaultFormat(DATEFORMAT));
 		dateInput2.setFormat(new DateBox.DefaultFormat(DATEFORMAT));
 		dateInput2.getElement().setAttribute("Placeholder", "End Date");
-		spnCalendar1.getElement().setInnerHTML("<i class='icon-calendar'/>");
-		spnCalendar2.getElement().setInnerHTML("<i class='icon-calendar'/>");
+		spnCalendar1.getElement().setInnerHTML("<i class='glyphicon glyphicon-calendar'/>");
+		spnCalendar2.getElement().setInnerHTML("<i class='glyphicon glyphicon-calendar'/>");
 		spnCalendar1.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

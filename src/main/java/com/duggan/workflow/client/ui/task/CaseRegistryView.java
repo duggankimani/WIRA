@@ -142,7 +142,7 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 
 	Anchor getSummaryLink(ProcessLog log){
 		ActionLink anchor = new ActionLink();
-		anchor.getElement().setInnerHTML("<i class='icon-th-large'/>");
+		anchor.getElement().setInnerHTML("<i class='glyphicon glyphicon-th-large'/>");
 		anchor.setTitle("Summary");
 		//anchor.setHref("#caseview;did="+log.getDocId());
 		anchor.setHref("#/caseview/"+log.getDocRefId());

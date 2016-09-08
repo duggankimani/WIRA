@@ -40,16 +40,16 @@
 						<g:HTMLPanel styleName="td">
 								<g:Anchor ui:field="aTest" styleName="btn btn-default" 
 								    title="Test data source">
-									<i class="icon-play"></i>
+									<i class="glyphicon glyphicon-play"></i>
 								</g:Anchor>
 								
 								<g:Anchor ui:field="aEdit" styleName="btn btn-default"
 								     title="Edit Data Source">
-									<i class="icon-edit"></i>
+									<i class="glyphicon glyphicon-edit"></i>
 								</g:Anchor>
 								<g:Anchor ui:field="aDelete" styleName="btn btn-default"
 								     title="Delete Data Source">
-									<i class="icon-trash"></i>
+									<i class="glyphicon glyphicon-trash"></i>
 								</g:Anchor>
 						</g:HTMLPanel>
 	</g:HTMLPanel>

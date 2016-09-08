@@ -5,20 +5,20 @@
 	</ui:style>
 	<g:HTMLPanel styleName="">
 		<div class="form-inline" ui:field="designHeader">
-			<div class="lead span10" style="display:inline-block;">
+			<div class="lead col-md-10" style="display:inline-block;">
 				<label ui:field="lblTitle" class="lead" for="username1">HTML Form</label>
 			</div>
 			<div ui:field="divActions" class="pull-right hide" style="display:inline-block;">
 				<g:Anchor styleName="btn btn-inverse hide" ui:field="aView" title="View Form">
-				    <i class="icon-chevron-left"></i>
-				    <i class="icon-chevron-right"></i>
+				    <i class="glyphicon glyphicon-chevron-left"></i>
+				    <i class="glyphicon glyphicon-chevron-right"></i>
 				</g:Anchor>
 				<g:Anchor styleName="btn" ui:field="aEdit" title="Edit HTML">
-				    <i class="icon-chevron-left"></i>
-				    <i class="icon-chevron-right"></i>
+				    <i class="glyphicon glyphicon-chevron-left"></i>
+				    <i class="glyphicon glyphicon-chevron-right"></i>
 				 </g:Anchor>
 				 <g:Anchor styleName="btn" ui:field="aSave" title="Save HTML">
-				    Save<i class="icon-floppy-save"></i>
+				    Save<i class="glyphicon glyphicon-floppy-save"></i>
 				 </g:Anchor>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 			Content goes here
 		</g:HTMLPanel>
 		<g:HTMLPanel>
-			<d:TextArea ui:field="txtComponent" rows="10" styleName="span12 hide">
+			<d:TextArea ui:field="txtComponent" rows="10" styleName="col-md-12 hide">
 			    HTML Goes here
 			</d:TextArea>
 		</g:HTMLPanel>

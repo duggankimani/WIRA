@@ -15,7 +15,7 @@
            </g:cell>
             <g:cell>
                <g:Anchor ui:field="aDelete" title="Delete">
-                   &nbsp;<i class="icon-remove"></i>
+                   &nbsp;<i class="glyphicon glyphicon-remove"></i>
                </g:Anchor> 
            </g:cell>
        </g:HorizontalPanel>

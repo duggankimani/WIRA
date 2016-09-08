@@ -7,9 +7,9 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 	
-    <g:HTMLPanel styleName="attachment-links span6">
-		<g:HTMLPanel styleName="span1 icon" ui:field="panelImg"></g:HTMLPanel>
-		<div class="span11 attachment-info">
+    <g:HTMLPanel styleName="attachment-links col-md-6">
+		<g:HTMLPanel styleName="col-md-1 icon" ui:field="panelImg"></g:HTMLPanel>
+		<div class="col-md-11 attachment-info">
 	        <b><span ui:field="spnName"></span></b>
 	        <br/>
 	        <div class="row">

@@ -52,7 +52,7 @@ public class TableDataView extends ViewImpl implements
 			}else if(task.getAverageTime()<14){
 				avgTime.addStyleName("label label-warning arrowed-in");
 			}else{
-				avgTime.addStyleName("label label-important arrowed-in");
+				avgTime.addStyleName("label label-danger arrowed-in");
 			}
 			tableView.addRow(new InlineLabel(task.getTaskName()),  new InlineLabel(task.getDocumentType()), 
 					new InlineLabel(task.getNoOfTasks()+" tasks"), 
