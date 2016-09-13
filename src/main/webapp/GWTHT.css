@@ -399,6 +399,10 @@ table {
 	border-color: gray;
 }
 
+table.fixed-layout{
+	table-layout:fixed;	
+}
+
 .thread-item.expanded {
 	cursor: default;
 	height: auto;
@@ -726,6 +730,8 @@ section.positioned {
 	font-family: Helvetica,Arial,sans-serif;
     /*font-size: 14px;*/
     color: #222;
+    white-space: nowrap;
+    overflow-x: hidden;
 }
 
 .table a{

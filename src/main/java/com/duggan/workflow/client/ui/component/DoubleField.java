@@ -60,7 +60,7 @@ public class DoubleField extends ValueBox<Double> {
 		if(format.equalsIgnoreCase("Integer")){
 			doubleRenderer.setFormat("#,###;(#,###)");
 		}else if(format.equalsIgnoreCase("Double")){
-			doubleRenderer.setFormat("#,###.##;(#,###.##)");
+			doubleRenderer.setFormat("#,##0.00;(#,##0.00)");
 		}else{
 			doubleRenderer.setFormat(format);
 		}
@@ -69,7 +69,7 @@ public class DoubleField extends ValueBox<Double> {
 
 	static class DoubleRenderer extends AbstractRenderer<Double> {
 
-		String format = "#,###.##;(#,###.##)";
+		String format = "#,##0.00;(#,##0.00)";
 
 		/**
 		 * Returns the instance.
@@ -93,7 +93,11 @@ public class DoubleField extends ValueBox<Double> {
 		}
 
 		public void setFormat(String format) {
-			this.format = format;
+			this.format = format.trim();
 		}
+	}
+
+	public String getFormat() {
+		return doubleRenderer.getFormat();
 	}
 }

@@ -335,8 +335,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 		else if(field.isGrid()){
 			//clear previous first
-			Collection<DocumentLine> lines =  doc.getDetails().get(name);
-			setValue(lines);
+//			Collection<DocumentLine> lines =  doc.getDetails().get(name);
+//			setValue(lines);
 		}
 		
 	}
@@ -641,31 +641,30 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				setHelp(help);
 			}
 
-			// Set Read only
-			boolean readOnly = false;
-			Object val = getValue(READONLY);
-			if (val != null && val instanceof Boolean) {
-				readOnly = (Boolean) val;
-			}
-			setReadOnly(readOnly);
-
 			String alignment = getPropertyValue(ALIGNMENT);
 			if (alignment != null) {
 				setAlignment(alignment);
 			}
-
-			// set dropdown choices
-			if (this instanceof IsSelectionField) {
-				((IsSelectionField) this).setSelectionValues(field
-						.getSelectionValues());
-			}
-
 			String labelPosition = getPropertyValue(LABELPOSITION);
 			if (labelPosition != null) {
 				setLabelPosition(labelPosition.equals("top"));
 			}
-
 		}
+		
+		// Set Read only
+		boolean readOnly = false;
+		Object val = getValue(READONLY);
+		if (val != null && val instanceof Boolean) {
+			readOnly = (Boolean) val;
+		}
+		setReadOnly(readOnly);
+
+		// set dropdown choices
+		if (this instanceof IsSelectionField) {
+			((IsSelectionField) this).setSelectionValues(field
+					.getSelectionValues());
+		}
+
 
 		// Set Value
 		Value value = field.getValue();
@@ -723,11 +722,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 
 		if (model.equals(field)) {
-			// Ignore metadata save for Wrapped fields - They will be saved by {HTMLForm}
-//			if (!((Field) model).isHTMLWrappedField()) {
-//				save((Field) model);
-//			}
-			
 			save((Field) model);
 		}
 
@@ -1212,7 +1206,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			if (!field.getLineRefId().equals(sourceDetailId)) {
 				return;
 			}
-			Window.alert("Delete line - "+field.getName()+"="+field.getValue());
 			ENV.setContext(field, new Double(0.0));
 			AppContext.fireEvent(new OperandChangedEvent(field
 					.getDocSpecificName(), new Double(0.0), field
@@ -1355,7 +1348,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					//Works in Production - Duggan 24/08/2016
 					widget = new HTMLNumberField(element, designMode);
 				}else if(type.equals("date")){
-//					widget = new DateField(element, designMode);
+					widget = new HTMLDateField(element, designMode);
 				}else if(type.equals("radio")){
 					widget = new HTMLRadioGroup(element,designMode);
 				}

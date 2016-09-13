@@ -143,29 +143,26 @@ public class AbstractTaskView extends ViewImpl implements
 	}
 
 	protected void createHeader(FlexTable table) {
+		table.addStyleName("fixed-layout");
 		int i = table.getRowCount();
 		int j = 0;
 		table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
 		table.getFlexCellFormatter().setWidth(i, (j - 1), "10px");
-
-		// table.setWidget(0, j++, new HTMLPanel("<strong>Summary</strong>"));
-		// table.getFlexCellFormatter().setWidth(i, (j - 1), "100px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Case No</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "40px");
-		// table.setWidget(i, j++, new HTMLPanel("<strong>Case</strong>"));
-		// table.getFlexCellFormatter().setWidth(i, (j - 1), "100px");
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "50px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Process</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "200px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Task</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "100px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Submitted By</strong>"));
+		table.setWidget(i, j++, new HTMLPanel("<strong>Current Task</strong>"));
 		table.setWidget(i, j++, new HTMLPanel("<strong>Current User</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
-		table.setWidget(i, j++, new HTMLPanel("<strong>Last Modify</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Due Date</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Last Modify</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Status</strong>"));
 		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+		table.setWidget(i, j++, new HTMLPanel("<strong>Notes</strong>"));
+		table.getFlexCellFormatter().setWidth(i, (j - 1), "20px");
 
 		for (int col = 0; col < table.getCellCount(i); col++) {
 			table.getFlexCellFormatter().setStyleName(i, col, "th");
@@ -563,7 +560,15 @@ public class AbstractTaskView extends ViewImpl implements
 			HTMLPanel task = new HTMLPanel("");
 			task.getElement().appendChild(spnSubject);
 			tblTasks.setWidget(i, j++, task);
+			
+			//Submitted By
+			InlineLabel submitter = new InlineLabel(doc.getOwner()==null? "": doc.getOwner().getFullName());
+			tblTasks.setWidget(i, j++, submitter);
 
+			//Current Task
+			String currentTask = doc.getCurrentTaskName()==null? "": doc.getCurrentTaskName();
+			tblTasks.setWidget(i, j++, new HTMLPanel(currentTask));
+			//Current Owner 
 			tblTasks.setWidget(i, j++, new HTMLPanel(taskActualOwner));
 			// tblTasks.getFlexCellFormatter().setWidth(i, (j - 1), "150px");
 			tblTasks.setWidget(i, j++, spnTime);
@@ -587,6 +592,9 @@ public class AbstractTaskView extends ViewImpl implements
 			status.add(new InlineLabel(doc.getProcessStatus().name()));
 
 			tblTasks.setWidget(i, j++, status);
+			
+			//Notes
+			tblTasks.setWidget(i, j++, new HTMLPanel(""));
 			++i;
 		}
 

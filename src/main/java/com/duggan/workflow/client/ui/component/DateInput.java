@@ -52,39 +52,44 @@ public class DateInput extends Composite implements HasValue<Date> {
 		});
 	}
 
-	public DateInput(Element element) {
+	public DateInput(Element dateElement) {
 		
-		Element parent = element.getParentElement();
+		Element parent = dateElement.getParentElement();
 
 		if (!(parent.hasClassName("input-group") && parent
 				.hasClassName("date"))) {
-			int idx = DOM.getChildIndex(parent, element);
-			element.removeFromParent();
+			int idx = DOM.getChildIndex(parent, dateElement);
+			dateElement.removeFromParent();
+			
+			/**
+			 * 
+			<div class="input-append span12">
+			  	<input class="" id="appendedInput" type="text">
+				<span class="add-on" style="box-sizing: border-box;padding: 0px;">.00</span>
+			</div>
+			 */
 
-			Element controlGroup = DOM.createDiv();
-			controlGroup.addClassName("form-group span3");
+			Element parentDiv = DOM.createDiv();
 
-			id = element.getId()+ "_Field";
+			id = dateElement.getId()+ "_Field";
 			Element div = DOM.createDiv();
-			div.addClassName("input-group date datepicker");
+			div.addClassName("date datepicker input-append input-group");
 			div.setId(id);
-			element.addClassName("form-control");
-			div.appendChild(element);
+			div.appendChild(dateElement);
 
 			Element span = DOM.createSpan();
-			span.addClassName("input-group-addon");
-			span.getStyle().setPaddingLeft(26, Unit.PX);
+			span.addClassName("input-group-addon add-on");
 			span.setInnerHTML("<span class=\"icon-calendar\"></span>");
 			div.appendChild(span);
 
-			controlGroup.appendChild(div);
-			DOM.insertChild(parent, controlGroup, idx);
+			parentDiv.appendChild(div);
+			DOM.insertChild(parent, parentDiv, idx);
 			// initWidget(txtDate);
 		}else{
 			id = parent.getId();
 		}
 		
-		txtDate = TextField.wrap(element,true);
+		txtDate = TextField.wrap(dateElement,true);
 		initCollapsable(this, id);
 		txtDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override

@@ -39,8 +39,6 @@ public class Document extends Doc implements Serializable {
 
 	private DocumentType type;
 
-	private HTUser owner;
-
 	protected String description;
 
 	protected Date created;
@@ -74,14 +72,6 @@ public class Document extends Doc implements Serializable {
 
 	public void setType(DocumentType type) {
 		this.type = type;
-	}
-
-	public HTUser getOwner() {
-		return owner;
-	}
-
-	public void setOwner(HTUser owner) {
-		this.owner = owner;
 	}
 
 	public static long getSerialversionuid() {
@@ -244,7 +234,7 @@ public class Document extends Doc implements Serializable {
 		return clone(false);
 	}
 
-	public Document clone(boolean fullClone) {
+	private Document clone(boolean fullClone) {
 
 		Document document = new Document();
 		document.setRefId(getRefId());
@@ -253,7 +243,7 @@ public class Document extends Doc implements Serializable {
 		document.setCaseNo(caseNo);
 		document.setDescription(description);
 		document.setDocumentDate(documentDate);
-		document.setOwner(owner);
+		document.setOwner(getOwner());
 		document.setPartner(partner);
 		document.setPriority(priority);
 		document.setProcessInstanceId(processInstanceId);
@@ -323,48 +313,46 @@ public class Document extends Doc implements Serializable {
 		
 		Document other = (Document)obj;
 		
-		if(this.description!=null && !this.description.equals(other.description)){
+		if(!isEqual(this.description,other.description)){
 			return false;
 		}
 		
-		if(this.created!=null && !this.created.equals(other.created)){
+		if(!isEqual(this.created,other.created)){
 			return false;
 		}
 		
-		if(this.dateSubmitted!=null && !this.dateSubmitted.equals(other.dateSubmitted)){
+		if(!isEqual(this.dateSubmitted,other.dateSubmitted)){
 			return false;
 		}
 		
-		if(this.documentDate!=null && !this.documentDate.equals(other.documentDate)){
+		if(!isEqual(this.documentDate,other.documentDate)){
 			return false;
 		}
 		
-		if(this.priority!=null && !this.priority.equals(other.priority)){
+		if(!isEqual(this.priority,other.priority)){
 			return false;
 		}
 		
-		if(this.partner!=null && !this.partner.equals(other.partner)){
+		if(!isEqual(this.partner,other.partner)){
 			return false;
 		}
 		
-		if(this.status!=null && !this.status.equals(other.status)){
+		if(!isEqual(this.status,other.status)){
 			return false;
 		}
 		
-		if(this.dateDue!=null && !this.dateDue.equals(other.dateDue)){
+		if(!isEqual(this.dateDue,other.dateDue)){
 			return false;
 		}
 		
-		if(this.processInstanceId!=null && !this.processInstanceId.equals(other.processInstanceId)){
+		if(!isEqual(this.processInstanceId,other.processInstanceId)){
 			return false;
 		}
 		
-		if(this.sessionId!=null && !this.sessionId.equals(other.sessionId)){
+		if(!isEqual(this.sessionId,other.sessionId)){
 			return false;
 		}
 		
-		boolean equal = super.equals(obj);
-				
-		return equal;
+		return super.equals(obj);
 	}
 }

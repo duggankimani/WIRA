@@ -604,18 +604,21 @@ public class JBPMHelper implements Closeable {
 			task.setName(getDisplayName(master_task));
 		} catch (Exception e) {
 		}
+		
+		if (doc.getRefId() != null) {
+			Document model = null;
+			model = DB.getDocumentDao().getDocJson(doc.getRefId());
+			task.setDocStatus(model == null ? null : model.getStatus());
+			task.setOwner(model.getOwner());
+			task.setCurrentTaskName(model.getCurrentTaskName());
+			task.setCurrentTaskId(model.getCurrentTaskId());
+		}
 
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
 			task.setValues(doc.getValues());
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
-
-			if (doc.getId() != null) {
-				DocumentModel model = DB.getDocumentDao().getById(doc.getId());
-				task.setDocStatus(model == null ? null : model.getStatus());
-			}
-			task.setOwner(doc.getOwner());
 
 			// TaskDelegation taskdelegation =
 			// DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());

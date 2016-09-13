@@ -60,7 +60,6 @@ public class ExecuteWorkflowActionHandler extends
 						document.setValue(key,value);
 					}
 					
-					
 					log.debug("ExecuteWorkflowActionHandler.documentOut "+key+"="+val);
 				}
 			}

@@ -10,11 +10,13 @@ import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -28,6 +30,7 @@ public class HTMLSelectBasic extends FieldWidget implements IsSelectionField {
 	
 	public HTMLSelectBasic(Element select, boolean designMode) {
 		super();
+		this.designMode = designMode;
 		this.select = select;
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
@@ -156,11 +159,12 @@ public class HTMLSelectBasic extends FieldWidget implements IsSelectionField {
 
 		if (values != null && !values.isEmpty()) {
 			lstItems.setItems(values);
+
+			// design mode values set here before save is called
+			// iff these we manually entered/ not referenced from another ds
+			field.setSelectionValues(values);
 		}
 
-		// design mode values set here before save is called
-		// iff these we manually entered/ not referenced from another ds
-		field.setSelectionValues(values);
 
 	}
 

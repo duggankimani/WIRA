@@ -47,8 +47,11 @@ public class Doc extends SerializableObj implements Serializable,
 
 	private HTStatus processStatus = HTStatus.INPROGRESS;
 
+	private String currentTaskName;
+	private Long currentTaskId;
 	private HTUser taskActualOwner;
 	private String potentialOwners;
+	private HTUser owner;
 
 	public Doc() {
 	}
@@ -198,7 +201,7 @@ public class Doc extends SerializableObj implements Serializable,
 	}
 
 	public HTUser getOwner() {
-		return null;
+		return owner;
 	}
 
 	public Long getProcessInstanceId() {
@@ -375,31 +378,43 @@ public class Doc extends SerializableObj implements Serializable,
 	public boolean equals(Object obj) {
 		
 		Doc other = (Doc)obj;
-		if(getRefId()!=null && !getRefId().equals(other.getRefId())){
+		if(!isEqual(getRefId(),other.getRefId())){
 			return false;
 		}
 		
-		if(processId!=null && !processId.equals(other.processId)){
+		if(!isEqual(taskActualOwner,other.taskActualOwner)){
 			return false;
 		}
 		
-		if(caseNo!=null && !caseNo.equals(caseNo)){
+		if(!isEqual(currentTaskId, other.currentTaskId)){
 			return false;
 		}
 		
-		if(processStatus!=null && !processStatus.equals(other.processStatus)){
+		if(!isEqual(currentTaskName, other.currentTaskName)){
 			return false;
 		}
 		
-		if(taskActualOwner!=null && !taskActualOwner.equals(other.taskActualOwner)){
+		if(!isEqual(processId,other.processId)){
 			return false;
 		}
 		
-		if(potentialOwners!=null && !potentialOwners.equals(other.potentialOwners)){
+		if(!isEqual(caseNo,other.caseNo)){
 			return false;
 		}
 		
-		if(taskActualOwner!=null && !taskActualOwner.equals(other.taskActualOwner)){
+		if(!isEqual(processStatus,other.processStatus)){
+			return false;
+		}
+		
+		if(!isEqual(taskActualOwner,other.taskActualOwner)){
+			return false;
+		}
+		
+		if(!isEqual(potentialOwners,other.potentialOwners)){
+			return false;
+		}
+		
+		if(!isEqual(taskActualOwner,other.taskActualOwner)){
 			return false;
 		}
 		
@@ -411,28 +426,40 @@ public class Doc extends SerializableObj implements Serializable,
 			return false;
 		}
 		
-//		for(Value val: values.values()){
-//			Value otherValue = other.values.get(val.getKey());
-//			if(otherValue==null){
-//				return false;
-//			}
-//			
-//			Object v = val.getValue();
-//			Object v1 = otherValue.getValue();
-//			if(v!=null){
-//				if(v1!=null){
-//					if(!v.equals(v1)){
-//						return false;
-//					}
-//				}else{
-//					return false;
-//				}
-//				
-//			}
-//		}
-		
-
 		return true;
+	}
+
+	protected boolean isEqual(Object obj1, Object obj2) {
+		
+		if(obj1!=null && obj2!=null){
+			return obj1.equals(obj2);
+		}else if(obj1==null && obj2==null){
+			//Both are null
+			return true;
+		}
+		
+		//Only one of the values is null;
+		return false;
+	}
+
+	public String getCurrentTaskName() {
+		return currentTaskName;
+	}
+
+	public void setCurrentTaskName(String currentTaskName) {
+		this.currentTaskName = currentTaskName;
+	}
+
+	public Long getCurrentTaskId() {
+		return currentTaskId;
+	}
+
+	public void setCurrentTaskId(Long currentTaskId) {
+		this.currentTaskId = currentTaskId;
+	}
+
+	public void setOwner(HTUser owner) {
+		this.owner = owner;
 	}
 
 }

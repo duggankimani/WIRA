@@ -10,7 +10,7 @@ public class HTSummary extends Doc implements Serializable{
 	private static final long serialVersionUID = -3021583190508951117L;
 	private long id;
 	private String name;//Display Name
-	private String taskName;//Code used for mapping to FormBuilder forms --17/Oct/2014 - this has changed
+	private String taskName;//Code used for mapping to FormBuilder forms --17/Oct/2014 - this has changed - i.e no longer used
 	private Date startDateDue;//Task Must have started by this time
 	private Date endDateDue;//Task must have ended by this time 
 	private Date completedOn;//Date this task was completed
@@ -21,7 +21,6 @@ public class HTSummary extends Doc implements Serializable{
 	private String description;
 	private Long documentRef;
 	private Long processInstanceId;
-	private HTUser owner;
 	private Date documentDate;
 	private DocStatus docStatus;
 	private Delegate delegate;
@@ -111,15 +110,6 @@ public class HTSummary extends Doc implements Serializable{
 	public Date getDocumentDate() {
 		
 		return documentDate;
-	}
-	
-	@Override
-	public HTUser getOwner() {	
-		return owner;
-	}
-
-	public void setOwner(HTUser owner) {
-		this.owner = owner;
 	}
 
 	public void setDocumentDate(Date documentDate) {

@@ -119,7 +119,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 
 	private T getItem(int idx) {
 		
-		if(idx<items.size()){
+		if(idx<items.size() && idx>=0){
 			return items.get(idx);
 		}
 		

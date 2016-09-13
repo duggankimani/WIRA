@@ -37,7 +37,7 @@ public class HTMLNumberField extends FieldWidget{
 		this.numberInput = numberInput;
 		this.designMode = designMode;
 		addProperty(new Property(NUMBERFORMAT, "Format", DataType.STRING));
-		setProperty(NUMBERFORMAT, "#,###.##;(#,###.##)");
+		setProperty(NUMBERFORMAT, "#,##0.00;(#,##0.00)");
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
@@ -113,11 +113,10 @@ public class HTMLNumberField extends FieldWidget{
 	
 	@Override
 	public void setField(Field field) {
-		super.setField(field);
 		if(field.getProperty(NUMBERFORMAT)!=null){
 			txtComponent.setFormat(field.getProperty(NUMBERFORMAT));
 		}
-		
+		super.setField(field);
 	}
 	
 	@Override
@@ -187,9 +186,6 @@ public class HTMLNumberField extends FieldWidget{
 	@Override
 	public void setValue(Object value) {
 		if(value!=null){
-//			if(field.getName().equals("lineTotal")){
-//				GWT.log("# "+field.getName()+" - "+value);
-//			}
 			if(value instanceof Value){
 				value= ((Value) value).getValue();
 			}
@@ -205,12 +201,7 @@ public class HTMLNumberField extends FieldWidget{
 			
 			ENV.setContext(field, (Double)value);
 			txtComponent.setValue((Double)value);
-
-			if(field.getName().equals("lineTotal")){
-				GWT.log("# "+field.getName()+" - "+value);
-			}
-			NumberFormat fmt = NumberFormat.getDecimalFormat();
-		    String formatted = fmt.format((Double)value);
+			
 		}else{
 			super.setValue(0.0);
 		}

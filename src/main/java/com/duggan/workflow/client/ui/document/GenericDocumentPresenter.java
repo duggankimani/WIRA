@@ -974,6 +974,7 @@ public class GenericDocumentPresenter extends
 		}
 
 		/*
+		 * 
 		 * Duggan 06/10/2015 ExecuteWorkflow action submits a ArrayList of Value
 		 * objects i.e HashMap<String,Value> , which works ok for all fields
 		 * except grid fields updated through triggers

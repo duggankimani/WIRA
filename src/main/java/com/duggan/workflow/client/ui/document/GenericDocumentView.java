@@ -295,7 +295,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 			@Override
 			public void onError(ErrorEvent event) {
-				statusContainer.add(new InlineLabel("We Could Not Load the Process HashMap. (Hint, confirm that the process is running)"));
+				statusContainer.add(new InlineLabel("We Could Not Load the Process Map. (Hint, confirm that the process is running)"));
 			}
 		});
 

@@ -115,7 +115,9 @@ public class DocValues implements Serializable{
 			Object obj = getRawValues().get(key);
 			
 			if(otherObj!=null && obj!=null){
-				if(!otherObj.equals(obj)){
+				if(otherObj instanceof Number){
+					isEqual = new Double(otherObj.toString()).equals(new Double(obj.toString()));
+				}else if(!otherObj.equals(obj)){
 					logger.debug("DocValues values NOT Equal "
 							+ "{this."+key+":"+obj+"} != "
 							+"{other."+key+":"+otherObj+"}");

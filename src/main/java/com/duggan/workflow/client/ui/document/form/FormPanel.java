@@ -29,6 +29,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
@@ -92,7 +93,9 @@ public class FormPanel extends Composite {
 	public FormPanel(Form form, Doc doc, MODE mode) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.mode = mode;
-
+		if(doc instanceof HTask){
+			GWT.log("Binding Task - {name:"+form.getName()+", refId:"+doc.getRefId()+",taskId:"+((HTask)doc).getId()+"}");
+		}
 		form.getCaption();
 		divFormHelp.setInnerText("");
 		if (form.getProps() != null)

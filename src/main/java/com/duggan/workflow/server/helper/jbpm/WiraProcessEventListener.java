@@ -14,7 +14,9 @@ import org.jbpm.process.core.context.variable.VariableScope;
 import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
+import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 
 public class WiraProcessEventListener implements ProcessEventListener{
@@ -68,6 +70,15 @@ public class WiraProcessEventListener implements ProcessEventListener{
 		
 		for(Catalog catalog: catalogs){
 			CatalogDaoHelper.mapAndSaveFormData(catalog,doc);
+		}
+		
+		//Clear Current Task Information
+		if(doc!=null && doc.getRefId()!=null){
+			doc = DocumentDaoHelper.getDocJson(doc.getRefId());
+			doc.setCurrentTaskId(null);
+			doc.setCurrentTaskName(null);
+			doc.setTaskActualOwner(null);
+			DocumentDaoHelper.createJson((Document)doc);
 		}
 	}
 

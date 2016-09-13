@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLTextField extends FieldWidget {
@@ -35,7 +36,8 @@ public class HTMLTextField extends FieldWidget {
 		super();
 		this.textInput = textInput;
 		this.designMode = designMode;
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
+		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX,
+				refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING,
 				refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
@@ -46,8 +48,8 @@ public class HTMLTextField extends FieldWidget {
 				DataType.STRING));
 
 		// Wrap
-		txtComponent = com.duggan.workflow.client.ui.component.TextField
-				.wrap(textInput,true);
+		txtComponent = com.duggan.workflow.client.ui.component.TextField.wrap(
+				textInput, true);
 		widget = txtComponent;
 		assert textInput.getId() != null;
 
@@ -65,10 +67,10 @@ public class HTMLTextField extends FieldWidget {
 				new BooleanValue(textInput.hasAttribute("required")));
 		setProperty(READONLY,
 				new BooleanValue(textInput.hasAttribute("readonly")));
-		
+
 		// field Properties update
 		field.setProperties(getProperties());
-		
+
 		// Events
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
@@ -87,10 +89,10 @@ public class HTMLTextField extends FieldWidget {
 			});
 		}
 	}
-	
+
 	@Override
 	public FieldWidget cloneWidget() {
-		return new HTMLTextField(textInput,designMode);
+		return new HTMLTextField(textInput, designMode);
 	}
 
 	@Override
@@ -141,6 +143,9 @@ public class HTMLTextField extends FieldWidget {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
+		if (!designMode){
+			txtComponent.setReadOnly(this.readOnly);
+		}
 	}
 
 	@Override
@@ -186,7 +191,7 @@ public class HTMLTextField extends FieldWidget {
 
 	@Override
 	public void setComponentValid(boolean isValid) {
-//		txtComponent.setv
+		// txtComponent.setv
 	}
 
 }

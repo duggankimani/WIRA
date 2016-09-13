@@ -36,8 +36,10 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.email.EmailWorkItemHandler;
 import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
+import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
+import org.jbpm.task.User;
 import org.jbpm.task.event.TaskEventListener;
 import org.jbpm.task.event.entity.TaskUserEvent;
 import org.jbpm.task.service.DefaultEscalatedDeadlineHandler;
@@ -62,12 +64,15 @@ import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 
 /**
  * 
@@ -868,6 +873,8 @@ class BPMSessionManager {
 		taskData.putAll(newValues);
 		
 		Document doc = DocumentDaoHelper.getDocument(newValues);
+		saveCurrentTaskInfo(task,doc);
+		
 		try{
 			new CustomEmailHandler().sendNotification(notification,doc, taskData);
 		}catch(IOException e){
@@ -879,6 +886,42 @@ class BPMSessionManager {
 		
 		//String processId = "beforetask-notification";
 		//startProcess(processId, newValues);
+	}
+
+	private void saveCurrentTaskInfo(Task task, Document doc) {
+		doc.setTaskActualOwner(null);
+		doc.setPotentialOwners(null);
+		
+		doc.setCurrentTaskId(task.getId());
+		doc.setCurrentTaskName(JBPMHelper.get().getDisplayName(task));
+		User actualOwner = task.getTaskData().getActualOwner();
+		if(actualOwner!=null){
+			doc.setTaskActualOwner(LoginHelper.get().getUser(actualOwner.getId(), false));
+		}else{
+			StringBuffer potentialOwners = new StringBuffer();
+			List<OrganizationalEntity> entities = task.getPeopleAssignments().getPotentialOwners();
+			for(OrganizationalEntity e: entities){
+				if(e instanceof User){
+					HTUser user = LoginHelper.get().getUser(actualOwner.getId(), false);
+					if(user!=null)
+					potentialOwners.append(user.getFullName()+",");
+				}else{
+					UserGroup group = LoginHelper.get().getGroupById(e.getId());
+					potentialOwners.append(group.getFullName()+",");
+				}
+				
+				doc.setPotentialOwners(potentialOwners.toString());
+			}
+		}
+		
+		logger.info("##UPDATING document: {caseNo:"+doc.getCaseNo()
+				+", refId:"+doc.getRefId()+"}, "
+				+" with currentTask:{TaskId:"+doc.getCurrentTaskId()
+				+",TaskName:"+doc.getCurrentTaskName()+"} "
+						+ "Owners: {actual_owner:"+actualOwner+", potentialOwners:"+doc.getPotentialOwners()+"}");
+		
+		//Update DB with current Task Details
+		DocumentDaoHelper.createJson(doc);
 	}
 
 	public Process getProcess(String processId) {
