@@ -123,12 +123,12 @@ public class InboxTaskView extends AbstractTaskView implements IInboxView {
 		// HTMLPanel("<strong>Last Modify</strong>"));
 		// table.setWidget(0, j++, new HTMLPanel("<strong>Due Date</strong>"));
 		// table.setWidget(0, j++, new HTMLPanel("<strong>Status</strong>"));
-		table.getFlexCellFormatter().setColSpan(i, 0, 8);
+		table.getFlexCellFormatter().setColSpan(i, 0, 11);
 	}
 
 	@Override
 	protected void createHeader(FlexTable table) {
-		createFilterRow(table);
+		//createFilterRow(table);
 		super.createHeader(table);
 	}
 

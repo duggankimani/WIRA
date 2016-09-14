@@ -59,7 +59,7 @@ public class InboxPresenter
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType = TaskType.INBOX;
-		String filter = request.getParameter("filter", null);
+		String filter = request.getParameter("filter", "all");
 		if (filter != null) {
 			currentTaskType = TaskType.valueOf(filter.toUpperCase());
 		}

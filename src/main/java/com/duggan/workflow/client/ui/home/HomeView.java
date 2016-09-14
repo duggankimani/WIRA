@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -31,7 +32,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@UiField
 	Anchor btnAdd;
-	
+
 	@UiField(provided = true)
 	HomeTabPanel tabPanel;
 	
@@ -50,6 +51,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	public HomeView(final Binder binder, HomeTabPanel panel) {
 		this.tabPanel = panel;
 		widget = binder.createAndBindUi(this);
+		
 		bindSlot(HomePresenter.DOCTREE_SLOT, divDocPopup);
 		btnAdd.getElement().setId("startprocess");
 		btnAdd.addClickHandler(new ClickHandler() {

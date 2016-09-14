@@ -511,7 +511,8 @@ body .dateBoxPopup {
 	margin: 0px 0px 0px 0px;
 	/*position: relative;*/
 	width: 200px;
-    position: absolute;
+	position: absolute;
+	background: #ededed;
 }
 
 #sidebar-nav .add-doc {
@@ -1330,8 +1331,8 @@ ul.icons-list.text-xl {
 }
 
 #dashboard-menu>li i {
-	font-size: 15px;
-	top: 3px;
+	font-size: 17px !important;
+	margin-left: 15px;
 }
 
 #dashboard-menu .pointer {
@@ -1427,7 +1428,6 @@ ul.icons-list.text-xl {
 	margin-bottom: 10px;
 	margin: 0px 0px;
 	padding-left: 1px;
-	box-shadow: 0 2px 1px -1px #FFFFFF;
 	padding-bottom: 0px;
 }
 
@@ -1455,12 +1455,16 @@ ul.icons-list.text-xl {
 	height: 25px;
 }
 
-#dashboard-menu .submenu li:hover {
-	background: #f0f0f0;
+#dashboard-menu .submenu li:hover, #dashboard-menu .submenu .accordion-heading:hover  {
+	background: #f6f6f6;
 }
 
 #dashboard-menu .submenu li.active {
-	background-color: #CDCDCD;
+	background-color: #2e8fda;
+}
+
+#dashboard-menu .submenu li.active a {
+color: #ffffff !important;
 }
 
 #dashboard-menu ul.submenu a:hover {
@@ -1754,16 +1758,28 @@ ul.icons-list.text-xl {
 #dashboard-menu ul.documents a{
 	display:inline-block;
 	font-weight: normal;
-    font-size: 13px;
-    color: #000;
-    text-decoration: none;
-    margin-bottom: 0;
-    padding-right: 15px;
-    padding-bottom: 7px;
+	font-size: 13px;
+	color: #000;
+	text-decoration: none;
+	margin-bottom: 0;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	line-height: 18px;
+	padding-left: 7px;
 }
 
 #dashboard-menu ul.documents li{
+	cursor: pointer;
 	list-style-type:none;
+}
+
+#dashboard-menu .accordion .accordion-group{
+	border: none;
+}
+
+#dashboard-menu .accordion .accordion-group .accordion-inner{
+	border-top:none;
+	padding: 2px 35px;
 }
 
 .dragview{

@@ -693,6 +693,10 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		if (properties != null) {
 			for (KeyValuePair prop : properties) {
 				Property p = props.get(prop.getKey());
+				if(p ==null){
+					GWT.log(getClass()+" "+field.getName()+" FATAL: missing property "+prop.getKey());
+					continue;
+				}
 				
 				Value value = null;
 				switch (p.getType()) {

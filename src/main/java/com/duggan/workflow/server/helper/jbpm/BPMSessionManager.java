@@ -888,7 +888,12 @@ class BPMSessionManager {
 		//startProcess(processId, newValues);
 	}
 
-	private void saveCurrentTaskInfo(Task task, Document doc) {
+	private void saveCurrentTaskInfo(Task task, Document aDocument) {
+		if(aDocument.getRefId()==null){
+			return;
+		}
+		
+		Document doc = DocumentDaoHelper.getDocJson(aDocument.getRefId());
 		doc.setTaskActualOwner(null);
 		doc.setPotentialOwners(null);
 		
@@ -902,7 +907,7 @@ class BPMSessionManager {
 			List<OrganizationalEntity> entities = task.getPeopleAssignments().getPotentialOwners();
 			for(OrganizationalEntity e: entities){
 				if(e instanceof User){
-					HTUser user = LoginHelper.get().getUser(actualOwner.getId(), false);
+					HTUser user = LoginHelper.get().getUser(e.getId(), false);
 					if(user!=null)
 					potentialOwners.append(user.getFullName()+",");
 				}else{
@@ -919,6 +924,11 @@ class BPMSessionManager {
 				+" with currentTask:{TaskId:"+doc.getCurrentTaskId()
 				+",TaskName:"+doc.getCurrentTaskName()+"} "
 						+ "Owners: {actual_owner:"+actualOwner+", potentialOwners:"+doc.getPotentialOwners()+"}");
+		
+		aDocument.setCurrentTaskId(doc.getCurrentTaskId());
+		aDocument.setCurrentTaskName(doc.getCurrentTaskName());
+		aDocument.setTaskActualOwner(doc.getTaskActualOwner());
+		aDocument.setPotentialOwners(doc.getPotentialOwners());
 		
 		//Update DB with current Task Details
 		DocumentDaoHelper.createJson(doc);

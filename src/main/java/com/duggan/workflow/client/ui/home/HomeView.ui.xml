@@ -23,7 +23,87 @@
 
 				<g:HTMLPanel styleName="full-page">
 					<ul id="dashboard-menu">
-						<li class="active">
+						<li>
+							<ul class="documents submenu">
+								<div class="accordion" id="accordion2">
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-inbox"></i>
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion2" href="#collapseOne">
+												Inbox (1)
+											</a>
+											<i class="icon-caret-right pull-right"
+												style="margin-right: 10px;margin-top: 8px;color: #ADA5A5;"></i>
+										</div>
+										<div id="collapseOne" class="accordion-body collapse">
+											<ul class="submenu">
+												<li class="accordion-inner">
+													<a href="#/inbox/mine">Mine (1)</a>
+												</li>
+												<li class="accordion-inner">
+													<a href="#/inbox/queued">Queued (0)</a>
+												</li>
+												<li class="accordion-inner">
+													<a href="#/inbox/all">All (0)</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-pencil"></i>
+											<a class="accordion-toggle" href="#/drafts">
+												Drafts (26)
+											</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-time"></i>
+											<a class="accordion-toggle" href="#/participated">Participated (29)</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-flag"></i>
+											<a class="accordion-toggle" href="#/suspended">Suspended (5)</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-warning-sign"></i>
+											<a class="accordion-toggle" href="#/unassigned">UnAssigned (1)</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-archive"></i>
+											<a class="accordion-toggle" href="#/registry">Case Registry</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-file"></i>
+											<a class="accordion-toggle" href="#/reports" style="padding-left:14px;">Reports</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<i class="icon-folder-open"></i>
+											<a class="accordion-toggle" href="#/explorer">File Explorer</a>
+										</div>
+									</div>
+								</div>
+							</ul>
+						</li>
+
+
+
+
+
+						<li class="active hide">
 							<a class="dropdown-toggle" href="#/inbox">
 								<i class="icon-tasks"></i>
 								<span>My Tasks</span>
@@ -32,14 +112,11 @@
 							<tab:HomeTabPanel ui:field="tabPanel"></tab:HomeTabPanel>
 						</li>
 
-						<li class="active">
-							<!-- a class="dropdown-toggle hide" href="#/home">
-								<i class="icon-book"></i>
-								<span>My Documents</span>
-								<i class="icon-chevron-up hidden-tablet"></i>
-							</a -->
-								<legend></legend>
-								<ul class="documents">
+						<li class="active hide">
+							<!-- a class="dropdown-toggle hide" href="#/home"> <i class="icon-book"></i> 
+								<span>My Documents</span> <i class="icon-chevron-up hidden-tablet"></i> </a -->
+							<legend></legend>
+							<ul class="documents">
 								<li>
 									<i class="icon-archive"></i>
 									<a href="#/registry" ui:field="aCaseReg">Case Registry</a>
@@ -52,7 +129,7 @@
 									<i class="icon-folder-open-alt"></i>
 									<a href="#/explorer" ui:field="aExplorer">File Explorer</a>
 								</li>
-								
+
 							</ul>
 							<g:HTMLPanel ui:field="panelDocTree" height="500px">
 							</g:HTMLPanel>
