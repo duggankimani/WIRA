@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.home;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.fileexplorer.FileExplorerPresenter;
@@ -13,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -22,6 +22,8 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Tab;
 import com.gwtplatform.mvp.client.TabData;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
@@ -47,9 +49,14 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@UiField Element aReports;
 	@UiField Element aExplorer;
 	
+	@UiField Element sideBarUL;
+
+	private PlaceManager placeManager;
+	
 	@Inject
-	public HomeView(final Binder binder, HomeTabPanel panel) {
+	public HomeView(final Binder binder, HomeTabPanel panel, PlaceManager placeManager) {
 		this.tabPanel = panel;
+		this.placeManager = placeManager;
 		widget = binder.createAndBindUi(this);
 		
 		bindSlot(HomePresenter.DOCTREE_SLOT, divDocPopup);
@@ -61,6 +68,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 				btnAdd.getElement().getParentElement().toggleClassName("open");
 			}
 		});
+		
+		bindAnchors(sideBarUL);
 	}
 
 	public HasClickHandlers getAddButton() {
@@ -105,6 +114,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@Override
 	public void setActiveTab(Tab tab) {
+		
+		selectTab(placeManager.getCurrentPlaceRequest());
 		tabPanel.setActiveTab(tab);
 	}
 
@@ -137,6 +148,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 		tabPanel.refreshTabs();
 		
 		for(Tab tab: tabPanel.getTabs()){
+			
 			showCustom(((TabItem)tab).getTabData());
 		}
 	}
@@ -185,7 +197,11 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	}
 	
 	@Override
-	public native void load() /*-{
+	public void load(){
+		initTree();
+	}
+	
+	public native void initTree() /*-{
 								
 								var el = $wnd.jQuery('div.dropdown-menu');
 								
@@ -203,5 +219,74 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	public void closeDocTypePopup() {
 		btnAdd.getElement().getParentElement().toggleClassName("open");
 	}
+	
+	private native void bindAnchors(Element parent)/*-{
+		var view = this;
+		$wnd.jQuery($doc).ready(function(){
+			$wnd.console.log('Ready.....to bind ');
+		
+			$wnd.jQuery(parent).find('#accordion2 a').each(function() {
+				var el = $wnd.jQuery(this);
+				$wnd.jQuery(el).click(function(e){
+					//clear Existing selection
+					view.@com.duggan.workflow.client.ui.home.HomeView::clearAnchors()();
+									
+					var parent = $wnd.jQuery(el).parent();
+					parent.addClass('active');
+					
+					if(el.prop('id')!=null && el.prop('id')=='inbox'){
+						//Inbox url is also used to collapse child links, href has been overriden
+						//Inbox should redirect to my inbox items
+						 
+						view.@com.duggan.workflow.client.ui.home.HomeView::redirectInbox()();
+						
+						String collapsibleId = el.prop('href');
+						
+					}
+				});
+			});
+			
+		});
+		
+	}-*/;
+	
+	void redirectInbox(){
+		placeManager.revealPlace(new PlaceRequest.Builder().nameToken(NameTokens.inboxwithparams)
+				.with("filter", "mine")
+				.build());
+	}
+	private void clearAnchors(){
+		clearAllAnchors(sideBarUL);
+	}
+	
+	private native void clearAllAnchors(Element parent)/*-{
+		$wnd.jQuery(parent).find('#accordion2 a').each(function() {
+				var parent = $wnd.jQuery(this).parent();
+				parent.removeClass('active');
+			});
+	}-*/;
+	
+
+	private void selectTab(PlaceRequest currentPlaceRequest) {
+		String nameToken = currentPlaceRequest.getNameToken();
+		nameToken = placeManager.buildHistoryToken(currentPlaceRequest);
+		
+		selectTab(sideBarUL,"#"+nameToken);
+	}
+	
+	private native void selectTab(Element parent,String historyToken)/*-{
+		$wnd.console.log("Select tab - "+historyToken);
+		var searchQuery = '#accordion2 a[href=\''+historyToken+'\']';
+		
+		$wnd.jQuery(parent).find(searchQuery).each(function() {
+				var el = $wnd.jQuery(this);
+				var elParent = $wnd.jQuery(el).parent();
+				elParent.addClass('active');
+				
+				if(elParent.hasClass("accordion-inner")){
+					elParent.closest("div.accordion-body", parent).removeClass("collapse");
+				}
+			});
+	}-*/;
 
 }

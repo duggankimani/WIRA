@@ -195,7 +195,7 @@ public class FormPanel extends Composite {
 		} catch (AttachDetachException e) {
 			StringBuffer buffer = new StringBuffer();
 			getTrace(e, buffer);
-			Window.alert(e.getMessage() + "<p>" + buffer.toString());
+			Window.alert("Form Panel says: "+e.getMessage() + "<p>" + buffer.toString());
 		}
 	}
 

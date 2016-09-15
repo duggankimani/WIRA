@@ -24,12 +24,12 @@
 				<g:HTMLPanel styleName="full-page">
 					<ul id="dashboard-menu">
 						<li>
-							<ul class="documents submenu">
+							<ul class="documents submenu" ui:field="sideBarUL">
 								<div class="accordion" id="accordion2">
 									<div class="accordion-group">
 										<div class="accordion-heading">
 											<i class="icon-inbox"></i>
-											<a class="accordion-toggle" data-toggle="collapse"
+											<a id="inbox" class="accordion-toggle" data-toggle="collapse"
 												data-parent="#accordion2" href="#collapseOne">
 												Inbox (1)
 											</a>
