@@ -190,6 +190,7 @@ public class FormPanel extends Composite {
 
 	@Override
 	protected void onAttach() {
+//		super.onAttach();
 		try {
 			super.onAttach();
 		} catch (AttachDetachException e) {

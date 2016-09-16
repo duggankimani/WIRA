@@ -32,6 +32,7 @@ public class UnAssignedPresenter extends AbstractTaskPresenter<UnAssignedPresent
 	}
 	
 	public static final String UNASSIGNED_CAN_VIEW_UNASSIGNEDTASKS = "UNASSIGNED_CAN_VIEW_UNASSIGNEDTASKS";
+	public static final String TABLABEL = "UnAssigned";
 	
 	@TabInfo(container = HomePresenter.class)
     static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {

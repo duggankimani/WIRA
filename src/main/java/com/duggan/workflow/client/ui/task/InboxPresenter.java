@@ -37,7 +37,7 @@ public class InboxPresenter
 	}
 
 	@TabInfo(container = HomePresenter.class)
-	static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+	public static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
 		return new HomeTabData(TaskType.INBOX.name(), "Inbox", "", 1,
 				adminGatekeeper);
 	}

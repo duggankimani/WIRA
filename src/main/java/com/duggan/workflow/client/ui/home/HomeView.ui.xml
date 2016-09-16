@@ -28,24 +28,31 @@
 								<div class="accordion" id="accordion2">
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-inbox"></i>
 											<a id="inbox" class="accordion-toggle" data-toggle="collapse"
 												data-parent="#accordion2" href="#collapseOne">
-												Inbox (1)
+												<i class="icon-inbox"></i>
+												<span>Inbox</span>
+												<i class="icon-caret-right pull-right"
+												style="margin-right: 10px;color: #ADA5A5;padding-top:2px;"></i>
 											</a>
-											<i class="icon-caret-right pull-right"
-												style="margin-right: 10px;margin-top: 8px;color: #ADA5A5;"></i>
+											
 										</div>
 										<div id="collapseOne" class="accordion-body collapse">
 											<ul class="submenu">
 												<li class="accordion-inner">
-													<a href="#/inbox/mine">Mine (1)</a>
+													<a href="#/inbox/mine" title="Tasks assigned to you">
+													   <span>Mine</span> 
+													</a>
 												</li>
 												<li class="accordion-inner">
-													<a href="#/inbox/queued">Queued (0)</a>
+													<a href="#/inbox/queued" title="Group tasks awaiting your action">
+													    <span>Queued</span>
+													    </a>
 												</li>
 												<li class="accordion-inner">
-													<a href="#/inbox/all">All (0)</a>
+													<a href="#/inbox/all" title="Includes group tasks that may have been performed by others in the group">
+													    <span>All</span>
+													</a>
 												</li>
 											</ul>
 										</div>
@@ -53,54 +60,66 @@
 
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-pencil"></i>
+											
 											<a class="accordion-toggle" href="#/drafts">
-												Drafts (26)
+												<i class="icon-pencil"></i>
+												<span>Drafts</span>
 											</a>
 										</div>
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-time"></i>
-											<a class="accordion-toggle" href="#/participated">Participated (29)</a>
+											
+											<a class="accordion-toggle" href="#/participated">
+											    <i class="icon-time"></i>
+											    <span>Participated</span>
+											 </a>
 										</div>
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-flag"></i>
-											<a class="accordion-toggle" href="#/suspended">Suspended (5)</a>
+											<a class="accordion-toggle" href="#/suspended">
+											    <i class="icon-flag"></i>
+											    <span>Suspended</span>
+											</a>
 										</div>
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-warning-sign"></i>
-											<a class="accordion-toggle" href="#/unassigned">UnAssigned (1)</a>
+											<a class="accordion-toggle" href="#/unassigned">
+											    <i class="icon-warning-sign"></i>
+											   	<span>UnAssigned</span>
+											    </a>
 										</div>
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-archive"></i>
-											<a class="accordion-toggle" href="#/registry">Case Registry</a>
+											<a class="accordion-toggle" href="#/registry">
+											    <i class="icon-archive"></i>
+											    <span>Case Registry</span>
+											</a>
 										</div>
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-file"></i>
-											<a class="accordion-toggle" href="#/reports" style="padding-left:14px;">Reports</a>
+											
+											<a class="accordion-toggle" href="#/reports">
+											    <i class="icon-file"></i>
+											    	<span>Reports</span>
+											    </a>
 										</div>
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<i class="icon-folder-open"></i>
-											<a class="accordion-toggle" href="#/explorer">File Explorer</a>
+											<a class="accordion-toggle" href="#/explorer">
+											    <i class="icon-folder-open"></i>
+											    <span>File Explorer</span>
+											</a>
 										</div>
 									</div>
 								</div>
 							</ul>
 						</li>
-
-
-
 
 
 						<li class="active hide">

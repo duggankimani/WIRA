@@ -19,6 +19,7 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.TreeType;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.TableLayout;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -75,6 +76,7 @@ public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.
 		initWidget(uiBinder.createAndBindUi(this));
 		userTree.setWidth("100%");
 		processTree.setWidth("100%");
+		fileTable.getElement().getStyle().setTableLayout(TableLayout.FIXED);
 
 		setHeaders(fileTable);
 
@@ -200,19 +202,21 @@ public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.
 		table.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
 		table.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
 		table.setWidget(0, j++, new HTMLPanel("<strong></strong>"));
-
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
+		
 		table.setWidget(0, j++, new HTMLPanel("<strong>File Name</strong>"));
 
 		table.setWidget(0, j++, new HTMLPanel("<strong>Modified</strong>"));
-		// table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "80px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Owner</strong>"));
 		// table.getFlexCellFormatter().setWidth(0, (j - 1), "110px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Type</strong>"));
-		// table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");	
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "80px");
+		
 		table.setWidget(0, j++, new HTMLPanel("<strong>Process</strong>"));
 		// table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Case</strong>"));
-		// table.getFlexCellFormatter().setWidth(0, (j - 1), "200px");
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "55px");
 	}
 
 	private String getHref(Attachment attachment) {
@@ -386,25 +390,25 @@ public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.
 	
 	@Override
 	public void onLoad() {
-		int clientWidth = Window.getClientWidth();
-//		int clientHeight= Window.getClientHeight();
-		double sideBarNav = Window.getClientWidth()*0.12;
-		double fileTreeNavWidthAndMargins = 227+16;
-		double tableDivMargins = 30;
-		double attachmentTableWidth = clientWidth - (sideBarNav+fileTreeNavWidthAndMargins+tableDivMargins);
-		
-		fileTable.setWidth(attachmentTableWidth+"px");
-		
-		
-		int clientHeight = Window.getClientHeight();
-		int windowHeading = 48;
-		int contentHeading = 26+10;
-		int contentTabs = 38;
-		int margin = 40;
-		int contentHeight = clientHeight - (windowHeading+contentHeading+contentTabs+margin); 
-		userTree.setHeight(contentHeight);
-		fileTree.setHeight(contentHeight+"px");
-		processTree.setHeight(contentHeight+"px");
+//		int clientWidth = Window.getClientWidth();
+////		int clientHeight= Window.getClientHeight();
+//		double sideBarNav = Window.getClientWidth()*0.12;
+//		double fileTreeNavWidthAndMargins = 227+16;
+//		double tableDivMargins = 30;
+//		double attachmentTableWidth = clientWidth - (sideBarNav+fileTreeNavWidthAndMargins+tableDivMargins);
+//		
+//		fileTable.setWidth(attachmentTableWidth+"px");
+//		
+//		
+//		int clientHeight = Window.getClientHeight();
+//		int windowHeading = 48;
+//		int contentHeading = 26+10;
+//		int contentTabs = 38;
+//		int margin = 40;
+//		int contentHeight = clientHeight - (windowHeading+contentHeading+contentTabs+margin); 
+//		userTree.setHeight(contentHeight);
+//		fileTree.setHeight(contentHeight+"px");
+//		processTree.setHeight(contentHeight+"px");
 	}
 
 }

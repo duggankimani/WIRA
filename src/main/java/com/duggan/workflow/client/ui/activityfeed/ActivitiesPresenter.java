@@ -13,6 +13,7 @@ import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Activity;
@@ -55,8 +56,8 @@ public class ActivitiesPresenter extends
 	}
 	
 	@TabInfo(container = HomePresenter.class)
-    static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-		TabDataExt data = new TabDataExt("Activities","icon-dashboard",10, adminGatekeeper,false);
+    public static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+		HomeTabData data = new HomeTabData("activities","Activities","icon-dashboard",10, adminGatekeeper,false);
         return data;
     }
 

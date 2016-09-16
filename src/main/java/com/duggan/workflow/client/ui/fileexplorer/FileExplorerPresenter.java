@@ -11,6 +11,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
+import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.TreeType;
@@ -84,7 +85,7 @@ public class FileExplorerPresenter extends
 		 * 
 		 */
 		gateKeeper.withParams(new String[]{REPORTS_CAN_VIEW_REPORTS});	
-		TabDataExt data = new TabDataExt(TABLABEL, "icon-dashboard", 12,
+		HomeTabData data = new HomeTabData("explorer",TABLABEL, "icon-dashboard", 12,
 				gateKeeper, false);
 		return data;
 	}

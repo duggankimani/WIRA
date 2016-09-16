@@ -158,12 +158,12 @@ public class HTMLRadioGroup extends FieldWidget implements IsSelectionField {
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
 
-		int count = vPanel.getWidgetCount();
-		for (int i = 0; i < count; i++) {
-			RadioButton btn = (RadioButton) vPanel.getWidget(i);
-			btn.setEnabled(!this.readOnly);
-			// btn.set
-		}
+//		int count = vPanel.getWidgetCount();
+//		for (int i = 0; i < count; i++) {
+//			RadioButton btn = (RadioButton) vPanel.getWidget(i);
+//			btn.setEnabled(!this.readOnly);
+//			// btn.set
+//		}
 	}
 
 	@Override
