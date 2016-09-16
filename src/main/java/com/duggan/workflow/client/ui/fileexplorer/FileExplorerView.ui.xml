@@ -10,12 +10,12 @@
 			<h4>File Explorer</h4>
 			<div class="span12">
 				<div class="span3">
-					<ul class="nav nav-tabs" id="myTab">
+					<ul class="nav nav-tabs" id="fileTab">
 						<li class="active">
 							<d:ActionLink ui:field="aFileTree" href="#files">Files</d:ActionLink>
 						</li>
 						<li>
-							<d:ActionLink ui:field="aProcessesTree" href="#processes">Processes</d:ActionLink>
+							<d:ActionLink ui:field="aProcessesTree" href="#processesTab">Processes</d:ActionLink>
 						</li>
 						<li>
 							<d:ActionLink ui:field="aUsersTree" href="#users">Users</d:ActionLink>
@@ -25,7 +25,7 @@
 						<div class="tab-pane active" id="files">
 							<tree:Tree ui:field="fileTree"></tree:Tree>
 						</div>
-						<div class="tab-pane" id="processes">
+						<div class="tab-pane" id="processesTab">
 							<tree:Tree ui:field="processTree"></tree:Tree>
 						</div>
 						<div class="tab-pane" id="users">

@@ -317,27 +317,29 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	private native void bindAnchors(Element parentUl)/*-{
 														var view = this;
 														$wnd.jQuery($doc).ready(function(){
-														//$wnd.console.log('Ready.....to bind ');
+															//$wnd.console.log('Ready.....to bind ');
+															
+															$wnd.jQuery(parentUl).find('#accordion2 a').each(function() {
+															var el = $wnd.jQuery(this);
+																$wnd.jQuery(el).click(function(e){
+																//clear Existing selection
+																view.@com.duggan.workflow.client.ui.home.HomeView::clearAnchors()();
+																
+																var parent = $wnd.jQuery(el).parent();
+																parent.addClass('active');
+																});
+															});
 														
-														$wnd.jQuery(parentUl).find('#accordion2 a').each(function() {
-														var el = $wnd.jQuery(this);
-														$wnd.jQuery(el).click(function(e){
-														//clear Existing selection
-														view.@com.duggan.workflow.client.ui.home.HomeView::clearAnchors()();
-														
-														var parent = $wnd.jQuery(el).parent();
-														parent.addClass('active');
-														
-														if(el.prop('id')!=null && el.prop('id')=='inbox'){
-														//Inbox url is also used to collapse child links, href has been overriden
-														//Inbox should redirect to my inbox items
-														
-														//view.@com.duggan.workflow.client.ui.home.HomeView::redirectInbox()();
-														//$wnd.jQuery(parentUl).find('#collapseOne').removeClass('collapse');
-														}
-														});
-														});
-														
+															$wnd.jQuery(parentUl).find('#inbox').click(function(e){
+																var inbox = $wnd.jQuery(e.target);
+																var caret = inbox.find('i.icon-caret-right').get(0);
+																if(caret==undefined){
+																	caret = inbox.find('i.icon-caret-down').get(0);
+																}
+																
+																$wnd.jQuery(caret).toggleClass('icon-caret-right');
+																$wnd.jQuery(caret).toggleClass('icon-caret-down');
+															});
 														});
 														
 														}-*/;
@@ -376,7 +378,13 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 																		elParent.addClass('active');
 																		
 																		if(elParent.hasClass("accordion-inner")){
-																			elParent.closest("div.accordion-body", parent).removeClass("collapse");
+																			var accordionBody = elParent.closest("div.accordion-body", parent);
+																			accordionBody.removeClass("collapse");
+																			
+																			//Toggle caret
+																			var caret = accordionBody.closest('div.accordion', parent).find(".accordion-toggle i.icon-caret-right").get(0);
+																			$wnd.jQuery(caret).toggleClass('icon-caret-right');
+																			$wnd.jQuery(caret).toggleClass('icon-caret-down');
 																		}
 																		});
 																		}-*/;

@@ -69,10 +69,10 @@
 							</g:Anchor>
 						</li>
 						<li class="home dropdown">
-							<a class="dropdown-toggle" id="drop5" role="button"
+							<a class="dropdown-toggle" id="adminDropDown" role="button"
 								data-toggle="dropdown" href="#">
 								<i class="icon-cog"></i>
-								<b class="caret"></b>
+								<b class="caret"></b>	
 							</a>
 							<ul class="dropdown-menu" id="adminSettings">
 
