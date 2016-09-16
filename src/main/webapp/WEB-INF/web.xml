@@ -73,7 +73,7 @@
 	
 	<servlet-mapping>
 	    <servlet-name>LoginServlet</servlet-name>
-	    <url-pattern>auth</url-pattern>
+	    <url-pattern>/auth</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
