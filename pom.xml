@@ -80,6 +80,7 @@
 					<include>**/*.properties</include> <include>**/*.index</include> </includes -->
 				<excludes>
 					<exclude>**/*.java</exclude>
+					<exclude>**/*.ui.xml</exclude>
 				</excludes>
 			</resource>
 		</resources>

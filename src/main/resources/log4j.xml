@@ -25,6 +25,12 @@
     <logger name="com.duggan.workflow.server">
         <level value="DEBUG"/>
     </logger>
+    <logger name="com.duggan.workflow.test">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="com.duggan.pg.jsontyp.test">
+        <level value="DEBUG"/>
+    </logger>
     <logger name="xtension.workitems">
         <level value="DEBUG"/>
     </logger>
