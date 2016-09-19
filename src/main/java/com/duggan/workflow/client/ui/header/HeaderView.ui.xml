@@ -7,10 +7,9 @@
 
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
+	<g:HTMLPanel styleName="navbar navbar-default" ui:field="divNavbar">
 		<div class="navbar-inner">
 			<div class="row">
-
 				<div class="pull-left">
 					<g:Anchor styleName="navbar-brand visible-md visible-lg visible-sm"
 						href="#/home" ui:field="aBrand">

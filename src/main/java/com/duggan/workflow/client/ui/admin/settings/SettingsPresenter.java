@@ -29,76 +29,77 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 
-public class SettingsPresenter extends
-		Presenter<SettingsPresenter.ISettingsView,SettingsPresenter.MyProxy> {
+public class SettingsPresenter extends Presenter<SettingsPresenter.ISettingsView, SettingsPresenter.MyProxy> {
 
 	public interface ISettingsView extends View {
 		public void setValues(ArrayList<Setting> settings);
+
 		public ArrayList<Setting> getSettings();
+
 		boolean isValid();
+
 		HasClickHandlers getSaveLink();
 	}
-	
+
 	public static final String SETTINGS_CAN_VIEW = "SETTINGS_CAN_VIEW";
-	
+
 	@ProxyCodeSplit
 	@NameToken(NameTokens.settings)
 	@UseGatekeeper(HasPermissionsGateKeeper.class)
-	@GatekeeperParams({SETTINGS_CAN_VIEW})
+	@GatekeeperParams({ SETTINGS_CAN_VIEW })
 	public interface MyProxy extends TabContentProxyPlace<SettingsPresenter> {
 	}
-	
+
 	@TabInfo(container = AdminHomePresenter.class)
-    static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
+	static TabData getTabLabel(HasPermissionsGateKeeper gateKeeper) {
 		/**
 		 * Manually calling gateKeeper.withParams Method.
 		 * 
-		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances of this GateKeeper in 
-		 * Presenter.MyProxy->UseGateKeeper & 
+		 * HACK NECESSITATED BY THE FACT THAT Gin injects to different instances
+		 * of this GateKeeper in Presenter.MyProxy->UseGateKeeper &
 		 * getTabLabel(GateKeeper);
 		 * 
-		 * Test -> 
-		 * Window.alert in GateKeeper.canReveal(this+" Params = "+params) Vs 
-		 * Window.alert here in getTabLabel.canReveal(this+" Params = "+params) Vs
-		 * Window.alert in AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params = "+params) Vs
+		 * Test -> Window.alert in GateKeeper.canReveal(this+" Params =
+		 * "+params) Vs Window.alert here in getTabLabel.canReveal(this+" Params
+		 * = "+params) Vs Window.alert in
+		 * AbstractTabPanel.refreshTabs(tab.getTabData.getGateKeeper()+" Params
+		 * = "+params) Vs
 		 * 
 		 */
-		gateKeeper.withParams(new String[]{SETTINGS_CAN_VIEW}); 
-        return new TabDataExt("Settings","glyphicon glyphicon-globe",7, gateKeeper);
-    }
-	
-	
-	@Inject DispatchAsync requestHelper;
+		gateKeeper.withParams(new String[] { SETTINGS_CAN_VIEW });
+		return new TabDataExt("Settings", "glyphicon glyphicon-globe", 7, gateKeeper);
+	}
+
+	@Inject
+	DispatchAsync requestHelper;
 
 	@Inject
 	public SettingsPresenter(final EventBus eventBus, final ISettingsView view, MyProxy proxy) {
-		super(eventBus, view, proxy,AdminHomePresenter.SLOT_SetTabContent);
+		super(eventBus, view, proxy, AdminHomePresenter.SLOT_SetTabContent);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
 		getView().getSaveLink().addClickHandler(new ClickHandler() {
-			
 			@Override
 			public void onClick(ClickEvent event) {
-				if(getView().isValid()){
-					
+				if (getView().isValid()) {
+
 					requestHelper.execute(new SaveSettingsRequest(getView().getSettings()),
 							new TaskServiceCallback<SaveSettingsResponse>() {
-						@Override
-						public void processResult(
-								SaveSettingsResponse aResponse) {
-							getView().setValues(aResponse.getSettings());
-							AppContext.reloadContext();
-						}
-					}); 
+								@Override
+								public void processResult(SaveSettingsResponse aResponse) {
+									getView().setValues(aResponse.getSettings());
+									AppContext.reloadContext();
+								}
+							});
 				}
 			}
 		});
-		
+
 	}
-	
+
 	@Override
 	protected void onReset() {
 		super.onReset();
@@ -106,11 +107,12 @@ public class SettingsPresenter extends
 	}
 
 	boolean loaded = false;
+
 	private void loadSettings() {
-		if(loaded){
+		if (loaded) {
 			return;
 		}
-		loaded=true;
+		loaded = true;
 		requestHelper.execute(new GetSettingsRequest(), new TaskServiceCallback<GetSettingsResponse>() {
 			@Override
 			public void processResult(GetSettingsResponse aResponse) {
