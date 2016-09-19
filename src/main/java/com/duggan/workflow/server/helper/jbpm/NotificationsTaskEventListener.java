@@ -191,11 +191,15 @@ public class NotificationsTaskEventListener implements
 			newValues.put("documentId", doc.getId());
 
 			//
-			taskData.putAll(newValues);
+			/*
+			 * Duggan 19/09/2016 - Disabled default task completion emails. 
+			 * 
+			 * taskData.putAll(newValues);
 			new CustomNotificationHandler().generate(taskData,
 					NotificationType.TASKCOMPLETED_OWNERNOTE);
 			new CustomNotificationHandler().generate(taskData,
 					NotificationType.TASKCOMPLETED_APPROVERNOTE);
+					*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -288,12 +292,24 @@ public class NotificationsTaskEventListener implements
 		// the human task
 		taskData.putAll(newValues);
 
+		/**
+		 * 
+		 *
+		 *Duggan 19/09/2016 Disabled default task creation notifications
+		 *
 		Document doc = DocumentDaoHelper.getDocument(newValues);
 		JBPMHelper.get().getEmailHandler().sendNotification(notification, doc, taskData);
 		new CustomNotificationHandler().generate(taskData,
 				NotificationType.APPROVALREQUEST_OWNERNOTE);
 		new CustomNotificationHandler().generate(taskData,
 				NotificationType.APPROVALREQUEST_APPROVERNOTE);
+				*/
+		
+		if(actorId!=null){
+			//Task Assigned directly to an actor
+			Document doc = DocumentDaoHelper.getDocument(newValues);
+			JBPMHelper.get().getEmailHandler().sendNotification(notification, doc, taskData);
+		}
 
 		// String processId = "beforetask-notification";
 		// startProcess(processId, newValues);
