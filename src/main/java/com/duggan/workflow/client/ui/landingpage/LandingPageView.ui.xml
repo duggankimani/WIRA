@@ -1,0 +1,597 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
+	<g:HTMLPanel styleName="overflow-y">
+		<div class="row-fluid">
+			<div class="span12 landing-page">
+				<div class="card-tabs-header">
+					<ul class="nav nav-tabs nav-pills" id="usermgt">
+						<li class="active">
+							<d:ActionLink ui:field="aUserstab" href="#users"
+								dataToggle="tab">FINANCE</d:ActionLink>
+						</li>
+						<li>
+							<d:ActionLink ui:field="aGroupstab" href="#groups"
+								dataToggle="tab">PROCUREMENT</d:ActionLink>
+						</li>
+						<li>
+							<d:ActionLink ui:field="aUnitstab" href="#orgs"
+								dataToggle="tab">HUMAN RESOURCE</d:ActionLink>
+						</li>
+						<li>
+							<d:ActionLink ui:field="aUnitstab2" href="#orgs"
+								dataToggle="tab">MARKETING</d:ActionLink>
+						</li>
+						<li>
+							<d:ActionLink ui:field="aUnitstab3" href="#orgs"
+								dataToggle="tab">PURCHASE</d:ActionLink>
+						</li>
+					</ul>
+				</div>
+
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="users">
+						<div class="container">
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-pane fade" id="groups">
+						<div class="container">
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-pane fade" id="orgs">
+						<div class="container">
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row">
+								<div class="span3">
+									<div class="card">
+										<div class="card-image">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(143, 56, 80);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(161, 119, 37);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="span3">
+									<div class="card">
+										<div class="card-image" style="background-color: rgb(50, 93, 148);">
+											<i class="icon-pencil icon-large mid-icon"></i>
+										</div>
+										<div class="card-action">
+											<span class="ng-binding">Petty Cash (6)</span>
+											<a class="pull-right">
+												<i class="icon-plus icon-large new"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -50,7 +50,7 @@ public class ActivitiesPresenter extends
 	}
 	
 	@ProxyCodeSplit
-	@NameToken(NameTokens.home)
+	@NameToken(NameTokens.activities)
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface IActivitiesProxy extends TabContentProxyPlace<ActivitiesPresenter> {
 	}

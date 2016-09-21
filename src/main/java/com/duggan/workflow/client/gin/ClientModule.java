@@ -76,6 +76,7 @@ import com.duggan.workflow.client.ui.header.HeaderPresenter;
 import com.duggan.workflow.client.ui.header.HeaderView;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeView;
+import com.duggan.workflow.client.ui.landingpage.LandingPageModule;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.ui.notifications.NotificationsView;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
@@ -152,6 +153,7 @@ public class ClientModule extends AbstractPresenterModule {
 		install(new BaseProcessModule());
 		install(new ProcessListingModule());
 		install(new ApplicationsCentralModule());
+		install(new LandingPageModule());
 //		install(new FileExplorerModule());
 
 		bindPresenter(ApplicationPresenter.class, ApplicationPresenter.MyView.class,

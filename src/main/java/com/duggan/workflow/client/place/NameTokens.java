@@ -2,10 +2,12 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
+	public static final String landingpage = "/landingpage";
+
 	public static final String applicationslisting = "/applicationslisting";
 
 	public static final String applicationsBase = "/applications";
-	
+
 	public static final String applicationsNew = "/applications/{processRefId}";
 
 	public static final String applications = "/applications/{processRefId}/{docRefId}";
@@ -49,6 +51,8 @@ public class NameTokens {
 	public static final String datatable = "/datatable";
 	public static final String caseview = "/caseview/{docRefId}";
 	public static final String messages = "/messages";
+	public static final String activities = "/activities";
+	
 
 	public static final String loginPage = "login.html";
 
@@ -118,6 +122,10 @@ public class NameTokens {
 
 	public static String getApplicationslisting() {
 		return applicationslisting;
+	}
+
+	public static String getLandingpage() {
+		return landingpage;
 	}
 
 }
