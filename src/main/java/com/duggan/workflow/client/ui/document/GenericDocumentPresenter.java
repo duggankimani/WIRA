@@ -1821,7 +1821,7 @@ public class GenericDocumentPresenter extends
 		}
 
 		// get document actions - if any
-		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(docRefId, taskId);
+		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(docRefId, taskId, result);
 		fireEvent(e);
 		if (e.getValidActions() != null) {
 			getView().setValidTaskActions(e.getValidActions());

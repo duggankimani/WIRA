@@ -1780,3 +1780,57 @@ color: #ffffff !important;
 	max-height:300px;
 	overflow-y:hidden;
 }
+
+.applications-body{
+	background-size: cover;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;	
+    background-color: grey;
+}
+
+.applications-editor{
+	margin:0;
+	width: 80%;
+    margin: auto;
+    background-color: white;
+    height: 100%;
+}
+
+.applications-editor #detailed-info div.upper-content{
+	display:none;
+}
+
+
+.applications-toolbar{
+	height:60px;
+	width:100%;
+	color:white;
+}
+
+.applications-toolbar a{
+	color:white;
+	font-size:16px;
+	padding-top:5px;
+	margin-left:20px;
+}
+
+.applications-toolbar a:hover{
+	color:#5BC0DE;
+}
+
+.applications-toolbar .toolbar-actions{
+	background-color:#656667;
+	width: 100%;
+    height: 48px;
+}
+
+.applications-toolbar .toolbar-actions .actionbar{
+	    padding: 10px 0px 0px 0px;
+}
+
+.applications-toolbar .toolbar-actions .actionbar .action-buttons{
+	margin-right: 20px;	
+}

@@ -2,6 +2,14 @@ package com.duggan.workflow.client.place;
 
 public class NameTokens {
 
+	public static final String applicationslisting = "/applicationslisting";
+
+	public static final String applicationsBase = "/applications";
+	
+	public static final String applicationsNew = "/applications/{processRefId}";
+
+	public static final String applications = "/applications/{processRefId}/{docRefId}";
+
 	public static final String activateacc = "/activateacc/{uid}/{reason}";
 
 	public static final String splash = "/splash";
@@ -102,6 +110,14 @@ public class NameTokens {
 
 	public static String getAcc() {
 		return activateacc;
+	}
+
+	public static String getApplications() {
+		return applications;
+	}
+
+	public static String getApplicationslisting() {
+		return applicationslisting;
 	}
 
 }

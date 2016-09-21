@@ -1,7 +1,12 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.google.inject.Inject;
@@ -26,11 +31,17 @@ public class CreateDocumentActionHandler extends
 	public void execute(CreateDocumentRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-				
-		Document doc = action.getDocument();
-		//doc = DocumentDaoHelper.save(doc);
+			
+		Document doc = new Document();
+		
+		if(action.getProcessRefId()!=null){
+			DocumentType type = DocumentDaoHelper.getDocumentTypeByProcessRef(action.getProcessRefId());
+			doc.setType(type);
+		}else{
+			doc = action.getDocument();
+		}
+
 		doc = DocumentDaoHelper.createJson(doc);
-				
 		CreateDocumentResult result = (CreateDocumentResult)actionResult;
 		result.setDocument(doc);
 		

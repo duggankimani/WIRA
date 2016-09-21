@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.dashboard.Data;
@@ -177,6 +178,12 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 		}
 		
 		return dataLst;
+	}
+
+	public ADDocType getDocumentTypeByProcessRef(String processRefId) {
+		
+		String hql = "FROM ADDocType t where t.processDef.refId=:processRefId";
+		return getSingleResultOrNull(getEntityManager().createQuery(hql).setParameter("processRefId", processRefId));
 	}
 	
 }

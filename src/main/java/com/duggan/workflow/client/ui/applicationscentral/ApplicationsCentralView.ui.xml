@@ -1,0 +1,90 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
+	<g:HTMLPanel styleName="applications-body">
+		<div class="applications-toolbar">
+			<div class="toolbar-actions">
+				<div class="actionbar">
+					<div class="pull-left">
+						<div class="generic-doc-title span6">
+							<span ui:field="spnProcessName"></span>
+							-&nbsp;
+							<span ui:field="spnCaseNumber"></span>
+						</div>
+					</div>
+					<div class="action-buttons pull-right">
+						<d:ActionLink ui:field="aDoc" title="View Data Form">
+							<i class="icon-file"></i>
+							<!-- Process -->
+						</d:ActionLink>
+						<d:ActionLink ui:field="aAudit" styleName=" disabled"
+							title="View Process Audit">
+							<i class="icon-time"></i>
+							<!-- Process -->
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aProcess" styleName=" disabled"
+							title="View Process Map">
+							<i class="icon-info"></i>
+							<!-- Process -->
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aAttach2" styleName=" hidden"
+							title="View attachments">
+							<i class="icon-upload-alt color-orange"></i>
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aViewAttachments" title="View attachments">
+							<i class="icon-paper-clip"></i>
+							<sup ui:field="elAttachmentsCount" class="text-info" style="line-height:20px;"></sup>
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aEdit" title="Edit">
+							<i class="icon-pencil"></i>
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aSave">
+							<i class="icon-save"></i>
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aConfigure" title="Configure">
+							<i class="icon-cogs"></i>
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aStart" styleName="btn btn-success hidden"
+							title="Start working on the task">
+							<i class="icon-play"></i>
+							Start
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aResume" styleName="btn btn-success hidden">
+							<i class="icon-play"></i>
+							Resume
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aComplete" styleName="btn btn-success hidden">
+							<i class="icon-ok"></i>
+							Complete
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aStop" styleName=" hidden">
+							<i class="icon-stop"></i>
+							Stop
+						</d:ActionLink>
+
+						<d:ActionLink ui:field="aForward"
+							styleName="btn btn-success">
+							Submit
+							<i class="icon-double-angle-right"></i>
+						</d:ActionLink>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="applications-editor">
+			<div id="detailed-info">
+				<g:HTMLPanel ui:field="docContainer" styleName="full-page"></g:HTMLPanel>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

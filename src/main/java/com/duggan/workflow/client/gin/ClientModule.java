@@ -59,6 +59,7 @@ import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerPrese
 import com.duggan.workflow.client.ui.admin.trigger.taskstep.TaskStepTriggerView;
 import com.duggan.workflow.client.ui.admin.users.UserPresenter;
 import com.duggan.workflow.client.ui.admin.users.UserView;
+import com.duggan.workflow.client.ui.applicationscentral.ApplicationsCentralModule;
 import com.duggan.workflow.client.ui.comments.CommentPresenter;
 import com.duggan.workflow.client.ui.comments.CommentView;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
@@ -150,6 +151,7 @@ public class ClientModule extends AbstractPresenterModule {
 		install(new SplashModule());
 		install(new BaseProcessModule());
 		install(new ProcessListingModule());
+		install(new ApplicationsCentralModule());
 //		install(new FileExplorerModule());
 
 		bindPresenter(ApplicationPresenter.class, ApplicationPresenter.MyView.class,

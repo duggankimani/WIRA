@@ -622,7 +622,6 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
 		ADDocType adtype = dao.getDocumentTypeByName(docTypeName);
-
 		return getType(adtype);
 	}
 
@@ -644,6 +643,11 @@ public class DocumentDaoHelper {
 			}
 
 		return types;
+	}
+	
+	public static DocumentType getDocumentTypeByProcessRef(String processRefId){
+		ADDocType adtype = DB.getDashboardDao().getDocumentTypeByProcessRef(processRefId);
+		return getType(adtype);
 	}
 
 	public static void delete(DocumentLine line) {
