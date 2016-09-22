@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+
+	</ui:style>
+	<g:HTMLPanel styleName="card">
+		<div class="card-image">
+			<i class="icon-pencil icon-large mid-icon"></i>
+		</div>
+		<div class="card-action">
+		    <a href="#" ui:field="aProcess">
+				<span class="ng-binding" ui:field="spnName">Petty Cash (6)</span>
+			</a>
+			<a class="pull-right" ui:field="aAdd">
+				<i class="icon-plus icon-large new"></i>
+			</a>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

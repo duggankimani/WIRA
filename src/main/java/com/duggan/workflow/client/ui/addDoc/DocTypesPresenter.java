@@ -84,27 +84,17 @@ public class DocTypesPresenter extends
 		for(final DocumentType type : types) {
 			if(type.getCategory()!=null && !category.equals(type.getCategory())){
 				category = type.getCategory();
-				//getView().addSeparator(category);
 				processCat = new ProcessCategory();
 				processCat.setName(category);
 				categories.add(processCat);
 			}else if(type.getCategory()==null && !category.equals("NULL")){
 				category="General";
-				//getView().addSeparator("General");
 				processCat = new ProcessCategory();
 				processCat.setName(category);
 				categories.add(processCat);
 			}
 			
 			processCat.addChild(type);
-			
-//			docTypeFactory.get(new ServiceCallback<DocTypeItemPresenter>() {
-//				@Override
-//				public void processResult(DocTypeItemPresenter result) {
-//					result.setDocumentTypes(type);
-//					DocumentPopupPresenter.this.addToSlot(DOCITEM_SLOT, result);
-//				}
-//			});
 		}
 		
 		if(types.size()==0){
@@ -114,30 +104,4 @@ public class DocTypesPresenter extends
 		}
 	}
 	
-//	public void setDocumentItems(ArrayList<DocumentType> types){
-//		this.setInSlot(DOCITEM_SLOT, null);
-//		
-//		String category="";
-//		for(final DocumentType type : types) {
-//			if(type.getCategory()!=null && !category.equals(type.getCategory())){
-//				category = type.getCategory();
-//				getView().addSeparator(category);
-//			}else if(type.getCategory()==null && !category.equals("NULL")){
-//				category="NULL";
-//				getView().addSeparator("General");
-//			}
-//			
-//			docTypeFactory.get(new ServiceCallback<DocTypeItemPresenter>() {
-//				@Override
-//				public void processResult(DocTypeItemPresenter result) {
-//					result.setDocumentTypes(type);
-//					DocumentPopupPresenter.this.addToSlot(DOCITEM_SLOT, result);
-//				}
-//			});
-//		}
-//		
-//		if(types.size()==0){
-//			getView().addContent("There are no processes assigned to you.");
-//		}
-//	}
 }
