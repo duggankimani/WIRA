@@ -2,13 +2,13 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-
+	
 	</ui:style>
 	<g:HTMLPanel styleName="row-fluid">
 		<div class="span12">
-			<div class="container">
-				<g:HTMLPanel styleName="row" ui:field="rowPanel">
-				    
+			<div class="container-fluid">
+				<g:HTMLPanel styleName="row-fluid" ui:field="rowPanel">
+
 				</g:HTMLPanel>
 			</div>
 		</div>

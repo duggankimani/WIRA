@@ -11,7 +11,7 @@ div.dashboard-stats li {
 	padding-left: 0;
 	padding-right: 0;
 	vertical-align: top;
-	margin: 0px 10px;
+	margin: 10px 10px;
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper {
