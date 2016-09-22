@@ -52,7 +52,7 @@ class LandingPageView extends ViewImpl implements LandingPagePresenter.ILandingP
 		Element a = DOM.createAnchor();
 		a.setAttribute("href", "#"+cat.getRefId());
 		a.setAttribute("data-toggle", "tab");
-		a.setInnerText(cat.getDisplayName());
+		a.setInnerText(cat.getDisplayName().toUpperCase());
 		li.appendChild(a);
 		
 		ul.appendChild(li);

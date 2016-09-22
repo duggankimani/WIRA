@@ -392,6 +392,7 @@ public class DocumentDaoHelper {
 		type.setIconStyle(adtype.getIconStyle());
 		type.setBackgroundColor(adtype.getBackgroundColor());
 		type.setRefId(adtype.getRefId());
+		type.setProcessRefId(adtype.getProcessRefId());
 
 		if (loadDetails) {
 //			type.setFormId(dao.getFormId(adtype.getId()));

@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.activityfeed.components.CommentActivity;
 import com.duggan.workflow.client.ui.activityfeed.components.TaskActivity;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
@@ -38,7 +38,6 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ActivitiesPresenter extends
 		Presenter<ActivitiesPresenter.MyView, ActivitiesPresenter.IActivitiesProxy> {
@@ -50,7 +49,7 @@ public class ActivitiesPresenter extends
 	}
 	
 	@ProxyCodeSplit
-	@NameToken(NameTokens.activities)
+	@NameToken({NameTokens.activitiesPerProcessAdd, NameTokens.activitiesPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface IActivitiesProxy extends TabContentProxyPlace<ActivitiesPresenter> {
 	}
@@ -72,10 +71,17 @@ public class ActivitiesPresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-		loadActivities();
+		String processRefId = request.getParameter("processRefId", null);
+		String action = request.getParameter("action", null);
+		if(action!=null){
+			
+		}else{
+			loadActivities(processRefId);
+		}
+		
 	}
 	 
-	public void loadActivities() {
+	public void loadActivities(String processRefId) {
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new GetActivitiesRequest(null));
 		

@@ -51,7 +51,8 @@ public class NameTokens {
 	public static final String datatable = "/datatable";
 	public static final String caseview = "/caseview/{docRefId}";
 	public static final String messages = "/messages";
-	public static final String activities = "/activities";
+	public static final String activitiesPerProcess = "/activities/{processRefId}";
+	public static final String activitiesPerProcessAdd = "/activities/{processRefId}/{action}";
 	
 
 	public static final String loginPage = "login.html";

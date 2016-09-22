@@ -76,7 +76,60 @@
 		</g:FocusPanel>
 
 		<div class="news-feed row-fluid">
-			<h4>News Feed</h4>
+			<h4>Asset Finance</h4>
+			<div class="row-fluid top-section section">
+			<div class="span4">
+				<a class="dashboard-stat tertiary">
+					<div class="visual">
+						<i class="icon-book"></i>
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="content-block">Requests Total</span>
+						<span class="value" ui:field="spnReqCount"></span>
+					</div> <!-- /.details -->
+
+					<i class="icon-play-circle more"></i>
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+
+			<div class="span4">
+				<a class="dashboard-stat secondary">
+					<div class="visual">
+						<i class="icon-ok"></i>
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="content-block">Active Requests</span>
+						<span class="value" ui:field="spnActiveCount"></span>
+					</div> <!-- /.details -->
+
+					<i class="icon-play-circle more"></i>
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+
+			<div class="span4">
+				<a class="dashboard-stat primary">
+					<div class="visual">
+						<i class="icon-remove-circle"></i>
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="content-block">Failed Requests</span>
+						<span class="value" ui:field="spnFailureCount"></span>
+					</div> <!-- /.details -->
+
+					<i class="icon-play-circle more"></i>
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+		</div>
+				
 			<d:BulletListPanel ui:field="panelActivity"
 				styleName="chat-box timeline">
 			</d:BulletListPanel>

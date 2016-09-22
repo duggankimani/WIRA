@@ -14,6 +14,15 @@ public class DocumentType extends IsProcessDisplay{
 	private String iconStyle;
 	private String className;
 	private String processId;
+	private String processRefId;
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
+	}
+
 	private String category;
 	
 	public DocumentType(){

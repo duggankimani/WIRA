@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -54,6 +55,9 @@ public class ADDocType extends PO {
 	
 	@XmlAttribute
 	private String className;
+	
+	@Transient
+	private String processRefId;
 	
 	@XmlTransient
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
@@ -106,8 +110,9 @@ public class ADDocType extends PO {
 	}
 	
 	public ADDocType(String refId, String name, String display, String backgroundColor,
-			String iconStyle, ADProcessCategory category){
+			String iconStyle, String processRefId, ADProcessCategory category){
 		this.refId = refId;
+		this.processRefId = processRefId;
 		if(name!=null)
 			name = name.toUpperCase();
 		
@@ -244,6 +249,10 @@ public class ADDocType extends PO {
 
 	public void setIconStyle(String iconStyle) {
 		this.iconStyle = iconStyle;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
 	}
 
 }

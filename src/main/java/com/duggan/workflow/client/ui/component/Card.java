@@ -42,6 +42,11 @@ public class Card extends Composite {
 		if(type.getBackgroundColor()!=null){
 			setBackGroundColor(type.getBackgroundColor());
 		}
+		
+		if(type.getProcessRefId()!=null){
+			aProcess.setHref("#/activities/"+type.getProcessRefId());
+			aAdd.setHref("#/activities/"+type.getProcessRefId()+"/add");
+		}
 
 	}
 	
