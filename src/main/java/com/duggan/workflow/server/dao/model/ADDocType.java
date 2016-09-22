@@ -10,9 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -24,6 +26,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name="doctype")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@Table(indexes = {
+		@Index(name = "idx_doctype_name", columnList = "name"),
+		@Index(name = "idx_doctype_display", columnList = "display")})
 public class ADDocType extends PO {
 
 	/**
@@ -39,6 +44,10 @@ public class ADDocType extends PO {
 	@XmlAttribute
 	@Column(unique=true)
 	private String name;
+	
+	private String backgroundColor;
+	
+	private String iconStyle;
 	
 	@XmlAttribute
 	private String display;
@@ -79,6 +88,7 @@ public class ADDocType extends PO {
 		this.display= display;
 	}
 	
+	@Deprecated
 	public ADDocType(String refId, String name, String display, String className){
 		this.refId = refId;
 		if(name!=null)
@@ -89,8 +99,22 @@ public class ADDocType extends PO {
 		this.className = className;
 	}
 	
+	@Deprecated
 	public ADDocType(String refId, String name, String display, String className, ADProcessCategory category){
 		this(refId,name,display,className);
+		this.category = category;
+	}
+	
+	public ADDocType(String refId, String name, String display, String backgroundColor,
+			String iconStyle, ADProcessCategory category){
+		this.refId = refId;
+		if(name!=null)
+			name = name.toUpperCase();
+		
+		this.name = name;
+		this.display= display;
+		this.backgroundColor = backgroundColor;
+		this.iconStyle = iconStyle;
 		this.category = category;
 	}
 	
@@ -205,4 +229,21 @@ public class ADDocType extends PO {
 	public void setCategory(ADProcessCategory category) {
 		this.category = category;
 	}
+	
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public String getIconStyle() {
+		return iconStyle;
+	}
+
+	public void setIconStyle(String iconStyle) {
+		this.iconStyle = iconStyle;
+	}
+
 }

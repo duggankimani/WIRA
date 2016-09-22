@@ -2,7 +2,6 @@ package com.duggan.workflow.shared.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.ArrayList;
 
 import com.wira.commons.shared.models.Listable;
 import com.wira.commons.shared.models.SerializableObj;
@@ -17,6 +16,9 @@ public class ProcessDef extends SerializableObj implements Listable{
 	private Long id;
 	private String name;
 	private String processId;
+	private String backgroundColor;
+	private String iconStyle;
+	
 	private ArrayList<DocumentType> docTypes = new ArrayList<DocumentType>();
 	private Date lastModified;
 	private Long fileId;
@@ -190,4 +192,21 @@ public class ProcessDef extends SerializableObj implements Listable{
 	public void setInbox(int inbox) {
 		this.inbox = inbox;
 	}
+	
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public String getIconStyle() {
+		return iconStyle;
+	}
+
+	public void setIconStyle(String iconStyle) {
+		this.iconStyle = iconStyle;
+	}
+
 }

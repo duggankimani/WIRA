@@ -217,6 +217,8 @@ public class DocumentDaoHelper {
 			adtype = dao.getDocumentTypeById(type.getId());
 			adtype.setName(type.getName());
 			adtype.setDisplay(type.getDisplayName());
+			adtype.setBackgroundColor(type.getBackgroundColor());
+			adtype.setIconStyle(type.getIconStyle());
 		}
 
 		return adtype;
@@ -387,6 +389,8 @@ public class DocumentDaoHelper {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		DocumentType type = new DocumentType(adtype.getId(), adtype.getName(),
 				adtype.getDisplay(), adtype.getClassName());
+		type.setIconStyle(adtype.getIconStyle());
+		type.setBackgroundColor(adtype.getBackgroundColor());
 		type.setRefId(adtype.getRefId());
 
 		if (loadDetails) {

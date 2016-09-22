@@ -39,6 +39,9 @@
 									<br />
 									<label>Icon Style:</label>
 									<d:TextField ui:field="txtIconStyle" />
+									<a href="http://fontawesome.io/3.2.1/icons/" target="blank">
+									    Find Icons Here
+									</a>
 								</div>
 							</div>
 						</div>
@@ -64,11 +67,12 @@
 					</g:InlineLabel>
 					<g:VerticalPanel styleName="upld-multiple"
 						ui:field="currentAttachmentsPanel">
-
 					</g:VerticalPanel>
 				</g:HTMLPanel>
 				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
-					<up:Uploader ui:field="uploader"></up:Uploader>
+				    <g:Anchor ui:field="aUpload" styleName="btn btn-primary" 
+				        text="Click Here To Upload"></g:Anchor>
+					<up:Uploader ui:field="uploader" styleName="hide"></up:Uploader>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:HTMLPanel>

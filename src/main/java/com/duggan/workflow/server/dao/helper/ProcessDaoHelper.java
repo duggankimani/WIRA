@@ -233,6 +233,8 @@ public class ProcessDaoHelper {
 
 			for (ADDocType doc : docModels) {
 				docTypes.add(getType(doc));
+				def.setBackgroundColor(doc.getBackgroundColor());
+				def.setIconStyle(doc.getIconStyle());
 			}
 			def.setDocTypes(docTypes);
 		}
@@ -304,10 +306,14 @@ public class ProcessDaoHelper {
 
 		if (types != null && !types.isEmpty()) {
 			for (DocumentType type : types) {
+				
 				type.setName(processDef.getProcessId());
 				type.setDisplayName(processDef.getDisplayName());
 				type.setProcessId(processDef.getProcessId());
+				type.setBackgroundColor(processDef.getBackgroundColor());
+				type.setIconStyle(processDef.getIconStyle());
 				ADDocType adtype = getType(type);
+				DB.getProcessDao().save(adtype);
 
 				ProcessCategory category = processDef.getCategory();
 				if (category != null) {
@@ -321,6 +327,10 @@ public class ProcessDaoHelper {
 		} else {
 			// Auto Generate Types
 			ADDocType adtype = getTypeFromProcess(processDef);
+			adtype.setBackgroundColor(processDef.getBackgroundColor());
+			adtype.setIconStyle(processDef.getIconStyle());
+			DB.getProcessDao().save(adtype);
+			
 			model.addDocType(adtype);
 		}
 

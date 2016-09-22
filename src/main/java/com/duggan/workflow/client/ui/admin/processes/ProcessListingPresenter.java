@@ -46,6 +46,7 @@ import com.duggan.workflow.shared.responses.StartAllProcessesResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -97,14 +98,13 @@ public class ProcessListingPresenter
 		HasClickHandlers getConfigureButton();
 
 	}
-	
 
 	public static final String CAN_VIEW_PROCESSES = "PROCESSES_CAN_VIEW_PROCESSES";
 
 	@NameToken(NameTokens.processlist)
 	@ProxyStandard
 	@UseGatekeeper(HasPermissionsGateKeeper.class)
-	@GatekeeperParams({CAN_VIEW_PROCESSES})
+	@GatekeeperParams({ CAN_VIEW_PROCESSES })
 	interface MyProxy extends ProxyPlace<ProcessListingPresenter> {
 	}
 
@@ -119,7 +119,7 @@ public class ProcessListingPresenter
 	private Object selectedModel;
 
 	@Inject
-	ProcessListingPresenter(EventBus eventBus, MyView view,MyProxy proxy) {
+	ProcessListingPresenter(EventBus eventBus, MyView view, MyProxy proxy) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 	}
 
@@ -130,7 +130,7 @@ public class ProcessListingPresenter
 		addRegisteredHandler(EditProcessEvent.TYPE, this);
 		addRegisteredHandler(CheckboxSelectionEvent.getType(), this);
 		addRegisteredHandler(SearchEvent.getType(), this);
-		
+
 		getView().getaNewProcess().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -322,15 +322,18 @@ public class ProcessListingPresenter
 
 	private void showAddProcessPopup(final Long processDefId) {
 		final ProcessSavePanel view = new ProcessSavePanel(processDefId);
-		
-		String heading = processDefId==null? "New Process": "Edit Process";
+
+		String heading = processDefId == null ? "New Process" : "Edit Process";
 		AppManager.showPopUp(heading, view, new OnOptionSelected() {
-			
+
 			@Override
 			public void onSelect(String name) {
-				if(name.equals("Save")){
-					saveProcess(view.getProcess());
-				}else if(name.equals("Cancel")){
+				if (name.equals("Save")) {
+					if (view.isValid()) {
+						
+						ProcessDef process = view.getProcess();
+						saveProcess(process);
+					}
 				}
 			}
 		}, "Cancel", "Save");
@@ -340,22 +343,24 @@ public class ProcessListingPresenter
 	protected void saveProcess(ProcessDef process) {
 
 		SaveProcessRequest request = new SaveProcessRequest(process);
-		requestHelper.execute(request, new TaskServiceCallback<SaveProcessResponse>() {
-			@Override
-			public void processResult(SaveProcessResponse result) {
-			}
-		});
+		requestHelper.execute(request,
+				new TaskServiceCallback<SaveProcessResponse>() {
+					@Override
+					public void processResult(SaveProcessResponse result) {
+						loadProcesses();
+					}
+				});
 	}
 
 	public void loadProcesses() {
 		loadProcesses("");
 	}
-	
+
 	public void loadProcesses(String searchTerm) {
 
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetProcessesRequest(searchTerm,true));
+		action.addRequest(new GetProcessesRequest(searchTerm, true));
 		action.addRequest(new GetProcessCategoriesRequest());
 
 		requestHelper.execute(action,
@@ -411,7 +416,7 @@ public class ProcessListingPresenter
 
 	@Override
 	public void onSearch(SearchEvent event) {
-		if(isVisible()){
+		if (isVisible()) {
 			loadProcesses(event.getFilter().getPhrase());
 		}
 	}

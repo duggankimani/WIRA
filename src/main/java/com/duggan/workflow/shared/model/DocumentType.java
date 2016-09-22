@@ -10,8 +10,9 @@ public class DocumentType extends IsProcessDisplay{
 	private Long id;
 	private String name;
 	private String display;
+	private String backgroundColor;
+	private String iconStyle;
 	private String className;
-	private Long formId;//start-up form for this process
 	private String processId;
 	private String category;
 	
@@ -63,14 +64,6 @@ public class DocumentType extends IsProcessDisplay{
 		return "["+display+"]";
 	}
 
-	public Long getFormId() {
-		return formId;
-	}
-
-	public void setFormId(Long formId) {
-		this.formId = formId;
-	}
-
 	public String getProcessId() {
 		return processId;
 	}
@@ -86,4 +79,21 @@ public class DocumentType extends IsProcessDisplay{
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public String getIconStyle() {
+		return iconStyle;
+	}
+
+	public void setIconStyle(String iconStyle) {
+		this.iconStyle = iconStyle;
+	}
+
 }

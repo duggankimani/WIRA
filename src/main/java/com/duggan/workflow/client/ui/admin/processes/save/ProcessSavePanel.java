@@ -21,16 +21,22 @@ import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
@@ -49,37 +55,72 @@ public class ProcessSavePanel extends Composite {
 	interface ProcessSavePanelUiBinder extends
 			UiBinder<Widget, ProcessSavePanel> {
 	}
-	
-	@UiField TextField txtIconStyle;
-	@UiField TextField txtColor;
-	@UiField Card cardProcess;
-	@UiField IssuesPanel issues;
-	@UiField TextField txtName;
-	@UiField TextField txtProcess;
-	@UiField Uploader uploader;
-	@UiField AutoCompleteField<Listable> lstUserGroups;
-	@UiField VerticalPanel currentAttachmentsPanel;
-	@UiField InlineLabel lblWarning;
-	@UiField DropDownList<ProcessCategory> lstCategories;
+
+	@UiField
+	TextField txtIconStyle;
+	@UiField
+	TextField txtColor;
+	@UiField
+	Card cardProcess;
+	@UiField
+	IssuesPanel issues;
+	@UiField
+	TextField txtName;
+	@UiField
+	TextField txtProcess;
+	@UiField
+	Anchor aUpload;
+	@UiField
+	Uploader uploader;
+	@UiField
+	AutoCompleteField<Listable> lstUserGroups;
+	@UiField
+	VerticalPanel currentAttachmentsPanel;
+	@UiField
+	InlineLabel lblWarning;
+	@UiField
+	DropDownList<ProcessCategory> lstCategories;
 
 	ProcessDef process = null;
-	
+
 	public ProcessSavePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		txtColor.setText(cardProcess.getBackGroundColor());
+		txtIconStyle.setText(cardProcess.getIconStyle());
+		UIObject.setVisible(lblWarning.getElement(), false);
+
 		txtColor.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				cardProcess.setBackgroundColor(event.getValue());
+				cardProcess.setBackGroundColor(event.getValue());
 			}
 		});
-		
+
 		txtIconStyle.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
 				cardProcess.setIconStyle(event.getValue());
+			}
+		});
+
+		aUpload.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(!isValid()){
+					return;
+				}
+				AppContext.getDispatcher().execute(
+						new SaveProcessRequest(getProcess()),
+						new TaskServiceCallback<SaveProcessResponse>() {
+							@Override
+							public void processResult(
+									SaveProcessResponse aResponse) {
+								setProcessDef(aResponse.getProcessDef());
+							}
+						});
 			}
 		});
 	}
@@ -89,77 +130,62 @@ public class ProcessSavePanel extends Composite {
 		loadProcess(processDefId);
 	}
 
-	public void setValues(Long processDefId,
-			String name,String processId,String description, ArrayList<DocumentType> docTypes,
-			ArrayList<Attachment> attachments, ProcessCategory category,ArrayList<Listable> userGroups) {
-		txtName.setValue(name);
-		txtProcess.setValue(processId);
-		setProcessId(processDefId);
-		
-		if(userGroups!=null){
-			lstUserGroups.select(userGroups);
-		}
-		
-		lstCategories.setValue(category);
-		
-		if(attachments!=null){
-			setAttachments(attachments);
-		}
-		
-	}
-
-	public ProcessDef getProcess(){
+	public ProcessDef getProcess() {
 		ProcessDef def = process;
-		if(def==null){
+		if (def == null) {
 			def = new ProcessDef();
 		}
 		def.setUsersAndGroups(lstUserGroups.getSelectedItems());
 		def.setName(txtName.getValue());
-		def.setProcessId(txtProcess.getValue());		
+		def.setProcessId(txtProcess.getValue());
 		def.setCategory(lstCategories.getValue());
-		
+		def.setBackgroundColor(txtColor.getValue());
+		def.setIconStyle(txtIconStyle.getValue());
+
 		return def;
 	}
-	
-	public boolean isValid(){
+
+	public boolean isValid() {
 		issues.clear();
 		boolean isValid = true;
-		
-		if(isNullOrEmpty(txtName.getValue())){
+
+		if (isNullOrEmpty(txtName.getValue())) {
 			issues.addError("Please specify process name");
-			isValid=false;
+			isValid = false;
 		}
-		
-		if(isNullOrEmpty(txtProcess.getValue())){
+
+		if (isNullOrEmpty(txtProcess.getValue())) {
 			issues.addError("Please specify Process Id");
-			isValid=false;
+			isValid = false;
 		}
-				
+
 		return isValid;
 	}
-		
+
 	boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() == 0;
 	}
 
 	/**
-	 * Process Def  Id
+	 * Process Def Id
 	 */
 	public void setProcessId(Long id) {
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADCHANGESET);
-		context.setContext("processDefId", id+"");
-		context.setAccept(ArrayUtil.asList("xml","bpmn","bpmn2","drl","png","jpeg","jpg","gif","svg"));
+		context.setContext("processDefId", id + "");
+		context.setAccept(ArrayUtil.asList("xml", "bpmn", "bpmn2", "drl",
+				"png", "jpeg", "jpg", "gif", "svg"));
 		uploader.setContext(context);
 	}
-	
-	public void setAttachments(ArrayList<Attachment> attachments){
+
+	public void setAttachments(ArrayList<Attachment> attachments) {
 		currentAttachmentsPanel.clear();
-		if(attachments!=null){
-			for(Attachment attachment: attachments){
-				if(attachment.getName().endsWith("xml") && attachments.size()>1){
-					//possible changeset
-					UIObject.setVisible(lblWarning.getElement(),true);
+		if (attachments != null) {
+			for (Attachment attachment : attachments) {
+				if (attachment.getName().endsWith("xml")
+						&& attachments.size() > 1) {
+					// possible changeset
+					UIObject.setVisible(lblWarning.getElement(), true);
 				}
 				ProcessAttachment panel = new ProcessAttachment(attachment);
 				currentAttachmentsPanel.add(panel);
@@ -175,47 +201,87 @@ public class ProcessSavePanel extends Composite {
 		lstCategories.setItems(categories);
 	}
 	
+
+	private void setProcessDef(ProcessDef processDef) {
+		process = processDef;
+		if(processDef.getRefId()!=null){
+			uploader.removeStyleName("hide");
+			aUpload.addStyleName("hide");
+		}
+		
+		Long processDefId=process.getId();
+		String name= process.getName();
+		String processId = process.getProcessId();
+		
+		ArrayList<Attachment> attachments =process.getFiles();
+		ProcessCategory category = process.getCategory();
+		ArrayList<Listable> userGroups = process.getUsersAndGroups();
+		
+		txtName.setValue(name);
+		txtProcess.setValue(processId);
+		setProcessId(processDefId);
+
+		if (userGroups != null) {
+			lstUserGroups.select(userGroups);
+		}
+
+		lstCategories.setValue(category);
+
+		if (attachments != null) {
+			setAttachments(attachments);
+		}
+		
+		if(processDef.getIconStyle()!=null){
+			cardProcess.setIconStyle(processDef.getIconStyle());
+		}
+		
+		if(processDef.getBackgroundColor()!=null){
+			cardProcess.setBackGroundColor(processDef.getBackgroundColor());
+		}
+
+	}
+
 	private void loadProcess(final Long processDefId) {
 		MultiRequestAction requests = new MultiRequestAction();
 		requests.addRequest(new GetProcessCategoriesRequest());
 		requests.addRequest(new GetUsersRequest());
 		requests.addRequest(new GetGroupsRequest());
-		
-		if(processDefId!=null){
-			requests.addRequest( new GetProcessRequest(processDefId));
-		}
-		
-		AppContext.getDispatcher().execute(requests, new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult results) {
-				int i=0;
-				
-				GetProcessCategoriesResponse response = (GetProcessCategoriesResponse)results.get(i++);
-				setCategories(response.getCategories());
-				
-				GetUsersResponse usersResp = (GetUsersResponse)results.get(i++);
-				GetGroupsResponse groupsResp = (GetGroupsResponse)results.get(i++);
-				ArrayList<Listable> items = new ArrayList<Listable>();
-				for(HTUser user: usersResp.getUsers()){
-					items.add(user);
-				}
-				for(UserGroup group: groupsResp.getGroups()){
-					items.add(group);
-				}
-				setUserGroups(items);
-				
-				if(processDefId!=null){
-					GetProcessResponse result =  (GetProcessResponse)results.get(i++);
-					process = result.getProcessDef();
-					setValues(process.getId(),
-							process.getName(),process.getProcessId(),
-							process.getDescription(),
-							process.getDocTypes(), process.getFiles(), process.getCategory(),
-							process.getUsersAndGroups());
-				}
-			}
-		});		
-	}
 
+		if (processDefId != null) {
+			requests.addRequest(new GetProcessRequest(processDefId));
+		}
+
+		AppContext.getDispatcher().execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult results) {
+						int i = 0;
+
+						GetProcessCategoriesResponse response = (GetProcessCategoriesResponse) results
+								.get(i++);
+						setCategories(response.getCategories());
+
+						GetUsersResponse usersResp = (GetUsersResponse) results
+								.get(i++);
+						GetGroupsResponse groupsResp = (GetGroupsResponse) results
+								.get(i++);
+						ArrayList<Listable> items = new ArrayList<Listable>();
+						for (HTUser user : usersResp.getUsers()) {
+							items.add(user);
+						}
+						for (UserGroup group : groupsResp.getGroups()) {
+							items.add(group);
+						}
+						setUserGroups(items);
+
+						if (processDefId != null) {
+							GetProcessResponse result = (GetProcessResponse) results
+									.get(i++);
+							setProcessDef(result.getProcessDef());
+							
+						}
+					}
+				});
+	}
 
 }

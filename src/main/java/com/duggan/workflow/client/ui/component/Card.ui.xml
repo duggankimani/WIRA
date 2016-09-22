@@ -5,8 +5,8 @@
 
 	</ui:style>
 	<g:HTMLPanel styleName="card">
-		<div class="card-image" ui:field="">
-			<i ui:field="cardImage" class="icon-pencil icon-large mid-icon"></i>
+		<div class="card-image" ui:field="cardImage">
+			<i ui:field="cardImageIcon" class="icon-large mid-icon"></i>
 		</div>
 		<div class="card-action">
 		    <a href="#" ui:field="aProcess">
