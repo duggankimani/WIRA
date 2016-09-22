@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import com.duggan.workflow.client.ui.component.CardRow;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.IsProcessDisplay;
 import com.duggan.workflow.shared.model.ProcessCategory;

@@ -11,6 +11,7 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.processes.category.CreateCategoryPanel;
+import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePanel;
 import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.EditProcessEvent;
@@ -32,6 +33,7 @@ import com.duggan.workflow.shared.requests.GetProcessesRequest;
 import com.duggan.workflow.shared.requests.ManageKnowledgeBaseRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveProcessCategoryRequest;
+import com.duggan.workflow.shared.requests.SaveProcessRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.responses.DeleteProcessResponse;
 import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
@@ -39,6 +41,7 @@ import com.duggan.workflow.shared.responses.GetProcessesResponse;
 import com.duggan.workflow.shared.responses.ManageKnowledgeBaseResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveProcessCategoryResponse;
+import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.duggan.workflow.shared.responses.StartAllProcessesResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -111,18 +114,13 @@ public class ProcessListingPresenter
 	@Inject
 	PlaceManager placeManager;
 
-	IndirectProvider<ProcessSavePresenter> processFactory;
-
 	private ArrayList<ProcessCategory> categories;
 
 	private Object selectedModel;
 
 	@Inject
-	ProcessListingPresenter(EventBus eventBus, MyView view,
-			Provider<ProcessSavePresenter> addprocessProvider, MyProxy proxy) {
+	ProcessListingPresenter(EventBus eventBus, MyView view,MyProxy proxy) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
-		processFactory = new StandardProvider<ProcessSavePresenter>(
-				addprocessProvider);
 	}
 
 	@Override
@@ -323,14 +321,30 @@ public class ProcessListingPresenter
 	}
 
 	private void showAddProcessPopup(final Long processDefId) {
-		processFactory.get(new ServiceCallback<ProcessSavePresenter>() {
+		final ProcessSavePanel view = new ProcessSavePanel(processDefId);
+		
+		String heading = processDefId==null? "New Process": "Edit Process";
+		AppManager.showPopUp(heading, view, new OnOptionSelected() {
+			
 			@Override
-			public void processResult(ProcessSavePresenter result) {
-				result.setProcessDefId(processDefId);
-				addToPopupSlot(result, false);
+			public void onSelect(String name) {
+				if(name.equals("Save")){
+					saveProcess(view.getProcess());
+				}else if(name.equals("Cancel")){
+				}
+			}
+		}, "Cancel", "Save");
+
+	}
+
+	protected void saveProcess(ProcessDef process) {
+
+		SaveProcessRequest request = new SaveProcessRequest(process);
+		requestHelper.execute(request, new TaskServiceCallback<SaveProcessResponse>() {
+			@Override
+			public void processResult(SaveProcessResponse result) {
 			}
 		});
-
 	}
 
 	public void loadProcesses() {

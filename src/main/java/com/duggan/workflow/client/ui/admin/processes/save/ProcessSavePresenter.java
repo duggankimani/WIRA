@@ -196,7 +196,6 @@ public class ProcessSavePresenter extends PresenterWidget<ProcessSavePresenter.I
 		this.processDefId = processDefId;
 	}
 	
-	
 	@Override
 	protected void onReveal() {
 		super.onReveal();

@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.landingpage;
+package com.duggan.workflow.client.ui.component;
 
 import com.duggan.workflow.shared.model.DocumentType;
 import com.google.gwt.core.client.GWT;
@@ -19,6 +19,7 @@ public class Card extends Composite {
 	@UiField Element spnName;
 	@UiField AnchorElement aProcess;
 	@UiField AnchorElement aAdd;
+	@UiField Element cardImage;
 
 	public Card() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -26,7 +27,19 @@ public class Card extends Composite {
 
 	public Card(DocumentType type) {
 		this();
-		spnName.setInnerText(type.getDisplayName());
+		setDisplay(type.getDisplayName());
+	}
+	
+	public void setDisplay(String name){
+		spnName.setInnerText(name);
+	}
+
+	public void setIconStyle(String iconStyle) {
+		
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		
 	}
 
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:admin='urn:import:com.duggan.workflow.client.ui.admin.component'>
+	<ui:style>
+
+	</ui:style>
+	<g:HTMLPanel>
+		<d:IssuesPanel ui:field="issues">
+		</d:IssuesPanel>
+
+		<g:HTMLPanel ui:field="divProcessDetails">
+			<g:HTMLPanel>
+				<g:HTMLPanel styleName="">
+					<div class="form-group">
+						<label for="ProcessName">Name:</label>
+						<d:TextField ui:field="txtName" type="text"
+							class="form-control input-xlarge" placeholder="Process Name" />
+					</div>
+					<div class="form-group">
+						<label for="ProcessName">Process Id:</label>
+						<d:TextField ui:field="txtProcess" type="text"
+							title="A single process may have multiple processes and subprocesses, this property identifies the main process"
+							class="form-control input-xlarge" placeholder="Main Process Id" />
+					</div>
+					<div class="form-group">
+						<label for="ProcessDescription">Display:</label>
+						<div class="row-fluid">
+						    <div class="span6">
+								<div style="width:200px">
+									<d:Card ui:field="cardProcess"></d:Card>
+								</div>
+							</div>
+							<div class="span6">
+								<div style="width:200px">
+								    <label>Color:</label>
+										<d:TextField ui:field="txtColor" />
+									<br />
+									<label>Icon Style:</label>
+									<d:TextField ui:field="txtIconStyle" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="ProcessName">Process Categories:</label>
+						<d:DropDownList ui:field="lstCategories" styleName="input-xlarge"></d:DropDownList>
+					</div>
+					<div class="form-group">
+						<label for="ProcessName">Users/Groups:</label>
+						<d:AutoCompleteField ui:field="lstUserGroups"></d:AutoCompleteField>
+					</div>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+
+		<g:HTMLPanel ui:field="divUploadDetails">
+			<g:HTMLPanel styleName="modal-body">
+				<g:HTMLPanel styleName="uploadPanel">
+					<g:InlineLabel ui:field="lblWarning" styleName="text-warning">
+						Mixing Guvnor changesets with other files may cause difficult to
+						debug errors.
+					</g:InlineLabel>
+					<g:VerticalPanel styleName="upld-multiple"
+						ui:field="currentAttachmentsPanel">
+
+					</g:VerticalPanel>
+				</g:HTMLPanel>
+				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
+					<up:Uploader ui:field="uploader"></up:Uploader>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+
+</ui:UiBinder> 

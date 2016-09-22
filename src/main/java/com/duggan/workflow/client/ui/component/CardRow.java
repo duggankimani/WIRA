@@ -1,4 +1,4 @@
-package com.duggan.workflow.client.ui.landingpage;
+package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
 
