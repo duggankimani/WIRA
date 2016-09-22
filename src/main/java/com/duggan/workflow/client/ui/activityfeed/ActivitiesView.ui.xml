@@ -9,7 +9,7 @@
 
 	<g:HTMLPanel styleName="no-overflow-x overflow-y">
 		<g:FocusPanel ui:field="parentPanel">
-			<g:HTMLPanel>
+			<g:HTMLPanel styleName="hide">
 				<div class="bootcamp js-notice" ui:field="divTutorial">
 					<h1>
 						Welcome to Wira BPM
@@ -77,59 +77,91 @@
 
 		<div class="news-feed row-fluid">
 			<h4>Asset Finance</h4>
-			<div class="row-fluid top-section section">
-			<div class="span4">
-				<a class="dashboard-stat tertiary">
-					<div class="visual">
-						<i class="icon-book"></i>
-					</div> <!-- /.visual -->
+			<div class="dashboard-stats text-center row-fluid">
+				<div class="span12">
+					<ul class="list-inline">
+						<li class="active">
+							<a href="/dashboard/?tab=projects">
+								<div class="stat-outer-wrapper">
+									<div class="stat-wrapper">
+										<div class="icon-wrapper">
+											<img
+												src="https://www.kuhustle.com/static/assets/images/icons/icon-posted-yellow.7b2ea775d86f.png"
+												alt="Newest Jobs"></img>
+										</div>
+										<div class="stat-item-wrapper stat-item1">
+											<div class="stat-item">20</div>
+											<div class="stat-status">Total</div>
+										</div>
+									</div><!-- End .stat-wrapper -->
 
-					<div class="details">
-						<span class="content-block">Requests Total</span>
-						<span class="value" ui:field="spnReqCount"></span>
-					</div> <!-- /.details -->
+									<div class="tip-outer-wrapper">
+										<div class="tip-wrapper">
+											<div class="tip"></div>
+											<div class="tip-border"></div>
+										</div>
+									</div>
 
-					<i class="icon-play-circle more"></i>
+								</div><!-- End .stat-outer-wrapper -->
+							</a>
+						</li>
+						<li class=" hidden-xs">
+							<a href="/dashboard/?tab=in_progress">
+								<div class="stat-outer-wrapper">
+									<div class="stat-wrapper">
+										<div class="icon-wrapper">
+											<img
+												src="https://www.kuhustle.com/static/assets/images/icons/icon-in-progress-brown.52047f81a6ae.png"
+												alt="In Progress"></img>
+										</div>
+										<div class="stat-item-wrapper stat-item2">
+											<div class="stat-item">12</div>
+											<div class="stat-status">Inbox</div>
+										</div>
+									</div><!-- End .stat-wrapper -->
 
-				</a> <!-- /.dashboard-stat -->
+								</div><!-- End .stat-outer-wrapper -->
+							</a>
+						</li>
+						<li class="hidden-xs hidden-sm">
+							<a href="/dashboard/?tab=ended">
+								<div class="stat-outer-wrapper">
+									<div class="stat-wrapper">
+										<div class="icon-wrapper">
+											<img
+												src="https://www.kuhustle.com/static/assets/images/icons/icon-completed-green.603dd8ffa49d.png"
+												alt="Completed"></img>
+										</div>
+										<div class="stat-item-wrapper stat-item3">
+											<div class="stat-item">8</div>
+											<div class="stat-status">Done</div>
+										</div>
+									</div><!-- End .stat-wrapper -->
 
-			</div> <!-- /.col-md-3 -->
+								</div><!-- End .stat-outer-wrapper -->
+							</a>
+						</li>
 
-			<div class="span4">
-				<a class="dashboard-stat secondary">
-					<div class="visual">
-						<i class="icon-ok"></i>
-					</div> <!-- /.visual -->
+						<li class="get-expert ">
+							<div class="stat-outer-wrapper">
+								<div class="stat-wrapper">
+									<div class="stat-item-wrapper stat-add-job">
+										<a href="/jobs/create/#start">
+											<span class="icon-wrapper">
+												<i class="icon-plus"></i>
+											</span>
+											<span class="stat-status">New</span>
+										</a>
+									</div>
+								</div><!-- End .stat-wrapper -->
 
-					<div class="details">
-						<span class="content-block">Active Requests</span>
-						<span class="value" ui:field="spnActiveCount"></span>
-					</div> <!-- /.details -->
+							</div><!-- End .stat-outer-wrapper -->
+						</li>
 
-					<i class="icon-play-circle more"></i>
+					</ul>
+				</div>
+			</div>
 
-				</a> <!-- /.dashboard-stat -->
-
-			</div> <!-- /.col-md-3 -->
-
-			<div class="span4">
-				<a class="dashboard-stat primary">
-					<div class="visual">
-						<i class="icon-remove-circle"></i>
-					</div> <!-- /.visual -->
-
-					<div class="details">
-						<span class="content-block">Failed Requests</span>
-						<span class="value" ui:field="spnFailureCount"></span>
-					</div> <!-- /.details -->
-
-					<i class="icon-play-circle more"></i>
-
-				</a> <!-- /.dashboard-stat -->
-
-			</div> <!-- /.col-md-3 -->
-		</div>
-				
 			<d:BulletListPanel ui:field="panelActivity"
 				styleName="chat-box timeline">
 			</d:BulletListPanel>

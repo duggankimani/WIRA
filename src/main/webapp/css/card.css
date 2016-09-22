@@ -80,14 +80,18 @@
 }
 
 .card .card-action a {
-	color: #ffab40;
-	margin-right: 16px;
+	color: #7d7c7b;
 	transition: color 0.3s ease;
 	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.card .card-action .ng-binding {
+	width:160px;
 }
 
 .card .card-action a:hover {
-	color: #ffd8a6;
+	color: #7d7c7b;
 	text-decoration: none;
 }
 
@@ -118,4 +122,5 @@ CUSTOM CARDS STYLE
 .landing-page .nav-pills>li>a {
 	color: #666 !important;
 	margin: 1px;
+	font-weight: 600;
 }

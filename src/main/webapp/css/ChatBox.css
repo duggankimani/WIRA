@@ -12,14 +12,14 @@
 }
 
 .news-feed .name a, a:active,a:visited{
-  color: #428bca; 
+  /*color: #428bca; */
 }
 
 /* line 40, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
 .news-feed a:hover,a:focus {
-	cursor: pointer;
-	outline: 0px none;
-	text-decoration: underline;
+	/* cursor: pointer; */
+	/* outline: 0px none; */
+	/* text-decoration: underline; */
 }
 
 /* line 105, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */

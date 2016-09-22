@@ -598,9 +598,6 @@ div.registry-table{
 box-shadow: -12px -4px 40px 0px rgba(206,210,222,1);
 }
 
-.text-center a, .text-center a:visited, .text-center a:hover {
-    color:  #3A87AD;
-}
 
 .text-center{
 	font-size:16px;
