@@ -1846,3 +1846,9 @@ color: #ffffff !important;
     padding-right: 5px;
     padding-left: 5px
 }
+
+.add-doc>.btn-danger:focus {
+	text-decoration: none;
+    border: none;
+    box-shadow: none;
+}

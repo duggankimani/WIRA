@@ -50,6 +50,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 
 	@UiField
 	Element sideBarUL;
+	
+	@UiField HTMLPanel mainContainer;
 
 	private PlaceManager placeManager;
 
@@ -71,8 +73,19 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 		});
 
 		bindAnchors(sideBarUL);
-
+		bindAddAnimation(mainContainer.getElement(),tabContent.getElement());
 	}
+	
+	public native void bindAddAnimation(Element parent, Element tabElement)/*-{
+		$wnd.jQuery($doc).ready(function(){
+			$wnd.jQuery(parent).find('#sidebar-nav a[href=\'#/home\']').click(function(){
+				$wnd.jQuery(tabElement).find('.landing-page').fadeOut(500, function(){
+						$wnd.jQuery(tabElement).find('.landing-page').fadeIn(500);
+					});
+			});
+		});
+		
+	}-*/;
 
 	public HasClickHandlers getAddButton() {
 		return btnAdd;
