@@ -137,7 +137,13 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		Document doc = new Document();
 		doc.setType(event.getDocType());
 		
-		CreateDocumentRequest request = new CreateDocumentRequest(doc);
+		CreateDocumentRequest request = null;
+		
+		if(event.getProcessRefId()!=null){
+			request = new CreateDocumentRequest(event.getProcessRefId());
+		}else{
+			request = new CreateDocumentRequest(doc);
+		}
 		
 		requestHelper.execute(request, new TaskServiceCallback<CreateDocumentResult>() {
 			@Override

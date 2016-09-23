@@ -30,7 +30,7 @@ public class InboxPresenter
 	}
 
 	@ProxyCodeSplit
-	@NameToken({ NameTokens.inbox, NameTokens.inboxwithparams })
+	@NameToken({ NameTokens.inbox, NameTokens.inboxwithparams,NameTokens.inboxwithparamsPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface InboxTaskProxy extends
 			TabContentProxyPlace<InboxPresenter> {

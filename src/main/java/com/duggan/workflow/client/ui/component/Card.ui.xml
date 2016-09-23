@@ -2,21 +2,21 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-	
+
 	</ui:style>
 	<g:HTMLPanel styleName="card">
-		<g:Anchor>
+		<a ui:field="aNavigate">
 			<div class="card-image" ui:field="cardImage">
 				<i ui:field="cardImageIcon" class="icon-large mid-icon"></i>
 			</div>
-			<div class="card-action">
-				<a href="#" ui:field="aProcess">
-					<span class="ng-binding ellipsis" ui:field="spnName"></span>
-				</a>
-				<a class="pull-right" ui:field="aAdd">
-					<i class="icon-plus icon-large new"></i>
-				</a>
-			</div>
-		</g:Anchor>
+		</a>
+		<div class="card-action">
+			<a href="#" ui:field="aProcess">
+				<span class="ng-binding ellipsis" ui:field="spnName"></span>
+			</a>
+			<a class="pull-right" ui:field="aAdd">
+				<i class="icon-plus icon-large new"></i>
+			</a>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

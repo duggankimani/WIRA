@@ -10,7 +10,7 @@
 				<span class="name">
 					<span class="label label-green">COMMENT</span>
 					<strong class="indent" ui:field="spnUser">Alex</strong>
-					<span ui:field="spnAction">posted a comment on this task:</span>
+					<span ui:field="spnAction">posted a comment on task</span>
 					<strong>
 						<!-- span ui:field="spnSubject">Core Admin</span-->
 						<g:Anchor ui:field="aDocument" styleName="item unread hand">
@@ -19,7 +19,7 @@
 				</span>
 				<span class="time">
 					<i class="icon-time"></i>
-					<span ui:field="spnTime">6 minutes ago</span>
+					<span ui:field="spnTime"></span>
 				</span>
 			</div>
 			<div class="content">

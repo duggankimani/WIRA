@@ -70,6 +70,9 @@ public class TaskActivity extends Composite {
 		String text = "";
 
 		String subject = notification.getSubject();
+		if(subject.startsWith("Case-")){
+			subject = "#"+subject.substring(5);
+		}
 		DocumentType documentType = notification.getDocumentType();
 
 		NotificationType notificationType = notification.getNotificationType();

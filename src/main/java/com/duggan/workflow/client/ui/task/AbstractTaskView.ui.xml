@@ -38,12 +38,18 @@
 			</g:HTMLPanel>
 		</div>
 
-		<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">
-			<!-- div class="no-overflow-y" style="margin-left:0px;" -->
-			<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
-				width="100%"></g:FlexTable>
-			<!-- /div -->
-		</g:ScrollPanel>
+		<div class="news-feed container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<h4 ui:field="processName">All Processes</h4>
+				</div>
+			</div>
+			<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">
+				<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
+					width="100%"></g:FlexTable>
+			</g:ScrollPanel>
+		</div>
+
 
 	</g:HTMLPanel>
 </ui:UiBinder>

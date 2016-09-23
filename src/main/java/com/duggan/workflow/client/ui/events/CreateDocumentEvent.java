@@ -10,13 +10,19 @@ public class CreateDocumentEvent extends
 
 	public static Type<CreateDocumentHandler> TYPE = new Type<CreateDocumentHandler>();
 	private DocumentType docType;
+	private String processRefId;
 
 	public interface CreateDocumentHandler extends EventHandler {
 		void onCreateDocument(CreateDocumentEvent event);
 	}
 
+	@Deprecated
 	public CreateDocumentEvent(DocumentType docType) {
 		this.docType = docType;
+	}
+	
+	public CreateDocumentEvent(String processRefId) {
+		this.processRefId = processRefId;
 	}
 
 	public DocumentType getDocType() {
@@ -37,7 +43,12 @@ public class CreateDocumentEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, DocumentType docType) {
-		source.fireEvent(new CreateDocumentEvent(docType));
+	public static void fire(HasHandlers source, String processRefId) {
+		source.fireEvent(new CreateDocumentEvent(processRefId));
 	}
+	
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
 }

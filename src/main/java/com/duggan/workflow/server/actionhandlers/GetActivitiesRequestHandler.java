@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
@@ -30,50 +31,59 @@ public class GetActivitiesRequestHandler extends
 	@Override
 	public void execute(GetActivitiesRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
+
+		List<Activity> activities = new ArrayList<>();
 		String docRefId = action.getDocRefId();
-		List<Activity> activities = new ArrayList<>();		
-		activities.addAll(NotificationDaoHelper.getAllNotificationsByRefId(docRefId,
-				NotificationType.TASKCOMPLETED_OWNERNOTE,
-				NotificationType.APPROVALREQUEST_OWNERNOTE,
-				NotificationType.TASKDELEGATED, NotificationType.FILE_UPLOADED));
-				
-		//activities.addAll(CommentDaoHelper.getAllCommentsByDocumentId(documentId));
-		activities.addAll(CommentDaoHelper.getAllCommentsByDocRefId(docRefId));	
-		Collections.sort(activities);
-				
-		HashMap<Activity, ArrayList<Activity>> activityMap = new LinkedHashMap<>();
+		String userId = SessionHelper.getCurrentUser().getUserId();
+
+		if (docRefId != null) {
+			activities.addAll(NotificationDaoHelper.getAllNotificationsByRefId(
+					docRefId, NotificationType.TASKCOMPLETED_OWNERNOTE,
+					NotificationType.APPROVALREQUEST_OWNERNOTE,
+					NotificationType.TASKDELEGATED,
+					NotificationType.FILE_UPLOADED));
+			activities.addAll(CommentDaoHelper
+					.getAllCommentsByDocRefId(docRefId));
+		} else {
+			activities.addAll(CommentDaoHelper.getAllComments(userId));
+			activities.addAll(NotificationDaoHelper.getAllNotifications(userId));
+		}
 		
-		for(Activity activity: activities){
-			if(activity instanceof Notification || !action.isCategorized()){
+		
+		Collections.sort(activities);
+		HashMap<Activity, ArrayList<Activity>> activityMap = new LinkedHashMap<>();
+
+		for (Activity activity : activities) {
+			if (activity instanceof Notification || !action.isCategorized()) {
 				activityMap.put(activity, null);
-			}else{
-				Comment comment = (Comment)activity;
-				//System.err.println("Adding Comment >>>"+comment.getId()+" :: Parent = "+comment.getParentId());
-				//check if this is a child
-				
-				if(comment.getParentId()==null){
-					//possible parent
+			} else {
+				Comment comment = (Comment) activity;
+				// System.err.println("Adding Comment >>>"+comment.getId()+" :: Parent = "+comment.getParentId());
+				// check if this is a child
+
+				if (comment.getParentId() == null) {
+					// possible parent
 					activityMap.put(comment, new ArrayList<Activity>());
-				}else{
+				} else {
 					Comment parent = new Comment();
 					parent.setId(comment.getParentId());
 					List<Activity> children = activityMap.get(parent);
-					
-					if(children==null){
-						//System.err.println("#############SERVER IGNORING CHILD.............");						
-					}else{
-						children.add(comment);//activity map loaded						
+
+					if (children == null) {
+						// System.err.println("#############SERVER IGNORING CHILD.............");
+					} else {
+						children.add(comment);// activity map loaded
 					}
-					
+
 				}
 			}
 		}
-		
-		GetActivitiesResponse response = (GetActivitiesResponse)actionResult;
+
+		GetActivitiesResponse response = (GetActivitiesResponse) actionResult;
 		response.setActivityMap(activityMap);
-		
+
 	}
-	
+
 	@Override
 	public Class<GetActivitiesRequest> getActionType() {
 		return GetActivitiesRequest.class;

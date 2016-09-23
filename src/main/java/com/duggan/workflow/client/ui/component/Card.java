@@ -1,12 +1,13 @@
 package com.duggan.workflow.client.ui.component;
 
+import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,18 +23,47 @@ public class Card extends Composite {
 	@UiField AnchorElement aAdd;
 	@UiField Element cardImage;
 	@UiField Element cardImageIcon;
+	@UiField AnchorElement aNavigate;
 
 	String iconStyle="icon-pencil";
 	String backgroundColor = "#0096B3";
+	private DocumentType docType;
 	
 	public Card() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setIconStyle(iconStyle);
 		setBackGroundColor(backgroundColor);
+		
+		/**
+		 * These listeners dont work given that this widget/ widget's parent 
+		 * is added to the DOM through parentElement.add(widget.getElement) and
+		 * not as a widget
+		 */
+		/*aAdd.addMouseOverHandler(new MouseOverHandler() {
+			
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				Window.alert("Mouse over!!");
+			}
+		});
+		
+		aAdd.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.alert("Testing click!");
+				if(docType!=null){
+					AppContext.getEventBus().fireEvent(new CreateDocumentEvent(docType));
+				}
+			}
+		});*/
+		
+		registerEvents(aAdd);
 	}
 
 	public Card(DocumentType type) {
 		this();
+		this.docType = type;
 		setDisplay(type.getDisplayName());
 		if(type.getIconStyle()!=null){
 			setIconStyle(type.getIconStyle());
@@ -45,7 +75,7 @@ public class Card extends Composite {
 		
 		if(type.getProcessRefId()!=null){
 			aProcess.setHref("#/activities/"+type.getProcessRefId());
-			aAdd.setHref("#/activities/"+type.getProcessRefId()+"/add");
+			aNavigate.setHref("#/activities/"+type.getProcessRefId());
 		}
 
 	}
@@ -71,5 +101,18 @@ public class Card extends Composite {
 	public String getIconStyle() {
 		return iconStyle;
 	}
+	
+	public void addDoc(){
+		AppContext.getEventBus().fireEvent(new CreateDocumentEvent(docType));
+	}
+	
+	public native void registerEvents(Element el)/*-{
+		var instance = this;
+		$wnd.jQuery($doc).ready(function(){
+			$wnd.jQuery(el).click(function(){
+				instance.@com.duggan.workflow.client.ui.component.Card::addDoc()();
+			});
+		})
+	}-*/;
 
 }

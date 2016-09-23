@@ -95,6 +95,8 @@ public class AbstractTaskView extends ViewImpl implements
 	HTMLPanel docContainer;
 	@UiField
 	FlexTable tblTasks;
+	
+	@UiField Element processName;
 
 	@UiField
 	ScrollPanel divTableListing;
@@ -637,5 +639,10 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@Override
 	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
+	}
+
+	@Override
+	public void bindProcess(ProcessDef processDef) {
+		processName.setInnerText(processDef.getDisplayName());
 	}
 }

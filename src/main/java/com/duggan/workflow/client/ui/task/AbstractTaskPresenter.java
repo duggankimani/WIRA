@@ -31,10 +31,13 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
+import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -93,6 +96,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		void bindTasks(ArrayList<Doc> tasks, boolean isIncremental);
 
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
+
+		void bindProcess(ProcessDef processDef);
 	}
 
 	public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
@@ -142,6 +147,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	protected int CURPOS = 0;
 
 	private boolean isLoadingData;
+
+	private String processRefId;
 
 	public AbstractTaskPresenter(final EventBus eventBus, final ITaskView view,
 			final Proxy_ proxy,
@@ -215,6 +222,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
+		processRefId = request.getParameter("processRefId", null);
 		CURPOS = 0;
 
 		clear();
@@ -294,6 +302,11 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		String userId = AppContext.getUserId();
 		
+		MultiRequestAction action = new MultiRequestAction();
+		if(processRefId!=null){
+			action.addRequest(new GetProcessRequest(processRefId));
+		}
+		
 		GetTaskList request = new GetTaskList(userId, currentTaskType);
 		request.setOffset(CURPOS);
 		request.setLength(PAGE_SIZE);
@@ -301,15 +314,24 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		// request.setDocumentId(documentId);
 		request.setDocRefId(docRefId);
 		request.setLoadAsAdmin(isLoadAsAdmin());
+		
+		action.addRequest(request);
 
 		// Window.alert("Loading - "+currentTaskType+" "+CURPOS+" - "+(PAGE_SIZE+CURPOS));
 
 		fireEvent(new ProcessingEvent());
-		dispatcher.execute(request,
-				new TaskServiceCallback<GetTaskListResult>() {
+		dispatcher.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
-					public void processResult(GetTaskListResult result) {
-						GetTaskListResult rst = (GetTaskListResult) result;
+					public void processResult(MultiRequestActionResult result) {
+						int i=0;
+						
+						if(processRefId!=null){
+							GetProcessResponse getProcess = (GetProcessResponse) result.get(i++);
+							getView().bindProcess(getProcess.getProcessDef());
+						}
+						
+						GetTaskListResult rst = (GetTaskListResult) result.get(i++);
 						ArrayList<Doc> tasks = rst.getTasks();
 						loadLines(tasks, isIncremental);
 

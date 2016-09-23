@@ -71,6 +71,9 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 		String prefix = documentType == null ? "Document" : documentType
 				.getDisplayName();
 		subject = prefix + " " + subject;
+		if(subject.startsWith("Case-")){
+			subject = "#"+subject.substring(5);
+		}
 
 		if (isRead) {
 			aDocument.removeStyleName("unread");

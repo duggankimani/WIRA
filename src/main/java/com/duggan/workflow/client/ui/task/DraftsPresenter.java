@@ -25,7 +25,7 @@ public class DraftsPresenter extends AbstractTaskPresenter<DraftsPresenter.IDraf
 	public interface IDraftsView extends ITaskView{}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.drafts})
+	@NameToken({NameTokens.drafts, NameTokens.draftsPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface IDraftsProxy extends TabContentProxyPlace<DraftsPresenter> {
 	}

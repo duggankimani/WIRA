@@ -6,24 +6,36 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.activityfeed.components.CommentActivity;
 import com.duggan.workflow.client.ui.activityfeed.components.TaskActivity;
+import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Comment;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Notification;
+import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
+import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
+import com.duggan.workflow.shared.responses.GetProcessResponse;
+import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
@@ -46,10 +58,13 @@ public class ActivitiesPresenter extends
 		HasWidgets getPanelActivity();
 		void bind();
 		void createGroup(String label);
+		HasClickHandlers getNew();
+		void setProcess(ProcessDef process);
+		void setTaskList(ArrayList<Doc> tasks);
 	}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.activitiesPerProcessAdd, NameTokens.activitiesPerProcess})
+	@NameToken({NameTokens.activitiesPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface IActivitiesProxy extends TabContentProxyPlace<ActivitiesPresenter> {
 	}
@@ -61,6 +76,7 @@ public class ActivitiesPresenter extends
     }
 
 	@Inject DispatchAsync requestHelper;
+	private String processRefId;
 
 	@Inject
 	public ActivitiesPresenter(final EventBus eventBus, final MyView view,
@@ -69,20 +85,36 @@ public class ActivitiesPresenter extends
 	}
 	
 	@Override
+	protected void onBind() {
+		super.onBind();
+		getView().bind();
+		
+		getView().getNew().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(processRefId!=null){
+					fireEvent(new CreateDocumentEvent(processRefId));
+				}
+			}
+		});
+	}
+	
+	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-		String processRefId = request.getParameter("processRefId", null);
-		String action = request.getParameter("action", null);
-		if(action!=null){
-			
-		}else{
-			loadActivities(processRefId);
-		}
+		processRefId = request.getParameter("processRefId", null);
+		loadActivities(processRefId);
 		
 	}
-	 
+
 	public void loadActivities(String processRefId) {
 		MultiRequestAction requests = new MultiRequestAction();
+		
+		requests.addRequest(new GetProcessRequest(processRefId));
+		GetTaskList recentTasks = new GetTaskList(AppContext.getUserId(), TaskType.INBOX);
+		recentTasks.setLength(5);
+		requests.addRequest(recentTasks);
 		requests.addRequest(new GetActivitiesRequest(null));
 		
 		fireEvent(new ProcessingEvent());
@@ -90,7 +122,16 @@ public class ActivitiesPresenter extends
 				new TaskServiceCallback<MultiRequestActionResult>() {
 			
 			public void processResult(MultiRequestActionResult results) {
-				GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(0);
+				int i=0;
+				
+				GetProcessResponse getProcess = (GetProcessResponse) results.get(i++);
+				ProcessDef process = getProcess.getProcessDef();
+				bindProcess(process);
+
+				GetTaskListResult result = (GetTaskListResult) results.get(i++);
+				getView().setTaskList(result.getTasks());
+				
+				GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(i++);
 				bindActivities(getActivities);
 				
 				fireEvent(new ProcessingCompletedEvent());
@@ -98,6 +139,10 @@ public class ActivitiesPresenter extends
 		});
 		
 		
+	}
+
+	protected void bindProcess(ProcessDef process) {
+		getView().setProcess(process);
 	}
 
 	int i=0;
@@ -160,9 +205,4 @@ public class ActivitiesPresenter extends
 		
 	}
 
-	@Override
-	protected void onBind() {
-		super.onBind();
-		getView().bind();
-	}
 }

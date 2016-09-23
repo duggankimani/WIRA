@@ -78,7 +78,7 @@
 		<div class="news-feed container-fluid">
 			<div class="row-fluid">
 				<div class="span12">
-					<h4>Asset Finance</h4>
+					<h4 ui:field="processName"></h4>
 				</div>
 			</div>
 			<div class="row-fluid">
@@ -112,7 +112,7 @@
 									</a>
 								</li>
 								<li class=" hidden-xs">
-									<a href="/dashboard/?tab=in_progress">
+									<a ui:field="aInbox" href="#">
 										<div class="stat-outer-wrapper">
 											<div class="stat-wrapper">
 												<div class="icon-wrapper">
@@ -130,7 +130,7 @@
 									</a>
 								</li>
 								<li class="hidden-xs hidden-sm">
-									<a href="/dashboard/?tab=ended">
+									<a ui:field="aDone" href="#">
 										<div class="stat-outer-wrapper">
 											<div class="stat-wrapper">
 												<div class="icon-wrapper">
@@ -148,16 +148,16 @@
 									</a>
 								</li>
 
-								<li class="get-expert ">
+								<li class="get-expert">
 									<div class="stat-outer-wrapper">
 										<div class="stat-wrapper">
 											<div class="stat-item-wrapper stat-add-job">
-												<a href="/jobs/create/#start">
+												<g:Anchor ui:field="aNew">
 													<span class="icon-wrapper">
 														<i class="icon-plus"></i>
 													</span>
 													<span class="stat-status">New</span>
-												</a>
+												</g:Anchor>
 											</div>
 										</div><!-- End .stat-wrapper -->
 
@@ -170,9 +170,22 @@
 				</div>
 			</div>
 
-			<d:BulletListPanel ui:field="panelActivity"
-				styleName="chat-box timeline">
-			</d:BulletListPanel>
+			<div class="row-fluid">
+				<div class="span6">
+				    <h5>Recent Tasks</h5>
+				    <g:HTMLPanel>
+				        <g:FlexTable ui:field="recentTasks" styleName="table table-hover"
+					width="100%"></g:FlexTable>
+				    </g:HTMLPanel>
+				</div>
+				<div class="span6">
+				    <h5>Recent Activity</h5>
+					<d:BulletListPanel ui:field="panelActivity"
+						styleName="chat-box timeline">
+					</d:BulletListPanel>
+				</div>
+			</div>
+
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

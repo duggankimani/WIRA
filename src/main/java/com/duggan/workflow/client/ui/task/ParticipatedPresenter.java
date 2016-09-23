@@ -23,7 +23,7 @@ public class ParticipatedPresenter extends AbstractTaskPresenter<ParticipatedPre
 	public interface IParticipatedView extends com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView{}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.participated})
+	@NameToken({NameTokens.participated,NameTokens.participatedPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface INewTaskProxy extends TabContentProxyPlace<ParticipatedPresenter> {
 	}

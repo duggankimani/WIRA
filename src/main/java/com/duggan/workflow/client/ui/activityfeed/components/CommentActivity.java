@@ -75,6 +75,10 @@ public class CommentActivity extends Composite {
 			
 		}
 		
+		if(subject.startsWith("Case-")){
+			subject = "#"+subject.substring(5);
+		}
+		
 		aDocument.setText(docType+" "+subject);
 		aDocument.setHref("#/search/"+docRefId);
 		
