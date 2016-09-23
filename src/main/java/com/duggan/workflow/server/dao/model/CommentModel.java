@@ -24,7 +24,7 @@ public class CommentModel extends PO{
 	
 	private String userId;
 	
-	@Column(nullable=false)
+	//@Column(nullable=false)
 	private Long documentId;
 	
 	private String docRefId;

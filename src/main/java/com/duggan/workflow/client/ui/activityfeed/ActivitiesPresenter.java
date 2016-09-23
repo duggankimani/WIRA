@@ -122,8 +122,8 @@ public class ActivitiesPresenter
 
 		requests.addRequest(new GetProcessRequest(processRefId));
 		GetTaskList recentTasks = new GetTaskList(AppContext.getUserId(),
-				TaskType.INBOX);
-		recentTasks.setLength(5);
+				TaskType.DRAFT);
+		recentTasks.setLength(50);
 		requests.addRequest(recentTasks);
 		requests.addRequest(new GetActivitiesRequest(null));
 

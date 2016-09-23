@@ -306,7 +306,7 @@ public class ActivitiesView extends ViewImpl implements
 		for (Doc doc : tasks) {
 			if(count++>5){
 				//Print 5 only
-				break;
+//				break;
 			}
 			
 			int j = 0;

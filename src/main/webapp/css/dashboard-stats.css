@@ -11,24 +11,23 @@ div.dashboard-stats li {
 	padding-left: 0;
 	padding-right: 0;
 	vertical-align: top;
-	margin: 10px 10px;
+	/* margin: 10px 10px; */
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper {
 	background-color: #fff;
 	position: relative;
-	width: 224px;
-	height: 180px;
+	height: 130px;
 	margin-right: 3px;
 	margin-left: 3px;
-	padding: 14px;
+	padding: 7px;
 	vertical-align: top;
 	border: 2px solid #eef3f6;
 	webkit-transition: border-color 0.3s ease-in;
 	-moz-transition: border-color 0.3s ease-in;
 	-ms-transition: border-color 0.3s ease-in;
 	-o-transition: border-color 0.3s ease-in;
-	transition: border-color 0.3s ease-in
+	transition: border-color 0.3s ease-in;
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .icon-wrapper
@@ -43,15 +42,15 @@ div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper
 	{
 	position: relative;
 	top: 50%;
-	-webkit-transform: translateY(-50%);
+	/* -webkit-transform: translateY(-50%); */
 	-ms-transform: translateY(-50%);
-	transform: translateY(-50%)
+	transform: translateY(-50%);
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper .stat-item
 	{
-	font-size: 60px;
-	line-height: 0.8
+	font-size: 48px;
+	line-height: 0.8;
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper .stat-item:after
@@ -120,12 +119,12 @@ div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper.stat
 	{
 	display: block;
 	position: relative;
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	background-color: #27383e;
+	/* width: 50px; */
+	/* height: 50px; */
+	/* border-radius: 50%; */
+	/* background-color: #27383e; */
 	color: #fff;
-	font-size: 36px;
+	font-size: 30px;
 	line-height: 1.8;
 	margin: 0 auto 50px;
 	webkit-transition: color 0.3s ease-in, background-color 0.3s ease-in;

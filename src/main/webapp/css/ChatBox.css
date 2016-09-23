@@ -1,26 +1,36 @@
 .main-container .news-feed {
 	margin-left: 0px;
-	padding: 10px 45px 0px 0px;
 	min-height: 100%;
 	border-top: 0px;
+	padding-top: 10px;
 }
 
-.news-feed h4{
-	margin:10px;
-	padding-bottom:5px;
-	border-bottom:1px solid #CCCCCC;
+.news-feed .panel {
+	padding: 10px;
+	border-color: #e7eaec;
+	border-image: none;
+	border-style: solid solid none;
+	border-width: 1px 0;
+}
+
+.news-feed h4 {
+	margin: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #CCCCCC;
 	font-size: 20px;
 }
 
-.news-feed .name a, a:active,a:visited{
-  /*color: #428bca; */
+.news-feed .name a, a:active, a:visited {
+	/*color: #428bca; */
+	
 }
 
 /* line 40, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
-.news-feed a:hover,a:focus {
+.news-feed a:hover, a:focus {
 	/* cursor: pointer; */
 	/* outline: 0px none; */
 	/* text-decoration: underline; */
+	
 }
 
 /* line 105, /home/andrei/core-admin-release/core-admin/source/stylesheets/base.scss */
@@ -56,7 +66,7 @@
 	margin-right: 0;
 }
 /* line 38, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
-.chat-box.timeline .info,.chat-box.timeline .content {
+.chat-box.timeline .info, .chat-box.timeline .content {
 	background: #fafafa;
 	padding: 5px 10px;
 }
@@ -73,7 +83,7 @@
 	border-bottom-right-radius: 2px;
 }
 /* line 24, /home/andrei/core-admin-release/core-admin/source/stylesheets/mixin_helpers.scss */
-.chat-box.timeline .content:before,.chat-box.timeline .content:after {
+.chat-box.timeline .content:before, .chat-box.timeline .content:after {
 	display: table;
 	content: "";
 	line-height: 0;
@@ -115,7 +125,7 @@
 	top: 0;
 }
 /* line 82, /home/andrei/core-admin-release/core-admin/source/stylesheets/chat-box.scss */
-.chat-box .arrow-box-left,.chat-box .arrow-box-right {
+.chat-box .arrow-box-left, .chat-box .arrow-box-right {
 	min-height: 30px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -163,7 +173,7 @@
 	border-radius: 2px;
 }
 /* line 24, /home/andrei/core-admin-release/core-admin/source/stylesheets/mixin_helpers.scss */
-.chat-box .info:before,.chat-box .info:after {
+.chat-box .info:before, .chat-box .info:after {
 	display: table;
 	content: "";
 	line-height: 0;
@@ -204,7 +214,7 @@
 }
 
 /* line 72, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
-.arrow-box-left:after,.arrow-box-left:before {
+.arrow-box-left:after, .arrow-box-left:before {
 	right: 100%;
 	border: solid transparent;
 	content: " ";
@@ -256,7 +266,7 @@
 }
 
 /* line 72, /home/andrei/core-admin-release/core-admin/source/stylesheets/_arrow.scss */
-.arrow-box-right:after,.arrow-box-right:before {
+.arrow-box-right:after, .arrow-box-right:before {
 	left: 100%;
 	border: solid transparent;
 	content: " ";
@@ -301,7 +311,7 @@
 *** LABELS ***
 */
 /* line 30, /home/andrei/core-admin-release/core-admin/source/stylesheets/badges.scss */
-.label,.badge {
+.label, .badge {
 	font-weight: 600;
 }
 
