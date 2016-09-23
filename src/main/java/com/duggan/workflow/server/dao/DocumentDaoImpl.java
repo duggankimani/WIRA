@@ -827,7 +827,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 	public boolean exists(String subject) {
 
-		String sql = "select count(id) from DocumentModelJson d where d.caseno=:subject";
+		String sql = "select count(id) from DocumentModelJson d where d.caseNo=:subject";
 		Query query = em.createQuery(sql).setParameter("subject", subject);
 
 		Long result = (Long) query.getSingleResult();
