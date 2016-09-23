@@ -10,10 +10,10 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.jbpm.executor.commands.SendMailCommand;
-import org.jbpm.executor.impl.ExecutorImpl;
 
 import com.duggan.workflow.server.dao.CommentDaoImpl;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
+import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
@@ -58,9 +58,9 @@ public class CommentDaoHelper {
 	private static void sendEmail(Comment comment) {
 		Document doc = null;
 		if(comment.getDocRefId()!=null){
-			doc = DocumentDaoHelper.getDocument(comment.getDocRefId());
+			doc = DocumentDaoHelper.getDocJson(comment.getDocRefId());
 		}else if(comment.getDocumentId()!=null){
-			doc = DocumentDaoHelper.getDocument(comment.getDocumentId());
+//			doc = DB.getDocumentDao().getById(DocumentDa, id)
 		}
 		
 		List<HTUser> recipients= DB.getCommentDao().getEmailRecipients(doc.getId());
@@ -152,8 +152,12 @@ public class CommentDaoHelper {
 		commentTo.setParentId(modelFrom.getParentId());
 		
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		String name = dao.getDocumentTypeByDocumentId(modelFrom.getDocumentId()).getDisplay();
-		commentTo.setDocType(name);
+		
+		ADDocType type = dao.getDocumentTypeByDocumentId(modelFrom.getDocumentId());
+		if(type!=null){
+			String name = type.getDisplay();
+			commentTo.setDocType(name);
+		}
 		
 		String subject = dao.getDocumentSubject(modelFrom.getDocumentId());
 		commentTo.setSubject(subject);

@@ -631,23 +631,19 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 	public ADDocType getDocumentTypeByDocumentId(Long documentId) {
 
+		logger.info("###### Get Document Type for documentId="+documentId);
+		assert documentId!=null;
 		// ADDocType type =
 		// (ADDocType)em.createQuery("select d.type FROM DocumentModel d where d.id=:documentId")
 		// .setParameter("documentId", documentId).getSingleResult();
 
 		String sql = "select d.* from ADDocType d "
-				+ "where id=(select doctype from localdocument where id=?)";
+				+ "where refId=(select doctyperefid from documentjson where id=?)";
 
 		Query query = em.createNativeQuery(sql, ADDocType.class).setParameter(
 				1, documentId);
 
-		ADDocType type = null;
-
-		try {
-			type = (ADDocType) query.getSingleResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		ADDocType type = getSingleResultOrNull(query);
 
 		return type;
 	}
@@ -822,16 +818,16 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 	public String getDocumentSubject(Long documentId) {
 
-		String sql = "select subject from localdocument where id=?";
-		String value = (String) em.createNativeQuery(sql)
-				.setParameter(1, documentId).getSingleResult();
+		String sql = "select caseno from documentjson where id=?";
+		String value = getSingleResultOrNull(em.createNativeQuery(sql)
+				.setParameter(1, documentId));
 
 		return value;
 	}
 
 	public boolean exists(String subject) {
 
-		String sql = "select count(id) from DocumentModel d where d.subject=:subject";
+		String sql = "select count(id) from DocumentModelJson d where d.caseno=:subject";
 		Query query = em.createQuery(sql).setParameter("subject", subject);
 
 		Long result = (Long) query.getSingleResult();
@@ -1035,6 +1031,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		ArrayList<Doc> docs = new ArrayList<Doc>();
 		for (DocumentModelJson jsonDoc : documents) {
 			Document doc = jsonDoc.getDocument();
+			doc.setId(jsonDoc.getId());
 			if (loadDetails) {
 				doc.setValues(jsonDoc.getData().getValuesMap());
 				addDocLinesJson(doc);

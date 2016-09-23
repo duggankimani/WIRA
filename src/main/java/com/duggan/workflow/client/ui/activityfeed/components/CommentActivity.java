@@ -63,6 +63,10 @@ public class CommentActivity extends Composite {
 			Date created, String updatedby, Date updated, long documentId,
 			String docRefId,boolean isChild) {
 		
+		if(subject==null){
+			return;
+		}
+		
 		this.commentid=commentId;
 		if(createdBy!=null){
 			spnTime.setInnerText(getTimeDifferenceAsString(created));

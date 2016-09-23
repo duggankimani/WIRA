@@ -1245,6 +1245,7 @@ public class GenericDocumentPresenter extends
 		Comment comment = new Comment();
 		comment.setComment(commenttxt);
 		comment.setDocRefId(docRefId);
+		comment.setDocumentId(doc.getDocumentId());
 		comment.setParentId(null);
 		comment.setUserId(AppContext.getUserId());
 		// comment.setCreatedBy(AppContext.getUserId());

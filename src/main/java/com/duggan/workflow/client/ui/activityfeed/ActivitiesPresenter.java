@@ -51,158 +51,181 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-public class ActivitiesPresenter extends
+public class ActivitiesPresenter
+		extends
 		Presenter<ActivitiesPresenter.MyView, ActivitiesPresenter.IActivitiesProxy> {
 
 	public interface MyView extends View {
 		HasWidgets getPanelActivity();
+
 		void bind();
+
 		void createGroup(String label);
+
 		HasClickHandlers getNew();
+
 		void setProcess(ProcessDef process);
+
 		void setTaskList(ArrayList<Doc> tasks);
 	}
-	
-	@ProxyCodeSplit
-	@NameToken({NameTokens.activitiesPerProcess})
-	@UseGatekeeper(LoginGateKeeper.class)
-	public interface IActivitiesProxy extends TabContentProxyPlace<ActivitiesPresenter> {
-	}
-	
-	@TabInfo(container = HomePresenter.class)
-    public static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
-		HomeTabData data = new HomeTabData("activities","Activities","icon-dashboard",10, adminGatekeeper,false);
-        return data;
-    }
 
-	@Inject DispatchAsync requestHelper;
+	@ProxyCodeSplit
+	@NameToken({ NameTokens.activitiesPerProcess })
+	@UseGatekeeper(LoginGateKeeper.class)
+	public interface IActivitiesProxy extends
+			TabContentProxyPlace<ActivitiesPresenter> {
+	}
+
+	@TabInfo(container = HomePresenter.class)
+	public static TabData getTabLabel(LoginGateKeeper adminGatekeeper) {
+		HomeTabData data = new HomeTabData("activities", "Activities",
+				"icon-dashboard", 10, adminGatekeeper, false);
+		return data;
+	}
+
+	@Inject
+	DispatchAsync requestHelper;
 	private String processRefId;
 
 	@Inject
 	public ActivitiesPresenter(final EventBus eventBus, final MyView view,
-			final IActivitiesProxy proxy){
+			final IActivitiesProxy proxy) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
 		getView().bind();
-		
+
 		getView().getNew().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				if(processRefId!=null){
+				if (processRefId != null) {
 					fireEvent(new CreateDocumentEvent(processRefId));
 				}
 			}
 		});
 	}
-	
+
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		processRefId = request.getParameter("processRefId", null);
 		loadActivities(processRefId);
-		
+
 	}
 
 	public void loadActivities(String processRefId) {
 		MultiRequestAction requests = new MultiRequestAction();
-		
+
 		requests.addRequest(new GetProcessRequest(processRefId));
-		GetTaskList recentTasks = new GetTaskList(AppContext.getUserId(), TaskType.INBOX);
+		GetTaskList recentTasks = new GetTaskList(AppContext.getUserId(),
+				TaskType.INBOX);
 		recentTasks.setLength(5);
 		requests.addRequest(recentTasks);
 		requests.addRequest(new GetActivitiesRequest(null));
-		
-		fireEvent(new ProcessingEvent());
-		requestHelper.execute(requests, 
-				new TaskServiceCallback<MultiRequestActionResult>() {
-			
-			public void processResult(MultiRequestActionResult results) {
-				int i=0;
-				
-				GetProcessResponse getProcess = (GetProcessResponse) results.get(i++);
-				ProcessDef process = getProcess.getProcessDef();
-				bindProcess(process);
 
-				GetTaskListResult result = (GetTaskListResult) results.get(i++);
-				getView().setTaskList(result.getTasks());
-				
-				GetActivitiesResponse getActivities = (GetActivitiesResponse)results.get(i++);
-				bindActivities(getActivities);
-				
-				fireEvent(new ProcessingCompletedEvent());
-			}
-		});
-		
-		
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(requests,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+
+					public void processResult(MultiRequestActionResult results) {
+						int i = 0;
+
+						GetProcessResponse getProcess = (GetProcessResponse) results
+								.get(i++);
+						ProcessDef process = getProcess.getProcessDef();
+						bindProcess(process);
+
+						GetTaskListResult result = (GetTaskListResult) results
+								.get(i++);
+						getView().setTaskList(result.getTasks());
+
+						GetActivitiesResponse getActivities = (GetActivitiesResponse) results
+								.get(i++);
+						bindActivities(getActivities);
+
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
+
 	}
 
 	protected void bindProcess(ProcessDef process) {
 		getView().setProcess(process);
 	}
 
-	int i=0;
+	int i = 0;
+
 	protected void bindActivities(GetActivitiesResponse response) {
 		getView().getPanelActivity().clear();
-		
-		HashMap<Activity, ArrayList<Activity>> activitiesMap = response.getActivityMap();
+
+		HashMap<Activity, ArrayList<Activity>> activitiesMap = response
+				.getActivityMap();
 		Set<Activity> keyset = activitiesMap.keySet();
-		ArrayList<Activity> activities= new ArrayList<Activity>();
-		
+		ArrayList<Activity> activities = new ArrayList<Activity>();
+
 		activities.addAll(keyset);
 		Collections.sort(activities);
 		Collections.reverse(activities);
-		
+
 		Date dateGroup = null;
-		String previousGroup="";
+		String previousGroup = "";
 		Date today = new Date();
-		boolean activitiesOlderThanAMonth=false;
-		for(Activity activity: activities){
+		boolean activitiesOlderThanAMonth = false;
+		for (Activity activity : activities) {
 			Date created = activity.getCreated();
-			
-			if(!activitiesOlderThanAMonth)
-			if(!DateUtils.isSameDate(dateGroup,created)){
-				if(dateGroup!=null && CalendarUtil.getDaysBetween(created, today)>31){
-					activitiesOlderThanAMonth=true;
+
+			if (!activitiesOlderThanAMonth)
+				if (!DateUtils.isSameDate(dateGroup, created)) {
+					if (dateGroup != null
+							&& CalendarUtil.getDaysBetween(created, today) > 31) {
+						activitiesOlderThanAMonth = true;
+					}
+					dateGroup = created;
+					String groupName = DateUtils
+							.getDateGroupDescription(dateGroup);
+
+					if (!previousGroup.equals(groupName)) {
+						getView().createGroup(groupName);
+					}
+
+					previousGroup = groupName;
 				}
-				dateGroup = created;
-				String groupName = DateUtils.getDateGroupDescription(dateGroup);
-				
-				if(!previousGroup.equals(groupName)){
-					getView().createGroup(groupName);
-				}
-				
-				previousGroup=groupName;
-			}
-			
-			bind(activity,false);
-			ArrayList<Activity> children = activitiesMap.get(activity);	
-			if(children!=null){
-				for(Activity child: children){										
+
+			bind(activity, false);
+			ArrayList<Activity> children = activitiesMap.get(activity);
+			if (children != null) {
+				for (Activity child : children) {
 					bind(child, true);
 				}
-				
+
 			}
 		}
 	}
 
 	private void bind(Activity activity, boolean b) {
-	
-		if(activity instanceof Notification){
-			TaskActivity activityView = new TaskActivity((Notification)activity);
-			getView().getPanelActivity().add(activityView);
-		}else{
-			CommentActivity activityView = new CommentActivity((Comment)activity);
-			getView().getPanelActivity().add(activityView);
+
+		if (activity instanceof Notification) {
+			Notification note = (Notification) activity;
+			if (note.getSubject() != null) {
+				TaskActivity activityView = new TaskActivity(
+						(Notification) activity);
+				getView().getPanelActivity().add(activityView);
+			}
+		} else {
+			Comment comment = (Comment) activity;
+			if (comment.getSubject() != null) {
+				CommentActivity activityView = new CommentActivity(comment);
+				getView().getPanelActivity().add(activityView);
+			}
 		}
 	}
 
 	protected void bindCommentsResult(GetCommentsResponse commentsResult) {
-		
+
 	}
 
 }

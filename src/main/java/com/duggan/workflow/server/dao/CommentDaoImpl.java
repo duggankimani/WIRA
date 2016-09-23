@@ -11,8 +11,8 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.duggan.workflow.server.dao.model.CommentModel;
-import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
@@ -108,7 +108,7 @@ public class CommentDaoImpl {
 
 		StringBuffer hql = new StringBuffer(
 				"Select c.id FROM localcomment c "
-						+ "inner join LocalDocument d on (d.id=c.documentId) "
+						+ "inner join documentjson d on (d.id=c.documentId) "
 						+ "left join Task t on (t.processInstanceId=d.processInstanceId) "
 						+ "left join OrganizationalEntity owner on (owner.id= t.actualOwner_id and owner.DTYPE='User') "
 						+ "left join PeopleAssignments_PotOwners potowners on (potowners.task_id=t.id)  "
@@ -146,7 +146,7 @@ public class CommentDaoImpl {
 
 	public List<HTUser> getEmailRecipients(Long documentId) {
 		String sql = "select t.actualOwner_id from "
-				+ "Task t inner join LocalDocument d "
+				+ "Task t inner join documentjson d "
 				+ "on (t.processInstanceId=d.processInstanceId) "
 				+ "left join OrganizationalEntity owner "
 				+ "on (owner.id= t.actualOwner_id and owner.DTYPE='User') "
@@ -168,7 +168,8 @@ public class CommentDaoImpl {
 
 		}
 		
-		String createdBy = (String)em.createNativeQuery("select createdBy from localdocument where id="+documentId).getSingleResult();
+		String createdBy = (String)em.createNativeQuery("select createdBy from documentjson where id="
+		+documentId).getSingleResult();
 		if(!currentUser.getUserId().equals(createdBy)){
 			users.add(new UserDaoHelper().getUser(createdBy));
 		}
