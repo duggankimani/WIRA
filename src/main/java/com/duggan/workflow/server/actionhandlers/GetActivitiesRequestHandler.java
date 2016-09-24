@@ -34,6 +34,7 @@ public class GetActivitiesRequestHandler extends
 
 		List<Activity> activities = new ArrayList<>();
 		String docRefId = action.getDocRefId();
+		String processRefId = action.getProcessRefId();
 		String userId = SessionHelper.getCurrentUser().getUserId();
 
 		if (docRefId != null) {
@@ -44,9 +45,9 @@ public class GetActivitiesRequestHandler extends
 					NotificationType.FILE_UPLOADED));
 			activities.addAll(CommentDaoHelper
 					.getAllCommentsByDocRefId(docRefId));
-		} else {
-			activities.addAll(CommentDaoHelper.getAllComments(userId));
-			activities.addAll(NotificationDaoHelper.getAllNotifications(userId));
+		} else if(processRefId!=null){
+			activities.addAll(CommentDaoHelper.getAllComments(processRefId,userId));
+			activities.addAll(NotificationDaoHelper.getAllNotifications(processRefId,userId));
 		}
 		
 		

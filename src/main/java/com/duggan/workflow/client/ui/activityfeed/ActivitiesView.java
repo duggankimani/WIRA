@@ -2,16 +2,14 @@ package com.duggan.workflow.client.ui.activityfeed;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
-import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.activityfeed.components.CarouselPopup;
 import com.duggan.workflow.client.ui.component.ActionLink;
-import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.events.CloseCarouselEvent;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.util.DateUtils;
-import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
@@ -33,8 +31,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
@@ -66,6 +62,10 @@ public class ActivitiesView extends ViewImpl implements
 
 	@UiField
 	ComplexPanel panelActivity;
+	@UiField Element panelActivity_Empty;
+	@UiField Element divRecentTasks;
+	@UiField Element divRecentTasks_Empty;
+	
 	@UiField
 	Anchor aCreate;
 	@UiField
@@ -101,6 +101,10 @@ public class ActivitiesView extends ViewImpl implements
 	@UiField FocusPanel parentPanel;
 	
 	@UiField FlexTable recentTasks;
+	
+	@UiField Element elTotal;
+	@UiField Element elDone;
+	@UiField Element elInbox;
 	
 	protected boolean hasElapsed = false;
 
@@ -296,6 +300,8 @@ public class ActivitiesView extends ViewImpl implements
 
 	@Override
 	public void setTaskList(ArrayList<Doc> tasks) {
+		
+		setHasRecentTasks(!tasks.isEmpty());
 		
 		recentTasks.removeAllRows();
 		setHeaders(recentTasks);
@@ -560,6 +566,27 @@ public class ActivitiesView extends ViewImpl implements
 	}
 
 
+	private void setHasRecentTasks(boolean hasRecentTasks) {
+		if(hasRecentTasks){
+			divRecentTasks.removeClassName("hide");
+			divRecentTasks_Empty.addClassName("hide");
+		}else{
+			divRecentTasks.addClassName("hide");
+			divRecentTasks_Empty.removeClassName("hide");
+		}
+	}
+
+
+	public void setHasActivities(boolean hasActivities) {
+		if(hasActivities){
+			panelActivity.removeStyleName("hide");
+			panelActivity_Empty.addClassName("hide");
+		}else{
+			panelActivity.addStyleName("hide");
+			panelActivity_Empty.removeClassName("hide");
+		}
+	}
+
 	private void setHeaders(FlexTable table) {
 		int i = table.getRowCount();
 		int j = 0;
@@ -622,4 +649,34 @@ public class ActivitiesView extends ViewImpl implements
 	}
 
 
+	@Override
+	public void bindTaskCounts(HashMap<TaskType, Integer> counts) {
+		counts.put(TaskType.INBOX, getValue(counts.get(TaskType.MINE)
+				+ getValue(counts.get(TaskType.QUEUED))));
+		
+		int total = 0;
+		for(TaskType type: counts.keySet()){
+			Integer count = counts.get(type);
+			if(count==null){
+				count = 0;
+			}
+			switch (type) {
+			case INBOX:
+				elInbox.setInnerText(count+"");
+				total = total+count;
+				break;
+			case PARTICIPATED:
+				elDone.setInnerText(count+"");
+				total = total+count;
+				break;
+			
+			}
+		}
+		
+		elTotal.setInnerText(total+"");
+	}
+
+	private Integer getValue(Integer val) {
+		return val == null ? 0 : val.intValue();
+	}
 }

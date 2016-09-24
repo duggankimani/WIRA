@@ -220,12 +220,23 @@ public class JBPMHelper implements Closeable {
 	 * Count the number of tasks - completed/ or new
 	 * 
 	 * @param userId
+	 * @param userId 
 	 * @param counts
 	 */
-	public void getCount(String userId, HashMap<TaskType, Integer> counts) {
+	public void getCount(String processRefId, String userId, HashMap<TaskType, Integer> counts) {
 
 		// Count drafts & initiated documents
-		DocumentDaoHelper.getCounts(userId, counts);
+		if(processRefId!=null){
+			String processId = DB.getProcessDao().getProcessId(processRefId);
+			DocumentDaoHelper.getCounts(processId,userId, counts);
+		}else{
+			DocumentDaoHelper.getCounts(null,userId, counts);
+		}
+		
+		int processInstanceId=-1;
+		if(processRefId!=null){
+			processInstanceId = DB.getProcessDao().getProcessDefId(processRefId).intValue();
+		}
 
 		// Count Tasks
 
@@ -240,33 +251,36 @@ public class JBPMHelper implements Closeable {
 			groupIds.add("USER"); // At least one group must be specified
 		}
 
-		Long count = (Long) DB
+		Number count = (Number)DB
 				.getEntityManager()
 				.createNamedQuery(
 						"TasksAssignedCountAsPotentialOwnerByStatusWithGroups")
 				.setParameter("userId", userId)
 				.setParameter("groupIds", groupIds)
 				.setParameter("language", "en-UK")
+				.setParameter("processInstanceId", processInstanceId)
 				.setParameter("status", getStatusesForTaskType(TaskType.INBOX))
 				.getSingleResult();
 		counts.put(TaskType.INBOX, count.intValue());
 		counts.put(TaskType.ALL, count.intValue());
 		
-		Long mine = (Long) DB.getEntityManager()
+		Number mine = (Number) DB.getEntityManager()
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
+				.setParameter("processInstanceId", processInstanceId)
 				.setParameter("status", getStatusesForTaskType(TaskType.MINE))
 				.getSingleResult();
 		counts.put(TaskType.MINE, mine.intValue());
 		
-		Long queued = (Long) DB
+		Number queued = (Number) DB
 				.getEntityManager()
 				.createNamedQuery(
 						"TasksAssignedCountAsPotentialOwnerByStatusWithGroups")
 				.setParameter("userId", userId)
 				.setParameter("groupIds", groupIds)
 				.setParameter("language", "en-UK")
+				.setParameter("processInstanceId", processInstanceId)
 				.setParameter("status", getStatusesForTaskType(TaskType.QUEUED))
 				.getSingleResult();
 		counts.put(TaskType.QUEUED, queued.intValue());
@@ -279,10 +293,11 @@ public class JBPMHelper implements Closeable {
 		 * his completed tasks? This mechanism creates the possibility of this
 		 * scenario happening TODO: Test the query with two users sharing a role
 		 */
-		Long count2 = (Long) DB.getEntityManager()
+		Number count2 = (Number) DB.getEntityManager()
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
+				.setParameter("processInstanceId", processInstanceId)
 				.setParameter("status", Status.Completed).getSingleResult();
 
 		// Inprogress participated requests
@@ -290,10 +305,11 @@ public class JBPMHelper implements Closeable {
 				.get(TaskType.PARTICIPATED);
 		counts.put(TaskType.PARTICIPATED, count2.intValue() + c);
 
-		Long count3 = (Long) DB.getEntityManager()
+		Number count3 = (Number) DB.getEntityManager()
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
+				.setParameter("processInstanceId", processInstanceId)
 				.setParameter("status", Status.Suspended).getSingleResult();
 		counts.put(TaskType.SUSPENDED, count3.intValue());
 
@@ -1459,7 +1475,7 @@ public class JBPMHelper implements Closeable {
 		assert userId != null;
 
 		HashMap<TaskType, Integer> counts = new HashMap<>();
-		getCount(userId, counts);
+		getCount(null,userId, counts);
 
 		htuser.setParticipated(counts.get(TaskType.PARTICIPATED));
 		htuser.setInbox(counts.get(TaskType.INBOX));

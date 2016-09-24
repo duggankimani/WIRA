@@ -8,10 +8,10 @@ public class GetActivitiesRequest extends
 		BaseRequest<GetActivitiesResponse> {
 
 	private String docRefId;
+	private String processRefId;
 	private boolean categorized=true;//parent child relationship set
 	
-	@SuppressWarnings("unused")
-	private GetActivitiesRequest() {
+	public GetActivitiesRequest() {
 	}
 	
 	public GetActivitiesRequest(String docRefId) {
@@ -34,6 +34,14 @@ public class GetActivitiesRequest extends
 
 	public void setCategorized(boolean categorized) {
 		this.categorized = categorized;
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 
 }

@@ -41,7 +41,12 @@
 		<div class="news-feed container-fluid">
 			<div class="row-fluid">
 				<div class="span12">
-					<h4 ui:field="processName">All Processes</h4>
+					<h4>
+					    <a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
+							<i class="icon-arrow-left"></i>
+						</a>
+					    <span ui:field="processName"></span>
+					</h4>
 				</div>
 			</div>
 			<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">

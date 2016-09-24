@@ -109,7 +109,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<h4>
-						<a href="#/home" style="color:blue">
+						<a href="#/home" style="color: #0088cc;">
 							<i class="icon-home"></i>
 						</a>
 						/
@@ -132,7 +132,7 @@
 														alt="Newest Jobs"></img>
 												</div>
 												<div class="stat-item-wrapper stat-item1">
-													<div class="stat-item">20</div>
+													<div class="stat-item" ui:field="elTotal"></div>
 													<div class="stat-status">Total</div>
 												</div>
 											</div><!-- End .stat-wrapper -->
@@ -150,7 +150,7 @@
 														alt="In Progress"></img>
 												</div>
 												<div class="stat-item-wrapper stat-item2">
-													<div class="stat-item">12</div>
+													<div class="stat-item" ui:field="elInbox"></div>
 													<div class="stat-status">Inbox</div>
 												</div>
 											</div><!-- End .stat-wrapper -->
@@ -168,7 +168,7 @@
 														alt="Completed"></img>
 												</div>
 												<div class="stat-item-wrapper stat-item3">
-													<div class="stat-item">8</div>
+													<div class="stat-item" ui:field="elDone"></div>
 													<div class="stat-status">Done</div>
 												</div>
 											</div><!-- End .stat-wrapper -->
@@ -204,11 +204,11 @@
 							<h5>Recent Tasks</h5>
 						</div>
 						<div class="panel-content">
-							<g:HTMLPanel styleName="hide">
+							<div ui:field="divRecentTasks">
 								<g:FlexTable ui:field="recentTasks" styleName="table table-hover"
 									width="100%"></g:FlexTable>
-							</g:HTMLPanel>
-							<div class="">
+							</div>
+							<div ui:field="divRecentTasks_Empty">
 								<img src="img/task-no-data.PNG" class="{style.faded-image}"></img>
 								<h4 class="{style.on-top-text}">No Tasks</h4>
 							</div>
@@ -225,7 +225,7 @@
 								styleName="chat-box timeline hide">
 							</d:BulletListPanel>
 
-							<div class="">
+							<div ui:field="panelActivity_Empty">
 								<img src="img/activity-no-data.PNG" class="{style.faded-image}"></img>
 								<h4 class="{style.on-top-text}">No Activities</h4>
 							</div>

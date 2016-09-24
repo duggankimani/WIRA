@@ -68,6 +68,8 @@ where
     ) and
 
     t.taskData.status in (:status) and
+    
+    (:processInstanceId=-1 or t.taskData.processInstanceId=:processInstanceId) and
 
     t.taskData.expirationTime is null
           </query>
@@ -105,6 +107,8 @@ where
     ) and
     
 	t.taskData.status in (:status) and
+	
+	(:processInstanceId=-1 or t.taskData.processInstanceId=:processInstanceId) and
 	
     t.taskData.expirationTime is null
           </query>

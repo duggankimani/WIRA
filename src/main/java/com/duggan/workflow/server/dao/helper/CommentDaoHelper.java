@@ -89,11 +89,8 @@ public class CommentDaoHelper {
 		
 	}
 
-	public static List<Comment> getAllComments(String userId){
-		CommentDaoImpl dao = DB.getCommentDao();
-		List<CommentModel> models = dao.getAllComments(userId);
-		
-		return copyData(models);
+	public static List<Comment> getAllComments(String processRefId,String userId){
+		return DB.getCommentDao().getAllComments(processRefId, userId);
 	}
 	
 	private static List<Comment> copyData(List<CommentModel> models) {

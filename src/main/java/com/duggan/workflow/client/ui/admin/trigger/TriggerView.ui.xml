@@ -24,7 +24,7 @@
 			</div>
 			<div class="row-fluid">
 			    Triggers use MVEL language. See 
-			    <a href="https://en.wikisource.org/wiki/MVEL_Language_Guide" target="_blank">MVEl wiki here</a>
+			    <a href="http://mvel.documentnode.com" target="_blank">MVEl wiki here</a>
 			</div>
 
 			<d:TableView ui:field="tblView" striped="false" isGrid="false"

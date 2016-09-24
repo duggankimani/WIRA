@@ -84,7 +84,7 @@ public class TestNotications {
 	public void getcompleted(){
 		HashMap<TaskType, Integer> counts = new HashMap<>();
 		
-		JBPMHelper.get().getCount("james", counts);
+		JBPMHelper.get().getCount(null,"james", counts);
 		
 		Integer count = counts.get(TaskType.COMPLETED);
 		
@@ -163,7 +163,7 @@ public class TestNotications {
 	@Ignore
 	public void getNotifications(){
 		DB.beginTransaction();
-		List<Notification> notes =  NotificationDaoHelper.getAllNotifications("calcacuervo");
+		List<Notification> notes =  NotificationDaoHelper.getAllNotifications(null,"calcacuervo");
 		System.out.println(notes);
 		DB.commitTransaction();
 		DB.closeSession();
@@ -172,7 +172,7 @@ public class TestNotications {
 	@Ignore
 	public void getNotificationCount(){
 		DB.beginTransaction();
-		Integer count = NotificationDaoHelper.getNotificationCount("calcacuervo");
+		Integer count = NotificationDaoHelper.getNotificationCount(null,"calcacuervo");
 		System.err.println(count);
 		DB.commitTransaction();
 		DB.closeSession();
@@ -183,7 +183,7 @@ public class TestNotications {
 	public void getAlertCount(){
 		HashMap<TaskType, Integer> vals = new HashMap<>(); 
 		String userId = "calcacuervo";
-		JBPMHelper.get().getCount(userId, vals);
+		JBPMHelper.get().getCount(null,userId, vals);
 		System.err.println(TaskType.COMPLETED+" : "+vals.get(TaskType.COMPLETED));
 		System.err.println(TaskType.INBOX+" : "+vals.get(TaskType.INBOX));
 		

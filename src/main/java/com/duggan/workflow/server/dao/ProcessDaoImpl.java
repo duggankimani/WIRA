@@ -666,4 +666,9 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				);
 	}
 
+	public String getProcessId(String processRefId) {
+		return getSingleResultOrNull(em.createNativeQuery("select processId from ProcessDefModel where refId=:refId")
+				.setParameter("refId", processRefId));
+	}
+
 }

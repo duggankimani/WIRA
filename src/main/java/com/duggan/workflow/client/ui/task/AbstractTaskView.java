@@ -31,6 +31,7 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.dom.client.Style.Unit;
@@ -68,6 +69,8 @@ public class AbstractTaskView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, AbstractTaskView> {
 	}
 
+	@UiField AnchorElement aProcess;
+	
 	@UiField
 	HTMLPanel container;
 	@UiField
@@ -103,6 +106,8 @@ public class AbstractTaskView extends ViewImpl implements
 
 	// Filter Dialog Caret
 	boolean isNotDisplayed = true;
+
+	private String processRefId;
 
 	@Inject
 	public AbstractTaskView(final Binder binder) {
@@ -644,5 +649,11 @@ public class AbstractTaskView extends ViewImpl implements
 	@Override
 	public void bindProcess(ProcessDef processDef) {
 		processName.setInnerText(processDef.getDisplayName());
+	}
+
+	@Override
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
+		aProcess.setHref("#/activities/"+processRefId);
 	}
 }

@@ -51,6 +51,13 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 	}
 	
 	
+	public HTUser(String userId, String firstName,
+			String lastName) {
+		this.userId = userId;
+		this.name = firstName;
+		this.surname = lastName;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}

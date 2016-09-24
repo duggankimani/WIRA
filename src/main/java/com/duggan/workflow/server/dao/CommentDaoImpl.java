@@ -14,15 +14,15 @@ import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.Comment;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
 
-public class CommentDaoImpl {
+public class CommentDaoImpl extends BaseDaoImpl{
 
-	EntityManager em;
 
 	public CommentDaoImpl(EntityManager em) {
-		this.em = em;
+		super(em);
 	}
 
 	public CommentModel getComment(Long id) {
@@ -48,13 +48,76 @@ public class CommentDaoImpl {
 		return comment;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<CommentModel> getAllComments(String userId) {
+	public List<Comment> getAllComments(String processRefId, String userId) {
 
-		return em
-				.createQuery(
-						"FROM CommentModel n where n.userId=:userId order by created desc")
-				.setParameter("userId", userId).getResultList();
+		String query = "select c.id,"
+				+ "c.refId,"
+				+ "c.created,"
+				+ "c.createdby,"
+				+ "u.firstname creatorfirstname,"
+				+ "u.lastname creatorlastname, "
+				+ "c.comment, "
+				+ "c.docrefid, "
+				+ "c.documentid, "
+				+ "c.parentid, "
+				+ "c.userid, "
+				+ "u1.firstname targetfirstname, "
+				+ "u1.lastname targetlastname, "
+				+ "t.display,"
+				+ "d.caseno "
+				+ "from localcomment c "
+				+ "inner join documentjson d on (d.refId=c.docRefId) "
+				+ "inner join addoctype t on (t.refId=d.docTypeRefId) "
+				+ "inner join processdefmodel p on (p.id=t.processDefId) "
+				+ "inner join buser u on (c.createdBy=u.userId) "
+				+ "left join buser u1 on (c.userid=u1.userid) "
+				+ "where c.userId=:userId "
+				+ "and (:processRefId='' or :processRefId=p.refId)"
+				+ "order by c.created desc";
+		
+		List<Object[]> result = getResultList(em.createNativeQuery(query)
+				.setParameter("userId", userId)
+				.setParameter("processRefId", processRefId==null? "": processRefId)
+				);
+		
+		List<Comment> comments = new ArrayList<Comment>();
+		
+		for(Object[] row: result){
+			Object value = null;
+			int i=0;
+			Long id = ((value=row[i++])==null? null: ((Number)value).longValue());
+			String refId = ((value=row[i++])==null? null: ((String)value));
+			Date created = ((value=row[i++])==null? null: ((Date)value));
+			String createdby = ((value=row[i++])==null? null: ((String)value));
+			String creatorfirstname = ((value=row[i++])==null? null: ((String)value));
+			String creatorlastname = ((value=row[i++])==null? null: ((String)value));
+			String comment = ((value=row[i++])==null? null: ((String)value));
+			String docrefid = ((value=row[i++])==null? null: ((String)value)); 
+			Long documentid = ((value=row[i++])==null? null: ((Number)value).longValue());
+			Long parentid = ((value=row[i++])==null? null: ((Number)value).longValue()); 
+			String userid = ((value=row[i++])==null? null: ((String)value));
+			String targetfirstname = ((value=row[i++])==null? null: ((String)value));
+			String targetlastname = ((value=row[i++])==null? null: ((String)value));
+			String docType = ((value=row[i++])==null? null: ((String)value));
+			String caseno = ((value=row[i++])==null? null: ((String)value));
+			
+			Comment dto = new Comment();
+			dto.setId(id);
+			dto.setRefId(refId);
+			dto.setCreated(created);
+			dto.setCreatedBy(new HTUser(createdby, creatorfirstname, creatorlastname));
+			dto.setComment(comment);
+			dto.setDocRefId(docrefid);
+			dto.setDocType(docType);
+			dto.setDocumentId(documentid);
+			dto.setParentId(parentid);
+			dto.setUserId(userid);
+			dto.setSubject(caseno);
+			
+			comments.add(dto);
+		}
+		
+		return comments;
 	}
 
 	public void delete(Long id) {

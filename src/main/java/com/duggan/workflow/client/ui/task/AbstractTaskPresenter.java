@@ -98,6 +98,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 
 		void bindProcess(ProcessDef processDef);
+
+		void setProcessRefId(String processRefId);
 	}
 
 	public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
@@ -223,6 +225,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		processRefId = request.getParameter("processRefId", null);
+		getView().setProcessRefId(processRefId);
+		
 		CURPOS = 0;
 
 		clear();

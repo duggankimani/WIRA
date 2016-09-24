@@ -8,12 +8,18 @@ public class GetNotificationsAction extends
 		BaseRequest<GetNotificationsActionResult> {
 
 	private String userId;
+	private String processRefId;
 
 	@SuppressWarnings("unused")
 	private GetNotificationsAction() {
 	}
 
 	public GetNotificationsAction(String userId) {
+		this.userId = userId;
+	}
+	
+	public GetNotificationsAction(String processRefId,String userId) {
+		this.processRefId = processRefId;
 		this.userId = userId;
 	}
 	
@@ -25,4 +31,9 @@ public class GetNotificationsAction extends
 	public String getUserId() {
 		return userId;
 	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
 }

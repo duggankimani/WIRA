@@ -60,11 +60,9 @@ public class NotificationDaoHelper {
 		return notification;
 	}
 	
-	public static List<Notification> getAllNotifications(String userId){
+	public static List<Notification> getAllNotifications(String processRefId,String userId){
 		NotificationDaoImpl dao = DB.getNotificationDao();
-		List<NotificationModel> models = dao.getAllNotifications(userId);
-		
-		return copyData(models);
+		return  dao.getAllNotifications(processRefId,userId);
 	}
 	
 	public static List<Notification> getAllNotifications(Long documentId, NotificationType...notificationTypes){
@@ -167,9 +165,9 @@ public class NotificationDaoHelper {
 		dao.delete(id);
 	}
 
-	public static Integer getNotificationCount(String userId) {
+	public static Integer getNotificationCount(String processRefId,String userId) {
 		NotificationDaoImpl dao =DB.getNotificationDao();
-		Integer count = dao.getAlertCount(userId);
+		Integer count = dao.getAlertCount(processRefId,userId);
 		return count;
 	}
 
@@ -182,7 +180,7 @@ public class NotificationDaoHelper {
 		return notification;
 	}
 
-	public static void getCounts(HashMap<TaskType, Integer> counts) {
-		counts.put(TaskType.NOTIFICATIONS, getNotificationCount(SessionHelper.getCurrentUser().getUserId()));
+	public static void getCounts(String processRefId, HashMap<TaskType, Integer> counts) {
+		counts.put(TaskType.NOTIFICATIONS, getNotificationCount(processRefId,SessionHelper.getCurrentUser().getUserId()));
 	}
 }

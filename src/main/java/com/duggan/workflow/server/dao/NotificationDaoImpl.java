@@ -13,15 +13,18 @@ import org.apache.commons.lang3.time.DateUtils;
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.ApproverAction;
+import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
+import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
 
-public class NotificationDaoImpl {
+public class NotificationDaoImpl extends BaseDaoImpl{
 
-	EntityManager em;
 	
 	public NotificationDaoImpl(EntityManager em) {
-		this.em = em;
+		super(em);
 	}
 
 	public NotificationModel getNotification(Long id) {
@@ -40,16 +43,105 @@ public class NotificationDaoImpl {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<NotificationModel> getAllNotifications(String userId) {
-
-		return em.createQuery("FROM NotificationModel n where "
-				+ "(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType)) "
+	public List<Notification> getAllNotifications(String processRefId, String userId) {
+		
+		String query = "select n.id,"
+				+ "n.refid,"
+				+ "n.created,"
+				+ "n.createdby,"
+				+ "u.firstname creatorfirstname,"
+				+ "u.lastname creatorlastname, "
+				+ "n.approveraction,"
+				+ "n.docrefid, "
+				+ "n.documentid, "
+				+ "n.documenttypedesc,"
+				+ "n.fileid, "
+				+ "n.filename, "
+				+ "n.isread, "
+				+ "n.isseen, "
+				+ "n.notificationtype, "
+				+ "n.owner, "
+				+ "u1.firstname ownerfirstname, "
+				+ "u1.lastname ownerlastname, "
+				+ "n.targetuserid, "
+				+ "u2.firstname targetfirstname, "
+				+ "u2.lastname targetlastname, "
+				+ "t.display,"
+				+ "t.name,"
+				+ "d.caseno, "
+				+ "d.processinstanceid "
+				+ "from localnotification n "
+				+ "inner join documentjson d on (d.refId=n.docRefId)  "
+				+ "inner join addoctype t on (t.refId=d.docTypeRefId)  "
+				+ "inner join processdefmodel p on (p.id=t.processDefId) "
+				+ "inner join buser u on (n.createdby=u.userid) "
+				+ "left join buser u1 on (n.owner=u1.userid) "
+				+ "left join buser u2 on (n.targetuserid=u2.userid) "
+				+ "where "
+				+ "(n.targetuserid=:userId or (n.createdBy=:userId and n.notificationType=:notificationType)) "
 				+ "and n.created>:thirtyDays "
-				+ "order by created desc")
+				+ "and (:processRefId='' or p.refId=:processRefId)"
+				+ "order by created desc";
+
+		List<Object[]> results = getResultList(em.createNativeQuery(query)
 				.setParameter("userId", userId)
-				.setParameter("notificationType", NotificationType.TASKDELEGATED)
+				.setParameter("notificationType", NotificationType.TASKDELEGATED.name())
 				.setParameter("thirtyDays", DateUtils.addDays(new Date(), -30))
-				.getResultList();
+				.setParameter("processRefId", processRefId==null? "":processRefId));
+
+		List<Notification> notifications = new ArrayList<Notification>();
+		for(Object[] row: results){
+			Object value = null;
+			int i=0;
+			Long id = ((value=row[i++])==null? null: ((Number)value).longValue());
+			String refid = ((value=row[i++])==null? null: ((String)value));
+			Date created = ((value=row[i++])==null? null: ((Date)value));
+			String createdby = ((value=row[i++])==null? null: ((String)value));
+			String creatorfirstname = ((value=row[i++])==null? null: ((String)value));
+			String creatorlastname = ((value=row[i++])==null? null: ((String)value));
+			String approveraction = ((value=row[i++])==null? null: ((String)value));
+			String docrefid = ((value=row[i++])==null? null: ((String)value));
+			Long documentid = ((value=row[i++])==null? null: ((Number)value).longValue());
+			String documenttypedesc = ((value=row[i++])==null? null: ((String)value));
+			Long fileid = ((value=row[i++])==null? null: ((Number)value).longValue());
+			String filename = ((value=row[i++])==null? null: ((String)value));
+			Boolean isread = ((value=row[i++])==null? null: ((Boolean)value));
+			Boolean isseen = ((value=row[i++])==null? null: ((Boolean)value));
+			String notificationtype = ((value=row[i++])==null? null: ((String)value));
+			String owner = ((value=row[i++])==null? null: ((String)value));
+			String ownerfirstname = ((value=row[i++])==null? null: ((String)value));
+			String ownerlastname = ((value=row[i++])==null? null: ((String)value));
+			String targetuserid = ((value=row[i++])==null? null: ((String)value));
+			String targetfirstname = ((value=row[i++])==null? null: ((String)value));
+			String targetlastname = ((value=row[i++])==null? null: ((String)value));
+			String display = ((value=row[i++])==null? null: ((String)value));
+			String docTypeName = ((value=row[i++])==null? null: ((String)value));
+			String caseno = ((value=row[i++])==null? null: ((String)value));
+			Long processInstanceId = ((value=row[i++])==null? null: ((Number)value).longValue());
+			
+			Notification notification = new Notification();
+			if(approveraction!=null)
+			notification.setApproverAction(ApproverAction.valueOf(approveraction));
+			notification.setCreated(created);
+			notification.setCreatedBy(new HTUser(createdby, creatorfirstname, creatorlastname));
+			notification.setDocRefId(docrefid);
+			notification.setDocumentId(documentid);
+			notification.setDocumentType(new DocumentType(processInstanceId, docTypeName, display, ""));
+			notification.setDocumentTypeDesc(display);
+			notification.setFileId(fileid);
+			notification.setFileName(filename);
+			notification.setId(id);
+			notification.setNotificationType(NotificationType.valueOf(notificationtype));
+			notification.setOwner(new HTUser(owner, ownerfirstname, ownerlastname));
+			notification.setProcessInstanceId(processInstanceId);
+			notification.setRead(isread);
+			notification.setRefId(refid);
+			notification.setSubject(caseno);
+			notification.setTargetUserId(new HTUser(targetuserid, targetfirstname, targetlastname));
+			notifications.add(notification);
+		}
+		
+		return notifications;
 	}
 
 	public void markRead(Long id, boolean isRead) {
@@ -65,19 +157,33 @@ public class NotificationDaoImpl {
 	/**
 	 * 
 	 * @param userId
+	 * @param userId 
 	 * @return count
 	 */
-	public Integer getAlertCount(String userId) {
+	public Integer getAlertCount(String processRefId, String userId) {
 		
-		Long count = (Long)em.createQuery("select count(n) from NotificationModel n where " +
-				"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType))  " +
-				"and n.isRead=:isRead and n.created>:thirtyDays")
-				.setParameter("userId", userId)
-				.setParameter("notificationType", NotificationType.TASKDELEGATED)
-				.setParameter("isRead",false)
-				.setParameter("thirtyDays", DateUtils.addDays(new Date(), -30))
-				.getSingleResult();
+		String hql = "select count(n) from localnotification n ";
+		if(processRefId!=null){
+			hql = hql+ " inner join documentjson d on (d.refId=n.docRefId) "
+					+ "inner join addoctype t on (t.refId=d.docTypeRefId) "
+					+ "inner join processdefmodel p on (p.id=t.processDefId) ";
+		}
 		
+		hql = hql+" where " +  
+		(processRefId==null? "":" p.refId=:processRefId and ")+
+		"(n.targetUserId=:userId or (n.createdBy=:userId and n.notificationType=:notificationType))  " +
+		"and n.isRead=:isRead and n.created>:thirtyDays";
+		
+		Query query = em.createNativeQuery(hql)
+		.setParameter("userId", userId)
+		.setParameter("notificationType", NotificationType.TASKDELEGATED.name())
+		.setParameter("isRead",false)
+		.setParameter("thirtyDays", DateUtils.addDays(new Date(), -30));
+		if(processRefId!=null){
+			query.setParameter("processRefId", processRefId);
+		}
+		
+		Number count = getSingleResultOrNull(query);
 		return count.intValue();
 	}
 

@@ -23,7 +23,7 @@ public class GetNotificationsActionHandler extends
 	public void execute(GetNotificationsAction action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-		List<Notification> notifications = NotificationDaoHelper.getAllNotifications(action.getUserId());
+		List<Notification> notifications = NotificationDaoHelper.getAllNotifications(action.getProcessRefId(),action.getUserId());
 		
 		GetNotificationsActionResult result = (GetNotificationsActionResult)actionResult;
 		result.setNotifications((ArrayList<Notification>) notifications);

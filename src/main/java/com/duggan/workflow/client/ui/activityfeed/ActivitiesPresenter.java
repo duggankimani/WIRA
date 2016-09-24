@@ -11,6 +11,7 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.activityfeed.components.CommentActivity;
 import com.duggan.workflow.client.ui.activityfeed.components.TaskActivity;
+import com.duggan.workflow.client.ui.events.AlertLoadEvent;
 import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
@@ -25,10 +26,12 @@ import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
+import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
+import com.duggan.workflow.shared.responses.GetAlertCountResult;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
@@ -67,6 +70,10 @@ public class ActivitiesPresenter
 		void setProcess(ProcessDef process);
 
 		void setTaskList(ArrayList<Doc> tasks);
+
+		void setHasActivities(boolean b);
+
+		void bindTaskCounts(HashMap<TaskType, Integer> counts);
 	}
 
 	@ProxyCodeSplit
@@ -120,12 +127,16 @@ public class ActivitiesPresenter
 	public void loadActivities(String processRefId) {
 		MultiRequestAction requests = new MultiRequestAction();
 
+		requests.addRequest(new GetAlertCount(processRefId));
 		requests.addRequest(new GetProcessRequest(processRefId));
 		GetTaskList recentTasks = new GetTaskList(AppContext.getUserId(),
-				TaskType.DRAFT);
-		recentTasks.setLength(50);
+				TaskType.INBOX);
+		recentTasks.setLength(5);
 		requests.addRequest(recentTasks);
-		requests.addRequest(new GetActivitiesRequest(null));
+		
+		GetActivitiesRequest getActivities = new GetActivitiesRequest();
+		getActivities.setProcessRefId(processRefId);
+		requests.addRequest(getActivities);
 
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(requests,
@@ -133,7 +144,10 @@ public class ActivitiesPresenter
 
 					public void processResult(MultiRequestActionResult results) {
 						int i = 0;
-
+						GetAlertCountResult getAlert = (GetAlertCountResult) results
+								.get(i++);
+						bindTaskCounts(getAlert.getCounts());
+						
 						GetProcessResponse getProcess = (GetProcessResponse) results
 								.get(i++);
 						ProcessDef process = getProcess.getProcessDef();
@@ -152,6 +166,10 @@ public class ActivitiesPresenter
 				});
 
 	}
+	
+	protected void bindTaskCounts(HashMap<TaskType, Integer> counts) {
+		getView().bindTaskCounts(counts);
+	}
 
 	protected void bindProcess(ProcessDef process) {
 		getView().setProcess(process);
@@ -164,6 +182,7 @@ public class ActivitiesPresenter
 
 		HashMap<Activity, ArrayList<Activity>> activitiesMap = response
 				.getActivityMap();
+		getView().setHasActivities(!activitiesMap.isEmpty());
 		Set<Activity> keyset = activitiesMap.keySet();
 		ArrayList<Activity> activities = new ArrayList<Activity>();
 
@@ -228,4 +247,5 @@ public class ActivitiesPresenter
 
 	}
 
+	
 }

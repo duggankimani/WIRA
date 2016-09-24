@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent.AdminPageLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
@@ -48,11 +49,9 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.wira.commons.client.security.CurrentUser;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.Version;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class HeaderPresenter extends
 		PresenterWidget<HeaderPresenter.IHeaderView> implements

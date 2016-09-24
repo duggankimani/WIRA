@@ -1,6 +1,7 @@
 package com.duggan.workflow.test;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -31,6 +32,17 @@ public class TestNotificationDao {
 	}
 	
 	@Test
+	public void loadNotifications(){
+		String processRefId = "2Py6AodmYZJjDC7M";
+		String userId="Administrator";
+		DB.getNotificationDao().getAllNotifications(processRefId, userId);
+		
+		List<Comment> comments = DB.getCommentDao().getAllComments(processRefId, userId);
+		System.out.println("Comments size: "+comments.size());
+		assert !comments.isEmpty();
+	}
+	
+	@Ignore
 	public void createComment(){
 		Comment comment = new Comment();
 		comment.setComment("Testing");
@@ -62,7 +74,7 @@ public class TestNotificationDao {
 		NotificationDaoHelper.delete(notification.getId());		
 		DB.commitTransaction();
 		
-		Assert.assertTrue(NotificationDaoHelper.getAllNotifications("mariano").isEmpty());
+		Assert.assertTrue(NotificationDaoHelper.getAllNotifications(null,"mariano").isEmpty());
 	}
 	
 	@After
