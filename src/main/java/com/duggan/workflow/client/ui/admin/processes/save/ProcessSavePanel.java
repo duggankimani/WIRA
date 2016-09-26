@@ -232,10 +232,12 @@ public class ProcessSavePanel extends Composite {
 		}
 		
 		if(processDef.getIconStyle()!=null){
+			txtIconStyle.setValue(processDef.getIconStyle());
 			cardProcess.setIconStyle(processDef.getIconStyle());
 		}
 		
 		if(processDef.getBackgroundColor()!=null){
+			txtColor.setValue(processDef.getBackgroundColor());
 			cardProcess.setBackGroundColor(processDef.getBackgroundColor());
 		}
 

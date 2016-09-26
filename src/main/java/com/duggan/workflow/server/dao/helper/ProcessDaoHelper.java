@@ -174,14 +174,6 @@ public class ProcessDaoHelper {
 		def.setRefId(model.getRefId());
 
 		if (isDetailed) {
-			def.setDocTypes(getDocTypes(model.getDocumentTypes()));
-
-			for (ADDocType type : model.getDocumentTypes()) {
-				def.setCategory(get(type.getCategory()));
-			}
-		}
-
-		if (isDetailed) {
 			// Process Access
 			UserDaoHelper helper = new UserDaoHelper();
 			Collection<User> users = model.getUsers();
@@ -203,38 +195,14 @@ public class ProcessDaoHelper {
 					model.getProcessId());
 			def.setStatus(running ? Status.RUNNING : Status.INACTIVE);
 
-			List<LocalAttachment> attachments = DB.getAttachmentDao()
-					.getAttachmentsForProcessDef(model);
-
-			// LocalAttachment attachment = (attachments == null ||
-			// attachments.size() == 0) ? null
-			// : attachments.get(0);
-
-			if (attachments != null) {
-				for (LocalAttachment attach : attachments) {
-					def.addFile(AttachmentDaoHelper.get(attach));
-				}
-				// def.setFileName(attachment.getName());
-				// def.setFileId(attachment.getId());
-			}
-
-			List<LocalAttachment> image = DB.getAttachmentDao()
-					.getAttachmentsForProcessDef(model, true);
-
-			if (image != null && !image.isEmpty()) {
-				def.setImageId(image.get(0).getId());
-
-				def.setImageName(image.get(0).getName());
-			}
-
 			ArrayList<DocumentType> docTypes = new ArrayList<>();
-
 			Collection<ADDocType> docModels = model.getDocumentTypes();
 
 			for (ADDocType doc : docModels) {
 				docTypes.add(getType(doc));
 				def.setBackgroundColor(doc.getBackgroundColor());
 				def.setIconStyle(doc.getIconStyle());
+				def.setCategory(get(doc.getCategory()));
 			}
 			def.setDocTypes(docTypes);
 		}
@@ -242,6 +210,27 @@ public class ProcessDaoHelper {
 		def.setDescription(model.getDescription());
 		def.setLastModified(model.getUpdated() == null ? model.getCreated()
 				: model.getUpdated());
+		
+
+		//?? Review below attachment loading mechanism - Duggan 26/09/2016
+		List<LocalAttachment> attachments = DB.getAttachmentDao()
+				.getAttachmentsForProcessDef(model);
+
+		if (attachments != null) {
+			for (LocalAttachment attach : attachments) {
+				def.addFile(AttachmentDaoHelper.get(attach));
+			}
+		}
+
+		List<LocalAttachment> image = DB.getAttachmentDao()
+				.getAttachmentsForProcessDef(model, true);
+
+		if (image != null && !image.isEmpty()) {
+			def.setImageId(image.get(0).getId());
+
+			def.setImageName(image.get(0).getName());
+		}
+
 		return def;
 	}
 
