@@ -13,7 +13,7 @@
 		<div class="card-action">
 			<a href="#" ui:field="aProcess">
 				<span class="ng-binding ellipsis" ui:field="spnName"></span>
-				<span class="label label-important">6 new</span>
+				<span ui:field="spnCount" class="label label-important"></span>
 			</a>
 			<a class="pull-right" ui:field="aAdd">
 				<i class="icon-plus icon-large new"></i>

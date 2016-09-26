@@ -136,6 +136,8 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		Document doc = new Document();
 		doc.setType(event.getDocType());
 		
+		final String processRefId = event.getProcessRefId();
+		
 		CreateDocumentRequest request = null;
 		
 		if(event.getProcessRefId()!=null){
@@ -147,11 +149,14 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		requestHelper.execute(request, new TaskServiceCallback<CreateDocumentResult>() {
 			@Override
 			public void processResult(CreateDocumentResult aResponse) {
-				PlaceRequest request = new PlaceRequest.Builder().nameToken(NameTokens.search)
+				PlaceRequest.Builder request = new PlaceRequest.Builder().nameToken(NameTokens.search)
 						.with("docRefId", aResponse.getDocument().getRefId())
-						.with("mode", "edit")
-						.build();
-				placeManager.revealPlace(request);
+						.with("mode", "edit");
+				if(processRefId!=null){
+					request.with("processRefId",processRefId);
+				}
+				
+				placeManager.revealPlace(request.build());
 			}
 		});
 	}

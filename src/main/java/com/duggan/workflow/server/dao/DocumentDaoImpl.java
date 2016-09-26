@@ -28,14 +28,18 @@ import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.HTStatus;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.Value;
+import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
 
 /**
@@ -665,43 +669,123 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return type;
 	}
 
-	public List<ADDocType> getDocumentTypes() {
+	public List<DocumentType> getDocumentTypes() {
 
 		return getDocumentTypes(SessionHelper.getCurrentUser().getUserId());
 	}
-
-	public List<ADDocType> getDocumentTypes(String userId) {
-
-		User user = DB.getUserGroupDao().getUser(userId);
-		List<Long> groupIds = new ArrayList<>();
-		for (Group group : user.getGroups()) {
-			groupIds.add(group.getId());
+	
+	public List<DocumentType> getDocumentTypes(String userId){
+		String hql="select doctype.id,doctype.refid,doctype.name,doctype.display, "+
+		"doctype.backgroundColor,doctype.iconStyle,  "+
+		"p.refid processRefId,  "+
+		"c.name categoryname, "+
+		"c.refid categoryrefid,  "+
+		"p.processId,  "+
+		"counts.inboxcounts "+ 
+		"from addoctype doctype "+  
+		"inner join  "+
+		"(select distinct(pdm.id), pdm.refid,pdm.processid,pdm.isactive from processdefmodel pdm "+ 
+		"inner join "+
+		"(select processaccess.uid,processaccess.gid, processaccess.processid from ( "+
+		"select null uid,g.id gid,pga.processid from process_groupaccess pga  "+
+		"inner join bgroup g on (g.id=pga.groupid)  "+
+		"join usergroup ug on (g.id=ug.groupid)  "+
+		"inner join buser u on(u.id=ug.userid)  "+
+		"where u.userid=:userId "+
+		"union "+
+		"select u.id uid, null gid, pua.processid from process_useraccess pua "+ 
+		"inner join buser u on (u.id=pua.userid)  "+
+		"where u.userid=:userId) as processaccess) as paccess "+
+		"on (paccess.processid=pdm.id) "+
+		"where pdm.isActive=1) as p "+
+		"on (p.id=doctype.processdefid) "+
+		"left join adprocesscategory c on (c.id=doctype.categoryid) "+ 
+		"left join   "+
+		"(select count(*) inboxcounts,doctype.refid "+ 
+		"from task t   "+
+		"inner join documentjson d1 on (d1.processinstanceid=t.processinstanceid) "+  
+		"inner join addoctype doctype on (d1.doctyperefid=doctype.refid)  "+
+		"inner join peopleassignments_potowners potowners on   "+
+		"(potowners.task_id=t.id and   "+
+		"(potowners.entity_id=:userId or potowners.entity_id in "+  
+		"(select g.name from bgroup g   "+
+		"inner join usergroup ug on ug.groupid=g.id "+  
+		"inner join buser u on u.id=ug.userid where u.userid=:userId))) "+  
+		"where t.status in ('Created','Ready','Reserved','InProgress')   "+
+		"group by doctype.refid) as counts on doctype.refid=counts.refId"; 
+		
+		List<Object[]> results = getResultList(em.createNativeQuery(hql).setParameter("userId", userId));
+		
+		List<DocumentType> types = new ArrayList<DocumentType>();
+		
+		for(Object[] row: results){
+			Object value = null;
+			int i=0;
+			long id = ((value=row[i++])==null? 0l: ((Number)value).longValue());
+			String refid = ((value=row[i++])==null? null: ((String)value));
+			String name = ((value=row[i++])==null? null: ((String)value));
+			String display = ((value=row[i++])==null? null: ((String)value));
+			String backgroundColor = ((value=row[i++])==null? null: ((String)value));
+			String iconStyle = ((value=row[i++])==null? null: ((String)value));
+			String processRefId = ((value=row[i++])==null? null: ((String)value));
+			String categoryname = ((value=row[i++])==null? null: ((String)value));
+			String categoryrefid = ((value=row[i++])==null? null: ((String)value));
+			String processId = ((value=row[i++])==null? null: ((String)value));
+			int inboxCount = ((value=row[i++])==null? 0: ((Number)value).intValue());
+			
+			DocumentType type = new DocumentType(id, name, display, null);
+			type.setRefId(refid);
+			type.setIconStyle(iconStyle);
+			type.setBackgroundColor(backgroundColor);
+			type.setProcessRefId(processRefId);
+			type.setProcessId(processId);
+			type.setCategory(categoryname);
+			type.setId(id);
+			type.setInboxCount(inboxCount);
+			
+			types.add(type);
+			
 		}
+		
+		return types;
 
-		List<ADDocType> docTypes = getResultList(em
-				.createQuery(
-						"SELECT distinct "
-								+ "new com.duggan.workflow.server.dao.model.ADDocType("
-								+ "t.refId," + "t.name," + "t.display,"
-								+ "t.backgroundColor,"
-								+ "t.iconStyle,"
-								+ "t.processDef.refId,"
-								+ "t.category) " + "FROM "
-								+ "ADDocType t "
-								+ "inner join t.processDef def "
-								+ "left join t.processDef.users u "
-								+ "left join t.processDef.groups g "
-								+ "where (u.userId=:userId "
-								+ "or (g.id in (:groupIds) "
-								+ "and g in elements (t.processDef.groups))) "
-								+ "and t.isActive=1 "
-								+ "and def.isActive=1 "
-								+ "order by t.display")
-				.setParameter("userId", userId)
-				.setParameter("groupIds", groupIds));
-
-		return docTypes;
 	}
+
+//	public List<ADDocType> getDocumentTypes(String userId) {
+//
+//		User user = DB.getUserGroupDao().getUser(userId);
+//		List<Long> groupIds = new ArrayList<>();
+//		for (Group group : user.getGroups()) {
+//			groupIds.add(group.getId());
+//		}
+//
+//		List<ADDocType> docTypes = getResultList(em
+//				.createQuery(
+//						"SELECT distinct "
+//								+ "new com.duggan.workflow.server.dao.model.ADDocType("
+//								+ "t.refId," 
+//								+ "t.name," 
+//								+ "t.display,"
+//								+ "t.backgroundColor,"
+//								+ "t.iconStyle,"
+//								+ "t.processDef.refId,"
+//								+ "t.category) " 
+//								+ "FROM "
+//								+ "ADDocType t "
+//								+ "inner join t.processDef def "
+//								+ "left join t.processDef.users u "
+//								+ "left join t.processDef.groups g "
+//								+ "where (u.userId=:userId "
+//								+ "or (g.id in (:groupIds) "
+//								+ "and g in elements (t.processDef.groups))) "
+//								+ "and t.isActive=1 "
+//								+ "and def.isActive=1 "
+//								+ "order by t.display")
+//				.setParameter("userId", userId)
+//				.setParameter("groupIds", groupIds));
+//
+//		return docTypes;
+//	}
 
 	/**
 	 * Return form ID for a document type - The document type to form id is
@@ -1053,4 +1137,118 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return getDocJson(json, loadDetails);
 	}
 
+	public List<Doc> getRecentTasks(String processId, String userId, int offset,int limit){
+		String hql="select * from( "+
+		"select d.id, d.refId docRefId,d.createdby, d.caseno,'Fill in request form' taskName, "+
+		"d.processinstanceid,d.created createdon,null completedon,d.status status,false isTask, "+
+		"doctype.refid doctyperef,doctype.display "+
+		"from documentjson d  "+
+		"inner join addoctype doctype on (d.doctyperefid=doctype.refid) "+
+		"where "+
+		"d.createdby=:userId  "+
+		"and (:processId='' or d.processId=:processId)"+
+		"union all "+
+		"select t.id, d1.refId docRefId,t.actualowner_id,d1.caseno,i.text taskName, "+
+		"t.processinstanceid,t.createdon,t.completedon,t.status, true isTask, "+
+		"doctype.refid doctyperef,doctype.display   "+
+		"from task t "+
+		"inner join i18ntext i on i.task_names_id=t.id "+ 
+		"inner join documentjson d1 on (d1.processinstanceid=t.processinstanceid) "+ 
+		"inner join addoctype doctype on (d1.doctyperefid=doctype.refid) "+
+		"inner join peopleassignments_potowners potowners on  "+
+		"(potowners.task_id=t.id and  "+
+		"(potowners.entity_id=:userId or potowners.entity_id in "+ 
+		"(select g.name from bgroup g  "+
+		"inner join usergroup ug on ug.groupid=g.id "+ 
+		"inner join buser u on u.id=ug.userid where u.userid=:userId))) "+
+		"where "+
+		"(:processId='' or d1.processId=:processId) "+
+		") as docstasks order by  "+
+		"(case when completedon is null then "+
+		"createdon  "+
+		"else  "+
+		"completedon "+ 
+		"end) desc"; 
+		
+		List<Doc> tasks = new ArrayList<Doc>();
+		
+		List<Object[]> results = getResultList(
+				em.createNativeQuery(hql)
+				.setParameter("userId", userId)
+				.setParameter("processId", processId==null? "": processId),offset,limit);
+		
+		for(Object[] row: results){
+			Object value = null;
+			int i=0;
+			Long id = ((value=row[i++])==null? null: ((Number)value).longValue());
+			String docRefId = ((value=row[i++])==null? null: ((String)value));
+			String createdby = ((value=row[i++])==null? null: ((String)value));
+			String caseno = ((value=row[i++])==null? null: ((String)value));
+			String taskName = ((value=row[i++])==null? null: ((String)value));
+			Long processInstanceId = ((value=row[i++])==null? null: ((Number)value).longValue());
+			Date createdon = ((value=row[i++])==null? null: ((Date)value));
+			Date completedon = ((value=row[i++])==null? null: ((Date)value));
+			String status = ((value=row[i++])==null? null: ((String)value).toUpperCase());
+			Boolean isTask = ((value=row[i++])==null? null: ((Boolean)value));
+			String doctyperef = ((value=row[i++])==null? null: ((String)value));
+			String doctypeDisplay = ((value=row[i++])==null? null: ((String)value));
+			
+			if(isTask){
+				HTSummary summary = new HTSummary();
+				summary.setRefId(docRefId);
+				summary.setId(id);
+				summary.setCompletedOn(completedon);
+				summary.setCreated(createdon);
+				summary.setCaseNo(caseno);
+//				summary.setCurrentTaskId(currentTaskId);
+//				summary.setCurrentTaskName(currentTaskName);
+//				summary.setDelegate(delegate);
+				summary.setDocumentDate(createdon);
+//				summary.setEndDateDue(endDateDue);
+				summary.setOwner(new HTUser(createdby));
+//				summary.setPotentialOwners(potentialOwners);
+				summary.setProcessInstanceId(processInstanceId);
+				summary.setProcessName(doctypeDisplay);
+				summary.setStatus(HTStatus.valueOf(status.toUpperCase()));
+				summary.setTaskName(taskName);
+				String displayName = JBPMHelper.get().getDisplayName(id);
+				if(displayName!=null){
+					summary.setName(displayName);
+				}
+				tasks.add(summary);
+			}else{
+				Document doc = new Document();
+				doc.setCaseNo(caseno);
+				doc.setCreated(createdon);
+//				doc.setCurrentTaskId(currentTaskId);
+//				doc.setCurrentTaskName(currentTaskName);
+//				doc.setDateDue(dateDue);
+//				doc.setDateSubmitted(dateSubmitted);
+//				doc.setDescription(description);
+//				doc.setHasAttachment(hasAttachment);
+				doc.setId(id);
+//				doc.setNodeName(nodeName);
+				doc.setOwner(new HTUser(createdby));
+				doc.setProcessId(processId);
+				DocumentType type = new DocumentType();
+				type.setRefId(doctyperef);
+				type.setProcessId(processId);
+				type.setDisplayName(doctypeDisplay);
+				doc.setType(type);
+				doc.setTaskActualOwner(new HTUser(createdby));
+				doc.setStatus(DocStatus.valueOf(status));
+				doc.setRefId(docRefId);
+				doc.setCurrentTaskName(taskName);
+				doc.setNodeName(taskName);
+//				doc.setProcessStatus(HTStatus.valueOf(arg0));
+				doc.setProcessName(doctypeDisplay);
+				doc.setProcessInstanceId(processInstanceId);
+				tasks.add(doc);
+			}
+				
+		}
+		
+		
+		return tasks;
+	}
 }

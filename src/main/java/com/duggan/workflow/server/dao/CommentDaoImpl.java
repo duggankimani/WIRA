@@ -72,12 +72,14 @@ public class CommentDaoImpl extends BaseDaoImpl{
 				+ "inner join buser u on (c.createdBy=u.userId) "
 				+ "left join buser u1 on (c.userid=u1.userid) "
 				+ "where c.userId=:userId "
-				+ "and (:processRefId='' or :processRefId=p.refId)"
+				+ "and (:processRefId='' or :processRefId=p.refId) "
+				+ "and c.created>:created "
 				+ "order by c.created desc";
 		
 		List<Object[]> result = getResultList(em.createNativeQuery(query)
 				.setParameter("userId", userId)
 				.setParameter("processRefId", processRefId==null? "": processRefId)
+				.setParameter("created", DateUtils.addDays(new Date(), -30))
 				);
 		
 		List<Comment> comments = new ArrayList<Comment>();

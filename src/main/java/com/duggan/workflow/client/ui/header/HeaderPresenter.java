@@ -133,7 +133,7 @@ public class HeaderPresenter extends
 
 		@Override
 		public void run() {
-			loadAlertCount();
+			//loadAlertCount();
 		}
 	};
 

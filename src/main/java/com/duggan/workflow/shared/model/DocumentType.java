@@ -15,6 +15,8 @@ public class DocumentType extends IsProcessDisplay{
 	private String className;
 	private String processId;
 	private String processRefId;
+	private int inboxCount;
+	
 	public String getProcessRefId() {
 		return processRefId;
 	}
@@ -103,6 +105,14 @@ public class DocumentType extends IsProcessDisplay{
 
 	public void setIconStyle(String iconStyle) {
 		this.iconStyle = iconStyle;
+	}
+
+	public int getInboxCount() {
+		return inboxCount;
+	}
+
+	public void setInboxCount(int inboxCount) {
+		this.inboxCount = inboxCount;
 	}
 
 }

@@ -24,7 +24,7 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 	public interface ISearchView extends com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView{}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.search})
+	@NameToken({NameTokens.search,NameTokens.searchTask})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface ISearchProxy extends TabContentProxyPlace<SearchPresenter> {
 	}

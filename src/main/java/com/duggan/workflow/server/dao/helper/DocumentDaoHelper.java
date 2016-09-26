@@ -4,7 +4,6 @@ import static com.duggan.workflow.server.dao.helper.FormDaoHelper.getValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +17,6 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
-import com.duggan.workflow.server.dao.model.ADFormJson;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DetailModel;
@@ -43,7 +41,6 @@ import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-import com.duggan.workflow.shared.model.form.Field;
 
 /**
  * This class is Dao Helper for persisting all document related entities.
@@ -636,19 +633,23 @@ public class DocumentDaoHelper {
 	}
 
 	public static List<DocumentType> getDocumentTypes(String userId) {
-		DocumentDaoImpl dao = DB.getDocumentDao();
-
-		List<ADDocType> adtypes = dao.getDocumentTypes(userId);
-
-		List<DocumentType> types = new ArrayList<>();
-
-		if (adtypes != null)
-			for (ADDocType adtype : adtypes) {
-				types.add(getType(adtype, true));
-			}
-
-		return types;
+		return DB.getDocumentDao().getDocumentTypes(userId);
 	}
+	
+//	public static List<DocumentType> getDocumentTypes(String userId) {
+//		DocumentDaoImpl dao = DB.getDocumentDao();
+//
+//		List<ADDocType> adtypes = dao.getDocumentTypes(userId);
+//
+//		List<DocumentType> types = new ArrayList<>();
+//
+//		if (adtypes != null)
+//			for (ADDocType adtype : adtypes) {
+//				types.add(getType(adtype, true));
+//			}
+//
+//		return types;
+//	}
 	
 	public static DocumentType getDocumentTypeByProcessRef(String processRefId){
 		ADDocType adtype = DB.getDashboardDao().getDocumentTypeByProcessRef(processRefId);
@@ -824,6 +825,12 @@ public class DocumentDaoHelper {
 
 		return DB.getDocumentDao().getAllDocumentsJson(offset, length,
 				loadDetails, status);
+	}
+
+	public static List<Doc> getRecentTasks(String processRefId, String userId,
+			int offset,int length) {
+		String processId = DB.getProcessDao().getProcessId(processRefId);
+		return DB.getDocumentDao().getRecentTasks(processId, userId, offset,length);
 	}
 
 }

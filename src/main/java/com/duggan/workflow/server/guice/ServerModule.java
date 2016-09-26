@@ -56,6 +56,7 @@ import com.duggan.workflow.server.actionhandlers.GetProcessLogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessStatusRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessesRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetRecentTasksActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetSettingsRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskCompletionDataActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetTaskListActionHandler;
@@ -149,6 +150,7 @@ import com.duggan.workflow.shared.requests.GetProcessLogRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.requests.GetProcessesRequest;
+import com.duggan.workflow.shared.requests.GetRecentTasksRequest;
 import com.duggan.workflow.shared.requests.GetSettingsRequest;
 import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
@@ -184,6 +186,7 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
+import com.duggan.workflow.shared.responses.GetRecentTasksResult;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.wira.commons.shared.request.GetUserRequest;
@@ -458,5 +461,7 @@ public class ServerModule extends HandlerModule {
 		bindHandler(ResetAccountRequest.class, ResetAccountRequestHandler.class);
 		
 		bindHandler(ActivateAccountRequest.class, ActivateAccountActionHandler.class);
+		
+		bindHandler(GetRecentTasksRequest.class, GetRecentTasksActionHandler.class, SessionValidator.class);
 	}
 }

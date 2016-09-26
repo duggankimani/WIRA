@@ -123,7 +123,7 @@
 						<div class="span12">
 							<ul class="list-inline row-fluid">
 								<li class="span3">
-									<a href="/dashboard/?tab=projects">
+									<a ui:field="aTotal" href="#">
 										<div class="stat-outer-wrapper">
 											<div class="stat-wrapper">
 												<div class="icon-wrapper">

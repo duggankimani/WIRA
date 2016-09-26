@@ -24,6 +24,8 @@ public class Card extends Composite {
 	@UiField Element cardImage;
 	@UiField Element cardImageIcon;
 	@UiField AnchorElement aNavigate;
+	
+	@UiField Element spnCount;
 
 	String iconStyle="icon-pencil";
 	String backgroundColor = "#0096B3";
@@ -33,31 +35,6 @@ public class Card extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		setIconStyle(iconStyle);
 		setBackGroundColor(backgroundColor);
-		
-		/**
-		 * These listeners dont work given that this widget/ widget's parent 
-		 * is added to the DOM through parentElement.add(widget.getElement) and
-		 * not as a widget
-		 */
-		/*aAdd.addMouseOverHandler(new MouseOverHandler() {
-			
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				Window.alert("Mouse over!!");
-			}
-		});
-		
-		aAdd.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Window.alert("Testing click!");
-				if(docType!=null){
-					AppContext.getEventBus().fireEvent(new CreateDocumentEvent(docType));
-				}
-			}
-		});*/
-		
 		registerEvents(aAdd);
 	}
 
@@ -78,6 +55,12 @@ public class Card extends Composite {
 			aNavigate.setHref("#/activities/"+type.getProcessRefId());
 		}
 
+		if(type.getInboxCount()==0){
+			spnCount.addClassName("hide");
+		}else{
+			spnCount.setInnerText(""+type.getInboxCount()+" new");
+			spnCount.removeClassName("hide");
+		}
 	}
 	
 	public void setDisplay(String name){

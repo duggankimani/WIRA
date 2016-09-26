@@ -62,10 +62,13 @@ public class ActivitiesView extends ViewImpl implements
 
 	@UiField
 	ComplexPanel panelActivity;
-	@UiField Element panelActivity_Empty;
-	@UiField Element divRecentTasks;
-	@UiField Element divRecentTasks_Empty;
-	
+	@UiField
+	Element panelActivity_Empty;
+	@UiField
+	Element divRecentTasks;
+	@UiField
+	Element divRecentTasks_Empty;
+
 	@UiField
 	Anchor aCreate;
 	@UiField
@@ -91,29 +94,41 @@ public class ActivitiesView extends ViewImpl implements
 	DivElement imgReceive;
 	@UiField
 	DivElement imgReview;
-	
-	@UiField Anchor aNew;
-	@UiField Element processName;
-	
-	@UiField AnchorElement aInbox;
-	@UiField AnchorElement aDone;
-	
-	@UiField FocusPanel parentPanel;
-	
-	@UiField FlexTable recentTasks;
-	
-	@UiField Element elTotal;
-	@UiField Element elDone;
-	@UiField Element elInbox;
-	
+
+	@UiField
+	Anchor aNew;
+	@UiField
+	Element processName;
+
+	@UiField
+	AnchorElement aInbox;
+	@UiField
+	AnchorElement aDone;
+	@UiField
+	AnchorElement aTotal;
+
+	@UiField
+	FocusPanel parentPanel;
+
+	@UiField
+	FlexTable recentTasks;
+
+	@UiField
+	Element elTotal;
+	@UiField
+	Element elDone;
+	@UiField
+	Element elInbox;
+
 	protected boolean hasElapsed = false;
+
+	private ProcessDef process;
 
 	@Inject
 	public ActivitiesView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 
 	}
-	
 
 	@Override
 	public Widget asWidget() {
@@ -124,7 +139,6 @@ public class ActivitiesView extends ViewImpl implements
 	public HasWidgets getPanelActivity() {
 		return panelActivity;
 	}
-
 
 	@Override
 	public void bind() {
@@ -180,8 +194,9 @@ public class ActivitiesView extends ViewImpl implements
 						int browserWidth = Window.getClientWidth();
 						int popovermaxwidth = (int) (0.4 * browserWidth);
 						position[1] = imgReceive.getAbsoluteLeft()
-									  - popovermaxwidth;
-						popUp1.getElement().getStyle().setWidth(popovermaxwidth-15, Unit.PX);
+								- popovermaxwidth;
+						popUp1.getElement().getStyle()
+								.setWidth(popovermaxwidth - 15, Unit.PX);
 
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showTask();
@@ -204,8 +219,9 @@ public class ActivitiesView extends ViewImpl implements
 						int browserWidth = Window.getClientWidth();
 						int popovermaxwidth = (int) (0.4 * browserWidth);
 						position[1] = imgReview.getAbsoluteLeft()
-									  - popovermaxwidth;
-						popUp1.getElement().getStyle().setWidth(popovermaxwidth-20, Unit.PX);
+								- popovermaxwidth;
+						popUp1.getElement().getStyle()
+								.setWidth(popovermaxwidth - 20, Unit.PX);
 
 						AppManager.showCarouselPanel(popUp1, position, true);
 						popUp1.showReview();
@@ -226,8 +242,7 @@ public class ActivitiesView extends ViewImpl implements
 				}
 			}
 		});
-	
-		
+
 		aFollowUp.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
@@ -260,61 +275,56 @@ public class ActivitiesView extends ViewImpl implements
 			@Override
 			public void onClick(ClickEvent event) {
 				divTutorial.addClassName("hidden");
-				AppContext.setSessionValue(Definitions.SHOWWELCOMEWIDGET, "false");
+				AppContext.setSessionValue(Definitions.SHOWWELCOMEWIDGET,
+						"false");
 			}
 		});
-		
-		if(!AppContext.isShowWelcomeWiget()){
+
+		if (!AppContext.isShowWelcomeWiget()) {
 			divTutorial.addClassName("hidden");
 		}
 
 		// TODO: Remove this afterwards
 		// divTutorial.addClassName("hidden");
-		
-	}
 
+	}
 
 	@Override
 	public void createGroup(String label) {
 		HTMLPanel divLabel = new HTMLPanel("<hr/>");
 		divLabel.addStyleName("day_divider");
-		
+
 		HTMLPanel lbl = new HTMLPanel(label);
 		lbl.addStyleName("day_divider_label");
-		divLabel.add(lbl); 
-		
+		divLabel.add(lbl);
+
 		panelActivity.add(divLabel);
 	}
-	
-	public HasClickHandlers getNew(){
+
+	public HasClickHandlers getNew() {
 		return aNew;
 	}
 
 	@Override
 	public void setProcess(ProcessDef process) {
+		this.process = process;
 		processName.setInnerText(process.getDisplayName());
-		aInbox.setHref("#/inbox/mine/"+process.getRefId());
-		aDone.setHref("#/participated/"+process.getRefId());
+		aTotal.setHref("#/inbox/mine/" + process.getRefId());
+		aInbox.setHref("#/inbox/mine/" + process.getRefId());
+		aDone.setHref("#/participated/" + process.getRefId());
 	}
-
 
 	@Override
 	public void setTaskList(ArrayList<Doc> tasks) {
-		
+
 		setHasRecentTasks(!tasks.isEmpty());
-		
+
 		recentTasks.removeAllRows();
 		setHeaders(recentTasks);
-		
+
 		int i = recentTasks.getRowCount();
 
-		int count = 0;
 		for (Doc doc : tasks) {
-			if(count++>5){
-				//Print 5 only
-//				break;
-			}
-			
 			int j = 0;
 
 			Date dateToUse = doc.getSortDate();
@@ -324,7 +334,7 @@ public class ActivitiesView extends ViewImpl implements
 					.getOwner().getFullName();
 
 			Element spnSubject = DOM.createSpan();
-			spnSubject.setInnerText("Fill in request form");
+			spnSubject.setInnerText("Fill in Request Form");
 
 			Element spnAttach = DOM.createSpan();
 			spnAttach.addClassName("icon-paper-clip clip hidden");
@@ -343,9 +353,6 @@ public class ActivitiesView extends ViewImpl implements
 			Element spnDeadlines = DOM.createSpan();
 			spnDeadlines.addClassName("spnDate");
 
-			Element spnProcessName = DOM.createSpan();
-			spnProcessName.setInnerText(doc.getProcessName());
-
 			InlineLabel spnStatus = new InlineLabel();
 
 			boolean isCompleted = true;
@@ -356,11 +363,13 @@ public class ActivitiesView extends ViewImpl implements
 			spnDeadlines = setDeadlines(DateUtils.addDays(doc.getCreated(), 1),
 					isCompleted);
 
+			HTMLPanel taskStatus = new HTMLPanel("");
 			if (doc instanceof HTSummary) {
+				spnSubject.setInnerText("--Undefined--");
 				HTSummary summ = (HTSummary) doc;
 				HTStatus status = summ.getStatus();
 				spnStatus.setText(status.name());
-
+				
 				if (summ.getRefId() == null) {
 					spnSubject.getStyle().setColor("red");
 					spnSubject
@@ -372,13 +381,17 @@ public class ActivitiesView extends ViewImpl implements
 				dateToUse = summ.getCreated();
 				if (status.equals(HTStatus.COMPLETED)) {
 					spnDocIcon.addStyleName("icon-ok");
+					spnStatus.addStyleName("text-success");
 					spnDocIcon.setTitle("Completed Task");
 					dateToUse = summ.getCompletedOn();
 				} else if (status.equals(HTStatus.SUSPENDED)) {
 					spnDocIcon.addStyleName("icon-pause");
+					spnStatus.addStyleName("text-warning");
 					spnDocIcon.setTitle("Task Currently Suspended");
 				} else if (status.equals(HTStatus.INPROGRESS)) {
 					spnDocIcon.addStyleName("icon-forward");
+					spnStatus.addStyleName("text-info");
+					spnStatus.addStyleName("text-primary");
 					spnDocIcon.setTitle("Task Currently in Progress");
 				} else {
 					spnDocIcon.addStyleName("icon-play");
@@ -411,74 +424,56 @@ public class ActivitiesView extends ViewImpl implements
 				} else {
 					spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
 				}
+				
+				
 			}
 
 			// Description
 			String desc = doc.getCaseNo();
-			if (desc == null) {
-				desc = doc.get("subject") == null ? null : doc.get("subject")
-						.toString();
-			}
-			if (desc == null) {
-				desc = doc.get("caseNo") == null ? null : doc.get("caseNo")
-						.toString();
-			}
 
-			if (doc.getProcessStatus() == HTStatus.COMPLETED) {
-				taskActualOwner = "Completed";
-				spnDescription.getElement().setInnerHTML(
-						desc + " - <span style='color:green;'>"
-								+ taskActualOwner + "</span>");
-			} else {
-				// How far in the workflow is my request
-				if (doc.getTaskActualOwner() != null) {
+			// How far in the workflow is my request
+			if (doc.getTaskActualOwner() != null) {
 
-					// Delegations are also handled here
-					if (doc instanceof HTSummary) {
-						HTSummary summ = (HTSummary) doc;
-						if (summ.getDelegate() != null
-								&& summ.getDelegate().getDelegateTo() != null) {
-							taskActualOwner = "Delegated: "
-									+ summ.getTaskActualOwner().getFullName();
-						} else {
-							taskActualOwner = doc.getTaskActualOwner()
-									.getFullName();
-						}
+				// Delegations are also handled here
+				if (doc instanceof HTSummary) {
+					HTSummary summ = (HTSummary) doc;
+					if (summ.getDelegate() != null
+							&& summ.getDelegate().getDelegateTo() != null) {
+						taskActualOwner = "Delegated: "
+								+ summ.getTaskActualOwner().getFullName();
 					} else {
 						taskActualOwner = doc.getTaskActualOwner()
 								.getFullName();
 					}
-
 				} else {
-					if (doc.getPotentialOwners() != null)
-						taskActualOwner = doc.getPotentialOwners();
+					taskActualOwner = doc.getTaskActualOwner().getFullName();
 				}
 
-				if (doc.getProcessInstanceId() != null
-						&& (taskActualOwner == null || taskActualOwner
-								.isEmpty())) {
-					spnDescription
-							.getElement()
-							.setInnerHTML(
-									desc
-											+ " - <span style='color:#D74819;font-size:9pt;'>UnAssigned</span>");
-				} else if (doc.getProcessInstanceId() != null) {
+			} else {
+				if (doc.getPotentialOwners() != null)
+					taskActualOwner = doc.getPotentialOwners();
+			}
 
-					// Span Description
-					spnDescription
-							.getElement()
-							.setInnerHTML(
-									desc
-											+ " - <span style='color:#2C3539;font-size:9pt;'>"
-											+ taskActualOwner + "</span>");
-				} else {
-					spnDescription
-							.getElement()
-							.setInnerHTML(
-									desc
-											+ " - <span style='color:#2C3539;font-size:9pt;'>\'Draft\'</span>");
-				}
-			}// End of setting descriptions
+			if (doc.getProcessInstanceId() != null
+					&& (taskActualOwner == null || taskActualOwner.isEmpty())) {
+				spnDescription
+						.getElement()
+						.setInnerHTML(
+								desc
+										+ " - <span style='color:#D74819;font-size:9pt;'>UnAssigned</span>");
+			} else if (doc.getProcessInstanceId() != null) {
+
+				// Span Description
+				spnDescription.getElement().setInnerHTML(
+						desc + " - <span style='color:#2C3539;font-size:9pt;'>"
+								+ taskActualOwner + "</span>");
+			} else {
+				spnDescription
+						.getElement()
+						.setInnerHTML(
+								desc
+										+ " - <span style='color:#2C3539;font-size:9pt;'>\'Draft\'</span>");
+			}
 
 			Priority priority = Priority.get(doc.getPriority());
 			InlineLabel spnPriority = new InlineLabel();
@@ -497,9 +492,8 @@ public class ActivitiesView extends ViewImpl implements
 				break;
 			}
 
-			
 			// Several days ago
-			if(dateToUse!=null){
+			if (dateToUse != null) {
 				if (CalendarUtil.getDaysBetween(dateToUse, new Date()) >= 1) {
 					spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
 				} else {
@@ -508,8 +502,15 @@ public class ActivitiesView extends ViewImpl implements
 			}
 
 			ActionLink link = new ActionLink(doc);
-			link.setHref("#/search/"+doc.getRefId());
-			if (doc.getCaseNo() != null){
+			String href ="#/search/" + doc.getRefId();
+			if(doc instanceof HTSummary){
+				href = href+"/"+((HTSummary)doc).getId();
+			}
+			if(process!=null){
+				href = href.concat("?processRefId="+process.getRefId());
+			}
+			link.setHref(href);
+			if (doc.getCaseNo() != null) {
 				link.setText("#" + (doc.getCaseNo().replaceAll("Case-", "")));
 			}
 
@@ -517,71 +518,35 @@ public class ActivitiesView extends ViewImpl implements
 			casePanel.add(link);
 			recentTasks.setWidget(i, j++, casePanel);
 
-//			Process Name
-//			HTMLPanel subject = new HTMLPanel("");
-//			subject.getElement().appendChild(spnProcessName);
-//			recentTasks.setWidget(i, j++, subject);
-
 			HTMLPanel task = new HTMLPanel("");
 			task.getElement().appendChild(spnSubject);
 			recentTasks.setWidget(i, j++, task);
 			
-			//Submitted By
-//			InlineLabel submitter = new InlineLabel(doc.getOwner()==null? "": doc.getOwner().getFullName());
-//			recentTasks.setWidget(i, j++, submitter);
+			taskStatus.add(spnStatus);
+			recentTasks.setWidget(i, j++, taskStatus);
 
-			//Current Task
-//			String currentTask = doc.getCurrentTaskName()==null? "": doc.getCurrentTaskName();
-//			recentTasks.setWidget(i, j++, new HTMLPanel(currentTask));
-			//Current Owner 
-//			recentTasks.setWidget(i, j++, new HTMLPanel(taskActualOwner));
-			// recentTasks.getFlexCellFormatter().setWidth(i, (j - 1), "150px");
-//			recentTasks.setWidget(i, j++, spnTime);
-//			HTMLPanel div = new HTMLPanel("");
-//			div.getElement().appendChild(spnDeadlines);
-//			recentTasks.setWidget(i, j++, div);
-
-			HTMLPanel status = new HTMLPanel("");
-			// status.add(spnStatus);
-			switch (doc.getProcessStatus()) {
-			case COMPLETED:
-				status.addStyleName("text-success");
-				break;
-			case INPROGRESS:
-				status.addStyleName("text-info");
-				break;
-			
-			default:
-				break;
-			}
-			
-			status.add(new InlineLabel(doc.getProcessStatus().name()));
-			recentTasks.setWidget(i, j++, status);
-			
-			//Notes
+			// Notes
 			recentTasks.setWidget(i, j++, new HTMLPanel(""));
 			++i;
 		}
 
 	}
 
-
 	private void setHasRecentTasks(boolean hasRecentTasks) {
-		if(hasRecentTasks){
+		if (hasRecentTasks) {
 			divRecentTasks.removeClassName("hide");
 			divRecentTasks_Empty.addClassName("hide");
-		}else{
+		} else {
 			divRecentTasks.addClassName("hide");
 			divRecentTasks_Empty.removeClassName("hide");
 		}
 	}
 
-
 	public void setHasActivities(boolean hasActivities) {
-		if(hasActivities){
+		if (hasActivities) {
 			panelActivity.removeStyleName("hide");
 			panelActivity_Empty.addClassName("hide");
-		}else{
+		} else {
 			panelActivity.addStyleName("hide");
 			panelActivity_Empty.removeClassName("hide");
 		}
@@ -590,19 +555,23 @@ public class ActivitiesView extends ViewImpl implements
 	private void setHeaders(FlexTable table) {
 		int i = table.getRowCount();
 		int j = 0;
-//		table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
-//		table.getFlexCellFormatter().setWidth(i, (j - 1), "10px");
+		// table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
+		// table.getFlexCellFormatter().setWidth(i, (j - 1), "10px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Case No</strong>"));
 		table.getFlexCellFormatter().setWidth(i, (j - 1), "50px");
-//		table.setWidget(i, j++, new HTMLPanel("<strong>Process</strong>"));
+		// table.setWidget(i, j++, new HTMLPanel("<strong>Process</strong>"));
 		table.setWidget(i, j++, new HTMLPanel("<strong>Task</strong>"));
-//		table.setWidget(i, j++, new HTMLPanel("<strong>Submitted By</strong>"));
-//		table.setWidget(i, j++, new HTMLPanel("<strong>Current Task</strong>"));
-//		table.setWidget(i, j++, new HTMLPanel("<strong>Current User</strong>"));
-//		table.setWidget(i, j++, new HTMLPanel("<strong>Due Date</strong>"));
-//		table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
-//		table.setWidget(i, j++, new HTMLPanel("<strong>Last Modify</strong>"));
-//		table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+		// table.setWidget(i, j++, new
+		// HTMLPanel("<strong>Submitted By</strong>"));
+		// table.setWidget(i, j++, new
+		// HTMLPanel("<strong>Current Task</strong>"));
+		// table.setWidget(i, j++, new
+		// HTMLPanel("<strong>Current User</strong>"));
+		// table.setWidget(i, j++, new HTMLPanel("<strong>Due Date</strong>"));
+		// table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+		// table.setWidget(i, j++, new
+		// HTMLPanel("<strong>Last Modify</strong>"));
+		// table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Status</strong>"));
 		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
 		table.setWidget(i, j++, new HTMLPanel("<strong>Notes</strong>"));
@@ -610,9 +579,9 @@ public class ActivitiesView extends ViewImpl implements
 		for (int col = 0; col < table.getCellCount(i); col++) {
 			table.getFlexCellFormatter().setStyleName(i, col, "th");
 		}
-		
+
 	}
-	
+
 	private Element setDeadlines(Date endDateDue) {
 		return setDeadlines(endDateDue, false);
 	}
@@ -648,32 +617,31 @@ public class ActivitiesView extends ViewImpl implements
 		return spnDeadline;
 	}
 
-
 	@Override
 	public void bindTaskCounts(HashMap<TaskType, Integer> counts) {
 		counts.put(TaskType.INBOX, getValue(counts.get(TaskType.MINE)
 				+ getValue(counts.get(TaskType.QUEUED))));
-		
+
 		int total = 0;
-		for(TaskType type: counts.keySet()){
+		for (TaskType type : counts.keySet()) {
 			Integer count = counts.get(type);
-			if(count==null){
+			if (count == null) {
 				count = 0;
 			}
 			switch (type) {
 			case INBOX:
-				elInbox.setInnerText(count+"");
-				total = total+count;
+				elInbox.setInnerText(count + "");
+				total = total + count;
 				break;
 			case PARTICIPATED:
-				elDone.setInnerText(count+"");
-				total = total+count;
+				elDone.setInnerText(count + "");
+				total = total + count;
 				break;
-			
+
 			}
 		}
-		
-		elTotal.setInnerText(total+"");
+
+		elTotal.setInnerText(total + "");
 	}
 
 	private Integer getValue(Integer val) {

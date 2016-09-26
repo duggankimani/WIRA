@@ -28,12 +28,14 @@ import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.shared.requests.GetRecentTasksRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetActivitiesResponse;
 import com.duggan.workflow.shared.responses.GetAlertCountResult;
 import com.duggan.workflow.shared.responses.GetCommentsResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
+import com.duggan.workflow.shared.responses.GetRecentTasksResult;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -129,9 +131,8 @@ public class ActivitiesPresenter
 
 		requests.addRequest(new GetAlertCount(processRefId));
 		requests.addRequest(new GetProcessRequest(processRefId));
-		GetTaskList recentTasks = new GetTaskList(AppContext.getUserId(),
-				TaskType.INBOX);
-		recentTasks.setLength(5);
+		GetRecentTasksRequest recentTasks = new GetRecentTasksRequest(processRefId,AppContext.getUserId(),
+				0,10);
 		requests.addRequest(recentTasks);
 		
 		GetActivitiesRequest getActivities = new GetActivitiesRequest();
@@ -153,7 +154,7 @@ public class ActivitiesPresenter
 						ProcessDef process = getProcess.getProcessDef();
 						bindProcess(process);
 
-						GetTaskListResult result = (GetTaskListResult) results
+						GetRecentTasksResult result = (GetRecentTasksResult) results
 								.get(i++);
 						getView().setTaskList(result.getTasks());
 
@@ -169,13 +170,12 @@ public class ActivitiesPresenter
 	
 	protected void bindTaskCounts(HashMap<TaskType, Integer> counts) {
 		getView().bindTaskCounts(counts);
+		fireEvent(new AlertLoadEvent(counts));
 	}
 
 	protected void bindProcess(ProcessDef process) {
 		getView().setProcess(process);
 	}
-
-	int i = 0;
 
 	protected void bindActivities(GetActivitiesResponse response) {
 		getView().getPanelActivity().clear();

@@ -225,17 +225,17 @@ public class JBPMHelper implements Closeable {
 	 */
 	public void getCount(String processRefId, String userId, HashMap<TaskType, Integer> counts) {
 
+		String processId = "";
 		// Count drafts & initiated documents
 		if(processRefId!=null){
-			String processId = DB.getProcessDao().getProcessId(processRefId);
+			processId = DB.getProcessDao().getProcessId(processRefId);
 			DocumentDaoHelper.getCounts(processId,userId, counts);
 		}else{
 			DocumentDaoHelper.getCounts(null,userId, counts);
 		}
 		
-		int processInstanceId=-1;
-		if(processRefId!=null){
-			processInstanceId = DB.getProcessDao().getProcessDefId(processRefId).intValue();
+		if(processId==null){
+			processId = "";
 		}
 
 		// Count Tasks
@@ -258,7 +258,7 @@ public class JBPMHelper implements Closeable {
 				.setParameter("userId", userId)
 				.setParameter("groupIds", groupIds)
 				.setParameter("language", "en-UK")
-				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("processId", processId)
 				.setParameter("status", getStatusesForTaskType(TaskType.INBOX))
 				.getSingleResult();
 		counts.put(TaskType.INBOX, count.intValue());
@@ -268,7 +268,7 @@ public class JBPMHelper implements Closeable {
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
-				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("processId", processId)
 				.setParameter("status", getStatusesForTaskType(TaskType.MINE))
 				.getSingleResult();
 		counts.put(TaskType.MINE, mine.intValue());
@@ -280,7 +280,7 @@ public class JBPMHelper implements Closeable {
 				.setParameter("userId", userId)
 				.setParameter("groupIds", groupIds)
 				.setParameter("language", "en-UK")
-				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("processId", processId)
 				.setParameter("status", getStatusesForTaskType(TaskType.QUEUED))
 				.getSingleResult();
 		counts.put(TaskType.QUEUED, queued.intValue());
@@ -297,7 +297,7 @@ public class JBPMHelper implements Closeable {
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
-				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("processId", processId)
 				.setParameter("status", Status.Completed).getSingleResult();
 
 		// Inprogress participated requests
@@ -309,7 +309,7 @@ public class JBPMHelper implements Closeable {
 				.createNamedQuery("TasksOwnedCount")
 				.setParameter("userId", userId)
 				.setParameter("language", "en-UK")
-				.setParameter("processInstanceId", processInstanceId)
+				.setParameter("processId", processId)
 				.setParameter("status", Status.Suspended).getSingleResult();
 		counts.put(TaskType.SUSPENDED, count3.intValue());
 
@@ -318,6 +318,7 @@ public class JBPMHelper implements Closeable {
 
 	public List<Status> getStatusesForTaskType(TaskType type) {
 
+		Task t;
 		List<Status> statuses = new ArrayList<>();
 
 		switch (type) {
@@ -375,7 +376,7 @@ public class JBPMHelper implements Closeable {
 					.createNamedQuery("TaskAssignedAsBizAdministrator")
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
-					.setParameter("processInstanceId", processInstanceId)
+					.setParameter("processInstanceId", processInstanceId==null? -1: processInstanceId.intValue())
 					.setFirstResult(offset).setMaxResults(length)
 					.getResultList();
 		} else {
@@ -384,7 +385,7 @@ public class JBPMHelper implements Closeable {
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
 					.setParameter("groupIds", groupIds)
-					.setParameter("processInstanceId", processInstanceId)
+					.setParameter("processInstanceId", processInstanceId==null? -1: processInstanceId.intValue())
 					.setFirstResult(offset).setMaxResults(length)
 					.getResultList();
 		}
