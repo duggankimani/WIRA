@@ -69,7 +69,7 @@ where
 
     t.taskData.status in (:status) and
     
-    (:processInstanceId=-1 or t.taskData.processInstanceId=:processInstanceId) and
+    (:processId='' or t.taskData.processId=:processId) and
 
     t.taskData.expirationTime is null
           </query>
@@ -108,7 +108,7 @@ where
     
 	t.taskData.status in (:status) and
 	
-	(:processInstanceId=-1 or t.taskData.processInstanceId=:processInstanceId) and
+	(:processId='' or t.taskData.processId=:processId) and
 	
     t.taskData.expirationTime is null
           </query>
@@ -166,9 +166,9 @@ where
     (
     description.language = :language
     or t.descriptions.size = 0
-    )and 
-    t.taskData.processInstanceId = :processInstanceId
-    and
+    ) and 
+    (:processInstanceId=-1 or t.taskData.processInstanceId=:processInstanceId) 
+    and 
     t.taskData.expirationTime is null
           </query>
           <!-- hint name="org.hibernate.timeout" value="200"/ -->
@@ -221,8 +221,8 @@ where
     (
     description.language = :language
     or t.descriptions.size = 0
-    )and 
-    t.taskData.processInstanceId = :processInstanceId
+    ) and 
+    (:processInstanceId=-1 or t.taskData.processInstanceId=:processInstanceId)
     and
     t.taskData.expirationTime is null
           </query>
