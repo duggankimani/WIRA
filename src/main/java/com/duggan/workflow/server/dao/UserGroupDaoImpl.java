@@ -161,6 +161,13 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		
 		return count.intValue()>0;
 	}
+
+	public List<String> getGroupsForUser(String userId) {
+		String hql = "select name from bgroup g "
+				+ "inner join usergroup ug on (g.id=ug.groupid) "
+				+ "inner join buser u on (u.id=ug.userid) where u.userid=:userId";
+		return getResultList(em.createNativeQuery(hql).setParameter("userId", userId));
+	}
 	
 
 }

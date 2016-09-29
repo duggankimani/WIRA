@@ -7,6 +7,7 @@ import com.wira.commons.shared.response.BaseResponse;
 
 public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 
+	private String processRefId;
 	private String userId;
 	private TaskType type;
 	private Long processInstanceId;
@@ -19,13 +20,15 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 	private GetTaskList() {
 	}
 
-	public GetTaskList(String userId, TaskType type) {
+	public GetTaskList(String processRefId,String userId, TaskType type) {
+		this.processRefId = processRefId;
 		this.userId = userId;
 		this.type = type;
 		
 	}
 
-	public GetTaskList(String userId, SearchFilter filter) {
+	public GetTaskList(String processRefId,String userId, SearchFilter filter) {
+		this.processRefId = processRefId;
 		this.userId = userId;
 		this.filter = filter;
 		this.type=TaskType.SEARCH;
@@ -81,6 +84,14 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 
 	public void setDocRefId(String docRefId) {
 		this.docRefId = docRefId;
+	}
+	
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 
 }

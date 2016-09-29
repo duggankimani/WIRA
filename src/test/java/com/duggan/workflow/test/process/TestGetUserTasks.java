@@ -28,7 +28,7 @@ public class TestGetUserTasks{
 //		String userId = "mutira.george";
 		String userId = "wangila.arnold";
 		
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(userId, TaskType.INBOX, 0, 100);
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(null,userId, TaskType.INBOX, 0, 100);
 		System.err.println("Summaries Count: "+summaries.size());
 	}
 }

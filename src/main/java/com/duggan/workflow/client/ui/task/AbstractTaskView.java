@@ -13,9 +13,6 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.component.Checkbox;
-import com.duggan.workflow.client.ui.component.DateField;
-import com.duggan.workflow.client.ui.component.DateInput;
-import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.task.DraftsPresenter.IDraftsView;
 import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedView;
@@ -46,7 +43,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -98,6 +94,8 @@ public class AbstractTaskView extends ViewImpl implements
 	HTMLPanel docContainer;
 	@UiField
 	FlexTable tblTasks;
+	
+	@UiField Element divProcess;
 	
 	@UiField Element processName;
 
@@ -654,6 +652,12 @@ public class AbstractTaskView extends ViewImpl implements
 	@Override
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
-		aProcess.setHref("#/activities/"+processRefId);
+		processName.setInnerText("");
+		if(processRefId==null){
+			divProcess.addClassName("hide");
+		}else{
+			divProcess.removeClassName("hide");
+			aProcess.setHref("#/activities/"+processRefId);
+		}
 	}
 }

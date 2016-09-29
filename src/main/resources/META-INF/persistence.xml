@@ -13,6 +13,7 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
         <mapping-file>META-INF/Executor-orm.xml</mapping-file>
         <mapping-file>META-INF/orm.xml</mapping-file>
         <mapping-file>META-INF/ext-Task-orm.xml</mapping-file>
+        <mapping-file>META-INF/ext-Task-orm-2.xml</mapping-file>
         <class>org.jbpm.task.Attachment</class>
         <class>org.jbpm.task.Content</class>
         <class>org.jbpm.task.BooleanExpression</class>

@@ -38,12 +38,12 @@
 			</g:HTMLPanel>
 		</div>
 
-		<div class="news-feed container-fluid">
-			<div class="row-fluid">
+		<div class="row-fluid">
+			<div class="" ui:field="divProcess">
 				<div class="span12">
-					<h4>
+					<h4 style="display: block;padding: 10px;">
 					    <a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
-							<i class="icon-arrow-left"></i>
+							<i class="icon-arrow-left" style="padding-right: 3px;"></i>
 						</a>
 					    <span ui:field="processName"></span>
 					</h4>

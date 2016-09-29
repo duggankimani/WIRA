@@ -313,7 +313,7 @@ public class JBPMHelper implements Closeable {
 				.setParameter("status", Status.Suspended).getSingleResult();
 		counts.put(TaskType.SUSPENDED, count3.intValue());
 
-		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassigned());
+		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassigned(processId));
 	}
 
 	public List<Status> getStatusesForTaskType(TaskType type) {
@@ -393,8 +393,8 @@ public class JBPMHelper implements Closeable {
 		return translateSummaries(ts);
 	}
 
-	public List<HTSummary> searchTasks(String userId, SearchFilter filter) {
-		List<TaskSummary> tasks = DB.getDocumentDao().searchTasks(userId,
+	public List<HTSummary> searchTasks(String processId, String userId, SearchFilter filter) {
+		List<TaskSummary> tasks = DB.getDocumentDao().searchTasks(processId,userId,
 				filter);
 
 		return translateSummaries(tasks);
@@ -443,11 +443,15 @@ public class JBPMHelper implements Closeable {
 	 *         user
 	 * 
 	 */
-	public List<HTSummary> getTasksForUser(String userId, TaskType type,int offset, int length) {
+	public List<HTSummary> getTasksForUser(String processId,String userId, TaskType type,int offset, int length) {
 
 		String language = "en-UK";
 		if (!LoginHelper.get().existsUser(userId)) {
 			throw new RuntimeException("User " + userId + " Unknown!!");
+		}
+		
+		if(processId==null){
+			processId="";
 		}
 
 		if (type == null) {
@@ -460,29 +464,49 @@ public class JBPMHelper implements Closeable {
 		case PARTICIPATED:
 		case COMPLETED:
 			// approvals - show only items I have approved
-			ts = sessionManager.getTaskClient().getTasksOwned(userId,
-					Arrays.asList(Status.Completed), language);
+			
+//			ts = sessionManager.getTaskClient().getTasksOwned(
+//					userId,
+//					Arrays.asList(Status.Completed), language);
+			
+			ts = DB.getDocumentDao().getTasksOwnedPerProcess(processId, userId,
+					Arrays.asList(Status.Completed), language, offset, length);
 
 			break;
 		case INBOX:
 		case MINE:
-			ts = sessionManager.getTaskClient().getTasksOwned(userId,getStatusesForTaskType(type),language);
+//			ts = sessionManager.getTaskClient().getTasksOwned(
+//					userId,getStatusesForTaskType(type),language);
+			
+			ts = DB.getDocumentDao().getTasksOwnedPerProcess(processId, userId,
+					getStatusesForTaskType(type), language, offset, length);
 			break;
 		case QUEUED:
-			ts = sessionManager.getTaskClient().getTasksAssignedAsPotentialOwnerByStatus(userId,
-					getStatusesForTaskType(type), language);
+//			ts = sessionManager.getTaskClient()
+//			.getTasksAssignedAsPotentialOwnerByStatus(userId,
+//					getStatusesForTaskType(type), language);
+			
+			ts = DB.getDocumentDao().getTasksAssignedAsPotentialOwnerByStatusAndProcessId(processId,userId,
+					getStatusesForTaskType(type), language, offset, length);
 			break;
 		case ALL:
-			ts = sessionManager.getTaskClient()
-			.getTasksAssignedAsPotentialOwnerByStatus(userId,
-					getStatusesForTaskType(type), "en-UK");
+//			ts = sessionManager.getTaskClient()
+//			.getTasksAssignedAsPotentialOwnerByStatus(userId,
+//					getStatusesForTaskType(type), "en-UK");
+			
+			ts = DB.getDocumentDao().getTasksAssignedAsPotentialOwnerByStatusAndProcessId(processId,userId,
+					getStatusesForTaskType(type), language, offset, length);
 			break;
 		case SUSPENDED:
-			ts = sessionManager.getTaskClient().getTasksOwned(userId,
-					Arrays.asList(Status.Suspended), language);
+//			ts = sessionManager.getTaskClient().getTasksOwned(
+//					userId,
+//					Arrays.asList(Status.Suspended), language);
+			
+			ts = DB.getDocumentDao().getTasksOwnedPerProcess(processId, userId,
+					Arrays.asList(Status.Suspended), language, offset, length);
 			break;
 		case UNASSIGNED:
-			ts = DB.getDocumentDao().getUnassignedTasks();
+			ts = DB.getDocumentDao().getUnassignedTasks(processId, offset, length);
 			break;
 		default:
 			break;

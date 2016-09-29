@@ -132,7 +132,7 @@ public class TestNotications {
 		
 		DB.beginTransaction();
 		//get tasks for approver
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(approver, TaskType.INBOX,0,100);
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(null,approver, TaskType.INBOX,0,100);
 		DB.commitTransaction();
 		DB.closeSession();
 		
@@ -190,14 +190,14 @@ public class TestNotications {
 		TaskType type = TaskType.INBOX;
 		Integer count = vals.get(type);
 		Integer actualCount = 0;		
-		List<HTSummary> summary = JBPMHelper.get().getTasksForUser(userId, type,0,100);
+		List<HTSummary> summary = JBPMHelper.get().getTasksForUser(null,userId, type,0,100);
 		actualCount = summary.size();
 		Assert.assertEquals(actualCount, count);
 		
 		TaskType type2 = TaskType.COMPLETED;
 		Integer count2 = vals.get(type2);
 		Integer actualCount2 = 0;		
-		List<HTSummary> summary2 = JBPMHelper.get().getTasksForUser(userId, type2,0,100);
+		List<HTSummary> summary2 = JBPMHelper.get().getTasksForUser(null,userId, type2,0,100);
 		actualCount2 = summary2.size();
 		Assert.assertEquals(actualCount2, count2);
 	}

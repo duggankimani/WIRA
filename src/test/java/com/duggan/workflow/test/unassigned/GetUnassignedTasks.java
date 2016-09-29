@@ -18,7 +18,7 @@ public class GetUnassignedTasks {
 	
 	@Test
 	public void getTasks(){
-		int unassigned = DB.getDocumentDao().getUnassigned();
+		int unassigned = DB.getDocumentDao().getUnassigned(null);
 		System.err.println(">> count = "+unassigned);		
 		
 //		System.err.println(">> Actual - "+DB.getDocumentDao().getUnassignedTasks().size());

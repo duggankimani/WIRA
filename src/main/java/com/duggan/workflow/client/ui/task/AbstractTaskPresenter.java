@@ -257,7 +257,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	public void search(final SearchFilter filter) {
 
-		GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
+		GetTaskList request = new GetTaskList(processRefId,AppContext.getUserId(), filter);
 		request.setLength(PAGE_SIZE);
 		request.setOffset(CURPOS = 0);
 		fireEvent(new ProcessingEvent());
@@ -311,7 +311,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			action.addRequest(new GetProcessRequest(processRefId));
 		}
 		
-		GetTaskList request = new GetTaskList(userId, currentTaskType);
+		GetTaskList request = new GetTaskList(processRefId,userId, currentTaskType);
 		request.setOffset(CURPOS);
 		request.setLength(PAGE_SIZE);
 		request.setProcessInstanceId(processInstanceId);
@@ -507,7 +507,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new AssignTaskRequest(event.getTaskId(), event
 				.getUserId()));
-		action.addRequest(new GetTaskList(AppContext.getUserId(),
+		action.addRequest(new GetTaskList(processRefId,AppContext.getUserId(),
 				TaskType.UNASSIGNED));
 
 		dispatcher.execute(action,

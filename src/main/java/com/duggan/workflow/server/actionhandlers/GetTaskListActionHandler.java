@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
@@ -36,6 +38,12 @@ public class GetTaskListActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
+		String processRefId = action.getProcessRefId();
+		String processId = null;
+		if(processRefId!=null){
+			processId = DB.getProcessDao().getProcessId(processRefId);
+		}
+		
 		String userId = action.getUserId()==null? SessionHelper.getCurrentUser().getUserId():
 			action.getUserId();
 		
@@ -47,7 +55,7 @@ public class GetTaskListActionHandler extends
 		switch (type) {
 		case DRAFT:
 			status = DocStatus.DRAFTED;
-			summary = DocumentDaoHelper.getAllDocumentsJson(action.getOffset(),action.getLength(),false,status);
+			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),false,status);
 			break;
 //		case APPROVED:
 //			status = DocStatus.APPROVED;
@@ -58,10 +66,10 @@ public class GetTaskListActionHandler extends
 //			summary = DocumentDaoHelper.getAllDocuments(status);
 //			break;
 		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocumentsJson(action.getOffset(),action.getLength(),false,
+			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),false,
 					DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
 					 DocStatus.COMPLETED);//Current users sent requests
-			summary.addAll(getPendingApprovals(userId, type,action.getOffset(),action.getLength()));
+			summary.addAll(getPendingApprovals(processId,userId, type,action.getOffset(),action.getLength()));
 			break;
 //		case REJECTED:
 //			status = DocStatus.REJECTED;
@@ -70,8 +78,8 @@ public class GetTaskListActionHandler extends
 		case SEARCH:
 			
 			if(action.getFilter()!=null){				
-				summary.addAll(DocumentDaoHelper.search(userId,action.getFilter()));
-				summary.addAll(JBPMHelper.get().searchTasks(userId, action.getFilter()));
+				summary.addAll(DocumentDaoHelper.search(processId,userId,action.getFilter()));
+				summary.addAll(JBPMHelper.get().searchTasks(processId,userId, action.getFilter()));
 			}else if(action.getProcessInstanceId()!=null || action.getDocRefId()!=null){
 				
 				Long processInstanceId = action.getProcessInstanceId();
@@ -105,7 +113,7 @@ public class GetTaskListActionHandler extends
 			
 		default:
 			//Tasks loaded here
-			summary = getPendingApprovals(userId, type,action.getOffset(),action.getLength());
+			summary = getPendingApprovals(processId,userId, type,action.getOffset(),action.getLength());
 			break;
 		}
 
@@ -117,12 +125,12 @@ public class GetTaskListActionHandler extends
 
 	}
 
-	private List<Doc> getPendingApprovals(String userId, TaskType type, int offset, int length) {
+	private List<Doc> getPendingApprovals(String processId,String userId, TaskType type, int offset, int length) {
 
 		List<HTSummary> tasks = new ArrayList<>();
 
 		try {
-			tasks = JBPMHelper.get().getTasksForUser(userId, type,offset, length);
+			tasks = JBPMHelper.get().getTasksForUser(processId,userId, type,offset, length);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

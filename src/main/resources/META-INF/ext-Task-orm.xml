@@ -298,6 +298,8 @@ where
     ) and
 
     t.taskData.status in (:status) and
+    
+    (:processId='' or t.taskData.processId=:processId) and 
 
     t.taskData.expirationTime is null
           </query>

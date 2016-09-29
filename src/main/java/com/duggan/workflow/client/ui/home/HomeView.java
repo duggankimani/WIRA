@@ -10,6 +10,7 @@ import com.duggan.workflow.client.ui.fileexplorer.FileExplorerPresenter;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
 import com.duggan.workflow.client.ui.task.UnAssignedPresenter;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -54,6 +55,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@UiField HTMLPanel mainContainer;
 
 	private PlaceManager placeManager;
+
+	private String processRefId;
 
 	@Inject
 	public HomeView(final Binder binder, HomeTabPanel panel,
@@ -213,7 +216,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	}
 
 	@Override
-	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
+	public void bindAlerts(HashMap<TaskType, Integer> alerts, String processRefId) {
+		this.processRefId = processRefId;
 		alerts.put(TaskType.INBOX, getValue(alerts.get(TaskType.MINE)
 				+ getValue(alerts.get(TaskType.QUEUED))));
 		for (TaskType type : alerts.keySet()) {
@@ -265,6 +269,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			return;
 		}
 		
+		
 		JavaScriptObject obj = getElement(sideBarUL, href);
 		if (obj != null) {
 			Element el = Element.as(obj);
@@ -274,12 +279,23 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			}
 		}
 
+		
+		//Change url
+		JavaScriptObject anchorJs = getLink(sideBarUL, href);
+		//Change URL
+		if(type!=TaskType.INBOX && processRefId!=null){
+			AnchorElement anchor = (AnchorElement)Element.as(anchorJs);
+			href = href+"/"+processRefId;
+			anchor.setHref(href);
+		}
+
+		
 	}
 
 	private native JavaScriptObject getElement(Element parentUl, String historyToken) /*-{
 																				//$wnd.console.log('find element href='+historyToken);
 																				
-																				var searchQuery = '#accordion2 a[href=\''+historyToken+'\']';
+																				var searchQuery = '#accordion2 a[href^=\''+historyToken+'\']';
 																				
 																				var anchor = $wnd.jQuery(parentUl).find(searchQuery).get(0);
 																				
@@ -288,6 +304,14 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 																				return span;
 																				
 																				}-*/;
+	
+	private native JavaScriptObject getLink(Element parentUl, String historyToken)/*-{
+		var searchQuery = '#accordion2 a[href^=\''+historyToken+'\']';
+		
+		var anchor = $wnd.jQuery(parentUl).find(searchQuery).get(0);
+		
+		return anchor;
+	}-*/;
 
 	private Integer getValue(Integer val) {
 		return val == null ? 0 : val.intValue();
@@ -363,7 +387,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 				.build());
 	}
 
-	private void clearAnchors() {
+	public void clearAnchors() {
 		clearAllAnchors(sideBarUL);
 	}
 
@@ -377,13 +401,13 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	private void selectTab(PlaceRequest currentPlaceRequest) {
 		String nameToken = currentPlaceRequest.getNameToken();
 		nameToken = placeManager.buildHistoryToken(currentPlaceRequest);
-
+		
 		selectTab(sideBarUL, "#" + nameToken);
 	}
 
 	private native void selectTab(Element parent, String historyToken)/*-{
 																		//$wnd.console.log("Select tab - "+historyToken);
-																		var searchQuery = '#accordion2 a[href=\''+historyToken+'\']';
+																		var searchQuery = '#accordion2 a[href^=\''+historyToken+'\']';
 																		
 																		$wnd.jQuery(parent).find(searchQuery).each(function() {
 																		var el = $wnd.jQuery(this);

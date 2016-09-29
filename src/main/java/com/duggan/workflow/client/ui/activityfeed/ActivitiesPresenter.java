@@ -170,7 +170,7 @@ public class ActivitiesPresenter
 	
 	protected void bindTaskCounts(HashMap<TaskType, Integer> counts) {
 		getView().bindTaskCounts(counts);
-		fireEvent(new AlertLoadEvent(counts));
+		fireEvent(new AlertLoadEvent(counts,processRefId));
 	}
 
 	protected void bindProcess(ProcessDef process) {

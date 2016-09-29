@@ -11,6 +11,7 @@ public class AlertLoadEvent extends GwtEvent<AlertLoadEvent.AlertLoadHandler> {
 
 	public static Type<AlertLoadHandler> TYPE = new Type<AlertLoadHandler>();
 	private HashMap<TaskType, Integer> alerts;
+	private String processRefId;
 
 	public interface AlertLoadHandler extends EventHandler {
 		void onAlertLoad(AlertLoadEvent event);
@@ -18,6 +19,11 @@ public class AlertLoadEvent extends GwtEvent<AlertLoadEvent.AlertLoadHandler> {
 
 	public AlertLoadEvent(HashMap<TaskType, Integer> alerts) {
 		this.alerts = alerts;
+	}
+
+	public AlertLoadEvent(HashMap<TaskType, Integer> counts, String processRefId) {
+		this.alerts = counts;
+		this.processRefId = processRefId;
 	}
 
 	public HashMap<TaskType, Integer> getAlerts() {
@@ -40,5 +46,13 @@ public class AlertLoadEvent extends GwtEvent<AlertLoadEvent.AlertLoadHandler> {
 
 	public static void fire(HasHandlers source, HashMap<TaskType, Integer> alerts) {
 		source.fireEvent(new AlertLoadEvent(alerts));
+	}
+
+	public String getProcessRefId() {
+		return processRefId;
+	}
+
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 }

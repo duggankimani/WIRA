@@ -233,7 +233,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	}
 
 
-	public List<DocumentModel> search(String userId, SearchFilter filter) {
+	public List<DocumentModel> search(String processId,String userId, SearchFilter filter) {
 
 		String subject = filter.getSubject();
 		Date startDate = filter.getStartDate();
@@ -252,7 +252,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		Map<String, Object> params = new HashMap<>();
 
-		StringBuffer query = new StringBuffer("FROM DocumentModel d where ");
+		StringBuffer query = new StringBuffer("FROM DocumentModelJson d where ");
 
 		boolean isFirst = true;
 		if (subject != null) {
@@ -369,7 +369,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return list;
 	}
 
-	public List<TaskSummary> searchTasks(String userId, SearchFilter filter) {
+	public List<TaskSummary> searchTasks(String processId,String userId, SearchFilter filter) {
 
 		String subject = filter.getSubject();
 		Date startDate = filter.getStartDate();
@@ -413,11 +413,13 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 						+ "(owner.id = ? "
 						+ "or "
 						+ "( potowners.entity_id = ? or potowners.entity_id in (?) )) "
+						+ "and (:processId='' or d.processId=:processId)"
 						+ "and " + "t.expirationTime is null ");
 
 		params.add(userId);
 		params.add(userId);
 		params.add(groupsIds);
+		params.add(processId==null? "": processId);
 
 		boolean isFirst = false;
 
@@ -943,10 +945,14 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		save(model);
 	}
 
-	public int getUnassigned() {
+	public int getUnassigned(String processId) {
+		if(processId==null){
+			processId="";
+		}
 		Query query = em
 				.createNamedQuery("TasksUnassignedCount")
 				.setParameter("language", "en-UK")
+				.setParameter("processId", processId)
 				.setParameter("status",
 						Arrays.asList(Status.Created, Status.Ready));
 
@@ -954,14 +960,16 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return count.intValue();
 	}
 
-	public List<TaskSummary> getUnassignedTasks() {
+	public List<TaskSummary> getUnassignedTasks(String processId,int offset,int length) {
 		Query query = em
 				.createNativeQuery("select id from task t "
 						+ "left join peopleassignments_potowners o on (o.task_id=t.id)  "
 						+ "where status in ('Ready', 'Created') "
 						+ "and o.task_id is null "
-						+ "and actualowner_id is null;");
-		List<BigInteger> idz = getResultList(query);
+						+ "and (:processId='' or t.processId=:processId) "
+						+ "and actualowner_id is null")
+						.setParameter("processId", processId);
+		List<BigInteger> idz = getResultList(query,offset,length);
 
 		List<Long> ids = new ArrayList<>();
 		for (BigInteger id : idz) {
@@ -1098,17 +1106,21 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		}
 	}
 
-	public List<Doc> getAllDocumentsJson(int offset, int length,
+	public List<Doc> getAllDocumentsJson(String processId,int offset, int length,
 			boolean loadDetails, DocStatus... status) {
 
 		@SuppressWarnings("unchecked")
 		List<DocumentModelJson> documents = em
 				.createQuery(
 						"FROM DocumentModelJson d where status in (:status) and "
-								+ "createdBy=:createdBy and isActive=:isActive order by created desc")
+								+ "createdBy=:createdBy "
+								+ "and isActive=:isActive "
+								+ "and (:processId='' or d.processId=:processId)"
+								+ "order by created desc")
 				.setParameter("status", Arrays.asList(status))
 				.setParameter("createdBy",
 						SessionHelper.getCurrentUser().getUserId())
+				.setParameter("processId", processId==null? "": processId)
 				.setParameter("isActive", 1).setFirstResult(offset)
 				.setMaxResults(length).getResultList();
 
@@ -1130,10 +1142,12 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	public Document getDocJsonByUserRef(String docRefId, String creatorUserId, boolean loadDetails) {
 		DocumentModelJson json = getSingleResultOrNull(em.createQuery(
 						"FROM DocumentModelJson d where "
-						+ "refId=:refId and "
-						+ "createdBy=:createdBy")
-				.setParameter("createdBy",creatorUserId)
-				.setParameter("refId", docRefId));
+						+ "refId=:refId ")
+						.setParameter("refId", docRefId));
+//						+ "and "
+//						+ "createdBy=:createdBy")
+//				.setParameter("createdBy",creatorUserId)
+				
 		return getDocJson(json, loadDetails);
 	}
 
@@ -1211,10 +1225,15 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				summary.setProcessName(doctypeDisplay);
 				summary.setStatus(HTStatus.valueOf(status.toUpperCase()));
 				summary.setTaskName(taskName);
-				String displayName = JBPMHelper.get().getDisplayName(id);
-				if(displayName!=null){
-					summary.setName(displayName);
+				try{
+					String displayName = JBPMHelper.get().getDisplayName(id);
+					if(displayName!=null){
+						summary.setName(displayName);
+					}
+				}catch(Exception e){
+					summary.setName(taskName);
 				}
+				
 				tasks.add(summary);
 			}else{
 				Document doc = new Document();
@@ -1250,5 +1269,29 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		
 		
 		return tasks;
+	}
+
+	public List<TaskSummary> getTasksOwnedPerProcess(String processId,
+			String userId, List<Status> status, String language, int offset, int length) {
+		return getResultList(em.createNamedQuery("TasksOwnedWithParticularStatusAndProcessId")
+				.setParameter("userId", userId)
+				.setParameter("language", language)
+				.setParameter("status", status)
+				.setParameter("processId", processId),offset,length);
+	}
+
+	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatusAndProcessId(
+			String processId, String userId, List<Status> status,
+			String language, int offset, int length) {
+		
+		List<String> groups = DB.getUserGroupDao().getGroupsForUser(userId);
+		
+		return getResultList(em.createNamedQuery("TasksAssignedAsPotentialOwnerByStatusWithGroupsAndProcessId")
+				.setParameter("userId", userId)
+				.setParameter("groupIds", groups)
+				.setParameter("language", language)
+				.setParameter("status", status)
+				.setParameter("processId", processId)
+				,offset,length);
 	}
 }

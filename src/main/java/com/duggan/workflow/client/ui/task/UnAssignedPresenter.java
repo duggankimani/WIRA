@@ -25,7 +25,7 @@ public class UnAssignedPresenter extends AbstractTaskPresenter<UnAssignedPresent
 	public interface IUnAssignedView extends com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView{}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.unassigned})
+	@NameToken({NameTokens.unassigned,NameTokens.unassignedPerProcess})
 	@UseGatekeeper(HasPermissionsGateKeeper.class)
 	@GatekeeperParams({UNASSIGNED_CAN_VIEW_UNASSIGNEDTASKS})
 	public interface IUnAssignedProxy extends TabContentProxyPlace<UnAssignedPresenter> {

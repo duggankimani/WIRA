@@ -39,7 +39,7 @@ public class TestSearchDocument {
 		String userId = "mariano";
 		TaskType type = TaskType.INBOX;
 		
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(userId, type,0,100);
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(null,userId, type,0,100);
 		for(HTSummary summary: summaries){
 			System.err.format("%d : %s : %s : %s",
 					summary.getId(), summary.getCreated(), summary.getDocumentRef(), 
@@ -67,7 +67,7 @@ public class TestSearchDocument {
 //		c.set(2013, 7, 30,0,0,0);
 //		filter.setEndDate(c.getTime());
 		
-		List<TaskSummary> models = dao.searchTasks(userId,filter);
+		List<TaskSummary> models = dao.searchTasks(null,userId,filter);
 		
 		Assert.assertTrue(models!=null);
 		Assert.assertTrue(models.size()>0);
@@ -97,7 +97,7 @@ public class TestSearchDocument {
 		c.set(2013, 7, 30,0,0,0);
 		filter.setEndDate(c.getTime());
 		
-		List<DocumentModel> models = dao.search(userId,filter);
+		List<DocumentModel> models = dao.search(null,userId,filter);
 		
 		Assert.assertTrue(models!=null);
 		Assert.assertTrue(models.size()>0);

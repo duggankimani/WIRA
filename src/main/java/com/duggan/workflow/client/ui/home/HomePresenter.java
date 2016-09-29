@@ -47,11 +47,12 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		void refreshTabs();
 //		void changeTab(Tab tab, TabData tabData, String historyToken);
 		void showmask(boolean b);
-		void bindAlerts(HashMap<TaskType, Integer> alerts);
+		void bindAlerts(HashMap<TaskType, Integer> alerts, String processRefId);
 		HasClickHandlers getAddButton();
 		void showDocsList();
 		void load();
 		void closeDocTypePopup();
+		void clearAnchors();
 	}
 	
 	@ProxyCodeSplit
@@ -127,7 +128,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 	
 	@Override
 	public void onAlertLoad(AlertLoadEvent event) {
-		getView().bindAlerts(event.getAlerts());		
+		getView().bindAlerts(event.getAlerts(),event.getProcessRefId());		
 	}
 	
 	@Override

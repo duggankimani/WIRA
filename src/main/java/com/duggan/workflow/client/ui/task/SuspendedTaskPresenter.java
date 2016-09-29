@@ -24,7 +24,7 @@ public class SuspendedTaskPresenter extends AbstractTaskPresenter<SuspendedTaskP
 	public interface ISuspendedView extends com.duggan.workflow.client.ui.task.AbstractTaskPresenter.ITaskView{}
 	
 	@ProxyCodeSplit
-	@NameToken({NameTokens.suspended})
+	@NameToken({NameTokens.suspended,NameTokens.suspendedPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface ISuspendedTaskProxy extends TabContentProxyPlace<SuspendedTaskPresenter> {
 	}

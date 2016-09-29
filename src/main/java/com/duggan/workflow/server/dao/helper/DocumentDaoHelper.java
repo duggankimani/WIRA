@@ -609,9 +609,9 @@ public class DocumentDaoHelper {
 		return dao.getProcessInstanceIdByDocRefId(docRefId);
 	}
 
-	public static List<Document> search(String userId, SearchFilter filter) {
+	public static List<Document> search(String processId,String userId, SearchFilter filter) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
-		List<DocumentModel> models = dao.search(userId, filter);
+		List<DocumentModel> models = dao.search(processId,userId, filter);
 		List<Document> docs = new ArrayList<>();
 		for (DocumentModel doc : models) {
 			docs.add(getDoc(doc));
@@ -820,10 +820,10 @@ public class DocumentDaoHelper {
 		return DB.getDocumentDao().getDocJson(docRefId);
 	}
 
-	public static List<Doc> getAllDocumentsJson(int offset, int length,
+	public static List<Doc> getAllDocumentsJson(String processId,int offset, int length,
 			boolean loadDetails, DocStatus... status) {
 
-		return DB.getDocumentDao().getAllDocumentsJson(offset, length,
+		return DB.getDocumentDao().getAllDocumentsJson(processId,offset, length,
 				loadDetails, status);
 	}
 
