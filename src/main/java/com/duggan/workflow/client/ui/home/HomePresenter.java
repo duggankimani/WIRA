@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.home;
 
 import java.util.HashMap;
 
+import com.duggan.workflow.client.model.ScreenMode;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
@@ -17,6 +18,8 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
+import com.duggan.workflow.client.ui.events.ScreenModeChangeEvent;
+import com.duggan.workflow.client.ui.events.ScreenModeChangeEvent.ScreenModeChangeHandler;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
@@ -40,7 +43,8 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class HomePresenter extends TabContainerPresenter<HomePresenter.IHomeView, HomePresenter.MyProxy> implements
-ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHandler, ContextLoadedHandler{
+ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHandler, ContextLoadedHandler, 
+ScreenModeChangeHandler{
 
 	public interface IHomeView extends TabView {
 		//void bindAlerts(HashMap<TaskType, Integer> alerts);
@@ -53,6 +57,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		void load();
 		void closeDocTypePopup();
 		void clearAnchors();
+		void setScreenMode(ScreenMode screenMode);
 	}
 	
 	@ProxyCodeSplit
@@ -99,6 +104,7 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		addRegisteredHandler(AlertLoadEvent.TYPE, this);
 		addRegisteredHandler(CreateDocumentEvent.TYPE, this);
 		addRegisteredHandler(ContextLoadedEvent.getType(), this);
+		addRegisteredHandler(ScreenModeChangeEvent.getType(), this);
 		setInSlot(DOCTREE_SLOT, docPopup);
 	}
 	
@@ -162,4 +168,9 @@ ProcessingHandler, ProcessingCompletedHandler, AlertLoadHandler,CreateDocumentHa
 		});
 	}
 	
+	
+	@Override
+	public void onScreenModeChange(ScreenModeChangeEvent event) {
+		getView().setScreenMode(event.getScreenMode());
+	}
 }

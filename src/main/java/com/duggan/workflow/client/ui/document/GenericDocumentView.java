@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.duggan.workflow.client.model.ScreenMode;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AttachmentItem;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
@@ -15,6 +16,7 @@ import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.client.ui.component.CommentBox;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.document.form.FormPanel;
+import com.duggan.workflow.client.ui.events.ScreenModeChangeEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
@@ -54,6 +56,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.wira.commons.client.security.CurrentUser;
 import com.wira.commons.client.util.ArrayUtil;
@@ -227,6 +230,8 @@ public class GenericDocumentView extends ViewImpl implements
 	private Date dateCreated;
 	DocStatus status = null;
 	private boolean isUnassignedList = false;
+	
+	@UiField Anchor aMaximize;
 
 	enum SHOWITEMS {
 		FORM, PROCESSTREE, AUDITLOG, ATTACHMENTS
@@ -290,6 +295,14 @@ public class GenericDocumentView extends ViewImpl implements
 		// Window.open(url, "Process HashMap", null);
 		// }
 		// });
+		
+		aMaximize.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				toggleMaximize(aMaximize.getElement());
+			}
+		});
 
 		imgProcess.addErrorHandler(new ErrorHandler() {
 
@@ -352,6 +365,28 @@ public class GenericDocumentView extends ViewImpl implements
 		changeView(SHOWITEMS.FORM);
 //		UIObject.setVisible(aSave.getElement(), false);
 
+	}
+
+	protected native void toggleMaximize(Element element) /*-{
+		var icon = $wnd.jQuery(element).find('i').get(0);
+		$wnd.jQuery(icon).toggleClass('icon-resize-small');
+		$wnd.jQuery(icon).toggleClass('icon-resize-full');
+		
+		if($wnd.jQuery(icon).hasClass('icon-resize-full')){
+			this.@com.duggan.workflow.client.ui.document.GenericDocumentView::showFullScreen(I)(0);
+		}else{
+			this.@com.duggan.workflow.client.ui.document.GenericDocumentView::showFullScreen(I)(1);
+		}
+	}-*/;
+	
+	void showFullScreen(int isFullScreen){
+		if(isFullScreen==1){
+			//true
+			AppContext.getEventBus().fireEvent(new ScreenModeChangeEvent(ScreenMode.FULLSCREEN));
+		}else{
+			//false
+			AppContext.getEventBus().fireEvent(new ScreenModeChangeEvent(ScreenMode.SMALLSCREEN));
+		}
 	}
 
 	public void createNavigationButtons() {
@@ -1173,5 +1208,5 @@ public class GenericDocumentView extends ViewImpl implements
 			elAttachmentsCount.setInnerText(""+size);	
 		}
 	}
-
+	
 }

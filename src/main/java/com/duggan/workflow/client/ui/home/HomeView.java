@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.home;
 
 import java.util.HashMap;
 
+import com.duggan.workflow.client.model.ScreenMode;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.reports.ReportsPresenter;
@@ -12,6 +13,8 @@ import com.duggan.workflow.client.ui.task.UnAssignedPresenter;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -425,5 +428,17 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 																		}
 																		});
 																		}-*/;
+
+	@Override
+	public void setScreenMode(ScreenMode screenMode) {
+		Element sideBar = mainContainer.getElementById("sidebar-nav");
+		if(screenMode==ScreenMode.FULLSCREEN){
+			sideBar.getStyle().setDisplay(Display.NONE);
+			tabContent.getElement().getStyle().setLeft(0, Unit.PX);
+		}else{
+			sideBar.getStyle().setDisplay(Display.INITIAL);
+			tabContent.getElement().getStyle().setLeft(200, Unit.PX);
+		}
+	}
 
 }

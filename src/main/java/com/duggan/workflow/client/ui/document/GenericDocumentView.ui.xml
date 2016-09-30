@@ -27,7 +27,7 @@
 						<i class="icon-time"></i>
 						<!-- Process -->
 					</d:ActionLink>
-					
+
 					<d:ActionLink ui:field="aProcess" styleName="btn btn-default disabled"
 						title="View Process Map">
 						<i class="icon-info"></i>
@@ -38,23 +38,23 @@
 						title="View attachments">
 						<i class="icon-upload-alt color-orange"></i>
 					</d:ActionLink>
-					
+
 					<d:ActionLink ui:field="aViewAttachments" styleName="btn btn-default"
 						title="View attachments">
 						<i class="icon-paper-clip color-black"></i>
 						<sup ui:field="elAttachmentsCount" class="text-info" style="line-height:20px;"></sup>
 					</d:ActionLink>
-					
+
 					<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
-							title="Edit">
+						title="Edit">
 						<i class="icon-pencil color-black"></i>
 					</d:ActionLink>
-					
+
 					<d:ActionLink ui:field="aSave" styleName="btn btn-default">
 						<i class="icon-save"></i>
 						Save
 					</d:ActionLink>
-					
+
 					<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
 						title="Configure">
 						<i class="icon-cogs color-black"></i>
@@ -85,7 +85,7 @@
 						<i class="icon-share-alt"></i>
 						Submit <!-- Forward For Approval -->
 					</d:ActionLink>
-					
+
 					<d:ActionLink ui:field="aApprove" styleName="btn btn-success"
 						title="Approve document">
 						<i class="icon-ok"></i>
@@ -137,7 +137,7 @@
 									Assign
 								</d:ActionLink>
 							</li>
-							
+
 							<li>
 								<d:ActionLink ui:field="aDelegate" styleName="hidden"
 									title="Delegate this task">
@@ -161,10 +161,14 @@
 							</li>
 						</ul>
 					</div>
-					<d:ActionLink ui:field="aClose" title="Close" 
-					styleName="generic-doc-close">
-						X
-					</d:ActionLink>
+					<div class="generic-doc-close" style="display:inline">
+						<d:ActionLink ui:field="aMaximize" title="Maximize or Minimize Window">
+							<i class="icon-resize-full"></i>
+						</d:ActionLink>
+						<d:ActionLink ui:field="aClose" title="Close">
+							X
+						</d:ActionLink>
+					</div>
 				</div>
 			</div>
 
@@ -236,7 +240,8 @@
 
 				<g:HTMLPanel ui:field="fldForm" styleName="form-horizontal field-form">
 					<div class="ribbon">
-						<div ui:field="divRibbon" class="ribbon-inner" data-bindattr-192="192">
+						<div ui:field="divRibbon" class="ribbon-inner"
+							data-bindattr-192="192">
 							<script id="metamorph-655-start" type="text/x-placeholder"></script>
 							<span ui:field="spnRibbon"></span>
 							<script id="metamorph-655-end" type="text/x-placeholder"></script>
@@ -289,24 +294,27 @@
 					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
 				</div>
 				<g:HTMLPanel ui:field="statusContainer" styleName="panel-body">
-				    <g:Image ui:field="imgProcess"></g:Image>
+					<g:Image ui:field="imgProcess"></g:Image>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-			
+
 			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
 				ui:field="divAuditLog">
 				<div class="row-fluid">
-					<h5>Process Audit <span ui:field="spnTimeTaken"></span></h5>
+					<h5>
+						Process Audit
+						<span ui:field="spnTimeTaken"></span>
+					</h5>
 					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
 				</div>
 				<g:HTMLPanel ui:field="auditContainer" styleName="panel-body">
 					<span ui:field="spnAuditEmpty" class="hide">
-				    	No Data To Display
-				    </span>
-				    <d:TableView ui:field="tblAuditLog"></d:TableView>
+						No Data To Display
+					</span>
+					<d:TableView ui:field="tblAuditLog"></d:TableView>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-			
+
 			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
 				ui:field="divAttachmentPanel">
 				<div class="row-fluid">
@@ -315,26 +323,18 @@
 				</div>
 				<g:HTMLPanel styleName="panel-body">
 					<span ui:field="spnAttachmentsEmpty" class="hide">
-				    	No Data To Display
-				    </span>
-				    <d:TableView ui:field="tblAttachments"></d:TableView>
+						No Data To Display
+					</span>
+					<d:TableView ui:field="tblAttachments"></d:TableView>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
-			
-			<!-- g:HTMLPanel styleName="status-section span3 pull-right row-fluid well"
-				ui:field="divProcess">
-				<div class="row-fluid">
-					<h5>Process Map</h5>
-				</div>
-				<g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel>
 
-				<g:HTMLPanel styleName="">
-					<d:ActionLink ui:field="aShowProcess" title="View full process"
-						styleName="hand">
-						<strong>View Complete Process</strong>
-					</d:ActionLink>
-				</g:HTMLPanel>
-			</g:HTMLPanel-->
+			<!-- g:HTMLPanel styleName="status-section span3 pull-right row-fluid 
+				well" ui:field="divProcess"> <div class="row-fluid"> <h5>Process Map</h5> 
+				</div> <g:HTMLPanel ui:field="statusContainer" styleName="panel-body"></g:HTMLPanel> 
+				<g:HTMLPanel styleName=""> <d:ActionLink ui:field="aShowProcess" title="View 
+				full process" styleName="hand"> <strong>View Complete Process</strong> </d:ActionLink> 
+				</g:HTMLPanel> </g:HTMLPanel -->
 
 		</g:HTMLPanel>
 	</g:HTMLPanel>
