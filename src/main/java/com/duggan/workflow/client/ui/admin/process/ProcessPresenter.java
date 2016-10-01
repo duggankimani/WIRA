@@ -2,7 +2,7 @@ package com.duggan.workflow.client.ui.admin.process;
 
 import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.events.ProcessSelectedEvent;
@@ -10,7 +10,6 @@ import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -27,7 +26,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.wira.commons.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class ProcessPresenter extends
 		Presenter<ProcessPresenter.IProcessView, ProcessPresenter.MyProxy>{
@@ -62,7 +60,6 @@ public class ProcessPresenter extends
 	@Inject
 	public ProcessPresenter(final EventBus eventBus, final IProcessView view,
 			final MyProxy proxy,
-			Provider<ProcessSavePresenter> addprocessProvider,
 			Provider<ProcessStepsPresenter> taskStepsProvider) {
 		super(eventBus, view, proxy, BaseProcessPresenter.CONTENT_SLOT);
 		taskStepsFactory = new StandardProvider<ProcessStepsPresenter>(

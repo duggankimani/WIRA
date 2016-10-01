@@ -46,8 +46,6 @@ import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsView;
 import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.admin.process.ProcessView;
 import com.duggan.workflow.client.ui.admin.processes.ProcessListingModule;
-import com.duggan.workflow.client.ui.admin.processes.save.ProcessSavePresenter;
-import com.duggan.workflow.client.ui.admin.processes.save.ProcessSaveView;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsPresenter;
 import com.duggan.workflow.client.ui.admin.processitem.ProcessStepsView;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessModule;
@@ -207,10 +205,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(AdminHomePresenter.class,
 				AdminHomePresenter.MyView.class, AdminHomeView.class,
 				AdminHomePresenter.MyProxy.class);
-
-		bindPresenterWidget(ProcessSavePresenter.class,
-				ProcessSavePresenter.IProcessSaveView.class,
-				ProcessSaveView.class);
 
 		bindPresenter(ProcessPresenter.class,
 				ProcessPresenter.IProcessView.class, ProcessView.class,

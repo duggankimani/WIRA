@@ -10,18 +10,21 @@ import com.duggan.workflow.client.ui.component.Card;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
+import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
+import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
-import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
+import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
@@ -33,6 +36,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -42,12 +48,13 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.Listable;
 import com.wira.commons.shared.models.UserGroup;
 
-public class ProcessSavePanel extends Composite {
+public class ProcessSavePanel extends Composite implements DeleteAttachmentHandler{
 
 	private static ProcessSavePanelUiBinder uiBinder = GWT
 			.create(ProcessSavePanelUiBinder.class);
@@ -80,6 +87,8 @@ public class ProcessSavePanel extends Composite {
 	InlineLabel lblWarning;
 	@UiField
 	DropDownList<ProcessCategory> lstCategories;
+	
+	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
 	ProcessDef process = null;
 
@@ -282,6 +291,53 @@ public class ProcessSavePanel extends Composite {
 							setProcessDef(result.getProcessDef());
 							
 						}
+					}
+				});
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		addRegisteredHandler(DeleteAttachmentEvent.getType(), this);
+	}
+	
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+		cleanUpEvents();
+	}
+	
+
+	/**
+	 * 
+	 * @param type
+	 * @param handler
+	 */
+	public void addRegisteredHandler(Type<? extends EventHandler> type,
+			EventHandler handler) {
+		@SuppressWarnings("unchecked")
+		HandlerRegistration hr = AppContext.getEventBus().addHandler(
+				(GwtEvent.Type<EventHandler>) type, handler);
+		handlers.add(hr);
+	}
+
+	/**
+	 * 
+	 */
+	protected void cleanUpEvents() {
+		for (HandlerRegistration hr : handlers) {
+			hr.removeHandler();
+		}
+		handlers.clear();
+	}
+	
+	@Override
+	public void onDeleteAttachment(DeleteAttachmentEvent event) {
+		Attachment attachment = event.getAttachment();
+		AppContext.getDispatcher().execute(new DeleteAttachmentRequest(attachment.getId()),
+				new TaskServiceCallback<DeleteAttachmentResponse>() {
+					@Override
+					public void processResult(DeleteAttachmentResponse result) {
 					}
 				});
 	}
