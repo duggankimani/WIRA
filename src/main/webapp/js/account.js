@@ -118,7 +118,11 @@ function showFormInputs(isShow){
 function activationRequest(){
 	showFormInputs(true);
 	
+	var email=getElementByName("email");
+	$(email).prop('disabled',true);
+	
 	if(activity=='reset'){
+		$('#elHeading').text("Reset Password");
 		var firstName = getElementByName('firstname');
 		$(firstName).hide();
 		$(firstName).prev().hide();
@@ -126,11 +130,12 @@ function activationRequest(){
 		var lastName = getElementByName('lastname');
 		$(lastName).hide();
 		$(lastName).prev().hide();
+		
+	}else{
+		$('elHeading').html("Activate Account");
 	}
 	
-	$('elHeading').html("Activate Account");
-	var email=getElementByName("email");
-	$(email).prop('disabled',true);
+	
 	
 	if(action==null || action!='activateacc' || activationId==null ||
 			userId==null || activity==null || (activity!='reset' && activity!='default')){
