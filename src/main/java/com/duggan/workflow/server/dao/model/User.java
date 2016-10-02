@@ -18,8 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.Cascade;
-
 import com.wira.commons.shared.models.HTUser;
 
 @Entity(name = "BUser")

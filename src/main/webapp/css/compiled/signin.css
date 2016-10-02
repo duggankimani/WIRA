@@ -19,6 +19,9 @@
 .login-wrapper {
 	position: absolute;
 	top: 70px;
+}
+
+.text-center{
 	text-align: center;
 }
 
@@ -247,5 +250,6 @@
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     background: #ffffff;
-	min-height:339px;
+	/*min-height:339px;*/
+	display: flex;
 }

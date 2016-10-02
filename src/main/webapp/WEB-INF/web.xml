@@ -77,6 +77,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+	    <servlet-name>AccountsServlet</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.security.AccountsServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>AccountsServlet</servlet-name>
+	    <url-pattern>/accounts</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	    <servlet-name>RestService</servlet-name>
 	    <servlet-class>com.duggan.workflow.server.rest.servlet.JerseyServletContainer</servlet-class>
 	    <init-param>

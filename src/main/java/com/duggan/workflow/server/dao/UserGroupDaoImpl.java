@@ -11,8 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import com.duggan.workflow.server.dao.model.Activation;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
+import com.wira.commons.shared.models.HTUser;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
 
@@ -168,6 +170,42 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 				+ "inner join buser u on (u.id=ug.userid) where u.userid=:userId";
 		return getResultList(em.createNativeQuery(hql).setParameter("userId", userId));
 	}
-	
+
+	public boolean isValid(String activationRefId, String userRefId) {
+		Number value = getSingleResultOrNull(
+				em.createNativeQuery("select id from activation where refId=:refId "
+						+ "and userRefId=:userRefId "
+						+ "and isActive=1")
+				.setParameter("refId", activationRefId)
+				.setParameter("userRefId", userRefId));
+				
+		return value!=null;
+	}
+
+	public HTUser getBasicUser(String userRefId) {
+		
+		String sql = "select refid,email,firstname,lastname from buser where refId=:refId and isActive=1" ;
+		
+		List<Object[]> row = getResultList(em.createNativeQuery(sql)
+				.setParameter("refId", userRefId));
+		
+		HTUser user = new HTUser();
+		if(row.size()==1){
+			Object[] arr = row.get(0);
+			int i=0;
+			String refId = arr[i++].toString();
+			String email = arr[i++].toString();
+			String firstName = arr[i++].toString();
+			String lastName = arr[i++].toString();
+			
+			user.setRefId(refId);
+			user.setSurname(lastName);
+			user.setName(firstName);
+			user.setEmail(email);
+			
+			return user;
+		}
+		return null;
+	}
 
 }

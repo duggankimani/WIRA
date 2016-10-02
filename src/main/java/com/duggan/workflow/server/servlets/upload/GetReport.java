@@ -5,73 +5,45 @@ import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
-import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
-import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.server.security.BaseServlet;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.itextpdf.text.DocumentException;
 
-public class GetReport extends HttpServlet {
+public class GetReport extends BaseServlet {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static Logger log = Logger.getLogger(GetReport.class);
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-		try {
-			// check session
-			//check session
-			SessionHelper.setHttpRequest(req);
-			
-			DB.beginTransaction();
-
-			executeGet(req, resp);
-
-			DB.commitTransaction();
-		} catch (Exception e) {
-			DB.rollback();
-			
-			resp.setContentType("text/html");
-			writeOut(resp, ("<p><b>"+e.getMessage()+"</b></p>"+ExceptionUtils.getStackTrace(e)).getBytes());
-			e.printStackTrace();
-		} finally {
-			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
-		}
-
+		initRequest(req, resp);
 	}
-
-	protected void executeGet(HttpServletRequest req, HttpServletResponse resp)
+	
+	
+	protected void executeRequest(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		String action = req.getParameter("ACTION");
@@ -341,21 +313,5 @@ public class GetReport extends HttpServlet {
 
 	}
 
-	private void writeOut(HttpServletResponse resp,
-			byte[] data) {
-		ServletOutputStream out = null;
-		try{
-			out = resp.getOutputStream();
-			out.write(data);
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
-		
-		try{
-			out.close();			
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}		
-	}
-
+	
 }

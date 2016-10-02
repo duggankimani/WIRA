@@ -18,6 +18,7 @@ import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.commands.SendMailCommand;
 
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
+import com.duggan.workflow.server.dao.model.Activation;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
@@ -355,9 +356,12 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	private void sendActivationEmail(User user) {
-		String subject = "Welcome to KNA Editorial Portal!";
+		String subject = "Welcome to WIRA BPM!";
+		Activation act = new Activation(user.getRefId());
+		DB.getUserGroupDao().save(act);
+		
 		String link = SessionHelper.getApplicationPath()
-				+ "/account.html#/activateacc/" + user.getRefId() + "/default";
+				+ "/account.html#/activateacc/"+act.getRefId()+"/"+ user.getRefId() + "/default";
 
 		String body = "Dear "
 				+ user.getFullNames()
@@ -393,10 +397,13 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	public void sendAccountResetEmail(HTUser user) {
+		
+		Activation act = new Activation(user.getRefId());
+		DB.getUserGroupDao().save(act);
 
 		String subject = "WIRA Workflow Password Reset";
 		String link = SessionHelper.getApplicationPath()
-				+ "/account.html#/activateacc/" + user.getRefId() + "/reset";
+				+ "/account.html#/activateacc/" +act.getRefId()+"/"+ user.getRefId() + "/reset";
 
 		String body = "Hello "
 				+ user.getFullName()

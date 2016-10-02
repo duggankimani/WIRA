@@ -29,6 +29,9 @@
 
 <title>Password Management</title>
 
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/js.cookie.js"></script>
+<script type="text/javascript" src="js/account.js"></script>
 </head>
 <body>
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
@@ -40,23 +43,44 @@
 			Your web browser must have JavaScript enabled in order for this
 			application to display correctly.</div>
 	</noscript>
-	<script type="text/javascript" language="javascript"
-		src="login/login.nocache.js"></script>
 
 	<div class="login-bg" id="mainContent">
 		<div class="row-fluid login-wrapper">
-			<div class="span6 accbox" id="loadingbox" style="margin: 0 auto;">
-				<img id="logo-image" class="logo-image" src="img/wiralogo.png"
-					alt="Logo"></img> <span class="logo-title">Wira</span>
-				<div class="content-wrap" id="divAccountsReset" style="margin-top: 15px;">
-					<img class="loading" src="img/loading.gif"/>				
-				</div>
-				<div class="">
-					<span
-						style="font-family: Helvetica Neue, Helvetica, Lucida Grande, tahoma, verdana, arial, sans-serif; font-size: 11px; color: #aaaaaa; line-height: 16px">
-						WIRA Workflow System for Kenya News Agency,
-						Department of Information <br /> Report a Problem <a href="#help">here.</a>
-					</span>
+			<div class="span5 accbox" id="loadingbox" 
+			style="margin: 0 auto;display: flex;">
+				<div class="span12">
+					<div class="span2"></div>
+					 <div class="span8" style="margin:auto;">
+					 	<div id="issues" class="hide alert alert-danger">User not found</div>
+					 	<div>
+					 	<div style="margin-bottom:20px;">
+					 		<h2 id="elHeading">Activate Account</h2>
+					 	</div>
+					    <form action="javascript:doActivateAccount();">	
+						    <label>Email Address</label>
+						    <input type="email" name="email" class="span12" disabled>
+						    <label>First Name</label>
+						    <input type="text" name="firstname" class="span12">
+						    <label>Last Name</label>
+						    <input type="text" name="lastname" class="span12">
+						    <label>Password</label>
+						    <input type="password" name="password" class="span12">
+						    <label>Confirm Password</label>
+						    <input type="password" name="passwordConfirm" class="span12">
+						    <label>
+						    <input type="checkbox" name="terms"> 
+						    I agree with the <a href="#">Terms and Conditions</a>.
+						    </label>
+						    <div>
+						    	<a class="btn" href="login.html">Cancel</a>
+						    	<input type="submit" name="submit" value="Sign up" class="btn btn-primary pull-right">
+						    </div>
+						    
+						    <div class="clearfix"></div>
+					    </form>
+					    </div>
+					 </div>
+					 <div class="span2"></div>
 				</div>
 			</div>
 		</div>
