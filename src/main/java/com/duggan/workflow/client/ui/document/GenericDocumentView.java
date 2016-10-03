@@ -56,7 +56,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.wira.commons.client.security.CurrentUser;
 import com.wira.commons.client.util.ArrayUtil;
@@ -239,6 +238,7 @@ public class GenericDocumentView extends ViewImpl implements
 	
 	SHOWITEMS selected = SHOWITEMS.FORM;
 	private boolean isLoadAsAdmin;
+	private String processRefId;
 
 	@Inject
 	public GenericDocumentView(final Binder binder, CurrentUser user) {
@@ -444,14 +444,6 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 
-	// protected void toggleProcess() {
-	// if(!isBizProcessDisplayed){
-	// showProcessTree(true);
-	// }else{
-	// showProcessTree(false);
-	// }
-	// }
-	//
 	public void changeView(SHOWITEMS itemToShow) {
 		divProcess.addStyleName("hide");
 		divContent.addClassName("hide");
@@ -524,8 +516,10 @@ public class GenericDocumentView extends ViewImpl implements
 		formPanel = new FormPanel(form, doc);
 		
 		//Configure
-		aConfigure.setHref("#/formbuilder?p=rOSplNWnmiCZMws4&formRefId="+form.getRefId());
-		aConfigure.setTarget("_blank");
+		if(processRefId!=null){
+			aConfigure.setHref("#/formbuilder?p="+processRefId+"&formRefId="+form.getRefId());
+			aConfigure.setTarget("_blank");	
+		}
 
 		if (validActions != null) {
 			if (validActions.contains(Actions.COMPLETE)) {
@@ -1207,6 +1201,11 @@ public class GenericDocumentView extends ViewImpl implements
 		if(size>0){
 			elAttachmentsCount.setInnerText(""+size);	
 		}
+	}
+
+	@Override
+	public void setProcessRefId(String processRefId) {
+		this.processRefId = processRefId;
 	}
 	
 }

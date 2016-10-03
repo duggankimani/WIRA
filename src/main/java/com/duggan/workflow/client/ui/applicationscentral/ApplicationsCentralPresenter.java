@@ -47,6 +47,8 @@ implements AfterDocumentLoadHandler
     @Inject PlaceManager placeManager;
     @Inject DispatchAsync requestHelper;
 
+	private String processRefId;
+
     @Inject
     ApplicationsCentralPresenter(
             EventBus eventBus,
@@ -69,7 +71,7 @@ implements AfterDocumentLoadHandler
     	super.prepareFromRequest(request);
     	Window.setTitle("Applications Central");
     	
-    	String processRefId = request.getParameter("processRefId", null);
+    	processRefId = request.getParameter("processRefId", null);
     	String docRefId = request.getParameter("docRefId", null);
     	
     	if(docRefId!=null){
@@ -89,7 +91,7 @@ implements AfterDocumentLoadHandler
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
-				result.setDocId(docRefId, taskId, false);
+				result.setDocId(processRefId,docRefId, taskId, false);
 				
 //				result.setGlobalFormMode(mode);
 //				if (currentTaskType == TaskType.UNASSIGNED) {

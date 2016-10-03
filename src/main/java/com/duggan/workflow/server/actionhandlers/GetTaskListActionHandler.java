@@ -102,7 +102,7 @@ public class GetTaskListActionHandler extends
 				if(doc!=null)
 					summary.add(doc);
 				
-				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(userId, processInstanceId, action.isLoadAsAdmin(),action.getOffset(),action.getLength());
+				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(processId,userId, processInstanceId, action.isLoadAsAdmin(),action.getOffset(),action.getLength());
 				
 				if(tasks!=null){
 					summary.addAll(tasks);

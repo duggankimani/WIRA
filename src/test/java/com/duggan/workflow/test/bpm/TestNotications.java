@@ -69,7 +69,7 @@ public class TestNotications {
 		String userId ="mariano";
 		Long processInstanceId = 108L; //88
 		//get owned or potential owner of
-		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(userId, processInstanceId,0,100);
+		List<HTSummary> summaries = JBPMHelper.get().getTasksForUser(null,userId, processInstanceId,0,100);
 		
 		
 		for(HTSummary sum : summaries){

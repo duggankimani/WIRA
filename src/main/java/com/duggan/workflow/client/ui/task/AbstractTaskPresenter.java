@@ -466,7 +466,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
-				result.setDocId(docRefId, taskId, isLoadAsAdmin());
+				result.setDocId(processRefId,docRefId, taskId, isLoadAsAdmin());
 				result.setGlobalFormMode(mode);
 
 				if (currentTaskType == TaskType.UNASSIGNED) {

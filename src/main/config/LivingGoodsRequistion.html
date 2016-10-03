@@ -384,7 +384,7 @@ th.row-headers-background {
 	padding: 2px 3px 2px 3px;
 }
 
-#particulars_grid_Delete {
+#particulars_grid_Delete, #others_grid_Delete {
 	color: red;
 	opacity: 0.7;
 	margin-right: -14px;
@@ -392,7 +392,7 @@ th.row-headers-background {
 	display: inline-block;
 }
 
-#particulars_grid_Add {
+#particulars_grid_Add, #others_grid_Add {
 	color: rgb(230, 129, 4);
 }
 
@@ -451,7 +451,7 @@ th.row-headers-background {
 }
 
 .waffle .header input, .waffle .header select {
-	color: black;
+	font-weight:bold;
 }
 
 .waffle .header select {
@@ -493,7 +493,7 @@ th.row-headers-background {
 					class="column-headers-background"></th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="header">
 			<tr style='height: 20px;'>
 				<td class="s2">Instructions:</td>
 				<td></td>
@@ -563,7 +563,9 @@ th.row-headers-background {
 			</tr>
 			<tr style='height: 20px;'>
 				<td class="s2" dir="ltr">Name:</td>
-				<td class="s4" dir="ltr" colspan="3">Josphine Muthoni</td>
+				<td class="s4" dir="ltr" colspan="3">
+					<input type="text" id="applicantName"></input>
+				</td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -578,8 +580,12 @@ th.row-headers-background {
 			</tr>
 			<tr style='height: 20px;'>
 				<td class="s2" dir="ltr">Country:</td>
-				<td class="s4" dir="ltr">Kenya</td>
-				<td></td>
+				<td class="s4" dir="ltr" colspan="2">
+				<select id="Country">
+					<option>Kenya</option>
+					<option>Uganda</option>
+				</select>
+				</td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -595,19 +601,35 @@ th.row-headers-background {
 			</tr>
 			<tr style='height: 20px;'>
 				<td class="s2" dir="ltr">Month:</td>
-				<td class="s4" dir="ltr">August</td>
+				<td class="s4" dir="ltr" colspan="2">
+				<select id="month">
+					<option>January</option>
+					<option>February</option>
+					<option>March</option>
+					<option>April</option>
+					<option>May</option>
+					<option>June</option>
+					<option>July</option>
+					<option>August</option>
+					<option>September</option>
+					<option>October</option>
+					<option>November</option>
+					<option>December</option>
+				</select>
+				</td>
 				<td></td>
 				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="s2">Year</td>
+				<td class="s2" colspan="2">
+					<input type="text" id="year"></input>
+				</td>
 				<td class="s1" dir="ltr"></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s1" dir="ltr"></td>
-				<td class="s1" dir="ltr"></td>
-				<td class="s1" dir="ltr"></td>
+				<td class="s2" dir="ltr">Date</td>
+				<td class="s1" colspan="2" dir="ltr">
+					<input type="date" id="dateSubmitted"></input>
+				</td>
 				<td class="s1" dir="ltr"></td>
 			</tr>
 			<tr style='height: 20px;'>
@@ -666,11 +688,12 @@ th.row-headers-background {
 
 			<tr class="grid_row_template" style='height: 20px;'>
 				<td class="s1" dir="ltr"><textarea class="textarea-box"
-						role="textbox" aria-multiline="true"></textarea></td>
+						role="textbox" aria-multiline="true" placeholder="Dates of activity"></textarea></td>
 				<td class="s6" dir="ltr"><input type="number" id="days">
 					</input></td>
-				<td class="s1" dir="ltr"><select id="location">
-				</select></td>
+				<td class="s1" dir="ltr">
+					<input type="text" id="location" placeholder="Location"></input>
+				</td>
 				<td class="s1" dir="ltr"><select id="expenseCategory">
 						<option>--Select--</option>
 						<option>Travel</option>
@@ -680,27 +703,27 @@ th.row-headers-background {
 						<option>Airtime</option>
 				</select></td>
 				<td class="s1" dir="ltr"><textarea class="textarea-box"
-						role="textbox" aria-multiline="true"></textarea></td>
+						role="textbox" aria-multiline="true" placeholder="Description"></textarea></td>
 				<td class="s1" dir="ltr"><input id="transportPerDay"
-					type="number" class="input_number"> </input></td>
+					type="number" class="input_number" placeholder="0.00"> </input></td>
 				<td class="s1" dir="ltr"><input id="accommodationPerNight"
-					type="number" class="input_number"></input></td>
+					type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"><input id="fieldTransportPerDay"
-					type="number" class="input_number"></input></td>
+					type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"><input id="mealsPerDay" type="number"
-					class="input_number"></input></td>
+					class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"><input id="transportTotal"
-					type="number" class="input_number"></input></td>
+					type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"><input id="accommodationTotal"
-					type="number" class="input_number"></input></td>
+					type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"><input id="fieldTransportTotal"
-					type="number" class="input_number"></input></td>
+					type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"><input id="mealsTotal" type="number"
-					class="input_number"></input></td>
+					class="input_number" placeholder="0.00"></input></td>
 				<td class="s7" dir="ltr">
 					<div>
-						<input id="lineTotal" type="number" class="grid_totals" /> <a
+						<input id="lineTotal" type="number" class="grid_totals" placeholder="0.00" /> <a
 							id="particulars_grid_Delete"><i class="icon-remove-circle"></i></a>
 					</div>
 				</td>
@@ -723,7 +746,7 @@ th.row-headers-background {
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s8" dir="ltr"><input id="particularsSubTotal"
-					type="number" class="grid_totals"></input></td>
+					type="number" class="grid_totals" placeholder="0.00"></input></td>
 			</tr>
 			<tr style='height: 20px;'>
 				<td></td>
@@ -774,9 +797,9 @@ th.row-headers-background {
 			<tr class="grid_row_template" style='height: 20px;'>
 				<td class="s4" dir="ltr">Please Describe</td>
 				<td class="s10" colspan="5"><textarea class="textarea-box"
-						role="textbox" aria-multiline="true"></textarea></td>
+						role="textbox" aria-multiline="true" placeholder="Description"></textarea></td>
 				<td></td>
-				<td><input id="otherAmount" type="number" class="input_number"></input></td>
+				<td><input id="otherAmount" type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
@@ -784,7 +807,7 @@ th.row-headers-background {
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s11" dir="ltr"><input id="otherTotal" type="number"
-					class="grid_totals input_number"></input> <a id="others_grid_Delete"> <i
+					class="grid_totals input_number" placeholder="0.00"></input> <a id="others_grid_Delete"> <i
 						class="icon-remove-circle"></i>
 				</a></td>
 			</tr>
@@ -806,7 +829,7 @@ th.row-headers-background {
 			<td class="s1" dir="ltr"></td>
 			<td class="s1" dir="ltr"></td>
 			<td class="s8" dir="ltr"><input id="otherSubTotal" type="number"
-				class="grid_totals input_number"></input></td>
+				class="grid_totals input_number" placeholder="0.00"></input></td>
 		</tr>
 		<tr style='height: 20px;'>
 			<td></td>
@@ -842,7 +865,7 @@ th.row-headers-background {
 			<td class="s1" dir="ltr"></td>
 			<td class="s1" dir="ltr"></td>
 			<td class="s8" dir="ltr"><input id="totalRequisition"
-				type="number" class="grid_totals input_number"></input></td>
+				type="number" class="grid_totals input_number" placeholder="0.00"></input></td>
 		</tr>
 		<tr style='height: 20px;'>
 			<td class="s14"></td>

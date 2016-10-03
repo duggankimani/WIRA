@@ -30,7 +30,7 @@ function doFormSubmit() {
 	var str = form.serialize();
 	
 	$('#issues').hide();
-	$('#submit').hide();
+	$('#submit').prop("disabled",true);
 	
 	$.ajax({
 		type:"POST",
@@ -44,7 +44,7 @@ function doFormSubmit() {
 		$('#issues').show();
 	})
 	.always(function() {
-		$('#submit').show();
+		$('#submit').prop("disabled",false);
 	});
 
 };

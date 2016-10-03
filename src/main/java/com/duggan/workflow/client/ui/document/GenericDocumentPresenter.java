@@ -268,6 +268,8 @@ public class GenericDocumentPresenter extends
 		void forceExecJs();
 
 		void setAttachmentsCount(int size);
+
+		void setProcessRefId(String processRefId);
 	}
 
 	private Long taskId;
@@ -1849,10 +1851,11 @@ public class GenericDocumentPresenter extends
 	// getView().setStates(states);
 	// }
 
-	public void setDocId(String docRefId, Long taskId, boolean isLoadAsAdmin) {
+	public void setDocId(String processRefId,String docRefId, Long taskId, boolean isLoadAsAdmin) {
 		this.docRefId = docRefId;
 		this.taskId = taskId;
 		this.isLoadAsAdmin = isLoadAsAdmin;
+		getView().setProcessRefId(processRefId);
 		getView().setLoadAsAdmin(isLoadAsAdmin);
 	}
 

@@ -352,13 +352,13 @@ public class JBPMHelper implements Closeable {
 		return statuses;
 	}
 
-	public List<HTSummary> getTasksForUser(String userId,
+	public List<HTSummary> getTasksForUser(String processId,String userId,
 			Long processInstanceId, int offset, int length) {
-		return getTasksForUser(userId, processInstanceId, false, offset, length);
+		return getTasksForUser(processId,userId, processInstanceId, false, offset, length);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<HTSummary> getTasksForUser(String userId,
+	public List<HTSummary> getTasksForUser(String processId,String userId,
 			Long processInstanceId, boolean isLoadAsAdmin, int offset,
 			int length) {
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
@@ -373,19 +373,21 @@ public class JBPMHelper implements Closeable {
 		if (isLoadAsAdmin) {
 			// Load Tasks As System administrator
 			ts = DB.getEntityManager()
-					.createNamedQuery("TaskAssignedAsBizAdministrator")
+					.createNamedQuery("TaskAssignedAsBizAdministratorByProcessId")
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
 					.setParameter("processInstanceId", processInstanceId==null? -1: processInstanceId.intValue())
+					.setParameter("processId", processId==null? "": processId)
 					.setFirstResult(offset).setMaxResults(length)
 					.getResultList();
 		} else {
 
-			ts = DB.getEntityManager().createNamedQuery("TasksOwnedBySubject")
+			ts = DB.getEntityManager().createNamedQuery("TasksOwnedBySubjectAndProcessId")
 					.setParameter("userId", userId)
 					.setParameter("language", "en-UK")
 					.setParameter("groupIds", groupIds)
 					.setParameter("processInstanceId", processInstanceId==null? -1: processInstanceId.intValue())
+					.setParameter("processId", processId==null? "": processId)
 					.setFirstResult(offset).setMaxResults(length)
 					.getResultList();
 		}
