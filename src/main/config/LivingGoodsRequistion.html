@@ -1,9 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
-.ritz .waffle a {
-	color: inherit;
-}
-
 th.row-headers-background {
 	background: #eee;
 	position: relative;
@@ -19,12 +15,10 @@ th.row-headers-background {
 	height: 23px;
 	border-bottom: solid 1px #ccc;
 	border-width: 0 1px 1px 0;
-	overflow: hidden;
 	padding: 0;
 }
 
 .waffle td, .grid-fixed-table td, td.mimic-overlay-cell {
-	overflow: hidden;
 	border: 1px #e5e5e5 solid;
 	border-color: rgba(0, 0, 0, 0.15);
 	border-width: 0 1px 1px 0;
@@ -108,7 +102,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -149,7 +142,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -163,7 +155,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -179,7 +170,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -194,7 +184,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -210,7 +199,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -241,7 +229,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -283,7 +270,6 @@ th.row-headers-background {
 	font-size: 12pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -297,7 +283,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -311,7 +296,6 @@ th.row-headers-background {
 	font-size: 10pt;
 	vertical-align: bottom;
 	white-space: normal;
-	overflow: hidden;
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -324,8 +308,8 @@ th.row-headers-background {
 	font-family: 'Arial';
 	font-size: 10pt;
 	vertical-align: bottom;
-	white-space: normal;
-	overflow: hidden;
+	white-space: nowrap;
+	/*  */
 	word-wrap: break-word;
 	direction: ltr;
 	padding: 2px 3px 2px 3px;
@@ -392,10 +376,6 @@ th.row-headers-background {
 	display: inline-block;
 }
 
-#particulars_grid_Add, #others_grid_Add {
-	color: rgb(230, 129, 4);
-}
-
 .waffle .grid_template input {
 	height: 100%;
 }
@@ -438,8 +418,16 @@ th.row-headers-background {
 	padding: 0px;
 }
 
+.waffle .datepicker {
+	width: 90%;
+}
+
+.waffle .datepicker .icon-calendar {
+	font-size: 11px;
+}
+
 .waffle .input-group input {
-	background-color: #E4E8F3
+	background-color: #E4E8F3;
 }
 
 .waffle .input-group-addon {
@@ -451,7 +439,7 @@ th.row-headers-background {
 }
 
 .waffle .header input, .waffle .header select {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 .waffle .header select {
@@ -563,9 +551,8 @@ th.row-headers-background {
 			</tr>
 			<tr style='height: 20px;'>
 				<td class="s2" dir="ltr">Name:</td>
-				<td class="s4" dir="ltr" colspan="3">
-					<input type="text" id="applicantName"></input>
-				</td>
+				<td class="s4" dir="ltr" colspan="3"><input type="text"
+					id="applicantName"></input></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -618,16 +605,14 @@ th.row-headers-background {
 				</td>
 				<td></td>
 				<td class="s2">Year</td>
-				<td class="s2" colspan="2">
-					<input type="text" id="year"></input>
+				<td class="s2" colspan="2"><input type="text" id="year"></input>
 				</td>
 				<td class="s1" dir="ltr"></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s2" dir="ltr">Date</td>
-				<td class="s1" colspan="2" dir="ltr">
-					<input type="date" id="dateSubmitted"></input>
-				</td>
+				<td class="s1" colspan="2" dir="ltr"><input type="date"
+					id="dateSubmitted"></input></td>
 				<td class="s1" dir="ltr"></td>
 			</tr>
 			<tr style='height: 20px;'>
@@ -650,7 +635,8 @@ th.row-headers-background {
 		</tbody>
 		<tbody id="particulars_grid" class="grid_template">
 			<tr style='height: 20px;'>
-				<td><a id="particulars_grid_Add">Add</a></td>
+				<td><br /> <a id="particulars_grid_Add"
+					class="btn btn-primary"><i class="icon-plus"></i>Add</a></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -686,12 +672,12 @@ th.row-headers-background {
 
 			<tr class="grid_row_template" style='height: 20px;'>
 				<td class="s1" dir="ltr"><textarea class="textarea-box"
-						role="textbox" aria-multiline="true" placeholder="Dates of activity"></textarea></td>
+						role="textbox" aria-multiline="true"
+						placeholder="Dates of activity"></textarea></td>
 				<td class="s6" dir="ltr"><input type="number" id="days">
 					</input></td>
-				<td class="s1" dir="ltr">
-					<input type="text" id="location" placeholder="Location"></input>
-				</td>
+				<td class="s1" dir="ltr"><input type="text" id="location"
+					placeholder="Location"></input></td>
 				<td class="s1" dir="ltr"><select id="expenseCategory">
 						<option>--Select--</option>
 						<option>Travel</option>
@@ -719,11 +705,9 @@ th.row-headers-background {
 					type="number" class="input_number" placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"><input id="mealsTotal" type="number"
 					class="input_number" placeholder="0.00"></input></td>
-				<td class="s7" dir="ltr">
-					<div>
-						<input id="lineTotal" type="number" class="grid_totals" placeholder="0.00" /> <a
-							id="particulars_grid_Delete"><i class="icon-remove-circle"></i></a>
-					</div>
+				<td class="s7" dir="ltr"><input id="lineTotal" type="number"
+					class="grid_totals" placeholder="0.00" /> <a
+					id="particulars_grid_Delete"><i class="icon-remove-circle"></i></a>
 				</td>
 			</tr>
 		</tbody>
@@ -764,9 +748,12 @@ th.row-headers-background {
 				<td class="s1" dir="ltr"></td>
 			</tr>
 		</tbody>
+
 		<tbody id="others_grid" class="grid_template">
 			<tr style='height: 20px;'>
-				<td class="s4" dir="ltr"><a id="others_grid_Add">Add</a></td>
+				<td class="s4" dir="ltr"><br /> <a id="others_grid_Add"
+					class="btn btn-primary"> <i class="icon-plus"></i> Add
+				</a></td>
 				<td class="s10" colspan="5"></td>
 				<td></td>
 				<td></td>
@@ -797,16 +784,17 @@ th.row-headers-background {
 				<td class="s10" colspan="5"><textarea class="textarea-box"
 						role="textbox" aria-multiline="true" placeholder="Description"></textarea></td>
 				<td></td>
-				<td><input id="otherAmount" type="number" class="input_number" placeholder="0.00"></input></td>
+				<td><input id="otherAmount" type="number" class="input_number"
+					placeholder="0.00"></input></td>
 				<td class="s1" dir="ltr"></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s11" dir="ltr"><input id="otherTotal" type="number"
-					class="grid_totals input_number" placeholder="0.00"></input> <a id="others_grid_Delete"> <i
-						class="icon-remove-circle"></i>
+				<td class="s7" dir="ltr"><input id="otherTotal" type="number"
+					class="grid_totals input_number" placeholder="0.00"></input> <a
+					id="others_grid_Delete"> <i class="icon-remove-circle"></i>
 				</a></td>
 			</tr>
 		</tbody>
