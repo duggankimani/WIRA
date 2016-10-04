@@ -462,34 +462,34 @@ th.row-headers-background {
 	<table class="waffle" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
-				<th id="0C0" style="min-width: 120px"
+				<th style="min-width: 120px"
 					class="column-headers-background"></th>
-				<th id="0C1" style="width: 49px" class="column-headers-background"></th>
-				<th id="0C2" style="min-width: 75px"
+				<th style="width: 49px" class="column-headers-background"></th>
+				<th style="min-width: 75px"
 					class="column-headers-background"></th>
-				<th id="0C3" style="min-width: 75px"
+				<th style="min-width: 75px"
 					class="column-headers-background"></th>
-				<th id="0C4" style="min-width: 120px"
+				<th style="min-width: 120px"
 					class="column-headers-background"></th>
-				<th id="0C5" style="min-width: 75px"
+				<th style="min-width: 75px"
 					class="column-headers-background"></th>
-				<th id="0C6" style="min-width: 75px"
+				<th style="min-width: 75px"
 					class="column-headers-background"></th>
-				<th id="0C7" style="min-width: 75px"
+				<th style="min-width: 75px"
 					class="column-headers-background"></th>
-				<th id="0C8" style="min-width: 75px"
+				<th style="min-width: 75px"
 					class="column-headers-background"></th>
-				<th id="0C9" style="min-width: 16px"
+				<th style="min-width: 16px"
 					class="column-headers-background"></th>
-				<th id="0C10" style="min-width: 100px"
+				<th style="min-width: 100px"
 					class="column-headers-background"></th>
-				<th id="0C11" style="min-width: 100px"
+				<th style="min-width: 100px"
 					class="column-headers-background"></th>
-				<th id="0C12" style="min-width: 100px"
+				<th style="min-width: 100px"
 					class="column-headers-background"></th>
-				<th id="0C13" style="min-width: 100px"
+				<th style="min-width: 100px"
 					class="column-headers-background"></th>
-				<th id="0C14" style="min-width: 100px"
+				<th style="min-width: 100px"
 					class="column-headers-background"></th>
 			</tr>
 		</thead>
@@ -580,13 +580,12 @@ th.row-headers-background {
 			</tr>
 			<tr style='height: 20px;'>
 				<td class="s2" dir="ltr">Country:</td>
-				<td class="s4" dir="ltr" colspan="2">
+				<td class="s4" dir="ltr" colspan="3">
 				<select id="Country">
 					<option>Kenya</option>
 					<option>Uganda</option>
 				</select>
 				</td>
-				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -601,7 +600,7 @@ th.row-headers-background {
 			</tr>
 			<tr style='height: 20px;'>
 				<td class="s2" dir="ltr">Month:</td>
-				<td class="s4" dir="ltr" colspan="2">
+				<td class="s4" dir="ltr" colspan="3">
 				<select id="month">
 					<option>January</option>
 					<option>February</option>
@@ -617,7 +616,6 @@ th.row-headers-background {
 					<option>December</option>
 				</select>
 				</td>
-				<td></td>
 				<td></td>
 				<td class="s2">Year</td>
 				<td class="s2" colspan="2">
@@ -930,8 +928,12 @@ th.row-headers-background {
 				is not provided)</td>
 			<td class="s2" dir="ltr"></td>
 			<td class="s2" dir="ltr" colspan="2">Submitted By</td>
-			<td class="s19" dir="ltr" colspan="4"></td>
-			<td class="s20" dir="ltr" colspan="3"></td>
+			<td class="s19" dir="ltr" colspan="4">
+				<span id="submitterStr"></span>
+			</td>
+			<td class="s20" dir="ltr" colspan="3">
+				<span id="dateSubmittedStr"></span>
+			</td>
 		</tr>
 		<tr style='height: 20px;'>
 			<td class="s2" dir="ltr"></td>
@@ -967,8 +969,8 @@ th.row-headers-background {
 			<td class="s21"></td>
 			<td class="s2" dir="ltr"></td>
 			<td class="s2" dir="ltr" colspan="2">Supervisors Approval</td>
-			<td class="s19" dir="ltr" colspan="4"></td>
-			<td class="s20" dir="ltr" colspan="3"></td>
+			<td class="s19" dir="ltr" colspan="4"><span id="supervisorStr"></span></td>
+			<td class="s20" dir="ltr" colspan="3"><span id="supervisorApprovalDateStr"></span></td>
 		</tr>
 		<tr style='height: 20px;'>
 			<td class="s4"></td>
@@ -1012,8 +1014,8 @@ th.row-headers-background {
 			<td class="s21"></td>
 			<td class="s2" dir="ltr"></td>
 			<td class="s2" dir="ltr" colspan="2">Finance Approval</td>
-			<td class="s20" dir="ltr" colspan="4"></td>
-			<td class="s20" dir="ltr" colspan="3"></td>
+			<td class="s20" dir="ltr" colspan="4"><span id="financeApprovalStr"></span></td>
+			<td class="s20" dir="ltr" colspan="3"><span id="financeApprovalDateStr"></span></td>
 		</tr>
 		<tr style='height: 20px;'>
 			<td class="s4"></td>
@@ -1056,9 +1058,9 @@ th.row-headers-background {
 			<td class="s22"></td>
 			<td class="s23"></td>
 			<td class="s2" dir="ltr"></td>
-			<td class="s2" dir="ltr" colspan="2">Receivers Approval</td>
-			<td class="s20" dir="ltr" colspan="4"></td>
-			<td class="s20" dir="ltr" colspan="3"></td>
+			<td class="s2" dir="ltr" colspan="2">Receivers Signature</td>
+			<td class="s20" dir="ltr" colspan="4"><span id="recieverStr"></span></td>
+			<td class="s20" dir="ltr" colspan="3"><span id="receiverDateStr"></span></td>
 		</tr>
 		</tbody>
 	</table>

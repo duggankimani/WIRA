@@ -75,6 +75,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler,
 		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler, DocumentLoadedHandler {
 
+	protected static final String GRID_TEMPLATE_CLASS = "grid_template";
+	protected static final String GRID_ROW_TEMPLATE_CLASS = "grid_row_template";
 	protected FocusPanel shim = new FocusPanel();
 	protected String refId = System.currentTimeMillis()+"";
 	protected HashMap<String, Property> props = new LinkedHashMap<String, Property>();
@@ -1329,11 +1331,17 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		};
 		
 		String tag = element.getTagName().toLowerCase();
-		if(type!=null && type.equals("radio")){
-			/*
-			 * DivElement enclosing radio buttons
-			 */
-			tag = "input";
+		if(type!=null){
+			if(type.equals("radio")){
+				/*
+				 * DivElement enclosing radio buttons
+				 */
+				tag = "input";
+			}
+			
+			if(type.equals("grid")){
+				tag="grid";
+			}
 		}
 		
 		FieldWidget widget = null;
@@ -1365,10 +1373,17 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				//Works in Production - Duggan 24/08/2016
 				widget = new HTMLSelectBasic(element, designMode);
 				break;
+			case "grid":
+				widget = new HTMLGrid(element, designMode);
+				break;
 			default:
-				if(type.equals("grid")){
-					widget = new HTMLGrid(element, designMode);
+				if(element.hasClassName(GRID_TEMPLATE_CLASS) 
+						|| element.hasClassName(GRID_ROW_TEMPLATE_CLASS) ){
+					//ignore
+				}else{
+					widget = new HTMLStatic(element,designMode);
 				}
+				//div, span, li, ul, etc - static elements
 				break;
 		}
 		
@@ -1397,8 +1412,63 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 		return null;
 	}
+	
+	public native void getAllElements(String parentId, JsArrayString elementIds)/*-{
+		var div = $doc.getElementById(parentId);
+		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
+		
+		$wnd.jQuery(div).find('[id]:not(.grid_template *)')
+		        .each(function() {
+		            var el = $wnd.jQuery(this);
+		            if(el.prop('id') !=null){
+		           	   elementIds.push(el.prop('id'));
+		           	}
+		           	if(el.prop('title')!=null && !isDesignMode){
+	           			$wnd.jQuery(el).popover({
+	           				trigger: 'focus'
+	           			});
+		           	}
+		        });
+	}-*/;
+	
+	public native void getAllGrids(String parentId, JsArrayString elementIds) /*-{
+		var div = $doc.getElementById(parentId);
+		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
+		
+		$wnd.jQuery(div).find('.grid_template')
+	    .each(function() {
+	        var el = $wnd.jQuery(this);
+	        var id = el.prop('id');
+	        if(id !=null && id != ''){
+	        	elementIds.push(id);
+	       	}
+	    });
+	    
+	    
+		$wnd.jQuery(div).find('.grid_template *[id]')
+	    .each(function() {
+	        var el = $wnd.jQuery(this);
+	        if(el.prop('id') !=null){
+	        	//alert('Elements in Grid >> '+el.prop('id'));
+	        	//elementIds.push(el.prop('id'));
+	       	}
+	       	
+	       	if(el.prop('title')!=null){
+	   			$wnd.jQuery(el).popover({
+	   				trigger: 'focus'
+	   			});
+	       	}
+	    });
+	    
+	  }-*/;
 
-	public static native void getAllInputs(String parentId,JsArrayString elementIds)/*-{
+	
+	
+	
+	
+	//Previous implementation
+	
+	/*public static native void getAllInputs(String parentId,JsArrayString elementIds)/*-{
 		var div = $doc.getElementById(parentId);
 		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
 		
@@ -1417,7 +1487,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 	}-*/;
 	
-	protected native void getAllGrids(String parentId, JsArrayString elementIds) /*-{
+	/*protected native void getAllGrids(String parentId, JsArrayString elementIds) /*-{
 		var div = $doc.getElementById(parentId);
 		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
 		
@@ -1447,6 +1517,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
         });
         
       }-*/;
+      
+    protected native void showPropertiesOnClick(Element el) /*-{
+		var that = this;
+		$wnd.jQuery(el).click(function(e){
+			that.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::showProperties(I)(0);
+		});
+	}-*/;
 	
 	protected native void showPropertiesOnClick(String id) /*-{
 		var that = this;
