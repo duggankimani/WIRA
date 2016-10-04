@@ -1111,8 +1111,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 //				GWT.log("Formula "+formular+"; [Handler-"+field.getName()+"]");
 //			}
 			Complex x = engine.evaluate(mathEclipseEscape(formular));
-			result = x.abs();
+			result = x.getReal();
 			setValue(result);
+			GWT.log("Formular "+field.getName()+"="+formular+" = "+result+"");
 		} catch (Exception e) {
 			GWT.log(e.getMessage());
 			e.printStackTrace();

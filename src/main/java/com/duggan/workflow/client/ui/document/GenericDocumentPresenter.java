@@ -949,6 +949,7 @@ public class GenericDocumentPresenter extends
 		if (formValues == null) {
 			formValues = new HashMap<String, Value>();
 		}
+		
 		// Add form field values : to take care of new values
 		for (String key : formValues.keySet()) {
 			Value val = formValues.get(key);
@@ -1201,18 +1202,12 @@ public class GenericDocumentPresenter extends
 	}
 
 	protected void save(Document document) {
-
-		// Incremental/ Page based additions
-		// mergeFormValuesWithDoc();
-
+		
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
 			MultiRequestAction requests = new MultiRequestAction();
 			requests.addRequest(new CreateDocumentRequest(document));
 			requests.addRequest(new GetAttachmentsRequest(docRefId));
-			// Window.alert("OnSave Value = "+(document.getValues().get("budgetAmount")==null?
-			// null:
-			// document.getValues().get("budgetAmount").getValue()));
 
 			requestHelper.execute(requests,
 					new TaskServiceCallback<MultiRequestActionResult>() {

@@ -4,6 +4,7 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLStatic extends FieldWidget{
@@ -40,7 +41,14 @@ public class HTMLStatic extends FieldWidget{
 	@Override
 	public void setField(Field field) {
 		super.setField(field);
-		String value = getPropertyValue(STATICCONTENT);
+		
+		Object val  = field.getValue()==null? null: field.getValue().getValue();
+		String value = null;
+		if(val!=null){
+			value = val.toString();
+		}else{
+			value = getPropertyValue(STATICCONTENT);
+		}
 		
 		if(value!=null){
 			lblEl.setInnerHTML(value);

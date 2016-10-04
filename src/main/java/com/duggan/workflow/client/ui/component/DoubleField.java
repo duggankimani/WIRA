@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
+import java.text.ParseException;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -8,22 +10,27 @@ import com.google.gwt.text.client.DoubleParser;
 import com.google.gwt.text.shared.AbstractRenderer;
 import com.google.gwt.text.shared.Parser;
 import com.google.gwt.text.shared.Renderer;
+import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ValueBox;
 
 public class DoubleField extends ValueBox<Double> {
 
 	private DoubleRenderer doubleRenderer;
+	private DoubleParser doubleParser;
+	
+	static String BASE_FORMAT = "#,##0.00;(#,##0.00)";
 
 	public DoubleField() {
 		this(Document.get().createTextInputElement(),
-				DoubleField.DoubleRenderer.instance(), DoubleParser.instance());
+				DoubleField.DoubleRenderer.instance(), DoubleField.DoubleParser.instance());
 	}
 
 	private DoubleField(Element element, Renderer<Double> renderer,
 			Parser<Double> parser) {
 		super(element, renderer, parser);
 		doubleRenderer = (DoubleRenderer)renderer;
+		doubleParser = (DoubleParser)parser;
 	}
 
 	public static DoubleField wrap(Element numberEl, boolean ishtmlFormElement) {
@@ -32,7 +39,7 @@ public class DoubleField extends ValueBox<Double> {
 
 		numberEl.setAttribute("type", "text");
 		DoubleField numberBox = new DoubleField(numberEl,
-				DoubleField.DoubleRenderer.instance(), DoubleParser.instance());
+				DoubleField.DoubleRenderer.instance(), DoubleField.DoubleParser.instance());
 
 		// Mark it attached and remember it for cleanup.
 		numberBox.onAttach();
@@ -58,19 +65,19 @@ public class DoubleField extends ValueBox<Double> {
 	
 	public void setFormat(String format){
 		if(format.equalsIgnoreCase("Integer")){
-			doubleRenderer.setFormat("#,###;(#,###)");
+			format = "#,###;(#,###)";
+			
 		}else if(format.equalsIgnoreCase("Double")){
-			doubleRenderer.setFormat("#,##0.00;(#,##0.00)");
-		}else{
-			doubleRenderer.setFormat(format);
+			format = "#,##0.00;(#,##0.00)";
 		}
 		
+		doubleRenderer.setFormat(format.trim());
+		doubleParser.setFormat(format.trim());
 	}
 
 	static class DoubleRenderer extends AbstractRenderer<Double> {
 
-		String format = "#,##0.00;(#,##0.00)";
-
+		String format = BASE_FORMAT;
 		/**
 		 * Returns the instance.
 		 */
@@ -100,4 +107,40 @@ public class DoubleField extends ValueBox<Double> {
 	public String getFormat() {
 		return doubleRenderer.getFormat();
 	}
+	
+	static class DoubleParser implements Parser<Double> {
+
+		  private static DoubleParser INSTANCE;
+		  String format = BASE_FORMAT;
+
+		  /**
+		   * Returns the instance of the no-op renderer.
+		   */
+		  public static Parser<Double> instance() {
+		    if (INSTANCE == null) {
+		      INSTANCE = new DoubleParser();
+		    }
+		    return INSTANCE;
+		  }
+
+		  protected DoubleParser() {
+		  }
+		  
+		  public void setFormat(String format){
+			this.format = format;
+		  }
+
+		  public Double parse(CharSequence object) throws ParseException {
+		    if ("".equals(object.toString())) {
+		      return null;
+		    }
+
+		    try {
+		      return NumberFormat.getFormat(format).parse(object.toString());
+		    } catch (NumberFormatException e) {
+		      throw new ParseException(e.getMessage(), 0);
+		    }
+		  }
+		}
+
 }

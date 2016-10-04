@@ -328,16 +328,13 @@ public class HTMLForm extends HTMLParent {
 	}
 	
 	protected void wrapElement(Element element, String type) {
-		GWT.log(element.getId()+" - Initializing--- ");
 		FieldWidget widget = FieldWidget.wrap(element,type, designMode);
 		
 		if (widget != null) {
 			Field child = initializeChild(widget);
 			children.put(child.getName(), child);
 			fieldWidgets.add(widget);
-			GWT.log(element.getId()+" - Initialized just fine!! - ");
 		}
-		
 		
 		field.setFields(children.values());
 	}
@@ -383,6 +380,8 @@ public class HTMLForm extends HTMLParent {
 		for (FieldWidget w : fieldWidgets) {
 			Field target = w.getField();
 			Value fieldValue = w.getFieldValue();
+			target.setValue(fieldValue);
+			
 			if (fieldValue != null) {
 				assert target.getName() != null;
 				assert !target.getName().isEmpty();
