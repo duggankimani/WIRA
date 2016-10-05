@@ -140,6 +140,11 @@ public class HTMLDateField extends FieldWidget {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
+		if(readOnly){
+			dateBox.setDisabled(true);
+		}else{
+			dateBox.setDisabled(false);
+		}
 	}
 
 	@Override

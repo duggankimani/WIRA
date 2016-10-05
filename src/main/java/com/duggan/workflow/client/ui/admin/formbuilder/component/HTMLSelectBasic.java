@@ -135,7 +135,7 @@ public class HTMLSelectBasic extends FieldWidget implements IsSelectionField {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-		UIObject.setVisible(lstItems.getElement(), !this.readOnly);
+		lstItems.setReadOnly(readOnly);
 	}
 
 	@Override

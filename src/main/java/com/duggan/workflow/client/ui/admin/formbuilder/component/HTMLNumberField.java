@@ -149,6 +149,7 @@ public class HTMLNumberField extends FieldWidget{
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
+		txtComponent.setReadOnly(readOnly);
 	}
 
 	@Override

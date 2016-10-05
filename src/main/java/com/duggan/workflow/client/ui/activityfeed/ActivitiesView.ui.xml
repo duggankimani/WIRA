@@ -127,9 +127,7 @@
 										<div class="stat-outer-wrapper">
 											<div class="stat-wrapper">
 												<div class="icon-wrapper">
-													<img
-														src="https://www.kuhustle.com/static/assets/images/icons/icon-posted-yellow.7b2ea775d86f.png"
-														alt="Newest Jobs"></img>
+													<i class="icon-pushpin"></i>
 												</div>
 												<div class="stat-item-wrapper stat-item1">
 													<div class="stat-item" ui:field="elTotal"></div>
@@ -145,9 +143,7 @@
 										<div class="stat-outer-wrapper">
 											<div class="stat-wrapper">
 												<div class="icon-wrapper">
-													<img
-														src="https://www.kuhustle.com/static/assets/images/icons/icon-in-progress-brown.52047f81a6ae.png"
-														alt="In Progress"></img>
+													<i class="icon-inbox"></i>
 												</div>
 												<div class="stat-item-wrapper stat-item2">
 													<div class="stat-item" ui:field="elInbox"></div>
@@ -163,9 +159,7 @@
 										<div class="stat-outer-wrapper">
 											<div class="stat-wrapper">
 												<div class="icon-wrapper">
-													<img
-														src="https://www.kuhustle.com/static/assets/images/icons/icon-completed-green.603dd8ffa49d.png"
-														alt="Completed"></img>
+													<i class="icon-ok-circle"></i>
 												</div>
 												<div class="stat-item-wrapper stat-item3">
 													<div class="stat-item" ui:field="elDone"></div>

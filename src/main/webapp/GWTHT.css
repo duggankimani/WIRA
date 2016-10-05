@@ -804,3 +804,18 @@ section.positioned {
 .controls .checkbox, .radio{
 	padding-left:0px;
 }
+
+.icon-wrapper i[class^="icon-"]{
+    font-size: 20px;
+}
+
+.icon-wrapper .icon-ok-circle{
+    color: #1F917B;
+}
+
+.icon-wrapper .icon-inbox{
+    color:#BB8D63;
+}
+.icon-wrapper .icon-pushpin{
+    color:#B89639;
+}
