@@ -154,7 +154,7 @@ public class DBUtil {
 						line._s(colName, ((BigInteger)value).longValue());
 					}
 					else if(value instanceof BigDecimal){
-						line._s(colName, ((BigDecimal)value).longValue());
+						line._s(colName, ((BigDecimal)value).doubleValue());
 					}
 				}
 				
