@@ -19,7 +19,7 @@ public class ProcessMigrationHelper {
 	public static void init(){
 		
 		if(autoStart){
-			List<ProcessDefModel> processes = DB.getProcessDao().getAllProcesses(null);
+			List<ProcessDefModel> processes = DB.getProcessDao().getAllProcesses(null,0,0);
 			
 			for(ProcessDefModel model: processes){
 				try{

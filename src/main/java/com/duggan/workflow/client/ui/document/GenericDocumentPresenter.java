@@ -1213,7 +1213,7 @@ public class GenericDocumentPresenter extends
 					new TaskServiceCallback<MultiRequestActionResult>() {
 						public void processResult(
 								MultiRequestActionResult results) {
-							setGlobalFormMode(MODE.VIEW);
+							setGlobalFormMode(MODE.EDIT);
 							int i = 0;
 							CreateDocumentResult aResponse = (CreateDocumentResult) results
 									.get(i++);

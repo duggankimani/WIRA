@@ -1,6 +1,5 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,15 +11,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.shared.models.HTUser;
-import com.wira.commons.shared.models.SerializableObj;
 
 @XmlType
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Doc extends SerializableObj implements Serializable,
-		IsSerializable, Comparable<Doc> {
+public class Doc extends IsDoc implements Comparable<Doc> {
 
 	/**
 	 * 
@@ -29,11 +25,6 @@ public class Doc extends SerializableObj implements Serializable,
 
 	private boolean hasAttachment = false;
 
-//	@XmlJavaTypeAdapter(MapValuesAdapter.class)
-//	@XmlElement(name="docvals")
-	@XmlTransient
-	protected HashMap<String, Value> values = new HashMap<String, Value>();
-	
 	@XmlTransient
 	protected HashMap<String, ArrayList<DocumentLine>> details = new HashMap<String, ArrayList<DocumentLine>>();
 
@@ -125,79 +116,6 @@ public class Doc extends SerializableObj implements Serializable,
 		
 
 		return dateToUse;
-	}
-
-	public HashMap<String, Value> getValues() {
-		return values;
-	}
-
-	public void setValues(HashMap<String, Value> values) {
-		this.values = values;
-	}
-
-	public void setValue(String name, Value value) {
-		if (value != null) {
-			value.setKey(name);
-		}
-
-		if (name.equals("subject")) {
-			// backward compatibility - Changing subject to-> CaseNo
-			setValue("caseNo", value.clone(false));
-		}
-
-		if (values.get(name) != null && value != null) {
-			// Duggan 15/09/2015- Added this to support Field Triggers that may
-			// update a field
-			// value with the previous value's id - This update causes
-			// duplication of a field value in
-			// the db
-
-			//Duggan 12/08/2016 - The above problem is no longer an issue. Document storage has now been upgraded to postgres jsonb format
-			//A new issue has arisen due to json storage, which uses duck typing to determine a number class to use i.e Integer, double, long etc
-			//This means the frontend might have a double field (DoubleValue) mapped (incorrectly) to an integer value (IntValue) on the server side.
-			//Overwriting the value in the document is an easier option to storing types being written
-//			Value v = values.get(name);
-//			v.setValue(value.getValue());
-			values.put(name, value);
-		} else {
-			values.put(name, value);
-		}
-
-	}
-
-	public void _s(String name, Date value) {
-		setValue(name, new DateValue(value));
-	}
-
-	public void _s(String name, String value) {
-		setValue(name, new StringValue(value));
-	}
-
-	public void _s(String name, Double value) {
-		setValue(name, new DoubleValue(value));
-	}
-
-	public void _s(String name, Integer value) {
-		setValue(name, new IntValue(value));
-	}
-
-	public void _s(String name, Long value) {
-		setValue(name, new LongValue(value));
-	}
-
-	public void _s(String name, Boolean value) {
-		setValue(name, new BooleanValue(value));
-	}
-
-	public void copyValue(String name, Value value) {
-		Value previous = values.get(name);
-		if (previous == null) {
-			previous = value.clone(false);
-		}
-
-		previous.setKey(name);
-		previous.setValue(value.getValue());
-		values.put(name, previous);
 	}
 
 	public HTUser getOwner() {
@@ -340,15 +258,6 @@ public class Doc extends SerializableObj implements Serializable,
 		return null;
 	}
 
-	public Object get(String key) {
-		Value val = values.get(key);
-		if (val == null) {
-			return null;
-		}
-
-		return val.getValue();
-	}
-
 	public String getCaseNo() {
 		return caseNo;
 	}
@@ -358,13 +267,6 @@ public class Doc extends SerializableObj implements Serializable,
 		setValue("caseNo", new StringValue(null, "caseNo", caseNo));
 	}
 
-	public HashMap<String, Object> toObjectMap() {
-		HashMap<String, Object> conv = new HashMap<String, Object>();
-		for (String key : getValues().keySet()) {
-			conv.put(key, get(key));
-		}
-		return conv;
-	}
 
 	public String getUploadedFileId() {
 		return uploadedFileId;

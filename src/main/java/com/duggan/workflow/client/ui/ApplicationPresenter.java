@@ -22,6 +22,7 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowA
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -252,8 +253,10 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 	public void onLockInteraction(LockInteractionEvent e) {
 		if(e.shouldLock()){
 			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.INITIAL);
+			//getView().showProcessing(true, "Loading...");
 		}else{
 			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.NONE);
+			//getView().showProcessing(false, null);
 		}
 	}
 

@@ -62,11 +62,11 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<ProcessDefModel> getAllProcesses() {
-		return getAllProcesses(null);
+		return getAllProcesses(null,0,0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ProcessDefModel> getAllProcesses(String searchTerm) {
+	public List<ProcessDefModel> getAllProcesses(String searchTerm, int beginIdx, int length) {
 
 		StringBuffer jpql = new StringBuffer(
 				"FROM ProcessDefModel p where p.isArchived=:isArchived ");
@@ -87,7 +87,12 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		for (String key : params.keySet()) {
 			query.setParameter(key, params.get(key));
 		}
-		return getResultList(query);
+		if(length==0){
+			return getResultList(query);
+		}else{
+			return getResultList(query,beginIdx,length);
+		}
+		
 	}
 
 	public void remove(ProcessDefModel model) {
