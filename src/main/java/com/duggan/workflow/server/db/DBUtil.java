@@ -25,6 +25,12 @@ public class DBUtil {
 		return getStringValue(sql, null);
 	}
 	
+	/**
+	 * 
+	 * @param sql
+	 * @param connectionName
+	 * @return
+	 */
 	public static String getStringValue(final String sql, String connectionName){
 		
 		DBExecute<String> exec = new DBExecute<String>(connectionName) {
@@ -57,7 +63,13 @@ public class DBUtil {
 		return exec.executeDbCall();
 	}
 	
-	
+
+	/**
+	 * 
+	 * @param sql
+	 * @param connectionName
+	 * @return
+	 */
 	public static List<Object[]> getValues(final String sql, String connectionName){
 		
 		DBExecute<List<Object[]>> exec = new DBExecute<List<Object[]>>(connectionName) {
@@ -101,10 +113,23 @@ public class DBUtil {
 		return exec.executeDbCall();
 	}
 	
+	/**
+	 * 
+	 * @param sql
+	 * @param connectionName
+	 * @param doc
+	 */
 	public static void mapValues(final String sql, String connectionName, Doc doc){
 		mapValues(sql, connectionName, null, doc);
 	}
 	
+	/**
+	 * 
+	 * @param sql
+	 * @param connectionName
+	 * @param gridName
+	 * @param doc
+	 */
 	public static void mapValues(final String sql, String connectionName,String gridName, IsDoc doc){
 		List<Object[]> rows = getValues(sql, connectionName);
 		

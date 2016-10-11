@@ -20,13 +20,14 @@ class LandingPageView extends ViewImpl implements LandingPagePresenter.ILandingP
     interface Binder extends UiBinder<Widget, LandingPageView> {
     }
 
+    
+    @UiField HTMLPanel tabsPanel;
+    @UiField HTMLPanel tabsContent;
+
     @Inject
     LandingPageView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
     }
-    
-    @UiField HTMLPanel tabsPanel;
-    @UiField HTMLPanel tabsContent;
 
 	@Override
 	public void setProcesses(ArrayList<ProcessCategory> categories) {
@@ -35,15 +36,25 @@ class LandingPageView extends ViewImpl implements LandingPagePresenter.ILandingP
 			addTab(cat);
 			addTabContent(cat);
 		}
+		
+		scrollOnSelect(tabsPanel.getElementById("processDropDown"));
 	}
 
 	private void clearTabs() {
 		tabsContent.getElement().removeAllChildren();
 		tabsPanel.getElementById("processtabs").removeAllChildren();
+		tabsPanel.getElementById("processDropDown").removeAllChildren();
 	}
 
 	private void addTab(ProcessCategory cat) {
 		Element ul = tabsPanel.getElementById("processtabs");
+		Element ul2 = tabsPanel.getElementById("processDropDown");
+		
+		addTab(ul, cat);
+		addTab(ul2, cat);
+	}
+	
+	private void addTab(Element ul, ProcessCategory cat) {
 		Element li = DOM.createElement("li");
 		if(!ul.hasChildNodes()){
 			li.addClassName("active");
@@ -53,14 +64,25 @@ class LandingPageView extends ViewImpl implements LandingPagePresenter.ILandingP
 		a.setAttribute("href", "#"+cat.getRefId());
 		a.setAttribute("data-toggle", "tab");
 		a.setInnerText(cat.getDisplayName().toUpperCase());
+		a.setTitle(cat.getDisplayName());
 		li.appendChild(a);
 		
 		ul.appendChild(li);
-//		<li class="active">
-//			<a href="#users" data-toggle="tab">FINANCE</a>
-//		</li>
 	}
 	
+	public native void scrollOnSelect(Element ulEl)/*-{
+		$wnd.jQuery($doc).ready(function(){
+			$wnd.jQuery(ulEl).find('a').click(function(){
+				$wnd.jQuery(this).preventDefault();
+				var href = $wnd.jQuery(this).prop('href');
+				href = href.substring(href.indexOf('#'),href.length); 
+				var query = 'a[href=\''+href+'\']';
+				$wnd.jQuery('#processtabs').find(query).get(0).scrollIntoView();
+			});
+		});
+		
+		
+	}-*/;
 
 	@SuppressWarnings("unchecked")
 	private void addTabContent(ProcessCategory cat) {

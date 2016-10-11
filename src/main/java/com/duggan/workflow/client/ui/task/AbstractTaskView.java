@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.task;
 
-import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DATEGROUP_SLOT;
+//import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DATEGROUP_SLOT;
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DOCUMENT_SLOT;
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.FILTER_SLOT;
 
@@ -228,12 +228,13 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {
-		if (slot == DATEGROUP_SLOT) {
-			ulTaskGroups.clear();
-			if (content != null) {
-				ulTaskGroups.add(content);
-			}
-		} else if (slot == DOCUMENT_SLOT) {
+//		if (slot == DATEGROUP_SLOT) {
+//			ulTaskGroups.clear();
+//			if (content != null) {
+//				ulTaskGroups.add(content);
+//			}
+//		} else 
+		if (slot == DOCUMENT_SLOT) {
 			docContainer.clear();
 			if (content != null) {
 				docContainer.add(content);
@@ -265,16 +266,16 @@ public class AbstractTaskView extends ViewImpl implements
 		}
 	}
 
-	@Override
-	public void addToSlot(Object slot, IsWidget content) {
-		if (slot == DATEGROUP_SLOT) {
-			if (content != null) {
-				ulTaskGroups.add(content);
-			}
-		} else {
-			super.addToSlot(slot, content);
-		}
-	}
+//	@Override
+//	public void addToSlot(Object slot, IsWidget content) {
+//		if (slot == DATEGROUP_SLOT) {
+//			if (content != null) {
+//				ulTaskGroups.add(content);
+//			}
+//		} else {
+//			super.addToSlot(slot, content);
+//		}
+//	}
 
 	public void setHeading(String heading) {
 		hCategory.setInnerText(heading);

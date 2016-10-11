@@ -105,9 +105,12 @@ public class NoteView extends ViewImpl implements NotePresenter.MyView {
 			approver="You";
 		}
 		
-		String target = targetUser.getSurname();
-		if(AppContext.isCurrentUser(targetUser.getUserId())){
-			target="You";
+		String target = "";
+		if(targetUser!=null){
+			target = targetUser.getSurname();
+			if(AppContext.isCurrentUser(targetUser.getUserId())){
+				target="You";
+			}
 		}
 		
 		SafeHtml safeHtml = null;

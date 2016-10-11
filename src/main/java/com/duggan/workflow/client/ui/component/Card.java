@@ -24,6 +24,7 @@ public class Card extends Composite {
 	@UiField Element cardImage;
 	@UiField Element cardImageIcon;
 	@UiField AnchorElement aNavigate;
+	@UiField AnchorElement aCount;
 	
 	@UiField Element spnCount;
 
@@ -60,11 +61,13 @@ public class Card extends Composite {
 		}else{
 			spnCount.setInnerText(""+type.getInboxCount()+" new");
 			spnCount.removeClassName("hide");
+			aCount.setHref("#/inbox/all/"+type.getProcessRefId());
 		}
 	}
-	
+
 	public void setDisplay(String name){
 		spnName.setInnerText(name);
+		spnName.setTitle(name);
 	}
 
 	public void setIconStyle(String iconStyle) {
@@ -97,5 +100,4 @@ public class Card extends Composite {
 			});
 		})
 	}-*/;
-
 }

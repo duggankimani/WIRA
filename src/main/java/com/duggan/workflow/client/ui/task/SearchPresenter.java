@@ -1,5 +1,7 @@
 package com.duggan.workflow.client.ui.task;
 
+import java.util.ArrayList;
+
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
@@ -7,7 +9,11 @@ import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
+import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.MODE;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -49,6 +55,7 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 		currentTaskType=TaskType.SEARCH;
 		getView().setTaskType(currentTaskType);
 		String formMode = request.getParameter("mode", null);
+		
 		if(formMode!=null){
 			try{
 				mode = MODE.valueOf(formMode.toUpperCase());
@@ -57,6 +64,29 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 		}
 		
 		super.prepareFromRequest(request);
+	}
+	
+	@Override
+	protected void loadLines(ArrayList<Doc> tasks, boolean isIncremental) {
+		
+		Long taskId = null;
+		String docRef = null;
+		if(tasks.size()==1){
+			Doc doc = tasks.get(0);
+			docRef = doc.getRefId();
+			
+			if(doc instanceof HTSummary){
+				taskId = ((HTSummary)doc).getId();
+			}
+		}
+		
+		
+		//Update table task list
+		super.loadLines(tasks, isIncremental);
+
+		if(tasks.size()==1 && docRef!=null){
+			displayDocument(docRef, taskId);
+		}
 	}
 
 }

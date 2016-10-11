@@ -11,7 +11,10 @@
 		<div class="navbar-inner">
 			<div class="row-fluid">
 
-				<div class="pull-left">
+				<div class="pull-left" id="toggleAndCompany">
+				    <a id="aMaximize" class="brand visible-desktop visible-tablet" title="Maximize">
+				        <i class="icon-align-justify"></i>
+				    </a>
 					<g:Anchor styleName="brand visible-desktop visible-tablet"
 						href="#/home" ui:field="aBrand">
 						<span ui:field="spnCompanyName" class="company-name ellipsis">Your Organisation</span>

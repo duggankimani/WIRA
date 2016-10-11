@@ -31,6 +31,17 @@ input:focus {
 	box-shadow: none;
 }
 
+#processtabs{
+	height: 39px;
+    overflow: hidden;
+    white-space:nowrap;
+}
+
+#processtabs li{
+	display: inline-block;
+    float: none;
+}
+
 *:focus {
 	outline: none;
 }

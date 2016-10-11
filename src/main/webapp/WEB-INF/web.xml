@@ -7,7 +7,7 @@
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>GWTHT.html</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
 	<!--
@@ -47,7 +47,7 @@
 	
 	<filter-mapping>
 	     <filter-name>SecurityFilter</filter-name>
-	     <url-pattern>/GWTHT.html</url-pattern>
+	     <url-pattern>/index.html</url-pattern>
 	</filter-mapping>
 	
 
@@ -67,7 +67,7 @@
 	    <servlet-class>com.duggan.workflow.server.security.LoginServlet</servlet-class>
 	    <init-param>
 	        <param-name>app_page</param-name>
-	        <param-value>GWTHT.html</param-value>
+	        <param-value>index.html</param-value>
 	     </init-param>
 	</servlet>
 	

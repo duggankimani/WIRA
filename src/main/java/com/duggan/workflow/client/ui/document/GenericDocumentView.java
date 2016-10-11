@@ -70,6 +70,9 @@ public class GenericDocumentView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, GenericDocumentView> {
 	}
 
+	@UiField HTMLPanel panelUpperContent;
+	@UiField HTMLPanel contentArea;
+	
 	@UiField
 	SpanElement spnDocType;
 	@UiField
@@ -130,6 +133,8 @@ public class GenericDocumentView extends ViewImpl implements
 	Anchor aReject;
 	@UiField
 	Anchor aClose;
+	@UiField
+	Anchor aPrint;
 	@UiField
 	HTMLPanel statusContainer;
 	@UiField
@@ -231,12 +236,8 @@ public class GenericDocumentView extends ViewImpl implements
 	private boolean isUnassignedList = false;
 	
 	@UiField Anchor aMaximize;
-
-	enum SHOWITEMS {
-		FORM, PROCESSTREE, AUDITLOG, ATTACHMENTS
-	}
 	
-	SHOWITEMS selected = SHOWITEMS.FORM;
+	VIEWS selected = VIEWS.FORM;
 	private boolean isLoadAsAdmin;
 	private String processRefId;
 
@@ -318,21 +319,21 @@ public class GenericDocumentView extends ViewImpl implements
 			public void onClick(ClickEvent event) {
 
 				setEditMode(true);
-				changeView(SHOWITEMS.FORM);
+				changeView(VIEWS.FORM);
 			}
 		});
 
 		aProcess.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				changeView(SHOWITEMS.PROCESSTREE);
+				changeView(VIEWS.PROCESSTREE);
 			}
 		});
 		
 		aViewAttachments.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				changeView(SHOWITEMS.ATTACHMENTS);
+				changeView(VIEWS.ATTACHMENTS);
 			}
 		});
 
@@ -350,7 +351,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 			@Override
 			public void onClick(ClickEvent event) {
-				changeView(SHOWITEMS.AUDITLOG);
+				changeView(VIEWS.AUDITLOG);
 			}
 		});
 		
@@ -358,14 +359,58 @@ public class GenericDocumentView extends ViewImpl implements
 
 			@Override
 			public void onClick(ClickEvent event) {
-				changeView(SHOWITEMS.FORM);
+				changeView(VIEWS.FORM);
 			}
 		});
 		
-		changeView(SHOWITEMS.FORM);
-//		UIObject.setVisible(aSave.getElement(), false);
-
+		changeView(VIEWS.FORM);
+		
+		initZoom(panelUpperContent.getElementById("divZoom"), contentArea.getElement());
+		
+		aPrint.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				//print(formPanel.getElement());
+			}
+		});
 	}
+
+	protected native void print(Element element) /*-{
+		//Get the HTML of div
+        var divElements = $wnd.jQuery(element).html();
+        //Get the HTML of whole page
+        var oldPage = $doc.body.innerHTML;
+
+        //Reset the page's HTML with div's HTML only
+        $doc.body.innerHTML = 
+          "<html><head><title></title></head><body>" + 
+          divElements + "</body>";
+
+        //Print Page
+        $wnd.print();
+
+        //Restore orignal HTML
+        $doc.body.innerHTML = oldPage;
+	}-*/;
+
+	private native void initZoom(Element element, Element contentArea) /*-{
+		$wnd.jQuery($doc).ready(function(){
+			var dropDownText = $wnd.jQuery(element).find('span.dropDownText').get(0);
+		
+			$wnd.jQuery(element).find('a').click(function(){
+				var txt = $wnd.jQuery(this).text();
+				$wnd.jQuery(dropDownText).text(txt);
+				
+				if(txt.endsWith('%')){
+					var amount = txt.substring(0,txt.length-1);
+					var scale = amount/100;
+					
+					contentArea.style.zoom=scale;
+				}
+			});
+		});
+	}-*/;
 
 	protected native void toggleMaximize(Element element) /*-{
 		var icon = $wnd.jQuery(element).find('i').get(0);
@@ -444,7 +489,7 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 	}
 
-	public void changeView(SHOWITEMS itemToShow) {
+	public void changeView(VIEWS itemToShow) {
 		divProcess.addStyleName("hide");
 		divContent.addClassName("hide");
 		divAuditLog.addStyleName("hide");
@@ -457,7 +502,7 @@ public class GenericDocumentView extends ViewImpl implements
 		aDoc.removeStyleName("disabled");
 
 		if(itemToShow==selected){
-			itemToShow=SHOWITEMS.FORM;
+			itemToShow=VIEWS.FORM;
 		}
 		
 		switch (itemToShow) {

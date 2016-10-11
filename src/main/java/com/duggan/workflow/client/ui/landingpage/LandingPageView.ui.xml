@@ -1,15 +1,25 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.duggan.workflow.client.ui.component'>
-	<g:HTMLPanel styleName="overflow-y">
-		<div class="row-fluid">
-			<div class="span12 landing-page">
+	<g:HTMLPanel styleName="overflow-y full-page">
+		<div class="row-fluid full-page">
+			<div class="span12 landing-page full-page">
 				<g:HTMLPanel ui:field="tabsPanel" styleName="card-tabs-header">
 					<div class="container-fluid">
 						<div class="row-fluid">
 							<div class="span12">
-								<ul class="nav nav-tabs nav-pills" id="processtabs">
-								</ul>
+								<div class="pull-left" style="display: inline-block;width: calc(100% - 24px);">
+									<ul class="nav nav-tabs nav-pills" id="processtabs">
+									</ul>
+								</div>
+								<div class="btn-group pull-right" style="line-height: 40px;box-shadow: -9px 0px 10px #888888;">
+									<a class="dropdown-toggle btn-search-dropdown"
+										data-toggle="dropdown">
+										<img src="img/ic_more_vert_black_24dp_1x.png"></img>
+									</a>
+									<ul class="dropdown-menu" id="processDropDown">
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>

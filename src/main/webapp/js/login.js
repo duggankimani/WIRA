@@ -16,7 +16,7 @@ function loginWithCookie(){
 		data:str
 	})
 	.done(function() {
-		window.location='GWTHT.html';
+		window.location='index.html';
 	})
 	.fail(function() {
 	})
@@ -38,7 +38,7 @@ function doFormSubmit() {
 		data:str
 	})
 	.done(function() {
-		window.location='GWTHT.html';
+		window.location='index.html';
 	})
 	.fail(function() {
 		$('#issues').show();

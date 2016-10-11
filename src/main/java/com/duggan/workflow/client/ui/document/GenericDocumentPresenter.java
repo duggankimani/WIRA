@@ -51,6 +51,7 @@ import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.client.ui.popup.GenericPopupPresenter;
+import com.duggan.workflow.client.ui.tasklistitem.IsTaskPresenter;
 import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
@@ -58,6 +59,13 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.event.FormLoadEvent;
+import com.duggan.workflow.shared.event.ForwardDocumentEvent;
+import com.duggan.workflow.shared.event.SaveDocumentEvent;
+import com.duggan.workflow.shared.event.ShowViewEvent;
+import com.duggan.workflow.shared.event.ForwardDocumentEvent.ForwardDocumentHandler;
+import com.duggan.workflow.shared.event.SaveDocumentEvent.SaveDocumentHandler;
+import com.duggan.workflow.shared.event.ShowViewEvent.ShowViewHandler;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Activity;
 import com.duggan.workflow.shared.model.Attachment;
@@ -141,20 +149,19 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
 import com.wira.commons.client.service.ServiceCallback;
 import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.HTUser;
+import com.duggan.workflow.client.ui.tasklistitem.IsTaskPresenter.IBaseTaskItemView;
 
 public class GenericDocumentPresenter extends
-		PresenterWidget<GenericDocumentPresenter.MyView> implements
+		IsTaskPresenter<GenericDocumentPresenter.MyView> implements
 		ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler,
 		DeleteAttachmentHandler, DeleteLineHandler, ButtonClickHandler,
 		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler,
-		FieldLoadHandler, UploadEndedHandler {
-
-	public interface MyView extends View {
+		FieldLoadHandler, UploadEndedHandler, ShowViewHandler,SaveDocumentHandler, ForwardDocumentHandler {
+	
+	public interface MyView extends IBaseTaskItemView {
 		void setValues(HTUser createdBy, Date created, String type,
 				String subject, Date docDate, String value, String partner,
 				String description, Integer priority, DocStatus status,
@@ -270,6 +277,8 @@ public class GenericDocumentPresenter extends
 		void setAttachmentsCount(int size);
 
 		void setProcessRefId(String processRefId);
+
+		void changeView(VIEWS view);
 	}
 
 	private Long taskId;
@@ -333,6 +342,10 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ExecTriggerEvent.TYPE, this);
 		addRegisteredHandler(FieldLoadEvent.getType(), this);
 		addRegisteredHandler(UploadEndedEvent.getType(), this);
+		addRegisteredHandler(ShowViewEvent.getType(), this);
+		addRegisteredHandler(SaveDocumentEvent.getType(), this);
+		addRegisteredHandler(ForwardDocumentEvent.getType(), this);
+		
 
 		getView().getCloseButton().addClickHandler(new ClickHandler() {
 
@@ -375,8 +388,7 @@ public class GenericDocumentPresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-				mergeFormValuesWithDoc();
-				save((Document) doc);
+				saveDocument();
 			}
 		});
 
@@ -1200,6 +1212,11 @@ public class GenericDocumentPresenter extends
 			}
 		}, "Ok", "Cancel");
 	}
+	
+	private void saveDocument(){
+		mergeFormValuesWithDoc();
+		save((Document) doc);
+	}
 
 	protected void save(Document document) {
 		
@@ -1428,6 +1445,8 @@ public class GenericDocumentPresenter extends
 			// Reload
 			loadDynamicFields(form.getDependencies(), null,false);
 		}
+		
+		fireEvent(new FormLoadEvent(form, doc));
 	}
 	
 	void bindData(Doc doc,boolean loadDynamicFields){
@@ -2012,6 +2031,21 @@ public class GenericDocumentPresenter extends
 						fireEvent(new ProcessingCompletedEvent());
 					};
 				});
+	}
+
+	@Override
+	public void onForwardDocument(ForwardDocumentEvent event) {
+		forwardForApproval();
+	}
+
+	@Override
+	public void onSaveDocument(SaveDocumentEvent event) {
+		saveDocument();
+	}
+
+	@Override
+	public void onShowView(ShowViewEvent event) {
+		getView().changeView(event.getView());
 	}
 
 }

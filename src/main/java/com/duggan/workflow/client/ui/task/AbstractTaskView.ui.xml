@@ -38,7 +38,7 @@
 			</g:HTMLPanel>
 		</div>
 
-		<div class="row-fluid">
+		<div class="row-fluid full-page">
 			<div class="" ui:field="divProcess">
 				<div class="span12">
 					<h4 style="display: block;padding: 10px;">

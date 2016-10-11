@@ -111,9 +111,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Inject
 	PlaceManager placeManager;
 
-	public static final Object DATEGROUP_SLOT = new Object();
+//	public static final Object DATEGROUP_SLOT = new Object();
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
-	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
+//	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
 
 	protected static TaskType currentTaskType;
 
@@ -159,8 +159,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
 		docViewFactory = new StandardProvider<GenericDocumentPresenter>(
 				docViewProvider);
-		dateGroupFactory = new StandardProvider<DateGroupPresenter>(
-				dateGroupProvider);
+//		dateGroupFactory = new StandardProvider<DateGroupPresenter>(
+//				dateGroupProvider);
 	}
 
 	@Override
@@ -283,7 +283,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	private void clear() {
 		// clear document slot
-		setInSlot(DATEGROUP_SLOT, null);
+//		setInSlot(DATEGROUP_SLOT, null);
 		setInSlot(DOCUMENT_SLOT, null);
 	}
 
@@ -395,41 +395,40 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	protected void loadLines(final ArrayList<Doc> tasks, boolean isIncremental) {
 		CURPOS = CURPOS + PAGE_SIZE;
-		if (!isIncremental) {
-			setInSlot(DATEGROUP_SLOT, null);
-		}
-
+//		if (!isIncremental) {
+//			setInSlot(DATEGROUP_SLOT, null);
+//		}
 		getView().bindTasks(tasks, isIncremental);
 
-		final ArrayList<Date> dates = new ArrayList<Date>();
-
-		for (int i = 0; i < tasks.size(); i++) {
-			// final String dt =
-			// DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
-			final Doc doc = tasks.get(i);
-
-			Date dateToUse = doc.getSortDate();
-
-			final String dt = DateUtils.LONGDATEFORMAT.format(dateToUse);
-			final Date date = DateUtils.LONGDATEFORMAT.parse(dt);
-
-			if (dates.contains(date)) {
-				fireEvent(new PresentTaskEvent(doc));
-			} else {
-				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
-					@Override
-					public void processResult(DateGroupPresenter result) {
-
-						result.setDate(date);
-
-						addToSlot(DATEGROUP_SLOT, result);
-						fireEvent(new PresentTaskEvent(doc));
-						dates.add(date);
-					}
-				});
-
-			}
-		}
+//		final ArrayList<Date> dates = new ArrayList<Date>();
+//
+//		for (int i = 0; i < tasks.size(); i++) {
+//			// final String dt =
+//			// DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
+//			final Doc doc = tasks.get(i);
+//
+//			Date dateToUse = doc.getSortDate();
+//
+//			final String dt = DateUtils.LONGDATEFORMAT.format(dateToUse);
+//			final Date date = DateUtils.LONGDATEFORMAT.parse(dt);
+//
+//			if (dates.contains(date)) {
+//				fireEvent(new PresentTaskEvent(doc));
+//			} else {
+//				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
+//					@Override
+//					public void processResult(DateGroupPresenter result) {
+//
+//						result.setDate(date);
+//
+//						addToSlot(DATEGROUP_SLOT, result);
+//						fireEvent(new PresentTaskEvent(doc));
+//						dates.add(date);
+//					}
+//				});
+//
+//			}
+//		}
 
 	}
 
