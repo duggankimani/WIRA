@@ -257,8 +257,8 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		boolean isFirst = true;
 		if (subject != null) {
 			isFirst = false;
-			query.append("(Lower(subject) like :subject");
-			params.put("subject", "%" + subject.toLowerCase() + "%");
+			query.append("(Lower(caseNo) like :caseNo");
+			params.put("caseNo", "%" + subject.toLowerCase() + "%");
 
 			if (phrase == null) {
 				query.append(" or Lower(description) like :phrase");

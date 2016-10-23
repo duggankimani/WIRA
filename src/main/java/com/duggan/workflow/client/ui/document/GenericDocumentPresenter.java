@@ -288,6 +288,7 @@ public class GenericDocumentPresenter extends
 	private Form form;
 	private int currentStep = 0;
 	private ArrayList<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
+	private HashMap<String, Field> fieldMap = new HashMap<String, Field>();
 
 	private Integer activities = 0;
 
@@ -308,7 +309,7 @@ public class GenericDocumentPresenter extends
 	public static final Object ATTACHMENTS_SLOT = new Object();
 	private ArrayList<TaskLog> logs = null;
 	private boolean isLoadAsAdmin;
-	private ArrayList<String> conditionFields;
+	private ArrayList<String> stepConditionFields;
 
 	@Inject
 	public GenericDocumentPresenter(final EventBus eventBus, final MyView view,
@@ -1383,7 +1384,7 @@ public class GenericDocumentPresenter extends
 
 	protected void setSteps(ArrayList<TaskStepDTO> steps, ArrayList<String> conditionFields) {
 		this.steps = steps;
-		this.conditionFields = conditionFields;
+		this.stepConditionFields = conditionFields;
 		if (steps == null) {
 			return;
 		}
@@ -1399,10 +1400,15 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		this.form = form;
-		for(String conditionField: conditionFields){
+		for(String conditionField: stepConditionFields){
 			ArrayList<String> parents = new ArrayList<String>();
 			parents.add(conditionField);
 			form.addFieldDependency(parents, "");
+		}
+		
+		fieldMap.clear();
+		for(Field field:form.getFields()){
+			fieldMap.put(field.getName(), field);
 		}
 
 		docRefId = doc.getRefId();
@@ -1544,11 +1550,16 @@ public class GenericDocumentPresenter extends
 			for (ArrayList<String> names : dependencies.values()) {
 				if (names != null) {
 					for (String name : names) {
-						Field f = new Field();
-						f.setName(name);
-						if (form.getFields().contains(f)) {
-							dependants.add(form.getFields().get(
-									form.getFields().indexOf(f)));
+//						Field f = new Field();
+//						f.setName(name);
+//						if (form.getFields().contains(f)) {
+//							dependants.add(form.getFields().get(
+//									form.getFields().indexOf(f)));
+//						}
+						
+						Field dependant = fieldMap.get(name);
+						if(dependant!=null){
+							dependants.add(dependant);
 						}
 					}
 				}
@@ -1591,7 +1602,7 @@ public class GenericDocumentPresenter extends
 						int i = 0;
 						
 						if(reloadSteps){
-							setSteps(((GetTaskStepsResponse)aResponse.get(i++)).getSteps(),conditionFields);
+							setSteps(((GetTaskStepsResponse)aResponse.get(i++)).getSteps(),stepConditionFields);
 						}
 
 						if (!dependants.isEmpty()) {
@@ -2011,7 +2022,7 @@ public class GenericDocumentPresenter extends
 		toReload.put(fieldName, dependencies.get(fieldName));
 
 		try {
-			loadDynamicFields(toReload,event.getTriggerName(),conditionFields.contains(fieldName));
+			loadDynamicFields(toReload,event.getTriggerName(),stepConditionFields.contains(fieldName));
 		} catch (Exception e) {
 			GWT.log("Error: " + e.getMessage());
 		}

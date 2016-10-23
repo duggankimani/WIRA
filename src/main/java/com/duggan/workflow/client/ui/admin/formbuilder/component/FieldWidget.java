@@ -350,7 +350,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			if (fields.contains(field)) {
 				Value fieldValue = getFieldValue();
 				int idx = fields.indexOf(field);
-
+				
 				Field reloaded = fields.get(idx);
 
 				if (event.isFormReadOnly()) {
@@ -370,7 +370,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				}
 
 				setField(reloaded);
-				setValue(fieldValue);
+				setValue(fieldValue==null? null: fieldValue.getValue());
 			}
 		}
 	}

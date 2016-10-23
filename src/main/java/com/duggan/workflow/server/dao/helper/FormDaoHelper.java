@@ -1123,12 +1123,13 @@ public class FormDaoHelper {
 				.findJsonFieldsForForm(form.getRefId());
 
 		for (Field field : fields) {
-			form.addFieldDependency(field.getDependentFields(),
-					field.getName());
 			//Load selection values
 			if(field.getType().isLookup()){
-				loadLookupJson(null, field);
+				loadLookupJson(null, field); //Field Dependencies set here
 			}
+			
+			form.addFieldDependency(field.getDependentFields(),
+					field.getName());//Add Field Dependencies to the form
 			
 			if (field.getType().hasChildren()) {
 				loadFieldsForParent(field);
