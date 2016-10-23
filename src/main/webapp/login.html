@@ -29,7 +29,42 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/js.cookie.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
+<!-- Google OAuth Client -->
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+<script>
+function start() {
+	
+	gapi.load('auth2', function() {
+	    auth2 = gapi.auth2.init({
+	      client_id: "631292106887-h50e6p0p43fvl60vjk1mcq818n5phl7h.apps.googleusercontent.com",
+	      // Scopes to request in addition to 'profile' and 'email'
+	      //scope: 'additional_scope'
+	    });
+	  });
+}
 
+function signInCallback(authResult) {
+  if (authResult['code']) {
+
+    // Hide the sign-in button now that the user is authorized, for example:
+    $('#Google_Login').attr('style', 'display: none');
+
+    // Send the code to the server
+    $.ajax({
+      type: 'POST',
+      url: 'oauth2callback',
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response.
+      },
+      processData: false,
+      data: authResult['code']
+    });
+  } else {
+    // There was an error.
+  }
+}
+</script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -66,7 +101,23 @@
 						</div>
 						<a href="account.html#/forgot" class="hide forgot">Forgot
 							the password?</a>
+							<br/>
+							Or
+							<br/>
 					</form>
+					<form id="googleloginform" action="googleservlet" method="POST">
+						<a id="Google_Login" class="btn btn-block btn-social btn-google" 
+						onclick="google_signin()">
+				            <i class="icon-google-plus-sign"></i> Sign in with Google
+				          </a>
+					</form>
+					<script>
+					  $('#Google_Login').click(function() {
+					    // signInCallback defined in step 6.
+					    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+					  });
+					</script>
+					
 				</div>
 			</div>
 		</div>

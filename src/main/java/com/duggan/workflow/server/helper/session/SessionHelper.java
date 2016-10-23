@@ -27,11 +27,20 @@ public class SessionHelper{
 	 * @return User This is the currently logged in user
 	 */
 	public static HTUser getCurrentUser(){
-				
-		HttpSession session = request.get()==null? null: request.get().getSession(false);
-		if(session==null){
+		if(request.get()==null){
+			//SUPPORTS TESTING - TO BE REMOVED
 			return new HTUser("Administrator", "mdkimani@gmail.com");
-			//return null;
+		}
+		
+		return getCurrentUser(request.get());
+	}
+	
+	public static HTUser getCurrentUser(HttpServletRequest req){
+		
+		
+		HttpSession session = req.getSession(false);
+		if(session==null){
+			return null;
 		}
 		
 		if(session.getAttribute(ServerConstants.USER)==null){

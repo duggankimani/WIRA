@@ -619,6 +619,17 @@ public class DocumentDaoHelper {
 
 		return docs;
 	}
+	
+	public static List<Document> searchJson(String processId,String userId, SearchFilter filter) {
+		List<DocumentModelJson> docs = DB.getDocumentDao().searchJson(processId, userId, filter);
+		
+		List<Document> documents = new ArrayList<Document>();
+		for(DocumentModelJson doc:docs){
+			documents.add(doc.getDocument());
+		}
+		
+		return documents; 
+	}
 
 	public static DocumentType getDocumentType(String docTypeName) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
@@ -821,10 +832,10 @@ public class DocumentDaoHelper {
 	}
 
 	public static List<Doc> getAllDocumentsJson(String processId,int offset, int length,
-			boolean loadDetails, DocStatus... status) {
+			boolean loadValues, boolean loadLines, DocStatus... status) {
 
 		return DB.getDocumentDao().getAllDocumentsJson(processId,offset, length,
-				loadDetails, status);
+				loadValues,loadLines, status);
 	}
 
 	public static List<Doc> getRecentTasks(String processRefId, String userId,

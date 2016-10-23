@@ -28,6 +28,7 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessLog;
+import com.duggan.workflow.shared.model.Schema;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;
 

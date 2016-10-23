@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.component.Checkbox;
@@ -21,6 +23,7 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.Column;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
@@ -28,6 +31,8 @@ import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.Schema;
+import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
@@ -43,11 +48,13 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
@@ -65,8 +72,9 @@ public class AbstractTaskView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, AbstractTaskView> {
 	}
 
-	@UiField AnchorElement aProcess;
-	
+	@UiField
+	AnchorElement aProcess;
+
 	@UiField
 	HTMLPanel container;
 	@UiField
@@ -94,10 +102,12 @@ public class AbstractTaskView extends ViewImpl implements
 	HTMLPanel docContainer;
 	@UiField
 	FlexTable tblTasks;
-	
-	@UiField Element divProcess;
-	
-	@UiField Element processName;
+
+	@UiField
+	Element divProcess;
+
+	@UiField
+	Element processName;
 
 	@UiField
 	ScrollPanel divTableListing;
@@ -107,9 +117,47 @@ public class AbstractTaskView extends ViewImpl implements
 
 	private String processRefId;
 
+	@UiField
+	ActionLink aFilter;
+	@UiField
+	ActionLink aConfigure;
+
+	ColumnsPanel columns = new ColumnsPanel();
+	Schema defaultSchema = new Schema("_GENERAL", "_GENERAL", "GENERAL");
+
+	private ArrayList<Doc> tasks;
+	ArrayList<String> defaultCols = new ArrayList<String>();
+
+	enum DefaultFields {
+		CaseNo, Process, Task, Submitter, CurrentTask, CurrentUser, Due, Modified, Status, Notes
+	}
+
 	@Inject
 	public AbstractTaskView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+
+		defaultSchema.addColumn(new Column(DefaultFields.CaseNo.name(),
+				"Case No", "Case", "50px"));
+		defaultSchema.addColumn(new Column(DefaultFields.Process.name(),
+				"Process", "Process"));
+		defaultSchema.addColumn(new Column(DefaultFields.Task.name(), "Task",
+				"Task"));
+		defaultSchema.addColumn(new Column(DefaultFields.Submitter.name(),
+				"Submitter", "Submitter"));
+		defaultSchema.addColumn(new Column(DefaultFields.CurrentTask.name(),
+				"Current Task", "Current Task"));
+		defaultSchema.addColumn(new Column(DefaultFields.CurrentUser.name(),
+				"Current User", "Current User"));
+		defaultSchema.addColumn(new Column(DefaultFields.Due.name(), "Due",
+				"Due", "80px"));
+		defaultSchema.addColumn(new Column(DefaultFields.Modified.name(),
+				"Modified", "Modified", "80px"));
+		defaultSchema.addColumn(new Column(DefaultFields.Status.name(),
+				"Status", "Status", "60px"));
+		defaultSchema.addColumn(new Column(DefaultFields.Notes.name(), "Notes",
+				"Notes", "20px"));
+		reinitialize();
+		
 		divTasks.setId("middle-box");
 		ulTaskGroups.setId("navigation-menu");
 		txtSearch.getElement().setAttribute("placeholder", "Search...");
@@ -144,75 +192,154 @@ public class AbstractTaskView extends ViewImpl implements
 			}
 		});
 
+		aFilter.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AppManager.showPopUp("Filter Data", new Filter(),
+						new OnOptionSelected() {
+
+							@Override
+							public void onSelect(String name) {
+
+							}
+						}, "Filter", "Cancel");
+			}
+		});
+
+		aConfigure.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AppManager.showPopUp("Configure Columns", columns,
+						new OnOptionSelected() {
+
+							@Override
+							public void onSelect(String name) {
+								bindTasks(tasks, false);
+							}
+						}, "Ok", "Cancel");
+			}
+		});
 		createHeader(tblTasks);
 	}
 
+	private void reinitialize() {
+		columns.getValues().clear();
+		for (Column col : defaultSchema.getColumns()) {
+			columns.add(col);
+			defaultCols.add(col.getRefId());
+		}
+	}
+	
 	protected void createHeader(FlexTable table) {
-		table.addStyleName("fixed-layout");
+		// table.addStyleName("fixed-layout");
 		int i = table.getRowCount();
 		int j = 0;
 		table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
 		table.getFlexCellFormatter().setWidth(i, (j - 1), "10px");
-		table.setWidget(i, j++, new HTMLPanel("<strong>Case No</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "50px");
-		table.setWidget(i, j++, new HTMLPanel("<strong>Process</strong>"));
-		table.setWidget(i, j++, new HTMLPanel("<strong>Task</strong>"));
-		table.setWidget(i, j++, new HTMLPanel("<strong>Submitted By</strong>"));
-		table.setWidget(i, j++, new HTMLPanel("<strong>Current Task</strong>"));
-		table.setWidget(i, j++, new HTMLPanel("<strong>Current User</strong>"));
-		table.setWidget(i, j++, new HTMLPanel("<strong>Due Date</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
-		table.setWidget(i, j++, new HTMLPanel("<strong>Last Modify</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
-		table.setWidget(i, j++, new HTMLPanel("<strong>Status</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
-		table.setWidget(i, j++, new HTMLPanel("<strong>Notes</strong>"));
-		table.getFlexCellFormatter().setWidth(i, (j - 1), "20px");
+		table.getFlexCellFormatter().setStyleName(i, (j - 1), "th");
+
+		HashMap<String, Column> values = columns.getValues();
+		if (values.containsKey(DefaultFields.CaseNo.name())) {
+			// Case No
+			table.setWidget(i, j++,
+					createHeader("<strong>Case</strong>", j - 1));
+			table.getFlexCellFormatter().setWidth(i, (j - 1), "50px");
+		}
+
+		if (values.containsKey(DefaultFields.Process.name())) {
+			// Process Name
+			table.setWidget(i, j++,
+					createHeader("<strong>Process</strong>", j - 1));
+		}
+
+		if (values.containsKey(DefaultFields.Task.name())) {
+			// Task
+			table.setWidget(i, j++,
+					createHeader("<strong>Task</strong>", j - 1));
+		}
+
+		if (values.containsKey(DefaultFields.Submitter.name())) {
+			// Submitted By
+			table.setWidget(i, j++,
+					createHeader("<strong>Submitter</strong>", j - 1));
+		}
+
+		if (values.containsKey(DefaultFields.CurrentTask.name())) {
+			// Current Task
+			table.setWidget(i, j++,
+					createHeader("<strong>Current Task</strong>", j - 1));
+		}
+
+		if (values.containsKey(DefaultFields.CurrentUser.name())) {
+			// Current Assignee
+			table.setWidget(i, j++,
+					createHeader("<strong>Current User</strong>", j - 1));
+		}
+
+		if (values.containsKey(DefaultFields.Due.name())) {
+			// DUE
+			table.setWidget(i, j++, createHeader("<strong>Due</strong>", j - 1));
+			table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+		}
+
+		if (values.containsKey(DefaultFields.Modified.name())) {
+			// MODIFIED
+			table.setWidget(i, j++,
+					createHeader("<strong>Modified</strong>", j - 1));
+			table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+		}
+
+		if (values.containsKey(DefaultFields.Status.name())) {
+			// STATUS
+			table.setWidget(i, j++,
+					createHeader("<strong>Status</strong>", j - 1));
+			table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+		}
+
+		if (values.containsKey(DefaultFields.Notes.name())) {
+			// NOTES
+			table.setWidget(i, j++, new HTMLPanel("<strong>Notes</strong>"));
+			table.getFlexCellFormatter().setWidth(i, (j - 1), "20px");
+		}
+
+		for (Column column : values.values()) {
+			if (defaultCols.contains(column.getRefId())) {
+				continue;
+			}
+
+			String text = column.getCaption() == null ? column.getName()
+					: column.getCaption();
+			table.setWidget(i, j++,
+					createHeader("<strong>" + text + "<strong", j - 1));
+		}
 
 		for (int col = 0; col < table.getCellCount(i); col++) {
 			table.getFlexCellFormatter().setStyleName(i, col, "th");
 		}
-		
-		/**
-		++i;
-		j=0;
+	}
 
-		table.setWidget(i, j++, new HTMLPanel("<strong>#</strong>"));
-		
-		table.getFlexCellFormatter().setColSpan(i, j, 7);
-		HTMLPanel searchForm = new HTMLPanel("");
-		searchForm.addStyleName("form-inline");
-		TextBox caseSearch = new TextBox();
-		caseSearch.addStyleName("input-medium search-query");
-		caseSearch.getElement().setPropertyString("placeholder", "Case No");
-		searchForm.add(caseSearch);
-		
-		DropDownList process = new DropDownList<ProcessDef>();
-		process.addStyleName("input-medium");
-		process.setNullText("--Process--");
-		process.setItems(new ArrayList<ProcessDef>());
-		searchForm.add(process);
-		
-		DropDownList task = new DropDownList<ProcessDef>();
-		task.addStyleName("input-medium");
-		task.setNullText("--Task--");
-		task.setItems(new ArrayList<ProcessDef>());
-		searchForm.add(task);
-		
-		DropDownList currentUser = new DropDownList<ProcessDef>();
-		currentUser.addStyleName("input-medium");
-		currentUser.setNullText("--Current User--");
-		currentUser.setItems(new ArrayList<ProcessDef>());
-		searchForm.add(currentUser);
-		
-		DropDownList status = new DropDownList<HTStatus>();
-		status.addStyleName("input-medium");
-		status.setNullText("--Status--");
-		status.setItems(new ArrayList<HTStatus>());
-		searchForm.add(status);
-		
-		table.setWidget(i, j, searchForm);*/
-		
+	private Widget createHeader(String heading, int idx) {
+		Element content = DOM.createDiv();
+		content.setInnerHTML(heading);
+		content.addClassName("sortable-header-content");
+		HTMLPanel header = new HTMLPanel("");
+		header.getElement().appendChild(content);
+		//header.getElement().appendChild(initSort(idx));
+		content.setTitle(heading);
+		return header;
+	}
+
+	private Element initSort(int i) {
+		Sorter sorter = new Sorter("task_view_" + i) {
+			@Override
+			public void sort(String id, String dir) {
+				super.sort(id, dir);
+				// load data
+			}
+		};
+		return sorter.getElement();
 	}
 
 	@Override
@@ -228,12 +355,6 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@Override
 	public void setInSlot(Object slot, IsWidget content) {
-//		if (slot == DATEGROUP_SLOT) {
-//			ulTaskGroups.clear();
-//			if (content != null) {
-//				ulTaskGroups.add(content);
-//			}
-//		} else 
 		if (slot == DOCUMENT_SLOT) {
 			docContainer.clear();
 			if (content != null) {
@@ -265,17 +386,6 @@ public class AbstractTaskView extends ViewImpl implements
 			divTableListing.addStyleName("hide");
 		}
 	}
-
-//	@Override
-//	public void addToSlot(Object slot, IsWidget content) {
-//		if (slot == DATEGROUP_SLOT) {
-//			if (content != null) {
-//				ulTaskGroups.add(content);
-//			}
-//		} else {
-//			super.addToSlot(slot, content);
-//		}
-//	}
 
 	public void setHeading(String heading) {
 		hCategory.setInnerText(heading);
@@ -323,13 +433,17 @@ public class AbstractTaskView extends ViewImpl implements
 		if (!isIncremental) {
 			tblTasks.removeAllRows();
 			createHeader(tblTasks);
+			this.tasks = tasks;
+		} else {
+			this.tasks.addAll(tasks);
 		}
 
 		int i = tblTasks.getRowCount();
 
 		for (Doc doc : tasks) {
 			int j = 0;
-
+			//Window.alert(">>>>> "+doc.getValues());
+			
 			Date dateToUse = doc.getSortDate();
 			InlineLabel spnTime = new InlineLabel();
 
@@ -373,7 +487,7 @@ public class AbstractTaskView extends ViewImpl implements
 				HTSummary summ = (HTSummary) doc;
 				HTStatus status = summ.getStatus();
 				spnStatus.setText(status.name());
-
+				
 				if (summ.getRefId() == null) {
 					spnSubject.getStyle().setColor("red");
 					spnSubject
@@ -510,9 +624,8 @@ public class AbstractTaskView extends ViewImpl implements
 				break;
 			}
 
-			
 			// Several days ago
-			if(dateToUse!=null){
+			if (dateToUse != null) {
 				if (CalendarUtil.getDaysBetween(dateToUse, new Date()) >= 1) {
 					spnTime.setText(DateUtils.LONGDATEFORMAT.format(dateToUse));
 				} else {
@@ -557,30 +670,58 @@ public class AbstractTaskView extends ViewImpl implements
 					}
 				}
 			});
-			tblTasks.setWidget(i, j++, casePanel);
 
-			HTMLPanel subject = new HTMLPanel("");
-			subject.getElement().appendChild(spnProcessName);
-			tblTasks.setWidget(i, j++, subject);
+			HashMap<String, Column> values = columns.getValues();
+			if (values.containsKey(DefaultFields.CaseNo.name())) {
+				// Case No
+				tblTasks.setWidget(i, j++, casePanel);
+			}
 
-			HTMLPanel task = new HTMLPanel("");
-			task.getElement().appendChild(spnSubject);
-			tblTasks.setWidget(i, j++, task);
-			
-			//Submitted By
-			InlineLabel submitter = new InlineLabel(doc.getOwner()==null? "": doc.getOwner().getFullName());
-			tblTasks.setWidget(i, j++, submitter);
+			if (values.containsKey(DefaultFields.Process.name())) {
+				// Process Name
+				HTMLPanel subject = new HTMLPanel("");
+				subject.getElement().appendChild(spnProcessName);
+				tblTasks.setWidget(i, j++, subject);
+			}
 
-			//Current Task
-			String currentTask = doc.getCurrentTaskName()==null? "": doc.getCurrentTaskName();
-			tblTasks.setWidget(i, j++, new HTMLPanel(currentTask));
-			//Current Owner 
-			tblTasks.setWidget(i, j++, new HTMLPanel(taskActualOwner));
-			// tblTasks.getFlexCellFormatter().setWidth(i, (j - 1), "150px");
-			tblTasks.setWidget(i, j++, spnTime);
-			HTMLPanel div = new HTMLPanel("");
-			div.getElement().appendChild(spnDeadlines);
-			tblTasks.setWidget(i, j++, div);
+			if (values.containsKey(DefaultFields.Task.name())) {
+				// Task
+				HTMLPanel task = new HTMLPanel("");
+				task.getElement().appendChild(spnSubject);
+				tblTasks.setWidget(i, j++, task);
+			}
+
+			if (values.containsKey(DefaultFields.Submitter.name())) {
+				// Submitted By
+				InlineLabel submitter = new InlineLabel(
+						doc.getOwner() == null ? "" : doc.getOwner()
+								.getFullName());
+				tblTasks.setWidget(i, j++, submitter);
+			}
+
+			if (values.containsKey(DefaultFields.CurrentTask.name())) {
+				// Current Task
+				String currentTask = doc.getCurrentTaskName() == null ? ""
+						: doc.getCurrentTaskName();
+				tblTasks.setWidget(i, j++, new HTMLPanel(currentTask));
+			}
+
+			if (values.containsKey(DefaultFields.CurrentUser.name())) {
+				// Current Assignee
+				tblTasks.setWidget(i, j++, new HTMLPanel(taskActualOwner));
+			}
+
+			if (values.containsKey(DefaultFields.Due.name())) {
+				// DUE
+				tblTasks.setWidget(i, j++, spnTime);
+			}
+
+			if (values.containsKey(DefaultFields.Modified.name())) {
+				// MODIFIED
+				HTMLPanel div = new HTMLPanel("");
+				div.getElement().appendChild(spnDeadlines);
+				tblTasks.setWidget(i, j++, div);
+			}
 
 			HTMLPanel status = new HTMLPanel("");
 			// status.add(spnStatus);
@@ -591,19 +732,58 @@ public class AbstractTaskView extends ViewImpl implements
 			case INPROGRESS:
 				status.addStyleName("text-info");
 				break;
-			
+
 			default:
 				break;
 			}
 			status.add(new InlineLabel(doc.getProcessStatus().name()));
 
-			tblTasks.setWidget(i, j++, status);
-			
-			//Notes
-			tblTasks.setWidget(i, j++, new HTMLPanel(""));
+			if (values.containsKey(DefaultFields.Status.name())) {
+				// STATUS
+				tblTasks.setWidget(i, j++, status);
+			}
+
+			if (values.containsKey(DefaultFields.Notes.name())) {
+				// NOTES
+				tblTasks.setWidget(i, j++, new HTMLPanel(""));
+			}
+
+			// Additional Columns
+			for (Column column : values.values()) {
+				if (defaultCols.contains(column.getRefId())) {
+					continue;
+				}
+
+				if (column.getName() != null) {
+					tblTasks.setWidget(i, j++, render(column, doc));
+				}
+
+			}
+
 			++i;
 		}
 
+	}
+
+	private Widget render(Column column, Doc doc) {
+		Label label = new Label();
+		String name = column.getName();
+		if (doc.getValues() != null) {
+			Value val = doc.getValue(name);
+
+			if (val != null && val.getValue() != null) {
+				Object v = val.getValue(); 
+				if(v instanceof Number){
+					label.setWidth("100%");
+					label.addStyleName("number");
+					
+				}
+				label.setText(val.getValue() + "");
+			}
+		}else{
+			label.setText("VAL==NULL");
+		}
+		return label;
 	}
 
 	private Element setDeadlines(Date endDateDue) {
@@ -652,13 +832,26 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@Override
 	public void setProcessRefId(String processRefId) {
+		if(this.processRefId==null || processRefId==null){
+			reinitialize();
+		}else if(!this.processRefId.equals(processRefId)){
+			reinitialize();
+		}
+		
 		this.processRefId = processRefId;
 		processName.setInnerText("");
-		if(processRefId==null){
+		if (processRefId == null) {
 			divProcess.addClassName("hide");
-		}else{
+		} else {
 			divProcess.removeClassName("hide");
-			aProcess.setHref("#/activities/"+processRefId);
+			aProcess.setHref("#/activities/" + processRefId);
 		}
+	}
+
+	@Override
+	public void bindProcessSchema(ArrayList<Schema> schema) {
+		schema.add(0, defaultSchema);
+		HashMap<String, Column> values = columns.getValues();
+		columns = new ColumnsPanel(values, schema);
 	}
 }

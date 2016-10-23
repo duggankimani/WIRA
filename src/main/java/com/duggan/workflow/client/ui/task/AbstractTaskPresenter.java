@@ -1,10 +1,10 @@
 package com.duggan.workflow.client.ui.task;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
@@ -13,7 +13,6 @@ import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent.AssignTaskHandler;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
-import com.duggan.workflow.client.ui.events.PresentTaskEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
@@ -23,7 +22,6 @@ import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
-import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
@@ -32,12 +30,15 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.Schema;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.shared.requests.GetProcessSchemaRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
+import com.duggan.workflow.shared.responses.GetProcessSchemaResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -49,7 +50,6 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -67,7 +67,6 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.wira.commons.client.service.ServiceCallback;
 import com.wira.commons.shared.response.BaseResponse;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
 		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> implements
@@ -100,6 +99,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		void bindProcess(ProcessDef processDef);
 
 		void setProcessRefId(String processRefId);
+
+		void bindProcessSchema(ArrayList<Schema> schema);
 	}
 
 	public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
@@ -309,6 +310,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		MultiRequestAction action = new MultiRequestAction();
 		if(processRefId!=null){
 			action.addRequest(new GetProcessRequest(processRefId));
+			action.addRequest(new GetProcessSchemaRequest(processRefId));
 		}
 		
 		GetTaskList request = new GetTaskList(processRefId,userId, currentTaskType);
@@ -333,6 +335,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 						if(processRefId!=null){
 							GetProcessResponse getProcess = (GetProcessResponse) result.get(i++);
 							getView().bindProcess(getProcess.getProcessDef());
+							
+							GetProcessSchemaResponse getSchema = (GetProcessSchemaResponse)result.get(i++);
+							getView().bindProcessSchema(getSchema.getSchema());
 						}
 						
 						GetTaskListResult rst = (GetTaskListResult) result.get(i++);

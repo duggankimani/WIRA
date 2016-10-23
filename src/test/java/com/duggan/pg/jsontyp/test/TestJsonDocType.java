@@ -40,7 +40,7 @@ public class TestJsonDocType {
 	
 	@Ignore
 	public void loadAll(){
-		DocumentDaoHelper.getAllDocumentsJson(null,0, 20, false, DocStatus.DRAFTED);
+		DocumentDaoHelper.getAllDocumentsJson(null,0, 20, false,false, DocStatus.DRAFTED);
 	}
 	
 	@Test

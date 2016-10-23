@@ -1,20 +1,34 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class Column implements Serializable{
+public class Column extends SerializableObj{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
+	private String caption;
 	private String definition;
+	private String fieldType;
 	private boolean isNull;
 	private boolean isPrimaryKey;
 	private int length;
+	private String width;
 
 	public Column() {
+	}
+
+	public Column(String refId, String name, String caption) {
+		setRefId(refId);
+		this.name = name;
+		this.caption = caption;
+	}
+	
+	public Column(String refId, String name, String caption, String width) {
+		this(refId,name,caption);
+		this.width = width;
 	}
 
 	public String getName() {
@@ -56,4 +70,29 @@ public class Column implements Serializable{
 	public void setLength(int length) {
 		this.length = length;
 	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+	public String getWidth() {
+		return width;
+	}
+
+	public void setWidth(String width) {
+		this.width = width;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
+	}
+	
+	public String getFieldType() {
+		return fieldType;
+	}
+
 }

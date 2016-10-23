@@ -234,6 +234,10 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 
 	public List<DocumentModel> search(String processId,String userId, SearchFilter filter) {
+		return new ArrayList<DocumentModel>();
+	}
+	
+	public List<DocumentModelJson> searchJson(String processId,String userId, SearchFilter filter) {
 
 		String subject = filter.getSubject();
 		Date startDate = filter.getStartDate();
@@ -252,13 +256,15 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		Map<String, Object> params = new HashMap<>();
 
-		StringBuffer query = new StringBuffer("FROM DocumentModelJson d where ");
+		StringBuffer query = new StringBuffer("select "
+				+ "new com.duggan.workflow.server.dao.model.DocumentModelJson(document, data) "
+				+ "FROM DocumentModelJson d where ");
 
 		boolean isFirst = true;
 		if (subject != null) {
 			isFirst = false;
-			query.append("(Lower(subject) like :subject");
-			params.put("subject", "%" + subject.toLowerCase() + "%");
+			query.append("(Lower(caseNo) like :caseNo");
+			params.put("caseNo", "%" + subject.toLowerCase() + "%");
 
 			if (phrase == null) {
 				query.append(" or Lower(description) like :phrase");
@@ -1107,7 +1113,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<Doc> getAllDocumentsJson(String processId,int offset, int length,
-			boolean loadDetails, DocStatus... status) {
+			boolean loadValues, boolean loadLines, DocStatus... status) {
 
 		@SuppressWarnings("unchecked")
 		List<DocumentModelJson> documents = em
@@ -1128,8 +1134,11 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		for (DocumentModelJson jsonDoc : documents) {
 			Document doc = jsonDoc.getDocument();
 			doc.setId(jsonDoc.getId());
-			if (loadDetails) {
+			if(loadValues){
 				doc.setValues(jsonDoc.getData().getValuesMap());
+			}
+			
+			if (loadLines) {
 				addDocLinesJson(doc);
 			}
 			docs.add(doc);

@@ -657,11 +657,11 @@ public class JBPMHelper implements Closeable {
 			task.setCurrentTaskId(model.getCurrentTaskId());
 		}
 
+		task.setPriority(doc.getPriority());
+		task.setDocumentDate(doc.getDocumentDate());
+		task.setValues(doc.getValues());
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
-			task.setValues(doc.getValues());
-			task.setPriority(doc.getPriority());
-			task.setDocumentDate(doc.getDocumentDate());
 
 			// TaskDelegation taskdelegation =
 			// DB.getDocumentDao().getTaskDelegationByTaskId(master_task.getId());

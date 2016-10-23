@@ -111,7 +111,7 @@ public class LoginServlet extends HttpServlet {
 					loggedInCookie);
 			Cookie xsrfCookie = new Cookie(
 					ServerConstants.AUTHENTICATIONCOOKIE, loggedInCookie);
-			xsrfCookie.setHttpOnly(false);// http only
+//			xsrfCookie.setHttpOnly(false);// http only
 			xsrfCookie.setPath(contextPath);
 			xsrfCookie.setMaxAge(3600 * 24 * 30); // Time in seconds (30 days)
 			xsrfCookie.setSecure(false); // http(s) cookie
@@ -135,7 +135,9 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	private String getContextPath() {
-		String contextPath = request.get().getServletContext().getContextPath();
+		
+//		String contextPath = request.get().getServletContext().getContextPath();
+		String contextPath = request.get().getContextPath();
 
 		if (!contextPath.isEmpty() && !contextPath.equals("/")) {
 			contextPath = (contextPath.startsWith("/") ? "" : "/")

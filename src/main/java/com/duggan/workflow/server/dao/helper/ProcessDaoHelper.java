@@ -49,6 +49,7 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.Schema;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskNotification;
@@ -942,6 +943,10 @@ public class ProcessDaoHelper {
 		out = writer.toString();
 		writer.close();
 		return out.getBytes();
+	}
+
+	public static List<Schema> getProcessSchema(String processRefId) {
+		return DB.getFormDao().getProcessSchema(processRefId);
 	}
 
 }

@@ -1,12 +1,31 @@
-//var count = 0;
-//$(document).ready(function(){
-//
-//	var authCookie = Cookies.get('AUTHCOOKIEID');
-//	if(authCookie && count<1){
-//		count=count+1;
-//		loginWithCookie();
-//	}
-//});
+var Google_Client_Status='';
+
+$(document).ready(function(){
+		bindEvents();
+	
+		$.ajax({
+			type:"GET",
+			url:"googleservlet",
+			dataType: 'json'
+		})
+		.done(function(data) {
+			Google_Client_Status = $(data)[0].GOOGLE_CLIENT_STATUS;
+			if(Google_Client_Status!='ACTIVE'){
+				$('#Google_Login').prop("disabled",true);
+			}
+			
+		})
+		.fail(function() {
+			$('#Google_Login').prop("disabled",false);
+		})
+		.always(function() {
+			
+		});
+});
+
+function bindEvents(){
+	$('#Google_Login').click(google_signin());
+}
 
 function loginWithCookie(){
 	var str = "loginmethod=VIA_COOKIE"
@@ -48,3 +67,11 @@ function doFormSubmit() {
 	});
 
 };
+
+function google_signin(){
+	if(Google_Client_Status!='ACTIVE'){
+		return;
+	}
+
+	$('#googleloginform').submit();
+}
