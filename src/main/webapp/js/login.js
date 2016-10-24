@@ -1,4 +1,140 @@
 var Google_Client_Status='';
+var CLIENT_ID='';
+
+function start() {
+	
+	gapi.load('auth2', function() {
+	    auth2 = gapi.auth2.init({
+	      client_id: "631292106887-h50e6p0p43fvl60vjk1mcq818n5phl7h.apps.googleusercontent.com",
+	      // Scopes to request in addition to 'profile' and 'email'
+	      //scope: 'additional_scope'
+	    });
+	    
+	 // Listen for sign-in state changes.
+	    auth2.isSignedIn.listen(signinChanged);
+
+	    // Listen for changes to current user.
+	    auth2.currentUser.listen(userChanged);
+
+	    // Sign in the user if they are currently signed in.
+	    if (auth2.isSignedIn.get() == true) {
+	      auth2.signIn();
+	    }
+
+	    // Start with the current live values.
+	    refreshValues();
+	  });
+}
+
+/**
+ * Listener method for sign-out live value.
+ *
+ * @param {boolean} val the updated signed out state.
+ */
+var signinChanged = function (val) {
+  console.log('Signin state changed to ', val);
+  document.getElementById('signed-in-cell').innerText = val;
+};
+
+/**
+ * Listener method for when the user changes.
+ *
+ * @param {GoogleUser} user the updated user.
+ */
+var userChanged = function (user) {
+  console.log('User now: ', user);
+  googleUser = user;
+  updateGoogleUser();
+  document.getElementById('curr-user-cell').innerText =
+    JSON.stringify(user, undefined, 2);
+};
+
+/**
+ * Updates the properties in the Google User table using the current user.
+ */
+var updateGoogleUser = function () {
+  if (googleUser) {
+    document.getElementById('user-id').innerText = googleUser.getId();
+    document.getElementById('user-scopes').innerText =
+      googleUser.getGrantedScopes();
+    document.getElementById('auth-response').innerText =
+      JSON.stringify(googleUser.getAuthResponse(), undefined, 2);
+    
+    var id_token=googleUser.getAuthResponse().id_token;
+    signInCallback(id_token, 'auth2tokencallback');
+    
+  } else {
+    document.getElementById('user-id').innerText = '--';
+    document.getElementById('user-scopes').innerText = '--';
+    document.getElementById('auth-response').innerText = '--';
+  }
+};
+
+/**
+ * Retrieves the current user and signed in states from the GoogleAuth
+ * object.
+ */
+var refreshValues = function() {
+  if (auth2){
+    console.log('Refreshing values...');
+
+    googleUser = auth2.currentUser.get();
+
+    document.getElementById('curr-user-cell').innerText =
+      JSON.stringify(googleUser, undefined, 2);
+    document.getElementById('signed-in-cell').innerText =
+      auth2.isSignedIn.get();
+
+    updateGoogleUser();
+  }
+}
+
+function signInCallback(authResult) {
+  if (authResult['code']) {
+
+    // Hide the sign-in button now that the user is authorized, for example:
+    $('#Google_Login').attr('style', 'display: none');
+
+    // Send the code to the server
+    $.ajax({
+      type: 'POST',
+      url: 'oauth2callback',
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response.
+    	  window.location='index.html';
+      },
+      processData: false,
+      data: authResult['code']
+    });
+  } else {
+    // There was an error.
+  }
+}
+
+function signInCallback(code, targetUrl) {
+  if (code) {
+
+    // Hide the sign-in button now that the user is authorized, for example:
+    $('#Google_Login').attr('style', 'display: none');
+
+    // Send the code to the server
+    $.ajax({
+      type: 'POST',
+      url: targetUrl,
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response.
+    	  window.location='index.html';
+      },
+      processData: false,
+      data: code
+    });
+  } else {
+    // There was an error.
+  }
+}
+
 
 $(document).ready(function(){
 		bindEvents();
@@ -10,6 +146,8 @@ $(document).ready(function(){
 		})
 		.done(function(data) {
 			Google_Client_Status = $(data)[0].GOOGLE_CLIENT_STATUS;
+			CLIENT_ID = $(data)[0].CLIENT_ID;
+			
 			if(Google_Client_Status!='ACTIVE'){
 				$('#Google_Login').prop("disabled",true);
 			}
@@ -24,7 +162,11 @@ $(document).ready(function(){
 });
 
 function bindEvents(){
-	$('#Google_Login').click(google_signin());
+	$('#Google_Login').click(function() {
+	    // signInCallback defined in step 6.
+	    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+	  });
+	
 }
 
 function loginWithCookie(){
@@ -67,11 +209,3 @@ function doFormSubmit() {
 	});
 
 };
-
-function google_signin(){
-	if(Google_Client_Status!='ACTIVE'){
-		return;
-	}
-
-	$('#googleloginform').submit();
-}

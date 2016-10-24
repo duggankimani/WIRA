@@ -30,6 +30,7 @@ public abstract class BaseServlet extends HttpServlet {
 			// check session
 			// check session
 			SessionHelper.setHttpRequest(req);
+			SessionHelper.setHttpResponse(resp);
 
 			DB.beginTransaction();
 
@@ -46,7 +47,7 @@ public abstract class BaseServlet extends HttpServlet {
 			e.printStackTrace();
 		} finally {
 			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
+			SessionHelper.afterRequest();;
 		}
 
 	}

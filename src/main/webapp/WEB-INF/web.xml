@@ -84,6 +84,10 @@
 	<servlet>
 	    <servlet-name>GoogleLoginCallbackServlet</servlet-name>
 	    <servlet-class>com.duggan.workflow.server.security.GoogleLoginCallbackServlet</servlet-class>
+	    <init-param>
+	        <param-name>app_page</param-name>
+	        <param-value>index.html</param-value>
+	     </init-param>
 	</servlet>
 	
 	<servlet-mapping>
@@ -91,6 +95,20 @@
 	    <url-pattern>oauth2callback</url-pattern>
 	</servlet-mapping>
 	
+	<!-- GOOGLE OAUTH TOKEN VERIFICATION SERVLET -->
+	<servlet>
+	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.security.GoogleIdTokenVerifierService</servlet-class>
+	    <init-param>
+	        <param-name>app_page</param-name>
+	        <param-value>index.html</param-value>
+	     </init-param>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
+	    <url-pattern>auth2tokencallback</url-pattern>
+	</servlet-mapping>
 	
 	<!-- ACCOUNTS MANAGEMENT/ ACTIVATION SERVLET -->
 	<servlet>

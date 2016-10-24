@@ -141,7 +141,7 @@
 				<configuration>
 					<!-- With multiple tests use GwtTestSuite.java for speed -->
 					<includes>**/*GwtTest.java</includes>
-					<extraJvmArgs>-Xss1024K -Xmx1024M -XX:MaxPermSize=256M -Dorg.apache.jasper.compiler.disablejsr199=false</extraJvmArgs>
+					<extraJvmArgs>-Xss1024K -Xmx1024M -XX:MaxPermSize=256M -DGoogle_OAuth_Client_Secret_File=/home/duggan/Projects/WIRA/src/main/resources/client_secret.apps.google.json -Dorg.apache.jasper.compiler.disablejsr199=false</extraJvmArgs>
 					<!-- compileReport>true</compileReport> <detail>true</detail> <detailedSoyc>true</detailedSoyc -->
 					<copyWebapp>true</copyWebapp>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>

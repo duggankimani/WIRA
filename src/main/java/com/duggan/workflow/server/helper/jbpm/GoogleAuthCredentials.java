@@ -8,7 +8,7 @@ public class GoogleAuthCredentials {
 	private String projectId;
 	private String authUri;
 	private String tokenUri;
-	private String[] redirectUris;
+//	private String[] redirectUris;
 	private String[] javascriptOrigins;
 	
 	public GoogleAuthCredentials() {
@@ -46,13 +46,13 @@ public class GoogleAuthCredentials {
 		this.tokenUri = tokenUri;
 	}
 
-	public String[] getRedirectUris() {
-		return redirectUris;
-	}
-
-	public void setRedirectUris(String[] redirectUris) {
-		this.redirectUris = redirectUris;
-	}
+//	public String[] getRedirectUris() {
+//		return redirectUris;
+//	}
+//
+//	public void setRedirectUris(String[] redirectUris) {
+//		this.redirectUris = redirectUris;
+//	}
 
 	public String[] getJavascriptOrigins() {
 		return javascriptOrigins;

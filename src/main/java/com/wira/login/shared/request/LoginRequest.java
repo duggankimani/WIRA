@@ -1,5 +1,6 @@
 package com.wira.login.shared.request;
 
+import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;
 import com.wira.login.shared.model.ActionType;
@@ -11,6 +12,7 @@ public class LoginRequest extends BaseRequest<LoginRequestResult> {
 	private String password;
 	private ActionType actionType;
 	private String loggedInCookie;
+	private HTUser user;
 	
 	@SuppressWarnings("unused")
 	private LoginRequest() {
@@ -26,6 +28,11 @@ public class LoginRequest extends BaseRequest<LoginRequestResult> {
 	public LoginRequest(String loggedInCookie){
 		actionType = ActionType.VIA_COOKIE;
 		this.loggedInCookie = loggedInCookie;
+	}
+
+	public LoginRequest(ActionType type, HTUser user) {
+		actionType = type;
+		this.user = user;
 	}
 
 	public String getLoggedInCookie() {
@@ -53,5 +60,13 @@ public class LoginRequest extends BaseRequest<LoginRequestResult> {
 	public BaseResponse createDefaultActionResponse() {
 
 		return new LoginRequestResult();
+	}
+
+	public HTUser getUser() {
+		return user;
+	}
+
+	public void setUser(HTUser user) {
+		this.user = user;
 	}
 }
