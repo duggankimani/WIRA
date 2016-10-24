@@ -95,7 +95,7 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
+//		addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
 		addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
 		addRegisteredHandler(AfterAttachmentReloadedEvent.TYPE, this);
 		addRegisteredHandler(AfterSearchEvent.TYPE, this);
@@ -103,13 +103,13 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 		getView().getFocusContainer().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if (task instanceof Document) {
-					Document doc = (Document) task;
-					fireEvent(new DocumentSelectionEvent(doc.getRefId(), null,
+				if (doc instanceof Document) {
+					Document document = (Document) doc;
+					fireEvent(new DocumentSelectionEvent(document.getRefId(), null,
 							DocMode.READWRITE));
 				} else {
-					Long taskId = ((HTSummary) task).getId();
-					String docRefId = ((HTSummary) task).getRefId();
+					Long taskId = ((HTSummary) doc).getId();
+					String docRefId = ((HTSummary) doc).getRefId();
 					fireEvent(new DocumentSelectionEvent(docRefId, taskId,
 							DocMode.READ));
 				}
@@ -137,7 +137,7 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 					public void onClick(ClickEvent event) {
 						dispatcher.execute(
 								new ApprovalRequest(AppContext.getUserId(),
-										(Document) task),
+										(Document) doc),
 								new TaskServiceCallback<ApprovalRequestResult>() {
 									@Override
 									public void processResult(
@@ -161,7 +161,7 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 	}
 	
 	public void setDocSummary(Doc summaryTask) {
-		this.task = summaryTask;
+		this.doc = summaryTask;
 		if (summaryTask != null) {
 			try {
 				getView().bind(summaryTask);
@@ -171,7 +171,7 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 
 		}
 
-		if (task instanceof HTSummary) {
+		if (doc instanceof HTSummary) {
 			getView().setTask(true);
 		} else {
 			getView().setTask(false);
@@ -183,15 +183,15 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 		String docRefId = event.getDocRefId();
 		Long taskId = event.getTaskId();
 
-		if ((task instanceof Document) && taskId == null) {
-			Document doc = (Document) task;
-			if (!doc.getRefId().equals(docRefId)) {
+		if ((doc instanceof Document) && taskId == null) {
+			Document document = (Document) doc;
+			if (!document.getRefId().equals(docRefId)) {
 				getView().setSelected(false);
 			} else {
 				getView().setSelected(true);
 			}
-		} else if (task instanceof HTSummary) {
-			Long tId = (Long) task.getId();
+		} else if (doc instanceof HTSummary) {
+			Long tId = (Long) doc.getId();
 
 			if (taskId == null || !taskId.equals(tId)) {
 				getView().setSelected(false);
@@ -212,25 +212,25 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 	@Override
 	public void onAfterAttachmentReloaded(AfterAttachmentReloadedEvent event) {
 		String docRefId = event.getDocRefId();
-		if ((task instanceof Document)) {
-			Document doc = (Document) task;
-			if (doc.getRefId().equals(docRefId)) {
+		if ((doc instanceof Document)) {
+			Document document = (Document) doc;
+			if (document.getRefId().equals(docRefId)) {
 				getView().showAttachmentIcon(true);
 			}
 
-		} else if (task instanceof HTSummary) {
-			HTSummary doc = (HTSummary) task;
-			if (doc.getDocumentRef() == null || doc.getRefId() == null) {
-				// This happens if this task was not loaded correctly.
+		} else if (doc instanceof HTSummary) {
+			HTSummary document = (HTSummary) doc;
+			if (document.getDocumentRef() == null || document.getRefId() == null) {
+				// This happens if this doc was not loaded correctly.
 				// this should be changed to processinstanceid - documents dont
 				// matter; processes do.
 				return;
 			}
 
-			assert doc.getDocumentRef() != null;
+			assert document.getDocumentRef() != null;
 			assert docRefId != null;
 
-			if (doc.getRefId().equals(docRefId)) {
+			if (document.getRefId().equals(docRefId)) {
 				getView().showAttachmentIcon(true);
 			}
 		}
@@ -238,13 +238,13 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 
 	protected void reload(HTSummary summary) {
 		setDocSummary(summary);
-		if (task instanceof Document) {
-			Document doc = (Document) task;
-			fireEvent(new DocumentSelectionEvent(doc.getRefId(), null,
+		if (doc instanceof Document) {
+			Document document = (Document) doc;
+			fireEvent(new DocumentSelectionEvent(document.getRefId(), null,
 					DocMode.READWRITE));
 		} else {
-			Long taskId = ((HTSummary) task).getId();
-			fireEvent(new DocumentSelectionEvent(task.getRefId(), taskId,
+			Long taskId = ((HTSummary) doc).getId();
+			fireEvent(new DocumentSelectionEvent(doc.getRefId(), taskId,
 					DocMode.READ));
 		}
 
@@ -260,11 +260,11 @@ implements AfterAttachmentReloadedHandler, AfterSearchHandler,DocumentSelectionH
 	 */
 	@Override
 	public void onAfterDocumentLoad(AfterDocumentLoadEvent event) {
-		if (task instanceof Document) {
+		if (doc instanceof Document) {
 			return;
 		}
 
-		HTSummary summary = (HTSummary) task;
+		HTSummary summary = (HTSummary) doc;
 
 		if (summary.getId().equals(event.getTaskId())) {
 			event.setValidActions(summary.getStatus().getValidActions());

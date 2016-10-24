@@ -719,6 +719,7 @@ public class GenericDocumentView extends ViewImpl implements
 			//show(aStop);
 			return;
 		}
+		
 		if (actions != null)
 			for (Actions action : actions) {
 				Anchor target = null;

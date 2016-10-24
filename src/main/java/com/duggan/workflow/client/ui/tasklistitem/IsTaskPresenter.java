@@ -41,8 +41,8 @@ public abstract class IsTaskPresenter<V extends IsTaskPresenter.IBaseTaskItemVie
 	public interface IBaseTaskItemView extends View {
 	}
 
-	Doc task;
-
+	protected Doc doc;
+	
 	@Inject
 	DispatchAsync dispatcher;
 
@@ -74,10 +74,10 @@ public abstract class IsTaskPresenter<V extends IsTaskPresenter.IBaseTaskItemVie
 		workflow.setAction(action);
 		workflow.setValues(values);
 
-		if (task instanceof Document) {
-			workflow.setTaskId(new Long((Integer) task.getId()));
+		if (doc instanceof Document) {
+			workflow.setTaskId(new Long((Integer) doc.getId()));
 		} else
-			workflow.setTaskId((Long) task.getId());
+			workflow.setTaskId((Long) doc.getId());
 
 		if (action == Actions.DELEGATE) {
 			delegate(workflow, action, values);
@@ -135,7 +135,7 @@ public abstract class IsTaskPresenter<V extends IsTaskPresenter.IBaseTaskItemVie
 			HashMap<String, Value> values) {
 		Notification notification = new Notification();
 		notification.setApproverAction(ApproverAction.DELEGATE);
-		HTSummary summary = (HTSummary) task;
+		HTSummary summary = (HTSummary) doc;
 		notification.setDocumentId(summary.getDocumentRef());
 		notification.setDocRefId(summary.getRefId());
 		// notification.setDocumentType(summary.getDocStatus());
@@ -185,25 +185,25 @@ public abstract class IsTaskPresenter<V extends IsTaskPresenter.IBaseTaskItemVie
 
 	@Override
 	public void onCompleteDocument(CompleteDocumentEvent event) {
-		if (task instanceof Document) {
+		if (doc instanceof Document) {
 			return;
 		}
 
-		if (task.getId().equals(event.getTaskId())) {
+		if (doc.getId().equals(event.getTaskId())) {
 			HashMap<String, Value> arguments = event.getResults();
 			arguments.put("documentId",
-					new LongValue(((HTSummary) task).getDocumentRef()));
+					new LongValue(((HTSummary) doc).getDocumentRef()));
 			submitRequest(Actions.COMPLETE, arguments);
 		}
 	}
 
 	@Override
 	public void onExecTask(ExecTaskEvent event) {
-		if (task instanceof Document) {
+		if (doc instanceof Document) {
 			return;
 		}
 
-		if (task.getId().equals(event.getTaskId())) {
+		if (doc.getId().equals(event.getTaskId())) {
 			// System.err.println("#####EXECUTING WF ACTION - "+event.getAction()+"; DOCUMENT :: "+documentId);
 			submitRequest(event.getAction(), event.getValues());
 		}

@@ -18,7 +18,6 @@ import com.duggan.workflow.client.ui.delegate.msg.DelegationMessageView;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
 import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent.ActivitiesLoadHandler;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
-import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AssignTaskEvent;
 import com.duggan.workflow.client.ui.events.ButtonClickEvent;
@@ -56,6 +55,7 @@ import com.duggan.workflow.client.ui.upload.UploadDocumentPresenter;
 import com.duggan.workflow.client.ui.upload.attachment.AttachmentPresenter;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
@@ -284,7 +284,6 @@ public class GenericDocumentPresenter extends
 	private Long taskId;
 	private String docRefId;
 
-	private Doc doc;
 	private Form form;
 	private int currentStep = 0;
 	private ArrayList<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
@@ -1849,12 +1848,11 @@ public class GenericDocumentPresenter extends
 		}
 
 		// get document actions - if any
-		AfterDocumentLoadEvent e = new AfterDocumentLoadEvent(docRefId, taskId, result);
-		fireEvent(e);
-		if (e.getValidActions() != null) {
-			getView().setValidTaskActions(e.getValidActions());
+		ArrayList<Actions> validActions = getValidActions(doc);
+		if (validActions != null) {
+			getView().setValidTaskActions(validActions);
 		}
-
+		
 		Long processInstanceId = doc.getProcessInstanceId();
 		if (processInstanceId != null)
 			getView().setProcessUrl(processInstanceId);
@@ -1875,6 +1873,15 @@ public class GenericDocumentPresenter extends
 	// public void setProcessState(ArrayList<NodeDetail> states){
 	// getView().setStates(states);
 	// }
+
+	private ArrayList<Actions> getValidActions(Doc task) {
+		if (task instanceof Document) {
+			return new ArrayList<Actions>();
+		}
+
+		HTSummary summary = (HTSummary) task;
+		return summary.getStatus().getValidActions();
+	}
 
 	public void setDocId(String processRefId,String docRefId, Long taskId, boolean isLoadAsAdmin) {
 		this.docRefId = docRefId;
@@ -2059,4 +2066,20 @@ public class GenericDocumentPresenter extends
 		getView().changeView(event.getView());
 	}
 
+	@Override
+	protected void reload(HTSummary summary) {
+		bindDocumentResult(summary);
+		bindForm(form, summary);
+		
+//		setDocSummary(summary);
+//		if (doc instanceof Document) {
+//			Document document = (Document) doc;
+//			fireEvent(new DocumentSelectionEvent(document.getRefId(), null,
+//					DocMode.READWRITE));
+//		} else {
+//			Long taskId = ((HTSummary) doc).getId();
+//			fireEvent(new DocumentSelectionEvent(doc.getRefId(), taskId,
+//					DocMode.READ));
+//		}
+	}
 }

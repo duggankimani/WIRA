@@ -659,7 +659,7 @@ public class JBPMHelper implements Closeable {
 
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
-			task.setValues(doc.getValues());
+			task.setValues(doc.getValues()==null? new HashMap<String, Value>() : doc.getValues());
 			task.setPriority(doc.getPriority());
 			task.setDocumentDate(doc.getDocumentDate());
 

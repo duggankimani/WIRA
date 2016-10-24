@@ -115,7 +115,7 @@
 						</button>
 
 						<ul class="dropdown-menu" role="menu" ui:field="ulMenu">
-							<li>
+							<li class="hidden">
 								<d:ActionLink ui:field="aPrint"
 									title="Print this document">
 									<i class="icon-print"></i>Print
