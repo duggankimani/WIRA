@@ -81,6 +81,12 @@
 							<br/>
 					</form>
 						<div id="Google_Login" class="g-signin2" data-onsuccess="onSignIn" data-width="369"></div>
+						<script>
+						$('#Google_Login').click(function() {
+						    // signInCallback defined in step 6.
+						   // auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+						  });
+						</script>
 						<!-- a id="Google_Login" class="btn btn-block btn-social btn-google">
 				            <i class="icon-google-plus-sign"></i> Sign in with Google
 				          </a -->

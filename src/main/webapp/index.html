@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- meta name="google-signin-client_id" content="631292106887-h50e6p0p43fvl60vjk1mcq818n5phl7h.apps.googleusercontent.com"-->
 
 <!-- BootStrap start -->
 <title>WIRA</title>
@@ -72,6 +73,110 @@
 <script src="js/moment.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+<script type="text/javascript">
+
+function refreshAuthState(parentEl){
+	if(auth2!=undefined){
+	var val = auth2.isSignedIn.get();
+	 var userEl = $(parentEl).find("#logged-in-user").get(0);
+	 if(val){
+		 $(userEl).prop('title','Google Login');
+		 $(userEl).css("color","green");
+	 }else{
+		 $(userEl).prop('title','');
+		 $(userEl).css("color","#333333");
+	 }
+	}
+}
+
+function logoutOauth(){
+	if(auth2!=undefined){
+		auth2.disconnect();	
+	}
+}
+
+
+function start() {
+	
+	gapi.load('auth2', function() {
+	    auth2 = gapi.auth2.init({
+	      client_id: "631292106887-h50e6p0p43fvl60vjk1mcq818n5phl7h.apps.googleusercontent.com",
+	      // Scopes to request in addition to 'profile' and 'email'
+	      //scope: 'additional_scope'
+	    });
+	    
+	 // Listen for sign-in state changes.
+	    auth2.isSignedIn.listen(signinChanged);
+
+	    // Listen for changes to current user.
+	    auth2.currentUser.listen(userChanged);
+
+	    // Sign in the user if they are currently signed in.
+	    if (auth2.isSignedIn.get() == true) {
+	     // auth2.signIn();
+	    }
+
+	    // Start with the current live values.
+	    refreshValues();
+	  });
+}
+
+/**
+ * Listener method for sign-out live value.
+ *
+ * @param {boolean} val the updated signed out state.
+ */
+var signinChanged = function (val) {
+	 var userEl = $("#logged-in-user").get(0);
+	 if(val){
+		 $(userEl).prop('title','Google Login');
+		 $(userEl).css("color","green");
+	 }else{
+		 $(userEl).prop('title','');
+		 $(userEl).css("color","#333333");
+	 }
+	 
+	// alert('signinChangedEvent says Signed = '+val +" = "+auth2.isSignedIn.get());
+};
+
+/**
+ * Listener method for when the user changes.
+ *
+ * @param {GoogleUser} user the updated user.
+ */
+var userChanged = function (user) {
+  googleUser = user;
+  updateGoogleUser();
+};
+
+/**
+ * Updates the properties in the Google User table using the current user.
+ */
+var updateGoogleUser = function () {
+  
+  if (googleUser) {
+    var id_token=googleUser.getAuthResponse().id_token;
+    //signInCallback(id_token, 'auth2tokencallback');
+	 
+
+  } else {
+	  //logged out
+  }
+};
+
+/**
+ * Retrieves the current user and signed in states from the GoogleAuth
+ * object.
+ */
+var refreshValues = function() {
+  if (auth2){
+    googleUser = auth2.currentUser.get();
+    updateGoogleUser();
+  }
+}
+
+</script>
 </head>
 
 <!--                                           -->

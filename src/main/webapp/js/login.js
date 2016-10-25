@@ -137,8 +137,6 @@ function signInCallback(code, targetUrl) {
 
 
 $(document).ready(function(){
-		bindEvents();
-	
 		$.ajax({
 			type:"GET",
 			url:"googleservlet",
@@ -160,14 +158,6 @@ $(document).ready(function(){
 			
 		});
 });
-
-function bindEvents(){
-	$('#Google_Login').click(function() {
-	    // signInCallback defined in step 6.
-	    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
-	  });
-	
-}
 
 function loginWithCookie(){
 	var str = "loginmethod=VIA_COOKIE"

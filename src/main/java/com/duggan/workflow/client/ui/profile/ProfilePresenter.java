@@ -173,7 +173,7 @@ public class ProfilePresenter extends
 			public void processResult(GetUserRequestResult aResponse) {
 				user = aResponse.getUser();				
 				assert user.getUserId()!=null;
-				assert !user.getGroups().isEmpty();
+//				assert !user.getGroups().isEmpty();
 				
 				getView().setUser(user);
 			}

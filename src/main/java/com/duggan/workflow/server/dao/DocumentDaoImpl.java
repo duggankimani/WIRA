@@ -1294,6 +1294,11 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 			String language, int offset, int length) {
 		
 		List<String> groups = DB.getUserGroupDao().getGroupsForUser(userId);
+		if(groups.isEmpty()){
+			//DUGGAN - 25/10/2016 - ADDED TO FIX HIBERNATE 'unexpected end of subtree errors' 
+			//CAUSED BY EMPTY IN() STATEMENTS IN THE HQL QUERIES BELOW
+			groups.add("UNDEFINED");
+		}
 		
 		return getResultList(em.createNamedQuery("TasksAssignedAsPotentialOwnerByStatusWithGroupsAndProcessId")
 				.setParameter("userId", userId)

@@ -88,6 +88,7 @@ public class UserDaoHelper implements LoginIntf {
 		htuser.setSurname(user.getLastName());
 		htuser.setId(user.getId());
 		htuser.setRefId(user.getRefId());
+		htuser.setPictureUrl(user.getPictureUrl());
 
 		if (loadGroups) {
 			htuser.setGroups(getFromDb(user.getGroups()));

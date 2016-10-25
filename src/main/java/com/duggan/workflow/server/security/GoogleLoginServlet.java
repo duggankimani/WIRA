@@ -40,7 +40,6 @@ public class GoogleLoginServlet extends BaseServlet {
 			JSONObject json = new JSONObject();
 			json.put("GOOGLE_CLIENT_STATUS", "ACTIVE");
 			json.put("CLIENT_ID", credentials.getClientId());
-			// json.put("REDIRECT_URL", REDIRECT_URI);
 			resp.getWriter().write(json.toString());
 			resp.setContentType("application/json");
 		} catch (Exception e) {
