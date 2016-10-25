@@ -85,6 +85,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	public HeaderView(final Binder binder, CurrentUser currentUser) {
 		this.currentUser = currentUser;
 		widget = binder.createAndBindUi(this);
+		spnUser.setId("logged-in-user");
 		txtSearch.getElement().setId("prependedDropdownButton");
 
 		aNotifications.setTabIndex(3);
@@ -105,7 +106,16 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		});
 		
 		attachToggleFullScreen(divNavbar.getElementById("aMaximize"));
+		googleOAuthHandler(divNavbar.getElement());
 	}
+
+	private native void googleOAuthHandler(Element divNavBar) /*-{
+		$wnd.jQuery($doc).ready(function(){
+			//alert('Logged in = '+$wnd.auth2.isSignedIn.get());
+			$wnd.refreshAuthState(divNavBar);
+		});
+		
+	}-*/;
 
 	private native void attachToggleFullScreen(Element aMaximize) /*-{
 		var that = this;

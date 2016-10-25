@@ -7,5 +7,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public enum ActionType implements Serializable,IsSerializable{
 
 	 VIA_CREDENTIALS,
-	  VIA_COOKIE
+	  VIA_COOKIE,
+	  VIA_GOOGLE_OAUTH
 }

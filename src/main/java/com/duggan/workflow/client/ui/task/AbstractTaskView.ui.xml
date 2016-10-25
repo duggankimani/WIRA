@@ -41,12 +41,26 @@
 		<div class="row-fluid full-page">
 			<div class="" ui:field="divProcess">
 				<div class="span12">
-					<h4 style="display: block;padding: 10px;">
-					    <a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
+					<h4 style="display: inline-block;padding: 10px;">
+						<a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
 							<i class="icon-arrow-left" style="padding-right: 3px;"></i>
 						</a>
-					    <span ui:field="processName"></span>
+						<span ui:field="processName"></span>
 					</h4>
+					<div class="pull-right" style="line-height: 35px;">
+						<div style="display:inline-block">
+							<d:ActionLink ui:field="aFilter" styleName="label label-primary" title="Filter Data">
+								<i class="icon-filter"></i>
+								Filter
+							</d:ActionLink>
+						</div>
+						<div style="display:inline-block">
+							<d:ActionLink ui:field="aConfigure" styleName="label label-primary" title="Select the columns to show">
+								<i class="icon-cogs"></i>
+								Configure
+							</d:ActionLink>
+						</div>
+					</div>
 				</div>
 			</div>
 			<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">

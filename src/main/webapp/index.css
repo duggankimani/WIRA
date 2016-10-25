@@ -738,7 +738,7 @@ section.positioned {
 }
 
 .table a {
-	color: #428bca !important;
+	color: #428bca;
 	text-decoration: none;
 }
 
@@ -879,3 +879,35 @@ section.positioned {
 	margin: 0px 21px 0px 0px;
 }
 
+.sortable-header-content{
+	width: calc(100% - 16px);
+    display: inline-block;
+    overflow-x: hidden;
+}
+
+.table-sort a, .table-sort a:visited, .table-sort a:hover{
+	color:grey;
+}
+
+.table-sort a.active{
+	color:#428bca;
+}
+
+.column-config-container{
+	
+} 		
+
+.column-config-container .cols-table{
+}
+
+.column-config-container .cols-table td{
+}
+
+.column-config-container .cols-table label{
+	display:inline-block;
+	padding-left: 10px;
+}
+
+.column-config-container .cols-table input{
+	margin:0px;
+}

@@ -74,6 +74,10 @@ public class DocumentModelJson extends PO{
 		
 	}
 	
+	public DocumentModelJson(Document document, DocValues data){
+		document.setValues(data.getValuesMap());
+	}
+	
 	public DocumentModelJson(Document document){
 		setDocument(document);
 	}

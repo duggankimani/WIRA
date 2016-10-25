@@ -38,6 +38,9 @@ public class GetTaskListActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
+		boolean isLoadLines = false; //Grid Values
+		boolean isLoadValues = true; //Value Map
+		
 		String processRefId = action.getProcessRefId();
 		String processId = null;
 		if(processRefId!=null){
@@ -55,7 +58,7 @@ public class GetTaskListActionHandler extends
 		switch (type) {
 		case DRAFT:
 			status = DocStatus.DRAFTED;
-			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),false,status);
+			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),isLoadValues,isLoadLines,status);
 			break;
 //		case APPROVED:
 //			status = DocStatus.APPROVED;
@@ -66,7 +69,7 @@ public class GetTaskListActionHandler extends
 //			summary = DocumentDaoHelper.getAllDocuments(status);
 //			break;
 		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),false,
+			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),isLoadValues,isLoadLines,
 					DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
 					 DocStatus.COMPLETED);//Current users sent requests
 			summary.addAll(getPendingApprovals(processId,userId, type,action.getOffset(),action.getLength()));
@@ -78,7 +81,7 @@ public class GetTaskListActionHandler extends
 		case SEARCH:
 			
 			if(action.getFilter()!=null){				
-				summary.addAll(DocumentDaoHelper.search(processId,userId,action.getFilter()));
+				summary.addAll(DocumentDaoHelper.searchJson(processId,userId,action.getFilter()));
 				summary.addAll(JBPMHelper.get().searchTasks(processId,userId, action.getFilter()));
 			}else if(action.getProcessInstanceId()!=null || action.getDocRefId()!=null){
 				

@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.helper.session;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -20,6 +21,7 @@ import com.wira.commons.shared.models.HTUser;
 public class SessionHelper{
 
 	static ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
+	static ThreadLocal<HttpServletResponse> response = new ThreadLocal<>();
 	private static Logger log = Logger.getLogger(SessionHelper.class);
 	
 	/**
@@ -27,11 +29,20 @@ public class SessionHelper{
 	 * @return User This is the currently logged in user
 	 */
 	public static HTUser getCurrentUser(){
-				
-		HttpSession session = request.get()==null? null: request.get().getSession(false);
-		if(session==null){
+		if(request.get()==null){
+			//SUPPORTS TESTING - TO BE REMOVED
 			return new HTUser("Administrator", "mdkimani@gmail.com");
-			//return null;
+		}
+		
+		return getCurrentUser(request.get());
+	}
+	
+	public static HTUser getCurrentUser(HttpServletRequest req){
+		
+		
+		HttpSession session = req.getSession(false);
+		if(session==null){
+			return null;
 		}
 		
 		if(session.getAttribute(ServerConstants.USER)==null){
@@ -78,12 +89,21 @@ public class SessionHelper{
 		request.set(httprequest);
 	}
 	
+	public static void setHttpResponse(HttpServletResponse httpresponse){
+		response.set(httpresponse);
+	}
+	
 	public static void afterRequest(){
 		request.set(null);
+		response.set(null);
 	}
 	
 	public static HttpServletRequest getHttpRequest(){
 		return request.get();
+	}
+	
+	public static HttpServletResponse getHttpResponse(){
+		return response.get();
 	}
 	
 	public static void throwException(String message){

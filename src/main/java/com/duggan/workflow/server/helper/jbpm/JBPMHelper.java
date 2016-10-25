@@ -247,8 +247,10 @@ public class JBPMHelper implements Closeable {
 			groupIds.add(group.getName());
 		}
 
-		if (groupIds.size() == 0) {
-			groupIds.add("USER"); // At least one group must be specified
+		if(groupIds.isEmpty()){
+			//DUGGAN - 25/10/2016 - ADDED TO FIX HIBERNATE 'unexpected end of subtree errors' 
+			//CAUSED BY EMPTY IN() STATEMENTS IN THE HQL QUERIES BELOW
+			groupIds.add("UNDEFINED");
 		}
 
 		Number count = (Number)DB
@@ -366,6 +368,12 @@ public class JBPMHelper implements Closeable {
 		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
 			groupIds.add(group.getName());
+		}
+		
+		if(groupIds.isEmpty()){
+			//DUGGAN - 25/10/2016 - ADDED TO FIX HIBERNATE 'unexpected end of subtree errors' 
+			//CAUSED BY EMPTY IN() STATEMENTS IN THE HQL QUERIES BELOW
+			groupIds.add("UNDEFINED");
 		}
 
 		List<TaskSummary> ts = new ArrayList<>();
@@ -657,6 +665,9 @@ public class JBPMHelper implements Closeable {
 			task.setCurrentTaskId(model.getCurrentTaskId());
 		}
 
+		task.setPriority(doc.getPriority());
+		task.setDocumentDate(doc.getDocumentDate());
+		task.setValues(doc.getValues());
 		if (task instanceof HTask) {
 			task.setDetails(doc.getDetails());
 			task.setValues(doc.getValues()==null? new HashMap<String, Value>() : doc.getValues());

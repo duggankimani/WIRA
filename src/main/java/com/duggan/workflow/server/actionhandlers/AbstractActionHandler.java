@@ -2,6 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -36,6 +37,7 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 	Logger log = Logger.getLogger(this.getClass());
 
 	@Inject	Provider<HttpServletRequest> request;
+	@Inject	Provider<HttpServletResponse> response;
 	
 	@Override
 	public final B execute(A action, ExecutionContext execContext)
@@ -64,6 +66,7 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 		}
 				
 		SessionHelper.setHttpRequest(request.get());
+		SessionHelper.setHttpResponse(response.get());
 	
 		boolean hasError= false;
 		Throwable throwable=null;
