@@ -2,6 +2,8 @@ package com.duggan.workflow.server.security;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -24,6 +26,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.wira.commons.shared.models.CurrentUserDto;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 import com.wira.login.shared.model.ActionType;
 import com.wira.login.shared.request.LoginRequest;
 import com.wira.login.shared.response.LoginRequestResult;
@@ -148,6 +151,15 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 		user.setSurname(familyName);
 		user.setPictureUrl(pictureUrl);
 		user.setEmailVerified(emailVerified);
+		if(user.getRefId()==null){
+			//new group
+			UserGroup admin = helper.getGroupById("ADMIN");
+			if(admin!=null){
+				ArrayList<UserGroup> groups = new ArrayList<UserGroup>();
+				groups.add(admin);
+				user.setGroups(groups);
+			}
+		}
 
 		LoginRequest request = new LoginRequest(ActionType.VIA_GOOGLE_OAUTH,
 				user);

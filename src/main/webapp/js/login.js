@@ -93,7 +93,6 @@ function signInCallback(authResult) {
 
 function signInCallback(code, targetUrl) {
   if (code) {
-
     // Hide the sign-in button now that the user is authorized, for example:
     $('#Google_Login').attr('style', 'display: none');
 
@@ -104,6 +103,7 @@ function signInCallback(code, targetUrl) {
       contentType: 'application/octet-stream; charset=utf-8',
       success: function(result) {
         // Handle or verify the server response.
+    	  $("body").hide();
     	  window.location='index.html';
       },
       processData: false,
@@ -170,7 +170,7 @@ function doFormSubmit() {
 		data:str
 	})
 	.done(function() {
-		$("body>div").hide();
+		$("body").hide();
 		window.location='index.html';
 	})
 	.fail(function() {
