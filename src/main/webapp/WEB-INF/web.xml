@@ -77,7 +77,7 @@
 	
 	<servlet-mapping>
 	    <servlet-name>GoogleLoginServlet</servlet-name>
-	    <url-pattern>googleservlet</url-pattern>
+	    <url-pattern>/googleservlet</url-pattern>
 	</servlet-mapping>
 	
 	<!-- GOOGLE OAUTH LOGIN CALLBACK SERVLET -->
@@ -92,7 +92,7 @@
 	
 	<servlet-mapping>
 	    <servlet-name>GoogleLoginCallbackServlet</servlet-name>
-	    <url-pattern>oauth2callback</url-pattern>
+	    <url-pattern>/oauth2callback</url-pattern>
 	</servlet-mapping>
 	
 	<!-- GOOGLE OAUTH TOKEN VERIFICATION SERVLET -->
@@ -107,7 +107,7 @@
 	
 	<servlet-mapping>
 	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
-	    <url-pattern>auth2tokencallback</url-pattern>
+	    <url-pattern>/auth2tokencallback</url-pattern>
 	</servlet-mapping>
 	
 	<!-- ACCOUNTS MANAGEMENT/ ACTIVATION SERVLET -->
