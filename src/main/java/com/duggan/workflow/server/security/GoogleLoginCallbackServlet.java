@@ -2,8 +2,6 @@ package com.duggan.workflow.server.security;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,9 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.GoogleAuthenticationManager;
-import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponseException;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -128,6 +124,7 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 //			credential = flow.createAndStoreCredential(tokenResponse, userId);
 //		}
 		
+		registerAndLoginUser(payload, req, resp);
 	}
 
 	protected void registerAndLoginUser(Payload payload, HttpServletRequest req,

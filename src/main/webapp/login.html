@@ -9,7 +9,8 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-signin-client_id" content="631292106887-h50e6p0p43fvl60vjk1mcq818n5phl7h.apps.googleusercontent.com">
+<meta name="google-signin-client_id"
+	content="631292106887-h50e6p0p43fvl60vjk1mcq818n5phl7h.apps.googleusercontent.com">
 
 <!-- BootStrap start -->
 <title>WIRA</title>
@@ -31,19 +32,20 @@
 <script type="text/javascript" src="js/js.cookie.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
 <!-- Google OAuth Client -->
-<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start"
+	async defer></script>
 <title>Insert title here</title>
 </head>
 <body>
-	
+
 	<div class="login-bg" id="mainContent">
 		<div class="row-fluid">
-			<div id="curr-user-cell" style="color:green"></div>
-			<div id="user-id" style="color:cyan"></div>
-			<div id="user-scopes" style="color:orange"></div>
-			<div id="auth-response" style="color:blue"></div>
-			<div id="signed-in-cell" style="color:yellow"></div>
-			
+			<div id="curr-user-cell" style="color: green"></div>
+			<div id="user-id" style="color: cyan"></div>
+			<div id="user-scopes" style="color: orange"></div>
+			<div id="auth-response" style="color: blue"></div>
+			<div id="signed-in-cell" style="color: yellow"></div>
+
 		</div>
 		<div class="row-fluid login-wrapper text-center">
 			<a class="brand hide" href="#"></a>
@@ -59,7 +61,8 @@
 						<span class="hide loadingtext" id="loading"> <i
 							class="icon-spinner icon-spin icon-large"></i> Logging In...
 						</span>
-						<div id="issues" class="hide alert alert-danger">Wrong username or password</div>
+						<div id="issues" class="hide alert alert-danger">Wrong
+							username or password</div>
 						<input type="text" id="username" name="username" class="span12"></input>
 						<input type="password" id="password" name="password"
 							class="span12"></input>
@@ -68,28 +71,18 @@
 								for="remember-me">Keep me Signed In</label>
 						</div>
 						<div id="divLogin">
-							<img class="loading hide" src="img/loading.gif" /> 
-							<input
+							<img class="loading hide" src="img/loading.gif" /> <input
 								value="Login" name="Login" id="submit"
-								 class="btn-glow btn-block primary login" type="submit" 
-								 />
+								class="btn-glow btn-block primary login" type="submit" />
 						</div>
-						<a href="account.html#/forgot" class="hide forgot">Forgot
-							the password?</a>
-							<br/>
-							Or
-							<br/>
+						<a href="account.html#/forgot" class="hide forgot">Forgot the
+							password?</a>
+						<div>
+							<br /> Or <br /><br />
+							<div id="Google_Login" class="g-signin2"
+								data-onsuccess="onSignIn" data-width="369"></div>
+						</div>
 					</form>
-						<div id="Google_Login" class="g-signin2" data-onsuccess="onSignIn" data-width="369"></div>
-						<script>
-						$('#Google_Login').click(function() {
-						    // signInCallback defined in step 6.
-						   // auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
-						  });
-						</script>
-						<!-- a id="Google_Login" class="btn btn-block btn-social btn-google">
-				            <i class="icon-google-plus-sign"></i> Sign in with Google
-				          </a -->
 				</div>
 			</div>
 		</div>

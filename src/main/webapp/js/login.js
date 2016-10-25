@@ -32,8 +32,7 @@ function start() {
  * @param {boolean} val the updated signed out state.
  */
 var signinChanged = function (val) {
-  console.log('Signin state changed to ', val);
-  document.getElementById('signed-in-cell').innerText = val;
+ 
 };
 
 /**
@@ -42,11 +41,8 @@ var signinChanged = function (val) {
  * @param {GoogleUser} user the updated user.
  */
 var userChanged = function (user) {
-  console.log('User now: ', user);
   googleUser = user;
   updateGoogleUser();
-  document.getElementById('curr-user-cell').innerText =
-    JSON.stringify(user, undefined, 2);
 };
 
 /**
@@ -54,19 +50,10 @@ var userChanged = function (user) {
  */
 var updateGoogleUser = function () {
   if (googleUser) {
-    document.getElementById('user-id').innerText = googleUser.getId();
-    document.getElementById('user-scopes').innerText =
-      googleUser.getGrantedScopes();
-    document.getElementById('auth-response').innerText =
-      JSON.stringify(googleUser.getAuthResponse(), undefined, 2);
-    
     var id_token=googleUser.getAuthResponse().id_token;
     signInCallback(id_token, 'auth2tokencallback');
-    
   } else {
-    document.getElementById('user-id').innerText = '--';
-    document.getElementById('user-scopes').innerText = '--';
-    document.getElementById('auth-response').innerText = '--';
+    //googleUser=null
   }
 };
 
@@ -76,15 +63,7 @@ var updateGoogleUser = function () {
  */
 var refreshValues = function() {
   if (auth2){
-    console.log('Refreshing values...');
-
     googleUser = auth2.currentUser.get();
-
-    document.getElementById('curr-user-cell').innerText =
-      JSON.stringify(googleUser, undefined, 2);
-    document.getElementById('signed-in-cell').innerText =
-      auth2.isSignedIn.get();
-
     updateGoogleUser();
   }
 }
@@ -147,12 +126,14 @@ $(document).ready(function(){
 			CLIENT_ID = $(data)[0].CLIENT_ID;
 			
 			if(Google_Client_Status!='ACTIVE'){
-				$('#Google_Login').prop("disabled",true);
+				$('#Google_Login').parent().hide();
+			}else{
+				$('#Google_Login').parent().show();
 			}
 			
 		})
 		.fail(function() {
-			$('#Google_Login').prop("disabled",false);
+			$('#Google_Login').parent().hide();
 		})
 		.always(function() {
 			
@@ -189,6 +170,7 @@ function doFormSubmit() {
 		data:str
 	})
 	.done(function() {
+		$("body>div").hide();
 		window.location='index.html';
 	})
 	.fail(function() {
