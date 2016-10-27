@@ -1,0 +1,1010 @@
+<head>
+<style type="text/css">
+th.row-headers-background {
+	background: #eee;
+	position: relative;
+}
+
+table.waffle th, .grid-fixed-table th {
+	font-weight: normal;
+	background: transparent;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 8pt;
+	color: #222;
+	height: 23px;
+	border-bottom: solid 1px #ccc;
+	border-width: 0 1px 1px 0;
+	padding: 0;
+}
+
+table.waffle td, .grid-fixed-table td, td.mimic-overlay-cell {
+	border: 1px #e5e5e5 solid;
+	border-color: rgba(0, 0, 0, 0.15);
+	border-width: 0 1px 1px 0;
+	vertical-align: bottom;
+	line-height: inherit;
+	background-color: #fff;
+	padding: 0 3px;
+}
+
+.column-headers-background, .row-headers-background {
+	z-index: 1;
+}
+
+table.waffle, .grid-fixed-table {
+	font-size: 13px;
+	/*table-layout: fixed;*/
+	border-collapse: separate;
+	border-style: none;
+	border-spacing: 0;
+	width: 0;
+	cursor: default;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, .2);
+	background-clip: padding-box;
+	border: solid transparent;
+	border-width: 1px 1px 1px 6px;
+	min-height: 28px;
+	padding: 100px 0 0;
+	box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0
+		rgba(0, 0, 0, .07);
+}
+
+::-webkit-scrollbar-track {
+	background-clip: padding-box;
+	border: solid transparent;
+	border-width: 0 0 0 4px;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+::-webkit-scrollbar {
+	height: 16px;
+	overflow: visible;
+	width: 16px;
+}
+
+.ritz table.waffle .s15 {
+	border-right: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	font-style: italic;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s13 {
+	border-left: none;
+	background-color: #ffffff;
+}
+
+.ritz table.waffle .s14 {
+	border-bottom: 1px SOLID #000000;
+	background-color: #ffffff;
+}
+
+.ritz table.waffle .s5 {
+	background-color: #005084;
+	text-align: left;
+	font-weight: bold;
+	color: #ffffff;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s3 {
+	background-color: #ffffff;
+	text-align: left;
+	font-style: italic;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s9 {
+	background-color: #005084;
+	text-align: left;
+	font-weight: bold;
+	color: #ffffff;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s20 {
+	border-bottom: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s1 {
+	background-color: #ffffff;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s18 {
+	border-right: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	font-style: italic;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s8 {
+	background-color: #e4e8f3;
+	text-align: right;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s19 {
+	border-bottom: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s10 {
+	background-color: #ffffff;
+}
+
+.ritz table.waffle .s4 {
+	background-color: #ffffff;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s17 {
+	background-color: #ffffff;
+	text-align: center;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s2 {
+	background-color: #ffffff;
+	text-align: left;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s23 {
+	border-bottom: 1px SOLID #000000;
+	border-right: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s16 {
+	background-color: #ffffff;
+	text-align: center;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 12pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s11 {
+	background-color: #e4e8f3;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s6 {
+	background-color: #ffffff;
+	text-align: right;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: normal;
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s7 {
+	background-color: #e4e8f3;
+	text-align: right;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	/*  */
+	word-wrap: break-word;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s0 {
+	background-color: #ffffff;
+	text-align: left;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Times New Roman";
+	font-size: 12pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s21 {
+	border-right: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s12 {
+	border-right: none;
+	background-color: #ffffff;
+	text-align: left;
+	font-weight: bold;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+.ritz table.waffle .s22 {
+	border-bottom: 1px SOLID #000000;
+	background-color: #ffffff;
+	text-align: left;
+	color: #000000;
+	font-family: "Arial";
+	font-size: 10pt;
+	vertical-align: bottom;
+	white-space: nowrap;
+	direction: ltr;
+	padding: 2px 3px 2px 3px;
+}
+
+#particulars_grid_Delete, #others_grid_Delete {
+	color: red;
+	opacity: 0.7;
+	margin-right: -14px;
+	padding-left: 4px;
+	display: inline-block;
+}
+
+table.waffle .grid_template input {
+	height: 99%;
+}
+
+table.waffle input, table.waffle select {
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border: none;
+}
+
+table.waffle input.grid_totals {
+	background-color: #E4E8F3;
+}
+
+table.waffle input.grid_totals, .input_number {
+	text-align: right;
+}
+
+table.waffle input:focus {
+	border: none;
+}
+
+table.waffle input:hover {
+	border: none;
+}
+
+table.waffle td.qty {
+	width: 12%;
+}
+
+table.waffle textarea {
+	width: 100%;
+	border: 0px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.input-group.date .input-group-addon {
+	padding: 0px;
+}
+
+table.waffle .datepicker {
+	width: 90%;
+}
+
+table.waffle .datepicker .icon-calendar {
+	font-size: 11px;
+}
+
+table.waffle .input-group input {
+	background-color: #E4E8F3;
+}
+
+table.waffle .input-group-addon {
+	padding-left: 4px;
+}
+
+#main-content .maincontent-panel .mainform td.s1 {
+	padding-bottom: 10px;
+}
+
+table.waffle .header input, table.waffle .header select {
+	font-weight: bold;
+}
+
+table.waffle .header select {
+	padding-left: 4px;
+}
+</style>
+</head>
+
+<div class="ritz grid-container" dir="ltr">
+	<table class="waffle">
+		<thead>
+			<tr>
+				<th style="min-width: 120px" class="column-headers-background"></th>
+				<th style="width: 49px" class="column-headers-background"></th>
+				<th style="min-width: 75px" class="column-headers-background"></th>
+				<th style="min-width: 75px" class="column-headers-background"></th>
+				<th style="min-width: 120px" class="column-headers-background"></th>
+				<th style="min-width: 75px" class="column-headers-background"></th>
+				<th style="min-width: 75px" class="column-headers-background"></th>
+				<th style="min-width: 75px" class="column-headers-background"></th>
+				<th style="min-width: 75px" class="column-headers-background"></th>
+				<th style="min-width: 16px" class="column-headers-background"></th>
+				<th style="min-width: 100px" class="column-headers-background"></th>
+				<th style="min-width: 100px" class="column-headers-background"></th>
+				<th style="min-width: 100px" class="column-headers-background"></th>
+				<th style="min-width: 100px" class="column-headers-background"></th>
+				<th style="min-width: 100px" class="column-headers-background"></th>
+			</tr>
+		</thead>
+		<tbody class="header">
+			<tr style="height: 20px;">
+				<td class="s2">Instructions:</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s3" dir="ltr" colspan="9">Please fill in all fields
+					that are purple, print out and sign and submit to your supervisor
+					for approval.</td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s3" dir="ltr" colspan="9">Note that some field have
+					drop down button; just select the appropriate data as you will not
+					be able to print in those cells</td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s3" dir="ltr" colspan="9">EER (Employee Expense
+					Report) and receipts must be submitted prior to another Requisition
+					being processed.</td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s2" dir="ltr">Name:</td>
+				<td class="s4" dir="ltr" colspan="3"><span id="applicantName"></span></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s2" dir="ltr">Country:</td>
+				<td class="s4" dir="ltr" colspan="3"><span id="Country">
+				</span></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s2" dir="ltr">Month:</td>
+				<td class="s4" dir="ltr" colspan="3"><span id="month"></span></td>
+				<td></td>
+				<td class="s2">Year</td>
+				<td class="s2" colspan="2"><span id="year"></span></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s2" dir="ltr">Date</td>
+				<td class="s1" colspan="2" dir="ltr"><span id="dateSubmitted"></span></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+		</tbody>
+		<tbody id="particulars_grid" class="grid_template">
+			<tr style="height: 20px;">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s5" dir="ltr">Dates</td>
+				<td class="s5" dir="ltr"># Of Days</td>
+				<td class="s5" dir="ltr">Location</td>
+				<td class="s5" dir="ltr">Expense</td>
+				<td class="s5" dir="ltr">Description</td>
+				<td class="s5" dir="ltr">Transport</td>
+				<td class="s5" dir="ltr">Accom/ Night</td>
+				<td class="s5" dir="ltr">Field Trans/ Day</td>
+				<td class="s5" dir="ltr">Meals (250/ 750/ 1000)</td>
+				<td class="s5"></td>
+				<td class="s5" dir="ltr">Total Transport</td>
+				<td class="s5" dir="ltr">Total Accom</td>
+				<td class="s5" dir="ltr">Total Field Trans</td>
+				<td class="s5" dir="ltr">Total Meals (Per Diem)</td>
+				<td class="s5" dir="ltr">Total (Ksh)</td>
+			</tr>
+
+			<tr class="grid_row_template" style="height: 20px;">
+				<td class="s1" dir="ltr"><textarea class="textarea-box"
+						aria-multiline="true" placeholder="Dates of activity"></textarea></td>
+				<td class="s6" dir="ltr"><span id="days"></span></td>
+				<td class="s1" dir="ltr"><span id="location"></span></td>
+				<td class="s1" dir="ltr"><span id="expenseCategory"> </span></td>
+				<td class="s1" dir="ltr"><textarea class="textarea-box"
+						aria-multiline="true" placeholder="Description"></textarea></td>
+				<td class="s1" dir="ltr"><span id="transportPerDay"
+					class="input_number"> </span></td>
+				<td class="s1" dir="ltr"><span id="accommodationPerNight"
+					class="input_number"></span></td>
+				<td class="s1" dir="ltr"><span id="fieldTransportPerDay"
+					class="input_number"></span></td>
+				<td class="s1" dir="ltr"><span id="mealsPerDay"
+					class="input_number"></span></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"><span id="transportTotal"
+					class="input_number"></span></td>
+				<td class="s1" dir="ltr"><span id="accommodationTotal"
+					class="input_number"></span></td>
+				<td class="s1" dir="ltr"><span id="fieldTransportTotal"
+					class="input_number"></span></td>
+				<td class="s1" dir="ltr"><span id="mealsTotal"
+					class="input_number"></span></td>
+				<td class="s7" dir="ltr"><span id="lineTotal"
+					class="grid_totals"></span> <a id="particulars_grid_Delete"><i
+						class="icon-remove-circle"></i></a></td>
+			</tr>
+		</tbody>
+		<tbody>
+			<tr style="height: 20px;">
+				<td class="s2" dir="ltr">Subtotal</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s8" dir="ltr"><span id="particularsSubTotal"
+					class="grid_totals"></span></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+		</tbody>
+
+		<tbody id="others_grid" class="grid_template">
+			<tr style="height: 20px;">
+				<td class="s4" dir="ltr"></td>
+				<td class="s10" colspan="5"></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s11" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s9" dir="ltr">Other</td>
+				<td class="s9" dir="ltr" colspan="5">Description</td>
+				<td class="s9" dir="ltr"></td>
+				<td class="s9" dir="ltr">Amount</td>
+				<td class="s5" dir="ltr"></td>
+				<td class="s9"></td>
+				<td class="s5" dir="ltr"></td>
+				<td class="s5" dir="ltr"></td>
+				<td class="s5" dir="ltr"></td>
+				<td class="s5" dir="ltr"></td>
+				<td class="s5" dir="ltr">Total (UGX)</td>
+			</tr>
+
+			<tr class="grid_row_template" style="height: 20px;">
+				<td class="s4" dir="ltr">Please Describe</td>
+				<td class="s10" colspan="5"><textarea class="textarea-box"
+						aria-multiline="true" placeholder="Description"></textarea></td>
+				<td></td>
+				<td><span id="otherAmount" class="input_number"></span></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s7" dir="ltr"><span id="otherTotal"
+					class="grid_totals input_number"></span> <a id="others_grid_Delete">
+						<i class="icon-remove-circle"></i>
+				</a></td>
+			</tr>
+		</tbody>
+
+		<tbody>
+			<tr style="height: 20px;">
+				<td class="s2" dir="ltr">Other Subtotal</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s8" dir="ltr"><span id="otherSubTotal"
+					class="grid_totals input_number"></span></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s12 softmerge" dir="ltr"><div
+						class="softmerge-inner" style="width: 167px; left: -1px;">Total
+						Requisition</div></td>
+				<td class="s13"></td>
+				<td class="s13"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s8" dir="ltr"><span id="totalRequisition"
+					class="grid_totals input_number"></span></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s14"></td>
+				<td class="s14"></td>
+				<td class="s14"></td>
+				<td class="s14"></td>
+				<td class="s14"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s15" dir="ltr" colspan="5">Please note following
+					limits:</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s16" dir="ltr" colspan="4">Name And Signature</td>
+				<td class="s16" dir="ltr" colspan="3">Date</td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s3"></td>
+				<td class="s3"></td>
+				<td class="s3"></td>
+				<td class="s3"></td>
+				<td class="s15"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s17" dir="ltr"></td>
+				<td class="s17" dir="ltr"></td>
+				<td class="s17" dir="ltr"></td>
+				<td class="s17" dir="ltr"></td>
+				<td class="s17" dir="ltr"></td>
+				<td class="s17" dir="ltr"></td>
+				<td class="s17" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s15" dir="ltr" colspan="5">Accomodation will usually
+					be provided</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s18" dir="ltr" colspan="5" rowspan="2">Meal
+					Allowance is Ksh 750/day (if lunch is provided) or Kshs 1,000 /day
+					(if lunch is not provided)</td>
+				<td class="s2" dir="ltr"></td>
+				<td class="s2" dir="ltr" colspan="2">Submitted By</td>
+				<td class="s19" dir="ltr" colspan="4"><span id="submitterStr"></span>
+				</td>
+				<td class="s20" dir="ltr" colspan="3"><span
+					id="dateSubmittedStr"></span></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s2" dir="ltr"></td>
+				<td class="s2" dir="ltr"></td>
+				<td class="s3" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s15" dir="ltr" colspan="5">Personal Auto Usage (fuel
+					+ running costs) is per the AAK guidelines</td>
+				<td class="s3" dir="ltr"></td>
+				<td class="s3" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s21"></td>
+				<td class="s2" dir="ltr"></td>
+				<td class="s2" dir="ltr" colspan="2">Supervisors Approval</td>
+				<td class="s19" dir="ltr" colspan="4"><span id="supervisorStr"></span></td>
+				<td class="s20" dir="ltr" colspan="3"><span
+					id="supervisorApprovalDateStr"></span></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s21"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s21"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s21"></td>
+				<td class="s2" dir="ltr"></td>
+				<td class="s2" dir="ltr" colspan="2">Finance Approval</td>
+				<td class="s20" dir="ltr" colspan="4"><span
+					id="financeApprovalStr"></span></td>
+				<td class="s20" dir="ltr" colspan="3"><span
+					id="financeApprovalDateStr"></span></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s21"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s21"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+				<td class="s1" dir="ltr"></td>
+			</tr>
+			<tr style="height: 20px;">
+				<td class="s22"></td>
+				<td class="s22"></td>
+				<td class="s22"></td>
+				<td class="s22"></td>
+				<td class="s23"></td>
+				<td class="s2" dir="ltr"></td>
+				<td class="s2" dir="ltr" colspan="2">Receivers Signature</td>
+				<td class="s20" dir="ltr" colspan="4"><span id="recieverStr"></span></td>
+				<td class="s20" dir="ltr" colspan="3"><span
+					id="receiverDateStr"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
