@@ -405,7 +405,8 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		List<TaskLog> logs = new ArrayList<>();
 		String sql = "select t.id,t.status,t.createdon, t.completedon, t.activationtime,t.expirationtime,"
 				+ "t.processinstanceid, "
-				+ "t.actualowner_id, i.text from task t "
+				+ "t.actualowner_id, i.text "
+				+ "from task t "
 				// +
 				// "left join peopleassignments_potowners p  on p.task_id=t.id "
 				+ "inner join i18ntext i on i.task_names_id=t.id "

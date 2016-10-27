@@ -113,6 +113,7 @@ public class HTMLGrid extends HTMLParent {
 	private ArrayList<FieldWidget> parseInputs(Element newRow) {
 
 		NodeList<Element> elements = newRow.getElementsByTagName("input");
+		
 		ArrayList<FieldWidget> fields = new ArrayList<FieldWidget>();
 
 		for (int i = 0; i < elements.getLength(); i++) {
@@ -122,6 +123,17 @@ public class HTMLGrid extends HTMLParent {
 				fields.add(widget);
 			}
 		}
+		
+		//Text Areas
+		elements = newRow.getElementsByTagName("textarea");
+		for (int i = 0; i < elements.getLength(); i++) {
+			Element element = elements.getItem(i);
+			FieldWidget widget = wrap(element, designMode);
+			if (widget != null) {
+				fields.add(widget);
+			}
+		}
+		
 
 		NodeList<Element> selects = newRow.getElementsByTagName("select");
 		for (int i = 0; i < selects.getLength(); i++) {

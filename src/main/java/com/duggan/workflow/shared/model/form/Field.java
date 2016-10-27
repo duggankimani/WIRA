@@ -423,6 +423,11 @@ public class Field extends FormModel implements Comparable<Field>{
 		}
 		
 		if(equal){
+			if(!this.selectionValues.containsAll(other.selectionValues)){
+				return false;
+			}
+		}
+		if(equal){
 			equal = this.position==other.position;
 		}
 		

@@ -20,7 +20,7 @@ public class TestTaskData {
 	
 	@Test
 	public void getData(){
-		Long taskId = 261L;
+		Long taskId = 332L;
 		HTask task = JBPMHelper.get().getTask(taskId);
 		for(String key: task.getValues().keySet()){
 			System.err.println("{"+key+":"+task.get(key)+"}");

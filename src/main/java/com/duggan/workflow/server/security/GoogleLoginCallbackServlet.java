@@ -56,7 +56,7 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 			clientSecrets = GoogleClientSecrets.load(
 					JacksonFactory.getDefaultInstance(), new FileReader(
 							CLIENT_SECRET_FILE));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

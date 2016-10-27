@@ -255,11 +255,9 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 	@Override
 	public void onLockInteraction(LockInteractionEvent e) {
 		if(e.shouldLock()){
-			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.INITIAL);
-			//getView().showProcessing(true, "Loading...");
+			getView().showProcessing(true, "Loading...");
 		}else{
-			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.NONE);
-			//getView().showProcessing(false, null);
+			getView().showProcessing(false, null);
 		}
 	}
 
