@@ -4,6 +4,7 @@ package com.duggan.workflow.client.ui;
 import com.duggan.workflow.client.event.ShowMessageEvent;
 import com.duggan.workflow.client.event.ShowMessageEvent.ShowMessageHandler;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
+import com.duggan.workflow.client.ui.applicationscentral.ApplicationsCentralPresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent.ClientDisconnectionHandler;
@@ -22,6 +23,7 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowA
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -36,10 +38,12 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.presenter.slots.IsSingleSlot;
 import com.gwtplatform.mvp.client.presenter.slots.IsSlot;
 import com.gwtplatform.mvp.client.presenter.slots.LegacySlotConvertor;
 import com.gwtplatform.mvp.client.presenter.slots.NestedSlot;
 import com.gwtplatform.mvp.client.presenter.slots.PermanentSlot;
+import com.gwtplatform.mvp.client.presenter.slots.SingleSlot;
 import com.gwtplatform.mvp.client.proxy.LockInteractionEvent;
 import com.gwtplatform.mvp.client.proxy.LockInteractionHandler;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -252,8 +256,10 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 	public void onLockInteraction(LockInteractionEvent e) {
 		if(e.shouldLock()){
 			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.INITIAL);
+			//getView().showProcessing(true, "Loading...");
 		}else{
 			RootPanel.get("loading").getElement().getStyle().setDisplay(Display.NONE);
+			//getView().showProcessing(false, null);
 		}
 	}
 

@@ -7,16 +7,8 @@
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>GWTHT.html</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-
-	<!--
-		This Guice listener hijacks all further filters and servlets. Extra
-		filters and servlets have to be configured in your
-		ServletModule#configureServlets() by calling
-		serve(String).with(Class<? extends HttpServlet>) and
-		filter(String).through(Class<? extends Filter)
-	-->
 
 	<resource-env-ref>
 	    <resource-env-ref-name>jdbc/ebusinessds</resource-env-ref-name>
@@ -47,7 +39,7 @@
 	
 	<filter-mapping>
 	     <filter-name>SecurityFilter</filter-name>
-	     <url-pattern>/GWTHT.html</url-pattern>
+	     <url-pattern>/index.html</url-pattern>
 	</filter-mapping>
 	
 
@@ -62,12 +54,13 @@
 		<url-pattern>/dispatch/*</url-pattern>
 	</filter-mapping>
 	
+	<!-- LOGIN SERVLET (PASSWORD/USERNAME) -->
 	<servlet>
 	    <servlet-name>LoginServlet</servlet-name>
 	    <servlet-class>com.duggan.workflow.server.security.LoginServlet</servlet-class>
 	    <init-param>
 	        <param-name>app_page</param-name>
-	        <param-value>GWTHT.html</param-value>
+	        <param-value>index.html</param-value>
 	     </init-param>
 	</servlet>
 	
@@ -76,6 +69,48 @@
 	    <url-pattern>/auth</url-pattern>
 	</servlet-mapping>
 	
+	<!-- GOOGLE OAUTH LOGIN SERVLET -->
+	<servlet>
+	    <servlet-name>GoogleLoginServlet</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.security.GoogleLoginServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>GoogleLoginServlet</servlet-name>
+	    <url-pattern>/googleservlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- GOOGLE OAUTH LOGIN CALLBACK SERVLET -->
+	<servlet>
+	    <servlet-name>GoogleLoginCallbackServlet</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.security.GoogleLoginCallbackServlet</servlet-class>
+	    <init-param>
+	        <param-name>app_page</param-name>
+	        <param-value>index.html</param-value>
+	     </init-param>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>GoogleLoginCallbackServlet</servlet-name>
+	    <url-pattern>/oauth2callback</url-pattern>
+	</servlet-mapping>
+	
+	<!-- GOOGLE OAUTH TOKEN VERIFICATION SERVLET -->
+	<servlet>
+	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.security.GoogleIdTokenVerifierService</servlet-class>
+	    <init-param>
+	        <param-name>app_page</param-name>
+	        <param-value>index.html</param-value>
+	     </init-param>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
+	    <url-pattern>/auth2tokencallback</url-pattern>
+	</servlet-mapping>
+	
+	<!-- ACCOUNTS MANAGEMENT/ ACTIVATION SERVLET -->
 	<servlet>
 	    <servlet-name>AccountsServlet</servlet-name>
 	    <servlet-class>com.duggan.workflow.server.security.AccountsServlet</servlet-class>
@@ -86,6 +121,7 @@
 	    <url-pattern>/accounts</url-pattern>
 	</servlet-mapping>
 	
+	<!-- REST SERVICE -->
 	<servlet>
 	    <servlet-name>RestService</servlet-name>
 	    <servlet-class>com.duggan.workflow.server.rest.servlet.JerseyServletContainer</servlet-class>
@@ -104,6 +140,7 @@
 	    <url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 	
+	<!-- UPLOAD SERVLET -->
 	<servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.UploadServlet</servlet-class>
 	    <servlet-name>uploader</servlet-name>
@@ -114,6 +151,7 @@
 	    <url-pattern>/upload</url-pattern>
 	</servlet-mapping>
 	
+	<!-- FILE/ ATTACHMENTS DOWNLOAD SERVLET -->
 	<servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.GetReport</servlet-class>
 	    <servlet-name>getReport</servlet-name>
@@ -124,6 +162,7 @@
 	    <url-pattern>/getreport</url-pattern>
 	</servlet-mapping>
 	
+	<!-- PIONEER MPESA INTEGRATION -->
 	<servlet>
 		<servlet-class>org.wira.pioneer.integration.PioneerMpesaServlet</servlet-class>
 		<servlet-name>ipnServlet</servlet-name>
@@ -143,12 +182,5 @@
 	    <servlet-name>downloadReport</servlet-name>
 	    <url-pattern>/downloadreport</url-pattern>
 	</servlet-mapping>
-	
-	<!-- For Servlet 3.0 -Securing cookies http://www.jtmelton.com/2012/01/17/year-of-security-for-java-week-3-session-cookie-secure-flag/ -->
-	<!-- session-config>
-	  <cookie-config>
-	    <secure>true</secure>
-	  </cookie-config>
-	</session-config -->
 
 </web-app>

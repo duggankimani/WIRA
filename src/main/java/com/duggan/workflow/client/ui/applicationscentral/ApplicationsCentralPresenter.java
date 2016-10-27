@@ -2,13 +2,24 @@ package com.duggan.workflow.client.ui.applicationscentral;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.ApplicationPresenter;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
+import com.duggan.workflow.client.ui.document.VIEWS;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
+import com.duggan.workflow.shared.event.FormLoadEvent;
+import com.duggan.workflow.shared.event.ForwardDocumentEvent;
+import com.duggan.workflow.shared.event.SaveDocumentEvent;
+import com.duggan.workflow.shared.event.ShowViewEvent;
+import com.duggan.workflow.shared.event.FormLoadEvent.FormLoadHandler;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -27,11 +38,28 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.wira.commons.client.service.ServiceCallback;
 public class ApplicationsCentralPresenter extends Presenter<ApplicationsCentralPresenter.MyView, ApplicationsCentralPresenter.MyProxy>  
-implements AfterDocumentLoadHandler
+implements FormLoadHandler
 {
     interface MyView extends View  {
 
-		void setContext(Doc doc);
+		void setContext(Form form, Doc doc);
+
+		HasClickHandlers getForwardForApproval();
+
+		HasClickHandlers getSaveButton();
+
+		HasClickHandlers getShowProcessMap();
+
+		HasClickHandlers getEditLink();
+
+		HasClickHandlers getShowAttachmentsLink();
+
+		HasClickHandlers getSaveDocLink();
+
+		HasClickHandlers getViewAuditLog();
+
+		HasClickHandlers getViewDocButton();
+		
     }
 
     public static final SingleSlot<GenericDocumentPresenter> DOCUMENT_SLOT = new SingleSlot<GenericDocumentPresenter>();
@@ -49,13 +77,15 @@ implements AfterDocumentLoadHandler
 
 	private String processRefId;
 
+	private Doc doc;
+
     @Inject
     ApplicationsCentralPresenter(
             EventBus eventBus,
             MyView view, 
             MyProxy proxy,
             Provider<GenericDocumentPresenter> docViewProvider) {
-        super(eventBus, view, proxy, RevealType.RootLayout);
+        super(eventBus, view, proxy, ApplicationPresenter.CONTENT_SLOT);
         docViewFactory = new StandardProvider<GenericDocumentPresenter>(
 				docViewProvider);
     }
@@ -63,10 +93,78 @@ implements AfterDocumentLoadHandler
     @Override
     protected void onBind() {
     	super.onBind();
-    	addRegisteredHandler(AfterDocumentLoadEvent.TYPE, this);
+    	addRegisteredHandler(FormLoadEvent.getType(), this);
+    	
+    	getView().getForwardForApproval().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				fireEvent(new ForwardDocumentEvent(doc));
+			}
+		});
+
+    	getView().getSaveButton().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				fireEvent(new SaveDocumentEvent(doc));
+			}
+		});
+
+//    	getView().getDeleteButton().addClickHandler(new ClickHandler() {
+//
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				delete((Document) doc);
+//			}
+//		});
+
+    	getView().getShowProcessMap().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(VIEWS.PROCESSTREE);
+			}
+		});
+
+		getView().getEditLink().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(VIEWS.FORM);
+			}
+		});
+
+		getView().getShowAttachmentsLink().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(VIEWS.ATTACHMENTS);
+			}
+		});
+
+		getView().getViewAuditLog().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(VIEWS.AUDITLOG);
+			}
+		});
+		
+		getView().getViewDocButton().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(VIEWS.FORM);
+			}
+		});
+		
+
     }
     
-    @Override
+    protected void changeView(VIEWS view) {
+    	fireEvent(new ShowViewEvent(view));
+	}
+
+	@Override
     public void prepareFromRequest(PlaceRequest request) {
     	super.prepareFromRequest(request);
     	Window.setTitle("Applications Central");
@@ -121,8 +219,7 @@ implements AfterDocumentLoadHandler
 	}
 	
 	@Override
-	public void onAfterDocumentLoad(AfterDocumentLoadEvent event) {
-		Doc doc = event.getDoc();
-		getView().setContext(doc);
+	public void onFormLoad(FormLoadEvent event) {
+		getView().setContext(event.getForm(),event.getDoc());
 	}
 }

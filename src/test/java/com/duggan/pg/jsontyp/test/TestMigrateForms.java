@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import bitronix.tm.TransactionManagerServices;
+
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.db.DB;
@@ -24,9 +26,12 @@ public class TestMigrateForms {
 	
 	@Test
 	public void migrateForms(){
+		
 		DB.beginTransaction();
-
-		List<ProcessDef> processes = ProcessDaoHelper.getAllProcesses(null, false);
+		int beginIdx = 30;
+		int length = 40;
+		
+		List<ProcessDef> processes = ProcessDaoHelper.getAllProcesses(null, false,beginIdx,length);
 		
 		for(ProcessDef p: processes){
 			//Transaction Per Process

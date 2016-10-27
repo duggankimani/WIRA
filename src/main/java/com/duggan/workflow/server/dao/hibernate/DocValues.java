@@ -116,7 +116,9 @@ public class DocValues implements Serializable{
 			
 			if(otherObj!=null && obj!=null){
 				if(otherObj instanceof Number){
-					isEqual = new Double(otherObj.toString()).equals(new Double(obj.toString()));
+					if(!new Double(otherObj.toString()).equals(new Double(obj.toString()))){
+						isEqual = false; 
+					}
 				}else if(!otherObj.equals(obj)){
 					logger.debug("DocValues values NOT Equal "
 							+ "{this."+key+":"+obj+"} != "

@@ -37,6 +37,11 @@ public class ADFieldJson extends PO{
 	@Type(type="JsonField")
 	private Field field;
 	
+	@XmlTransient
+	private String formRef;
+	
+	private String fieldType;
+	
 	public ADFieldJson() {
 	}
 	
@@ -61,6 +66,13 @@ public class ADFieldJson extends PO{
 			return false;
 		
 		ADFieldJson field = (ADFieldJson)obj;
+		
+		if(formRef!=null){
+			if(field.getFormRef()!=null &&
+					!this.formRef.equals(field.getFormRef())){
+				return false;
+			}
+		}
 		
 		if(this.field!=null){
 			if(this.field.equals(field.field)){
@@ -96,7 +108,25 @@ public class ADFieldJson extends PO{
 
 	public void setField(Field field) {
 		this.field = field;
+		formRef = field.getFormRef();
 		setRefId(field.getRefId());
+		this.fieldType = field.getType().name();
+	}
+
+	public String getFormRef() {
+		return formRef;
+	}
+
+	public void setFormRef(String formRef) {
+		this.formRef = formRef;
+	}
+
+	public String getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
 	}
 	
 }

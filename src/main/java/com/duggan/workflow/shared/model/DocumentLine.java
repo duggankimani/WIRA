@@ -27,7 +27,7 @@ import com.wira.commons.shared.models.SerializableObj;
 @XmlSeeAlso({KeyValuePair.class,Property.class,Field.class})
 @XmlRootElement(name="docline")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DocumentLine extends SerializableObj{
+public class DocumentLine extends IsDoc{
 
 	/**
 	 * 
@@ -39,9 +39,6 @@ public class DocumentLine extends SerializableObj{
 	@XmlTransient
 	private Long documentId;
 	private String name;
-	
-	@XmlTransient
-	private HashMap<String, Value> values = new HashMap<String, Value>();
 	
 	public DocumentLine(){
 	}
@@ -80,29 +77,12 @@ public class DocumentLine extends SerializableObj{
 		this.name = name;
 	}
 
-	public HashMap<String, Value> getValues() {
-		return values;
-	}
-
-	public void setValues(HashMap<String, Value> values) {
-		this.values = values;
-	}
-
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public void addValue(String name,Value value){
-		value.setKey(name);
-		values.put(name, value);
-	}
-	
-	public Value getValue(String name){
-		return values.get(name);
 	}
 	
 	@Override

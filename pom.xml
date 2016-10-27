@@ -141,7 +141,7 @@
 				<configuration>
 					<!-- With multiple tests use GwtTestSuite.java for speed -->
 					<includes>**/*GwtTest.java</includes>
-					<extraJvmArgs>-Xss1024K -Xmx1024M -XX:MaxPermSize=256M -Dorg.apache.jasper.compiler.disablejsr199=false</extraJvmArgs>
+					<extraJvmArgs>-Xss1024K -Xmx1024M -XX:MaxPermSize=256M -DGoogle_OAuth_Client_Secret_File=/home/duggan/Projects/WIRA/src/main/resources/client_secret.apps.google.json -Dorg.apache.jasper.compiler.disablejsr199=false</extraJvmArgs>
 					<!-- compileReport>true</compileReport> <detail>true</detail> <detailedSoyc>true</detailedSoyc -->
 					<copyWebapp>true</copyWebapp>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
@@ -149,7 +149,6 @@
 					<runTarget>login.html</runTarget>
 					<modules>
 						<module>com.duggan.workflow.GWTHT</module>
-						<!-- module>com.wira.login.Login</module -->
 					</modules>
 				</configuration>
 				<executions>
@@ -267,6 +266,26 @@
 	</build>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.22.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-servlet</artifactId>
+			<version>1.20.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>transaction-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -329,7 +348,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -340,13 +359,13 @@
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>2.7.7</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>3.3</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -437,7 +456,7 @@
 		<dependency>
 			<groupId>org.mvel</groupId>
 			<artifactId>mvel2</artifactId>
-			<!-- version>2.1.3.Final</version-->
+			<!-- version>2.1.3.Final</version -->
 			<version>2.2.8.Final</version>
 		</dependency>
 
@@ -446,7 +465,7 @@
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 			<version>2.1.3</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -459,7 +478,7 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -609,14 +628,14 @@
 			<groupId>org.ow2.util.bundles</groupId>
 			<artifactId>javassist-3.14.0-GA</artifactId>
 			<version>1.0.0</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.4.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -639,11 +658,11 @@
 
 		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-core -->
 		<dependency>
-		    <groupId>com.sun.xml.bind</groupId>
-		    <artifactId>jaxb-core</artifactId>
-		    <version>2.2.11</version>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.2.11</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
@@ -697,7 +716,7 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -743,14 +762,14 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_3.0_spec</artifactId>
 			<version>1.1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jta_1.1_spec</artifactId>
 			<version>1.1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 
@@ -809,66 +828,66 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>ejb3-persistence</artifactId>
 			<version>1.0.2.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>3.3.2.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>3.4.0.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>3.1.0.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.4.0.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
-		    <groupId>org.postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
-		    <version>9.4-1201-jdbc41</version>
-		    <!--scope>provided</scope-->
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4-1201-jdbc41</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver 
 			-DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
 
@@ -900,7 +919,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -914,7 +933,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

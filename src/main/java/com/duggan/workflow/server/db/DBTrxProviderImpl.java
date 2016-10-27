@@ -74,6 +74,10 @@ public class DBTrxProviderImpl{
 			logger.warn("No Global User Trx Found - Could you be running in development mode?");
 			//non
 			Configuration config = TransactionManagerServices.getConfiguration();
+			
+			//Data Importation - Please Remove - DUGGAN KIMANI 6/10/2016
+			config.setDefaultTransactionTimeout(300);
+			
 			File resourceProperties = new File(Thread.currentThread().getContextClassLoader().getResource("").getPath());
 			config.setResourceConfigurationFilename(resourceProperties.getPath()+"/db.properties");
 			resourceProperties=null;

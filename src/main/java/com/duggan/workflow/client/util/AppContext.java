@@ -141,9 +141,14 @@ public class AppContext {
 	}
 
 	public static String getUserImageUrl() {
+		if(user.getUser().getPictureUrl()!=null){
+			return user.getUser().getPictureUrl(); 
+		}
+		
 		String moduleUrl = getBaseUrl();
 		String url = moduleUrl + "/getreport?ACTION=GetUser&userId="
 				+ user.getUser().getUserId();
+		
 		return url;
 	}
 

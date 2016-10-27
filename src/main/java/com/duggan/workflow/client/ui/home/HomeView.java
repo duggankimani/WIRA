@@ -432,6 +432,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@Override
 	public void setScreenMode(ScreenMode screenMode) {
 		Element sideBar = mainContainer.getElementById("sidebar-nav");
+		
+		//showSideBar(sideBar,screenMode==ScreenMode.SMALLSCREEN);
 		if(screenMode==ScreenMode.FULLSCREEN){
 			sideBar.getStyle().setDisplay(Display.NONE);
 			tabContent.getElement().getStyle().setLeft(0, Unit.PX);
@@ -440,5 +442,17 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			tabContent.getElement().getStyle().setLeft(200, Unit.PX);
 		}
 	}
+
+	private native void showSideBar(Element sideBar, boolean isShow) /*-{
+		if(isShow){
+			$wnd.jQuery(sideBar).show(1000);
+		}else{
+			$wnd.jQuery(sideBar).hide(1000);
+		}
+		
+		
+	}-*/;
+	
+	
 
 }

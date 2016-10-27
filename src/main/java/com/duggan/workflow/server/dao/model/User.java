@@ -47,6 +47,10 @@ public class User extends PO {
 
 	@Column(length = 100)
 	private String email;
+	
+	private String pictureUrl;
+	
+	private String refreshToken;
 
 	private boolean isArchived;
 
@@ -162,5 +166,21 @@ public class User extends PO {
 		return (lastName == null ? "" : lastName) + " "
 				+ (firstName == null ? "" : firstName);
 
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 }

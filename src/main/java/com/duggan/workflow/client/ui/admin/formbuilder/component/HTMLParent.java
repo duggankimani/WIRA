@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
+import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Window;
@@ -21,8 +22,10 @@ public abstract class HTMLParent extends FieldWidget {
 
 	@Override
 	public void setField(Field aField) {
+		
 		for (Field child : aField.getFields()) {
 			child.setForm(aField.getFormId(), aField.getFormRef());
+//			child.addValue(new KeyValuePair(READONLY, aField.getProperty(READONLY)));
 			children.put(child.getName(), child);
 		}
 		super.setField(aField);

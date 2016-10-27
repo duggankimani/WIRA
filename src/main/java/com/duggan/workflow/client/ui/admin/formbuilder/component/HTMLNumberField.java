@@ -149,6 +149,7 @@ public class HTMLNumberField extends FieldWidget{
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
+		txtComponent.setReadOnly(readOnly);
 	}
 
 	@Override
@@ -175,7 +176,6 @@ public class HTMLNumberField extends FieldWidget{
 	@Override
 	public Value getFieldValue() {
 		Double value = txtComponent.getValue();
-		
 		if(value==null)
 			return null;
 		
@@ -201,7 +201,7 @@ public class HTMLNumberField extends FieldWidget{
 			
 			ENV.setContext(field, (Double)value);
 			txtComponent.setValue((Double)value);
-			
+
 		}else{
 			super.setValue(0.0);
 		}

@@ -22,6 +22,9 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 	private String userId;
 	private String email;
 	private String surname;
+	private String pictureUrl;
+	private boolean isEmailVerified; 
+	private String refreshToken;
 	
 	@XmlTransient
 	private String password;
@@ -222,5 +225,29 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 
 	public void setOrg(Org org) {
 		this.org = org;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	public boolean isEmailVerified() {
+		return isEmailVerified;
+	}
+
+	public void setEmailVerified(boolean isEmailVerified) {
+		this.isEmailVerified = isEmailVerified;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 }

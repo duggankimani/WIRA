@@ -8,7 +8,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="full-page">
-		<g:HTMLPanel styleName="upper-content">
+		<g:HTMLPanel styleName="upper-content" ui:field="panelUpperContent">
 			<div class="action-area row-fluid">
 				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel>
 				<div class="generic-doc-title span6">
@@ -115,6 +115,12 @@
 						</button>
 
 						<ul class="dropdown-menu" role="menu" ui:field="ulMenu">
+							<li class="hidden">
+								<d:ActionLink ui:field="aPrint"
+									title="Print this document">
+									<i class="icon-print"></i>Print
+								</d:ActionLink>
+							</li>
 							<li>
 								<d:ActionLink ui:field="aRevoke" styleName="btn hidden"
 									title="Revoke this task so that its re-assignable to other users in your group">
@@ -161,8 +167,43 @@
 							</li>
 						</ul>
 					</div>
+
+					<div class="dropdown" style="display:inline-block" title="Zoom"
+						id="divZoom">
+						<button class="btn dropdown-toggle" data-toggle="dropdown">
+							<span class="dropDownText">100%</span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li>
+								<a id="fitPage">150%</a>
+							</li>
+							<li>
+								<a id="fitPage">120%</a>
+							</li>
+							<li>
+								<a id="fitPage">100%</a>
+							</li>
+							<li>
+								<a id="fitPage">90%</a>
+							</li>
+							<li>
+								<a id="fitPage">80%</a>
+							</li>
+							<li>
+								<a id="fitPage">60%</a>
+							</li>
+							<li>
+								<a id="fitPage">50%</a>
+							</li>
+						</ul>
+
+
+					</div>
 					<div class="generic-doc-close" style="display:inline">
-						<d:ActionLink ui:field="aMaximize" title="Maximize or Minimize Window">
+
+						<d:ActionLink ui:field="aMaximize" styleName="hide"
+							title="Maximize or Minimize Window">
 							<i class="icon-resize-full"></i>
 						</d:ActionLink>
 						<d:ActionLink ui:field="aClose" title="Close">
@@ -170,11 +211,12 @@
 						</d:ActionLink>
 					</div>
 				</div>
+
 			</div>
 
 		</g:HTMLPanel>
 
-		<g:HTMLPanel styleName="overflow-y">
+		<g:HTMLPanel ui:field="contentArea" styleName="overflow-y">
 			<div class="personal_info row-fluid span12">
 				<div class="span9">
 					<div class="span2 image">

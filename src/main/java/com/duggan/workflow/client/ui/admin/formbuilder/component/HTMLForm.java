@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -150,10 +151,6 @@ public class HTMLForm extends HTMLParent {
 		
 		String html = getPropertyValue(HTMLCONTENT);
 		bindHTML(html);
-		
-//		if(field.getName().equals("academicqualification")){
-//			Window.alert(" >> SETField! "+field.getName());
-//		}
 
 		if (isAttached()) {
 			bindHTMLWidgets(htmlContent.getElement());
@@ -258,6 +255,7 @@ public class HTMLForm extends HTMLParent {
 		}
 
 		String parentId = getElement().getId();
+		String viewId = parentId.substring(0,parentId.length()-5)+"View";
 		String textAreaId = getPropertyValue(NAME);
 		
 		/**
@@ -270,18 +268,24 @@ public class HTMLForm extends HTMLParent {
 		 */
 		JsArrayString elementArray = (JsArrayString) JsArrayString
 				.createArray();
-		getAllInputs(parentId, elementArray);
+		//getAllInputs(parentId, elementArray);
+		getAllElements(parentId, elementArray);
 		
 		List<String> inputGroups = new ArrayList<String>();
 		
 		for (int i = 0; i < elementArray.length(); i++) {
 			String id = elementArray.get(i);
-			if (id == null || id.isEmpty() || id.equals(parentId)
+			if (id == null || id.isEmpty() || id.equals(parentId) || id.equals(viewId) 
 					|| (textAreaId != null && id.equals(textAreaId))) {
 				continue;
 			}
 
 			Element element = htmlContent.getElementById(id);
+			
+			if(element.hasClassName(GRID_ROW_TEMPLATE_CLASS) || element.hasClassName(GRID_TEMPLATE_CLASS)){
+				//Not writable
+				continue;
+			}
 			
 			String type = element.getAttribute("type");
 			if(type!=null && (type.equals("radio") || type.equals("checkbox"))){
@@ -376,6 +380,8 @@ public class HTMLForm extends HTMLParent {
 		for (FieldWidget w : fieldWidgets) {
 			Field target = w.getField();
 			Value fieldValue = w.getFieldValue();
+			target.setValue(fieldValue);
+			
 			if (fieldValue != null) {
 				assert target.getName() != null;
 				assert !target.getName().isEmpty();
@@ -385,5 +391,6 @@ public class HTMLForm extends HTMLParent {
 		}
 		return values;
 	}
-
+	
+	
 }

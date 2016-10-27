@@ -122,6 +122,8 @@ public class HTMLTextArea extends FieldWidget {
 			txtComponent.getElement().getStyle()
 					.setBorderStyle(BorderStyle.NONE);
 		}
+		
+		txtComponent.setReadOnly(readOnly);
 	}
 
 	@Override

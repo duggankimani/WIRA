@@ -72,8 +72,7 @@
 							Stop
 						</d:ActionLink>
 
-						<d:ActionLink ui:field="aForward"
-							styleName="btn btn-success">
+						<d:ActionLink ui:field="aForward" styleName="btn btn-success">
 							Submit
 							<i class="icon-double-angle-right"></i>
 						</d:ActionLink>
@@ -85,6 +84,15 @@
 			<div id="detailed-info">
 				<g:HTMLPanel ui:field="docContainer" styleName="full-page"></g:HTMLPanel>
 			</div>
+		</div>
+		<div class="zoom" ui:field="aZoom">
+			<a>
+			    <i class="icon-zoom-in"></i>
+			</a>
+			<br></br>
+			<a>
+			    <i class="icon-zoom-out"></i>
+			</a>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

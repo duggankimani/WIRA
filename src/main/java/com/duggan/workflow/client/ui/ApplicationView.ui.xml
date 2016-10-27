@@ -14,19 +14,19 @@
 			<strong ui:field="spnSubject"></strong>
 			<g:Anchor styleName="hand muted" ui:field="aView">View Document</g:Anchor>
 		</div>
-		
+
 		<div ui:field="divGenericAlerts" class="alert alert-success hide">
-			<!-- strong>Success!</strong>
-			Indicates a successful or positive action. -->
+			<!-- strong>Success!</strong> Indicates a successful or positive action. -->
 		</div>
 
-		<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
-
-		<!-- Domain Specific View goes here -->
-		<g:HTMLPanel styleName="full-page">
-			<g:HTMLPanel ui:field="pContainer" styleName="full-page">
+		<div class="full-page">
+			<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
+			<!-- Domain Specific View goes here -->
+			<g:HTMLPanel styleName="full-page">
+				<g:HTMLPanel ui:field="pContainer" styleName="full-page">
+				</g:HTMLPanel>
 			</g:HTMLPanel>
-		</g:HTMLPanel>
+		</div>
 		<g:HTMLPanel ui:field="popoverPanel"></g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

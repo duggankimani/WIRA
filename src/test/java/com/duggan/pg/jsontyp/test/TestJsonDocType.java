@@ -40,13 +40,13 @@ public class TestJsonDocType {
 	
 	@Ignore
 	public void loadAll(){
-		DocumentDaoHelper.getAllDocumentsJson(null,0, 20, false, DocStatus.DRAFTED);
+		DocumentDaoHelper.getAllDocumentsJson(null,0, 20, false,false, DocStatus.DRAFTED);
 	}
 	
 	@Test
 	public void migrateData(){
 		List<BigInteger> documentIds = DB.getEntityManager()
-				.createNativeQuery("select id from localdocument order by id desc limit 20")
+				.createNativeQuery("select id from localdocument order by id desc limit 100")
 				.getResultList();
 		
 		for(BigInteger id: documentIds){

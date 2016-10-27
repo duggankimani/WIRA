@@ -77,7 +77,8 @@ public class SecurityFilter implements Filter {
 	}
 	
 	private String getContextPath(HttpServletRequest request) {
-		String contextPath = request.getServletContext().getContextPath();
+		//String contextPath = request.getServletContext().getContextPath();
+		String contextPath = request.getContextPath();
 
 		if (!contextPath.isEmpty() && !contextPath.equals("/")) {
 			contextPath = (contextPath.startsWith("/") ? "" : "/") + contextPath

@@ -42,7 +42,7 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
 
 	@UiField
 	Element divGenericAlerts;
-
+	
 	ModalPopup popup = new ModalPopup();
 
 	Timer timer = new Timer() {

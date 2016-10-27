@@ -1,0 +1,82 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.duggan.workflow.client.ui.component">
+	<ui:style>
+
+	</ui:style>
+	<g:HTMLPanel>
+		<div class="accordion" id="generalFields">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#generalFields"
+						href="#generalFieldsOne">
+						<strong>General</strong>
+					</a>
+				</div>
+				<div id="generalFieldsOne" class="accordion-body collapse">
+					<div class="accordion-inner">
+						<table class="table">
+							<tr>
+								<td>Case</td>
+								<td>
+								    <d:TextField></d:TextField>
+								</td>
+							</tr>
+							<tr>
+								<td>Process</td>
+								<td>
+								    <d:DropDownList styleName="input-medium"></d:DropDownList>
+								</td>
+							</tr>
+							<tr>
+								<td>Task</td>
+								<td><d:DropDownList styleName="input-medium"></d:DropDownList></td>
+							</tr>
+							<tr>
+								<td>Submitter</td>
+								<td>
+								    <d:DropDownList styleName="input-medium"></d:DropDownList>
+								</td>
+							</tr>
+							<tr>
+								<td>Current Task</td>
+								<td>
+								    <d:TextField></d:TextField>
+								</td>
+							</tr>
+							<tr>
+								<td>Current User</td>
+								<td>
+								    <d:DropDownList styleName="input-medium"></d:DropDownList>
+								</td>
+							</tr>
+							<tr>
+								<td>Due</td>
+								<td>
+								    <d:DateInput styleName="input-medium"></d:DateInput>
+								</td>
+							</tr>
+							<tr>
+								<td>Modified</td>
+								<td>
+								    <d:DateInput styleName="input-medium"></d:DateInput>
+								</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>
+								    <select>
+								        <option>Drafted</option>
+								        <option>InProgress</option>
+								        <option>Completed</option>
+								    </select>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

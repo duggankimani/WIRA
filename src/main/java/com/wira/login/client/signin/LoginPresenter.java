@@ -197,7 +197,7 @@ public class LoginPresenter extends Presenter<LoginPresenter.ILoginView, LoginPr
 //	}
 	
 	public void redirectToLoggedOnPage() {
-		String redirect = "GWTHT.html";
+		String redirect = "index.html";
 		Window.Location.replace(redirect);
 //		String token = placeManager.getCurrentPlaceRequest().getParameter(
 //				Definitions.REDIRECT, redirect);

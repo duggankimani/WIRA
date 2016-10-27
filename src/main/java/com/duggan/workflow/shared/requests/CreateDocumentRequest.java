@@ -31,7 +31,6 @@ public class CreateDocumentRequest extends
 	 * Please use {@link #CreateDocumentRequest(String)} 
 	 * @param document
 	 */
-	@Deprecated 
 	public CreateDocumentRequest(Document document) {
 		this.document = document;
 	}

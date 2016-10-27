@@ -19,7 +19,9 @@ import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.Column;
 import com.duggan.workflow.shared.model.DataType;
+import com.duggan.workflow.shared.model.Schema;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
 
@@ -418,5 +420,60 @@ public class FormDaoImpl extends BaseDaoImpl {
 		ArrayList<Field> fields = (ArrayList<Field>)getResultListJson(sql,parameters,Field.class);
 		
 		return fields;
+	}
+
+	public List<Schema> getProcessSchema(String processRefId) {
+		
+		String sql = "select f.refid,"
+				+ "f.field->>'name' fieldname, "
+				+ "f.field->>'caption' caption, "
+				+ "f.field->>'type' fieldtype, "
+				+ "frm.refid formRefId, "
+				+ "frm.name formname, "
+				+ "frm.caption formcaption "
+				+ "from adfieldjson f "
+				+ "inner join adform_json frm "
+				+ "on (frm.refid=f.formRef) "
+				+ "where frm.processrefid=:processRefId "
+				+ "and f.fieldType not in('LAYOUTHR','LABEL','GRID','FORM','JS','FILEUPLOAD') "
+				+ "order by formcaption,caption";
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("processRefId", processRefId);
+		
+		List<Object[]> rows = getResultList(em.createNativeQuery(sql).setParameter("processRefId", processRefId));
+		List<Schema> schemas = new ArrayList<Schema>();
+		
+		Schema schema = null;
+		for(Object[] row: rows){
+			Object value = null;
+			int i=0;
+			
+			String fieldRefId = (value=row[i++])==null ? null: value.toString();
+			String fieldName = (value=row[i++])==null ? null: value.toString();
+			String caption = (value=row[i++])==null ? null: value.toString();
+			String fieldType = (value=row[i++])==null ? null: value.toString();
+			String formRefId = (value=row[i++])==null ? null: value.toString();
+			String formName = (value=row[i++])==null ? null: value.toString();
+			String formCaption = (value=row[i++])==null ? null: value.toString();
+			
+			if(schema==null || !schema.getRefId().equals(formRefId)){
+				schema = new Schema();
+				schema.setRefId(formRefId);
+				schema.setName(formName);
+				schema.setCaption(formCaption);
+				schemas.add(schema);
+			}
+			
+			Column col = new Column();
+			col.setRefId(fieldRefId);
+			col.setName(fieldName);
+			col.setCaption(caption);
+			col.setFieldType(fieldType);
+			schema.addColumn(col);
+			
+		}
+		
+		return schemas;
 	}
 }

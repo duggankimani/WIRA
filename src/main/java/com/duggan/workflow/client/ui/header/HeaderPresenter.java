@@ -270,17 +270,25 @@ public class HeaderPresenter extends
 	}
 
 	protected void logout() {
+		logoutOauth();
 		dispatcher.execute(new LogoutAction(),
 				new TaskServiceCallback<LogoutActionResult>() {
 					@Override
 					public void processResult(LogoutActionResult result) {
 						AppContext.destroy();
 						Window.Location.replace(NameTokens.loginPage);
-//						placeManager.revealPlace(new PlaceRequest.Builder()
-//								.nameToken(NameTokens.splash).build());
 					}
 				});
 	}
+	
+	/**
+	 * Logout Google OAuth
+	 */
+	public native void logoutOauth()/*-{
+		if($wnd.auth2 != undefined){
+			$wnd.auth2.disconnect();
+		}
+	}-*/;
 
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {

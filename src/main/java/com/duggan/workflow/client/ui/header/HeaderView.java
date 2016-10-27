@@ -2,8 +2,11 @@ package com.duggan.workflow.client.ui.header;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.model.ScreenMode;
 import com.duggan.workflow.client.ui.component.TextField;
+import com.duggan.workflow.client.ui.events.ScreenModeChangeEvent;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.util.AppContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -82,6 +85,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	public HeaderView(final Binder binder, CurrentUser currentUser) {
 		this.currentUser = currentUser;
 		widget = binder.createAndBindUi(this);
+		spnUser.setId("logged-in-user");
 		txtSearch.getElement().setId("prependedDropdownButton");
 
 		aNotifications.setTabIndex(3);
@@ -94,18 +98,53 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 			}
 		});
 
-		// imgSmall.getElement().getStyle().setWidth(30.0, Unit.PX);
-		// imgSmall.getElement().getStyle().setHeight(50.0, Unit.PX);
-
 		img.addErrorHandler(new ErrorHandler() {
 			@Override
 			public void onError(ErrorEvent event) {
 				img.setUrl("img/blueman.png");
 			}
 		});
+		
+		attachToggleFullScreen(divNavbar.getElementById("aMaximize"));
+		googleOAuthHandler(divNavbar.getElement());
+	}
 
-		// img.getElement().getStyle().setWidth(70.0, Unit.PX);
-		// img.getElement().getStyle().setHeight(90.0, Unit.PX);
+	private native void googleOAuthHandler(Element divNavBar) /*-{
+		$wnd.jQuery($doc).ready(function(){
+			//alert('Logged in = '+$wnd.auth2.isSignedIn.get());
+			$wnd.refreshAuthState(divNavBar);
+		});
+		
+	}-*/;
+
+	private native void attachToggleFullScreen(Element aMaximize) /*-{
+		var that = this;
+		$wnd.jQuery($doc).ready(function(){
+			$wnd.jQuery(aMaximize).click(function(){
+				var title = $wnd.jQuery(aMaximize).prop("title");
+				if(title=='Maximize'){
+					//toggle title
+					title="Minimize";
+					that.@com.duggan.workflow.client.ui.header.HeaderView::showFullScreen(I)(1);
+				}else{
+					title= "Maximize"; 
+					that.@com.duggan.workflow.client.ui.header.HeaderView::showFullScreen(I)(0);
+				}
+				
+				$wnd.jQuery(aMaximize).prop("title", title);
+			});
+		});
+		
+	}-*/;
+	
+	void showFullScreen(int isFullScreen){
+		if(isFullScreen==1){
+			//true
+			AppContext.getEventBus().fireEvent(new ScreenModeChangeEvent(ScreenMode.FULLSCREEN));
+		}else{
+			//false
+			AppContext.getEventBus().fireEvent(new ScreenModeChangeEvent(ScreenMode.SMALLSCREEN));
+		}
 	}
 
 	@Override

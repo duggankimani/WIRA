@@ -49,6 +49,7 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.Schema;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskNotification;
@@ -148,10 +149,15 @@ public class ProcessDaoHelper {
 
 	public static List<ProcessDef> getAllProcesses(String searchTerm,
 			boolean isLoadDetails) {
+		return getAllProcesses(searchTerm, isLoadDetails, 0, 0);
+	}
+
+	public static List<ProcessDef> getAllProcesses(String searchTerm,
+			boolean isLoadDetails, int beginIdx, int length) {
 
 		ProcessDaoImpl dao = DB.getProcessDao();
 
-		List<ProcessDefModel> process = dao.getAllProcesses(searchTerm);
+		List<ProcessDefModel> process = dao.getAllProcesses(searchTerm,beginIdx,length);
 
 		List<ProcessDef> processDefs = new ArrayList<>();
 
@@ -210,9 +216,8 @@ public class ProcessDaoHelper {
 		def.setDescription(model.getDescription());
 		def.setLastModified(model.getUpdated() == null ? model.getCreated()
 				: model.getUpdated());
-		
 
-		//?? Review below attachment loading mechanism - Duggan 26/09/2016
+		// ?? Review below attachment loading mechanism - Duggan 26/09/2016
 		List<LocalAttachment> attachments = DB.getAttachmentDao()
 				.getAttachmentsForProcessDef(model);
 
@@ -295,7 +300,7 @@ public class ProcessDaoHelper {
 
 		if (types != null && !types.isEmpty()) {
 			for (DocumentType type : types) {
-				
+
 				type.setName(processDef.getProcessId());
 				type.setDisplayName(processDef.getDisplayName());
 				type.setProcessId(processDef.getProcessId());
@@ -319,7 +324,7 @@ public class ProcessDaoHelper {
 			adtype.setBackgroundColor(processDef.getBackgroundColor());
 			adtype.setIconStyle(processDef.getIconStyle());
 			DB.getProcessDao().save(adtype);
-			
+
 			model.addDocType(adtype);
 		}
 
@@ -401,7 +406,7 @@ public class ProcessDaoHelper {
 		dto.setFormName(model.getForm() == null ? null : model.getForm()
 				.getCaption());
 		dto.setFormRefId(model.getFormRef());
-		if(dto.getFormRefId()!=null){
+		if (dto.getFormRefId() != null) {
 			dto.setFormName(DB.getFormDao().getFormNameJson(dto.getFormRefId()));
 		}
 		dto.setId(model.getId());
@@ -475,13 +480,14 @@ public class ProcessDaoHelper {
 		}
 		return steps;
 	}
-	
+
 	public static List<TaskStepDTO> getTaskStepsByDocumentJson(String docRefId) {
 		Document docModel = DB.getDocumentDao().getDocJson(docRefId, false);
 
 		String processId = docModel.getProcessId();
 		if (processId == null && docModel.getType() != null) {
-			processId = docModel.getType()==null? docModel.getProcessId(): docModel.getType().getProcessId();
+			processId = docModel.getType() == null ? docModel.getProcessId()
+					: docModel.getType().getProcessId();
 		}
 		List<TaskStepModel> models = DB.getProcessDao().getTaskSteps(processId,
 				null);
@@ -521,10 +527,10 @@ public class ProcessDaoHelper {
 
 	public static List<TaskStepDTO> getTaskStepsByDocRefId(String docRefId) {
 
-//		DocumentModel docModel = DB.getDocumentDao().findByRefId(docRefId,
-//				DocumentModel.class);
-		
-		Document docModel = DB.getDocumentDao().getDocJson(docRefId,false);
+		// DocumentModel docModel = DB.getDocumentDao().findByRefId(docRefId,
+		// DocumentModel.class);
+
+		Document docModel = DB.getDocumentDao().getDocJson(docRefId, false);
 
 		String processId = docModel.getProcessId();
 		if (processId == null && docModel.getType() != null) {
@@ -812,109 +818,121 @@ public class ProcessDaoHelper {
 		ProcessDaoImpl dao = DB.getProcessDao();
 		ProcessDefModel model = dao.getProcessDef(dao
 				.getProcessDefId(processRefId));
-		List<LocalAttachment> attachments = DB.getAttachmentDao().getAttachmentsForProcessDef(model);
-		List<LocalAttachment> images = DB.getAttachmentDao().getAttachmentsForProcessDef(model, true);
+		List<LocalAttachment> attachments = DB.getAttachmentDao()
+				.getAttachmentsForProcessDef(model);
+		List<LocalAttachment> images = DB.getAttachmentDao()
+				.getAttachmentsForProcessDef(model, true);
 		attachments.addAll(images);
-		
-		
-		//Steps
+
+		// Steps
 		Collection<TaskStepModel> taskSteps = model.getTaskSteps();
 
 		String folder = "/home/duggan/Projects/WIRA/jaxbexport/";
 		String processXmlName = model.getName() + ".xml";
-		String attachmentsFolder = folder+"attachments/";
-		String stepsFolder = folder+"steps/";
-		String formsFolder = folder+"forms/";
-		String outputDocsFolder = folder+"outputdocs/";
-		String triggersFolder = folder+"triggers/";
-		
+		String attachmentsFolder = folder + "attachments/";
+		String stepsFolder = folder + "steps/";
+		String formsFolder = folder + "forms/";
+		String outputDocsFolder = folder + "outputdocs/";
+		String triggersFolder = folder + "triggers/";
+
 		try {
-			//Attachments
-			for(LocalAttachment a: attachments){
+			// Attachments
+			for (LocalAttachment a : attachments) {
 				model.addAttachmentName(a.getName());
 			}
-			
-			//Process
+
+			// Process
 			IOUtils.write(exportObject(model), new FileOutputStream(new File(
 					folder + processXmlName)));
-			
-			//Task Steps
-			for(TaskStepModel step: taskSteps){
-				//ADForm form = step.getForm();
-				Form form = FormDaoHelper.getFormJson(step.getRefId(), false); 
+
+			// Task Steps
+			for (TaskStepModel step : taskSteps) {
+				// ADForm form = step.getForm();
+				Form form = FormDaoHelper.getFormJson(step.getRefId(), false);
 				ADOutputDoc doc = step.getDoc();
-				
-				Collection<ADTaskStepTrigger> stepTriggers = step.getTaskStepTriggers();
-				log.debug("### "+step.getNodeId()+" - "+stepTriggers.size());
-//				dao.getTaskStepTriggers(step.getId(), TriggerType.BEFORESTEP);
-//				stepTriggers.addAll(dao.getTaskStepTriggers(step.getId(), TriggerType.AFTERSTEP));
-				
-				for(ADTaskStepTrigger stepTrigger: stepTriggers){
-					stepTrigger.setTriggerName(stepTrigger.getTrigger().getName());
-					log.warn(">>>"+stepTrigger.getTriggerName());
+
+				Collection<ADTaskStepTrigger> stepTriggers = step
+						.getTaskStepTriggers();
+				log.debug("### " + step.getNodeId() + " - "
+						+ stepTriggers.size());
+				// dao.getTaskStepTriggers(step.getId(),
+				// TriggerType.BEFORESTEP);
+				// stepTriggers.addAll(dao.getTaskStepTriggers(step.getId(),
+				// TriggerType.AFTERSTEP));
+
+				for (ADTaskStepTrigger stepTrigger : stepTriggers) {
+					stepTrigger.setTriggerName(stepTrigger.getTrigger()
+							.getName());
+					log.warn(">>>" + stepTrigger.getTriggerName());
 				}
-				
+
 				String name = "ProcessInitiation";
-				if(form!=null){
+				if (form != null) {
 					name = form.getName();
 				}
-				
-				if(doc!=null){
+
+				if (doc != null) {
 					name = doc.getName();
 				}
-				
-				String stepName=step.getSequenceNo()+"_"+name+".xml";
-				if(step.getNodeId()!=null){
-					stepName = step.getNodeId()+"_"+stepName;
-				}else{
-					stepName = "00"+"_"+stepName;
+
+				String stepName = step.getSequenceNo() + "_" + name + ".xml";
+				if (step.getNodeId() != null) {
+					stepName = step.getNodeId() + "_" + stepName;
+				} else {
+					stepName = "00" + "_" + stepName;
 				}
-				//step.setFormRefId(step.getForm()==null? null:  step.getForm().getRefId());
-				step.setOutputRefId(step.getDoc()==null? null: step.getDoc().getRefId());
-				IOUtils.write(exportObject(step), new FileOutputStream(new File(
-						stepsFolder + stepName)));
+				// step.setFormRefId(step.getForm()==null? null:
+				// step.getForm().getRefId());
+				step.setOutputRefId(step.getDoc() == null ? null : step
+						.getDoc().getRefId());
+				IOUtils.write(exportObject(step), new FileOutputStream(
+						new File(stepsFolder + stepName)));
 			}
-			
-			//Forms
-			//List<ADForm> forms = DB.getFormDao().getAllForms(model.getId());
-			List<Form> forms = FormDaoHelper.getFormsJson(model.getRefId(),true);
-			for(Form form: forms){
-				String name = form.getName()+".xml";
-				IOUtils.write(exportObject(form), new FileOutputStream(new File(
-						formsFolder + name)));
+
+			// Forms
+			// List<ADForm> forms = DB.getFormDao().getAllForms(model.getId());
+			List<Form> forms = FormDaoHelper.getFormsJson(model.getRefId(),
+					true);
+			for (Form form : forms) {
+				String name = form.getName() + ".xml";
+				IOUtils.write(exportObject(form), new FileOutputStream(
+						new File(formsFolder + name)));
 			}
-			
-			List<ADOutputDoc> docs = DB.getOutputDocDao().getOutputDocuments(model.getRefId(), null);
-			for(ADOutputDoc doc: docs){
-				String name = doc.getName()+".xml";
+
+			List<ADOutputDoc> docs = DB.getOutputDocDao().getOutputDocuments(
+					model.getRefId(), null);
+			for (ADOutputDoc doc : docs) {
+				String name = doc.getName() + ".xml";
 				IOUtils.write(exportObject(doc), new FileOutputStream(new File(
 						outputDocsFolder + name)));
-				if(doc.getAttachment()!=null){
+				if (doc.getAttachment() != null) {
 					attachments.add(doc.getAttachment());
 				}
 			}
-			
-			List<ADTrigger> triggers = DB.getProcessDao().getTriggers(model.getRefId(), null);
-			for(ADTrigger trigger: triggers){
-				String name = trigger.getName()+".xml";
-				IOUtils.write(exportObject(trigger), new FileOutputStream(new File(
-						triggersFolder + name)));
+
+			List<ADTrigger> triggers = DB.getProcessDao().getTriggers(
+					model.getRefId(), null);
+			for (ADTrigger trigger : triggers) {
+				String name = trigger.getName() + ".xml";
+				IOUtils.write(exportObject(trigger), new FileOutputStream(
+						new File(triggersFolder + name)));
 			}
-			
-			//Attachments
-			for(LocalAttachment a: attachments){
+
+			// Attachments
+			for (LocalAttachment a : attachments) {
 				IOUtils.write(a.getAttachment(), new FileOutputStream(new File(
 						attachmentsFolder + a.getName())));
 			}
-			
+
 		} catch (IOException | JAXBException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static byte[] exportObject(Object model) throws JAXBException, IOException {
-		JAXBContext context = new JaxbFormExportProviderImpl()
-				.getContext(model.getClass());
+	private static byte[] exportObject(Object model) throws JAXBException,
+			IOException {
+		JAXBContext context = new JaxbFormExportProviderImpl().getContext(model
+				.getClass());
 		String out = null;
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -925,6 +943,10 @@ public class ProcessDaoHelper {
 		out = writer.toString();
 		writer.close();
 		return out.getBytes();
+	}
+
+	public static List<Schema> getProcessSchema(String processRefId) {
+		return DB.getFormDao().getProcessSchema(processRefId);
 	}
 
 }

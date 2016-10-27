@@ -31,4 +31,8 @@ public class SimpleRadio extends SimpleRadioButton {
 		return radioButton;
 	}
 
+	public void setReadOnly(boolean readOnly) {
+		super.setEnabled(!readOnly);
+	}
+
 }
