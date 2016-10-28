@@ -216,7 +216,7 @@ public class FileExplorerView extends ViewImpl implements FileExplorerPresenter.
 		table.setWidget(0, j++, new HTMLPanel("<strong>Process</strong>"));
 		// table.getFlexCellFormatter().setWidth(0, (j - 1), "100px");
 		table.setWidget(0, j++, new HTMLPanel("<strong>Case</strong>"));
-		table.getFlexCellFormatter().setWidth(0, (j - 1), "55px");
+		table.getFlexCellFormatter().setWidth(0, (j - 1), "80px");
 	}
 
 	private String getHref(Attachment attachment) {

@@ -23,8 +23,11 @@ public class MVELExecutor {
 		}
 		String script = trigger.getScript();
 		String imports = "com.duggan.workflow.shared.model;"
+				+ "com.wira.commons.shared.models;"
+				+ "com.duggan.workflow.server.helper.email;"
 				+ "com.duggan.workflow.server.db;"
-				+ "com.duggan.workflow.server.helper.session;" + "java.util";
+				+ "com.duggan.workflow.server.helper.session;" 
+				+ "java.util";
 
 		if (trigger.getImports() != null) {
 			imports = imports.concat(";" + trigger.getImports()); // semicolon

@@ -5,10 +5,10 @@
 	<ui:style>
 
 	</ui:style>
-	<g:HTMLPanel styleName="no-overflow-x overflow-y">
-		<div class="news-feed file-explorer row-fluid">
-			<h4>File Explorer</h4>
-			<div class="span12">
+	<g:HTMLPanel styleName="row-fluid">
+		<div class="content-area">
+			<legend>File Explorer</legend>
+			<div class="row-fluid">
 				<div class="span3">
 					<ul class="nav nav-tabs" id="fileTab">
 						<li class="active">
@@ -34,8 +34,7 @@
 					</div>
 				</div>
 
-
-				<div class="span9">
+				<div class="span9" style="margin-left:0px">
 					<g:FlexTable styleName="table table-hover table-striped table-condensed"
 						ui:field="fileTable"></g:FlexTable>
 					<span ui:field="spnNoAttachments" class="hide">No attachments to

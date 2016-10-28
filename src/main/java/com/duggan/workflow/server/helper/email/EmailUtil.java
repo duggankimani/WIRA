@@ -18,12 +18,12 @@ public class EmailUtil {
 	 * @param templateName
 	 * @param emailAddresses
 	 */
-	public static void sendEmail(String subject,String templateName,Doc doc,String...emailAddresses){
+	public static void sendEmail(String subject,String email,Doc doc,String...emailAddresses){
 		
 		HTUser [] users = new HTUser[emailAddresses.length];
 		
 		//for()
-		sendEmail(subject, templateName,doc,users);
+		sendEmail(subject, email,doc,users);
 	}
 	
 	public static void sendEmail(String subject,String email,Doc doc,HTUser...users){
