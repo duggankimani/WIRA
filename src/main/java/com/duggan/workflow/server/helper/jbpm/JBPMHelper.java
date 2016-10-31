@@ -1497,6 +1497,7 @@ public class JBPMHelper implements Closeable {
 	public void assignTask(Long taskId, String userId) {
 
 		Task task = DB.getEntityManager().find(Task.class, taskId);
+		task.getTaskData().setStatus(Status.Reserved);
 
 		PeopleAssignments peopleAssign = new PeopleAssignments();
 		List<OrganizationalEntity> entities = new ArrayList<>();

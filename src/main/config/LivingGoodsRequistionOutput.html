@@ -1,3 +1,4 @@
+<html>
 <head>
 <style type="text/css">
 th.row-headers-background {
@@ -445,9 +446,27 @@ table.waffle .header input, table.waffle .header select {
 table.waffle .header select {
 	padding-left: 4px;
 }
+
+@page { 
+    size: letter; 
+    margin: 0.3in; 
+    padding-top: 0.9in; 
+} 
+
+@page land { 
+    size: letter landscape; 
+    margin: 0.3in; 
+} 
+
+.landscape { 
+    page:land; 
+    page-break-before: always; 
+    width: 10in;
+} 
 </style>
 </head>
-
+<body>
+<div class="landscape">
 <div class="ritz grid-container" dir="ltr">
 	<table class="waffle">
 		<thead>
@@ -539,7 +558,7 @@ table.waffle .header select {
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s2" dir="ltr">Name:</td>
-				<td class="s4" dir="ltr" colspan="3"><span id="applicantName"></span></td>
+				<td class="s4" dir="ltr" colspan="3"><span>@@applicantName</span></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -554,7 +573,7 @@ table.waffle .header select {
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s2" dir="ltr">Country:</td>
-				<td class="s4" dir="ltr" colspan="3"><span id="Country">
+				<td class="s4" dir="ltr" colspan="3"><span>@@Country
 				</span></td>
 				<td></td>
 				<td></td>
@@ -570,15 +589,15 @@ table.waffle .header select {
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s2" dir="ltr">Month:</td>
-				<td class="s4" dir="ltr" colspan="3"><span id="month"></span></td>
+				<td class="s4" dir="ltr" colspan="3"><span>@@month</span></td>
 				<td></td>
 				<td class="s2">Year</td>
-				<td class="s2" colspan="2"><span id="year"></span></td>
+				<td class="s2" colspan="2"><span>@@year</span></td>
 				<td class="s1" dir="ltr"></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s2" dir="ltr">Date</td>
-				<td class="s1" colspan="2" dir="ltr"><span id="dateSubmitted"></span></td>
+				<td class="s1" colspan="2" dir="ltr"><span>@@dateSubmitted</span></td>
 				<td class="s1" dir="ltr"></td>
 			</tr>
 			<tr style="height: 20px;">
@@ -634,36 +653,34 @@ table.waffle .header select {
 				<td class="s5" dir="ltr">Total Meals (Per Diem)</td>
 				<td class="s5" dir="ltr">Total (Ksh)</td>
 			</tr>
-
+			<!--@>particulars_grid-->
 			<tr class="grid_row_template" style="height: 20px;">
-				<td class="s1" dir="ltr"><textarea class="textarea-box"
-						aria-multiline="true" placeholder="Dates of activity"></textarea></td>
-				<td class="s6" dir="ltr"><span id="days"></span></td>
-				<td class="s1" dir="ltr"><span id="location"></span></td>
-				<td class="s1" dir="ltr"><span id="expenseCategory"> </span></td>
-				<td class="s1" dir="ltr"><textarea class="textarea-box"
-						aria-multiline="true" placeholder="Description"></textarea></td>
-				<td class="s1" dir="ltr"><span id="transportPerDay"
-					class="input_number"> </span></td>
-				<td class="s1" dir="ltr"><span id="accommodationPerNight"
-					class="input_number"></span></td>
-				<td class="s1" dir="ltr"><span id="fieldTransportPerDay"
-					class="input_number"></span></td>
-				<td class="s1" dir="ltr"><span id="mealsPerDay"
-					class="input_number"></span></td>
+				<td class="s1" dir="ltr">@@datesOfActivity</td>
+				<td class="s6" dir="ltr"><span>@@days</span></td>
+				<td class="s1" dir="ltr"><span>@@location</span></td>
+				<td class="s1" dir="ltr"><span> @@expenseCategory</span></td>
+				<td class="s1" dir="ltr">@@description</td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number"> @@transportPerDay</span></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@accommodationPerNight</span></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@fieldTransportPerDay</span></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@mealsPerDay</span></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s1" dir="ltr"><span id="transportTotal"
-					class="input_number"></span></td>
-				<td class="s1" dir="ltr"><span id="accommodationTotal"
-					class="input_number"></span></td>
-				<td class="s1" dir="ltr"><span id="fieldTransportTotal"
-					class="input_number"></span></td>
-				<td class="s1" dir="ltr"><span id="mealsTotal"
-					class="input_number"></span></td>
-				<td class="s7" dir="ltr"><span id="lineTotal"
-					class="grid_totals"></span> <a id="particulars_grid_Delete"><i
-						class="icon-remove-circle"></i></a></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@transportTotal</span></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@accommodationTotal</span></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@fieldTransportTotal</span></td>
+				<td class="s1" dir="ltr"><span 
+					class="input_number">@@mealsTotal</span></td>
+				<td class="s7" dir="ltr"><span 
+					class="grid_totals">@@lineTotal</span></td>
 			</tr>
+			<!--@<particulars_grid-->
 		</tbody>
 		<tbody>
 			<tr style="height: 20px;">
@@ -681,8 +698,8 @@ table.waffle .header select {
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s8" dir="ltr"><span id="particularsSubTotal"
-					class="grid_totals"></span></td>
+				<td class="s8" dir="ltr"><span 
+					class="grid_totals">@@particularsSubTotal</span></td>
 			</tr>
 			<tr style="height: 20px;">
 				<td></td>
@@ -730,24 +747,22 @@ table.waffle .header select {
 				<td class="s5" dir="ltr"></td>
 				<td class="s5" dir="ltr">Total (UGX)</td>
 			</tr>
-
+			<!-- @>others_grid -->
 			<tr class="grid_row_template" style="height: 20px;">
 				<td class="s4" dir="ltr">Please Describe</td>
-				<td class="s10" colspan="5"><textarea class="textarea-box"
-						aria-multiline="true" placeholder="Description"></textarea></td>
+				<td class="s10" colspan="5">@@otherDescription</td>
 				<td></td>
-				<td><span id="otherAmount" class="input_number"></span></td>
+				<td>@@otherAmount</td>
 				<td class="s1" dir="ltr"></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s7" dir="ltr"><span id="otherTotal"
-					class="grid_totals input_number"></span> <a id="others_grid_Delete">
-						<i class="icon-remove-circle"></i>
-				</a></td>
+				<td class="s7" dir="ltr"><span 
+					class="grid_totals input_number">@@otherTotal</span></td>
 			</tr>
+			<!-- @<others_grid -->
 		</tbody>
 
 		<tbody>
@@ -766,8 +781,8 @@ table.waffle .header select {
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s8" dir="ltr"><span id="otherSubTotal"
-					class="grid_totals input_number"></span></td>
+				<td class="s8" dir="ltr"><span 
+					class="grid_totals input_number">@@otherSubTotal</span></td>
 			</tr>
 			<tr style="height: 20px;">
 				<td></td>
@@ -803,8 +818,9 @@ table.waffle .header select {
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
 				<td class="s1" dir="ltr"></td>
-				<td class="s8" dir="ltr"><span id="totalRequisition"
-					class="grid_totals input_number"></span></td>
+				<td class="s8" dir="ltr"><span class="grid_totals input_number">
+				@@totalRequisition</span>
+				</td>
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s14"></td>
@@ -869,10 +885,9 @@ table.waffle .header select {
 					(if lunch is not provided)</td>
 				<td class="s2" dir="ltr"></td>
 				<td class="s2" dir="ltr" colspan="2">Submitted By</td>
-				<td class="s19" dir="ltr" colspan="4"><span id="submitterStr"></span>
+				<td class="s19" dir="ltr" colspan="4"><span>@@submitterStr</span>
 				</td>
-				<td class="s20" dir="ltr" colspan="3"><span
-					id="dateSubmittedStr"></span></td>
+				<td class="s20" dir="ltr" colspan="3"><span>@@dateSubmittedStr</span></td>
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s2" dir="ltr"></td>
@@ -908,9 +923,8 @@ table.waffle .header select {
 				<td class="s21"></td>
 				<td class="s2" dir="ltr"></td>
 				<td class="s2" dir="ltr" colspan="2">Supervisors Approval</td>
-				<td class="s19" dir="ltr" colspan="4"><span id="supervisorStr"></span></td>
-				<td class="s20" dir="ltr" colspan="3"><span
-					id="supervisorApprovalDateStr"></span></td>
+				<td class="s19" dir="ltr" colspan="4"><span>@@supervisorStr</span></td>
+				<td class="s20" dir="ltr" colspan="3"><span>@@supervisorApprovalDateStr</span></td>
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s4"></td>
@@ -954,10 +968,10 @@ table.waffle .header select {
 				<td class="s21"></td>
 				<td class="s2" dir="ltr"></td>
 				<td class="s2" dir="ltr" colspan="2">Finance Approval</td>
-				<td class="s20" dir="ltr" colspan="4"><span
-					id="financeApprovalStr"></span></td>
-				<td class="s20" dir="ltr" colspan="3"><span
-					id="financeApprovalDateStr"></span></td>
+				<td class="s20" dir="ltr" colspan="4"><span>
+					@@financeApprovalStr</span></td>
+				<td class="s20" dir="ltr" colspan="3"><span>
+					@@financeApprovalDateStr</span></td>
 			</tr>
 			<tr style="height: 20px;">
 				<td class="s4"></td>
@@ -1001,10 +1015,12 @@ table.waffle .header select {
 				<td class="s23"></td>
 				<td class="s2" dir="ltr"></td>
 				<td class="s2" dir="ltr" colspan="2">Receivers Signature</td>
-				<td class="s20" dir="ltr" colspan="4"><span id="recieverStr"></span></td>
-				<td class="s20" dir="ltr" colspan="3"><span
-					id="receiverDateStr"></span></td>
+				<td class="s20" dir="ltr" colspan="4"><span>@@recieverStr</span></td>
+				<td class="s20" dir="ltr" colspan="3"><span>@@receiverDateStr</span></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
+</div>
+</body>
+</html>

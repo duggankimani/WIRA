@@ -569,12 +569,20 @@ th.row-headers-background {
 				<td class="s2" dir="ltr">Country:</td>
 				<td class="s4" dir="ltr" colspan="3">
 				<select id="Country">
-					<option>Kenya</option>
+					<option>--Select--</option>
 					<option>Uganda</option>
+					<option>Kenya</option>
 				</select>
 				</td>
-				<td></td>
-				<td></td>
+				<td class="s2">Currency</td>
+				<td>
+					<select id="Currency">
+						<option>--Select--</option>
+						<option>UGX</option>
+						<option>KSH</option>
+						<option>USD</option>
+					</select>
+				</td>
 				<td></td>
 				<td></td>
 				<td class="s1" dir="ltr"></td>
@@ -667,11 +675,11 @@ th.row-headers-background {
 				<td class="s5" dir="ltr">Total Accom</td>
 				<td class="s5" dir="ltr">Total Field Trans</td>
 				<td class="s5" dir="ltr">Total Meals (Per Diem)</td>
-				<td class="s5" dir="ltr">Total (Ksh)</td>
+				<td class="s5" dir="ltr">Total </td>
 			</tr>
 
 			<tr class="grid_row_template" style='height: 20px;'>
-				<td class="s1" dir="ltr"><textarea class="textarea-box"
+				<td class="s1" dir="ltr"><textarea class="textarea-box" id="datesOfActivity"
 						role="textbox" aria-multiline="true"
 						placeholder="Dates of activity"></textarea></td>
 				<td class="s6" dir="ltr"><input type="number" id="days">
@@ -686,7 +694,7 @@ th.row-headers-background {
 						<option>Laundry</option>
 						<option>Airtime</option>
 				</select></td>
-				<td class="s1" dir="ltr"><textarea class="textarea-box"
+				<td class="s1" dir="ltr"><textarea class="textarea-box" id="description"
 						role="textbox" aria-multiline="true" placeholder="Description"></textarea></td>
 				<td class="s1" dir="ltr"><input id="transportPerDay"
 					type="number" class="input_number" placeholder="0.00"> </input></td>
@@ -776,12 +784,12 @@ th.row-headers-background {
 				<td class="s5" dir="ltr"></td>
 				<td class="s5" dir="ltr"></td>
 				<td class="s5" dir="ltr"></td>
-				<td class="s5" dir="ltr">Total (UGX)</td>
+				<td class="s5" dir="ltr">Total</td>
 			</tr>
 
 			<tr class="grid_row_template" style='height: 20px;'>
 				<td class="s4" dir="ltr">Please Describe</td>
-				<td class="s10" colspan="5"><textarea class="textarea-box"
+				<td class="s10" colspan="5"><textarea class="textarea-box" id="otherDescription"
 						role="textbox" aria-multiline="true" placeholder="Description"></textarea></td>
 				<td></td>
 				<td><input id="otherAmount" type="number" class="input_number"

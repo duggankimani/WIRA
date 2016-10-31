@@ -19,6 +19,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLForm extends HTMLParent {
@@ -158,6 +159,11 @@ public class HTMLForm extends HTMLParent {
 			bindHTMLWidgets = true;
 		}
 	}
+
+//	@Override
+//	public void setReadOnly(boolean readOnly) {
+//		this.readOnly = readOnly || isComponentReadOnly();
+//	}
 
 	private void bindHTML(String html) {
 		if (html == null) {

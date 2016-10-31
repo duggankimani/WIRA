@@ -32,6 +32,8 @@ public class HTMLGrid extends HTMLParent {
 	private Element templateRow = null;
 	private ArrayList<HTMLLine> htmlLines = new ArrayList<HTMLGrid.HTMLLine>();
 	long rowCount=0;
+	final String gridId;
+	ActionLink aAdd;
 
 	public HTMLGrid(Element element, boolean designMode) {
 		super();
@@ -47,10 +49,10 @@ public class HTMLGrid extends HTMLParent {
 		// field Properties update
 		field.setProperties(getProperties());
 
-		final String id = element.getId();
+		gridId = element.getId();
 		String addLineId = element.getId() + "_Add";
 		
-		JavaScriptObject row = getGridRowTemplate(id);
+		JavaScriptObject row = getGridRowTemplate(gridId);
 		if (row != null) {
 			templateRow = Element.as(row);
 
@@ -64,11 +66,11 @@ public class HTMLGrid extends HTMLParent {
 			boolean isAnchor = nodeType.equals("a");
 			if (!isAnchor) {
 				GWT.log("Invalid 'Add Button' element type <" + nodeType
-						+ "> for Grid template '" + id + "' ");
+						+ "> for Grid template '" + gridId + "' ");
 			}
 			if (addLine != null && isAnchor) {
-				ActionLink link = ActionLink.wrap(addLine, true);
-				link.addClickHandler(new ClickHandler() {
+				aAdd = ActionLink.wrap(addLine, true);
+				aAdd.addClickHandler(new ClickHandler() {
 
 					@Override
 					public void onClick(ClickEvent event) {
@@ -108,6 +110,13 @@ public class HTMLGrid extends HTMLParent {
 			HTMLLine line = new HTMLLine(templateRow,true);
 		}
 		
+	}
+
+	public void setReadOnly(boolean isReadOnly) {
+		this.readOnly = isReadOnly || isComponentReadOnly();
+		if(readOnly && aAdd!=null){
+			aAdd.addStyleName("hide");
+		}
 	}
 
 	private ArrayList<FieldWidget> parseInputs(Element newRow) {
@@ -246,6 +255,10 @@ public class HTMLGrid extends HTMLParent {
 					String nodeId = nodes.getItem(i).getId();
 					if (nodeId != null && nodeId.endsWith("_Delete")) {
 						delete = nodes.getItem(i);
+						if(readOnly){
+							//read only grid
+							delete.addClassName("hide");
+						}
 						break;
 					}
 				}

@@ -48,7 +48,7 @@
 							</div>
 						</div>
 						<section class="">
-							<div class="table-container">
+							<div class="table-container overflow-y" style="height:400px">
 								<g:FlexTable ui:field="tblUser" styleName="table">
 								</g:FlexTable>
 							</div>
@@ -80,7 +80,7 @@
 						</div>
 
 						<section class="">
-							<div class="table-container">
+							<div class="table-container overflow-y" style="height:400px">
 								<g:FlexTable ui:field="tblGroup" styleName="table">
 								</g:FlexTable>
 							</div>
@@ -111,7 +111,7 @@
 						</div>
 
 						<section class="">
-							<div class="table-container">
+							<div class="table-container overflow-y" style="height:400px">
 								<g:FlexTable ui:field="tblOrgs" styleName="table">
 								</g:FlexTable>
 							</div>

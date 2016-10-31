@@ -1,22 +1,16 @@
 package com.duggan.workflow.shared.model;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.duggan.workflow.server.dao.hibernate.ListValuesAdapter;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
-import com.google.gwt.user.client.rpc.IsSerializable;
-import com.wira.commons.shared.models.SerializableObj;
 
 /**
  *  

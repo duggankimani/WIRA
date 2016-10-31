@@ -119,6 +119,10 @@ public abstract class HTMLParent extends FieldWidget {
 		feField.setProps(dbField.getProps());
 		feField.setSelectionValues(dbField.getSelectionValues());
 		feField.setValue(dbField.getValue());
+		
+		if(this.readOnly){
+			feField.addValue(new KeyValuePair(READONLY, "true"));
+		}
 	}
 
 }
