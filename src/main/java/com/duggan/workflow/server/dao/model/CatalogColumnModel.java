@@ -124,14 +124,14 @@ public class CatalogColumnModel extends PO{
 		this.catalog = catalog;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof CatalogColumnModel){
-			return this.name.equals(((CatalogColumnModel)obj).name);
-		}
-		
-		return false;
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if(obj instanceof CatalogColumnModel){
+//			return this.name.equals(((CatalogColumnModel)obj).name);
+//		}
+//		
+//		return false;
+//	}
 	
 	@Override
 	public int hashCode() {

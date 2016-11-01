@@ -1399,6 +1399,7 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		this.form = form;
+		
 		for(String conditionField: stepConditionFields){
 			ArrayList<String> parents = new ArrayList<String>();
 			parents.add(conditionField);

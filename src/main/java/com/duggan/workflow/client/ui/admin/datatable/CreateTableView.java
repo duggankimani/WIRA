@@ -16,6 +16,8 @@ import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.events.EditCatalogSchemaEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.grid.AggregationGrid;
 import com.duggan.workflow.client.ui.grid.ColumnConfig;
 import com.duggan.workflow.client.ui.grid.DataMapper;
@@ -44,6 +46,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -81,7 +84,7 @@ public class CreateTableView extends Composite {
 
 	@UiField
 	DropDownList<Catalog> lstViews;
-	
+
 	@UiField
 	DropDownList<ProcessCategory> lstCategories;
 
@@ -159,8 +162,7 @@ public class CreateTableView extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		lstFields.setMultiple(true);
 		ArrayList<FieldSource> values = new ArrayList<FieldSource>();
-		values.addAll(ArrayUtil.asList(FieldSource.FORM,
-				FieldSource.GRID));
+		values.addAll(ArrayUtil.asList(FieldSource.FORM, FieldSource.GRID));
 		lstFieldSources.setItems(values);
 
 		ArrayList<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
@@ -263,7 +265,7 @@ public class CreateTableView extends Composite {
 
 				if (type == CatalogType.REPORTTABLE) {
 					grid.setData(new ArrayList<DataModel>());
-					loadFields(event.getValue().getId());
+					loadFields(event.getValue().getRefId());
 				}
 			}
 		});
@@ -327,13 +329,16 @@ public class CreateTableView extends Composite {
 
 	}
 
-	protected void loadFields(Long processDefId) {
+	protected void loadFields(final String processRefId) {
+
+		AppContext.fireEvent(new ProcessingEvent("Loading..."));
 		AppContext.getDispatcher().execute(
-				new GetFormsRequest(processDefId, true),
+				new GetFormsRequest(processRefId, true),
 				new TaskServiceCallback<GetFormsResponse>() {
 					@Override
 					public void processResult(GetFormsResponse aResponse) {
 						loadFields(aResponse.getForms());
+						AppContext.fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}
@@ -365,7 +370,11 @@ public class CreateTableView extends Composite {
 		col.setAutoIncrement(false);
 		col.setId(null);
 		col.setNullable(false);
-		String name = field.getName().toLowerCase();
+		String name = field.getName();//.toLowerCase(); - Report Tables are case Sensitive
+		if(type!=CatalogType.REPORTTABLE){
+			//Report Tables are case Sensitive since values are mapped to form values
+			name = field.getName().toLowerCase();
+		}
 		name = StringUtils.toAphanumeric(name);
 		col.setName(name);
 		col.setLabel(field.getCaption());
@@ -403,7 +412,7 @@ public class CreateTableView extends Composite {
 		ArrayList<Field> gridFields = new ArrayList<>();
 
 		for (Form form : forms) {
-			if (form.getFields() != null)
+			if (form.getFields() != null) {
 				for (Field field : form.getFields()) {
 					if (!fields.contains(field)
 							&& field.getType() != DataType.JS) {
@@ -418,6 +427,7 @@ public class CreateTableView extends Composite {
 						}
 					}
 				}
+			}
 		}
 
 		if (source == FieldSource.FORM) {
@@ -439,6 +449,14 @@ public class CreateTableView extends Composite {
 				return getName();
 			};
 		};
+
+		if (field.getType() == DataType.FORM) {
+			// HTML Forms containing multiple fields
+			for (Field customFormField : field.getFields()) {
+				addField(fields, customFormField);
+			}
+			return;
+		}
 
 		field.copyTo(clone, true);
 		fields.add(clone);
@@ -627,7 +645,7 @@ public class CreateTableView extends Composite {
 			for (ProcessDef d : processes) {
 				if (d.getId().equals(catalog.getProcessDefId())) {
 					setProcess(d);
-					loadFields(d.getId());
+					loadFields(d.getRefId());
 				}
 			}
 		}
@@ -635,7 +653,8 @@ public class CreateTableView extends Composite {
 
 	private void setProcess(ProcessDef process) {
 		lstProcess.setValue(process);
-		if(process.getCategory()!=null && (catalog==null || catalog.getCategory()==null)){
+		if (process.getCategory() != null
+				&& (catalog == null || catalog.getCategory() == null)) {
 			lstCategories.setValue(process.getCategory());
 		}
 	}
@@ -649,10 +668,10 @@ public class CreateTableView extends Composite {
 
 	public void setCategories(ArrayList<ProcessCategory> categories) {
 		lstCategories.setItems(categories);
-		if(catalog!=null){
+		if (catalog != null) {
 			lstCategories.setValue(catalog.getCategory());
 		}
-		
+
 	}
 
 }

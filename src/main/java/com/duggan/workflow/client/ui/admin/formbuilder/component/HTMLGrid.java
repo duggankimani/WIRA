@@ -5,8 +5,6 @@ import java.util.Collection;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
-import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
-import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
@@ -14,7 +12,6 @@ import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
-import com.duggan.workflow.shared.model.form.FormModel;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -23,8 +20,6 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Random;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLGrid extends HTMLParent {
@@ -116,6 +111,12 @@ public class HTMLGrid extends HTMLParent {
 		this.readOnly = isReadOnly || isComponentReadOnly();
 		if(readOnly && aAdd!=null){
 			aAdd.addStyleName("hide");
+		}else{
+			aAdd.removeStyleName("hide");
+		}
+		
+		for(HTMLLine line: htmlLines){
+			line.setReadonly(this.readOnly);
 		}
 	}
 
@@ -240,15 +241,15 @@ public class HTMLGrid extends HTMLParent {
 
 		private ArrayList<FieldWidget> inputs = new ArrayList<FieldWidget>();
 		private Element line;
+		Element delete = null;
 		private DocumentLine documentLine;
 
 		public HTMLLine(Element line) {
 			this(line, false);
 		}
-
+		
 		public HTMLLine(Element line, boolean parseFields) {
 			this.line = line;
-			Element delete = null;
 			NodeList<Element> nodes = line.getElementsByTagName("a");
 			if (nodes.getLength() > 0) {
 				for (int i = 0; i < nodes.getLength(); i++) {
@@ -297,6 +298,20 @@ public class HTMLGrid extends HTMLParent {
 						inputs.add(widget);
 					}
 					
+				}
+			}
+		}
+
+		public void setReadonly(boolean isReadOnly) {
+			for(FieldWidget input: inputs){
+				input.setReadOnly(isReadOnly);
+			}
+			
+			if(delete!=null){
+				if(isReadOnly){
+					delete.addClassName("hide");
+				}else{
+					delete.removeClassName("hide");
 				}
 			}
 		}

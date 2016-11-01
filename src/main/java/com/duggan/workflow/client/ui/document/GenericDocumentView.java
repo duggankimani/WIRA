@@ -566,7 +566,12 @@ public class GenericDocumentView extends ViewImpl implements
 			aConfigure.setTarget("_blank");	
 		}
 
-		if (validActions != null) {
+		boolean isDraft = false;
+		if(doc instanceof Document){
+			isDraft = ((Document)doc).getStatus()==DocStatus.DRAFTED;
+		}
+		
+		if (validActions != null && !isDraft) {
 			if (validActions.contains(Actions.COMPLETE)) {
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);

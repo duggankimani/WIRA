@@ -96,6 +96,16 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			String comma_Separated_fieldNames, String searchTerm,
 			List<String> searchCols) {
 
+		String[] quotedFieldNames = comma_Separated_fieldNames.split(",");
+		comma_Separated_fieldNames="";
+		int len = quotedFieldNames.length;
+		for(int i=0; i<len; i++){
+			comma_Separated_fieldNames =   comma_Separated_fieldNames+"\""+quotedFieldNames[i]+"\"";
+			if(i+1!=len){
+				comma_Separated_fieldNames = comma_Separated_fieldNames+",";
+			}
+		}
+		
 		StringBuffer jpql = new StringBuffer("select "
 				+ comma_Separated_fieldNames + " from " + tableName);
 

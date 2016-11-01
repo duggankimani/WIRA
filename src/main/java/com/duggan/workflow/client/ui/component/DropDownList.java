@@ -167,9 +167,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 	}
 
 	public void setReadOnly(boolean readOnly) {
-		if (readOnly) {
-			setEnabled(false);
-		}
+		setEnabled(!readOnly);
 	}
 
 	public ArrayList<T> values() {

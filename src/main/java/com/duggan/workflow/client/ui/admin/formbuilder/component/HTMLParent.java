@@ -91,6 +91,9 @@ public abstract class HTMLParent extends FieldWidget {
 		}
 		widget.setField(child);
 
+		//Read Only From The Parent
+		widget.setReadOnly(this.readOnly);
+		
 		// register handlers
 		widget.registerHandlers();
 		
@@ -119,10 +122,6 @@ public abstract class HTMLParent extends FieldWidget {
 		feField.setProps(dbField.getProps());
 		feField.setSelectionValues(dbField.getSelectionValues());
 		feField.setValue(dbField.getValue());
-		
-		if(this.readOnly){
-			feField.addValue(new KeyValuePair(READONLY, "true"));
-		}
 	}
 
 }

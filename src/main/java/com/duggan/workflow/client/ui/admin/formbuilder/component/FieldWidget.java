@@ -509,8 +509,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		return isComponentReadOnly;
 	}
 
-	public void setReadOnly(boolean readOnly) {
-
+	public void setReadOnly(boolean isReadOnly) {
+		
 	}
 
 	protected void setCaption(String caption) {

@@ -265,7 +265,7 @@ public class FormPanel extends Composite {
 				continue;
 
 			} else if (field.getType() == DataType.FORM) {
-
+				
 				bind(field.getFields(), doc, parentFields, true);
 
 			} else if (field.getType() == DataType.BUTTON) {
@@ -330,6 +330,10 @@ public class FormPanel extends Composite {
 			// HTML Field - Do not instanciate field widget
 			if (mode == MODE.VIEW) {
 				// SET READONLY
+				/*
+				 * Duggan - 31/10/2016
+				 * Cannot set readOnly for unAttached HTML Fields at this point
+				 */
 			}
 			return;
 		}

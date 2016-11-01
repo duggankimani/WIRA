@@ -16,10 +16,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLForm extends HTMLParent {
@@ -47,7 +45,6 @@ public class HTMLForm extends HTMLParent {
 	@UiField
 	Element designHeader;
 
-
 	public HTMLForm() {
 		super();
 		widget = uiBinder.createAndBindUi(this);
@@ -66,7 +63,8 @@ public class HTMLForm extends HTMLParent {
 				htmlContent.getElement().setInnerHTML(txtComponent.getValue());
 				Property prop = props.get(HTMLCONTENT);
 				if (prop == null) {
-					prop  = new Property(HTMLCONTENT, "HTML Content", DataType.STRINGLONG);
+					prop = new Property(HTMLCONTENT, "HTML Content",
+							DataType.STRINGLONG);
 				}
 				prop.setValue(new TextValue(txtComponent.getValue()));
 				props.put(HTMLCONTENT, prop);
@@ -89,7 +87,8 @@ public class HTMLForm extends HTMLParent {
 				htmlContent.getElement().setInnerHTML(txtComponent.getValue());
 				Property prop = props.get(HTMLCONTENT);
 				if (prop == null) {
-					prop  = new Property(HTMLCONTENT, "HTML Content", DataType.STRINGLONG);
+					prop = new Property(HTMLCONTENT, "HTML Content",
+							DataType.STRINGLONG);
 				}
 				prop.setValue(new TextValue(txtComponent.getValue()));
 				props.put(HTMLCONTENT, prop);
@@ -138,38 +137,47 @@ public class HTMLForm extends HTMLParent {
 	}
 
 	@Override
+	public void setReadOnly(boolean isReadOnly) {
+		this.readOnly = isComponentReadOnly() || isReadOnly;
+//		Window.alert("Form "+field.getName()+" Readonly = "+this.readOnly);
+		for (FieldWidget w : fieldWidgets) {
+			w.setReadOnly(this.readOnly);
+		}
+	}
+
+	@Override
 	public void setComponentValid(boolean isValid) {
 
 	}
-	
 
 	boolean bindHTMLWidgets = false;
-	
+
 	@Override
 	public void setField(Field aField) {
 		super.setField(aField);
 		bindHTMLWidgets = false;
-		
+
 		String html = getPropertyValue(HTMLCONTENT);
 		bindHTML(html);
 
 		if (isAttached()) {
 			bindHTMLWidgets(htmlContent.getElement());
-		}else{
+		} else {
 			bindHTMLWidgets = true;
 		}
+		
 	}
 
-//	@Override
-//	public void setReadOnly(boolean readOnly) {
-//		this.readOnly = readOnly || isComponentReadOnly();
-//	}
+	// @Override
+	// public void setReadOnly(boolean readOnly) {
+	// this.readOnly = readOnly || isComponentReadOnly();
+	// }
 
 	private void bindHTML(String html) {
 		if (html == null) {
 			return;
 		}
-		if(designMode){
+		if (designMode) {
 			txtComponent.setValue(html);
 		}
 		htmlContent.getElement().setInnerHTML(html);
@@ -177,7 +185,7 @@ public class HTMLForm extends HTMLParent {
 
 	@Override
 	public void onDragEnd() {
-		//divActions.removeClassName("hide");
+		// divActions.removeClassName("hide");
 	}
 
 	@Override
@@ -194,58 +202,56 @@ public class HTMLForm extends HTMLParent {
 			htmlContent.getElement().getStyle().setMarginBottom(12, Unit.PX); // margin-bottom:
 																				// 15px;
 		}
-//		if(field.getName().equals("academicqualification")){
-//			Window.alert(" >> onLoad! "+field.getName());
-//		}
-		
+		// if(field.getName().equals("academicqualification")){
+		// Window.alert(" >> onLoad! "+field.getName());
+		// }
+
 	}
 
 	@Override
 	protected void onAttach() {
 		super.onAttach();
-		
-		if(bindHTMLWidgets){
+
+		if (bindHTMLWidgets) {
 			bindHTMLWidgets(htmlContent.getElement());
-			bindHTMLWidgets=false;
+			bindHTMLWidgets = false;
 		}
-		
-//		if(field.getName().equals("academicqualification")){
-//			Window.alert(" >> onAttach! "+field.getName());
-//		}
+
+		// if(field.getName().equals("academicqualification")){
+		// Window.alert(" >> onAttach! "+field.getName());
+		// }
 	}
-	
+
 	/**
 	 * Bind HTML Widgets.
 	 * 
-	 * HTML Widgets have to be bound on setField, but after onAttach has been called.
-	 * The sequence of calls in different scenarios is as follows
-	 * </br>
-	 * Form INITIALIZATION: setField  -> onLoad -> on Attach <br>
-	 * HTML Form DragStart: onLoad  -> onAttach <br>
-	 * HTML Form DragEnd:  onLoad -> onAttach -> setField <br>
+	 * HTML Widgets have to be bound on setField, but after onAttach has been
+	 * called. The sequence of calls in different scenarios is as follows </br>
+	 * Form INITIALIZATION: setField -> onLoad -> on Attach <br>
+	 * HTML Form DragStart: onLoad -> onAttach <br>
+	 * HTML Form DragEnd: onLoad -> onAttach -> setField <br>
 	 * 
-	 * As such, a flag has to be maintained to ensure this method is called in the correct instances only,
-	 * otherwise, the application throws exceptions
-	 *  <p>
+	 * As such, a flag has to be maintained to ensure this method is called in
+	 * the correct instances only, otherwise, the application throws exceptions
+	 * <p>
 	 * 
 	 * @param parent
 	 */
 	protected void bindHTMLWidgets(Element parent) {
 		for (Field child : children.values()) {
 			if (child.getName() != null) {
-				
-				Element element = getElementById(parent,child.getName());
-				if(child.getName().equals(txtComponent.getElement().getId())){
+
+				Element element = getElementById(parent, child.getName());
+				if (child.getName().equals(txtComponent.getElement().getId())) {
 					continue;
 				}
-				
-				if (element != null){
-					wrapElement(element,getElementType(child, element));
+
+				if (element != null) {
+					wrapElement(element, getElementType(child, element));
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Scan HTML & Generate FieldWidgets
@@ -261,9 +267,9 @@ public class HTMLForm extends HTMLParent {
 		}
 
 		String parentId = getElement().getId();
-		String viewId = parentId.substring(0,parentId.length()-5)+"View";
+		String viewId = parentId.substring(0, parentId.length() - 5) + "View";
 		String textAreaId = getPropertyValue(NAME);
-		
+
 		/**
 		 * Grids
 		 */
@@ -274,107 +280,109 @@ public class HTMLForm extends HTMLParent {
 		 */
 		JsArrayString elementArray = (JsArrayString) JsArrayString
 				.createArray();
-		//getAllInputs(parentId, elementArray);
+		// getAllInputs(parentId, elementArray);
 		getAllElements(parentId, elementArray);
-		
+
 		List<String> inputGroups = new ArrayList<String>();
-		
+
 		for (int i = 0; i < elementArray.length(); i++) {
 			String id = elementArray.get(i);
-			if (id == null || id.isEmpty() || id.equals(parentId) || id.equals(viewId) 
+			if (id == null || id.isEmpty() || id.equals(parentId)
+					|| id.equals(viewId)
 					|| (textAreaId != null && id.equals(textAreaId))) {
 				continue;
 			}
 
 			Element element = htmlContent.getElementById(id);
-			
-			if(element.hasClassName(GRID_ROW_TEMPLATE_CLASS) || element.hasClassName(GRID_TEMPLATE_CLASS)){
-				//Not writable
+
+			if (element.hasClassName(GRID_ROW_TEMPLATE_CLASS)
+					|| element.hasClassName(GRID_TEMPLATE_CLASS)) {
+				// Not writable
 				continue;
 			}
-			
+
 			String type = element.getAttribute("type");
-			if(type!=null && (type.equals("radio") || type.equals("checkbox"))){
+			if (type != null
+					&& (type.equals("radio") || type.equals("checkbox"))) {
 				String name = element.getAttribute("name");
-				if(name!=null){
-					if(inputGroups.contains(name)){
+				if (name != null) {
+					if (inputGroups.contains(name)) {
 						continue;
 					}
-					
+
 					inputGroups.add(name);
-					
-					//Parent has the same id as the name of the children
+
+					// Parent has the same id as the name of the children
 					Element parentElement = htmlContent.getElementById(name);
-					if(parentElement!=null){
-						wrapElement(parentElement,type);
+					if (parentElement != null) {
+						wrapElement(parentElement, type);
 					}
-					
-					//find an element whose ID= NameOfInputs
+
+					// find an element whose ID= NameOfInputs
 				}
-			}else{
+			} else {
 				wrapElement(element);
 			}
 		}
-		
+
 	}
 
 	private void wrapGrid(String parentId) {
-		JsArrayString grids = (JsArrayString) JsArrayString
-				.createArray();
+		JsArrayString grids = (JsArrayString) JsArrayString.createArray();
 		getAllGrids(parentId, grids);
-		
+
 		for (int i = 0; i < grids.length(); i++) {
 			Element element = htmlContent.getElementById(grids.get(i));
 			wrapElement(element, "grid");
 		}
 	}
-	
+
 	protected void wrapElement(Element element) {
-		wrapElement(element,element.getAttribute("type"));
+		wrapElement(element, element.getAttribute("type"));
 	}
-	
+
 	protected void wrapElement(Element element, String type) {
-		FieldWidget widget = FieldWidget.wrap(element,type, designMode);
-		
+		FieldWidget widget = FieldWidget.wrap(element, type, designMode);
+
 		if (widget != null) {
 			Field child = initializeChild(widget);
 			children.put(child.getName(), child);
 			fieldWidgets.add(widget);
 		}
-		
+
 		field.setFields(children.values());
 	}
 
-//	@Override
-//	public void onSaveProperties(SavePropertiesEvent event) {
-//		//super.onSaveProperties(event);
-//		FormModel model = event.getParent();
-//		if (model == null || !(model instanceof Field)) {
-//			return;
-//		}
-//
-//		Field fieldModel = (Field) model;
-//		if (!fieldModel.isHTMLWrappedField()) {
-//			if (field.equals(fieldModel)) {
-//				super.save(fieldModel);
-//			}
-//
-//			return;
-//		}
-//
-//		if (children.get(fieldModel.getName()) == null) {
-//			// not a child of this HTMLForm - Ignore
-//			return;
-//		}
-//
-//		children.put(fieldModel.getName(), fieldModel);
-//
-//		ArrayList<Field> list = new ArrayList<Field>();
-//		list.addAll(children.values());
-//		field.setFields(list);
-//		super.save(field);
-//
-//	}
+	// @Override
+	// public void onSaveProperties(SavePropertiesEvent event) {
+	// //super.onSaveProperties(event);
+	// FormModel model = event.getParent();
+	// if (model == null || !(model instanceof Field)) {
+	// return;
+	// }
+	//
+	// Field fieldModel = (Field) model;
+	// if (!fieldModel.isHTMLWrappedField()) {
+	// if (field.equals(fieldModel)) {
+	// super.save(fieldModel);
+	// }
+	//
+	// return;
+	// }
+	//
+	// if (children.get(fieldModel.getName()) == null) {
+	// // not a child of this HTMLForm - Ignore
+	// return;
+	// }
+	//
+	// children.put(fieldModel.getName(), fieldModel);
+	//
+	// ArrayList<Field> list = new ArrayList<Field>();
+	// list.addAll(children.values());
+	// field.setFields(list);
+	// super.save(field);
+	//
+	// }
 
 	/**
 	 * Get All Field Values
@@ -387,7 +395,7 @@ public class HTMLForm extends HTMLParent {
 			Field target = w.getField();
 			Value fieldValue = w.getFieldValue();
 			target.setValue(fieldValue);
-			
+
 			if (fieldValue != null) {
 				assert target.getName() != null;
 				assert !target.getName().isEmpty();
@@ -397,6 +405,5 @@ public class HTMLForm extends HTMLParent {
 		}
 		return values;
 	}
-	
-	
+
 }

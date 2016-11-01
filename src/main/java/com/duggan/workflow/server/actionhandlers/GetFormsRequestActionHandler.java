@@ -26,7 +26,7 @@ public class GetFormsRequestActionHandler extends
 		List<Form> forms = new ArrayList<Form>();
 
 		if(action.getProcessRefId()!=null){
-			forms = FormDaoHelper.getFormsJson(action.getProcessRefId(), false);
+			forms = FormDaoHelper.getFormsJson(action.getProcessRefId(), action.isLoadFields());
 		}else if (action.getProcessDefId() != null) {
 			forms = FormDaoHelper.getForms(action.getProcessDefId(),
 					action.isLoadFields());

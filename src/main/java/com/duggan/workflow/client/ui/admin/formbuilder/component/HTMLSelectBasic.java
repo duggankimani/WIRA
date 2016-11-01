@@ -8,6 +8,7 @@ import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.core.shared.GWT;
@@ -131,11 +132,11 @@ public class HTMLSelectBasic extends FieldWidget implements IsSelectionField {
 	protected DataType getType() {
 		return DataType.SELECTBASIC;
 	}
-
+	
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-		lstItems.setReadOnly(readOnly);
+		lstItems.setReadOnly(this.readOnly);
 	}
 
 	@Override
