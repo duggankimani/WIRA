@@ -4,6 +4,7 @@ import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import java.util.ArrayList;
 
+import com.duggan.workflow.client.ui.admin.formbuilder.component.HTMLSelectBasic;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -117,7 +118,27 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		return values;
 	}
 
+	/**
+	 * The Selected index in the ListBox is always one item ahead of List<T> items list
+	 * due to the inclusion of the null --Select-- text option. i.e. ListBox[i] = items.get(i-1);
+	 * <p>
+	 * 
+	 * As such, all calls to {@link #getItem(int)} provide the parameter idx as (selectedItemIdx-1) 
+	 * where selectedItemIdx is the index of the clicked item on the ListBox.
+	 * 
+	 * <p>
+	 * {@link HTMLSelectBasic} field may however wrap a DOM element (select) that does not include 
+	 * the null option. i.e no option --Select--. In this case ListBox[i] = items.get(i);
+	 * 
+	 * @param idx
+	 * @return
+	 */
 	private T getItem(int idx) {
+		
+		if(nullText==null){
+			//DUGGAN 1/11/2016
+			idx = idx+1;
+		}
 		
 		if(idx<items.size() && idx>=0){
 			return items.get(idx);
@@ -216,6 +237,7 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		NodeList<Node> nodes = select.getChildNodes();
 		ArrayList<KeyValuePair> pairs = new ArrayList<KeyValuePair>();
 		int length = nodes.getLength();
+		listBox.setNullText(null);
 		for (int i = 0; i < length; i++) {
 			Element option = (Element) nodes.getItem(i);
 			String text = option.getInnerHTML();
