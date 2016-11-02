@@ -521,9 +521,10 @@ body .dateBoxPopup {
 	padding: 10px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
 	/*position: relative;*/
-	width: 200px;
+	width: 50px;
 	position: absolute;
-	background: #ededed;
+	background: #3498DB;
+	z-index: 100000;
 }
 
 #sidebar-nav .add-doc {
@@ -575,7 +576,7 @@ body .dateBoxPopup {
 	width: auto;
 	position: absolute;
 	right: 0px;
-	left: 200px;
+	left: 50px;
 	height: 100%;
 	background-color: #ffffff;
 	border: 1px solid #CCCCCC;
@@ -1386,13 +1387,39 @@ ul.icons-list.text-xl {
 	-moz-transition: color .1s linear;
 	-webkit-transition: color .1s linear;
 	-o-transition: color .1s linear;
+	display: none;
+}
+
+
+#dashboard-menu div.active {
+	background-color: #278bce;
+}
+
+#dashboard-menu div.active .selected{
+	border-bottom: 7px solid transparent;
+	border-right: 7px solid #ffffff;
+	border-top: 7px solid transparent;
+	display: inline-block;
+	height: 0;
+	/* position: absolute; */
+	right: 0;
+	top: 13px;
+	vertical-align: middle;
+	width: 0;
+}
+#dashboard-menu .accordion-group div:hover span.selected {
+	display:none;
+}
+
+#dashboard-menu .accordion-group div:hover span {
+	display:inline-block;
 }
 
 #dashboard-menu a i {
 	left: 0;
 	/* height: 24px; */
 	/* width: 11px; */
-	opacity: 0.7;
+	/* opacity: 0.7; */
 	transition: opacity .1s ease;
 	-moz-transition: opacity .1s ease;
 	-webkit-transition: opacity .1s ease;
@@ -1468,10 +1495,15 @@ ul.icons-list.text-xl {
 	background: #f6f6f6;
 }
 
-#dashboard-menu .submenu li.active, #dashboard-menu .submenu div.active a
+#dashboard-menu .submenu li.active, #dashboard-menu .submenu .accordion-group div:hover a
 	{
 	background-color: #2e8fda !important;
 	color: #ffffff !important;
+	white-space: nowrap;
+	overflow-x: visible;
+	width: initial;
+	border-radius: 0px 5px 5px 0px;
+	min-width: 110px;
 }
 
 #dashboard-menu .submenu li.active a {
@@ -1665,7 +1697,7 @@ ul.icons-list.text-xl {
 		top: 5px;
 	}
 	#dashboard-menu ul.submenu {
-		margin: 0px 2px
+		/* margin: 0px 2px */
 	}
 	.btn-large {
 		padding: 10px 14px;
@@ -1774,6 +1806,10 @@ ul.icons-list.text-xl {
 	line-height: 18px;
 	padding-left: 7px;
 }
+#dashboard-menu ul.documents i {
+	font-size:17px;
+	color: #ffffff !important;
+}
 
 #dashboard-menu ul.documents li {
 	cursor: pointer;
@@ -1782,6 +1818,9 @@ ul.icons-list.text-xl {
 
 #dashboard-menu .accordion .accordion-group {
 	border: none;
+	border-top: 1px solid #3ea2e5;
+	color: #d7e9fc;
+	border-right: 1px solid #3ea2e5;
 }
 
 #dashboard-menu .accordion .accordion-group .accordion-inner {
@@ -1958,4 +1997,98 @@ btn-social>:first-child {
 	font-size: 1.6em;
 	text-align: center;
 	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+
+/*#####################navigation panel with lpanel-bg2 theme Color Start################*/
+
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel {
+    background: #3498DB none repeat scroll 0 0;
+    color: #d7e9fc;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .profile-box {
+    border-bottom: 1px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .profile-box {
+    border-bottom: 0px;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .profile-box .media a > img {
+    border: 1px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li > a {
+    background: #3498DB;
+    border-top: 1px solid #3ea2e5;
+    color: #d7e9fc;
+	border-right: 1px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li:last-child > a {
+    border-bottom: 1px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li:first-child > a {
+    border-top: 0px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li > a:hover,
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li > a:focus {
+    color: #FFF;
+    background: #278bce;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li.active > a {
+    background: #278bce;
+    border-top: 1px solid #3ea2e5;
+    color: #FFF;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list > li.hoe-has-menu.opened > a {
+    background: #3498DB;
+    color: #d7e9fc;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list ul {
+    background: #fafafa;
+    box-shadow: -1px 2px 3px 0px rgba(0, 0, 0, 0.2);
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list ul.hoe-sub-menu li > a {
+    background: #1e82c5;
+    border-top: 1px solid #2c90d3;
+    color: #d7e9fc;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list li.hoe-has-menu > ul.hoe-sub-menu li > a:hover,
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list li.hoe-has-menu > ul.hoe-sub-menu li > a:focus {
+    color: #FFF;
+    background: #1074b7;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list li.active > a .selected {
+    border-right: 7px solid #FFF;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .panel-list li a .label {
+    color: #d7e9fc;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] .sul {
+    background-color: #0e72b5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel {
+    background: #3498DB;
+    color: #d7e9fc;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .panel-list > li.hoe-has-menu:hover > a,
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .panel-list > li.hoe-has-menu:focus > a {
+    border-radius: 0px 4px 0px 0px;
+    background: #278bce;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .panel-list > li.hoe-has-menu.opened > a {
+    background: #3498DB;
+    color: #d7e9fc;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .panel-list > li.hoe-has-menu.opened > a:hover {
+    background: #278bce;
+    color: #FFF;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .panel-list > li.hoe-has-menu:hover > ul.hoe-sub-menu,
+#hoeapp-container[hoe-color-type="lpanel-bg2"].hoe-minimized-lpanel #hoe-left-panel .panel-list > li.hoe-has-menu:focus > ul.hoe-sub-menu {
+    border-right: 1px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .nav-level {
+    border-top: 1px solid #3ea2e5;
+}
+#hoeapp-container[hoe-color-type="lpanel-bg2"] #hoe-left-panel .nav-level:first-child {
+    border-top: 0px solid #3ea2e5;
 }

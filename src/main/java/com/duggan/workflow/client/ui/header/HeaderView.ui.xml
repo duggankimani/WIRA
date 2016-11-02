@@ -12,7 +12,7 @@
 			<div class="row-fluid">
 
 				<div class="pull-left" id="toggleAndCompany">
-				    <a id="aMaximize" class="brand visible-desktop visible-tablet" title="Maximize">
+				    <a id="aMaximize" class="brand hide" title="Maximize">
 				        <i class="icon-align-justify"></i>
 				    </a>
 					<g:Anchor styleName="brand visible-desktop visible-tablet"
