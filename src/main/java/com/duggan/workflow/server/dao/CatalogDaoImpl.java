@@ -168,9 +168,10 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		StringBuffer values = new StringBuffer(" VALUES (");
 		int i = 0;
 		for (CatalogColumn col : columns) {
+			String columnName = col.getName(); 
 			if (col.isPrimaryKey()) {
-				primaryKey = col.getName();
-				whereBuffer.append("" + col.getName() + "=:" + col.getName());
+				primaryKey = columnName;
+				whereBuffer.append("\"" + col.getName() + "\"=:" + col.getName());
 			}
 
 			if (col.isAutoIncrement()) {
@@ -178,7 +179,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			}
 
 			// Insert Statement
-			insertBuffer.append(col.getName());
+			insertBuffer.append("\""+col.getName()+"\"");
 			values.append(":" + col.getName());
 
 			// Update Statement
