@@ -89,7 +89,7 @@
 										<div class="accordion-heading">
 
 											<a class="accordion-toggle" href="#/participated">
-												<i class="icon-time"></i>
+												<i class="icon-check"></i>
 												<span>Participated</span>
 												<span class="selected"></span>
 											</a>
@@ -116,7 +116,7 @@
 									<div class="accordion-group">
 										<div class="accordion-heading">
 											<a class="accordion-toggle" href="#/registry">
-												<i class="icon-archive"></i>
+												<i class="icon-calendar"></i>
 												<span>Case Registry</span>
 												<span class="selected"></span>
 											</a>
@@ -126,7 +126,7 @@
 										<div class="accordion-heading">
 
 											<a class="accordion-toggle" href="#/reports">
-												<i class="icon-file"></i>
+												<i class="icon-bar-chart"></i>
 												<span>Reports</span>
 												<span class="selected"></span>
 											</a>

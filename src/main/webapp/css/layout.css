@@ -1390,6 +1390,16 @@ ul.icons-list.text-xl {
 	display: none;
 }
 
+#dashboard-menu a>span {
+	padding-right:15px;
+}
+
+#dashboard-menu a span.selected {
+	padding-right:0px;
+	/* float: right; */
+	left: 42px;
+	position: absolute;
+}
 
 #dashboard-menu div.active {
 	background-color: #278bce;
@@ -1424,7 +1434,8 @@ ul.icons-list.text-xl {
 	-moz-transition: opacity .1s ease;
 	-webkit-transition: opacity .1s ease;
 	-o-transition: opacity .1s ease;
-	padding: 5px 10px 0px 0px;
+	padding: 5px 5px 0px 0px;
+	/* float: right; */
 }
 
 #dashboard-menu a i.icon-chevron-up {
@@ -1801,10 +1812,12 @@ ul.icons-list.text-xl {
 	color: #000;
 	text-decoration: none;
 	margin-bottom: 0;
-	padding-right: 15px;
+	padding-right: 0px;
 	padding-bottom: 10px;
 	line-height: 18px;
 	padding-left: 7px;
+	/* float: right; */
+	position: relative;
 }
 #dashboard-menu ul.documents i {
 	font-size:17px;
