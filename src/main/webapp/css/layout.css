@@ -1506,6 +1506,10 @@ ul.icons-list.text-xl {
 	background: #f6f6f6;
 }
 
+#dashboard-menu .submenu .accordion-group a{
+	padding-right:0px;
+}
+
 #dashboard-menu .submenu li.active, #dashboard-menu .submenu .accordion-group div:hover a
 	{
 	background-color: #2e8fda !important;
@@ -1838,7 +1842,7 @@ ul.icons-list.text-xl {
 
 #dashboard-menu .accordion .accordion-group .accordion-inner {
 	border-top: none;
-	padding: 2px 35px;
+	padding: 2px 0px;
 }
 
 .dragview {

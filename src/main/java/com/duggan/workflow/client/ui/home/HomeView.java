@@ -240,14 +240,16 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			href="#/inbox/all";
 			break;
 		case MINE:
-			href="#/inbox/mine";
+//			href="#/inbox/mine";
+			href="#/inbox/all";
 			break;
 		case QUEUED:
-			href="#/inbox/queued";
+//			href="#/inbox/queued";
+			href="#/inbox/all";
 			break;
 		case INBOX:
-			//href="#/inbox";
-			href="#collapseOne";
+			//href="#collapseOne";
+			href="#/inbox/all";
 			break;
 		case COMPLETED:
 			href="#/participated";
@@ -370,16 +372,16 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 																});
 															});
 														
-															$wnd.jQuery(parentUl).find('#inbox').click(function(e){
-																var inbox = $wnd.jQuery(e.target);
-																var caret = inbox.find('i.icon-caret-right').get(0);
-																if(caret==undefined){
-																	caret = inbox.find('i.icon-caret-down').get(0);
-																}
-																
-																$wnd.jQuery(caret).toggleClass('icon-caret-right');
-																$wnd.jQuery(caret).toggleClass('icon-caret-down');
-															});
+//															$wnd.jQuery(parentUl).find('#inbox').click(function(e){
+//																var inbox = $wnd.jQuery(e.target);
+//																var caret = inbox.find('i.icon-caret-right').get(0);
+//																if(caret==undefined){
+//																	caret = inbox.find('i.icon-caret-down').get(0);
+//																}
+//																
+//																$wnd.jQuery(caret).toggleClass('icon-caret-right');
+//																$wnd.jQuery(caret).toggleClass('icon-caret-down');
+//															});
 														});
 														
 														}-*/;
@@ -404,7 +406,11 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	private void selectTab(PlaceRequest currentPlaceRequest) {
 		String nameToken = currentPlaceRequest.getNameToken();
 		nameToken = placeManager.buildHistoryToken(currentPlaceRequest);
-		
+		clearAllAnchors(sideBarUL);
+		//single inbox
+		if(nameToken.startsWith("/inbox")){
+			nameToken = "/inbox/all";;
+		}
 		selectTab(sideBarUL, "#" + nameToken);
 	}
 

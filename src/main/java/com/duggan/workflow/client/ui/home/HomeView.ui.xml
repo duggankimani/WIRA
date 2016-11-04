@@ -43,12 +43,18 @@
 
 									<div class="accordion-group">
 										<div class="accordion-heading">
+											<a id="inbox" class="accordion-toggle" href="#/inbox/all">
+												<i class="icon-inbox"></i>
+												<span>Inbox</span>
+												<span class="selected"></span>
+											</a>
+
+										</div>
+										<!-- div class="accordion-heading">
 											<a id="inbox" class="accordion-toggle" data-toggle="collapse"
 												data-parent="#accordion2" href="#collapseOne">
 												<i class="icon-inbox"></i>
 												<span>Inbox</span>
-												<i class="icon-caret-right pull-right hide"
-													style="margin-right: 10px;color: #ADA5A5;padding-top:2px;"></i>
 												<span class="selected"></span>
 											</a>
 
@@ -57,22 +63,26 @@
 											<ul class="submenu">
 												<li class="accordion-inner">
 													<a href="#/inbox/mine" title="Tasks assigned to you">
+													    <i class="icon-user"></i>
 														<span>Mine</span>
+														<span class="selected"></span>
 													</a>
 												</li>
 												<li class="accordion-inner">
 													<a href="#/inbox/queued" title="Group tasks awaiting your action">
+													    <i class="icon-group"></i>
 														<span>Queued</span>
+														<span class="selected"></span>
 													</a>
 												</li>
-												<li class="accordion-inner">
+												<li class="accordion-inner hide">
 													<a href="#/inbox/all"
 														title="Includes group tasks that may have been performed by others in the group">
 														<span>All</span>
 													</a>
 												</li>
 											</ul>
-										</div>
+										</div-->
 									</div>
 
 									<div class="accordion-group">

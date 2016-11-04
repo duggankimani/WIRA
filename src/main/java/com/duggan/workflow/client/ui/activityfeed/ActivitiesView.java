@@ -309,8 +309,8 @@ public class ActivitiesView extends ViewImpl implements
 	public void setProcess(ProcessDef process) {
 		this.process = process;
 		processName.setInnerText(process.getDisplayName());
-		aTotal.setHref("#/inbox/mine/" + process.getRefId());
-		aInbox.setHref("#/inbox/mine/" + process.getRefId());
+		aTotal.setHref("#/inbox/all/" + process.getRefId());
+		aInbox.setHref("#/inbox/all/" + process.getRefId());
 		aDone.setHref("#/participated/" + process.getRefId());
 	}
 

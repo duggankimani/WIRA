@@ -81,6 +81,10 @@ public class DropDownList<T extends Listable> extends ListBox implements
 	public void setItems(ArrayList<T> items) {
 		clear();
 		this.items = items;
+		if(nullText==null){
+			//NULL TEXT FOR SQL BASED, HTMLSelect Field
+			nullText="--Select--";
+		}
 		addItem(nullText, "");
 
 		if (items != null) {
@@ -246,7 +250,6 @@ public class DropDownList<T extends Listable> extends ListBox implements
 			if(optionStr!=null && optionStr.toLowerCase().equals("option")){
 				if(text.startsWith("--")){
 					listBox.setNullText(text);
-					//pairs.add(new KeyValuePair(text, ""));
 				}else{
 					pairs.add(new KeyValuePair(text, text));
 				}
