@@ -2,6 +2,7 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -10,25 +11,43 @@
 		<div class="content-body">
 			<div class="row-fluid">
 				<div class="action-buttons" ui:field="divGeneralActions">
+				    <div class="btn-group" style="float:none">
+						<a class="btn btn-primary" title="Import CSV Data. The first row of the csv must be the column names of the data.">
+						    Import CSV
+						</a>
+						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<g:Anchor ui:field="aImportComma" title="Import Comma Separated CSV">
+									Comma Separated CSV
+								</g:Anchor>
+							</li>
+							<li>
+								<g:Anchor ui:field="aImportTab" title="Import Tab Separated CSV">
+									Tab Separated CSV
+								</g:Anchor>
+							</li>
+						</ul>
+					</div>
+					<up:Uploader ui:field="aUploader" styleName="hide">
+					</up:Uploader>
+					
 					<g:Anchor ui:field="aNew" styleName="btn btn-primary"
-						title="New Form">
+						title="Create a New Table">
 						<i class="icon-plus"></i>
 						New Table
 					</g:Anchor>
+					<g:Anchor ui:field="aNewReportView" styleName="btn btn-primary"
+						title="Create a Report From a Database View">
+						<i class="icon-plus"></i>
+						New View
+					</g:Anchor>
 					<g:Anchor ui:field="aNewReport" styleName="btn btn-primary"
-						title="New Form">
+						title="Create a New Report Table for a Process. Data will be dumped into this table at the end of each process.">
 						<i class="icon-plus"></i>
 						New Report Table
-					</g:Anchor>
-					<g:Anchor ui:field="aNewReportView" styleName="btn btn-primary"
-						title="New Form">
-						<i class="icon-plus"></i>
-						New Report View
-					</g:Anchor>
-					<g:Anchor ui:field="aImport" styleName="btn btn-primary"
-						title="Import Form">
-						<i class="icon-upload-alt"></i>
-						Import Table
 					</g:Anchor>
 				</div>
 				<div class="row-fluid hide" ui:field="divTableActions">

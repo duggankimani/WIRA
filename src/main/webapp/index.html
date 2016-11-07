@@ -73,12 +73,13 @@
 <script src="js/moment.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+<!-- script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script -->
 <script type="text/javascript">
 
 function refreshAuthState(parentEl){
-	if(auth2!=undefined){
-	var val = auth2.isSignedIn.get();
+	
+	if(typeof auth2!=="undefined"){
+	 var val = auth2.isSignedIn.get();
 	 var userEl = $(parentEl).find("#logged-in-user").get(0);
 	 if(val){
 		 $(userEl).prop('title','Google Login');
@@ -91,7 +92,7 @@ function refreshAuthState(parentEl){
 }
 
 function logoutOauth(){
-	if(auth2!=undefined){
+	if(typeof auth2!=="undefined"){
 		auth2.disconnect();	
 	}
 }

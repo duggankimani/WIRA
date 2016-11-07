@@ -182,7 +182,7 @@ public class ReportsView extends ViewImpl implements ReportsPresenter.IReportsVi
 	}
 
 	public void downloadReport(String doctype) {
-		String url = "/downloadreport?reportRefId=" + catalog.getRefId() + "&NAME=" + catalog.getDisplayName()
+		String url = "downloadreport?reportRefId=" + catalog.getRefId() + "&NAME=" + catalog.getDisplayName()
 				+ "&docType=" + doctype;
 		Window.open(url, null, null);
 	}

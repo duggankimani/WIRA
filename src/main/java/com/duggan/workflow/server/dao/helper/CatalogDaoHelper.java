@@ -1,9 +1,10 @@
 package com.duggan.workflow.server.dao.helper;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -29,13 +32,11 @@ import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
-import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.server.servlets.upload.GenerateCatalogueExcel;
-import com.duggan.workflow.server.servlets.upload.GetReport;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
@@ -46,7 +47,6 @@ import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.duggan.workflow.shared.model.catalog.FieldSource;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.itextpdf.text.DocumentException;
 import com.wira.commons.shared.models.HTUser;
 
@@ -57,10 +57,22 @@ public class CatalogDaoHelper {
 	public static Catalog save(Catalog catalog) {
 
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		CatalogModel model = get(catalog);
+		CatalogModel model = null;
+		if(catalog.getRefId()!=null){
+			model = dao.findByRefId(catalog.getRefId(), CatalogModel.class);
+			dao.updateTable(catalog);
+		}else if(catalog.getId()!=null){
+			model = dao.getById(CatalogModel.class, catalog.getId());
+			dao.updateTable(catalog);
+		}else{
+			dao.generateTable(catalog);
+		}
+		
+		model = get(catalog);
 		dao.save(model);
-		dao.generateTable(catalog);
+		
 		catalog.setId(model.getId());
+		catalog.setRefId(model.getRefId());
 
 		return catalog;
 	}
@@ -191,7 +203,8 @@ public class CatalogDaoHelper {
 
 	public static void deleteCatalog(Long catalogId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		dao.delete(dao.getById(CatalogModel.class, catalogId));
+		CatalogModel model = dao.getById(CatalogModel.class, catalogId);
+		dao.delete(model);
 	}
 
 	public static void deleteCatalogColumn(Long columnId) {
@@ -491,4 +504,133 @@ public class CatalogDaoHelper {
 		return bytes;
 
 	}
+
+	public static Catalog save(String fileName, String format, byte[] bites) throws IOException {
+		
+		Reader in = new InputStreamReader(new ByteArrayInputStream(bites));
+		Iterable<CSVRecord> records  = CSVFormat.valueOf(format.toUpperCase()).parse(in);
+
+		String catalogName = format(fileName.substring(0, fileName.lastIndexOf(".")));
+		
+		catalogName = renameIfExists(catalogName);
+		
+		Catalog catalog = new Catalog();
+		catalog.setName(catalogName);
+		catalog.setDescription(catalogName);
+		catalog.setType(CatalogType.DATATABLE);
+		
+		ArrayList<CatalogColumn> columns = new ArrayList<CatalogColumn>();
+		ArrayList<DocumentLine> documents  = new ArrayList<DocumentLine>();
+		int row=0;
+		for(CSVRecord rec: records){
+			if(row==0){
+				columns = createCatalogColumns(rec);
+				catalog.setColumns(columns);
+				catalog = save(catalog);
+			}else{
+				//Data Column
+				documents.add(createRow(columns,rec));
+			}
+			++row;
+		}
+		
+		saveData(catalog, documents, true);
+		return catalog;
+	}
+	
+	private static String renameIfExists(String catalogName) {
+		return renameIfExists(catalogName, 0);
+	}
+
+	private static String renameIfExists(String catalogName, int i) {
+
+		boolean isExists = DB.getCatalogDao().checkExists(catalogName);
+		if(isExists){
+			return renameIfExists(catalogName+"_"+(i+1),(i+1));
+		}
+		
+		return catalogName;
+	}
+
+	private static DocumentLine createRow(ArrayList<CatalogColumn> columns,CSVRecord rec) {
+		int recCount = rec.size();
+		DocumentLine line = new DocumentLine();
+		for(int i=0; i<recCount; i++){
+			String value = rec.get(i);
+			String col = columns.get(i).getName();
+			line._s(col, value);
+		}
+		return line;
+	}
+
+	private static String format(String substring) {
+		substring = substring.replaceAll("\\s", "_");
+		substring = substring.replaceAll("\\.", "_");
+		substring = substring.replaceAll("[^A-Za-z0-9_]", "");
+		
+		return substring;
+	}
+
+	private static ArrayList<CatalogColumn> createCatalogColumns(CSVRecord rec) {
+		ArrayList<CatalogColumn> lines = new ArrayList<CatalogColumn>();
+		int recCount = rec.size();
+		for(int i=0; i<recCount; i++){
+			String label = rec.get(i);
+			String name = format(label);
+					
+			CatalogColumn col = new CatalogColumn();
+			col.setPrimaryKey(false);
+			col.setAutoIncrement(false);
+			col.setId(null);
+			col.setNullable(false);
+			col.setSize(null);
+			col.setName(name);
+			col.setLabel(label);
+			col.setType(DBType.VARCHAR);
+			col.setSize(255);
+			lines.add(col);
+		}
+		
+		return lines;
+	}
+
+	private CatalogColumn createLine(String[] lineValues) {
+		CatalogColumn col = new CatalogColumn();
+		col.setPrimaryKey(false);
+		col.setAutoIncrement(false);
+		col.setId(null);
+		col.setNullable(false);
+		col.setSize(null);
+		for (int i = 0; i < lineValues.length; i++) {
+			String value = lineValues[i];
+			if (value != null && !value.isEmpty()) {
+				// remove quotes, and further trim to take care of values like
+				// "" 24"
+				value = value.replaceAll("\"", "");
+				value = value.trim();
+			}
+
+			if (i == 0) {
+				col.setName(value);
+			} else if (i == 1) {
+				col.setLabel(value);
+			} else if (i == 2) {
+				try {
+					col.setType(DBType.valueOf(value));
+				} catch (Exception e) {
+				}
+			} else if (i == 3) {
+				try {
+					// Col Size
+					col.setSize(Integer.parseInt(value));
+				} catch (Exception e) {
+				}
+
+			}
+
+		}
+
+		return col;
+	}
+
 }

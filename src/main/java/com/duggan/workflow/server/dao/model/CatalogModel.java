@@ -46,7 +46,7 @@ public class CatalogModel extends PO {
 	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute(required = true)
-	@Column(nullable = false, length = 125)
+	@Column(nullable = false, length = 125, unique=true)
 	private String name;
 
 	@XmlAttribute

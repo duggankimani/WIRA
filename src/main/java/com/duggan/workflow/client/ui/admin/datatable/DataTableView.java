@@ -3,12 +3,15 @@ package com.duggan.workflow.client.ui.admin.datatable;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
@@ -36,7 +39,9 @@ public class DataTableView extends ViewImpl implements
 	@UiField
 	TableView tblView;
 	@UiField
-	Anchor aImport;
+	Anchor aImportTab;
+	@UiField
+	Anchor aImportComma;
 	@UiField
 	Anchor aNewReport;
 	@UiField
@@ -56,6 +61,8 @@ public class DataTableView extends ViewImpl implements
 	Element divTableActions;
 	@UiField
 	Element divGeneralActions;
+	
+	@UiField Uploader aUploader;
 
 	public interface Binder extends UiBinder<Widget, DataTableView> {
 	}
@@ -63,7 +70,52 @@ public class DataTableView extends ViewImpl implements
 	@Inject
 	public DataTableView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		aUploader.getElement().setId("csvuploader");
+		aUploader.setAvoidRepeatFiles(false);
+		final UploadContext ctx = new UploadContext();
+		ArrayList<String> types = new ArrayList<String>();
+		types.add("csv");
+		types.add("txt");
+		ctx.setAccept(types);
+		ctx.setAction(UPLOADACTION.IMPORTCSV);
+		
+		aImportTab.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				/**
+				 * CSV Formats
+				 * DEFAULT
+				 * EXCEL - comma separated
+				 * TDF - Tab separated
+				 */
+				ctx.setContext("f", "TDF");
+				aUploader.setContext(ctx);
+				triggerUpload(aUploader.getElement());
+			}
+		});
+		
+		aImportComma.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				/**
+				 * CSV Formats
+				 * DEFAULT
+				 * EXCEL - comma separated
+				 * TDF - Tab separated
+				 */
+				ctx.setContext("f", "RFC4180");
+				aUploader.setContext(ctx);
+				triggerUpload(aUploader.getElement());
+			}
+		});
 	}
+
+	protected native void triggerUpload(Element uploader) /*-{
+		$wnd.jQuery(uploader).find('input').trigger('click');
+		
+	}-*/;
 
 	@Override
 	public Widget asWidget() {
@@ -204,7 +256,7 @@ public class DataTableView extends ViewImpl implements
 
 	@Override
 	public HasClickHandlers getImportButton() {
-		return aImport;
+		return aImportTab;
 	}
 
 	@Override
@@ -242,5 +294,9 @@ public class DataTableView extends ViewImpl implements
 		} else {
 			divTableActions.addClassName("hide");
 		}
+	}
+	
+	public Uploader getUploader(){
+		return aUploader;
 	}
 }

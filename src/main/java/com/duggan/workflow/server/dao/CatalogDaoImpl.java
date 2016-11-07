@@ -3,7 +3,9 @@ package com.duggan.workflow.server.dao;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,9 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.hibernate.impl.SessionImpl;
 
+import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
+import com.duggan.workflow.server.dao.model.PO;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
@@ -29,6 +33,19 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 
 	public CatalogDaoImpl(EntityManager em) {
 		super(em);
+	}
+	
+	@Override
+	public void delete(PO po) {
+		if(po instanceof CatalogModel){
+			String name = ((CatalogModel)po).getName();
+			if(!name.toLowerCase().startsWith("ext_")){
+				name = name.toLowerCase().startsWith("ext_")? name.toLowerCase(): "ext_"+name.toLowerCase();
+			}
+			String query = "DROP TABLE "+name;
+			em.createNativeQuery(query).executeUpdate();
+		}
+		super.delete(po);
 	}
 
 	public List<CatalogModel> getCatalogs(String searchTerm) {
@@ -90,6 +107,152 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		// CREATE
 		em.createNativeQuery(create.toString()).executeUpdate();
 
+	}
+	
+
+	public void updateTable(Catalog catalog) {
+		List<CatalogColumn> columns = catalog.getColumns();
+		for(CatalogColumn col: columns){
+			if(col.getId()==null){
+				//create column
+				addColumn(catalog, col);
+			}else{
+				//alter column
+				alterColumn(catalog, col);
+			}
+		}
+	}
+
+	private void alterColumn(Catalog catalog, CatalogColumn col) {
+		CatalogColumnModel model = getById(CatalogColumnModel.class, col.getId());
+		if(!isChanged(col, model)){
+			return;
+		}
+		
+		String catalogName = catalog.getName().toLowerCase();
+		if(!catalogName.startsWith("ext_")){
+			catalogName = "ext_"+catalogName;
+		}
+		
+		String ALTER_TABLE = "ALTER TABLE "+catalogName;
+		
+		String columnName="\""+col.getName()+"\"";
+		
+		//ADD Column
+		StringBuffer alter = new StringBuffer(ALTER_TABLE+" ALTER COLUMN "+columnName+" TYPE "+col.getType().name());
+		if(col.getSize()!=null && col.getSize()!=0){
+			alter.append("("+col.getSize()+")");
+		}
+		logger.debug("ALTER COLUMN: "+alter.toString());
+		em.createNativeQuery(alter.toString()).executeUpdate();
+		
+		if(!model.getName().equals(col.getName())){
+			renameColumn(catalogName, model.getName(), col.getName());
+		}
+		
+		updateNullability(catalogName, columnName,col.isNullable(), col.isNullable()!=model.isNullable());
+		updatePrimaryKey(catalogName, columnName,col.isPrimaryKey(), col.isPrimaryKey()!=model.isPrimaryKey());
+	}
+
+	private void addColumn(Catalog catalog, CatalogColumn col) {
+		String catalogName = catalog.getName().toLowerCase();
+		if(!catalogName.startsWith("ext_")){
+			catalogName = "ext_"+catalogName;
+		}
+		
+		String ALTER_TABLE = "ALTER TABLE "+catalogName;
+		
+		String columnName="\""+col.getName()+"\"";
+		
+		//ADD Column
+		StringBuffer alter = new StringBuffer(ALTER_TABLE+" ADD COLUMN "+columnName);
+		if (col.isAutoIncrement()) {
+			alter.append(col.isAutoIncrement() ? " serial" : "");// POSTGRES
+		} else {
+			alter.append(" " + col.getType().name());
+			alter.append((col.getSize() == null || col.getSize() == 0) ? ""
+					: "(" + col.getSize() + ")");
+		}
+
+		alter.append(col.isPrimaryKey() ? " PRIMARY KEY" : "");
+		alter.append(col.isNullable() ? " NULL" : " NOT NULL");
+		
+		logger.debug("ALTER COLUMN: "+alter.toString());
+		em.createNativeQuery(alter.toString()).executeUpdate();
+	}
+	
+	private void renameColumn(String catalogName, String previousName, String newName) {
+		String rename = "ALTER TABLE "+catalogName+" RENAME "+previousName+" TO "+newName;
+		em.createNativeQuery(rename).executeUpdate();
+	}
+
+	private void updatePrimaryKey(String catalogName, String columnName,
+			boolean isPrimaryKey, boolean isChanged) {
+		//Primary Key
+		if(isChanged){
+			String primaryKey = null;
+			String dropKey = "ALTER TABLE "+catalogName+" DROP CONSTRAINT IF EXISTS "+catalogName+"_pkey";
+			log.warn("DROP_KEY: "+dropKey);
+			if(isPrimaryKey){
+				em.createNativeQuery(dropKey).executeUpdate();
+				primaryKey = "ALTER TABLE "+catalogName+" ADD PRIMARY KEY("+columnName+")";
+			}else{
+				primaryKey = "ALTER TABLE "+catalogName+" DROP CONSTRAINT IF EXISTS "+catalogName+"_pkey";
+				em.createNativeQuery(primaryKey).executeUpdate();
+			}
+			logger.debug("PRIMARY KEY QUERY - "+primaryKey);
+		}
+	}
+
+	private void updateNullability(String catalogName, String columnName,boolean nullable, boolean isChanged) {
+		String ALTER_TABLE = "ALTER TABLE "+catalogName;
+		//Nullability
+		if(isChanged){
+			String nullableQuery = null;
+			if(nullable){
+				nullableQuery =  ALTER_TABLE+" ALTER COLUMN "+columnName+" SET NOT NULL";
+			}else{
+				nullableQuery= ALTER_TABLE+" ALTER COLUMN "+columnName+" SET NULL";
+			}
+			logger.debug("NULLABLE QUERY = "+nullableQuery);
+			em.createNativeQuery(nullableQuery).executeUpdate();
+		}
+	}
+
+
+	private boolean isChanged(CatalogColumn col, CatalogColumnModel model) {
+		boolean isChanged = false;
+		if(!col.getName().equals(model.getName())){
+			log.debug("["+col.getName()+"] Column Name changed from '"+model.getName()+"' -to- "+col.getName());
+			isChanged = true;
+		}
+		
+		if(col.getType()!= model.getType()){
+			log.debug("["+col.getName()+"] Column Type changed from '"+model.getType()+"' -to- "+col.getType());
+			isChanged = true;
+		}
+		
+		if(col.isNullable()!=model.isNullable()){
+			log.debug("["+col.getName()+"] Column Nullability changed from '"+model.isNullable()+"' -to- "+col.isNullable());
+			isChanged = true;
+		}
+		
+		if(col.isPrimaryKey()!= model.isPrimaryKey()){
+			log.debug("["+col.getName()+"] Primary Key Field from "+model.isPrimaryKey()+" -to "+col.isPrimaryKey());
+			isChanged = true;
+		}
+		
+		if(col.isAutoIncrement()!=model.isAutoIncrement()){
+			log.debug("["+col.getName()+"] Autoincrement changed from '"+model.isAutoIncrement()+"' -to- "+col.isAutoIncrement());
+			isChanged = true;
+		}
+		
+		if(col.getSize()!=model.getSize()){
+			log.debug("["+col.getName()+"] Column Size changed from '"+model.getSize()+"' -to- "+col.getSize());
+			isChanged = true;
+		}
+		
+		return isChanged;
 	}
 
 	public List<Object[]> getData(String tableName,
@@ -342,4 +505,25 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 
 		return catalogs;
 	}
+
+	public boolean checkExists(String catalogName) {
+		SessionImpl sessionImp = (SessionImpl) em.getDelegate();
+		boolean exists = false;
+		
+		if(!catalogName.toLowerCase().startsWith("ext_")){
+			catalogName = "EXT_"+catalogName;
+		}
+		
+		try{
+			DatabaseMetaData metadata = sessionImp.connection().getMetaData();
+			ResultSet rs = metadata.getTables(null, null, catalogName.toLowerCase(), new String[]{"TABLE"});
+			exists = rs.next();
+			rs.close();
+		}catch(Exception e){
+			log.warn("Catalog '"+catalogName+"' does not exist: ["+e.getMessage()+"].");
+			//Does not exist
+		}
+		return exists;
+	}
+
 }

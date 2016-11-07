@@ -123,6 +123,9 @@ public class UploadServlet extends UploadAction {
 		case IMPORTGRIDDATA:
 			executor = new ImportCSVDataExecutor();
 			break;
+		case IMPORTCSV:
+			executor = new AdvancedCSVImporterExecutor();
+			break;
 		}
 		
 		if(executor==null){

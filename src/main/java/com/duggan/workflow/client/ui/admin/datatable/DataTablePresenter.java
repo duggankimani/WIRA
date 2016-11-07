@@ -1,10 +1,14 @@
 package com.duggan.workflow.client.ui.admin.datatable;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
@@ -17,8 +21,8 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
@@ -39,6 +43,7 @@ import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -52,7 +57,6 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class DataTablePresenter
 		extends
@@ -78,6 +82,8 @@ public class DataTablePresenter
 		HasClickHandlers getEditLink();
 
 		HasClickHandlers getDeleteLink();
+		
+		Uploader getUploader();
 	}
 
 	public static final String DATATABLES_CAN_VIEW_DATATABLES = "DATATABLES_CAN_VIEW_DATATABLES";
@@ -182,7 +188,20 @@ public class DataTablePresenter
 				deleteCatalog((Catalog) selectedModel);
 			}
 		});
-
+		
+		getView().getUploader().addOnFinishUploaderHandler(new OnFinishUploaderHandler() {
+			
+			@Override
+			public void onFinish(IUploader uploader) {
+				String catalogRefId = uploader.getServerMessage().getMessage();
+				if(catalogRefId==null || catalogRefId.equals("null")){
+					Window.alert("Generation of table for file '"+uploader.getFileInput().getFilename()+"' failed");
+				}else{
+					showDataPopup(catalogRefId);
+				}
+				
+			}
+		});
 	}
 
 	protected void showPopup(Catalog catalog) {
@@ -226,7 +245,7 @@ public class DataTablePresenter
 				});
 
 		AppManager.showPopUp(
-				(catalog == null || catalog.getId() == null) ? "Create Table"
+				(catalog == null || catalog.getId() == null) ? "Create Table "
 						: "Edit Table", view, "create-data-table-popup",
 				new OptionControl() {
 
@@ -244,6 +263,25 @@ public class DataTablePresenter
 					}
 
 				}, "Save", "Cancel");
+	}
+	
+	private void showDataPopup(final String catalogRefId) {
+		fireEvent(new ProcessingEvent());
+		MultiRequestAction action  = new MultiRequestAction();
+		action.addRequest(new GetCatalogsRequest(catalogRefId));
+		action.addRequest(new GetDataRequest(catalogRefId));
+		
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i=0;
+						GetCatalogsResponse getCats = (GetCatalogsResponse) aResponse.get(i++);
+						GetDataResponse getData = (GetDataResponse) aResponse.get(i++);
+						showDataPopup(getCats.getCatalogs().get(0), getData.getLines());
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
 	}
 
 	private void showDataPopup(final Catalog catalog) {
@@ -267,7 +305,7 @@ public class DataTablePresenter
 			actions = new String[] { "Close" };
 		}
 
-		AppManager.showPopUp("Data View", view, "create-data-table-popup",
+		AppManager.showPopUp("Data View -"+catalog.getDescription(), view, "create-data-table-popup",
 				new OptionControl() {
 
 					@Override
@@ -407,6 +445,7 @@ public class DataTablePresenter
 									ArrayList<Catalog> catalogs = ((GetCatalogsResponse) aResponse
 											.get(1)).getCatalogs();
 									getView().bindCatalogs(catalogs);
+									selectItem(null, false);
 									hide();
 								}
 							});
