@@ -53,7 +53,9 @@ public class CreateDataView extends Composite {
 				DataModel model = new DataModel();
 				model.setId(c.getId());
 
+//				int i=0;
 				for (Value val : c.getValues().values()) {
+//					Window.alert("Key="+val.getKey()+" : value="+val.getValue());
 					model.set(val.getKey(), val.getValue());
 				}
 				models.add(model);

@@ -15,9 +15,8 @@ public class TestABC {
 		
 		String month= calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
 		int year= calendar.get(Calendar.YEAR);
-		System.out.println("Month "+month+"/ "+year);
-	
+		//System.out.println("Month "+month+"/ "+year);
 		
-		
+		System.out.println(false==false);
 	}
 }

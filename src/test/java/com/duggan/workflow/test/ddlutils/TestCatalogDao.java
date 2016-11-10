@@ -40,6 +40,16 @@ public class TestCatalogDao {
 		DB.beginTransaction();
 	}
 
+	@Test
+	public void getTableData(){
+		Long catalogId = 50L;
+		List<DocumentLine> data = CatalogDaoHelper.getTableData(catalogId, null);
+	
+		for(DocumentLine line: data){
+			logger.info("Line -> "+line);
+		}
+	}
+
 	@Ignore
 	public void loadViews() {
 		DB.getCatalogDao().getViews();
@@ -125,7 +135,7 @@ public class TestCatalogDao {
 
 	}
 
-	@Test
+	@Ignore
 	public void testGenerateCatalogue() throws IOException, SAXException, ParserConfigurationException,
 			FactoryConfigurationError, DocumentException {
 		String refId = "KXcBJKEAIJKJxPsy";

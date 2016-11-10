@@ -259,7 +259,8 @@ public class CatalogDaoHelper {
 		StringBuffer fieldNames = new StringBuffer();
 		int size = catalog.getColumns().size();
 		int i = 0;
-		for (CatalogColumnModel col : catalog.getColumns()) {
+		List<CatalogColumnModel> columns = new ArrayList<>(catalog.getColumns());
+		for (CatalogColumnModel col : columns) {
 			fieldNames.append("" + col.getName() + "");
 			if (i + 1 < size) {
 				fieldNames.append(",");
@@ -272,9 +273,8 @@ public class CatalogDaoHelper {
 			++i;
 		}
 
-		List<CatalogColumnModel> columns = new ArrayList<>(catalog.getColumns());
+		
 		List<Object[]> row = dao.getData(catalogName, fieldNames.toString(), searchTerm, searchFields);
-
 		List<DocumentLine> lines = new ArrayList<>();
 		for (Object[] line : row) {
 
@@ -283,10 +283,10 @@ public class CatalogDaoHelper {
 			for (Object v : line) {
 				CatalogColumnModel column = columns.get(i);
 				Value value = getValue(column, v);
-				if (value == null) {
-					continue;
+				if (value != null) {
+					docLine.addValue(column.getName(), value);
 				}
-				docLine.addValue(column.getName(), value);
+				
 				++i;
 			}
 			lines.add(docLine);
