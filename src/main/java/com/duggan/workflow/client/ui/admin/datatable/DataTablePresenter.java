@@ -125,6 +125,8 @@ public class DataTablePresenter
 
 	private Object selectedModel;
 
+	private String searchTerm;
+
 	@Inject
 	public DataTablePresenter(final EventBus eventBus,
 			final IDataTableView view, IDataTableProxy proxy) {
@@ -328,7 +330,9 @@ public class DataTablePresenter
 		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new InsertDataRequest(catalog.getId(), data));
-		action.addRequest(new GetCatalogsRequest());
+		GetCatalogsRequest aGetCatsReq = new GetCatalogsRequest();
+		aGetCatsReq.setSearchTerm(searchTerm);
+		action.addRequest(aGetCatsReq);
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -355,7 +359,7 @@ public class DataTablePresenter
 	}
 
 	private void loadData() {
-		loadData(null);
+		loadData(searchTerm);
 	}
 
 	private void loadData(String searchTerm) {
@@ -460,7 +464,8 @@ public class DataTablePresenter
 	@Override
 	public void onSearch(SearchEvent event) {
 		if (isVisible()) {
-			loadData(event.getFilter().getPhrase());
+			this.searchTerm = event.getFilter().getPhrase();
+			loadData(this.searchTerm);
 		}
 	}
 

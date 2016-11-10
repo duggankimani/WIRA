@@ -111,6 +111,13 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	
 
 	public void updateTable(Catalog catalog) {
+		CatalogModel model = getById(CatalogModel.class, catalog.getId());
+		if(!catalog.getName().toLowerCase().equals(model.getName().toLowerCase())){
+			String changeName = "ALTER TABLE ext_"+model.getName()+" RENAME TO ext_"+catalog.getName();
+			logger.debug("RENAME TABLE - "+changeName);
+			em.createNativeQuery(changeName).executeUpdate();
+		}
+				
 		List<CatalogColumn> columns = catalog.getColumns();
 		for(CatalogColumn col: columns){
 			if(col.getId()==null){
@@ -137,8 +144,11 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		String ALTER_TABLE = "ALTER TABLE "+catalogName;
 		
 		String columnName="\""+col.getName()+"\"";
+		if(!model.getName().equals(col.getName())){
+			renameColumn(catalogName, model.getName(), col.getName());
+		}
 		
-		//ADD Column
+		//ALTER Column TYPE
 		StringBuffer alter = new StringBuffer(ALTER_TABLE+" ALTER COLUMN "+columnName+" TYPE "+col.getType().name());
 		if(col.getSize()!=null && col.getSize()!=0){
 			alter.append("("+col.getSize()+")");
@@ -146,9 +156,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		logger.debug("ALTER COLUMN: "+alter.toString());
 		em.createNativeQuery(alter.toString()).executeUpdate();
 		
-		if(!model.getName().equals(col.getName())){
-			renameColumn(catalogName, model.getName(), col.getName());
-		}
+		
 		
 		updateNullability(catalogName, columnName,col.isNullable(), col.isNullable()!=model.isNullable());
 		updatePrimaryKey(catalogName, columnName,col.isPrimaryKey(), col.isPrimaryKey()!=model.isPrimaryKey());
@@ -181,7 +189,15 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		em.createNativeQuery(alter.toString()).executeUpdate();
 	}
 	
+	/**
+	 * 
+	 * @param catalogName
+	 * @param previousName
+	 * @param newName
+	 */
 	private void renameColumn(String catalogName, String previousName, String newName) {
+		previousName = "\""+previousName+"\"";
+		newName = "\""+newName+"\"";
 		String rename = "ALTER TABLE "+catalogName+" RENAME "+previousName+" TO "+newName;
 		em.createNativeQuery(rename).executeUpdate();
 	}
@@ -247,12 +263,16 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			isChanged = true;
 		}
 		
-		if(col.getSize()!=model.getSize()){
-			log.debug("["+col.getName()+"] Column Size changed from '"+model.getSize()+"' -to- "+col.getSize());
+		if(coalesce(col.getSize(),0)!=coalesce(model.getSize(),0)){
+			log.debug("["+col.getName()+"] Column Size changed from "+model.getSize()+" -to- "+col.getSize());
 			isChanged = true;
 		}
 		
 		return isChanged;
+	}
+
+	private int coalesce(Integer val, int valueIfNull) {
+		return val==null? valueIfNull: val.intValue();
 	}
 
 	public List<Object[]> getData(String tableName,

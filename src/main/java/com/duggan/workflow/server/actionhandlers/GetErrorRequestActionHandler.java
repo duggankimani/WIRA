@@ -38,7 +38,6 @@ public class GetErrorRequestActionHandler extends
 			result.setStack("");
 			result.setErrorDate(new Date());
 		}
-		result.setErrorCode(0);
 	}
 	
 	@Override

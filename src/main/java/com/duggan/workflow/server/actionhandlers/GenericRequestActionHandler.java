@@ -10,6 +10,7 @@ import com.duggan.workflow.shared.responses.GenericResponse;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.models.ErrorCodes;
 import com.wira.commons.shared.response.BaseResponse;
 
 public class GenericRequestActionHandler extends
@@ -40,11 +41,11 @@ public class GenericRequestActionHandler extends
 			String errorMessage = integration.execute(vals);
 			if(errorMessage!=null && !errorMessage.isEmpty()){
 				actionResult.setErrorMessage(errorMessage);
-				actionResult.setErrorCode(100);
+				actionResult.setErrorCode(ErrorCodes.INTEGRATION_SMS.ordinal());
 			}
 			
 		}catch(Exception e){
-			actionResult.setErrorCode(100);
+			actionResult.setErrorCode(ErrorCodes.INTEGRATION_SMS.ordinal());
 			e.printStackTrace();
 			actionResult.setErrorMessage(e.getMessage());
 		}

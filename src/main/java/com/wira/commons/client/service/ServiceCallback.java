@@ -5,7 +5,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 
 	@Override
-	public void onFailure(Throwable caught) {	
+	public void onFailure(Throwable caught) {
+		
 	}
 
 	@Override
