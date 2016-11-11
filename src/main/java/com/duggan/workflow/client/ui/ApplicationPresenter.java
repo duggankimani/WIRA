@@ -83,6 +83,8 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 
 	@Inject IFrameDataPresenter presenter;
 	
+	static final String VERSION = "V1.0.0-1";
+	
 	@Inject
 	public ApplicationPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
