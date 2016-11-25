@@ -6,6 +6,7 @@ import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.google.gwt.dom.client.AnchorElement;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -29,6 +30,8 @@ public class ProcessView extends ViewImpl implements
 	
 	@UiField Image imgProcess;
 
+	@UiField IFrameElement guvnorIFrame;
+	
 	private String actionPreview;
 	
 	@UiField AnchorElement aDownloadBPN;
@@ -41,7 +44,7 @@ public class ProcessView extends ViewImpl implements
 	public ProcessView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		imgProcess.setAltText("Could not load process image. Kindly ensure the svg image for this process has been uploaded");
-		
+		guvnorIFrame.setSrc("http://localhost:9090/kie-wb?standalone=&path=default://master@jbpm-playground/Evaluation/src/main/resources/evaluation.bpmn2");
 		bindSlot(ProcessPresenter.TABLE_SLOT, processStepsPanel); 
 	}
 

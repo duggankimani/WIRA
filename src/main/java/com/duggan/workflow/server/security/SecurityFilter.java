@@ -72,10 +72,11 @@ public class SecurityFilter implements Filter {
 			returnError(request, response, "Invalid request cookie found");
 		}else {
 			logger.debug("#Security Filter - Authentication success! - forwarding request");
+			((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:9090/kie-wb");
 			chain.doFilter(request, response);
 		}
 	}
-	
+
 	private String getContextPath(HttpServletRequest request) {
 		//String contextPath = request.getServletContext().getContextPath();
 		String contextPath = request.getContextPath();

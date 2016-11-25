@@ -12,6 +12,7 @@
 				<a ui:field="aDownloadBPN" target="_blank" class="btn btn-default">Download BPMN <i class="icon-download"></i></a>
 				<a ui:field="aDownloadIMG" target="_blank" class="btn btn-default">View Image <i class="icon-download"></i></a>
 			</div>
+			<iframe ui:field="guvnorIFrame" width="100%" height="600px"></iframe>
 			<g:Image ui:field="imgProcess" />
 			
 			<g:HTMLPanel styleName="row-fluid hide" ui:field="processConfigPanel">
