@@ -239,7 +239,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		Map<String, Object> params = new HashMap<String, Object>();
 		if(searchTerm!=null){
 			query.append(" and lower(t.name) like :searchTerm ");
-			params.put("searchTerm", "%"+searchTerm+"%");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
 		}
 		
 		query.append(" order by name");
