@@ -54,8 +54,16 @@ public class ExecuteTriggerActionHandler extends
 		
 		ProcessDaoImpl dao = DB.getProcessDao();
 		if(canExecute){
-			ADTrigger trigger = dao.getTrigger(action.getTriggerName());
-			new MVELExecutor().execute(trigger, doc);
+			log.debug("Executing trigger names "+action.getTriggerName());
+			String[] triggerNames = action.getTriggerName().split(";");
+			for(String triggerName: triggerNames){
+				log.debug("-> Executing trigger '"+triggerName+"'");
+				if(triggerName!=null && !triggerName.trim().isEmpty()){
+					ADTrigger trigger = dao.getTrigger(triggerName);
+					new MVELExecutor().execute(trigger, doc);
+				}
+			}
+			
 			
 		}
 		
