@@ -44,7 +44,7 @@ public class RestClient {
 	}
 	
 	public String executeGet(String uri, Object request) {
-		WebResource resource = jclient.resource(uri);
+		WebResource resource = jclient.resource(serverUrl+uri);
 
 		ClientResponse clientResponse = null;
 
@@ -61,7 +61,7 @@ public class RestClient {
 			throw new RuntimeException(e);
 		}
 
-		if (clientResponse.getStatus() != ClientResponse.Status.OK.ordinal()) {
+		if (clientResponse.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
 			throw new RuntimeException("Unexpected HTTP Status ["+clientResponse.getStatus()+"]");
 		}
 

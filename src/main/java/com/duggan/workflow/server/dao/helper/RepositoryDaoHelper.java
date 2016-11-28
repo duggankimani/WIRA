@@ -2,6 +2,12 @@ package com.duggan.workflow.server.dao.helper;
 
 public class RepositoryDaoHelper {
 
+	/**
+	 * Refs: 
+	 * http://mswiderski.blogspot.co.ke/2015/09/unified-kie-execution-server-part-2.html
+	 * 
+	 * 
+	 */
 	public void getRepositories(){
 		RestClient client = RestClient.getInstance();
 		String out = client.executeGet("/repositories", null);
