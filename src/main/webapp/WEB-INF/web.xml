@@ -51,7 +51,7 @@
 
 	<filter-mapping>
 		<filter-name>guiceFilter</filter-name>
-		<url-pattern>/dispatch/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
 	<!-- LOGIN SERVLET (PASSWORD/USERNAME) -->
@@ -160,7 +160,7 @@
 	<servlet-mapping>
 	    <servlet-name>getReport</servlet-name>
 	    <url-pattern>/getreport</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 	
 	<!-- PIONEER MPESA INTEGRATION -->
 	<servlet>

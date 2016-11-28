@@ -6,19 +6,19 @@ import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.PopupType;
 import com.duggan.workflow.client.ui.admin.outputdocs.save.SaveOutPutDocsPresenter;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
-import com.duggan.workflow.client.ui.component.HTMLEditor;
 import com.duggan.workflow.client.ui.component.TinyMceHTMLEditor;
-import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
-import com.duggan.workflow.client.ui.events.EditOutputDocEvent.EditOutputDocHandler;
-import com.duggan.workflow.client.ui.events.SearchEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
+import com.duggan.workflow.shared.events.EditOutputDocEvent;
+import com.duggan.workflow.shared.events.EditOutputDocEvent.EditOutputDocHandler;
+import com.duggan.workflow.shared.events.SearchEvent;
+import com.duggan.workflow.shared.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.requests.GetOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
@@ -42,7 +42,6 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class OutPutDocsPresenter extends
 		Presenter<OutPutDocsPresenter.MyView, OutPutDocsPresenter.MyProxy>

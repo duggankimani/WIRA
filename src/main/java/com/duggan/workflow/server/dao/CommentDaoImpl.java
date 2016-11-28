@@ -27,7 +27,8 @@ public class CommentDaoImpl extends BaseDaoImpl{
 
 	public CommentModel getComment(Long id) {
 
-		List lst = em.createQuery("FROM CommentModel n where id= :id")
+		List lst = getEntityManager()
+				.createQuery("FROM CommentModel n where id= :id")
 				.setParameter("id", id).getResultList();
 
 		if (lst.size() > 0) {
@@ -44,7 +45,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 			comment.setUpdated(new Date());
 			comment.setUpdatedBy(SessionHelper.getCurrentUser().getUserId());
 		}
-		em.persist(comment);
+		getEntityManager().persist(comment);
 		return comment;
 	}
 
@@ -123,7 +124,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 	}
 
 	public void delete(Long id) {
-		em.remove(getComment(id));
+		getEntityManager().remove(getComment(id));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -133,8 +134,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 			return getAllComments();
 		}
 
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"FROM CommentModel n where n.documentId=:documentId order by created desc")
 				.setParameter("documentId", documentId).getResultList();
 
@@ -147,8 +147,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 			return getAllComments();
 		}
 
-		return em
-				.createQuery(
+		return getEntityManager().createQuery(
 						"FROM CommentModel n where n.docRefId=:docRefId order by created desc")
 				.setParameter("docRefId", docRefId).getResultList();
 
@@ -184,7 +183,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 						+ "( potowners.entity_id = ? or potowners.entity_id in (?) )) "
 						+ "and c.created>? " + " order by c.created desc");
 
-		Query query = em.createNativeQuery(hql.toString())
+		Query query = getEntityManager().createNativeQuery(hql.toString())
 				.setParameter(1, userId).setParameter(2, userId)
 				.setParameter(3, userId).setParameter(4, groupsIds)
 				.setParameter(5, DateUtils.addDays(new Date(), -30));
@@ -202,8 +201,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 		}
 
 		@SuppressWarnings("unchecked")
-		List<CommentModel> comments = em
-				.createQuery("FROM CommentModel where id in (:ids)")
+		List<CommentModel> comments = getEntityManager().createQuery("FROM CommentModel where id in (:ids)")
 				.setParameter("ids", ids).getResultList();
 
 		return comments;
@@ -219,7 +217,8 @@ public class CommentDaoImpl extends BaseDaoImpl{
 				+ "(potowners.task_id=t.id) "
 				+ "where t.archived = 0 and d.id=:documentId";
 
-		Query query = em.createNativeQuery(sql).setParameter("documentId", documentId);
+		Query query = getEntityManager().createNativeQuery(sql).setParameter(
+				"documentId", documentId);
 		List<String> usersIds = query.getResultList();
 
 		List<HTUser> users = new ArrayList<>();
@@ -238,7 +237,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 		if(!currentUser.getUserId().equals(createdBy)){
 			users.add(new UserDaoHelper().getUser(createdBy));
 		}
-		
+
 		return users;
 
 	}

@@ -22,6 +22,11 @@ public class GetAlertCountActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
+		String userId = action.getUserId();
+		if(userId==null){
+			userId = SessionHelper.getCurrentUser().getUserId();
+		}
+
 		GetAlertCountResult countResult = (GetAlertCountResult)actionResult;
 		JBPMHelper.get().getCount(action.getProcessRefId(),SessionHelper.getCurrentUser().getUserId(), countResult.getCounts());
 		NotificationDaoHelper.getCounts(action.getProcessRefId(),countResult.getCounts());

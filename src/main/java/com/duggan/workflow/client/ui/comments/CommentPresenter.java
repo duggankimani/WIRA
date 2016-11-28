@@ -2,8 +2,10 @@ package com.duggan.workflow.client.ui.comments;
 
 import java.util.Date;
 
-import com.duggan.workflow.client.ui.events.ActivitiesLoadEvent;
+import com.duggan.workflow.client.service.TaskServiceCallback;
+
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.ActivitiesLoadEvent;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.requests.GetActivitiesRequest;
@@ -14,14 +16,13 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.wira.commons.shared.models.HTUser;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class CommentPresenter extends PresenterWidget<CommentPresenter.ICommentView> {
 

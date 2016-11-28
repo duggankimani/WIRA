@@ -8,7 +8,7 @@ import com.duggan.workflow.shared.model.RequestInfoDto;
  */
 public interface Executor extends Service {
 
-	public Long scheduleRequest(CommandCodes commandName, CommandContext ctx);
+	public Long scheduleRequest(CommandCode commandName, CommandContext ctx);
 	
 	public Long updateRequest(RequestInfoDto dto, boolean resend);
 

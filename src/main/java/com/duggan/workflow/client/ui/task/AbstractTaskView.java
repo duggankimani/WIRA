@@ -1,6 +1,5 @@
 package com.duggan.workflow.client.ui.task;
 
-//import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DATEGROUP_SLOT;
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.DOCUMENT_SLOT;
 import static com.duggan.workflow.client.ui.task.AbstractTaskPresenter.FILTER_SLOT;
 
@@ -9,13 +8,11 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.BulletListPanel;
 import com.duggan.workflow.client.ui.component.Checkbox;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.task.DraftsPresenter.IDraftsView;
 import com.duggan.workflow.client.ui.task.ParticipatedPresenter.IParticipatedView;
 import com.duggan.workflow.client.ui.task.SuspendedTaskPresenter.ISuspendedView;
@@ -23,6 +20,7 @@ import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.DocumentSelectionEvent;
 import com.duggan.workflow.shared.model.Column;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -32,6 +30,7 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Priority;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Schema;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
@@ -48,7 +47,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;

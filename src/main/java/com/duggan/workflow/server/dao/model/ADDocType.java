@@ -76,7 +76,7 @@ public class ADDocType extends PO {
 	@XmlAttribute
 	private String subjectFormat;
 	
-	@ManyToOne
+	@ManyToOne(optional=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="categoryId")
 	private ADProcessCategory category;
 	

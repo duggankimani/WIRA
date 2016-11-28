@@ -17,6 +17,7 @@ import javax.transaction.SystemException;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.jbpm.executor.api.Command;
 import org.jbpm.executor.api.CommandCallback;
+import org.jbpm.executor.api.CommandCode;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.ExecutionResults;
@@ -46,7 +47,11 @@ public class ExecutorUtil {
 			logger.log(Level.INFO, " >> Command Name to execute = {0}",
 					requestInfo.getCommandName());
 
-			Command cmd = this.findCommand(requestInfo.getCommandName());
+			String className=CommandCodes.class.getName();
+			if(requestInfo.getCommandClass()!=null){
+				className = requestInfo.getCommandClass();
+			}
+			Command cmd = this.findCommand(className,requestInfo.getCommandName());
 
 			CommandContext ctx = null;
 			byte[] reqData = requestInfo.getRequestData();
@@ -158,16 +163,20 @@ public class ExecutorUtil {
 		}
 	}
 
-	private Command findCommand(CommandCodes name) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Command findCommand(String enumClass,String commandName) {
 
 		Class<?> handler = null;
 		try {
-			handler = name.getHandlerClass();
+
+			Class clazz = Class.forName(enumClass);
+			CommandCode code = (CommandCode)Enum.valueOf(clazz, commandName);
+			handler = code.getHandlerClass();
 			return (Command) handler.newInstance();
 		} catch (Exception e) {
 
 			throw new IllegalArgumentException(
-					"Unknown Command implemenation with name '" + name + "'");
+					"Unknown Command implemenation with name '" + enumClass+"."+commandName + "'");
 		}
 
 	}

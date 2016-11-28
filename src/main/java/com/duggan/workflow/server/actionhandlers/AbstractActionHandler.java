@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.ErrorCode;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.guice.UserTransactionProvider;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -41,13 +41,17 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 
 	@Inject	Provider<HttpServletRequest> request;
 	@Inject	Provider<HttpServletResponse> response;
+	@Inject UserTransactionProvider userTrx;
 	
 	@Override
 	public final B execute(A action, ExecutionContext execContext)
 			throws ActionException {
 		@SuppressWarnings("unchecked")
 		B result = (B) action.createDefaultActionResponse();
+		log.warn("AbstractActionHandler on entry Trx with status "+DB.getTrxStatus());
+		
 		log.debug(action.getRequestCode()+": Executing command " + action.getClass().getName());
+		
 		if(action.isEmbedded()){
 			/*Embedded calls are calls executed in one command
 			 * to execute another on the server side. As such, a transaction and
@@ -59,8 +63,7 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 		}
 		
 		
-		
-		//NEW SERVER REQUEST
+		//WIRA - NEW SERVER REQUEST
 		if(SessionHelper.getHttpRequest()!=null){
 			//embedded call -- needed when executing multiple commands in one call
 			//not usable when working with servlets
@@ -80,7 +83,9 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 				DB.beginTransaction();
 			}
 			
+			
 			execute(action, result, execContext);
+			log.warn("AbstractActionHandler on after execute Trx with status "+userTrx.get().getStatus());
 			
 			DB.commitTransaction();
 		} catch (Exception e) {	
@@ -89,8 +94,10 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			hasError = true;
 			throwable = e;
 		}finally {
+			log.debug(action.getRequestCode()+": Closing & Finalizing command " + action.getClass().getName());
 			DB.closeSession();		
 			logErrors(hasError, throwable, result);
+			
 			SessionHelper.afterRequest();
 		}
 		

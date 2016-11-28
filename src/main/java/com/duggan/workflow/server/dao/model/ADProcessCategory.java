@@ -4,14 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADProcessCategory extends PO{
 
 
@@ -38,6 +42,7 @@ public class ADProcessCategory extends PO{
 	@XmlTransient
 	@OneToMany
 	private Set<CatalogModel> catalogs = new HashSet<>(); 
+
 
 	public String getName() {
 		return name;

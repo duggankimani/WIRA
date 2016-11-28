@@ -4,8 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class ADKeyValuePair extends PO {
 
 	private static final long serialVersionUID = -5161552354221706835L;

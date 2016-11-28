@@ -3,17 +3,18 @@ package com.duggan.workflow.client.ui.task;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.StringUtils;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
+import com.duggan.workflow.shared.events.ProcessingEvent;
+import com.duggan.workflow.shared.events.SearchEvent;
+import com.duggan.workflow.shared.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessLog;
@@ -46,7 +47,6 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.wira.commons.shared.models.HTUser;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class CaseRegistryPresenter
 		extends

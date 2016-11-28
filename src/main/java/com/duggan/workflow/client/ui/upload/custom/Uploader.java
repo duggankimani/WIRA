@@ -14,9 +14,9 @@ import gwtupload.client.SingleUploader;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
-import com.duggan.workflow.client.ui.events.UploadEndedEvent;
-import com.duggan.workflow.client.ui.events.UploadStartedEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.UploadEndedEvent;
+import com.duggan.workflow.shared.events.UploadStartedEvent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.util;
 
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
+import com.duggan.workflow.shared.events.ContextLoadedEvent;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.core.client.GWT;

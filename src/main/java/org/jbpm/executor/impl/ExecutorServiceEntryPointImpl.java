@@ -7,7 +7,7 @@ package org.jbpm.executor.impl;
 import java.util.List;
 
 import org.jbpm.executor.ExecutorServiceEntryPoint;
-import org.jbpm.executor.api.CommandCodes;
+import org.jbpm.executor.api.CommandCode;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.Executor;
 import org.jbpm.executor.api.ExecutorQueryService;
@@ -89,7 +89,7 @@ public class ExecutorServiceEntryPointImpl implements ExecutorServiceEntryPoint 
         return adminService.clearAllErrors();
     }
 
-    public synchronized Long scheduleRequest(CommandCodes commandName, CommandContext ctx) {
+    public synchronized Long scheduleRequest(CommandCode commandName, CommandContext ctx) {
     	assert executor!=null;
     	assert commandName!=null;
     	assert ctx!=null;

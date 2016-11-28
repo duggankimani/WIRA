@@ -1,13 +1,8 @@
 package com.duggan.workflow.shared.responses;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.ProcessLog;
-import com.duggan.workflow.shared.model.TaskLog;
-import com.wira.commons.shared.models.HTUser;
-import com.wira.commons.shared.models.UserGroup;
-import com.wira.commons.shared.models.Version;
 import com.wira.commons.shared.response.BaseResponse;
 
 public class GetProcessInstancesResponse extends BaseResponse {

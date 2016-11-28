@@ -6,8 +6,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import xtension.workitems.SendMailWorkItemHandler;
-
 import com.duggan.workflow.server.ServerConstants;
 import com.wira.commons.shared.models.HTUser;
 

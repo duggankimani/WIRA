@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.filter;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.home.HomeView;
+import com.duggan.workflow.shared.events.SearchEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
@@ -16,8 +16,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;

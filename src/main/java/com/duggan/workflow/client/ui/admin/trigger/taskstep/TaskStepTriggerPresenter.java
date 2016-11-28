@@ -1,18 +1,18 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
-import com.duggan.workflow.client.ui.component.TextArea;
 import com.duggan.workflow.client.ui.component.TextField;
-import com.duggan.workflow.client.ui.events.EditTriggerEvent;
-import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
-import com.duggan.workflow.client.ui.events.LoadTriggersEvent;
-import com.duggan.workflow.client.ui.events.LoadTriggersEvent.LoadTriggersHandler;
+import com.duggan.workflow.shared.events.EditTriggerEvent;
+import com.duggan.workflow.shared.events.EditTriggerEvent.EditTriggerHandler;
+import com.duggan.workflow.shared.events.LoadTriggersEvent;
+import com.duggan.workflow.shared.events.LoadTriggersEvent.LoadTriggersHandler;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
@@ -33,7 +33,6 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class TaskStepTriggerPresenter extends
 		PresenterWidget<TaskStepTriggerPresenter.ITaskStepTriggerView> implements LoadTriggersHandler,

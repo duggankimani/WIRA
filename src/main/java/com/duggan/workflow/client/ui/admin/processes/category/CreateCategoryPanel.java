@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.processes.category;
 
 import java.util.ArrayList;
+import static com.duggan.workflow.client.ui.util.StringUtils.isNullOrEmpty;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
@@ -14,8 +15,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-
-import static com.duggan.workflow.client.ui.util.StringUtils.*;
 
 public class CreateCategoryPanel extends Composite {
 

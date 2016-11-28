@@ -22,6 +22,13 @@ public class BaseRequest<T extends BaseResponse> extends ActionImpl<T>{
 	*/
 	private boolean isEmbedded=false;
 	
+	@Override
+	public String getServiceName() {
+		String className = this.getClass().getName();
+		int namePos = className.lastIndexOf(".") + 1;
+		return "servlets/"+ActionImpl.DEFAULT_SERVICE_NAME + className.substring(namePos);
+	}
+	
 	public BaseResponse createDefaultActionResponse(){
 		return new BaseResponse();
 	}

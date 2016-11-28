@@ -2,12 +2,13 @@ package com.duggan.workflow.client.ui.profile;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent;
-import com.duggan.workflow.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
-import com.duggan.workflow.client.ui.events.LoadAlertsEvent;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.security.LoginGateKeeper;
 import com.duggan.workflow.client.util.AppContext;
+
+import com.duggan.workflow.shared.events.ContextLoadedEvent;
+import com.duggan.workflow.shared.events.ContextLoadedEvent.ContextLoadedHandler;
+import com.duggan.workflow.shared.events.LoadAlertsEvent;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;

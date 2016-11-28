@@ -29,7 +29,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 
 	public NotificationModel getNotification(Long id) {
 		
-		List lst = em.createQuery("FROM NotificationModel n where id= :id").setParameter("id", id).getResultList();
+		List lst = getEntityManager().createQuery("FROM NotificationModel n where id= :id").setParameter("id", id).getResultList();
 		
 		if(lst.size()>0){
 			return (NotificationModel)lst.get(0);
@@ -38,7 +38,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 	}
 
 	public NotificationModel saveOrUpdate(NotificationModel model) {
-		em.persist(model);
+		getEntityManager().persist(model);
 		return model;
 	}
 
@@ -151,7 +151,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 	}
 
 	public void delete(Long id) {
-		em.remove(getNotification(id));
+		getEntityManager().remove(getNotification(id));
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 	 */
 	public List getNotification(Long documentId, String owner) {
 
-		List models = em.createQuery("FROM NotificationModel n where documentId= :documentId " +
+		List models = getEntityManager().createQuery("FROM NotificationModel n where documentId= :documentId " +
 				"and notificationType=:notificationType and owner=:owner")
 				.setParameter("documentId", documentId)
 				.setParameter("notificationType", NotificationType.APPROVALREQUEST_OWNERNOTE)
@@ -217,7 +217,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 			notes.add(type);
 		}
 		
-		return em.createQuery("FROM NotificationModel n " +
+		return getEntityManager().createQuery("FROM NotificationModel n " +
 				"where n.documentId=:documentId " +
 				"and n.notificationType in (:notificationType)" +
 				"order by created desc")
@@ -241,7 +241,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 			notes.add(type);
 		}
 		
-		return em.createQuery("FROM NotificationModel n " +
+		return getEntityManager().createQuery("FROM NotificationModel n " +
 				"where n.docRefId=:docRefId " +
 				"and n.notificationType in (:notificationType)" +
 				"order by created desc")
@@ -290,7 +290,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 		"n.created>:thirtyDays"
 		 );
 		
-		Query query = em.createNativeQuery(hql.toString())
+		Query query = getEntityManager().createNativeQuery(hql.toString())
 				.setParameter(1, userId)
 				.setParameter(2, userId)
 				.setParameter(3, userId)
@@ -310,7 +310,7 @@ public class NotificationDaoImpl extends BaseDaoImpl{
 			return new ArrayList<>();
 		}
 		
-		return em.createQuery("FROM NotificationModel n " +
+		return getEntityManager().createQuery("FROM NotificationModel n " +
 				"where n.id in (:ids) "+		
 				"order by created desc")
 		.setParameter("ids", ids)

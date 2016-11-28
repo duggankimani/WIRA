@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.wira.commons.shared.response.BaseResponse;
 

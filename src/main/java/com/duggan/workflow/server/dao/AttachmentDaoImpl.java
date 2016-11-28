@@ -7,11 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.ColumnResult;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
-import org.drools.runtime.process.ProcessInstance;
 
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
@@ -21,7 +18,6 @@ import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.HTStatus;
-import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.model.TreeType;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.wira.commons.shared.models.HTUser;
@@ -35,7 +31,6 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 	public LocalAttachment getAttachmentById(long id) {
 		Object obj = em.createQuery("FROM LocalAttachment d where id= :id")
 				.setParameter("id", id).getSingleResult();
-
 		LocalAttachment attachment = null;
 
 		if (obj != null) {
@@ -120,7 +115,6 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 
 	public void deleteUserImage(String userId) {
 		String sql = "update localattachment set isActive=0 where imageUserId=?";
-
 		Query query = em.createNativeQuery(sql).setParameter(1, userId);
 		query.executeUpdate();
 	}
@@ -190,7 +184,7 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 				+ "(l.document.processInstanceId is not null "
 				+ "and l.document.processInstanceId in (:ids)) "
 				+ "or l.document.createdBy=:userId";
-		Query query = em.createQuery(sql).setParameter("ids", ids)
+		Query query = getEntityManager().createQuery(sql).setParameter("ids", ids)
 				.setParameter("userId", userId);
 
 		return getResultList(query);

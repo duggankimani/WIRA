@@ -21,6 +21,14 @@ import com.duggan.workflow.server.dao.hibernate.JsonType;
 import com.duggan.workflow.server.dao.model.PO;
 import com.sun.jersey.api.json.JSONUnmarshaller;
 
+
+/**
+ * No guice injection possible in these classes since initialization is performed manually 
+ * through the DaoFactory class
+ * 
+ * @author duggan
+ *
+ */
 public class BaseDaoImpl {
 
 	protected Logger logger = Logger.getLogger(getClass());

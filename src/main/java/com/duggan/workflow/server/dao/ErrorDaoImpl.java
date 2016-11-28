@@ -1,23 +1,16 @@
 package com.duggan.workflow.server.dao;
 
-import javax.persistence.EntityManager;
-
 import com.duggan.workflow.server.dao.model.ErrorLog;
 
-public class ErrorDaoImpl {
-	EntityManager em;
-	
-	public ErrorDaoImpl(EntityManager em){
-		this.em = em;
-	}
+public class ErrorDaoImpl extends BaseDaoImpl{
 	
 	public Long saveError(ErrorLog log){
-		em.persist(log);
-		
+		save(log);
 		return log.getId();
 	}
 	
 	public ErrorLog retrieveError(Long logId){
-		return em.find(ErrorLog.class, logId);
+		
+		return getEntityManager().find(ErrorLog.class, logId);
 	}
 }

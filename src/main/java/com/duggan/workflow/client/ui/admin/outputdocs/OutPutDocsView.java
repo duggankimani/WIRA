@@ -1,14 +1,14 @@
 package com.duggan.workflow.client.ui.admin.outputdocs;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
-import com.duggan.workflow.client.ui.events.EditOutputDocEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.EditOutputDocEvent;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;

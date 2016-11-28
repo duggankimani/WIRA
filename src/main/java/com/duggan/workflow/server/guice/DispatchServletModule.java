@@ -8,7 +8,7 @@ public class DispatchServletModule extends ServletModule {
 
 	@Override
 	public void configureServlets() {
-		serve("/" + ActionImpl.DEFAULT_SERVICE_NAME+"*")
-				.with(DispatchServiceImpl.class);
+		serve("/" + ActionImpl.DEFAULT_SERVICE_NAME + "*").with(
+				DispatchServiceImpl.class);
 	}
 }

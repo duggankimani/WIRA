@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -40,6 +39,7 @@ import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Value;
 
 /**
@@ -251,11 +251,15 @@ public class DocumentDaoHelper {
 		}
 		Document doc = new Document();
 		doc.setRefId(model.getRefId());
+		assert model.getId()!=null;
+		logger.debug("Document ID = "+model.getId());
+		
+		doc.setId(model.getId());
 		doc.setCreated(model.getCreated());
 		doc.setDescription(model.getDescription());
 		doc.setDocumentDate(model.getDocumentDate());
-		doc.setId(model.getId());
 		doc.setOwner(LoginHelper.get().getUser(model.getCreatedBy()));
+		logger.debug("Case Number = "+model.getId());
 		doc.setCaseNo(model.getSubject());
 		doc.setType(getType(model.getType()));
 		doc.setDocumentDate(model.getDocumentDate());
@@ -545,7 +549,6 @@ public class DocumentDaoHelper {
 			doc.setId(id);
 
 		}
-
 		return doc;
 	}
 

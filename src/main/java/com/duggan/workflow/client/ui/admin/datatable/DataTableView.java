@@ -10,9 +10,10 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.component.TableView;
-import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
+
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.EditCatalogDataEvent;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.catalog.CatalogType;
 import com.google.gwt.dom.client.Element;

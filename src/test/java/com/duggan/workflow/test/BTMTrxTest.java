@@ -1,20 +1,12 @@
 package com.duggan.workflow.test;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProviderImpl;
+import com.duggan.workflow.test.dao.AbstractDaoTest;
 
-public class BTMTrxTest {
-
-	@Before
-	public void setup(){
-		DBTrxProviderImpl.init();
-		DB.beginTransaction();
-	}
+public class BTMTrxTest extends AbstractDaoTest{
 	
 	@Test
 	public void persist(){
@@ -23,9 +15,4 @@ public class BTMTrxTest {
 		System.out.println(subject);
 	}
 	
-	@After
-	public void destroy(){
-		DB.rollback();
-		DBTrxProviderImpl.close();
-	}
 }

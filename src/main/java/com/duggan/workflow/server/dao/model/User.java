@@ -57,7 +57,6 @@ public class User extends PO {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(name = "UserGroup", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = { @JoinColumn(name = "groupid") })
-	// @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.PERSIST,org.hibernate.annotations.CascadeType.MERGE})
 	private Collection<Group> groups = new HashSet<>();
 
 	@ManyToMany

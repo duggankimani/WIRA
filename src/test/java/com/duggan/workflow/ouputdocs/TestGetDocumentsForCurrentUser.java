@@ -4,29 +4,33 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.duggan.workflow.server.dao.helper.AttachmentDaoHelper;
-import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.requests.MultiRequestAction;
+import com.duggan.workflow.test.dao.AbstractDaoTest;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
+import com.gwtplatform.dispatch.rpc.shared.ServiceException;
+import com.gwtplatform.dispatch.shared.ActionException;
 
-public class TestGetDocumentsForCurrentUser {
+public class TestGetDocumentsForCurrentUser extends AbstractDaoTest{
 
-	@Before
-	public void setup(){
-		DBTrxProviderImpl.init();
-		DB.beginTransaction();
-	}
+	@Inject ExecutionContext execContext;
 	
 	@Test
+	public void load() throws ActionException, ServiceException{
+		execContext.execute(new MultiRequestAction());
+	}
+	
+	@Ignore
 	public void getAttachmentsForUser(){
-		List<Attachment> list = AttachmentDaoHelper.getAllAttachments("Administrator",true);
+		//List<Attachment> list = AttachmentDaoHelper.getAttachmentsByDocRefId("tdFlpNLtZEVCW6yy");
+		List<Attachment> list = AttachmentDaoHelper.getAttachments(44l);
 		for(Attachment a: list){
 			System.err.println(a.getName());
 		}
@@ -40,9 +44,4 @@ public class TestGetDocumentsForCurrentUser {
 		Assert.assertSame(9, ids.size());
 	}
 	
-	@After
-	public void close(){
-		DB.commitTransaction();
-		DB.closeSession();
-	}
 }

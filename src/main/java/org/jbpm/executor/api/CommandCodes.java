@@ -4,7 +4,7 @@ import org.jbpm.executor.callback.SendEmailCallback;
 import org.jbpm.executor.commands.PrintOutCommand;
 import org.jbpm.executor.commands.SendMailCommand;
 
-public enum CommandCodes {
+public enum CommandCodes implements CommandCode{
 	
 	PrintOutCmd(PrintOutCommand.class),
 	SendEmailCommand(SendMailCommand.class),

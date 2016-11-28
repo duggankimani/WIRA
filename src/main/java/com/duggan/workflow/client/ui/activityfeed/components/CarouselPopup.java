@@ -3,10 +3,10 @@ package com.duggan.workflow.client.ui.activityfeed.components;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.component.BulletPanel;
 import com.duggan.workflow.client.ui.component.OLPanel;
-import com.duggan.workflow.client.ui.events.CloseCarouselEvent;
-import com.duggan.workflow.client.ui.events.CloseCarouselEvent.CloseCarouselHandler;
 import com.duggan.workflow.client.ui.images.ImageResources;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.CloseCarouselEvent;
+import com.duggan.workflow.shared.events.CloseCarouselEvent.CloseCarouselHandler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,7 +18,6 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
@@ -27,6 +26,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 public class CarouselPopup extends Composite implements CloseCarouselHandler {
 

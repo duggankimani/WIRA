@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,7 +33,7 @@ import com.duggan.workflow.shared.model.catalog.FieldSource;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso(CatalogColumnModel.class)
 @Entity
-@Table(name = "catalog")
+@Table(name = "catalog",indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class CatalogModel extends PO {
 
 	@XmlTransient

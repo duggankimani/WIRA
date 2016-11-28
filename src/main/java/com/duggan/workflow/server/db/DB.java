@@ -5,11 +5,13 @@ import java.sql.Connection;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import org.drools.runtime.Environment;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.internal.SessionImpl;
 import org.jbpm.bpmn2.xml.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,10 @@ import com.duggan.workflow.server.dao.PermissionDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserGroupDaoImpl;
+import com.duggan.workflow.server.guice.UserTransactionProvider;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 /**
  * <p>
@@ -61,6 +66,7 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
  * @author duggan
  *
  */
+// Statically Injected
 public class DB {
 
 	private static Logger log = LoggerFactory.getLogger(DB.class);
@@ -69,33 +75,41 @@ public class DB {
 
 	private static ThreadLocal<JDBCConnection> jdbcConnectionBot = new ThreadLocal<>();
 
-	private static DBImpl impl = null;
-	
+	private static Provider<EntityManager> emProvider;
+
+	private static Provider<EntityManagerFactory> emfProvider;
+
+	static UserTransactionProvider userTransactionProvider;
 
 	private DB() {
 	}
 	
-	public static DBImpl getImpl(){
-		if(impl==null){
-			String className= ApplicationSettings.getInstance().getProperty("db.impl.class");
-			if(className!=null){
-				try {
-					Class<?> implClass = Class.forName(className);
-					impl = (DBImpl)implClass.newInstance();
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
-					return null;
-				}
-			}else{
-				impl = new DBImpl();
-			}
-			
-		}
-		return impl;
+	@Inject
+	public static void init(Provider<EntityManagerFactory> emfProvider,Provider<EntityManager> emProvider,
+			UserTransactionProvider userTransactionProvider){
+		DB.emfProvider = emfProvider;
+		DB.emProvider = emProvider;
+		DB.userTransactionProvider = userTransactionProvider;
 	}
 
 	public static EntityManager getEntityManager() {
-		return getImpl().getEntityManager();
+		EntityManager em = emProvider.get();
+		Session session = (Session) em.getDelegate();
+		SessionImpl sessionImpl = (SessionImpl) session;
+		try {
+			
+			/**
+			 * A hack to fix LOB loading error : Cannot load LOB in autocommit mode - AttachmentDaoImpl
+			 */
+			boolean autoCommit = sessionImpl.connection().getAutoCommit();
+			if(autoCommit){
+				sessionImpl.connection().setAutoCommit(false);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return em;
 	}
 
 	/**
@@ -104,7 +118,7 @@ public class DB {
 	 * @return
 	 */
 	public static EntityManagerFactory getEntityManagerFactory() {
-		return getImpl().getEntityManagerFactory();
+		return emfProvider.get();
 	}
 
 	public static void closeSession() {
@@ -115,23 +129,9 @@ public class DB {
 			e.printStackTrace();
 		}
 
-		try {
-			if (!getImpl().isEntityManagerAvailable()) {
-				return;
-			}
-		} catch (Exception e) {
+		clearSession();
 
-			try {
-				rollback();
-			} catch (Exception ex) {
-			}
-
-			throw new RuntimeException(e);
-		} finally {
-			clearSession();
-
-			closeFactory();
-		}
+		closeFactory();
 
 	}
 
@@ -141,7 +141,6 @@ public class DB {
 	 * @throws HibernateException
 	 */
 	public static void clearSession() {
-		getImpl().clearSession();
 	}
 
 	/**
@@ -151,7 +150,12 @@ public class DB {
 	 * This is called whenever a new entity manager is requested
 	 */
 	public static void beginTransaction() {
-		getImpl().beginTransaction();
+		try {
+			// getUserTrx().begin();
+		} catch (Exception e) {
+
+		}
+		// getImpl().beginTransaction();
 	}
 
 	/**
@@ -160,18 +164,47 @@ public class DB {
 	 * A transaction is always generated whenever an entity manager is requested
 	 */
 	public static void commitTransaction() {
-		getImpl().commitTransaction();
+		try {
+			// if(entityManagers.get()!=null)
+
+			int status = DB.getUserTrx().getStatus();
+			/*
+			 * STATUS_ACTIVE 0 STATUS_COMMITTED 3 STATUS_COMMITTING 8
+			 * STATUS_MARKED_ROLLBACK 1 STATUS_NO_TRANSACTION 6 STATUS_PREPARED
+			 * 2 STATUS_PREPARING 7 STATUS_ROLLEDBACK 4 STATUS_ROLLING_BACK 9
+			 * STATUS_UNKNOWN 5
+			 */
+
+			// JBPM engine marks transactions for rollback everytime
+			// something goes wrong - it does'nt necessarily throw an exception
+			if (status == 1 || status == 4 || status == 9) {
+				log.warn("Rolling Back Trx with status " + status);
+				// getUserTrx().rollback();
+			} else {
+				log.debug("Commiting Back Trx with status " + status);
+				// getUserTrx().commit();
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		// getImpl().
 	}
 
 	/**
 	 * Rollback a {@link UserTransaction}
 	 */
 	public static void rollback() {
-		getImpl().rollback();
+		try {
+			// getUserTrx().rollback();
+		} catch (Exception e) {
+
+		}
 	}
 
 	public static UserTransaction getUserTrx() throws NamingException {
-		return getImpl().getUserTrx();
+		return userTransactionProvider.get();
 	}
 
 	private static DaoFactory factory() {
@@ -187,33 +220,33 @@ public class DB {
 	}
 
 	public static DocumentDaoImpl getDocumentDao() {
-		return factory().getDocumentDao(getEntityManager());
+		return factory().getDocumentDao();
 	}
 
 	public static ErrorDaoImpl getErrorDao() {
 
-		return factory().getErrorDao(getEntityManager());
+		return factory().getErrorDao();
 	}
 
 	public static NotificationDaoImpl getNotificationDao() {
 
-		return factory().getNotificationDao(getEntityManager());
+		return factory().getNotificationDao();
 	}
 
 	public static CommentDaoImpl getCommentDao() {
-		return factory().getCommentDao(getEntityManager());
+		return factory().getCommentDao();
 	}
 
 	public static ProcessDaoImpl getProcessDao() {
-		return factory().getProcessDao(getEntityManager());
+		return factory().getProcessDao();
 	}
 
 	public static UserGroupDaoImpl getUserGroupDao() {
-		return factory().getUserGroupDaoImpl(getEntityManager());
+		return factory().getUserGroupDaoImpl();
 	}
 
 	public static FormDaoImpl getFormDao() {
-		return factory().getFormDaoImpl(getEntityManager());
+		return factory().getFormDaoImpl();
 	}
 
 	private static void closeFactory() {
@@ -225,17 +258,31 @@ public class DB {
 
 	public static boolean hasActiveTrx() throws SystemException,
 			NamingException {
-		return getImpl().hasActiveTrx();
+		int status = getUserTrx().getStatus();
+
+		boolean active = false;
+
+		switch (status) {
+		case Status.STATUS_NO_TRANSACTION:
+			active = false;
+			break;
+
+		default:
+			active = true;
+			break;
+		}
+
+		return active;
 	}
 
 	public static AttachmentDaoImpl getAttachmentDao() {
 
-		return factory().getAttachmentDaoImpl(getEntityManager());
+		return factory().getAttachmentDaoImpl();
 	}
 
 	public static DSConfigDaoImpl getDSConfigDao() {
 
-		return factory().getDSConfigDaoImpl(getEntityManager());
+		return factory().getDSConfigDaoImpl();
 	}
 
 	public static Connection getConnection(String connectionName) {
@@ -264,19 +311,28 @@ public class DB {
 	}
 
 	public static DashboardDaoImpl getDashboardDao() {
-		return factory().getDashboardDaoImpl(getEntityManager());
+		return factory().getDashboardDaoImpl();
 	}
 
 	public static SettingsDaoImpl getSettingsDao() {
-		return factory().getSettingsDaoImpl(getEntityManager());
+		return factory().getSettingsDaoImpl();
 	}
 
 	public static OutputDocumentDao getOutputDocDao() {
-		return factory().getOuputDocDaoImpl(getEntityManager());
+		return factory().getOuputDocDaoImpl();
 	}
 
 	public static CatalogDaoImpl getCatalogDao() {
-		return factory().getCatalogDaoImp(getEntityManager());
+		return factory().getCatalogDaoImp();
+	}
+
+	public static String getTrxStatus() {
+		try {
+			return getUserTrx().getStatus() + "";
+		} catch (Exception e) {
+		}
+
+		return null;
 	}
 	
 	public static OrganizationDao getOrganizationDao() {

@@ -1,14 +1,9 @@
 package com.duggan.workflow.test.deadlines;
 
-import java.util.List;
-
-import org.jbpm.task.Deadline;
-import org.jbpm.task.Deadlines;
-import org.jbpm.task.Task;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.kie.api.task.model.Task;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
@@ -29,21 +24,21 @@ public class TestDeadline {
 		long taskId=1953L;
 		
 		Task task = JBPMHelper.get().getSysTask(taskId);
-		Deadlines deadlines = task.getDeadlines();
-		List<Deadline> startDeadLines = deadlines.getStartDeadlines();
-		List<Deadline> endDeadLines = deadlines.getEndDeadlines();
-		
-		Assert.assertNotNull(startDeadLines);
-		Assert.assertNotNull(endDeadLines);
-		System.err.println("Yeah!! "+startDeadLines.size()+" - "+endDeadLines.size());
-		
-		for(Deadline deadline: startDeadLines){
-			System.err.println("Start Deadline: "+deadline.getDate());
-		}
-
-		for(Deadline deadline: endDeadLines){
-			System.err.println("End Deadline: "+deadline.getDate());
-		}
+//		Deadlines deadlines = task.getTaskData().getDeadlines();
+//		List<Deadline> startDeadLines = deadlines.getStartDeadlines();
+//		List<Deadline> endDeadLines = deadlines.getEndDeadlines();
+//		
+//		Assert.assertNotNull(startDeadLines);
+//		Assert.assertNotNull(endDeadLines);
+//		System.err.println("Yeah!! "+startDeadLines.size()+" - "+endDeadLines.size());
+//		
+//		for(Deadline deadline: startDeadLines){
+//			System.err.println("Start Deadline: "+deadline.getDate());
+//		}
+//
+//		for(Deadline deadline: endDeadLines){
+//			System.err.println("End Deadline: "+deadline.getDate());
+//		}
 
 	}
 	

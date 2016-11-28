@@ -6,8 +6,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.Listable;
 
-public enum HTStatus implements IsSerializable, Listable{
-	
+public enum HTStatus implements IsSerializable, Listable{	
 	COMPLETED,
 	CREATED,
 	ERROR,

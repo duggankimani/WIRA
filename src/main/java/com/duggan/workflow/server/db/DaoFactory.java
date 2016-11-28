@@ -1,7 +1,5 @@
 package com.duggan.workflow.server.db;
 
-import javax.persistence.EntityManager;
-
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
@@ -36,11 +34,11 @@ class DaoFactory {
 	OrganizationDao organizationDao;
 	PermissionDao permissionDao;
 	
-	DocumentDaoImpl getDocumentDao(EntityManager em) {
+	DocumentDaoImpl getDocumentDao() {
 		if (documentDao == null) {
 			synchronized (DaoFactory.class) {
 				if (documentDao == null) {
-					documentDao = new DocumentDaoImpl(em);
+					documentDao = new DocumentDaoImpl();
 				}
 			}
 
@@ -49,11 +47,11 @@ class DaoFactory {
 		return documentDao;
 	}
 
-	ErrorDaoImpl getErrorDao(EntityManager entityManager) {
+	ErrorDaoImpl getErrorDao() {
 		if (errorDao == null) {
 			synchronized (DaoFactory.class) {
 				if (errorDao == null) {
-					errorDao = new ErrorDaoImpl(entityManager);
+					errorDao = new ErrorDaoImpl();
 				}
 			}
 		}
@@ -61,11 +59,11 @@ class DaoFactory {
 		return errorDao;
 	}
 
-	NotificationDaoImpl getNotificationDao(EntityManager em) {
+	NotificationDaoImpl getNotificationDao() {
 		if (notificationDao == null) {
 			synchronized (DaoFactory.class) {
 				if (notificationDao == null) {
-					notificationDao = new NotificationDaoImpl(em);
+					notificationDao = new NotificationDaoImpl();
 				}
 			}
 		}
@@ -73,12 +71,12 @@ class DaoFactory {
 		return notificationDao;
 	}
 
-	public AttachmentDaoImpl getAttachmentDaoImpl(EntityManager em) {
+	public AttachmentDaoImpl getAttachmentDaoImpl() {
 
 		if(attachmentDao ==null){
 			synchronized (DaoFactory.class) {
 				if(attachmentDao == null){
-					attachmentDao = new AttachmentDaoImpl(em);
+					attachmentDao = new AttachmentDaoImpl();
 				}
 			}
 		}
@@ -86,12 +84,12 @@ class DaoFactory {
 		return attachmentDao;
 	}
 
-	public CommentDaoImpl getCommentDao(EntityManager entityManager) {
+	public CommentDaoImpl getCommentDao() {
 
 		if(commentDaoImpl==null){
 			synchronized (DaoFactory.class) {
 				if(commentDaoImpl==null){
-					commentDaoImpl = new CommentDaoImpl(entityManager);
+					commentDaoImpl = new CommentDaoImpl();
 				}
 			}
 		}
@@ -99,11 +97,11 @@ class DaoFactory {
 		return commentDaoImpl;
 	}
 
-	public ProcessDaoImpl getProcessDao(EntityManager entityManager) {
+	public ProcessDaoImpl getProcessDao() {
 		if(processDao==null){
 			synchronized (DaoFactory.class) {
 				if(processDao==null){
-					processDao = new ProcessDaoImpl(entityManager);
+					processDao = new ProcessDaoImpl();
 				}
 			}
 		}
@@ -111,11 +109,11 @@ class DaoFactory {
 		return processDao;
 	}
 
-	public UserGroupDaoImpl getUserGroupDaoImpl(EntityManager entityManager) {
+	public UserGroupDaoImpl getUserGroupDaoImpl() {
 		if(userGroupDao==null){
 			synchronized (DaoFactory.class) {
 				if(userGroupDao==null){
-					userGroupDao = new UserGroupDaoImpl(entityManager);
+					userGroupDao = new UserGroupDaoImpl();
 				}
 			}
 		}
@@ -123,11 +121,11 @@ class DaoFactory {
 		return userGroupDao;
 	}
 	
-	public FormDaoImpl getFormDaoImpl(EntityManager entityManager) {
+	public FormDaoImpl getFormDaoImpl() {
 		if(formDao==null){
 			synchronized (DaoFactory.class) {
 				if(formDao==null){
-					formDao = new FormDaoImpl(entityManager);
+					formDao = new FormDaoImpl();
 				}
 			}
 		}
@@ -135,11 +133,11 @@ class DaoFactory {
 		return formDao;
 	}
 
-	public DSConfigDaoImpl getDSConfigDaoImpl(EntityManager entityManager) {
+	public DSConfigDaoImpl getDSConfigDaoImpl() {
 		if(dsDao==null){
 			synchronized (DaoFactory.class) {
 				if(dsDao==null){
-					dsDao = new DSConfigDaoImpl(entityManager);
+					dsDao = new DSConfigDaoImpl();
 				}
 			}
 		}
@@ -147,12 +145,12 @@ class DaoFactory {
 		return dsDao;
 	}
 
-	public DashboardDaoImpl getDashboardDaoImpl(EntityManager entityManager) {
+	public DashboardDaoImpl getDashboardDaoImpl() {
 		
 		if(dashDao==null){
 			synchronized (DaoFactory.class) {
 				if(dashDao==null){
-					dashDao = new DashboardDaoImpl(entityManager);
+					dashDao = new DashboardDaoImpl();
 				}
 			}
 		}
@@ -160,11 +158,11 @@ class DaoFactory {
 		return dashDao;
 	}
 
-	public SettingsDaoImpl getSettingsDaoImpl(EntityManager entityManager) {
+	public SettingsDaoImpl getSettingsDaoImpl() {
 		if(settingsDao==null){
 			synchronized (DaoFactory.class) {
 				if(settingsDao==null){
-					settingsDao = new SettingsDaoImpl(entityManager);
+					settingsDao = new SettingsDaoImpl();
 				}
 			}
 		}
@@ -172,11 +170,11 @@ class DaoFactory {
 		return settingsDao;
 	}
 
-	public OutputDocumentDao getOuputDocDaoImpl(EntityManager entityManager) {
+	public OutputDocumentDao getOuputDocDaoImpl() {
 		if(outputDao==null){
 			synchronized (DaoFactory.class) {
 				if(outputDao==null){
-					outputDao = new OutputDocumentDao(entityManager);
+					outputDao = new OutputDocumentDao();
 				}
 			}
 		}
@@ -184,11 +182,11 @@ class DaoFactory {
 		return outputDao;
 	}
 
-	public CatalogDaoImpl getCatalogDaoImp(EntityManager entityManager) {
+	public CatalogDaoImpl getCatalogDaoImp() {
 		if(catalogDao==null){
 			synchronized (DaoFactory.class) {
 				if(catalogDao==null){
-					catalogDao = new CatalogDaoImpl(entityManager);
+					catalogDao = new CatalogDaoImpl();
 				}
 			}
 		}

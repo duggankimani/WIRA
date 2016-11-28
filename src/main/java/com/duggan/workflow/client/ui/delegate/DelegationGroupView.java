@@ -1,24 +1,23 @@
 package com.duggan.workflow.client.ui.delegate;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.delegate.userDisplay.UserDisplay;
-import com.duggan.workflow.client.ui.events.PresentUserEvent;
-import com.duggan.workflow.client.ui.events.PresentUserEvent.PresentUserHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.PresentUserEvent;
+import com.duggan.workflow.shared.events.PresentUserEvent.PresentUserHandler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
 

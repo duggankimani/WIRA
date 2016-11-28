@@ -1,21 +1,20 @@
 package com.duggan.workflow.client.ui.tasklistitem;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
-import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
-import com.duggan.workflow.client.ui.events.AfterSearchEvent;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
-import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler;
-import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
-import com.duggan.workflow.client.ui.events.AfterSearchEvent.AfterSearchHandler;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
-import com.duggan.workflow.client.ui.tasklistitem.IsTaskPresenter.IBaseTaskItemView;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.AfterAttachmentReloadedEvent;
+import com.duggan.workflow.shared.events.AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler;
+import com.duggan.workflow.shared.events.AfterDocumentLoadEvent;
+import com.duggan.workflow.shared.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
+import com.duggan.workflow.shared.events.AfterSearchEvent;
+import com.duggan.workflow.shared.events.AfterSearchEvent.AfterSearchHandler;
+import com.duggan.workflow.shared.events.DocumentSelectionEvent;
+import com.duggan.workflow.shared.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.responses.ApprovalRequestResult;
 import com.google.gwt.core.shared.GWT;
@@ -29,8 +28,9 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+
+import com.duggan.workflow.client.ui.tasklistitem.IsTaskPresenter.IBaseTaskItemView;
 
 /**
  * This class displays a Task or a Document

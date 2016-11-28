@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
-import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
-import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.PropertyChangedEvent;
+import com.duggan.workflow.shared.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;

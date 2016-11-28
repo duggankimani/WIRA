@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.ds.save;
 
-import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent;
+import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.shared.events.LoadDSConfigsEvent;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.model.RDBMSType;
 import com.duggan.workflow.shared.requests.SaveDSConfigRequest;
@@ -8,8 +9,8 @@ import com.duggan.workflow.shared.responses.SaveDSConfigResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;

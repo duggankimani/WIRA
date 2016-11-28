@@ -6,7 +6,7 @@ package org.jbpm.executor;
 
 import java.util.List;
 
-import org.jbpm.executor.api.CommandCodes;
+import org.jbpm.executor.api.CommandCode;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.entities.RequestInfo;
 
@@ -34,7 +34,7 @@ public interface ExecutorServiceEntryPoint {
 
     public int clearAllErrors();
 
-    public Long scheduleRequest(CommandCodes commandName, CommandContext ctx);
+    public Long scheduleRequest(CommandCode commandName, CommandContext ctx);
 
     public void cancelRequest(Long requestId);
 

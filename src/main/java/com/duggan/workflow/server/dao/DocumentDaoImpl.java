@@ -14,8 +14,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.jbpm.task.Status;
-import org.jbpm.task.query.TaskSummary;
+import org.kie.api.task.model.Status;
+import org.kie.api.task.model.TaskSummary;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADValue;
@@ -23,9 +23,7 @@ import com.duggan.workflow.server.dao.model.DetailModel;
 import com.duggan.workflow.server.dao.model.DocumentLineJson;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.DocumentModelJson;
-import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
-import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
@@ -107,7 +105,6 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	public void delete(DocumentModel document) {
 
 		em.remove(document);
-
 	}
 
 	public Integer count(String processId, String userId, DocStatus status) {
@@ -364,6 +361,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		}
 
 		Query hquery = em.createQuery(query.toString());
+
 		Set<String> keys = params.keySet();
 
 		for (String key : keys) {
@@ -420,6 +418,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 						+ "or "
 						+ "( potowners.entity_id = ? or potowners.entity_id in (?) )) "
 						+ "and (:processId='' or d.processId=:processId)"
+
 						+ "and " + "t.expirationTime is null ");
 
 		params.add(userId);
@@ -587,25 +586,44 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<TaskSummary> searchTasks(List<Long> ids) {
+		
+//		new TaskSummaryImpl(id, processInstanceId, name, subject, description, status,
+//				priority, skipable, actualOwner, createdBy, createdOn, activationTime, 
+//				expirationTime, processId, processSessionId, subTaskStrategy, parentId);
+		
 		String query = "select " + "distinct "
-				+ "new org.jbpm.task.query.TaskSummary( " + "t.id, "
-				+ "t.taskData.processInstanceId, " + "name.text, "
-				+ "subject.text, " + "description.text, "
-				+ "t.taskData.status, " + "t.priority, "
-				+ "t.taskData.skipable, " + "actualOwner, " + "createdBy, "
-				+ "t.taskData.createdOn, " + "t.taskData.activationTime, "
-				+ "t.taskData.expirationTime, " + "t.taskData.processId, "
-				+ "t.taskData.processSessionId) " + "from " + "Task t "
+				+ "new org.jbpm.services.task.query.TaskSummaryImpl( " 
+				+ "t.id, "
+				+ "t.taskData.processInstanceId, " 
+				+ "name.text, "
+				+ "subject.text, " 
+				+ "description.text, "
+				+ "t.taskData.status, " 
+				+ "t.priority, "
+				+ "t.taskData.skipable, " 
+				+ "actualOwner, " 
+				+ "createdBy, "
+				+ "t.taskData.createdOn, " 
+				+ "t.taskData.activationTime, "
+				+ "t.taskData.expirationTime, " 
+				+ "t.taskData.processId, "
+				+ "t.taskData.processSessionId,"
+				+ "t.subTaskStrategy,"
+				+ "t.taskData.parentId) " 
+				+ "from " 
+				+ "org.kie.api.task.model.Task t "
 				+ "left join t.taskData.createdBy as createdBy "
 				+ "left join t.taskData.actualOwner as actualOwner "
 				+ "left join t.subjects as subject "
 				+ "left join t.descriptions as description "
 				+ "left join t.names as name, "
-				+ "OrganizationalEntity potentialOwners " + "where " +
+
+				+ "org.kie.api.task.model.OrganizationalEntity potentialOwners " + "where " +
 				// "t.processInstanceId=d.processInstanceId "+
 				"t.id in (:taskIds) ";
 
-		Query hquery = em.createQuery(query).setParameter("taskIds", ids);
+		Query hquery = getEntityManager().createQuery(query).setParameter(
+				"taskIds", ids);
 
 		List list = hquery.getResultList();
 
@@ -665,7 +683,6 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				+ "where refid=(select docTypeRefId from documentjson where refId=?)";
 
 		Query query = em.createNativeQuery(sql).setParameter(1, docRefId);
-
 		String type = null;
 
 		try {
@@ -959,6 +976,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				.createNamedQuery("TasksUnassignedCount")
 				.setParameter("language", "en-UK")
 				.setParameter("processId", processId)
+
 				.setParameter("status",
 						Arrays.asList(Status.Created, Status.Ready));
 

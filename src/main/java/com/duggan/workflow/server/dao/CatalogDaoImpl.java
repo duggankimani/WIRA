@@ -3,9 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +64,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		}
 
 		return getResultList(query);
+
 	}
 
 	public void generateTable(Catalog model) {
@@ -142,7 +141,6 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		}
 		
 		String ALTER_TABLE = "ALTER TABLE "+catalogName;
-		
 		String columnName="\""+col.getName()+"\"";
 		if(!model.getName().equals(col.getName())){
 			renameColumn(catalogName, model.getName(), col.getName());

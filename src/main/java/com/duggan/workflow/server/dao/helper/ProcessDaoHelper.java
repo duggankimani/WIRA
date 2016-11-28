@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -19,13 +18,11 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.drools.definition.process.Node;
-import org.jbpm.task.Task;
+import org.kie.api.definition.process.Node;
+import org.kie.api.task.model.Task;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
-import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
@@ -55,6 +52,7 @@ import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TaskNotification;
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
+import com.duggan.workflow.shared.model.TaskType;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
 import com.duggan.workflow.shared.model.form.Form;

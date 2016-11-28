@@ -138,7 +138,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 						}
 					}
 				}
-			em.merge(form);
+			getEntityManager().merge(form);
 		}
 	}
 
@@ -220,7 +220,6 @@ public class FormDaoImpl extends BaseDaoImpl {
 			// System.err.println(">>Field :: Id = "+field.getId()+"; Previous = "+previousStr+
 			// " Pos - "+field.getPosition());
 		}
-
 		fld.setPosition(newPos);
 	}
 

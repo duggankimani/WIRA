@@ -1,17 +1,16 @@
 package com.duggan.workflow.test.process;
 
+import java.util.Arrays;
 import java.util.List;
 
-import org.jbpm.task.Delegation;
-import org.jbpm.task.OrganizationalEntity;
-import org.jbpm.task.Status;
-import org.jbpm.task.Task;
-import org.jbpm.task.query.TaskSummary;
-import org.jbpm.task.service.local.LocalTaskService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kie.api.task.TaskService;
+import org.kie.api.task.model.Status;
+import org.kie.api.task.model.Task;
+import org.kie.api.task.model.TaskSummary;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
@@ -39,22 +38,22 @@ public class TestTaskClassifications {
 		
 		String userId="mariano";
 		String language="en-UK";
-		LocalTaskService client = JBPMHelper.get().getTaskClient();
+		TaskService client = JBPMHelper.get().getTaskClient();
 		
-		Task task =client.getTask(534L);
+		Task task =client.getTaskById(534L);
 		
 		Long docContentId = task.getTaskData().getDocumentContentId();
 		Long outContentId = task.getTaskData().getOutputContentId();
 		
 		System.out.println("#docContentId "+docContentId+" :: "+" #outContentId = "+outContentId);
-		Delegation delegation = task.getDelegation();
-		List<OrganizationalEntity> entities = delegation.getDelegates();
-		assert entities!=null;
-		assert entities.size()>0;
-		
+//		Delegation delegation = task.getDelegation();
+//		List<OrganizationalEntity> entities = delegation.getDelegates();
+//		assert entities!=null;
+//		assert entities.size()>0;
+//		
 		//OrganizationalEntity entity = entities.get(0);
-		System.err.println(" >> :: "+entities.size());
-//		HashMap<String,Object> data = JBPMHelper.getMappedDataByContentId(outContentId);
+//		System.err.println(" >> :: "+entities.size());
+//		Map<String,Object> data = JBPMHelper.getMappedDataByContentId(outContentId);
 //		for(String key: data.keySet()){
 //			System.err.println(key+" - "+data.get(key));
 //		}
@@ -66,23 +65,23 @@ public class TestTaskClassifications {
 		String language="en-UK";
 		Status status = Status.Created;
 		
-		LocalTaskService client = JBPMHelper.get().getTaskClient();
+		TaskService client = JBPMHelper.get().getTaskClient();
 		List<TaskSummary> summaries=client.getTasksAssignedAsPotentialOwner(userId, language);
 		System.out.println("PotentialOwner = "+summaries.size());
 		
-		summaries=client.getTasksAssignedAsRecipient(userId, language);
+		summaries=client.getTasksOwned(userId, language);
 		System.out.println("Recipient = "+summaries.size());
 		
 		summaries=client.getTasksOwned(userId, language);
 		System.out.println("Tasks Owned = "+summaries.size());
 		
-		summaries=client.getTasksAssignedAsTaskInitiator(userId, language);
+		summaries=client.getTasksAssignedAsPotentialOwner(userId, language);
 		System.out.println("Task Initiator = "+summaries.size());
 		
-		summaries=client.getTasksAssignedAsTaskStakeholder(userId, language);
-		System.out.println("Stake Holder = "+summaries.size());
+		summaries=client.getTasksAssignedAsBusinessAdministrator(userId, language);
+		System.out.println("Business Administrator = "+summaries.size());
 		
-		summaries=client.getTasksAssignedAsExcludedOwner(userId, language);
+		summaries=client.getTasksByStatusByProcessInstanceId(1L, Arrays.asList(Status.Completed),userId);
 		System.out.println("Excluded Owner = "+summaries.size());
 	}
 	

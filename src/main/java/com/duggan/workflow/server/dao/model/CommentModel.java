@@ -6,10 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="localcomment")
+@Table(name="localcomment",indexes={@Index(name="idx_ref_id",columnList="refId")})
 public class CommentModel extends PO{
 
 	private static final long serialVersionUID = 6882858941033696924L;

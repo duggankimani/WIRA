@@ -28,7 +28,7 @@ public class ExecutorRunnable extends Thread {
     
     public ExecutorRunnable(){
     	//setDaemon(true);
-    	logger.setLevel(Level.WARNING);
+    	logger.setLevel(Level.FINER);
     }
 
     /**
@@ -37,41 +37,42 @@ public class ExecutorRunnable extends Thread {
      * requests sent/retried to an optimum number. 
      */
     public void run() {
+    	logger.fine(getClass()+"#"+Thread.currentThread()+" Executing Run! - ");
     	executeInTrx();
     }
 
+    /**
+     * Begin And End Units of work in a transaction
+     */
     private void executeInTrx() {
+    	ExecutorFactory.getExecutorTransactionManagementService().begin();
     	try{
-    		DB.beginTransaction();
     		execute();
-    		DB.commitTransaction();
     	}catch(Exception e){
-    		logger.severe("############[1] Error : "+e.getMessage());
-    		try{
-    			DB.rollback();
-    		}catch(Exception f){logger.severe("############ RollbackError : "+f.getMessage());}
-    	}finally{
-    		DB.closeSession();
+    		logger.finer(getClass()+"#Failed to begin Trx: "+e.getMessage());
+    		e.printStackTrace();
     	}
+    	
+    	ExecutorFactory.getExecutorTransactionManagementService().end();
 	}
 
 	private void execute() {
     	EntityManager em = DB.getEntityManager();
     	
-        logger.log(Level.INFO, " >>> Executor Thread {0} Waking Up!!!", this.toString());
+        logger.log(Level.FINER, " >>> Executor Thread {0} Waking Up!!!", this.toString());
         List<?> resultList = em.createQuery("Select r from RequestInfo as r "
         		+ "where r.status ='QUEUED' "
         		+ "or r.status = 'RETRYING' ORDER BY r.time DESC")
         		.setMaxResults(3).getResultList();
         
-        logger.log(Level.INFO, " >>> Pending Requests = {0}", resultList.size());
+        logger.log(Level.FINER, " >>> Pending Requests = {0}", resultList.size());
         if (resultList.size() > 0) {
             RequestInfo r = null;
             r = (RequestInfo) resultList.get(0);
             new ExecutorUtil().execute(r);
         }
-        logger.log(Level.INFO, " >>> Executor Thread {0} Committing.....!!!", this.toString());
-        logger.log(Level.INFO, " >>> Executor Thread {0} Committed . Closed Session.....!!!", this.toString());
+        logger.log(Level.FINER, " >>> Executor Thread {0} Committing.....!!!", this.toString());
+        logger.log(Level.FINER, " >>> Executor Thread {0} Committed . Closed Session.....!!!", this.toString());
 
 	}
 

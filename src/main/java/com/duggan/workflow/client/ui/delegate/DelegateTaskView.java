@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 
-import com.duggan.workflow.client.ui.events.PresentUserEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.PresentUserEvent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

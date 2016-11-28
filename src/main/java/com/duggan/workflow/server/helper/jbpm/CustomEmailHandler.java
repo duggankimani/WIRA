@@ -1,9 +1,7 @@
 package com.duggan.workflow.server.helper.jbpm;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +24,12 @@ import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.StringValue;
 import com.wira.commons.shared.models.HTUser;
 
-public class CustomEmailHandler {
+public class CustomEmailHandler implements EmailHandler {
 
 	private static Logger log = Logger.getLogger(CustomEmailHandler.class);
 
 	public void sendNotification(ADTaskNotification template, Document doc,
-			Map<String, Object> params) throws IOException {
+			Map<String, Object> params) {
 
 		String caseNo = null;
 		String noteType = null;
@@ -48,7 +46,12 @@ public class CustomEmailHandler {
 				InputStream is = Thread.currentThread().getContextClassLoader()
 						.getResourceAsStream("email.html");
 				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				IOUtils.copy(is, bout);
+				try{
+					IOUtils.copy(is, bout);
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
+				
 				html = new String(bout.toByteArray());
 			} else {
 				html = template.getNotificationTemplate();

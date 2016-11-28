@@ -3,17 +3,18 @@ package com.duggan.workflow.client.ui.admin.ds;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
 import com.duggan.workflow.client.ui.admin.ds.item.DSItemPresenter;
 import com.duggan.workflow.client.ui.admin.ds.save.DSSavePresenter;
-import com.duggan.workflow.client.ui.events.EditDSConfigEvent;
-import com.duggan.workflow.client.ui.events.EditDSConfigEvent.EditDSConfigHandler;
-import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent;
-import com.duggan.workflow.client.ui.events.LoadDSConfigsEvent.LoadDSConfigsHandler;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
+import com.duggan.workflow.shared.events.EditDSConfigEvent;
+import com.duggan.workflow.shared.events.EditDSConfigEvent.EditDSConfigHandler;
+import com.duggan.workflow.shared.events.LoadDSConfigsEvent;
+import com.duggan.workflow.shared.events.LoadDSConfigsEvent.LoadDSConfigsHandler;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
+import com.duggan.workflow.shared.events.ProcessingEvent;
 import com.duggan.workflow.shared.model.DSConfiguration;
 import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
 import com.duggan.workflow.shared.requests.GetDSStatusRequest;
@@ -38,7 +39,6 @@ import com.gwtplatform.mvp.client.annotations.TabInfo;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.wira.commons.client.service.ServiceCallback;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class DataSourcePresenter extends
 		Presenter<DataSourcePresenter.IDataSourceView,DataSourcePresenter.MyProxy> 

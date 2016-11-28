@@ -22,11 +22,14 @@ import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
+import com.duggan.workflow.server.guice.UserTransactionProvider;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.security.BaseServlet;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.itextpdf.text.DocumentException;
 
 public class GetReport extends BaseServlet {
@@ -40,6 +43,7 @@ public class GetReport extends BaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		initRequest(req, resp);
+
 	}
 	
 	

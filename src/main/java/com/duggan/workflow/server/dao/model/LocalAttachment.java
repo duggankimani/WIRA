@@ -6,8 +6,8 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.ColumnResult;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
-
 
 @Entity
 @Table(name="localattachment")
@@ -145,7 +144,7 @@ public class LocalAttachment extends PO{
 
 	@XmlTransient
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@XmlAttribute
@@ -165,8 +164,8 @@ public class LocalAttachment extends PO{
 	private SETTINGNAME settingName;
 
 	@XmlTransient
-	@Basic(fetch=FetchType.LAZY)
 	@Lob
+	@Basic(fetch = FetchType.LAZY, optional = false)
 	private byte[] attachment;
 	
 	@XmlAttribute
@@ -189,20 +188,20 @@ public class LocalAttachment extends PO{
 	
 	@XmlTransient
 	@ManyToOne
-	@JoinColumn(name="documentId",referencedColumnName="id")
+	@JoinColumn(name = "documentId", referencedColumnName = "id")
 	private DocumentModel document;
-	
-	//Form Field Name; against which this file was uploaded
+
+	// Form Field Name; against which this file was uploaded
 	private String fieldName;
 	
 	@XmlTransient
 	@ManyToOne
-	@JoinColumn(name="processDefId", referencedColumnName="id")
+	@JoinColumn(name = "processDefId", referencedColumnName = "id")
 	private ProcessDefModel processDef;
 	
 	@XmlTransient
 	@ManyToOne
-	@JoinColumn(name="processDefIdImage", referencedColumnName="id")
+	@JoinColumn(name = "processDefIdImage", referencedColumnName = "id")
 	private ProcessDefModel processDefImage;
 	
 	@XmlTransient
@@ -218,15 +217,15 @@ public class LocalAttachment extends PO{
 	@OneToMany(fetch=FetchType.LAZY, cascade= {CascadeType.REMOVE}, mappedBy="parent")
 	private Set<LocalAttachment>  children = new HashSet<LocalAttachment>();
 
-	public LocalAttachment(){
+	public LocalAttachment() {
 		super();
 	}
-	
-	public LocalAttachment(Long id,String name, byte[] attachment){
+
+	public LocalAttachment(Long id, String name, byte[] attachment) {
 		this();
-		this.name=name;
-		this.attachment=attachment;
-		this.id=id;
+		this.name = name;
+		this.attachment = attachment;
+		this.id = id;
 	}
 
 	public Long getId() {
