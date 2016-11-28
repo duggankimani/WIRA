@@ -1,5 +1,6 @@
 package com.duggan.workflow.test.bpm6.kna;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,11 +17,9 @@ import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTStatus;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.StringValue;
-import com.duggan.workflow.shared.model.UserGroup;
 import com.duggan.workflow.shared.requests.ApprovalRequest;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.requests.GetTaskList;
@@ -30,6 +29,8 @@ import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.test.bpm6.AbstractBPM6Test;
 import com.gwtplatform.dispatch.rpc.shared.ServiceException;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.UserGroup;
 
 public class TestKNAProcess extends AbstractBPM6Test {
 	
@@ -78,7 +79,7 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		user.setName("Administrator");
 		user.setSurname("");
 		user.setUserId("Administrator");
-		user.setGroups(Arrays.asList(admin));
+//		user.setGroups(Arrays.asList(admin));
 		LoginHelper.get().createUser(user);
 		
 		//Content Creators
@@ -87,7 +88,9 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		contentCreator.setName("Matt");
 		contentCreator.setSurname("Mutembei");
 		contentCreator.setUserId("matt.mutembei");
-		contentCreator.setGroups(Arrays.asList(general));
+		ArrayList<UserGroup> groups = new ArrayList<UserGroup>();
+		groups.add(general);
+		contentCreator.setGroups(groups);
 		LoginHelper.get().createUser(contentCreator);
 
 		contentCreator = new HTUser();
@@ -95,7 +98,9 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		contentCreator.setName("Justin");
 		contentCreator.setSurname("Okocha");
 		contentCreator.setUserId("justin.okocha");
-		contentCreator.setGroups(Arrays.asList(general));
+		groups = new ArrayList<UserGroup>();
+		groups.add(general);
+		contentCreator.setGroups(groups);
 		LoginHelper.get().createUser(contentCreator);
 
 		contentCreator = new HTUser();
@@ -103,7 +108,9 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		contentCreator.setName("Faith");
 		contentCreator.setSurname("Wambui");
 		contentCreator.setUserId("faith.wambui");
-		contentCreator.setGroups(Arrays.asList(general));
+		groups = new ArrayList<UserGroup>();
+		groups.add(general);
+		contentCreator.setGroups(groups);
 		LoginHelper.get().createUser(contentCreator);
 
 		// Editors
@@ -112,7 +119,9 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		editor.setName("Njeri");
 		editor.setSurname("Maina");
 		editor.setUserId("njeri.maina");
-		editor.setGroups(Arrays.asList(editors));
+		groups = new ArrayList<UserGroup>();
+		groups.add(general);
+		editor.setGroups(groups);
 		LoginHelper.get().createUser(editor);
 
 		editor = new HTUser();
@@ -120,7 +129,9 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		editor.setName("Ngotho");
 		editor.setSurname("Calvin");
 		editor.setUserId("ngotho.calvin");
-		editor.setGroups(Arrays.asList(editors));
+		groups = new ArrayList<UserGroup>();
+		groups.add(general);
+		editor.setGroups(groups);
 		LoginHelper.get().createUser(editor);
 
 		// Chief Editor
@@ -129,7 +140,9 @@ public class TestKNAProcess extends AbstractBPM6Test {
 		chiefeditor.setName("Kaburo");
 		chiefeditor.setSurname("Kobia");
 		chiefeditor.setUserId("kaburo.kobia");
-		chiefeditor.setGroups(Arrays.asList(chiefEditors));
+		groups = new ArrayList<UserGroup>();
+		groups.add(general);
+		chiefeditor.setGroups(groups);
 		LoginHelper.get().createUser(chiefeditor);
 	}
 	
@@ -205,7 +218,7 @@ public class TestKNAProcess extends AbstractBPM6Test {
 	@Ignore
 	public void retrieveTasksFroUser() throws ActionException, ServiceException{
 		Task t;
-		GetTaskList list = new GetTaskList("faith.wambui", new SearchFilter());
+		GetTaskList list = new GetTaskList(null,"faith.wambui", new SearchFilter());
 		GetTaskListResult result = (GetTaskListResult)dispatchService.execute(RPCCOOKIE, list);
 		List<Doc> tasks = result.getTasks();
 		Assert.assertNotEquals(0, tasks.size());

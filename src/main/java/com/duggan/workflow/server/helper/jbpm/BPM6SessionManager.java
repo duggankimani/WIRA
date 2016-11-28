@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.runtime.manager.impl.SimpleRegisterableItemsFactory;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
@@ -28,7 +27,6 @@ import org.kie.api.task.model.Task;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 import org.kie.internal.utils.KieHelper;
-import org.wira.pioneer.integration.PioneerIntegrationWorkitemHandler;
 
 import xtension.workitems.FormValidationWorkItemHandler;
 import xtension.workitems.GenerateNotificationWorkItemHandler;
@@ -155,9 +153,6 @@ public class BPM6SessionManager implements WiraSessionManager {
 		registerableItemsFactory.addWorkItemHandler("GenerateOutputDoc",
 				GenerateOutputDocWorkItemHandler.class);
 
-		registerableItemsFactory.addWorkItemHandler("PioneerIntegration",
-				PioneerIntegrationWorkitemHandler.class);
-
 		// EmailWorkItemHandler emailHandler = new EmailWorkItemHandler(
 		// EmailServiceHelper.getProperty("mail.smtp.host"),
 		// EmailServiceHelper.getProperty("mail.smtp.port"),
@@ -171,7 +166,7 @@ public class BPM6SessionManager implements WiraSessionManager {
 
 	public KieSession getSession() {
 		KieSession session = getRuntime().getKieSession();
-		new JPAWorkingMemoryDbLogger(session);
+		//new JPAWorkingMemoryDbLogger(session);
 		// session.addEventListener(new NotificationsTaskEventListener());
 		return session;
 	}

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.drools.event.process.ProcessCompletedEvent;
-import org.drools.event.process.ProcessEventListener;
-import org.drools.event.process.ProcessNodeLeftEvent;
-import org.drools.event.process.ProcessNodeTriggeredEvent;
-import org.drools.event.process.ProcessStartedEvent;
-import org.drools.event.process.ProcessVariableChangedEvent;
 import org.jbpm.process.core.context.variable.VariableScope;
 import org.jbpm.process.instance.context.variable.VariableScopeInstance;
+import org.kie.api.event.process.ProcessCompletedEvent;
+import org.kie.api.event.process.ProcessEventListener;
+import org.kie.api.event.process.ProcessNodeLeftEvent;
+import org.kie.api.event.process.ProcessNodeTriggeredEvent;
+import org.kie.api.event.process.ProcessStartedEvent;
+import org.kie.api.event.process.ProcessVariableChangedEvent;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;

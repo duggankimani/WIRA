@@ -1,5 +1,7 @@
 package com.duggan.workflow.server.db;
 
+import javax.persistence.EntityManager;
+
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.CommentDaoImpl;
@@ -38,7 +40,7 @@ class DaoFactory {
 		if (documentDao == null) {
 			synchronized (DaoFactory.class) {
 				if (documentDao == null) {
-					documentDao = new DocumentDaoImpl();
+					documentDao = new DocumentDaoImpl(DB.getEntityManager());
 				}
 			}
 
@@ -51,7 +53,7 @@ class DaoFactory {
 		if (errorDao == null) {
 			synchronized (DaoFactory.class) {
 				if (errorDao == null) {
-					errorDao = new ErrorDaoImpl();
+					errorDao = new ErrorDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -63,7 +65,7 @@ class DaoFactory {
 		if (notificationDao == null) {
 			synchronized (DaoFactory.class) {
 				if (notificationDao == null) {
-					notificationDao = new NotificationDaoImpl();
+					notificationDao = new NotificationDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -76,7 +78,7 @@ class DaoFactory {
 		if(attachmentDao ==null){
 			synchronized (DaoFactory.class) {
 				if(attachmentDao == null){
-					attachmentDao = new AttachmentDaoImpl();
+					attachmentDao = new AttachmentDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -89,7 +91,7 @@ class DaoFactory {
 		if(commentDaoImpl==null){
 			synchronized (DaoFactory.class) {
 				if(commentDaoImpl==null){
-					commentDaoImpl = new CommentDaoImpl();
+					commentDaoImpl = new CommentDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -101,7 +103,7 @@ class DaoFactory {
 		if(processDao==null){
 			synchronized (DaoFactory.class) {
 				if(processDao==null){
-					processDao = new ProcessDaoImpl();
+					processDao = new ProcessDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -113,7 +115,7 @@ class DaoFactory {
 		if(userGroupDao==null){
 			synchronized (DaoFactory.class) {
 				if(userGroupDao==null){
-					userGroupDao = new UserGroupDaoImpl();
+					userGroupDao = new UserGroupDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -125,7 +127,7 @@ class DaoFactory {
 		if(formDao==null){
 			synchronized (DaoFactory.class) {
 				if(formDao==null){
-					formDao = new FormDaoImpl();
+					formDao = new FormDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -137,7 +139,7 @@ class DaoFactory {
 		if(dsDao==null){
 			synchronized (DaoFactory.class) {
 				if(dsDao==null){
-					dsDao = new DSConfigDaoImpl();
+					dsDao = new DSConfigDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -150,7 +152,7 @@ class DaoFactory {
 		if(dashDao==null){
 			synchronized (DaoFactory.class) {
 				if(dashDao==null){
-					dashDao = new DashboardDaoImpl();
+					dashDao = new DashboardDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -162,7 +164,7 @@ class DaoFactory {
 		if(settingsDao==null){
 			synchronized (DaoFactory.class) {
 				if(settingsDao==null){
-					settingsDao = new SettingsDaoImpl();
+					settingsDao = new SettingsDaoImpl(DB.getEntityManager());
 				}
 			}
 		}
@@ -174,7 +176,7 @@ class DaoFactory {
 		if(outputDao==null){
 			synchronized (DaoFactory.class) {
 				if(outputDao==null){
-					outputDao = new OutputDocumentDao();
+					outputDao = new OutputDocumentDao(DB.getEntityManager());
 				}
 			}
 		}
@@ -186,7 +188,7 @@ class DaoFactory {
 		if(catalogDao==null){
 			synchronized (DaoFactory.class) {
 				if(catalogDao==null){
-					catalogDao = new CatalogDaoImpl();
+					catalogDao = new CatalogDaoImpl(DB.getEntityManager());
 				}
 			}
 		}

@@ -15,7 +15,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.impl.SessionImpl;
+import org.hibernate.internal.SessionImpl;
 
 import com.duggan.workflow.server.dao.hibernate.JsonType;
 import com.duggan.workflow.server.dao.model.PO;
@@ -161,13 +161,15 @@ public class BaseDaoImpl {
 		
 		logger.info("GetSingleResultJson Query = " + sql);
 		Session session = (Session) getEntityManager().getDelegate();
-		Connection connection = ((SessionImpl) session).getJDBCContext()
-				.getConnectionManager().getConnection();
+		
+//		Connection connection = ((SessionImpl) session).getJDBCContext()
+//				.getConnectionManager().getConnection();
 
 		T value = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			Connection connection = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection();
 			ps = connection.prepareStatement(sql);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -224,13 +226,14 @@ public class BaseDaoImpl {
 
 		logger.info("GetResultListJson Query = " + sql);
 		Session session = (Session) getEntityManager().getDelegate();
-		Connection connection = ((SessionImpl) session).getJDBCContext()
-				.getConnectionManager().getConnection();
+//		Connection connection = ((SessionImpl) session).getJDBCContext()
+//				.getConnectionManager().getConnection();
 
 		ArrayList<T> values = new ArrayList<T>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			Connection connection = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection();
 			ps = connection.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -286,12 +289,13 @@ public class BaseDaoImpl {
 
 		logger.info("ExecuteJsonUpdate Query = " + sql);
 		Session session = (Session) getEntityManager().getDelegate();
-		Connection connection = ((SessionImpl) session).getJDBCContext()
-				.getConnectionManager().getConnection();
+//		Connection connection = ((SessionImpl) session).getJDBCContext()
+//				.getConnectionManager().getConnection();
 
 		PreparedStatement ps = null;
 		int count = 0;
 		try {
+			Connection connection = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection();
 			ps = connection.prepareStatement(sql);
 			count = ps.executeUpdate();
 

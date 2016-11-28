@@ -6,13 +6,13 @@ import java.util.Comparator;
 
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
+import com.duggan.workflow.shared.events.ProcessingEvent;
+import com.duggan.workflow.shared.events.SearchEvent;
+import com.duggan.workflow.shared.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.requests.GetCatalogsRequest;

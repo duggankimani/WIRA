@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 
 public class SettingsDaoImpl extends BaseDaoImpl {
+	
+	public SettingsDaoImpl(EntityManager em) {
+		super(em);
+	}
 	
 	public void saveSettings(SETTINGNAME name, ADValue value){
 		deleteName(name);

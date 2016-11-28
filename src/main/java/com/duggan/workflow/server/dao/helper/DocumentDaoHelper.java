@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
 
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
@@ -271,10 +270,10 @@ public class DocumentDaoHelper {
 
 		if (model.getProcessInstanceId() != null) {
 			try {
-				ProcessInstanceLog log = JPAProcessInstanceDbLog
-						.findProcessInstance(model.getProcessInstanceId());
-				if (log != null)
-					doc.setDateSubmitted(log.getStart());
+//				ProcessInstanceLog log = JPAProcessInstanceDbLog
+//						.findProcessInstance(model.getProcessInstanceId());
+//				if (log != null)
+//					doc.setDateSubmitted(log.getStart());
 			} catch (Exception e) {
 				logger.warn("DocumentDaoHelper - getDoc-> findProcessInstance : "
 						+ e.getMessage());

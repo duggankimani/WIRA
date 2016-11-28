@@ -1,9 +1,9 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import com.duggan.workflow.client.ui.component.DoubleField;
-import com.duggan.workflow.client.ui.events.OperandChangedEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.events.OperandChangedEvent;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DoubleValue;
@@ -20,8 +20,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLNumberField extends FieldWidget{

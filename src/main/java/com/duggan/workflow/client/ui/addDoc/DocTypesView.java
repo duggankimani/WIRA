@@ -4,18 +4,16 @@ import static com.duggan.workflow.client.ui.resources.ICONS.INSTANCE;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.CreateDocumentEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.IsProcessDisplay;
 import com.duggan.workflow.shared.model.ProcessCategory;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -24,8 +22,6 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 import com.sencha.gxt.data.shared.TreeStore;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 
 public class DocTypesView extends ViewImpl implements

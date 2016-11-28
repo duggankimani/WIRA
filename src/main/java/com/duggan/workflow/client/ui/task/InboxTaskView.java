@@ -2,10 +2,10 @@ package com.duggan.workflow.client.ui.task;
 
 import java.util.HashMap;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.task.InboxPresenter.IInboxView;
+import com.duggan.workflow.shared.model.TaskType;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.FlexTable;

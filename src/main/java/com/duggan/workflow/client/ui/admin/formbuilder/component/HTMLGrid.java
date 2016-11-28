@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
+import com.duggan.workflow.shared.events.DeleteLineEvent;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.GridValue;

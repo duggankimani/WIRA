@@ -19,18 +19,17 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import javax.ws.rs.HEAD;
 
 import org.apache.log4j.Logger;
 import org.jbpm.process.audit.NodeInstanceLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
-import org.jbpm.task.utils.ContentMarshallerHelper;
+import org.jbpm.services.task.utils.ContentMarshallerHelper;
 import org.jbpm.workflow.core.impl.WorkflowProcessImpl;
 import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.StartNode;
 import org.jbpm.workflow.core.node.SubProcessNode;
-import org.drools.definition.process.Node;
+import org.kie.api.definition.process.Node;
 import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -438,9 +437,9 @@ public class JBPMHelper implements Closeable {
 
 		WorkflowProcessImpl workflow = (WorkflowProcessImpl) process;
 
-		org.drools.definition.process.Node[] nodes = workflow.getNodes();
+		Node[] nodes = workflow.getNodes();
 
-		for (org.drools.definition.process.Node node : nodes) {
+		for (Node node : nodes) {
 
 			if (node instanceof HumanTaskNode) {
 				HumanTaskNode htnode = (HumanTaskNode) node;
@@ -1135,7 +1134,7 @@ public class JBPMHelper implements Closeable {
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
 
-		for (org.drools.definition.process.Node node : wfprocess.getNodes()) {
+		for (Node node : wfprocess.getNodes()) {
 
 			long nodeId = node.getId();
 
@@ -1194,7 +1193,7 @@ public class JBPMHelper implements Closeable {
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
 
-		for (org.drools.definition.process.Node node : wfprocess.getNodes()) {
+		for (Node node : wfprocess.getNodes()) {
 
 			long nodeId = node.getId();
 
@@ -1277,7 +1276,7 @@ public class JBPMHelper implements Closeable {
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) process;
 
-		for (org.drools.definition.process.Node node : wfprocess.getNodes()) {
+		for (Node node : wfprocess.getNodes()) {
 
 			if (node instanceof SubProcessNode) {
 				SubProcessNode n = (SubProcessNode) node;
@@ -1448,7 +1447,7 @@ public class JBPMHelper implements Closeable {
 		return task.getName();
 	}
 
-	public org.drools.definition.process.Node getNode(Task task) {
+	public Node getNode(Task task) {
 		String processId = task.getTaskData().getProcessId();
 		String taskName = getTaskName(task.getId());
 
@@ -1460,7 +1459,7 @@ public class JBPMHelper implements Closeable {
 
 		WorkflowProcessImpl wfprocess = (WorkflowProcessImpl) droolsProcess;
 
-		for (org.drools.definition.process.Node node : wfprocess.getNodes()) {
+		for (Node node : wfprocess.getNodes()) {
 
 			if (node instanceof HumanTaskNode) {
 				HumanTaskNode htnode = (HumanTaskNode) node;

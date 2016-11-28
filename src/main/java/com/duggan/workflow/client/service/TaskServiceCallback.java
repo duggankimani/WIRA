@@ -1,13 +1,9 @@
 package com.duggan.workflow.client.service;
 
 import com.duggan.workflow.client.util.AppContext;
-<<<<<<< HEAD
 import com.google.gwt.user.client.Window;
-=======
 import com.duggan.workflow.shared.events.ErrorEvent;
 import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
-import com.duggan.workflow.shared.responses.BaseResponse;
->>>>>>> wiradbaccess
 import com.gwtplatform.dispatch.rpc.shared.Result;
 import com.gwtplatform.dispatch.rpc.shared.ServiceException;
 import com.wira.commons.client.service.ServiceCallback;

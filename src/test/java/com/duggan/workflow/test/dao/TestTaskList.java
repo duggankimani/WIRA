@@ -7,13 +7,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
+import com.duggan.workflow.shared.model.TaskType;
 
 public class TestTaskList {
 	

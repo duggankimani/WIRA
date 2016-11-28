@@ -6,8 +6,8 @@ import org.jbpm.services.task.impl.model.TaskImpl;
 import org.junit.Test;
 
 import com.duggan.workflow.server.helper.auth.LoginHelper;
-import com.duggan.workflow.shared.model.HTUser;
 import com.duggan.workflow.test.bpm6.AbstractBPM6Test;
+import com.wira.commons.shared.models.HTUser;
 
 public class TestKNAUserManagement extends AbstractBPM6Test{
 

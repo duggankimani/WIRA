@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,7 +22,8 @@ public class JsonDocValue extends JsonType{
 	}
 	
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+	public Object nullSafeGet(ResultSet rs, String[] names,
+			SessionImplementor arg2, Object owner)
 			throws HibernateException, SQLException {
 		String colName = names[0];
 		final String cellContent = rs.getString(colName);
@@ -47,7 +49,8 @@ public class JsonDocValue extends JsonType{
 	}
 
 	@Override
-	public void nullSafeSet(PreparedStatement ps, Object value, final int idx)
+	public void nullSafeSet(PreparedStatement ps, Object value, final int idx,
+			SessionImplementor arg3)
 			throws HibernateException, SQLException {
 		if (value == null) {
 			ps.setNull(idx, Types.OTHER);

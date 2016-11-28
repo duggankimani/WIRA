@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -12,6 +13,10 @@ import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 
 public class DashboardDaoImpl extends BaseDaoImpl{
+	
+	public DashboardDaoImpl(EntityManager em) {
+		super(em);
+	}
 	
 	public Integer getRequestCount(DocStatus status){
 		return getRequestCount(true, status); 

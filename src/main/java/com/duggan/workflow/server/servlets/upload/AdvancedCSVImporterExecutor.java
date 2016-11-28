@@ -2,20 +2,14 @@ package com.duggan.workflow.server.servlets.upload;
 
 import gwtupload.server.exceptions.UploadActionException;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.fileupload.FileItem;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.shared.model.catalog.Catalog;
-import com.duggan.workflow.shared.model.catalog.CatalogType;
 
 public class AdvancedCSVImporterExecutor extends FileExecutor {
 

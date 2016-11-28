@@ -453,4 +453,16 @@ public class NotificationsTaskEventListener implements
 		
 	}
 
+	@Override
+	public void afterTaskUpdatedEvent(TaskEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void beforeTaskUpdatedEvent(TaskEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

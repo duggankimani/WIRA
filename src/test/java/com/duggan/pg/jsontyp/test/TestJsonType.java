@@ -14,7 +14,6 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
-import org.jbpm.process.workitem.wsht.GenericHTWorkItemHandler;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
@@ -11,6 +12,10 @@ import com.duggan.workflow.server.dao.model.LocalAttachment;
 
 public class OutputDocumentDao extends BaseDaoImpl {
 
+	public OutputDocumentDao(EntityManager em) {
+		super(em);
+	}
+	
 	public ADOutputDoc getOuputDocument(Long id) {
 		return getById(ADOutputDoc.class, id);
 	}

@@ -1,10 +1,10 @@
 package com.duggan.workflow.client.ui.component;
 
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
-import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
-import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.events.ProcessingEvent.ProcessingHandler;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent;
+import com.duggan.workflow.shared.events.ProcessingCompletedEvent.ProcessingCompletedHandler;
+import com.duggan.workflow.shared.events.ProcessingEvent;
+import com.duggan.workflow.shared.events.ProcessingEvent.ProcessingHandler;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;

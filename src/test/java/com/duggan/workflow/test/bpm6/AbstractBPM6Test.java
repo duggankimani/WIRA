@@ -16,19 +16,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.duggan.workflow.client.util.Definitions;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.guice.UserTransactionProvider;
-import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.HTUser;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Key;
 import com.google.inject.persist.UnitOfWork;
 import com.gwtplatform.dispatch.rpc.shared.DispatchService;
+import com.wira.commons.client.util.Definitions;
+import com.wira.commons.shared.models.HTUser;
 
 //@RunWith(OnamiRunner.class)
 @RunWith(MockitoJUnitRunner.class)

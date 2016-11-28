@@ -3,12 +3,17 @@ package com.duggan.workflow.server.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.DataSourceConfig;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 
 public class DSConfigDaoImpl extends BaseDaoImpl{
+	
+	public DSConfigDaoImpl(EntityManager em) {
+		super(em);
+	}
 
 	public DataSourceConfig getConfiguration(Long id) {
 
@@ -60,7 +65,7 @@ public class DSConfigDaoImpl extends BaseDaoImpl{
 	 * @return
 	 */
 	public DataSourceConfig getConfigurationByName(String configName) {
-		log.debug("configName = "+configName);
+		logger.debug("configName = "+configName);
 		Query query = getEntityManager().createQuery("FROM DataSourceConfig ds WHERE ds.configName=:configName")
 				.setParameter("configName", configName);
 		

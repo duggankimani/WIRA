@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.component;
 
-import com.duggan.workflow.client.ui.events.CreateDocumentEvent;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.events.CreateDocumentEvent;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;

@@ -12,7 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.hibernate.impl.SessionImpl;
+import org.hibernate.Session;
+import org.hibernate.internal.SessionImpl;
 
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
@@ -480,8 +481,10 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		List<Catalog> catalogs = new ArrayList<Catalog>();
 
 		try {
-			Connection conn = ((SessionImpl) (em.getDelegate()))
-					.getJDBCContext().connection();
+			Session session = (Session) getEntityManager().getDelegate();
+			Connection conn = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection();
+//			Connection conn = ((SessionImpl) (em.getDelegate()))
+//					.getJDBCContext().connection();
 			ResultSet rs = null;
 			DatabaseMetaData meta = conn.getMetaData();
 			rs = meta.getTables(null, null, null, new String[] { "VIEW" });

@@ -2,10 +2,10 @@ package com.duggan.workflow.processevents;
 
 import java.util.HashMap;
 
-import org.jbpm.task.Status;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.kie.api.task.model.Status;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;

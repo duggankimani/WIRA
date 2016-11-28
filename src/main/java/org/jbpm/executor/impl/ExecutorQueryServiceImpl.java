@@ -11,6 +11,7 @@ import org.jbpm.executor.entities.RequestInfo;
 
 import com.duggan.workflow.server.dao.BaseDaoImpl;
 import com.duggan.workflow.server.dao.model.ErrorLog;
+import com.duggan.workflow.server.db.DB;
 
 /**
  *
@@ -19,7 +20,7 @@ import com.duggan.workflow.server.dao.model.ErrorLog;
 public class ExecutorQueryServiceImpl extends BaseDaoImpl implements ExecutorQueryService{
     
     public ExecutorQueryServiceImpl() {
-    	super();
+    	super(DB.getEntityManager());
     }
     
     public List<RequestInfo> getQueuedRequests() {

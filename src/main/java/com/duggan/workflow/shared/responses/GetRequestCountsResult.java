@@ -2,6 +2,8 @@ package com.duggan.workflow.shared.responses;
 
 import java.util.HashMap;
 
+import com.wira.commons.shared.response.BaseResponse;
+
 public class GetRequestCountsResult extends BaseResponse {
 
 	/**

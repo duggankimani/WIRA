@@ -16,6 +16,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.UserType;
 
 import com.duggan.workflow.server.dao.model.ADDocType;
@@ -106,8 +107,9 @@ public abstract class JsonType implements UserType {
 	}
 
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
-			throws HibernateException, SQLException {
+	public Object nullSafeGet(ResultSet rs, String[] names,
+			SessionImplementor arg2, Object owner) throws HibernateException,
+			SQLException {
 		final String cellContent = rs.getString(names[0]);
 		if (cellContent == null) {
 			return null;
@@ -122,10 +124,30 @@ public abstract class JsonType implements UserType {
 					+ returnedClass() +" "+ ex.getMessage(), ex);
 		}
 	}
+	
+//	Hibernate 3.6
+//	@Override
+//	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+//			throws HibernateException, SQLException {
+//		final String cellContent = rs.getString(names[0]);
+//		if (cellContent == null) {
+//			return null;
+//		}
+//		try {
+//			final JSONJAXBContext mapper = getJaxbContext();
+//			
+//			return mapper.createJSONUnmarshaller().unmarshalFromJSON(new ByteArrayInputStream(cellContent.getBytes("UTF-8")), returnedClass());
+//		} catch (final Exception ex) {
+//			ex.printStackTrace();
+//			throw new RuntimeException("Failed to convert String \" "+cellContent+" \" to "
+//					+ returnedClass() +" "+ ex.getMessage(), ex);
+//		}
+//	}
+
 
 	@Override
-	public void nullSafeSet(PreparedStatement ps, Object value, final int idx)
-			throws HibernateException, SQLException {
+	public void nullSafeSet(PreparedStatement ps, Object value, final int idx,
+			SessionImplementor arg3) throws HibernateException, SQLException {
 		if (value == null) {
 			ps.setNull(idx, Types.OTHER);
 			return;
@@ -141,6 +163,26 @@ public abstract class JsonType implements UserType {
 					+ ex.getMessage(), ex);
 		}
 	}
+	
+//	Version 3.6
+//	@Override
+//	public void nullSafeSet(PreparedStatement ps, Object value, final int idx)
+//			throws HibernateException, SQLException {
+//		if (value == null) {
+//			ps.setNull(idx, Types.OTHER);
+//			return;
+//		}
+//		try {
+//			final JSONJAXBContext mapper = getJaxbContext();
+//			final StringWriter w = new StringWriter();
+//			mapper.createJSONMarshaller().marshallToJSON(value,w);
+//			w.flush();
+//			ps.setObject(idx, w.toString(), Types.OTHER);
+//		} catch (final Exception ex) {
+//			throw new RuntimeException("Failed to convert Object to String: "
+//					+ ex.getMessage(), ex);
+//		}
+//	}
 
 	@Override
 	public Object replace(Object original, Object target, Object owner)
