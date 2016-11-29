@@ -80,6 +80,12 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 	@UiField Anchor aSave;
 	@UiField Anchor aEdit;
 	
+	@UiField TextField txtOrgUnit;
+	@UiField Element spnOrgUnit;
+	
+	@UiField TextField txtRepo;
+	@UiField Element spnRepo;
+	
 	@Inject
 	public SettingsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -152,11 +158,15 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 		UIObject.setVisible(spnTLS,!edit);
 		UIObject.setVisible(spnAuth,!edit);
 		UIObject.setVisible(spnReportViewImpl,!edit);
+		UIObject.setVisible(spnRepo,!edit);
+		UIObject.setVisible(spnOrgUnit,!edit);
 		
 		txtCompanyName.setVisible(edit);
 		txtHost.setVisible(edit);
 		txtPort.setVisible(edit);
 		txtProcotol.setVisible(edit);
+		txtRepo.setVisible(edit);
+		txtOrgUnit.setVisible(edit);
 		chkStartTls.setVisible(edit);
 		chkAuth.setVisible(edit);
 		txtAccount.setVisible(edit);
@@ -216,6 +226,14 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 			chkStartTls.setValue(settingValue==null?null: (Boolean)settingValue);
 			spnTLS.setInnerText(settingValue==null?null: settingValue.toString());
 			break;
+		case ORG_UNIT:
+			txtOrgUnit.setValue(settingValue==null?null: settingValue.toString());
+			spnOrgUnit.setInnerText(settingValue==null?null: settingValue.toString());
+			break;
+		case ORG_REPO:
+			txtRepo.setValue(settingValue==null?null: settingValue.toString());
+			spnRepo.setInnerText(settingValue==null?null: settingValue.toString());
+			break;
 		case REPORT_VIEW_IMPL:
 			String val = settingValue==null?null: settingValue.toString();
 			if(val!=null){
@@ -259,6 +277,12 @@ public class SettingsView extends ViewImpl implements SettingsPresenter.ISetting
 		setting  = new Setting(SETTINGNAME.REPORT_VIEW_IMPL,
 				new StringValue(null, SETTINGNAME.REPORT_VIEW_IMPL.name(), 
 						listReportView.getValue()==null? null : listReportView.getValue().getName()));
+		lst.add(setting);
+		
+		setting  = new Setting(SETTINGNAME.ORG_UNIT, new StringValue(null, SETTINGNAME.ORG_UNIT.name(), txtOrgUnit.getValue()));
+		lst.add(setting);
+		
+		setting  = new Setting(SETTINGNAME.ORG_REPO, new StringValue(null, SETTINGNAME.ORG_REPO.name(), txtRepo.getValue()));
 		lst.add(setting);
 		
 		return lst;

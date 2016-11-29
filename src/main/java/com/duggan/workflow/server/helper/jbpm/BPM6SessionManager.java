@@ -47,8 +47,23 @@ import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 
+/**
+ * Key resources:
+ * 
+ * https://docs.jboss.org/jbpm/release/6.3.0.Final/jbpm-docs/html/ch07.html#jBPMTaskServiceAPI
+ * https://docs.jboss.org/jbpm/v6.3/userguide/ch05.html#d0e1810
+ * https://docs.jboss.org/jbpm/release/6.4.0.Final/jbpm-docs/html/ch17.html#_rest_serialization_jaxb_or_json
+ * https://docs.jboss.org/jbpm/v6.0/userguide/wb.WorkbenchIntegration.html
+ * https://docs.jboss.org/jbpm/v6.3/userguide/ch17.html
+ * https://docs.jboss.org/jbpm/release/6.5.0.Final/jbpm-docs/html/ch25.html#jBPMReleaseNotes640
+ * 
+ * @author duggan
+ *
+ */
 public class BPM6SessionManager implements WiraSessionManager {
 
+	
+		
 	RuntimeManager manager;
 	KieBase kbase = null;
 
