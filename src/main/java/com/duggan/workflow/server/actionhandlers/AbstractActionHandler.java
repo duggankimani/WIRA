@@ -48,7 +48,6 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			throws ActionException {
 		@SuppressWarnings("unchecked")
 		B result = (B) action.createDefaultActionResponse();
-		log.warn("AbstractActionHandler on entry Trx with status "+DB.getTrxStatus());
 		
 		log.debug(action.getRequestCode()+": Executing command " + action.getClass().getName());
 		

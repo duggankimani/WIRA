@@ -44,7 +44,17 @@ public class ProcessView extends ViewImpl implements
 	public ProcessView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		imgProcess.setAltText("Could not load process image. Kindly ensure the svg image for this process has been uploaded");
+		/**
+		 * http://stackoverflow.com/questions/28960628/embedding-workbench-jbpm-in-application
+		 * 
+		 * http://localhost:9090/kie-wb/kie-wb.html?standalone=&perspective=org.kie.workbench.common.screens.home.client.perspectives.HomePerspective#org.kie.workbench.common.screens.messageconsole.MessageConsole
+		 */
+		
 		guvnorIFrame.setSrc("http://localhost:9090/kie-wb?standalone=&path=default://master@jbpm-playground/Evaluation/src/main/resources/evaluation.bpmn2");
+		
+		//using erspectives instead of path_url
+		//http://localhost:9090/kie-wb/kie-wb.html?standalone=&perspective=org.kie.workbench.common.screens.home.client.perspectives.HomePerspective
+		//guvnorIFrame.setSrc("http://localhost:9090/kie-wb/kie-wb.html?standalone=&perspective=org.kie.workbench.common.screens.home.client.perspectives.HomePerspective#org.kie.workbench.common.screens.messageconsole.MessageConsole");
 		bindSlot(ProcessPresenter.TABLE_SLOT, processStepsPanel); 
 	}
 

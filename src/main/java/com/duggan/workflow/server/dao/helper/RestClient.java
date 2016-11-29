@@ -1,6 +1,13 @@
 package com.duggan.workflow.server.dao.helper;
 
+import java.io.ByteArrayInputStream;
+import java.util.Collection;
+
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import org.guvnor.common.services.project.model.Repository;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -8,6 +15,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.api.json.JSONJAXBContext;
 
 public class RestClient {
 
@@ -77,6 +85,20 @@ public class RestClient {
 
 	public void setServerUrl(String serverUrl) {
 		this.serverUrl = serverUrl;
+	}
+
+	public <T>T unmarshal(String json, Class<T> clazz) {
+		Object result = null;
+		try {
+			JSONJAXBContext jsonJAXBContext = new JSONJAXBContext(clazz);
+			Unmarshaller unmarshaller = jsonJAXBContext.createUnmarshaller();
+			result = unmarshaller.unmarshal(new ByteArrayInputStream(json.getBytes()));
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return (T) result;
 	}
 
 }

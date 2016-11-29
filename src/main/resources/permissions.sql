@@ -1,9 +1,3 @@
-alter table permission drop column refid;
-alter table permission drop column createdby;
-alter table permission drop column created;
-create sequence permission_id_seq;
-alter table permission alter id set default nextval('permission_id_seq');
-
 delete from permission;
 
 insert into permission(name,description) 

@@ -11,25 +11,22 @@
         <level value="FATAL"/>
     </logger>
     <logger name="org.hibernate">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
     <logger name="org.apache.directory">
         <level value="FATAL"/>
     </logger>
     <logger name="org.jbpm.executor">
-        <level value="DEBUG"/>
+        <level value="WARN"/>
     </logger>
     <logger name="org.drools.xml">
     	<level value="FATAL"/>
-    </logger>
-    <logger name="org.apache.onami.persist">
-    	<level value="debug"/>
     </logger>
     <logger name="org.apache">
         <level value="FATAL"/>
     </logger>
     <logger name="com.duggan.workflow.server">
-        <level value="DEBUG"/>
+        <level value="WARN"/>
     </logger>
     <logger name="com.duggan.workflow.test">
         <level value="DEBUG"/>
@@ -38,7 +35,7 @@
         <level value="DEBUG"/>
     </logger>
     <logger name="xtension.workitems">
-        <level value="DEBUG"/>
+        <level value="WARN"/>
     </logger>
     <logger name="bitronix">
         <level value="FATAL"/>

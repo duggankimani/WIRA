@@ -20,8 +20,8 @@
 	</listener>
 	
 	<servlet>
-	    <servlet-class>com.duggan.workflow.server.servlets.InitializerServlet</servlet-class>
 	    <servlet-name>daemon-initializer</servlet-name>
+	    <servlet-class>com.duggan.workflow.server.servlets.InitializerServlet</servlet-class>
 	    <load-on-startup>1</load-on-startup>
 	</servlet>
 	
@@ -160,7 +160,7 @@
 	<servlet-mapping>
 	    <servlet-name>getReport</servlet-name>
 	    <url-pattern>/getreport</url-pattern>
-	</servlet-mapping-->
+	</servlet-mapping>
 	
 	<!-- PIONEER MPESA INTEGRATION -->
 	<servlet>

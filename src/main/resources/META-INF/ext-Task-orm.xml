@@ -135,7 +135,8 @@ select
     t.taskData.processId,
     t.taskData.processInstanceId,
     t.taskData.parentId,
-    t.taskData.deploymentId)
+    t.taskData.deploymentId,
+    t.taskData.skipable)
 from
     TaskImpl t 
     left join t.subjects as subject
@@ -191,7 +192,8 @@ select
     t.taskData.processId,
     t.taskData.processInstanceId,
     t.taskData.parentId,
-    t.taskData.deploymentId)
+    t.taskData.deploymentId,
+    t.taskData.skipable)
 from
     TaskImpl t 
     left join t.subjects as subject

@@ -22,7 +22,7 @@ public class DatabaseModule extends AbstractModule {
 		// DB Class
 		requestStaticInjection(DB.class);
 		
-//		bind(JPAInitializer.class).asEagerSingleton();
+		bind(JPAInitializer.class).asEagerSingleton();
 		bind(ExecutorTransactionManagementService.class).asEagerSingleton();
 		requestStaticInjection(ExecutorFactory.class);
 		
