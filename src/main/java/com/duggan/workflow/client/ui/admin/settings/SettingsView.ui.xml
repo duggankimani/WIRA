@@ -132,11 +132,11 @@
 				</div>
 				<div class="control-group">
 					<label class="control-label">
-						<b>Repository:</b>
+						<b>Repository Name:</b>
 					</label>
 					<div class="controls">
 						<d:TextField ui:field="txtRepo" type="text" class="input-large"
-							placeholder="git://localhost:9418/wira" />
+							placeholder="e.g workpointrepo" />
 						<span ui:field="spnRepo" />
 					</div>
 				</div>

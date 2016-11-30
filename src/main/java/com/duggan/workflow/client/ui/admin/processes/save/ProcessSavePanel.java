@@ -17,10 +17,12 @@ import com.duggan.workflow.shared.events.DeleteAttachmentEvent.DeleteAttachmentH
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.ProjectDto;
 import com.duggan.workflow.shared.requests.DeleteAttachmentRequest;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
+import com.duggan.workflow.shared.requests.GetProjectsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.requests.SaveProcessRequest;
@@ -28,12 +30,15 @@ import com.duggan.workflow.shared.responses.DeleteAttachmentResponse;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetProcessCategoriesResponse;
 import com.duggan.workflow.shared.responses.GetProcessResponse;
+import com.duggan.workflow.shared.responses.GetProjectsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
@@ -41,6 +46,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -87,6 +93,9 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 	@UiField
 	DropDownList<ProcessCategory> lstCategories;
 	
+	@UiField
+	DropDownList<ProjectDto> lstProjects;
+	
 	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
 	ProcessDef process = null;
@@ -96,6 +105,20 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 		txtColor.setText(cardProcess.getBackGroundColor());
 		txtIconStyle.setText(cardProcess.getIconStyle());
 		UIObject.setVisible(lblWarning.getElement(), false);
+		
+		txtName.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				cardProcess.setDisplay(txtName.getValue());
+			}
+		});
+		txtName.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				cardProcess.setDisplay(txtName.getValue());
+			}
+		});
 
 		txtColor.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -145,6 +168,13 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 		}
 		def.setUsersAndGroups(lstUserGroups.getSelectedItems());
 		def.setName(txtName.getValue());
+		ProjectDto project = lstProjects.getValue();
+		if(project!=null){
+			def.setProject(project.getName());
+			def.setProjectVersion(project.getVersion());
+			def.setGroupId(project.getGroupId());
+		}
+		
 		def.setProcessId(txtProcess.getValue());
 		def.setCategory(lstCategories.getValue());
 		def.setBackgroundColor(txtColor.getValue());
@@ -226,6 +256,7 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 		ArrayList<Listable> userGroups = process.getUsersAndGroups();
 		
 		txtName.setValue(name);
+		cardProcess.setDisplay(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
 
@@ -248,7 +279,7 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 			txtColor.setValue(processDef.getBackgroundColor());
 			cardProcess.setBackGroundColor(processDef.getBackgroundColor());
 		}
-
+		
 	}
 
 	private void loadProcess(final Long processDefId) {
@@ -260,6 +291,7 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 		if (processDefId != null) {
 			requests.addRequest(new GetProcessRequest(processDefId));
 		}
+		requests.addRequest(new GetProjectsRequest());
 
 		AppContext.getDispatcher().execute(requests,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -288,12 +320,23 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 							GetProcessResponse result = (GetProcessResponse) results
 									.get(i++);
 							setProcessDef(result.getProcessDef());
-							
 						}
+						
+						GetProjectsResponse resp = (GetProjectsResponse)results.get(i++);
+						bindProjects(resp.getProjects());
 					}
 				});
 	}
 	
+	protected void bindProjects(ArrayList<ProjectDto> projects) {
+		lstProjects.setItems(projects);
+		String projectName = process==null? null: process.getProject();
+		if(projectName!=null){
+			lstProjects.setValueByKey(projectName);
+		}
+		
+	}
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();

@@ -173,6 +173,10 @@ public class ProcessDaoHelper {
 
 		ProcessDef def = new ProcessDef();
 		def.setName(model.getName());
+		def.setProject(model.getProject());
+		def.setGroupId(model.getGroupId());
+		def.setProjectVersion(model.getProjectVersion());
+		
 		def.setProcessId(model.getProcessId());
 		def.setId(model.getId());
 		def.setRefId(model.getRefId());
@@ -278,6 +282,9 @@ public class ProcessDaoHelper {
 		}
 
 		model.setName(processDef.getName());
+		model.setProject(processDef.getProject());
+		model.setProjectVersion(processDef.getProjectVersion());
+		model.setGroupId(model.getGroupId());
 		model.setDescription(processDef.getDescription());
 		model.setProcessId(processDef.getProcessId());
 

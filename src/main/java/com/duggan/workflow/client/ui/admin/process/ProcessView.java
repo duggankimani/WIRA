@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -50,7 +51,7 @@ public class ProcessView extends ViewImpl implements
 		 * http://localhost:9090/kie-wb/kie-wb.html?standalone=&perspective=org.kie.workbench.common.screens.home.client.perspectives.HomePerspective#org.kie.workbench.common.screens.messageconsole.MessageConsole
 		 */
 		
-		guvnorIFrame.setSrc("http://localhost:9090/kie-wb?standalone=&path=default://master@jbpm-playground/Evaluation/src/main/resources/evaluation.bpmn2");
+		//guvnorIFrame.setSrc("http://localhost:9090/kie-wb?standalone=&path=default://master@jbpm-playground/Evaluation/src/main/resources/evaluation.bpmn2");
 		
 		//using erspectives instead of path_url
 		//http://localhost:9090/kie-wb/kie-wb.html?standalone=&perspective=org.kie.workbench.common.screens.home.client.perspectives.HomePerspective
@@ -108,5 +109,24 @@ public class ProcessView extends ViewImpl implements
 			processConfigPanel.addStyleName("hide");
 			imgProcess.removeStyleName("hide");
 		}
+	}
+
+	@Override
+	public void bindWorkbench(String orgUnit, String orgRepo,
+			ProcessDef processDef) {
+		String processId = processDef.getProcessId();
+		String project = processDef.getProject();//processDef.getCategory().getName();
+		processId = processId.replace(".", "/");
+		String url = "http://localhost:9090/kie-wb?standalone=&"
+				+ "path="
+				+ "default://master@"
+				+ orgRepo
+				+ "/"
+				+ project
+				+ "/src/main/resources/"
+				+ processId
+				+ ".bpmn2";
+		Window.alert("Url = "+url);
+		guvnorIFrame.setSrc(url);
 	}
 }

@@ -14,33 +14,37 @@
 			<g:HTMLPanel>
 				<g:HTMLPanel styleName="">
 					<div class="form-group">
-						<label for="ProcessName">Name:</label>
-						<d:TextField ui:field="txtName" type="text"
-							class="form-control input-xlarge" placeholder="Process Name" />
+						<label for="ProcessName">Project:</label>
+						<d:DropDownList ui:field="lstProjects" styleName="input-xlarge"></d:DropDownList>
 					</div>
 					<div class="form-group">
 						<label for="ProcessName">Process Id:</label>
 						<d:TextField ui:field="txtProcess" type="text"
 							title="A single process may have multiple processes and subprocesses, this property identifies the main process"
-							class="form-control input-xlarge" placeholder="Main Process Id" />
+							class="form-control input-xlarge" placeholder="Process Id" />
 					</div>
+
 					<div class="form-group">
 						<label for="ProcessDescription">Display:</label>
 						<div class="row-fluid">
-						    <div class="span6">
+							<div class="span6">
 								<div style="width:200px">
 									<d:Card ui:field="cardProcess"></d:Card>
 								</div>
 							</div>
 							<div class="span6">
 								<div style="width:200px">
-								    <label>Color:</label>
-										<d:TextField ui:field="txtColor" />
+									<label for="ProcessName">Name:</label>
+									<d:TextField ui:field="txtName" type="text"
+										placeholder="Display Name" />
+									
+									<label>Color:</label>
+									<d:TextField ui:field="txtColor" />
 									<br />
 									<label>Icon Style:</label>
 									<d:TextField ui:field="txtIconStyle" />
 									<a href="http://fontawesome.io/3.2.1/icons/" target="blank">
-									    Find Icons Here
+										Find Icons Here
 									</a>
 								</div>
 							</div>
@@ -70,8 +74,8 @@
 					</g:VerticalPanel>
 				</g:HTMLPanel>
 				<g:HTMLPanel ui:field="uploadPanel" styleName="uploadPanel">
-				    <g:Anchor ui:field="aUpload" styleName="btn btn-primary" 
-				        text="Click Here To Upload"></g:Anchor>
+					<g:Anchor ui:field="aUpload" styleName="btn btn-primary"
+						text="Click Here To Upload"></g:Anchor>
 					<up:Uploader ui:field="uploader" styleName="hide"></up:Uploader>
 				</g:HTMLPanel>
 			</g:HTMLPanel>

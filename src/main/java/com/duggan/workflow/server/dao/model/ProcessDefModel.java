@@ -50,6 +50,11 @@ public class ProcessDefModel extends PO {
 	@XmlAttribute
 	private String name;
 	
+	//kie project
+	private String project;
+	private String groupId;
+	private String projectVersion;
+	
 	@XmlAttribute
 	private String processId;
 	
@@ -221,5 +226,29 @@ public class ProcessDefModel extends PO {
 
 	public void addAttachmentName(String attachmentName) {
 		attachmentNames.add(attachmentName);
+	}
+
+	public String getProject() {
+		return project;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getProjectVersion() {
+		return projectVersion;
+	}
+
+	public void setProjectVersion(String projectVersion) {
+		this.projectVersion = projectVersion;
 	}
 }
