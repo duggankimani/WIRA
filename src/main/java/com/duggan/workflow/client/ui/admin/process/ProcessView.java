@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.event.dom.client.ErrorEvent;
@@ -126,7 +127,7 @@ public class ProcessView extends ViewImpl implements
 				+ "/src/main/resources/"
 				+ processId
 				+ ".bpmn2";
-		Window.alert("Url = "+url);
+		GWT.log("Workbench Url = "+url);
 		guvnorIFrame.setSrc(url);
 	}
 }

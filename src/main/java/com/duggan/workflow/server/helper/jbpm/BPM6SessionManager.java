@@ -6,9 +6,11 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.drools.compiler.kie.builder.impl.KieServicesImpl;
 import org.jbpm.runtime.manager.impl.SimpleRegisterableItemsFactory;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieFileSystem;
 import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.io.Resource;
 import org.kie.api.io.ResourceType;
