@@ -398,7 +398,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -509,7 +509,7 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -523,7 +523,7 @@
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 			<version>2.1.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -536,7 +536,7 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -607,7 +607,7 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.18.1-GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -681,7 +681,7 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -818,14 +818,14 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901-1.jdbc4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver 
@@ -859,7 +859,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -873,7 +873,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
