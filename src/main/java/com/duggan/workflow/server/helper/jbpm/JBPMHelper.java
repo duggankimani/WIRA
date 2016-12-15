@@ -1289,7 +1289,7 @@ public class JBPMHelper implements Closeable {
 									 * JPAProcessInstanceDbLog
 									 * .findProcessInstance(processInstanceId);
 									 */
-		String processId = log.getProcessId();
+		String processId = "KNA.Process";//log.getProcessId();
 
 		return "[Process " + processId + "; ProcessInstanceId "
 				+ processInstanceId + "L]";
