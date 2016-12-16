@@ -67,7 +67,7 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 	}
 	
 	@Override
-	protected void loadLines(ArrayList<Doc> tasks, boolean isIncremental) {
+	protected void loadLines(ArrayList<Doc> tasks,int totalCount, boolean isIncremental) {
 		
 		Long taskId = null;
 		String docRef = null;
@@ -82,7 +82,7 @@ public class SearchPresenter extends AbstractTaskPresenter<SearchPresenter.ISear
 		
 		
 		//Update table task list
-		super.loadLines(tasks, isIncremental);
+		super.loadLines(tasks, totalCount, isIncremental);
 
 		if(tasks.size()==1 && docRef!=null){
 			displayDocument(docRef, taskId);

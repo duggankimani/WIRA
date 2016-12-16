@@ -2,9 +2,9 @@ package com.duggan.workflow.shared.model;
 
 public enum Priority {
 
-	NORMAL("Info"),
-	HIGH("Urgent"),
-	CRITICAL("Critical");
+	NORMAL("NORMAL"),
+	HIGH("HIGH"),
+	CRITICAL("CRITICAL");
 
 	String displayName;
 	

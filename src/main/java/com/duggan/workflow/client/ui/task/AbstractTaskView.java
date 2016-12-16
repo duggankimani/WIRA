@@ -108,6 +108,9 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@UiField
 	Element processName;
+	
+	@UiField
+	Element divNoData;
 
 	@UiField
 	ScrollPanel divTableListing;
@@ -124,12 +127,14 @@ public class AbstractTaskView extends ViewImpl implements
 
 	ColumnsPanel columns = new ColumnsPanel();
 	Schema defaultSchema = new Schema("_GENERAL", "_GENERAL", "GENERAL");
-
+	
 	private ArrayList<Doc> tasks;
 	ArrayList<String> defaultCols = new ArrayList<String>();
 
+	private int totalCount;
+
 	enum DefaultFields {
-		CaseNo, Process, Task, Submitter, CurrentTask, CurrentUser, Due, Modified, Status, Notes
+		CaseNo, Process, Task, Submitter, CurrentTask, CurrentUser, Due, Modified, Status, Priority, Notes
 	}
 
 	@Inject
@@ -144,14 +149,16 @@ public class AbstractTaskView extends ViewImpl implements
 				"Task"));
 		defaultSchema.addColumn(new Column(DefaultFields.Submitter.name(),
 				"Submitter", "Submitter"));
-		defaultSchema.addColumn(new Column(DefaultFields.CurrentTask.name(),
-				"Current Task", "Current Task"));
+//		defaultSchema.addColumn(new Column(DefaultFields.CurrentTask.name(),
+//				"Current Task", "Current Task"));
 		defaultSchema.addColumn(new Column(DefaultFields.CurrentUser.name(),
 				"Current User", "Current User"));
 		defaultSchema.addColumn(new Column(DefaultFields.Due.name(), "Due",
 				"Due", "80px"));
 		defaultSchema.addColumn(new Column(DefaultFields.Modified.name(),
 				"Modified", "Modified", "80px"));
+		defaultSchema.addColumn(new Column(DefaultFields.Priority.name(),
+				"Priority", "Priority", "60px"));
 		defaultSchema.addColumn(new Column(DefaultFields.Status.name(),
 				"Status", "Status", "60px"));
 		defaultSchema.addColumn(new Column(DefaultFields.Notes.name(), "Notes",
@@ -216,11 +223,12 @@ public class AbstractTaskView extends ViewImpl implements
 
 							@Override
 							public void onSelect(String name) {
-								bindTasks(tasks, false);
+								bindTasks(tasks, totalCount, false);
 							}
 						}, "Ok", "Cancel");
 			}
 		});
+		
 		createHeader(tblTasks);
 	}
 
@@ -243,65 +251,98 @@ public class AbstractTaskView extends ViewImpl implements
 		HashMap<String, Column> values = columns.getValues();
 		if (values.containsKey(DefaultFields.CaseNo.name())) {
 			// Case No
+			String width = values.get(DefaultFields.CaseNo.name()).getWidth();
 			table.setWidget(i, j++,
 					createHeader("<strong>Case</strong>", j - 1));
-			table.getFlexCellFormatter().setWidth(i, (j - 1), "50px");
+			table.getFlexCellFormatter().setWidth(i, (j - 1), width);
 		}
 
 		if (values.containsKey(DefaultFields.Process.name())) {
+			String width = values.get(DefaultFields.Process.name()).getWidth();
 			// Process Name
 			table.setWidget(i, j++,
-					createHeader("<strong>Process</strong>", j - 1));
+					createHeader("<strong>Process</strong>", j - 1	));
+			if(width!=null){
+				table.getFlexCellFormatter().setWidth(i, (j - 1), width);
+			}
 		}
 
 		if (values.containsKey(DefaultFields.Task.name())) {
+			String width = values.get(DefaultFields.Task.name()).getWidth();
 			// Task
 			table.setWidget(i, j++,
 					createHeader("<strong>Task</strong>", j - 1));
+			if(width!=null){
+				table.getFlexCellFormatter().setWidth(i, (j - 1), width);
+			}
 		}
 
 		if (values.containsKey(DefaultFields.Submitter.name())) {
+			String width = values.get(DefaultFields.Submitter.name()).getWidth();
 			// Submitted By
 			table.setWidget(i, j++,
 					createHeader("<strong>Submitter</strong>", j - 1));
+			if(width!=null){
+				table.getFlexCellFormatter().setWidth(i, (j - 1), width);
+			}
 		}
 
 		if (values.containsKey(DefaultFields.CurrentTask.name())) {
+			String width = values.get(DefaultFields.CurrentTask.name()).getWidth();
 			// Current Task
 			table.setWidget(i, j++,
 					createHeader("<strong>Current Task</strong>", j - 1));
+			if(width!=null){
+				table.getFlexCellFormatter().setWidth(i, (j - 1), width);
+			}
 		}
 
 		if (values.containsKey(DefaultFields.CurrentUser.name())) {
+			String width = values.get(DefaultFields.CurrentUser.name()).getWidth();
 			// Current Assignee
 			table.setWidget(i, j++,
 					createHeader("<strong>Current User</strong>", j - 1));
+			if(width!=null){
+				table.getFlexCellFormatter().setWidth(i, (j - 1), width);
+			}
 		}
 
 		if (values.containsKey(DefaultFields.Due.name())) {
+			String width = values.get(DefaultFields.Due.name()).getWidth();
 			// DUE
 			table.setWidget(i, j++, createHeader("<strong>Due</strong>", j - 1));
-			table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+			table.getFlexCellFormatter().setWidth(i, (j - 1), width==null?"80px":width);
 		}
 
 		if (values.containsKey(DefaultFields.Modified.name())) {
+			String width = values.get(DefaultFields.Modified.name()).getWidth();
 			// MODIFIED
 			table.setWidget(i, j++,
 					createHeader("<strong>Modified</strong>", j - 1));
-			table.getFlexCellFormatter().setWidth(i, (j - 1), "80px");
+			table.getFlexCellFormatter().setWidth(i, (j - 1), width==null?"80px":width);
+		}
+		
+		if (values.containsKey(DefaultFields.Priority.name())) {
+			String width = values.get(DefaultFields.Priority.name()).getWidth();
+			// STATUS
+			table.setWidget(i, j++,
+					createHeader("<strong>Priority</strong>", j - 1));
+			table.getFlexCellFormatter().setWidth(i, (j - 1), width==null?"60px":width);
 		}
 
 		if (values.containsKey(DefaultFields.Status.name())) {
+			String width = values.get(DefaultFields.Status.name()).getWidth();
 			// STATUS
 			table.setWidget(i, j++,
 					createHeader("<strong>Status</strong>", j - 1));
-			table.getFlexCellFormatter().setWidth(i, (j - 1), "60px");
+			table.getFlexCellFormatter().setWidth(i, (j - 1), width==null?"60px":width);
 		}
 
 		if (values.containsKey(DefaultFields.Notes.name())) {
+			String width = values.get(DefaultFields.Notes.name()).getWidth();
 			// NOTES
 			table.setWidget(i, j++, new HTMLPanel("<strong>Notes</strong>"));
-			table.getFlexCellFormatter().setWidth(i, (j - 1), "20px");
+			table.getFlexCellFormatter().setWidth(i, (j - 1), width==null?"20px":width);
 		}
 
 		for (Column column : values.values()) {
@@ -320,7 +361,7 @@ public class AbstractTaskView extends ViewImpl implements
 		}
 	}
 
-	private Widget createHeader(String heading, int idx) {
+	protected Widget createHeader(String heading, int idx) {
 		Element content = DOM.createDiv();
 		content.setInnerHTML(heading);
 		content.addClassName("sortable-header-content");
@@ -428,16 +469,27 @@ public class AbstractTaskView extends ViewImpl implements
 	}
 
 	@Override
-	public void bindTasks(ArrayList<Doc> tasks, boolean isIncremental) {
-
+	public void bindTasks(ArrayList<Doc> tasks, int totalCount, boolean isIncremental) {
+		this.totalCount = totalCount;
 		if (!isIncremental) {
 			tblTasks.removeAllRows();
 			createHeader(tblTasks);
 			this.tasks = tasks;
+			
 		} else {
 			this.tasks.addAll(tasks);
 		}
 
+		if(this.tasks.isEmpty()){
+			divNoData.setInnerText("No Items To Display");
+			divNoData.removeClassName("hide");
+		}else if(tasks.isEmpty()){
+			divNoData.removeClassName("hide");
+			divNoData.setInnerText("Showing 1 - "+this.tasks.size()+" of "+this.tasks.size());
+		}else{
+			divNoData.setInnerText("Showing 1 - "+this.tasks.size()+" of Many");
+		}
+		
 		int i = tblTasks.getRowCount();
 
 		for (Doc doc : tasks) {
@@ -536,6 +588,7 @@ public class AbstractTaskView extends ViewImpl implements
 					spnDocIcon.addStyleName("icon-ok");
 					spnDocIcon.setTitle("Completed Task");
 				} else {
+					spnStatus.setText("DRAFT");
 					spnDocIcon.addStyleName("icon-file-alt color-silver-dark");
 				}
 			}
@@ -608,21 +661,23 @@ public class AbstractTaskView extends ViewImpl implements
 			}// End of setting descriptions
 
 			Priority priority = Priority.get(doc.getPriority());
-			InlineLabel spnPriority = new InlineLabel();
+			InlineLabel spnPriority = new InlineLabel(priority.getDisplayName());
 			spnPriority.addStyleName("priority");
 			switch (priority) {
 			case CRITICAL:
-				spnPriority.addStyleName("label-important");
+				spnPriority.addStyleName("label label-important");
 				break;
 
 			case HIGH:
-				spnPriority.addStyleName("label-warning"); //
+				spnPriority.addStyleName("label label-warning"); //
 				break;
 
 			default:
-				spnPriority.addStyleName("hide");
+				spnPriority.addStyleName("label label-info");
 				break;
 			}
+			
+			
 
 			// Several days ago
 			if (dateToUse != null) {
@@ -653,23 +708,23 @@ public class AbstractTaskView extends ViewImpl implements
 
 			HTMLPanel casePanel = new HTMLPanel("");
 			casePanel.add(link);
-			link.addClickHandler(new ClickHandler() {
-
-				@Override
-				public void onClick(ClickEvent event) {
-					Object model = ((ActionLink) event.getSource()).getModel();
-					if (model instanceof Document) {
-						Document doc = (Document) model;
-						AppContext.fireEvent(new DocumentSelectionEvent(doc
-								.getRefId(), null, DocMode.READWRITE));
-					} else {
-						Long taskId = ((HTSummary) model).getId();
-						String docRefId = ((HTSummary) model).getRefId();
-						AppContext.fireEvent(new DocumentSelectionEvent(
-								docRefId, taskId, DocMode.READ));
-					}
-				}
-			});
+//			link.addClickHandler(new ClickHandler() {
+//
+//				@Override
+//				public void onClick(ClickEvent event) {
+//					Object model = ((ActionLink) event.getSource()).getModel();
+//					if (model instanceof Document) {
+//						Document doc = (Document) model;
+//						AppContext.fireEvent(new DocumentSelectionEvent(doc
+//								.getRefId(), null, DocMode.READWRITE));
+//					} else {
+//						Long taskId = ((HTSummary) model).getId();
+//						String docRefId = ((HTSummary) model).getRefId();
+//						AppContext.fireEvent(new DocumentSelectionEvent(
+//								docRefId, taskId, DocMode.READ));
+//					}
+//				}
+//			});
 
 			HashMap<String, Column> values = columns.getValues();
 			if (values.containsKey(DefaultFields.CaseNo.name())) {
@@ -713,30 +768,46 @@ public class AbstractTaskView extends ViewImpl implements
 
 			if (values.containsKey(DefaultFields.Due.name())) {
 				// DUE
-				tblTasks.setWidget(i, j++, spnTime);
-			}
-
-			if (values.containsKey(DefaultFields.Modified.name())) {
-				// MODIFIED
 				HTMLPanel div = new HTMLPanel("");
 				div.getElement().appendChild(spnDeadlines);
 				tblTasks.setWidget(i, j++, div);
 			}
 
-			HTMLPanel status = new HTMLPanel("");
-			// status.add(spnStatus);
-			switch (doc.getProcessStatus()) {
-			case COMPLETED:
-				status.addStyleName("text-success");
-				break;
-			case INPROGRESS:
-				status.addStyleName("text-info");
-				break;
-
-			default:
-				break;
+			if (values.containsKey(DefaultFields.Modified.name())) {
+				// MODIFIED
+				HTMLPanel div = new HTMLPanel("");
+				div.add(spnTime);
+				tblTasks.setWidget(i, j++, div);
 			}
-			status.add(new InlineLabel(doc.getProcessStatus().name()));
+			
+			HTMLPanel divPriority = new HTMLPanel("");
+			divPriority.add(spnPriority);
+			if (values.containsKey(DefaultFields.Priority.name())) {
+				// STATUS
+				tblTasks.setWidget(i, j++, divPriority);
+			}
+			
+
+			HTMLPanel status = new HTMLPanel("");
+
+			if(doc.getProcessInstanceId()!=null){
+				// status.add(spnStatus);
+				switch (doc.getProcessStatus()) {
+				case COMPLETED:
+					status.addStyleName("text-success");
+					break;
+				case INPROGRESS:
+					status.addStyleName("text-info");
+					break;
+
+				default:
+					break;
+				}
+				status.add(new InlineLabel(doc.getProcessStatus().name()));
+			}else{
+				status.add(spnStatus);
+			}
+			
 
 			if (values.containsKey(DefaultFields.Status.name())) {
 				// STATUS
@@ -760,9 +831,39 @@ public class AbstractTaskView extends ViewImpl implements
 
 			}
 
+			tblTasks.getRowFormatter().addStyleName(i, "clickable-row");
+			String taskId = (doc instanceof HTSummary)? ((HTSummary)doc).getId()+"": "";
+			tblTasks.getRowFormatter().getElement(i).setAttribute("data-href", "/"+doc.getRefId()+"/"+taskId);
 			++i;
 		}
 
+		initTable(tblTasks.getElement());
+	}
+
+	private native void initTable(Element table) /*-{
+		var parent = this;
+		$wnd.jQuery(document).ready(function($) {
+			$wnd.jQuery(".clickable-row").unbind('click');
+		    $wnd.jQuery(".clickable-row").click(function() {
+		        var tokens = $(this).data("href").split('/');
+		        var docRefId = tokens[1];
+		        var taskId = "";
+		        if(tokens.length>1){
+		        	taskId = tokens[2];
+		        }
+		         //alert("docRefId="+docRefId+"; taskId="+taskId);
+		        parent.@com.duggan.workflow.client.ui.task.AbstractTaskView::fireSelectionEvent(Ljava/lang/String;Ljava/lang/String;)(docRefId, taskId);
+		    });
+		});
+	}-*/;
+	
+	void fireSelectionEvent(final String docRefId, final String taskId){
+		if (taskId.isEmpty()) {
+			AppContext.fireEvent(new DocumentSelectionEvent(docRefId, null, DocMode.READWRITE));
+		} else {
+			AppContext.fireEvent(new DocumentSelectionEvent(
+					docRefId, Long.parseLong(taskId), DocMode.READ));
+		}
 	}
 
 	private Widget render(Column column, Doc doc) {
@@ -827,7 +928,11 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@Override
 	public void bindProcess(ProcessDef processDef) {
-		processName.setInnerText(processDef.getDisplayName());
+		if(processDef!=null){
+			processName.setInnerText(processDef.getDisplayName());
+		}else{
+			processName.setInnerText("All Processes");
+		}
 	}
 
 	@Override
@@ -841,10 +946,15 @@ public class AbstractTaskView extends ViewImpl implements
 		this.processRefId = processRefId;
 		processName.setInnerText("");
 		if (processRefId == null) {
-			divProcess.addClassName("hide");
+			aProcess.setHref("#/home");
+			aFilter.addStyleName("hide");
+			aConfigure.addStyleName("hide");
+			//divProcess.addClassName("hide");
 		} else {
 			divProcess.removeClassName("hide");
 			aProcess.setHref("#/activities/" + processRefId);
+			aFilter.removeStyleName("hide");
+			aConfigure.removeStyleName("hide");
 		}
 	}
 

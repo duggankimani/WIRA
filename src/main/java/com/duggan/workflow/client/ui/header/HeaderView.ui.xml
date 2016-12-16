@@ -9,7 +9,7 @@
 
 	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
 		<div class="navbar-inner">
-			<div class="row-fluid">
+			<div class="row-fluid" style="max-height: 48px;">
 
 				<div class="pull-left" id="toggleAndCompany">
 				    <a id="aMaximize" class="brand hide" title="Maximize">

@@ -911,3 +911,9 @@ section.positioned {
 .column-config-container .cols-table input{
 	margin:0px;
 }
+
+.clickable-row td{
+	pointer:hand;
+	cursor:pointer;
+	pointer-events:auto;
+}

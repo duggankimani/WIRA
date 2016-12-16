@@ -94,5 +94,12 @@ public class Column extends SerializableObj{
 	public String getFieldType() {
 		return fieldType;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Column other = (Column)obj;
+		
+		return other.name.equals(name);
+	}
 
 }

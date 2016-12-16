@@ -92,7 +92,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		void addScrollHandler(ScrollHandler scrollHandler);
 
-		void bindTasks(ArrayList<Doc> tasks, boolean isIncremental);
+		void bindTasks(ArrayList<Doc> tasks, int totalCount,boolean isIncremental);
 
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 
@@ -269,7 +269,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 						GetTaskListResult rst = (GetTaskListResult) result;
 						ArrayList<Doc> tasks = rst.getTasks();
-						loadLines(tasks);
+						loadLines(tasks, rst.getTotalCount());
 						if (tasks.isEmpty())
 							getView().setHasItems(false);
 						else
@@ -338,11 +338,13 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 							
 							GetProcessSchemaResponse getSchema = (GetProcessSchemaResponse)result.get(i++);
 							getView().bindProcessSchema(getSchema.getSchema());
+						}else{
+							getView().bindProcess(null);
 						}
 						
 						GetTaskListResult rst = (GetTaskListResult) result.get(i++);
 						ArrayList<Doc> tasks = rst.getTasks();
-						loadLines(tasks, isIncremental);
+						loadLines(tasks, rst.getTotalCount(), isIncremental);
 
 						if (tasks.size() > 0 && !isIncremental) {
 							getView().setHasItems(true);
@@ -394,16 +396,16 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	 * 
 	 * @param tasks
 	 */
-	protected void loadLines(final ArrayList<Doc> tasks) {
-		loadLines(tasks, false);
+	protected void loadLines(final ArrayList<Doc> tasks, int totalCount) {
+		loadLines(tasks, totalCount, false);
 	}
 
-	protected void loadLines(final ArrayList<Doc> tasks, boolean isIncremental) {
+	protected void loadLines(final ArrayList<Doc> tasks,int totalCount, boolean isIncremental) {
 		CURPOS = CURPOS + PAGE_SIZE;
 //		if (!isIncremental) {
 //			setInSlot(DATEGROUP_SLOT, null);
 //		}
-		getView().bindTasks(tasks, isIncremental);
+		getView().bindTasks(tasks, totalCount, isIncremental);
 
 //		final ArrayList<Date> dates = new ArrayList<Date>();
 //
@@ -521,7 +523,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 						BaseResponse response = aResponse.get(0);
 						GetTaskListResult listResult = (GetTaskListResult) aResponse
 								.get(1);
-						loadLines(listResult.getTasks());
+						loadLines(listResult.getTasks(), listResult.getTotalCount());
 					}
 				});
 

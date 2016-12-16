@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="row-fluid full-page">
-			<div class="" ui:field="divProcess">
+			<div ui:field="divProcess" style="height: 40px;">
 				<div class="span12">
 					<h4 style="display: inline-block;padding: 10px;">
 						<a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
@@ -49,13 +49,15 @@
 					</h4>
 					<div class="pull-right" style="line-height: 35px;">
 						<div style="display:inline-block">
-							<d:ActionLink ui:field="aFilter" styleName="label label-primary" title="Filter Data">
+							<d:ActionLink ui:field="aFilter" styleName="label label-primary"
+								title="Filter Data">
 								<i class="icon-filter"></i>
 								Filter
 							</d:ActionLink>
 						</div>
 						<div style="display:inline-block">
-							<d:ActionLink ui:field="aConfigure" styleName="label label-primary" title="Select the columns to show">
+							<d:ActionLink ui:field="aConfigure" styleName="label label-primary"
+								title="Select the columns to show">
 								<i class="icon-cogs"></i>
 								Configure
 							</d:ActionLink>
@@ -63,10 +65,18 @@
 					</div>
 				</div>
 			</div>
-			<g:ScrollPanel ui:field="divTableListing" styleName="span12 overflow-y">
-				<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
-					width="100%"></g:FlexTable>
-			</g:ScrollPanel>
+
+			<div class="span12 row-fluid" 
+			    style="overflow: auto; height: calc(100% - 80px); position: absolute; zoom: 1;margin-left: 0px;">
+				<g:ScrollPanel ui:field="divTableListing" styleName="span12 full-page">
+					<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
+						width="100%"></g:FlexTable>
+				</g:ScrollPanel>
+			</div>
+
+			<div class="row-fluid" style="position: absolute;height: 40px;bottom: 0px;">
+				<div ui:field="divNoData">Loading....</div>
+			</div>
 		</div>
 
 

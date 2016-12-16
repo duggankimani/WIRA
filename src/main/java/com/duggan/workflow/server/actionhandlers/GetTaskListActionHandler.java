@@ -50,6 +50,7 @@ public class GetTaskListActionHandler extends
 		String userId = action.getUserId()==null? SessionHelper.getCurrentUser().getUserId():
 			action.getUserId();
 		
+		int totalCount = 0;
 		TaskType type = action.getType();
 
 		List<Doc> summary = new ArrayList<>();
@@ -82,7 +83,7 @@ public class GetTaskListActionHandler extends
 			
 			if(action.getFilter()!=null){				
 				summary.addAll(DocumentDaoHelper.searchJson(processId,userId,action.getFilter()));
-				summary.addAll(JBPMHelper.get().searchTasks(processId,userId, action.getFilter()));
+				//summary.addAll(JBPMHelper.get().searchTasks(processId,userId, action.getFilter()));
 			}else if(action.getProcessInstanceId()!=null || action.getDocRefId()!=null){
 				
 				Long processInstanceId = action.getProcessInstanceId();
@@ -125,6 +126,7 @@ public class GetTaskListActionHandler extends
 		Collections.sort(summary);
 		
 		result.setTasks((ArrayList<Doc>) summary);
+		result.setTotalCount(totalCount);
 
 	}
 
