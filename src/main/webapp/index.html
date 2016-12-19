@@ -41,17 +41,19 @@
 <link href="css/font-awesome/css/font-awesome.css" type="text/css"
 	rel="stylesheet">
 
-<!-- global styles -->
-<link rel="stylesheet" type="text/css" href="css/layout.css">
-<link rel="stylesheet" type="text/css" href="css/elements.css">
-<link rel="stylesheet" type="text/css" href="css/icons.css">
-<link rel="stylesheet" type="text/css" href="css/Upload.css">
 
 <!--Admin Fonts  -->
 <link rel="stylesheet" type="text/css"
 	href="css/admin_css/admin_layout.css">
 <link rel="stylesheet" type="text/css"
 	href="css/admin_css/stilearn-helper.css">
+	
+<!-- global styles -->
+<link rel="stylesheet" type="text/css" href="css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/elements.css">
+<link rel="stylesheet" type="text/css" href="css/icons.css">
+<link rel="stylesheet" type="text/css" href="css/Upload.css">
+
 
 <!-- Bootstrap end -->
 
@@ -178,6 +180,18 @@ var refreshValues = function() {
 }
 
 </script>
+
+<style type="text/css">
+#progressbar{
+	margin: 10px; width: 400px; height: 15px; border: 2px solid black; overflow: hidden; border-radius: 10px;
+}
+
+@media (max-width: 767px){
+#progressbar{
+	margin: 10px; width: 350px; height: 15px; border: 2px solid black; overflow: hidden; border-radius: 10px;
+}
+}
+</style>
 </head>
 
 <!--                                           -->
@@ -198,7 +212,7 @@ var refreshValues = function() {
 			style="font-size: 13px; margin: auto; width: 400px; text-align: center;">Please
 			wait as the system loads...</div>
 		<div id="progressbar"
-			style="margin: 10px; width: 400px; height: 15px; border: 2px solid black; overflow: hidden; border-radius: 10px;">
+			style="">
 			<div id="progress"
 				style="background: #2299dd; height: 100%; width: 0;"></div>
 			<script type="text/javascript">

@@ -538,6 +538,19 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aForward, false);
 		show(aApprove, false);
 		show(aAssign, isUnassignedList && AppContext.isCurrentUserAdmin());
+		
+		show(aClaim, false);
+		show(aStart, false);
+		show(aSuspend, false);
+		show(aResume, false);
+		show(aComplete, false);
+		show(aDelegate, false);
+		show(aReject, false);
+		show(aRevoke, false);
+		show(aStop, false);
+		show(aForward, false);
+		show(aApprove, false);
+		show(aAssign, isUnassignedList && AppContext.isCurrentUserAdmin());
 	}
 
 	@Override

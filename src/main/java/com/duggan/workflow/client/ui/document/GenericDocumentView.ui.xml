@@ -10,13 +10,86 @@
 	<g:HTMLPanel styleName="full-page">
 		<g:HTMLPanel styleName="upper-content" ui:field="panelUpperContent">
 			<div class="action-area row-fluid">
-				<g:HTMLPanel styleName="span1 priority" ui:field="spnPriority"></g:HTMLPanel>
+				<g:HTMLPanel styleName="span1 priority hide" ui:field="spnPriority"></g:HTMLPanel>
 				<div class="generic-doc-title span6">
 					<span ui:field="spnDocType"></span>
 					-&nbsp;
 					<span ui:field="spnSubject"></span>
 				</div>
-				<div class="action-buttons pull-right">
+
+				<div id="phoneActions" class="dropdown action-buttons pull-right visible-phone">
+					<a id="aPhoneActions" class="btn dropdown-toggle" data-toggle="dropdown">
+						<i class="icon-align-justify"></i>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a id="aEdit" title="Edit">
+								<i class="icon-pencil color-black"></i>
+								Edit
+							</a>
+						</li>
+						<li>
+							<a id="aSave">
+								<i class="icon-save"></i>
+								Save
+							</a>
+						</li>
+						<li>
+							<a id="aViewAttachments" title="View attachments">
+								<i class="icon-paper-clip color-black"></i>
+								Attachments
+							</a>
+						</li>
+
+						<li class="hidden">
+							<a id="aStart" title="Start working on the task">
+								<i class="icon-play"></i>
+								Start
+							</a>
+						</li>
+
+						<li class="hidden">
+							<a id="aResume">
+								<i class="icon-play"></i>
+								Resume
+							</a>
+						</li>
+
+						<li class="hidden">
+							<a id="aRevoke"
+								title="Revoke this task so that its re-assignable to other users in your group">
+								<i class="icon-minus"></i>
+								Revoke
+							</a>
+						</li>
+
+						<li class="hidden">
+							<a id="aSuspend" title="Suspend this task">
+								<i class="icon-pause color-black"></i>
+								Suspend
+							</a>
+						</li>
+
+						<li class="hidden">
+							<a id="aAssign" title="Assign this task">
+								<i class="icon-group"></i>
+								Assign
+							</a>
+						</li>
+
+						<li class="hidden">
+							<a id="aDelegate" title="Delegate this task">
+								<i class="icon-group"></i>
+								Delegate
+							</a>
+						</li>
+
+						<!-- End -->
+					</ul>
+
+				</div>
+
+				<div id="desktopActions" class="action-buttons pull-right hidden-phone">
 					<d:ActionLink ui:field="aDoc" styleName="btn btn-default disabled"
 						title="View Data Form">
 						<i class="icon-file"></i>
@@ -116,9 +189,9 @@
 
 						<ul class="dropdown-menu" role="menu" ui:field="ulMenu">
 							<li class="hidden">
-								<d:ActionLink ui:field="aPrint"
-									title="Print this document">
-									<i class="icon-print"></i>Print
+								<d:ActionLink ui:field="aPrint" title="Print this document">
+									<i class="icon-print"></i>
+									Print
 								</d:ActionLink>
 							</li>
 							<li>
@@ -211,7 +284,6 @@
 						</d:ActionLink>
 					</div>
 				</div>
-
 			</div>
 
 		</g:HTMLPanel>

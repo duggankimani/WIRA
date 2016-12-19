@@ -64,14 +64,14 @@
 				</div>
 
 
-				<div class="pull-right right-navigations hidden-phone">
+				<div class="pull-right right-navigations">
 					<ul ui:field="ulNav" class="nav pull-right nav-icons">
-						<li class="home">
+						<li class="home hidden-phone">
 							<g:Anchor href="#/home" ui:field="aHome" styleName="close-icon hand">
 								<i class="icon-home"></i>
 							</g:Anchor>
 						</li>
-						<li class="home dropdown">
+						<li class="home dropdown hidden-phone">
 							<a class="dropdown-toggle" id="adminDropDown" role="button"
 								data-toggle="dropdown" href="#">
 								<i class="icon-cog"></i>
@@ -117,7 +117,7 @@
 								</li>
 							</ul>
 						</li>
-						<li class="notification-dropdown">
+						<li class="notification-dropdown hidden-phone">
 							<g:Anchor ui:field="aNotifications" styleName="close-icon hand dropdown-toggle">
 								<i class="icon-bell"></i>
 								<span ui:field="lblCount" class="label label-important"></span>
@@ -134,8 +134,8 @@
 						</li>
 
 						<li class="user-dropdown dropdown">
-							<a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
-								<span ui:field="spnUser"></span>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span ui:field="spnUser" class="hidden-phone"></span>
 								<g:Image styleName="avatar-small" ui:field="imgSmall"
 									width="30px" height="50px" />
 								<!-- img src="img/blueman(small).png" width="30px" height="50px"/ -->
