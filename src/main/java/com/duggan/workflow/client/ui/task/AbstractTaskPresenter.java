@@ -41,18 +41,10 @@ import com.duggan.workflow.shared.responses.GetProcessResponse;
 import com.duggan.workflow.shared.responses.GetProcessSchemaResponse;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
@@ -74,21 +66,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		SearchHandler, AssignTaskHandler {
 
 	public interface ITaskView extends View {
-		void setHeading(String heading);
-
-		HasClickHandlers getRefreshButton();
-
-		public void setHasItems(boolean hasItems);
 
 		void setTaskType(TaskType currentTaskType);
-
-		public Anchor getaRefresh();
-
-		TextBox getSearchBox();
-
-		public void hideFilterDialog();
-
-		public void setSearchBox(String text);
 
 		void addScrollHandler(ScrollHandler scrollHandler);
 
@@ -186,37 +165,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			}
 		});
 
-		filterPresenter.addCloseHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				getView().hideFilterDialog();
-			}
-		});
-
-		getView().getSearchBox().addKeyUpHandler(new KeyUpHandler() {
-
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				String txt = getView().getSearchBox().getValue().trim();
-
-				if (!txt.equals(searchTerm)
-						|| event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					searchTerm = txt;
-					timer.cancel();
-					timer.schedule(400);
-				}
-
-			}
-		});
-
-		getView().getRefreshButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				loadTasks();
-			}
-		});
-
 	}
 
 	/**
@@ -270,11 +218,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 						GetTaskListResult rst = (GetTaskListResult) result;
 						ArrayList<Doc> tasks = rst.getTasks();
 						loadLines(tasks, rst.getTotalCount());
-						if (tasks.isEmpty())
-							getView().setHasItems(false);
-						else
-							getView().setHasItems(true);
-
 						fireEvent(new AfterSearchEvent(filter.getSubject(),
 								filter.getPhrase()));
 						fireEvent(new ProcessingCompletedEvent());
@@ -302,8 +245,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		if (!isIncremental)
 			clear();
-
-		getView().setHeading(type.getTitle());
 
 		String userId = AppContext.getUserId();
 		
@@ -347,7 +288,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 						loadLines(tasks, rst.getTotalCount(), isIncremental);
 
 						if (tasks.size() > 0 && !isIncremental) {
-							getView().setHasItems(true);
 
 							Doc doc = tasks.get(0);
 							String docRefId = null;
@@ -374,8 +314,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 //								taskId, docMode));
 							}
 
-						} else {
-							getView().setHasItems(false);
 						}
 						afterDataLoaded();
 						fireEvent(new ProcessingCompletedEvent());
@@ -504,7 +442,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 				return;
 			}
 			search(filter);
-			getView().hideFilterDialog();
 		}
 	}
 

@@ -782,7 +782,8 @@ body .dateBoxPopup {
 	margin-left: 0px;
 	border: 1px solid #CCCCCC;
 	/*width: 74.8%;*/
-	height: 92%;
+	/*height: 92%;*/
+	height:100%;
 }
 
 #detailed-info .upper-content {
@@ -865,6 +866,7 @@ body .dateBoxPopup {
 	padding: 6px 25px 0 0px;
 	font-size: 12px;
 	margin-left: 15px;
+	width: calc(100% - 15px);
 	/* margin-right: 73px; */
 }
 

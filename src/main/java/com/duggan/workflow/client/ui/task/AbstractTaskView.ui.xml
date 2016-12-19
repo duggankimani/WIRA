@@ -7,39 +7,14 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="full-page" ui:field="container">
-		<!--middle navigation -->
-		<div class="span2 hide" ui:field="divTasks">
-			<div id="nav-top" style="height:auto;">
-				<i class="icon-tag"></i>
-				<h5 ui:field="hCategory">Completed</h5>
-				<br />
-
-				<!-- div class="search hide" -->
-				<div class="hide">
-					<g:TextBox styleName="search-box" ui:field="txtSearch" />
-					<g:Anchor styleName="icon-caret-down" ui:field="iFilterdropdown"></g:Anchor>
-				</div>
-				<g:Anchor ui:field="aRefresh" styleName="hide icon-refresh icon-large hand"></g:Anchor>
-				<g:HTMLPanel ui:field="filterDialog" styleName="hidden"></g:HTMLPanel>
-			</div>
-
-			<g:ScrollPanel ui:field="divDocListing">
-				<g:HTMLPanel styleName="content-nav row-fluid">
-					<d:BulletListPanel ui:field="ulTaskGroups">
-					</d:BulletListPanel>
-					<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
-				</g:HTMLPanel>
-			</g:ScrollPanel>
-		</div>
-
-		<!--Detailed Info Description -->
-		<div ui:field="divDocView" class="span12 hide">
+		<!--Document View-->
+		<div ui:field="divDocView" class="span12 hide" style="height:100%">
 			<g:HTMLPanel ui:field="docContainer" styleName="full-page">
 			</g:HTMLPanel>
 		</div>
 
-		<div class="row-fluid full-page">
-			<div ui:field="divProcess" style="height: 40px;">
+		<div ui:field="divTaskListing" class="row-fluid full-page">
+			<div  style="height: 40px;">
 				<div class="span12">
 					<h4 style="display: inline-block;padding: 10px;">
 						<a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
@@ -48,34 +23,41 @@
 						<span ui:field="processName"></span>
 					</h4>
 					<div class="pull-right" style="line-height: 35px;">
-						<div style="display:inline-block">
-							<d:ActionLink ui:field="aFilter" styleName="label label-primary"
-								title="Filter Data">
-								<i class="icon-filter"></i>
-								Filter
-							</d:ActionLink>
-						</div>
-						<div style="display:inline-block">
-							<d:ActionLink ui:field="aConfigure" styleName="label label-primary"
-								title="Select the columns to show">
-								<i class="icon-cogs"></i>
-								Configure
-							</d:ActionLink>
+						<div ui:field="divNoData" style="display:inline-block">Loading....</div>
+
+						<div class="dropdown" style="display:inline-block">
+							<button class="btn dropdown-toggle" data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+
+							<ul class="dropdown-menu" role="menu" style="right: 0px;left: initial;">
+								<li>
+									<d:ActionLink ui:field="aFilter"
+										title="Filter Data">
+										<i class="icon-filter"></i>
+										Filter
+									</d:ActionLink>
+								</li>
+								<li>
+									<d:ActionLink ui:field="aConfigure"
+										title="Select the columns to show">
+										<i class="icon-cogs"></i>
+										Configure
+									</d:ActionLink>
+
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="span12 row-fluid" 
-			    style="overflow: auto; height: calc(100% - 80px); position: absolute; zoom: 1;margin-left: 0px;">
+			<div class="span12 row-fluid"
+				style="overflow: auto; height: calc(100% - 40px); position: absolute; zoom: 1;margin-left: 0px;">
 				<g:ScrollPanel ui:field="divTableListing" styleName="span12 full-page">
 					<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
 						width="100%"></g:FlexTable>
 				</g:ScrollPanel>
-			</div>
-
-			<div class="row-fluid" style="position: absolute;height: 40px;bottom: 0px;">
-				<div ui:field="divNoData">Loading....</div>
 			</div>
 		</div>
 

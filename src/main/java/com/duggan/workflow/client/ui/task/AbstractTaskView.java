@@ -78,33 +78,14 @@ public class AbstractTaskView extends ViewImpl implements
 	@UiField
 	HTMLPanel container;
 	@UiField
-	TextBox txtSearch;
-	// @UiField HTMLPanel divDocPopup;
-	@UiField
-	ScrollPanel divDocListing;
-	@UiField
 	Element divDocView;
-	@UiField
-	Element divTasks;
-	@UiField
-	BulletListPanel ulTaskGroups;
-	@UiField
-	HeadingElement hCategory;
-	@UiField
-	Anchor aRefresh;
-	@UiField
-	Anchor iFilterdropdown;
-	@UiField
-	HTMLPanel filterDialog;
-	@UiField
-	InlineLabel spnNoItems;
 	@UiField
 	HTMLPanel docContainer;
 	@UiField
 	FlexTable tblTasks;
 
 	@UiField
-	Element divProcess;
+	Element divTaskListing;
 
 	@UiField
 	Element processName;
@@ -165,10 +146,6 @@ public class AbstractTaskView extends ViewImpl implements
 				"Notes", "20px"));
 		reinitialize();
 		
-		divTasks.setId("middle-box");
-		ulTaskGroups.setId("navigation-menu");
-		txtSearch.getElement().setAttribute("placeholder", "Search...");
-		divDocListing.getElement().setId("middle-nav");
 		divDocView.setId("detailed-info");
 		divTableListing.getElement().getStyle().setMarginLeft(0, Unit.PX);
 
@@ -178,26 +155,6 @@ public class AbstractTaskView extends ViewImpl implements
 				// System.err.println("### ABS");
 			}
 		}, ClickEvent.getType());
-
-		iFilterdropdown.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				if (isNotDisplayed) {
-					filterDialog.removeStyleName("hidden");
-					isNotDisplayed = false;
-				} else {
-					filterDialog.addStyleName("hidden");
-					isNotDisplayed = true;
-				}
-			}
-		});
-
-		txtSearch.addFocusHandler(new FocusHandler() {
-			@Override
-			public void onFocus(FocusEvent event) {
-				// hideFilterDialog();
-			}
-		});
 
 		aFilter.addClickHandler(new ClickHandler() {
 
@@ -385,7 +342,6 @@ public class AbstractTaskView extends ViewImpl implements
 
 	@Override
 	public void addScrollHandler(ScrollHandler scrollHandler) {
-		divDocListing.addScrollHandler(scrollHandler);
 		divTableListing.addScrollHandler(scrollHandler);
 	}
 
@@ -404,12 +360,6 @@ public class AbstractTaskView extends ViewImpl implements
 			} else {
 				displayTable(true);
 			}
-		} else if (slot == FILTER_SLOT) {
-			filterDialog.clear();
-			if (content != null) {
-				filterDialog.add(content);
-			}
-
 		} else {
 			super.setInSlot(slot, content);
 		}
@@ -419,53 +369,18 @@ public class AbstractTaskView extends ViewImpl implements
 	protected void displayTable(boolean isDisplayTable) {
 		if (isDisplayTable) {
 			divDocView.addClassName("hide");
-			divTasks.addClassName("hide");
-			divTableListing.removeStyleName("hide");
+			divTaskListing.removeClassName("hide");
+			//divTableListing.removeStyleName("hide");
 		} else {
 			divDocView.removeClassName("hide");
-			divTasks.removeClassName("hide");
-			divTableListing.addStyleName("hide");
+			divTaskListing.addClassName("hide");
+//			divTableListing.addStyleName("hide");
 		}
 	}
-
-	public void setHeading(String heading) {
-		hCategory.setInnerText(heading);
-	}
-
-	public HasClickHandlers getRefreshButton() {
-		return aRefresh;
-	}
-
-	public void setHasItems(boolean hasItems) {
-		UIObject.setVisible(spnNoItems.getElement(), !hasItems);
-		if (!hasItems) {
-			spnNoItems.setText("No items to display");
-		}
-	}
-
-	public TextBox getSearchBox() {
-		return txtSearch;
-	}
-
-	@Override
-	public void hideFilterDialog() {
-		filterDialog.addStyleName("hidden");
-		isNotDisplayed = true;
-	}
-
-	@Override
-	public void setSearchBox(String text) {
-		txtSearch.setValue(text);
-	}
-
+	
 	@Override
 	public void setTaskType(TaskType currentTaskType) {
 
-	}
-
-	@Override
-	public Anchor getaRefresh() {
-		return null;
 	}
 
 	@Override
@@ -949,9 +864,7 @@ public class AbstractTaskView extends ViewImpl implements
 			aProcess.setHref("#/home");
 			aFilter.addStyleName("hide");
 			aConfigure.addStyleName("hide");
-			//divProcess.addClassName("hide");
 		} else {
-			divProcess.removeClassName("hide");
 			aProcess.setHref("#/activities/" + processRefId);
 			aFilter.removeStyleName("hide");
 			aConfigure.removeStyleName("hide");
