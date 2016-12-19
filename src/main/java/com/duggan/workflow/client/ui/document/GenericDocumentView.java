@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.batik.dom.events.DOMEvent;
+
 import com.duggan.workflow.client.model.ScreenMode;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AttachmentItem;
@@ -36,14 +38,17 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -245,6 +250,24 @@ public class GenericDocumentView extends ViewImpl implements
 	public GenericDocumentView(final Binder binder, CurrentUser user) {
 		widget = binder.createAndBindUi(this);
 		createNavigationButtons();
+		
+		aClaim.getElement().setId("aClaim_Link");
+		aStart.getElement().setId("aStart_Link");
+		aSuspend.getElement().setId("aSuspend_Link");
+		aResume.getElement().setId("aResume_Link");
+		aComplete.getElement().setId("aComplete_Link");
+		aDelegate.getElement().setId("aDelegate_Link");
+		aReject.getElement().setId("aReject_Link");
+		aRevoke.getElement().setId("aRevoke_Link");
+		aStop.getElement().setId("aStop_Link");
+		aForward.getElement().setId("aForward_Link");
+		aApprove.getElement().setId("aApprove_Link");
+		aAssign.getElement().setId("aAssign_Link");
+		aEdit.getElement().setId("aEdit_Link");
+		aSave.getElement().setId("aSave_Link");
+		aProcess.getElement().setId("aProcess_Link");
+		aDoc.getElement().setId("aDoc_Link");
+		aAudit.getElement().setId("aAudit_Link");
 
 		//UIObject.setVisible(aEdit.getElement(), false);
 		UIObject.setVisible(aConfigure.getElement(), 
@@ -267,6 +290,9 @@ public class GenericDocumentView extends ViewImpl implements
 		//ArrayUtil.asList("filename","",""),
 		tblAttachments.setHeaders(
 				ArrayUtil.asList("File Name","Created By","Date Created"));
+		
+		//Register Phone events
+		registerPhoneEvents(panelUpperContent.getElementById("phoneActions"));
 		
 		img.addErrorHandler(new ErrorHandler() {
 
@@ -474,6 +500,7 @@ public class GenericDocumentView extends ViewImpl implements
 		formPanel.setReadOnly(!isEditMode);
 		//--UIObject.setVisible(btnGroup, !isEditMode);
 		UIObject.setVisible(aForward.getElement(), !isEditMode);
+		showLi("aForward", !isEditMode);
 		//UIObject.setVisible(aEdit.getElement(), !isEditMode);
 //		UIObject.setVisible(aSave.getElement(), isEditMode);
 		showNavigation(isEditMode);
@@ -539,18 +566,119 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aApprove, false);
 		show(aAssign, isUnassignedList && AppContext.isCurrentUserAdmin());
 		
-		show(aClaim, false);
-		show(aStart, false);
-		show(aSuspend, false);
-		show(aResume, false);
-		show(aComplete, false);
-		show(aDelegate, false);
-		show(aReject, false);
-		show(aRevoke, false);
-		show(aStop, false);
-		show(aForward, false);
-		show(aApprove, false);
-		show(aAssign, isUnassignedList && AppContext.isCurrentUserAdmin());
+		showLi("aClaim", false);
+		showLi("aStart", false);
+		showLi("aSuspend", false);
+		showLi("aResume", false);
+		showLi("aComplete", false);
+		showLi("aDelegate", false);
+		showLi("aReject", false);
+		showLi("aRevoke", false);
+		showLi("aStop", false);
+		showLi("aForward", false);
+		showLi("aApprove", false);
+		showLi("aAssign", isUnassignedList && AppContext.isCurrentUserAdmin());
+	}
+	
+	public native void registerPhoneEvents(Element phoneActions)/*-{
+		var view = this;
+		$wnd.jQuery().ready(function(){
+			$wnd.jQuery(phoneActions).find('.dropdown-menu a').click(function(){
+				var id= $wnd.jQuery(this).prop('id');
+				view.@com.duggan.workflow.client.ui.document.GenericDocumentView::click(Ljava/lang/String;)(id);
+			});
+		});
+		
+	}-*/;
+	
+	public void click(String id){
+		Anchor target = null;
+		switch(id){
+		case "aClaim":
+			target = aClaim;
+			break;
+		case "aStart":
+			target = aStart;
+			break;
+		case "aSuspend":
+			target = aSuspend;
+			break;
+		case "aResume":
+			target = aResume;
+			break;
+		case "aDelegate":
+			target = aDelegate;
+			break;
+		case "aReject":
+			target = aReject;
+			break;
+		case "aRevoke":
+			target = aRevoke;
+			break;
+		case "aStop":
+			target = aStop;
+			break;
+		case "aForward":
+			target = aForward;
+			break;
+		case "aAssign":
+			target = aAssign;
+			break;
+		case "aEdit":
+			target = aEdit;
+			break;
+		case "aSave":
+			target = aSave;
+			break;
+		case "aProcess":
+			target = aProcess;
+			break;
+		case "aDoc":
+			target = aDoc;
+			break;
+		case "aAudit":
+			target = aAudit;
+			break;
+		case "aViewAttachments":
+			target = aViewAttachments;
+			break;
+		case "aClose":
+			target = aClose;
+			break;
+			
+		}
+		if(target==null){
+			return;
+		}
+		DomEvent.fireNativeEvent(com.google.gwt.dom.client.Document.get().createClickEvent(
+				0, 0, 0, 0, 0,
+	            false, false, false, false), target);
+	}
+
+	private void showLi(String elementId, boolean isShow) {
+		if(elementId==null){
+			return;
+		}
+		
+		Element el = panelUpperContent.getElementById(elementId);
+		if(el==null){
+			//not found
+			return;
+		}
+		
+		Element target = el;
+		if(el!=null){
+			Element parentEl = el.getParentElement();
+			if(parentEl.hasTagName("li")){
+				target = parentEl;
+			}
+		}
+		
+		if(isShow){
+			target.removeClassName("hidden");
+		}else{
+			target.addClassName("hidden");
+		}
 	}
 
 	@Override
@@ -845,8 +973,53 @@ public class GenericDocumentView extends ViewImpl implements
 		if (isShow) {
 			target.removeStyleName("hidden");
 		}
+		showLi(getRelatedId(target), isShow);
 		UIObject.setVisible(target.getElement(), isShow);
 
+	}
+
+	private String getRelatedId(Anchor target) {
+		
+		if(target==aClaim){
+			return "aClaim";
+		}else if(target==aStart){
+			return "aStart";
+		}else if(target==aSuspend){
+			return "aSuspend";
+		}else if(target==aResume){
+			return "aResume";
+		}else if(target==aComplete){
+			return "aComplete";
+		}else if(target==aDelegate){
+			return "aDelegate";
+		}else if(target==aReject){
+			return "aReject";
+		}else if(target==aRevoke){
+			return "aRevoke";
+		}else if(target==aStop){
+			return "aStop";
+		}else if(target==aForward){
+			return "aForward";
+		}else if(target==aApprove){
+			return "aApprove";
+		}else if(target==aAssign){
+			return "aAssign";
+		}else if(target==aDoc){
+			return "aDoc";
+		}else if(target==aAudit){
+			return "aAudit";
+		}else if(target==aProcess){
+			return "aProcess";
+		}else if(target==aEdit){
+			return "aEdit";
+		}else if(target==aSave){
+			return "aSave";
+		}else if(target==aViewAttachments){
+			return "aViewAttachments";
+		}else if(target==aClose){
+			return "aClose";
+		}
+		return null;
 	}
 
 	public HasClickHandlers getClaimLink() {

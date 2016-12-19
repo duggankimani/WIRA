@@ -2198,4 +2198,8 @@ btn-social>:first-child {
 		width: calc(100% - 110px);
     	display: inline-block;
 	}
+	
+	#detailed-info .action-buttons .dropdown-menu {
+    	left: -91px;
+	}
 }

@@ -35,6 +35,28 @@
 							</a>
 						</li>
 						<li>
+							<a id="aDoc" class="disabled" title="View Data Form">
+								<i class="icon-file"></i>
+								View Form
+								<!-- Process -->
+							</a>
+						</li>
+						<li>
+							<a id="aAudit" class="disabled" title="View Process Audit">
+								<i class="icon-time"></i>
+								Process Audit
+								<!-- Process -->
+							</a>
+						</li>
+
+						<li>
+							<a id="aProcess" class="disabled" title="View Process Map">
+								<i class="icon-info"></i>
+								Process Map
+								<!-- Process -->
+							</a>
+						</li>
+						<li>
 							<a id="aViewAttachments" title="View attachments">
 								<i class="icon-paper-clip color-black"></i>
 								Attachments
@@ -84,6 +106,12 @@
 							</a>
 						</li>
 
+						<li>
+							<a id="aClose" title="Close">
+								<i class="icon-remove"></i>
+								Close
+							</a>
+						</li>
 						<!-- End -->
 					</ul>
 
