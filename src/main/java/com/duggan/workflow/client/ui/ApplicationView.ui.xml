@@ -18,7 +18,10 @@
 		<div ui:field="divGenericAlerts" class="alert alert-success hide">
 			<!-- strong>Success!</strong> Indicates a successful or positive action. -->
 		</div>
-
+		<div ui:field="elMobileLoader" class="visible-mobile hide" 
+		    style="margin: 0;position: absolute;width: 100%;top: 50%;z-index: 10;left: 50%;">
+			<div id="mobile-loader"></div>    
+		</div>
 		<div class="full-page">
 			<g:HTMLPanel ui:field="pHeader"></g:HTMLPanel>
 			<!-- Domain Specific View goes here -->

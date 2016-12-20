@@ -39,6 +39,8 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
 	HTMLPanel popoverPanel;
 	@UiField
 	Element disconnectionText;
+	@UiField
+	Element elMobileLoader;
 
 	@UiField
 	Element divGenericAlerts;
@@ -92,9 +94,11 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
 				loadingtext.setInnerText(message);
 			}
 			loadingtext.removeClassName("hide");
+			elMobileLoader.removeClassName("hide");
 		} else {
 			loadingtext.setInnerText("Loading ...");
 			loadingtext.addClassName("hide");
+			elMobileLoader.addClassName("hide");
 		}
 	}
 
