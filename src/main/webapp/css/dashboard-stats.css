@@ -72,12 +72,14 @@ div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper .sta
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper.stat-item1 .stat-item
 	{
-	color: #f0cd6d
+	color:gray;
+	/*color: #f0cd6d*/
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper.stat-item1 .stat-status
 	{
-	color: #b79436
+	/*color: #b79436*/
+	color:gray;
 }
 
 div.dashboard-stats li .stat-outer-wrapper .stat-wrapper .stat-item-wrapper.stat-item2 .stat-item

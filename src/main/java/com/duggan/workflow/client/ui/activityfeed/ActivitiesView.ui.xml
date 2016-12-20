@@ -7,33 +7,34 @@
 	ui:generateLocales='default'>
 
 	<ui:style>
-	.bottom-panel {
+		.bottom-panel {
 		padding: 20px 0px;
 		height: 456px;
-	}
-	
-	.recent-activities {
+		}
+
+		.recent-activities {
 		max-height: 480px;
 		overflow-y: auto;
-	}
-	
-	.faded-image {
+		}
+
+		.faded-image {
 		opacity: 0.3;
 		text-align: center;
 		margin: 0 auto;
 		display: block;
 		padding: 10px 0;
-	}
-	
-	.on-top-text {
+		}
+
+		.on-top-text {
 		position: absolute;
 		width: 95%;
 		top: 30%;
 		border-bottom: none;
 		text-align: center;
 		color: #333;
-		border-bottom: none !important;
-	}
+		border-bottom: none
+		!important;
+		}
 	</ui:style>
 
 
@@ -122,22 +123,6 @@
 					<div class="dashboard-stats text-center row-fluid">
 						<div class="span12">
 							<ul class="list-inline row-fluid">
-								<li class="span3">
-									<a ui:field="aTotal" href="#">
-										<div class="stat-outer-wrapper">
-											<div class="stat-wrapper">
-												<div class="icon-wrapper">
-													<i class="icon-pushpin"></i>
-												</div>
-												<div class="stat-item-wrapper stat-item1">
-													<div class="stat-item" ui:field="elTotal"></div>
-													<div class="stat-status">Total</div>
-												</div>
-											</div><!-- End .stat-wrapper -->
-
-										</div><!-- End .stat-outer-wrapper -->
-									</a>
-								</li>
 								<li class=" hidden-xs span3">
 									<a ui:field="aInbox" href="#">
 										<div class="stat-outer-wrapper">
@@ -170,7 +155,22 @@
 										</div><!-- End .stat-outer-wrapper -->
 									</a>
 								</li>
+								<li class="span3">
+									<a ui:field="aDrafts" href="#">
+										<div class="stat-outer-wrapper">
+											<div class="stat-wrapper">
+												<div class="icon-wrapper">
+													<i class="icon-pencil"></i>
+												</div>
+												<div class="stat-item-wrapper stat-item1">
+													<div class="stat-item" ui:field="elDrafts"></div>
+													<div class="stat-status">Drafts</div>
+												</div>
+											</div><!-- End .stat-wrapper -->
 
+										</div><!-- End .stat-outer-wrapper -->
+									</a>
+								</li>
 								<li class="span3 active">
 									<div class="stat-outer-wrapper">
 										<div class="stat-wrapper">
@@ -184,7 +184,6 @@
 
 									</div><!-- End .stat-outer-wrapper -->
 								</li>
-
 							</ul>
 						</div>
 					</div>

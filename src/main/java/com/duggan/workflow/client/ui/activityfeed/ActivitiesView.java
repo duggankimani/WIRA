@@ -105,7 +105,7 @@ public class ActivitiesView extends ViewImpl implements
 	@UiField
 	AnchorElement aDone;
 	@UiField
-	AnchorElement aTotal;
+	AnchorElement aDrafts;
 
 	@UiField
 	FocusPanel parentPanel;
@@ -114,7 +114,7 @@ public class ActivitiesView extends ViewImpl implements
 	FlexTable recentTasks;
 
 	@UiField
-	Element elTotal;
+	Element elDrafts;
 	@UiField
 	Element elDone;
 	@UiField
@@ -309,7 +309,7 @@ public class ActivitiesView extends ViewImpl implements
 	public void setProcess(ProcessDef process) {
 		this.process = process;
 		processName.setInnerText(process.getDisplayName());
-		aTotal.setHref("#/inbox/all/" + process.getRefId());
+		aDrafts.setHref("#/drafts/" + process.getRefId());
 		aInbox.setHref("#/inbox/all/" + process.getRefId());
 		aDone.setHref("#/participated/" + process.getRefId());
 	}
@@ -637,11 +637,14 @@ public class ActivitiesView extends ViewImpl implements
 				elDone.setInnerText(count + "");
 				total = total + count;
 				break;
+			case DRAFT:
+				elDrafts.setInnerText(count+"");
+				break;
 
 			}
 		}
 
-		elTotal.setInnerText(total + "");
+		//elTotal.setInnerText(total + "");
 	}
 
 	private Integer getValue(Integer val) {
