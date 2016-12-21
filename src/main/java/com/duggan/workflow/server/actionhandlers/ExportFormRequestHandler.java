@@ -19,8 +19,8 @@ public class ExportFormRequestHandler extends
 	public void execute(ExportFormRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		
-		Long formId = action.getFormId();
-		String xml = FormDaoHelper.exportForm(formId);
+		String formRefId = action.getFormRefId();
+		String xml = FormDaoHelper.exportForm(formRefId);
 		
 		ExportFormResponse response = (ExportFormResponse)actionResult;
 		response.setXml(xml);

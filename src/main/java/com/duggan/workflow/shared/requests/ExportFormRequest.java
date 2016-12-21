@@ -6,19 +6,19 @@ import com.wira.commons.shared.response.BaseResponse;
 
 public class ExportFormRequest extends BaseRequest<ExportFormResponse> {
 
-	private Long formId;
+	private String formRefId;
 
 	@SuppressWarnings("unused")
 	private ExportFormRequest() {
 		// For serialization only
 	}
 
-	public ExportFormRequest(Long formId) {
-		this.formId = formId;
+	public ExportFormRequest(String formRefId) {
+		this.formRefId = formRefId;
 	}
 
-	public Long getFormId() {
-		return formId;
+	public String getFormRefId() {
+		return formRefId;
 	}
 	
 	@Override

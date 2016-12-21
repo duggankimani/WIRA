@@ -52,6 +52,12 @@
 						<i class="icon-minus-sign"></i>
 					</g:Anchor>
 
+					<g:Anchor ui:field="aExport" styleName="btn btn-primary"
+						title="Export Process">
+						Export
+						<i class="icon-arrow-down"></i>
+					</g:Anchor>
+					
 					<g:Anchor styleName="btn btn-danger" ui:field="aDelete">
 						Delete
 						<i class="icon-trash"></i>

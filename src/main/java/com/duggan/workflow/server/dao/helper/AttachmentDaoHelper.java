@@ -100,6 +100,7 @@ public class AttachmentDaoHelper {
 			attachment.setProcessDefId(model.getProcessDef().getId());
 
 		attachment.setId(model.getId());
+		attachment.setRefId(model.getRefId());
 		attachment.setName(model.getName());
 		attachment.setType(model.getType()==null? AttachmentType.UPLOADED: model.getType());
 		attachment.setFieldName(model.getFieldName());

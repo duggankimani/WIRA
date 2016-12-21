@@ -3,13 +3,18 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 
 import com.wira.commons.shared.models.Listable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class Trigger implements Serializable, Listable{
+public class Trigger extends SerializableObj implements Serializable, Listable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final String ID = "id";
+	public static final String NAME = "name";
+	public static final String IMPORTS = "imports";
+	public static final String SCRIPT = "script";
 	private Long id;
 	private String name;
 	private String imports;
@@ -51,6 +56,7 @@ public class Trigger implements Serializable, Listable{
 		Trigger trigger = new Trigger();
 		trigger.setActive(isActive);
 		trigger.setId(id);
+		trigger.setRefId(getRefId());
 		trigger.setName(name);
 		trigger.setScript(script);
 		trigger.setImports(imports);

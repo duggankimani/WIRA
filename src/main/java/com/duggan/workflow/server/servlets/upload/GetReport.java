@@ -14,9 +14,11 @@ import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
+import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
@@ -26,6 +28,8 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.security.BaseServlet;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.itextpdf.text.DocumentException;
 
@@ -47,6 +51,10 @@ public class GetReport extends BaseServlet {
 			throws ServletException, IOException {
 
 		String action = req.getParameter("ACTION");
+		if(action==null){
+			action = req.getParameter("action");
+		}
+		
 		log.debug("GetReport Action = "+action);
 
 		if (action == null) {
@@ -104,7 +112,10 @@ public class GetReport extends BaseServlet {
 		if(action.equalsIgnoreCase("PROCESSMAP")){
 			processBPMProcessMap(req, resp);
 		}
-
+		
+		if(action.equalsIgnoreCase("EXPORTPROCESS")){
+			processExportProcessRequest(req, resp);
+		}
 	}
 
 	private void processBPMProcessMap(HttpServletRequest req,
@@ -255,27 +266,25 @@ public class GetReport extends BaseServlet {
 
 	private void processExportFormRequest(HttpServletRequest req,
 			HttpServletResponse resp) {
-		String param1 = req.getParameter("formId");
-		assert param1!=null;
+		String refId = req.getParameter("formRefId");
+		assert refId!=null;
+		Form form = FormDaoHelper.getFormJson(refId, true);
+		String name = form.getName()+".json";
+		String json = FormDaoHelper.exportForm(form);
 		
-		Long formId  = Long.parseLong(param1);
-		ADForm form = DB.getFormDao().getForm(formId);
+		processAttachmentRequest(resp,json.getBytes() , name);
 		
-		String name = form.getCaption();
-		if(name==null){
-			name=form.getName();
-		}
+	}
+	
+	private void processExportProcessRequest(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		String processRefId = req.getParameter("processRefId");
+		assert processRefId!=null;
+		ProcessDef def = ProcessDaoHelper.getProcessDef(processRefId);
 		
-		if(name==null){
-			name="Untitled"+formId;
-		}
-		
-		name=name+".xml";
-		
-		String xml = FormDaoHelper.exportForm(form);
-		
-		processAttachmentRequest(resp,xml.getBytes() , name);
-		
+		resp.setHeader("Content-disposition", "attachment;filename=\""
+				+ def.getName()+".zip");
+		ProcessDaoHelper.exportProcessAsZip(processRefId, resp.getOutputStream());
 	}
 
 	private void processAttachmentRequest(HttpServletRequest req,

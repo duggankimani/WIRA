@@ -62,6 +62,9 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 
 	@UiField
 	Anchor aConfigure;
+	
+	@UiField
+	Anchor aExport;
 
 
     @Inject
@@ -220,6 +223,10 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 
 	public HasClickHandlers getEditButton() {
 		return aEdit;
+	}
+	
+	public HasClickHandlers getDownloadButton() {
+		return aExport;
 	}
 
 	public HasClickHandlers getDeleteButton() {

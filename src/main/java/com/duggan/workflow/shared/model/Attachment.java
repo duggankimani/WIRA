@@ -17,6 +17,18 @@ public class Attachment extends SerializableObj implements Serializable,TreeStor
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final String ID = "id";
+
+	public static final String TYPE = "type";
+
+	public static final String SIZE = "size";
+
+	public static final String CONTENTTYPE = "contenttype";
+
+	public static final String PATH = "path";
+
+	public static final String NAME = "name";
 	
 	private Long id;
 	private String name;

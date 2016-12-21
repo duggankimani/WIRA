@@ -3,13 +3,22 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class TaskStepTrigger implements Serializable,IsSerializable{
+public class TaskStepTrigger extends SerializableObj implements Serializable,IsSerializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final String ID = "id";
+
+	public static final String TRIGGER = "trigger";
+
+	public static final String CONDITION = "condition";
+
+	public static final String TYPE = "type";
 	
 	private Long id;
 	private Trigger trigger;

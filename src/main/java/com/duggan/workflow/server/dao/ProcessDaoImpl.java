@@ -271,14 +271,25 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 	public List<ADTaskStepTrigger> getTaskStepTriggers(Long taskStepId,
 			TriggerType type) {
-		Query query = em
-				.createQuery(
-						"FROM ADTaskStepTrigger t where t.isActive=:active "
-								+ "and t.taskStep.id=:taskStepId and t.type=:type")
-				.setParameter("active", 1)
-				.setParameter("taskStepId", taskStepId)
-				.setParameter("type", type);
-
+		Query query = null;
+		
+		if(type==null){
+			query = em
+					.createQuery(
+							"FROM ADTaskStepTrigger t where t.isActive=:active "
+									+ "and t.taskStep.id=:taskStepId")
+					.setParameter("active", 1)
+					.setParameter("taskStepId", taskStepId);
+		}else{
+			query = em
+					.createQuery(
+							"FROM ADTaskStepTrigger t where t.isActive=:active "
+									+ "and t.taskStep.id=:taskStepId and t.type=:type")
+					.setParameter("active", 1)
+					.setParameter("taskStepId", taskStepId)
+					.setParameter("type", type);
+		}
+		
 		return getResultList(query);
 	}
 
@@ -389,6 +400,17 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		return getSingleResultOrNull(query);
 	}
+	
+	public List<ADTaskNotification> getTaskNotifications(Long processDefId) {
+		StringBuffer jpql = new StringBuffer("from ADTaskNotification t where "
+				+ "t.processDefId=:processDefId ");
+
+		Query query = em.createQuery(jpql.toString())
+			.setParameter("processDefId", processDefId);
+
+		return getResultList(query);
+	}
+
 
 	/**
 	 * 
@@ -678,4 +700,9 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				.setParameter("refId", processRefId));
 	}
 
+	public List<TaskStepModel> getTaskStepsByProcessRef(String processRefId) {
+		String query = "FROM TaskStepModel t where t.processDef.refId=:processRefId "
+				+ "and isActive=1 order by nodeId, sequenceNo";
+		return getResultList(em.createQuery(query).setParameter("processRefId", processRefId));
+	}
 }

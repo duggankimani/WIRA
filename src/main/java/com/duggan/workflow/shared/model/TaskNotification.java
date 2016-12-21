@@ -6,13 +6,32 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class TaskNotification implements Serializable, IsSerializable{
+public class TaskNotification extends SerializableObj implements Serializable, IsSerializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final String CATEGORY = "category";
+
+	public static final String ENABLENOTIFICATION = "enablenotification";
+
+	public static final String ACTION = "action";
+
+	public static final String DEFAULTANOTIFICATION = "usedefaultnotification";
+
+	public static final String TEMPLATE = "template";
+
+	public static final String NODEID = "nodeid";
+
+	public static final String STEPNAME = "stepname";
+
+	public static final String SUBJECT = "subject";
+
+	public static final String RECIPIENTS = "recipients";
 	
 	private NotificationCategory category;
 	private Long id;

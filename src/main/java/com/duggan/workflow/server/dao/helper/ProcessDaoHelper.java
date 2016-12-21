@@ -3,15 +3,25 @@ package com.duggan.workflow.server.dao.helper;
 import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getType;
 import static com.duggan.workflow.server.dao.helper.DocumentDaoHelper.getTypeFromProcess;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,9 +31,13 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.hibernate.JsonForm;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADOutputDoc;
@@ -44,9 +58,13 @@ import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.AssignmentDto;
+import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
+import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.NotificationCategory;
+import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Schema;
@@ -57,7 +75,10 @@ import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;
 import com.duggan.workflow.shared.model.Trigger;
 import com.duggan.workflow.shared.model.TriggerType;
+import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Form;
+import com.sun.jersey.api.json.JSONJAXBContext;
+import com.sun.jersey.api.json.JSONMarshaller;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.Listable;
 import com.wira.commons.shared.models.UserGroup;
@@ -137,15 +158,20 @@ public class ProcessDaoHelper {
 	}
 
 	public static ProcessDef getProcessDef(String processRefId) {
+		return getProcessDef(processRefId, true);
+	}
+	
+	public static ProcessDef getProcessDef(String processRefId, boolean isDetailed) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
 		ProcessDefModel model = dao.findByRefId(processRefId,
 				ProcessDefModel.class);
 
-		ProcessDef def = get(model, true);
+		ProcessDef def = get(model, isDetailed);
 
 		return def;
 	}
+
 
 	public static List<ProcessDef> getAllProcesses(String searchTerm,
 			boolean isLoadDetails) {
@@ -410,6 +436,7 @@ public class ProcessDaoHelper {
 			dto.setFormName(DB.getFormDao().getFormNameJson(dto.getFormRefId()));
 		}
 		dto.setId(model.getId());
+		dto.setRefId(model.getRefId());
 		dto.setMode(model.getMode());
 		dto.setNodeId(model.getNodeId());
 		dto.setOutputDocName(model.getDoc() == null ? null : model.getDoc()
@@ -608,6 +635,7 @@ public class ProcessDaoHelper {
 
 		Trigger trigger = new Trigger();
 		trigger.setId(po.getId());
+		trigger.setRefId(po.getRefId());
 		trigger.setName(po.getName());
 		trigger.setScript(po.getScript());
 		trigger.setImports(po.getImports());
@@ -677,6 +705,7 @@ public class ProcessDaoHelper {
 		stepTrigger.setTaskStepId(adTaskStep.getTaskStep().getId());
 		stepTrigger.setType(adTaskStep.getType());
 		stepTrigger.setId(adTaskStep.getId());
+		stepTrigger.setRefId(adTaskStep.getRefId());
 		stepTrigger.setCondition(adTaskStep.getCondition());
 
 		return stepTrigger;
@@ -947,6 +976,278 @@ public class ProcessDaoHelper {
 
 	public static List<Schema> getProcessSchema(String processRefId) {
 		return DB.getFormDao().getProcessSchema(processRefId);
+	}
+	
+	public static String exportProcessJson(String processRefId) throws JSONException{
+		ProcessDaoImpl dao = DB.getProcessDao();
+		ProcessDefModel model = dao.findByRefId(processRefId,
+				ProcessDefModel.class);
+		ProcessDef processDef = get(model, true);
+
+		
+		List<Attachment> files = processDef.getFiles();//Does not include process svg image
+		List<LocalAttachment> imageFiles = DB.getAttachmentDao().getAttachmentsForProcessDef(model,true);
+		for(LocalAttachment a: imageFiles){
+			files.add(AttachmentDaoHelper.get(a));
+		}
+		
+		JSONObject process = new JSONObject();
+		process.put(ProcessDef.ID, processDef.getRefId());
+		process.put(ProcessDef.NAME, processDef.getName());
+		process.put(ProcessDef.PROCESSID, processDef.getProcessId());
+		process.put(ProcessDef.BACKGROUNDCOLOR, processDef.getBackgroundColor());
+		process.put(ProcessDef.ICONSTYLE, processDef.getIconStyle());
+		process.put(ProcessDef.FILENAME, processDef.getFileName());
+		process.put(ProcessDef.DESCRIPTION, processDef.getDescription());
+		process.put(ProcessDef.IMAGENAME, processDef.getImageName());
+		process.put(ProcessDef.CATEGORY, processDef.getCategory()==null? null: processDef.getCategory().getName());
+		
+		JSONArray processAttachments = new JSONArray();
+		for(Attachment a: processDef.getFiles()){
+			JSONObject att = new JSONObject();
+			att.put(Attachment.ID, a.getRefId());
+			att.put(Attachment.NAME, a.getName());
+			att.put(Attachment.TYPE, a.getType());
+			att.put(Attachment.SIZE, a.getSize());
+			att.put(Attachment.CONTENTTYPE, a.getContentType());
+			att.put(Attachment.PATH, a.getPath());
+			processAttachments.put(att);
+			//Process SVG Image not included 
+		}
+		//Process BPMN2 & SVG
+		process.put("attachments", processAttachments);
+		
+		//Access Rights
+		ArrayList<Listable> usersAndGroups = processDef.getUsersAndGroups();
+		JSONArray access = new JSONArray();
+		for(Listable userOrGroup: usersAndGroups){
+			if(userOrGroup instanceof HTUser){
+				access.put(((HTUser)userOrGroup).getUserId());
+			}else{
+				access.put(userOrGroup.getName());
+			}
+			
+		}
+		process.put("access", access);//Access info
+		
+		
+		//Task Steps
+		ArrayList<TaskStepDTO> taskSteps = getSteps(processRefId);
+		JSONArray steps = new JSONArray();
+		for(TaskStepDTO dto: taskSteps){
+			JSONObject obj = new JSONObject();
+			obj.put(TaskStepDTO.ID, dto.getRefId());
+			obj.put(TaskStepDTO.NODEID, dto.getNodeId());
+			obj.put(TaskStepDTO.STEPNAME, dto.getStepName());
+			obj.put(TaskStepDTO.SEQUENCENO, dto.getSequenceNo());
+			obj.put(TaskStepDTO.MODE, dto.getMode()==null? MODE.EDIT.name(): dto.getMode().name());
+			obj.put(TaskStepDTO.CONDITION, dto.getCondition());
+			obj.put(TaskStepDTO.FORMNAME, dto.getFormName());
+			obj.put(TaskStepDTO.FORMREF, dto.getFormRefId());
+			obj.put(TaskStepDTO.OUTPUTNAME, dto.getOutputDocName());
+			obj.put(TaskStepDTO.OUTPUTREF, dto.getOutputDocId());
+			steps.put(obj);
+			
+			//Step Triggers
+			List<TaskStepTrigger> triggers = getTaskStepTriggers(dto.getId(), null);
+			JSONArray trigg = new JSONArray();
+			for(TaskStepTrigger trigger: triggers){
+				JSONObject item = new JSONObject();
+				item.put(TaskStepTrigger.ID, trigger.getRefId());
+				item.put(TaskStepTrigger.TRIGGER, trigger.getTrigger().getName());
+				item.put(TaskStepTrigger.CONDITION, trigger.getCondition());
+				item.put(TaskStepTrigger.TYPE, trigger.getType().name());
+				trigg.put(item);
+			}
+			//Step Triggers
+			obj.put("triggers", trigg);
+		}
+		
+		//Steps
+		process.put("steps", steps);
+		
+		List<TaskNotification> notificationTemplates =  getTaskNotificationTemplates(processDef.getId());
+		JSONArray notificationArr = new JSONArray();
+		for(TaskNotification template: notificationTemplates){
+			JSONObject obj = new JSONObject();
+			obj.put(TaskNotification.CATEGORY, template.getCategory().name());
+			obj.put(TaskNotification.ENABLENOTIFICATION, template.isEnableNotification());
+			obj.put(TaskNotification.ACTION, template.getAction().name());
+			obj.put(TaskNotification.DEFAULTANOTIFICATION, template.isUseDefaultNotification());
+			obj.put(TaskNotification.TEMPLATE, template.getNotificationTemplate());
+			obj.put(TaskNotification.NODEID, template.getNodeId());
+			obj.put(TaskNotification.STEPNAME, template.getStepName());
+			obj.put(TaskNotification.SUBJECT, template.getSubject());
+			obj.put(TaskNotification.RECIPIENTS, template.getTargets());
+			notificationArr.put(obj);			
+		}
+		//Notifications
+		process.put("notifications", notificationArr);
+		
+
+		return process.toString();
+	}
+
+	private static List<TaskNotification> getTaskNotificationTemplates(
+			Long processDefId) {
+		assert processDefId != null;
+		List<ADTaskNotification> adTaskNotes = DB.getProcessDao().getTaskNotifications(processDefId);
+		List<TaskNotification> taskNotes = new ArrayList<TaskNotification>();
+		for(ADTaskNotification template: adTaskNotes){
+			taskNotes.add(getTaskNotification(template));
+		}
+		
+		return taskNotes;
+	}
+
+	private static ArrayList<TaskStepDTO> getSteps(String processRefId) {
+		List<TaskStepModel> taskSteps = DB.getProcessDao().getTaskStepsByProcessRef(processRefId);
+		ArrayList<TaskStepDTO> steps = new ArrayList<TaskStepDTO>();
+		for(TaskStepModel model: taskSteps){
+			TaskStepDTO taskStep = getStep(model);
+			steps.add(taskStep);
+		}
+		
+		return steps;
+	}
+	
+	public static void exportProcessAsZip(String processRefId, OutputStream outputStream) throws IOException{
+		String processMeta = null;
+		List<OutputDocument> docs = OutputDocumentDaoHelper.getDocuments(processRefId);
+		List<Trigger> triggers = ProcessDaoHelper.getTriggers(processRefId, null);
+		List<Form> forms = FormDaoHelper.getForms(processRefId, true);
+		
+		try{
+			processMeta = exportProcessJson(processRefId);
+		}catch(JSONException e){
+			throw new RuntimeException(e);
+		}
+		
+		ZipOutputStream zos  = new ZipOutputStream(outputStream);
+		addZipEntry(zos, "process.json",processMeta.getBytes());
+		//Triggers
+		for(Trigger t: triggers){
+			String triggerMeta = null;
+			try {
+				triggerMeta = exportProcessTriggersJson(t);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			addZipEntry(zos, "triggers/"+t.getName()+".json",triggerMeta.getBytes());
+		}
+		
+		//Output Documents
+		for(OutputDocument doc: docs){
+			String template = OutputDocumentDaoHelper.getHTMLTemplateByRefId(doc.getRefId());
+			doc.setTemplate(template);
+			String outputMeta = null;
+			try {
+				outputMeta = exportProcessOutputJson(doc);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			addZipEntry(zos, "outputs/"+doc.getName()+".json",outputMeta.getBytes());
+		}
+		
+		//Forms
+		for(Form form : forms){
+			String formMeta = exportFormJson(form);
+			addZipEntry(zos, "forms/"+form.getName()+".json",formMeta.getBytes());
+		}
+	
+		//Process Attachments
+		//Attach files
+		try{
+			JSONObject process = new JSONObject(processMeta);
+			JSONArray arr = process.getJSONArray("attachments");
+			for(int i=0 ; i<arr.length(); i++){
+				JSONObject attachment = arr.getJSONObject(i);
+				String attachmentRefId = attachment.getString(Attachment.ID);
+				String name = attachment.getString(Attachment.NAME);
+				LocalAttachment a = DB.getAttachmentDao().findByRefId(attachmentRefId, LocalAttachment.class);
+				addZipEntry(zos, name,a.getAttachment());
+			}
+		}catch(JSONException e){
+			throw new RuntimeException(e);
+		}
+		
+		zos.close();
+	}
+	
+	static String exportFormJson(Form form) {
+		String out = null;
+		try{
+			JSONMarshaller marshaller  = JsonForm.getJaxbContext().createJSONMarshaller();
+			final StringWriter w = new StringWriter();
+			marshaller.marshallToJSON(form,w);
+			w.flush();
+			JSONObject formJson = new JSONObject(w.toString());
+			JSONArray arr = new JSONArray();
+			if(form.getFields()!=null)
+			for(Field field: form.getFields()){
+				String fieldJson = exportFieldJson(field);
+				JSONObject obj = new JSONObject(fieldJson);
+				arr.put(obj);
+			}
+			formJson.put("fields", arr);
+			out = formJson.toString();
+		}catch(JAXBException | JSONException ex){
+			throw new RuntimeException(ex);
+		}
+		return out;
+	}
+
+	private static String exportFieldJson(Field field) {
+		String out = null;
+		try{
+			JSONMarshaller marshaller  = JsonForm.getJaxbContext().createJSONMarshaller();
+			final StringWriter w = new StringWriter();
+			marshaller.marshallToJSON(field,w);
+			w.flush();
+			out = w.toString();
+		}catch(JAXBException ex){
+			throw new RuntimeException(ex);
+		}
+		return out;
+	}
+
+	private static void addZipEntry(ZipOutputStream zos,String entryName, byte[] entryContent)
+			throws IOException {
+		ZipEntry entry = new ZipEntry(entryName);
+		zos.putNextEntry(entry);
+		zos.write(entryContent);
+		zos.closeEntry();
+	}
+
+	private static String exportProcessOutputJson(OutputDocument doc) throws JSONException {
+		
+			JSONObject obj = new JSONObject();
+			obj.put(OutputDocument.ID, doc.getRefId());
+			obj.put(OutputDocument.NAME, doc.getName());
+			obj.put(OutputDocument.CODE, doc.getCode());
+			obj.put(OutputDocument.DESCRIPTION, doc.getDescription());
+			obj.put(OutputDocument.ATTACHMENTNAME, doc.getAttachmentName());
+			obj.put(OutputDocument.PATH, doc.getPath());
+			obj.put(OutputDocument.TEMPLATE, doc.getTemplate());
+		return obj.toString();
+	}
+
+	private static String exportProcessTriggersJson(Trigger trigger) throws JSONException {
+		
+		JSONObject t = new JSONObject();
+		t.put(Trigger.ID, trigger.getRefId());
+		t.put(Trigger.NAME, trigger.getName());
+		t.put(Trigger.IMPORTS, trigger.getImports());
+		t.put(Trigger.SCRIPT, trigger.getScript());
+		
+		return t.toString();
+	}
+
+	public static void exportProcessAsFile(String processRefId, String fileName) throws IOException{
+		FileOutputStream fos = new FileOutputStream(new File(fileName));
+		exportProcessAsZip(processRefId, fos);
+		fos.close();
 	}
 
 }

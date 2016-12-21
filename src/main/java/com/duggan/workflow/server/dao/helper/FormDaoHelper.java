@@ -772,50 +772,6 @@ public class FormDaoHelper {
 			}
 	}
 
-	/**
-	 * Converts Form into an XML representation
-	 * 
-	 * @param formId
-	 * @return
-	 */
-	public static String exportForm(Long formId) {
-		FormDaoImpl dao = DB.getFormDao();
-		ADForm form = dao.getForm(formId);
-		Collection<ADField> fields = dao.getFields(form);
-
-		if (fields != null)
-			for (ADField field : fields) {
-				if (field.getType() == DataType.SELECTBASIC) {
-					ADProperty prop = field.getProperty(SELECTIONTYPE);
-					ADValue value = prop.getValue();
-					String referenceName = value.getStringValue();
-					field.setKeyValuePairs(getDropdownValues(referenceName));
-				}
-			}
-
-		return exportForm(form);
-	}
-
-	public static String exportForm(ADForm form) {
-		JAXBContext context = new JaxbFormExportProviderImpl()
-				.getContext(ADForm.class);
-		String out = null;
-		try {
-			Marshaller marshaller = context.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-			StringWriter writer = new StringWriter();
-			marshaller.marshal(form, writer);
-
-			out = writer.toString();
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return out;
-	}
-
 	public static Long importForm(String xml) {
 		FormDaoImpl dao = DB.getFormDao();
 		ADForm form = transform(xml);
@@ -1223,5 +1179,14 @@ public class FormDaoHelper {
 	private static void deleteJsonForm(String fieldRefId) {
 		FormDaoImpl dao = DB.getFormDao();
 		dao.deleteJsonForm(fieldRefId);
+	}
+
+	public static String exportForm(Form form) {
+		return ProcessDaoHelper.exportFormJson(form);
+	}
+	
+	public static String exportForm(String formRefId) {
+		Form form = getFormJson(formRefId, true);
+		return ProcessDaoHelper.exportFormJson(form);
 	}
 }

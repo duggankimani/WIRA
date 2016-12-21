@@ -42,9 +42,11 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.duggan.workflow.shared.responses.SaveProcessCategoryResponse;
 import com.duggan.workflow.shared.responses.SaveProcessResponse;
 import com.duggan.workflow.shared.responses.StartAllProcessesResponse;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -70,6 +72,8 @@ public class ProcessListingPresenter
 		HasClickHandlers getaNewProcess();
 
 		HasClickHandlers getStartAllProcesses();
+		
+		HasClickHandlers getDownloadButton();
 
 		void setCategories(ArrayList<ProcessCategory> categories);
 
@@ -257,6 +261,23 @@ public class ProcessListingPresenter
 								}
 							}
 						}, "Yes", "Cancel");
+			}
+		});
+		
+		getView().getDownloadButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				ProcessDef def = (ProcessDef)selectedModel;
+				String url = "getreport?action=exportprocess&processRefId="+def.getRefId();
+				
+				String moduleUrl = GWT.getModuleBaseURL().replace("/gwtht", "");
+				if(moduleUrl.endsWith("/")){
+					moduleUrl = moduleUrl.substring(0, moduleUrl.length()-1);
+				}
+				url = url.replace("/", "");
+				moduleUrl =moduleUrl+"/"+url;
+				Window.open(moduleUrl, def.getName()+".zip", null);
 			}
 		});
 	}

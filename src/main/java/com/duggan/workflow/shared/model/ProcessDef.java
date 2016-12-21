@@ -13,6 +13,24 @@ public class ProcessDef extends SerializableObj implements Listable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public static final String NAME = "name";
+
+	public static final String PROCESSID = "processid";
+
+	public static final String BACKGROUNDCOLOR = "backgroundcolor";
+
+	public static final String ICONSTYLE = "iconstyle";
+
+	public static final String FILENAME = "filename";
+
+	public static final String DESCRIPTION = "description";
+
+	public static final String IMAGENAME = "imagename";
+
+	public static final String CATEGORY = "category";
+
+	public static final String ID = "id";
+
 	private Long id;
 	private String name;
 	private String processId;

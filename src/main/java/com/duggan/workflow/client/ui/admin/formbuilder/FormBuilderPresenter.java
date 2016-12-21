@@ -11,6 +11,8 @@ import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent.PropertyChangedHandler;
 import com.duggan.workflow.client.ui.events.SaveFormDesignEvent;
@@ -40,7 +42,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -90,6 +91,7 @@ public class FormBuilderPresenter extends
 	@UseGatekeeper(AdminGateKeeper.class)
 	public interface MyProxy extends ProxyPlace<FormBuilderPresenter> {
 	}
+	
 //	public interface MyProxy extends TabContentProxyPlace<FormBuilderPresenter> {
 //	}
 	
@@ -230,13 +232,14 @@ public class FormBuilderPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				assert formId!=null;
-				dispatcher.execute(new ExportFormRequest(formId), 
+				assert formRefId!=null;
+				fireEvent(new ProcessingEvent());
+				dispatcher.execute(new ExportFormRequest(formRefId), 
 						new TaskServiceCallback<ExportFormResponse>() {
 							@Override
 							public void processResult(
 									ExportFormResponse aResponse) {
-								
+								fireEvent(new ProcessingCompletedEvent());
 								String xml = aResponse.getXml();
 								
 								InlineLabel area = new InlineLabel(xml);
@@ -249,7 +252,7 @@ public class FormBuilderPresenter extends
 											public void onSelect(String name) {
 												if(name.equals("Save To File")){
 													UploadContext context = new UploadContext("getreport");
-													context.setContext("formId", formId+"");
+													context.setContext("formRefId", formRefId);
 													context.setContext("ACTION", "EXPORTFORM");
 													String url = context.toUrl();
 													

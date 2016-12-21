@@ -3,13 +3,36 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class TaskStepDTO implements Serializable, IsSerializable{
+public class TaskStepDTO extends SerializableObj implements Serializable, IsSerializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final String ID = "id";
+
+	public static final String STEPNAME = "stepname";
+
+	public static final String SEQUENCENO = "sequenceno";
+
+	public static final String CONDITION = "condition";
+
+	public static final String MODE = "mode";
+
+	public static final String FORMNAME = "formname";
+
+	public static final String FORMREF = "formref";
+
+	public static final String OUTPUTNAME = "outputname";
+
+	public static final String OUTPUTREF = "outputref";
+
+	public static final String TRIGGERTYPE = "triggertype";
+
+	public static final String NODEID = "nodeid";
 	
 	private Long id;
 	private Long nodeId;
@@ -114,6 +137,7 @@ public class TaskStepDTO implements Serializable, IsSerializable{
 		dto.setFormRefId(formRefId);
 		dto.setFormName(formName);
 		dto.setId(id);
+		dto.setRefId(getRefId());
 		dto.setMode(mode);
 		dto.setNodeId(nodeId);
 		dto.setOutputDocId(outputDocId);

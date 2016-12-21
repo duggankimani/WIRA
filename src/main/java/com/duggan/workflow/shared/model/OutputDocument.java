@@ -11,6 +11,20 @@ public class OutputDocument extends SerializableObj implements Serializable, Lis
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final String ID = "id";
+
+	public static final String NAME = "name";
+
+	public static final String CODE = "code";
+
+	public static final String DESCRIPTION = "description";
+
+	public static final String ATTACHMENTNAME = "attachmentname";
+
+	public static final String PATH = "path";
+
+	public static final String TEMPLATE = "template";
 	
 	private String name;
 	private String code;
