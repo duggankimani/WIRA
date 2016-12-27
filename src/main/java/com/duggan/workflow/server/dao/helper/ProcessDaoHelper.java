@@ -471,6 +471,11 @@ public class ProcessDaoHelper {
 		}else if (step.getId() != null) {
 			model = dao.getById(TaskStepModel.class, step.getId());
 		}
+		
+		if(model==null){
+			model = new TaskStepModel();
+		}
+		
 		model.setRefId(step.getRefId());
 		model.setCondition(step.getCondition());
 		model.setFormRef(step.getFormRefId());
@@ -731,25 +736,32 @@ public class ProcessDaoHelper {
 		return stepTrigger;
 	}
 
-	private static ADTaskStepTrigger getStepTrigger(TaskStepTrigger trigger) {
+	private static ADTaskStepTrigger getStepTrigger(TaskStepTrigger stepTrigger) {
 		ProcessDaoImpl dao = DB.getProcessDao();
-		ADTaskStepTrigger adTaskStep = new ADTaskStepTrigger();
+		ADTaskStepTrigger adTaskStepTrigger = new ADTaskStepTrigger();
 
-		if (trigger.getId() != null) {
-			adTaskStep = dao.getById(ADTaskStepTrigger.class, trigger.getId());
-		}else if(trigger.getRefId()!=null){
-			adTaskStep = dao.findByRefId(trigger.getRefId(), ADTaskStepTrigger.class);
+		if (stepTrigger.getId() != null) {
+			adTaskStepTrigger = dao.getById(ADTaskStepTrigger.class, stepTrigger.getId());
+		}else if(stepTrigger.getRefId()!=null){
+			adTaskStepTrigger = dao.findByRefId(stepTrigger.getRefId(), ADTaskStepTrigger.class);
 		}
+		if(adTaskStepTrigger==null){
+			adTaskStepTrigger = new ADTaskStepTrigger();
+		}
+		adTaskStepTrigger.setType(stepTrigger.getType());
+		adTaskStepTrigger.setCondition(stepTrigger.getCondition());
 
-		adTaskStep.setTaskStep(dao.getById(TaskStepModel.class,
-				trigger.getTaskStepId()));
-
-		adTaskStep.setType(trigger.getType());
-		adTaskStep.setTrigger(dao.getById(ADTrigger.class, trigger.getTrigger()
-				.getId()));
-
-		adTaskStep.setCondition(trigger.getCondition());
-		return adTaskStep;
+		//Step
+		TaskStepModel stepModel = dao.getById(TaskStepModel.class,
+				stepTrigger.getTaskStepId());
+		adTaskStepTrigger.setTaskStep(stepModel);
+		
+		//trigger
+		ADTrigger trigger = dao.getById(ADTrigger.class, stepTrigger.getTrigger()
+				.getId());
+		adTaskStepTrigger.setTrigger(trigger);
+		
+		return adTaskStepTrigger;
 	}
 
 	public static TaskNotification saveTaskNotification(
@@ -787,8 +799,14 @@ public class ProcessDaoHelper {
 
 		ProcessDaoImpl dao = DB.getProcessDao();
 		ADTaskNotification model = new ADTaskNotification();
-		if (notification.getId() != null) {
+		if(notification.getRefId()!=null){
+			model = dao.findByRefId(notification.getRefId(), ADTaskNotification.class);
+		}else if (notification.getId() != null) {
 			model = dao.getTaskNotificationById(notification.getId());
+		}
+		
+		if(model==null){
+			model = new ADTaskNotification();
 		}
 
 		model.setAction(notification.getAction());
@@ -1100,6 +1118,7 @@ public class ProcessDaoHelper {
 		JSONArray notificationArr = new JSONArray();
 		for (TaskNotification template : notificationTemplates) {
 			JSONObject obj = new JSONObject();
+			obj.put(TaskNotification.ID, template.getRefId());
 			obj.put(TaskNotification.CATEGORY, template.getCategory().name());
 			obj.put(TaskNotification.ENABLENOTIFICATION,
 					template.isEnableNotification());
@@ -1238,6 +1257,7 @@ public class ProcessDaoHelper {
 				for (Field field : form.getFields()) {
 					String fieldJson = exportFieldJson(field);
 					JSONObject obj = new JSONObject(fieldJson);
+					appendChildren(obj,field);
 					arr.put(obj);
 				}
 			formJson.put("fields", arr);
@@ -1246,6 +1266,28 @@ public class ProcessDaoHelper {
 			throw new RuntimeException(ex);
 		}
 		return out;
+	}
+
+	/**
+	 * Recursively append children fields into a parent
+	 * 
+	 * @param parentJson
+	 * @param parent
+	 * @throws JSONException
+	 */
+	private static void appendChildren(JSONObject parentJson, Field parent) throws JSONException {
+		if(parent.getFields()==null || parent.getFields().isEmpty()){
+			return;
+		}
+		
+		JSONArray children = new JSONArray();
+		for(Field field: parent.getFields()){
+			String fieldJson = exportFieldJson(field);
+			JSONObject obj = new JSONObject(fieldJson);
+			children.put(obj);
+			appendChildren(obj,field);
+		}
+		parentJson.put("fields", children);
 	}
 
 	private static String exportFieldJson(Field field) {
@@ -1511,46 +1553,79 @@ public class ProcessDaoHelper {
 	}
 
 	private static void importTaskNotifications(JSONObject processJson,
-			ProcessDefModel processDefModel) {
-		
+			ProcessDefModel processDefModel) throws JSONException {
+		JSONArray notificationArr = processJson.getJSONArray("notifications");
+		for (int i=0; i<notificationArr.length(); i++) {
+			JSONObject obj = notificationArr.getJSONObject(i);
+			TaskNotification notification = new TaskNotification();
+			notification.setCategory(NotificationCategory.valueOf(obj.getString(TaskNotification.CATEGORY)));
+			notification.setEnableNotification(obj.optBoolean(TaskNotification.ENABLENOTIFICATION));
+			notification.setAction(Actions.valueOf(obj.optString(TaskNotification.ACTION)));
+			notification.setUseDefaultNotification(obj.optBoolean(TaskNotification.DEFAULTANOTIFICATION));
+			notification.setNotificationTemplate(obj.optString(TaskNotification.TEMPLATE));
+			notification.setNodeId(obj.optLong(TaskNotification.NODEID));
+			notification.setStepName(obj.optString(TaskNotification.STEPNAME));
+			notification.setSubject(obj.optString(TaskNotification.SUBJECT));
+			notification.setProcessDefId(processDefModel.getId());
+			notification.setRefId(obj.optString(TaskNotification.ID));
+//			notification.setTargets(obj.optString(TaskNotification.RECIPIENTS));
+			saveTaskNotification(notification);
+		}
 	}
 
 	private static void importTaskSteps(JSONObject processJson,
 			ProcessDefModel processDefModel) throws JSONException {
+		
+		ProcessDaoImpl dao = DB.getProcessDao();
+		
 		// Task Steps
 		JSONArray steps = processJson.getJSONArray("steps");
 		for (int i=0; i<steps.length(); i++) {
 			JSONObject obj = steps.getJSONObject(i);
+			log.info("Importing task step "+obj.optString(TaskStepDTO.FORMNAME)+obj.optString(TaskStepDTO.OUTPUTNAME));
 			
 			TaskStepModel model = DB.getProcessDao().findByRefId(obj.getString(TaskStepDTO.ID), TaskStepModel.class);
-			TaskStepDTO dto  = model==null? new TaskStepDTO(): getStep(model);
+			if(model==null){
+				model = new TaskStepModel();
+			}
 			
-			dto.setRefId(obj.getString(TaskStepDTO.ID));
-			dto.setNodeId(obj.getLong(TaskStepDTO.NODEID));
-			dto.setStepName(obj.getString(TaskStepDTO.STEPNAME));
-			dto.setSequenceNo(obj.getInt(TaskStepDTO.SEQUENCENO));
-			dto.setMode(MODE.valueOf(obj.getString(TaskStepDTO.MODE)));
-			dto.setCondition(obj.getString(TaskStepDTO.CONDITION));
-			dto.setFormName(obj.getString(TaskStepDTO.FORMNAME));
-			dto.setFormRefId(obj.getString(TaskStepDTO.FORMREF));
-			dto.setOutputDocName(obj.getString(TaskStepDTO.OUTPUTNAME));
-			dto.setOutputRefId(obj.getString(TaskStepDTO.OUTPUTREF));
-			dto.setProcessDefId(processDefModel.getId());
-			dto.setProcessRefId(processDefModel.getRefId());
-			createTaskSteps(Arrays.asList(dto));
+			model.setRefId(obj.getString(TaskStepDTO.ID));
+			model.setNodeId(obj.optLong(TaskStepDTO.NODEID));
+			if(model.getNodeId()==0){
+				model.setNodeId(null);
+			}
+			model.setStepName(obj.optString(TaskStepDTO.STEPNAME));
+			model.setSequenceNo(obj.getInt(TaskStepDTO.SEQUENCENO));
+			model.setMode(MODE.valueOf(obj.getString(TaskStepDTO.MODE)));
+			model.setCondition(obj.optString(TaskStepDTO.CONDITION));
+			model.setFormRef(obj.optString(TaskStepDTO.FORMREF));
+			model.setOutputRefId(obj.optString(TaskStepDTO.OUTPUTREF));
+			if(model.getOutputRefId()!=null){
+				ADOutputDoc doc = dao.findByRefId(model.getOutputRefId(), ADOutputDoc.class);
+				model.setDoc(doc);
+			}
+			
+			model.setProcessDef(processDefModel);
+			dao.createStep(model);			
 			
 			// Step Triggers
 			JSONArray triggersJson = obj.getJSONArray("triggers");
 			for (int j=0; j<triggersJson.length(); j++) {
 				JSONObject item = triggersJson.getJSONObject(j);
-
-				TaskStepTrigger trigger  = new TaskStepTrigger();
+				log.info("Importing step trigger "+item.getString(TaskStepTrigger.TRIGGER));
+				
+				ADTaskStepTrigger trigger = dao.findByRefId(item.getString(TaskStepTrigger.ID), ADTaskStepTrigger.class);
+				if(trigger==null){
+					trigger = new ADTaskStepTrigger();
+				}
+				
 				trigger.setRefId(item.getString(TaskStepTrigger.ID));
+				trigger.setTaskStep(model);
 				trigger.setType(TriggerType.valueOf(item.getString(TaskStepTrigger.TYPE)));
 				ADTrigger adTrigger = DB.getProcessDao().getTrigger(item.getString(TaskStepTrigger.TRIGGER));
-				trigger.setTrigger(getTrigger(adTrigger));
-				trigger.setCondition(item.getString(TaskStepTrigger.CONDITION));
-				saveTaskStepTrigger(trigger);
+				trigger.setTrigger(adTrigger);
+				trigger.setCondition(item.optString(TaskStepTrigger.CONDITION));
+				dao.save(trigger);
 			}
 		}
 
@@ -1572,18 +1647,19 @@ public class ProcessDaoHelper {
 				form = unmarshaller.unmarshalFromJSON(new StringReader(
 						new String(bytes)), Form.class);
 				form.setProcessRefId(processDefModel.getRefId());
-				FormDaoHelper.createJson(form);
 				
 				//Form
-				JSONObject formJson = new JSONObject(bytes);
+				JSONObject formJson = new JSONObject(new String(bytes));
 				
 				//fields
-				JSONArray fields = new JSONArray(formJson.get("fields"));
+				JSONArray fields = formJson.getJSONArray("fields");
 				for(int i=0; i<fields.length(); i++){
 					String fieldJson = fields.getJSONObject(i).toString();
 					Field field = unmarshaller.unmarshalFromJSON(new StringReader(fieldJson), Field.class);
+					importChildren(fields.getJSONObject(i),field);
 					form.addField(field);
 				}
+				FormDaoHelper.createJson(form);
 			} catch (JAXBException jaxbEx) {
 				log.fatal("JAXBException: Unable to read form '"
 						+ form.getName() + "' - " + path.toString());
@@ -1593,6 +1669,23 @@ public class ProcessDaoHelper {
 						+ form.getName() + "' - " + path.toString());
 				throw new RuntimeException(e);
 			}
+		}
+	}
+
+	private static void importChildren(JSONObject parentJson, Field parent) throws JAXBException, JSONException {
+		JSONArray children = parentJson.optJSONArray("fields");
+		if(children==null || children.length()==0){
+			return;
+		}
+		
+		JSONUnmarshaller unmarshaller = JsonForm.getJaxbContext()
+				.createJSONUnmarshaller();
+		
+		for(int i=0; i<children.length(); i++){
+			JSONObject fieldJson = children.getJSONObject(i);
+			Field field = unmarshaller.unmarshalFromJSON(new StringReader(fieldJson.toString()), Field.class);
+			parent.addField(field);
+			importChildren(fieldJson, field);
 		}
 	}
 
@@ -1606,7 +1699,10 @@ public class ProcessDaoHelper {
 			log.info("Reading outputdoc " + path.toString());
 			byte[] bytes = Files.readAllBytes(path);
 			JSONObject outputJson = new JSONObject(new String(bytes));
-			OutputDocument doc = new OutputDocument();
+			OutputDocument doc = OutputDocumentDaoHelper.getDocument(outputJson.getString(OutputDocument.ID), true);
+			if(doc==null){
+				doc = new OutputDocument();
+			}
 			doc.setRefId(outputJson.getString(OutputDocument.ID));
 			doc.setName(outputJson.getString(OutputDocument.NAME));
 			doc.setCode(outputJson.getString(OutputDocument.CODE));
@@ -1626,7 +1722,7 @@ public class ProcessDaoHelper {
 		Path triggersPath = rootPath.resolve("triggers");
 		DirectoryStream<Path> triggers = Files.newDirectoryStream(triggersPath);
 		for (Path path : triggers) {
-			log.info("Reading trigger " + path.toString());
+			log.info("Importing trigger " + path.toString());
 			byte[] bytes = Files.readAllBytes(path);
 			JSONObject triggerJson = new JSONObject(new String(bytes));
 

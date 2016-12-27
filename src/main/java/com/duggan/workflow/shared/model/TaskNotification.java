@@ -32,6 +32,8 @@ public class TaskNotification extends SerializableObj implements Serializable, I
 	public static final String SUBJECT = "subject";
 
 	public static final String RECIPIENTS = "recipients";
+
+	public static final String ID = "ID";
 	
 	private NotificationCategory category;
 	private Long id;

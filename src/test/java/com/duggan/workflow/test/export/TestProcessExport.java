@@ -3,10 +3,6 @@ package com.duggan.workflow.test.export;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.json.JSONException;
 import org.junit.After;
