@@ -1,6 +1,17 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.btn-separator:after {
+		content: ' ';
+		display: inline-block;
+		background: #ADADAD;
+		margin: 0 5px;
+		height: 34px;
+		width: 1px;
+		vertical-align:bottom;
+		}
+	</ui:style>
 	<g:HTMLPanel>
 		<div class="content-body overflow-y" ui:field="divProcessListing">
 			<div class="row-fluid">
@@ -29,10 +40,7 @@
 						<i class="icon-cogs"></i>
 					</g:Anchor>
 
-					<g:Anchor styleName="btn btn-warning" ui:field="aEdit">
-						Edit
-						<i class="icon-pencil helper-14"></i>
-					</g:Anchor>
+					<span class="{style.btn-separator}"></span>
 
 					<g:Anchor ui:field="aActivate" styleName="btn btn-success"
 						title="Activate Process">
@@ -52,10 +60,19 @@
 						<i class="icon-minus-sign"></i>
 					</g:Anchor>
 
+					<span class="{style.btn-separator}"></span>
+					
 					<g:Anchor ui:field="aExport" styleName="btn btn-primary"
 						title="Export Process">
 						Export
 						<i class="icon-arrow-down"></i>
+					</g:Anchor>
+
+					<span class="{style.btn-separator}"></span>
+					
+					<g:Anchor styleName="btn btn-warning" ui:field="aEdit">
+						Edit
+						<i class="icon-pencil helper-14"></i>
 					</g:Anchor>
 					
 					<g:Anchor styleName="btn btn-danger" ui:field="aDelete">

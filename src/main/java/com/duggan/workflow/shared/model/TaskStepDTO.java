@@ -49,12 +49,15 @@ public class TaskStepDTO extends SerializableObj implements Serializable, IsSeri
 	
 	private String outputDocName;
 	private Long outputDocId;
+	private String outputRefId;
+	
 	private boolean isActive = true;
 	private transient TriggerType triggerType;
 	
 	public TaskStepDTO() {
 	
 	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -161,5 +164,13 @@ public class TaskStepDTO extends SerializableObj implements Serializable, IsSeri
 	}
 	public void setFormRefId(String formRefId) {
 		this.formRefId = formRefId;
+	}
+
+	public String getOutputRefId() {
+		return outputRefId;
+	}
+
+	public void setOutputRefId(String outputRefId) {
+		this.outputRefId = outputRefId;
 	}
 }

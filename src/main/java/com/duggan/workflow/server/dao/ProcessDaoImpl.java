@@ -641,6 +641,16 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		return getResultList(em
 				.createQuery("FROM ADProcessCategory where isActive=1"));
 	}
+	
+	public ADProcessCategory getProcessCategoryByName(String categoryName) {
+		if(categoryName==null || categoryName.isEmpty()){
+			return null;
+		}
+		
+		return getSingleResultOrNull(em
+				.createQuery("FROM ADProcessCategory where name=:categoryName and isActive=1")
+				.setParameter("categoryName", categoryName.toUpperCase()));
+	}
 
 	public ADTrigger getTrigger(String triggerName) {
 

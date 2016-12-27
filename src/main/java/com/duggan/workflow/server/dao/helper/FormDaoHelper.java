@@ -76,6 +76,7 @@ public class FormDaoHelper {
 		return forms;
 	}
 
+	@Deprecated
 	public static List<Form> getForms(String processRefId, boolean loadFields) {
 
 		FormDaoImpl dao = DB.getFormDao();

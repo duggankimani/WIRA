@@ -64,6 +64,15 @@ public class OutputDocumentDaoHelper {
 		if (doc.getId() != null) {
 			adDoc = dao.getOuputDocument(doc.getId());
 		}
+		
+		if(doc.getRefId()!=null){
+			adDoc = dao.findByRefId(doc.getRefId(), ADOutputDoc.class);
+		}
+		
+		if(adDoc==null){
+			adDoc = new ADOutputDoc();
+		}
+		
 		adDoc.setIsActive(doc.isActive() ? 1 : 0);
 		adDoc.setCode(doc.getCode());
 		adDoc.setName(doc.getName());

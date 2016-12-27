@@ -19,7 +19,7 @@ public class TestExportProcess {
 	@Test
 	public void export(){
 		String processRefId="4uSQJcExcNyBGYED";
-		ProcessDaoHelper.exportProcess(processRefId);
+//		ProcessDaoHelper.exportProcess(processRefId);
 	}
 	
 	@After

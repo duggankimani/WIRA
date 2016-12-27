@@ -61,7 +61,7 @@ public class GetReport extends BaseServlet {
 			action = "GETATTACHMENT";
 		}
 
-		if(action.equals("GETDOCUMENTPROCESS")){
+		if(action.equalsIgnoreCase("GETDOCUMENTPROCESS")){
 			//String docId = req.getParameter("did");
 			String docRefId = req.getParameter("docRefId");
 			if(docRefId==null){
@@ -89,19 +89,19 @@ public class GetReport extends BaseServlet {
 			processAttachmentRequest(resp, attachments.get(0));
 		}
 		
-		if (action.equals("GETATTACHMENT")) {
+		if (action.equalsIgnoreCase("GETATTACHMENT")) {
 			processAttachmentRequest(req, resp);
 		}
 		
-		if(action.equals("EXPORTFORM")){
+		if(action.equalsIgnoreCase("EXPORTFORM")){
 			processExportFormRequest(req , resp);
 		}
 		
-		if(action.equals("GetUser")){
+		if(action.equalsIgnoreCase("GetUser")){
 			processUserImage(req, resp);
 		}
 		
-		if(action.equals("GetLogo")){
+		if(action.equalsIgnoreCase("GetLogo")){
 			processSettingsImage(req, resp);
 		}
 		
