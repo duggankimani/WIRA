@@ -51,6 +51,7 @@ import com.duggan.workflow.server.actionhandlers.GetOutputDocumentRequestHandler
 import com.duggan.workflow.server.actionhandlers.GetOutputDocumentsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetPermissionsActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessCategoriesRequestActionHandler;
+import com.duggan.workflow.server.actionhandlers.GetProcessImportStatusActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessInstancesRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessLogRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetProcessRequestActionHandler;
@@ -146,6 +147,7 @@ import com.duggan.workflow.shared.requests.GetOutputDocumentRequest;
 import com.duggan.workflow.shared.requests.GetOutputDocumentsRequest;
 import com.duggan.workflow.shared.requests.GetPermissionsRequest;
 import com.duggan.workflow.shared.requests.GetProcessCategoriesRequest;
+import com.duggan.workflow.shared.requests.GetProcessImportStatus;
 import com.duggan.workflow.shared.requests.GetProcessInstancesRequest;
 import com.duggan.workflow.shared.requests.GetProcessLogRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
@@ -188,6 +190,7 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
+import com.duggan.workflow.shared.responses.GetProcessImportStatusResponse;
 import com.duggan.workflow.shared.responses.GetRecentTasksResult;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
@@ -467,5 +470,7 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetRecentTasksRequest.class, GetRecentTasksActionHandler.class, SessionValidator.class);
 		
 		bindHandler(GetProcessSchemaRequest.class, GetProcessSchemaActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetProcessImportStatus.class, GetProcessImportStatusActionHandler.class, SessionValidator.class);
 	}
 }

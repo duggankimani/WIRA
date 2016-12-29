@@ -2,6 +2,7 @@ package com.duggan.workflow.test.export;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.json.JSONException;
@@ -23,13 +24,17 @@ public class TestProcessExport {
 	}
 	
 	@Test
-	public void importProcessFromZip() throws IOException{
-		
+	public void importProcessFromInputStream() throws IOException{
 		String fileName = "Workplan.zip";
-
-		FileInputStream is = new FileInputStream(new File(fileName));
+		File file = new File(fileName);
+		FileInputStream is = new FileInputStream(file);
+		ProcessDaoHelper.importProcessAsStream(fileName, file.length(), is);
+	}
+	
+	@Ignore
+	public void importProcessFromZip() throws IOException{
+		String fileName = "Workplan.zip";
 		ProcessDaoHelper.importProcessAsZip(fileName);
-		is.close();
 	}
 	
 	@Ignore

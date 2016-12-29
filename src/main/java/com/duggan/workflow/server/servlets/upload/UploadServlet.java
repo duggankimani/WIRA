@@ -126,6 +126,9 @@ public class UploadServlet extends UploadAction {
 		case IMPORTCSV:
 			executor = new AdvancedCSVImporterExecutor();
 			break;
+		case IMPORTPROCESS:
+			executor = new ImportProcessExecutor();
+			break;
 		}
 		
 		if(executor==null){

@@ -1,20 +1,40 @@
 package com.duggan.workflow.client.ui.admin.processes;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
+
+import gwtupload.client.IUploader;
+import gwtupload.client.SingleUploader;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.OnStartUploaderHandler;
+import gwtupload.client.IUploader.OnStatusChangedHandler;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
+import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
+import com.duggan.workflow.shared.requests.GetProcessImportStatus;
+import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
+import com.duggan.workflow.shared.responses.GetProcessImportStatusResponse;
+import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -22,10 +42,11 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -65,14 +86,105 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 	
 	@UiField
 	Anchor aExport;
-
+	
+	Uploader uploader;
+	
+	@UiField Anchor aImportProcess;
+	HTMLPanel status = new HTMLPanel("");
 
     @Inject
     ProcessListingView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
+        uploader = new Uploader(true);
+        final SingleUploader up = (SingleUploader)uploader.getIUploader();
+        up.getElement().setId("processuploader");
+        up.getElement().getStyle().setWidth(100, Unit.PCT);
+        UploadContext ctx = new UploadContext();
+        ctx.setAction(UPLOADACTION.IMPORTPROCESS);
+        ArrayList<String> accept = new ArrayList<String>();
+        accept.add("zip");
+        ctx.setAccept(accept);
+        uploader.setContext(ctx);
+        
+        //uploader.addStyleName("hide");
+        //divGeneralActions.appendChild(uploader.getElement());
+        
+        final HTMLPanel parent = new HTMLPanel("");
+        InlineLabel label = new InlineLabel("This may take a while, please be patient.");
+        parent.add(label);
+        parent.add(uploader);
+        parent.add(status);
+        
+        uploader.getIUploader().addOnStatusChangedHandler(new OnStatusChangedHandler() {
+			
+			@Override
+			public void onStatusChanged(IUploader uploader) {
+				gwtupload.client.IUploadStatus.Status istatus = uploader.getStatusWidget().getStatus();
+				GWT.log("Status = "+istatus);
+				if(istatus==gwtupload.client.IUploadStatus.Status.SUCCESS){
+					GWT.log("Status #Success");
+					updateImportStatus(status,0);
+				}
+			}
+		});
+        
+        uploader.getIUploader().addOnStartUploadHandler(new OnStartUploaderHandler() {
+			
+			@Override
+			public void onStart(IUploader uploader) {
+				
+			}
+		});
+        
+        aImportProcess.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				click(up.getElement());
+				AppManager.showPopUp("Uploading Process", parent, new OnOptionSelected() {
+					
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Finish")){
+							//Save
+						}else{
+							//Cancel
+						}
+						status.clear();
+						AppContext.fireEvent(new LoadProcessesEvent());
+						parent.removeFromParent();
+					}
+				}, "Finish", "Cancel");
+				
+			}
+		});
     }
     
-    @Override
+    protected void updateImportStatus(final HTMLPanel status, final int idx) {
+		AppContext.getDispatcher().execute(new GetProcessImportStatus(), new TaskServiceCallback<GetProcessImportStatusResponse>() {
+			@Override
+			public void processResult(GetProcessImportStatusResponse aResponse) {
+				ArrayList<String> importationStatus = aResponse.getStatus();
+				for(int i=idx; i<importationStatus.size(); i++){
+					String istatus = importationStatus.get(i);
+					status.add(new HTMLPanel(""+istatus));
+				}
+				
+				String finalState = importationStatus.get(importationStatus.size()-1);
+				if(finalState.startsWith("Importation Succeeded!") || finalState.startsWith("Importation Failed!")){
+					return;
+				}else{
+					updateImportStatus(status, importationStatus.size());
+				}
+			}
+		});
+	}
+
+	protected native void click(Element source) /*-{
+		$wnd.jQuery(source).find('input').trigger('click');
+	}-*/;
+
+	@Override
 	public void bindProcesses(ArrayList<ProcessDef> processDefinitions) {
 		tblProcesses.removeAllRows();
 		setProcessHeaders(tblProcesses);

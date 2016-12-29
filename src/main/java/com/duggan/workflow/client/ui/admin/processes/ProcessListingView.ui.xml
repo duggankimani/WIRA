@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:up="urn:import:com.duggan.workflow.client.ui.upload.custom">
 	<ui:style>
 		.btn-separator:after {
 		content: ' ';
@@ -21,6 +22,11 @@
 						<i class="icon-plus"></i>
 						Add Process
 					</g:Anchor>
+					<g:Anchor ui:field="aImportProcess" styleName="btn btn-primary"
+						title="Import Process (zip files only)">
+						<i class="icon-arrow-up"></i>
+						Import Process
+					</g:Anchor>
 					<g:Anchor ui:field="aStartProcesses" styleName="btn btn-success"
 						title="Start All Processes">
 						<i class="icon-ok"></i>
@@ -35,12 +41,12 @@
 
 				<div ui:field="divProcessInstanceActions" class="action-buttons hide">
 
-					<g:Anchor styleName="btn btn-success" ui:field="aConfigure">
+					<g:Anchor styleName="btn btn-success hide" ui:field="aConfigure">
 						Configure Process
 						<i class="icon-cogs"></i>
 					</g:Anchor>
 
-					<span class="{style.btn-separator}"></span>
+					<span class="{style.btn-separator} hide"></span>
 
 					<g:Anchor ui:field="aActivate" styleName="btn btn-success"
 						title="Activate Process">

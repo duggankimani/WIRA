@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystemException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +36,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.drools.definition.process.Node;
 import org.jbpm.task.Task;
@@ -60,6 +63,7 @@ import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.servlets.upload.ImportLogger;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.AssignmentDto;
 import com.duggan.workflow.shared.model.Attachment;
@@ -466,27 +470,28 @@ public class ProcessDaoHelper {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
 		TaskStepModel model = new TaskStepModel();
-		if(step.getRefId()!=null){
+		if (step.getRefId() != null) {
 			model = dao.findByRefId(step.getRefId(), TaskStepModel.class);
-		}else if (step.getId() != null) {
+		} else if (step.getId() != null) {
 			model = dao.getById(TaskStepModel.class, step.getId());
 		}
-		
-		if(model==null){
+
+		if (model == null) {
 			model = new TaskStepModel();
 		}
-		
+
 		model.setRefId(step.getRefId());
 		model.setCondition(step.getCondition());
 		model.setFormRef(step.getFormRefId());
-		if(step.getOutputRefId()!=null){
-			ADOutputDoc doc = dao.findByRefId(step.getOutputRefId(), ADOutputDoc.class);
+		if (step.getOutputRefId() != null) {
+			ADOutputDoc doc = dao.findByRefId(step.getOutputRefId(),
+					ADOutputDoc.class);
 			model.setDoc(doc);
-		}else{
+		} else {
 			model.setDoc(step.getOutputDocId() == null ? null : dao.getById(
 					ADOutputDoc.class, step.getOutputDocId()));
 		}
-		
+
 		model.setMode(step.getMode());
 		model.setNodeId(step.getNodeId());
 		model.setProcessDef(dao.getById(ProcessDefModel.class,
@@ -741,26 +746,28 @@ public class ProcessDaoHelper {
 		ADTaskStepTrigger adTaskStepTrigger = new ADTaskStepTrigger();
 
 		if (stepTrigger.getId() != null) {
-			adTaskStepTrigger = dao.getById(ADTaskStepTrigger.class, stepTrigger.getId());
-		}else if(stepTrigger.getRefId()!=null){
-			adTaskStepTrigger = dao.findByRefId(stepTrigger.getRefId(), ADTaskStepTrigger.class);
+			adTaskStepTrigger = dao.getById(ADTaskStepTrigger.class,
+					stepTrigger.getId());
+		} else if (stepTrigger.getRefId() != null) {
+			adTaskStepTrigger = dao.findByRefId(stepTrigger.getRefId(),
+					ADTaskStepTrigger.class);
 		}
-		if(adTaskStepTrigger==null){
+		if (adTaskStepTrigger == null) {
 			adTaskStepTrigger = new ADTaskStepTrigger();
 		}
 		adTaskStepTrigger.setType(stepTrigger.getType());
 		adTaskStepTrigger.setCondition(stepTrigger.getCondition());
 
-		//Step
+		// Step
 		TaskStepModel stepModel = dao.getById(TaskStepModel.class,
 				stepTrigger.getTaskStepId());
 		adTaskStepTrigger.setTaskStep(stepModel);
-		
-		//trigger
-		ADTrigger trigger = dao.getById(ADTrigger.class, stepTrigger.getTrigger()
-				.getId());
+
+		// trigger
+		ADTrigger trigger = dao.getById(ADTrigger.class, stepTrigger
+				.getTrigger().getId());
 		adTaskStepTrigger.setTrigger(trigger);
-		
+
 		return adTaskStepTrigger;
 	}
 
@@ -799,13 +806,14 @@ public class ProcessDaoHelper {
 
 		ProcessDaoImpl dao = DB.getProcessDao();
 		ADTaskNotification model = new ADTaskNotification();
-		if(notification.getRefId()!=null){
-			model = dao.findByRefId(notification.getRefId(), ADTaskNotification.class);
-		}else if (notification.getId() != null) {
+		if (notification.getRefId() != null) {
+			model = dao.findByRefId(notification.getRefId(),
+					ADTaskNotification.class);
+		} else if (notification.getId() != null) {
 			model = dao.getTaskNotificationById(notification.getId());
 		}
-		
-		if(model==null){
+
+		if (model == null) {
 			model = new ADTaskNotification();
 		}
 
@@ -1257,7 +1265,7 @@ public class ProcessDaoHelper {
 				for (Field field : form.getFields()) {
 					String fieldJson = exportFieldJson(field);
 					JSONObject obj = new JSONObject(fieldJson);
-					appendChildren(obj,field);
+					appendChildren(obj, field);
 					arr.put(obj);
 				}
 			formJson.put("fields", arr);
@@ -1275,17 +1283,18 @@ public class ProcessDaoHelper {
 	 * @param parent
 	 * @throws JSONException
 	 */
-	private static void appendChildren(JSONObject parentJson, Field parent) throws JSONException {
-		if(parent.getFields()==null || parent.getFields().isEmpty()){
+	private static void appendChildren(JSONObject parentJson, Field parent)
+			throws JSONException {
+		if (parent.getFields() == null || parent.getFields().isEmpty()) {
 			return;
 		}
-		
+
 		JSONArray children = new JSONArray();
-		for(Field field: parent.getFields()){
+		for (Field field : parent.getFields()) {
 			String fieldJson = exportFieldJson(field);
 			JSONObject obj = new JSONObject(fieldJson);
 			children.put(obj);
-			appendChildren(obj,field);
+			appendChildren(obj, field);
 		}
 		parentJson.put("fields", children);
 	}
@@ -1348,8 +1357,43 @@ public class ProcessDaoHelper {
 
 	private static final String OUTPUT_FOLDER = "wiraimportzip";
 
+	public static void importProcessAsStream(String name, long size,
+			InputStream is) throws IOException {
+		log.info("Importing process from inputstream {name:" + name + ", size:"
+				+ (size / 1024) + "kb}");
+		Set<PosixFilePermission> perms = new HashSet<>();
+		// add permission as rw-r--r-- 644
+		perms.add(PosixFilePermission.OWNER_WRITE);
+		perms.add(PosixFilePermission.OWNER_READ);
+		perms.add(PosixFilePermission.OWNER_EXECUTE);
+		perms.add(PosixFilePermission.GROUP_READ);
+		perms.add(PosixFilePermission.GROUP_WRITE);
+		perms.add(PosixFilePermission.GROUP_EXECUTE);
+		perms.add(PosixFilePermission.OTHERS_READ);
+		perms.add(PosixFilePermission.OTHERS_EXECUTE);
+		FileAttribute<Set<PosixFilePermission>> fileAttributes = PosixFilePermissions
+				.asFileAttribute(perms);
+
+		Path zipFilePath = Files.createTempFile(name, null, fileAttributes);
+		OpenOption[] options = new OpenOption[] { StandardOpenOption.WRITE,
+				StandardOpenOption.CREATE };
+		OutputStream fos = Files.newOutputStream(zipFilePath, options);
+		final byte[] buffer = new byte[1024];
+		int len;
+		while ((len = is.read(buffer)) > 0) {
+			fos.write(buffer, 0, len);
+		}
+		fos.close();
+		is.close();
+
+		importProcessAsZip(zipFilePath.toString());
+
+		zipFilePath.toFile().delete();
+	}
+
 	public static void importProcessAsZip(String zipFileName) {
 
+		log.info("Importing zip file " + zipFileName);
 		// create output directory is not exists
 
 		Set<PosixFilePermission> perms = new HashSet<>();
@@ -1370,8 +1414,10 @@ public class ProcessDaoHelper {
 		try {
 			zipFile = new ZipFile(zipFileName);
 
-			root = Files.createDirectories(Paths.get(OUTPUT_FOLDER),
-					fileAttributes);
+			// root = Files.createDirectories(Paths.get(OUTPUT_FOLDER),
+			// fileAttributes);
+			root = Files.createTempDirectory(OUTPUT_FOLDER, fileAttributes);
+			log.debug("Creating temporary working directory " + root.toString());
 
 			// File folder = path.toFile();
 			// folder.deleteOnExit();
@@ -1438,6 +1484,15 @@ public class ProcessDaoHelper {
 				e.printStackTrace();
 			}
 		}
+
+		try {
+			log.debug("Cleaning up working directory " + root.toString());
+			FileUtils.deleteDirectory(root.toFile());
+		} catch (IOException e) {
+			log.warn("Unable to clean working directory " + root.toString()
+					+ ", cause: " + e.getMessage());
+		}
+
 	}
 
 	/**
@@ -1454,6 +1509,9 @@ public class ProcessDaoHelper {
 			JSONObject processJson = new JSONObject(processJsonStr);
 
 			log.info("Importing process ID: "
+					+ processJson.getString(ProcessDef.ID) + ", Name:"
+					+ processJson.getString(ProcessDef.NAME));
+			ImportLogger.log("Importing process ID: "
 					+ processJson.getString(ProcessDef.ID) + ", Name:"
 					+ processJson.getString(ProcessDef.NAME));
 
@@ -1529,6 +1587,7 @@ public class ProcessDaoHelper {
 				String attachmentName = attachment.getName();
 				attachmentName = format(attachmentName);
 				log.info("importing attachment " + attachmentName);
+				ImportLogger.log("importing attachment " + attachmentName);
 				attachment.setAttachment(Files.readAllBytes(rootPath
 						.resolve(attachmentName)));
 
@@ -1541,7 +1600,7 @@ public class ProcessDaoHelper {
 			importForms(rootPath, processDefModel);
 			importTaskSteps(processJson, processDefModel);
 			importTaskNotifications(processJson, processDefModel);
-			
+
 		} catch (IOException e) {
 			log.fatal("Unable to read bytes from " + processPath.toString());
 			throw new RuntimeException(e);
@@ -1555,43 +1614,53 @@ public class ProcessDaoHelper {
 	private static void importTaskNotifications(JSONObject processJson,
 			ProcessDefModel processDefModel) throws JSONException {
 		JSONArray notificationArr = processJson.getJSONArray("notifications");
-		for (int i=0; i<notificationArr.length(); i++) {
+		for (int i = 0; i < notificationArr.length(); i++) {
 			JSONObject obj = notificationArr.getJSONObject(i);
 			TaskNotification notification = new TaskNotification();
-			notification.setCategory(NotificationCategory.valueOf(obj.getString(TaskNotification.CATEGORY)));
-			notification.setEnableNotification(obj.optBoolean(TaskNotification.ENABLENOTIFICATION));
-			notification.setAction(Actions.valueOf(obj.optString(TaskNotification.ACTION)));
-			notification.setUseDefaultNotification(obj.optBoolean(TaskNotification.DEFAULTANOTIFICATION));
-			notification.setNotificationTemplate(obj.optString(TaskNotification.TEMPLATE));
+			notification.setCategory(NotificationCategory.valueOf(obj
+					.getString(TaskNotification.CATEGORY)));
+			notification.setEnableNotification(obj
+					.optBoolean(TaskNotification.ENABLENOTIFICATION));
+			notification.setAction(Actions.valueOf(obj
+					.optString(TaskNotification.ACTION)));
+			notification.setUseDefaultNotification(obj
+					.optBoolean(TaskNotification.DEFAULTANOTIFICATION));
+			notification.setNotificationTemplate(obj
+					.optString(TaskNotification.TEMPLATE));
 			notification.setNodeId(obj.optLong(TaskNotification.NODEID));
 			notification.setStepName(obj.optString(TaskNotification.STEPNAME));
 			notification.setSubject(obj.optString(TaskNotification.SUBJECT));
 			notification.setProcessDefId(processDefModel.getId());
 			notification.setRefId(obj.optString(TaskNotification.ID));
-//			notification.setTargets(obj.optString(TaskNotification.RECIPIENTS));
+			// notification.setTargets(obj.optString(TaskNotification.RECIPIENTS));
 			saveTaskNotification(notification);
 		}
 	}
 
 	private static void importTaskSteps(JSONObject processJson,
 			ProcessDefModel processDefModel) throws JSONException {
-		
+
 		ProcessDaoImpl dao = DB.getProcessDao();
-		
+
 		// Task Steps
 		JSONArray steps = processJson.getJSONArray("steps");
-		for (int i=0; i<steps.length(); i++) {
+		for (int i = 0; i < steps.length(); i++) {
 			JSONObject obj = steps.getJSONObject(i);
-			log.info("Importing task step "+obj.optString(TaskStepDTO.FORMNAME)+obj.optString(TaskStepDTO.OUTPUTNAME));
-			
-			TaskStepModel model = DB.getProcessDao().findByRefId(obj.getString(TaskStepDTO.ID), TaskStepModel.class);
-			if(model==null){
+			log.info("Importing task step "
+					+ obj.optString(TaskStepDTO.FORMNAME)
+					+ obj.optString(TaskStepDTO.OUTPUTNAME));
+			ImportLogger.log("Importing task step "
+					+ obj.optString(TaskStepDTO.FORMNAME)
+					+ obj.optString(TaskStepDTO.OUTPUTNAME));
+			TaskStepModel model = DB.getProcessDao().findByRefId(
+					obj.getString(TaskStepDTO.ID), TaskStepModel.class);
+			if (model == null) {
 				model = new TaskStepModel();
 			}
-			
+
 			model.setRefId(obj.getString(TaskStepDTO.ID));
 			model.setNodeId(obj.optLong(TaskStepDTO.NODEID));
-			if(model.getNodeId()==0){
+			if (model.getNodeId() == 0) {
 				model.setNodeId(null);
 			}
 			model.setStepName(obj.optString(TaskStepDTO.STEPNAME));
@@ -1600,29 +1669,36 @@ public class ProcessDaoHelper {
 			model.setCondition(obj.optString(TaskStepDTO.CONDITION));
 			model.setFormRef(obj.optString(TaskStepDTO.FORMREF));
 			model.setOutputRefId(obj.optString(TaskStepDTO.OUTPUTREF));
-			if(model.getOutputRefId()!=null){
-				ADOutputDoc doc = dao.findByRefId(model.getOutputRefId(), ADOutputDoc.class);
+			if (model.getOutputRefId() != null) {
+				ADOutputDoc doc = dao.findByRefId(model.getOutputRefId(),
+						ADOutputDoc.class);
 				model.setDoc(doc);
 			}
-			
+
 			model.setProcessDef(processDefModel);
-			dao.createStep(model);			
-			
+			dao.createStep(model);
+
 			// Step Triggers
 			JSONArray triggersJson = obj.getJSONArray("triggers");
-			for (int j=0; j<triggersJson.length(); j++) {
+			for (int j = 0; j < triggersJson.length(); j++) {
 				JSONObject item = triggersJson.getJSONObject(j);
-				log.info("Importing step trigger "+item.getString(TaskStepTrigger.TRIGGER));
-				
-				ADTaskStepTrigger trigger = dao.findByRefId(item.getString(TaskStepTrigger.ID), ADTaskStepTrigger.class);
-				if(trigger==null){
+				log.info("Importing step trigger "
+						+ item.getString(TaskStepTrigger.TRIGGER));
+				ImportLogger.log("Importing step trigger "
+						+ item.getString(TaskStepTrigger.TRIGGER));
+				ADTaskStepTrigger trigger = dao.findByRefId(
+						item.getString(TaskStepTrigger.ID),
+						ADTaskStepTrigger.class);
+				if (trigger == null) {
 					trigger = new ADTaskStepTrigger();
 				}
-				
+
 				trigger.setRefId(item.getString(TaskStepTrigger.ID));
 				trigger.setTaskStep(model);
-				trigger.setType(TriggerType.valueOf(item.getString(TaskStepTrigger.TYPE)));
-				ADTrigger adTrigger = DB.getProcessDao().getTrigger(item.getString(TaskStepTrigger.TRIGGER));
+				trigger.setType(TriggerType.valueOf(item
+						.getString(TaskStepTrigger.TYPE)));
+				ADTrigger adTrigger = DB.getProcessDao().getTrigger(
+						item.getString(TaskStepTrigger.TRIGGER));
 				trigger.setTrigger(adTrigger);
 				trigger.setCondition(item.optString(TaskStepTrigger.CONDITION));
 				dao.save(trigger);
@@ -1630,60 +1706,72 @@ public class ProcessDaoHelper {
 		}
 
 	}
-	
+
 	private static void importForms(Path rootPath,
 			ProcessDefModel processDefModel) throws IOException {
 		// Forms
 		Path formsPath = rootPath.resolve("forms");
-		DirectoryStream<Path> forms = Files.newDirectoryStream(formsPath);
-		for (Path path : forms) {
-			log.info("Reading form " + path.toString());
-			byte[] bytes = Files.readAllBytes(path);
-			Form form = null;
-			try {
-				JSONUnmarshaller unmarshaller = JsonForm.getJaxbContext()
-						.createJSONUnmarshaller();
-				
-				form = unmarshaller.unmarshalFromJSON(new StringReader(
-						new String(bytes)), Form.class);
-				form.setProcessRefId(processDefModel.getRefId());
-				
-				//Form
-				JSONObject formJson = new JSONObject(new String(bytes));
-				
-				//fields
-				JSONArray fields = formJson.getJSONArray("fields");
-				for(int i=0; i<fields.length(); i++){
-					String fieldJson = fields.getJSONObject(i).toString();
-					Field field = unmarshaller.unmarshalFromJSON(new StringReader(fieldJson), Field.class);
-					importChildren(fields.getJSONObject(i),field);
-					form.addField(field);
+		LinkOption[] options = new LinkOption[] { LinkOption.NOFOLLOW_LINKS };
+		if (Files.notExists(formsPath, options)) {
+			return;
+		}
+
+		try (DirectoryStream<Path> forms = Files.newDirectoryStream(formsPath)) {
+			for (Path path : forms) {
+				log.info("Importing form " + path.toString());
+				ImportLogger.log("Importing form " + path.getFileName());
+				byte[] bytes = Files.readAllBytes(path);
+				Form form = null;
+				try {
+					JSONUnmarshaller unmarshaller = JsonForm.getJaxbContext()
+							.createJSONUnmarshaller();
+
+					form = unmarshaller.unmarshalFromJSON(new StringReader(
+							new String(bytes)), Form.class);
+					form.setProcessRefId(processDefModel.getRefId());
+
+					// Form
+					JSONObject formJson = new JSONObject(new String(bytes));
+
+					// fields
+					JSONArray fields = formJson.getJSONArray("fields");
+					for (int i = 0; i < fields.length(); i++) {
+						String fieldJson = fields.getJSONObject(i).toString();
+						Field field = unmarshaller.unmarshalFromJSON(
+								new StringReader(fieldJson), Field.class);
+						importChildren(fields.getJSONObject(i), field);
+						form.addField(field);
+					}
+					FormDaoHelper.createJson(form);
+				} catch (JAXBException jaxbEx) {
+					log.fatal("JAXBException: Unable to read form '"
+							+ form.getName() + "' - " + path.toString());
+					throw new RuntimeException(jaxbEx);
+				} catch (JSONException e) {
+					log.fatal("JSONException: Unable to read form '"
+							+ form.getName() + "' - " + path.toString());
+					throw new RuntimeException(e);
 				}
-				FormDaoHelper.createJson(form);
-			} catch (JAXBException jaxbEx) {
-				log.fatal("JAXBException: Unable to read form '"
-						+ form.getName() + "' - " + path.toString());
-				throw new RuntimeException(jaxbEx);
-			}catch (JSONException e) {
-				log.fatal("JSONException: Unable to read form '"
-						+ form.getName() + "' - " + path.toString());
-				throw new RuntimeException(e);
 			}
+		} catch (DirectoryIteratorException ex) {
+			throw ex.getCause();
 		}
 	}
 
-	private static void importChildren(JSONObject parentJson, Field parent) throws JAXBException, JSONException {
+	private static void importChildren(JSONObject parentJson, Field parent)
+			throws JAXBException, JSONException {
 		JSONArray children = parentJson.optJSONArray("fields");
-		if(children==null || children.length()==0){
+		if (children == null || children.length() == 0) {
 			return;
 		}
-		
+
 		JSONUnmarshaller unmarshaller = JsonForm.getJaxbContext()
 				.createJSONUnmarshaller();
-		
-		for(int i=0; i<children.length(); i++){
+
+		for (int i = 0; i < children.length(); i++) {
 			JSONObject fieldJson = children.getJSONObject(i);
-			Field field = unmarshaller.unmarshalFromJSON(new StringReader(fieldJson.toString()), Field.class);
+			Field field = unmarshaller.unmarshalFromJSON(new StringReader(
+					fieldJson.toString()), Field.class);
 			parent.addField(field);
 			importChildren(fieldJson, field);
 		}
@@ -1694,24 +1782,36 @@ public class ProcessDaoHelper {
 
 		// Triggers
 		Path outputsPath = rootPath.resolve("outputs");
-		DirectoryStream<Path> outputs = Files.newDirectoryStream(outputsPath);
-		for (Path path : outputs) {
-			log.info("Reading outputdoc " + path.toString());
-			byte[] bytes = Files.readAllBytes(path);
-			JSONObject outputJson = new JSONObject(new String(bytes));
-			OutputDocument doc = OutputDocumentDaoHelper.getDocument(outputJson.getString(OutputDocument.ID), true);
-			if(doc==null){
-				doc = new OutputDocument();
-			}
-			doc.setRefId(outputJson.getString(OutputDocument.ID));
-			doc.setName(outputJson.getString(OutputDocument.NAME));
-			doc.setCode(outputJson.getString(OutputDocument.CODE));
-			doc.setDescription(outputJson.getString(OutputDocument.DESCRIPTION));
-			doc.setPath(outputJson.getString(OutputDocument.PATH));
-			doc.setTemplate(outputJson.getString(OutputDocument.TEMPLATE));
-			doc.setProcessRefId(processDefModel.getRefId());
+		LinkOption[] options = new LinkOption[] { LinkOption.NOFOLLOW_LINKS };
+		if (Files.notExists(outputsPath, options)) {
+			return;
+		}
 
-			OutputDocumentDaoHelper.saveOutputDoc(doc);
+		try (DirectoryStream<Path> outputs = Files
+				.newDirectoryStream(outputsPath)) {
+			for (Path path : outputs) {
+				ImportLogger.log("Importing outputdoc " + path.getFileName());
+				log.info("Importing outputdoc " + path.toString());
+				byte[] bytes = Files.readAllBytes(path);
+				JSONObject outputJson = new JSONObject(new String(bytes));
+				OutputDocument doc = OutputDocumentDaoHelper.getDocument(
+						outputJson.getString(OutputDocument.ID), true);
+				if (doc == null) {
+					doc = new OutputDocument();
+				}
+				doc.setRefId(outputJson.getString(OutputDocument.ID));
+				doc.setName(outputJson.getString(OutputDocument.NAME));
+				doc.setCode(outputJson.getString(OutputDocument.CODE));
+				doc.setDescription(outputJson
+						.getString(OutputDocument.DESCRIPTION));
+				doc.setPath(outputJson.getString(OutputDocument.PATH));
+				doc.setTemplate(outputJson.getString(OutputDocument.TEMPLATE));
+				doc.setProcessRefId(processDefModel.getRefId());
+
+				OutputDocumentDaoHelper.saveOutputDoc(doc);
+			}
+		} catch (DirectoryIteratorException ex) {
+			throw ex.getCause();
 		}
 	}
 
@@ -1720,23 +1820,33 @@ public class ProcessDaoHelper {
 		ProcessDaoImpl dao = DB.getProcessDao();
 		// Triggers
 		Path triggersPath = rootPath.resolve("triggers");
-		DirectoryStream<Path> triggers = Files.newDirectoryStream(triggersPath);
-		for (Path path : triggers) {
-			log.info("Importing trigger " + path.toString());
-			byte[] bytes = Files.readAllBytes(path);
-			JSONObject triggerJson = new JSONObject(new String(bytes));
+		LinkOption[] options = new LinkOption[] { LinkOption.NOFOLLOW_LINKS };
+		if (Files.notExists(triggersPath, options)) {
+			return;
+		}
 
-			ADTrigger trigger = dao.findByRefId(
-					triggerJson.getString(Trigger.ID), ADTrigger.class);
-			if (trigger == null) {
-				trigger = new ADTrigger();
+		try (DirectoryStream<Path> triggers = Files
+				.newDirectoryStream(triggersPath)) {
+			for (Path path : triggers) {
+				ImportLogger.log("Importing trigger " + path.getFileName());
+				log.info("Importing trigger " + path.toString());
+				byte[] bytes = Files.readAllBytes(path);
+				JSONObject triggerJson = new JSONObject(new String(bytes));
+
+				ADTrigger trigger = dao.findByRefId(
+						triggerJson.getString(Trigger.ID), ADTrigger.class);
+				if (trigger == null) {
+					trigger = new ADTrigger();
+				}
+				trigger.setRefId(triggerJson.getString(Trigger.ID));
+				trigger.setName(triggerJson.getString(Trigger.NAME));
+				trigger.setImports(triggerJson.optString(Trigger.IMPORTS));
+				trigger.setScript(triggerJson.optString(Trigger.SCRIPT));
+				trigger.setProcessRefId(processDefModel.getRefId());
+				dao.save(trigger);
 			}
-			trigger.setRefId(triggerJson.getString(Trigger.ID));
-			trigger.setName(triggerJson.getString(Trigger.NAME));
-			trigger.setImports(triggerJson.optString(Trigger.IMPORTS));
-			trigger.setScript(triggerJson.optString(Trigger.SCRIPT));
-			trigger.setProcessRefId(processDefModel.getRefId());
-			dao.save(trigger);
+		} catch (DirectoryIteratorException ex) {
+			throw ex.getCause();
 		}
 	}
 

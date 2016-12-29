@@ -184,4 +184,8 @@ public class Uploader extends Composite {
 	public String getFieldId(){
 		return context.getContext(FIELD_REFID);
 	}
+	
+	public IUploader getIUploader(){
+		return uploader;
+	}
 }
