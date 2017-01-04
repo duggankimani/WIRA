@@ -285,9 +285,7 @@ public class HeaderPresenter extends
 	 * Logout Google OAuth
 	 */
 	public native void logoutOauth()/*-{
-		if($wnd.auth2 != undefined){
-			$wnd.auth2.disconnect();
-		}
+		$wnd.logoutGoogleOauth()
 	}-*/;
 
 	@Override
