@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -301,6 +302,8 @@ public class HTMLForm extends HTMLParent {
 				continue;
 			}
 
+			//Input groups Must Have have ids, they have a shared name & form values
+			//They must also wrapped in an element with an id = groupName
 			String type = element.getAttribute("type");
 			if (type != null
 					&& (type.equals("radio") || type.equals("checkbox"))) {
@@ -311,7 +314,7 @@ public class HTMLForm extends HTMLParent {
 					}
 
 					inputGroups.add(name);
-
+					
 					// Parent has the same id as the name of the children
 					Element parentElement = htmlContent.getElementById(name);
 					if (parentElement != null) {

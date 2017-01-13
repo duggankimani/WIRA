@@ -20,6 +20,7 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLGrid extends HTMLParent {
@@ -291,7 +292,9 @@ public class HTMLGrid extends HTMLParent {
 					Element input = getElementById(line, child.getName());
 					if(input!=null){
 						FieldWidget widget = wrap(input,getElementType(child,input), designMode);
+						
 						child = initializeChild(widget);
+						
 //						Window.alert("Original "+child.getName()+"; "+child.getProperty(FORMULA) 
 //								+"; isObserver="+widget.isObserver+"; isObserverable="+widget.isObservable);
 						//Window.alert(child.getName()+" - "+child.getProperty(FORMULA));

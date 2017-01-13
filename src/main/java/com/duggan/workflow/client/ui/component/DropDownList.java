@@ -80,7 +80,8 @@ public class DropDownList<T extends Listable> extends ListBox implements
 
 	public void setItems(ArrayList<T> items) {
 		clear();
-		this.items = items;
+		this.items.clear();
+		this.items.addAll(items);
 		if(nullText==null){
 			//NULL TEXT FOR SQL BASED, HTMLSelect Field
 			nullText="--Select--";

@@ -1158,10 +1158,11 @@ public class FormDaoHelper {
 						logger.debug("SQL Parse: " + sqlSelect);
 					}
 
+					logger.debug("Loading Lookup '"+field.getName()+"' Query = " + sqlSelect);
 					field.setSelectionValues(loader.getValuesByDataSourceName(
 							sqlDS, sqlSelect));
 				} catch (Exception e) {
-					logger.warn("#Dropdown Query Failed -  " + e.getMessage());
+					logger.warn("#Dropdown '"+field.getName()+"' Query Failed -  " + e.getMessage());
 				}
 			}
 

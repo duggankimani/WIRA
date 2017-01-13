@@ -39,8 +39,12 @@ public abstract class HTMLParent extends FieldWidget {
 			return "checkbox";
 		} else if (fld.getType() == DataType.BOOLEAN) {
 			return "radio";
-		} else if (fld.getType() == DataType.GRID) {
+		} else if (fld.getType() == DataType.CHECKBOXGROUP) {
+			return "checkboxgroup";
+		}else if (fld.getType() == DataType.GRID) {
 			return "grid";
+		}else if(fld.getType() == DataType.SELECTBASIC) {
+			return "select";	
 		} else {
 			return element.getAttribute("type");
 		}
@@ -89,6 +93,7 @@ public abstract class HTMLParent extends FieldWidget {
 			Field dbEl = children.get(name);
 			copy(child, dbEl);
 		}
+		
 		widget.setField(child);
 
 		//Read Only From The Parent

@@ -157,7 +157,7 @@ public class HTMLSelectBasic extends FieldWidget implements IsSelectionField {
 			// from another subsystem
 			// as new data provided manually
 		}
-
+		
 		if (values != null && !values.isEmpty()) {
 			lstItems.setItems(values);
 

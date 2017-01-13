@@ -1333,7 +1333,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		
 		String tag = element.getTagName().toLowerCase();
 		if(type!=null){
-			if(type.equals("radio")){
+			if(type.equals("radio") || type.equals("checkbox")){
 				/*
 				 * DivElement enclosing radio buttons
 				 */
@@ -1364,6 +1364,8 @@ public abstract class FieldWidget extends AbsolutePanel implements
 					widget = new HTMLDateField(element, designMode);
 				}else if(type.equals("radio")){
 					widget = new HTMLRadioGroup(element,designMode);
+				}else if(type.equals("checkbox")){
+					widget = new HTMLCheckBoxGroup(element,designMode);
 				}
 				break;
 			case "textarea":
@@ -1377,9 +1379,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			case "grid":
 				widget = new HTMLGrid(element, designMode);
 				break;
+			case "checkboxgroup":
+				widget = new HTMLCheckBoxGroup(element, designMode);
+				break;
 			default:
 				if(element.hasClassName(GRID_TEMPLATE_CLASS) 
-						|| element.hasClassName(GRID_ROW_TEMPLATE_CLASS) ){
+						|| element.hasClassName(GRID_ROW_TEMPLATE_CLASS) 
+						|| element.hasChildNodes()){
 					//ignore
 				}else{
 					widget = new HTMLStatic(element,designMode);
@@ -1464,6 +1470,24 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	  }-*/;
 
 	
+	public native void getAllInputGroups(String parentId, JsArrayString elementIds)/*-{
+		var div = $doc.getElementById(parentId);
+		var isDesignMode = this.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::designMode;
+		
+		$wnd.jQuery(div).find('input[type=checkbox]:not([id]):not(.grid_template *), input[type=radio]:not([id]):not(.grid_template *)')
+        .each(function() {
+            var el = $wnd.jQuery(this);
+           
+            if(el.prop('name') !=null){
+           	   elementIds.push(el.prop('id'));
+           	}
+           	if(el.prop('title')!=null && !isDesignMode){
+       			$wnd.jQuery(el).popover({
+       				trigger: 'focus'
+       			});
+           	}
+        });
+	}-*/;
 	
 	
 	
