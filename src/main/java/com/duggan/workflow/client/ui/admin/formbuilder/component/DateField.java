@@ -56,6 +56,8 @@ public class DateField extends FieldWidget {
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
+				DataType.STRING));
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);

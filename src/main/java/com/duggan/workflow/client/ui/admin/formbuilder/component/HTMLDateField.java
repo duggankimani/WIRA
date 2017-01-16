@@ -42,6 +42,8 @@ public class HTMLDateField extends FieldWidget {
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
+		addProperty(new Property(CUSTOMTRIGGER, "Trigger Class",
+				DataType.STRING));
 
 		// Wrap
 		elementDate.setAttribute("type", "text");
