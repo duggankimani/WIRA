@@ -81,6 +81,8 @@ public class NumberField extends FieldWidget{
 		super();
 		isWrappedField=true;
 		this.designMode = designMode;
+		addProperty(new Property(NUMBERFORMAT, "Format", DataType.STRING));
+		setProperty(NUMBERFORMAT, "#,##0.00;(#,##0.00)");
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
@@ -188,6 +190,10 @@ public class NumberField extends FieldWidget{
 
 	@Override
 	public void setField(Field field) {
+		if(field.getProperty(NUMBERFORMAT)!=null){
+			txtComponent.setFormat(field.getProperty(NUMBERFORMAT));
+		}
+		
 		super.setField(field);
 		if(isWrappedField){
 			registerHandlers();
