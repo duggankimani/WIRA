@@ -18,6 +18,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;
@@ -109,8 +110,8 @@ public class DateInput extends Composite implements HasValue<Date> {
 		return DATEFORMAT_SYS.parse(dateStr);
 	}
 
-	public HasValueChangeHandlers<String> getDateInput() {
-		return txtDate;
+	public HasValueChangeHandlers<Date> getDateInput() {
+		return this;
 	}
 
 	public void setPlaceholder(String placeHolderValue) {

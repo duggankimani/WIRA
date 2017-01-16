@@ -63,64 +63,13 @@ public class DateField extends FieldWidget {
 		UIObject.setVisible(spnMandatory, false);
 
 		dateBox.getDateInput().addValueChangeHandler(
-				new ValueChangeHandler<String>() {
+				new ValueChangeHandler<Date>() {
 					@Override
-					public void onValueChange(ValueChangeEvent<String> event) {
+					public void onValueChange(ValueChangeEvent<Date> event) {
 						execTrigger();
 					}
 				});
 
-	}
-
-	@Deprecated
-	public DateField(Element elementDate, boolean designMode) {
-		super();
-		this.designMode = designMode;
-		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
-		addProperty(new Property("DATEFORMAT", "Date Format", DataType.STRING));
-		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
-
-		// Wrap
-		elementDate.setAttribute("type", "text");
-		dateBox = new DateInput(elementDate);
-		widget = dateBox;
-		assert elementDate.getId() != null;
-
-		// Set
-		setProperty(NAME, elementDate.getId());
-		field.setName(elementDate.getId());
-		lblEl = findLabelFor(elementDate);
-		if (lblEl != null) {
-			field.setCaption(lblEl.getInnerHTML());
-			setProperty(CAPTION, lblEl.getInnerHTML());
-		}
-
-		setProperty(HELP, elementDate.getTitle());
-		setProperty(MANDATORY,
-				new BooleanValue(elementDate.hasAttribute("required")));
-		setProperty(READONLY,
-				new BooleanValue(elementDate.hasAttribute("readonly")));
-
-		// field Properties update
-		field.setProperties(getProperties());
-
-		dateBox.getDateInput().addValueChangeHandler(
-				new ValueChangeHandler<String>() {
-					@Override
-					public void onValueChange(ValueChangeEvent<String> event) {
-						execTrigger();
-					}
-				});
-
-		if (designMode) {
-			dateBox.addClickHandler(new ClickHandler() {
-
-				@Override
-				public void onClick(ClickEvent event) {
-					showProperties(0);
-				}
-			});
-		}
 	}
 
 	/**
