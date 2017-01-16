@@ -54,6 +54,8 @@ public class NumberField extends FieldWidget{
 	
 	public NumberField(){
 		super();
+		addProperty(new Property(NUMBERFORMAT, "Format", DataType.STRING));
+		setProperty(NUMBERFORMAT, "#,##0.00;(#,##0.00)");
 		addProperty(new Property(MANDATORY, "Mandatory", DataType.CHECKBOX, refId));
 		addProperty(new Property(PLACEHOLDER, "Place Holder", DataType.STRING, refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
