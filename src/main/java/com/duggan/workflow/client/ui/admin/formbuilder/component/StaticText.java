@@ -47,12 +47,16 @@ public class StaticText extends FieldWidget {
 	@Override
 	public void setField(Field field) {
 		super.setField(field);
-		String value = getPropertyValue(STATICCONTENT);
+		Object val  = field.getValue()==null? null: field.getValue().getValue();
+		String value = null;
+		if(val!=null){
+			value = val.toString();
+		}else{
+			value = getPropertyValue(STATICCONTENT);
+		}
 		
 		if(value!=null){
 			lblEl.setInnerHTML(value);
-		}else{
-			lblEl.setInnerText("Static Text");
 		}
 	}
 	
