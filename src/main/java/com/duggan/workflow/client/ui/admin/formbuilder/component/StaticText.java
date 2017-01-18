@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class StaticText extends FieldWidget {
@@ -63,6 +64,13 @@ public class StaticText extends FieldWidget {
 	@Override
 	protected void setStaticContent(String content) {
 		lblEl.setInnerHTML(content);
+	}
+	
+	@Override
+	public void setValue(Object value) {
+		if(value!=null){
+			lblEl.setInnerHTML(value.toString());
+		}
 	}
 	
 	@Override

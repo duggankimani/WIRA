@@ -80,8 +80,9 @@ function signInCallback(authResult) {
       url: 'oauth2callback',
       contentType: 'application/octet-stream; charset=utf-8',
       success: function(result) {
+    	  
         // Handle or verify the server response.
-    	  window.location='index.html';
+    	  redirectLogin();
       },
       processData: false,
       data: authResult['code']
@@ -104,7 +105,7 @@ function signInCallback(code, targetUrl) {
       success: function(result) {
         // Handle or verify the server response.
     	  $("body").hide();
-    	  window.location='index.html';
+    	  redirectLogin();
       },
       processData: false,
       data: code
@@ -148,7 +149,7 @@ function loginWithCookie(){
 		data:str
 	})
 	.done(function() {
-		window.location='index.html';
+		redirectLogin();
 	})
 	.fail(function() {
 	})
@@ -171,7 +172,7 @@ function doFormSubmit() {
 	})
 	.done(function() {
 		$("body").hide();
-		window.location='index.html';
+		redirectLogin();
 	})
 	.fail(function() {
 		$('#issues').show();
@@ -181,3 +182,15 @@ function doFormSubmit() {
 	});
 
 };
+
+function redirectLogin(){
+	var redirectUrl = window.location.href;
+	if(redirectUrl.includes("#")){
+		var idx = redirectUrl.indexOf("#");
+		redirectUrl = redirectUrl.substring(idx);
+	}else{
+		redirectUrl="";
+	}
+	
+	window.location='index.html'+redirectUrl;
+}
