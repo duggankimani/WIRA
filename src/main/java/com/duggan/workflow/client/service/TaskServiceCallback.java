@@ -37,7 +37,7 @@ public abstract class TaskServiceCallback<T extends Result> extends ServiceCallb
 	@Override
 	public void onSuccess(T aResponse) {
 		BaseResponse baseResult = (BaseResponse)aResponse;
-		
+
 		if(baseResult.getErrorCode()==0){
 			processResult(aResponse);
 		}else{

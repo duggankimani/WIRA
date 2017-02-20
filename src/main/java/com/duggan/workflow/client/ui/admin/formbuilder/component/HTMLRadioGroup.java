@@ -24,10 +24,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLRadioGroup extends FieldWidget implements IsSelectionField {
 	
-	private Widget widget;
-
 	Element lblEl;
-	HTMLPanel vPanel;
+	//HTMLPanel vPanel;
 	Value fieldValue = null;
 
 	private boolean isWrappedField;// HTMLForm Child Field
@@ -151,14 +149,12 @@ public class HTMLRadioGroup extends FieldWidget implements IsSelectionField {
 
 	@Override
 	public Widget createComponent(boolean small) {
-		return vPanel;
+		return null;
 	}
 
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-
-		int count = vPanel.getWidgetCount();
 		for (SimpleRadio radio:wrappedFields.values()) {
 			radio.setReadOnly(this.readOnly);
 		}

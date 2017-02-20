@@ -539,7 +539,7 @@ public class FormBuilderView extends ViewImpl implements
 		formLabel.getElement().setInnerHTML(caption);
 
 		setFields(form.getFields());
-		if (form.getFields().isEmpty()) {
+		if (form.getFields()==null || form.getFields().isEmpty()) {
 			/*
 			 * A hack for easing drag drop when there are no fields on the form
 			 */

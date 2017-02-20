@@ -347,12 +347,14 @@ public class HTMLForm extends HTMLParent {
 	protected void wrapElement(Element element, String type) {
 		FieldWidget widget = FieldWidget.wrap(element, type, designMode);
 
-		if (widget != null) {
-			Field child = initializeChild(widget);
-			children.put(child.getName(), child);
-			fieldWidgets.add(widget);
+		if (widget == null) {
+			return;
 		}
 
+		Field child = initializeChild(widget);
+		children.put(child.getName(), child);
+		fieldWidgets.add(widget);
+		
 		field.setFields(children.values());
 	}
 
@@ -395,6 +397,10 @@ public class HTMLForm extends HTMLParent {
 	public ArrayList<Value> getFieldValues() {
 		ArrayList<Value> values = new ArrayList<Value>();
 		for (FieldWidget w : fieldWidgets) {
+			if(w==null){
+				continue;
+			}
+			
 			Field target = w.getField();
 			Value fieldValue = w.getFieldValue();
 			target.setValue(fieldValue);

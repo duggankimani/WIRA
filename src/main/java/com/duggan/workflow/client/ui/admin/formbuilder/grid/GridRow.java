@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent;
+import com.duggan.workflow.client.ui.events.AfterDeleteLineEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.Value;
@@ -75,7 +75,7 @@ public class GridRow extends Composite {
 					@Override
 					public void onSelect(String name) {
 						if(name.equals("Ok")){
-							AppContext.fireEvent(new DeleteLineEvent(line));
+							AppContext.fireEvent(new AfterDeleteLineEvent(line));
 							GridRow.this.removeFromParent();
 						}
 					}

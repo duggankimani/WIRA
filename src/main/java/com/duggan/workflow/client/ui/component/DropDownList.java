@@ -78,18 +78,18 @@ public class DropDownList<T extends Listable> extends ListBox implements
 		});
 	}
 
-	public void setItems(ArrayList<T> items) {
+	public void setItems(ArrayList<T> aListOfItems) {
 		clear();
 		this.items.clear();
-		this.items.addAll(items);
 		if(nullText==null){
 			//NULL TEXT FOR SQL BASED, HTMLSelect Field
 			nullText="--Select--";
 		}
 		addItem(nullText, "");
 
-		if (items != null) {
-			for (T item : items) {
+		if (aListOfItems != null) {
+			this.items.addAll(aListOfItems);
+			for (T item : aListOfItems) {
 				addItem(item.getDisplayName(), item.getName());
 			}
 		}

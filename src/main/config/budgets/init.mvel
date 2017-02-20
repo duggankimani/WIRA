@@ -1,0 +1,83 @@
+String fullNames = SessionHelper.getCurrentUser().getFullName(); 
+
+String cycleCode = values.?budgetCycle.?value;
+if(cycleCode==null){
+  return;
+}
+
+String query = "select code,name,startDate,endDate from ext_budgetcycle where code='"+cycleCode+"'";
+
+List cycles = DBUtil.getValues(query, "wiradb");
+if(cycles.size==0){
+ return;
+}
+
+Object cycle = cycles.get(0);
+
+System.out.println("####################"+fullNames);
+
+DocumentLine budgetCycle = new DocumentLine();
+budgetCycle._s("type","BudgetCycle");
+budgetCycle._s("name",cycle[1]);
+budgetCycle._s("id",cycleCode);
+budgetCycle._s("lineAmount",0.0);
+budgetCycle._s("startDate", cycle[2]); 
+budgetCycle._s("endDate", cycle[3]);
+budgetCycle._s("activity","");
+budgetCycle._s("lastChangedBy", "");
+budgetCycle._s("lastChanged", "");
+budgetCycle._s("createdBy",fullNames);
+budgetCycle._s("createdOn", new Date());
+budgetCycle.setName("budget");
+addDetail(budgetCycle);
+
+String sectorCode = values.?sector.?value;
+if(sectorCode==null){
+  return;
+}
+
+List sectors = DBUtil.getValues("select code, name from ext_sector where code='"+sectorCode+"'", "wiradb");
+
+for(Object row : sectors){
+  String code = row[0];
+  String name = row[1];
+  DocumentLine sector =  new DocumentLine();
+  sector._s("id",code);
+  sector._s("name",name);
+  sector._s("type","Sector");
+  sector._s("amount",0.0);
+  sector._s("lineAmount",0.0);
+  sector._s("startDate", cycle[2]); 
+  sector._s("endDate", cycle[3]);
+  sector._s("activity","");
+  sector._s("lastChangedBy", "");
+  sector._s("createdBy",fullNames);
+  sector._s("createdOn", new Date());
+  sector._s("lastChanged", "");
+  sector._s("parent",cycleCode);
+  sector.setName("budget");
+  addDetail(sector);
+}
+
+String iQuery  = "select code, name from ext_intervention";
+List interventions = DBUtil.getValues(iQuery , "wiradb");
+
+for(Object row : interventions){
+  String code = row[0];
+  String name = row[1];
+  DocumentLine intervention =  new DocumentLine();
+  intervention._s("id",code);
+  intervention._s("name",name);
+  intervention._s("type","Intervention");
+  intervention._s("lineAmount",0.0);
+  intervention._s("parent",sectorCode);
+  intervention._s("startDate", cycle[2]); 
+  intervention._s("endDate", cycle[3]);
+  intervention._s("activity","");
+  intervention._s("lastChangedBy", "");
+  intervention._s("createdBy",fullNames);
+  intervention._s("createdOn", new Date());
+  intervention._s("lastChanged", "");
+  intervention.setName("budget");
+  addDetail(intervention);
+}

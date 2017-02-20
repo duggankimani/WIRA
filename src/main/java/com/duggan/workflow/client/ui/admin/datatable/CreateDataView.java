@@ -217,7 +217,7 @@ public class CreateDataView extends Composite {
 
 		for (CatalogColumn c : cols) {
 			ColumnConfig config = new ColumnConfig(c.getName(), c.getLabel(), c
-					.getType().getFieldType(), "", "input-medium",
+					.getType().getFieldType(), "", null ,
 					!c.isAutoIncrement());
 			configs.add(config);
 		}

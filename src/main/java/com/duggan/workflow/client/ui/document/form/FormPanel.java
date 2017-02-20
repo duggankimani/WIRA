@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.SingleButton;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.HTMLButton;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.TextArea;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.delegate.FormDelegate;
@@ -270,7 +270,7 @@ public class FormPanel extends Composite {
 
 			} else if (field.getType() == DataType.BUTTON) {
 				String submitType = field
-						.getPropertyValue(SingleButton.SUBMITTYPE);
+						.getPropertyValue(HTMLButton.SUBMITTYPE);
 				if (submitType != null) {
 					if (submitType.equals("CompleteProcess")) {
 						// Override default complete

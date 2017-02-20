@@ -1,0 +1,136 @@
+<html>
+<head>
+</head>
+<body>
+
+	<div style="width: 153; height: 69; margin:0 auto;">
+		<img
+			src="getreport?ACTION=GetLogo&amp;width=179&amp;settingName=ORGLOGO"
+			style="width: 153; height: 69" align="middle" />
+	</div>
+	<table class="mceItemTable" style="width: 100%;" border="0"
+		cellpadding="5">
+		<tbody>
+			<tr>
+				<td>
+					<h2>Payment Request - M-Pesa | Case #: @@CaseNumber</h2>
+					<hr />
+				</td>
+			</tr>
+			<tr>
+				<td><strong>SECTION 1: M-Pesa Details</strong><br />
+					<table class="mceItemTable"
+						style="font-family: Arial, Helvetica, sans-serif; width: 70%;"
+						border="0">
+						<tbody>
+							<tr style="background-color:#E0E0E0">
+								<td>Name</td>
+								<td>Phone Number</td>
+								<td>Amount</td>
+								<td>Registered?</td>
+							</tr>
+							<!-- @>mpesaPayees -->
+							<tr style="background-color:#F3F3F3">
+								<td><span style="font-family: 'courier new';">@@payeeName</span></td>
+								<td><span style="font-family: 'courier new';">@@payeeNumber</span></td>
+								<td><span style="font-family: 'courier new';">@@amount</span></td>
+								<td><span style="font-family: 'courier new';">@@registeredOnMpesa</span></td>
+							</tr>
+							<!-- @<mpesaPayees -->
+						</tbody>
+					</table> <br /> <strong>Total Amount: Kshs @@totalAmount </strong> <br />
+					<br /> Payment to include withdrawal charges: @@mpesawithdrawal</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="mceItemTable"
+						style="font-family: Arial, Helvetica, sans-serif;" border="0">
+						<tbody>
+							<tr>
+								<td><strong>Expense Lines</strong><br />
+									<table class="mceItemTable"
+										style="width: 100%; font-family: Arial, Helvetica, sans-serif;"
+										border="0">
+										<thead style="background-color:#E0E0E0;">
+											<tr>
+												<th>Expense Acc</th>
+												<th>Description</th>
+												<th>Qty</th>
+												<th>Unit Price</th>
+												<th>Amount</th>
+											</tr>
+										</thead>
+										<tbody>
+											<!--@>particulars_grid-->
+											<tr style="background-color:#F3F3F3">
+												<td style="width: 10%;">@@expenseType</td>
+												<td style="width: 10%;">@@productName</td>
+												<td style="width: 10%;">@@qty</td>
+												<td style="width: 10%;">@@unitPrice</td>
+												<td style="width: 10%;">@#lineTotal</td>
+											</tr>
+											<!--@<particulars_grid-->
+										</tbody>
+									</table></td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="mceItemTable"
+						style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 14px; width: 100%;"
+						border="0">
+						<tbody>
+							<tr>
+								<td><strong>Submitted By</strong></td>
+								<td>@@submitterStr</td>
+								<td><strong>Date Submitted</strong></td>
+								<td>@@dateSubmittedStr</td>
+								<td><strong>UID:</strong> @@OriginatorUserID</td>
+							</tr>
+							<tr>
+								<td><strong>Supervisor</strong></td>
+								<td>@@approverNameStr</td>
+								<td><strong>Date Approved</strong></td>
+								<td>@@approvalDateStr</td>
+								<td><strong>UID:</strong> @@ApproverUserID</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td><strong>SECTION 2: Accounts</strong>
+					<table class="mceItemTable"
+						style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 14px; width: 100%;"
+						border="0">
+						<tbody>
+							<tr>
+								<td>M-Pesa Number: ___________________</td>
+								<td>Sage Number: ______________</td>
+								<td> </td>
+							</tr>
+							<tr>
+								<td>Finance Approver: @@financeApprover</td>
+								<td>Date: @@financeApprovalDate</td>
+							</tr>
+							<tr>
+								<td>Signature: ___________________________</td>
+								<td>UID: @@FinanceApproverUserID</td>
+							</tr>
+							<tr>
+								<td>Final Approved by: ____________________</td>
+								<td>Signature:____________________</td>
+								<td>Date:_____________</td>
+							</tr>
+						</tbody>
+					</table></td>
+			</tr>
+		</tbody>
+	</table>
+	<!--footer starts-->
+	<div style="position: fixed; bottom: 3mm; left: 0mm; width: 100%; text-align:center">
+			<hr />
+			Workpoint Limited | Document generated: @@GenDate
+	</div>
+	<!--footer ends-->
+</body>
+</html>

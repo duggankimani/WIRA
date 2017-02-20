@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ArrayList;
 
+import com.duggan.workflow.client.ui.component.DateInput;
 import com.duggan.workflow.client.ui.component.DoubleField;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.IntegerField;
@@ -104,7 +105,10 @@ public class ColumnConfig {
 		} else if (type == DataType.BOOLEAN) {
 			CheckBox field = new CheckBox();
 			widget = field;
-		} else {
+		} else if(type == DataType.DATE) {
+			DateInput field = new DateInput();
+			widget = field;
+		}else {
 			TextField field = new TextField();
 			field.setPlaceholder(placeHolder == null ? "" : placeHolder);
 			widget = field;

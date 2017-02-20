@@ -25,8 +25,9 @@ import com.duggan.workflow.client.ui.events.ButtonClickEvent.ButtonClickHandler;
 import com.duggan.workflow.client.ui.events.CompleteDocumentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent.DeleteAttachmentHandler;
+import com.duggan.workflow.client.ui.events.AfterDeleteLineEvent;
+import com.duggan.workflow.client.ui.events.AfterDeleteLineEvent.AfterDeleteLineHandler;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
 import com.duggan.workflow.client.ui.events.DocumentLoadedEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.ExecTaskEvent;
@@ -45,6 +46,7 @@ import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent.ReloadAttachm
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadDocumentEvent.ReloadDocumentHandler;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
+import com.duggan.workflow.client.ui.events.SetValueEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent;
 import com.duggan.workflow.client.ui.events.UploadEndedEvent.UploadEndedHandler;
 import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
@@ -157,10 +159,11 @@ import com.duggan.workflow.client.ui.tasklistitem.IsTaskPresenter.IBaseTaskItemV
 public class GenericDocumentPresenter extends
 		IsTaskPresenter<GenericDocumentPresenter.MyView> implements
 		ReloadDocumentHandler, ActivitiesLoadHandler, ReloadAttachmentsHandler,
-		DeleteAttachmentHandler, DeleteLineHandler, ButtonClickHandler,
+		DeleteAttachmentHandler, AfterDeleteLineHandler, ButtonClickHandler,
 		ProcessingHandler, ProcessingCompletedHandler, ExecTriggerHandler,
-		FieldLoadHandler, UploadEndedHandler, ShowViewHandler,SaveDocumentHandler, ForwardDocumentHandler {
-	
+		FieldLoadHandler, UploadEndedHandler, ShowViewHandler,
+		SaveDocumentHandler, ForwardDocumentHandler {
+
 	public interface MyView extends IBaseTaskItemView {
 		void setValues(HTUser createdBy, Date created, String type,
 				String subject, Date docDate, String value, String partner,
@@ -334,7 +337,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(ReloadDocumentEvent.TYPE, this);
 		addRegisteredHandler(ActivitiesLoadEvent.TYPE, this);
 		addRegisteredHandler(ReloadAttachmentsEvent.TYPE, this);
-		addRegisteredHandler(DeleteLineEvent.TYPE, this);
+		addRegisteredHandler(AfterDeleteLineEvent.TYPE, this);
 		addRegisteredHandler(ButtonClickEvent.TYPE, this);
 		addRegisteredHandler(DeleteAttachmentEvent.TYPE, this);
 		addRegisteredHandler(ProcessingEvent.TYPE, this);
@@ -346,6 +349,7 @@ public class GenericDocumentPresenter extends
 		addRegisteredHandler(SaveDocumentEvent.getType(), this);
 		addRegisteredHandler(ForwardDocumentEvent.getType(), this);
 		
+		exportSetValue();
 
 		getView().getCloseButton().addClickHandler(new ClickHandler() {
 
@@ -825,13 +829,12 @@ public class GenericDocumentPresenter extends
 							// Reverse Navigation
 							navigateIndex(!isNavigateNext);
 						}
-						
+
 						@Override
-						public void onSuccess(
-								MultiRequestActionResult aResponse) {
+						public void onSuccess(MultiRequestActionResult aResponse) {
 							if (aResponse.getErrorCode() == 0) {
 								super.onSuccess(aResponse);
-							}else{
+							} else {
 								navigateIndex(!isNavigateNext);
 								super.onSuccess(aResponse);
 							}
@@ -887,13 +890,12 @@ public class GenericDocumentPresenter extends
 							// Reverse Navigation
 							navigateIndex(!isNavigateNext);
 						}
-						
+
 						@Override
-						public void onSuccess(
-								MultiRequestActionResult aResponse) {
+						public void onSuccess(MultiRequestActionResult aResponse) {
 							if (aResponse.getErrorCode() == 0) {
 								super.onSuccess(aResponse);
-							}else{
+							} else {
 								navigateIndex(!isNavigateNext);
 								super.onSuccess(aResponse);
 							}
@@ -924,9 +926,18 @@ public class GenericDocumentPresenter extends
 			return;
 		}
 
+		execTrigger(event.getTriggerName());
+	}
+
+	protected void execTrigger(String triggerName){
+		execTrigger(triggerName, null);
+	}
+	
+	protected void execTrigger(String triggerName,
+			HashMap<String, Value> triggerValues) {
 		mergeFormValuesWithDoc();
-		ExecuteTriggerRequest request = new ExecuteTriggerRequest(
-				event.getTriggerName(), doc);
+		ExecuteTriggerRequest request = new ExecuteTriggerRequest(triggerName,
+				doc);
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<ExecuteTriggerResponse>() {
@@ -934,12 +945,11 @@ public class GenericDocumentPresenter extends
 						// Updated Form
 
 						doc = aResponse.getDocument();
-//						bindForm(form, doc);
-						bindData(doc, false);
+						bindForm(form, doc);
+						// bindData(doc, false);
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
-
 	}
 
 	public void complete(HashMap<String, Value> withValues, boolean validateForm) {
@@ -961,7 +971,7 @@ public class GenericDocumentPresenter extends
 		if (formValues == null) {
 			formValues = new HashMap<String, Value>();
 		}
-		
+
 		// Add form field values : to take care of new values
 		for (String key : formValues.keySet()) {
 			Value val = formValues.get(key);
@@ -1212,14 +1222,14 @@ public class GenericDocumentPresenter extends
 			}
 		}, "Ok", "Cancel");
 	}
-	
-	private void saveDocument(){
+
+	private void saveDocument() {
 		mergeFormValuesWithDoc();
 		save((Document) doc);
 	}
 
 	protected void save(Document document) {
-		
+
 		if (getView().isValid()) {
 			fireEvent(new ProcessingEvent());
 			MultiRequestAction requests = new MultiRequestAction();
@@ -1236,7 +1246,7 @@ public class GenericDocumentPresenter extends
 									.get(i++);
 							Document saved = aResponse.getDocument();
 							assert saved.getId() != null;
-							bindData(saved,false);
+							bindData(saved, false);
 							// Window.alert("OnAfterSave Value = "+(saved.getValues().get("budgetAmount")==null?
 							// null:
 							// saved.getValues().get("budgetAmount").getValue()));
@@ -1295,6 +1305,7 @@ public class GenericDocumentPresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
+
 		// Window.alert("Reveal >> DocRefId= "+docRefId+"; docId= "+documentId);
 		loadData();
 		getView().show((Anchor) getView().getLinkEnv(),
@@ -1320,12 +1331,13 @@ public class GenericDocumentPresenter extends
 								MultiRequestActionResult results) {
 							int i = 0;
 
-							//Bind Task Steps & Triggers before load
+							// Bind Task Steps & Triggers before load
 							GetInitialDocumentResponse compositeResp = (GetInitialDocumentResponse) results
 									.get(i++);
-							setSteps(compositeResp.getSteps(), compositeResp.getConditionalFields());
-							
-							//Document/ Task Binding 
+							setSteps(compositeResp.getSteps(),
+									compositeResp.getConditionalFields());
+
+							// Document/ Task Binding
 							bindDocumentResult(compositeResp.getDoc());
 
 							// Form
@@ -1381,7 +1393,8 @@ public class GenericDocumentPresenter extends
 	// });
 	// }
 
-	protected void setSteps(ArrayList<TaskStepDTO> steps, ArrayList<String> conditionFields) {
+	protected void setSteps(ArrayList<TaskStepDTO> steps,
+			ArrayList<String> conditionFields) {
 		this.steps = steps;
 		this.stepConditionFields = conditionFields;
 		if (steps == null) {
@@ -1395,19 +1408,19 @@ public class GenericDocumentPresenter extends
 	protected void bindForm(Form form, Doc doc) {
 		bindForm(form, doc, true);
 	}
-	
+
 	protected void bindForm(Form form, Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		this.form = form;
-		
-		for(String conditionField: stepConditionFields){
+
+		for (String conditionField : stepConditionFields) {
 			ArrayList<String> parents = new ArrayList<String>();
 			parents.add(conditionField);
 			form.addFieldDependency(parents, "");
 		}
-		
+
 		fieldMap.clear();
-		for(Field field:form.getFields()){
+		for (Field field : form.getFields()) {
 			fieldMap.put(field.getName(), field);
 		}
 
@@ -1449,13 +1462,13 @@ public class GenericDocumentPresenter extends
 		 */
 		if (!form.getDependencies().isEmpty() && loadDynamicFields) {
 			// Reload
-			loadDynamicFields(form.getDependencies(), null,false);
+			loadDynamicFields(form.getDependencies(), null, false);
 		}
-		
+
 		fireEvent(new FormLoadEvent(form, doc));
 	}
-	
-	void bindData(Doc doc,boolean loadDynamicFields){
+
+	void bindData(Doc doc, boolean loadDynamicFields) {
 		this.doc = doc;
 		docRefId = doc.getRefId();
 		if (doc instanceof Document) {
@@ -1481,21 +1494,22 @@ public class GenericDocumentPresenter extends
 					true && ((Document) doc).getStatus() == DocStatus.DRAFTED);
 
 		}
-		
+
 		fireEvent(new DocumentLoadedEvent(doc));
 		getView().forceExecJs();
-		
+
 		/**
 		 * Field Dependencies
 		 */
 		if (!form.getDependencies().isEmpty() && loadDynamicFields) {
 			// Reload
-			loadDynamicFields(form.getDependencies(), null,false);
+			loadDynamicFields(form.getDependencies(), null, false);
 		}
 	}
 
 	/**
 	 * Current Step Form Mode
+	 * 
 	 * @return
 	 */
 	private MODE getCurrentStepMode() {
@@ -1510,6 +1524,7 @@ public class GenericDocumentPresenter extends
 
 	/**
 	 * Check if form is read only
+	 * 
 	 * @return
 	 */
 	boolean isFormReadOnly() {
@@ -1532,11 +1547,9 @@ public class GenericDocumentPresenter extends
 	public void setForm(Form form, Doc doc, MODE mode) {
 		getView().setForm(form, doc, isFormReadOnly(mode));
 	}
-	
-	
 
 	/**
-	 * Dropdown Parent->Child Relationship loading 
+	 * Dropdown Parent->Child Relationship loading
 	 * 
 	 * @param dependencies
 	 * @param triggerName
@@ -1544,21 +1557,21 @@ public class GenericDocumentPresenter extends
 	private void loadDynamicFields(
 			HashMap<String, ArrayList<String>> dependencies,
 			final String triggerName, final boolean reloadSteps) {
-		
+
 		final ArrayList<Field> dependants = new ArrayList<Field>();
 		if (dependencies != null) {
 			for (ArrayList<String> names : dependencies.values()) {
 				if (names != null) {
 					for (String name : names) {
-//						Field f = new Field();
-//						f.setName(name);
-//						if (form.getFields().contains(f)) {
-//							dependants.add(form.getFields().get(
-//									form.getFields().indexOf(f)));
-//						}
-						
+						// Field f = new Field();
+						// f.setName(name);
+						// if (form.getFields().contains(f)) {
+						// dependants.add(form.getFields().get(
+						// form.getFields().indexOf(f)));
+						// }
+
 						Field dependant = fieldMap.get(name);
-						if(dependant!=null){
+						if (dependant != null) {
 							dependants.add(dependant);
 						}
 					}
@@ -1566,7 +1579,8 @@ public class GenericDocumentPresenter extends
 			}
 		}
 
-		if (dependants.isEmpty() && StringUtils.isNullOrEmpty(triggerName) && !reloadSteps) {
+		if (dependants.isEmpty() && StringUtils.isNullOrEmpty(triggerName)
+				&& !reloadSteps) {
 			return;
 		}
 
@@ -1577,8 +1591,8 @@ public class GenericDocumentPresenter extends
 
 		MultiRequestAction action = new MultiRequestAction();
 
-		//Task Steps
-		if(reloadSteps){
+		// Task Steps
+		if (reloadSteps) {
 			action.addRequest(new GetTaskStepsRequest(doc));
 		}
 
@@ -1592,7 +1606,6 @@ public class GenericDocumentPresenter extends
 			action.addRequest(new ExecuteTriggerRequest(triggerName, doc));
 			action.addRequest(new GetAttachmentsRequest(docRefId));
 		}
-		
 
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(action,
@@ -1600,9 +1613,11 @@ public class GenericDocumentPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
-						
-						if(reloadSteps){
-							setSteps(((GetTaskStepsResponse)aResponse.get(i++)).getSteps(),stepConditionFields);
+
+						if (reloadSteps) {
+							setSteps(
+									((GetTaskStepsResponse) aResponse.get(i++))
+											.getSteps(), stepConditionFields);
 						}
 
 						if (!dependants.isEmpty()) {
@@ -1628,13 +1643,14 @@ public class GenericDocumentPresenter extends
 							ExecuteTriggerResponse aTriggerResp = (ExecuteTriggerResponse) aResponse
 									.get(i++);
 							doc = aTriggerResp.getDocument();
-//							bindForm(form, doc, false);
+							// bindForm(form, doc, false);
 							bindData(doc, false);
-							
-							GetAttachmentsResponse getAttachments = (GetAttachmentsResponse)aResponse.get(i++);
+
+							GetAttachmentsResponse getAttachments = (GetAttachmentsResponse) aResponse
+									.get(i++);
 							bindAttachments(getAttachments);
 						}
-						
+
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
@@ -1652,6 +1668,7 @@ public class GenericDocumentPresenter extends
 
 	/**
 	 * Bind Notifications & Comments
+	 * 
 	 * @param activitiesMap
 	 */
 	public void bindActivities(
@@ -1719,14 +1736,14 @@ public class GenericDocumentPresenter extends
 
 		setInSlot(ATTACHMENTS_SLOT, null);// clear
 		for (final Attachment attachment : attachments) {
-			
+
 			if (attachment.getFieldName() != null) {
 				attachment.setDocRefId(doc.getRefId());
 				fireEvent(new FileLoadEvent(attachment));
 				continue;
 			}
-			
-			//For attachments with no field
+
+			// For attachments with no field
 			attachmentPresenterFactory
 					.get(new ServiceCallback<AttachmentPresenter>() {
 						@Override
@@ -1853,7 +1870,7 @@ public class GenericDocumentPresenter extends
 		if (validActions != null) {
 			getView().setValidTaskActions(validActions);
 		}
-		
+
 		Long processInstanceId = doc.getProcessInstanceId();
 		if (processInstanceId != null)
 			getView().setProcessUrl(processInstanceId);
@@ -1884,7 +1901,8 @@ public class GenericDocumentPresenter extends
 		return summary.getStatus().getValidActions();
 	}
 
-	public void setDocId(String processRefId,String docRefId, Long taskId, boolean isLoadAsAdmin) {
+	public void setDocId(String processRefId, String docRefId, Long taskId,
+			boolean isLoadAsAdmin) {
 		this.docRefId = docRefId;
 		this.taskId = taskId;
 		this.isLoadAsAdmin = isLoadAsAdmin;
@@ -1929,7 +1947,7 @@ public class GenericDocumentPresenter extends
 	 * Runtime - Delete Row -Enable save/ edit mode
 	 */
 	@Override
-	public void onDeleteLine(DeleteLineEvent event) {
+	public void onAfterDeleteLine(AfterDeleteLineEvent event) {
 		DocumentLine line = event.getLine();
 		if (line.getId() == null) {
 			return;
@@ -1948,7 +1966,7 @@ public class GenericDocumentPresenter extends
 	public void onButtonClick(ButtonClickEvent event) {
 		String requestType = event.getRequestType();
 
-		if (requestType == null && event.getCustomHandlerClass() == null) {
+		if (requestType == null && event.getTrigger() == null) {
 			return;
 		}
 
@@ -1959,18 +1977,8 @@ public class GenericDocumentPresenter extends
 				complete(event.getValues(), event.isValidateForm());
 			}
 		} else {
-			executeGenericCode(event.getValues(), event.getCustomHandlerClass());
+			execTrigger(event.getTrigger(), event.getValues());
 		}
-	}
-
-	private void executeGenericCode(HashMap<String, Value> values,
-			String customHandlerClass) {
-		requestHelper.execute(new GenericRequest(values, customHandlerClass),
-				new TaskServiceCallback<GenericResponse>() {
-					@Override
-					public void processResult(GenericResponse aResponse) {
-					}
-				});
 	}
 
 	public void setGlobalFormMode(MODE mode) {
@@ -2018,11 +2026,11 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onFieldLoad(FieldLoadEvent event) {
 		Field uploadField = null;
-		if(event.getField().getType()==DataType.FILEUPLOAD){
+		if (event.getField().getType() == DataType.FILEUPLOAD) {
 			uploadField = event.getField();
 			doc.setUploadedFileId(uploadField.getUploadedFileId());
 		}
-		
+
 		String fieldName = event.getField().getName();
 		HashMap<String, ArrayList<String>> dependencies = form
 				.getDependencies();
@@ -2030,7 +2038,8 @@ public class GenericDocumentPresenter extends
 		toReload.put(fieldName, dependencies.get(fieldName));
 
 		try {
-			loadDynamicFields(toReload,event.getTriggerName(),stepConditionFields.contains(fieldName));
+			loadDynamicFields(toReload, event.getTriggerName(),
+					stepConditionFields.contains(fieldName));
 		} catch (Exception e) {
 			GWT.log("Error: " + e.getMessage());
 		}
@@ -2043,8 +2052,8 @@ public class GenericDocumentPresenter extends
 
 		String fieldRefId = ((Uploader) event.getSource()).getFieldId();
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new GenerateFilePathRequest(doc,
-				fieldRefId, event.getFileFieldNames()),
+		requestHelper.execute(new GenerateFilePathRequest(doc, fieldRefId,
+				event.getFileFieldNames()),
 				new TaskServiceCallback<GenerateFilePathResponse>() {
 					public void processResult(GenerateFilePathResponse aResponse) {
 						fireEvent(new ProcessingCompletedEvent());
@@ -2071,16 +2080,44 @@ public class GenericDocumentPresenter extends
 	protected void reload(HTSummary summary) {
 		bindDocumentResult(summary);
 		bindForm(form, summary);
-		
-//		setDocSummary(summary);
-//		if (doc instanceof Document) {
-//			Document document = (Document) doc;
-//			fireEvent(new DocumentSelectionEvent(document.getRefId(), null,
-//					DocMode.READWRITE));
-//		} else {
-//			Long taskId = ((HTSummary) doc).getId();
-//			fireEvent(new DocumentSelectionEvent(doc.getRefId(), taskId,
-//					DocMode.READ));
-//		}
 	}
+
+	Doc getDoc(){
+		return doc;
+	}
+	
+	public native void exportSetValue()/*-{
+		var that = this;
+		$wnd.setValue = $entry(function(key,value){
+			that.@com.duggan.workflow.client.ui.document.GenericDocumentPresenter::setVal(Ljava/lang/String;Ljava/lang/String;)(key,value);
+		});
+		
+		$wnd.deleteLine = $entry(function(gridName,lineId){
+			that.@com.duggan.workflow.client.ui.document.GenericDocumentPresenter::deleteLine(Ljava/lang/String;Ljava/lang/String;)(gridName, lineId);
+		});
+		
+	}-*/;
+	
+	/**
+	 * Set value of a field: A key reason for not writing field values directly into the 
+	 * input elements is additional calls required for:
+	 * <ul>
+	 * <li>Setting value into ENV - needed for formula computations</li>
+	 * <li>Invocation of triggers/ dynamic field validation on field change</li>
+	 * <li>Setting values to doc object for non field or hidden fields i.e  writing context information such as trigger metadata</li>
+	 * </ul>
+	 * Requires fieldName, fieldValue
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void setVal(String key, String value){
+		fireEvent(new SetValueEvent(key, value));
+		doc._s(key, value);
+	}
+	
+	public void deleteLine(String gridName, String lineId){
+		fireEvent(new DeleteLineEvent(gridName, lineId));
+	}
+	
 }

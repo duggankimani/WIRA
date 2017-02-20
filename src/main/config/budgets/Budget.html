@@ -1,0 +1,195 @@
+<html>
+<head>
+<style type="text/css">
+#detailed-info .field-form{
+    padding-top:10px;
+}
+.form-horizontal legend>span{
+  color: #7988c1;
+  font-size:24px;
+}
+
+.table td.budget-head{
+  color:#4b8cf7;
+  font-weight:bold;
+}
+
+.table td.budget-head>a{
+    margin-left:10px;
+}
+
+table.budget{
+  table-layout:fixed;
+}
+
+table.budget th{
+  color: #383535;
+  font-weight: normal;
+}
+
+table.budget td{
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+table.budget th{
+   white-space:nowrap;
+    overflow-x: hidden;
+}
+
+table.budget .curr{
+  width:40px;
+}
+
+table.budget td.date, table.budget th.date{
+   max-width:60px;
+   width:60px;
+}
+
+table.budget td.amounts{
+   text-align:right;
+}
+
+table.budget td.currency, table.budget th.currency{
+   max-width:90px;
+   width:90px;
+}
+
+table.budget td.lineamount{
+   color: #084d92;
+   padding-right:5px;
+   text-align:right;
+}
+tr { 
+cursor: default; 
+}
+
+.highlight { 
+background: yellow; 
+}
+
+</style>
+</head>
+<body>
+<div class="budget-module">
+<div style="line-height: 40px;">
+<select id="budgetCycle" style="vertical-align: top;">
+    <option>--Budget Cycle--</option>
+</select>
+<select id="sector" style="margin-top: 9px;vertical-align: top;">
+    <option>--Sector--</option>
+</select>
+<select id="intervention" style="  vertical-align: top;margin-top: 20px;">
+      <option>--Intervention--</option>
+</select>
+</div>
+
+<div class="actions">
+<a id="aAdd" class="btn btn-primary hide"><i class="icon-plus"></i> Add</a>
+<a id="aCopy" class="btn btn-primary hide"><i class="icon-copy"></i> Copy</a>
+<a id="aDelete" class="btn btn-warning hide"><i class="icon-remove"></i> Delete</a>
+</div>
+
+<table class="budget tree table table-highlight" style="max-width:100%">
+<thead>
+<tr>
+<th style="width:135px;">Status</th>
+<th>Budget</th>
+<th class="date">Start Date</th>
+<th class="date">End Date</th>
+<th class="date">Budget Temp</th>
+<th class="curr">Currency</th>
+<th class="currency">Amount</th>
+<th>Activity</th>
+<th>Last Change</th>
+<th>Created By</th>
+<th class="date">Created On</th>
+<th class="date">Last Changed</th>
+</tr>
+</thead>
+<tbody>        
+        <tr class="treegrid-bc">
+          <td colspan="10" class="budget-head">Budget Cycle 2016-2018 
+<a><i class="icon-plus-sign-alt"></i></a>
+</td>
+          <td colspan="2" class="budget-head amounts">1,000,000,000</td>
+        </tr>
+        <tr class="treegrid-sector-agri treegrid-parent-bc">
+          <td colspan="10" class="budget-head">Sector: Ag Inputs
+             <a><i class="icon-plus-sign-alt"></i></a>
+         </td>
+          <td colspan="2" class="budget-head amounts">200,000,000</td>
+        </tr>
+        <tr class="treegrid-int-inputs-team-costs treegrid-parent-sector-agri">
+          <td colspan="10" class="budget-head">Intervention: Input Team Costs 
+                <a><i class="icon-plus-sign-alt"></i></a>
+          </td> 
+          <td colspan="2" class="budget-head amounts">19,000,000</td>
+        </tr>
+        <tr class="treegrid-team-costs treegrid-parent-int-inputs-team-costs">
+          <td>In Progress</td>
+          <td>Team Costs</td>
+          <td class="date">1/1/16</td>
+          <td class="date">12/31/18</td>        
+          <td>Team Costs</td>
+          <td class="curr">GBP</td>
+          <td class="lineamount currency">990,389.68</td>
+          <td>Team Cost</td>
+          <td>Peter Othiambo</td>
+          <td>Michael Wahito</td>
+          <td class="date">11/20/15</td>
+          <td class="date">2/2/16</td>
+        </tr>
+        
+        <tr class="treegrid-agro-dealers-engagement treegrid-parent-sector-agri">
+          <td colspan="10" class="budget-head">HUB AGRODEALERS ENGAGEMENT (RURAL STOCKLISTS SUPPORT PROGRAMME) <a><i class="icon-plus-sign-alt"></i></a></td>
+          <td colspan="2" class="budget-head amounts">84,434,885.90</td>
+        </tr>
+        <tr class="treegrid-team-costs treegrid-parent-agro-dealers-engagement">
+          <td>In Progress</td>
+          <td>Customer Service Training</td>
+          <td class="date">1/1/16</td>
+          <td class="date">12/31/18</td>        
+          <td>Programme Template</td>
+          <td class="curr">KES</td>
+          <td class="lineamount currency">27,000,000.20</td>
+          <td>Activity 8: Facilitate Training for Agrodealers adoption of improved business & customer management; ict linkages, village promotions</td>
+          <td>Susan Maina</td>
+          <td>Susan Maina</td>
+          <td class="date">11/20/15</td>
+          <td class="date">2/2/16</td>
+        </tr>
+<tr class="treegrid-team-costs2 treegrid-parent-agro-dealers-engagement">
+                   <td>In Progress</td>
+          <td>Customer Service Training</td>
+          <td class="date">1/1/16</td>
+          <td class="date">12/31/18</td>        
+          <td>Programme Template</td>
+          <td class="curr">KES</td>
+          <td class="lineamount currency">27,000,000.20</td>
+          <td>Activity 8: Facilitate Training for Agrodealers adoption of improved business & customer management; ict linkages, village promotions</td>
+          <td>Susan Maina</td>
+          <td>Susan Maina</td>
+          <td class="date">11/20/15</td>
+          <td class="date">2/2/16</td>
+        </tr>
+<tr class="treegrid-team-costs2 treegrid-parent-agro-dealers-engagement">
+          <td>In Progress</td>
+          <td>Customer Service Training</td>
+          <td class="date">1/1/16</td>
+          <td class="date">12/31/18</td>        
+          <td>Programme Template</td>
+          <td class="curr">KES</td>
+          <td class="lineamount currency">27,000,000.20</td>
+          <td>Activity 8: Facilitate Training for Agrodealers adoption of improved business & customer management; ict linkages, village promotions</td>
+          <td>Susan Maina</td>
+          <td>Susan Maina</td>
+          <td class="date">11/20/15</td>
+          <td class="date">2/2/16</td>
+        </tr></tbody>        
+      </table>
+</div>
+</div>		  
+</body>
+</html>

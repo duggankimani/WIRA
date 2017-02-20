@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.formbuilder.grid.GridView;
+import com.duggan.workflow.client.ui.events.DeleteLineEvent;
 import com.duggan.workflow.client.ui.events.EditLineEvent;
 import com.duggan.workflow.client.ui.events.EditLineEvent.EditLineHandler;
 import com.duggan.workflow.client.util.AppContext;
@@ -71,7 +72,8 @@ public class GridLayout extends FieldWidget implements EditLineHandler {
 			}
 		});
 
-		AppContext.getEventBus().addHandler(EditLineEvent.TYPE, this);
+		addRegisteredHandler(EditLineEvent.TYPE, this);
+//		AppContext.getEventBus().addHandler(EditLineEvent.TYPE, this);
 	}
 
 	@Override
@@ -79,6 +81,12 @@ public class GridLayout extends FieldWidget implements EditLineHandler {
 		if (designMode) {
 			showDesignGrid();
 		}
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		addRegisteredHandler(DeleteLineEvent.getType(), this);
 	}
 
 	/**

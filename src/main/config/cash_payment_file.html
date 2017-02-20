@@ -1,0 +1,170 @@
+<html>
+<head>
+</head>
+<body>
+
+	<div style="width: 153; height: 69; margin:0 auto;">
+		<img
+			src="getreport?ACTION=GetLogo&amp;width=179&amp;settingName=ORGLOGO"
+			style="width: 153; height: 69" align="middle" />
+	</div>
+	<table class="mceItemTable"
+		style="width: 100%; font-family: Arial, Helvetica, sans-serif;"
+		border="0" cellpadding="5">
+		<tbody>
+			<tr>
+				<td>
+					<h2>Payment Request - Cash | Case #: @#CaseNumber</h2>
+					<hr />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="mceItemTable" border="0">
+						<tbody>
+							<tr>
+								<td colspan="2"><strong>SECTION 1: Cash Request
+										Details</strong></td>
+							</tr>
+							<tr>
+								<td><strong>Vendor Name:</strong></td>
+								<td>@#payeeName</td>
+							</tr>
+							<tr>
+								<td><strong>Memo:</strong></td>
+								<td>@#VendorFor</td>
+							</tr>
+							<tr>
+								<td><strong>Amount:</strong></td>
+								<td>Kshs @#amount</td>
+							</tr>
+							<tr>
+								<td><strong>Date:</strong></td>
+								<td>@#CashDate</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+					<hr />
+					<table class="mceItemTable" border="0">
+						<tbody>
+							<tr>
+								<td><strong>Expense Lines</strong><br />
+									<table class="mceItemTable"
+										style="width: 100%; font-family: Arial, Helvetica, sans-serif; font-size: 10px;"
+										border="0">
+										<tbody>
+											<tr bgcolor="#E0E0E0">
+												<th>GL</th>
+												<th>Grant</th>
+												<th>Program</th>
+												<th>Sub Program</th>
+												<th>Location</th>
+												<th>Field Office</th>
+												<th>Department</th>
+												<th>Activity</th>
+												<th>Memo</th>
+												<th>Amount</th>
+											</tr>
+											<!--@>PRDetailsGrid-->
+											<tr bgcolor="#F3F3F3">
+												<td style="width: 10%;">@#ExpenseAccount</td>
+												<td style="width: 10%; word-wrap: break-word;">@#ProjectCombination_Split</td>
+												<td style="width: 10%;">@#Program</td>
+												<td style="width: 10%;">@#SubProgram</td>
+												<td style="width: 10%;">@#Location</td>
+												<td style="width: 10%;">@#SubSegment</td>
+												<td style="width: 10%;">@#Department</td>
+												<td style="width: 10%;">@#Segment</td>
+												<td style="width: 10%;">@#Memo</td>
+												<td style="width: 10%;">@#Amount</td>
+											</tr>
+											<!--@<PRDetailsGrid-->
+										</tbody>
+									</table></td>
+							</tr>
+						</tbody>
+					</table> <strong>Total Amount: Kshs @#CalcAmount </strong><br />
+					<table class="mceItemTable" style="font-size: 12px;" border="0">
+						<tbody>
+							<tr>
+								<td><strong>Submitted By:</strong></td>
+								<td>@#Submitter</td>
+								<td><strong>Date Submitted:</strong></td>
+								<td>@#DateSubmitted</td>
+								<td><strong>UID:</strong>@#OriginatorUserID</td>
+							</tr>
+							<tr>
+								<td><strong>Approved By:</strong></td>
+								<td>@#ApproverName</td>
+								<td><strong>Date Approved:</strong></td>
+								<td>@#ApprovalDate</td>
+								<td><strong>UID:</strong>@#ApproverUserID</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td><strong>SECTION 2: Accounts</strong>
+					<table class="mceItemTable">
+						<tbody>
+							<tr>
+								<td>Sage Ref Number:</td>
+								<td>____________________</td>
+								<td>Office:</td>
+								<td>__________________</td>
+							</tr>
+							<tr>
+								<td>Finance Approver:</td>
+								<td>@#FinanceApproverName</td>
+								<td>Date:</td>
+								<td>@#FinanceApprovalDate</td>
+							</tr>
+							<tr>
+								<td>Signature:</td>
+								<td>____________________</td>
+								<td>UID:</td>
+								<td>@#FinanceApproverUserID</td>
+							</tr>
+						</tbody>
+					</table></td>
+			</tr>
+			<tr>
+				<td><strong>SECTION 3: </strong>Vendor/Payee to sign upon
+					receiving the cash.
+					<table class="mceItemTable">
+						<tbody>
+							<tr>
+								<td>Name:</td>
+								<td>____________________</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="4" height="10px"></td>
+							</tr>
+							<tr>
+								<td>Signature:</td>
+								<td>____________________</td>
+								<td>Date:</td>
+								<td>____________________</td>
+								<td>ID No:</td>
+								<td>_____________</td>
+							</tr>
+						</tbody>
+					</table></td>
+			</tr>
+		</tbody>
+	</table>
+	<!--footer starts-->
+	<div style="position: fixed; bottom: 3mm; left: 0mm; width: 100%; text-align:center">
+			<hr />
+			Workpoint Limited | Document generated: @@GenDate
+	</div>
+	<!--footer ends-->
+</body>
+</html>

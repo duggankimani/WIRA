@@ -14,8 +14,8 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.client.ui.admin.formbuilder.PalettePanel;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent;
-import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.AfterDeleteLineEvent;
+import com.duggan.workflow.client.ui.events.AfterDeleteLineEvent.AfterDeleteLineHandler;
 import com.duggan.workflow.client.ui.events.DocumentLoadedEvent;
 import com.duggan.workflow.client.ui.events.DocumentLoadedEvent.DocumentLoadedHandler;
 import com.duggan.workflow.client.ui.events.FieldLoadEvent;
@@ -33,6 +33,7 @@ import com.duggan.workflow.client.ui.events.ResetFormPositionEvent;
 import com.duggan.workflow.client.ui.events.ResetFormPositionEvent.ResetFormPositionHandler;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent.SavePropertiesHandler;
+import com.duggan.workflow.client.ui.events.SetValueEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
@@ -73,7 +74,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 public abstract class FieldWidget extends AbsolutePanel implements
 		HasDragHandle, PropertyChangedHandler, HasProperties,
 		SavePropertiesHandler, ResetFormPositionHandler, OperandChangedHandler,
-		DeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler, DocumentLoadedHandler {
+		AfterDeleteLineHandler, ResetFieldValueHandler, FieldReloadedHandler, DocumentLoadedHandler {
 
 	protected static final String GRID_TEMPLATE_CLASS = "grid_template";
 	protected static final String GRID_ROW_TEMPLATE_CLASS = "grid_row_template";
@@ -296,6 +297,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		addRegisteredHandler(SavePropertiesEvent.TYPE, this);
 		addRegisteredHandler(FieldReloadedEvent.getType(), this);
 		addRegisteredHandler(DocumentLoadedEvent.getType(), this);
+		addRegisteredHandler(SetValueEvent.getType(), this);
 
 		if (isObserver) {
 			// System.err.println("Registering observer.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
@@ -317,7 +319,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				// System.err.println("Registering observable.. > "+field.getName()+" : "+field.getParentId()+" : "+field.getDetailId());
 				registerValueChangeHandler();
 				addRegisteredHandler(ResetFieldValueEvent.TYPE, this);
-				addRegisteredHandler(DeleteLineEvent.TYPE, this);
+				addRegisteredHandler(AfterDeleteLineEvent.TYPE, this);
 			}
 
 		}
@@ -1207,7 +1209,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	}
 
 	@Override
-	public void onDeleteLine(DeleteLineEvent event) {
+	public void onAfterDeleteLine(AfterDeleteLineEvent event) {
 		if (isObservable && field.getLineRefId() != null) {
 			Long sourceDetailId = event.getLine().getTempId();
 			if (!field.getLineRefId().equals(sourceDetailId)) {
@@ -1381,6 +1383,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 				break;
 			case "checkboxgroup":
 				widget = new HTMLCheckBoxGroup(element, designMode);
+				break;
+			case "a":
+				widget = new HTMLButton(element, designMode);
 				break;
 			default:
 				if(element.hasClassName(GRID_TEMPLATE_CLASS) 
@@ -1556,4 +1561,5 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			that.@com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget::showProperties(I)(0);
 		});
 	}-*/;
+	
 }

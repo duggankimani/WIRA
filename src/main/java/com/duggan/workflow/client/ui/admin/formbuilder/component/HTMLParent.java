@@ -45,7 +45,9 @@ public abstract class HTMLParent extends FieldWidget {
 			return "grid";
 		}else if(fld.getType() == DataType.SELECTBASIC) {
 			return "select";	
-		} else {
+		} else if(fld.getType() == DataType.BUTTON){
+			return "a";
+		}else{
 			return element.getAttribute("type");
 		}
 	}

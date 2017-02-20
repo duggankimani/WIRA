@@ -1,6 +1,13 @@
-alter table permission drop column refid;
-alter table permission drop column createdby;
-alter table permission drop column created;
+CREATE TABLE permission (
+    id bigint DEFAULT nextval('permission_id_seq'::regclass) NOT NULL,
+    createddate date DEFAULT ('now'::text)::date NOT NULL,
+    isactive integer DEFAULT 1,
+    updated timestamp without time zone,
+    updatedby character varying(255),
+    description character varying(255),
+    name character varying(255) NOT NULL
+);
+
 create sequence permission_id_seq;
 alter table permission alter id set default nextval('permission_id_seq');
 

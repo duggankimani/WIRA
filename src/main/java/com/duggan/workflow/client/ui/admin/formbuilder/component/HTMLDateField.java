@@ -10,24 +10,16 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.DateValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Property;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLDateField extends FieldWidget {
-
-	private final Widget widget;
 
 	@UiField
 	Element lblEl;
@@ -49,7 +41,6 @@ public class HTMLDateField extends FieldWidget {
 		// Wrap
 		elementDate.setAttribute("type", "text");
 		dateBox = new DateInput(elementDate);
-		widget = dateBox;
 		assert elementDate.getId() != null;
 
 		// Set
@@ -74,7 +65,6 @@ public class HTMLDateField extends FieldWidget {
 				new ValueChangeHandler<Date>() {
 					@Override
 					public void onValueChange(ValueChangeEvent<Date> event) {
-						Window.alert("Value changed!! "+event.getValue());
 						execTrigger();
 					}
 				});
@@ -107,7 +97,11 @@ public class HTMLDateField extends FieldWidget {
 
 	@Override
 	protected void setHelp(String help) {
-		dateBox.setTitle(help);
+		//DATE BOX IS only a wrapper for a textfield & a span
+		//It does not wrap the provided element, meaning any call to dateBox.getElement will return null
+		//This method below cannot be called due to the above issue
+		//TODO: Redesign date wrapping - Duggan 31/01/2017
+		//dateBox.setTitle(help);
 	}
 
 	@Override

@@ -151,6 +151,7 @@ public class DBImpl {
 		Object value = ctx.lookup("java:comp/UserTransaction");
 
 		if (value == null) {
+			log.debug("User Transaction is  null!!!");
 			return null;
 		}
 

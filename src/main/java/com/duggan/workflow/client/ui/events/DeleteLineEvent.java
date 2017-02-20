@@ -1,43 +1,51 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.duggan.workflow.shared.model.DocumentLine;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HasHandlers;
 
-public class DeleteLineEvent extends
-		GwtEvent<DeleteLineEvent.DeleteLineHandler> {
+public class DeleteLineEvent extends GwtEvent<DeleteLineEvent.DeleteLineHandler> {
+    private static Type<DeleteLineHandler> TYPE = new Type<DeleteLineHandler>();
+    
+    public interface DeleteLineHandler extends EventHandler {
+        void onDeleteLine(DeleteLineEvent event);
+    }
+    
+	private String gridName;
+	private String tempId;
+   
+    public DeleteLineEvent(final String gridName, final String tempId) {
+		this.gridName = gridName;
+		this.tempId = tempId;
+    }
 
-	public static Type<DeleteLineHandler> TYPE = new Type<DeleteLineHandler>();
-	private DocumentLine line;
+    public static Type<DeleteLineHandler> getType() {
+        return TYPE;
+    }
 
-	public interface DeleteLineHandler extends EventHandler {
-		void onDeleteLine(DeleteLineEvent event);
+    @Override
+    protected void dispatch(final DeleteLineHandler handler) {
+        handler.onDeleteLine(this);
+    }
+
+    @Override
+    public Type<DeleteLineHandler> getAssociatedType() {
+        return TYPE;
+    }
+
+	public String getGridName() {
+		return gridName;
 	}
 
-	public DeleteLineEvent(DocumentLine line) {
-		this.line = line;
+	public void setGridName(String gridName) {
+		this.gridName = gridName;
 	}
 
-	public DocumentLine getLine() {
-		return line;
+	public String getTempId() {
+		return tempId;
 	}
 
-	@Override
-	protected void dispatch(DeleteLineHandler handler) {
-		handler.onDeleteLine(this);
+	public void setTempId(String tempId) {
+		this.tempId = tempId;
 	}
-
-	@Override
-	public Type<DeleteLineHandler> getAssociatedType() {
-		return TYPE;
-	}
-
-	public static Type<DeleteLineHandler> getType() {
-		return TYPE;
-	}
-
-	public static void fire(HasHandlers source, DocumentLine line) {
-		source.fireEvent(new DeleteLineEvent(line));
-	}
-}
+    
+}

@@ -45,6 +45,9 @@ public class ColumnsPanel extends Composite {
 	}
 	
 	public void create(Schema schema){
+		if(schema.getCaption()==null){
+			return;
+		}
 		HTMLPanel accordionGroup = new HTMLPanel("");
 		accordionGroup.addStyleName("accordion-group");
 		accordion.add(accordionGroup);
@@ -82,6 +85,9 @@ public class ColumnsPanel extends Composite {
 			HTMLPanel panel = new HTMLPanel("");
 			Checkbox checkbox = new Checkbox(col);
 			String text = col.getCaption()==null? col.getName(): col.getCaption();
+			if(text ==null){
+				continue;
+			}
 			checkbox.setText(""+text.toUpperCase());
 			boolean isContained = values.get(col.getRefId())!=null; 
 			checkbox.setValue(isContained);

@@ -58,7 +58,7 @@ public class SingleButton extends FieldWidget {
 				new KeyValuePair("CompleteProcess", "Complete Process")));
 		
 		addProperty(new Property(VALUES, "Values", DataType.STRING));
-		addProperty(new Property(CUSTOMHANDLERCLASS, "Custom Handler Class", DataType.STRING));
+		addProperty(new Property(CUSTOMTRIGGER, "String", DataType.STRING));
 		Property property = new Property(VALIDATEFORM, "Validate Form", DataType.CHECKBOX);
 		property.setValue(new BooleanValue(null, VALIDATEFORM, true));
 		addProperty(property);
@@ -128,9 +128,9 @@ public class SingleButton extends FieldWidget {
 
 	private void submit() {
 		String submitType = getPropertyValue(SUBMITTYPE);
-		String customHandler = getPropertyValue(CUSTOMHANDLERCLASS);
+		String customHandler = getPropertyValue(CUSTOMTRIGGER);
 		ButtonClickEvent event = new ButtonClickEvent(submitType, getValues());
-		event.setCustomHandlerClass(customHandler);
+		event.setTrigger(customHandler);
 		AppContext.fireEvent(event);
 	}
 	

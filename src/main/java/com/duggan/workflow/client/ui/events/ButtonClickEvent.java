@@ -14,7 +14,7 @@ public class ButtonClickEvent extends
 	public static Type<ButtonClickHandler> TYPE = new Type<ButtonClickHandler>();
 	private String requestType;
 	private boolean isValidateForm=true;
-	private String customHandlerClass=null;
+	private String trigger =null;
 
 	public interface ButtonClickHandler extends EventHandler {
 		void onButtonClick(ButtonClickEvent event);
@@ -65,11 +65,11 @@ public class ButtonClickEvent extends
 		this.isValidateForm = isValidateForm;
 	}
 
-	public String getCustomHandlerClass() {
-		return customHandlerClass;
+	public String getTrigger() {
+		return trigger;
 	}
 
-	public void setCustomHandlerClass(String customHandlerClass) {
-		this.customHandlerClass = customHandlerClass;
+	public void setTrigger(String trigger) {
+		this.trigger = trigger;
 	}
 }

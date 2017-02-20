@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -21,6 +23,11 @@ import com.duggan.workflow.shared.model.form.KeyValuePair;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @org.hibernate.annotations.Entity(dynamicInsert=true, dynamicUpdate=true)
+@Table(indexes = {
+		@Index(name="idx_adfieldjson_formrefid", columnList="formRef"),
+		@Index(name="idx_adfieldjson_fieldtype", columnList="fieldType")		
+})
+
 public class ADFieldJson extends PO{
 
 	/**

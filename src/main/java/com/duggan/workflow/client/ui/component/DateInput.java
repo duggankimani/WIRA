@@ -36,6 +36,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 	TextField txtDate;
 	@UiField HTMLPanel panelContainer;
 	String id = DOM.createUniqueId();
+	static int count = 0;
 
 	ArrayList<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
@@ -72,7 +73,7 @@ public class DateInput extends Composite implements HasValue<Date> {
 
 			Element parentDiv = DOM.createDiv();
 
-			id = dateElement.getId()+ "_Field";
+			id = dateElement.getId()+ "_Field_"+(++count);
 			Element div = DOM.createDiv();
 			div.addClassName("date datepicker input-append input-group");
 			div.setId(id);
@@ -141,14 +142,22 @@ public class DateInput extends Composite implements HasValue<Date> {
 	public void setDisabled(Boolean isDisabled) {
 		if (isDisabled) {
 			txtDate.getElement().setAttribute("disabled", "disabled");
+		}else{
+			removeAttribute(txtDate.getElement(), "disabled");
 		}
 	}
 
 	public void setRequired(Boolean isRequired) {
 		if (isRequired) {
 			txtDate.getElement().setAttribute("required", "required");
+		}else{
+			removeAttribute(txtDate.getElement(),"required");
 		}
 	}
+	
+	private native void removeAttribute(Element el,String attrName) /*-{
+		$wnd.jQuery(el).removeAttr(attrName);
+	}-*/;
 
 	public void setMaxLength(String maxLength) {
 		txtDate.getElement().setAttribute("max-length", maxLength);
@@ -246,5 +255,4 @@ public class DateInput extends Composite implements HasValue<Date> {
 	public void addClickHandler(ClickHandler clickHandler) {
 		txtDate.addClickHandler(clickHandler);
 	}
-
 }

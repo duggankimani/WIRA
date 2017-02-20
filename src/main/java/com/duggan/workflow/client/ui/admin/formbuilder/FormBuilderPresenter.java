@@ -381,6 +381,7 @@ public class FormBuilderPresenter extends
 						CreateFormResponse createResp = (CreateFormResponse)result.get(0);
 						Form form=createResp.getForm();
 						setFormRefId(form.getRefId());
+						
 						getView().setForm(form);
 						
 						GetFormsResponse response = (GetFormsResponse)result.get(1);
@@ -441,6 +442,10 @@ public class FormBuilderPresenter extends
 	
 	@Override
 	public void onSaveProperties(SavePropertiesEvent event) {
+		if(!(event.getParent() instanceof Form)){
+			return;
+		}
+		
 		if (event.getParent() != null
 				&& event.getParent().equals(getView().getForm())) {
 			saveForm(getView().getForm());
