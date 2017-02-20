@@ -73,6 +73,10 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		User user = getUser(userId);
 		
 		assert user!=null;
+		if(user==null){
+			log.warn("No user with id '"+userId+"' Found");
+			return new ArrayList<Group>();
+		}
 		
 		return user.getGroups();
 	}
