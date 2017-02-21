@@ -7,6 +7,7 @@ pipeline{
 	stages{
 		stage('Build'){
 			steps{
+				sh 'mvn install:install-file -Dfile=matheclipse-0.0.10_1.jar -DgroupId=org.matheclipse -DartifactId=matheclipse -Dversion=0.0.10_1 -Dpackaging=jar'
 				sh 'mvn clean install'
 			}
 		}
