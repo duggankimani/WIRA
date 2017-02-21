@@ -1,9 +1,10 @@
 pipeline{
 	agent any
+	tools{
+		maven 'apache-maven-3.0.1'
+	}
+		
 	stages{
-		tools{
-			maven 'apache-maven-3.0.1'
-		}
 		stage('Build'){
 			steps{
 				sh 'mvn clean install'
