@@ -15,7 +15,7 @@ pipeline{
 		stage('Deploy'){
 			steps{
 				sh '/DATA/installations/tomcat_8/bin/shutdown.sh'
-				sh 'rm -r /DATA/installations/tomcat_8/webapps/wira*'
+				sh 'rm -r /DATA/installations/tomcat_8/webapps/wira /DATA/installations/tomcat_8/webapps/wira.war'
 				sh 'cp target/wira-0.9.war /DATA/installations/tomcat_8/webapps/wira.war'
 				sh '/DATA/installations/tomcat_8/bin/start.sh'
 			}
