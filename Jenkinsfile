@@ -17,7 +17,7 @@ pipeline{
 				sh '/DATA/installations/tomcat_8/bin/shutdown.sh'
 				sh 'rm -rf /DATA/installations/tomcat_8/webapps/wira /DATA/installations/tomcat_8/webapps/wira.war'
 				sh 'cp target/wira-0.9.war /DATA/installations/tomcat_8/webapps/wira.war'
-				sh '/DATA/installations/tomcat_8/bin/start.sh'
+				sh '/DATA/installations/tomcat_8/bin/startup.sh'
 			}
 		}
 	}
