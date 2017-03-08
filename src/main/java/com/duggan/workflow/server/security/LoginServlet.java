@@ -78,6 +78,7 @@ public class LoginServlet extends BaseServlet {
 			redirectToApp();
 		}else{
 			logger.debug("#LoginServlet failed to login in; invalidating session");
+			resp.setStatus(403);//NOT AUTHENTICATED
 			req.getSession().invalidate();
 		}
 	
