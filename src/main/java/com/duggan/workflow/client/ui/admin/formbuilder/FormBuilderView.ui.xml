@@ -179,6 +179,10 @@
 									    <f:HR></f:HR>	
 									</fb:PalettePanel>	
 									
+									<fb:PalettePanel ui:field="vTablePanel">	
+									    <f:Grid></f:Grid>
+									</fb:PalettePanel>
+									
 									<fb:PalettePanel ui:field="vGridPanel">	
 									    <f:GridLayout></f:GridLayout>
 									</fb:PalettePanel>

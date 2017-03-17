@@ -965,14 +965,14 @@ public class FormDaoHelper {
 	public static Field createJson(Field field) {
 		// Save Parent
 		ADFieldJson jsonField = new ADFieldJson(field);
-		int previousIdx = -1;
+//		int previousIdx = -1;
 		if (field.getRefId() != null) {
 			jsonField = DB.getFormDao().findByRefId(field.getRefId(),
 					ADFieldJson.class);
 			if (jsonField == null) {
 				jsonField = new ADFieldJson(field);
 			} else {
-				previousIdx = jsonField.getField().getPosition();
+//				previousIdx = jsonField.getField().getPosition();
 				jsonField.setField(field);
 			}
 		} else {
@@ -986,13 +986,14 @@ public class FormDaoHelper {
 
 		if(field.getParentRef()==null){
 			//shift form fields incase there was a change
-			shiftPositions(field,previousIdx, field.getPosition());
+//			shiftPositions(field,previousIdx, field.getPosition());
 		}
 
 		for (Field child : field.getFields()) {
 			child.setParent(jsonField.getId(), jsonField.getRefId());
 			child.setForm(field.getFormId(), field.getFormRef());
 			createJson(child);
+			logger.debug(">> CreateGridField: {name: "+child.getCaption()+", pos: "+child.getPosition()+"}");
 		}
 
 		return field;

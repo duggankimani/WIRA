@@ -308,7 +308,7 @@ public class FormDaoImpl extends BaseDaoImpl {
 	}
 
 	public ArrayList<Field> findJsonFieldsForField(String parentRef) {
-		String sql ="select field from adfieldjson where field @> '{\"parentRef\":\":parentRef\"}'";
+		String sql ="select field from adfieldjson where field @> '{\"parentRef\":\":parentRef\"}' order by field->>'position'";
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("parentRef", parentRef);
 		

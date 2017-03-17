@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+	    
+	    <g:FlexTable ui:field="flextable" styleName="flextable-grid">
+	    </g:FlexTable>
+	    
+		<table class="hide">
+			<tbody>
+				<tr style='height: 23px;'>
+					<td class="s2">
+						<g:Anchor ui:field="gridAdd" styleName="btn btn-small">
+							<i class="icon-plus"></i>
+							Add Line
+						</g:Anchor>
+					</td>
+					<td class="s2">
+					    <g:HTMLPanel ui:field="divControls"></g:HTMLPanel>
+					</td>
+				</tr>
+				<tr style='height: 23px;'>
+					<td class="s9" dir="ltr">Column0</td>
+					<td class="s9" dir="ltr">Actions</td>
+				</tr>
+			</tbody>
+			
+			<tbody class="grid_template">
+				<tr class="grid_row_template" ui:field="templateRow">
+					<td class="s11" dir="ltr">
+						<select id="expenseType"></select>
+					</td>
+					<td class="delete">
+						<a id="row_Delete">
+							<i class="icon-remove-circle"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder> 

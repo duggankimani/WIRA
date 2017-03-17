@@ -321,29 +321,26 @@ public class Field extends FormModel implements Comparable<Field>{
 		field.setName(name);
 		field.setPosition(position);
 		field.setType(type);
-		field.setForm(null,null);
-		field.setRefId(null);
 		
-		if(copyAll){
-			field.setForm(formId,formRef);
-			field.setRefId(getRefId());
-			field.setId(getId());
-			field.setParent(parentId,getParentRef());
-			field.setDocId(docId);
-			field.setDocRefId(docRefId);
-		}
+		field.setForm(formId,formRef);
+		field.setRefId(getRefId());
+		field.setId(getId());
+		field.setParent(parentId,getParentRef());
+		field.setGridName(gridName);
+		field.setDocId(docId);
+		field.setDocRefId(docRefId);
 	
-		if(value!=null){
-			field.setValue(value.clone(copyAll));
-		}
-		
-		field.setSelectionValues(getSelectionValues());
-		
-		for(Field fld: fields){
-			field.addField(fld.clone());
-		}
-		
+		// field.setId(getId());
+		field.setRefId(getRefId());
+		field.setId(getId());
+		// Name, Caption, my be ignored - Use Front end values
+		field.setDependentFields(getDependentFields());
+		field.setDynamicParent(isDynamicParent());
+		field.setFields(getFields());
+//		field.setLineRefId(getLineRefId());
 		field.setProps(getProps());
+		field.setSelectionValues(getSelectionValues());
+		field.setValue(getValue());
 	}
 
 	public ArrayList<String> getDependentFields() {

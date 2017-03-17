@@ -208,9 +208,10 @@ public class NumberField extends FieldWidget{
 			@Override
 			public void onValueChange(ValueChangeEvent<Double> event) {
 				Double value = event.getValue();
+				
 				//ENV.setContext(field.getName(),field.getQualifiedName(), value);
 				ENV.setContext(field, value);
-				//System.err.println("Change event fired -> "+value);
+				
 				//fire based on actual name-- other fields are aware of actuals
 				AppContext.fireEvent(new OperandChangedEvent(field.getDocSpecificName(), value, field.getLineRefId()));
 			}
@@ -218,7 +219,7 @@ public class NumberField extends FieldWidget{
 		});
 		
 	}
-	
+		
 	@Override
 	public void addRegisteredHandler(Type<? extends EventHandler> type,
 			EventHandler handler) {
@@ -249,19 +250,19 @@ public class NumberField extends FieldWidget{
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-		
-		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
-		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
-		
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+		txtComponent.setReadOnly(this.readOnly);
+//		UIObject.setVisible(txtComponent.getElement(),!this.readOnly);
+//		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
+//		
+//		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
-	public Widget createComponent(boolean small) {
-				
-		if(!readOnly)
-		if(small){
-			txtComponent.setClass("input-medium");
+	public Widget createComponent(boolean isGridItem) {
+
+		if(isGridItem){
+			panelControls.removeStyleName("controls");
+			txtComponent.removeStyleName("input-xlarge");
 		}
 		return panelControls;
 	}
@@ -374,4 +375,13 @@ public class NumberField extends FieldWidget{
 		}
 	}
 	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		txtComponent.removeStyleName("input-xlarge");
+		panelControls.removeStyleName("controls");
+	}
 }

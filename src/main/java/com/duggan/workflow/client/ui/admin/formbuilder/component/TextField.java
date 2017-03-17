@@ -310,19 +310,21 @@ public class TextField extends FieldWidget {
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
 
-		UIObject.setVisible(txtComponent.getElement(), !this.readOnly);
-		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
-
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+		txtComponent.setReadOnly(this.readOnly);
+//		UIObject.setVisible(txtComponent.getElement(), !this.readOnly);
+//		UIObject.setVisible(lblReadOnly.getElement(), this.readOnly);
+//
+//		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
-	public Widget createComponent(boolean small) {
+	public Widget createComponent(boolean isGridItem) {
 
-		if (!readOnly)
-			if (small) {
-				txtComponent.setClass("input-medium");
-			}
+		if(isGridItem){
+			//Remove Item
+			panelControls.removeStyleName("controls");
+			txtComponent.removeStyleName("input-xlarge");
+		}
 		return panelControls;
 	}
 
@@ -373,6 +375,16 @@ public class TextField extends FieldWidget {
 			panelGroup.addStyleName("error");
 			spnIcon.addClassName("icon-remove-circle");
 		}
+	}
+	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		txtComponent.removeStyleName("input-xlarge");
+		panelControls.removeStyleName("controls");
 	}
 
 }

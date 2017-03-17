@@ -374,6 +374,7 @@ public class FormBuilderPresenter extends
 		
 		GetFormsRequest formsRequest = new GetFormsRequest(processRefId);
 		action.addRequest(formsRequest);
+		fireEvent(new ProcessingEvent("Saving form..."));
 		dispatcher.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
@@ -386,6 +387,7 @@ public class FormBuilderPresenter extends
 						
 						GetFormsResponse response = (GetFormsResponse)result.get(1);
 						getView().setForms(response.getForms());
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}

@@ -16,6 +16,8 @@ import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.HTMLForm;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
+import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.StringValue;
@@ -38,6 +40,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -147,6 +150,8 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField
 	PalettePanel vGridPanel;
 	@UiField
+	PalettePanel vTablePanel;
+	@UiField
 	PalettePanel vFileUploadPanel;
 	@UiField
 	PalettePanel vPanelIFrame;
@@ -183,45 +188,6 @@ public class FormBuilderView extends ViewImpl implements
 		// Vertical Panel Display
 		vPanel.getElement().getStyle().setWidth(100, Unit.PCT);
 
-		DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()) {
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				FieldWidget draggable = (FieldWidget) event.getContext().draggable;
-				if (draggable instanceof HTMLForm
-						&& draggable.getViewElement() != null) {
-					draggable.getViewElement().addClassName("dragview");
-				}
-				super.onDragStart(event);
-			}
-
-			@Override
-			public void onDragEnd(DragEndEvent event) {
-				super.onDragEnd(event);
-				FieldWidget draggable = (FieldWidget) event.getContext().draggable;
-
-				int idx = vPanel.getWidgetIndex(draggable);
-				if (idx == -1) {
-					draggable.delete();
-				} else {
-					/*
-					 * Cannot use Window.alert here - Generates and Exception
-					 * 
-					 * com.google.gwt.event.shared.UmbrellaException: Exception
-					 * caught: (TypeError) : Cannot read property
-					 * 'getElement_23_g$' of null
-					 */
-					if (draggable instanceof HTMLForm
-							&& draggable.getViewElement() != null) {
-						draggable.getViewElement().removeClassName("dragview");
-					}
-					draggable.getField().setForm(form.getId(), form.getRefId());
-					draggable.getField().setPosition(idx);
-					draggable.save();
-					draggable.onDragEnd();
-				}
-			}
-		};
-
 		/*
 		 * set up pick-up and move parameters: absolutePanel, boolean(whether
 		 * items can be placed to any location)
@@ -232,6 +198,14 @@ public class FormBuilderView extends ViewImpl implements
 			protected void restoreSelectedWidgetsLocation() {
 				// do nothing -- Dont drop the widget back to the palette menu
 				// if target was missed;
+				FieldWidget draggable = (FieldWidget) this.context.draggable;
+				if (draggable.getField().getRefId() == null) {
+					// This is a clone from the pallete & should therefore not
+					// be restored
+				} else {
+					super.restoreSelectedWidgetsLocation();
+				}
+
 			}
 		};
 
@@ -312,6 +286,68 @@ public class FormBuilderView extends ViewImpl implements
 
 	}
 
+	DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()) {
+		@Override
+		public void onDragStart(DragStartEvent event) {
+			FieldWidget draggable = (FieldWidget) event.getContext().draggable;
+			if (draggable instanceof HTMLForm
+					&& draggable.getViewElement() != null) {
+				draggable.getViewElement().addClassName("dragview");
+			}
+			super.onDragStart(event);
+		}
+
+		@Override
+		public void onDragEnd(DragEndEvent event) {
+			super.onDragEnd(event);
+			FieldWidget draggable = (FieldWidget) event.getContext().draggable;
+
+			int idx = vPanel.getWidgetIndex(draggable);
+			if (idx == -1) {
+				if (draggable.getField().getRefId() == null) {
+					// From the pallete
+					draggable.delete();
+				} else {
+					// a field loaded from the db should not be deleted when you
+					// miss the drop target
+				}
+				//
+				// Do not delete when you are out of the drop area
+
+			} else {
+				/*
+				 * Cannot use Window.alert here - Generates and Exception
+				 * 
+				 * com.google.gwt.event.shared.UmbrellaException: Exception
+				 * caught: (TypeError) : Cannot read property 'getElement_23_g$'
+				 * of null
+				 */
+				if (draggable instanceof HTMLForm
+						&& draggable.getViewElement() != null) {
+					draggable.getViewElement().removeClassName("dragview");
+				}
+				
+				Field field = draggable.getField();
+				field.setForm(form.getId(), form.getRefId());
+				field.setPosition(idx);
+				//draggable.save();
+				draggable.onDragEnd();
+				
+				//Save field positions
+				ArrayList<Field> fields = new ArrayList<Field>();
+				for(int i=0; i< vPanel.getWidgetCount(); i++){
+					FieldWidget fw = (FieldWidget)vPanel.getWidget(i);
+					Field f = fw.getField();
+					f.setPosition(i);
+					fields.add(f);
+				}
+				form.setFields(fields);
+				AppContext.getEventBus().fireEvent(new SavePropertiesEvent(form));
+				
+			}
+		}
+	};
+
 	/**
 	 * Hello there
 	 * 
@@ -374,6 +410,7 @@ public class FormBuilderView extends ViewImpl implements
 		// layout
 		vHRPanel.registerDragController(widgetDragController);
 		vGridPanel.registerDragController(widgetDragController);
+		vTablePanel.registerDragController(widgetDragController);
 		vFileUploadPanel.registerDragController(widgetDragController);
 		vHTMLFormPanel.registerDragController(widgetDragController);
 		vPanelIFrame.registerDragController(widgetDragController);
@@ -539,7 +576,7 @@ public class FormBuilderView extends ViewImpl implements
 		formLabel.getElement().setInnerHTML(caption);
 
 		setFields(form.getFields());
-		if (form.getFields()==null || form.getFields().isEmpty()) {
+		if (form.getFields() == null || form.getFields().isEmpty()) {
 			/*
 			 * A hack for easing drag drop when there are no fields on the form
 			 */

@@ -33,6 +33,8 @@ public interface HasProperties {
 	public static final String WIDTH="WIDTH";
 	public static final String HTMLCONTENT = "HTMLCONTENT";
 	public static final String NUMBERFORMAT = "NUMBERFORMAT";
+	public static final String COLSPAN = "COLSPAN";
+	public static final String COLWIDTH = "WIDTH";
 
 	void addProperty(Property property);
 	

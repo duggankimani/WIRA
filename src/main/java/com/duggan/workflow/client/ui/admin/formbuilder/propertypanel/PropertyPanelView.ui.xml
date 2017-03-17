@@ -11,6 +11,7 @@
 				<div class="popover-content overflow-y">
 					<g:HTMLPanel ui:field="pBody">
 					</g:HTMLPanel>
+					
 				</div>
 			</g:HTMLPanel>
 		</g:FocusPanel>

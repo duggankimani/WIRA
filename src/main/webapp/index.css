@@ -917,3 +917,43 @@ section.positioned {
 	cursor:pointer;
 	pointer-events:auto;
 }
+
+.flextable-grid{
+	width:100%;
+}
+
+.flextable-grid .th{
+    background-color: #3b4e87;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+    font-family: 'Arial';
+    font-size: 10pt;
+    vertical-align: middle;
+    white-space: nowrap;
+    direction: ltr;
+    padding: 2px 3px 2px 3px;
+}
+
+.flextable-grid input, .flextable-grid text-area, .flextable-grid select, 
+.flextable-grid input[type="text"], .flextable-grid input[type="number"]{
+	width: 100%;
+ 	box-sizing: border-box;
+ 	height:30px;
+}
+
+.flextable-grid td {
+    background-color: #ffffff;
+    text-align: left;
+    color: #000000;
+    font-family: 'Arial';
+    font-size: 10pt;
+    vertical-align: middle;
+    white-space: nowrap;
+    direction: ltr;
+    padding: 2px 3px 2px 3px;
+}
+
+.flextable-grid .input-group.date .input-group-addon {
+    padding: 0px;
+}

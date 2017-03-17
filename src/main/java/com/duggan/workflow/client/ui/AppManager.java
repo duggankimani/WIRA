@@ -124,9 +124,11 @@ public class AppManager {
 			public void onSelect(String name) {
 				if(name.equals("Save")){
 					propertyPanel.save();
+				}else if(name.equals("Delete")){
+					propertyPanel.delete();
 				}
 			}
-		}, "Save", "Cancel");
+		}, "Delete","Save", "Cancel");
 	}
 	
 	public static void showCarouselPanel(Widget widget, int[] position,

@@ -95,7 +95,7 @@ public class GridLayout extends FieldWidget implements EditLineHandler {
 	private void showDesignGrid() {
 		divControls.clear();
 		field.sortFields();
-		grid = new GridDnD(field.getFields()) {
+		grid = new GridDnD() {
 			@Override
 			protected void save(ArrayList<Field> fields) {
 				field.setFields(fields);

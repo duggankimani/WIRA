@@ -44,7 +44,7 @@ public class HR extends FieldWidget{
 	@Override
 	protected void onAttach() {
 		super.onAttach();
-		widget.getElement().getStyle().setMarginBottom(15, Unit.PX);
+		//widget.getElement().getStyle().setMarginBottom(15, Unit.PX);
 	}
 
 	@Override

@@ -158,10 +158,10 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 	@Override
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
-
-		UIObject.setVisible(lstItems.getElement(), !this.readOnly);
-		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+		lstItems.setReadOnly(this.readOnly);
+//		UIObject.setVisible(lstItems.getElement(), !this.readOnly);
+//		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
+//		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
 	}
 
 	@Override
@@ -267,4 +267,13 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		}
 	}
 
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		lstItems.removeStyleName("input-xlarge");
+		panelControls.removeStyleName("controls");
+	}
 }

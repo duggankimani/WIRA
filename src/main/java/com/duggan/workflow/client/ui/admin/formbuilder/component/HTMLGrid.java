@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class HTMLGrid extends HTMLParent implements DeleteLineHandler {
 
 	private Element templateRow = null;
-	private HashMap<String,HTMLLine> htmlLines = new HashMap<String,HTMLGrid.HTMLLine>();
+	private HashMap<String,HTMLLine> htmlLines = new HashMap<String,HTMLLine>();
 	long rowCount = 0;
 	final String gridId;
 	ActionLink aAdd = null;
