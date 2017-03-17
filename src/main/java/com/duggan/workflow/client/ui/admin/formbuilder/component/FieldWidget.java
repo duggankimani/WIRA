@@ -562,7 +562,6 @@ public abstract class FieldWidget extends AbsolutePanel implements
 										}-*/;
 
 	protected void save(Field model) {
-
 		/*if(model.getParentRef()==null){
 			//Child of FormPanel  - @See FormBuilderView.dragHandler.onDragEnd
 			Widget parent = getParent();
@@ -733,8 +732,13 @@ public abstract class FieldWidget extends AbsolutePanel implements
 	@Override
 	public void onSaveProperties(SavePropertiesEvent event) {
 		FormModel model = event.getParent();
-
-		if (model == null || !(model instanceof Field)) {
+		
+		/*
+		 * Duggan 17/Feb/2017 - Added designMode check to avoid GRID row fields handling this event 
+		 * and creating multiple save calls to the database
+		 */
+		//Must be in design mode to save field properties
+		if (!designMode || model == null || !(model instanceof Field)) {
 			return;
 		}
 

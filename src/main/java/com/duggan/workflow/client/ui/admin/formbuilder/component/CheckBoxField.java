@@ -36,6 +36,7 @@ public class CheckBoxField extends FieldWidget {
 	@UiField SpanElement spnMsg;
 	@UiField Element spnIcon;
 	@UiField HTMLPanel panelGroup;
+	@UiField HTMLPanel panelControls;
 	
 	private final Widget widget;
 
@@ -169,5 +170,15 @@ public class CheckBoxField extends FieldWidget {
 			panelGroup.addStyleName("error");
 			spnIcon.addClassName("icon-remove-circle");
 		}
+	}
+	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		component.removeStyleName("input-xlarge");
+		panelControls.removeStyleName("controls");
 	}
 }

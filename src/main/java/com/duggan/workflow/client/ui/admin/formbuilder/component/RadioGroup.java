@@ -36,6 +36,8 @@ public class RadioGroup extends FieldWidget implements IsSelectionField {
 	@UiField
 	Element lblEl;
 	@UiField
+	HTMLPanel panelGroup;
+	@UiField
 	HTMLPanel vPanel;
 	Value fieldValue = null;
 
@@ -277,5 +279,14 @@ public class RadioGroup extends FieldWidget implements IsSelectionField {
 	@Override
 	public void setComponentValid(boolean isValid) {
 
+	}
+	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		vPanel.removeStyleName("controls");
 	}
 }

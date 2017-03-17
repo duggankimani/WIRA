@@ -936,7 +936,9 @@ section.positioned {
 }
 
 .flextable-grid input, .flextable-grid text-area, .flextable-grid select, 
-.flextable-grid input[type="text"], .flextable-grid input[type="number"]{
+.flextable-grid input[type="text"], .flextable-grid input[type="number"],
+.flextable-grid input[type="date"], .flextable-grid .datepicker
+{
 	width: 100%;
  	box-sizing: border-box;
  	height:30px;
@@ -955,5 +957,8 @@ section.positioned {
 }
 
 .flextable-grid .input-group.date .input-group-addon {
-    padding: 0px;
+}
+
+ .flextable-grid .datepicker input{
+    width: calc(100% - 20px);
 }

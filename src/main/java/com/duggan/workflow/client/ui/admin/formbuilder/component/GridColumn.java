@@ -41,6 +41,16 @@ public class GridColumn extends Composite implements PropertyChangedHandler, Del
 		label = new Label();
 		panel.add(label);
 
+		String caption = field.getCaption();
+		if(caption==null){
+			field.getProperty(HasProperties.CAPTION);
+			caption = field.getProperty(HasProperties.NAME);
+			if(caption==null){
+				caption = "Label";
+			}
+			field.setCaption(caption);
+		}
+		
 		// addStyleName("thead th td");
 		label.getElement().setInnerHTML(field.getCaption());
 

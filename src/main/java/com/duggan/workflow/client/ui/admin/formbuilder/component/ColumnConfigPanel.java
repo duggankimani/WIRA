@@ -83,6 +83,8 @@ public class ColumnConfigPanel extends AbsolutePanel{
 			heading.label.getElement().getStyle().setBackgroundColor("#3c6094");
 			heading.label.getElement().getStyle().setFontWeight(FontWeight.BOLD);
 			heading.label.getElement().getStyle().setFontSize(16, Unit.PX);
+			heading.label.getElement().getStyle().setMarginBottom(2, Unit.PX);
+			
 			
 			columnCompositePanel.add(heading);
 			columnCompositePanel.add(verticalPanel);
