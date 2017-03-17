@@ -74,6 +74,7 @@ public class TextField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		UIObject.setVisible(lblReadOnly.getElement(), false);
 
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<String>() {
 			@Override
@@ -294,14 +295,14 @@ public class TextField extends FieldWidget {
 			txtComponent.setValue((String) value);
 			if (lblReadOnly != null) {
 				// Raw HTML Fields may be null
-				lblReadOnly.setText((String) value);
+				//lblReadOnly.setText((String) value);
 			}
 
 		} else {
 			txtComponent.setValue(null);
 			if (lblReadOnly != null) {
 				// Raw HTML Fields may be null
-				lblReadOnly.setText(null);
+				//lblReadOnly.setText(null);
 			}
 		}
 	}

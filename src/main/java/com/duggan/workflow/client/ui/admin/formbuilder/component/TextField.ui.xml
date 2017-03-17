@@ -8,7 +8,7 @@
 		       <label ui:field="lblEl" for="Username" class="control-label">Text Input:</label>
 			    <g:HTMLPanel styleName="controls" ui:field="panelControls">
 				    <d:TextField ui:field="txtComponent" type="text" class="input-xlarge"/>
-				    <g:InlineLabel ui:field="lblReadOnly" styleName="help-inline"></g:InlineLabel>
+				    <g:InlineLabel ui:field="lblReadOnly" styleName="help-inline hide"></g:InlineLabel>
 				    <span ui:field="spnMsg" class="hide help-inline helper-font-14">
 				    	<i class="icon icon-ok" ui:field="spnIcon"></i>
 				    </span>

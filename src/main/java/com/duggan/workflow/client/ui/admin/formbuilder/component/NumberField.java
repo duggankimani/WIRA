@@ -69,6 +69,7 @@ public class NumberField extends FieldWidget{
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		UIObject.setVisible(lblReadOnly.getElement(), false);
 		
 		txtComponent.addValueChangeHandler(new ValueChangeHandler<Double>() {
 			@Override
