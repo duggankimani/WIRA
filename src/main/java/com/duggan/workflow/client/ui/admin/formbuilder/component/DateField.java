@@ -61,6 +61,7 @@ public class DateField extends FieldWidget {
 		widget = uiBinder.createAndBindUi(this);
 		add(widget);
 		UIObject.setVisible(spnMandatory, false);
+		lblComponent.addStyleName("hide");
 
 		dateBox.getDateInput().addValueChangeHandler(
 				new ValueChangeHandler<Date>() {
@@ -146,10 +147,11 @@ public class DateField extends FieldWidget {
 	public void setReadOnly(boolean isReadOnly) {
 		this.readOnly = isReadOnly || isComponentReadOnly();
 
-		UIObject.setVisible(dateBox.getElement(), !this.readOnly);
-		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
-
-		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+//		UIObject.setVisible(dateBox.getElement(), !this.readOnly);
+//		UIObject.setVisible(lblComponent.getElement(), this.readOnly);
+//
+//		UIObject.setVisible(spnMandatory, (!this.readOnly && isMandatory()));
+		dateBox.setReadOnly(this.readOnly);
 	}
 
 	@Override

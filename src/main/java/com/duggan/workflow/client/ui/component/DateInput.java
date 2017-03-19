@@ -255,4 +255,8 @@ public class DateInput extends Composite implements HasValue<Date> {
 	public void addClickHandler(ClickHandler clickHandler) {
 		txtDate.addClickHandler(clickHandler);
 	}
+
+	public void setReadOnly(boolean readOnly) {
+		txtDate.setReadOnly(readOnly);
+	}
 }
