@@ -943,6 +943,14 @@ section.positioned {
  	box-sizing: border-box;
  	height:30px;
 }
+	
+.flextable-grid input[type="radio"], .flextable-grid input[type="checkbox"]{
+	margin: 0px;
+}
+
+.flextable-grid .gwt-CheckBox label{
+	margin: 0px;
+}
 
 .flextable-grid td {
     background-color: #ffffff;
@@ -962,3 +970,4 @@ section.positioned {
  .flextable-grid .datepicker input{
     width: calc(100% - 20px);
 }
+
