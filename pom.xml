@@ -282,7 +282,7 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>transaction-api</artifactId>
 			<version>1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
@@ -347,7 +347,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -358,13 +358,13 @@
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>2.7.7</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>3.3</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -464,7 +464,7 @@
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 			<version>2.1.3</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -477,7 +477,7 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -627,14 +627,14 @@
 			<groupId>org.ow2.util.bundles</groupId>
 			<artifactId>javassist-3.14.0-GA</artifactId>
 			<version>1.0.0</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.4.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -715,7 +715,7 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -761,14 +761,14 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_3.0_spec</artifactId>
 			<version>1.1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jta_1.1_spec</artifactId>
 			<version>1.1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 
@@ -827,56 +827,56 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>ejb3-persistence</artifactId>
 			<version>1.0.2.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>3.3.2.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>3.4.0.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>3.1.0.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.4.0.GA</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
@@ -892,7 +892,7 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1201-jdbc41</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver 
@@ -926,7 +926,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -940,7 +940,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.4</version>
-			<!--scope>provided</scope-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
