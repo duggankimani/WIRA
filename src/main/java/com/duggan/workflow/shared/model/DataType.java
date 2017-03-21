@@ -17,6 +17,7 @@ public enum DataType implements IsSerializable{
 	BUTTON,
 	LAYOUTHR,
 	GRID,
+	TABLE,
 	COLUMNPROPERTY, 
 	FILEUPLOAD, FORM, LINK, IFRAME,
 	JS,CHECKBOXGROUP;
