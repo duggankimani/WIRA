@@ -35,6 +35,9 @@ public class CheckBoxGroup extends FieldWidget implements IsSelectionField {
 	Element lblEl;
 	@UiField
 	HTMLPanel vPanel;
+	@UiField
+	HTMLPanel panelGroup;
+	
 	Value fieldValue = null;
 
 	public CheckBoxGroup() {
@@ -120,7 +123,7 @@ public class CheckBoxGroup extends FieldWidget implements IsSelectionField {
 	private void resetStyle(CheckBox checkbox) {
 		//Span
 		Element span = checkbox.getElement();
-		span.getStyle().setDisplay(Display.BLOCK);
+		span.getStyle().setDisplay(Display.INLINE_BLOCK);
 
 		//Input
 		Element input = span.getElementsByTagName("input").getItem(0);
@@ -234,5 +237,14 @@ public class CheckBoxGroup extends FieldWidget implements IsSelectionField {
 	@Override
 	public void setComponentValid(boolean isValid) {
 
+	}
+	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		vPanel.removeStyleName("controls");
 	}
 }

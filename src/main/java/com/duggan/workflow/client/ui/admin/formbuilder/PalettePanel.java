@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.TableLayout;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -13,6 +14,7 @@ public class PalettePanel extends VerticalPanel {
 	public PalettePanel() {
 		
 		addStyleName("demo-PalettePanel");
+		setWidth("100%");
 		setSpacing(2);
 		setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 	}
@@ -20,7 +22,8 @@ public class PalettePanel extends VerticalPanel {
 	public void registerDragController(PickupDragController controller) {
 		this.dragController = controller;
 		for (int i = 0; i < this.getWidgetCount(); i++) {
-			controller.makeDraggable(this.getWidget(i));
+			Widget w  = this.getWidget(i);
+			controller.makeDraggable(w);
 		}
 
 	}

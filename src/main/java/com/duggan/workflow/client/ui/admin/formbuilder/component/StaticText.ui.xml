@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
     xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:AbsolutePanel ui:field="container">
-	        <g:HTMLPanel styleName="control-group">
+	        <g:HTMLPanel styleName="control-group" ui:field="panelGroup">
 		       <label ui:field="lblEl" class="control-label" style="width:100%; text-align:left;">Static Text:</label>
 	       </g:HTMLPanel>
 	</g:AbsolutePanel>

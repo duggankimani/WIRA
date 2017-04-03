@@ -15,6 +15,7 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.DragHandlerImpl;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.HTMLForm;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.TableLayout;
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.events.SavePropertiesEvent;
 import com.duggan.workflow.client.util.AppContext;
@@ -150,6 +151,8 @@ public class FormBuilderView extends ViewImpl implements
 	@UiField
 	PalettePanel vGridPanel;
 	@UiField
+	PalettePanel vTablePanel;
+	@UiField
 	PalettePanel vFileUploadPanel;
 	@UiField
 	PalettePanel vPanelIFrame;
@@ -196,6 +199,11 @@ public class FormBuilderView extends ViewImpl implements
 			protected void restoreSelectedWidgetsLocation() {
 				// do nothing -- Dont drop the widget back to the palette menu
 				// if target was missed;
+				if(!(this.context.draggable instanceof FieldWidget)){
+					super.restoreSelectedWidgetsLocation();
+					return;
+				}
+				
 				FieldWidget draggable = (FieldWidget) this.context.draggable;
 				if (draggable.getField().getRefId() == null) {
 					// This is a clone from the pallete & should therefore not
@@ -281,12 +289,17 @@ public class FormBuilderView extends ViewImpl implements
 		aDeleteForm.setVisible(false);
 		aCloneForm.setVisible(false);
 		aExportForm.setVisible(false);
-
+		
 	}
 
 	DragHandlerImpl dragHandler = new DragHandlerImpl(this.asWidget()) {
 		@Override
 		public void onDragStart(DragStartEvent event) {
+			if(!(event.getContext().draggable instanceof FieldWidget)){
+				super.onDragStart(event);
+				return;
+			}
+			
 			FieldWidget draggable = (FieldWidget) event.getContext().draggable;
 			if (draggable instanceof HTMLForm
 					&& draggable.getViewElement() != null) {
@@ -298,6 +311,10 @@ public class FormBuilderView extends ViewImpl implements
 		@Override
 		public void onDragEnd(DragEndEvent event) {
 			super.onDragEnd(event);
+			if(!(event.getContext().draggable instanceof FieldWidget)){
+				return;
+			}
+			
 			FieldWidget draggable = (FieldWidget) event.getContext().draggable;
 
 			int idx = vPanel.getWidgetIndex(draggable);
@@ -408,6 +425,7 @@ public class FormBuilderView extends ViewImpl implements
 		// layout
 		vHRPanel.registerDragController(widgetDragController);
 		vGridPanel.registerDragController(widgetDragController);
+		vTablePanel.registerDragController(widgetDragController);
 		vFileUploadPanel.registerDragController(widgetDragController);
 		vHTMLFormPanel.registerDragController(widgetDragController);
 		vPanelIFrame.registerDragController(widgetDragController);

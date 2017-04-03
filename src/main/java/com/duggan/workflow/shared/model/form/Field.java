@@ -91,6 +91,9 @@ public class Field extends FormModel implements Comparable<Field>{
 	private boolean isDynamicParent;
 	
 	private String formRef;
+
+	private int row=-1;
+	private int col=-1;
 	
 	public Field() {
 		docId="TempD";
@@ -148,6 +151,11 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+	
+	public void setCell(int row, int col){
+		this.row = row;
+		this.col = col;
 	}
 
 	public ArrayList<KeyValuePair> getSelectionValues() {
@@ -321,22 +329,30 @@ public class Field extends FormModel implements Comparable<Field>{
 		field.setName(name);
 		field.setPosition(position);
 		field.setType(type);
+
+		if(copyAll){
+			field.setForm(formId,formRef);
+			field.setRefId(getRefId());
+			field.setId(getId());
+			field.setParent(parentId,getParentRef());
+		}
 		
-		field.setForm(formId,formRef);
-		field.setRefId(getRefId());
-		field.setId(getId());
-		field.setParent(parentId,getParentRef());
 		field.setGridName(gridName);
 		field.setDocId(docId);
 		field.setDocRefId(docRefId);
 	
 		// field.setId(getId());
-		field.setRefId(getRefId());
-		field.setId(getId());
 		// Name, Caption, my be ignored - Use Front end values
 		field.setDependentFields(getDependentFields());
 		field.setDynamicParent(isDynamicParent());
-		field.setFields(getFields());
+		
+		ArrayList<Field> children = getFields();
+		if(fields!=null){
+			for(Field child: children){
+				field.addField(child.clone());
+			}
+		}
+		
 //		field.setLineRefId(getLineRefId());
 		field.setProps(getProps());
 		field.setSelectionValues(getSelectionValues());
@@ -434,6 +450,22 @@ public class Field extends FormModel implements Comparable<Field>{
 
 	public static String getGridPrefix() {
 		return "GRID_";
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 
 }

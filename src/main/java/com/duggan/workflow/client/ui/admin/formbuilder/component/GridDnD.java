@@ -1,30 +1,26 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.HorizontalPanelDropController;
-import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.shared.model.form.Field;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Overflow;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,9 +32,15 @@ public class GridDnD extends AbsolutePanel {
 	}
 
 	@UiField
+	HTMLPanel container;
+	
+	@UiField
 	HTMLPanel pMove;
 	@UiField
 	Anchor gridConfig;
+	
+	@UiField
+	Element dropDownColumns;
 
 	FocusPanel shim = new FocusPanel();
 
@@ -61,12 +63,29 @@ public class GridDnD extends AbsolutePanel {
 	ActionLink aNumField;
 	@UiField
 	ActionLink aCurrField;
+	
+	@UiField
+	ActionLink fileUploadField;
 
 	private DragHandler handler;
 	private PickupDragController columnDragController;
 	private HorizontalPanelDropController columnDropController;
 
+	public enum Options{
+		MOVE, FIELDS, SORT  
+	} 
+	
+	ArrayList<Options> options = new ArrayList<GridDnD.Options>();
+	
 	public GridDnD() {
+		this(Options.MOVE,Options.FIELDS,Options.SORT);
+	}
+	
+	public GridDnD(Options...aOptions) {
+		for(Options option: aOptions){
+			this.options.add(option);
+		}
+		
 		getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		this.addStyleName("grid-layout");
 		add(uiBinder.createAndBindUi(this));
@@ -77,6 +96,35 @@ public class GridDnD extends AbsolutePanel {
 		button.setTitle("Move Grid");
 		shim.add(button);
 		pMove.add(shim);
+		
+		int optionsCount = options.size()==0? 1: options.size();
+		
+		container.setWidth((optionsCount*20)+"px");
+		String optionStyle = "span"+(12/options.size());
+		
+		pMove.removeStyleName("span4");
+		gridConfig.getElement().getParentElement().removeClassName("span4");
+		dropDownColumns.removeClassName("span4");
+		
+		if(!options.contains(Options.MOVE)){
+			pMove.addStyleName("hide");
+		}else{
+			pMove.addStyleName(optionStyle);
+		}
+		
+		if(!options.contains(Options.SORT)){
+			gridConfig.getElement().getParentElement().addClassName("hide");
+//			gridConfig.addStyleName("hide");
+		}else{
+			gridConfig.getElement().getParentElement().addClassName(optionStyle);
+		}
+			
+		if(!options.contains(Options.FIELDS)){
+			dropDownColumns.addClassName("hide");
+		}else{
+			dropDownColumns.addClassName(optionStyle);
+		}
+		
 
 		gridConfig.addClickHandler(new ClickHandler() {
 
@@ -182,44 +230,6 @@ public class GridDnD extends AbsolutePanel {
 
 	}
 
-	public void createColumns(ArrayList<Field> columns) {
-		hPanel.getElement().getStyle().setWidth(100, Unit.PCT);
-
-		for (Field col : columns) {
-			// initialize a vertical panel to hold the heading and a second
-			// vertical
-			// panel
-			VerticalPanel columnCompositePanel = new VerticalPanel();
-
-			// columnCompositePanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_COLUMN_COMPOSITE);
-
-			// initialize inner vertical panel to hold individual widgets
-			VerticalPanel verticalPanel = new VerticalPanel();
-			// verticalPanel.addStyleName(CSS_DEMO_INSERT_PANEL_EXAMPLE_CONTAINER);
-
-			verticalPanel.addStyleName("inner");
-
-			hPanel.add(columnCompositePanel);
-
-			// Put together the column pieces
-			GridColumn heading = new GridColumn(col);
-
-			columnCompositePanel.add(heading);
-			columnCompositePanel.add(verticalPanel);
-
-			columnCompositePanel.setCellHorizontalAlignment(verticalPanel,
-					HasHorizontalAlignment.ALIGN_CENTER);
-
-			// make the column draggable by its heading
-			columnDragController.makeDraggable(columnCompositePanel,
-					heading.getDragComponent());
-
-			// for (int row = 1; row <= ROWS; row++) {
-			// verticalPanel.add(new HTML("Data"));
-			// }
-		}
-	}
-
 	private void clearCols() {
 		hPanel.clear();
 	}
@@ -268,6 +278,10 @@ public class GridDnD extends AbsolutePanel {
 
 	public ActionLink getCurrField() {
 		return aCurrField;
+	}
+	
+	public ActionLink getFileUploadField() {
+		return fileUploadField;
 	}
 
 	public FocusPanel getMoveWidget() {

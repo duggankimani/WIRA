@@ -35,6 +35,8 @@ public interface HasProperties {
 	public static final String NUMBERFORMAT = "NUMBERFORMAT";
 	public static final String COLSPAN = "COLSPAN";
 	public static final String COLWIDTH = "WIDTH";
+	public static final String ROW_COUNT = "ROW_COUNT";
+	public static final String COL_COUNT = "COL_COUNT";
 
 	void addProperty(Property property);
 	

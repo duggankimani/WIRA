@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.model.ADField;
+import com.duggan.workflow.server.dao.model.ADFieldJson;
 import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.ADKeyValuePair;
 import com.duggan.workflow.server.dao.model.ADProperty;
@@ -475,5 +476,41 @@ public class FormDaoImpl extends BaseDaoImpl {
 		}
 		
 		return schemas;
+	}
+
+	public void deleteTableRow(String parentRefId, int row) {
+		String deleteQuery = "select refId from ( "+
+				"select refid, cast(field->>'row' as Integer) rowno from adfieldjson "+
+				"where field@>'{\"parentRef\":\""+parentRefId+"\"}') as jsonquery where rowno="+row;
+		
+		List<String> toDelete = getResultList(getEntityManager().createNativeQuery(deleteQuery));
+		
+		//Delete fields in the row
+		if(!toDelete.isEmpty()){
+			logger.debug("Deleting fields: "+toDelete);
+			getEntityManager().createNativeQuery("delete from ADFieldJson where refId in(:elements)")
+				.setParameter("elements", toDelete).executeUpdate();
+		}
+		
+		//Update rowNo of fields in rows > :targetRow
+		String updateQuery = "select refId,fieldName,rowno from ( "+
+				"select refid, field->>'name' fieldName,cast(field->>'row' as Integer) rowno from adfieldjson "+
+				"where field@>'{\"parentRef\":\""+parentRefId+"\"}') as jsonquery where rowno>"+row;
+		
+		List<Object[]> updateList = getResultList(getEntityManager().createNativeQuery(updateQuery));
+		for(Object[] aRow : updateList){
+			String refId = aRow[0].toString();
+			String name = aRow[1]==null? refId: aRow[1].toString();
+			Integer rowNum = (Integer)aRow[2];
+			logger.debug("UPDATE TABLE field: {name: "+name+", ref: "+refId+", row: "+row+"}");
+			
+			ADFieldJson fieldJson = findByRefId(refId, ADFieldJson.class);
+			Field field = fieldJson.getField();
+			field.setRow(--rowNum);
+			
+			fieldJson.setField(field);
+			save(fieldJson);
+		}
+		
 	}
 }

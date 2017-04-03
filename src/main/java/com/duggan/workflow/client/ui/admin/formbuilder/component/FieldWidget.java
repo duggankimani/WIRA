@@ -104,7 +104,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		super();
 		getElement().getStyle().setProperty("position", "inherit");
 		getElement().getStyle().setProperty("overflow", "inherit");
-		shim.addStyleName("demo-PaletteWidget-shim");
+		//shim.addStyleName("demo-PaletteWidget-shim");
 		defaultProperties();
 		initField();
 		exportSetValue();
@@ -701,7 +701,7 @@ public abstract class FieldWidget extends AbsolutePanel implements
 
 	}
 
-	private void setProperties(ArrayList<KeyValuePair> properties) {
+	protected void setProperties(ArrayList<KeyValuePair> properties) {
 		if (properties != null) {
 			for (KeyValuePair prop : properties) {
 				Property p = props.get(prop.getKey());
@@ -863,6 +863,9 @@ public abstract class FieldWidget extends AbsolutePanel implements
 			break;
 		case FORM:
 			widget = new HTMLForm();
+			break;
+		case TABLE:
+			widget = new TableLayout();
 			break;
 		}
 

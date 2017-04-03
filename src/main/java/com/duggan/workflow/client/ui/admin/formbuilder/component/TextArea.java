@@ -284,4 +284,15 @@ public class TextArea extends FieldWidget {
 			spnIcon.addClassName("icon-remove-circle");
 		}
 	}
+	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		txtComponent.removeStyleName("input-xlarge");
+		divControls.removeClassName("controls");
+		panelControls.removeStyleName("comment-container");
+	}
 }

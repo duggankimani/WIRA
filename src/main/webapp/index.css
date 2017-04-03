@@ -935,7 +935,7 @@ section.positioned {
     padding: 2px 3px 2px 3px;
 }
 
-.flextable-grid input, .flextable-grid text-area, .flextable-grid select, 
+.flextable-grid input, .flextable-grid textarea, .flextable-grid select, 
 .flextable-grid input[type="text"], .flextable-grid input[type="number"],
 .flextable-grid input[type="date"], .flextable-grid .datepicker
 {
@@ -950,6 +950,10 @@ section.positioned {
 
 .flextable-grid .gwt-CheckBox label{
 	margin: 0px;
+}
+
+.flextable-grid label{
+	white-space:normal;
 }
 
 .flextable-grid td {
@@ -971,3 +975,49 @@ section.positioned {
     width: calc(100% - 20px);
 }
 
+table.form-table{
+}
+
+table.form-table td.data-cell{
+	border: 1px solid grey;
+	padding: 0px;
+	width: 25%;
+}
+
+.form-table td div{
+	display: inline-block;
+}
+
+.form-table td div.table-droptarget{
+    box-sizing: border-box;
+    width: calc(100% - 22px);
+    height: 58px;
+	background-color: whitesmoke;
+}
+
+.form-table td div.grid-layout{
+	width:22px;
+}
+
+table.table-border-visible{
+	border:1px solid #dddddd;	
+}
+
+table.table-border-visible > tbody > tr > td{
+	border:1px solid #dddddd;
+	padding: 2px;
+	vertical-align:middle;	
+}
+
+table.flextable-grid span, table.flextable-grid label{
+	display: inline-block;
+}
+
+table.flextable-grid label{
+    margin-bottom: 5px;
+    padding: 6px;
+}
+
+table.flextable-grid .GWTUpld form{
+	margin-bottom: 0px;	
+}

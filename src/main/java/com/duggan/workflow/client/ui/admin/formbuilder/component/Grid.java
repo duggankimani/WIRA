@@ -8,13 +8,12 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
+import com.duggan.workflow.client.ui.admin.formbuilder.component.GridDnD.Options;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.events.AfterDeleteLineEvent;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent;
-import com.duggan.workflow.client.ui.events.EditLineEvent;
-import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
 import com.duggan.workflow.client.ui.events.DeleteLineEvent.DeleteLineHandler;
+import com.duggan.workflow.client.ui.events.EditLineEvent;
 import com.duggan.workflow.client.ui.events.EditLineEvent.EditLineHandler;
 import com.duggan.workflow.client.ui.events.ReloadGridEvent;
 import com.duggan.workflow.client.ui.events.ReloadGridEvent.ReloadGridHandler;
@@ -35,7 +34,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -52,10 +50,11 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 
 	int rowCount = 0;
 
-	private HashMap<String, HTMLLine> htmlLines = new HashMap<String, HTMLLine>();
+	protected HashMap<String, HTMLLine> htmlLines = new HashMap<String, HTMLLine>();
 	@UiField FlexTable flextable;
-	private HTMLPanel divControls = new HTMLPanel("");
-	private Anchor gridAdd = new Anchor();
+	protected HTMLPanel divControls = new HTMLPanel("");
+	protected Anchor gridAdd = new Anchor();
+	protected GridDnD dragDrop = createWidgetControls(Options.MOVE,Options.SORT,Options.FIELDS);
 
 	public Grid() {
 		super();
@@ -63,7 +62,10 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 				refId));
 		addProperty(new Property(READONLY, "Read Only", DataType.CHECKBOX));
 		add(uiBinder.createAndBindUi(this));
-		
+		init();
+	}
+	
+	protected void init() {
 		initTable(field);
 		gridAdd.addClickHandler(new ClickHandler() {
 
@@ -79,34 +81,39 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 		createDesignGrid();
 	}
 	
-	GridDnD dragDrop = new GridDnD() {
-		@Override
-		protected void save(ArrayList<Field> fields) {
-			field.setFields(fields);
-			Grid.this.save(field);
-		}
-		
-		public void configureColumns() {
-			final ColumnConfigPanel config = new ColumnConfigPanel(field.getFields());
+	protected GridDnD createWidgetControls(Options ... controls) {
+		GridDnD dragDrop = new GridDnD(controls) {
+			@Override
+			protected void save(ArrayList<Field> fields) {
+				field.setFields(fields);
+				Grid.this.save(field);
+			}
 			
-			AppManager.showPopUp("Configure Columns", config, new OptionControl(){
-				@Override
-				public void onSelect(String name) {
-					if(name.equals("Save")){
-						save(config.getFields());
-						hide();
-					}else{
-						hide();
+			public void configureColumns() {
+				final ColumnConfigPanel config = new ColumnConfigPanel(field.getFields());
+				
+				AppManager.showPopUp("Configure Columns", config, new OptionControl(){
+					@Override
+					public void onSelect(String name) {
+						if(name.equals("Save")){
+							save(config.getFields());
+							hide();
+						}else{
+							hide();
+						}
+						
 					}
-					
-				}
-			}, "Save", "Cancel");
+				}, "Save", "Cancel");
+			};
+			
 		};
 		
-	};
+		return dragDrop;
+	}
 	
 	
-	private void initTable(Field aField) {
+	
+	protected void initTable(Field aField) {
 		clearTable();
 		
 		rowCount = 0;
@@ -163,7 +170,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 		
 	}
 
-	private String getColWidth(Field gridCol) {
+	protected String getColWidth(Field gridCol) {
 		String percWidth = gridCol.getProperty(HasProperties.COLWIDTH);
 		return percWidth;
 	}
@@ -194,7 +201,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 		};
 	}
 
-	private ActionLink newDelete() {
+	protected ActionLink newDelete() {
 		ActionLink rowDelete = new ActionLink();
 		rowDelete.addStyleName("red");
 		rowDelete.setHTML("<i class=\"icon-remove-circle\"></i>");
@@ -242,6 +249,8 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 	
 	@Override
 	public void setField(Field field) {
+		this.field = field;
+		setProperties(field.getProps());
 		for(Field child: field.getFields()){
 			child.setForm(field.getFormId(), field.getFormRef());
 			child.setParent(field.getId(), field.getRefId());
@@ -321,6 +330,14 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 				addColumn(DataType.DOUBLE);
 			}
 		});
+		
+		dragDrop.getFileUploadField().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				addColumn(DataType.FILEUPLOAD);
+			}
+		});
 
 		dragDrop.getCurrField().addClickHandler(new ClickHandler() {
 
@@ -350,7 +367,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 
 	}
 
-	private void addColumn(Field child) {
+	protected void addColumn(Field child) {
 		child.setParent(null, field.getRefId());
 		int pos = field.getFields().size();
 		child.setPosition(pos);
@@ -450,7 +467,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 		return lines;
 	}
 
-	private void addLine(DocumentLine documentLine) {
+	protected void addLine(DocumentLine documentLine) {
 		HTMLLine line = new HTMLLine();
 		line.setDocument(documentLine);
 		htmlLines.put(line.getDocument().getTempId()+"", line);
@@ -518,7 +535,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 	}
 	
 	
-	private void clearTable() {
+	public void clearTable() {
 		flextable.clear();
 		htmlLines.clear();
 	}
@@ -537,7 +554,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 			int col = 0;
 			for(; i< field.getFields().size(); i++, col++){
 				Field child = field.getFields().get(i);//.clone(true);
-				Field clone = child.clone();
+				Field clone = child.clone(true);
 				FieldWidget fw = FieldWidget.getWidget(child.getType(), clone, false);
 				inputs.add(fw);
 				fw.gridFormat(true);

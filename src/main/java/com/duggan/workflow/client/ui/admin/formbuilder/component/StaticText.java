@@ -8,6 +8,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class StaticText extends FieldWidget {
@@ -20,6 +21,7 @@ public class StaticText extends FieldWidget {
 	interface LabelFieldUiBinder extends UiBinder<Widget, StaticText> {
 	}
 
+	@UiField HTMLPanel panelGroup;
 	@UiField Element lblEl;
 	
 	public StaticText() {
@@ -58,6 +60,8 @@ public class StaticText extends FieldWidget {
 		}
 		
 		if(value!=null){
+			lblEl.setInnerHTML(value);
+		}else if((value = getPropertyValue(CAPTION)) != null){
 			lblEl.setInnerHTML(value);
 		}
 	}
@@ -107,5 +111,12 @@ public class StaticText extends FieldWidget {
 	@Override
 	public void setComponentValid(boolean isValid) {
 		
+	}
+	
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
 	}
 }

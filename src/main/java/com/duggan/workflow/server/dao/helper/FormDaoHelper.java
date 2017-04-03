@@ -1192,4 +1192,24 @@ public class FormDaoHelper {
 		Form form = getFormJson(formRefId, true);
 		return ProcessDaoHelper.exportFormJson(form);
 	}
+
+	public static Field deleteTableRowJson(String parentRefId, int row) {
+		
+		FormDaoImpl dao = DB.getFormDao();
+		dao.deleteTableRow(parentRefId, row);
+		
+		ADFieldJson fieldJson = dao.findByRefId(parentRefId, ADFieldJson.class);
+		Field field = fieldJson.getField();
+		
+		String rowCount = field.getProperty(com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.ROW_COUNT);
+		int rows = new Integer(rowCount);
+		rows = rows - 1;
+		field.addValue(new KeyValuePair(com.duggan.workflow.client.ui.admin.formbuilder.HasProperties.ROW_COUNT, rows+""));
+		fieldJson.setField(field);
+		dao.save(fieldJson);
+		dao.getEntityManager().flush();
+		
+		
+		return getFieldJson(field.getRefId());
+	}
 }

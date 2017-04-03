@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-		   <g:HTMLPanel styleName="control-group">
+		   <g:HTMLPanel styleName="control-group" ui:field="panelGroup">
 		       <label ui:field="lblEl" class="control-label">CheckBox Group</label>
 			    <g:HTMLPanel ui:field="vPanel" styleName="controls">
 				    

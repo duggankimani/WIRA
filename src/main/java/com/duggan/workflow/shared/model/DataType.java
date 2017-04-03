@@ -1,8 +1,8 @@
 package com.duggan.workflow.shared.model;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.Listable;
 
-public enum DataType implements IsSerializable{
+public enum DataType implements Listable{
 	STRING,
 	STRINGLONG,
 	BOOLEAN,
@@ -70,6 +70,16 @@ public enum DataType implements IsSerializable{
 	}
 
 	public boolean hasChildren() {
-		return this.equals(GRID) || this.equals(FORM);
+		return this.equals(GRID) || this.equals(FORM) || this.equals(TABLE);
+	}
+	
+	@Override
+	public String getDisplayName() {
+		return name();
+	}
+	
+	@Override
+	public String getName() {
+		return name();
 	}
 }

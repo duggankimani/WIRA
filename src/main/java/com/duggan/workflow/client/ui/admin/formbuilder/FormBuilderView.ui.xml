@@ -87,7 +87,7 @@
 				    	<div id="myTabContent" class="tab-content" style="height:initial;">
    						   <g:HTMLPanel styleName="tab-pane in active" ui:field="divInput">
 
-							 <div class="form-horizontal">
+							 <div class="form-horizontal" style="width:100%;">
 								 <fieldset>
 									<fb:PalettePanel ui:field="vTextInputPanel">	
 									    <f:TextField></f:TextField>	
@@ -181,6 +181,10 @@
 									
 									<fb:PalettePanel ui:field="vGridPanel">	
 									    <f:Grid></f:Grid>
+									</fb:PalettePanel>
+									
+									<fb:PalettePanel ui:field="vTablePanel">	
+									    <f:TableLayout></f:TableLayout>
 									</fb:PalettePanel>
 									
 									<fb:PalettePanel ui:field="vHTMLFormPanel">	

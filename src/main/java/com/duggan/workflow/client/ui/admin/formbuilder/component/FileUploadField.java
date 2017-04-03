@@ -43,6 +43,7 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 	private final Widget widget;
 	
 	@UiField HTMLPanel uploadContainer;
+	@UiField HTMLPanel panelGroup;
 	
 	@UiField Element lblEl;
 	@UiField InlineLabel lblReadOnly; 
@@ -258,8 +259,15 @@ public class FileUploadField extends FieldWidget implements FileLoadHandler, Rel
 
 	@Override
 	public void setComponentValid(boolean isValid) {
-		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
+	public void gridFormat(boolean isGridField) {
+		super.gridFormat(isGridField);
+		lblEl.addClassName("hide");
+		lblEl.removeClassName("control-label");
+		panelGroup.removeStyleName("control-group");
+		panelControls.removeStyleName("controls");
+	}
 }

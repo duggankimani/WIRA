@@ -55,7 +55,7 @@
 			<div class="span12 row-fluid"
 				style="overflow: auto; height: calc(100% - 40px); position: absolute; zoom: 1;margin-left: 0px;">
 				<g:ScrollPanel ui:field="divTableListing" styleName="span12 full-page">
-					<g:FlexTable ui:field="tblTasks" styleName="table table-hover"
+					<g:FlexTable ui:field="tblTasks" styleName="table table-hover table-condensed"
 						width="100%"></g:FlexTable>
 				</g:ScrollPanel>
 			</div>

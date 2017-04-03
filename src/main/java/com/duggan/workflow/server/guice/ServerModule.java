@@ -16,6 +16,7 @@ import com.duggan.workflow.server.actionhandlers.DeleteFormModelRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteLineRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteNotificationTemplateRequestHandler;
 import com.duggan.workflow.server.actionhandlers.DeleteProcessRequestHandler;
+import com.duggan.workflow.server.actionhandlers.DeleteTableRowActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteTriggerActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteTriggersActionHandler;
 import com.duggan.workflow.server.actionhandlers.ExecuteWorkflowActionHandler;
@@ -112,6 +113,7 @@ import com.duggan.workflow.shared.requests.DeleteFormModelRequest;
 import com.duggan.workflow.shared.requests.DeleteLineRequest;
 import com.duggan.workflow.shared.requests.DeleteNotificationTemplateRequest;
 import com.duggan.workflow.shared.requests.DeleteProcessRequest;
+import com.duggan.workflow.shared.requests.DeleteTableRowRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggerRequest;
 import com.duggan.workflow.shared.requests.ExecuteTriggersRequest;
 import com.duggan.workflow.shared.requests.ExecuteWorkflow;
@@ -472,5 +474,7 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetProcessSchemaRequest.class, GetProcessSchemaActionHandler.class, SessionValidator.class);
 		
 		bindHandler(GetProcessImportStatus.class, GetProcessImportStatusActionHandler.class, SessionValidator.class);
+		
+		bindHandler(DeleteTableRowRequest.class, DeleteTableRowActionHandler.class, SessionValidator.class);
 	}
 }
