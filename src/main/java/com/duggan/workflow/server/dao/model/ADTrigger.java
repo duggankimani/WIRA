@@ -45,7 +45,7 @@ public class ADTrigger extends PO{
 	@XmlAttribute
 	private String imports;
 	
-	@Column(length=5000)
+	@Column(columnDefinition="text")
 	private String script;
 
 	@XmlTransient
