@@ -95,6 +95,10 @@ public class CatalogDaoHelper {
 		}else if(catalog.getRefId() != null){
 			model = dao.findByRefId(catalog.getRefId(), CatalogModel.class);
 		}
+		
+		if(model==null){
+			model = new CatalogModel();
+		}
 
 		ProcessCategory category = catalog.getCategory();
 		if (category != null) {
@@ -103,6 +107,7 @@ public class CatalogDaoHelper {
 			model.setCategory(cat);
 		}
 
+		model.setRefId(catalog.getRefId());//Importation of new catalog
 		model.setDescription(catalog.getDescription());
 		model.setName(catalog.getName());
 		model.setType(catalog.getType());
@@ -130,6 +135,10 @@ public class CatalogDaoHelper {
 			colModel = dao.getById(CatalogColumnModel.class, cat.getId());
 		}
 
+		if(colModel==null){
+			colModel = new CatalogColumnModel();
+		}
+		colModel.setRefId(cat.getRefId());//Importation of new catalog
 		colModel.setAutoIncrement(cat.isAutoIncrement());
 		colModel.setLabel(cat.getLabel());
 		colModel.setName(cat.getName());
@@ -718,7 +727,16 @@ public class CatalogDaoHelper {
 		catalog.put(Catalog.REFID, model.getRefId());
 		catalog.put(Catalog.TYPE, model.getType());
 
-		Collection<CatalogColumnModel> columns = model.getColumns();
+		Collection<CatalogColumnModel> columnsCollection = model.getColumns();
+		List<CatalogColumnModel> columns = new ArrayList<CatalogColumnModel>();
+		columns.addAll(columnsCollection);
+		Collections.sort(columns, new Comparator<CatalogColumnModel>() {
+			@Override
+			public int compare(CatalogColumnModel o1, CatalogColumnModel o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+		});
+		
 		if (tableToo) {
 			JSONArray array = new JSONArray();
 			for (CatalogColumnModel col : columns) {
@@ -788,7 +806,7 @@ public class CatalogDaoHelper {
 		}
 
 		catalog.setDescription(description);
-		if (fieldSource != null) {
+		if (fieldSource != null && !fieldSource.trim().isEmpty()) {
 			catalog.setFieldSource(FieldSource.valueOf(fieldSource
 					.toUpperCase()));
 		}
@@ -797,7 +815,7 @@ public class CatalogDaoHelper {
 		catalog.setName(name);
 		catalog.setProcess(process);
 		catalog.setRefId(refId);
-		if (type != null) {
+		if (type != null && !type.trim().isEmpty()) {
 			catalog.setType(CatalogType.valueOf(type.toUpperCase()));
 		}
 

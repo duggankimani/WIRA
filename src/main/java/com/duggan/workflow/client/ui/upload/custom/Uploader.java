@@ -181,6 +181,10 @@ public class Uploader extends Composite {
 		uploader.addOnCancelUploadHandler(handler);
 	}
 	
+	public void addOnStartUploaderHandler(OnStartUploaderHandler handler){
+		uploader.addOnStartUploadHandler(handler);
+	}
+	
 	public String getFieldId(){
 		return context.getContext(FIELD_REFID);
 	}

@@ -1,7 +1,9 @@
 package com.duggan.workflow.client.ui.admin.datatable;
 
 import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnCancelUploaderHandler;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.OnStartUploaderHandler;
 
 import java.util.ArrayList;
 
@@ -192,10 +194,26 @@ public class DataTablePresenter
 			}
 		});
 		
+		
+		getView().getUploader().addOnStartUploaderHandler(new OnStartUploaderHandler() {
+			
+			@Override
+			public void onStart(IUploader uploader) {
+				fireEvent(new ProcessingEvent("Uploading file "+uploader.getFileInput().getFilename()));
+			}
+		});
+		getView().getUploader().addOnCancelUploaderHandler(new OnCancelUploaderHandler() {
+			
+			@Override
+			public void onCancel(IUploader uploader) {
+				fireEvent(new ProcessingCompletedEvent());
+			}
+		});
 		getView().getUploader().addOnFinishUploaderHandler(new OnFinishUploaderHandler() {
 			
 			@Override
 			public void onFinish(IUploader uploader) {
+				fireEvent(new ProcessingCompletedEvent());
 				String message = uploader.getServerMessage().getMessage();
 				if(message==null || message.equals("null")){
 					Window.alert("Generation of table for file '"+uploader.getFileInput().getFilename()+"' failed");
