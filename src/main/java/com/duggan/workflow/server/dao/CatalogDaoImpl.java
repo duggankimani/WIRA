@@ -3,9 +3,7 @@ package com.duggan.workflow.server.dao;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +66,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		return getResultList(query);
 	}
 
-	public void generateTable(Catalog model) {
+	public void ddlGenerateTable(Catalog model) {
 		if (model.getType() == CatalogType.REPORTVIEW) {
 			return;
 		}
@@ -110,8 +108,14 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	}
 	
 
-	public void updateTable(Catalog catalog) {
-		CatalogModel model = getById(CatalogModel.class, catalog.getId());
+	public void ddlUpdateTable(Catalog catalog) {
+		CatalogModel model = null;
+		if(catalog.getRefId()!=null){
+			model = findByRefId(catalog.getRefId(), CatalogModel.class);
+		}else if(catalog.getId()!=null){
+			model = getById(CatalogModel.class, catalog.getId());
+		}
+		
 		if(!catalog.getName().toLowerCase().equals(model.getName().toLowerCase())){
 			String changeName = "ALTER TABLE ext_"+model.getName()+" RENAME TO ext_"+catalog.getName();
 			logger.debug("RENAME TABLE - "+changeName);
@@ -120,7 +124,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				
 		List<CatalogColumn> columns = catalog.getColumns();
 		for(CatalogColumn col: columns){
-			if(col.getId()==null){
+			if(col.getId()==null && col.getRefId()==null){
 				//create column
 				addColumn(catalog, col);
 			}else{
@@ -131,7 +135,24 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	}
 
 	private void alterColumn(Catalog catalog, CatalogColumn col) {
-		CatalogColumnModel model = getById(CatalogColumnModel.class, col.getId());
+		CatalogColumnModel model = null;
+		
+		if(col.getRefId()!=null){
+			model = findByRefId(col.getRefId(), CatalogColumnModel.class);
+		}else if(col.getId()!=null){
+			model = getById(CatalogColumnModel.class, col.getId());
+		}else{
+			logger.debug("RefID & ID are null for "+col.getName()+" - Creating New Catalog Column");
+		}
+		
+		
+		if(model == null){
+			logger.debug("No Column found with {refId: "+col.getRefId()+", name : "+col.getName()+"} - Creating New Catalog Column");
+			//Column does not exist in the db - addColumn()
+			addColumn(catalog, col);
+			return;
+		}
+		
 		if(!isChanged(col, model)){
 			return;
 		}
@@ -153,7 +174,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		if(col.getSize()!=null && col.getSize()!=0){
 			alter.append("("+col.getSize()+")");
 		}
-		logger.debug("ALTER COLUMN: "+alter.toString());
+		logger.info("ALTER COLUMN: "+alter.toString());
 		em.createNativeQuery(alter.toString()).executeUpdate();
 		
 		
@@ -545,5 +566,4 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		}
 		return exists;
 	}
-
 }

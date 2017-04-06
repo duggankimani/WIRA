@@ -1,7 +1,7 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.TaskStepDTO;
 import com.duggan.workflow.shared.model.TaskStepTrigger;

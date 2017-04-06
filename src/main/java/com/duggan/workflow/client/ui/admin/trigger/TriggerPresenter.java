@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.ProcessChildLoadedEvent;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.processmgt.BaseProcessPresenter;
 import com.duggan.workflow.client.ui.admin.trigger.save.SaveTriggerView;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent;
-import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.EditTriggerEvent.EditTriggerHandler;
+import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.shared.model.Trigger;
@@ -33,7 +34,6 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class TriggerPresenter extends
 		Presenter<TriggerPresenter.ITriggerView, TriggerPresenter.MyProxy>

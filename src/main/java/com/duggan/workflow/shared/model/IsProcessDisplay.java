@@ -3,7 +3,6 @@ package com.duggan.workflow.shared.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 import com.sencha.gxt.data.shared.TreeStore.TreeNode;
 import com.wira.commons.shared.models.Listable;

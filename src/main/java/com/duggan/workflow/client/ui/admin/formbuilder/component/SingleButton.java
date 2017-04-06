@@ -2,8 +2,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;

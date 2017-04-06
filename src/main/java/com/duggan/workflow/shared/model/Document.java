@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.duggan.workflow.server.dao.hibernate.JsonType;
-import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.SerializableObj;
 
 /**

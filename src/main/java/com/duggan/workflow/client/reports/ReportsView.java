@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
-import com.duggan.workflow.server.servlets.upload.DownloadReportServlet;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.Value;

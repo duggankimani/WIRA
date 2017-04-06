@@ -3,7 +3,6 @@ package com.duggan.workflow.server.security;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

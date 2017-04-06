@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

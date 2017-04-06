@@ -1,7 +1,6 @@
 package com.duggan.workflow.server.helper.jbpm;
 
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.StringWriter;
 
 import org.apache.commons.io.IOUtils;

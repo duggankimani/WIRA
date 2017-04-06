@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.task;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -46,7 +47,6 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.wira.commons.shared.models.HTUser;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class CaseRegistryPresenter
 		extends

@@ -11,15 +11,15 @@ import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.duggan.workflow.server.dao.AttachmentDaoImpl;
-import com.duggan.workflow.server.dao.ProcessDaoImpl;
+import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
-import com.duggan.workflow.server.dao.model.ADForm;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
@@ -29,6 +29,7 @@ import com.duggan.workflow.server.security.BaseServlet;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.ProcessDef;
+import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.itextpdf.text.DocumentException;
@@ -116,7 +117,36 @@ public class GetReport extends BaseServlet {
 		if(action.equalsIgnoreCase("EXPORTPROCESS")){
 			processExportProcessRequest(req, resp);
 		}
+		
+		if(action.equalsIgnoreCase("EXPORTDATATABLE")){
+			processExportDataTableRequest(req, resp);
+		}
 	}
+
+	private void processExportDataTableRequest(HttpServletRequest req,
+			HttpServletResponse resp) {
+		String refId = req.getParameter("catalogRefId");
+		String filter = req.getParameter("filter");
+		JSONObject json = null;
+		
+		String desc = "";
+		try{
+			json = CatalogDaoHelper.exportCatalog(refId, filter);
+			desc = json.getString(Catalog.DESC);
+			if(desc==null){
+				desc = refId;
+			}
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+		
+		if(filter!=null){
+			desc = desc+"-"+filter;
+		}
+		desc = desc + ".json";
+		processAttachmentRequest(resp, json.toString().getBytes(), desc);
+	}
+
 
 	private void processBPMProcessMap(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {

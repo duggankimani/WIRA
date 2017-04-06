@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.duggan.workflow.server.helper.jbpm.GoogleAuthCredentials;
-import com.duggan.workflow.server.helper.jbpm.GoogleAuthenticationManager;
-
 public class GoogleLoginServlet extends GoogleLoginCallbackServlet {
 
 	/**

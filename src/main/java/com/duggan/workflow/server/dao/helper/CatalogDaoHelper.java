@@ -9,6 +9,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -26,17 +27,23 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
+import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.server.dao.CatalogDaoImpl;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.dao.JaxbFormExportProviderImpl;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.server.servlets.upload.GenerateCatalogueExcel;
+import com.duggan.workflow.shared.model.Column;
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
@@ -58,19 +65,21 @@ public class CatalogDaoHelper {
 
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel model = null;
-		if(catalog.getRefId()!=null){
+		if (catalog.getRefId() != null) {
 			model = dao.findByRefId(catalog.getRefId(), CatalogModel.class);
-			dao.updateTable(catalog);
-		}else if(catalog.getId()!=null){
+		} else if (catalog.getId() != null) {
 			model = dao.getById(CatalogModel.class, catalog.getId());
-			dao.updateTable(catalog);
-		}else{
-			dao.generateTable(catalog);
 		}
-		
+
+		if (model != null) {
+			dao.ddlUpdateTable(catalog);
+		} else {
+			dao.ddlGenerateTable(catalog);
+		}
+
 		model = get(catalog);
 		dao.save(model);
-		
+
 		catalog.setId(model.getId());
 		catalog.setRefId(model.getRefId());
 
@@ -83,11 +92,14 @@ public class CatalogDaoHelper {
 		CatalogModel model = new CatalogModel();
 		if (catalog.getId() != null) {
 			model = dao.getById(CatalogModel.class, catalog.getId());
+		}else if(catalog.getRefId() != null){
+			model = dao.findByRefId(catalog.getRefId(), CatalogModel.class);
 		}
 
 		ProcessCategory category = catalog.getCategory();
 		if (category != null) {
-			ADProcessCategory cat = dao.getById(ADProcessCategory.class, category.getId());
+			ADProcessCategory cat = dao.getById(ADProcessCategory.class,
+					category.getId());
 			model.setCategory(cat);
 		}
 
@@ -111,7 +123,10 @@ public class CatalogDaoHelper {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 
 		CatalogColumnModel colModel = new CatalogColumnModel();
-		if (cat.getId() != null) {
+		if (cat.getRefId() != null) {
+			colModel = dao.findByRefId(cat.getRefId(),
+					CatalogColumnModel.class, false);
+		} else if (cat.getId() != null) {
 			colModel = dao.getById(CatalogColumnModel.class, cat.getId());
 		}
 
@@ -135,14 +150,16 @@ public class CatalogDaoHelper {
 
 	public static Catalog getCatalog(String catalogRefId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		CatalogModel colModel = dao.findByRefId(catalogRefId, CatalogModel.class);
+		CatalogModel colModel = dao.findByRefId(catalogRefId,
+				CatalogModel.class);
 
 		return get(colModel);
 	}
 
 	public static List<Catalog> getCatalogsForProcess(String processId) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		List<CatalogModel> catModels = dao.getReportTablesByProcessId(processId);
+		List<CatalogModel> catModels = dao
+				.getReportTablesByProcessId(processId);
 
 		List<Catalog> catalogs = new ArrayList<>();
 		for (CatalogModel model : catModels) {
@@ -224,30 +241,37 @@ public class CatalogDaoHelper {
 		return catalogs;
 	}
 
-	public static void saveData(Long id, List<DocumentLine> lines, boolean isClearExisting) {
+	public static void saveData(Long id, List<DocumentLine> lines,
+			boolean isClearExisting) {
 		Catalog catalog = getCatalog(id);
 		saveData(catalog, lines, isClearExisting);
 	}
 
-	private static void saveData(Catalog catalog, List<DocumentLine> lines, boolean isClearExisting) {
+	private static void saveData(Catalog catalog, List<DocumentLine> lines,
+			boolean isClearExisting) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines, isClearExisting);
+		dao.save("EXT_" + catalog.getName(), catalog.getColumns(), lines,
+				isClearExisting);
 	}
 
-	public static List<DocumentLine> getTableData(String catalogRefId, String searchTerm) {
+	public static List<DocumentLine> getTableData(String catalogRefId,
+			String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
-		CatalogModel catalog = dao.findByRefId(catalogRefId, CatalogModel.class);
+		CatalogModel catalog = dao
+				.findByRefId(catalogRefId, CatalogModel.class);
 		return getTableData(catalog, searchTerm);
 	}
 
-	public static List<DocumentLine> getTableData(Long catalogId, String searchTerm) {
+	public static List<DocumentLine> getTableData(Long catalogId,
+			String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		CatalogModel catalog = dao.getById(CatalogModel.class, catalogId);
 
 		return getTableData(catalog, searchTerm);
 	}
 
-	public static List<DocumentLine> getTableData(CatalogModel catalog, String searchTerm) {
+	public static List<DocumentLine> getTableData(CatalogModel catalog,
+			String searchTerm) {
 		CatalogDaoImpl dao = DB.getCatalogDao();
 		String catalogName = "EXT_" + catalog.getName();
 		List<String> searchFields = new ArrayList<String>();
@@ -267,14 +291,15 @@ public class CatalogDaoHelper {
 			}
 
 			// Search field
-			if (col.getType() == DBType.VARCHAR || col.getType() == DBType.LONGVARCHAR) {
+			if (col.getType() == DBType.VARCHAR
+					|| col.getType() == DBType.LONGVARCHAR) {
 				searchFields.add(col.getName());
 			}
 			++i;
 		}
 
-		
-		List<Object[]> row = dao.getData(catalogName, fieldNames.toString(), searchTerm, searchFields);
+		List<Object[]> row = dao.getData(catalogName, fieldNames.toString(),
+				searchTerm, searchFields);
 		List<DocumentLine> lines = new ArrayList<>();
 		for (Object[] line : row) {
 
@@ -286,7 +311,7 @@ public class CatalogDaoHelper {
 				if (value != null) {
 					docLine.addValue(column.getName(), value);
 				}
-				
+
 				++i;
 			}
 			lines.add(docLine);
@@ -296,55 +321,59 @@ public class CatalogDaoHelper {
 	}
 
 	private static Value getValue(CatalogColumnModel column, Object v) {
-		return FormDaoHelper.getValue(null, column.getName(), v, column.getType().getFieldType());
+		return FormDaoHelper.getValue(null, column.getName(), v, column
+				.getType().getFieldType());
 	}
 
-	public static String exportTable(Long catalogId) {
-		CatalogDaoImpl dao = DB.getCatalogDao();
-		CatalogModel model = dao.getById(CatalogModel.class, catalogId);
-		assert model != null;
+//	public static String exportTable(Long catalogId) {
+//		CatalogDaoImpl dao = DB.getCatalogDao();
+//		CatalogModel model = dao.getById(CatalogModel.class, catalogId);
+//		assert model != null;
+//
+//		model.getColumns();
+//
+//		return exportTable(model);
+//	}
 
-		model.getColumns();
+//	public static String exportTable(CatalogModel model) {
+//		JAXBContext context = new JaxbFormExportProviderImpl()
+//				.getContext(CatalogModel.class);
+//		String out = null;
+//		try {
+//			Marshaller marshaller = context.createMarshaller();
+//			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//
+//			StringWriter writer = new StringWriter();
+//			marshaller.marshal(model, writer);
+//
+//			out = writer.toString();
+//			writer.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		return out;
+//	}
 
-		return exportTable(model);
-	}
-
-	public static String exportTable(CatalogModel model) {
-		JAXBContext context = new JaxbFormExportProviderImpl().getContext(CatalogModel.class);
-		String out = null;
-		try {
-			Marshaller marshaller = context.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-			StringWriter writer = new StringWriter();
-			marshaller.marshal(model, writer);
-
-			out = writer.toString();
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return out;
-	}
-
-	public static CatalogModel importTable(String xml) {
-		JAXBContext context = new JaxbFormExportProviderImpl().getContext(CatalogModel.class);
-		CatalogModel model = null;
-		try {
-			Unmarshaller marshaller = context.createUnmarshaller();
-			model = (CatalogModel) marshaller.unmarshal(new StringReader(xml));
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return model;
-	}
+//	public static CatalogModel importTable(String xml) {
+//		JAXBContext context = new JaxbFormExportProviderImpl()
+//				.getContext(CatalogModel.class);
+//		CatalogModel model = null;
+//		try {
+//			Unmarshaller marshaller = context.createUnmarshaller();
+//			model = (CatalogModel) marshaller.unmarshal(new StringReader(xml));
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return model;
+//	}
 
 	public static void mapAndSaveFormData(Catalog catalog, Doc doc) {
 		List<DocumentLine> documentLines = new ArrayList<>();
 		// Case Insensitive Map
-		Map<String, Value> formValues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		Map<String, Value> formValues = new TreeMap<>(
+				String.CASE_INSENSITIVE_ORDER);
 		formValues.putAll(doc.getValues());
 
 		// Form
@@ -360,9 +389,11 @@ public class CatalogDaoHelper {
 			documentLines.add(row);
 		} else {
 			// Grid
-			List<DocumentLine> details = doc.getDetails().get(catalog.getGridName());
+			List<DocumentLine> details = doc.getDetails().get(
+					catalog.getGridName());
 			if (details == null) {
-				String message = "CatalogDaoHelper.ReportTable Error- Catalog " + catalog.getName() + ": Grid '"
+				String message = "CatalogDaoHelper.ReportTable Error- Catalog "
+						+ catalog.getName() + ": Grid '"
 						+ catalog.getGridName() + "' Not Found";
 				logger.warn(message);
 				throw new RuntimeException(message);
@@ -371,7 +402,8 @@ public class CatalogDaoHelper {
 			for (DocumentLine detail : details) {
 				DocumentLine row = new DocumentLine();
 				// Case Insensitive Map
-				Map<String, Value> gridValues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+				Map<String, Value> gridValues = new TreeMap<>(
+						String.CASE_INSENSITIVE_ORDER);
 				gridValues.putAll(detail.getValues());
 
 				for (CatalogColumn col : catalog.getColumns()) {
@@ -379,8 +411,11 @@ public class CatalogDaoHelper {
 					if (value == null) {
 						value = formValues.get(col.getName());
 						if (value != null) {
-							logger.warn("#Report Table Mapping for " + doc.getCaseNo() + " - #Grid '"
-									+ catalog.getGridName() + "' uses form value for '" + col.getName() + "'");
+							logger.warn("#Report Table Mapping for "
+									+ doc.getCaseNo() + " - #Grid '"
+									+ catalog.getGridName()
+									+ "' uses form value for '" + col.getName()
+									+ "'");
 						}
 					}
 
@@ -399,14 +434,16 @@ public class CatalogDaoHelper {
 		return DB.getCatalogDao().getViews();
 	}
 
-	public static byte[] printCatalogue(String refId, String docType) throws IOException, SAXException,
-			ParserConfigurationException, FactoryConfigurationError, DocumentException {
+	public static byte[] printCatalogue(String refId, String docType)
+			throws IOException, SAXException, ParserConfigurationException,
+			FactoryConfigurationError, DocumentException {
 
 		Catalog catalog = getCatalog(refId);
 
 		List<DocumentLine> documentLines = getTableData(refId, null);
 
-		logger.warn("dOCUMENT LINES SIZE +++++++++++++++++++++++++++ " + documentLines.size());
+		logger.warn("dOCUMENT LINES SIZE +++++++++++++++++++++++++++ "
+				+ documentLines.size());
 
 		if (docType.equals("xlsx")) {
 			return toExcel(catalog, documentLines);
@@ -421,7 +458,8 @@ public class CatalogDaoHelper {
 		 */
 
 		HTMLToPDFConvertor convertor = new HTMLToPDFConvertor();
-		InputStream is = CatalogDaoHelper.class.getClassLoader().getResourceAsStream("catalogue.html");
+		InputStream is = CatalogDaoHelper.class.getClassLoader()
+				.getResourceAsStream("catalogue.html");
 		String html = IOUtils.toString(is);
 
 		HTUser loggedIn = SessionHelper.getCurrentUser();
@@ -429,17 +467,19 @@ public class CatalogDaoHelper {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
 		StringBuffer headerbuffer = new StringBuffer(html);
-		headerbuffer.append("<div><h3>" + catalog.getDisplayName() + "</h3>     <h5>Generated by : "
-				+ loggedIn.getDisplayName() + "</h5>   <h3>Date : " + format.format(new Date())
+		headerbuffer.append("<div><h3>" + catalog.getDisplayName()
+				+ "</h3>     <h5>Generated by : " + loggedIn.getDisplayName()
+				+ "</h5>   <h3>Date : " + format.format(new Date())
 				+ "</h3></div>");
-		headerbuffer.append(
-				"<table width='100%' height='300px' cellpadding='0' style='padding: 20px;' bgcolor='#DFDFDF' class='table table-bordered table-condensed'>");
+		headerbuffer
+				.append("<table width='100%' height='300px' cellpadding='0' style='padding: 20px;' bgcolor='#DFDFDF' class='table table-bordered table-condensed'>");
 
 		Document document = new Document();
 
 		document.setDetails("bodyDetails", documentLines);
 
-		StringBuffer bodybuffer = new StringBuffer("<tbody><!--@>bodyDetails--><tr>");
+		StringBuffer bodybuffer = new StringBuffer(
+				"<tbody><!--@>bodyDetails--><tr>");
 		headerbuffer.append("<theader>");
 		for (CatalogColumn catCol : catalog.getColumns()) {
 
@@ -449,14 +489,16 @@ public class CatalogDaoHelper {
 			bodybuffer.append(body);
 		}
 
-		bodybuffer.append("</tr><!--@<bodyDetails--></tbody><tfooter><tr><div>FOOTER</div></tr></tfooter>"
-				+ "</table><!--End of main content area --></body></html>");
+		bodybuffer
+				.append("</tr><!--@<bodyDetails--></tbody><tfooter><tr><div>FOOTER</div></tr></tfooter>"
+						+ "</table><!--End of main content area --></body></html>");
 
 		headerbuffer.append("</theader>");
 
 		String table = headerbuffer.append(bodybuffer.toString()).toString();
-		
-//		IOUtils.write(table.getBytes(), new FileOutputStream(new File("/home/wladek/Documents/cataloguehtml.html")));
+
+		// IOUtils.write(table.getBytes(), new FileOutputStream(new
+		// File("/home/wladek/Documents/cataloguehtml.html")));
 
 		return convertor.convert(document, table);
 	}
@@ -498,46 +540,51 @@ public class CatalogDaoHelper {
 		return stringBuffer.toString().getBytes();
 	}
 
-	public static byte[] toExcel(Catalog catalog, List<DocumentLine> documentLines) throws IOException {
-		GenerateCatalogueExcel excel = new GenerateCatalogueExcel(documentLines, catalog.getDisplayName(), catalog);
+	public static byte[] toExcel(Catalog catalog,
+			List<DocumentLine> documentLines) throws IOException {
+		GenerateCatalogueExcel excel = new GenerateCatalogueExcel(
+				documentLines, catalog.getDisplayName(), catalog);
 		byte[] bytes = excel.getBytes();
 		return bytes;
 
 	}
 
-	public static Catalog save(String fileName, String format, byte[] bites) throws IOException {
-		
-		Reader in = new InputStreamReader(new ByteArrayInputStream(bites));
-		Iterable<CSVRecord> records  = CSVFormat.valueOf(format.toUpperCase()).parse(in);
+	public static Catalog save(String fileName, String format, byte[] bites)
+			throws IOException {
 
-		String catalogName = format(fileName.substring(0, fileName.lastIndexOf(".")));
-		
+		Reader in = new InputStreamReader(new ByteArrayInputStream(bites));
+		Iterable<CSVRecord> records = CSVFormat.valueOf(format.toUpperCase())
+				.parse(in);
+
+		String catalogName = format(fileName.substring(0,
+				fileName.lastIndexOf(".")));
+
 		catalogName = renameIfExists(catalogName);
-		
+
 		Catalog catalog = new Catalog();
 		catalog.setName(catalogName);
 		catalog.setDescription(catalogName);
 		catalog.setType(CatalogType.DATATABLE);
-		
+
 		ArrayList<CatalogColumn> columns = new ArrayList<CatalogColumn>();
-		ArrayList<DocumentLine> documents  = new ArrayList<DocumentLine>();
-		int row=0;
-		for(CSVRecord rec: records){
-			if(row==0){
+		ArrayList<DocumentLine> documents = new ArrayList<DocumentLine>();
+		int row = 0;
+		for (CSVRecord rec : records) {
+			if (row == 0) {
 				columns = createCatalogColumns(rec);
 				catalog.setColumns(columns);
 				catalog = save(catalog);
-			}else{
-				//Data Column
-				documents.add(createRow(columns,rec));
+			} else {
+				// Data Column
+				documents.add(createRow(columns, rec));
 			}
 			++row;
 		}
-		
+
 		saveData(catalog, documents, true);
 		return catalog;
 	}
-	
+
 	private static String renameIfExists(String catalogName) {
 		return renameIfExists(catalogName, 0);
 	}
@@ -545,17 +592,18 @@ public class CatalogDaoHelper {
 	private static String renameIfExists(String catalogName, int i) {
 
 		boolean isExists = DB.getCatalogDao().checkExists(catalogName);
-		if(isExists){
-			return renameIfExists(catalogName+"_"+(i+1),(i+1));
+		if (isExists) {
+			return renameIfExists(catalogName + "_" + (i + 1), (i + 1));
 		}
-		
+
 		return catalogName;
 	}
 
-	private static DocumentLine createRow(ArrayList<CatalogColumn> columns,CSVRecord rec) {
+	private static DocumentLine createRow(ArrayList<CatalogColumn> columns,
+			CSVRecord rec) {
 		int recCount = rec.size();
 		DocumentLine line = new DocumentLine();
-		for(int i=0; i<recCount; i++){
+		for (int i = 0; i < recCount; i++) {
 			String value = rec.get(i);
 			String col = columns.get(i).getName();
 			line._s(col, value);
@@ -567,17 +615,17 @@ public class CatalogDaoHelper {
 		substring = substring.replaceAll("\\s", "_");
 		substring = substring.replaceAll("\\.", "_");
 		substring = substring.replaceAll("[^A-Za-z0-9_]", "");
-		
+
 		return substring;
 	}
 
 	private static ArrayList<CatalogColumn> createCatalogColumns(CSVRecord rec) {
 		ArrayList<CatalogColumn> lines = new ArrayList<CatalogColumn>();
 		int recCount = rec.size();
-		for(int i=0; i<recCount; i++){
+		for (int i = 0; i < recCount; i++) {
 			String label = rec.get(i);
 			String name = format(label);
-					
+
 			CatalogColumn col = new CatalogColumn();
 			col.setPrimaryKey(false);
 			col.setAutoIncrement(false);
@@ -590,7 +638,7 @@ public class CatalogDaoHelper {
 			col.setSize(255);
 			lines.add(col);
 		}
-		
+
 		return lines;
 	}
 
@@ -633,4 +681,248 @@ public class CatalogDaoHelper {
 		return col;
 	}
 
+	public static JSONObject exportCatalog(String catalogRefId, String filter)
+			throws JSONException {
+		CatalogDaoImpl dao = DB.getCatalogDao();
+
+		boolean dataToo = filter == null || filter.equals("dataonly");
+		boolean tableToo = filter == null || filter.equals("tableonly");
+
+		CatalogModel model = dao.findByRefId(catalogRefId, CatalogModel.class);
+		JSONObject catalog = new JSONObject();
+		if (model == null) {
+			return catalog;
+		}
+
+		catalog.put(Catalog.NAME, model.getName());
+
+		if (model.getCategory() != null) {
+			catalog.put(Catalog.CATEGORY, model.getCategory().getName());
+		}
+
+		catalog.put(Catalog.DESC, model.getDescription());
+		if (model.getFieldSource() != null) {
+			catalog.put(Catalog.FIELDSOURCE, model.getFieldSource().name());
+		}
+
+		catalog.put(Catalog.GRIDNAME, model.getGridName());
+		catalog.put(Catalog.PROCESS, model.getProcess());
+
+		if (model.getProcessDefId() != null) {
+			ProcessDefModel process = dao.getById(ProcessDefModel.class,
+					model.getProcessDefId());
+			if (process != null) {
+				catalog.put(Catalog.PROCESSREF, process.getRefId());
+			}
+		}
+		catalog.put(Catalog.REFID, model.getRefId());
+		catalog.put(Catalog.TYPE, model.getType());
+
+		Collection<CatalogColumnModel> columns = model.getColumns();
+		if (tableToo) {
+			JSONArray array = new JSONArray();
+			for (CatalogColumnModel col : columns) {
+				JSONObject column = new JSONObject();
+				column.put(CatalogColumn.REFID, col.getRefId());
+				column.put(CatalogColumn.LABEL, col.getLabel());
+				column.put(CatalogColumn.NAME, col.getName());
+				column.put(CatalogColumn.SIZE, col.getSize());
+				if (col.getType() != null) {
+					column.put(CatalogColumn.TYPE, col.getType().name());
+				}
+
+				column.put(CatalogColumn.AUTOINCREMENT,
+						col.isAutoIncrement() ? 1 : 0);
+				column.put(CatalogColumn.NULLABLE, col.isNullable() ? 1 : 0);
+				column.put(CatalogColumn.PRIMARYKEY, col.isPrimaryKey() ? 1 : 0);
+				array.put(column);
+			}
+
+			catalog.put("columns", array);
+		}
+
+		if (dataToo) {
+			List<DocumentLine> lines = getTableData(model, null);
+			JSONArray data = new JSONArray();
+			for (DocumentLine line : lines) {
+				String lineRefId = line.getRefId();
+				JSONObject row = new JSONObject();
+				row.put("refId", lineRefId);
+				for (CatalogColumnModel col : columns) {
+					Value val = line.getValue(col.getName());
+					if (val != null && val.getValue() != null) {
+						row.put(col.getName(), val.getValue());
+					}
+				}
+
+				data.put(row);
+			}
+			catalog.put("data", data);
+		}
+
+		return catalog;
+	}
+
+	public static Catalog importCatalog(String json, List<String> messages) throws JSONException {
+		JSONObject catalogJson = new JSONObject(json);
+
+		Catalog catalog = new Catalog();
+		String category = catalogJson.optString(Catalog.CATEGORY);
+		String description = catalogJson.optString(Catalog.DESC);
+		String fieldSource = catalogJson.optString(Catalog.FIELDSOURCE);
+		String gridName = catalogJson.optString(Catalog.GRIDNAME);
+		String name = catalogJson.optString(Catalog.NAME);
+		String process = catalogJson.optString(Catalog.PROCESS);
+		String refId = catalogJson.optString(Catalog.REFID);
+		String type = catalogJson.optString(Catalog.TYPE);
+		messages.add("Created Catalog "+name);
+
+		if (category != null) {
+			ProcessCategory cat = ProcessDaoHelper
+					.getProcessCategoryByName(category);
+			if (cat != null) {
+				catalog.setCategory(cat);
+			} else {
+				// Create?
+			}
+		}
+
+		catalog.setDescription(description);
+		if (fieldSource != null) {
+			catalog.setFieldSource(FieldSource.valueOf(fieldSource
+					.toUpperCase()));
+		}
+
+		catalog.setGridName(gridName);
+		catalog.setName(name);
+		catalog.setProcess(process);
+		catalog.setRefId(refId);
+		if (type != null) {
+			catalog.setType(CatalogType.valueOf(type.toUpperCase()));
+		}
+
+		// Columns
+		JSONArray colArray = catalogJson.optJSONArray("columns");
+		ArrayList<CatalogColumn> columns = new ArrayList<CatalogColumn>();
+		if (colArray != null) {
+			messages.add("Creating columns");
+			for (int col = 0; col < colArray.length(); col++) {
+				JSONObject colJson = (JSONObject) colArray.get(col);
+
+				String colRefId = colJson.optString(CatalogColumn.REFID);
+				String colLabel = colJson.optString(CatalogColumn.LABEL);
+				String colName = colJson.optString(CatalogColumn.NAME);
+				int colSize = colJson.optInt(CatalogColumn.SIZE);
+				DBType dbType = null;
+				if (colJson.optString(CatalogColumn.TYPE) != null) {
+					String colType = colJson.getString(CatalogColumn.TYPE);
+					dbType = DBType.valueOf(colType);
+				}
+
+				int autoIncrement = colJson
+						.optInt(CatalogColumn.AUTOINCREMENT);
+				boolean isAutoIncrement = autoIncrement == 1 ? true : false;
+				int nullable = colJson.optInt(CatalogColumn.NULLABLE);
+				boolean isNullable = nullable == 1 ? true : false;
+				int primaryKey = colJson.optInt(CatalogColumn.PRIMARYKEY);
+				boolean isPrimaryKey = primaryKey == 1 ? true : false;
+				
+				messages.add(colLabel+": "+colName+" "+dbType+" "+colSize+" "
+						+(isAutoIncrement? " autoincrement" : "")
+						+(isNullable? " not null " : "")
+						+(isPrimaryKey? " primary key" : ""));
+				
+				CatalogColumn column = new CatalogColumn();
+				column.setRefId(colRefId);
+				column.setAutoIncrement(isAutoIncrement);
+				column.setLabel(colLabel);
+				column.setName(colName);
+				column.setNullable(isNullable);
+				column.setPrimaryKey(isPrimaryKey);
+
+				if (colSize != 0) {
+					column.setSize(colSize);
+				}
+				column.setType(dbType);
+				columns.add(column);
+			}
+
+			catalog.setColumns(columns);
+			catalog = save(catalog);
+		}
+
+		// lines
+		JSONArray data = catalogJson.optJSONArray("data");
+		List<DocumentLine> lines = new ArrayList<DocumentLine>();
+		if (data != null) {
+			if (columns.isEmpty()) {
+				catalog = getCatalog(refId);
+				columns = catalog.getColumns();
+			}
+			
+			messages.add("Importing data - "+data.length()+" records");
+			for (int row = 0; row < data.length(); row++) {
+				JSONObject rowJson = data.getJSONObject(row);
+				DocumentLine line = new DocumentLine();
+				line.setRefId(rowJson.optString("refId"));
+				for (CatalogColumn column : columns) {
+					val(rowJson, line, column);
+				}
+				lines.add(line);
+			}
+			saveData(catalog, lines, true);
+		}
+		
+		return catalog;
+	}
+
+	private static DocumentLine val(JSONObject rowJson, DocumentLine line,
+			CatalogColumn column) {
+		String name = column.getName();
+		DBType colType = column.getType();
+
+		switch (colType) {
+		case BIGINT:
+		case DECIMAL:
+		case DOUBLE:
+		case FLOAT:
+		case REAL:
+			line._s(name, rowJson.optDouble(name));
+			break;
+		case INTEGER:
+		case SMALLINT:
+		case TINYINT:
+			line._s(name, rowJson.optInt(name));
+			break;
+		case CHAR:
+		case LONGVARCHAR:
+		case TEXT:
+		case VARCHAR:
+			line._s(name, rowJson.optString(name));
+			break;
+		case BOOLEAN:
+			int val = rowJson.optInt(name);
+			line._s(name, val == 1 ? true : false);
+			break;
+		case DATE:
+		case DATETIME:
+		case TIME:
+			// convert to date
+			String dt = rowJson.optString(name);
+			if (dt != null) {
+				try {
+					Date date = org.apache.commons.lang3.time.DateUtils
+							.parseDate(dt, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss",
+									"yyyy-MM-dd HH:mm");
+					line._s(name, date);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+
+			}
+			break;
+		}
+
+		return null;
+	}
 }

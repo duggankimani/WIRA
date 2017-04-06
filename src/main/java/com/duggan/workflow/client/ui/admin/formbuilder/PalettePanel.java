@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
-import com.duggan.workflow.client.ui.admin.formbuilder.component.TableLayout;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;

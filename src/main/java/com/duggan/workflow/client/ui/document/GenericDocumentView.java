@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.apache.batik.dom.events.DOMEvent;
-
 import com.duggan.workflow.client.model.ScreenMode;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.AttachmentItem;
@@ -38,7 +36,6 @@ import com.duggan.workflow.shared.model.form.Form;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -48,7 +45,6 @@ import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

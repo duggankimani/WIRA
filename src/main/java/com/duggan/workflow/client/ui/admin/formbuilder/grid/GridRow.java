@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder.grid;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;

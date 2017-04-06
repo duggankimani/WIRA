@@ -9,9 +9,9 @@ import com.duggan.workflow.client.ui.events.NotificationsLoadEvent.Notifications
 import com.duggan.workflow.client.ui.notifications.note.NotePresenter;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;

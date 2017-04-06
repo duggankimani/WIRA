@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.wfstatus;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.NodeDetail;

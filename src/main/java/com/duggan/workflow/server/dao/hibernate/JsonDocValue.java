@@ -6,12 +6,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.sun.jersey.api.json.JSONJAXBContext;
 
 public class JsonDocValue extends JsonType{
 

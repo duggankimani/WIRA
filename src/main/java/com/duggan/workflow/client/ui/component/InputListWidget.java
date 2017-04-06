@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

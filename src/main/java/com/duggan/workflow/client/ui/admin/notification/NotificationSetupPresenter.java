@@ -1,5 +1,6 @@
 package com.duggan.workflow.client.ui.admin.notification;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.component.DropDownList;
@@ -26,7 +27,6 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.wira.commons.shared.response.BaseResponse;
 
 public class NotificationSetupPresenter extends

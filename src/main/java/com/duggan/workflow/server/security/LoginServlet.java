@@ -1,27 +1,18 @@
 package com.duggan.workflow.server.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.ServerConstants;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.wira.commons.shared.models.CurrentUserDto;
-import com.wira.commons.shared.models.HTUser;
-import com.wira.commons.shared.models.UserGroup;
-import com.wira.login.shared.model.ActionType;
 import com.wira.login.shared.request.LoginRequest;
 import com.wira.login.shared.response.LoginRequestResult;
 

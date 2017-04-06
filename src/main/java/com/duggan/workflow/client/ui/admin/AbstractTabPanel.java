@@ -1,11 +1,8 @@
 package com.duggan.workflow.client.ui.admin;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.BulletListPanel;
-import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.gwtplatform.mvp.client.Tab;

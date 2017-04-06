@@ -4,7 +4,6 @@ import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DragHandlerImpl implements DragHandler {

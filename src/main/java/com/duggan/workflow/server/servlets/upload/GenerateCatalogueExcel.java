@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.catalog.Catalog;
-import com.duggan.workflow.shared.model.catalog.CatalogColumn;
 
 public class GenerateCatalogueExcel {
 	Logger logger = Logger.getLogger(GenerateCatalogueExcel.class);

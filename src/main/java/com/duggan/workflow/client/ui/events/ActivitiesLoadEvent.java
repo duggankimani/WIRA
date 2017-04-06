@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Activity;
 import com.google.gwt.event.shared.EventHandler;

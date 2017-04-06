@@ -5,7 +5,6 @@ import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.home.HomeTabData;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.google.inject.Inject;

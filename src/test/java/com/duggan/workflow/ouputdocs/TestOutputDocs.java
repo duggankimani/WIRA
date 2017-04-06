@@ -23,7 +23,6 @@ import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.TreeType;
 
 public class TestOutputDocs {

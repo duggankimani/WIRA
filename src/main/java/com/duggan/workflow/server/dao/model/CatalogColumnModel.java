@@ -35,6 +35,7 @@ public class CatalogColumnModel extends PO{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	@XmlAttribute
 	private String name;
 	@XmlAttribute

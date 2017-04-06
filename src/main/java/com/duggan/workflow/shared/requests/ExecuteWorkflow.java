@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
 import java.util.HashMap;
-import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Value;

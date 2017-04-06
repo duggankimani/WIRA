@@ -3,7 +3,6 @@ package com.duggan.workflow.shared.model;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

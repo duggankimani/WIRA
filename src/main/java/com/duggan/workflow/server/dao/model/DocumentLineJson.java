@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import com.duggan.workflow.server.dao.hibernate.DocValues;
-import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 
 @org.hibernate.annotations.Entity(dynamicUpdate=true)

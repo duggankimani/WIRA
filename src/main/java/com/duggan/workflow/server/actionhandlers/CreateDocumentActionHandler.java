@@ -1,12 +1,8 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
-import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
-import com.duggan.workflow.server.dao.model.ProcessDefModel;
-import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.requests.CreateDocumentRequest;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.google.inject.Inject;

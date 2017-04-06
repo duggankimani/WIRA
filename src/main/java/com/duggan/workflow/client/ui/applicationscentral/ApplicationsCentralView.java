@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import com.duggan.workflow.shared.event.FormLoadEvent;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;

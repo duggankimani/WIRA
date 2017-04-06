@@ -1,15 +1,9 @@
 package com.duggan.workflow.client.ui.admin.processes;
 
-import com.duggan.workflow.client.service.TaskServiceCallback;
-import com.duggan.workflow.client.ui.AppManager;
-import com.duggan.workflow.client.ui.OnOptionSelected;
-import com.duggan.workflow.client.ui.upload.custom.Uploader;
-
 import gwtupload.client.IUploader;
-import gwtupload.client.SingleUploader;
-import gwtupload.client.IUploader.OnFinishUploaderHandler;
 import gwtupload.client.IUploader.OnStartUploaderHandler;
 import gwtupload.client.IUploader.OnStatusChangedHandler;
+import gwtupload.client.SingleUploader;
 
 import java.util.ArrayList;
 
@@ -19,19 +13,21 @@ import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AppManager;
+import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.process.ProcessPresenter;
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.events.LoadProcessesEvent;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Status;
 import com.duggan.workflow.shared.requests.GetProcessImportStatus;
-import com.duggan.workflow.shared.requests.GetProcessStatusRequest;
 import com.duggan.workflow.shared.responses.GetProcessImportStatusResponse;
-import com.duggan.workflow.shared.responses.GetProcessStatusRequestResult;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
@@ -42,7 +38,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;

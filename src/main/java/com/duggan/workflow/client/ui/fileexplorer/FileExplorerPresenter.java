@@ -3,7 +3,7 @@ package com.duggan.workflow.client.ui.fileexplorer;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
-import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.FileSelectedEvent;
 import com.duggan.workflow.client.ui.events.FileSelectedEvent.FileSelectedHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
@@ -36,7 +36,6 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.sencha.gxt.widget.core.client.tree.Tree;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class FileExplorerPresenter extends
 		Presenter<FileExplorerPresenter.MyView, FileExplorerPresenter.MyProxy>

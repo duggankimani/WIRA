@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.duggan.workflow.server.dao.model.Activation;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.wira.commons.shared.models.HTUser;

@@ -1,17 +1,34 @@
 package com.duggan.workflow.shared.model.catalog;
 
-import java.io.Serializable;
-
 import com.duggan.workflow.shared.model.DBType;
 import com.duggan.workflow.shared.model.form.Field;
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class CatalogColumn implements Serializable,IsSerializable, IsCatalogItem{
+public class CatalogColumn extends SerializableObj implements IsCatalogItem{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+
+	public static final String REFID = "refId";
+
+	public static final String LABEL = "label";
+
+	public static final String NAME = "name";
+
+	public static final String SIZE = "size";
+
+	public static final String TYPE = "type";
+
+	public static final String AUTOINCREMENT = "isautoincrement";
+
+	public static final String NULLABLE = "isnullable";
+
+	public static final String PRIMARYKEY = "isprimarykey";
+	
+	
 	private Long id;
 	private String name;
 	private String label;

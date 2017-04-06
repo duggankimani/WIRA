@@ -20,8 +20,6 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.shared.model.AttachmentType;
 import com.duggan.workflow.shared.model.Doc;
-import com.duggan.workflow.shared.model.Document;
-import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.OutputDocument;
 import com.duggan.workflow.shared.model.Value;

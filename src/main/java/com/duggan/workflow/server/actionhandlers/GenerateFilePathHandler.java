@@ -3,8 +3,6 @@ package com.duggan.workflow.server.actionhandlers;
 import com.duggan.workflow.client.ui.admin.formbuilder.HasProperties;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.helper.OutputDocumentDaoHelper;
-import com.duggan.workflow.server.dao.model.ADField;
-import com.duggan.workflow.server.dao.model.ADProperty;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.servlets.upload.DocumentAttachmentExecutor;

@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
@@ -46,12 +47,10 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.wira.commons.client.util.ArrayUtil;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class CreateTableView extends Composite {
 

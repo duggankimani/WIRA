@@ -2,7 +2,6 @@ package com.duggan.workflow.shared.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.ArrayList;
 
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.HasKey;

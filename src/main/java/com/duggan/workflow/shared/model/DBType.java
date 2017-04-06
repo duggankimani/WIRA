@@ -2,7 +2,6 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.wira.commons.shared.models.Listable;
 

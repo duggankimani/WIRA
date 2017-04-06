@@ -3,7 +3,6 @@ package com.duggan.workflow.client.ui.admin.trigger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.ActionLink;
 import com.duggan.workflow.client.ui.component.TableHeader;

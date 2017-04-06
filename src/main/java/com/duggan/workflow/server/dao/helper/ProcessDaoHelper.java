@@ -17,13 +17,11 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -135,7 +133,7 @@ public class ProcessDaoHelper {
 
 		return adCat;
 	}
-
+	
 	public static void delete(Long processDefId) {
 		ProcessDaoImpl dao = DB.getProcessDao();
 
@@ -1850,7 +1848,7 @@ public class ProcessDaoHelper {
 		}
 	}
 
-	private static ProcessCategory getProcessCategoryByName(String categoryName) {
+	public static ProcessCategory getProcessCategoryByName(String categoryName) {
 		ADProcessCategory category = DB.getProcessDao()
 				.getProcessCategoryByName(categoryName);
 		return get(category);

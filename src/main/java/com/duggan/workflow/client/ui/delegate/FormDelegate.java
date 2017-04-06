@@ -1,9 +1,8 @@
 package com.duggan.workflow.client.ui.delegate;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;

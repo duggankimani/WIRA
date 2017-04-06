@@ -25,7 +25,6 @@ import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.api.Executor;
-import org.jbpm.executor.callback.SendEmailCallback;
 import org.jbpm.executor.commands.SendMailCommand;
 import org.jbpm.executor.entities.RequestInfo;
 

@@ -43,6 +43,7 @@ import com.duggan.workflow.shared.responses.SaveCatalogResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.thirdparty.json.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -75,7 +76,7 @@ public class DataTablePresenter
 
 		HasClickHandlers getNewReportViewLink();
 
-		void setSelected(boolean isSelected);
+		void setSelected(Object model, boolean isSelected);
 
 		HasClickHandlers getViewDataLink();
 
@@ -195,10 +196,11 @@ public class DataTablePresenter
 			
 			@Override
 			public void onFinish(IUploader uploader) {
-				String catalogRefId = uploader.getServerMessage().getMessage();
-				if(catalogRefId==null || catalogRefId.equals("null")){
+				String message = uploader.getServerMessage().getMessage();
+				if(message==null || message.equals("null")){
 					Window.alert("Generation of table for file '"+uploader.getFileInput().getFilename()+"' failed");
 				}else{
+					String catalogRefId = message;
 					showDataPopup(catalogRefId);
 				}
 				
@@ -481,6 +483,6 @@ public class DataTablePresenter
 	}
 
 	private void selectItem(Object model, boolean isSelected) {
-		getView().setSelected(isSelected);
+		getView().setSelected(model, isSelected);
 	}
 }

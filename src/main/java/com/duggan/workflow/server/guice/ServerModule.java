@@ -192,8 +192,6 @@ import com.duggan.workflow.shared.requests.SendMessageRequest;
 import com.duggan.workflow.shared.requests.StartAllProcessesRequest;
 import com.duggan.workflow.shared.requests.UpdateNotificationRequest;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
-import com.duggan.workflow.shared.responses.GetProcessImportStatusResponse;
-import com.duggan.workflow.shared.responses.GetRecentTasksResult;
 import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.wira.commons.shared.request.GetUserRequest;

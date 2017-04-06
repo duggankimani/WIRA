@@ -3,6 +3,7 @@ package com.duggan.workflow.client.ui.admin.msgs;
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
@@ -11,7 +12,6 @@ import com.duggan.workflow.client.ui.component.Emailer;
 import com.duggan.workflow.client.ui.component.Grid;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
-import com.duggan.workflow.client.ui.security.AdminGateKeeper;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.shared.model.RequestInfoDto;
 import com.duggan.workflow.shared.requests.GetMessagesRequest;
@@ -38,7 +38,6 @@ import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class MessagesPresenter
 		extends

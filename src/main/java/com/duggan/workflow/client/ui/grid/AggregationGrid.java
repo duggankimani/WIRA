@@ -2,8 +2,6 @@ package com.duggan.workflow.client.ui.grid;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.component.TableView;
 import com.duggan.workflow.client.ui.util.NumberUtils;
@@ -12,10 +10,8 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;

@@ -61,7 +61,6 @@ import bitronix.tm.TransactionManagerServices;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
-import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;

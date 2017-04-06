@@ -2,8 +2,6 @@ package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

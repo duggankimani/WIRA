@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.ErrorCode;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.duggan.workflow.server.db.DB;

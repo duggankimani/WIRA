@@ -23,6 +23,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -38,10 +39,21 @@ public class DataTableView extends ViewImpl implements
 	Anchor aNew;
 	@UiField
 	TableView tblView;
+	
+	@UiField
+	Anchor aImportTable;
 	@UiField
 	Anchor aImportTab;
 	@UiField
 	Anchor aImportComma;
+	
+	@UiField
+	Anchor aExport;
+	@UiField
+	Anchor aExportTable;
+	@UiField
+	Anchor aExportData;
+	
 	@UiField
 	Anchor aNewReport;
 	@UiField
@@ -63,6 +75,7 @@ public class DataTableView extends ViewImpl implements
 	Element divGeneralActions;
 	
 	@UiField Uploader aUploader;
+	private Object selected;
 
 	public interface Binder extends UiBinder<Widget, DataTableView> {
 	}
@@ -73,11 +86,30 @@ public class DataTableView extends ViewImpl implements
 		aUploader.getElement().setId("csvuploader");
 		aUploader.setAvoidRepeatFiles(false);
 		final UploadContext ctx = new UploadContext();
-		ArrayList<String> types = new ArrayList<String>();
+		final ArrayList<String> types = new ArrayList<String>();
 		types.add("csv");
-		types.add("txt");
+		
 		ctx.setAccept(types);
 		ctx.setAction(UPLOADACTION.IMPORTCSV);
+		
+		aImportTable.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				/**
+				 * CSV Formats
+				 * DEFAULT
+				 * EXCEL - comma separated
+				 * TDF - Tab separated
+				 */
+				ctx.setAction(UPLOADACTION.IMPORTTABLE);
+				types.clear();
+				types.add("json");
+				ctx.setAccept(types);
+				aUploader.setContext(ctx);
+				triggerUpload(aUploader.getElement());
+			}
+		});
 		
 		aImportTab.addClickHandler(new ClickHandler() {
 			
@@ -89,6 +121,9 @@ public class DataTableView extends ViewImpl implements
 				 * EXCEL - comma separated
 				 * TDF - Tab separated
 				 */
+				types.clear();
+				types.add("csv");
+				ctx.setAccept(types);
 				ctx.setContext("f", "TDF");
 				aUploader.setContext(ctx);
 				triggerUpload(aUploader.getElement());
@@ -105,9 +140,52 @@ public class DataTableView extends ViewImpl implements
 				 * EXCEL - comma separated
 				 * TDF - Tab separated
 				 */
+				types.clear();
+				types.add("csv");
+				ctx.setAccept(types);
 				ctx.setContext("f", "RFC4180");
 				aUploader.setContext(ctx);
 				triggerUpload(aUploader.getElement());
+			}
+		});
+		
+		
+		aExport.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(selected==null){
+					return;
+				}
+				
+				Catalog cat = (Catalog)selected;
+				Window.open("getreport?action=exportdatatable&catalogRefId="+cat.getRefId(), "_blank", null);
+			}
+		});
+		
+		aExportData.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(selected==null){
+					return;
+				}
+				
+				Catalog cat = (Catalog)selected;
+				Window.open("getreport?action=exportdatatable&filter=dataonly&catalogRefId="+cat.getRefId(), "_blank", null);
+			}
+		});
+		
+		aExportTable.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(selected==null){
+					return;
+				}
+				
+				Catalog cat = (Catalog)selected;
+				Window.open("getreport?action=exportdatatable&filter=tableonly&catalogRefId="+cat.getRefId(), "_blank", null);
 			}
 		});
 	}
@@ -285,13 +363,16 @@ public class DataTableView extends ViewImpl implements
 	}
 
 	@Override
-	public void setSelected(boolean isSelected) {
+	public void setSelected(Object model, boolean isSelected) {
 		divGeneralActions.removeClassName("hide");
 		divTableActions.removeClassName("hide");
 
+		this.selected = model;
+		
 		if (isSelected) {
 			divGeneralActions.addClassName("hide");
 		} else {
+			this.selected = null;
 			divTableActions.addClassName("hide");
 		}
 	}

@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.events.PropertyChangedEvent;
 import com.duggan.workflow.client.util.AppContext;

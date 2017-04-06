@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.trigger.taskstep;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.TableHeader;
 import com.duggan.workflow.client.ui.component.TableView;

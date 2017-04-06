@@ -3,12 +3,12 @@ package com.duggan.workflow.client.ui.tasklistitem;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent;
-import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
-import com.duggan.workflow.client.ui.events.AfterSearchEvent;
-import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.AfterAttachmentReloadedEvent.AfterAttachmentReloadedHandler;
+import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent;
 import com.duggan.workflow.client.ui.events.AfterDocumentLoadEvent.AfterDocumentLoadHandler;
+import com.duggan.workflow.client.ui.events.AfterSearchEvent;
 import com.duggan.workflow.client.ui.events.AfterSearchEvent.AfterSearchHandler;
+import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.tasklistitem.IsTaskPresenter.IBaseTaskItemView;
 import com.duggan.workflow.client.ui.util.DocMode;
@@ -29,7 +29,6 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 /**

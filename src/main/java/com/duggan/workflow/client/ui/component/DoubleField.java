@@ -4,13 +4,10 @@ import java.text.ParseException;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.text.client.DoubleParser;
 import com.google.gwt.text.shared.AbstractRenderer;
 import com.google.gwt.text.shared.Parser;
 import com.google.gwt.text.shared.Renderer;
-import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ValueBox;
 

@@ -1,7 +1,5 @@
 package com.duggan.workflow.shared.requests;
 
-import javax.jws.soap.SOAPBinding.Use;
-
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.responses.CreateDocumentResult;
 import com.wira.commons.shared.request.BaseRequest;

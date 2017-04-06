@@ -1,7 +1,7 @@
  package com.duggan.workflow.client.ui.tasklistitem;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.duggan.workflow.client.ui.util.DateUtils;
 import com.duggan.workflow.shared.model.Actions;

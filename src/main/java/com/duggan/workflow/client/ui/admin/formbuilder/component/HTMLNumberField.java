@@ -20,8 +20,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLNumberField extends FieldWidget{

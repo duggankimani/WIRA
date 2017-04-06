@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.requests;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.form.Field;

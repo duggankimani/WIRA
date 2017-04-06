@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
-import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Window;

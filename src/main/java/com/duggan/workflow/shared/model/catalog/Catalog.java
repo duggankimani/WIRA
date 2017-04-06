@@ -12,6 +12,26 @@ public class Catalog extends SerializableObj implements IsCatalogItem, Listable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static final String NAME = "name";
+	
+	public static final String CATEGORY = "category";
+	
+	public static final String DESC = "description";
+	
+	public static final String FIELDSOURCE = "fieldsource";
+	
+	public static final String GRIDNAME = "gridname";
+	
+	public static final String PROCESS = "process";
+	
+	public static final String REFID = "refId";
+	
+	public static final String TYPE = "type";
+
+	public static final String PROCESSREF = "processRefId";
+	
+	
 	private Long id;
 	private String name;
 	private String description;

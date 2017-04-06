@@ -18,7 +18,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import com.duggan.workflow.server.dao.FormDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.db.DB;
@@ -27,13 +26,11 @@ import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
-import com.duggan.workflow.server.helper.email.EmailUtil;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.mvel.MVELExecutor;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.itextpdf.text.DocumentException;
-import com.wira.commons.shared.models.HTUser;
 
 public class TestEmail {
 

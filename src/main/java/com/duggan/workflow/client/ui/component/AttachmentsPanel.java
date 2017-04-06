@@ -1,12 +1,10 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
-import com.duggan.workflow.client.ui.events.ReloadAttachmentsEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.google.gwt.core.client.GWT;

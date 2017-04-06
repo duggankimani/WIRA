@@ -11,7 +11,6 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

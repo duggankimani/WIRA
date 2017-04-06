@@ -126,12 +126,12 @@ public class TestCatalogDao {
 
 	@Ignore
 	public void export() {
-		String xml = CatalogDaoHelper.exportTable(1L);
-		System.err.println(xml);
-
-		CatalogModel model = CatalogDaoHelper.importTable(xml);
-		System.err.println("Size: " + model.getColumns().size() + "\n" + model.getName() + "\n"
-				+ CatalogDaoHelper.exportTable(model));
+//		String xml = CatalogDaoHelper.exportTable(1L);
+//		System.err.println(xml);
+//
+//		CatalogModel model = CatalogDaoHelper.importTable(xml);
+//		System.err.println("Size: " + model.getColumns().size() + "\n" + model.getName() + "\n"
+//				+ CatalogDaoHelper.exportTable(model));
 
 	}
 

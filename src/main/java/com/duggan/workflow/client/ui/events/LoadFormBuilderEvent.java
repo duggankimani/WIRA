@@ -2,8 +2,8 @@ package com.duggan.workflow.client.ui.events;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 public class LoadFormBuilderEvent extends
 		GwtEvent<LoadFormBuilderEvent.LoadFormBuilderHandler> {

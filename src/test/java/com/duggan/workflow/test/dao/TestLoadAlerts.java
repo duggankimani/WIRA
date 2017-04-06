@@ -15,7 +15,6 @@ import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTSummary;

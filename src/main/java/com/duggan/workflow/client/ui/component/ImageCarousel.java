@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.ui.images.ImageResources;
@@ -9,11 +8,8 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Attachment;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Node;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ErrorEvent;
-import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;

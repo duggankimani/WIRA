@@ -2,16 +2,16 @@ package com.duggan.workflow.client.ui.admin.dashboard.linegraph;
 
 import java.util.ArrayList;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.dashboard.ChartType;
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.requests.GetTaskCompletionRequest;
 import com.duggan.workflow.shared.responses.GetTaskCompletionResponse;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class LineGraphPresenter extends
 		PresenterWidget<LineGraphPresenter.ILineGraphView> {

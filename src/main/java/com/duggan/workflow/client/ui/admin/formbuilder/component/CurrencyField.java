@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.Iterator;
 
-import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.KeyValuePair;
 import com.duggan.workflow.shared.model.form.Property;
@@ -10,7 +9,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.CurrencyData;
 import com.google.gwt.i18n.client.CurrencyList;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.Window;
 
 public class CurrencyField extends NumberField{
 	

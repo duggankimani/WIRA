@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.notifications.note;
 
 import static com.duggan.workflow.client.ui.util.DateUtils.getTimeDifferenceAsString;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.Notification;
@@ -11,14 +12,13 @@ import com.duggan.workflow.shared.responses.UpdateNotificationRequestResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.wira.commons.shared.models.HTUser;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 
 public class NotePresenter extends
 		PresenterWidget<NotePresenter.MyView> {

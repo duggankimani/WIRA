@@ -4,7 +4,6 @@ import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
 import com.duggan.workflow.shared.model.form.Property;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HTMLStatic extends FieldWidget{

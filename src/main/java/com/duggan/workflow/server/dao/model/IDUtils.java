@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.dao.model;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang.RandomStringUtils;
 
 public class IDUtils {
 

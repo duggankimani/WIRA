@@ -2,6 +2,7 @@ package com.duggan.workflow.client.ui.admin.ds.item;
 
 import java.util.Date;
 
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OnOptionSelected;
 import com.duggan.workflow.client.ui.events.EditDSConfigEvent;
@@ -16,12 +17,11 @@ import com.duggan.workflow.shared.responses.GetDSStatusResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.wira.commons.shared.response.BaseResponse;
 
 public class DSItemPresenter extends

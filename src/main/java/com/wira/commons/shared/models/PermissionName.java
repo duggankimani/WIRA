@@ -1,6 +1,16 @@
 package com.wira.commons.shared.models;
 
-import static com.wira.commons.shared.models.Module.*;
+import static com.wira.commons.shared.models.Module.ACCESSMGT;
+import static com.wira.commons.shared.models.Module.CASEREGISTRY;
+import static com.wira.commons.shared.models.Module.DASHBOARDS;
+import static com.wira.commons.shared.models.Module.DATASOURCES;
+import static com.wira.commons.shared.models.Module.DATATABLES;
+import static com.wira.commons.shared.models.Module.FILEVIEWER;
+import static com.wira.commons.shared.models.Module.MAILLOG;
+import static com.wira.commons.shared.models.Module.PROCESSES;
+import static com.wira.commons.shared.models.Module.REPORTS;
+import static com.wira.commons.shared.models.Module.SETTINGS;
+import static com.wira.commons.shared.models.Module.UNASSIGNED;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

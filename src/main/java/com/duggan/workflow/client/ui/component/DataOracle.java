@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.wira.commons.shared.models.Listable;

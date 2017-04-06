@@ -1,7 +1,6 @@
 package com.duggan.workflow.shared.model.form;
 
 import java.util.HashMap;
-import java.util.HashMap;
 
 public class ProcessMappings {
 

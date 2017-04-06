@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.grid;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DateInput;
 import com.duggan.workflow.client.ui.component.DoubleField;
@@ -17,7 +16,6 @@ import com.duggan.workflow.shared.model.DoubleValue;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.InlineLabel;

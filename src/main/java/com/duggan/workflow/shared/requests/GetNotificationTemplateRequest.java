@@ -2,7 +2,6 @@ package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.NotificationCategory;
-import com.duggan.workflow.shared.responses.CheckPasswordRequestResult;
 import com.duggan.workflow.shared.responses.GetNotificationTemplateResult;
 import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;

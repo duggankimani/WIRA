@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
 import java.util.HashMap;
-import java.util.HashMap;
 
 import com.duggan.workflow.shared.model.Value;
 import com.google.gwt.event.shared.EventHandler;

@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.component;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.admin.component.ListItem.OnSelectHandler;
 import com.duggan.workflow.client.ui.component.BulletListPanel;

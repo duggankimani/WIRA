@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.ColumnResult;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -24,11 +23,9 @@ import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
-import com.duggan.workflow.shared.model.Attachment;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.ProcessLog;
-import com.duggan.workflow.shared.model.Schema;
 import com.duggan.workflow.shared.model.TaskLog;
 import com.duggan.workflow.shared.model.TriggerType;
 
