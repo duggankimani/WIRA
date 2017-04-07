@@ -22,6 +22,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -167,6 +168,11 @@ implements NoticationCategoryChangeHandler{
 		if(!event.getProcessDefId().equals(processDefId)){
 			return;
 		}
+		
+
+		this.id = null;
+		this.nodeId = null;
+		this.stepName = null;
 		
 		category = event.getCategory();
 		stepName = event.getStepName();
