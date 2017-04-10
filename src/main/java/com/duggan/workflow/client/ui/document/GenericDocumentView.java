@@ -72,6 +72,7 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	@UiField HTMLPanel panelUpperContent;
+	
 	@UiField HTMLPanel contentArea;
 	
 	@UiField
@@ -192,6 +193,9 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@UiField
 	HTMLPanel fldForm;
+	
+	@UiField
+	Element iDocStatus;
 
 	@UiField
 	BulletListPanel bulletListPanel;
@@ -708,26 +712,37 @@ public class GenericDocumentView extends ViewImpl implements
 			isDraft = ((Document)doc).getStatus()==DocStatus.DRAFTED;
 		}
 		
+		fldForm.removeStyleName("form-editable");
+		fldForm.removeStyleName("form-uneditable");
+		iDocStatus.removeAttribute("class");
+		
 		if (validActions != null && !isDraft) {
 			if (validActions.contains(Actions.COMPLETE)) {
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
-
+				
 				// Running or started
-				divRibbon.addClassName("ribbon-success");
+				divRibbon.addClassName("ribbon-open");
 				spnRibbon.setInnerText("In Progress");
+				iDocStatus.setInnerText("In Progress");
+				iDocStatus.addClassName("doc-pending icon-edit");
+				fldForm.addStyleName("form-editable");
 			} else {
 
 				if (validActions.contains(Actions.START)
 						|| validActions.contains(Actions.RESUME)) {
 					// Not Started
 					divRibbon.addClassName("ribbon-open");
-					spnRibbon.setInnerText("Pending");
-
+					spnRibbon.setInnerText("New");
+					iDocStatus.setInnerText("New");
+					iDocStatus.addClassName("doc-pending icon-double-angle-right");
+					fldForm.addStyleName("form-uneditable");
 				} else {
-					//
 					divRibbon.addClassName("ribbon-accepted");
 					spnRibbon.setInnerText("Completed");
+					iDocStatus.setInnerText("Completed");
+					iDocStatus.addClassName("icon-ok-sign doc-success");
+					fldForm.addStyleName("form-uneditable");
 				}
 				formPanel.setReadOnly(true);
 				showNavigation(false);
@@ -738,10 +753,16 @@ public class GenericDocumentView extends ViewImpl implements
 			if (status != null) {
 				if (status == DocStatus.INPROGRESS) {
 					divRibbon.addClassName("ribbon-accepted");
-					spnRibbon.setInnerText("Sent");
+					spnRibbon.setInnerText("Completed");
+					iDocStatus.setInnerText("Completed");
+					iDocStatus.addClassName("icon-ok-sign doc-success");
+					fldForm.addStyleName("form-uneditable");
 				} else {
 					divRibbon.addClassName("ribbon-draft");
 					spnRibbon.setInnerText("Draft");
+					iDocStatus.setInnerText("Draft");
+					iDocStatus.addClassName("doc-waiting icon-edit-sign");
+					fldForm.addStyleName("form-editable");
 				}
 
 			}

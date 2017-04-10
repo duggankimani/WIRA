@@ -957,7 +957,6 @@ section.positioned {
 }
 
 .flextable-grid td {
-    background-color: #ffffff;
     text-align: left;
     color: #000000;
     font-family: 'Arial';
@@ -1020,4 +1019,31 @@ table.flextable-grid label{
 
 table.flextable-grid .GWTUpld form{
 	margin-bottom: 0px;	
+}
+
+.content-area .form-editable{
+	background-color:inherit;
+}
+
+.content-area .form-uneditable{
+	background-color:#f5f5f5;
+}
+
+.generic-doc-title [class^="doc-"], .generic-doc-title [class*=" doc-"]{
+	font-style: normal;
+	margin-left: 5px;
+	font-size: medium;
+	padding: 2px;
+}
+
+.generic-doc-title .doc-waiting{
+	color:#788e8f;
+}
+
+.generic-doc-title .doc-success{
+	color: green;
+}
+
+.generic-doc-title .doc-pending{
+	color: #1e7ab8;
 }
