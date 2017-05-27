@@ -1,6 +1,8 @@
 package com.duggan.workflow.server.dao;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,7 +12,11 @@ import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.dashboard.Data;
+import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
+import com.duggan.workflow.shared.model.dashboard.ProcessTrend;
+import com.duggan.workflow.shared.model.dashboard.ProcessesSummary;
+import com.duggan.workflow.shared.model.dashboard.TaskAging;
 
 public class DashboardDaoImpl extends BaseDaoImpl{
 
@@ -22,8 +28,84 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 		return getRequestCount(true, status); 
 	}
 	
+	public ArrayList<ProcessesSummary> getProcessesSummary(String processId, Date startDate, Date endDate){
+		String sql = "select refId,processId,name,inprogress,completed,overdue,avgtot,targetDays "
+				+ "from fun_GetProcessSummary(:startDate, :endDate) order by inprogress desc,completed desc";
+		
+		if(processId!=null){
+			sql = "select refId,processId,name,inprogress,completed,overdue,avgtot,targetDays "
+					+ "from fun_GetProcessSummaryPerProcess(:processId, :startDate, :endDate) order by inprogress desc,completed desc";
+		}
+		
+		Query query = getEntityManager().createNativeQuery(sql)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate);
+		
+		if(processId!=null){
+			query.setParameter("processId", processId);
+		}
+		
+		List<Object[]> rows = getResultList(query);
+		
+		ArrayList<ProcessesSummary> summaries = new ArrayList<ProcessesSummary>();
+		for(Object[] row: rows){
+			int i=0;
+			Object value = null;
+			String refId = (value=row[i++])==null? null : value.toString();
+			String aProcessId = (value=row[i++])==null? null : value.toString();
+			String name = (value=row[i++])==null? null : value.toString();
+			Integer inprogress = (value=row[i++])==null? null : (Integer)value;
+			Integer completed = (value=row[i++])==null? null : (Integer)value;
+			Integer overdue = (value=row[i++])==null? null : (Integer)value;
+			Double avgtot = (value=row[i++])==null? null : ((Number)value).doubleValue();
+			Integer targetDay = (value=row[i++])==null? null : (Integer)value;
+			summaries.add(new ProcessesSummary(refId, aProcessId, name, inprogress, completed, overdue, avgtot, targetDay));
+		}
+		
+		return summaries;
+	}
+	
+	public ArrayList<EmployeeWorkload> getTasksSummary(String processId, Date startDate, Date endDate){
+		
+		String sql = "select refId, ownerid, fullName, inprogress, completed, total, "
+				+ "overdue, avg from fun_GetTaskSummary(:startDate, :endDate) order by total desc, completed desc limit 5"; 
+		
+		if(processId!=null){
+			sql = "select refId, ownerid, fullName, inprogress, completed, total, "
+					+ "overdue, avg from fun_GetTaskSummaryPerProcess(:processId, :startDate, :endDate) order by total desc, completed desc limit 5";
+		}
+		
+		Query query = getEntityManager().createNativeQuery(sql)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate);
+		
+		if(processId!=null){
+			query.setParameter("processId", processId);
+		}
+		
+		List<Object[]> rows = getResultList(query);
+		
+		ArrayList<EmployeeWorkload> workloads = new ArrayList<EmployeeWorkload>();
+		for(Object[] row: rows){
+			int i=0;
+			Object value = null;
+			String refId = (value=row[i++])==null? null : value.toString();
+			String ownerid = (value=row[i++])==null? null : value.toString();
+			String fullName = (value=row[i++])==null? null : value.toString();
+			Integer inprogress = (value=row[i++])==null? null : (Integer)value;
+			Integer completed = (value=row[i++])==null? null : (Integer)value;
+			Integer total = (value=row[i++])==null? null : (Integer)value;
+			Integer overdue = (value=row[i++])==null? null : (Integer)value;
+			Double avg = (value=row[i++])==null? null : ((Number)value).doubleValue();
+			
+			workloads.add(new EmployeeWorkload(refId, ownerid, fullName, inprogress, completed, total, overdue, avg));
+		}
+		
+		return workloads;
+	}
+	
 	public Integer getRequestCount(boolean is, DocStatus status){
-		StringBuffer sql = new StringBuffer("select count(*) from localdocument where ");
+		StringBuffer sql = new StringBuffer("select count(*) from documentjson where ");
 		
 		if(is){
 			sql.append("status=?");
@@ -57,7 +139,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 			"when (extract(day from current_timestamp-created)<61)then 60 "+
 			"else 61 "+
 			"END cnt "+
-			"from localdocument where status!='DRAFTED' "+
+			"from processinstancelog where status==0 "+
 			")as docdays "+
 			"group by days,cnt order by cnt;");
 		
@@ -66,7 +148,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 		
 		for(Object c: list){
 			Object[] row = (Object[])c;
-			Data data = new Data((String)row[0], (Number)row[1]);
+			Data data = new Data((String)row[0], ((Number)row[1]).doubleValue());
 			dataLst.add(data);
 		}
 		
@@ -82,7 +164,7 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 		List<?> list = query.getResultList();
 		for(Object c: list){
 			Object[] row = (Object[])c;
-			Data data = new Data((String)row[0], (Number)row[1]);
+			Data data = new Data((String)row[0], ((Number)row[1]).doubleValue());
 			dataLst.add(data);
 		}
 		
@@ -114,11 +196,9 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 			Object[] row = (Object[])c;
 			LongTask longTask = new LongTask();
 			longTask.setNoOfTasks(((Number)row[0]).intValue());
-			longTask.setAverageTime(((Number)row[1]).intValue());
 			
 			String taskName = row[2].toString();
 			String docType = getDocumentTypeNameByTaskName(taskName);
-			longTask.setDocumentType(docType);
 			
 			String taskDisplayName = taskName;
 			
@@ -184,6 +264,105 @@ public class DashboardDaoImpl extends BaseDaoImpl{
 		
 		String hql = "FROM ADDocType t where t.processDef.refId=:processRefId";
 		return getSingleResultOrNull(getEntityManager().createQuery(hql).setParameter("processRefId", processRefId));
+	}
+
+	public ArrayList<LongTask> getLongTasks(String processId,
+			Date startDate, Date endDate) {
+		
+		String sql = "select taskname, taskcount, avgdays, peoplecount, peoplenames "
+				+ "from func_GetTasksWorkfload(:processId,:startDate,:endDate) order by avgdays desc limit 5";
+		
+		Query query = getEntityManager().createNativeQuery(sql)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
+				.setParameter("processId", processId);
+		
+		List<Object[]> rows = getResultList(query);
+		
+		ArrayList<LongTask> longTasks = new ArrayList<LongTask>();
+		for(Object[] row: rows){
+			int i=0;
+			Object value = null;
+			String taskname = (value=row[i++])==null? null : value.toString();
+			Integer taskCount = (value=row[i++])==null? null : (Integer)value;
+			Double avgDays = (value=row[i++])==null? null : ((Number)value).doubleValue();
+			Integer peopleCount = (value=row[i++])==null? null : (Integer)value;
+			String peopleNames = (value=row[i++])==null? null : value.toString();
+			
+			longTasks.add(new LongTask(taskname, processId, avgDays,taskCount, peopleCount, peopleNames));
+		}
+		
+		return longTasks;
+	}
+
+	public ArrayList<TaskAging> getProcessAging(String processId,
+			Date startDate, Date endDate) {
+		String sql = "select agingperiod, taskcount from func_GetTasksAging(:processId,:startDate,:endDate)";
+		
+		Query query = getEntityManager().createNativeQuery(sql)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
+				.setParameter("processId", processId);
+		
+		List<Object[]> rows = getResultList(query);
+		
+		ArrayList<TaskAging> aging = new ArrayList<TaskAging>();
+		for(Object[] row: rows){
+			int i=0;
+			Object value = null;
+			
+			String period = (value=row[i++])==null? null : value.toString();
+			int pos = 0;
+			if(period.startsWith("0")){
+				pos = 1;
+			}else if(period.startsWith("7")){
+				pos = 2;
+			}else if(period.startsWith("15")){
+				pos = 3;
+			}else if(period.startsWith("31")){
+				pos = 4;
+			}else{
+				pos = 5;
+			}
+			
+			Integer count = (value=row[i++])==null? null : (Integer)value;
+			aging.add(new TaskAging(period, count, pos));
+		}
+		
+		aging.sort(new Comparator<TaskAging>() {
+			@Override
+			public int compare(TaskAging o1, TaskAging o2) {
+				return ((Integer)o1.getPosition()).compareTo(((Integer)o2.getPosition()));
+			}
+		});
+		return aging;
+	}
+
+
+	public ArrayList<ProcessTrend> getProcessTrend(String processId,
+			Date startDate, Date endDate, String periodicity, int type) {
+		
+		String sql = "select period, taskcount from func_GetTasksTrend(:processId,:startDate, :endDate, :periodicity, :type) order by period";
+		
+		Query query = getEntityManager().createNativeQuery(sql)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
+				.setParameter("processId", processId)
+				.setParameter("periodicity", periodicity)
+				.setParameter("type", type);
+		
+		List<Object[]> rows = getResultList(query);
+		
+		ArrayList<ProcessTrend> trends = new ArrayList<ProcessTrend>();
+		for(Object[] row: rows){
+			int i=0;
+			Object value = null;
+			Integer period = (value=row[i++])==null? null : (Integer)value;
+			Integer count = (value=row[i++])==null? null : (Integer)value;
+			trends.add(new ProcessTrend(period, count));
+		}
+		
+		return trends;
 	}
 	
 }

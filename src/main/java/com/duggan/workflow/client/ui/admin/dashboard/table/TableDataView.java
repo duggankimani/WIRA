@@ -54,7 +54,7 @@ public class TableDataView extends ViewImpl implements
 			}else{
 				avgTime.addStyleName("label label-important arrowed-in");
 			}
-			tableView.addRow(new InlineLabel(task.getTaskName()),  new InlineLabel(task.getDocumentType()), 
+			tableView.addRow(new InlineLabel(task.getTaskName()),  new InlineLabel(""), 
 					new InlineLabel(task.getNoOfTasks()+" tasks"), 
 					avgTime);
 		}

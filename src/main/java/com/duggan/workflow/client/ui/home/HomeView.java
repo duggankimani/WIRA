@@ -7,6 +7,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.reports.ReportsPresenter;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter;
 import com.duggan.workflow.client.ui.fileexplorer.FileExplorerPresenter;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter;
 import com.duggan.workflow.client.ui.task.UnAssignedPresenter;
@@ -164,6 +165,9 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 			break;
 		case FileExplorerPresenter.TABLABEL:
 			showItem(getElement(sideBarUL, "#/explorer"), data.canReveal());
+			break;
+		case DashboardPresenter.TABLABEL:
+			showItem(getElement(sideBarUL, "#/dashboards"), data.canReveal());
 			break;
 		}
 	}

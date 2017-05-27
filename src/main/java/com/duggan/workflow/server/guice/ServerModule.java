@@ -32,7 +32,8 @@ import com.duggan.workflow.server.actionhandlers.GetCommentsRequestActionHandler
 import com.duggan.workflow.server.actionhandlers.GetContextRequestActionHandler;
 import com.duggan.workflow.server.actionhandlers.GetDSConfigurationsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDSStatusRequestActionHandler;
-import com.duggan.workflow.server.actionhandlers.GetDashBoardDataRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetDashboardDataRequestHandler;
+import com.duggan.workflow.server.actionhandlers.GetDashboardProcessTrendsRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDataRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentRequestHandler;
 import com.duggan.workflow.server.actionhandlers.GetDocumentTypesRequestActionHandler;
@@ -129,7 +130,8 @@ import com.duggan.workflow.shared.requests.GetCommentsRequest;
 import com.duggan.workflow.shared.requests.GetContextRequest;
 import com.duggan.workflow.shared.requests.GetDSConfigurationsRequest;
 import com.duggan.workflow.shared.requests.GetDSStatusRequest;
-import com.duggan.workflow.shared.requests.GetDashBoardDataRequest;
+import com.duggan.workflow.shared.requests.GetDashboardDataRequest;
+import com.duggan.workflow.shared.requests.GetDashboardProcessTrendsRequest;
 import com.duggan.workflow.shared.requests.GetDataRequest;
 import com.duggan.workflow.shared.requests.GetDocumentRequest;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
@@ -360,8 +362,8 @@ public class ServerModule extends HandlerModule {
 				UpdatePasswordRequestActionHandler.class,
 				SessionValidator.class);
 
-		bindHandler(GetDashBoardDataRequest.class,
-				GetDashBoardDataRequestHandler.class,
+		bindHandler(GetDashboardDataRequest.class,
+				GetDashboardDataRequestHandler.class,
 				SessionValidator.class);
 
 		bindHandler(GetLongTasksRequest.class,
@@ -474,5 +476,7 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetProcessImportStatus.class, GetProcessImportStatusActionHandler.class, SessionValidator.class);
 		
 		bindHandler(DeleteTableRowRequest.class, DeleteTableRowActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetDashboardProcessTrendsRequest.class, GetDashboardProcessTrendsRequestHandler.class, SessionValidator.class);
 	}
 }

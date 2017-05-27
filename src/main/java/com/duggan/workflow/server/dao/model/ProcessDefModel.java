@@ -85,6 +85,8 @@ public class ProcessDefModel extends PO {
 	@XmlElement(name="attachment")
 	private List<String> attachmentNames = new ArrayList<String>();
 		
+	private Integer targetDays;
+	
 	public ProcessDefModel(){
 		status = Status.INACTIVE;
 	}
@@ -218,5 +220,13 @@ public class ProcessDefModel extends PO {
 
 	public void addAttachmentName(String attachmentName) {
 		attachmentNames.add(attachmentName);
+	}
+
+	public Integer getTargetDays() {
+		return targetDays;
+	}
+
+	public void setTargetDays(Integer targetDays) {
+		this.targetDays = targetDays;
 	}
 }

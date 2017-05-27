@@ -250,6 +250,7 @@ public class ProcessDaoHelper {
 		}
 
 		def.setDescription(model.getDescription());
+		def.setTargetDays(model.getTargetDays());
 		def.setLastModified(model.getUpdated() == null ? model.getCreated()
 				: model.getUpdated());
 
@@ -319,6 +320,7 @@ public class ProcessDaoHelper {
 		model.setName(processDef.getName());
 		model.setDescription(processDef.getDescription());
 		model.setProcessId(processDef.getProcessId());
+		model.setTargetDays(processDef.getTargetDays());
 
 		List<Listable> usersAndGroups = processDef.getUsersAndGroups();
 		for (Listable item : usersAndGroups) {

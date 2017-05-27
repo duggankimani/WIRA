@@ -8,6 +8,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.component.AutoCompleteField;
 import com.duggan.workflow.client.ui.component.Card;
 import com.duggan.workflow.client.ui.component.DropDownList;
+import com.duggan.workflow.client.ui.component.IntegerField;
 import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.events.DeleteAttachmentEvent;
@@ -74,6 +75,8 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 	TextField txtName;
 	@UiField
 	TextField txtProcess;
+	@UiField
+	IntegerField txtTargetDays;
 	@UiField
 	Anchor aUpload;
 	@UiField
@@ -149,6 +152,7 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 		def.setCategory(lstCategories.getValue());
 		def.setBackgroundColor(txtColor.getValue());
 		def.setIconStyle(txtIconStyle.getValue());
+		def.setTargetDays(txtTargetDays.getValue());
 
 		return def;
 	}
@@ -228,6 +232,7 @@ public class ProcessSavePanel extends Composite implements DeleteAttachmentHandl
 		txtName.setValue(name);
 		txtProcess.setValue(processId);
 		setProcessId(processDefId);
+		txtTargetDays.setValue(processDef.getTargetDays());
 
 		if (userGroups != null) {
 			lstUserGroups.select(userGroups);

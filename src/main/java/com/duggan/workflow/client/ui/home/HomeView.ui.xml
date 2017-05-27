@@ -144,6 +144,16 @@
 									</div>
 									<div class="accordion-group">
 										<div class="accordion-heading">
+
+											<a class="accordion-toggle" href="#/dashboards">
+												<i class="icon-dashboard"></i>
+												<span>Dashboards</span>
+												<span class="selected"></span>
+											</a>
+										</div>
+									</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
 											<a class="accordion-toggle" href="#/explorer">
 												<i class="icon-folder-open"></i>
 												<span>File Explorer</span>

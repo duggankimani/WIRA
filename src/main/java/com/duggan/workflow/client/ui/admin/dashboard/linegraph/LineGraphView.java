@@ -222,7 +222,7 @@ public class LineGraphView extends ViewImpl implements
 	public void setData(ArrayList<Data> data) {
 		double max = axis.getMaximum();
 		for(Data d: data){
-			double big = Math.max(d.getData1().doubleValue(), d.getData2().doubleValue());
+			double big = Math.max(d.getData1(), d.getData2());
 			max = Math.max(max, big);
 		}
 		axis.setMaximum(max);

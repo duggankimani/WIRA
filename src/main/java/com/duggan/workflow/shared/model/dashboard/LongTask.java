@@ -1,40 +1,44 @@
 package com.duggan.workflow.shared.model.dashboard;
 
-import java.io.Serializable;
+import com.wira.commons.shared.models.SerializableObj;
 
-public class LongTask implements Serializable {
+public class LongTask extends SerializableObj{
 
 	private static final long serialVersionUID = -26425705263928669L;
 	private String taskName;
-	private String documentType;
-	private Integer averageTime;
+	private String processId;
+	private Double averageTime;
 	private Integer noOfTasks;
+	private Integer peopleCount;
+	private String peopleNames;
 
 	public LongTask() {
+	}
+
+	public LongTask(String taskName, String processId, Double averageTime,
+			Integer noOfTasks) {
+		this.taskName = taskName;
+		this.processId = processId;
+		this.averageTime = averageTime;
+		this.noOfTasks = noOfTasks;
+	}
+
+	public LongTask(String taskName, String processId, Double averageTime,
+			Integer noOfTasks, Integer peopleCount, String peopleNames) {
+		this.taskName = taskName;
+		this.processId = processId;
+		this.averageTime = averageTime;
+		this.noOfTasks = noOfTasks;
+		this.peopleCount = peopleCount;
+		this.peopleNames = peopleNames;
 	}
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
 
-	public void setDocumentType(String documentType) {
-		this.documentType = documentType;
-	}
-
-	public void setAverageTime(Integer averageTime) {
-		this.averageTime = averageTime;
-	}
-
 	public String getTaskName() {
 		return taskName;
-	}
-
-	public String getDocumentType() {
-		return documentType;
-	}
-
-	public Integer getAverageTime() {
-		return averageTime;
 	}
 
 	public Integer getNoOfTasks() {
@@ -43,5 +47,37 @@ public class LongTask implements Serializable {
 
 	public void setNoOfTasks(Integer noOfTasks) {
 		this.noOfTasks = noOfTasks;
+	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
+
+	public Integer getPeopleCount() {
+		return peopleCount;
+	}
+
+	public void setPeopleCount(Integer peopleCount) {
+		this.peopleCount = peopleCount;
+	}
+
+	public String getPeopleNames() {
+		return peopleNames;
+	}
+
+	public void setPeopleNames(String peopleNames) {
+		this.peopleNames = peopleNames;
+	}
+
+	public Double getAverageTime() {
+		return averageTime;
+	}
+
+	public void setAverageTime(Double averageTime) {
+		this.averageTime = averageTime;
 	}
 }

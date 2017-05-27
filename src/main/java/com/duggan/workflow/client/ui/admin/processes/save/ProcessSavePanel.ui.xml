@@ -54,6 +54,12 @@
 						<label for="ProcessName">Users/Groups:</label>
 						<d:AutoCompleteField ui:field="lstUserGroups"></d:AutoCompleteField>
 					</div>
+					
+					<div class="form-group" style="margin-top:20px;">
+						<label for="targetDays form-label">Working Days (Target):</label>
+						<d:IntegerField ui:field="txtTargetDays" 
+						    class="form-control input-xlarge" placeholder="Target" />
+					</div>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:HTMLPanel>

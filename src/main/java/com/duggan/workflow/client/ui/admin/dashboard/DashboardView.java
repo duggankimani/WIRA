@@ -1,16 +1,15 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
-import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.LINEGRAPH_SLOT;
-import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.LONGLASTINGTASKS_SLOT;
-import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.OVERALLTURNAROUND_SLOT;
-import static com.duggan.workflow.client.ui.admin.dashboard.DashboardPresenter.REQUESTSPERDOC_SLOT;
+import java.util.ArrayList;
 
-import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.i18n.client.NumberFormat;
+import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
+import com.duggan.workflow.shared.model.dashboard.LongTask;
+import com.duggan.workflow.shared.model.dashboard.ProcessTrend;
+import com.duggan.workflow.shared.model.dashboard.ProcessesSummary;
+import com.duggan.workflow.shared.model.dashboard.TaskAging;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -23,14 +22,10 @@ public class DashboardView extends ViewImpl implements
 
 	private Widget widget;
 
-	@UiField HTMLPanel panelTurnAroundTime;
-	@UiField HTMLPanel panelTotalRequestsPerDoc;
-	@UiField HTMLPanel panelRequestsApprovalsComp;
-	@UiField HTMLPanel panelLongLastingProcesses;
-	
-	@UiField SpanElement spnReqCount;
-	@UiField SpanElement spnActiveCount;
-	@UiField SpanElement spnFailureCount;
+	@UiField Element divBase;
+	@UiField Element divDrillDown;
+	@UiField Dashboard baseDashboard;
+	@UiField DashboardDrillDown drilldownDashboard;
 	
 	@Inject
 	public DashboardView(final Binder binder) {
@@ -41,45 +36,35 @@ public class DashboardView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+
+	@Override
+	public void setDashboardData(String processRefId, ArrayList<EmployeeWorkload> workloads,
+			ArrayList<ProcessesSummary> processesSummary) {
+		if(processRefId==null){
+			divBase.removeClassName("hide");
+			divDrillDown.addClassName("hide");
+			baseDashboard.setWorkflows(workloads);
+			baseDashboard.setProcessesSummary(processesSummary);
+		}else{
+			divBase.addClassName("hide");
+			divDrillDown.removeClassName("hide");
+			drilldownDashboard.setWorkflows(workloads);
+			drilldownDashboard.setProcessesSummary(processesSummary);
+		}
+		
+	}
+
+	@Override
+	public void setProcessAgingData(ArrayList<TaskAging> aging,
+			ArrayList<LongTask> longTasks) {
+		drilldownDashboard.setAgingData(aging, longTasks);
+		
+	}
+
+	@Override
+	public void setProcessTrendsData(ArrayList<ProcessTrend> startTrend,
+			ArrayList<ProcessTrend> completionTrend) {
+		drilldownDashboard.setTrendsData(startTrend, completionTrend);
+	}
 	
-	@Override
-	public void setInSlot(Object slot, IsWidget content) {
-		
-		if(slot == OVERALLTURNAROUND_SLOT){
-			panelTurnAroundTime.clear();
-			if(content!=null){
-				panelTurnAroundTime.add(content);
-			}
-		}else if(slot == REQUESTSPERDOC_SLOT){
-			panelTotalRequestsPerDoc.clear();
-			if(content!=null){
-				panelTotalRequestsPerDoc.add(content);
-			}
-		}else if(slot == LINEGRAPH_SLOT){
-			panelRequestsApprovalsComp.clear();
-			if(content!=null){
-				panelRequestsApprovalsComp.add(content);
-			}
-		}else if(slot == LONGLASTINGTASKS_SLOT){
-			panelLongLastingProcesses.clear();
-			if(content!=null){
-				panelLongLastingProcesses.add(content);
-			}
-		}else
-			super.setInSlot(slot, content);
-	}
-
-	@Override
-	public void setValues(Integer requestCount, Integer activeCount,
-			Integer failureCount) {
-		NumberFormat format = NumberFormat.getFormat("#,###");
-		String reqC = format.format(requestCount);
-		String activeC = format.format(activeCount);
-		String failureC = format.format(failureCount);
-		
-		spnReqCount.setInnerText(reqC);
-		spnActiveCount.setInnerText(activeC);
-		spnFailureCount.setInnerText(failureC);
-	}
-
 }

@@ -50,6 +50,8 @@ public class ProcessDef extends SerializableObj implements Listable{
 	private ArrayList<Listable> usersAndGroups = new ArrayList<Listable>();
 	private int participated;
 	private int inbox;
+	
+	private Integer targetDays;//Days
 
 	public ProcessDef() {
 	}
@@ -225,6 +227,14 @@ public class ProcessDef extends SerializableObj implements Listable{
 
 	public void setIconStyle(String iconStyle) {
 		this.iconStyle = iconStyle;
+	}
+
+	public Integer getTargetDays() {
+		return targetDays;
+	}
+
+	public void setTargetDays(Integer targetDays) {
+		this.targetDays = targetDays;
 	}
 
 }

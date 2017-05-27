@@ -1,3 +1,5 @@
+alter table adtrigger alter column script type text;
+
 CREATE TABLE buser (
     id bigint NOT NULL,
     created timestamp without time zone,

@@ -90,11 +90,6 @@
 										Processes</a>
 								</li>
 								<li>
-									<a href="#/dashboards" id="dashboards">
-									<i class="icon-dashboard"></i>
-									Dashboards</a>
-								</li>
-								<li>
 									<a href="#/messages" id="messages">
 									<i class="icon-globe"></i>
 									Messages</a>
