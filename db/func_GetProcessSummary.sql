@@ -34,6 +34,9 @@ BEGIN
 		(select p1.processId, p1.targetDays from processdefmodel p1) as targets 
 		on (targets.processId=base1.processId) 
 		inner join 
+		(select d.name, d.processid, d.refId from processdefmodel d) as processes 
+		on (processes.processid = base1.processId);
+		left join 
 		(select targets.processId, count(*) overdue from (
 		select l.processId, fun_CalcWorkdays(cast(start_date as Date),cast(end_date as Date)) days, p.targetDays from processinstancelog l 
 		inner join processdefmodel p on l.processId=p.processId 
@@ -41,8 +44,6 @@ BEGIN
 		where targets.days > targets.targetDays 
 		group by targets.processId) as overdue
 		on (overdue.processId=base1.processId) 
-		inner join 
-		(select d.name, d.processid, d.refId from processdefmodel d) as processes 
-		on (processes.processid = base1.processId);
+		
 END;
 $$ LANGUAGE plpgsql;
