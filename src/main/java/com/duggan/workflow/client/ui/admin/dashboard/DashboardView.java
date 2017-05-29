@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
@@ -65,6 +66,15 @@ public class DashboardView extends ViewImpl implements
 	public void setProcessTrendsData(ArrayList<ProcessTrend> startTrend,
 			ArrayList<ProcessTrend> completionTrend) {
 		drilldownDashboard.setTrendsData(startTrend, completionTrend);
+	}
+
+	@Override
+	public void setDates(String processRefId, Date startDate, Date endDate) {
+		if(processRefId==null){
+			baseDashboard.setDates(startDate, endDate);
+		}else{
+			drilldownDashboard.setDates(startDate, endDate);
+		}
 	}
 	
 }

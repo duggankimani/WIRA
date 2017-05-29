@@ -6,9 +6,12 @@ import java.util.Date;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.TabDataExt;
+import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.duggan.workflow.shared.model.dashboard.ProcessTrend;
@@ -20,6 +23,7 @@ import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetDashboardDataResponse;
 import com.duggan.workflow.shared.responses.GetDashboardProcessTrendsResponse;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -35,7 +39,8 @@ import com.gwtplatform.mvp.client.proxy.TabContentProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 public class DashboardPresenter extends
-		Presenter<DashboardPresenter.IDashboardView, DashboardPresenter.MyProxy> {
+		Presenter<DashboardPresenter.IDashboardView, DashboardPresenter.MyProxy> 
+implements SearchHandler{
 
 	public interface IDashboardView extends View {
 
@@ -47,6 +52,8 @@ public class DashboardPresenter extends
 
 		void setProcessTrendsData(ArrayList<ProcessTrend> startTrend,
 				ArrayList<ProcessTrend> completionTrend);
+
+		void setDates(String processRefId, Date startDate, Date endDate);
 		
 	}
 	
@@ -81,6 +88,12 @@ public class DashboardPresenter extends
 	public static final String TABLABEL = "Dashboards";
 	
 	@Inject DispatchAsync requestHelper;
+
+	private String processRefId;
+
+	private Date startDate;
+
+	private Date endDate;
 	
 	@Inject
 	public DashboardPresenter(final EventBus eventBus, final IDashboardView view,MyProxy proxy) {
@@ -88,14 +101,35 @@ public class DashboardPresenter extends
 	}
 	
 	@Override
-	public void prepareFromRequest(PlaceRequest request) {
-		String processRefId = request.getParameter("processRefId", null);
-		loadCharts(processRefId);
+	protected void onBind() {
+		addRegisteredHandler(SearchEvent.TYPE, this);
 	}
 	
-	private void loadCharts(final String processRefId) {
-		Date startDate = DateUtils.addDays(new Date(), -365);
-		Date endDate = new Date();
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		String processRefId = request.getParameter("processRefId", null);
+		String start = request.getParameter("start", null);
+		String end = request.getParameter("end", null);
+		if(start!=null){
+			startDate = new Date(Long.parseLong(start));
+		}
+		if(end!=null){
+			endDate = new Date(Long.parseLong(end));
+		}
+
+		loadCharts(processRefId, startDate, endDate);
+	}
+	
+	private void loadCharts(final String processRefId, Date startDate, Date endDate) {
+		this.processRefId = processRefId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		getView().setDates(processRefId,startDate, endDate);
+		
+		if(startDate==null){
+			startDate = DateUtils.addDays(new Date(), -29);
+			endDate = new Date();
+		}
 		
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetDashboardDataRequest(processRefId, startDate, new Date()));
@@ -120,6 +154,14 @@ public class DashboardPresenter extends
 				}
 			}
 		});
+		
+	}
+	
+	@Override
+	public void onSearch(SearchEvent event) {
+		if (this.isVisible()) {
+			loadCharts(processRefId, event.getFilter().getStartDate(), event.getFilter().getEndDate());
+		}
 		
 	}
 }

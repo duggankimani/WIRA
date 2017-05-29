@@ -9,9 +9,14 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="page-title-box">
-						<legend><a href="#/dashboards">Dashboard</a></legend>
-						<h4 class="page-title hide">Dashboard</h4>
-						<div class="clearfix"></div>
+						<legend style="margin-bottom: 10px;"><a href="#/dashboards">Dashboard</a></legend>
+						<div style="width:240px;margin-bottom: 10px;">
+							<div id="reportrange"  
+						    style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+							    <i class="icon-calendar"></i>&nbsp;
+							    <span></span> <b class="caret"></b>
+							</div>    
+						</div>
 					</div>
 				</div>
 			</div>
@@ -27,7 +32,7 @@
 								class="m-0 text-uppercase text-white font-600 font-secondary text-overflow"
 								title="Statistics">Total Requests</p>
 							<h2 class="text-white">
-								<span data-plugin="counterup" ui:field="spnTotal">3000</span>
+								<span data-plugin="counterup" ui:field="spnTotal"></span>
 								<small>
 									<i class="icon-arrow-up text-white"></i>
 								</small>
@@ -49,13 +54,13 @@
 								class="m-0 text-white text-uppercase font-600 font-secondary text-overflow"
 								title="User Today">Completed</p>
 							<h2 class="text-white">
-								<span data-plugin="counterup" ui:field="spnCompleted">2741</span>
+								<span data-plugin="counterup" ui:field="spnCompleted"></span>
 								<small>
 									<i class="icon-arrow-up text-white"></i>
 								</small>
 							</h2>
 							<p class="text-white m-0">
-								<b ui:field="spnCompletedPerc">75%</b>
+								<b ui:field="spnCompletedPerc"></b>
 								of total cases
 							</p>
 						</div>
@@ -71,13 +76,13 @@
 								class="m-0 text-uppercase text-white font-600 font-secondary text-overflow"
 								title="Request Per Minute">In Progress</p>
 							<h2 class="text-white">
-								<span data-plugin="counterup" ui:field="spnInProgress">1000</span>
+								<span data-plugin="counterup" ui:field="spnInProgress"></span>
 								<small>
 									<i class="icon-arrow-up text-white"></i>
 								</small>
 							</h2>
 							<p class="text-white m-0">
-								<b ui:field="spnInProgressPerc">30%</b>
+								<b ui:field="spnInProgressPerc"></b>
 								of total cases
 							</p>
 						</div>
@@ -93,13 +98,13 @@
 								class="m-0 text-white text-uppercase font-600 font-secondary text-overflow"
 								title="New Downloads">Overdue</p>
 							<h2 class="text-white">
-								<span data-plugin="counterup" ui:field="spnOverdue">854</span>
+								<span data-plugin="counterup" ui:field="spnOverdue"></span>
 								<small>
 									<i class="icon-arrow-up text-white"></i>
 								</small>
 							</h2>
 							<p class="text-white m-0">
-								<b ui:field="spnOverduePerc">10%</b>
+								<b ui:field="spnOverduePerc"></b>
 								of total cases
 							</p>
 						</div>

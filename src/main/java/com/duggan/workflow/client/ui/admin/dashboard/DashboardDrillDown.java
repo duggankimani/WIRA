@@ -1,10 +1,14 @@
 package com.duggan.workflow.client.ui.admin.dashboard;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.ui.admin.dashboard.Dashboard.DataPropertyAccess;
+import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.util.NumberUtils;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.model.SearchFilter;
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
@@ -12,6 +16,7 @@ import com.duggan.workflow.shared.model.dashboard.ProcessTrend;
 import com.duggan.workflow.shared.model.dashboard.ProcessesSummary;
 import com.duggan.workflow.shared.model.dashboard.TaskAging;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsDate;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -85,6 +90,8 @@ public class DashboardDrillDown extends Composite {
 	
 	@UiField HTMLPanel panelChart;
 
+	private String processRefId;
+
 	private static final DataPropertyAccess dataAccess = GWT
 			.create(DataPropertyAccess.class);
 
@@ -115,7 +122,7 @@ public class DashboardDrillDown extends Composite {
 			String name = processesSummary.getName();
 			int overdue = processesSummary.getOverdue();
 			String processId = processesSummary.getProcessId();
-			String processRefId = processesSummary.getRefId();
+			processRefId = processesSummary.getRefId();
 			int target = processesSummary.getTargetDays();
 			int total = inProgress + completed;
 			Double completedPerc = (new Double(completed) / total) * 100;
@@ -285,6 +292,8 @@ public class DashboardDrillDown extends Composite {
 	
 	ListStore<Data> lineStore = new ListStore<Data>(dataAccess.nameKey());
 
+	private SearchFilter filter;
+
 	public Chart<Data> createLineGraph(int maxCount) {
 		
 		NumericAxis<Data> axis = new NumericAxis<Data>();
@@ -396,4 +405,105 @@ public class DashboardDrillDown extends Composite {
 		return lineChart;
 	}
 
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		initDatePicker(getElement());
+	}
+
+	public native void initDatePicker(Element parent)/*-{
+		var instance = this;
+		
+		var start = instance.@com.duggan.workflow.client.ui.admin.dashboard.DashboardDrillDown::getStart()();
+		if(start==null){
+			start = $wnd.moment().subtract(29, 'days');
+		}else{
+			start = $wnd.moment(new Date(start));
+		}
+		
+		var end = instance.@com.duggan.workflow.client.ui.admin.dashboard.DashboardDrillDown::getEnd()();
+		if(end == null){
+			end = $wnd.moment();
+		}else{
+			end = $wnd.moment(new Date(end));
+		}
+	
+		function valueChanged(start, end, fireSearchEvent){
+			$wnd.jQuery(parent).find('#range-drilldown span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	        
+	        start = new $wnd.Date(start);
+	        end = new $wnd.Date(end);
+	        instance.@com.duggan.workflow.client.ui.admin.dashboard.DashboardDrillDown::onDateChange(Lcom/google/gwt/core/client/JsDate;Lcom/google/gwt/core/client/JsDate;Ljava/lang/Boolean;)(start, end, @java.lang.Boolean::valueOf(Z)(fireSearchEvent));
+		}
+		
+	    function cb(start, end) {
+	        valueChanged(start, end, true);
+	    }
+	
+	    var daterange = $wnd.jQuery(parent).find('#range-drilldown').daterangepicker({
+	    	showDropdowns: true,
+	    	alwaysShowCalendars: true,
+	    	format: 'YYYY-MM-DD',
+	        startDate: start,
+	        endDate: end,
+	        parentEl: 'range-drilldown',
+	        ranges: {
+	           'Today': [$wnd.moment(), $wnd.moment()],
+	           'Yesterday': [$wnd.moment().subtract(1, 'days'), $wnd.moment().subtract(1, 'days')],
+	           'Last 7 Days': [$wnd.moment().subtract(6, 'days'), $wnd.moment()],
+	           'Last 30 Days': [$wnd.moment().subtract(29, 'days'), $wnd.moment()],
+	           'This Month': [$wnd.moment().startOf('month'), $wnd.moment().endOf('month')],
+	           'Last Month': [$wnd.moment().subtract(1, 'month').startOf('month'), $wnd.moment().subtract(1, 'month').endOf('month')]
+	        }
+	    }, cb);
+	
+	    valueChanged(start, end, false);
+	}-*/;
+
+	public void onDateChange(JsDate jsStartDate, JsDate jsEndDate, Boolean fireSearchEvent){
+		
+		if(jsStartDate!=null && jsEndDate!=null){
+			Date startDate = new Date(new Double(jsStartDate.getTime()).longValue());
+			Date endDate = new Date(new Double(jsEndDate.getTime()).longValue());
+			filter = new SearchFilter();
+			filter.setStartDate(startDate);
+			filter.setEndDate(endDate);
+			if(fireSearchEvent){
+				AppContext.fireEvent(new SearchEvent(filter));
+			}
+			
+		}
+	}
+
+	public String getStart(){
+		if(filter==null){
+			return null;
+		}
+		return filter.getStartDate().getTime()+"";
+	}
+	
+	public String getEnd(){
+		if(filter==null){
+			return null;
+		}
+		return filter.getEndDate().getTime()+"";
+	}
+	
+	public void setDates(Date startDate, Date endDate) {
+		if(startDate==null || endDate==null){
+			return;
+		}
+		if(filter!=null){
+			filter.setStartDate(startDate);
+			filter.setEndDate(endDate);
+		}
+		
+		setJsDates(getElement(), JsDate.create(startDate.getTime()), JsDate.create(endDate.getTime()));
+	}
+	
+	private native void setJsDates(Element parent, JsDate start, JsDate end)/*-{
+		start = $wnd.moment(start);
+		end = $wnd.moment(end);
+		$wnd.jQuery(parent).find('#range-drilldown span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	}-*/;
 }

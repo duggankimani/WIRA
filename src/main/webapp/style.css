@@ -1179,3 +1179,8 @@ blockquote {
   }
 }
 /* Large devices (large desktops, 1200px and up) */
+
+
+.page-title-box .reportrange .daterangepicker .calendar{
+	max-width:none;
+}

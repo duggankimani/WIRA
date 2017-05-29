@@ -1047,3 +1047,11 @@ table.flextable-grid .GWTUpld form{
 .generic-doc-title .doc-pending{
 	color: #1e7ab8;
 }
+
+div.daterangepicker > .calendar{
+	max-width:318px;
+}
+
+div.daterangepicker > .calendar > .daterangepicker_input .input-mini{
+	width:90%;
+}
