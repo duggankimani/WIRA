@@ -29,7 +29,7 @@ public class GetUserRequestActionHandler extends
 		if(action.getUserId()!=null){
 			 user= LoginHelper.getHelper().getUser(action.getUserId(), true);
 		}else if(action.getRefId()!=null){
-			user = new UserDaoHelper().get((User)DB.getUserGroupDao().findByRefId(action.getRefId(), User.class), true);
+			user = new UserDaoHelper().get((User)DB.getUserDao().findByRefId(action.getRefId(), User.class), true);
 		}
 		
 		GetUserRequestResult result = (GetUserRequestResult) actionResult;

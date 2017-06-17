@@ -64,11 +64,11 @@ public class TestJsonType {
 		boolean exists = false;
 		
 		if(actorId!=null){
-			exists = DB.getUserGroupDao().userExists(actorId.toString());
+			exists = DB.getUserDao().userExists(actorId.toString());
 		}
 		
 		if(groupId!=null){
-			exists = DB.getUserGroupDao().usersExist(groupId.toString());
+			exists = DB.getUserDao().usersExist(groupId.toString());
 		}
 		
 		Assert.assertTrue(exists);

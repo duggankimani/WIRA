@@ -66,9 +66,6 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			execute(action, result, execContext);
 			return result;
 		}
-				
-		SessionHelper.setHttpRequest(request.get());
-		SessionHelper.setHttpResponse(response.get());
 	
 		boolean hasError= false;
 		Throwable throwable=null;
@@ -90,7 +87,6 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 		}finally {
 			DB.closeSession();		
 			logErrors(hasError, throwable, result);
-			SessionHelper.afterRequest();
 		}
 		
 		postExecute((BaseResponse) result);

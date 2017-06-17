@@ -10,20 +10,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.commands.SendMailCommand;
 
 import com.duggan.workflow.server.ServerConstants;
-import com.duggan.workflow.server.dao.UserGroupDaoImpl;
-import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
+import com.duggan.workflow.server.dao.UserDaoImpl;
 import com.duggan.workflow.server.dao.model.Activation;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.PermissionModel;
@@ -31,17 +35,15 @@ import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.server.helper.session.SessionHelper;
-import com.duggan.workflow.shared.model.settings.SETTINGNAME;
-import com.duggan.workflow.shared.model.settings.Setting;
+import com.duggan.workflow.server.security.authenticator.AuthenticationException;
 import com.wira.commons.shared.models.CurrentUserDto;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.LogInAction;
+import com.wira.commons.shared.models.LogInResult;
 import com.wira.commons.shared.models.PermissionPOJO;
-import com.wira.commons.shared.models.REPORTVIEWIMPL;
 import com.wira.commons.shared.models.UserGroup;
-import com.wira.login.shared.request.LoginRequest;
-import com.wira.login.shared.response.LoginRequestResult;
+import com.wira.login.shared.model.ActionType;
 
 public class UserDaoHelper implements LoginIntf {
 
@@ -55,7 +57,7 @@ public class UserDaoHelper implements LoginIntf {
 	@Override
 	public boolean login(String username, String password) {
 
-		User user = DB.getUserGroupDao().getUser(username);
+		User user = DB.getUserDao().getUser(username);
 
 		return user != null && user.getPassword().equals(password);
 	}
@@ -64,7 +66,7 @@ public class UserDaoHelper implements LoginIntf {
 	public List<HTUser> retrieveUsers() {
 		List<HTUser> ht_users = new ArrayList<>();
 
-		List<User> users = DB.getUserGroupDao().getAllUsers(null);
+		List<User> users = DB.getUserDao().getAllUsers(null);
 
 		if (users != null)
 			for (User user : users) {
@@ -116,7 +118,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public HTUser getUser(String userId, boolean loadGroups) {
-		User user = DB.getUserGroupDao().getUser(userId);
+		User user = DB.getUserDao().getUser(userId);
 
 		if (user != null) {
 			return get(user, loadGroups);
@@ -127,7 +129,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public List<UserGroup> retrieveGroups() {
-		List<Group> groups = DB.getUserGroupDao().getAllGroups(null);
+		List<Group> groups = DB.getUserDao().getAllGroups(null);
 
 		List<UserGroup> userGroups = new ArrayList<>();
 		if (groups != null) {
@@ -159,7 +161,7 @@ public class UserDaoHelper implements LoginIntf {
 
 		boolean isNew = htuser.getId() == null;
 
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 
 		User user = new User();
 
@@ -172,13 +174,12 @@ public class UserDaoHelper implements LoginIntf {
 		user.setEmail(htuser.getEmail());
 		user.setFirstName(htuser.getName());
 		user.setLastName(htuser.getSurname());
-		user.setPassword(htuser.getPassword());
 		user.setUserId(htuser.getUserId());
 		user.setGroups(get(htuser.getGroups()));
 		user.setRefreshToken(htuser.getRefreshToken());
 		user.setPictureUrl(htuser.getPictureUrl());
 
-		dao.saveUser(user);
+		dao.saveUser(user, false);
 
 		htuser = get(user);
 		if (isSendActivationEmail) {
@@ -209,7 +210,7 @@ public class UserDaoHelper implements LoginIntf {
 
 		Group group = new Group();
 		if (usergroup.getId() != null) {
-			UserGroupDaoImpl dao = DB.getUserGroupDao();
+			UserDaoImpl dao = DB.getUserDao();
 			group = dao.getGroup(usergroup.getName());
 		}
 		group.setFullName(usergroup.getFullName());
@@ -224,16 +225,16 @@ public class UserDaoHelper implements LoginIntf {
 
 		assert htuser.getId() != null;
 
-		User user = DB.getUserGroupDao().getUser(htuser.getId());
+		User user = DB.getUserDao().getUser(htuser.getId());
 
-		DB.getUserGroupDao().delete(user);
+		DB.getUserDao().delete(user);
 
 		return true;
 	}
 
 	@Override
 	public List<UserGroup> getGroupsForUser(String userId) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 		Collection<Group> groups = dao.getAllGroupsByUserId(userId);
 
 		List<UserGroup> userGroups = new ArrayList<>();
@@ -248,7 +249,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public List<HTUser> getUsersForGroup(String groupName) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 		Collection<User> users = dao.getAllUsersByGroupId(groupName);
 
 		List<HTUser> groupUsers = new ArrayList<>();
@@ -263,7 +264,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public boolean existsUser(String userId) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 		User user = dao.getUser(userId);
 
 		return user != null;
@@ -271,7 +272,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public UserGroup createGroup(UserGroup usergroup) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 		Group group = dao.getGroup(usergroup.getName());
 
 		if (group == null) {
@@ -296,7 +297,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public boolean deleteGroup(UserGroup userGroup) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 
 		Group group = dao.getGroup(userGroup.getName());
 
@@ -311,7 +312,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public List<HTUser> getAllUsers(String searchTerm) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 		List<User> users = dao.getAllUsers(searchTerm);
 
 		List<HTUser> htusers = new ArrayList<>();
@@ -326,14 +327,14 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public List<UserGroup> getAllGroups(String searchTerm) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 
 		return getFromDb(dao.getAllGroups(searchTerm));
 	}
 
 	@Override
 	public UserGroup getGroupById(String groupId) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 
 		return get(dao.getGroup(groupId));
 	}
@@ -354,16 +355,16 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public boolean updatePassword(String username, String password) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		UserDaoImpl dao = DB.getUserDao();
 		User user = dao.getUser(username);
 		user.setPassword(password);
-		dao.save(user);
+		dao.changePassword(user);
 
 		return true;
 	}
 
 	public HTUser getUserByEmail(String email) {
-		User user = DB.getUserGroupDao().getUserByEmail(email);
+		User user = DB.getUserDao().getUserByEmail(email);
 		if (user == null) {
 			return null;
 		}
@@ -374,7 +375,7 @@ public class UserDaoHelper implements LoginIntf {
 	private void sendActivationEmail(User user) {
 		String subject = "Welcome to WIRA BPM!";
 		Activation act = new Activation(user.getRefId());
-		DB.getUserGroupDao().save(act);
+		DB.getUserDao().save(act);
 		
 		String link = SessionHelper.getApplicationPath()
 				+ "/account.html#/activateacc/"+act.getRefId()+"/"+ user.getRefId() + "/default";
@@ -391,7 +392,7 @@ public class UserDaoHelper implements LoginIntf {
 			List<HTUser> recipients = Arrays.asList(htuser);
 			sendMail(subject, recipients, body);
 		} catch (Exception e) {
-			logger.warning("Activation Email for " + user.getEmail()
+			logger.warn("Activation Email for " + user.getEmail()
 					+ " failed. Cause: " + e.getMessage());
 			e.printStackTrace();
 		}
@@ -415,7 +416,7 @@ public class UserDaoHelper implements LoginIntf {
 	public void sendAccountResetEmail(HTUser user) {
 		
 		Activation act = new Activation(user.getRefId());
-		DB.getUserGroupDao().save(act);
+		DB.getUserDao().save(act);
 
 		String subject = "WIRA Workflow Password Reset";
 		String link = SessionHelper.getApplicationPath()
@@ -436,7 +437,6 @@ public class UserDaoHelper implements LoginIntf {
 		params.put("userEmail", user.getEmail());
 		params.put("ResetUrl", link);
 		params.put("fullNames", user.getFullName());
-		params.put("fullNames", user.getFullName());
 
 		try {
 			body = IOUtils.toString(UserDaoHelper.class.getClassLoader()
@@ -451,97 +451,90 @@ public class UserDaoHelper implements LoginIntf {
 			new CustomEmailHandler()
 					.sendMail(subject, body, recipients, params);
 		} catch (Exception e) {
-			logger.warning("Activation Email for " + user.getEmail()
+			logger.warn("Activation Email for " + user.getEmail()
 					+ " failed. Cause: " + e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
 
-	public void login(LoginRequest action, LoginRequestResult result) {
-		execLogin(action, result);
+	public void execLogin(LogInAction action, LogInResult result) {
+		//Example using most common scenario of username/password pair:
+		UsernamePasswordToken token = new UsernamePasswordToken(action.getUsername(), action.getPassword());
+		//"Remember Me" built-in: 
+		token.setRememberMe(false);
 		
-		if(result.getCurrentUserDto().isLoggedIn()){
-			//Set Context Info
-			result.setVersion(VersionManager.getVersion());
-			
-			//Permissions
-			HTUser user = result.getCurrentUserDto().getUser();
-			user.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForUser(user.getUserId()));
-			result.getCurrentUserDto().setUser(user);
-			
-			Setting setting = SettingsDaoHelper.getSetting(SETTINGNAME.ORGNAME);
-			if(setting!=null){
-				Object value = setting.getValue().getValue();
-				result.setOrganizationName(value==null? null: value.toString());
-			}
-					
-			Setting reportView = SettingsDaoHelper.getSetting(SETTINGNAME.REPORT_VIEW_IMPL);
-			if(reportView!=null && reportView.getValue()!=null && reportView.getValue().getValue()!=null){
-				result.setReportViewImpl(REPORTVIEWIMPL.valueOf(reportView.getValue().getValue().toString()));
-			}
-		}
+		wrapResult(execLogin(token),result);
 	}
 	
-
-	public void execLogin(LoginRequest action, LoginRequestResult result) {
-		HTUser userDto = null;
-		boolean isLoggedIn = true;
-
-		switch (action.getActionType()){
-		case VIA_COOKIE:
-			logger.info("ActionType VIA_COOKIE LogInHandlerexecut(): loggedInCookie=" + action.getLoggedInCookie());
-			userDto = getUserFromCookie(action.getLoggedInCookie());
-			break;
-		case VIA_CREDENTIALS:
-			userDto = getUserFromCredentials(action.getUsername(),
-					action.getPassword());
-			break;
-		case VIA_GOOGLE_OAUTH:
-			userDto = initGoogleAuthorizationCodeFlow(action.getUser());
-			break;
+	public boolean execLogin(AuthenticationToken token) {
+		Subject currentUser = SecurityUtils.getSubject();
+		
+		try{
+			currentUser.login(token);
+		}catch(Exception e){
+			logger.debug(e.getMessage());
 		}
+		
+		return currentUser.isAuthenticated() || currentUser.isRemembered();
+	}
+	
+	public void wrapResult(boolean loggedIn, LogInResult result) {
+		Subject currentUser = SecurityUtils.getSubject();
+		if(loggedIn){
+			onAfterLogin(loggedIn);
+		}else{
+			resetCookies();
+		}
+		
+		result.setValues(result.getActionType(), new CurrentUserDto(loggedIn, SessionHelper.getCurrentUser()), null);
+	}
+	
+	public void onAfterLogin(boolean isLoggedIn) {
 
-		String contextPath = getContextPath();
-		logger.info("#Exec Login: Setting context path = " + contextPath);
-
-		isLoggedIn = userDto != null;
-
-		String loggedInCookie = "";
+		HttpSession session = SessionHelper.getHttpRequest().getSession(false);
 		if (isLoggedIn) {
-			HttpSession session = SessionHelper.getHttpRequest().getSession(true);
-			loggedInCookie = createSessionCookie(action.getLoggedInCookie(),
-					userDto);
+			resetCookies();
+			HTUser userDto = SessionHelper.getCurrentUser();
+			String loggedInCookie = DB.getUserSessionDao().createSessionCookie(
+					null, userDto);
 			session.setAttribute(ServerConstants.AUTHENTICATIONCOOKIE,
 					loggedInCookie);
-			Cookie xsrfCookie = new Cookie(ServerConstants.AUTHENTICATIONCOOKIE,
-					loggedInCookie);
-//			xsrfCookie.setHttpOnly(false);// http only
-			xsrfCookie.setPath(contextPath);
+			Cookie xsrfCookie = new Cookie(
+					ServerConstants.AUTHENTICATIONCOOKIE, loggedInCookie);
+			// xsrfCookie.setHttpOnly(false);// http only
+			xsrfCookie.setPath(SessionHelper.getApplicationPath());
 			xsrfCookie.setMaxAge(3600 * 24 * 30); // Time in seconds (30 days)
 			xsrfCookie.setSecure(false); // http(s) cookie
-			
 			SessionHelper.getHttpResponse().addCookie(xsrfCookie);
-		} else {
-			// reset headers
-			resetSession();
 		}
-
-
-		CurrentUserDto currentUserDto = new CurrentUserDto(isLoggedIn, userDto);
-
-		logger.info("LogInHandlerexecut(): actiontype="
-				+ action.getActionType());
-		logger.info("LogInHandlerexecut(): currentUserDto=" + currentUserDto);
-		logger.info("LogInHandlerexecut(): loggedInCookie=" + loggedInCookie);
-
-		assert action.getActionType() == null;
-
-		result.setValues(action.getActionType(), currentUserDto, loggedInCookie);
 	}
 
-	private HTUser initGoogleAuthorizationCodeFlow(HTUser user) {
-		HTUser userDto = createUser(user,false);
+	public void logout() {
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		resetCookies();
+	}
+
+	private HTUser getUserFromCookie(String loggedInCookie) {
+		HTUser userDto = null;
+		
+		HttpServletRequest request = SessionHelper.getHttpRequest();
+		try {
+			if (request.getSession(false) != null) {
+				Object authCookie = request.getSession(false)
+						.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
+				if (authCookie == null || !authCookie.equals(loggedInCookie)) {
+					return null;
+				}
+
+				userDto = (HTUser) request.getSession(false)
+						.getAttribute(ServerConstants.USER);
+			}
+		} catch (AuthenticationException e) {
+			// isLoggedIn = false;
+		}
+
 		return userDto;
 	}
 
@@ -557,12 +550,7 @@ public class UserDaoHelper implements LoginIntf {
 		return contextPath;
 	}
 	
-	public void resetSession() {
-
-		HttpSession session = SessionHelper.getHttpRequest().getSession(false);
-		if (session != null) {
-			session.invalidate();
-		}
+	public void resetCookies() {
 		SessionHelper.getHttpResponse().setHeader("Set-Cookie",
 				ServerConstants.AUTHENTICATIONCOOKIE + "=deleted; path="
 						+ getContextPath() + "; "
@@ -582,41 +570,4 @@ public class UserDaoHelper implements LoginIntf {
 		
 		return sessionId.toString();
 	}
-
-	private HTUser getUserFromCookie(String loggedInCookie) {
-
-		HTUser user = null;
-		HttpSession session = SessionHelper.getHttpRequest().getSession(false);
-		if(session==null){
-			logger.info("getUserFromCookie(cookie="+loggedInCookie+") Session is null!!"); 
-			return null;
-		}
-		
-		Object sessionId = session
-				.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
-		Object sessionUser = session.getAttribute(ServerConstants.USER);
-
-		boolean isValid = (session != null && sessionUser != null && 
-				sessionId != null && sessionId.equals(loggedInCookie));
-
-		if (isValid) {
-			user = (HTUser) sessionUser;
-			user.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(user.getUserId()));
-		}
-		
-		logger.info("getUserFromCookie(cookie="+loggedInCookie+") Server sessionId= "+sessionId+", validity = "+isValid+", User = "+user); 
-
-		return user;
-	}
-
-	private HTUser getUserFromCredentials(String username, String password) {
-		HTUser user = null;
-		boolean loggedIn = LoginHelper.get().login(username, password);
-		if (loggedIn) {
-			user = LoginHelper.get().getUser(username, true);
-		}
-
-		return user;
-	}
-
 }

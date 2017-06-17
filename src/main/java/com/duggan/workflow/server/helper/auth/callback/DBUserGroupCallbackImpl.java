@@ -19,7 +19,7 @@ public class DBUserGroupCallbackImpl implements UserGroupCallback{
 	@Override
 	public boolean existsUser(String userId) {
 		
-		User user = DB.getUserGroupDao().getUser(userId);
+		User user = DB.getUserDao().getUser(userId);
 		
 		assert user!=null;
 		
@@ -30,7 +30,7 @@ public class DBUserGroupCallbackImpl implements UserGroupCallback{
 	@Override
 	public boolean existsGroup(String groupId) {
 		
-		Group group = DB.getUserGroupDao().getGroup(groupId);
+		Group group = DB.getUserDao().getGroup(groupId);
 		
 		assert group!=null;
 		
@@ -43,7 +43,7 @@ public class DBUserGroupCallbackImpl implements UserGroupCallback{
 		
 		List<String> groupNames = new ArrayList<>();
 		
-		Collection<Group> groups = DB.getUserGroupDao().getAllGroupsByUserId(userId);
+		Collection<Group> groups = DB.getUserDao().getAllGroupsByUserId(userId);
 		
 		if(groups!=null){
 			Iterator<Group> iter = groups.iterator();

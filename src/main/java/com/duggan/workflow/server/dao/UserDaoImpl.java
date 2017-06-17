@@ -11,143 +11,156 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
+
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.wira.commons.shared.models.HTUser;
 
-public class UserGroupDaoImpl extends BaseDaoImpl{
+public class UserDaoImpl extends BaseDaoImpl {
 
 	Properties dbProperties = new Properties();
-	
-	public UserGroupDaoImpl(EntityManager em){
+
+	public UserDaoImpl(EntityManager em) {
 		super(em);
 	}
-	
-	public User getUser(String userId){
+
+	public User getUser(String userId) {
 		Query query = em.createNamedQuery("User.getUserByUserId");
 		query.setParameter("userId", userId);
-		Object user= null;
-		try{
+		Object user = null;
+		try {
 			user = query.getSingleResult();
-			return (User)user;
-		}catch(NoResultException e){
-			
+			return (User) user;
+		} catch (NoResultException e) {
+
 		}
-		
+
 		return null;
 	}
-	
-	public Group getGroup(String groupId){
+
+	public Group getGroup(String groupId) {
 		Query query = em.createNamedQuery("Group.getGroupByGroupId");
 		query.setParameter("name", groupId);
-		
-		Object group =null;
-		
-		try{
-			group  = query.getSingleResult();
-		}catch(NoResultException e){}
-		
-		return (Group)group;
+
+		Object group = null;
+
+		try {
+			group = query.getSingleResult();
+		} catch (NoResultException e) {
+		}
+
+		return (Group) group;
 	}
-	
-	public void saveGroup(Group group){
+
+	public void saveGroup(Group group) {
 		save(group);
 	}
-	
-	public void saveUser(User user){
+
+	public void saveUser(User user, boolean updatePassword) {
+		if (updatePassword) {
+			// Encrypt passwords for new entries only, not on user info update
+			user.setPassword(encrypt(user.getPassword()));
+		}
 		List<Group> groups = new ArrayList<>();
 		groups.addAll(user.getGroups());
-		
+
 		user.setGroups(null);
+		
 		save(user);
-				
+
 		user.setGroups(groups);
-		em.merge(user);		
+		em.merge(user);
+	}
+	
+	public void changePassword(User user) {
+		user.setPassword(encrypt(user.getPassword()));
+		save(user);
+	}
+
+	public String encrypt(String password) {
+		return new Sha256Hash(password).toHex();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers(String searchTerm) {
-			
+
 		StringBuffer jpql = new StringBuffer("FROM BUser u ");
-		
+
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(searchTerm!=null){
+		if (searchTerm != null) {
 			jpql.append(" where (lower(u.userId) like :searchTerm or "
 					+ "lower(u.lastName) like :searchTerm or "
 					+ "lower(u.firstName) like :searchTerm or "
 					+ "lower(u.email) like :searchTerm) and u.isActive=1 ");
-			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+			params.put("searchTerm", "%" + searchTerm.toLowerCase() + "%");
 		}
 		jpql.append(" order by u.lastName, u.firstName");
-		
+
 		Query query = em.createQuery(jpql.toString());
-		for(String key: params.keySet()){
+		for (String key : params.keySet()) {
 			query.setParameter(key, params.get(key));
 		}
-		
+
 		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Group> getAllGroups(String searchTerm) {
-		
+
 		StringBuffer jpql = new StringBuffer("FROM BGroup b ");
-		
+
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(searchTerm!=null){
+		if (searchTerm != null) {
 			jpql.append(" where (lower(b.name) like :searchTerm "
 					+ "or lower(b.fullName) like :searchTerm) and b.isActive=1 ");
-			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+			params.put("searchTerm", "%" + searchTerm.toLowerCase() + "%");
 		}
 		jpql.append(" order by b.fullName");
-		
+
 		Query query = em.createQuery(jpql.toString());
-		for(String key: params.keySet()){
+		for (String key : params.keySet()) {
 			query.setParameter(key, params.get(key));
 		}
-		
+
 		return query.getResultList();
 	}
 
 	public User getUser(Long id) {
-		
+
 		return em.find(User.class, id);
 	}
 
 	public Collection<Group> getAllGroupsByUserId(String userId) {
-		
+
 		User user = getUser(userId);
-		
-		assert user!=null;
-		
+
+		assert user != null;
+
 		return user.getGroups();
 	}
-	
-	
 
 	public Collection<User> getAllUsersByGroupId(String groupId) {
 		Group group = getGroup(groupId);
-		if(group==null){
+		if (group == null) {
 			return new ArrayList<>();
 		}
 		return group.getMembers();
 	}
 
 	public User getUserByEmail(String email) {
-		StringBuffer jpql = new StringBuffer("FROM BUser u where u.email=:email");
-		
-		return getSingleResultOrNull(getEntityManager()
-				.createQuery(jpql.toString())
-				.setParameter("email", email)
-				);
+		StringBuffer jpql = new StringBuffer(
+				"FROM BUser u where u.email=:email");
+
+		return getSingleResultOrNull(getEntityManager().createQuery(
+				jpql.toString()).setParameter("email", email));
 	}
 
 	public boolean userExists(String actorId) {
 		String sql = "select count(*) from buser where userid=:userId";
 		Number count = getSingleResultOrNull(getEntityManager()
-				.createNativeQuery(sql)
-				.setParameter("userId", actorId));
-		return count.intValue()>0;
+				.createNativeQuery(sql).setParameter("userId", actorId));
+		return count.intValue() > 0;
 	}
 
 	public boolean usersExist(String groupId) {
@@ -155,56 +168,73 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 				+ "inner join usergroup ug on (u.id=ug.userid) "
 				+ "inner join bgroup g on (g.id=ug.groupid) "
 				+ "where g.name=:groupId";
-		
+
 		Number count = getSingleResultOrNull(getEntityManager()
-				.createNativeQuery(sql)
-				.setParameter("groupId", groupId));
-		
-		return count.intValue()>0;
+				.createNativeQuery(sql).setParameter("groupId", groupId));
+
+		return count.intValue() > 0;
 	}
 
 	public List<String> getGroupsForUser(String userId) {
 		String hql = "select name from bgroup g "
 				+ "inner join usergroup ug on (g.id=ug.groupid) "
 				+ "inner join buser u on (u.id=ug.userid) where u.userid=:userId";
-		return getResultList(em.createNativeQuery(hql).setParameter("userId", userId));
+		return getResultList(em.createNativeQuery(hql).setParameter("userId",
+				userId));
 	}
 
 	public boolean isValid(String activationRefId, String userRefId) {
-		Number value = getSingleResultOrNull(
-				em.createNativeQuery("select id from activation where refId=:refId "
-						+ "and userRefId=:userRefId "
-						+ "and isActive=1")
+		Number value = getSingleResultOrNull(em
+				.createNativeQuery(
+						"select id from activation where refId=:refId "
+								+ "and userRefId=:userRefId "
+								+ "and isActive=1")
 				.setParameter("refId", activationRefId)
 				.setParameter("userRefId", userRefId));
-				
-		return value!=null;
+
+		return value != null;
 	}
 
 	public HTUser getBasicUser(String userRefId) {
-		
-		String sql = "select refid,email,firstname,lastname from buser where refId=:refId and isActive=1" ;
-		
+
+		String sql = "select refid,email,firstname,lastname from buser where refId=:refId and isActive=1";
+
 		List<Object[]> row = getResultList(em.createNativeQuery(sql)
 				.setParameter("refId", userRefId));
-		
+
 		HTUser user = new HTUser();
-		if(row.size()==1){
+		if (row.size() == 1) {
 			Object[] arr = row.get(0);
-			int i=0;
+			int i = 0;
 			String refId = arr[i++].toString();
 			String email = arr[i++].toString();
 			String firstName = arr[i++].toString();
 			String lastName = arr[i++].toString();
-			
+
 			user.setRefId(refId);
 			user.setSurname(lastName);
 			user.setName(firstName);
 			user.setEmail(email);
-			
+
 			return user;
 		}
 		return null;
+	}
+
+	public boolean checkEmailExistsAndIsUnique(String email) {
+		String query = "select count(*) from buser where email=:email";
+
+		Number value = getSingleResultOrNull(getEntityManager()
+				.createNativeQuery(query).setParameter("email", email));
+
+		return value.intValue() == 1;// Must be one account with the email
+	}
+
+	public User findUserByEmail(String email) {
+		assert email != null;
+		String query = "from BUser u where u.email=:email";
+		return getSingleResultOrNull(getEntityManager().createQuery(query)
+				.setParameter("email", email));
 	}
 
 }

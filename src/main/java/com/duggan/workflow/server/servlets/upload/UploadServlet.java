@@ -29,9 +29,6 @@ public class UploadServlet extends UploadAction {
 			HttpServletResponse response) throws IOException, ServletException {
 		
 		try{
-			//check session
-			SessionHelper.setHttpRequest(request);
-			
 			DB.beginTransaction();			
 			
 			super.doPost(request, response);	
@@ -42,7 +39,6 @@ public class UploadServlet extends UploadAction {
 			e.printStackTrace();			
 		}finally{
 			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
 		}
 	}
 
@@ -53,7 +49,6 @@ public class UploadServlet extends UploadAction {
 		
 		try{
 			//check session
-			SessionHelper.setHttpRequest(request);
 			DB.beginTransaction();			
 			super.doGet(request, response);			
 			DB.commitTransaction();
@@ -62,7 +57,6 @@ public class UploadServlet extends UploadAction {
 			e.printStackTrace();			
 		}finally{
 			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
 		}
 	}
 	

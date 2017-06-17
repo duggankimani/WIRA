@@ -1,4 +1,4 @@
-package com.duggan.workflow.server.security;
+package com.duggan.workflow.server.security.realm;
 
 import java.io.IOException;
 
@@ -8,13 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.session.SessionHelper;
-
 public abstract class BaseServlet extends HttpServlet {
+
 	/**
 	 * 
 	 */
@@ -46,6 +43,5 @@ public abstract class BaseServlet extends HttpServlet {
 
 	protected abstract void executeRequest(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException;
-
 		
 }

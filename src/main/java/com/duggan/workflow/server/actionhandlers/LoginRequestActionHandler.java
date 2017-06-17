@@ -37,7 +37,7 @@ public class LoginRequestActionHandler extends
 	public void execute(LoginRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		LoginRequestResult result = (LoginRequestResult) actionResult;
-		new UserDaoHelper().login(action,result);
+		//new UserDaoHelper().login(action,result);
 	}
 
 	@Override

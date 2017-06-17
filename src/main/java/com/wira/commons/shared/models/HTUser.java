@@ -22,6 +22,7 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 	private String userId;
 	private String email;
 	private String surname;
+	private String fullName;
 	private String pictureUrl;
 	private boolean isEmailVerified; 
 	private String refreshToken;
@@ -40,6 +41,15 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 	private ArrayList<PermissionPOJO> permissions = new ArrayList<PermissionPOJO>();
 	@XmlTransient
 	private Org org;
+	
+	/**
+	 * Shiro roles
+	 */
+	private ArrayList<String> roles = new ArrayList<String>();
+	/**
+	 * Shiro Permission List
+	 */
+	private ArrayList<String> permissionList = new ArrayList<String>();
 	
 	public HTUser() {
 	}
@@ -249,5 +259,25 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
+	}
+
+	public ArrayList<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(ArrayList<String> roles) {
+		this.roles = roles;
+	}
+
+	public ArrayList<String> getPermissionList() {
+		return permissionList;
+	}
+
+	public void setPermissionList(ArrayList<String> permissionList) {
+		this.permissionList = permissionList;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }

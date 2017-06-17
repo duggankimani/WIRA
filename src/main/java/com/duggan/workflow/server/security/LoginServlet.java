@@ -13,11 +13,17 @@ import org.apache.log4j.Logger;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.wira.commons.shared.models.LogInAction;
+import com.wira.commons.shared.models.LogInResult;
 import com.wira.login.shared.request.LoginRequest;
 import com.wira.login.shared.response.LoginRequestResult;
 
+@Singleton
 public class LoginServlet extends BaseServlet {
 
+	@Inject UserDaoHelper userHelper;
 	/**
 	 * 
 	 */
@@ -43,8 +49,8 @@ public class LoginServlet extends BaseServlet {
 	protected void executeRequest(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		LoginRequest action = null;
-		LoginRequestResult result = new LoginRequestResult();
+		LogInAction action = null;
+		LogInResult result = new LogInResult();
 		
 		String loginMethod = req.getParameter("loginmethod");
 		String authCookie = "";
@@ -54,15 +60,15 @@ public class LoginServlet extends BaseServlet {
 					authCookie= cookie.getValue();
 				}
 			}
-			action = new LoginRequest(authCookie);
+			action = new LogInAction(authCookie);
 		}else{
 
 			String username = req.getParameter("username");
 			String password  = req.getParameter("password");
-			action = new LoginRequest(username, password);
+			action = new LogInAction(username, password);
 		}
 		
-		new UserDaoHelper().execLogin(action, result);
+		userHelper.execLogin(action, result);
 		
 		if(result.getCurrentUserDto()!=null && result.getCurrentUserDto().isLoggedIn()){
 			logger.debug("#LoginServlet redirecting to "+app_page);

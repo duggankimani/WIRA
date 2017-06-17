@@ -4,57 +4,83 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.duggan.workflow.server.ServerConstants;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import com.wira.commons.shared.models.HTUser;
 
 /**
- * A utility class for retrieval and use of 
- * session variables & the HTTPSession
+ * A utility class for retrieval and use of session variables & the HTTPSession
  * 
  * @author duggan
  *
  */
-public class SessionHelper{
+@Singleton
+public class SessionHelper {
 
-	static ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
-	static ThreadLocal<HttpServletResponse> response = new ThreadLocal<>();
-	private static Logger log = Logger.getLogger(SessionHelper.class);
+	@Inject
+	static Provider<HttpServletRequest> request;
 	
+	@Inject
+	static Provider<HttpServletResponse> response;
+
+
+	private static Logger log = LoggerFactory.getLogger(SessionHelper.class);
+
 	/**
 	 * 
 	 * @return User This is the currently logged in user
 	 */
-	public static HTUser getCurrentUser(){
-		if(request.get()==null){
-			//SUPPORTS TESTING - TO BE REMOVED
-			return new HTUser("Administrator", "mdkimani@gmail.com");
-		}
+	public static HTUser getCurrentUser() {
+		Subject subject = SecurityUtils.getSubject();
 		
-		return getCurrentUser(request.get());
-	}
-	
-	public static HTUser getCurrentUser(HttpServletRequest req){
-		
-		
-		HttpSession session = req.getSession(false);
-		if(session==null){
+		if(!(subject.isAuthenticated() || subject.isRemembered())){
 			return null;
 		}
 		
-		if(session.getAttribute(ServerConstants.USER)==null){
-			//return new HTUser("calcacuervo");
-			return null;
-		}
+		PrincipalCollection principals = subject.getPrincipals();
+		HTUser dto = (HTUser) principals.iterator().next();
 		
-		return (HTUser)session.getAttribute(ServerConstants.USER);
+		return dto;
 	}
-	
-	public static String getRemoteIP(){
-		return getHttpRequest()==null? "Not Defined" :getHttpRequest().getRemoteAddr();
+
+	public static String getRemoteIP() {
+		return getHttpRequest() == null ? "Not Defined" : getHttpRequest()
+				.getRemoteAddr();
 	}
-	
+
+	public static String getApplicationPath() {
+		HttpServletRequest request = getHttpRequest();
+		if (request != null) {
+			if(request.getRequestURL()==null){
+				return null;
+			}
+			String requestURL = request.getRequestURL().toString();
+			String servletPath = request.getServletPath();
+			String pathInfo = request.getPathInfo();
+
+			log.debug("# RequestURL = " + requestURL);
+			log.debug("# ServletPath = " + servletPath);
+			log.debug("# Path Info = " + pathInfo);
+			if (pathInfo != null) {
+				requestURL = requestURL.replace(pathInfo, "");
+			}
+			log.debug("# Remove Path Info = " + requestURL);
+			requestURL = requestURL.replace(servletPath, "");
+			log.debug("# Replace ServletPath = " + requestURL);
+
+			return requestURL;
+		}
+
+		return null;
+	}
+
 	public static String generateDocUrl(String docRefId){
 		HttpServletRequest request = getHttpRequest();
 		if(request!=null){
@@ -76,57 +102,25 @@ public class SessionHelper{
 		}
 		return "#";
 	}
-	
-	/**
-	 * This is a utility method to enable retrieval of request from 
-	 * any part of the application
-	 * 
-	 * @param request
-	 */
-	public static void setHttpRequest(HttpServletRequest httprequest){
-		request.set(httprequest);
-	}
-	
-	public static void setHttpResponse(HttpServletResponse httpresponse){
-		response.set(httpresponse);
-	}
-	
-	public static void afterRequest(){
-		request.set(null);
-		response.set(null);
-	}
-	
-	public static HttpServletRequest getHttpRequest(){
+
+	public static HttpServletRequest getHttpRequest() {
 		return request.get();
 	}
 	
-	public static HttpServletResponse getHttpResponse(){
-		return response.get();
-	}
-	
-	public static void throwException(String message){
-		throw new RuntimeException(message);
+	public static String getContextPath() {
+		HttpSession session = request.get().getSession(false);
+		String contextPath = (session).getServletContext().getContextPath();
+
+		if (!contextPath.isEmpty() && !contextPath.equals("/")) {
+			contextPath = (contextPath.startsWith("/") ? "" : "/")
+					+ contextPath + "/";
+		} else {
+			contextPath = "/";
+		}
+		return contextPath;
 	}
 
-	public static String getApplicationPath() {
-		HttpServletRequest request = getHttpRequest();
-		if(request!=null){
-			String requestURL = request.getRequestURL().toString();
-			String servletPath = request.getServletPath();
-			String pathInfo = request.getPathInfo();
-			
-			log.debug("# RequestURL = "+requestURL);
-			log.debug("# ServletPath = "+servletPath);
-			log.debug("# Path Info = "+pathInfo);
-			if(pathInfo!=null){
-				requestURL = requestURL.replace(pathInfo, "");
-			}
-			log.debug("# Remove Path Info = "+requestURL);				
-			requestURL = requestURL.replace(servletPath, "");
-			log.debug("# Replace ServletPath = "+requestURL);
-			
-			return requestURL;
-		}
-		return "#";
+	public static HttpServletResponse getHttpResponse() {
+		return response.get();
 	}
 }

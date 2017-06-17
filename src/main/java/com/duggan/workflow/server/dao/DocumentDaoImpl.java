@@ -1291,7 +1291,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 			String processId, String userId, List<Status> status,
 			String language, int offset, int length) {
 		
-		List<String> groups = DB.getUserGroupDao().getGroupsForUser(userId);
+		List<String> groups = DB.getUserDao().getGroupsForUser(userId);
 		if(groups.isEmpty()){
 			//DUGGAN - 25/10/2016 - ADDED TO FIX HIBERNATE 'unexpected end of subtree errors' 
 			//CAUSED BY EMPTY IN() STATEMENTS IN THE HQL QUERIES BELOW

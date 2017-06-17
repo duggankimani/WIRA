@@ -39,10 +39,10 @@ public class TestUserGroupCallback {
 		user.setLastName("Cuervo");
 		user.addGroup(group);
 		
-		DB.getUserGroupDao().saveUser(user);
+		DB.getUserDao().saveUser(user, false);
 		Assert.assertNotNull(user.getId());		
 		
-		group = DB.getUserGroupDao().getGroup(groupId);
+		group = DB.getUserDao().getGroup(groupId);
 		
 		Collection<Group> userGroups = user.getGroups();		
 		

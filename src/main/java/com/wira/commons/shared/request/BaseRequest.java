@@ -46,4 +46,9 @@ public class BaseRequest<T extends BaseResponse> extends ActionImpl<T>{
 	public void setEmbedded(boolean isEmbedded) {
 		this.isEmbedded = isEmbedded;
 	}
+	
+	@Override
+	public String getServiceName() {
+		return "/api/"+super.getServiceName();
+	}
 }

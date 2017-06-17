@@ -841,9 +841,9 @@ class BPMSessionManager {
 		
 		boolean actorExists = false;
 		if(actorId!=null){
-			actorExists = DB.getUserGroupDao().userExists(actorId.toString());
+			actorExists = DB.getUserDao().userExists(actorId.toString());
 		}else if(groupId!=null){
-			actorExists = DB.getUserGroupDao().usersExist(groupId.toString());
+			actorExists = DB.getUserDao().usersExist(groupId.toString());
 		}
 		
 		if(!actorExists){

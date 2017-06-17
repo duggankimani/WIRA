@@ -8,5 +8,5 @@ public enum ActionType implements Serializable,IsSerializable{
 
 	 VIA_CREDENTIALS,
 	  VIA_COOKIE,
-	  VIA_GOOGLE_OAUTH
+	  VIA_GOOGLE_OAUTH, VIA_APIKEY
 }

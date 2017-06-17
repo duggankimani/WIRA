@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://demo.eric.org/"
+    xmlns:tns="http://demo.eric.org/"
+    xmlns:ns1=""
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ns2="http://demo.eric.org/types"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema>
+      <xs:complexType name="quote">
+        <xs:sequence>
+          <xs:element name="ID" type="xs:string" minOccurs="0"/>
+          <xs:element name="time" type="xs:string" minOccurs="0"/>
+          <xs:element name="val" type="xs:float"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getStockQuote">
+    <wsdl:part name="stockTicker" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStockQuoteResponse">
+    <wsdl:part name="updatedQuote" type="tns:quote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="quoteReporter">
+    <wsdl:operation name="getStockQuote">
+      <wsdl:input name="getQuote" message="tns:getStockQuote">
+    </wsdl:input>
+      <wsdl:output name="getQuoteResponse" message="tns:getStockQuoteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="quoteReporterBinding" type="tns:quoteReporter">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getStockQuote">
+      <soap:operation style="rpc"/>
+      <wsdl:input name="getQuote">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getQuoteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="quoteReporterService">
+    <wsdl:port name="quoteReporterPort" binding="tns:quoteReporterBinding">
+      <soap:address location="http://localhost:9000/quoteReporterService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

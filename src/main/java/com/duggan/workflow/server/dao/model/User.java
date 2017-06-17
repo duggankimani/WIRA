@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.duggan.workflow.server.security.realm.google.GoogleUserDetails;
 import com.wira.commons.shared.models.HTUser;
 
 @Entity(name = "BUser")
@@ -44,6 +45,8 @@ public class User extends PO {
 
 	@Column(nullable = false)
 	private String firstName;
+	
+	private String fullName;
 
 	@Column(length = 100)
 	private String email;
@@ -149,15 +152,19 @@ public class User extends PO {
 		processDef.remove(processDefModel);
 	}
 
-	public HTUser toHTUser() {
-		User user = this;
+	public HTUser toDto() {
 		HTUser htuser = new HTUser();
-		htuser.setEmail(user.getEmail());
-		htuser.setUserId(user.getUserId());
-		htuser.setName(user.getFirstName());
-		htuser.setPassword(user.getPassword());
-		htuser.setSurname(user.getLastName());
-		htuser.setId(user.getId());
+		return toDto(htuser);
+	}
+	
+	public HTUser toDto(HTUser htuser) {
+		htuser.setEmail(this.getEmail());
+		htuser.setUserId(this.getUserId());
+		htuser.setName(this.getFirstName());
+		htuser.setPassword(this.getPassword());
+		htuser.setSurname(this.getLastName());
+		htuser.setId(this.getId());
+		htuser.setRefId(this.getRefId());
 
 		return htuser;
 	}
@@ -183,4 +190,42 @@ public class User extends PO {
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
+	public boolean isSame(String email, String familyName, String givenName,
+			int status) {
+
+		if (isSame(familyName, this.lastName)
+				&& isSame(givenName, this.firstName)
+				&& isSame(this.getIsActive(), status)) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	private boolean isSame(String str1, String str2) {
+		if (str1 == null ^ str2 == null) {
+			//xor
+			return false;
+		}
+
+		if (str1 != null) {
+			return str1.equals(str2);
+		}
+		
+		return false;
+	}
+
+	private boolean isSame(int isActive, int status) {
+		return isActive == status;
+	}
+
 }

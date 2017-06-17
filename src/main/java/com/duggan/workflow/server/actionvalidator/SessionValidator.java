@@ -47,7 +47,6 @@ public class SessionValidator implements ActionValidator {
 		for(Cookie c: cookies){
 			if(c.getName().equals(ServerConstants.AUTHENTICATIONCOOKIE)){
 				if(sessionCookie.equals(c.getValue())){
-					//Authentication cookie provided by the front end== authentication cookie on the server session
 					return true;
 				}
 			}

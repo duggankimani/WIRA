@@ -28,9 +28,6 @@ public class DownloadReportServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			// check session
-			//check session
-			SessionHelper.setHttpRequest(req);
 			
 			DB.beginTransaction();
 
@@ -45,7 +42,6 @@ public class DownloadReportServlet extends HttpServlet{
 			e.printStackTrace();
 		} finally {
 			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
 		}
 	}
 

@@ -56,7 +56,7 @@ public class GetReport extends BaseServlet {
 			action = req.getParameter("action");
 		}
 		
-		log.debug("GetReport Action = "+action);
+		logger.debug("GetReport Action = "+action);
 
 		if (action == null) {
 			action = "GETATTACHMENT";
@@ -223,7 +223,7 @@ public class GetReport extends BaseServlet {
 			HttpServletResponse resp) {
 		
 		String settingName = req.getParameter("settingName");
-		log.debug("Logging- SettingName "+settingName);
+		logger.debug("Logging- SettingName "+settingName);
 		assert settingName!=null;
 		
 		String widthPx = req.getParameter("width");
@@ -244,11 +244,11 @@ public class GetReport extends BaseServlet {
 		LocalAttachment attachment = DB.getAttachmentDao().getSettingImage(SETTINGNAME.valueOf(settingName));
 		
 		if(attachment==null){
-			log.debug("No Attachment Found for Setting: ["+settingName+"]");
+			logger.debug("No Attachment Found for Setting: ["+settingName+"]");
 			return;
 		}
 		
-		log.debug("Attachment found for setting: ["+settingName+"], FileName = "+attachment.getName());
+		logger.debug("Attachment found for setting: ["+settingName+"], FileName = "+attachment.getName());
 		
 		byte[] bites = attachment.getAttachment();
 		

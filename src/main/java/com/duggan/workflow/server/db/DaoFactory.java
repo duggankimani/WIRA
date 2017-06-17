@@ -16,7 +16,8 @@ import com.duggan.workflow.server.dao.OutputDocumentDao;
 import com.duggan.workflow.server.dao.PermissionDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
-import com.duggan.workflow.server.dao.UserGroupDaoImpl;
+import com.duggan.workflow.server.dao.UserDaoImpl;
+import com.duggan.workflow.server.dao.UserSessionDao;
 
 class DaoFactory {
 
@@ -26,7 +27,7 @@ class DaoFactory {
 	AttachmentDaoImpl attachmentDao;
 	CommentDaoImpl commentDaoImpl;
 	ProcessDaoImpl processDao;
-	UserGroupDaoImpl userGroupDao;
+	UserDaoImpl userGroupDao;
 	FormDaoImpl formDao;
 	DSConfigDaoImpl dsDao;
 	DashboardDaoImpl dashDao;
@@ -35,6 +36,7 @@ class DaoFactory {
 	CatalogDaoImpl catalogDao;
 	OrganizationDao organizationDao;
 	PermissionDao permissionDao;
+	UserSessionDao userSessionDao;
 	
 	DocumentDaoImpl getDocumentDao(EntityManager em) {
 		if (documentDao == null) {
@@ -111,11 +113,11 @@ class DaoFactory {
 		return processDao;
 	}
 
-	public UserGroupDaoImpl getUserGroupDaoImpl(EntityManager entityManager) {
+	public UserDaoImpl getUserGroupDaoImpl(EntityManager entityManager) {
 		if(userGroupDao==null){
 			synchronized (DaoFactory.class) {
 				if(userGroupDao==null){
-					userGroupDao = new UserGroupDaoImpl(entityManager);
+					userGroupDao = new UserDaoImpl(entityManager);
 				}
 			}
 		}
@@ -218,5 +220,17 @@ class DaoFactory {
 		}
 		
 		return permissionDao;
+	}
+
+	public UserSessionDao getUserSessionDao(EntityManager entityManager) {
+		
+		if(userSessionDao==null){
+			synchronized (DaoFactory.class) {
+				if(userSessionDao==null){
+					userSessionDao = new UserSessionDao(entityManager);
+				}
+			}
+		}
+		return userSessionDao;
 	}
 }

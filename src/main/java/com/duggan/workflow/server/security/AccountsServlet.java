@@ -80,16 +80,16 @@ public class AccountsServlet extends BaseServlet{
 			throw new IllegalArgumentException("Null values not allowed for email, firstname, lastname or password");
 		}
 		
-		if(!DB.getUserGroupDao().isValid(activationRefId, userRefId)){
+		if(!DB.getUserDao().isValid(activationRefId, userRefId)){
 			throw new RuntimeException("Invalid activation link");
 		}
 		
-		User user = DB.getUserGroupDao().findByRefId(userRefId, User.class);
+		User user = DB.getUserDao().findByRefId(userRefId, User.class);
 		assert user!=null;
 		
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-		DB.getUserGroupDao().save(user);
+		DB.getUserDao().save(user);
 		
 		new UserDaoHelper().updatePassword(user.getUserId(), password);
 	}
@@ -98,11 +98,11 @@ public class AccountsServlet extends BaseServlet{
 		String activationRefId=req.getParameter("aid");
 		String userRefId = req.getParameter("uid");
 		
-		if(!DB.getUserGroupDao().isValid(activationRefId, userRefId)){
+		if(!DB.getUserDao().isValid(activationRefId, userRefId)){
 			throw new RuntimeException("Invalid activation link");
 		}
 		
-		HTUser user = DB.getUserGroupDao().getBasicUser(userRefId);
+		HTUser user = DB.getUserDao().getBasicUser(userRefId);
 		
 		try{
 			JSONObject userJson = new JSONObject();

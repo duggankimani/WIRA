@@ -2,9 +2,13 @@ package com.duggan.workflow.server.guice;
 
 import javax.servlet.ServletContextEvent;
 
+import org.apache.shiro.SecurityUtils;
+
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -13,8 +17,19 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice
-				.createInjector(new ServerModule(), new DispatchServletModule());
+		Injector injector = Guice
+				.createInjector(new ServerModule(), new BootstrapServletModule(),
+				new AbstractModule() {
+					@Override
+					protected void configure() {
+						requestStaticInjection(SessionHelper.class);
+					}
+				});
+		
+		org.apache.shiro.mgt.SecurityManager securityManager = injector
+				.getInstance(org.apache.shiro.mgt.SecurityManager.class);
+		SecurityUtils.setSecurityManager(securityManager); 
+		return injector;
 	}
 	
 	@Override
@@ -23,17 +38,6 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		super.contextInitialized(servletContextEvent);
 		DBTrxProviderImpl.init();
 		JBPMHelper.get();
-		
-//		try{		
-//			DB.beginTransaction();
-//			ProcessMigrationHelper.init();
-//			DB.commitTransaction();			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			DB.closeSession();
-//		}
-		
 	}
 	
 	@Override

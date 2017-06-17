@@ -48,8 +48,6 @@ public class CommandBasedRestService{
 			httprequest.getSession().setAttribute(ServerConstants.USER,user);
 			
 			//check session
-			SessionHelper.setHttpRequest(httprequest);
-
 			IncomingRequestService service = new IncomingRequestImpl();
 			
 			service.executeClientRequest(request, response);
@@ -62,7 +60,6 @@ public class CommandBasedRestService{
 		}finally{
 			
 			DB.closeSession();
-			SessionHelper.setHttpRequest(null);
 			JBPMHelper.clearRequestData();
 			
 		}		

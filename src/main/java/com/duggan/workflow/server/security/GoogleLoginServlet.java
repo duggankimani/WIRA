@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class GoogleLoginServlet extends GoogleLoginCallbackServlet {
 
 	/**
@@ -30,13 +33,6 @@ public class GoogleLoginServlet extends GoogleLoginCallbackServlet {
 	@Override
 	protected void executeRequest(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		if (clientSecrets == null) {
-			resp.setStatus(404);
-			resp.getWriter().write("No Google Auth Credentials found");
-			resp.setContentType("text/plain");
-			return;
-		}
-		
 		try {
 			JSONObject json = new JSONObject();
 			json.put("GOOGLE_CLIENT_STATUS", "ACTIVE");

@@ -325,11 +325,11 @@ public class ProcessDaoHelper {
 		List<Listable> usersAndGroups = processDef.getUsersAndGroups();
 		for (Listable item : usersAndGroups) {
 			if (item instanceof HTUser) {
-				User u = DB.getUserGroupDao().getUser(
+				User u = DB.getUserDao().getUser(
 						((HTUser) item).getUserId());
 				model.addUser(u);
 			} else {
-				Group g = DB.getUserGroupDao().getGroup(
+				Group g = DB.getUserDao().getGroup(
 						((UserGroup) item).getName());
 				model.addGroup(g);
 			}

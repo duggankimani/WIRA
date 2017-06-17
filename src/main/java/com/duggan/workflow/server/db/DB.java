@@ -29,7 +29,8 @@ import com.duggan.workflow.server.dao.OutputDocumentDao;
 import com.duggan.workflow.server.dao.PermissionDao;
 import com.duggan.workflow.server.dao.ProcessDaoImpl;
 import com.duggan.workflow.server.dao.SettingsDaoImpl;
-import com.duggan.workflow.server.dao.UserGroupDaoImpl;
+import com.duggan.workflow.server.dao.UserDaoImpl;
+import com.duggan.workflow.server.dao.UserSessionDao;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 
 /**
@@ -208,7 +209,7 @@ public class DB {
 		return factory().getProcessDao(getEntityManager());
 	}
 
-	public static UserGroupDaoImpl getUserGroupDao() {
+	public static UserDaoImpl getUserDao() {
 		return factory().getUserGroupDaoImpl(getEntityManager());
 	}
 
@@ -285,5 +286,9 @@ public class DB {
 	
 	public static PermissionDao getPermissionDao() {
 		return factory().getPermissionDao(getEntityManager());
+	}
+	
+	public static UserSessionDao getUserSessionDao(){
+		return factory().getUserSessionDao(getEntityManager());
 	}
 }
