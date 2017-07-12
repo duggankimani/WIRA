@@ -1,6 +1,9 @@
 package com.duggan.workflow.server.helper.auth;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +18,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
@@ -617,6 +622,43 @@ public class UserDaoHelper implements LoginIntf {
 		}
 
 		return user;
+	}
+
+	public static void importUsers(String name, long size,
+			InputStream inputStream) throws IOException {
+		
+		Reader reader = new InputStreamReader(inputStream);
+		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
+
+		int row = 0;
+		
+		
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		for (CSVRecord rec : records) {
+
+			if (row++ == 0) {
+				// Column Names
+				continue;
+			}
+
+			int col = 0;
+
+			String firstName = rec.get(col++);
+			String lastName = rec.get(col++);
+			String email = rec.get(col++).toLowerCase();
+
+			User user = new User();
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setUserId(email);
+			user.setEmail(email);
+			
+			Group group = dao.getGroup("Staff");
+			if(group!=null){
+				user.setGroups(Arrays.asList(group));
+			}
+			dao.save(user);
+		}
 	}
 
 }

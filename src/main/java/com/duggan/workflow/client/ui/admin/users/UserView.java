@@ -1,11 +1,22 @@
 package com.duggan.workflow.client.ui.admin.users;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.OnStartUploaderHandler;
+
 import java.util.ArrayList;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.ui.component.Checkbox;
+import com.duggan.workflow.client.ui.events.LoadUsersEvent;
+import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
+import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -30,6 +41,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	private final Widget widget;
 	@UiField
 	Anchor aNewUser;
+	@UiField
+	Anchor aImportUsers;
+	
+	@UiField Uploader aUploader;
+	
 	@UiField
 	Anchor aNewGroup;
 	@UiField
@@ -98,7 +114,46 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 						.build());
 			}
 		});
+		
+		aImportUsers.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				final UploadContext ctx = new UploadContext();
+				final ArrayList<String> types = new ArrayList<String>();
+				types.add("csv");
+				ctx.setAccept(types);
+				
+				ctx.setAction(UPLOADACTION.IMPORTUSERS);
+				aUploader.setContext(ctx);
+				triggerUpload(aUploader.getElement());
+			}
+		});
+		
+		
+		
+		aUploader.addOnStartUploaderHandler(new OnStartUploaderHandler(){
+			@Override
+			public void onStart(IUploader uploader) {
+				AppContext.fireEvent(new ProcessingEvent());
+			}
+		});
+		
+		
+		aUploader.addOnFinishUploaderHandler(new OnFinishUploaderHandler(){
+			@Override
+			public void onFinish(IUploader uploader) {
+				AppContext.fireEvent(new ProcessingCompletedEvent());
+				AppContext.fireEvent(new LoadUsersEvent());
+			}
+		});
 	}
+	
+	protected native void triggerUpload(Element uploader) /*-{
+	$wnd.jQuery(uploader).find('input').trigger('click');
+	
+	}-*/;
 
 	@Override
 	public void bindUsers(ArrayList<HTUser> users) {
@@ -241,6 +296,10 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	@Override
 	public HasClickHandlers getaNewUser() {
 		return aNewUser;
+	}
+	
+	public HasClickHandlers getImportUsers(){
+		return aImportUsers;
 	}
 
 	@Override

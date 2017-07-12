@@ -2,6 +2,7 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'>
@@ -23,6 +24,9 @@
 							dataToggle="tab">Orgs</d:ActionLink>
 					</li>
 				</ul>
+				
+				<up:Uploader ui:field="aUploader" styleName="hide">
+				</up:Uploader>
 
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="users">
@@ -33,6 +37,11 @@
 									title="Add a New User">
 									<i class="icon-plus"></i>
 									Add User
+								</g:Anchor>
+								<g:Anchor ui:field="aImportUsers" styleName="btn btn-primary"
+									title="Import Users">
+									<i class="icon-plus"></i>
+									Import Users
 								</g:Anchor>
 								<g:Anchor ui:field="aEditUser" styleName="btn btn-success hide"
 									title="Edit User">

@@ -132,6 +132,9 @@ public class UploadServlet extends UploadAction {
 		case IMPORTPROCESS:
 			executor = new ImportProcessExecutor();
 			break;
+		case IMPORTUSERS:
+			executor = new ImportUsersExecutor();
+			break;
 		}
 		
 		if(executor==null){
