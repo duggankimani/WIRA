@@ -9,6 +9,23 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+	
+	<error-page>
+	    <error-code>401</error-code>
+		<location>/login.html</location>
+	</error-page>
+	<error-page>
+	    <error-code>403</error-code>
+		<location>/not_allowed.html</location>
+	</error-page>
+	<error-page>
+	    <error-code>404</error-code>
+		<location>/not_found.html</location>
+	</error-page>
+	<error-page>
+	    <error-code>500</error-code>
+		<location>/server_failure.html</location>
+	</error-page>
 
 	<resource-env-ref>
 	    <resource-env-ref-name>jdbc/ebusinessds</resource-env-ref-name>
@@ -24,24 +41,6 @@
 	    <servlet-name>daemon-initializer</servlet-name>
 	    <load-on-startup>1</load-on-startup>
 	</servlet>
-	
-	<!--Servlet Filter that handles site authorization.-->
-	<filter>
-	     <filter-name>SecurityFilter</filter-name>
-	     <filter-class>com.duggan.workflow.server.security.SecurityFilter</filter-class>
-	     <description>This Filter authorizes user access to application
-	                  components based upon request URI.</description>
-	     <init-param>
-	        <param-name>login_page</param-name>
-	        <param-value>login.html</param-value>
-	     </init-param>
-	</filter>
-	
-	<filter-mapping>
-	     <filter-name>SecurityFilter</filter-name>
-	     <url-pattern>/index.html</url-pattern>
-	</filter-mapping>
-	
 
 	<!-- GuiceFilter -->
 	<filter>
@@ -51,64 +50,9 @@
 
 	<filter-mapping>
 		<filter-name>guiceFilter</filter-name>
-		<url-pattern>/dispatch/*</url-pattern>
+		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
 	
-	<!-- LOGIN SERVLET (PASSWORD/USERNAME) -->
-	<servlet>
-	    <servlet-name>LoginServlet</servlet-name>
-	    <servlet-class>com.duggan.workflow.server.security.LoginServlet</servlet-class>
-	    <init-param>
-	        <param-name>app_page</param-name>
-	        <param-value>index.html</param-value>
-	     </init-param>
-	</servlet>
-	
-	<servlet-mapping>
-	    <servlet-name>LoginServlet</servlet-name>
-	    <url-pattern>/auth</url-pattern>
-	</servlet-mapping>
-	
-	<!-- GOOGLE OAUTH LOGIN SERVLET -->
-	<servlet>
-	    <servlet-name>GoogleLoginServlet</servlet-name>
-	    <servlet-class>com.duggan.workflow.server.security.GoogleLoginServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-	    <servlet-name>GoogleLoginServlet</servlet-name>
-	    <url-pattern>/googleservlet</url-pattern>
-	</servlet-mapping>
-	
-	<!-- GOOGLE OAUTH LOGIN CALLBACK SERVLET -->
-	<servlet>
-	    <servlet-name>GoogleLoginCallbackServlet</servlet-name>
-	    <servlet-class>com.duggan.workflow.server.security.GoogleLoginCallbackServlet</servlet-class>
-	    <init-param>
-	        <param-name>app_page</param-name>
-	        <param-value>index.html</param-value>
-	     </init-param>
-	</servlet>
-	
-	<servlet-mapping>
-	    <servlet-name>GoogleLoginCallbackServlet</servlet-name>
-	    <url-pattern>/oauth2callback</url-pattern>
-	</servlet-mapping>
-	
-	<!-- GOOGLE OAUTH TOKEN VERIFICATION SERVLET -->
-	<servlet>
-	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
-	    <servlet-class>com.duggan.workflow.server.security.GoogleIdTokenVerifierService</servlet-class>
-	    <init-param>
-	        <param-name>app_page</param-name>
-	        <param-value>index.html</param-value>
-	     </init-param>
-	</servlet>
-	
-	<servlet-mapping>
-	    <servlet-name>GoogleIdTokenVerifierService</servlet-name>
-	    <url-pattern>/auth2tokencallback</url-pattern>
-	</servlet-mapping>
 	
 	<!-- ACCOUNTS MANAGEMENT/ ACTIVATION SERVLET -->
 	<servlet>
@@ -160,17 +104,6 @@
 	<servlet-mapping>
 	    <servlet-name>getReport</servlet-name>
 	    <url-pattern>/getreport</url-pattern>
-	</servlet-mapping>
-	
-	<!-- PIONEER MPESA INTEGRATION -->
-	<servlet>
-		<servlet-class>org.wira.pioneer.integration.PioneerMpesaServlet</servlet-class>
-		<servlet-name>ipnServlet</servlet-name>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>ipnServlet</servlet-name>
-		<url-pattern>/ipnserv</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
