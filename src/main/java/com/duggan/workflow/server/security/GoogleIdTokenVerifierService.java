@@ -81,10 +81,10 @@ public class GoogleIdTokenVerifierService extends GoogleLoginCallbackServlet {
 
 			// Print user identifier
 			String userId = payload.getSubject();
-			System.out.println("User ID: " + userId);
 
 			// Get profile information from payload
-			String email = payload.getEmail();
+			String email = payload.getEmail().toLowerCase();
+			System.out.println("User ID: " + userId+", email = '"+email+"'");
 			boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
 			String name = (String) payload.get("name");
 			String pictureUrl = (String) payload.get("picture");

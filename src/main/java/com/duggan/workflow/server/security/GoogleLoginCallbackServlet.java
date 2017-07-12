@@ -131,7 +131,7 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 
 	protected void registerAndLoginUser(Payload payload, HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
-		String email = payload.getEmail();
+		String email = payload.getEmail().toLowerCase();
 		boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
 		String name = (String) payload.get("name");
 		String pictureUrl = (String) payload.get("picture");
@@ -140,7 +140,7 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 		String givenName = (String) payload.get("given_name");
 
 		UserDaoHelper helper = new UserDaoHelper();
-		HTUser user = helper.getUser(email.toLowerCase());
+		HTUser user = helper.getUser(email);
 		if (user == null) {
 			//user = new HTUser();
 			resp.setStatus(403);
@@ -148,6 +148,7 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 			return;
 		}
 		
+		logger.warn("#### "+GoogleLoginCallbackServlet.class+" says email = "+email);
 		user.setEmail(email);
 		user.setUserId(email);
 		user.setName(givenName);

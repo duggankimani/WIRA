@@ -546,7 +546,7 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	private HTUser initGoogleAuthorizationCodeFlow(HTUser user) {
-		HTUser userDto = createUser(user,false);
+		HTUser userDto = getUser(user.getEmail());
 		return userDto;
 	}
 
