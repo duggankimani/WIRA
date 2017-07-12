@@ -140,7 +140,7 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 		String givenName = (String) payload.get("given_name");
 
 		UserDaoHelper helper = new UserDaoHelper();
-		HTUser user = helper.getUser(email);
+		HTUser user = helper.getUser(email.toLowerCase());
 		if (user == null) {
 			//user = new HTUser();
 			resp.setStatus(403);
