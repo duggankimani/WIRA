@@ -36,24 +36,21 @@ public class SessionValidator implements ActionValidator {
 			throw new InvalidSessionException("No valid session found[1]");
 		}
 		
-		Object sessionCookie = session.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
-			
-		if(sessionCookie==null){
-			throw new InvalidSessionException("No valid session found[2]");
-			
-		}
+		String sessionId = session.getId();
 		
 		Cookie[] cookies = request.get().getCookies();
-		for(Cookie c: cookies){
-			if(c.getName().equals(ServerConstants.AUTHENTICATIONCOOKIE)){
-				if(sessionCookie.equals(c.getValue())){
-					return true;
-				}
-			}
-		}
+//		for(Cookie c: cookies){
+//			if(c.getName().equals(ServerConstants.AUTHENTICATIONCOOKIE)){
+//				if(sessionId.equals(c.getValue())){
+//					return true;
+//				}
+//			}
+//		}
 		
-		session.invalidate();
-		throw new InvalidSessionException("No valid session found[3]");
+		return true;
+		//session.invalidate();
+		
+		//throw new InvalidSessionException("No valid session found[3]");
 	}
 
 }

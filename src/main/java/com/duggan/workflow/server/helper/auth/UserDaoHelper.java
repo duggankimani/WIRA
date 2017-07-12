@@ -462,9 +462,10 @@ public class UserDaoHelper implements LoginIntf {
 		//Example using most common scenario of username/password pair:
 		UsernamePasswordToken token = new UsernamePasswordToken(action.getUsername(), action.getPassword());
 		//"Remember Me" built-in: 
-		token.setRememberMe(false);
-		
-		wrapResult(execLogin(token),result);
+		token.setRememberMe(true);
+		boolean isAuthenticated = execLogin(token); 
+		logger.info("After Authentication - isAuthenticated = "+isAuthenticated);
+		wrapResult(isAuthenticated,result);
 	}
 	
 	public boolean execLogin(AuthenticationToken token) {
@@ -480,35 +481,9 @@ public class UserDaoHelper implements LoginIntf {
 	}
 	
 	public void wrapResult(boolean loggedIn, LogInResult result) {
-		Subject currentUser = SecurityUtils.getSubject();
-		if(loggedIn){
-			onAfterLogin(loggedIn);
-		}else{
-			resetCookies();
-		}
-		
 		result.setValues(result.getActionType(), new CurrentUserDto(loggedIn, SessionHelper.getCurrentUser()), null);
 	}
-	
-	public void onAfterLogin(boolean isLoggedIn) {
 
-		HttpSession session = SessionHelper.getHttpRequest().getSession(false);
-		if (isLoggedIn) {
-			resetCookies();
-			HTUser userDto = SessionHelper.getCurrentUser();
-			String loggedInCookie = DB.getUserSessionDao().createSessionCookie(
-					null, userDto);
-			session.setAttribute(ServerConstants.AUTHENTICATIONCOOKIE,
-					loggedInCookie);
-			Cookie xsrfCookie = new Cookie(
-					ServerConstants.AUTHENTICATIONCOOKIE, loggedInCookie);
-			// xsrfCookie.setHttpOnly(false);// http only
-			xsrfCookie.setPath(SessionHelper.getApplicationPath());
-			xsrfCookie.setMaxAge(3600 * 24 * 30); // Time in seconds (30 days)
-			xsrfCookie.setSecure(false); // http(s) cookie
-			SessionHelper.getHttpResponse().addCookie(xsrfCookie);
-		}
-	}
 
 	public void logout() {
 		Subject subject = SecurityUtils.getSubject();

@@ -51,7 +51,7 @@ var userChanged = function (user) {
 var updateGoogleUser = function () {
   if (googleUser) {
     var id_token=googleUser.getAuthResponse().id_token;
-    signInCallback(id_token, 'auth2tokencallback');
+    signInCallback(id_token, 'api/auth2tokencallback');
   } else {
     //googleUser=null
   }
@@ -77,7 +77,7 @@ function signInCallback(authResult) {
     // Send the code to the server
     $.ajax({
       type: 'POST',
-      url: 'oauth2callback',
+      url: 'api/oauth2callback',
       contentType: 'application/octet-stream; charset=utf-8',
       success: function(result) {
     	  
@@ -119,7 +119,7 @@ function signInCallback(code, targetUrl) {
 $(document).ready(function(){
 		$.ajax({
 			type:"GET",
-			url:"googleservlet",
+			url:"api/googleservlet",
 			dataType: 'json'
 		})
 		.done(function(data) {
@@ -145,7 +145,7 @@ function loginWithCookie(){
 	var str = "loginmethod=VIA_COOKIE"
 	$.ajax({
 		type:"POST",
-		url:"auth",
+		url:"api/auth2",
 		data:str
 	})
 	.done(function() {
@@ -167,7 +167,7 @@ function doFormSubmit() {
 	
 	$.ajax({
 		type:"POST",
-		url:"auth",
+		url:"api/auth2",
 		data:str
 	})
 	.done(function() {
@@ -192,5 +192,5 @@ function redirectLogin(){
 		redirectUrl="";
 	}
 	
-	window.location='index.html'+redirectUrl;
+	window.location='/index.html'+redirectUrl;
 }

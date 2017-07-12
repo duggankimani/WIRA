@@ -26,14 +26,14 @@ public class BootstrapServletModule extends ServletModule {
 	@Override
 	protected void configureServlets() {
 
-		
 		// Initialize Apache Shiro if present
 		install(new ShiroSecurityModule(getServletContext()));
 
-		serve("/api/" + ActionImpl.DEFAULT_SERVICE_NAME+"*").with(DispatchServiceImpl.class);
 		// if you had a ShiroWebModule installed above you would need to add
 		// this GuiceShiroFilter also.
 		filter("/*").through(GuiceShiroFilter.class);
+		
+		serve("/api/" + ActionImpl.DEFAULT_SERVICE_NAME+"*").with(DispatchServiceImpl.class);
 		
 		// GOOGLE AUTH
 		Map<String, String> authParams = new HashMap<String, String>();

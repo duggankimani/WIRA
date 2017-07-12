@@ -48,13 +48,13 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 @Singleton
-public class GoogleOAuthAuthentingRealm extends AuthorizingRealm{
+public class GoogleOAuthAuthentingRealm extends AbstractAuthenticatingRealm{
 
 	GoogleClientSecrets clientSecrets = null;
 	Logger logger = Logger.getLogger(getClass());
 	
 	public GoogleOAuthAuthentingRealm() {
-		super(new MemoryConstrainedCacheManager(), new GoogleCredentialsMatcher());
+		super(new GoogleCredentialsMatcher());
 		setName("GoogleOAuthRealm");
 		try {
 			clientSecrets = GoogleClientSecrets.load(
@@ -110,6 +110,7 @@ public class GoogleOAuthAuthentingRealm extends AuthorizingRealm{
 				dbUser.setPictureUrl(googleUserDetails.getPictureUrl());
 				dbUser.toDto(googleUserDetails);
 				dbUser.toDto(googleUserDetails);
+				logger.info("GoogleOAuthAuthentingRealm - Google Auth Info created");
 				return new GoogleAuthenticationInfo(googleUserDetails, idToken.getPayload().getAccessTokenHash(), getName());
 			}
 		} catch (IOException | GeneralSecurityException e) {
@@ -119,50 +120,6 @@ public class GoogleOAuthAuthentingRealm extends AuthorizingRealm{
 		return null;
 	}
 	
-	public AuthorizationInfo doGetAuthorizationInfo(
-			PrincipalCollection principals) {
-		Collection dbPrincipals = principals.fromRealm(getName());
-		if(!dbPrincipals.iterator().hasNext()){
-			return null;
-		}
-		
-		GoogleUserDetails googleUser = (GoogleUserDetails) dbPrincipals.iterator().next();
-		User user = null;
-		
-		UserDaoImpl userDao = DB.getUserDao();
-		
-		try{
-			user = userDao.findUserByEmail(googleUser.getEmail());
-		}catch(Exception e){}
-		
-		if (user != null) {
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			ArrayList<String> permissionList = new ArrayList<String>();
-			ArrayList<String> roles = new ArrayList<String>();
-			
-			for (Group role : user.getGroups()) {
-				roles.add(role.getName());
-				Collection<PermissionModel> permissions = role.getPermissions();
-				for(PermissionModel permission: permissions){
-					if(!permissionList.contains(permission.getName().name())){
-						permissionList.add(permission.getName().name());
-					}
-				}
-				
-			}
-			
-			info.addRoles(roles);
-			info.addStringPermissions(permissionList);
-			
-			googleUser.setRoles(roles);
-			googleUser.setPermissionList(permissionList);
-			
-			return info;
-		} else {
-			return null;
-		}
-	}
-
 	@Override
 	public Class<?> getAuthenticationTokenClass() {
 		return GoogleAuthenticationToken.class;

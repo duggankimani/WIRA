@@ -72,7 +72,7 @@ public class LoginServlet extends BaseServlet {
 		
 		if(result.getCurrentUserDto()!=null && result.getCurrentUserDto().isLoggedIn()){
 			logger.debug("#LoginServlet redirecting to "+app_page);
-			redirectToApp();
+			//redirectToApp();
 		}else{
 			logger.debug("#LoginServlet failed to login in; invalidating session");
 			resp.setStatus(403);//NOT AUTHENTICATED

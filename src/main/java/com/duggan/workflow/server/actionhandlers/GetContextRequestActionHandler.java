@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
+import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.duggan.workflow.shared.requests.GetContextRequest;
@@ -40,13 +44,11 @@ public class GetContextRequestActionHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		HttpSession session = httpRequest.get().getSession(false);
-		
-		//Object sessionid=session.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
-		Object user = session.getAttribute(ServerConstants.USER);
+		Subject subject = SecurityUtils.getSubject();
+		HTUser user = SessionHelper.getCurrentUser();
 
 		GetContextRequestResult result = (GetContextRequestResult)actionResult;
-		result.setIsValid(session!=null && user!=null);
+		result.setIsValid(subject.isAuthenticated() || subject.isRemembered());
 		
 		if(result.getIsValid()){
 			HTUser userDto = (HTUser)user;
