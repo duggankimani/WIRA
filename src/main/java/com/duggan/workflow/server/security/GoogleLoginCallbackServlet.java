@@ -142,8 +142,12 @@ public class GoogleLoginCallbackServlet extends BaseServlet {
 		UserDaoHelper helper = new UserDaoHelper();
 		HTUser user = helper.getUser(email);
 		if (user == null) {
-			user = new HTUser();
+			//user = new HTUser();
+			resp.setStatus(403);
+			resp.getWriter().write("Wrong email");
+			return;
 		}
+		
 		user.setEmail(email);
 		user.setUserId(email);
 		user.setName(givenName);

@@ -80,9 +80,12 @@ function signInCallback(authResult) {
       url: 'oauth2callback',
       contentType: 'application/octet-stream; charset=utf-8',
       success: function(result) {
-    	  
         // Handle or verify the server response.
     	  redirectLogin();
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+    	  $('#issues').show();
+    	  auth2.signOut();  
       },
       processData: false,
       data: authResult['code']
@@ -106,6 +109,14 @@ function signInCallback(code, targetUrl) {
         // Handle or verify the server response.
     	  $("body").hide();
     	  redirectLogin();
+      },	
+      fail: function(){
+    	  $('#issues').show();
+    	  auth2.signOut();
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+    	  $('#issues').show();
+    	  auth2.signOut();  
       },
       processData: false,
       data: code
