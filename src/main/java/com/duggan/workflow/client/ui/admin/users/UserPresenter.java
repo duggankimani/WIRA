@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.event.ShowMessageEvent;
+import com.duggan.workflow.client.model.UploadContext;
+import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AlertType;
@@ -71,6 +73,8 @@ public class UserPresenter extends
 	public interface MyView extends View {
 
 		HasClickHandlers getaNewUser();
+		
+		HasClickHandlers getImportUsers();
 
 		HasClickHandlers getaNewGroup();
 
@@ -172,7 +176,7 @@ public class UserPresenter extends
 				showPopup(TYPE.GROUP);
 			}
 		});
-
+		
 		getView().getEditUser().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
