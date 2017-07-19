@@ -56,29 +56,20 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			execute(action, result, execContext);
 			return result;
 		}
-		
-		
-		
-		//NEW SERVER REQUEST
-		if(SessionHelper.getHttpRequest()!=null){
-			//embedded call -- needed when executing multiple commands in one call
-			//not usable when working with servlets
-			execute(action, result, execContext);
-			return result;
-		}
 	
 		boolean hasError= false;
 		Throwable throwable=null;
 		
 		try {
 			if(!DB.hasActiveTrx()){
-				
 				DB.beginTransaction();
-			}
+			}	
 			
+			log.debug("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 			execute(action, result, execContext);
 			
 			DB.commitTransaction();
+			log.debug("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 		} catch (Exception e) {	
 			e.printStackTrace();
 			DB.rollback();			
