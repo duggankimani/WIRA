@@ -65,11 +65,11 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 				DB.beginTransaction();
 			}	
 			
-			log.debug("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
+			log.trace("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 			execute(action, result, execContext);
 			
 			DB.commitTransaction();
-			log.debug("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
+			log.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 		} catch (Exception e) {	
 			e.printStackTrace();
 			DB.rollback();			
