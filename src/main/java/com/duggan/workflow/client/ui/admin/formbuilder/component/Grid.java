@@ -34,6 +34,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -506,17 +507,25 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 		}, "OK");
 	}
 	
-	private void deleteLines() {
-		for (HTMLLine line : htmlLines.values()) {
-			line.deleteLine();
+	private void deleteLines(boolean fireDeleteFromDB) {
+		HashMap<String, HTMLLine> toDelete = new HashMap<String, HTMLLine>();
+		toDelete.putAll(htmlLines);
+		for (HTMLLine line : toDelete.values()) {
+			if(line!=null) {
+				line.deleteLine(fireDeleteFromDB);
+			}
+			
 		}
 	}
-	
+		
 	@Override
 	public void setValue(Object value) {
-		deleteLines();
+		setValue(value, true);
+	}
+	
+	public void setValue(Object value, boolean fireDeleteFromDB) {
+		deleteLines(fireDeleteFromDB);
 		if (value != null) {
-			// System.err.println("lines");
 			@SuppressWarnings("unchecked")
 			Collection<DocumentLine> lines = (Collection<DocumentLine>) value;
 			setLines(lines);
@@ -527,7 +536,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 			setLines(lines);
 		}
 	}
-	
+
 	private void setLines(Collection<DocumentLine> doclines) {
 		for (DocumentLine line : doclines) {
 			addLine(line);
@@ -587,12 +596,22 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 		}
 
 		protected void deleteLine() {
+			deleteLine(true);
+		}
+		
+		protected void deleteLine(boolean isDeleteFromDb) {
 			ArrayList<String> list = new ArrayList<String>();
-			list.addAll(htmlLines.keySet());
-			int tableRow = list.indexOf(documentLine.getTempId()+"") + 2;
+			if(htmlLines!=null && !htmlLines.isEmpty()) {
+				list.addAll(htmlLines.keySet());
+			}
+			
+			String docLineTid = documentLine.getTempId()+"";
+			int idx = list.indexOf(docLineTid);
+			int tableRow = idx + 2;
 
 			//This event must be fired before the the row is removed from the DOM, otherwise events wont work!
-			AppContext.fireEvent(new AfterDeleteLineEvent(documentLine));
+			AppContext.fireEvent(new AfterDeleteLineEvent(documentLine, isDeleteFromDb));
+			
 			//Remove row from table
 			flextable.removeRow(tableRow);
 			for (FieldWidget widget : inputs) {

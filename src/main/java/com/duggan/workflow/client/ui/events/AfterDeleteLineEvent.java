@@ -10,6 +10,7 @@ public class AfterDeleteLineEvent extends
 
 	public static Type<AfterDeleteLineHandler> TYPE = new Type<AfterDeleteLineHandler>();
 	private DocumentLine line;
+	private boolean isDeleteDbValue = true;
 
 	public interface AfterDeleteLineHandler extends EventHandler {
 		void onAfterDeleteLine(AfterDeleteLineEvent event);
@@ -18,9 +19,18 @@ public class AfterDeleteLineEvent extends
 	public AfterDeleteLineEvent(DocumentLine line) {
 		this.line = line;
 	}
+	
+	public AfterDeleteLineEvent(DocumentLine line, boolean isDeleteFromDb) {
+		this.line = line;
+		this.isDeleteDbValue = isDeleteFromDb;
+	}
 
 	public DocumentLine getLine() {
 		return line;
+	}
+	
+	public boolean isDeleteDbValue() {
+		return isDeleteDbValue;
 	}
 
 	@Override

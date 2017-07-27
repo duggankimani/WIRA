@@ -943,6 +943,7 @@ public class GenericDocumentPresenter extends
 
 						doc = aResponse.getDocument();
 						bindForm(form, doc);
+						
 						// bindData(doc, false);
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -1946,7 +1947,7 @@ public class GenericDocumentPresenter extends
 	@Override
 	public void onAfterDeleteLine(AfterDeleteLineEvent event) {
 		DocumentLine line = event.getLine();
-		if (line.getId() == null) {
+		if (line.getId() == null || !event.isDeleteDbValue()) {
 			return;
 		}
 		AppContext.fireEvent(new ProcessingEvent("Deleting ..."));

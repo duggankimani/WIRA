@@ -1,6 +1,7 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -41,6 +42,7 @@ import com.duggan.workflow.client.util.ENV;
 import com.duggan.workflow.shared.model.BooleanValue;
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.form.Field;
@@ -61,6 +63,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -339,8 +342,12 @@ public abstract class FieldWidget extends AbsolutePanel implements
 		}
 		else if(field.isGrid()){
 			//clear previous first
-//			Collection<DocumentLine> lines =  doc.getDetails().get(name);
-//			setValue(lines);
+			if(this instanceof Grid) {
+				//Window.alert("Setting Grid Value "+name);
+				Collection<DocumentLine> lines =  doc.getDetails().get(name);
+				((Grid)this).setValue(lines, false);
+			}
+			
 		}
 		
 	}
