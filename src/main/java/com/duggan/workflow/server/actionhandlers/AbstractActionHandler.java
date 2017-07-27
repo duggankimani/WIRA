@@ -1,8 +1,10 @@
 package com.duggan.workflow.server.actionhandlers;
 
+import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.SystemException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -51,9 +53,15 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			/*Embedded calls are calls executed in one command
 			 * to execute another on the server side. As such, a transaction and
 			 * all relevant session information have been initialized. 
-			 * Initializing these again causes a deadline			 
+			 * Initializing these again causes a deadlock			 
 			*/
 			execute(action, result, execContext);
+			try {
+				log.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
+			} catch (SystemException | NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return result;
 		}
 	
@@ -62,17 +70,19 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 		
 		try {
 			if(!DB.hasActiveTrx()){
-				DB.beginTransaction();
+				//DB.beginTransaction();
 			}	
 			
 			log.trace("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 			execute(action, result, execContext);
 			
-			DB.commitTransaction();
+			//DB.commitTransaction();
 			log.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 		} catch (Exception e) {	
+			log.trace(action.getRequestCode()+": Error in " + action.getClass().getName()+" cause: "+e.getMessage());
 			e.printStackTrace();
-			DB.rollback();			
+			//DB.rollback();
+			DB.setRollbackOnly();
 			hasError = true;
 			throwable = e;
 		}finally {

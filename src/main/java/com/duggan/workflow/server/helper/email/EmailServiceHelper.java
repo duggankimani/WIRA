@@ -78,7 +78,11 @@ public class EmailServiceHelper {
 					.getSettingValue(SETTINGNAME.SMTP_PROTOCOL);
 			Object starttls = SettingsDaoHelper
 					.getSettingValue(SETTINGNAME.SMTP_STARTTLS);
+			Object orgName = SettingsDaoHelper
+					.getSettingValue(SETTINGNAME.ORGNAME); 
 
+			props.setProperty(SETTINGNAME.SMTP_AUTH.getKey(),
+					auth == null ? null : auth.toString());
 			props.setProperty(SETTINGNAME.SMTP_AUTH.getKey(),
 					auth == null ? null : auth.toString());
 			props.setProperty(SETTINGNAME.SMTP_HOST.getKey(),
@@ -93,6 +97,8 @@ public class EmailServiceHelper {
 					protocol == null ? null : protocol.toString());
 			props.setProperty(SETTINGNAME.SMTP_STARTTLS.getKey(),
 					starttls == null ? null : starttls.toString());
+			props.setProperty(SETTINGNAME.ORGNAME.getKey(),
+					orgName == null ? null : orgName.toString());
 
 			for (Object prop : props.keySet()) {
 				if (prop.equals(SETTINGNAME.SMTP_PASSWORD.getKey())) {

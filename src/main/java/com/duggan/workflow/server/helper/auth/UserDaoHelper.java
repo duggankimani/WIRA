@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -48,7 +47,6 @@ import com.wira.commons.shared.models.LogInAction;
 import com.wira.commons.shared.models.LogInResult;
 import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.UserGroup;
-import com.wira.login.shared.model.ActionType;
 
 public class UserDaoHelper implements LoginIntf {
 
@@ -549,5 +547,41 @@ public class UserDaoHelper implements LoginIntf {
 		session.setAttribute(ServerConstants.USER, user);
 		
 		return sessionId.toString();
+	}
+	
+	public static void importUsers(String name, long size,
+			InputStream inputStream) throws IOException {
+		
+		Reader reader = new InputStreamReader(inputStream);
+		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
+
+		int row = 0;
+		
+		UserDaoImpl dao = DB.getUserDao();
+		for (CSVRecord rec : records) {
+
+			if (row++ == 0) {
+				// Column Names
+				continue;
+			}
+
+			int col = 0;
+
+			String firstName = rec.get(col++);
+			String lastName = rec.get(col++);
+			String email = rec.get(col++).toLowerCase();
+
+			User user = new User();
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setUserId(email);
+			user.setEmail(email);
+			
+			Group group = dao.getGroup("Staff");
+			if(group!=null){
+				user.setGroups(Arrays.asList(group));
+			}
+			dao.save(user);
+		}
 	}
 }

@@ -32,8 +32,10 @@ import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.duggan.workflow.shared.model.form.Form;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
+import com.google.inject.Singleton;
 import com.itextpdf.text.DocumentException;
 
+@Singleton
 public class GetReport extends BaseServlet {
 
 	/**

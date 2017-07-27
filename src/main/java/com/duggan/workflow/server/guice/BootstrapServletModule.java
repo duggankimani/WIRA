@@ -10,6 +10,10 @@ import com.duggan.workflow.server.security.GoogleLoginCallbackServlet;
 import com.duggan.workflow.server.security.GoogleLoginServlet;
 import com.duggan.workflow.server.security.LoginServlet;
 import com.duggan.workflow.server.security.shiro.ShiroSecurityModule;
+import com.duggan.workflow.server.servlets.upload.DownloadReportServlet;
+import com.duggan.workflow.server.servlets.upload.GetReport;
+import com.duggan.workflow.server.servlets.upload.UploadServlet;
+import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
 import com.gwtplatform.dispatch.rpc.shared.ActionImpl;
@@ -29,6 +33,9 @@ public class BootstrapServletModule extends ServletModule {
 		// Initialize Apache Shiro if present
 		install(new ShiroSecurityModule(getServletContext()));
 
+		filter("/api/*").through(PersistFilter.class);
+		filter("/api/*").through(TransactionFilter.class);
+		
 		// if you had a ShiroWebModule installed above you would need to add
 		// this GuiceShiroFilter also.
 		filter("/*").through(GuiceShiroFilter.class);
@@ -51,5 +58,12 @@ public class BootstrapServletModule extends ServletModule {
 //		serve("/files/*").with(FileManagementServlet.class, params2);//No TRansactions created before hand!
 //		serve("/files").with(FileManagementServlet.class, params2);
 		
+		Map<String, String> params2 = new HashMap<String, String>();
+		params2.put("loadonstartup", "1");
+		serve("/api/downloadreport").with(DownloadReportServlet.class, params2);
+		serve("/api/getreport").with(GetReport.class, params2);
+		serve("/api/getreport/**").with(GetReport.class, params2);
+		serve("/api/upload").with(UploadServlet.class, params2);
+		serve("/api/upload/**").with(UploadServlet.class, params2);
 	}
 }

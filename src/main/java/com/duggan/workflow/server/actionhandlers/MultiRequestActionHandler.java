@@ -35,6 +35,7 @@ public class MultiRequestActionHandler extends
 		//execution will follow the order of insertion
 		for(BaseRequest request : requests){
 			try{
+				request.setEmbedded(true);//Embedded request
 				result.addResponse((BaseResponse)execContext.execute(request));
 			}catch(Exception e){
 				throw new RuntimeException(e);

@@ -75,5 +75,21 @@ public enum DBType implements Listable,Serializable{
 		break;
 		}
 		return dt;
+	}
+
+	public boolean isNumber() {
+		
+		switch (this) {
+		case BIGINT:
+		case SMALLINT:
+		case TINYINT:
+		case INTEGER:
+		case DECIMAL:
+		case DOUBLE:
+		case FLOAT:		
+		case REAL:
+			return true;
+		}
+		return false;
 	}	
 }

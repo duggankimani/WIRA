@@ -16,8 +16,10 @@ import org.xml.sax.SAXException;
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.google.inject.Singleton;
 import com.itextpdf.text.DocumentException;
 
+@Singleton
 public class DownloadReportServlet extends HttpServlet{
 
 	/**

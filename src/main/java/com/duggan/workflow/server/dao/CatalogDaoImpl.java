@@ -174,6 +174,11 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		if(col.getSize()!=null && col.getSize()!=0){
 			alter.append("("+col.getSize()+")");
 		}
+		if(col.getType().isNumber() && !model.getType().isNumber()){
+			String trimmed = columnName;
+			alter.append(" USING (cast(trim("+columnName+") as "+col.getType().name()+"))");
+		}
+		
 		logger.info("ALTER COLUMN: "+alter.toString());
 		em.createNativeQuery(alter.toString()).executeUpdate();
 		

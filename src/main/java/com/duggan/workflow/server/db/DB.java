@@ -170,6 +170,18 @@ public class DB {
 	public static void rollback() {
 		getImpl().rollback();
 	}
+	
+	public static void setRollbackOnly() {
+		try {
+			getUserTrx().setRollbackOnly();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (SystemException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static UserTransaction getUserTrx() throws NamingException {
 		return getImpl().getUserTrx();

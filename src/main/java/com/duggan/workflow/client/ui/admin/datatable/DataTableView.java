@@ -90,7 +90,6 @@ public class DataTableView extends ViewImpl implements
 		types.add("csv");
 		
 		ctx.setAccept(types);
-		ctx.setAction(UPLOADACTION.IMPORTCSV);
 		
 		aImportTable.addClickHandler(new ClickHandler() {
 			
@@ -121,6 +120,7 @@ public class DataTableView extends ViewImpl implements
 				 * EXCEL - comma separated
 				 * TDF - Tab separated
 				 */
+				ctx.setAction(UPLOADACTION.IMPORTCSV);
 				types.clear();
 				types.add("csv");
 				ctx.setAccept(types);
@@ -140,6 +140,7 @@ public class DataTableView extends ViewImpl implements
 				 * EXCEL - comma separated
 				 * TDF - Tab separated
 				 */
+				ctx.setAction(UPLOADACTION.IMPORTCSV);
 				types.clear();
 				types.add("csv");
 				ctx.setAccept(types);

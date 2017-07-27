@@ -85,7 +85,7 @@
 	</servlet-mapping>
 	
 	<!-- UPLOAD SERVLET -->
-	<servlet>
+	<!-- servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.UploadServlet</servlet-class>
 	    <servlet-name>uploader</servlet-name>
 	</servlet>
@@ -93,10 +93,10 @@
 	<servlet-mapping>
 	    <servlet-name>uploader</servlet-name>
 	    <url-pattern>/upload</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 	
 	<!-- FILE/ ATTACHMENTS DOWNLOAD SERVLET -->
-	<servlet>
+	<!-- servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.GetReport</servlet-class>
 	    <servlet-name>getReport</servlet-name>
 	</servlet>
@@ -104,9 +104,9 @@
 	<servlet-mapping>
 	    <servlet-name>getReport</servlet-name>
 	    <url-pattern>/getreport</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 	
-	<servlet>
+	<!-- servlet>
 	    <servlet-class>com.duggan.workflow.server.servlets.upload.DownloadReportServlet</servlet-class>
 	    <servlet-name>downloadReport</servlet-name>
 	</servlet>
@@ -114,6 +114,6 @@
 	<servlet-mapping>
 	    <servlet-name>downloadReport</servlet-name>
 	    <url-pattern>/downloadreport</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 
 </web-app>
