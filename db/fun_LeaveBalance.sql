@@ -48,15 +48,7 @@ BEGIN
 	
 	v_leavebalance = v_daysallocated - v_leavedays_taken;
 	
-	create temporary table if not exists tbl_leave_balances(r_balance decimal, 
-	 r_daysallocated decimal, 
-	 r_leavedaystaken decimal,
-	 v_daysearned decimal);
-	 delete from tbl_leave_balances;
-	 
-	insert into tbl_leave_balances values(v_leavebalance,v_daysallocated,v_leavedays_taken,v_daysearned);
-
-	RETURN QUERY select * from tbl_leave_balances;
+	RETURN QUERY select v_leavebalance,v_daysallocated,v_leavedays_taken,v_daysearned;
 END;
 $$ LANGUAGE plpgsql;
 
