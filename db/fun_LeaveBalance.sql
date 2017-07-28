@@ -17,7 +17,7 @@ DECLARE
 	v_balance_from_previous_year decimal;
 BEGIN
     
-	v_leavedays_taken = 0;
+	
 	v_daysallocated = 0;
 	v_daysearned = 0;
 	
@@ -28,6 +28,9 @@ BEGIN
 	select coalesce(sum(days),0) into v_leavedays_taken from ext_kam_leave_report_per_type t 
 	inner join ext_leaveapplications a 
 	on (t."caseNo" = a."caseNo") where t."leaveCategory"=p_leavetype and t."staffId"=p_userid;
+	
+	v_leavedays_taken = coalesce(v_leavedays_taken, 0);
+	v_daysallocated = coalesce(v_daysallocated, 0);
 	
 	if(p_leavetype='Annual Leave') then
 		v_daysearned = 1.75 * (SELECT DATE_PART('month', current_date::timestamp)-1);
