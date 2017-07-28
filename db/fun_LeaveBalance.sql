@@ -1,17 +1,25 @@
 drop function if exists fun_LeaveBalance(varchar, varchar);
 
 CREATE FUNCTION fun_LeaveBalance(in p_userid varchar, in p_leavetype varchar) 
-returns int as  $$
+returns TABLE (
+	 r_balance decimal, 
+	 r_daysallocated decimal, 
+	 r_leavedaystaken decimal,
+	 v_daysearned decimal
+) as $$
 DECLARE
-	v_leavebalance int;	
-	v_daysallocated int;
-	v_leavedays_taken int;
-	v_openingleavetaken int;
-	v_leavedaystoutilize int;
+	v_daysearned decimal;
+	v_leavebalance decimal;	
+	v_daysallocated decimal;
+	v_leavedays_taken decimal;
+	v_openingleavetaken decimal;
+	v_leavedaystoutilize decimal;
+	v_balance_from_previous_year decimal;
 BEGIN
     
 	v_leavedays_taken = 0;
 	v_daysallocated = 0;
+	v_daysearned = 0;
 	
 	--allocation
 	select days into v_daysallocated from ext_leavetype where leavetype=p_leavetype;
@@ -22,19 +30,30 @@ BEGIN
 	on (t."caseNo" = a."caseNo") where t."leaveCategory"=p_leavetype and t."staffId"=p_userid;
 	
 	if(p_leavetype='Annual Leave') then
+		v_daysearned = 1.75 * (SELECT DATE_PART('month', current_date::timestamp)-1);
+		
 		--opening balances
-		select coalesce(leave_taken, 0), coalesce(days_to_utilize,0) into v_openingleavetaken,v_leavedaystoutilize 
+		select coalesce(leave_taken, 0), coalesce(days_to_utilize,0), coalesce(balance_from_previous_year) 
+		into v_openingleavetaken,v_leavedaystoutilize,v_balance_from_previous_year 
 		from ext_kam_leave_master where email = p_userid;
 		
 		v_leavedays_taken = v_leavedays_taken + v_openingleavetaken;
-		v_daysallocated = v_leavedaystoutilize;
+		v_daysallocated = v_daysallocated + v_balance_from_previous_year;
 	end if;
 	
-	RAISE NOTICE 'v_daysallocated = % , v_leavedays_taken = %', v_daysallocated,v_leavedays_taken ;
+	RAISE NOTICE 'v_daysallocated = % , v_leavedays_taken = % , v_daysearned = % ', v_daysallocated,v_leavedays_taken,v_daysearned;
 	
 	v_leavebalance = v_daysallocated - v_leavedays_taken;
 	
-	return v_leavebalance;
+	create temporary table if not exists tbl_leave_balances(r_balance decimal, 
+	 r_daysallocated decimal, 
+	 r_leavedaystaken decimal,
+	 v_daysearned decimal);
+	 delete from tbl_leave_balances;
+	 
+	insert into tbl_leave_balances values(v_leavebalance,v_daysallocated,v_leavedays_taken,v_daysearned);
+
+	RETURN QUERY select * from tbl_leave_balances;
 END;
 $$ LANGUAGE plpgsql;
 
