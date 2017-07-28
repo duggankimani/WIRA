@@ -79,7 +79,7 @@ public class SplashPresenter extends Presenter<SplashPresenter.MyView, SplashPre
 		AppContext.updateContext(result.getVersion(), result.getOrganizationName(), result.getReportViewImpl());
 		
 		redirect();
-		AppContext.fireEvent(new ContextLoadedEvent(currentUser.getUser(), result.getVersion()));
+		//AppContext.fireEvent(new ContextLoadedEvent(currentUser.getUser(), result.getVersion()));
 	}
 
 	private void redirect() {

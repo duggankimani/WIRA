@@ -3,6 +3,8 @@ package com.duggan.workflow.client.ui;
 
 import com.duggan.workflow.client.event.ShowMessageEvent;
 import com.duggan.workflow.client.event.ShowMessageEvent.ShowMessageHandler;
+import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.admin.AdminHomePresenter;
 import com.duggan.workflow.client.ui.events.AdminPageLoadEvent;
 import com.duggan.workflow.client.ui.events.ClientDisconnectionEvent;
@@ -22,6 +24,8 @@ import com.duggan.workflow.client.ui.upload.attachment.ShowAttachmentEvent.ShowA
 import com.duggan.workflow.client.ui.upload.href.IFrameDataPresenter;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.requests.GetContextRequest;
+import com.duggan.workflow.shared.responses.GetContextRequestResult;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -44,6 +48,8 @@ import com.gwtplatform.mvp.client.proxy.LockInteractionEvent;
 import com.gwtplatform.mvp.client.proxy.LockInteractionHandler;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.wira.commons.client.security.CurrentUser;
+import com.wira.commons.shared.models.CurrentUserDto;
 import com.wira.commons.shared.models.REPORTVIEWIMPL;
 
 public class ApplicationPresenter extends
@@ -79,6 +85,8 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 
 	@Inject IFrameDataPresenter presenter;
 	
+	@Inject CurrentUser currentUser;
+	
 	static final String VERSION = "V1.0.0-1";
 	
 	@Inject
@@ -104,6 +112,7 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 		addRegisteredHandler(ClientDisconnectionEvent.TYPE, this);
 		addRegisteredHandler(ShowMessageEvent.getType(), this);
 		addRegisteredHandler(LockInteractionEvent.getType(), this);
+		loadContext();
 	}
 	
 	
@@ -259,4 +268,28 @@ ClientDisconnectionHandler, ShowMessageHandler, LockInteractionHandler{
 		}
 	}
 
+	private void loadContext() {
+		
+		dispatcher.execute(new GetContextRequest(), new TaskServiceCallback<GetContextRequestResult>() {
+			@Override
+			public void processResult(GetContextRequestResult aResponse) {
+				if(!aResponse.getIsValid()){
+					Window.Location.replace(NameTokens.loginPage);
+					return;
+				}
+				setContextValues(aResponse);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.Location.replace(NameTokens.loginPage);
+			}
+		});
+	}
+
+	protected void setContextValues(GetContextRequestResult result) {
+		CurrentUserDto currentUserDto = result.getCurrentUserDto();
+		currentUser.fromCurrentUserDto(currentUserDto);
+		AppContext.updateContext(result.getVersion(), result.getOrganizationName(), result.getReportViewImpl());
+	}
 }

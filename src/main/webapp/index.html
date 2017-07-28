@@ -60,6 +60,99 @@
 <link rel="stylesheet" type="text/css" href="css/compiled/signin.css">
 <!-- <link rel="stylesheet" type="text/css" href="css/compiled/index.css"> -->
 
+<link rel="stylesheet" type="text/css" href="css/daterangepicker/daterangepicker.css" />
+
+<style type="text/css">
+
+#progressbar, #system-loading-text, #app-name{
+	width: 400px;
+	max-width: 90%;
+}
+
+#progressbar {
+	margin: 10px;
+	height: 15px;
+	border: 2px solid black;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+@media ( max-width : 767px) {
+	#progressbar, #system-loading-text, #app-name {
+		width: 350px;
+		max-width: 90%;
+	}
+	
+	#progressbar{
+		margin-top: 10px;
+		height: 15px;
+		border: 2px solid black;
+		overflow: hidden;
+		border-radius: 10px;
+	}
+}
+</style>
+</head>
+
+<!--                                           -->
+<!-- The body can have arbitrary html, or      -->
+<!-- you can leave the body empty if you want  -->
+<!-- to create a completely dynamic UI.        -->
+<!--                                           -->
+
+<body>
+	<!-- div id="loading" style="display: none" -->
+	<div id="loading"
+		style="display: inline-block; position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto; width: 450px; height: 100px;">
+		<div id="app-name" style="margin: auto;">
+			<h2 style="text-align: center; padding-bottom: 9px;">WIRA
+				Workflow</h2>
+		</div>
+		<div id="system-loading-text"
+			style="font-size: 13px; margin: auto; text-align: center;">Please
+			wait as the system loads...</div>
+		<div id="progressbar" style="">
+			<div id="progress"
+				style="background: #2299dd; height: 100%; width: 0;"></div>
+			<script type="text/javascript">
+				var loading = document.getElementById('loading');
+				var progress = document.getElementById('progress');
+				var progressbar = document.getElementById('progressbar');
+				function updateProgress() {
+					if (loading.style.display !== 'none') {
+						var width = parseInt(progress.offsetWidth
+								+ ((progressbar.offsetWidth - progress.offsetWidth) * .15));
+						if (width > (progressbar.offsetWidth * .95)) {
+							width = width + ((100 - width) * .5);
+						}
+						progress.style.width = width + 'px';
+						window.setTimeout("updateProgress()", 1000);
+					}
+				}
+				document.body.style.margin = 0;
+				document.body.style.padding = 0;
+				loading.style.display = 'block';
+				updateProgress();
+			</script>
+		</div>
+	</div>
+
+	<!-- OPTIONAL: include this if you want history support -->
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+
+	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif;">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+	<script type="text/javascript" language="javascript"
+		src="gwtht/gwtht.nocache.js"></script>
+
+</body>
+
 <!--                                           -->
 <!-- This script loads your compiled module.   -->
 <!-- If you add any GWT meta tags, they must   -->
@@ -75,9 +168,9 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
-<script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
+<script type="text/javascript" src="js/daterangepicker/daterangepicker.js"></script>
+
 <script type="text/javascript">
 	function initForm(){
 		alert('Doc ID = ');
@@ -187,99 +280,4 @@
 	}
 </script>
 
-<style type="text/css">
-
-#progressbar, #system-loading-text, #app-name{
-	width: 400px;
-	max-width: 90%;
-}
-
-#progressbar {
-	margin: 10px;
-	height: 15px;
-	border: 2px solid black;
-	overflow: hidden;
-	border-radius: 10px;
-}
-
-@media ( max-width : 767px) {
-	#progressbar, #system-loading-text, #app-name {
-		width: 350px;
-		max-width: 90%;
-	}
-	
-	#progressbar{
-		margin-top: 10px;
-		height: 15px;
-		border: 2px solid black;
-		overflow: hidden;
-		border-radius: 10px;
-	}
-}
-</style>
-</head>
-
-<!--                                           -->
-<!-- The body can have arbitrary html, or      -->
-<!-- you can leave the body empty if you want  -->
-<!-- to create a completely dynamic UI.        -->
-<!--                                           -->
-
-<body>
-	<!-- div id="loading" style="display: none" -->
-	<div id="loading"
-		style="display: inline-block; position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto; width: 450px; height: 100px;">
-		<div id="app-name" style="margin: auto;">
-			<h2 style="text-align: center; padding-bottom: 9px;">WIRA
-				Workflow</h2>
-		</div>
-		<div id="system-loading-text"
-			style="font-size: 13px; margin: auto; text-align: center;">Please
-			wait as the system loads...</div>
-		<div id="progressbar" style="">
-			<div id="progress"
-				style="background: #2299dd; height: 100%; width: 0;"></div>
-			<script type="text/javascript">
-				var loading = document.getElementById('loading');
-				var progress = document.getElementById('progress');
-				var progressbar = document.getElementById('progressbar');
-				function updateProgress() {
-					if (loading.style.display !== 'none') {
-						var width = parseInt(progress.offsetWidth
-								+ ((progressbar.offsetWidth - progress.offsetWidth) * .15));
-						if (width > (progressbar.offsetWidth * .95)) {
-							width = width + ((100 - width) * .5);
-						}
-						progress.style.width = width + 'px';
-						window.setTimeout("updateProgress()", 1000);
-					}
-				}
-				document.body.style.margin = 0;
-				document.body.style.padding = 0;
-				loading.style.display = 'block';
-				updateProgress();
-			</script>
-		</div>
-	</div>
-
-	<!-- OPTIONAL: include this if you want history support -->
-	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
-		style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
-
-	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
-	<noscript>
-		<div
-			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif;">
-			Your web browser must have JavaScript enabled in order for this
-			application to display correctly.</div>
-	</noscript>
-	<script type="text/javascript" language="javascript"
-		src="gwtht/gwtht.nocache.js"></script>
-
-</body>
-
-<!-- script type="text/javascript">
-	var d2 = [ [ 0, 3 ], [ 4, 8 ], [ 8, 5 ], [ 9, 13 ] ];
-	$.plot("#placeholder", [ d2 ]);
-</script -->
 </html>
