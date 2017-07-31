@@ -6,9 +6,12 @@ import com.wira.commons.shared.response.BaseResponse;
 
 public class MultiRequestActionResult extends BaseResponse {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<BaseResponse> responses = new ArrayList<BaseResponse>();
 
-	@SuppressWarnings("unused")
 	public MultiRequestActionResult() {
 	}
 

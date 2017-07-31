@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.MultiRequestActionResult;
@@ -29,7 +29,7 @@ public class MultiRequestActionHandler extends
 	@Override
 	public void execute(MultiRequestAction action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		List<BaseRequest<BaseResponse>> requests = action.getRequest();
+		ArrayList<BaseRequest<BaseResponse>> requests = action.getRequest();
 		MultiRequestActionResult result = (MultiRequestActionResult)actionResult;
 		
 		//execution will follow the order of insertion

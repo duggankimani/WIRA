@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.jbpm.executor.commands.SendMailCommand;
 
+import com.duggan.workflow.server.dao.model.User;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.shared.model.Doc;
 import com.wira.commons.shared.models.HTUser;
@@ -22,7 +24,18 @@ public class EmailUtil {
 		
 		HTUser [] users = new HTUser[emailAddresses.length];
 		
-		//for()
+		int i=0;
+		if(emailAddresses!=null)
+		for(String emailAdd: emailAddresses) {
+			User u = DB.getUserGroupDao().getUserByEmail(emailAdd);
+			if(u==null) {
+				HTUser user = new HTUser();
+				user.setEmail(emailAdd);
+				users[i++] = user;
+			}else {
+				users[i++] = u.toHTUser();
+			}
+		}
 		sendEmail(subject, email,doc,users);
 	}
 	

@@ -2,7 +2,6 @@ package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.form.Field;
@@ -13,7 +12,7 @@ import com.google.gwt.user.client.Window;
 public abstract class HTMLParent extends FieldWidget {
 
 	HashMap<String, Field> children = new HashMap<String, Field>();
-	List<FieldWidget> fieldWidgets = new ArrayList<FieldWidget>();
+	ArrayList<FieldWidget> fieldWidgets = new ArrayList<FieldWidget>();
 
 	public HTMLParent() {
 		super();

@@ -1,7 +1,6 @@
 package com.duggan.workflow.client.ui.admin.formbuilder.component;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.duggan.workflow.shared.model.DataType;
 import com.duggan.workflow.shared.model.TextValue;
@@ -283,7 +282,7 @@ public class HTMLForm extends HTMLParent {
 		// getAllInputs(parentId, elementArray);
 		getAllElements(parentId, elementArray);
 
-		List<String> inputGroups = new ArrayList<String>();
+		ArrayList<String> inputGroups = new ArrayList<String>();
 
 		for (int i = 0; i < elementArray.length(); i++) {
 			String id = elementArray.get(i);
