@@ -41,8 +41,8 @@ BEGIN
 		into v_openingleavetaken,v_leavedaystoutilize,v_balance_from_previous_year 
 		from ext_kam_leave_master where email = p_userid;
 		
-		v_leavedays_taken = v_leavedays_taken + v_openingleavetaken;
-		v_daysallocated = v_daysallocated + v_balance_from_previous_year;
+		v_leavedays_taken = coalesce(v_leavedays_taken,0) + coalesce(v_openingleavetaken,0);
+		v_daysallocated = coalesce(v_daysallocated,0) + coalesce(v_balance_from_previous_year,0);
 	end if;
 	
 	RAISE NOTICE 'v_daysallocated = % , v_leavedays_taken = % , v_daysearned = %, v_balance_from_previous_year = % ', v_daysallocated,v_leavedays_taken,v_daysearned, v_balance_from_previous_year;
