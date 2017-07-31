@@ -31,6 +31,7 @@ public class MultiRequestAction extends BaseRequest<MultiRequestActionResult> {
 	
 	public void addRequest(BaseRequest request){
 		request.setRequestCode(requestcode);
+		request.setEmbedded(true);
 		requests.add(request);
 	}
 	
