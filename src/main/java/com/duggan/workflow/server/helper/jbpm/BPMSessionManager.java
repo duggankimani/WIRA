@@ -67,6 +67,7 @@ import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -775,6 +776,12 @@ class BPMSessionManager {
 				newValues.put("docRefId", doc.getRefId());
 				if(newValues.get("document")==null){
 					newValues.put("document", doc);
+				}
+				
+				if(!(newValues.get("document") instanceof Doc)) {
+					logger.warn(BPMSessionManager.class+"#taskCompleted() - Document found with invalid value : {"+newValues.get("document")+"}");
+					newValues.put("document", doc);
+					logger.warn(BPMSessionManager.class+"#taskCompleted() - Resetting document to : {"+newValues.get("document")+"}");
 				}
 				
 				//
