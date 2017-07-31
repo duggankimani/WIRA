@@ -5,7 +5,8 @@ returns TABLE (
 	 r_balance decimal, 
 	 r_daysallocated decimal, 
 	 r_leavedaystaken decimal,
-	 v_daysearned decimal
+	 r_daysearned decimal,
+	 r_prevyearbal decimal
 ) as $$
 DECLARE
 	v_daysearned decimal;
@@ -36,7 +37,7 @@ BEGIN
 		v_daysearned = 1.75 * (SELECT DATE_PART('month', current_date::timestamp)-1);
 		
 		--opening balances
-		select coalesce(leave_taken, 0), coalesce(days_to_utilize,0), coalesce(balance_from_previous_year) 
+		select coalesce(leave_taken, 0), coalesce(days_to_utilize,0), coalesce(balance_from_previous_year,0) 
 		into v_openingleavetaken,v_leavedaystoutilize,v_balance_from_previous_year 
 		from ext_kam_leave_master where email = p_userid;
 		
@@ -44,11 +45,11 @@ BEGIN
 		v_daysallocated = v_daysallocated + v_balance_from_previous_year;
 	end if;
 	
-	RAISE NOTICE 'v_daysallocated = % , v_leavedays_taken = % , v_daysearned = % ', v_daysallocated,v_leavedays_taken,v_daysearned;
+	RAISE NOTICE 'v_daysallocated = % , v_leavedays_taken = % , v_daysearned = %, v_balance_from_previous_year = % ', v_daysallocated,v_leavedays_taken,v_daysearned, v_balance_from_previous_year;
 	
 	v_leavebalance = v_daysallocated - v_leavedays_taken;
 	
-	RETURN QUERY select v_leavebalance,v_daysallocated,v_leavedays_taken,v_daysearned;
+	RETURN QUERY select v_leavebalance,v_daysallocated,v_leavedays_taken,v_daysearned, v_balance_from_previous_year;
 END;
 $$ LANGUAGE plpgsql;
 
