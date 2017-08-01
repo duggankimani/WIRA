@@ -45,7 +45,7 @@ public class CatalogColumnModel extends PO{
 	@Enumerated(EnumType.STRING)
 	private DBType type;
 	@XmlAttribute
-	private Integer size;
+	private String size;//Size with precision e.g decimal(10,2)
 	@XmlAttribute
 	private boolean isNullable;
 	@XmlAttribute
@@ -140,11 +140,11 @@ public class CatalogColumnModel extends PO{
 		return 7*name.hashCode();
 	}
 
-	public Integer getSize() {
+	public String getSize() {
 		return size;
 	}
 
-	public void setSize(Integer size) {
+	public void setSize(String size) {
 		this.size = size;
 	}
 }

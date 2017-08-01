@@ -33,7 +33,7 @@ public class CatalogColumn extends SerializableObj implements IsCatalogItem{
 	private String name;
 	private String label;
 	private DBType type;
-	private Integer size;
+	private String size;//Size with precision e.g decimal(10,2)
 	private boolean isNullable;
 	private boolean isPrimaryKey;
 	private boolean isAutoIncrement;
@@ -98,11 +98,11 @@ public class CatalogColumn extends SerializableObj implements IsCatalogItem{
 		this.type = type;
 	}
 
-	public Integer getSize() {
+	public String getSize() {
 		return size;
 	}
 
-	public void setSize(Integer size) {
+	public void setSize(String size) {
 		this.size = size;
 	}
 	

@@ -102,21 +102,21 @@ public class TestCatalogDao {
 		col.setName("id");
 		col.setNullable(false);
 		col.setPrimaryKey(true);
-		col.setSize(10);
+		col.setSize("10");
 		col.setType(DBType.INTEGER);
 		columns.add(col);
 
 		col = new CatalogColumn();
 		col.setLabel("Name");
 		col.setName("name");
-		col.setSize(100);
+		col.setSize("100");
 		col.setType(DBType.VARCHAR);
 		columns.add(col);
 
 		col = new CatalogColumn();
 		col.setLabel("Description");
 		col.setName("description");
-		col.setSize(250);
+		col.setSize("250");
 		col.setType(DBType.VARCHAR);
 		columns.add(col);
 

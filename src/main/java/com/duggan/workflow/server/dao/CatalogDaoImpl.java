@@ -84,7 +84,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				create.append(col.isAutoIncrement() ? " serial" : "");// POSTGRES
 			} else {
 				create.append(" " + col.getType().name());
-				create.append((col.getSize() == null || col.getSize() == 0) ? ""
+				create.append((col.getSize() == null || !col.getSize().isEmpty()) ? ""
 						: "(" + col.getSize() + ")");
 			}
 
@@ -171,7 +171,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		
 		//ALTER Column TYPE
 		StringBuffer alter = new StringBuffer(ALTER_TABLE+" ALTER COLUMN "+columnName+" TYPE "+col.getType().name());
-		if(col.getSize()!=null && col.getSize()!=0){
+		if(col.getSize()!=null && !col.getSize().isEmpty()){
 			alter.append("("+col.getSize()+")");
 		}
 		logger.info("ALTER COLUMN: "+alter.toString());
@@ -199,7 +199,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			alter.append(col.isAutoIncrement() ? " serial" : "");// POSTGRES
 		} else {
 			alter.append(" " + col.getType().name());
-			alter.append((col.getSize() == null || col.getSize() == 0) ? ""
+			alter.append((col.getSize() == null || !col.getSize().isEmpty()) ? ""
 					: "(" + col.getSize() + ")");
 		}
 
@@ -284,12 +284,16 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			isChanged = true;
 		}
 		
-		if(coalesce(col.getSize(),0)!=coalesce(model.getSize(),0)){
+		if(!coalesce(col.getSize(),"").equals(coalesce(model.getSize(),""))){
 			log.debug("["+col.getName()+"] Column Size changed from "+model.getSize()+" -to- "+col.getSize());
 			isChanged = true;
 		}
 		
 		return isChanged;
+	}
+
+	private String coalesce(String val, String valueIfNull) {
+		return val==null ? valueIfNull: val;
 	}
 
 	private int coalesce(Integer val, int valueIfNull) {
@@ -529,7 +533,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 					String type = colsRs.getString("TYPE_NAME");
 					column.setType(DBType.valueOf(type.toUpperCase()));
 
-					int size = colsRs.getInt("COLUMN_SIZE");
+					String size = colsRs.getString("COLUMN_SIZE");
 					column.setSize(size);
 					columns.add(column);
 				}

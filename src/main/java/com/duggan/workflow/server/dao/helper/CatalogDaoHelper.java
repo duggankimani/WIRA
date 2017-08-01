@@ -644,7 +644,7 @@ public class CatalogDaoHelper {
 			col.setName(name);
 			col.setLabel(label);
 			col.setType(DBType.VARCHAR);
-			col.setSize(255);
+			col.setSize("255");
 			lines.add(col);
 		}
 
@@ -679,7 +679,7 @@ public class CatalogDaoHelper {
 			} else if (i == 3) {
 				try {
 					// Col Size
-					col.setSize(Integer.parseInt(value));
+					col.setSize(value);
 				} catch (Exception e) {
 				}
 
@@ -830,7 +830,7 @@ public class CatalogDaoHelper {
 				String colRefId = colJson.optString(CatalogColumn.REFID);
 				String colLabel = colJson.optString(CatalogColumn.LABEL);
 				String colName = colJson.optString(CatalogColumn.NAME);
-				int colSize = colJson.optInt(CatalogColumn.SIZE);
+				String colSize = colJson.optString(CatalogColumn.SIZE);
 				DBType dbType = null;
 				if (colJson.optString(CatalogColumn.TYPE) != null) {
 					String colType = colJson.getString(CatalogColumn.TYPE);
@@ -858,7 +858,7 @@ public class CatalogDaoHelper {
 				column.setNullable(isNullable);
 				column.setPrimaryKey(isPrimaryKey);
 
-				if (colSize != 0) {
+				if (colSize != null) {
 					column.setSize(colSize);
 				}
 				column.setType(dbType);

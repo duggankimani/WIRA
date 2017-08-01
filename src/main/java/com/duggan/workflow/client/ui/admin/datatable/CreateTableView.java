@@ -141,7 +141,7 @@ public class CreateTableView extends Composite {
 			col.setNullable(model.get("fieldNullable") == null ? false
 					: (Boolean) model.get("fieldNullable"));
 			col.setPrimaryKey((Boolean) model.get("fieldPrimary"));
-			col.setSize((Integer) model.get("fieldSize"));
+			col.setSize((String) model.get("fieldSize"));
 			col.setType((DBType) model.get("fieldType"));
 
 			if (isNullOrEmpty(col.getName()) || isNullOrEmpty(col.getLabel())
@@ -176,7 +176,7 @@ public class CreateTableView extends Composite {
 		columnConfigs.add(config);
 
 		columnConfigs.add(new ColumnConfig("fieldSize", "Size",
-				DataType.INTEGER, "", "input-createtable-colsize"));
+				DataType.STRING, "", "input-createtable-colsize"));
 		columnConfigs.add(new ColumnConfig("fieldNullable", "Null",
 				DataType.BOOLEAN));
 		columnConfigs.add(new ColumnConfig("fieldPrimary", "PK",
@@ -510,7 +510,7 @@ public class CreateTableView extends Composite {
 			} else if (i == 3) {
 				try {
 					// Col Size
-					col.setSize(Integer.parseInt(value));
+					col.setSize(value);
 				} catch (Exception e) {
 				}
 
