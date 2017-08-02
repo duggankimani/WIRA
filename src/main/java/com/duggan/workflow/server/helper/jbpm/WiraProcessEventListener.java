@@ -17,6 +17,7 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.model.DocumentModelJson;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailUtil;
@@ -99,14 +100,41 @@ public class WiraProcessEventListener implements ProcessEventListener{
 			
 		}
 		
+		Long id = doc.getDocumentId();
+		String refId = doc.getRefId();
+		
 		//Clear Current Task Information
-		if(doc!=null && doc.getRefId()!=null){
-			doc = DocumentDaoHelper.getDocJson(doc.getRefId());
-			doc.setCurrentTaskId(null);
-			doc.setCurrentTaskName(null);
-			doc.setTaskActualOwner(null);
-			DocumentDaoHelper.createJson((Document)doc);
+		if(doc!=null && refId!=null && !refId.isEmpty()){
+			System.out.println("WiraProcessEventListener.afterProcessCompleted - Update Document BY RefId "+doc.getRefId());
+			try {
+				doc = DocumentDaoHelper.getDocJson(doc.getRefId());
+			}catch (Exception e) {
+				System.err.print("WiraProcessEventListener.afterProcessCompleted ### Failed to GET Document - "+doc.getRefId()+": cause "+e.getMessage());
+			}
 		}
+		
+		if(doc==null && id!=null) {
+			System.out.println("WiraProcessEventListener.afterProcessCompleted - Update Document By ID "+id);
+			try {
+				DocumentModelJson json = DB.getDocumentDao().getById(DocumentModelJson.class, id);
+				doc = DB.getDocumentDao().getDocJson(json, true);
+			}catch (Exception e) {
+				System.err.print("WiraProcessEventListener.afterProcessCompleted ### Failed to GET Document BY ID- "+doc.getRefId()+": cause "+e.getMessage());
+			}
+		}
+		
+		if(doc!=null) {
+			try {
+				doc.setCurrentTaskId(null);
+				doc.setCurrentTaskName(null);
+				doc.setTaskActualOwner(null);
+				DocumentDaoHelper.createJson((Document)doc);
+			}catch (Exception e) {
+				System.err.print("WiraProcessEventListener.afterProcessCompleted ###Could not update json for update, leaving inconsistent!- "+doc.getRefId()+" #### "+doc.getCaseNo()+": cause "+e.getMessage());
+			}
+			
+		}
+		
 	}
 
 	@Override

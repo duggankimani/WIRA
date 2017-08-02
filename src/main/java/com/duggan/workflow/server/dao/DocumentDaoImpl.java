@@ -1081,7 +1081,10 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return getDocJson(json,loadDetails);
 	}
 
-	private Document getDocJson(DocumentModelJson json, boolean loadDetails) {
+	public Document getDocJson(DocumentModelJson json, boolean loadDetails) {
+		if(json==null) {
+			return null;
+		}
 		Document document = json.getDocument();
 		
 		if(loadDetails){
