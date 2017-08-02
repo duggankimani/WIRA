@@ -1,8 +1,10 @@
 package com.duggan.workflow.server.helper.jbpm;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.drools.event.process.ProcessCompletedEvent;
 import org.drools.event.process.ProcessEventListener;
@@ -15,9 +17,13 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 
 import com.duggan.workflow.server.dao.helper.CatalogDaoHelper;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
+import com.duggan.workflow.server.dao.model.User;
+import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.helper.email.EmailUtil;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.catalog.Catalog;
+import com.wira.commons.shared.models.HTUser;
 
 public class WiraProcessEventListener implements ProcessEventListener{
 
@@ -69,7 +75,24 @@ public class WiraProcessEventListener implements ProcessEventListener{
 		}
 		
 		for(Catalog catalog: catalogs){
-			CatalogDaoHelper.mapAndSaveFormData(catalog,doc);
+			try {
+				CatalogDaoHelper.mapAndSaveFormData(catalog,doc);
+			}catch (Exception e) {
+				logger.fatal("Data dump for REPORT TABLE - "+catalog.getDescription()
+				+" on case "+doc.getCaseNo()+" failed, please try again later"); 
+				Collection<User> administrators = DB.getUserGroupDao().getAllUsersByGroupId("Administrator");
+				HTUser[] users= new HTUser[administrators.size()];
+				int i=0;
+				for(User u: administrators) {
+					users[i++] = u.toHTUser();
+				}
+				EmailUtil.sendEmail("Error Dumping REPORT TABLE - "+catalog.getDescription()+" - @@caseNo"
+						, "Dear Admin,<p> There was an error dumping data to report table "+catalog.getDisplayName()+" cause: p<>"
+								+ "</p> "
+								+ ""+e.getMessage()+"<br/>"
+								+ ExceptionUtils.getStackTrace(e)+"", doc, users);
+			}
+			
 		}
 		
 		//Clear Current Task Information
