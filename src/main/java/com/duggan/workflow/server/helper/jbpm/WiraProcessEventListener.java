@@ -77,7 +77,8 @@ public class WiraProcessEventListener implements ProcessEventListener{
 		
 		for(Catalog catalog: catalogs){
 			try {
-				CatalogDaoHelper.mapAndSaveFormData(catalog,doc);
+				//Create Async Update!
+				//CatalogDaoHelper.mapAndSaveFormData(catalog,doc);
 			}catch (Exception e) {
 				logger.fatal("Data dump for REPORT TABLE - "+catalog.getDescription()
 				+" on case "+doc.getCaseNo()+" failed, please try again later"); 
@@ -110,7 +111,7 @@ public class WiraProcessEventListener implements ProcessEventListener{
 			try {
 				doc = DocumentDaoHelper.getDocJson(doc.getRefId());
 			}catch (Exception e) {
-				System.err.print("WiraProcessEventListener.afterProcessCompleted ### Failed to GET Document - "+refId+": cause "+e.getMessage());
+				System.err.println("WiraProcessEventListener.afterProcessCompleted ### Failed to GET Document - "+refId+": cause "+e.getMessage());
 			}
 		}
 		
@@ -120,7 +121,7 @@ public class WiraProcessEventListener implements ProcessEventListener{
 				DocumentModelJson json = DB.getDocumentDao().getById(DocumentModelJson.class, id);
 				doc = DB.getDocumentDao().getDocJson(json, true);
 			}catch (Exception e) {
-				System.err.print("WiraProcessEventListener.afterProcessCompleted ### Failed to GET Document BY ID- "+refId+": cause "+e.getMessage());
+				System.err.println("WiraProcessEventListener.afterProcessCompleted ### Failed to GET Document BY ID- "+refId+": cause "+e.getMessage());
 			}
 		}
 		
@@ -131,11 +132,11 @@ public class WiraProcessEventListener implements ProcessEventListener{
 				doc.setTaskActualOwner(null);
 				DocumentDaoHelper.createJson((Document)doc);
 			}catch (Exception e) {
-				System.err.print("WiraProcessEventListener.afterProcessCompleted [1] ###Could not update json for update, leaving inconsistent!- "+doc.getRefId()+" #### "+doc.getCaseNo()+": cause "+e.getMessage());
+				System.err.println("WiraProcessEventListener.afterProcessCompleted [1] ###Could not update json for update, leaving inconsistent!- "+doc.getRefId()+" #### "+doc.getCaseNo()+": cause "+e.getMessage());
 			}
 			
 		}else {
-			System.err.print("WiraProcessEventListener.afterProcessCompleted [2] ###Could not update json for update, leaving inconsistent!- "+refId+" #### "+caseNo+": cause ID is null && could not get document by refId");
+			System.err.println("WiraProcessEventListener.afterProcessCompleted [2] ###Could not update json for update, leaving inconsistent!- "+refId+" #### "+caseNo+": cause ID is null && could not get document by refId");
 		}
 		
 	}
