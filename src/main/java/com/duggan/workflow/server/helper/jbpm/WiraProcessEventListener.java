@@ -80,17 +80,21 @@ public class WiraProcessEventListener implements ProcessEventListener{
 			}catch (Exception e) {
 				logger.fatal("Data dump for REPORT TABLE - "+catalog.getDescription()
 				+" on case "+doc.getCaseNo()+" failed, please try again later"); 
-				Collection<User> administrators = DB.getUserGroupDao().getAllUsersByGroupId("Administrator");
-				HTUser[] users= new HTUser[administrators.size()];
-				int i=0;
-				for(User u: administrators) {
-					users[i++] = u.toHTUser();
+				try {
+					Collection<User> administrators = DB.getUserGroupDao().getAllUsersByGroupId("ADMIN");	
+					HTUser[] users= new HTUser[administrators.size()];
+					int i=0;
+					for(User u: administrators) {
+						users[i++] = u.toHTUser();
+					}
+					EmailUtil.sendEmail("Error Dumping REPORT TABLE - "+catalog.getDescription()+" - @@caseNo"
+							, "Dear Admin,<p> There was an error dumping data to report table "+catalog.getDisplayName()+" cause: p<>"
+									+ "</p> "
+									+ ""+e.getMessage()+"<br/>"
+									+ ExceptionUtils.getStackTrace(e)+"", doc, users);
+				}catch(Exception e1) {
+					e1.printStackTrace();
 				}
-				EmailUtil.sendEmail("Error Dumping REPORT TABLE - "+catalog.getDescription()+" - @@caseNo"
-						, "Dear Admin,<p> There was an error dumping data to report table "+catalog.getDisplayName()+" cause: p<>"
-								+ "</p> "
-								+ ""+e.getMessage()+"<br/>"
-								+ ExceptionUtils.getStackTrace(e)+"", doc, users);
 			}
 			
 		}
