@@ -14,6 +14,7 @@ import com.duggan.workflow.server.servlets.upload.DownloadReportServlet;
 import com.duggan.workflow.server.servlets.upload.GetReport;
 import com.duggan.workflow.server.servlets.upload.UploadServlet;
 import com.google.inject.persist.PersistFilter;
+import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.rpc.server.guice.DispatchServiceImpl;
 import com.gwtplatform.dispatch.rpc.shared.ActionImpl;
@@ -30,11 +31,13 @@ public class BootstrapServletModule extends ServletModule {
 	@Override
 	protected void configureServlets() {
 
-		// Initialize Apache Shiro if present
-		install(new ShiroSecurityModule(getServletContext()));
-
+		install(new JpaPersistModule("org.jbpm.persistence.jpa"));
+		
 		filter("/api/*").through(PersistFilter.class);
 		filter("/api/*").through(TransactionFilter.class);
+
+		// Initialize Apache Shiro if present
+		install(new ShiroSecurityModule(getServletContext()));
 		
 		// if you had a ShiroWebModule installed above you would need to add
 		// this GuiceShiroFilter also.

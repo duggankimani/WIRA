@@ -5,7 +5,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
@@ -14,34 +13,23 @@ import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
+@Singleton
 public class DBImpl {
 
 	private Logger log = LoggerFactory.getLogger(DBImpl.class);
 
-	private EntityManagerFactory emf;
-
-	final ThreadLocal<EntityManager> entityManagers = new ThreadLocal<EntityManager>();
+	@Inject
+	private Provider<EntityManager> entityManagerProvider;
+	
+	@Inject
+	private Provider<EntityManagerFactory> entityManagerFactoryProvider;
 
 	public EntityManager getEntityManager() {
-
-		EntityManager em = entityManagers.get();
-
-		if (em != null && !em.isOpen()) {
-			em = null;
-		}
-		if (em == null) {
-
-			synchronized (entityManagers) {
-				if (emf == null) {
-					emf = getEntityManagerFactory(); // (serviceRegistry);
-				}
-			}
-
-			// beginTransaction();
-			em = emf.createEntityManager();
-			entityManagers.set(em);
-		}
-
+		EntityManager em = entityManagerProvider.get();
 		return em;
 	}
 
@@ -51,19 +39,7 @@ public class DBImpl {
 	 * @return
 	 */
 	public EntityManagerFactory getEntityManagerFactory() {
-
-		synchronized (log) {
-			if (emf == null) {
-				try {
-					emf = Persistence
-							.createEntityManagerFactory("org.jbpm.persistence.jpa");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return emf;
+		return entityManagerFactoryProvider.get();
 	}
 
 	/**
@@ -72,16 +48,7 @@ public class DBImpl {
 	 * @throws HibernateException
 	 */
 	public void clearSession() {
-		EntityManager em = (EntityManager) entityManagers.get();
-		if (em == null)
-			return;
-
-		entityManagers.set(null);
-
-		if (em != null) {
-			em.close();
-		}
-
+		//@See com.google.inject.persist.PersistFilter 
 	}
 
 	/**
@@ -96,7 +63,6 @@ public class DBImpl {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	/**
@@ -157,21 +123,12 @@ public class DBImpl {
 		UserTransaction userTrx = (UserTransaction) value;
 		return userTrx;
 	}
-
-	public boolean isEntityManagerAvailable() {
-
-		EntityManager em = (EntityManager) entityManagers.get();
-		if (em == null)
-			return false;
-
-		return true;
-	}
-
+	
 	public boolean hasActiveTrx() throws SystemException, NamingException {
 
 		int status = getUserTrx().getStatus();
 
-		boolean active = false;
+		boolean active = false;	
 
 		switch (status) {
 		case Status.STATUS_NO_TRANSACTION:

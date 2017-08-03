@@ -32,6 +32,8 @@ import com.duggan.workflow.server.dao.SettingsDaoImpl;
 import com.duggan.workflow.server.dao.UserDaoImpl;
 import com.duggan.workflow.server.dao.UserSessionDao;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 /**
  * <p>
@@ -64,37 +66,23 @@ import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
  */
 public class DB {
 
-	private static Logger log = LoggerFactory.getLogger(DB.class);
+	private static Logger logger = LoggerFactory.getLogger(DB.class);
 
 	private static ThreadLocal<DaoFactory> daoFactory = new ThreadLocal<>();
 
 	private static ThreadLocal<JDBCConnection> jdbcConnectionBot = new ThreadLocal<>();
 
-	private static DBImpl impl = null;
 	
+	@Inject
+	private static Provider<DBImpl> impl;
 
 	private DB() {
 	}
-	
-	public static DBImpl getImpl(){
-		if(impl==null){
-			String className= ApplicationSettings.getInstance().getProperty("db.impl.class");
-			if(className!=null){
-				try {
-					Class<?> implClass = Class.forName(className);
-					impl = (DBImpl)implClass.newInstance();
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
-					return null;
-				}
-			}else{
-				impl = new DBImpl();
-			}
-			
-		}
-		return impl;
-	}
 
+	public static DBImpl getImpl() {
+		return impl.get();
+	}
+	
 	public static EntityManager getEntityManager() {
 		return getImpl().getEntityManager();
 	}
@@ -115,25 +103,6 @@ public class DB {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		try {
-			if (!getImpl().isEntityManagerAvailable()) {
-				return;
-			}
-		} catch (Exception e) {
-
-			try {
-				rollback();
-			} catch (Exception ex) {
-			}
-
-			throw new RuntimeException(e);
-		} finally {
-			clearSession();
-
-			closeFactory();
-		}
-
 	}
 
 	/**

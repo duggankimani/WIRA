@@ -1,10 +1,8 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.SystemException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -13,7 +11,6 @@ import org.hibernate.exception.ConstraintViolationException;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.error.ErrorLogDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
-import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.exceptions.InvalidSessionException;
 import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
 import com.google.inject.Inject;
@@ -56,12 +53,6 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			 * Initializing these again causes a deadlock			 
 			*/
 			execute(action, result, execContext);
-			try {
-				log.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
-			} catch (SystemException | NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return result;
 		}
 	
@@ -73,11 +64,11 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 				//DB.beginTransaction();
 			}	
 			
-			log.trace("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
+//			log.trace("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 			execute(action, result, execContext);
 			
 			//DB.commitTransaction();
-			log.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
+//			log.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 		} catch (Exception e) {	
 			log.trace(action.getRequestCode()+": Error in " + action.getClass().getName()+" cause: "+e.getMessage());
 			e.printStackTrace();

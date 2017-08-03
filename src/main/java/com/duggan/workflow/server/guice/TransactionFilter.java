@@ -11,9 +11,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
 
 import org.apache.log4j.Logger;
 
+import com.duggan.workflow.server.db.DB;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -21,14 +23,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class TransactionFilter implements Filter {
 
-	private Provider<EntityManager> emProvider;
-
 	Logger logger = Logger.getLogger(TransactionFilter.class);
-	
-	@Inject
-	public TransactionFilter(Provider<EntityManager> emProvider) {
-		this.emProvider = emProvider;
-	}
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
@@ -39,22 +34,26 @@ public class TransactionFilter implements Filter {
 			final ServletResponse servletResponse, final FilterChain filterChain)
 			throws IOException, ServletException {
 
-		EntityManager em = emProvider.get();
-		final EntityTransaction txn = em.getTransaction();
-	    txn.begin();
-
 		try {
-			
+			DB.beginTransaction();
+			logger.trace("Begun Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 			filterChain.doFilter(servletRequest, servletResponse);
-			txn.commit();
+			DB.commitTransaction();
+			logger.trace("Committed Trx for "+getClass().getCanonicalName()+" - Active="+DB.hasActiveTrx());
 		}catch(Exception e){
 			logger.error("TransactionFilter caught exception: Attempting transaction rollback : "+e.getMessage());
 			try{
-				txn.rollback();
+				DB.rollback();
 			}catch(Exception x){}
 			
 			((HttpServletResponse)servletResponse).setStatus(500);
-			throw e;
+			
+			if(e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}else {
+				throw new RuntimeException(e);
+			}
+			
 			
 		}
 	}

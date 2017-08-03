@@ -4,7 +4,10 @@ import javax.servlet.ServletContextEvent;
 
 import org.apache.shiro.SecurityUtils;
 
+import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.server.db.DBImpl;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
+import com.duggan.workflow.server.db.DBUtil;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -22,9 +25,13 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 				new AbstractModule() {
 					@Override
 					protected void configure() {
+						requestInjection(DBImpl.class);
 						requestStaticInjection(SessionHelper.class);
+						requestStaticInjection(DB.class);
+						requestStaticInjection(Utils.class);
 					}
 				});
+		
 		
 		org.apache.shiro.mgt.SecurityManager securityManager = injector
 				.getInstance(org.apache.shiro.mgt.SecurityManager.class);
@@ -34,10 +41,9 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 	
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		// TODO Auto-generated method stub
-		super.contextInitialized(servletContextEvent);
 		DBTrxProviderImpl.init();
-		JBPMHelper.get();
+		super.contextInitialized(servletContextEvent);
+		//JBPMHelper.get();
 	}
 	
 	@Override

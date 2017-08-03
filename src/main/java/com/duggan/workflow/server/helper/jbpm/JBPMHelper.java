@@ -86,7 +86,6 @@ public class JBPMHelper implements Closeable {
 
 	private JBPMHelper() {
 		try {
-			Node l;
 			// By Setting the jbpm.usergroup.callback property with the call
 			// back class full name, task service will use this to validate the
 			// user/group exists and its permissions are ok.
@@ -115,7 +114,6 @@ public class JBPMHelper implements Closeable {
 	@Override
 	public void close() {
 		assert sessionManager != null;
-
 		sessionManager.disposeSessions();
 	}
 

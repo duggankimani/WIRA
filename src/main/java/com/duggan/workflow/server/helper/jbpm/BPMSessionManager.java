@@ -91,12 +91,9 @@ class BPMSessionManager {
 	Boolean autoLoad = true;
 
 	public BPMSessionManager() {
-
 		service = new TaskService(DB.getEntityManagerFactory(),
 				SystemEventListenerFactory.getSystemEventListener(),
 				new DefaultEscalatedDeadlineHandler(EmailServiceHelper.getProperties()));
-		// service.
-
 	}
 
 	// processId - KnowledgeBase Map
