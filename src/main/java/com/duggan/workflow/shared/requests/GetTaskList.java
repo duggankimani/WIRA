@@ -12,7 +12,7 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 	private TaskType type;
 	private Long processInstanceId;
 	private String docRefId;
-	private Long documentId;
+	private Long taskId;
 	private SearchFilter filter;
 	private boolean isLoadAsAdmin=false;
 	
@@ -60,16 +60,6 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 		return filter;
 	}
 
-	@Deprecated
-	public Long getDocumentId() {
-		return documentId;
-	}
-
-	@Deprecated
-	public void setDocumentId(Long documentId) {
-		this.documentId = documentId;
-	}
-
 	public boolean isLoadAsAdmin() {
 		return isLoadAsAdmin;
 	}
@@ -92,6 +82,14 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
+	}
+
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
 	}
 
 }

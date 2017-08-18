@@ -17,7 +17,8 @@ public enum TaskType implements IsSerializable{
 	NOTIFICATIONS("notifications", "Notifications"),
 	SEARCH("search","Search"),
 	PARTICIPATED("participated", "Participated"),
-	UNASSIGNED("UnAssigned", "UnAssigned");
+	UNASSIGNED("UnAssigned", "UnAssigned"),
+	CASEVIEW("registry", "Case Registry");
 	
 	String url;
 	String title;

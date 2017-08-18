@@ -140,7 +140,7 @@ public class DB {
 	 *
 	 * @throws HibernateException
 	 */
-	public static void clearSession() {
+	private static void clearSession() {
 		getImpl().clearSession();
 	}
 

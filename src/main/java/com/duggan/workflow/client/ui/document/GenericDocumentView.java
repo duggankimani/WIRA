@@ -92,6 +92,9 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnPartner;
 	@UiField
 	SpanElement spnDescription;
+	
+	@UiField
+	DivElement divAssignee;
 
 	@UiField
 	Image img;
@@ -773,7 +776,9 @@ public class GenericDocumentView extends ViewImpl implements
 		formPanel.setDeadline(dateDue);
 
 		if (doc instanceof HTSummary) {
-			formPanel.setCompletedOn(((HTSummary) doc).getCompletedOn());
+			HTSummary task = (HTSummary) doc;
+			formPanel.setCompletedOn(task.getCompletedOn());
+			setAssignee(task.getTaskActualOwner()==null? null : task.getTaskActualOwner().getFullName());
 			show(aEdit, false);
 			show(aSave, false);
 		}else{
@@ -789,6 +794,12 @@ public class GenericDocumentView extends ViewImpl implements
 
 		// Force Scroll To Top of Form
 		img.getElement().scrollIntoView();
+	}
+
+	private void setAssignee(String assigneeFullName) {
+		if(assigneeFullName!=null && !assigneeFullName.isEmpty()) {
+			divAssignee.setInnerText("Assignee: "+assigneeFullName);
+		}
 	}
 
 	public void showDefaultFields(boolean show) {

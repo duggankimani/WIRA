@@ -144,8 +144,10 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		ActionLink anchor = new ActionLink();
 		anchor.getElement().setInnerHTML("<i class='icon-th-large'/>");
 		anchor.setTitle("Summary");
-		//anchor.setHref("#caseview;did="+log.getDocId());
-		anchor.setHref("#/caseview/"+log.getDocRefId());
+		
+		String href = "#/caseview/"+log.getDocRefId()+
+				(log.getTaskId()==null? "": "?tid="+log.getTaskId());
+		anchor.setHref(href);
 		return anchor;
 	}
 
@@ -198,8 +200,6 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		DocumentType type= listProcesses.getValue();
 		
 		filter.setProcessId(type==null? null: type.getProcessId());
-		//Window.alert("ProcessId = "+type+" : "+filter.getProcessId());
-		
 		HTUser user = listUsers.getValue();
 		filter.setUserId(user==null? null: user.getUserId());
 		

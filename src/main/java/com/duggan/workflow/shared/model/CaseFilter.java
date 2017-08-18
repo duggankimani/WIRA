@@ -2,7 +2,9 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 
-public class CaseFilter implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class CaseFilter implements Serializable, IsSerializable{
 
 	/**
 	 * 

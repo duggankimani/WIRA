@@ -10,13 +10,17 @@
 	<g:HTMLPanel styleName="full-page">
 		<g:HTMLPanel styleName="upper-content" ui:field="panelUpperContent">
 			<div class="action-area row-fluid">
-				<g:HTMLPanel styleName="span1 priority hide" ui:field="spnPriority"></g:HTMLPanel>
+				<g:HTMLPanel styleName="span1 priority hide" ui:field="spnPriority">
+				</g:HTMLPanel>
 				<div class="generic-doc-title span6">
 					<span ui:field="spnDocType"></span>
 					-&nbsp;
 					<span ui:field="spnSubject"></span>
 					<i ui:field="iDocStatus">
 					 </i>
+					 <div ui:field="divAssignee" 
+					 style="font-size: 9px;font-weight: 100;color: #827d7d;margin-top: -5px;text-transform: inherit;">
+					 </div>
 				</div>
 
 				<div id="phoneActions" class="dropdown action-buttons pull-right visible-phone">

@@ -494,7 +494,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				+ "l.processinstanceid, "
 				+ "l.processid, "
 				+ "l.start_date,l.end_date,"
-				+ "d.subject caseNo, "
+				+ "d.caseNo, "
 				+ "l.status processstatus,"
 				+ "t.status, "
 				+ "concat(u1.firstname,' ' ,u1.lastname) createdby,"
@@ -506,10 +506,10 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				+ "left join bgroup g on (g.name=po.entity_id) "
 				+ "where task_id=t.id) potowners "
 				+ "from processinstancelog l "
+				+ "inner join documentjson d "
+				+ "on (d.processinstanceid=l.processinstanceid)  "
 				+ "left join task t "
 				+ "on (t.processinstanceid=l.processinstanceid and t.status!='Completed') "
-				+ "inner join localdocument d "
-				+ "on (d.processinstanceid=l.processinstanceid)  "
 				+ "left join buser u on (u.userid=t.actualowner_id) "
 				+ "left join buser u1 on (u1.userid=d.createdby) "
 				+ "left join i18ntext i on i.task_names_id=t.id ";
@@ -535,7 +535,7 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 			}
 			isFirst = false;
 
-			sql = sql + " d.subject ilike :caseNo";
+			sql = sql + " d.caseNo ilike :caseNo";
 		}
 
 		if (filter.getUserId() != null) {

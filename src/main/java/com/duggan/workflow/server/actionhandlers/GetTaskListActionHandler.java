@@ -25,116 +25,107 @@ import com.wira.commons.shared.response.BaseResponse;
  * @author duggan
  * 
  */
-public class GetTaskListActionHandler extends
-		AbstractActionHandler<GetTaskList, GetTaskListResult> {
+public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList, GetTaskListResult> {
 
 	@Inject
 	public GetTaskListActionHandler() {
 	}
 
 	@Override
-	public void execute(GetTaskList action,
-			BaseResponse actionResult, ExecutionContext execContext)
+	public void execute(GetTaskList action, BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 
-		boolean isLoadLines = false; //Grid Values
-		boolean isLoadValues = true; //Value Map
-		
+		boolean isLoadLines = false; // Grid Values
+		boolean isLoadValues = true; // Value Map
+
 		String processRefId = action.getProcessRefId();
 		String processId = null;
-		if(processRefId!=null){
+		if (processRefId != null) {
 			processId = DB.getProcessDao().getProcessId(processRefId);
 		}
-		
-		String userId = action.getUserId()==null? SessionHelper.getCurrentUser().getUserId():
-			action.getUserId();
-		
+
+		String userId = action.getUserId() == null ? SessionHelper.getCurrentUser().getUserId() : action.getUserId();
+
 		int totalCount = 0;
 		TaskType type = action.getType();
 
-		List<Doc> summary = new ArrayList<>();
+		List<Doc> summaries = new ArrayList<>();
 		DocStatus status = null;
-		
-		switch (type) {
-		case DRAFT:
-			status = DocStatus.DRAFTED;
-			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),isLoadValues,isLoadLines,status);
-			break;
-//		case APPROVED:
-//			status = DocStatus.APPROVED;
-//			summary = DocumentDaoHelper.getAllDocuments(status);
-//			break;
-//		case INPROGRESS:
-//			status = DocStatus.INPROGRESS;
-//			summary = DocumentDaoHelper.getAllDocuments(status);
-//			break;
-		case PARTICIPATED:
-			summary = DocumentDaoHelper.getAllDocumentsJson(processId,action.getOffset(),action.getLength(),isLoadValues,isLoadLines,
-					DocStatus.INPROGRESS, DocStatus.REJECTED,DocStatus.APPROVED,
-					 DocStatus.COMPLETED);//Current users sent requests
-			summary.addAll(getPendingApprovals(processId,userId, type,action.getOffset(),action.getLength()));
-			break;
-//		case REJECTED:
-//			status = DocStatus.REJECTED;
-//			summary = DocumentDaoHelper.getAllDocuments(status);
-//			break;
-		case SEARCH:
-			
-			if(action.getFilter()!=null){				
-				summary.addAll(DocumentDaoHelper.searchJson(processId,userId,action.getFilter()));
-				//summary.addAll(JBPMHelper.get().searchTasks(processId,userId, action.getFilter()));
-			}else if(action.getProcessInstanceId()!=null || action.getDocRefId()!=null){
-				
-				Long processInstanceId = action.getProcessInstanceId();
-				
-				if(processInstanceId==null || processInstanceId==0L){
-					processInstanceId = 
-							DocumentDaoHelper.getProcessInstanceIdByDocRefId(action.getDocRefId());
+
+		if (action.getTaskId() != null) {
+			HTSummary summary = JBPMHelper.get().getTaskSummary(action.getTaskId());
+			summaries.add(summary);
+		} else {
+			switch (type) {
+			case DRAFT:
+				status = DocStatus.DRAFTED;
+				summaries = DocumentDaoHelper.getAllDocumentsJson(processId, action.getOffset(), action.getLength(),
+						isLoadValues, isLoadLines, status);
+				break;
+			case PARTICIPATED:
+				summaries = DocumentDaoHelper.getAllDocumentsJson(processId, action.getOffset(), action.getLength(),
+						isLoadValues, isLoadLines, DocStatus.INPROGRESS, DocStatus.REJECTED, DocStatus.APPROVED,
+						DocStatus.COMPLETED);// Current users sent requests
+				summaries.addAll(getPendingApprovals(processId, userId, type, action.getOffset(), action.getLength()));
+				break;
+			case SEARCH:
+				if (action.getFilter() != null) {
+					summaries.addAll(DocumentDaoHelper.searchJson(processId, userId, action.getFilter()));
+					// summary.addAll(JBPMHelper.get().searchTasks(processId,userId,
+					// action.getFilter()));
+				} else if (action.getProcessInstanceId() != null || action.getDocRefId() != null) {
+
+					Long processInstanceId = action.getProcessInstanceId();
+
+					if (processInstanceId == null || processInstanceId == 0L) {
+						processInstanceId = DocumentDaoHelper.getProcessInstanceIdByDocRefId(action.getDocRefId());
+					}
+
+					Document doc = null;
+
+					if (processInstanceId != null) {
+						// ensure current user has rights to view
+						doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId, true);
+					} else if (action.getDocRefId() != null) {
+						// doc = DocumentDaoHelper.getDocument(action.getDocRefId(),true);
+						doc = DocumentDaoHelper.getDocJson(action.getDocRefId(), true);
+					}
+
+					if (doc != null)
+						summaries.add(doc);
+
+					List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(processId, userId, processInstanceId,
+							action.isLoadAsAdmin(), action.getOffset(), action.getLength());
+
+					if (tasks != null) {
+						summaries.addAll(tasks);
+					}
 				}
-								
-				Document doc = null;
-				
-				if(processInstanceId!=null){
-					//ensure current user has rights to view
-					doc = DocumentDaoHelper.getDocumentByProcessInstance(processInstanceId,true);
-				}else if(action.getDocRefId()!=null){
-					//doc = DocumentDaoHelper.getDocument(action.getDocRefId(),true);
-					doc = DocumentDaoHelper.getDocJson(action.getDocRefId(),true);
-				}
-				
-				if(doc!=null)
-					summary.add(doc);
-				
-				List<HTSummary> tasks = JBPMHelper.get().getTasksForUser(processId,userId, processInstanceId, action.isLoadAsAdmin(),action.getOffset(),action.getLength());
-				
-				if(tasks!=null){
-					summary.addAll(tasks);
-				}
+
+				break;
+
+			default:
+				// Tasks loaded here
+				summaries = getPendingApprovals(processId, userId, type, action.getOffset(), action.getLength());
+				break;
 			}
-			
-			break;
-			
-		default:
-			//Tasks loaded here
-			summary = getPendingApprovals(processId,userId, type,action.getOffset(),action.getLength());
-			break;
 		}
 
 		GetTaskListResult result = (GetTaskListResult) actionResult;
-		
-		Collections.sort(summary);
-		
-		result.setTasks((ArrayList<Doc>) summary);
+
+		Collections.sort(summaries);
+
+		result.setTasks((ArrayList<Doc>) summaries);
 		result.setTotalCount(totalCount);
 
 	}
 
-	private List<Doc> getPendingApprovals(String processId,String userId, TaskType type, int offset, int length) {
+	private List<Doc> getPendingApprovals(String processId, String userId, TaskType type, int offset, int length) {
 
 		List<HTSummary> tasks = new ArrayList<>();
 
 		try {
-			tasks = JBPMHelper.get().getTasksForUser(processId,userId, type,offset, length);
+			tasks = JBPMHelper.get().getTasksForUser(processId, userId, type, offset, length);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -148,8 +139,7 @@ public class GetTaskListActionHandler extends
 	}
 
 	@Override
-	public void undo(GetTaskList action, GetTaskListResult result,
-			ExecutionContext context) throws ActionException {
+	public void undo(GetTaskList action, GetTaskListResult result, ExecutionContext context) throws ActionException {
 	}
 
 	@Override

@@ -104,6 +104,8 @@ public class AbstractTaskView extends ViewImpl implements
 
 	private int totalCount;
 
+	private TaskType currentTaskType;
+
 	enum DefaultFields {
 		CaseNo, Process, Task, Submitter, CurrentTask, CurrentUser, Due, Modified, Status, Priority, Notes
 	}
@@ -370,7 +372,7 @@ public class AbstractTaskView extends ViewImpl implements
 	
 	@Override
 	public void setTaskType(TaskType currentTaskType) {
-
+		this.currentTaskType = currentTaskType;
 	}
 
 	@Override
@@ -850,7 +852,12 @@ public class AbstractTaskView extends ViewImpl implements
 		
 		this.processRefId = processRefId;
 		processName.setInnerText("");
-		if (processRefId == null) {
+		
+		if(currentTaskType == TaskType.CASEVIEW) {
+			aProcess.setHref("#/registry");
+			aFilter.addStyleName("hide");
+			aConfigure.addStyleName("hide");
+		}else if (processRefId == null) {
 			aProcess.setHref("#/home");
 			aFilter.addStyleName("hide");
 			aConfigure.addStyleName("hide");

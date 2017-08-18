@@ -45,7 +45,7 @@ public class CaseViewPresenter extends AbstractTaskPresenter<CaseViewPresenter.I
 
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		currentTaskType=TaskType.SEARCH;
+		currentTaskType=TaskType.CASEVIEW;
 		getView().setTaskType(currentTaskType);
 		mode = MODE.VIEW;
 		super.prepareFromRequest(request);

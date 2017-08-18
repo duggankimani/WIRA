@@ -79,7 +79,7 @@ import com.wira.commons.shared.models.UserGroup;
  * @author duggan
  * 
  */
-class BPMSessionManager {
+public class BPMSessionManager {
 
 	private TaskService service;
 
@@ -111,7 +111,7 @@ class BPMSessionManager {
 	 *            (ID of the process to be initialized-- e.g invoice-process)
 	 * @return
 	 */
-	private StatefulKnowledgeSession getSession(String processId) {
+	public StatefulKnowledgeSession getSession(String processId) {
 
 		StatefulKnowledgeSession session = initializeSession(processId);
 

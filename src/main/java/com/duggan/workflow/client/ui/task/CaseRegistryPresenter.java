@@ -31,6 +31,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -150,6 +151,8 @@ public class CaseRegistryPresenter
 	private void loadData(CaseFilter filter) {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetProcessInstancesRequest(filter));
+//		Window.alert("{processId: "+filter.getProcessId()+", userId="+filter.getUserId()+", "
+//				+ "caseNo="+filter.getCaseNo()+"}");
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {

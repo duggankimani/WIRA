@@ -544,6 +544,18 @@ public class JBPMHelper implements Closeable {
 
 		return tasks;
 	}
+	
+	public BPMSessionManager getSessionManager() {
+		return sessionManager;
+	}
+	
+	public HTSummary getTaskSummary(Long taskId) {
+		
+		HTSummary summ = new HTSummary(taskId);
+		copy(summ, getSysTask(taskId));
+		
+		return summ;
+	}
 
 	private void copy(HTSummary task, Task master_task) {
 
@@ -555,7 +567,7 @@ public class JBPMHelper implements Closeable {
 		task.setCreated(master_task.getTaskData().getCreatedOn());
 		task.setCaseNo(doc.getCaseNo());
 		if (task.getCaseNo() == null) {
-			Object subject = doc.get("subject");
+			Object subject = doc.get("subject");//for backward compatibility
 			if (subject != null) {
 				task.setCaseNo(subject.toString());
 			}
@@ -1488,9 +1500,13 @@ public class JBPMHelper implements Closeable {
 	}
 
 	public void assignTask(Long taskId, String userId) {
+		
+		if(userId.equals("Administrator")) {
+			throw new RuntimeException("Reassignment to Administrator is forbidden, please select a different user.");
+		}
 
 		Task task = DB.getEntityManager().find(Task.class, taskId);
-		task.getTaskData().setStatus(Status.Reserved);
+		task.getTaskData().setStatus(Status.Ready);
 
 		PeopleAssignments peopleAssign = new PeopleAssignments();
 		List<OrganizationalEntity> entities = new ArrayList<>();

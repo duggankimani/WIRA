@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.duggan.workflow.client.model.TaskType;
+import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
@@ -61,9 +62,8 @@ import com.wira.commons.client.service.ServiceCallback;
 import com.wira.commons.shared.response.BaseResponse;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
-		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>> implements
-		AfterSaveHandler, DocumentSelectionHandler, ReloadHandler,
-		SearchHandler, AssignTaskHandler {
+		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>>
+		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler, SearchHandler, AssignTaskHandler {
 
 	public interface ITaskView extends View {
 
@@ -71,7 +71,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		void addScrollHandler(ScrollHandler scrollHandler);
 
-		void bindTasks(ArrayList<Doc> tasks, int totalCount,boolean isIncremental);
+		void bindTasks(ArrayList<Doc> tasks, int totalCount, boolean isIncremental);
 
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 
@@ -91,9 +91,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Inject
 	PlaceManager placeManager;
 
-//	public static final Object DATEGROUP_SLOT = new Object();
+	// public static final Object DATEGROUP_SLOT = new Object();
 	private IndirectProvider<GenericDocumentPresenter> docViewFactory;
-//	private IndirectProvider<DateGroupPresenter> dateGroupFactory;
+	// private IndirectProvider<DateGroupPresenter> dateGroupFactory;
 
 	protected static TaskType currentTaskType;
 
@@ -107,6 +107,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	 */
 	// private Long documentId=null;
 	private String docRefId = null;
+
+	private Long taskId = null;
 
 	String searchTerm = "";
 
@@ -132,15 +134,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	private String processRefId;
 
-	public AbstractTaskPresenter(final EventBus eventBus, final ITaskView view,
-			final Proxy_ proxy,
-			Provider<GenericDocumentPresenter> docViewProvider,
-			Provider<DateGroupPresenter> dateGroupProvider) {
+	public AbstractTaskPresenter(final EventBus eventBus, final ITaskView view, final Proxy_ proxy,
+			Provider<GenericDocumentPresenter> docViewProvider, Provider<DateGroupPresenter> dateGroupProvider) {
 		super(eventBus, view, proxy, HomePresenter.SLOT_SetTabContent);
-		docViewFactory = new StandardProvider<GenericDocumentPresenter>(
-				docViewProvider);
-//		dateGroupFactory = new StandardProvider<DateGroupPresenter>(
-//				dateGroupProvider);
+		docViewFactory = new StandardProvider<GenericDocumentPresenter>(docViewProvider);
+		// dateGroupFactory = new StandardProvider<DateGroupPresenter>(
+		// dateGroupProvider);
 	}
 
 	@Override
@@ -174,8 +173,16 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		processRefId = request.getParameter("processRefId", null);
+		String taskIdStr = request.getParameter("tid", null);
+		if (taskIdStr != null) {
+			taskId = Long.parseLong(taskIdStr);
+		} else {
+			taskId = null;
+		}
+
+		getView().setTaskType(currentTaskType);
 		getView().setProcessRefId(processRefId);
-		
+
 		CURPOS = 0;
 
 		clear();
@@ -206,28 +213,26 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	public void search(final SearchFilter filter) {
 
-		GetTaskList request = new GetTaskList(processRefId,AppContext.getUserId(), filter);
+		GetTaskList request = new GetTaskList(processRefId, AppContext.getUserId(), filter);
 		request.setLength(PAGE_SIZE);
 		request.setOffset(CURPOS = 0);
 		fireEvent(new ProcessingEvent());
-		dispatcher.execute(request,
-				new TaskServiceCallback<GetTaskListResult>() {
-					@Override
-					public void processResult(GetTaskListResult result) {
+		dispatcher.execute(request, new TaskServiceCallback<GetTaskListResult>() {
+			@Override
+			public void processResult(GetTaskListResult result) {
 
-						GetTaskListResult rst = (GetTaskListResult) result;
-						ArrayList<Doc> tasks = rst.getTasks();
-						loadLines(tasks, rst.getTotalCount());
-						fireEvent(new AfterSearchEvent(filter.getSubject(),
-								filter.getPhrase()));
-						fireEvent(new ProcessingCompletedEvent());
-					}
-				});
+				GetTaskListResult rst = (GetTaskListResult) result;
+				ArrayList<Doc> tasks = rst.getTasks();
+				loadLines(tasks, rst.getTotalCount());
+				fireEvent(new AfterSearchEvent(filter.getSubject(), filter.getPhrase()));
+				fireEvent(new ProcessingCompletedEvent());
+			}
+		});
 	}
 
 	private void clear() {
 		// clear document slot
-//		setInSlot(DATEGROUP_SLOT, null);
+		// setInSlot(DATEGROUP_SLOT, null);
 		setInSlot(DOCUMENT_SLOT, null);
 	}
 
@@ -247,79 +252,76 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			clear();
 
 		String userId = AppContext.getUserId();
-		
+
 		MultiRequestAction action = new MultiRequestAction();
-		if(processRefId!=null){
+		if (processRefId != null) {
 			action.addRequest(new GetProcessRequest(processRefId));
 			action.addRequest(new GetProcessSchemaRequest(processRefId));
 		}
-		
-		GetTaskList request = new GetTaskList(processRefId,userId, currentTaskType);
+
+		GetTaskList request = new GetTaskList(processRefId, userId, currentTaskType);
 		request.setOffset(CURPOS);
 		request.setLength(PAGE_SIZE);
 		request.setProcessInstanceId(processInstanceId);
-		// request.setDocumentId(documentId);
+		request.setTaskId(taskId);
 		request.setDocRefId(docRefId);
 		request.setLoadAsAdmin(isLoadAsAdmin());
-		
+
 		action.addRequest(request);
 
-		// Window.alert("Loading - "+currentTaskType+" "+CURPOS+" - "+(PAGE_SIZE+CURPOS));
+		// Window.alert("Loading - "+currentTaskType+" "+CURPOS+" -
+		// "+(PAGE_SIZE+CURPOS));
 
 		fireEvent(new ProcessingEvent());
-		dispatcher.execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult result) {
-						int i=0;
-						
-						if(processRefId!=null){
-							GetProcessResponse getProcess = (GetProcessResponse) result.get(i++);
-							getView().bindProcess(getProcess.getProcessDef());
-							
-							GetProcessSchemaResponse getSchema = (GetProcessSchemaResponse)result.get(i++);
-							getView().bindProcessSchema(getSchema.getSchema());
-						}else{
-							getView().bindProcess(null);
+		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult result) {
+				int i = 0;
+
+				if (processRefId != null) {
+					GetProcessResponse getProcess = (GetProcessResponse) result.get(i++);
+					getView().bindProcess(getProcess.getProcessDef());
+
+					GetProcessSchemaResponse getSchema = (GetProcessSchemaResponse) result.get(i++);
+					getView().bindProcessSchema(getSchema.getSchema());
+				} else {
+					getView().bindProcess(null);
+				}
+
+				GetTaskListResult rst = (GetTaskListResult) result.get(i++);
+				ArrayList<Doc> tasks = rst.getTasks();
+				loadLines(tasks, rst.getTotalCount(), isIncremental);
+
+				//if (tasks.size() > 0 && !isIncremental) {
+				if (tasks.size() == 1 && !isIncremental) {
+
+					Doc doc = tasks.get(0);
+					String docRefId = null;
+					DocMode docMode = DocMode.READ;
+
+					if (doc instanceof Document) {
+						docRefId = doc.getRefId();
+
+						if (((Document) doc).getStatus() == DocStatus.DRAFTED) {
+							docMode = DocMode.READWRITE;
 						}
-						
-						GetTaskListResult rst = (GetTaskListResult) result.get(i++);
-						ArrayList<Doc> tasks = rst.getTasks();
-						loadLines(tasks, rst.getTotalCount(), isIncremental);
-
-						if (tasks.size() > 0 && !isIncremental) {
-
-							Doc doc = tasks.get(0);
-							String docRefId = null;
-							DocMode docMode = DocMode.READ;
-
-							if (doc instanceof Document) {
-								docRefId = doc.getRefId();
-
-								if (((Document) doc).getStatus() == DocStatus.DRAFTED) {
-									docMode = DocMode.READWRITE;
-								}
-								// Load document
-								if (currentTaskType==TaskType.SEARCH 
-										&& (mode == MODE.EDIT || mode == MODE.CREATE)) {
-									fireEvent(new DocumentSelectionEvent(
-											docRefId, null, docMode));
-								}
-							} else {
-								docRefId = ((HTSummary) doc).getRefId();
-								long taskId = ((HTSummary) doc).getId();
-								// Load Task
-//								fireEvent(new
-//								 DocumentSelectionEvent(docRefId,
-//								taskId, docMode));
-							}
-
+						// Load document
+						if (currentTaskType == TaskType.SEARCH && (mode == MODE.EDIT || mode == MODE.CREATE)) {
+							fireEvent(new DocumentSelectionEvent(docRefId, null, docMode));
 						}
-						afterDataLoaded();
-						fireEvent(new ProcessingCompletedEvent());
+					} else {
+						docRefId = ((HTSummary) doc).getRefId();
+						long taskId = ((HTSummary) doc).getId();
+						// Load Task
+						fireEvent(new DocumentSelectionEvent(docRefId, taskId, docMode));
 					}
 
-				});
+				}
+				afterDataLoaded();
+				fireEvent(new ProcessingCompletedEvent());
+			}
+
+		});
 	}
 
 	protected void afterDataLoaded() {
@@ -338,42 +340,42 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		loadLines(tasks, totalCount, false);
 	}
 
-	protected void loadLines(final ArrayList<Doc> tasks,int totalCount, boolean isIncremental) {
+	protected void loadLines(final ArrayList<Doc> tasks, int totalCount, boolean isIncremental) {
 		CURPOS = CURPOS + PAGE_SIZE;
-//		if (!isIncremental) {
-//			setInSlot(DATEGROUP_SLOT, null);
-//		}
+		// if (!isIncremental) {
+		// setInSlot(DATEGROUP_SLOT, null);
+		// }
 		getView().bindTasks(tasks, totalCount, isIncremental);
 
-//		final ArrayList<Date> dates = new ArrayList<Date>();
-//
-//		for (int i = 0; i < tasks.size(); i++) {
-//			// final String dt =
-//			// DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
-//			final Doc doc = tasks.get(i);
-//
-//			Date dateToUse = doc.getSortDate();
-//
-//			final String dt = DateUtils.LONGDATEFORMAT.format(dateToUse);
-//			final Date date = DateUtils.LONGDATEFORMAT.parse(dt);
-//
-//			if (dates.contains(date)) {
-//				fireEvent(new PresentTaskEvent(doc));
-//			} else {
-//				dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
-//					@Override
-//					public void processResult(DateGroupPresenter result) {
-//
-//						result.setDate(date);
-//
-//						addToSlot(DATEGROUP_SLOT, result);
-//						fireEvent(new PresentTaskEvent(doc));
-//						dates.add(date);
-//					}
-//				});
-//
-//			}
-//		}
+		// final ArrayList<Date> dates = new ArrayList<Date>();
+		//
+		// for (int i = 0; i < tasks.size(); i++) {
+		// // final String dt =
+		// // DateUtils.FULLDATEFORMAT.format(tasks.get(i).getCreated());
+		// final Doc doc = tasks.get(i);
+		//
+		// Date dateToUse = doc.getSortDate();
+		//
+		// final String dt = DateUtils.LONGDATEFORMAT.format(dateToUse);
+		// final Date date = DateUtils.LONGDATEFORMAT.parse(dt);
+		//
+		// if (dates.contains(date)) {
+		// fireEvent(new PresentTaskEvent(doc));
+		// } else {
+		// dateGroupFactory.get(new ServiceCallback<DateGroupPresenter>() {
+		// @Override
+		// public void processResult(DateGroupPresenter result) {
+		//
+		// result.setDate(date);
+		//
+		// addToSlot(DATEGROUP_SLOT, result);
+		// fireEvent(new PresentTaskEvent(doc));
+		// dates.add(date);
+		// }
+		// });
+		//
+		// }
+		// }
 
 	}
 
@@ -404,19 +406,26 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	protected void displayDocument(final String docRefId, final Long taskId) {
 		if (docRefId == null && taskId == null) {
 			setInSlot(DOCUMENT_SLOT, null);
+			
+			//Close Button Clicked
+			if(currentTaskType==TaskType.CASEVIEW) {
+				placeManager.revealPlace(new PlaceRequest.Builder()
+						.nameToken(NameTokens.registry).build());
+			}
+			
 			return;
 		}
-		
+
 		docViewFactory.get(new ServiceCallback<GenericDocumentPresenter>() {
 			@Override
 			public void processResult(GenericDocumentPresenter result) {
-				result.setDocId(processRefId,docRefId, taskId, isLoadAsAdmin());
+				result.setDocId(processRefId, docRefId, taskId, isLoadAsAdmin());
 				result.setGlobalFormMode(mode);
 
 				if (currentTaskType == TaskType.UNASSIGNED) {
 					result.setUnAssignedList(true);
 				}
-//				Window.alert("Display Doc >> "+docRefId+" - "+taskId+" - "+result);
+				// Window.alert("Display Doc >> "+docRefId+" - "+taskId+" - "+result);
 				setInSlot(DOCUMENT_SLOT, result);
 			}
 		});
@@ -434,10 +443,10 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void onSearch(SearchEvent event) {
 		if (this.isVisible()) {
 			CURPOS = 0;
-			
+
 			SearchFilter filter = event.getFilter();
 			searchTerm = filter.getPhrase().trim();
-			if (searchTerm==null || searchTerm.isEmpty()) {
+			if (searchTerm == null || searchTerm.isEmpty()) {
 				loadTasks();
 				return;
 			}
@@ -448,28 +457,24 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onAssignTask(AssignTaskEvent event) {
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new AssignTaskRequest(event.getTaskId(), event
-				.getUserId()));
-		action.addRequest(new GetTaskList(processRefId,AppContext.getUserId(),
-				TaskType.UNASSIGNED));
+		action.addRequest(new AssignTaskRequest(event.getTaskId(), event.getUserId()));
+		action.addRequest(new GetTaskList(processRefId, AppContext.getUserId(), TaskType.UNASSIGNED));
 
-		dispatcher.execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult aResponse) {
-						BaseResponse response = aResponse.get(0);
-						GetTaskListResult listResult = (GetTaskListResult) aResponse
-								.get(1);
-						loadLines(listResult.getTasks(), listResult.getTotalCount());
-					}
-				});
+		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResponse) {
+				BaseResponse response = aResponse.get(0);
+				GetTaskListResult listResult = (GetTaskListResult) aResponse.get(1);
+				loadLines(listResult.getTasks(), listResult.getTotalCount());
+			}
+		});
 
 	}
 
 	/**
 	 * <p>
-	 * Tells the server to load a Task as Administrator[Business Admin] for
-	 * Admin Overview & Management
+	 * Tells the server to load a Task as Administrator[Business Admin] for Admin
+	 * Overview & Management
 	 * <p>
 	 * Override it in inheriting presenters
 	 * 
