@@ -43,7 +43,10 @@ public class GetTaskStepsRequestHandler extends
 			
 			((GetTaskStepsResponse)actionResult).setConditionalFields(getConditionalFields(steps));
 			steps = filter(steps, action.getDoc());
-		}else{
+		}else if(action.getProcessInstanceId()!=null && action.getNodeId()==null){
+			steps = ProcessDaoHelper.getTaskStepsByProcessInstanceId(action.getProcessInstanceId());
+		}else {
+			
 			steps = ProcessDaoHelper.getSteps(action.getProcessId(), action.getNodeId());
 		}
 		

@@ -102,7 +102,15 @@ public class HTUser extends SerializableObj implements Listable,HasKey,Serializa
 	}
 	
 	public String getFullName(){
-		return surname+" "+name;
+		String fullName = null;
+		if(surname!=null) {
+			fullName=surname;
+		}
+		
+		if(name!=null) {
+			fullName = fullName+(fullName==null?"":" ")+name;
+		}
+		return fullName;
 	}
 	
 	@Override

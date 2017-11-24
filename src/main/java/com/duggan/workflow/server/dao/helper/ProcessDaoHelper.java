@@ -537,6 +537,50 @@ public class ProcessDaoHelper {
 		}
 		return steps;
 	}
+	
+	public static List<TaskStepDTO> getTaskStepsByProcessInstanceId(Long processInstanceId){
+		String processId = DB.getProcessDao().getProcessId(processInstanceId);
+		log.trace("Get PID = "+processInstanceId+", ProcessId="+processId);
+		List<TaskLog> instanceTasks = getProcessLog(processInstanceId, "en-UK");
+		
+		List<Long> nodeIds = new ArrayList<>();
+		for(TaskLog instance: instanceTasks) {
+			Long taskId = instance.getTaskId();
+			Task task = JBPMHelper.get().getSysTask(taskId);
+			Node node = JBPMHelper.get().getNode(task);
+			
+			if(nodeIds.contains(node.getId())) {
+				continue;//Avoid processing same node more than once
+			}
+			nodeIds.add(node.getId());
+		}
+		
+		log.trace("GET TaskSteps for "+processId+", nodeIds = "+nodeIds);
+		List<TaskStepModel> steps = DB.getProcessDao().getTaskStepsForNodes(processId, nodeIds);
+		List<TaskStepModel> uniqueSteps = new ArrayList<>();
+		
+		List<String> forms = new ArrayList<>();
+		for(TaskStepModel model: steps) {
+			String formRef = model.getFormRef();
+			if(formRef==null) {
+				continue;
+			}
+			
+			if(forms.contains(formRef)) {
+				continue;
+			}
+			
+			forms.add(formRef);
+			log.trace("TaskStep ID - "+model.getId()+" :: "+model.getRefId());
+			uniqueSteps.add(model);
+		}
+		
+		List<TaskStepDTO> stepDtos = new ArrayList<>();
+		for (TaskStepModel m : uniqueSteps) {
+			stepDtos.add(getStep(m));
+		}
+		return stepDtos;
+	}
 
 	public static List<TaskStepDTO> getTaskStepsByDocumentJson(String docRefId) {
 		Document docModel = DB.getDocumentDao().getDocJson(docRefId, false);
@@ -546,8 +590,9 @@ public class ProcessDaoHelper {
 			processId = docModel.getType() == null ? docModel.getProcessId()
 					: docModel.getType().getProcessId();
 		}
+		Long nodeId = null;
 		List<TaskStepModel> models = DB.getProcessDao().getTaskSteps(processId,
-				null);
+				nodeId);
 
 		List<TaskStepDTO> steps = new ArrayList<>();
 		for (TaskStepModel m : models) {
@@ -572,7 +617,7 @@ public class ProcessDaoHelper {
 		if (processId == null && docModel.getType() != null) {
 			processId = docModel.getType().getProcessDef().getProcessId();
 		}
-		List<TaskStepModel> models = DB.getProcessDao().getTaskSteps(processId,
+		List<TaskStepModel> models = DB.getProcessDao().getTaskStepsForNodes(processId,
 				null);
 
 		List<TaskStepDTO> steps = new ArrayList<>();
@@ -593,7 +638,7 @@ public class ProcessDaoHelper {
 		if (processId == null && docModel.getType() != null) {
 			processId = docModel.getType().getProcessId();
 		}
-		List<TaskStepModel> models = DB.getProcessDao().getTaskSteps(processId,
+		List<TaskStepModel> models = DB.getProcessDao().getTaskStepsForNodes(processId,
 				null);
 
 		List<TaskStepDTO> steps = new ArrayList<>();
@@ -1851,8 +1896,7 @@ public class ProcessDaoHelper {
 	}
 
 	public static ProcessCategory getProcessCategoryByName(String categoryName) {
-		ADProcessCategory category = DB.getProcessDao()
-				.getProcessCategoryByName(categoryName);
+		ADProcessCategory category = DB.getProcessDao().getProcessCategoryByName(categoryName);
 		return get(category);
 	}
 

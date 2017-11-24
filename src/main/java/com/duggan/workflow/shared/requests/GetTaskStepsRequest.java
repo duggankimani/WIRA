@@ -9,10 +9,15 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 	
 	private String processId;
 	private Long nodeId;
+	private Long processInstanceId;
 	
 	private Doc doc;
 	
 	public GetTaskStepsRequest() {
+	}
+	
+	public GetTaskStepsRequest(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
 	}
 	
 	public GetTaskStepsRequest(String processId,Long nodeId) {
@@ -44,6 +49,14 @@ public class GetTaskStepsRequest extends BaseRequest<GetTaskStepsResponse> {
 
 	public void setDoc(Doc doc) {
 		this.doc = doc;
+	}
+
+	public Long getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(Long processInstanceId) {
+		this.processInstanceId = processInstanceId;
 	}
 
 }

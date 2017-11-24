@@ -105,16 +105,21 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		}
 		
 		int row=tblRegistry.getRowCount();
+		
 		for(ProcessLog log: logs){
 			int col=0;
 			
 			String taskOwner = log.getTaskOwner();
+			String ownerLabelTitle = "";
 			if(taskOwner==null || taskOwner.trim().isEmpty()){
 				if(log.getPotOwners()!=null){
+					ownerLabelTitle  = "Potential Owner of the task, user has to claim the task!";
 					taskOwner = "["+log.getPotOwners()+"]";
 				}else{
 					taskOwner="--";
 				}
+			}else {
+				ownerLabelTitle = "Actual Task Owner";
 			}
 			
 			InlineLabel priority = new InlineLabel("NORMAL");
@@ -128,7 +133,13 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 			tblRegistry.setWidget(row, col++, new InlineLabel(log.getProcessName()));
 			tblRegistry.setWidget(row, col++, new InlineLabel(log.getInitiator()));
 			tblRegistry.setWidget(row, col++, new InlineLabel(log.getTaskName()==null? "--": log.getTaskName()));
-			tblRegistry.setWidget(row, col++, new InlineLabel(taskOwner.isEmpty()? "--": taskOwner));
+			
+			InlineLabel taskOwnerLabel = new InlineLabel(taskOwner.isEmpty()? "--": taskOwner);
+			if(!ownerLabelTitle.isEmpty()) {
+				taskOwnerLabel.setTitle(ownerLabelTitle);
+			}
+			
+			tblRegistry.setWidget(row, col++, taskOwnerLabel);
 			tblRegistry.setWidget(row, col++, priority);
 			tblRegistry.setWidget(row, col++, getProcessState(log.getProcessState()));
 			
@@ -145,8 +156,9 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		anchor.getElement().setInnerHTML("<i class='icon-th-large'/>");
 		anchor.setTitle("Summary");
 		
-		String href = "#/caseview/"+log.getDocRefId()+
-				(log.getTaskId()==null? "": "?tid="+log.getTaskId());
+		String taskIdQ = (log.getTaskId()==null? "1=1&": "tid="+log.getTaskId());
+		String processInstanceIdQ = log.getProcessinstanceid()==null? "": "pid="+log.getProcessinstanceid();		
+		String href = "#/caseview/"+log.getDocRefId()+"?"+taskIdQ+"&"+processInstanceIdQ;
 		anchor.setHref(href);
 		return anchor;
 	}
@@ -164,14 +176,21 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		case 1:
 			//Aborted
 			name="Aborted";
-			styleName="label label-danger";
+			styleName="label label-warning";
 			break;
 		case 2:
 			//Completed
 			name="Done";
 			styleName="label label-success";
 			break;
+		case 3:
+			//Aborted
+			name="Exited";
+			styleName="label label-exited";
+			break;
 		default:
+			name="State"+processState;
+			styleName="label label-danger";
 			break;
 		}
 		

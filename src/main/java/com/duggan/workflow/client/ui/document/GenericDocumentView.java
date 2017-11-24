@@ -50,6 +50,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -63,18 +64,19 @@ import com.wira.commons.client.util.ArrayUtil;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.PermissionName;
 
-public class GenericDocumentView extends ViewImpl implements
-		GenericDocumentPresenter.MyView {
+public class GenericDocumentView extends ViewImpl implements GenericDocumentPresenter.MyView {
 
 	private final Widget widget;
 
 	public interface Binder extends UiBinder<Widget, GenericDocumentView> {
 	}
 
-	@UiField HTMLPanel panelUpperContent;
-	
-	@UiField HTMLPanel contentArea;
-	
+	@UiField
+	HTMLPanel panelUpperContent;
+
+	@UiField
+	HTMLPanel contentArea;
+
 	@UiField
 	SpanElement spnDocType;
 	@UiField
@@ -82,7 +84,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@UiField
 	Element elAttachmentsCount;
-	
+
 	@UiField
 	SpanElement spnDate;
 
@@ -92,14 +94,17 @@ public class GenericDocumentView extends ViewImpl implements
 	SpanElement spnPartner;
 	@UiField
 	SpanElement spnDescription;
-	
+
 	@UiField
 	DivElement divAssignee;
 
 	@UiField
 	Image img;
 
-	@UiField Anchor aDoc;
+	@UiField
+	Anchor aAdminOverview;
+	@UiField
+	Anchor aDoc;
 	@UiField
 	Anchor aAudit;
 	@UiField
@@ -195,8 +200,13 @@ public class GenericDocumentView extends ViewImpl implements
 	DivElement divContent;
 
 	@UiField
+	HTMLPanel divProcessOverview;
+	@UiField
+	HTMLPanel overviewContainer;
+
+	@UiField
 	HTMLPanel fldForm;
-	
+
 	@UiField
 	Element iDocStatus;
 
@@ -209,24 +219,32 @@ public class GenericDocumentView extends ViewImpl implements
 	BulletPanel liNext;
 	ActionLink aNext;
 
-	@UiField SpanElement spnTimeTaken;
-	
+	@UiField
+	SpanElement spnTimeTaken;
+
 	@UiField
 	Element divRibbon;
 	@UiField
 	SpanElement spnRibbon;
 	FormPanel formPanel;
-	
-	@UiField TableView tblAuditLog;
-	@UiField SpanElement spnAuditEmpty;
-	
-	//Attachments View
-	@UiField Anchor aViewAttachments;
-	@UiField Element spnAttachmentsEmpty;
-	@UiField TableView tblAttachments;
-	@UiField HTMLPanel divAttachmentPanel;
-	
-	@UiField Anchor aConfigure;
+
+	@UiField
+	FlexTable tblAuditLog;
+	@UiField
+	SpanElement spnAuditEmpty;
+
+	// Attachments View
+	@UiField
+	Anchor aViewAttachments;
+	@UiField
+	Element spnAttachmentsEmpty;
+	@UiField
+	TableView tblAttachments;
+	@UiField
+	HTMLPanel divAttachmentPanel;
+
+	@UiField
+	Anchor aConfigure;
 
 	String url = null;
 
@@ -242,18 +260,20 @@ public class GenericDocumentView extends ViewImpl implements
 	private Date dateCreated;
 	DocStatus status = null;
 	private boolean isUnassignedList = false;
-	
-	@UiField Anchor aMaximize;
-	
+
+	@UiField
+	Anchor aMaximize;
+
 	VIEWS selected = VIEWS.FORM;
 	private boolean isLoadAsAdmin;
 	private String processRefId;
+	private String caseViewDocRefId = null; //Set by CasePresenter for Process Audit Views //Duggan 22/08/2017
 
 	@Inject
 	public GenericDocumentView(final Binder binder, CurrentUser user) {
 		widget = binder.createAndBindUi(this);
 		createNavigationButtons();
-		
+
 		aClaim.getElement().setId("aClaim_Link");
 		aStart.getElement().setId("aStart_Link");
 		aSuspend.getElement().setId("aSuspend_Link");
@@ -272,10 +292,10 @@ public class GenericDocumentView extends ViewImpl implements
 		aDoc.getElement().setId("aDoc_Link");
 		aAudit.getElement().setId("aAudit_Link");
 
-		//UIObject.setVisible(aEdit.getElement(), false);
-		UIObject.setVisible(aConfigure.getElement(), 
+		// UIObject.setVisible(aEdit.getElement(), false);
+		UIObject.setVisible(aConfigure.getElement(),
 				user.hasPermissions(PermissionName.PROCESSES_CAN_EDIT_PROCESSES.name()));
-		
+
 		aEdit.getElement().setAttribute("type", "button");
 		aEdit.getElement().setAttribute("data-toggle", "tooltip");
 		aProcess.getElement().setAttribute("data-toggle", "button");
@@ -287,16 +307,12 @@ public class GenericDocumentView extends ViewImpl implements
 		panelActivity.getElement().setAttribute("id", "panelactivity");
 		aForward.getElement().setAttribute("alt", "Forward for Approval");
 		imgProcess.setVisible(false);
-		tblAuditLog.setHeaders(ArrayUtil
-				.asList("Task Name", "Assignee", "Status",
-						"Start Date", "Completion Date", "Time Taken"));
-		//ArrayUtil.asList("filename","",""),
-		tblAttachments.setHeaders(
-				ArrayUtil.asList("File Name","Created By","Date Created"));
-		
-		//Register Phone events
+
+		tblAttachments.setHeaders(ArrayUtil.asList("File Name", "Created By", "Date Created"));
+
+		// Register Phone events
 		registerPhoneEvents(panelUpperContent.getElementById("phoneActions"));
-		
+
 		img.addErrorHandler(new ErrorHandler() {
 
 			@Override
@@ -325,9 +341,9 @@ public class GenericDocumentView extends ViewImpl implements
 		// Window.open(url, "Process HashMap", null);
 		// }
 		// });
-		
+
 		aMaximize.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				toggleMaximize(aMaximize.getElement());
@@ -338,7 +354,8 @@ public class GenericDocumentView extends ViewImpl implements
 
 			@Override
 			public void onError(ErrorEvent event) {
-				statusContainer.add(new InlineLabel("We Could Not Load the Process Map. (Hint, confirm that the process is running)"));
+				statusContainer.add(new InlineLabel(
+						"We Could Not Load the Process Map. (Hint, confirm that the process is running)"));
 			}
 		});
 
@@ -352,13 +369,21 @@ public class GenericDocumentView extends ViewImpl implements
 			}
 		});
 
+		aAdminOverview.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				changeView(VIEWS.ADMINOVERVIEW);
+			}
+		});
+
 		aProcess.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				changeView(VIEWS.PROCESSTREE);
 			}
 		});
-		
+
 		aViewAttachments.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -383,7 +408,7 @@ public class GenericDocumentView extends ViewImpl implements
 				changeView(VIEWS.AUDITLOG);
 			}
 		});
-		
+
 		aDoc.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -391,74 +416,74 @@ public class GenericDocumentView extends ViewImpl implements
 				changeView(VIEWS.FORM);
 			}
 		});
-		
+
 		changeView(VIEWS.FORM);
-		
+
 		initZoom(panelUpperContent.getElementById("divZoom"), contentArea.getElement());
-		
+
 		aPrint.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				//print(formPanel.getElement());
+				// print(formPanel.getElement());
 			}
 		});
 	}
 
 	protected native void print(Element element) /*-{
-		//Get the HTML of div
-        var divElements = $wnd.jQuery(element).html();
-        //Get the HTML of whole page
-        var oldPage = $doc.body.innerHTML;
-
-        //Reset the page's HTML with div's HTML only
-        $doc.body.innerHTML = 
-          "<html><head><title></title></head><body>" + 
-          divElements + "</body>";
-
-        //Print Page
-        $wnd.print();
-
-        //Restore orignal HTML
-        $doc.body.innerHTML = oldPage;
-	}-*/;
+													//Get the HTML of div
+													var divElements = $wnd.jQuery(element).html();
+													//Get the HTML of whole page
+													var oldPage = $doc.body.innerHTML;
+													
+													//Reset the page's HTML with div's HTML only
+													$doc.body.innerHTML = 
+													"<html><head><title></title></head><body>" + 
+													divElements + "</body>";
+													
+													//Print Page
+													$wnd.print();
+													
+													//Restore orignal HTML
+													$doc.body.innerHTML = oldPage;
+													}-*/;
 
 	private native void initZoom(Element element, Element contentArea) /*-{
-		$wnd.jQuery($doc).ready(function(){
-			var dropDownText = $wnd.jQuery(element).find('span.dropDownText').get(0);
-		
-			$wnd.jQuery(element).find('a').click(function(){
-				var txt = $wnd.jQuery(this).text();
-				$wnd.jQuery(dropDownText).text(txt);
-				
-				if(txt.endsWith('%')){
-					var amount = txt.substring(0,txt.length-1);
-					var scale = amount/100;
-					
-					contentArea.style.zoom=scale;
-				}
-			});
-		});
-	}-*/;
+																		$wnd.jQuery($doc).ready(function(){
+																		var dropDownText = $wnd.jQuery(element).find('span.dropDownText').get(0);
+																		
+																		$wnd.jQuery(element).find('a').click(function(){
+																		var txt = $wnd.jQuery(this).text();
+																		$wnd.jQuery(dropDownText).text(txt);
+																		
+																		if(txt.endsWith('%')){
+																		var amount = txt.substring(0,txt.length-1);
+																		var scale = amount/100;
+																		
+																		contentArea.style.zoom=scale;
+																		}
+																		});
+																		});
+																		}-*/;
 
 	protected native void toggleMaximize(Element element) /*-{
-		var icon = $wnd.jQuery(element).find('i').get(0);
-		$wnd.jQuery(icon).toggleClass('icon-resize-small');
-		$wnd.jQuery(icon).toggleClass('icon-resize-full');
-		
-		if($wnd.jQuery(icon).hasClass('icon-resize-full')){
-			this.@com.duggan.workflow.client.ui.document.GenericDocumentView::showFullScreen(I)(0);
-		}else{
-			this.@com.duggan.workflow.client.ui.document.GenericDocumentView::showFullScreen(I)(1);
-		}
-	}-*/;
-	
-	void showFullScreen(int isFullScreen){
-		if(isFullScreen==1){
-			//true
+															var icon = $wnd.jQuery(element).find('i').get(0);
+															$wnd.jQuery(icon).toggleClass('icon-resize-small');
+															$wnd.jQuery(icon).toggleClass('icon-resize-full');
+															
+															if($wnd.jQuery(icon).hasClass('icon-resize-full')){
+															this.@com.duggan.workflow.client.ui.document.GenericDocumentView::showFullScreen(I)(0);
+															}else{
+															this.@com.duggan.workflow.client.ui.document.GenericDocumentView::showFullScreen(I)(1);
+															}
+															}-*/;
+
+	void showFullScreen(int isFullScreen) {
+		if (isFullScreen == 1) {
+			// true
 			AppContext.getEventBus().fireEvent(new ScreenModeChangeEvent(ScreenMode.FULLSCREEN));
-		}else{
-			//false
+		} else {
+			// false
 			AppContext.getEventBus().fireEvent(new ScreenModeChangeEvent(ScreenMode.SMALLSCREEN));
 		}
 	}
@@ -469,9 +494,7 @@ public class GenericDocumentView extends ViewImpl implements
 		liPrevious.addStyleName("disabled");
 		aPrevious = new ActionLink();
 		aPrevious.getElement().setInnerSafeHtml(
-				new SafeHtmlBuilder().appendHtmlConstant(
-						"<i class=\"icon-double-angle-left\"></i>")
-						.toSafeHtml());
+				new SafeHtmlBuilder().appendHtmlConstant("<i class=\"icon-double-angle-left\"></i>").toSafeHtml());
 		liPrevious.add(aPrevious);
 		// Added on setTaskSteps/ Form Steps
 
@@ -479,15 +502,12 @@ public class GenericDocumentView extends ViewImpl implements
 		liNext.addStyleName("disabled");
 		aNext = new ActionLink();
 		aNext.getElement().setInnerSafeHtml(
-				new SafeHtmlBuilder().appendHtmlConstant(
-						"<i class=\"icon-double-angle-right\"></i>")
-						.toSafeHtml());
+				new SafeHtmlBuilder().appendHtmlConstant("<i class=\"icon-double-angle-right\"></i>").toSafeHtml());
 		liNext.add(aNext);
 		// Added after all steps have been
 	}
 
-	public BulletPanel generateStep(String stepName, String stepTitle,
-			String styleName) {
+	public BulletPanel generateStep(String stepName, String stepTitle, String styleName) {
 		BulletPanel liStep = new BulletPanel();
 		if (styleName != null && !styleName.isEmpty())
 			liStep.addStyleName(styleName);
@@ -501,11 +521,11 @@ public class GenericDocumentView extends ViewImpl implements
 
 	public void setEditMode(boolean isEditMode) {
 		formPanel.setReadOnly(!isEditMode);
-		//--UIObject.setVisible(btnGroup, !isEditMode);
+		// --UIObject.setVisible(btnGroup, !isEditMode);
 		UIObject.setVisible(aForward.getElement(), !isEditMode);
 		showLi("aForward", !isEditMode);
-		//UIObject.setVisible(aEdit.getElement(), !isEditMode);
-//		UIObject.setVisible(aSave.getElement(), isEditMode);
+		// UIObject.setVisible(aEdit.getElement(), !isEditMode);
+		// UIObject.setVisible(aSave.getElement(), isEditMode);
 		showNavigation(isEditMode);
 	}
 
@@ -525,17 +545,23 @@ public class GenericDocumentView extends ViewImpl implements
 		divAuditLog.addStyleName("hide");
 		divContent.addClassName("hide");
 		divAttachmentPanel.addStyleName("hide");
-				
+		// divProcessOverview.addStyleName("hide");
+
+		// aAdminOverview.removeStyleName("disabled");
 		aProcess.removeStyleName("disabled");
 		aAudit.removeStyleName("disabled");
 		aViewAttachments.removeStyleName("disabled");
 		aDoc.removeStyleName("disabled");
 
-		if(itemToShow==selected){
-			itemToShow=VIEWS.FORM;
+		if (itemToShow == selected) {
+			itemToShow = VIEWS.FORM;
 		}
-		
+
 		switch (itemToShow) {
+		case ADMINOVERVIEW:
+			// aAdminOverview.addStyleName("disabled");
+			// divProcessOverview.removeStyleName("hide");
+			break;
 		case FORM:
 			aDoc.addStyleName("disabled");
 			divContent.removeClassName("hide");
@@ -567,8 +593,8 @@ public class GenericDocumentView extends ViewImpl implements
 		show(aStop, false);
 		show(aForward, false);
 		show(aApprove, false);
-		show(aAssign, isUnassignedList && AppContext.isCurrentUserAdmin());
-		
+		show(aAssign, false);
+
 		showLi("aClaim", false);
 		showLi("aStart", false);
 		showLi("aSuspend", false);
@@ -580,23 +606,24 @@ public class GenericDocumentView extends ViewImpl implements
 		showLi("aStop", false);
 		showLi("aForward", false);
 		showLi("aApprove", false);
-		showLi("aAssign", isUnassignedList && AppContext.isCurrentUserAdmin());
+		showLi("aAssign", false);
+
 	}
-	
+
 	public native void registerPhoneEvents(Element phoneActions)/*-{
-		var view = this;
-		$wnd.jQuery().ready(function(){
-			$wnd.jQuery(phoneActions).find('.dropdown-menu a').click(function(){
-				var id= $wnd.jQuery(this).prop('id');
-				view.@com.duggan.workflow.client.ui.document.GenericDocumentView::click(Ljava/lang/String;)(id);
-			});
-		});
-		
-	}-*/;
-	
-	public void click(String id){
+																var view = this;
+																$wnd.jQuery().ready(function(){
+																$wnd.jQuery(phoneActions).find('.dropdown-menu a').click(function(){
+																var id= $wnd.jQuery(this).prop('id');
+																view.@com.duggan.workflow.client.ui.document.GenericDocumentView::click(Ljava/lang/String;)(id);
+																});
+																});
+																
+																}-*/;
+
+	public void click(String id) {
 		Anchor target = null;
-		switch(id){
+		switch (id) {
 		case "aClaim":
 			target = aClaim;
 			break;
@@ -648,38 +675,38 @@ public class GenericDocumentView extends ViewImpl implements
 		case "aClose":
 			target = aClose;
 			break;
-			
+
 		}
-		if(target==null){
+		if (target == null) {
 			return;
 		}
-		DomEvent.fireNativeEvent(com.google.gwt.dom.client.Document.get().createClickEvent(
-				0, 0, 0, 0, 0,
-	            false, false, false, false), target);
+		DomEvent.fireNativeEvent(
+				com.google.gwt.dom.client.Document.get().createClickEvent(0, 0, 0, 0, 0, false, false, false, false),
+				target);
 	}
 
 	private void showLi(String elementId, boolean isShow) {
-		if(elementId==null){
+		if (elementId == null) {
 			return;
 		}
-		
+
 		Element el = panelUpperContent.getElementById(elementId);
-		if(el==null){
-			//not found
+		if (el == null) {
+			// not found
 			return;
 		}
-		
+
 		Element target = el;
-		if(el!=null){
+		if (el != null) {
 			Element parentEl = el.getParentElement();
-			if(parentEl.hasTagName("li")){
+			if (parentEl.hasTagName("li")) {
 				target = parentEl;
 			}
 		}
-		
-		if(isShow){
+
+		if (isShow) {
 			target.removeClassName("hidden");
-		}else{
+		} else {
 			target.addClassName("hidden");
 		}
 	}
@@ -703,27 +730,27 @@ public class GenericDocumentView extends ViewImpl implements
 		}
 
 		formPanel = new FormPanel(form, doc);
-		
-		//Configure
-		if(processRefId!=null){
-			aConfigure.setHref("#/formbuilder?p="+processRefId+"&formRefId="+form.getRefId());
-			aConfigure.setTarget("_blank");	
+
+		// Configure
+		if (processRefId != null) {
+			aConfigure.setHref("#/formbuilder?p=" + processRefId + "&formRefId=" + form.getRefId());
+			aConfigure.setTarget("_blank");
 		}
 
 		boolean isDraft = false;
-		if(doc instanceof Document){
-			isDraft = ((Document)doc).getStatus()==DocStatus.DRAFTED;
+		if (doc instanceof Document) {
+			isDraft = ((Document) doc).getStatus() == DocStatus.DRAFTED;
 		}
-		
+
 		fldForm.removeStyleName("form-editable");
 		fldForm.removeStyleName("form-uneditable");
 		iDocStatus.removeAttribute("class");
-		
+
 		if (validActions != null && !isDraft) {
 			if (validActions.contains(Actions.COMPLETE)) {
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
-				
+
 				// Running or started
 				divRibbon.addClassName("ribbon-open");
 				spnRibbon.setInnerText("In Progress");
@@ -732,19 +759,24 @@ public class GenericDocumentView extends ViewImpl implements
 				fldForm.addStyleName("form-editable");
 			} else {
 
-				if (validActions.contains(Actions.START)
-						|| validActions.contains(Actions.RESUME)) {
+				if (validActions.contains(Actions.START) || validActions.contains(Actions.RESUME)) {
 					// Not Started
 					divRibbon.addClassName("ribbon-open");
 					spnRibbon.setInnerText("New");
 					iDocStatus.setInnerText("New");
 					iDocStatus.addClassName("doc-pending icon-double-angle-right");
 					fldForm.addStyleName("form-uneditable");
-				} else {
+				} else if(doc.getProcessStatus()==HTStatus.COMPLETED){
 					divRibbon.addClassName("ribbon-accepted");
 					spnRibbon.setInnerText("Completed");
 					iDocStatus.setInnerText("Completed");
 					iDocStatus.addClassName("icon-ok-sign doc-success");
+					fldForm.addStyleName("form-uneditable");
+				}else {
+					divRibbon.addClassName("ribbon-error");
+					spnRibbon.setInnerText("Exited");
+					iDocStatus.setInnerText("Exited");
+					iDocStatus.addClassName("doc-exited");
 					fldForm.addStyleName("form-uneditable");
 				}
 				formPanel.setReadOnly(true);
@@ -778,14 +810,14 @@ public class GenericDocumentView extends ViewImpl implements
 		if (doc instanceof HTSummary) {
 			HTSummary task = (HTSummary) doc;
 			formPanel.setCompletedOn(task.getCompletedOn());
-			setAssignee(task.getTaskActualOwner()==null? null : task.getTaskActualOwner().getFullName());
+			setAssignee(task.getTaskActualOwner() == null ? null : task.getTaskActualOwner().getFullName());
 			show(aEdit, false);
 			show(aSave, false);
-		}else{
-			Document document = (Document)doc;
-			show(aEdit, document.getStatus()==DocStatus.DRAFTED);
-			show(aSave, document.getStatus()==DocStatus.DRAFTED);
-			if(document.getDateSubmitted()!=null){
+		} else {
+			Document document = (Document) doc;
+			show(aEdit, document.getStatus() == DocStatus.DRAFTED);
+			show(aSave, document.getStatus() == DocStatus.DRAFTED);
+			if (document.getDateSubmitted() != null) {
 				formPanel.setCreated(document.getDateSubmitted());
 			}
 		}
@@ -797,8 +829,8 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	private void setAssignee(String assigneeFullName) {
-		if(assigneeFullName!=null && !assigneeFullName.isEmpty()) {
-			divAssignee.setInnerText("Assignee: "+assigneeFullName);
+		if (assigneeFullName != null && !assigneeFullName.isEmpty()) {
+			divAssignee.setInnerText("Assignee: " + assigneeFullName);
 		}
 	}
 
@@ -809,9 +841,8 @@ public class GenericDocumentView extends ViewImpl implements
 		UIObject.setVisible(divValue, show);
 	}
 
-	public void setValues(HTUser createdBy, Date created, String type,
-			String subject, Date docDate, String value, String partner,
-			String description, Integer priority, DocStatus status, String docRefId,
+	public void setValues(HTUser createdBy, Date created, String type, String subject, Date docDate, String value,
+			String partner, String description, Integer priority, DocStatus status, String docRefId,
 			String taskDisplayName) {
 		disableAll();
 		if (createdBy != null) {
@@ -887,13 +918,17 @@ public class GenericDocumentView extends ViewImpl implements
 
 	public void setValidTaskActions(ArrayList<Actions> actions) {
 		this.validActions = actions;
-		if(isLoadAsAdmin){
+		if (isLoadAsAdmin) {
 			disableAll();
 			
-			//show(aStop);
+			if(!actions.isEmpty()) {
+				//There must be valid actions
+				show(aAssign, caseViewDocRefId!=null && AppContext.isCurrentUserAdmin());
+				show(aStop, caseViewDocRefId!=null && AppContext.isCurrentUserAdmin());
+			}
 			return;
 		}
-		
+
 		if (actions != null)
 			for (Actions action : actions) {
 				Anchor target = null;
@@ -911,6 +946,7 @@ public class GenericDocumentView extends ViewImpl implements
 					break;
 				case DELEGATE:
 					target = aDelegate;
+					
 					break;
 				case FORWARD:
 					if (!overrideDefaultStart) {
@@ -938,7 +974,6 @@ public class GenericDocumentView extends ViewImpl implements
 					show(target);
 				}
 			}
-
 	}
 
 	@Override
@@ -967,7 +1002,7 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@Override
 	public void showEdit(boolean displayed) {
-		//UIObject.setVisible(aEdit.getElement(), displayed);
+		// UIObject.setVisible(aEdit.getElement(), displayed);
 		UIObject.setVisible(aDelete.getElement(), displayed);
 	}
 
@@ -1007,45 +1042,47 @@ public class GenericDocumentView extends ViewImpl implements
 	}
 
 	private String getRelatedId(Anchor target) {
-		
-		if(target==aClaim){
+
+		if (target == aClaim) {
 			return "aClaim";
-		}else if(target==aStart){
+		} else if (target == aStart) {
 			return "aStart";
-		}else if(target==aSuspend){
+		} else if (target == aSuspend) {
 			return "aSuspend";
-		}else if(target==aResume){
+		} else if (target == aResume) {
 			return "aResume";
-		}else if(target==aComplete){
+		} else if (target == aComplete) {
 			return "aComplete";
-		}else if(target==aDelegate){
+		} else if (target == aDelegate) {
 			return "aDelegate";
-		}else if(target==aReject){
+		} else if (target == aReject) {
 			return "aReject";
-		}else if(target==aRevoke){
+		} else if (target == aRevoke) {
 			return "aRevoke";
-		}else if(target==aStop){
+		} else if (target == aStop) {
 			return "aStop";
-		}else if(target==aForward){
+		} else if (target == aForward) {
 			return "aForward";
-		}else if(target==aApprove){
+		} else if (target == aApprove) {
 			return "aApprove";
-		}else if(target==aAssign){
+		} else if (target == aAssign) {
 			return "aAssign";
-		}else if(target==aDoc){
+		} else if (target == aDoc) {
 			return "aDoc";
-		}else if(target==aAudit){
+		} else if (target == aAudit) {
 			return "aAudit";
-		}else if(target==aProcess){
+		} else if (target == aProcess) {
 			return "aProcess";
-		}else if(target==aEdit){
+		} else if (target == aEdit) {
 			return "aEdit";
-		}else if(target==aSave){
+		} else if (target == aSave) {
 			return "aSave";
-		}else if(target==aViewAttachments){
+		} else if (target == aViewAttachments) {
 			return "aViewAttachments";
-		}else if(target==aClose){
+		} else if (target == aClose) {
 			return "aClose";
+		}else if(target == aStop) {
+			return "aStop";
 		}
 		return null;
 	}
@@ -1198,8 +1235,7 @@ public class GenericDocumentView extends ViewImpl implements
 		if (moduleUrl.endsWith("/")) {
 			moduleUrl = moduleUrl.substring(0, moduleUrl.length() - 1);
 		}
-		moduleUrl = moduleUrl + "/getreport?ACTION=GetUser&userId="
-				+ user.getUserId();
+		moduleUrl = moduleUrl + "/getreport?ACTION=GetUser&userId=" + user.getUserId();
 		img.setUrl(moduleUrl);
 	}
 
@@ -1261,8 +1297,7 @@ public class GenericDocumentView extends ViewImpl implements
 		bulletListPanel.add(liPrevious);
 		for (TaskStepDTO dto : steps) {
 			int idx = steps.indexOf(dto);
-			String title = dto.getFormName() == null ? dto.getOutputDocName()
-					: dto.getFormName();
+			String title = dto.getFormName() == null ? dto.getOutputDocName() : dto.getFormName();
 
 			String styleName = null;
 			if (idx == currentStep) {
@@ -1305,8 +1340,8 @@ public class GenericDocumentView extends ViewImpl implements
 		if (processInstanceId != null) {
 			String root = GWT.getModuleBaseURL();
 			root = root.replaceAll("/gwtht", "");
-			this.url = root + "getreport?pid=" + processInstanceId
-					+ "&ACTION=PROCESSMAP&v=" + System.currentTimeMillis();
+			this.url = root + "getreport?pid=" + processInstanceId + "&ACTION=PROCESSMAP&v="
+					+ System.currentTimeMillis();
 			imgProcess.setVisible(true);
 			imgProcess.setUrl(this.url);
 		}
@@ -1316,8 +1351,7 @@ public class GenericDocumentView extends ViewImpl implements
 		if (docRefId != null) {
 			String root = GWT.getModuleBaseURL();
 			root = root.replaceAll("/gwtht", "");
-			this.url = root + "getreport?docRefId=" + docRefId
-					+ "&ACTION=GETDOCUMENTPROCESS";
+			this.url = root + "getreport?docRefId=" + docRefId + "&ACTION=GETDOCUMENTPROCESS";
 			imgProcess.setVisible(true);
 			imgProcess.setUrl(this.url);
 		}
@@ -1330,109 +1364,132 @@ public class GenericDocumentView extends ViewImpl implements
 
 	@Override
 	public void bindProcessLog(ArrayList<TaskLog> logs) {
-		tblAuditLog.clearRows();
+		tblAuditLog.clear();
 		
 		if (logs != null && !logs.isEmpty()) {
 			spnAuditEmpty.addClassName("hide");
 			Date start = logs.get(0).getCreatedon();
-			Date end = logs.get(logs.size()-1).getCompletedon();
-			end = end==null? new Date() : end;
-			String timeTaken = DateUtils.getTimeDifference(start,end);
-			spnTimeTaken.setInnerText("("+timeTaken+")");
-			
-			if(!((TaskLog)logs.get(0)).isProcessLoaded()){
+			Date end = logs.get(logs.size() - 1).getCompletedon();
+			end = end == null ? new Date() : end;
+			String timeTaken = DateUtils.getTimeDifference(start, end);
+			spnTimeTaken.setInnerText("(" + timeTaken + ")");
+
+			if (!((TaskLog) logs.get(0)).isProcessLoaded()) {
 				spnAuditEmpty.removeClassName("hide");
-				spnAuditEmpty.setInnerText("Issue404: Task Keys will be used in place of names. (Hint - Start the process to view tasks correctly)");
+				spnAuditEmpty.setInnerText(
+						"Issue404: Task Keys will be used in place of names. (Hint - Start the process to view tasks correctly)");
+			}
+
+			int row = 0;
+			int col = 0;
+			tblAuditLog.setWidget(row, col++, new InlineLabel("#"));
+			tblAuditLog.setWidget(row, col++, new InlineLabel("Task Name"));
+			tblAuditLog.setWidget(row, col++, new InlineLabel("Assignee"));
+			tblAuditLog.setWidget(row, col++, new InlineLabel("Status"));
+			tblAuditLog.setWidget(row, col++, new InlineLabel("Start Date"));
+			tblAuditLog.setWidget(row, col++, new InlineLabel("Completion Date"));
+			tblAuditLog.setWidget(row, col++, new InlineLabel("Time Taken"));
+			
+			if(caseViewDocRefId!=null) {
+				tblAuditLog.setWidget(row, col++, new InlineLabel("Actions"));
 			}
 			
+
+			++row;
 			for (TaskLog log : logs) {
-				
+
 				InlineLabel label = new InlineLabel();
 				HTStatus status = HTStatus.valueOf(log.getStatus().toUpperCase());
 				String text = "";
-				String styleName="label label-success";
-				
-				switch(status){
+				String styleName = "label label-success";
+
+				switch (status) {
 				case COMPLETED:
 					text = "Completed";
 					break;
 				case CREATED:
-					text="In Progress";
-					styleName="label label-warning";
+					text = "In Progress";
+					styleName = "label label-warning";
 					break;
 				case ERROR:
-					text="Error";
-					styleName="label label-danger";
+					text = "Error";
+					styleName = "label label-danger";
 					break;
 				case EXITED:
-					text="Exited";
-					styleName="label label-danger";
+					text = "Exited";
+					styleName = "label label-danger";
 					break;
 				case FAILED:
-					text="Failed";
-					styleName="label label-danger";
+					text = "Failed";
+					styleName = "label label-danger";
 					break;
 				case INPROGRESS:
-					text="In Progress";
-					styleName="label label-warning";
+					text = "In Progress";
+					styleName = "label label-warning";
 					break;
 				case OBSOLUTE:
-					text="Obsolute";
-					styleName="label label-danger";
+					text = "Obsolute";
+					styleName = "label label-danger";
 					break;
 				case READY:
-					text="In Progress";
-					styleName="label label-warning";
+					text = "In Progress";
+					styleName = "label label-warning";
 					break;
 				case RESERVED:
-					text="In Progress";
-					styleName="label label-warning";
+					text = "In Progress";
+					styleName = "label label-warning";
 					break;
 				case SUSPENDED:
-					text="Suspended";
-					styleName="label label-warning";
+					text = "Suspended";
+					styleName = "label label-warning";
 					break;
 				}
-				
+
 				label.addStyleName(styleName);
 				label.setText(text);
+
+				col = 0;
+				tblAuditLog.setWidget(row, col++, new InlineLabel(row+""));
+				tblAuditLog.setWidget(row, col++, new InlineLabel(log.getTaskName()));
+				tblAuditLog.setWidget(row, col++, new InlineLabel(
+						log.getActualOwner() == null ? log.getPotOwner() : log.getActualOwner().toString()));
+				tblAuditLog.setWidget(row, col++, label);
+				tblAuditLog.setWidget(row, col++, new InlineLabel(
+						log.getCreatedon() == null ? "" : DateUtils.DATEFORMAT.format(log.getCreatedon())));
+				tblAuditLog.setWidget(row, col++, new InlineLabel(
+						log.getCompletedon() == null ? "" : DateUtils.DATEFORMAT.format(log.getCompletedon())));
+				tblAuditLog.setWidget(row, col++, new InlineLabel(DateUtils.getTimeDifference(log.getCreatedon(),
+						log.getCompletedon() == null ? new Date() : log.getCompletedon())));
 				
-				tblAuditLog.addRow(
-						new InlineLabel(log.getTaskName()),
-						new InlineLabel(log.getActualOwner() == null ? log
-								.getPotOwner() : log.getActualOwner()
-								.toString()),
-								label,
-						new InlineLabel(log.getCreatedon() == null ? ""
-								: DateUtils.DATEFORMAT.format(log
-										.getCreatedon())),
-						new InlineLabel(log.getCompletedon() == null ? ""
-								: DateUtils.DATEFORMAT.format(log
-										.getCompletedon())),
-						new InlineLabel(DateUtils.getTimeDifference(
-								log.getCreatedon(),
-								log.getCompletedon() == null ? new Date() : log
-										.getCompletedon())));
+				if(caseViewDocRefId!=null) {
+					Anchor anchor = new Anchor("View");
+					String taskIdQ = (log.getTaskId()==null? "1=1&": "tid="+log.getTaskId());
+					String processInstanceIdQ = log.getProcessinstanceid()==null? "": "pid="+log.getProcessinstanceid();
+					String href = "#/caseview/"+caseViewDocRefId+"?"+taskIdQ+"&"+processInstanceIdQ;
+					anchor.setHref(href);
+					tblAuditLog.setWidget(row, col++, anchor);
+				}
+				
+				++row;
 			}
-			
-		}else{
+
+		} else {
 			spnAuditEmpty.setInnerText("No Data To Display");
 			spnAuditEmpty.removeClassName("hide");
-			//nothing to display
+			// nothing to display
 		}
-		
+
 		auditContainer.add(tblAuditLog);
 	}
-	
-	public void showAttachments(ArrayList<Attachment> attachments){
+
+	public void showAttachments(ArrayList<Attachment> attachments) {
 		tblAttachments.clearRows();
 		tblAttachments.addStyleName("file-attach");
-		if(attachments!=null){
-			for(Attachment attachment: attachments){
-				tblAttachments.addRow(ArrayUtil.asList("","",""),
-						new AttachmentItem(attachment, true, false),
-						new InlineLabel(attachment.getCreatedBy()==null? "":
-							attachment.getCreatedBy().getFullName()),
+		if (attachments != null) {
+			for (Attachment attachment : attachments) {
+				tblAttachments.addRow(ArrayUtil.asList("", "", ""), new AttachmentItem(attachment, true, false),
+						new InlineLabel(
+								attachment.getCreatedBy() == null ? "" : attachment.getCreatedBy().getFullName()),
 						new InlineLabel(DateUtils.CREATEDFORMAT.format(attachment.getCreated())));
 			}
 		}
@@ -1441,17 +1498,17 @@ public class GenericDocumentView extends ViewImpl implements
 	@Override
 	public void setLoadAsAdmin(boolean isLoadAsAdmin) {
 		this.isLoadAsAdmin = isLoadAsAdmin;
-		
+
 	}
 
 	@Override
 	public void enableSubmit(boolean isEnable) {
 		aContinue.setEnabled(isEnable);
 	}
-	
+
 	@Override
 	public HasClickHandlers getCloseButton() {
-		
+
 		return aClose;
 	}
 
@@ -1459,12 +1516,12 @@ public class GenericDocumentView extends ViewImpl implements
 	public void forceExecJs() {
 		formPanel.forceReloadJs();
 	}
-	
+
 	@Override
 	public void setAttachmentsCount(int size) {
 		elAttachmentsCount.setInnerText("");
-		if(size>0){
-			elAttachmentsCount.setInnerText(""+size);	
+		if (size > 0) {
+			elAttachmentsCount.setInnerText("" + size);
 		}
 	}
 
@@ -1472,5 +1529,10 @@ public class GenericDocumentView extends ViewImpl implements
 	public void setProcessRefId(String processRefId) {
 		this.processRefId = processRefId;
 	}
-	
+
+	@Override
+	public void setCaseViewDocRefId(String docRefId) {
+		this.caseViewDocRefId = docRefId;
+	}
+
 }

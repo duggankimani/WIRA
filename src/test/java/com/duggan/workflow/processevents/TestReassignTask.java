@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.helper.ProcessDaoHelper;
+import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
@@ -21,6 +23,7 @@ import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.ProcessLog;
+import com.duggan.workflow.shared.model.TaskStepDTO;
 
 public class TestReassignTask {
 
@@ -34,7 +37,22 @@ public class TestReassignTask {
 		DB.closeSession(); //This is required to close the Entity Manager in the current thread so that the next calls receives a new instance
 	}	
 	
-	@Test
+	@Ignore
+	public void getTaskStepsForProcess() {
+		DB.beginTransaction();
+		Long processInstanceId = 111L;
+		List<TaskStepDTO> steps = ProcessDaoHelper.getTaskStepsByProcessInstanceId(processInstanceId);
+		
+		for(TaskStepDTO dto: steps) {
+			String desc = dto.getFormName()==null? dto.getOutputDocName() : dto.getFormName();
+			System.out.println("Step - "+dto.getStepName()+" :: "+desc);
+		}
+			
+		DB.commitTransaction();
+		DB.closeSession();
+	}
+	
+	@Ignore
 	public void getProcesses() {
 		DB.beginTransaction();
 		
@@ -56,15 +74,16 @@ public class TestReassignTask {
 	 * @throws SystemException
 	 * @throws NamingException
 	 */
-	@Ignore
+	@Test
 	public void reassign() throws SystemException, NamingException {
 		System.err.println("B4 - Transaction Status = activeTrx = "+DB.getUserTrx().getStatus());
 		//6 | Leave Application
 		DB.beginTransaction();
 		//Task 116		
-		Long taskId = 104L;
+		Long taskId = 110L;
 		String userId= "kimani@wira.io";
-		JBPMHelper.get().assignTask(taskId, userId);
+		String previousOwner= "tomkim@wira.io";
+		JBPMHelper.get().reassignTask(taskId, previousOwner , userId);
 		
 		System.err.println("On Begin - Transaction Status = activeTrx = "+DB.getUserTrx().getStatus());
 		
@@ -74,7 +93,6 @@ public class TestReassignTask {
 		System.err.println("Transaction Status = activeTrx = "+DB.getUserTrx().getStatus());
 		DB.commitTransaction();
 		DB.closeSession(); //Close session
-		
 		
 		//New Session
 		System.err.println("After - Transaction Status = activeTrx = "+DB.getUserTrx().getStatus());

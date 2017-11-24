@@ -156,6 +156,27 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		return getResultList(query);
 	}
+	
+	public List<TaskStepModel> getTaskStepsForNodes(String processId, List<Long> nodeIds) {
+		String hql = "FROM TaskStepModel t where t.processDef.processId=:processId";
+		if (nodeIds != null && !nodeIds.isEmpty()) {
+			hql = hql.concat(" and t.nodeId in (:nodeIds)");
+		} else {
+			hql = hql.concat(" and t.nodeId is null");
+		}
+
+		hql = hql.concat(" order by sequenceNo");
+
+		Query query = em.createQuery(hql).setParameter("processId", processId);
+
+		if (nodeIds != null && !nodeIds.isEmpty()) {
+			query.setParameter("nodeIds", nodeIds);
+		}
+
+		return getResultList(query);
+	}
+	
+	
 
 	public TaskStepModel getTaskStepBySequenceNo(Long processDefId,
 			Long nodeId, int sequenceNo) {
@@ -711,5 +732,10 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		String query = "FROM TaskStepModel t where t.processDef.refId=:processRefId "
 				+ "and isActive=1 order by nodeId, sequenceNo";
 		return getResultList(em.createQuery(query).setParameter("processRefId", processRefId));
+	}
+
+	public String getProcessId(Long processInstanceId) {
+		String q = "select processid from processinstanceinfo where instanceid=:instanceId";
+		return getSingleResultOrNull(getEntityManager().createNativeQuery(q).setParameter("instanceId", processInstanceId));
 	}
 }

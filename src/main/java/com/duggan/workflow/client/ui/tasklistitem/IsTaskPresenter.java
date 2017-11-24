@@ -96,7 +96,8 @@ public abstract class IsTaskPresenter<V extends IsTaskPresenter.IBaseTaskItemVie
 
 						if (action == Actions.COMPLETE
 								|| action == Actions.SUSPEND
-								|| action == Actions.RESUME) {
+								|| action == Actions.RESUME
+								|| action == Actions.FORWARD) {
 							String out = "";
 							if (action == Actions.COMPLETE) {
 								Boolean isApproved = null;
@@ -115,6 +116,8 @@ public abstract class IsTaskPresenter<V extends IsTaskPresenter.IBaseTaskItemVie
 								out = "You have suspended ";
 							} else if (action == Actions.RESUME) {
 								out = "You have resumed ";
+							}else if(action == Actions.FORWARD) {
+								out = "You have reassigned ";
 							}
 
 							// removeFromParent();

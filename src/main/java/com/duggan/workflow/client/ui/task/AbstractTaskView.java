@@ -874,4 +874,5 @@ public class AbstractTaskView extends ViewImpl implements
 		HashMap<String, Column> values = columns.getValues();
 		columns = new ColumnsPanel(values, schema);
 	}
+
 }

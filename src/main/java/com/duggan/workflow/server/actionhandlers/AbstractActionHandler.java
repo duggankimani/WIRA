@@ -83,7 +83,7 @@ public abstract class AbstractActionHandler<A extends BaseRequest<B>, B extends 
 			
 			DB.commitTransaction();
 		} catch (Exception e) {	
-			e.printStackTrace();
+			log.error(getClass().getCanonicalName()+": "+action.getRequestCode()+" says Cannot commit trx due to error: "+e.getMessage());
 			DB.rollback();			
 			hasError = true;
 			throwable = e;

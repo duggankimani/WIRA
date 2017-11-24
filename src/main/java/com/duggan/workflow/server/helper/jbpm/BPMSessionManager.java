@@ -520,7 +520,7 @@ public class BPMSessionManager {
 
 		// initialize session - Each HT execution must run within an active
 		// StatefulKnowledgeSession
-		getSession(new Long(task.getTaskData().getProcessSessionId()), task
+		StatefulKnowledgeSession session = getSession(new Long(task.getTaskData().getProcessSessionId()), task
 				.getTaskData().getProcessId());
 
 		switch (action) {
@@ -534,7 +534,7 @@ public class BPMSessionManager {
 			delegate(taskId, userId, (String)values.get("targetUserId"));
 			break;
 		case FORWARD:
-			// get().getTaskClient().forward(taskId, userId, targetEntityId)
+			JBPMHelper.get().reassignTask(taskId, userId, (String)values.get("targetUserId"));
 			break;
 		case RESUME:
 			getTaskClient().resume(taskId, userId);
@@ -547,7 +547,9 @@ public class BPMSessionManager {
 			getTaskClient().start(taskId, userId);
 			break;
 		case STOP:
-			getTaskClient().stop(taskId, userId);
+			//Abort processinstance
+			session.abortProcessInstance(task.getTaskData().getProcessInstanceId());
+//			getTaskClient().stop(taskId, userId);
 			break;
 		case SUSPEND:
 			getTaskClient().suspend(taskId, userId);

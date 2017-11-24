@@ -3,9 +3,11 @@ package com.duggan.workflow.client.ui.task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.duggan.workflow.client.event.ShowMessageEvent;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
+import com.duggan.workflow.client.ui.AlertType;
 import com.duggan.workflow.client.ui.document.GenericDocumentPresenter;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent;
 import com.duggan.workflow.client.ui.events.AfterSaveEvent.AfterSaveHandler;
@@ -16,9 +18,11 @@ import com.duggan.workflow.client.ui.events.DocumentSelectionEvent;
 import com.duggan.workflow.client.ui.events.DocumentSelectionEvent.DocumentSelectionHandler;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
+import com.duggan.workflow.client.ui.events.ReloadDocumentEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent;
 import com.duggan.workflow.client.ui.events.ReloadEvent.ReloadHandler;
 import com.duggan.workflow.client.ui.events.SearchEvent;
+import com.duggan.workflow.client.ui.events.WorkflowProcessEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.filter.FilterPresenter;
 import com.duggan.workflow.client.ui.home.HomePresenter;
@@ -425,6 +429,11 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 				if (currentTaskType == TaskType.UNASSIGNED) {
 					result.setUnAssignedList(true);
 				}
+				
+				if (currentTaskType == TaskType.CASEVIEW) {
+					result.getView().setCaseViewDocRefId(docRefId);
+				}
+				
 				// Window.alert("Display Doc >> "+docRefId+" - "+taskId+" - "+result);
 				setInSlot(DOCUMENT_SLOT, result);
 			}
@@ -458,14 +467,21 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void onAssignTask(AssignTaskEvent event) {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new AssignTaskRequest(event.getTaskId(), event.getUserId()));
-		action.addRequest(new GetTaskList(processRefId, AppContext.getUserId(), TaskType.UNASSIGNED));
+		GetTaskList listRequest = new GetTaskList(processRefId, AppContext.getUserId(), TaskType.UNASSIGNED);
+		listRequest.setTaskId(taskId);
+		listRequest.setDocRefId(docRefId);
+		action.addRequest(listRequest);
 
+		fireEvent(new ProcessingEvent("Processing..."));
 		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
 			public void processResult(MultiRequestActionResult aResponse) {
-				BaseResponse response = aResponse.get(0);
+				BaseResponse a = aResponse.get(0);
 				GetTaskListResult listResult = (GetTaskListResult) aResponse.get(1);
 				loadLines(listResult.getTasks(), listResult.getTotalCount());
+				fireEvent(new ProcessingCompletedEvent());
+				fireEvent(new ReloadDocumentEvent(docRefId));
+				fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "Assignment Successful!"));
 			}
 		});
 

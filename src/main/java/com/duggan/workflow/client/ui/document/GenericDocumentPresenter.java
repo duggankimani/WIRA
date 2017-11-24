@@ -279,6 +279,8 @@ public class GenericDocumentPresenter extends
 		void setProcessRefId(String processRefId);
 
 		void changeView(VIEWS view);
+
+		void setCaseViewDocRefId(String docRefId);
 	}
 
 	private Long taskId;
@@ -457,12 +459,13 @@ public class GenericDocumentPresenter extends
 			public void onClick(ClickEvent event) {
 
 				// submitRequest(Actions.DELEGATE);
-				// fireEvent(new ExecTaskEvent(taskId, Actions.DELEGATE));
+				fireEvent(new ProcessingEvent("Loading users..."));
 				requestHelper.execute(new GetUsersRequest(),
 						new TaskServiceCallback<GetUsersResponse>() {
 							@Override
 							public void processResult(GetUsersResponse result) {
 								showDelegatePopup(result.getUsers());
+								fireEvent(new ProcessingCompletedEvent());
 							}
 						});
 			}
@@ -482,7 +485,17 @@ public class GenericDocumentPresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new ExecTaskEvent(taskId, Actions.STOP));
+				AppManager.showPopUp("Confirm Stop Action",
+						"Do you want to abort this process. Please note that this action cannot be undone.",
+						new OnOptionSelected() {
+							
+							@Override
+							public void onSelect(String name) {
+								if(name.equals("Yes, Abort")) {
+									fireEvent(new ExecTaskEvent(taskId, Actions.STOP));
+								}
+							}
+						}, "Cancel", "Yes, Abort");
 			}
 		});
 
@@ -564,13 +577,16 @@ public class GenericDocumentPresenter extends
 		});
 
 		getView().getAssignLink().addClickHandler(new ClickHandler() {
+			
 			@Override
 			public void onClick(ClickEvent event) {
+				fireEvent(new ProcessingEvent("Loading users..."));
 				requestHelper.execute(new GetUsersRequest(),
 						new TaskServiceCallback<GetUsersResponse>() {
 							@Override
 							public void processResult(GetUsersResponse result) {
 								showAssignPopup(result.getUsers());
+								fireEvent(new ProcessingCompletedEvent());
 							}
 						});
 			}
@@ -643,9 +659,13 @@ public class GenericDocumentPresenter extends
 
 	protected void showAssignPopup(ArrayList<HTUser> users) {
 		final DelegateTaskView view = new DelegateTaskView(users);
-
+		showAssignPopup(view);
+		
+	}
+	
+	protected void showAssignPopup(final DelegateTaskView view) {
 		AppManager.showPopUp("Assign Task", view, new OnOptionSelected() {
-
+			
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Ok")) {
@@ -662,7 +682,7 @@ public class GenericDocumentPresenter extends
 									public void onSelect(String name) {
 
 										if (name.equals("Back")) {
-											showDelegatePopup(view);
+											showAssignPopup(view);
 										} else {
 											fireEvent(new AssignTaskEvent(
 													taskId, user.getUserId()));
@@ -1918,6 +1938,7 @@ public class GenericDocumentPresenter extends
 	public void onReloadDocument(ReloadDocumentEvent event) {
 		if (event.getDocRefId().equals(this.docRefId)) {
 			loadData();
+			loadProcessLog();
 		}
 	}
 

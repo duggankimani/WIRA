@@ -17,10 +17,10 @@
 					-&nbsp;
 					<span ui:field="spnSubject"></span>
 					<i ui:field="iDocStatus">
-					 </i>
-					 <div ui:field="divAssignee" 
-					 style="font-size: 9px;font-weight: 100;color: #827d7d;margin-top: -5px;text-transform: inherit;">
-					 </div>
+					</i>
+					<div ui:field="divAssignee"
+						style="font-size: 9px;font-weight: 100;color: #827d7d;margin-top: -5px;text-transform: inherit;">
+					</div>
 				</div>
 
 				<div id="phoneActions" class="dropdown action-buttons pull-right visible-phone">
@@ -41,20 +41,19 @@
 							</a>
 						</li>
 						<li>
+							<a id="aOverview" class="disabled" title="Process Overview">
+								<i class="icon-list"></i>
+								Process Overview
+								<!-- Process -->
+							</a>
+						</li>
+						<li>
 							<a id="aDoc" class="disabled" title="View Data Form">
 								<i class="icon-file"></i>
 								View Form
 								<!-- Process -->
 							</a>
 						</li>
-						<li>
-							<a id="aAudit" class="disabled" title="View Process Audit">
-								<i class="icon-time"></i>
-								Process Audit
-								<!-- Process -->
-							</a>
-						</li>
-
 						<li>
 							<a id="aProcess" class="disabled" title="View Process Map">
 								<i class="icon-info"></i>
@@ -124,6 +123,11 @@
 				</div>
 
 				<div id="desktopActions" class="action-buttons pull-right hidden-phone">
+					<d:ActionLink ui:field="aAdminOverview" styleName="btn btn-default hide"
+						title="Process Overview">
+						<i class="icon-list"></i>
+						<!-- Process -->
+					</d:ActionLink>
 					<d:ActionLink ui:field="aDoc" styleName="btn btn-default disabled"
 						title="View Data Form">
 						<i class="icon-file"></i>
@@ -183,11 +187,6 @@
 						Complete
 					</d:ActionLink>
 
-					<d:ActionLink ui:field="aStop" styleName="btn btn-default hidden">
-						<i class="icon-stop"></i>
-						Stop
-					</d:ActionLink>
-
 					<d:ActionLink ui:field="aForward" styleName="hidden btn btn-success hidden">
 						<i class="icon-share-alt"></i>
 						Submit <!-- Forward For Approval -->
@@ -244,21 +243,28 @@
 							</li>
 
 							<li>
-								<d:ActionLink ui:field="aAssign" styleName="hidden"
-									title="Assign this task">
-									<i class="icon-group"></i>
-									Assign
-								</d:ActionLink>
-							</li>
-
-							<li>
 								<d:ActionLink ui:field="aDelegate" styleName="hidden"
 									title="Delegate this task">
 									<i class="icon-group"></i>
 									Delegate
 								</d:ActionLink>
 							</li>
-
+							
+							<li>
+								<d:ActionLink ui:field="aAssign" styleName="hidden"
+									title="Assign this task">
+									<i class="icon-group"></i>
+									Re-Assign
+								</d:ActionLink>
+							</li>
+							
+							<li>
+								<d:ActionLink ui:field="aStop" styleName="hidden">
+									<i class="icon-stop"></i>
+									Stop
+								</d:ActionLink>
+							</li>
+							
 							<li>
 								<d:ActionLink ui:field="aEnv" title="View Env Variables">
 									<i class="icon-group"></i>
@@ -359,6 +365,57 @@
 
 			</div>
 
+			<g:HTMLPanel styleName="row-fluid content-area span12 hide"
+				ui:field="divProcessOverview">
+				<div class="row-fluid">
+					<h5>Process Overview</h5>
+					<!-- d:ActionLink ui:field="aOpenImageInNewTab" text="View Full Image"></d:ActionLink -->
+				</div>
+				<g:HTMLPanel ui:field="overviewContainer" styleName="panel-body">
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="">
+								<table class="table table-highlight">
+									<tr>
+										<th colspan="2">Process Details</th>
+									</tr>
+									<tr>
+										<td>Date Created</td>
+										<td>1st Aug 2017</td>
+									</tr>
+									<tr>
+										<td>Time</td>
+										<td>14 days</td>
+									</tr>
+								</table>
+							</div>
+							
+							<div class="">
+								<table class="table table-highlight">
+									<tr>
+										<th colspan="2">Current Task</th>
+									</tr>
+									<tr>
+										<td>Date Created</td>
+										<td>10th August 2017</td>
+									</tr>
+									<tr>
+										<td>Time</td>
+										<td>4 days</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						
+						<div class="span6">
+							<div class="">
+								<g:FlexTable ui:field="tblForms" styleName="table table-highlight">
+								</g:FlexTable>
+							</div>
+						</div>
+					</div>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
 
 			<div class="row-fluid content-area span12" ui:field="divContent">
 				<div class="row-fluid item" ui:field="divDate">
@@ -459,7 +516,7 @@
 					<span ui:field="spnAuditEmpty" class="hide">
 						No Data To Display
 					</span>
-					<d:TableView ui:field="tblAuditLog"></d:TableView>
+					<g:FlexTable ui:field="tblAuditLog" styleName="table table-highlight table-striped"></g:FlexTable>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 

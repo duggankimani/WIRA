@@ -1,8 +1,10 @@
 package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
+import com.duggan.workflow.shared.model.form.Form;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wira.commons.shared.models.HTUser;
 
@@ -24,6 +26,8 @@ public class TaskLog implements Serializable, IsSerializable{
 	private String potOwner;
 	private String taskName;
 	private boolean isProcessLoaded=true;
+	
+	private ArrayList<Form> forms = new ArrayList<Form>();
 	
 	public TaskLog() {
 	}
@@ -119,5 +123,13 @@ public class TaskLog implements Serializable, IsSerializable{
 
 	public void setProcessLoaded(boolean isProcessLoaded) {
 		this.isProcessLoaded = isProcessLoaded;
+	}
+
+	public ArrayList<Form> getForms() {
+		return forms;
+	}
+
+	public void setForms(ArrayList<Form> forms) {
+		this.forms = forms;
 	}
 }
