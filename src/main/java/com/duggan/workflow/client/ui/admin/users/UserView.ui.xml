@@ -2,12 +2,20 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client" xmlns:up='urn:import:com.duggan.workflow.client.ui.upload.custom'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
+	xmlns:group='urn:import:com.duggan.workflow.client.ui.admin.users'
 	ui:generateLocales='default'>
-
+	<ui:style>
+	.cellTable {
+		border-bottom: 1px solid #ccc;
+		text-align: left;
+		margin-bottom: 4px;
+	}
+	</ui:style>
 	<g:HTMLPanel>
+
 		<div class="content-body no-overflow-y">
 			<div class="row-fluid">
 				<ul class="nav nav-tabs" id="usermgt">
@@ -24,7 +32,7 @@
 							dataToggle="tab">Orgs</d:ActionLink>
 					</li>
 				</ul>
-				
+
 				<up:Uploader ui:field="aUploader" styleName="hide">
 				</up:Uploader>
 
@@ -48,7 +56,7 @@
 									<i class="icon-pencil"></i>
 									Edit User
 								</g:Anchor>
-								
+
 								<g:Anchor ui:field="aDeleteUser" styleName="btn btn-danger hide"
 									title="Delete User">
 									<i class="icon-trash"></i>
@@ -56,8 +64,46 @@
 								</g:Anchor>
 							</div>
 						</div>
-						<section class="">
-							<div class="table-container overflow-y" style="height:400px">
+						<section style="padding-top:0px">
+							<div class="content-body">
+								<table cellspacing="0" cellpadding="0" style="width:100%;">
+									<tr>
+										<td valign="top">
+											<c:CellTable addStyleNames="{style.cellTable}"
+												pageSize="15" ui:field="cellTable" />
+										</td>
+									</tr>
+									<tr>
+										<td align="center">
+											<g:HTMLPanel ui:field="divPaginate"></g:HTMLPanel>
+										</td>
+									</tr>
+								</table>
+							</div>
+							
+							<div class="content-body no-overflow-y hide">
+								<div class="row-fluid" style="height:100%">
+									<div class="span5" style="border:1px solid; height:100%;">
+										<group:GroupAssignment ui:field="unAssignedGroups"></group:GroupAssignment>
+									</div>
+									<div class="span1" style="height:100%; position: relative;">
+										<div
+											style="width: 100%; text-align: center; font-weight:bold; font-size:20px; position: absolute; top: 40%;">
+											<a ui:field="aAddGroup" class="display:block;" style="color:black">
+												<i class="icon-double-angle-right"></i>
+											</a>
+											<div></div>
+											<a ui:field="aRemoveGroup" class="display:block" style="color:black">
+												<i class="icon-double-angle-left"></i>
+											</a>
+										</div>
+									</div>
+									<div class="span5" style="border:1px solid;height:100%">
+										<group:GroupAssignment ui:field="assignedGroups"></group:GroupAssignment>
+									</div>
+								</div>
+							</div>
+							<div class="table-container overflow-y hide" style="height:400px">
 								<g:FlexTable ui:field="tblUser" styleName="table">
 								</g:FlexTable>
 							</div>
@@ -65,7 +111,7 @@
 					</div>
 
 					<div class="tab-pane fade" id="groups">
-						<!-- Group's Table -->
+						<!-- Group"s Table -->
 						<div class="row-fluid">
 							<!--Action Buttons -->
 							<div class="action-buttons">
@@ -79,7 +125,7 @@
 									<i class="icon-pencil"></i>
 									Edit Group
 								</g:Anchor>
-								
+
 								<g:Anchor ui:field="aDeleteGroup" styleName="btn btn-danger hide"
 									title="Delete Group">
 									<i class="icon-trash"></i>
@@ -96,7 +142,7 @@
 						</section>
 					</div>
 					<div class="tab-pane" id="orgs">
-						<!-- Unit's Table -->
+						<!-- Unit"s Table -->
 						<div class="row-fluid">
 							<!--Action Buttons -->
 							<div class="action-buttons">
@@ -110,7 +156,7 @@
 									<i class="icon-pencil"></i>
 									Edit Org
 								</g:Anchor>
-								
+
 								<g:Anchor ui:field="aDeleteOrg" styleName="btn btn-danger hide"
 									title="Delete Org">
 									<i class="icon-trash"></i>

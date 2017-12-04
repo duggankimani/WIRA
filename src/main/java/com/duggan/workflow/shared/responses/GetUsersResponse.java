@@ -3,11 +3,15 @@ package com.duggan.workflow.shared.responses;
 import java.util.ArrayList;
 
 import com.wira.commons.shared.models.HTUser;
-import com.wira.commons.shared.response.BaseResponse;
 
-public class GetUsersResponse extends BaseResponse {
+public class GetUsersResponse extends BaseListResponse {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<HTUser> users;
+	private Integer userCount;
 
 	public GetUsersResponse() {
 	}
@@ -22,5 +26,13 @@ public class GetUsersResponse extends BaseResponse {
 
 	public void setUsers(ArrayList<HTUser> users) {
 		this.users = users;
+	}
+
+	public Integer getUserCount() {
+		return userCount;
+	}
+
+	public void setUserCount(Integer userCount) {
+		this.userCount = userCount;
 	}
 }

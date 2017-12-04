@@ -4,7 +4,7 @@ import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;
 
-public class GetGroupsRequest extends BaseRequest<GetGroupsResponse> {
+public class GetGroupsRequest extends BaseListRequest<GetGroupsResponse> {
 
 	private String groupName;
 	private String searchTerm;

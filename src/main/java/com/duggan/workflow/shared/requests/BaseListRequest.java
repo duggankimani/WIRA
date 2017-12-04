@@ -5,22 +5,26 @@ import com.wira.commons.shared.request.BaseRequest;
 
 public class BaseListRequest<T extends BaseListResponse> extends BaseRequest<T>{
 
-	private int offset;
-	private int length;
+	private Integer offset;
+	private Integer length;
 	
 	public BaseListRequest() {
 	}
-	
-	public int getOffset() {
+
+	public Integer getOffset() {
 		return offset;
 	}
-	public void setOffset(int offset) {
+
+	public void setOffset(Integer offset) {
 		this.offset = offset;
 	}
-	public int getLength() {
+
+	public Integer getLength() {
 		return length;
 	}
-	public void setLength(int length) {
+
+	public void setLength(Integer length) {
 		this.length = length;
 	}
+	
 }

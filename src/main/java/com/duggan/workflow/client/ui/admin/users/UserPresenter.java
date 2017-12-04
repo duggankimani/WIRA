@@ -47,6 +47,7 @@ import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -80,7 +81,7 @@ public class UserPresenter extends
 
 		void setType(TYPE type);
 
-		void bindUsers(ArrayList<HTUser> users);
+		void bindUsers(ArrayList<HTUser> users, Integer offset, Integer totalCount);
 
 		void bindGroups(ArrayList<UserGroup> groups);
 
@@ -139,6 +140,7 @@ public class UserPresenter extends
 	public static final Object ITEMSLOT = new Object();
 	public static final Object GROUPSLOT = new Object();
 	public static final String TABLABEL = "Users and Groups";
+	protected static final Integer PAGE_SIZE = 15;
 
 	TYPE type = TYPE.USER;
 
@@ -267,6 +269,7 @@ public class UserPresenter extends
 			}
 		});
 
+		Window.alert(">>> Bind users!");
 	}
 
 	@Override
@@ -284,7 +287,8 @@ public class UserPresenter extends
 		}
 
 		setType(type);
-		loadData();
+		Window.alert(">>> Prepare from Req");
+		//loadData();
 	}
 
 	private void showPopup(final TYPE type) {
@@ -362,7 +366,7 @@ public class UserPresenter extends
 
 	void loadData() {
 		if (type == TYPE.USER) {
-			loadUsers();
+			//loadUsers();
 		} else if (type == TYPE.GROUP) {
 			loadGroups();
 		} else {
@@ -390,12 +394,14 @@ public class UserPresenter extends
 	}
 
 	private void loadGroups() {
-		loadGroups(null);
+		loadGroups(null, 0, PAGE_SIZE);
 	}
 	
-	private void loadGroups(String searchTerm) {
+	private void loadGroups(String searchTerm, Integer offset, Integer limit) {
 		GetGroupsRequest request = new GetGroupsRequest();
 		request.setSearchTerm(searchTerm);
+		request.setOffset(offset);
+		request.setLength(limit);
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetGroupsResponse>() {
@@ -411,19 +417,22 @@ public class UserPresenter extends
 				});
 	}
 
-	private void loadUsers() {
-		loadUsers(null);
+	private void loadUsers(Integer offset, Integer limit) {
+		loadUsers(null, offset, limit);
 	}
 	
-	private void loadUsers(String searchTerm) {
+	private void loadUsers(String searchTerm, final Integer offset, Integer limit) {
 		GetUsersRequest request = new GetUsersRequest(searchTerm);
+		request.setOffset(offset);
+		request.setLength(limit);
+		
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetUsersResponse>() {
 					@Override
 					public void processResult(GetUsersResponse result) {
 						ArrayList<HTUser> users = result.getUsers();
-						getView().bindUsers(users);
+						getView().bindUsers(users, offset, result.getTotalCount());
 						// loadUsers(users);
 						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new CheckboxSelectionEvent(selectedModel,
@@ -439,7 +448,8 @@ public class UserPresenter extends
 
 	@Override
 	public void onLoadUsers(LoadUsersEvent event) {
-		loadData();
+		Window.alert("Load Users!");
+		loadUsers(null, event.getStart(), event.getLimit());
 	}
 
 	@Override
@@ -489,7 +499,7 @@ public class UserPresenter extends
 					@Override
 					public void processResult(SaveUserResponse result) {
 						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "User successfully deleted.",false));
-						loadUsers();
+						loadUsers(null, 0, PAGE_SIZE);
 					}
 				});
 	}
@@ -527,13 +537,13 @@ public class UserPresenter extends
 			
 			switch (type) {
 			case GROUP:
-				loadGroups(filter.getPhrase());
+				loadGroups(filter.getPhrase(),0, PAGE_SIZE);
 				break;
 			case ORG:
-				loadOrgs(filter.getPhrase(),0,100);
+				loadOrgs(filter.getPhrase(),0,PAGE_SIZE);
 				break;
 			case USER:
-				loadUsers(filter.getPhrase());
+				loadUsers(filter.getPhrase(),0, PAGE_SIZE);
 				break;
 			}
 			filter.getPhrase();

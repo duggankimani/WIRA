@@ -69,7 +69,7 @@ public class UserDaoHelper implements LoginIntf {
 	public List<HTUser> retrieveUsers() {
 		List<HTUser> ht_users = new ArrayList<>();
 
-		List<User> users = DB.getUserGroupDao().getAllUsers(null);
+		List<User> users = DB.getUserGroupDao().getAllUsers(null,0,500);
 
 		if (users != null)
 			for (User user : users) {
@@ -315,9 +315,9 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	@Override
-	public List<HTUser> getAllUsers(String searchTerm) {
+	public List<HTUser> getAllUsers(String searchTerm, int offset, int limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		List<User> users = dao.getAllUsers(searchTerm);
+		List<User> users = dao.getAllUsers(searchTerm, offset, limit);
 
 		List<HTUser> htusers = new ArrayList<>();
 
@@ -327,6 +327,12 @@ public class UserDaoHelper implements LoginIntf {
 			}
 
 		return htusers;
+	}
+	
+	@Override
+	public Integer getUserCount(String searchTerm) {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		return dao.getUserCount(searchTerm);
 	}
 
 	@Override

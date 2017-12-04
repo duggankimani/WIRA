@@ -66,7 +66,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers(String searchTerm) {
+	public List<User> getAllUsers(String searchTerm, Integer offset, Integer limit) {
 			
 		StringBuffer jpql = new StringBuffer("FROM BUser u ");
 		
@@ -85,7 +85,29 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 			query.setParameter(key, params.get(key));
 		}
 		
-		return query.getResultList();
+		return query.setFirstResult(offset).setMaxResults(limit).getResultList();
+	}
+	
+	public Integer getUserCount(String searchTerm) {
+		StringBuffer jpql = new StringBuffer("select count(*) FROM BUser u ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			jpql.append(" where (lower(u.userId) like :searchTerm or "
+					+ "lower(u.lastName) like :searchTerm or "
+					+ "lower(u.firstName) like :searchTerm or "
+					+ "lower(u.email) like :searchTerm) and u.isActive=1 ");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+		}
+		
+		Query query = em.createQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		
+		
+		Number count = (Number) query.getSingleResult();
+		return count.intValue();
 	}
 
 	@SuppressWarnings("unchecked")

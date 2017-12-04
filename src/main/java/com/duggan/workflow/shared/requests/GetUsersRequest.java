@@ -4,7 +4,7 @@ import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;
 
-public class GetUsersRequest extends BaseRequest<GetUsersResponse> {
+public class GetUsersRequest extends BaseListRequest<GetUsersResponse> {
 
 	private String searchTerm;
 

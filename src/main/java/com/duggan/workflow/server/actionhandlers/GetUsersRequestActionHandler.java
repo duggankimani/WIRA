@@ -23,7 +23,10 @@ public class GetUsersRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		GetUsersResponse response = (GetUsersResponse)actionResult;
 		
-		response.setUsers((ArrayList<HTUser>) LoginHelper.get().getAllUsers(action.getSearchTerm()));
+		response.setUsers((ArrayList<HTUser>) LoginHelper.get().getAllUsers(
+				action.getSearchTerm(),
+				action.getOffset(), action.getLength()));
+		response.setTotalCount(LoginHelper.get().getUserCount(action.getSearchTerm()));
 	}
 	
 	@Override

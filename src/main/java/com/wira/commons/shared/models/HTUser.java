@@ -9,11 +9,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.view.client.ProvidesKey;
 
 @XmlRootElement(name="user")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HTUser extends SerializableObj implements Listable,HasKey,Serializable,IsSerializable {
 
+
+	/**
+     * The key provider that provides the unique ID of a contact.
+     */
+    public static final ProvidesKey<HTUser> KEY_PROVIDER = new ProvidesKey<HTUser>() {
+      @Override
+      public Object getKey(HTUser item) {
+        return item == null ? null : item.getRefId();
+      }
+    };
+    
 	private static final long serialVersionUID = -5249516544970187459L;
 	@XmlTransient
 	private Long id;

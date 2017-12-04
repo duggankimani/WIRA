@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.wira.commons.shared.models.UserGroup;
 import com.wira.commons.shared.response.BaseResponse;
 
-public class GetGroupsResponse extends BaseResponse{
+public class GetGroupsResponse extends BaseListResponse{
 
 	private ArrayList<UserGroup> groups;
 

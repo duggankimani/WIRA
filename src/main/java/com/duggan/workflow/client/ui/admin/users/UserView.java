@@ -1,34 +1,55 @@
 package com.duggan.workflow.client.ui.admin.users;
 
-import gwtupload.client.IUploader;
-import gwtupload.client.IUploader.OnFinishUploaderHandler;
-import gwtupload.client.IUploader.OnStartUploaderHandler;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.model.UploadContext;
 import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
+import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.component.Checkbox;
 import com.duggan.workflow.client.ui.events.LoadUsersEvent;
 import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.shared.responses.GetUsersResponse;
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.RangeChangeEvent;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.inject.Inject;
+import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
@@ -36,16 +57,22 @@ import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.Org;
 import com.wira.commons.shared.models.UserGroup;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.OnStartUploaderHandler;
+
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 
+	protected static int CONTACTS_SIZE = 0;
 	private final Widget widget;
 	@UiField
 	Anchor aNewUser;
 	@UiField
 	Anchor aImportUsers;
-	
-	@UiField Uploader aUploader;
-	
+
+	@UiField
+	Uploader aUploader;
+
 	@UiField
 	Anchor aNewGroup;
 	@UiField
@@ -61,7 +88,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	FlexTable tblGroup;
 	@UiField
 	FlexTable tblOrgs;
-	
+
 	@UiField
 	Anchor aEditUser;
 	@UiField
@@ -70,7 +97,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	Anchor aEditGroup;
 	@UiField
 	Anchor aDeleteGroup;
-	
+
 	@UiField
 	Anchor aNewOrg;
 	@UiField
@@ -78,70 +105,91 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	@UiField
 	Anchor aDeleteOrg;
 
+	@UiField
+	GroupAssignment unAssignedGroups;
+	@UiField
+	GroupAssignment assignedGroups;
+
+	@UiField
+	HTMLPanel divPaginate;
+
 	public interface Binder extends UiBinder<Widget, UserView> {
 	}
 
 	PlaceManager placeManager;
+	
+	Integer PAGE_SIZE = 15;
+	Integer PAGE_START = 0;
 
 	@Inject
 	public UserView(final Binder binder, PlaceManager manager) {
+		// Set a key provider that provides a unique key for each contact. If key is
+		// used to identify contacts when fields (such as the name and address)
+		// change.
+		cellTable = new CellTable<HTUser>(HTUser.KEY_PROVIDER);
+		cellTable.setWidth("100%", true);
+		cellTable.setPageSize(PAGE_SIZE);
+		cellTable.setPageStart(PAGE_START);
+
+		SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+		pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+		pager.setDisplay(cellTable);
+
+		// Create a Pager to control the table.
+		initialize();
+
 		widget = binder.createAndBindUi(this);
 		placeManager = manager;
+		divPaginate.add(pager);
 
 		aUserstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				placeManager.revealPlace(new PlaceRequest.Builder()
-						.nameToken(NameTokens.usermgt).with("page", "user")
-						.build());
+				placeManager.revealPlace(
+						new PlaceRequest.Builder().nameToken(NameTokens.usermgt).with("page", "user").build());
 			}
 		});
 
 		aGroupstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				placeManager.revealPlace(new PlaceRequest.Builder()
-						.nameToken(NameTokens.usermgt).with("page", "group")
-						.build());
+				placeManager.revealPlace(
+						new PlaceRequest.Builder().nameToken(NameTokens.usermgt).with("page", "group").build());
 			}
 		});
-		
+
 		aUnitstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				placeManager.revealPlace(new PlaceRequest.Builder()
-						.nameToken(NameTokens.usermgt).with("page", "org")
-						.build());
+				placeManager.revealPlace(
+						new PlaceRequest.Builder().nameToken(NameTokens.usermgt).with("page", "org").build());
 			}
 		});
-		
+
 		aImportUsers.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				
+
 				final UploadContext ctx = new UploadContext();
 				final ArrayList<String> types = new ArrayList<String>();
 				types.add("csv");
 				ctx.setAccept(types);
-				
+
 				ctx.setAction(UPLOADACTION.IMPORTUSERS);
 				aUploader.setContext(ctx);
 				triggerUpload(aUploader.getElement());
 			}
 		});
-		
-		
-		
-		aUploader.addOnStartUploaderHandler(new OnStartUploaderHandler(){
+
+		aUploader.addOnStartUploaderHandler(new OnStartUploaderHandler() {
 			@Override
 			public void onStart(IUploader uploader) {
 				AppContext.fireEvent(new ProcessingEvent());
 			}
 		});
-		
-		
-		aUploader.addOnFinishUploaderHandler(new OnFinishUploaderHandler(){
+
+		aUploader.addOnFinishUploaderHandler(new OnFinishUploaderHandler() {
 			@Override
 			public void onFinish(IUploader uploader) {
 				AppContext.fireEvent(new ProcessingCompletedEvent());
@@ -149,14 +197,24 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			}
 		});
 	}
-	
+
 	protected native void triggerUpload(Element uploader) /*-{
-	$wnd.jQuery(uploader).find('input').trigger('click');
-	
-	}-*/;
+															$wnd.jQuery(uploader).find('input').trigger('click');
+															
+															}-*/;
 
 	@Override
-	public void bindUsers(ArrayList<HTUser> users) {
+	public void bindUsers(ArrayList<HTUser> users,Integer start, Integer totalCount) {
+		if(CONTACTS_SIZE!=totalCount) {
+			CONTACTS_SIZE = totalCount;
+			dataProvider.updateRowCount(CONTACTS_SIZE, true);
+		}
+		
+		dataProvider.updateRowData(start, users);
+		sortHandler.setList(users);
+	}
+
+	public void bindUsers1(ArrayList<HTUser> users) {
 		clearSelections();
 		tblUser.removeAllRows();
 		setUserHeaders(tblUser);
@@ -169,8 +227,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				@Override
 				public void onValueChange(ValueChangeEvent<Boolean> event) {
 					Object model = ((Checkbox) (event.getSource())).getModel();
-					AppContext.fireEvent(new CheckboxSelectionEvent(model,
-							event.getValue()));
+					AppContext.fireEvent(new CheckboxSelectionEvent(model, event.getValue()));
 				}
 			});
 
@@ -181,8 +238,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			tblUser.setWidget(i, j++, new HTMLPanel(user.getEmail()));
 			tblUser.setWidget(i, j++, new HTMLPanel(user.getGroupsAsString()));
 			tblUser.setWidget(i, j++, new HTMLPanel(user.getInbox() + ""));
-			tblUser.setWidget(i, j++,
-					new HTMLPanel(user.getParticipated() + ""));
+			tblUser.setWidget(i, j++, new HTMLPanel(user.getParticipated() + ""));
 			tblUser.setWidget(i, j++, new HTMLPanel(user.getDrafts() + ""));
 			tblUser.setWidget(i, j++, new HTMLPanel(user.getTotal() + ""));
 			++i;
@@ -193,24 +249,22 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	public void bindGroups(ArrayList<UserGroup> groups) {
 		tblGroup.removeAllRows();
 		clearSelections();
-		
+
 		int j = 0;
 		tblGroup.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
 		tblGroup.setWidget(0, j++, new HTMLPanel("<strong>Code</strong>"));
-		tblGroup.setWidget(0, j++,
-				new HTMLPanel("<strong>Description</strong>"));
+		tblGroup.setWidget(0, j++, new HTMLPanel("<strong>Description</strong>"));
 
 		int i = 1;
 		for (UserGroup group : groups) {
 			j = 0;
-			
+
 			Checkbox box = new Checkbox(group);
 			box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 				@Override
 				public void onValueChange(ValueChangeEvent<Boolean> event) {
 					Object model = ((Checkbox) (event.getSource())).getModel();
-					AppContext.fireEvent(new CheckboxSelectionEvent(model,
-							event.getValue()));
+					AppContext.fireEvent(new CheckboxSelectionEvent(model, event.getValue()));
 				}
 			});
 
@@ -255,13 +309,13 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			table.getFlexCellFormatter().setStyleName(0, i, "th");
 		}
 	}
-	
+
 	@Override
 	public void bindOrgs(ArrayList<Org> orgs) {
 		tblOrgs.clear();
 		tblOrgs.removeAllRows();
 		clearSelections();
-		
+
 		int j = 0;
 		tblOrgs.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
 		tblOrgs.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
@@ -270,14 +324,13 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		int i = 1;
 		for (Org org : orgs) {
 			j = 0;
-			
+
 			Checkbox box = new Checkbox(org);
 			box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 				@Override
 				public void onValueChange(ValueChangeEvent<Boolean> event) {
 					Object model = ((Checkbox) (event.getSource())).getModel();
-					AppContext.fireEvent(new CheckboxSelectionEvent(model,
-							event.getValue()));
+					AppContext.fireEvent(new CheckboxSelectionEvent(model, event.getValue()));
 				}
 			});
 
@@ -297,8 +350,8 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	public HasClickHandlers getaNewUser() {
 		return aNewUser;
 	}
-	
-	public HasClickHandlers getImportUsers(){
+
+	public HasClickHandlers getImportUsers() {
 		return aImportUsers;
 	}
 
@@ -356,7 +409,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			aDeleteUser.addStyleName("hide");
 		}
 	}
-	
+
 	@Override
 	public void setOrgEdit(boolean value) {
 		if (value) {
@@ -367,32 +420,313 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			aDeleteOrg.addStyleName("hide");
 		}
 	}
-	
-	public HasClickHandlers getEditUser(){
+
+	public HasClickHandlers getEditUser() {
 		return aEditUser;
 	}
-	
-	public HasClickHandlers getDeleteUser(){
+
+	public HasClickHandlers getDeleteUser() {
 		return aDeleteUser;
 	}
-	
-	public HasClickHandlers getEditGroup(){
+
+	public HasClickHandlers getEditGroup() {
 		return aEditGroup;
 	}
-	
-	public HasClickHandlers getDeleteGroup(){
+
+	public HasClickHandlers getDeleteGroup() {
 		return aDeleteGroup;
 	}
-	
-	public HasClickHandlers getNewOrg(){
+
+	public HasClickHandlers getNewOrg() {
 		return aNewOrg;
 	}
-	
-	public HasClickHandlers getEditOrg(){
+
+	public HasClickHandlers getEditOrg() {
 		return aEditOrg;
 	}
-	
-	public HasClickHandlers getDeleteOrg(){
+
+	public HasClickHandlers getDeleteOrg() {
 		return aDeleteOrg;
 	}
+
+	/**
+	 * The main CellTable.
+	 */
+	@UiField(provided = true)
+	CellTable<HTUser> cellTable;
+
+	/**
+	 * The pager used to change the range of data.
+	 */
+	// @UiField(provided = true)
+	SimplePager pager;
+
+	// Create a CellTable.
+	AsyncDataProvider<HTUser> dataProvider = new AsyncDataProvider<HTUser>() {
+		@Override
+		protected void onRangeChanged(HasData<HTUser> display) {
+			final int start = display.getVisibleRange().getStart();
+			int end = start + display.getVisibleRange().getLength();
+			
+			end = end >= CONTACTS_SIZE ? CONTACTS_SIZE : end;
+			if(end==0) {
+				end=PAGE_SIZE;
+			}
+			
+			Window.alert(">>> Load users!");
+			AppContext.fireEvent(new LoadUsersEvent(start, PAGE_SIZE));
+			
+//			GetUsersRequest request = new GetUsersRequest(null);
+//			request.setOffset(start);
+//			request.setLength(PAGE_SIZE);
+//			
+//			final DispatchAsync dispatcher = AppContext.getDispatcher();
+//			dispatcher.execute(request,
+//					new TaskServiceCallback<GetUsersResponse>() {
+//				@Override
+//				public void processResult(GetUsersResponse result) {
+//					if(CONTACTS_SIZE!=result.getTotalCount()) {
+//						CONTACTS_SIZE = result.getTotalCount();
+//						updateRowCount(CONTACTS_SIZE, true);
+//					}
+//					
+//					ArrayList<HTUser> users = result.getUsers();
+//					updateRowData(start, users);
+//					sortHandler.setList(users);
+//				}
+//			});
+			
+		}
+	};
+	
+	ListHandler<HTUser> sortHandler = null;
+
+	private void initialize() {
+
+		// Do not refresh the headers and footers every time the data is updated.
+		cellTable.setAutoHeaderRefreshDisabled(true);
+		cellTable.setAutoFooterRefreshDisabled(true);
+
+		// Attach a column sort handler to the ListDataProvider to sort the list.
+		sortHandler = new ListHandler<HTUser>(new ArrayList<HTUser>());
+		cellTable.addColumnSortHandler(sortHandler);
+
+		// Add a selection model so we can select cells.
+		final SelectionModel<HTUser> selectionModel = new MultiSelectionModel<HTUser>(HTUser.KEY_PROVIDER);
+		cellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<HTUser>createCheckboxManager());
+
+		// Initialize the columns.
+		initTableColumns(selectionModel, sortHandler);
+
+		// Add the CellList to the adapter in the database.
+		dataProvider.addDataDisplay(cellTable);
+
+	}
+
+	/**
+	 * Add the columns to the table.
+	 */
+	private void initTableColumns(final SelectionModel<HTUser> selectionModel, ListHandler<HTUser> sortHandler) {
+		// Checkbox column. This table will uses a checkbox column for selection.
+		// Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
+		// mouse selection.
+		Column<HTUser, Boolean> checkColumn = new Column<HTUser, Boolean>(new CheckboxCell(true, false)) {
+			@Override
+			public Boolean getValue(HTUser object) {
+				// Get the value from the selection model.
+				return selectionModel.isSelected(object);
+			}
+		};
+		cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+		cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
+
+		// First name.
+		Column<HTUser, String> firstNameColumn = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getName();
+			}
+		};
+		firstNameColumn.setSortable(true);
+		sortHandler.setComparator(firstNameColumn, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+
+		cellTable.addColumn(firstNameColumn, "First Name");
+		firstNameColumn.setFieldUpdater(new FieldUpdater<HTUser, String>() {
+			@Override
+			public void update(int index, HTUser object, String value) {
+				// Called when the user changes the value.
+				object.setName(value);
+//				dataProvider.refresh();
+			}
+		});
+		cellTable.setColumnWidth(firstNameColumn, 15, Unit.PCT);
+
+		// Last name.
+		Column<HTUser, String> lastNameColumn = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getSurname();
+			}
+		};
+		lastNameColumn.setSortable(true);
+		sortHandler.setComparator(lastNameColumn, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				return o1.getSurname().compareTo(o2.getSurname());
+			}
+		});
+		cellTable.addColumn(lastNameColumn, "Last Name");
+		lastNameColumn.setFieldUpdater(new FieldUpdater<HTUser, String>() {
+			@Override
+			public void update(int index, HTUser object, String value) {
+				// Called when the user changes the value.
+				object.setSurname(value);
+//				dataProvider.refresh();
+			}
+		});
+		cellTable.setColumnWidth(lastNameColumn, 15, Unit.PCT);
+
+		// Userid
+		Column<HTUser, String> userIdCol = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getUserId();
+			}
+		};
+		userIdCol.setSortable(true);
+		sortHandler.setComparator(userIdCol, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				return o1.getUserId().compareTo(o2.getUserId());
+			}
+		});
+		cellTable.addColumn(userIdCol, "User ID");
+
+		// Email
+		Column<HTUser, String> emailColumn = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getEmail();
+			}
+		};
+		emailColumn.setSortable(true);
+		sortHandler.setComparator(emailColumn, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				return o1.getEmail().compareTo(o2.getEmail());
+			}
+		});
+		cellTable.addColumn(emailColumn, "Email");
+
+		lastNameColumn.setFieldUpdater(new FieldUpdater<HTUser, String>() {
+			@Override
+			public void update(int index, HTUser object, String value) {
+				// Called when the user changes the value.
+				object.setEmail(value);
+//				dataProvider.refresh();
+			}
+		});
+		cellTable.setColumnWidth(emailColumn, 15, Unit.PCT);
+
+		// Organization
+		Column<HTUser, String> orgColumn = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getOrg() == null ? "" : object.getOrg().getDisplayName();
+			}
+		};
+		orgColumn.setSortable(true);
+		sortHandler.setComparator(orgColumn, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				return o1.getOrg().getDisplayName().compareTo(o2.getOrg().getDisplayName());
+			}
+		});
+		cellTable.addColumn(orgColumn, "Org");
+		cellTable.setColumnWidth(orgColumn, 15, Unit.PCT);
+
+		// Participated
+		Column<HTUser, String> participatedCol = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getParticipated() + "";
+			}
+		};
+		participatedCol.setSortable(true);
+		sortHandler.setComparator(participatedCol, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				Integer participated = o1.getParticipated();
+				Integer participated2 = o2.getParticipated();
+				return participated.compareTo(participated2);
+			}
+		});
+		cellTable.addColumn(participatedCol, "Participated");
+		cellTable.setColumnWidth(participatedCol, 70, Unit.PX);
+
+		// Inbox
+		Column<HTUser, String> inboxCol = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getInbox() + "";
+			}
+		};
+		inboxCol.setSortable(true);
+		sortHandler.setComparator(inboxCol, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				Integer inbox = o1.getInbox();
+				Integer inbox2 = o2.getInbox();
+				return inbox.compareTo(inbox2);
+			}
+		});
+		cellTable.addColumn(participatedCol, "Inbox");
+		cellTable.setColumnWidth(participatedCol, 70, Unit.PX);
+
+		// Inbox
+		Column<HTUser, String> draftsCol = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+				return object.getInbox() + "";
+			}
+		};
+		draftsCol.setSortable(true);
+		sortHandler.setComparator(draftsCol, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				Integer drafts = o1.getDrafts();
+				Integer drafts2 = o2.getDrafts();
+				return drafts.compareTo(drafts2);
+			}
+		});
+		cellTable.addColumn(draftsCol, "Drafts");
+		cellTable.setColumnWidth(draftsCol, 70, Unit.PX);
+
+		// Total
+		Column<HTUser, String> totalsCol = new Column<HTUser, String>(new EditTextCell()) {
+			@Override
+			public String getValue(HTUser object) {
+
+				return (object.getDrafts() + object.getInbox() + object.getParticipated()) + "";
+			}
+		};
+		totalsCol.setSortable(true);
+		sortHandler.setComparator(totalsCol, new Comparator<HTUser>() {
+			@Override
+			public int compare(HTUser o1, HTUser o2) {
+				Integer totals = o1.getDrafts() + o1.getInbox() + o1.getParticipated();
+				Integer totals2 = o2.getDrafts() + o2.getInbox() + o2.getParticipated();
+
+				return totals.compareTo(totals2);
+			}
+		});
+		cellTable.addColumn(totalsCol, "Totals");
+		cellTable.setColumnWidth(totalsCol, 70, Unit.PX);
+	}
+
 }

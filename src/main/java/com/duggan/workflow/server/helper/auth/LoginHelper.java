@@ -117,14 +117,15 @@ public class LoginHelper implements LoginIntf{
 		return impl.deleteGroup(group);
 	}
 
-	public List<HTUser> getAllUsers() {
+	public List<HTUser> getAllUsers(String searchTerm, int offset, int limit) {
 
-		return impl.getAllUsers(null);
+		return impl.getAllUsers(searchTerm, offset, limit);
 	}
 	
-	public List<HTUser> getAllUsers(String searchTerm) {
 
-		return impl.getAllUsers(searchTerm);
+	public Integer getUserCount(String searchTerm) {
+		
+		return impl.getUserCount(searchTerm);
 	}
 
 	public List<UserGroup> getAllGroups(String searchTerm) {
@@ -161,4 +162,5 @@ public class LoginHelper implements LoginIntf{
 	public boolean updatePassword(String username, String password) {
 		return impl.updatePassword(username, password);
 	}
+
 }

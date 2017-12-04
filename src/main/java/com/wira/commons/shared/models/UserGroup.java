@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * 
@@ -17,6 +18,16 @@ public class UserGroup implements Serializable,IsSerializable, Listable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+     * The key provider that provides the unique ID of a contact.
+     */
+    public static final ProvidesKey<UserGroup> KEY_PROVIDER = new ProvidesKey<UserGroup>() {
+      @Override
+      public Object getKey(UserGroup item) {
+        return item == null ? null : item.getName();
+      }
+    };
+    
 	private Long id;
 	
 	private String name;

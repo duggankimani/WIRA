@@ -534,7 +534,7 @@ public class CatalogDaoHelper {
 			for (CatalogColumn catCol : catalog.getColumns()) {
 
 				Value value = line.getValue(catCol.getName());
-
+				
 				stringBuffer.append("" + value.getValue());
 
 				stringBuffer.append(",");
