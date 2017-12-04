@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.duggan.workflow.shared.model.DocumentLine;
+import com.duggan.workflow.shared.model.Value;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 
 public class GenerateCatalogueExcel {
@@ -293,7 +294,14 @@ public class GenerateCatalogueExcel {
 			Cell cell = row.createCell(j);
 			String styleName = null;
 
-			cell.setCellValue(detail.getValues().get(catalog.getColumns().get(j).getName()).getValue()+"");
+			Value val = detail.getValues().get(catalog.getColumns().get(j).getName());
+			
+			if(val!=null && val.getValue()!=null) {
+				Object actual = val.getValue();
+				cell.setCellValue(actual+"");
+			}else {
+				cell.setCellValue("");
+			}
 
 			styleName = "cell_normal";
 			cell.setCellStyle(styles.get(styleName));
