@@ -1048,6 +1048,14 @@ table.flextable-grid .GWTUpld form{
 	color: #1e7ab8;
 }
 
+.generic-doc-title .doc-exited{
+	color: #953b39;
+}
+
+body .label-exited{
+	background-color: #953b39;
+}
+
 div.daterangepicker > .calendar{
 	max-width:318px;
 }
