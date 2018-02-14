@@ -177,11 +177,11 @@ public class DateField extends FieldWidget {
 
 	public Value from(String key, String val) {
 		try {
-			return new DateValue(null, key, DateUtils.DATEFORMAT.parse(val));
+			return new DateValue(null, key, DateUtils.tryParse(val));
 		} catch (Exception e) {
 		}
 
-		return super.from(key, val);
+		return super.from(key, null);
 	}
 
 	@Override

@@ -334,8 +334,11 @@ public class DataTablePresenter
 					public void onSelect(String name) {
 
 						if (name.equals("Save")) {
-							saveData(catalog, view.getData());
-							hide();
+							if(view.isValid()) {
+								saveData(catalog, view.getData());
+								hide();
+							}
+							
 						} else {
 							hide();
 						}

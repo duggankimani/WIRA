@@ -209,4 +209,32 @@ public class DateUtils implements Formats{
 		}
 		return days+" day"+(days==1? "":"s");
 	}
+
+
+	public static Date tryParse(String val) {
+		Date date = null;
+		
+		String defaultFormatDash = "dd-MM-yyyy";
+		String defaultFormatDash2 = "yyyy-MM-dd";
+		
+		String defaultFormatSlash = "dd/MM/yyyy";
+		String defaultFormatSlash2 = "yyyy/MM/yyyy";
+		
+		if(val.contains("-")) {
+			if(val.indexOf("-")<3) {
+				date = DateTimeFormat.getFormat(defaultFormatDash).parse(val);
+			}else {
+				date = DateTimeFormat.getFormat(defaultFormatDash2).parse(val);
+			}
+			
+		}else if(val.contains("//")) {
+			if(val.indexOf("-")<3) {
+				date = DateTimeFormat.getFormat(defaultFormatSlash).parse(val);
+			}else {
+				date = DateTimeFormat.getFormat(defaultFormatSlash2).parse(val);
+			}
+		}
+		
+		return date;
+	}
 }

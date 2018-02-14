@@ -144,7 +144,9 @@ public class CatalogDaoHelper {
 		colModel.setName(cat.getName());
 		colModel.setNullable(cat.isNullable());
 		colModel.setPrimaryKey(cat.isPrimaryKey());
-		colModel.setSize(cat.getSize());
+		if(cat.getSize()!=null && !cat.getSize().isEmpty()) {
+			colModel.setSize(cat.getSize());
+		}
 		colModel.setType(cat.getType());
 
 		return colModel;
@@ -206,6 +208,14 @@ public class CatalogDaoHelper {
 		Collections.sort(models, new Comparator<CatalogColumn>() {
 			@Override
 			public int compare(CatalogColumn o1, CatalogColumn o2) {
+				if(o1.getId()==null) {
+					return -1;
+				}
+				
+				if(o2.getId()==null) {
+					return 1;
+				}
+				
 				return o1.getId().compareTo(o2.getId());
 			}
 		});
@@ -221,7 +231,10 @@ public class CatalogDaoHelper {
 		cat.setName(colModel.getName());
 		cat.setNullable(colModel.isNullable());
 		cat.setPrimaryKey(colModel.isPrimaryKey());
-		cat.setSize(colModel.getSize());
+		if(cat.getSize()!=null && !cat.getSize().isEmpty()) {
+			cat.setSize(colModel.getSize());
+		}
+		
 		cat.setType(colModel.getType());
 
 		return cat;

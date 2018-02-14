@@ -117,7 +117,7 @@ public class ColumnConfig {
 		if (styleName != null) {
 			((Widget) widget).addStyleName(styleName);
 		}
-
+		
 		widget.setValue(value);
 		return (Widget) widget;
 	}

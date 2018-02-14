@@ -723,7 +723,7 @@ public class GenericDocumentView extends ViewImpl implements GenericDocumentPres
 
 		// hide static fields
 		showDefaultFields(false);
-
+		
 		boolean readOnly = true;
 		if (formPanel != null) {
 			readOnly = formPanel.isReadOnly();
@@ -746,7 +746,7 @@ public class GenericDocumentView extends ViewImpl implements GenericDocumentPres
 		fldForm.removeStyleName("form-uneditable");
 		iDocStatus.removeAttribute("class");
 
-		if (validActions != null && !isDraft) {
+		if (validActions != null && !validActions.isEmpty() && !isDraft) {
 			if (validActions.contains(Actions.COMPLETE)) {
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);

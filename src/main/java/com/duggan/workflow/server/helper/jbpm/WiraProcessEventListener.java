@@ -22,7 +22,9 @@ import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.email.EmailUtil;
 import com.duggan.workflow.shared.model.Doc;
+import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
+import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.catalog.Catalog;
 import com.wira.commons.shared.models.HTUser;
 
@@ -130,6 +132,8 @@ public class WiraProcessEventListener implements ProcessEventListener{
 				doc.setCurrentTaskId(null);
 				doc.setCurrentTaskName(null);
 				doc.setTaskActualOwner(null);
+				((Document)doc).setStatus(DocStatus.COMPLETED);
+				doc.setProcessStatus(HTStatus.COMPLETED); //Completed
 				DocumentDaoHelper.createJson((Document)doc);
 			}catch (Exception e) {
 				System.err.println("WiraProcessEventListener.afterProcessCompleted [1] ###Could not update json for update, leaving inconsistent!- "+doc.getRefId()+" #### "+doc.getCaseNo()+": cause "+e.getMessage());

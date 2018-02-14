@@ -10,6 +10,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
@@ -80,6 +81,8 @@ public class AggregationGridRow extends RowWidget{
 			}
 		}
 	};
+
+	private int rowIndex;
 	
 	public Long getModelId() {
 		return modelId;
@@ -119,19 +122,24 @@ public class AggregationGridRow extends RowWidget{
 		
 		ArrayList<String> errors = new ArrayList<String>();
 		for(ColumnConfig config: configs){
-			if(config.isMandatory() && model.get(config.getKey())==null){
-				String error = "Column "+config.getDisplayName()+" is mandatory";
-				System.err.println(error);
-				errors.add(error);
+			if(config.isMandatory()) {
+				Object val = model.get(config.getKey());
+				if(val==null || val.toString().isEmpty()){
+					String error = "Row "+(rowIndex+1)+", Column "+config.getDisplayName()+" is mandatory";
+					errors.add(error);
+				}
 			}
 		}
 		
-		if(errors.isEmpty()){
-			return null;
-		}
-		
-		
 		return errors;
+	}
+
+	public void setRowIndex(int rowIndex) {
+		this.rowIndex = rowIndex;
+	}
+
+	public int getRowIndex() {
+		return rowIndex;
 	}
 
 }

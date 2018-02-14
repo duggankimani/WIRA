@@ -11,6 +11,7 @@ import com.duggan.workflow.client.ui.AppManager;
 import com.duggan.workflow.client.ui.OptionControl;
 import com.duggan.workflow.client.ui.admin.formbuilder.component.FieldWidget;
 import com.duggan.workflow.client.ui.admin.formbuilder.upload.ImportView;
+import com.duggan.workflow.client.ui.component.IssuesPanel;
 import com.duggan.workflow.client.ui.events.EditCatalogDataEvent;
 import com.duggan.workflow.client.ui.grid.AggregationGrid;
 import com.duggan.workflow.client.ui.grid.ColumnConfig;
@@ -91,6 +92,9 @@ public class CreateDataView extends Composite {
 
 	@UiField
 	HasClickHandlers aImport;
+	
+	@UiField
+	IssuesPanel issues;
 
 	public CreateDataView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -219,6 +223,7 @@ public class CreateDataView extends Composite {
 			ColumnConfig config = new ColumnConfig(c.getName(), c.getLabel(), c
 					.getType().getFieldType(), "", null ,
 					!c.isAutoIncrement());
+			config.setMandatory(!c.isNullable());
 			configs.add(config);
 		}
 
@@ -244,6 +249,22 @@ public class CreateDataView extends Composite {
 			throw new RuntimeException(e);
 		}
 		return lines;
+	}
+
+	public boolean isValid() {
+		issues.clear();
+		boolean isValid = true;
+		ArrayList<String> errors = grid.getErrors();
+		
+		if(!errors.isEmpty()) {
+			isValid = false;
+			for(String err: errors) {
+				issues.addError(err);
+			}
+			
+			issues.getElement().scrollIntoView();
+		}
+		return isValid;
 	}
 
 }

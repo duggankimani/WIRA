@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.ejb.HibernateEntityManager;
 import org.hibernate.impl.SessionImpl;
+import org.hibernate.type.BooleanType;
+import org.hibernate.type.DateType;
+import org.hibernate.type.DoubleType;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
+import org.hibernate.type.Type;
 
 import com.duggan.workflow.server.dao.model.CatalogColumnModel;
 import com.duggan.workflow.server.dao.model.CatalogModel;
@@ -199,7 +209,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 			alter.append(col.isAutoIncrement() ? " serial" : "");// POSTGRES
 		} else {
 			alter.append(" " + col.getType().name());
-			alter.append((col.getSize() == null || !col.getSize().isEmpty()) ? ""
+			alter.append((col.getSize() == null || col.getSize().isEmpty()) ? ""
 					: "(" + col.getSize() + ")");
 		}
 
@@ -247,9 +257,9 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		if(isChanged){
 			String nullableQuery = null;
 			if(nullable){
-				nullableQuery =  ALTER_TABLE+" ALTER COLUMN "+columnName+" SET NOT NULL";
+				nullableQuery= ALTER_TABLE+" ALTER COLUMN "+columnName+" DROP NOT NULL";
 			}else{
-				nullableQuery= ALTER_TABLE+" ALTER COLUMN "+columnName+" SET NULL";
+				nullableQuery =  ALTER_TABLE+" ALTER COLUMN "+columnName+" SET NOT NULL";
 			}
 			logger.debug("NULLABLE QUERY = "+nullableQuery);
 			em.createNativeQuery(nullableQuery).executeUpdate();
@@ -443,14 +453,17 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 				}
 			}
 
-			Query query = null;
+			//Use Hibernate session due to NULL handling issue in jpa - https://hibernate.atlassian.net/browse/HHH-9165
+			
+			Session session = ((SessionImpl)em.getDelegate());
+			SQLQuery query = null;
 
 			if (isUpdate) {
 				log.debug("Exec DML: " + updateBuffer.toString());
-				query = em.createNativeQuery(updateBuffer.toString());
+				query = session.createSQLQuery(updateBuffer.toString());
 			} else {
 				log.debug("Exec DML: " + insertBuffer.toString());
-				query = em.createNativeQuery(insertBuffer.toString());
+				query = session.createSQLQuery(insertBuffer.toString());
 			}
 
 			// Set Values
@@ -467,12 +480,9 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 						+ col.getType() + " = " + value);
 
 				// Hardcoded to handle hibernate null
-				if (value == null
-						&& col.getType().getFieldType().equals(DataType.DOUBLE)) {
-					query.setParameter(col.getName(), 0.0);
-				} else if (val != null && val.getDataType().isDate()) {
-					query.setParameter(col.getName(), value);
-				} else {
+				if (value == null || value.toString().trim().isEmpty()) {
+					setNull(query, col);
+				}else {
 					query.setParameter(col.getName(), value);
 				}
 
@@ -481,6 +491,50 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 
 		}
 
+	}
+
+	@SuppressWarnings("null")
+	private void setNull(SQLQuery query, CatalogColumn column) {
+		DBType colType = column.getType();
+
+		switch (colType) {
+		case BIGINT:
+		case DECIMAL:
+		case DOUBLE:
+		case FLOAT:
+		case REAL:
+			Double val = null;
+			query.setParameter(column.getName(), null, new DoubleType());
+			//query.setDouble(column.getName(), val);
+			break;
+		case INTEGER:
+		case SMALLINT:
+		case TINYINT:
+			Integer intVal = null;
+			//query.setInteger(column.getName(),intVal);
+			query.setParameter(column.getName(), null, new IntegerType());
+			break;
+		case CHAR:
+		case LONGVARCHAR:
+		case TEXT:
+		case VARCHAR:
+			String strVal = null;
+			//query.setString(column.getName(), strVal);
+			query.setParameter(column.getName(), null, new StringType());
+			break;
+		case BOOLEAN:
+			Boolean boolVal = null;
+			//query.setBoolean(column.getName(), boolVal);
+			query.setParameter(column.getName(), null, new BooleanType());
+			break;
+		case DATE:
+		case DATETIME:
+		case TIME:
+			Date doubleVal = null;
+			//query.setDate(column.getName(), doubleVal);
+			query.setParameter(column.getName(), null, new DateType());
+			break;
+		}
 	}
 
 	public int getCount(String tableName) {

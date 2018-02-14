@@ -71,7 +71,9 @@ public class AggregationGrid extends Composite {
 	}
 	
 	public void addRowData(DataModel data){
+		
 		AggregationGridRow row = new AggregationGridRow(this, data, columnConfigs);	
+		row.setRowIndex(tblView.getRowCount());
 		tblView.addRow(row);
 	}
 
@@ -248,17 +250,19 @@ public class AggregationGrid extends Composite {
 	
 	public ArrayList<String> getErrors(){
 		int rowCount = tblView.getRowCount();
+		ArrayList<String> err  = new ArrayList<String>();
+		
 		for(int i=0; i<rowCount; i++){
 			Widget rowWidget = tblView.getRow(i);
 			AggregationGridRow gridRow = (AggregationGridRow)rowWidget;
-			
-			ArrayList<String> err = gridRow.getErrors(); 
-			if(err!=null){
-				return err;
-			}
+			err.addAll(gridRow.getErrors());
 		}
 		
-		return null;
+		return err;
+	}
+
+	public boolean isValid() {
+		return getErrors().isEmpty();
 	}
 	
 }
