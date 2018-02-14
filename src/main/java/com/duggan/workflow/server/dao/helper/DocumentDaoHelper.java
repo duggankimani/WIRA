@@ -625,7 +625,13 @@ public class DocumentDaoHelper {
 		
 		List<Document> documents = new ArrayList<Document>();
 		for(DocumentModelJson doc:docs){
-			documents.add(doc.getDocument());
+			Document document = doc.getDocument();
+			if(document!=null) {
+				document.setCreated(doc.getCreated());
+				document.setDateSubmitted(doc.getDocumentDate());
+				document.setStatus(doc.getStatus());
+				documents.add(document);
+			}
 		}
 		
 		return documents; 

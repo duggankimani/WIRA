@@ -75,20 +75,6 @@ public class InboxTaskView extends AbstractTaskView implements IInboxView {
 	public void setTaskType(TaskType currentTaskType) {
 		clearAllSelections();
 		super.setTaskType(currentTaskType);
-		switch (currentTaskType) {
-		case MINE:
-			mine.setValue(true);
-			break;
-		case QUEUED:
-			queued.setValue(true);
-			break;
-		case ALL:
-			all.setValue(true);
-			break;
-		default:
-			mine.setValue(true);
-			break;
-		}
 	}
 
 	private void clearAllSelections() {
@@ -136,20 +122,20 @@ public class InboxTaskView extends AbstractTaskView implements IInboxView {
 	public void bindAlerts(HashMap<TaskType, Integer> alerts) {
 		super.bindAlerts(alerts);
 
-		for (TaskType type : alerts.keySet()) {
-			Integer count = alerts.get(type);
-			String title = type.getTitle()+ "("+(count==null? 0: count)+")";
-			switch (type) {
-			case MINE:
-				mine.setText(title);
-				break;
-			case QUEUED:
-				queued.setText(title);
-				break;
-			case ALL:
-				all.setText(title);
-				break;
-			}
-		}
+//		for (TaskType type : alerts.keySet()) {
+//			Integer count = alerts.get(type);
+//			String title = type.getTitle()+ "("+(count==null? 0: count)+")";
+//			switch (type) {
+//			case MINE:
+//				mine.setText(title);
+//				break;
+//			case QUEUED:
+//				queued.setText(title);
+//				break;
+//			case ALL:
+//				all.setText(title);
+//				break;
+//			}
+//		}
 	}
 }

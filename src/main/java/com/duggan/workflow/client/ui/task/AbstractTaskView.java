@@ -400,8 +400,12 @@ public class AbstractTaskView extends ViewImpl implements
 		int i = tblTasks.getRowCount();
 
 		for (Doc doc : tasks) {
+			if(doc==null) {
+				continue;
+			}
 			int j = 0;
 			//Window.alert(">>>>> "+doc.getValues());
+			
 			
 			Date dateToUse = doc.getSortDate();
 			InlineLabel spnTime = new InlineLabel();
@@ -439,7 +443,7 @@ public class AbstractTaskView extends ViewImpl implements
 				isCompleted = !(((Document) doc).getStatus() == DocStatus.DRAFTED);
 			}
 
-			spnDeadlines = setDeadlines(DateUtils.addDays(doc.getCreated(), 1),
+			spnDeadlines = setDeadlines(DateUtils.addDays(doc.getCreated()==null? doc.getSortDate(): doc.getCreated(), 1),
 					isCompleted);
 
 			if (doc instanceof HTSummary) {

@@ -43,7 +43,7 @@
 
 									<div class="accordion-group">
 										<div class="accordion-heading">
-											<a id="inbox" class="accordion-toggle" href="#/inbox/all">
+											<a id="inbox" class="accordion-toggle" href="#/inbox">
 												<i class="icon-inbox"></i>
 												<span>Inbox</span>
 												<span class="selected"></span>

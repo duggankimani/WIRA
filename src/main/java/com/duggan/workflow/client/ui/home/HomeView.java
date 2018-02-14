@@ -224,8 +224,6 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@Override
 	public void bindAlerts(HashMap<TaskType, Integer> alerts, String processRefId) {
 		this.processRefId = processRefId;
-		alerts.put(TaskType.INBOX, getValue(alerts.get(TaskType.MINE)
-				+ getValue(alerts.get(TaskType.QUEUED))));
 		for (TaskType type : alerts.keySet()) {
 			String text = (type.getTitle() + " (" + alerts.get(type) + ")");
 			tabPanel.changeTab(type, text);
@@ -239,20 +237,9 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 		String href = null;
 
 		switch (type) {
-		case ALL:
-			href="#/inbox/all";
-			break;
-		case MINE:
-//			href="#/inbox/mine";
-			href="#/inbox/all";
-			break;
-		case QUEUED:
-//			href="#/inbox/queued";
-			href="#/inbox/all";
-			break;
 		case INBOX:
 			//href="#collapseOne";
-			href="#/inbox/all";
+			href="#/inbox";
 			break;
 		case COMPLETED:
 			href="#/participated";

@@ -244,20 +244,7 @@ public class JBPMHelper implements Closeable {
 				.setParameter("processId", processId).setParameter("status", getStatusesForTaskType(TaskType.INBOX))
 				.getSingleResult();
 		counts.put(TaskType.INBOX, count.intValue());
-		counts.put(TaskType.ALL, count.intValue());
-
-		Number mine = (Number) DB.getEntityManager().createNamedQuery("TasksOwnedCount").setParameter("userId", userId)
-				.setParameter("language", "en-UK").setParameter("processId", processId)
-				.setParameter("status", getStatusesForTaskType(TaskType.MINE)).getSingleResult();
-		counts.put(TaskType.MINE, mine.intValue());
-
-		Number queued = (Number) DB.getEntityManager()
-				.createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups").setParameter("userId", userId)
-				.setParameter("groupIds", groupIds).setParameter("language", "en-UK")
-				.setParameter("processId", processId).setParameter("status", getStatusesForTaskType(TaskType.QUEUED))
-				.getSingleResult();
-		counts.put(TaskType.QUEUED, queued.intValue());
-
+		
 		/**
 		 * If John & James share the Role HOD_DEV John Claims, Starts and completes a
 		 * task, should that task be presented to James as one of his completed tasks?
@@ -286,19 +273,7 @@ public class JBPMHelper implements Closeable {
 		List<Status> statuses = new ArrayList<>();
 
 		switch (type) {
-		case MINE:
-			statuses = Arrays.asList(Status.InProgress,
-					// Status.Error,
-					// Status.Exited,
-					// Status.Failed,
-					// Status.Obsolete,
-					Status.Reserved);
-			break;
-		case QUEUED:
-			statuses = Arrays.asList(Status.Created, Status.Ready);
-			break;
 		case INBOX:
-		case ALL:
 			statuses = Arrays.asList(Status.Created, Status.InProgress,
 					// Status.Error,
 					// Status.Exited,
@@ -434,29 +409,10 @@ public class JBPMHelper implements Closeable {
 
 			break;
 		case INBOX:
-		case MINE:
-			// ts = sessionManager.getTaskClient().getTasksOwned(
-			// userId,getStatusesForTaskType(type),language);
-
 			ts = DB.getDocumentDao().getTasksOwnedPerProcess(processId, userId, getStatusesForTaskType(type), language,
 					offset, length);
 			break;
-		case QUEUED:
-			// ts = sessionManager.getTaskClient()
-			// .getTasksAssignedAsPotentialOwnerByStatus(userId,
-			// getStatusesForTaskType(type), language);
 
-			ts = DB.getDocumentDao().getTasksAssignedAsPotentialOwnerByStatusAndProcessId(processId, userId,
-					getStatusesForTaskType(type), language, offset, length);
-			break;
-		case ALL:
-			// ts = sessionManager.getTaskClient()
-			// .getTasksAssignedAsPotentialOwnerByStatus(userId,
-			// getStatusesForTaskType(type), "en-UK");
-
-			ts = DB.getDocumentDao().getTasksAssignedAsPotentialOwnerByStatusAndProcessId(processId, userId,
-					getStatusesForTaskType(type), language, offset, length);
-			break;
 		case SUSPENDED:
 			// ts = sessionManager.getTaskClient().getTasksOwned(
 			// userId,

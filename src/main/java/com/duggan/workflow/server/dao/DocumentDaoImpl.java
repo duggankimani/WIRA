@@ -255,7 +255,8 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		Map<String, Object> params = new HashMap<>();
 
 		StringBuffer query = new StringBuffer("select "
-				+ "new com.duggan.workflow.server.dao.model.DocumentModelJson(document, data) "
+				+ "new com.duggan.workflow.server.dao.model.DocumentModelJson(document, data,"
+				+ "created, documentDate, updated, status, priority) "
 				+ "FROM DocumentModelJson d where ");
 
 		boolean isFirst = true;

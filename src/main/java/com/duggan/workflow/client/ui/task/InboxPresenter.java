@@ -30,7 +30,7 @@ public class InboxPresenter
 	}
 
 	@ProxyCodeSplit
-	@NameToken({ NameTokens.inbox, NameTokens.inboxwithparams,NameTokens.inboxwithparamsPerProcess})
+	@NameToken({ NameTokens.inbox,NameTokens.inboxwithparamsPerProcess})
 	@UseGatekeeper(LoginGateKeeper.class)
 	public interface InboxTaskProxy extends
 			TabContentProxyPlace<InboxPresenter> {
@@ -59,11 +59,6 @@ public class InboxPresenter
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		currentTaskType = TaskType.INBOX;
-		String filter = request.getParameter("filter", "all");
-		if (filter != null) {
-			currentTaskType = TaskType.valueOf(filter.toUpperCase());
-		}
-		getView().setTaskType(currentTaskType);
 		super.prepareFromRequest(request);
 	}
 

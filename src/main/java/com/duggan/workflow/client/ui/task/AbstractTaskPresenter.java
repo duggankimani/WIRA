@@ -49,6 +49,7 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -264,6 +265,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		}
 
 		GetTaskList request = new GetTaskList(processRefId, userId, currentTaskType);
+//		Window.alert("GetTaskList -> "+currentTaskType);
 		request.setOffset(CURPOS);
 		request.setLength(PAGE_SIZE);
 		request.setProcessInstanceId(processInstanceId);

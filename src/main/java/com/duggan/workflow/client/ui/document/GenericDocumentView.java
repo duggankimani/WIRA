@@ -746,7 +746,7 @@ public class GenericDocumentView extends ViewImpl implements GenericDocumentPres
 		fldForm.removeStyleName("form-uneditable");
 		iDocStatus.removeAttribute("class");
 
-		if (validActions != null && !validActions.isEmpty() && !isDraft) {
+		if (validActions != null && !isDraft) {
 			if (validActions.contains(Actions.COMPLETE)) {
 				formPanel.setReadOnly(false || isFormReadOnly);
 				showNavigation(true);
@@ -772,11 +772,17 @@ public class GenericDocumentView extends ViewImpl implements GenericDocumentPres
 					iDocStatus.setInnerText("Completed");
 					iDocStatus.addClassName("icon-ok-sign doc-success");
 					fldForm.addStyleName("form-uneditable");
-				}else {
+				}else if(doc.getProcessStatus()==HTStatus.EXITED){
 					divRibbon.addClassName("ribbon-error");
 					spnRibbon.setInnerText("Exited");
 					iDocStatus.setInnerText("Exited");
 					iDocStatus.addClassName("doc-exited");
+					fldForm.addStyleName("form-uneditable");
+				}else{
+					divRibbon.addClassName("ribbon-error");
+					spnRibbon.setInnerText(doc.getProcessStatus().getDisplayName());
+					iDocStatus.setInnerText(doc.getProcessStatus().getDisplayName());
+					iDocStatus.addClassName("doc-primary");
 					fldForm.addStyleName("form-uneditable");
 				}
 				formPanel.setReadOnly(true);

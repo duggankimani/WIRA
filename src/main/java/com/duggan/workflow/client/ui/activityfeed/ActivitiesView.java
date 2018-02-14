@@ -502,14 +502,49 @@ public class ActivitiesView extends ViewImpl implements
 			}
 
 			ActionLink link = new ActionLink(doc);
-			String href ="#/search/" + doc.getRefId();
+			String docRefId = doc.getRefId();
+			Long taskId = null;
+			String processRefId = null;
+			String baseURL = "#";
 			if(doc instanceof HTSummary){
-				href = href+"/"+((HTSummary)doc).getId();
+				taskId = ((HTSummary)doc).getId();
+				HTStatus status = ((HTSummary)doc).getStatus();
+				switch (status) {
+				case INPROGRESS:
+					baseURL = baseURL+"/inbox";
+					break;
+				case COMPLETED:
+					baseURL = baseURL+"/participated";
+					break;
+				default:
+					baseURL = baseURL+"/search";
+					break;
+				}
+			}else {
+				DocStatus docStatus = ((Document)doc).getStatus();
+				switch (docStatus) {
+				case DRAFTED:
+					baseURL = baseURL+"/drafts";
+					break;
+				default:
+					baseURL = baseURL+"/participated";
+					break;
+				}
 			}
+			
 			if(process!=null){
-				href = href.concat("?processRefId="+process.getRefId());
+				processRefId = process.getRefId();
+				baseURL = baseURL+"/"+processRefId;
 			}
-			link.setHref(href);
+			
+			
+			if(taskId!=null) {
+				baseURL = baseURL+"?tid="+taskId;
+			}else {
+				baseURL = baseURL+"?docRefId="+doc.getRefId();
+			}
+			
+			link.setHref(baseURL);
 			if (doc.getCaseNo() != null) {
 				link.setText("#" + (doc.getCaseNo().replaceAll("Case-", "")));
 			}
@@ -619,9 +654,6 @@ public class ActivitiesView extends ViewImpl implements
 
 	@Override
 	public void bindTaskCounts(HashMap<TaskType, Integer> counts) {
-		counts.put(TaskType.INBOX, getValue(counts.get(TaskType.MINE)
-				+ getValue(counts.get(TaskType.QUEUED))));
-
 		int total = 0;
 		for (TaskType type : counts.keySet()) {
 			Integer count = counts.get(type);

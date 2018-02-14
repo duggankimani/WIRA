@@ -53,16 +53,28 @@ public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList,
 		DocStatus status = null;
 
 		if (action.getTaskId() != null) {
+			//Task ID exists
 			HTSummary summary = JBPMHelper.get().getTaskSummary(action.getTaskId());
 			summaries.add(summary);
-		} else {
+		}else if(action.getDocRefId()!=null) {
+			summaries.add(DocumentDaoHelper.getDocJson(action.getDocRefId(), true));
+		}else {
 			switch (type) {
 			case DRAFT:
 				status = DocStatus.DRAFTED;
-				summaries = DocumentDaoHelper.getAllDocumentsJson(processId, action.getOffset(), action.getLength(),
-						isLoadValues, isLoadLines, status);
+				if(action.getFilter()!=null) {
+					summaries.addAll(DocumentDaoHelper.searchJson(processId, userId, action.getFilter()));
+				}else {
+					summaries = DocumentDaoHelper.getAllDocumentsJson(processId, action.getOffset(), action.getLength(),
+					isLoadValues, isLoadLines, status);
+				}
+				
+				break;
+			case INBOX:
+				summaries.addAll(getPendingApprovals(processId, userId, type, action.getOffset(), action.getLength()));
 				break;
 			case PARTICIPATED:
+				//Initial Request is not a Task	
 				summaries = DocumentDaoHelper.getAllDocumentsJson(processId, action.getOffset(), action.getLength(),
 						isLoadValues, isLoadLines, DocStatus.INPROGRESS, DocStatus.REJECTED, DocStatus.APPROVED,
 						DocStatus.COMPLETED);// Current users sent requests
@@ -70,6 +82,7 @@ public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList,
 				break;
 			case SEARCH:
 				if (action.getFilter() != null) {
+					
 					summaries.addAll(DocumentDaoHelper.searchJson(processId, userId, action.getFilter()));
 					// summary.addAll(JBPMHelper.get().searchTasks(processId,userId,
 					// action.getFilter()));
@@ -105,7 +118,7 @@ public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList,
 				break;
 
 			default:
-				// Tasks loaded here
+				// INBOX
 				summaries = getPendingApprovals(processId, userId, type, action.getOffset(), action.getLength());
 				break;
 			}

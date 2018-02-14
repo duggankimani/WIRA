@@ -71,12 +71,18 @@ public class DocumentModelJson extends PO{
 		
 	}
 	
-	public DocumentModelJson(Document document, DocValues data){
+	public DocumentModelJson(Document document, DocValues data, Date created, Date documentDate, Date updated, DocStatus status, Integer priority){
+		this(document);
+		setDocumentDate(documentDate);
+		setCreated(created);
+		setUpdated(updated);
+		setStatus(status);
+		setPriority(priority);
 		document.setValues(data.getValuesMap());
 	}
 	
 	public DocumentModelJson(Document document){
-		setDocument(document);
+		this.document = document;
 	}
 
 	public Long getId() {

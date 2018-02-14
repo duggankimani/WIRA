@@ -43,12 +43,12 @@ public class NameTokens {
 	public static final String participated = "/participated";
 	public static final String participatedPerProcess = "/participated/{processRefId}";
 	public static final String inbox = "/inbox";
-	public static final String inboxwithparams = "/inbox/{filter}";
-	public static final String inboxwithparamsPerProcess = "/inbox/{filter}/{processRefId}";
+	public static final String inboxwithparams = "/inbox";
+	public static final String inboxwithparamsPerProcess = "/inbox/{processRefId}";
 	public static final String suspended = "/suspended";
 	public static final String suspendedPerProcess = "/suspended/{processRefId}";
-	public static final String search = "/search/{docRefId}";
-	public static final String searchTask = "/search/{docRefId}/{taskId}";
+	public static final String search = "/search";
+	public static final String searchTask = "/search/{processRefId}";
 	public static final String outputdocs = "/outputdocs";
 	public static final String triggers = "/triggers";
 	public static final String unassigned = "/unassigned";
