@@ -2,6 +2,7 @@ package com.duggan.workflow.shared.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -15,6 +16,10 @@ public class SearchFilter implements Serializable,IsSerializable {
 	private Integer priority;
 	private Boolean hasAttachment;
 	private DocumentType DocumentType;
+	private String userId;
+	private List<String> groupIds;
+	private String processId;
+	private List<String> taskStatuses;
 
 	public SearchFilter() {
 	}
@@ -92,5 +97,37 @@ public class SearchFilter implements Serializable,IsSerializable {
 			return false;
 		return  true;
 		
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
+
+	public List<String> getGroupIds() {
+		return groupIds;
+	}
+
+	public void setGroupIds(List<String> groupIds) {
+		this.groupIds = groupIds;
+	}
+
+	public List<String> getTaskStatuses() {
+		return taskStatuses;
+	}
+
+	public void setTaskStatuses(List<String> taskStatuses) {
+		this.taskStatuses = taskStatuses;
 	}
 }

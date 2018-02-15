@@ -235,308 +235,137 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return new ArrayList<DocumentModel>();
 	}
 	
-	public List<DocumentModelJson> searchJson(String processId,String userId, SearchFilter filter) {
-
-		String subject = filter.getSubject();
-		Date startDate = filter.getStartDate();
-		Date endDate = filter.getEndDate();
-		Integer priority = filter.getPriority();
-		String phrase = filter.getPhrase();
-		DocumentType docTypeIn = filter.getDocType();
-
-		ADDocType docType = null;
-		if (docTypeIn != null) {
-//			docType = getDocumentTypeById(docTypeIn.getId());
-			docType = findByRefId(docTypeIn.getRefId(), ADDocType.class);
-		}
-
-		Boolean hasAttachment = filter.hasAttachment();
-
-		Map<String, Object> params = new HashMap<>();
-
-		StringBuffer query = new StringBuffer("select "
+	public List<DocumentModelJson> searchJson(SearchFilter filter) {
+		StringBuilder query = new StringBuilder("select "
 				+ "new com.duggan.workflow.server.dao.model.DocumentModelJson(document, data,"
 				+ "created, documentDate, updated, status, priority) "
-				+ "FROM DocumentModelJson d where ");
+				+ "FROM DocumentModelJson d where d.isActive=1 ");
 
-		boolean isFirst = true;
-		if (subject != null) {
-			isFirst = false;
-			query.append("(Lower(caseNo) like :caseNo");
-			params.put("caseNo", "%" + subject.toLowerCase() + "%");
-
-			if (phrase == null) {
-				query.append(" or Lower(description) like :phrase");
-				params.put("phrase", "%" + subject.toLowerCase() + "%");
-			}
-			query.append(")");
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (startDate != null && endDate != null) {
-			isFirst = false;
-			query.append("created>:startDate " + "and " + "created<:endDate");
-
-			params.put("startDate", startDate);
-			params.put("endDate", endDate);
-		} else if (startDate != null) {
-			isFirst = false;
-			// mysql functions - They wont work on postgres
-			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=:startDate");
-			params.put("startDate", startDate);
-
-		} else if (endDate != null) {
-			isFirst = false;
-			// mysql functions - They wont work on postgres
-			query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=:endDate");
-			params.put("endDate", endDate);
-
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (priority != null) {
-			isFirst = false;
-			query.append("priority=:priority");
-			params.put("priority", priority);
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (phrase != null) {
-			isFirst = false;
-			query.append("Lower(description) like :phrase");
-			params.put("phrase", "%" + phrase.toLowerCase() + "%");
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (docType != null) {
-			isFirst = false;
-			query.append("type=:docType");
-			params.put("docType", docType);
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
+		Map<String, Object> params = new HashMap<>();
+		addWhereClause(query, filter, params);
 		{
-			isFirst = false;
-			query.append("createdBy=:createdBy");
-			// params.put("createdBy",
-			// SessionHelper.getCurrentUser().getUserId());
-			params.put("createdBy", userId);
+			query.append(" and d.createdBy=:createdBy");
+			params.put("createdBy", filter.getUserId());
 		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		{
-			isFirst = false;
-			query.append("isActive=:isActive");
-			// params.put("createdBy",
-			// SessionHelper.getCurrentUser().getUserId());
-			params.put("isActive", 1);
-		}
-
-		if (isFirst) {
-			// we ended up with an and at the end
-			query = new StringBuffer(query.subSequence(0, query.length() - 5)
-					.toString());
-		}
-
+		
 		Query hquery = em.createQuery(query.toString());
 		Set<String> keys = params.keySet();
-
+		
 		for (String key : keys) {
 			hquery.setParameter(key, params.get(key));
 		}
 
-		List list = hquery.getResultList();
+		List<DocumentModelJson> list = hquery.getResultList();
 
 		return list;
 	}
 
-	public List<TaskSummary> searchTasks(String processId,String userId, SearchFilter filter) {
-
-		String subject = filter.getSubject();
+	private void addWhereClause(StringBuilder query, SearchFilter filter, Map<String, Object> params) {
+		String caseNo = filter.getSubject();
 		Date startDate = filter.getStartDate();
 		Date endDate = filter.getEndDate();
 		Integer priority = filter.getPriority();
 		String phrase = filter.getPhrase();
 		DocumentType docTypeIn = filter.getDocType();
+		String processId = filter.getProcessId();
+		String userId = filter.getUserId();
+		List<String> groupIds = filter.getGroupIds();
+		Boolean hasAttachment = filter.hasAttachment();
 
 		ADDocType docType = null;
 		if (docTypeIn != null) {
-//			docType = getDocumentTypeById(docTypeIn.getId());
 			docType = findByRefId(docTypeIn.getRefId(), ADDocType.class);
 		}
 
+		if (caseNo != null) {
+			query.append(" and (Lower(d.caseNo) like :caseNo or Lower(d.description) like :caseNo)");
+			params.put("caseNo", "%" + caseNo.toLowerCase() + "%");
+		}
+		
+		if (startDate != null) {
+			query.append(" and d.created>:startDate");
+			params.put("startDate", startDate);
+
+		} 
+		
+		if (endDate != null) {
+			query.append(" and d.created<:endDate");
+			params.put("endDate", endDate);
+		}
+		
+		if (priority != null) {
+			query.append(" and d.priority=:priority");
+			params.put("priority", priority);
+		}
+
+		if (docType != null) {
+			query.append(" and d.type=:docType");
+			params.put("docType", docType);
+		}
+		
+		if(processId !=null){
+			query.append(" and (:processId='' or d.processId=:processId)");
+			params.put("processId", processId);
+		}
+
+	}
+
+	public List<TaskSummary> searchTasks(SearchFilter filter) {
+
 		Boolean hasAttachment = filter.hasAttachment();
 
+		String userId = filter.getUserId();
 		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
 				userId);
-		String groupsIds = "";
+		
+		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
-			groupsIds = groupsIds.concat(group.getName() + ",");
+			groupIds.add(group.getName());
 		}
+		filter.setGroupIds(groupIds);
+		
+		Map<String, Object> params = new HashMap<>();
 
-		if (groupsIds.isEmpty()) {
-			return new ArrayList<>();
-		}
-		groupsIds = groupsIds.substring(0, groupsIds.length() - 1);
-
-		List<Object> params = new ArrayList<>();
-
-		StringBuffer query = new StringBuffer(
+		StringBuilder query = new StringBuilder(
 				"select t.id "
-						+
-						// "d.id documentId "+
-						"from localdocument d "
+						+ "from documentjson d "
 						+ "inner join Task t on (t.processInstanceId=d.processInstanceId) "
 						+ "left join OrganizationalEntity owner on (owner.id= t.actualOwner_id and owner.DTYPE='User') "
 						+ "left join PeopleAssignments_PotOwners potowners on (potowners.task_id=t.id)  "
 						+ "where "
 						+ "t.archived = 0 and "
-						+ "(owner.id = ? "
+						+ "(owner.id = :userId "
 						+ "or "
-						+ "( potowners.entity_id = ? or potowners.entity_id in (?) )) "
-						+ "and (:processId='' or d.processId=:processId)"
-						+ "and " + "t.expirationTime is null ");
-
-		params.add(userId);
-		params.add(userId);
-		params.add(groupsIds);
-		params.add(processId==null? "": processId);
-
-		boolean isFirst = false;
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (subject != null) {
-			isFirst = false;
-			/**
-			 * TODO:Necessary Table index has to be added; otherwise full table
-			 * scan will be used
-			 */
-			query.append("(LOWER(d.subject) like ?");
-			params.add("%" + subject.toLowerCase() + "%");
-
-			if (phrase == null) {
-				query.append(" or Lower(d.description) like ?");
-				params.add("%" + subject.toLowerCase() + "%");
+						+ "( potowners.entity_id = :userId or potowners.entity_id in (:groupIds) )) "
+						+ "and t.expirationTime is null ");
+		
+		
+		addWhereClause(query, filter, params);
+		if(groupIds!=null && !groupIds.isEmpty()){
+			String groupsIds = "";
+			for(String name: groupIds) {
+				groupsIds = groupsIds.concat(name + ",");
 			}
-			query.append(")");
+			groupsIds = groupsIds.substring(0, groupsIds.length() - 1);
+			params.put("groupIds", groupIds);
 		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
+		
+		if(filter.getTaskStatuses()!=null && !filter.getTaskStatuses().isEmpty()) {
+			String values = "";
+			for(String status: filter.getTaskStatuses()) {
+				values = values+status+",";
+			}
+			query.append(" and t.status in (:taskStatuses)");
+			params.put("taskStatuses", values.substring(0, values.length()-1));
 		}
-
-		if (startDate != null && endDate != null) {
-			isFirst = false;
-			query.append("t.createdOn>? " + "and " + "t.createdOn<?");
-
-			params.add(startDate);
-			params.add(endDate);
-		} else if (startDate != null) {
-			isFirst = false;
-			/**
-			 * TODO:This needs to be changed - It will force full table scan --
-			 * further these functions only work on Mysql/ Fail on postgres
-			 */
-			// query.append(" ?<=created and (? + interval '1 day')>created ");
-			// query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
-
-			// params.add(startDate);
-			// params.add(startDate);
-
-		} else if (endDate != null) {
-			isFirst = false;
-			/**
-			 * TODO:This needs to be changed - It will force full table scan
-			 */
-			// same day
-			query.append(" ?>=created and (? + interval '1 day')>created ");
-			// query.append("STR_TO_DATE(DATE_FORMAT(created, '%d/%m/%y'), '%d/%m/%y')=?");
-
-			// params.add(endDate);
-			// params.add(endDate);
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (priority != null) {
-			isFirst = false;
-			query.append("d.priority=?");
-			params.add(priority);
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (phrase != null) {
-			isFirst = false;
-			query.append("Lower(d.description) like ?");
-			params.add("%" + phrase.toLowerCase() + "%");
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (docType != null) {
-			isFirst = false;
-			query.append("d.docType=?");
-			params.add(docType);
-		}
-
-		if (!isFirst) {
-			query.append(" AND ");
-			isFirst = true;// so that we dont add another AND
-		}
-
-		if (isFirst) {
-			// we ended up with an "and" at the end
-			query = new StringBuffer(query.subSequence(0, query.length() - 5)
-					.toString());
-		}
-
+		
+		//statuses?
 		Query hquery = em.createNativeQuery(query.toString());
-
-		for (int i = 0; i < params.size(); i++) {
-			hquery.setParameter(i + 1, params.get(i));
+		for(String key: params.keySet()) {
+			params.put(key, params.get(key));
 		}
 
 		List<BigInteger> b_ids = hquery.getResultList();
-
 		List<Long> ids = new ArrayList<>();
 
 		for (BigInteger b : b_ids) {
@@ -548,41 +377,6 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		}
 
 		return searchTasks(ids);
-
-		// String queryIds = "select t.id taskId " +
-		// "d.id as documentId " +
-		// "from localdocument d " +
-		// "inner join Task t "+
-		// "on t.processInstanceId=d.processInstanceId " +
-		// "left join OrganizationalEntity owner " +
-		// "on (owner.id= t.actualOwner_id and owner.DTYPE='User') "+
-		// "left join PeopleAssignments_PotOwners potowners " +
-		// "on (potowners.taskid=t.id) "+
-		// "where " +
-		// "t.archived = 0 and "+
-		// "(owner.id = ? "+
-		// " or  "+
-		// "( potowners.entity_id = ? or potowners.entity_id in (?) ) "+
-		// ") "+
-		//
-		// "and "+
-		//
-		// "( "+
-		// "name.language = :language "+
-		// "or t.names.size = 0 "+
-		// ") and "+
-		//
-		// "( "+
-		// " subject.language = :language "+
-		// " or t.subjects.size = 0 "+
-		// " ) and "+
-		//
-		// "( "+
-		// "description.language = :language "+
-		// "or t.descriptions.size = 0 "+
-		// ")and  "+
-		// "t.taskData.expirationTime is null ";
-
 	}
 
 	public List<TaskSummary> searchTasks(List<Long> ids) {
@@ -600,9 +394,8 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				+ "left join t.subjects as subject "
 				+ "left join t.descriptions as description "
 				+ "left join t.names as name, "
-				+ "OrganizationalEntity potentialOwners " + "where " +
-				// "t.processInstanceId=d.processInstanceId "+
-				"t.id in (:taskIds) ";
+				+ "OrganizationalEntity potentialOwners where "
+				+ "t.id in (:taskIds) ";
 
 		Query hquery = em.createQuery(query).setParameter("taskIds", ids);
 

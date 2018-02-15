@@ -269,7 +269,6 @@ public class JBPMHelper implements Closeable {
 
 	public List<Status> getStatusesForTaskType(TaskType type) {
 
-		Task t;
 		List<Status> statuses = new ArrayList<>();
 
 		switch (type) {
@@ -333,7 +332,9 @@ public class JBPMHelper implements Closeable {
 	}
 
 	public List<HTSummary> searchTasks(String processId, String userId, SearchFilter filter) {
-		List<TaskSummary> tasks = DB.getDocumentDao().searchTasks(processId, userId, filter);
+		filter.setProcessId(processId);
+		filter.setUserId(userId);
+		List<TaskSummary> tasks = DB.getDocumentDao().searchTasks(filter);
 
 		return translateSummaries(tasks);
 	}

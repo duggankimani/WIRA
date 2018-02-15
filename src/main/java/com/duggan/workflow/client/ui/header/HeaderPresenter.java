@@ -174,7 +174,7 @@ public class HeaderPresenter extends
 			public void onKeyUp(KeyUpEvent event) {
 				String txt = getView().getSearchField().getValue().trim();
 
-				if (!txt.equals(searchTerm)
+				if ((txt==null && searchTerm!=null) || !txt.equals(searchTerm)
 						|| event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					searchTerm = txt;
 					timer.cancel();

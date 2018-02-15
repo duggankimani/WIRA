@@ -24,7 +24,6 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 		this.processRefId = processRefId;
 		this.userId = userId;
 		this.type = type;
-		
 	}
 
 	public GetTaskList(String processRefId,String userId, SearchFilter filter) {

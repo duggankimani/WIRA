@@ -206,7 +206,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	protected void search() {
 		timer.cancel();
-		if (searchTerm.isEmpty()) {
+		if (searchTerm==null || searchTerm.isEmpty()) {
 			loadTasks();
 			return;
 		}
@@ -454,14 +454,9 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void onSearch(SearchEvent event) {
 		if (this.isVisible()) {
 			CURPOS = 0;
-
 			SearchFilter filter = event.getFilter();
-			searchTerm = filter.getPhrase().trim();
-			if (searchTerm == null || searchTerm.isEmpty()) {
-				loadTasks();
-				return;
-			}
-			search(filter);
+			searchTerm = filter.getPhrase()==null? null : filter.getPhrase().trim();
+			search();
 		}
 	}
 

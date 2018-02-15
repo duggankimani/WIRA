@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
+import org.jbpm.task.query.TaskSummary;
 
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.DocumentDaoImpl;
@@ -36,6 +37,7 @@ import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
+import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.SearchFilter;
@@ -585,18 +587,6 @@ public class DocumentDaoHelper {
 		// counts.put(TaskType.FLAGGED, dao.count(DocStatus.));
 	}
 
-	public static List<Document> search(String subject) {
-		DocumentDaoImpl dao = DB.getDocumentDao();
-		List<DocumentModel> models = dao.search(subject);
-
-		List<Document> docs = new ArrayList<>();
-		for (DocumentModel doc : models) {
-			docs.add(getDoc(doc));
-		}
-
-		return docs;
-	}
-
 	public static Long getProcessInstanceIdByDocumentId(Long documentId) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 
@@ -608,20 +598,12 @@ public class DocumentDaoHelper {
 
 		return dao.getProcessInstanceIdByDocRefId(docRefId);
 	}
-
-	public static List<Document> search(String processId,String userId, SearchFilter filter) {
-		DocumentDaoImpl dao = DB.getDocumentDao();
-		List<DocumentModel> models = dao.search(processId,userId, filter);
-		List<Document> docs = new ArrayList<>();
-		for (DocumentModel doc : models) {
-			docs.add(getDoc(doc));
-		}
-
-		return docs;
-	}
 	
 	public static List<Document> searchJson(String processId,String userId, SearchFilter filter) {
-		List<DocumentModelJson> docs = DB.getDocumentDao().searchJson(processId, userId, filter);
+		filter.setProcessId(processId);
+		filter.setUserId(userId);
+		
+		List<DocumentModelJson> docs = DB.getDocumentDao().searchJson(filter);
 		
 		List<Document> documents = new ArrayList<Document>();
 		for(DocumentModelJson doc:docs){
@@ -635,6 +617,14 @@ public class DocumentDaoHelper {
 		}
 		
 		return documents; 
+	}
+	
+	public static List<HTSummary> searchTasks(String processId,String userId, SearchFilter filter) {
+		filter.setProcessId(processId);
+		filter.setUserId(userId);
+		List<TaskSummary> results = DB.getDocumentDao().searchTasks(filter);
+		
+		return JBPMHelper.get().translateSummaries(results); 
 	}
 
 	public static DocumentType getDocumentType(String docTypeName) {
