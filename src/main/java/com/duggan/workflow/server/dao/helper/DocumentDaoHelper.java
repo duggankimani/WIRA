@@ -708,6 +708,7 @@ public class DocumentDaoHelper {
 			doc.setProcessId(type.getProcessDef().getProcessId());
 			jsonDoc.setProcessId(type.getProcessDef().getProcessId());
 			jsonDoc.setCaseNo(doc.getCaseNo());
+			jsonDoc.setDocTypeRefId(type.getRefId());
 			
 			Value caseNo = doc.getValues().get("caseNo");
 			if (caseNo == null) {

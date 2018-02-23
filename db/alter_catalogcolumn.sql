@@ -1,0 +1,1 @@
+alter table catalogcolumn alter column size type varchar(10);
