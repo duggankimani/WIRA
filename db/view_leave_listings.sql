@@ -12,7 +12,7 @@ SELECT d.createdby AS applicant,
     l.data ->> 'ending'::text AS ending,
     l.data ->> 'days'::text AS noofdays,
     l.data ->> 'balance'::text AS balanceBefore,
-    cast(l.data ->> 'balance' as decimal) - cast(l.data ->> 'days' as decimal) balanceAfter,
+    cast(l.data ->> 'balance' as decimal(5,2)) - cast(l.data ->> 'days' as decimal(5,2)) balanceAfter,
     concat((d.doc -> 'taskActualOwner'::text) ->> 'surname'::text, ' ', (d.doc -> 'taskActualOwner'::text) ->> 'name'::text) AS currentapprover,
     d.doc ->> 'currentTaskName'::text AS currentstep
    FROM documentjson d

@@ -46,12 +46,14 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 	@Override
 	public void delete(PO po) {
 		if(po instanceof CatalogModel){
-			String name = ((CatalogModel)po).getName();
-			if(!name.toLowerCase().startsWith("ext_")){
-				name = name.toLowerCase().startsWith("ext_")? name.toLowerCase(): "ext_"+name.toLowerCase();
+			if(((CatalogModel)po).getType() != CatalogType.REPORTVIEW) {
+				String name = ((CatalogModel)po).getName();
+				if(!name.toLowerCase().startsWith("ext_")){
+					name = name.toLowerCase().startsWith("ext_")? name.toLowerCase(): "ext_"+name.toLowerCase();
+				}
+				String query = "DROP TABLE "+name;
+				em.createNativeQuery(query).executeUpdate();
 			}
-			String query = "DROP TABLE "+name;
-			em.createNativeQuery(query).executeUpdate();
 		}
 		super.delete(po);
 	}
