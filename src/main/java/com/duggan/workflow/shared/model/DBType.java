@@ -14,6 +14,7 @@ public enum DBType implements Listable,Serializable{
 	DATETIME,
 	DECIMAL,
 	DOUBLE,
+	NUMERIC,
 	FLOAT,
 	INTEGER,
 	LONGVARCHAR,
@@ -56,6 +57,7 @@ public enum DBType implements Listable,Serializable{
 			break;
 		case DECIMAL:
 		case DOUBLE:
+		case NUMERIC:
 		case FLOAT:		
 		case REAL:
 			dt = DataType.DOUBLE;

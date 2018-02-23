@@ -920,6 +920,7 @@ public class CatalogDaoHelper {
 		case BIGINT:
 		case DECIMAL:
 		case DOUBLE:
+		case NUMERIC:
 		case FLOAT:
 		case REAL:
 			line._s(name, rowJson.optDouble(name));

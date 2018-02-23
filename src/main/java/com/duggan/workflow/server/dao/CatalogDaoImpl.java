@@ -501,6 +501,7 @@ public class CatalogDaoImpl extends BaseDaoImpl {
 		case BIGINT:
 		case DECIMAL:
 		case DOUBLE:
+		case NUMERIC:
 		case FLOAT:
 		case REAL:
 			Double val = null;
