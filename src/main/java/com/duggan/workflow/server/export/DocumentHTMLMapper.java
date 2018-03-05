@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,7 @@ public class DocumentHTMLMapper {
 
 		return rtn;
 	}
+	
 
 	private String generateQRCode(String subject, String strToEncode) {
 
@@ -287,4 +289,19 @@ public class DocumentHTMLMapper {
 
 	}
 
+	public List<String> getAttachmentPaths(String html) {
+		Pattern pattern = Pattern.compile("ATTACH\\:PATH\\:\\w+\\:([/\\w+]+?)\\s",
+				Pattern.DOTALL);
+		String rtn = new String(html);
+		Matcher matcher = pattern.matcher(rtn);
+
+		List<String> paths = new ArrayList<>();
+		while (matcher.find()) {
+			String group = matcher.group();
+			rtn = group.substring("ATTACH:PATH:".length(), group.length());
+			paths.add(rtn);
+		}
+
+		return paths;
+	}
 }

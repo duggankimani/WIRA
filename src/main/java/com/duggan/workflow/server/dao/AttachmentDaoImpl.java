@@ -1,5 +1,6 @@
 package com.duggan.workflow.server.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -569,6 +570,31 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 
 		return files;
 
+	}
+
+	public List<LocalAttachment> getAttachmentsByPath(String docRefId, String filePath) {
+		StringBuffer jpql = new StringBuffer(
+				"select new com.duggan.workflow.server.dao.model.LocalAttachment(a.refId,"
+						+ "a.name,"
+						+ "a.contentType, "
+						+ "a.attachment) "
+						+ "from LocalAttachment a "
+						+ "where a.docRefId =:docRefId and a.isActive=1 "
+						+ "and a.path like :path ");
+		
+		if(filePath!=null && !filePath.isEmpty()) {
+			if(filePath.startsWith("/")) {
+				filePath = filePath.substring(1);
+			}
+				
+		}
+		Query query = getEntityManager().createQuery(jpql.toString())
+				.setParameter("docRefId", docRefId)
+				.setParameter("path", "%"+filePath+"%");
+		
+		List<LocalAttachment> files = getResultList(query);
+		
+		return files;
 	}
 
 }

@@ -29,6 +29,9 @@ import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
+import com.duggan.workflow.server.export.DocumentHTMLMapper;
+import com.duggan.workflow.shared.model.Attachment;
+import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.wira.commons.shared.models.HTUser;
 
@@ -191,6 +194,26 @@ public class EmailServiceHelper {
 					}
 				}
 			}
+			
+			DocumentHTMLMapper mapper = new DocumentHTMLMapper();
+			List<String> paths = mapper.getAttachmentPaths(body);
+			if(!paths.isEmpty()) {
+				for(String path: paths) {
+					String docRefId = path.substring(0, path.indexOf(":")).trim();
+					String filePath = path.substring(path.indexOf(":")+1, path.length()).trim();
+					List<LocalAttachment> attachments = DB.getAttachmentDao().getAttachmentsByPath(docRefId, filePath.trim());
+					for(LocalAttachment attachment: attachments) {
+						
+						MimeBodyPart part = new MimeBodyPart();
+						if(attachment.getAttachment()!=null) {
+							DataHandler handler = new DataHandler(new ByteArrayDataSource(attachment.getAttachment(), attachment.getContentType()));
+							part.setDataHandler(handler);
+							part.setFileName(attachment.getName());
+							multipart.addBodyPart(part);
+						}
+					}
+				}
+			}
 
 			message.setContent(multipart);
 			message.setSentDate(new java.util.Date());
@@ -198,7 +221,7 @@ public class EmailServiceHelper {
 			assert message != null;
 			log.debug("Sending ........");
 			Transport.send(message);
-			log.debug("Email Successfully send........");
+			log.debug("Email Successfully sent........");
 		} catch (Exception e) {
 			log.fatal("Could not send email: " + subject + ": Cause "
 					+ e.getMessage());

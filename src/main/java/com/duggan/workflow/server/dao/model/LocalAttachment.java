@@ -227,6 +227,15 @@ public class LocalAttachment extends PO{
 		this.attachment=attachment;
 		this.id=id;
 	}
+	
+	
+	public LocalAttachment(String refId,String name, String contentType, byte[] attachment){
+		this();
+		setRefId(refId);
+		setName(name);
+		setContentType(contentType);
+		setAttachment(attachment);
+	}
 
 	public Long getId() {
 		return id;
