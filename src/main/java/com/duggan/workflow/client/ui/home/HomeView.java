@@ -376,11 +376,6 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 														
 														}-*/;
 
-	void redirectInbox() {
-		placeManager.revealPlace(new PlaceRequest.Builder()
-				.nameToken(NameTokens.inboxwithparams).with("filter", "mine")
-				.build());
-	}
 
 	public void clearAnchors() {
 		clearAllAnchors(sideBarUL);
@@ -399,7 +394,8 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 		clearAllAnchors(sideBarUL);
 		//single inbox
 		if(nameToken.startsWith("/inbox")){
-			nameToken = "/inbox/all";;
+			//nameToken = "/inbox/all";;
+			nameToken = "/inbox/";;
 		}
 		selectTab(sideBarUL, "#" + nameToken);
 	}

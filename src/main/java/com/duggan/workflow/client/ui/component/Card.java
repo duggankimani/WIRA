@@ -61,7 +61,7 @@ public class Card extends Composite {
 		}else{
 			spnCount.setInnerText(""+type.getInboxCount()+" new");
 			spnCount.removeClassName("hide");
-			aCount.setHref("#/inbox/all/"+type.getProcessRefId());
+			aCount.setHref("#/inbox/"+type.getProcessRefId());
 		}
 	}
 
