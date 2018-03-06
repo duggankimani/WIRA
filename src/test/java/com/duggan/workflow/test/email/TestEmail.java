@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +33,7 @@ import com.duggan.workflow.server.mvel.MVELExecutor;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
 import com.itextpdf.text.DocumentException;
+import com.wira.commons.shared.models.HTUser;
 
 public class TestEmail {
 
@@ -45,6 +48,27 @@ public class TestEmail {
 	}
 	
 	@Test
+	public void testSendEmailWithAttachment() throws IOException, MessagingException {
+		InputStream is = TestEmail.class.getClass().getResourceAsStream("/email.html");
+		String body = IOUtils.toString(is);
+		assert body!=null;
+		
+		Doc doc = DocumentDaoHelper.getDocJson("Uu3YYFc36N5AfMJF");
+		doc._s("docRefId", doc.getRefId());
+		
+		body = new DocumentHTMLMapper().map(doc, body);
+		System.err.println(body);
+		
+		HTUser initiatorId = new HTUser(null, "kimani@wira.io");
+		List<HTUser> recipients = new ArrayList<>();
+		recipients.add(initiatorId);
+		
+		String subject = "Leave Application Testing with Attachment";
+		
+		EmailServiceHelper.sendEmail(body, subject, recipients, initiatorId);
+	}
+	
+	@Ignore
 	public void testEmailUtil(){
 		String triggerName = "chasebank.finance.ExpenseClaim.SendFinanceApprovalEmail";
 		ADTrigger trigger = DB.getProcessDao().getTrigger(triggerName);
@@ -55,7 +79,6 @@ public class TestEmail {
 		new MVELExecutor().execute(trigger, doc);
 		
 	}
-	
 	
 	@Ignore
 	public void generateEmail() throws IOException, SAXException, ParserConfigurationException, FactoryConfigurationError, DocumentException{
