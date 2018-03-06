@@ -310,7 +310,7 @@ public class ActivitiesView extends ViewImpl implements
 		this.process = process;
 		processName.setInnerText(process.getDisplayName());
 		aDrafts.setHref("#/drafts/" + process.getRefId());
-		aInbox.setHref("#/inbox/all/" + process.getRefId());
+		aInbox.setHref("#/inbox/" + process.getRefId());
 		aDone.setHref("#/participated/" + process.getRefId());
 	}
 
