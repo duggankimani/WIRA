@@ -140,7 +140,7 @@ public class CustomEmailHandler {
 			taskId = ((Document) doc).getCurrentTaskId();
 		} else {
 			docType = ((HTask) doc).getProcessName();
-			taskId = ((Document) doc).getCurrentTaskId();
+			taskId = ((HTask) doc).getCurrentTaskId();
 		}
 
 		ProcessDefModel model = DB.getProcessDao().getProcessDef(doc.getProcessId());
