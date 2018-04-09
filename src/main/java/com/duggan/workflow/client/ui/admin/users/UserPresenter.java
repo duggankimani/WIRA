@@ -140,7 +140,9 @@ public class UserPresenter extends
 	public static final Object ITEMSLOT = new Object();
 	public static final Object GROUPSLOT = new Object();
 	public static final String TABLABEL = "Users and Groups";
-	protected static final Integer PAGE_SIZE = 15;
+	protected static final Integer PAGE_START = 0;
+	protected static final Integer PAGE_SIZE = 10;
+	
 
 	TYPE type = TYPE.USER;
 
@@ -157,7 +159,6 @@ public class UserPresenter extends
 
 	@Override
 	protected void onBind() {
-		super.onBind();
 		addRegisteredHandler(EditUserEvent.TYPE, this);
 		addRegisteredHandler(LoadUsersEvent.TYPE, this);
 		addRegisteredHandler(LoadGroupsEvent.TYPE, this);
@@ -269,7 +270,7 @@ public class UserPresenter extends
 			}
 		});
 
-		Window.alert(">>> Bind users!");
+		//Window.alert(">>> Bind users!");
 	}
 
 	@Override
@@ -287,7 +288,6 @@ public class UserPresenter extends
 		}
 
 		setType(type);
-		Window.alert(">>> Prepare from Req");
 		//loadData();
 	}
 
@@ -366,7 +366,7 @@ public class UserPresenter extends
 
 	void loadData() {
 		if (type == TYPE.USER) {
-			//loadUsers();
+			loadUsers(null, 0, PAGE_SIZE);
 		} else if (type == TYPE.GROUP) {
 			loadGroups();
 		} else {
@@ -417,10 +417,6 @@ public class UserPresenter extends
 				});
 	}
 
-	private void loadUsers(Integer offset, Integer limit) {
-		loadUsers(null, offset, limit);
-	}
-	
 	private void loadUsers(String searchTerm, final Integer offset, Integer limit) {
 		GetUsersRequest request = new GetUsersRequest(searchTerm);
 		request.setOffset(offset);
@@ -448,12 +444,13 @@ public class UserPresenter extends
 
 	@Override
 	public void onLoadUsers(LoadUsersEvent event) {
-		Window.alert("Load Users!");
+//		Window.alert("onLoadUsers Users!");
 		loadUsers(null, event.getStart(), event.getLimit());
 	}
 
 	@Override
 	public void onLoadGroups(LoadGroupsEvent event) {
+//		Window.alert("onLoadUsers groups!");
 		loadData();
 	}
 

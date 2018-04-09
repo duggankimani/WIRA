@@ -70,7 +70,7 @@
 									<tr>
 										<td valign="top">
 											<c:CellTable addStyleNames="{style.cellTable}"
-												pageSize="15" ui:field="cellTable" />
+												pageSize="15" ui:field="usersTable" />
 										</td>
 									</tr>
 									<tr>
@@ -135,8 +135,25 @@
 						</div>
 
 						<section class="">
+							<div class="content-body">
+								<table cellspacing="0" cellpadding="0" style="width:100%;">
+									<tr>
+										<td valign="top">
+											<c:CellTable addStyleNames="{style.cellTable}"
+												pageSize="15" ui:field="groupsTable" />
+										</td>
+									</tr>
+									<tr>
+										<td align="center">
+											<g:HTMLPanel ui:field="divGroupsPaginate"></g:HTMLPanel>
+										</td>
+									</tr>
+								</table>
+							</div>
+							
 							<div class="table-container overflow-y" style="height:400px">
 								<g:FlexTable ui:field="tblGroup" styleName="table">
+									
 								</g:FlexTable>
 							</div>
 						</section>
@@ -168,6 +185,7 @@
 						<section class="">
 							<div class="table-container overflow-y" style="height:400px">
 								<g:FlexTable ui:field="tblOrgs" styleName="table">
+									
 								</g:FlexTable>
 							</div>
 						</section>

@@ -14,11 +14,14 @@ import com.duggan.workflow.client.ui.events.ProcessingCompletedEvent;
 import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
+import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
@@ -43,12 +46,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.Range;
-import com.google.gwt.view.client.RangeChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -117,30 +120,55 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 
 	PlaceManager placeManager;
-	
-	Integer PAGE_SIZE = 15;
-	Integer PAGE_START = 0;
+	/**
+	 * The main CellTable.
+	 */
+	@UiField(provided = true)
+	CellTable<HTUser> usersTable;
+
+	@UiField(provided = true)
+	CellTable<UserGroup> groupsTable;
+
+	/**
+	 * The pager used to change the range of data.
+	 */
+	// @UiField(provided = true)
+	SimplePager usersPager;
+	SimplePager groupsPager;
+
+	// Create a Data Provider.
+	AsyncDataProvider<HTUser> usersDataProvider;
+	AsyncDataProvider<UserGroup> groupsDataProvider;
+
+	ListHandler<HTUser> sortHandler = null;
+
+	private EventBus eventBus;
 
 	@Inject
-	public UserView(final Binder binder, PlaceManager manager) {
+	public UserView(final Binder binder, PlaceManager manager, EventBus eventBus) {
+		this.eventBus = eventBus;
 		// Set a key provider that provides a unique key for each contact. If key is
 		// used to identify contacts when fields (such as the name and address)
 		// change.
-		cellTable = new CellTable<HTUser>(HTUser.KEY_PROVIDER);
-		cellTable.setWidth("100%", true);
-		cellTable.setPageSize(PAGE_SIZE);
-		cellTable.setPageStart(PAGE_START);
+		usersTable = new CellTable<HTUser>(UserPresenter.PAGE_SIZE, HTUser.KEY_PROVIDER);
+		usersTable.setWidth("100%", true);
 
 		SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-		pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-		pager.setDisplay(cellTable);
+		usersPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+		usersPager.setDisplay(usersTable);
+
+		//
+		groupsTable = new CellTable<UserGroup>(UserPresenter.PAGE_SIZE, UserGroup.KEY_PROVIDER);
+		groupsTable.setWidth("100%", true);
+		groupsPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+		groupsPager.setDisplay(groupsTable);
 
 		// Create a Pager to control the table.
 		initialize();
 
 		widget = binder.createAndBindUi(this);
 		placeManager = manager;
-		divPaginate.add(pager);
+		divPaginate.add(usersPager);
 
 		aUserstab.addClickHandler(new ClickHandler() {
 			@Override
@@ -204,13 +232,14 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 															}-*/;
 
 	@Override
-	public void bindUsers(ArrayList<HTUser> users,Integer start, Integer totalCount) {
-		if(CONTACTS_SIZE!=totalCount) {
+	public void bindUsers(ArrayList<HTUser> users, Integer start, Integer totalCount) {
+
+		if (CONTACTS_SIZE != totalCount) {
 			CONTACTS_SIZE = totalCount;
-			dataProvider.updateRowCount(CONTACTS_SIZE, true);
+			usersDataProvider.updateRowCount(CONTACTS_SIZE, true);
 		}
-		
-		dataProvider.updateRowData(start, users);
+
+		usersDataProvider.updateRowData(start, users);
 		sortHandler.setList(users);
 	}
 
@@ -449,77 +478,115 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		return aDeleteOrg;
 	}
 
-	/**
-	 * The main CellTable.
-	 */
-	@UiField(provided = true)
-	CellTable<HTUser> cellTable;
-
-	/**
-	 * The pager used to change the range of data.
-	 */
-	// @UiField(provided = true)
-	SimplePager pager;
-
-	// Create a CellTable.
-	AsyncDataProvider<HTUser> dataProvider = new AsyncDataProvider<HTUser>() {
-		@Override
-		protected void onRangeChanged(HasData<HTUser> display) {
-			final int start = display.getVisibleRange().getStart();
-			int end = start + display.getVisibleRange().getLength();
-			
-			end = end >= CONTACTS_SIZE ? CONTACTS_SIZE : end;
-			if(end==0) {
-				end=PAGE_SIZE;
-			}
-			
-			Window.alert(">>> Load users!");
-			AppContext.fireEvent(new LoadUsersEvent(start, PAGE_SIZE));
-			
-//			GetUsersRequest request = new GetUsersRequest(null);
-//			request.setOffset(start);
-//			request.setLength(PAGE_SIZE);
-//			
-//			final DispatchAsync dispatcher = AppContext.getDispatcher();
-//			dispatcher.execute(request,
-//					new TaskServiceCallback<GetUsersResponse>() {
-//				@Override
-//				public void processResult(GetUsersResponse result) {
-//					if(CONTACTS_SIZE!=result.getTotalCount()) {
-//						CONTACTS_SIZE = result.getTotalCount();
-//						updateRowCount(CONTACTS_SIZE, true);
-//					}
-//					
-//					ArrayList<HTUser> users = result.getUsers();
-//					updateRowData(start, users);
-//					sortHandler.setList(users);
-//				}
-//			});
-			
-		}
-	};
-	
-	ListHandler<HTUser> sortHandler = null;
-
 	private void initialize() {
+		initializeUsers();
+		initializeGroups();
+	}
+
+	private void initializeGroups() {
+		groupsDataProvider = new AsyncDataProvider<UserGroup>() {
+			@Override
+			protected void onRangeChanged(HasData<UserGroup> display) {
+				final int start = display.getVisibleRange().getStart();
+				int end = start + display.getVisibleRange().getLength();
+
+				end = end >= CONTACTS_SIZE ? CONTACTS_SIZE : end;
+				if (end == 0) {
+					end = UserPresenter.PAGE_SIZE;
+				}
+
+				GetGroupsRequest request = new GetGroupsRequest(null);
+				request.setOffset(start);
+				request.setLength(UserPresenter.PAGE_SIZE);
+
+				// Window.alert("### Before Users Load - "+start+" - "+end+" -");
+				final DispatchAsync dispatcher = AppContext.getDispatcher();
+				dispatcher.execute(request, new TaskServiceCallback<GetGroupsResponse>() {
+					@Override
+					public void processResult(GetGroupsResponse result) {
+
+						if (CONTACTS_SIZE != result.getTotalCount()) {
+							CONTACTS_SIZE = result.getTotalCount();
+							updateRowCount(CONTACTS_SIZE, true);
+						}
+
+						ArrayList<UserGroup> groups = result.getGroups();
+						updateRowData(start, groups);
+					}
+				});
+
+			}
+		};
 
 		// Do not refresh the headers and footers every time the data is updated.
-		cellTable.setAutoHeaderRefreshDisabled(true);
-		cellTable.setAutoFooterRefreshDisabled(true);
+		groupsTable.setAutoHeaderRefreshDisabled(true);
+		groupsTable.setAutoFooterRefreshDisabled(true);
+
+		// Add a selection model so we can select cells.
+		final SelectionModel<UserGroup> selectionModel = new SingleSelectionModel<UserGroup>(UserGroup.KEY_PROVIDER);
+		groupsTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<UserGroup>createCheckboxManager());
+
+		// Initialize the columns.
+		initGroupColumns(selectionModel);
+
+		// Add the CellList to the adapter in the database.
+		groupsDataProvider.addDataDisplay(groupsTable);
+
+	}
+
+	private void initializeUsers() {
+		usersDataProvider = new AsyncDataProvider<HTUser>() {
+			@Override
+			protected void onRangeChanged(HasData<HTUser> display) {
+				final int start = display.getVisibleRange().getStart();
+				int end = start + display.getVisibleRange().getLength();
+
+				end = end >= CONTACTS_SIZE ? CONTACTS_SIZE : end;
+				if (end == 0) {
+					end = UserPresenter.PAGE_SIZE;
+				}
+
+				GetUsersRequest request = new GetUsersRequest(null);
+				request.setOffset(start);
+				request.setLength(UserPresenter.PAGE_SIZE);
+
+				// Window.alert("### Before Users Load - "+start+" - "+end+" -");
+				final DispatchAsync dispatcher = AppContext.getDispatcher();
+				dispatcher.execute(request, new TaskServiceCallback<GetUsersResponse>() {
+					@Override
+					public void processResult(GetUsersResponse result) {
+
+						if (CONTACTS_SIZE != result.getTotalCount()) {
+							CONTACTS_SIZE = result.getTotalCount();
+							updateRowCount(CONTACTS_SIZE, true);
+						}
+
+						ArrayList<HTUser> users = result.getUsers();
+						updateRowData(start, users);
+						sortHandler.setList(users);
+					}
+				});
+
+			}
+		};
+
+		// Do not refresh the headers and footers every time the data is updated.
+		usersTable.setAutoHeaderRefreshDisabled(true);
+		usersTable.setAutoFooterRefreshDisabled(true);
 
 		// Attach a column sort handler to the ListDataProvider to sort the list.
 		sortHandler = new ListHandler<HTUser>(new ArrayList<HTUser>());
-		cellTable.addColumnSortHandler(sortHandler);
+		usersTable.addColumnSortHandler(sortHandler);
 
 		// Add a selection model so we can select cells.
-		final SelectionModel<HTUser> selectionModel = new MultiSelectionModel<HTUser>(HTUser.KEY_PROVIDER);
-		cellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<HTUser>createCheckboxManager());
+		final SelectionModel<HTUser> selectionModel = new SingleSelectionModel<HTUser>(HTUser.KEY_PROVIDER);
+		usersTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<HTUser>createCheckboxManager());
 
 		// Initialize the columns.
 		initTableColumns(selectionModel, sortHandler);
 
 		// Add the CellList to the adapter in the database.
-		dataProvider.addDataDisplay(cellTable);
+		usersDataProvider.addDataDisplay(usersTable);
 
 	}
 
@@ -537,11 +604,12 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return selectionModel.isSelected(object);
 			}
 		};
-		cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-		cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
+		usersTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+
+		usersTable.setColumnWidth(checkColumn, 40, Unit.PX);
 
 		// First name.
-		Column<HTUser, String> firstNameColumn = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> firstNameColumn = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getName();
@@ -555,19 +623,19 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			}
 		});
 
-		cellTable.addColumn(firstNameColumn, "First Name");
+		usersTable.addColumn(firstNameColumn, "First Name");
 		firstNameColumn.setFieldUpdater(new FieldUpdater<HTUser, String>() {
 			@Override
 			public void update(int index, HTUser object, String value) {
 				// Called when the user changes the value.
 				object.setName(value);
-//				dataProvider.refresh();
+				// dataProvider.refresh();
 			}
 		});
-		cellTable.setColumnWidth(firstNameColumn, 15, Unit.PCT);
+		usersTable.setColumnWidth(firstNameColumn, 15, Unit.PCT);
 
 		// Last name.
-		Column<HTUser, String> lastNameColumn = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> lastNameColumn = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getSurname();
@@ -580,19 +648,19 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return o1.getSurname().compareTo(o2.getSurname());
 			}
 		});
-		cellTable.addColumn(lastNameColumn, "Last Name");
+		usersTable.addColumn(lastNameColumn, "Last Name");
 		lastNameColumn.setFieldUpdater(new FieldUpdater<HTUser, String>() {
 			@Override
 			public void update(int index, HTUser object, String value) {
 				// Called when the user changes the value.
 				object.setSurname(value);
-//				dataProvider.refresh();
+				// dataProvider.refresh();
 			}
 		});
-		cellTable.setColumnWidth(lastNameColumn, 15, Unit.PCT);
+		usersTable.setColumnWidth(lastNameColumn, 15, Unit.PCT);
 
 		// Userid
-		Column<HTUser, String> userIdCol = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> userIdCol = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getUserId();
@@ -605,10 +673,10 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return o1.getUserId().compareTo(o2.getUserId());
 			}
 		});
-		cellTable.addColumn(userIdCol, "User ID");
+		usersTable.addColumn(userIdCol, "User ID");
 
 		// Email
-		Column<HTUser, String> emailColumn = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> emailColumn = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getEmail();
@@ -621,20 +689,20 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return o1.getEmail().compareTo(o2.getEmail());
 			}
 		});
-		cellTable.addColumn(emailColumn, "Email");
+		usersTable.addColumn(emailColumn, "Email");
 
 		lastNameColumn.setFieldUpdater(new FieldUpdater<HTUser, String>() {
 			@Override
 			public void update(int index, HTUser object, String value) {
 				// Called when the user changes the value.
 				object.setEmail(value);
-//				dataProvider.refresh();
+				// dataProvider.refresh();
 			}
 		});
-		cellTable.setColumnWidth(emailColumn, 15, Unit.PCT);
+		usersTable.setColumnWidth(emailColumn, 15, Unit.PCT);
 
 		// Organization
-		Column<HTUser, String> orgColumn = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> orgColumn = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getOrg() == null ? "" : object.getOrg().getDisplayName();
@@ -647,11 +715,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return o1.getOrg().getDisplayName().compareTo(o2.getOrg().getDisplayName());
 			}
 		});
-		cellTable.addColumn(orgColumn, "Org");
-		cellTable.setColumnWidth(orgColumn, 15, Unit.PCT);
+		usersTable.addColumn(orgColumn, "Org");
+		usersTable.setColumnWidth(orgColumn, 15, Unit.PCT);
 
 		// Participated
-		Column<HTUser, String> participatedCol = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> participatedCol = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getParticipated() + "";
@@ -666,11 +734,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return participated.compareTo(participated2);
 			}
 		});
-		cellTable.addColumn(participatedCol, "Participated");
-		cellTable.setColumnWidth(participatedCol, 70, Unit.PX);
+		usersTable.addColumn(participatedCol, "Participated");
+		usersTable.setColumnWidth(participatedCol, 70, Unit.PX);
 
 		// Inbox
-		Column<HTUser, String> inboxCol = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> inboxCol = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getInbox() + "";
@@ -685,11 +753,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return inbox.compareTo(inbox2);
 			}
 		});
-		cellTable.addColumn(participatedCol, "Inbox");
-		cellTable.setColumnWidth(participatedCol, 70, Unit.PX);
+		usersTable.addColumn(participatedCol, "Inbox");
+		usersTable.setColumnWidth(participatedCol, 70, Unit.PX);
 
 		// Inbox
-		Column<HTUser, String> draftsCol = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> draftsCol = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 				return object.getInbox() + "";
@@ -704,11 +772,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return drafts.compareTo(drafts2);
 			}
 		});
-		cellTable.addColumn(draftsCol, "Drafts");
-		cellTable.setColumnWidth(draftsCol, 70, Unit.PX);
+		usersTable.addColumn(draftsCol, "Drafts");
+		usersTable.setColumnWidth(draftsCol, 70, Unit.PX);
 
 		// Total
-		Column<HTUser, String> totalsCol = new Column<HTUser, String>(new EditTextCell()) {
+		Column<HTUser, String> totalsCol = new Column<HTUser, String>(new TextCell()) {
 			@Override
 			public String getValue(HTUser object) {
 
@@ -725,8 +793,83 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				return totals.compareTo(totals2);
 			}
 		});
-		cellTable.addColumn(totalsCol, "Totals");
-		cellTable.setColumnWidth(totalsCol, 70, Unit.PX);
+		usersTable.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				SingleSelectionModel<HTUser> usersSelectionModel = (SingleSelectionModel<HTUser>) usersTable
+						.getSelectionModel();
+				HTUser model = usersSelectionModel.getSelectedObject();
+				boolean isSelected = false;
+				if (model != null) {
+					isSelected = usersSelectionModel.isSelected(model);
+				} else {
+					model = new HTUser();
+				}
+				eventBus.fireEvent(new CheckboxSelectionEvent(model, isSelected));
+			}
+		});
+
+		usersTable.addColumn(totalsCol, "Totals");
+		usersTable.setColumnWidth(totalsCol, 70, Unit.PX);
 	}
+	
+	/**
+	 * Add the columns to the table.
+	 */
+	private void initGroupColumns(final SelectionModel<UserGroup> selectionModel) {
+		// Checkbox column. This table will uses a checkbox column for selection.
+		// Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
+		// mouse selection.
+		Column<UserGroup, Boolean> checkColumn = new Column<UserGroup, Boolean>(new CheckboxCell(true, false)) {
+			@Override
+			public Boolean getValue(UserGroup object) {
+				// Get the value from the selection model.
+				return selectionModel.isSelected(object);
+			}
+		};
+		groupsTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+		groupsTable.setColumnWidth(checkColumn, 40, Unit.PX);
+
+		// First name.
+		Column<UserGroup, String> name = new Column<UserGroup, String>(new TextCell()) {
+			@Override
+			public String getValue(UserGroup object) {
+				return object.getName();
+			}
+		};
+		name.setSortable(true);
+		groupsTable.addColumn(name, "Name");
+		groupsTable.setColumnWidth(name, 40, Unit.PCT);
+
+		// Last name.
+		Column<UserGroup, String> description = new Column<UserGroup, String>(new TextCell()) {
+			@Override
+			public String getValue(UserGroup object) {
+				return object.getDisplayName();
+			}
+		};
+		description.setSortable(true);
+		groupsTable.addColumn(description, "Description");
+		
+		groupsTable.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				SingleSelectionModel<UserGroup> usersSelectionModel = (SingleSelectionModel<UserGroup>) groupsTable
+						.getSelectionModel();
+				
+				UserGroup model = usersSelectionModel.getSelectedObject();
+				boolean isSelected = false;
+				if (model != null) {
+					isSelected = usersSelectionModel.isSelected(model);
+				} else {
+					model = new UserGroup();
+				}
+				eventBus.fireEvent(new CheckboxSelectionEvent(model, isSelected));
+			}
+		});
+	}
+
 
 }
