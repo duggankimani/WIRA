@@ -16,6 +16,8 @@ import org.jbpm.executor.api.CommandContext;
 import org.jbpm.executor.commands.SendMailCommand;
 
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
+import com.duggan.workflow.server.dao.model.ProcessDefModel;
+import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -132,15 +134,22 @@ public class CustomEmailHandler {
 //								.getCreated() : doc.getDocumentDate()));
 
 		String docType = "";
+		Long taskId = null;
 		if (doc instanceof Document) {
 			docType = ((Document) doc).getType().getDisplayName();
+			taskId = ((Document) doc).getCurrentTaskId();
 		} else {
 			docType = ((HTask) doc).getProcessName();
+			taskId = ((Document) doc).getCurrentTaskId();
 		}
 
+		ProcessDefModel model = DB.getProcessDao().getProcessDef(doc.getProcessId());
 		params.put("DocType", docType);
-		params.put("DocumentURL", getDocUrl(doc.getRefId()));
 		params.put("ownerId", doc.getOwner());
+		
+		if(model!=null) {
+			params.put("DocumentURL", SessionHelper.generateDocUrl(model.getRefId(), taskId));
+		}
 
 		try {
 
