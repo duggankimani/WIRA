@@ -399,7 +399,7 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	private void sendActivationEmail(User user) {
-		String subject = "Welcome to WIRA BPM!";
+		String subject = "Welcome to IPMIS!";
 		Activation act = new Activation(user.getRefId());
 		DB.getUserGroupDao().save(act);
 		
@@ -409,7 +409,7 @@ public class UserDaoHelper implements LoginIntf {
 		String body = "Dear "
 				+ user.getFullNames()
 				+ ","
-				+ "<p/>An account has been created for you in the KNA Editorial portal. "
+				+ "<p/>An account has been created for you in the IPMIS portal. "
 				+ "<a href=" + link + ">Click this link </a>"
 				+ " to create your password." + "<p>Thank you";
 
@@ -430,7 +430,7 @@ public class UserDaoHelper implements LoginIntf {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("callbacks", CommandCodes.SendEmailCallback.name());
 		params.put("To", recipients);
-		params.put("From", "Head KNA");
+		params.put("From", "Head IPMIS");
 		params.put(SendMailCommand.SUBJECT, subject);
 		params.put(SendMailCommand.BODY, body);
 		context.setData(params);
@@ -444,7 +444,7 @@ public class UserDaoHelper implements LoginIntf {
 		Activation act = new Activation(user.getRefId());
 		DB.getUserGroupDao().save(act);
 
-		String subject = "WIRA Workflow Password Reset";
+		String subject = "IPMIS Password Reset";
 		String link = SessionHelper.getApplicationPath()
 				+ "/account.html#/activateacc/" +act.getRefId()+"/"+ user.getRefId() + "/reset";
 
