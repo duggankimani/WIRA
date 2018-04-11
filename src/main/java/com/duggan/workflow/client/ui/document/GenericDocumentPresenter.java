@@ -1644,6 +1644,7 @@ public class GenericDocumentPresenter extends
 							ArrayList<Field> fields = loadDynamicFields
 									.getFields();
 							for (Field field : fields) {
+								
 								int idx = form.getFields().indexOf(field);
 								if (idx != -1) {
 									form.getFields().remove(idx);

@@ -15,11 +15,12 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.upload.custom.Uploader;
 import com.duggan.workflow.client.util.AppContext;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
+import com.duggan.workflow.shared.requests.GetOrgsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
+import com.duggan.workflow.shared.responses.GetOrgsResponse;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.shared.GWT;
@@ -38,7 +39,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -46,7 +46,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -67,6 +66,8 @@ import gwtupload.client.IUploader.OnStartUploaderHandler;
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 
 	protected static int CONTACTS_SIZE = 0;
+	protected static int GROUPS_SIZE = 0;
+	protected static int ORGS_SIZE = 0;
 	private final Widget widget;
 	@UiField
 	Anchor aNewUser;
@@ -115,6 +116,12 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 
 	@UiField
 	HTMLPanel divPaginate;
+	
+	@UiField
+	HTMLPanel divGroupsPaginate;
+	
+	@UiField
+	HTMLPanel divOrgsPaginate;
 
 	public interface Binder extends UiBinder<Widget, UserView> {
 	}
@@ -128,6 +135,9 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 
 	@UiField(provided = true)
 	CellTable<UserGroup> groupsTable;
+	
+	@UiField(provided = true)
+	CellTable<Org> orgsTable;
 
 	/**
 	 * The pager used to change the range of data.
@@ -135,10 +145,12 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	// @UiField(provided = true)
 	SimplePager usersPager;
 	SimplePager groupsPager;
+	SimplePager orgsPager;
 
 	// Create a Data Provider.
 	AsyncDataProvider<HTUser> usersDataProvider;
 	AsyncDataProvider<UserGroup> groupsDataProvider;
+	AsyncDataProvider<Org> orgsDataProvider;
 
 	ListHandler<HTUser> sortHandler = null;
 
@@ -160,15 +172,26 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		//
 		groupsTable = new CellTable<UserGroup>(UserPresenter.PAGE_SIZE, UserGroup.KEY_PROVIDER);
 		groupsTable.setWidth("100%", true);
+		pagerResources =GWT.create(SimplePager.Resources.class);
 		groupsPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
 		groupsPager.setDisplay(groupsTable);
 
+		
+		orgsTable = new CellTable<Org>(UserPresenter.PAGE_SIZE, Org.KEY_PROVIDER);
+		orgsTable.setWidth("100%", true);
+		pagerResources =GWT.create(SimplePager.Resources.class);
+		orgsPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+		orgsPager.setDisplay(orgsTable);
+
+		
 		// Create a Pager to control the table.
 		initialize();
 
 		widget = binder.createAndBindUi(this);
 		placeManager = manager;
 		divPaginate.add(usersPager);
+		divGroupsPaginate.add(groupsPager);
+		divOrgsPaginate.add(orgsPager);
 
 		aUserstab.addClickHandler(new ClickHandler() {
 			@Override
@@ -275,34 +298,13 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 
 	@Override
-	public void bindGroups(ArrayList<UserGroup> groups) {
-		tblGroup.removeAllRows();
-		clearSelections();
-
-		int j = 0;
-		tblGroup.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
-		tblGroup.setWidget(0, j++, new HTMLPanel("<strong>Code</strong>"));
-		tblGroup.setWidget(0, j++, new HTMLPanel("<strong>Description</strong>"));
-
-		int i = 1;
-		for (UserGroup group : groups) {
-			j = 0;
-
-			Checkbox box = new Checkbox(group);
-			box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<Boolean> event) {
-					Object model = ((Checkbox) (event.getSource())).getModel();
-					AppContext.fireEvent(new CheckboxSelectionEvent(model, event.getValue()));
-				}
-			});
-
-			tblGroup.setWidget(i, j++, box);
-			tblGroup.setWidget(i, j++, new HTMLPanel(group.getName()));
-			tblGroup.setWidget(i, j++, new HTMLPanel(group.getFullName()));
-			++i;
+	public void bindGroups(ArrayList<UserGroup> groups, Integer start, Integer totalCount) {
+		if (GROUPS_SIZE != totalCount) {
+			GROUPS_SIZE = totalCount;
+			groupsDataProvider.updateRowCount(GROUPS_SIZE, true);
 		}
 
+		groupsDataProvider.updateRowData(start, groups);
 	}
 
 	private void clearSelections() {
@@ -340,33 +342,13 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 
 	@Override
-	public void bindOrgs(ArrayList<Org> orgs) {
-		tblOrgs.clear();
-		tblOrgs.removeAllRows();
-		clearSelections();
-
-		int j = 0;
-		tblOrgs.setWidget(0, j++, new HTMLPanel("<strong>#</strong>"));
-		tblOrgs.getFlexCellFormatter().setWidth(0, (j - 1), "20px");
-		tblOrgs.setWidget(0, j++, new HTMLPanel("<strong>Name</strong>"));
-
-		int i = 1;
-		for (Org org : orgs) {
-			j = 0;
-
-			Checkbox box = new Checkbox(org);
-			box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<Boolean> event) {
-					Object model = ((Checkbox) (event.getSource())).getModel();
-					AppContext.fireEvent(new CheckboxSelectionEvent(model, event.getValue()));
-				}
-			});
-
-			tblOrgs.setWidget(i, j++, box);
-			tblOrgs.setWidget(i, j++, new HTMLPanel(org.getName()));
-			++i;
+	public void bindOrgs(ArrayList<Org> orgs, Integer start, Integer totalCount) {
+		if (ORGS_SIZE != totalCount) {
+			ORGS_SIZE = totalCount;
+			orgsDataProvider.updateRowCount(ORGS_SIZE, true);
 		}
+
+		orgsDataProvider.updateRowData(start, orgs);
 
 	}
 
@@ -481,6 +463,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	private void initialize() {
 		initializeUsers();
 		initializeGroups();
+		initializeOrgs();
 	}
 
 	private void initializeGroups() {
@@ -490,7 +473,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				final int start = display.getVisibleRange().getStart();
 				int end = start + display.getVisibleRange().getLength();
 
-				end = end >= CONTACTS_SIZE ? CONTACTS_SIZE : end;
+				end = end >= GROUPS_SIZE ? GROUPS_SIZE : end;
 				if (end == 0) {
 					end = UserPresenter.PAGE_SIZE;
 				}
@@ -505,13 +488,14 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 					@Override
 					public void processResult(GetGroupsResponse result) {
 
-						if (CONTACTS_SIZE != result.getTotalCount()) {
-							CONTACTS_SIZE = result.getTotalCount();
-							updateRowCount(CONTACTS_SIZE, true);
+						if (GROUPS_SIZE != result.getTotalCount()) {
+							GROUPS_SIZE = result.getTotalCount();
+							updateRowCount(GROUPS_SIZE, true);
 						}
 
 						ArrayList<UserGroup> groups = result.getGroups();
 						updateRowData(start, groups);
+						groupsTable.redraw();
 					}
 				});
 
@@ -533,6 +517,59 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		groupsDataProvider.addDataDisplay(groupsTable);
 
 	}
+	
+	private void initializeOrgs() {
+		orgsDataProvider = new AsyncDataProvider<Org>() {
+			@Override
+			protected void onRangeChanged(HasData<Org> display) {
+				final int start = display.getVisibleRange().getStart();
+				int end = start + display.getVisibleRange().getLength();
+
+				end = end >= GROUPS_SIZE ? GROUPS_SIZE : end;
+				if (end == 0) {
+					end = UserPresenter.PAGE_SIZE;
+				}
+
+				GetOrgsRequest request = new GetOrgsRequest();
+				request.setOffset(start);
+				request.setLength(UserPresenter.PAGE_SIZE);
+
+				// Window.alert("### Before Users Load - "+start+" - "+end+" -");
+				final DispatchAsync dispatcher = AppContext.getDispatcher();
+				dispatcher.execute(request, new TaskServiceCallback<GetOrgsResponse>() {
+					@Override
+					public void processResult(GetOrgsResponse result) {
+
+						if (GROUPS_SIZE != result.getTotalCount()) {
+							GROUPS_SIZE = result.getTotalCount();
+							updateRowCount(GROUPS_SIZE, true);
+						}
+
+						ArrayList<Org> groups = result.getOrgs();
+						updateRowData(start, groups);
+						orgsTable.redraw();
+					}
+				});
+
+			}
+		};
+
+		// Do not refresh the headers and footers every time the data is updated.
+		orgsTable.setAutoHeaderRefreshDisabled(true);
+		orgsTable.setAutoFooterRefreshDisabled(true);
+
+		// Add a selection model so we can select cells.
+		final SelectionModel<Org> selectionModel = new SingleSelectionModel<Org>(Org.KEY_PROVIDER);
+		orgsTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Org>createCheckboxManager());
+
+		// Initialize the columns.
+		initOrgColumns(selectionModel);
+
+		// Add the CellList to the adapter in the database.
+		orgsDataProvider.addDataDisplay(orgsTable);
+
+	}
+
 
 	private void initializeUsers() {
 		usersDataProvider = new AsyncDataProvider<HTUser>() {
@@ -869,7 +906,62 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 				eventBus.fireEvent(new CheckboxSelectionEvent(model, isSelected));
 			}
 		});
+		
 	}
 
+	private void initOrgColumns(final SelectionModel<Org> selectionModel) {
+		// Checkbox column. This table will uses a checkbox column for selection.
+		// Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
+		// mouse selection.
+		Column<Org, Boolean> checkColumn = new Column<Org, Boolean>(new CheckboxCell(true, false)) {
+			@Override
+			public Boolean getValue(Org object) {
+				// Get the value from the selection model.
+				return selectionModel.isSelected(object);
+			}
+		};
+		orgsTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+		orgsTable.setColumnWidth(checkColumn, 40, Unit.PX);
+
+		// First name.
+		Column<Org, String> name = new Column<Org, String>(new TextCell()) {
+			@Override
+			public String getValue(Org object) {
+				return object.getName();
+			}
+		};
+		name.setSortable(true);
+		orgsTable.addColumn(name, "Name");
+		orgsTable.setColumnWidth(name, 40, Unit.PCT);
+
+		// Last name.
+		Column<Org, String> description = new Column<Org, String>(new TextCell()) {
+			@Override
+			public String getValue(Org object) {
+				return object.getDisplayName();
+			}
+		};
+		description.setSortable(true);
+		orgsTable.addColumn(description, "Description");
+		
+		orgsTable.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				SingleSelectionModel<Org> usersSelectionModel = (SingleSelectionModel<Org>) orgsTable
+						.getSelectionModel();
+				
+				Org model = usersSelectionModel.getSelectedObject();
+				boolean isSelected = false;
+				if (model != null) {
+					isSelected = usersSelectionModel.isSelected(model);
+				} else {
+					model = new Org();
+				}
+				eventBus.fireEvent(new CheckboxSelectionEvent(model, isSelected));
+			}
+		});
+		
+	}
 
 }

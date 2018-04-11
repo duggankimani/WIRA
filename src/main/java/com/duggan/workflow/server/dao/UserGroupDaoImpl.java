@@ -85,6 +85,14 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 			query.setParameter(key, params.get(key));
 		}
 		
+		if(offset==null) {
+			offset = 0;
+		}
+		
+		if(limit == null) {
+			limit = 15;
+		}
+		
 		return query.setFirstResult(offset).setMaxResults(limit).getResultList();
 	}
 	
@@ -111,7 +119,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Group> getAllGroups(String searchTerm) {
+	public List<Group> getAllGroups(String searchTerm, Integer offset, Integer limit) {
 		
 		StringBuffer jpql = new StringBuffer("FROM BGroup b ");
 		
@@ -127,10 +135,36 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		for(String key: params.keySet()){
 			query.setParameter(key, params.get(key));
 		}
+
+		if(offset==null) {
+			offset = 0;
+		}
 		
-		return query.getResultList();
+		if(limit==null) {
+			limit = 10;
+		}
+		return query.setFirstResult(offset).setMaxResults(limit).getResultList();
 	}
 
+
+	public Integer getGroupCount(String searchTerm) {
+		StringBuffer jpql = new StringBuffer("select count(b) FROM BGroup b ");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(searchTerm!=null){
+			jpql.append(" where (lower(b.name) like :searchTerm "
+					+ "or lower(b.fullName) like :searchTerm) and b.isActive=1 ");
+			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+		}
+		
+		Query query = em.createQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+
+		return ((Number) query.getSingleResult()).intValue();
+	}
+	
 	public User getUser(Long id) {
 		
 		return em.find(User.class, id);

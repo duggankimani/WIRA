@@ -13,14 +13,14 @@ public class OrganizationDao extends BaseDaoImpl {
 		super(em);
 	}
 
-	public OrgModel getByOrgModelId(String roleId) {
-		return getByOrgModelId(roleId, true);
+	public OrgModel getByOrgModelId(String refId) {
+		return getByOrgModelId(refId, true);
 	}
 
-	public OrgModel getByOrgModelId(String roleId, boolean isThrowExceptionIfNull) {
+	public OrgModel getByOrgModelId(String refId, boolean isThrowExceptionIfNull) {
 		OrgModel role = getSingleResultOrNull(
 				getEntityManager().createQuery("from OrgModel u where u.refId=:refId")
-				.setParameter("refId", roleId));
+				.setParameter("refId", refId));
 		return role;
 	}
 

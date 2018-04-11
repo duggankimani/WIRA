@@ -39,6 +39,7 @@ public class GetInitialDocumentRequestHandler extends
 			GetDocumentRequest request = new GetDocumentRequest(action.getDocRefId(), action.getTaskId(),action.isLoadAsAdmin());
 			GetDocumentResult result = execContext.execute(request);
 			Doc doc = result.getDoc(); 
+//			doc._s("institution", "11018");
 			
 			GetTaskStepsRequest taskSteps = new GetTaskStepsRequest(doc);
 			GetTaskStepsResponse response = execContext.execute(taskSteps);

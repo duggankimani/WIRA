@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent;
 import com.duggan.workflow.client.event.CheckboxSelectionEvent.CheckboxSelectionHandler;
 import com.duggan.workflow.client.event.ShowMessageEvent;
-import com.duggan.workflow.client.model.UploadContext;
-import com.duggan.workflow.client.model.UploadContext.UPLOADACTION;
 import com.duggan.workflow.client.place.NameTokens;
 import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.AlertType;
@@ -83,7 +81,7 @@ public class UserPresenter extends
 
 		void bindUsers(ArrayList<HTUser> users, Integer offset, Integer totalCount);
 
-		void bindGroups(ArrayList<UserGroup> groups);
+		void bindGroups(ArrayList<UserGroup> groups, Integer offset, Integer totalCount);
 
 		void setUserEdit(boolean value);
 
@@ -103,7 +101,7 @@ public class UserPresenter extends
 
 		HasClickHandlers getDeleteOrg();
 
-		void bindOrgs(ArrayList<Org> orgs);
+		void bindOrgs(ArrayList<Org> orgs, Integer start, Integer totalCount);
 
 		void setOrgEdit(boolean value);
 	}
@@ -346,7 +344,7 @@ public class UserPresenter extends
 					@Override
 					public void processResult(SaveUserResponse result) {
 						fireEvent(new ShowMessageEvent(AlertType.SUCCESS, "User successfully saved!",true));
-						fireEvent(new LoadUsersEvent());
+						loadUsers(null, 0, PAGE_SIZE);
 					}
 				});
 	}
@@ -378,14 +376,14 @@ public class UserPresenter extends
 		loadOrgs(null, 0, 100);
 	}
 
-	private void loadOrgs(String searchTerm, int start, int length) {
+	private void loadOrgs(String searchTerm, final int start, int length) {
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new GetOrgsRequest(searchTerm, start, length),
 				new TaskServiceCallback<GetOrgsResponse>() {
 					@Override
 					public void processResult(GetOrgsResponse aResponse) {
 						ArrayList<Org> orgs = aResponse.getOrgs();
-						getView().bindOrgs(orgs);
+						getView().bindOrgs(orgs, start, aResponse.getTotalCount());
 						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new CheckboxSelectionEvent(selectedModel,
 								true));
@@ -397,7 +395,7 @@ public class UserPresenter extends
 		loadGroups(null, 0, PAGE_SIZE);
 	}
 	
-	private void loadGroups(String searchTerm, Integer offset, Integer limit) {
+	private void loadGroups(String searchTerm, final Integer offset, final Integer limit) {
 		GetGroupsRequest request = new GetGroupsRequest();
 		request.setSearchTerm(searchTerm);
 		request.setOffset(offset);
@@ -408,7 +406,7 @@ public class UserPresenter extends
 					@Override
 					public void processResult(GetGroupsResponse result) {
 						ArrayList<UserGroup> groups = result.getGroups();
-						getView().bindGroups(groups);
+						getView().bindGroups(groups, offset, result.getTotalCount());
 						// loadGroups(groups);
 						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new CheckboxSelectionEvent(selectedModel,
@@ -422,7 +420,7 @@ public class UserPresenter extends
 		request.setOffset(offset);
 		request.setLength(limit);
 		
-		fireEvent(new ProcessingEvent());
+//		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetUsersResponse>() {
 					@Override
@@ -430,9 +428,9 @@ public class UserPresenter extends
 						ArrayList<HTUser> users = result.getUsers();
 						getView().bindUsers(users, offset, result.getTotalCount());
 						// loadUsers(users);
-						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new CheckboxSelectionEvent(selectedModel,
 								true));
+//						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}

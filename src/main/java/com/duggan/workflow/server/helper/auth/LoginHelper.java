@@ -117,7 +117,7 @@ public class LoginHelper implements LoginIntf{
 		return impl.deleteGroup(group);
 	}
 
-	public List<HTUser> getAllUsers(String searchTerm, int offset, int limit) {
+	public List<HTUser> getAllUsers(String searchTerm, Integer offset, Integer limit) {
 
 		return impl.getAllUsers(searchTerm, offset, limit);
 	}
@@ -128,9 +128,9 @@ public class LoginHelper implements LoginIntf{
 		return impl.getUserCount(searchTerm);
 	}
 
-	public List<UserGroup> getAllGroups(String searchTerm) {
+	public List<UserGroup> getAllGroups(String searchTerm, Integer offset, Integer limit) {
 		
-		return impl.getAllGroups(searchTerm);
+		return impl.getAllGroups(searchTerm, offset, limit);
 	}
 
 	@Override

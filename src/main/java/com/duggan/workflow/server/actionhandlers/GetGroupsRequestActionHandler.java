@@ -33,7 +33,8 @@ public class GetGroupsRequestActionHandler extends
 			groups.add(group);
 			response.setGroups(groups);
 		}else{
-			response.setGroups((ArrayList<UserGroup>) LoginHelper.get().getAllGroups(action.getSearchTerm()));
+			response.setGroups((ArrayList<UserGroup>) LoginHelper.get().getAllGroups(action.getSearchTerm(), action.getOffset(), action.getLength()));
+			response.setTotalCount(DB.getUserGroupDao().getGroupCount(action.getSearchTerm()));
 		}
 		
 	}

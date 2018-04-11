@@ -183,4 +183,12 @@ public class User extends PO {
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
+
+	public OrgModel getOrg() {
+		return org;
+	}
+
+	public void setOrg(OrgModel org) {
+		this.org = org;
+	}
 }

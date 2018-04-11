@@ -31,6 +31,7 @@ import com.duggan.workflow.server.dao.UserGroupDaoImpl;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.dao.model.Activation;
 import com.duggan.workflow.server.dao.model.Group;
+import com.duggan.workflow.server.dao.model.OrgModel;
 import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
@@ -42,6 +43,7 @@ import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.wira.commons.shared.models.CurrentUserDto;
 import com.wira.commons.shared.models.HTUser;
+import com.wira.commons.shared.models.Org;
 import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.REPORTVIEWIMPL;
 import com.wira.commons.shared.models.UserGroup;
@@ -100,6 +102,10 @@ public class UserDaoHelper implements LoginIntf {
 			JBPMHelper.get().setCounts(htuser);
 		}
 
+		OrgModel model = user.getOrg();
+		if(model!=null) {
+			htuser.setOrg(model.toDto());
+		}
 		return htuser;
 	}
 
@@ -132,7 +138,7 @@ public class UserDaoHelper implements LoginIntf {
 
 	@Override
 	public List<UserGroup> retrieveGroups() {
-		List<Group> groups = DB.getUserGroupDao().getAllGroups(null);
+		List<Group> groups = DB.getUserGroupDao().getAllGroups(null, 0, 100);
 
 		List<UserGroup> userGroups = new ArrayList<>();
 		if (groups != null) {
@@ -182,7 +188,17 @@ public class UserDaoHelper implements LoginIntf {
 		user.setGroups(get(htuser.getGroups()));
 		user.setRefreshToken(htuser.getRefreshToken());
 		user.setPictureUrl(htuser.getPictureUrl());
-
+		
+		Org org = htuser.getOrg();
+		if(org!=null) {
+			logger.info(">> Saving user "+htuser.getDisplayName()+">> Org -> "+org.getDisplayName()+", "+org.getRefId());
+			
+			OrgModel model = DB.getOrganizationDao().getByOrgModelId(org.getRefId());
+			user.setOrg(model);
+		}else {
+			logger.info(">> Saving user "+htuser.getDisplayName() +" NO ORG");
+		}
+		
 		dao.saveUser(user);
 
 		htuser = get(user);
@@ -315,7 +331,7 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	@Override
-	public List<HTUser> getAllUsers(String searchTerm, int offset, int limit) {
+	public List<HTUser> getAllUsers(String searchTerm, Integer offset, Integer limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		List<User> users = dao.getAllUsers(searchTerm, offset, limit);
 
@@ -336,10 +352,10 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	@Override
-	public List<UserGroup> getAllGroups(String searchTerm) {
+	public List<UserGroup> getAllGroups(String searchTerm, Integer offset, Integer limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 
-		return getFromDb(dao.getAllGroups(searchTerm));
+		return getFromDb(dao.getAllGroups(searchTerm,offset, limit));
 	}
 
 	@Override
