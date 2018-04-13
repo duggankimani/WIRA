@@ -97,6 +97,9 @@ public class UserSaveView extends Composite {
 	// Organization/ unit
 	@UiField
 	TextField txtUnitName;
+	
+	@UiField
+	TextArea txtOrgDescription;
 
 	@UiField
 	Element divPermissions;
@@ -412,12 +415,14 @@ public class UserSaveView extends Composite {
 			org = new Org();
 		}
 		org.setName(txtUnitName.getValue());
+		org.setDescription(txtOrgDescription.getValue());
 		return org;
 	}
 
 	public void setOrg(Org org) {
 		this.org = org;
 		txtUnitName.setValue(org.getName());
+		txtOrgDescription.setValue(org.getDescription());
 	}
 
 	HTUser user;

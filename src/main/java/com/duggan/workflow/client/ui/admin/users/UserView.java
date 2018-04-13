@@ -923,7 +923,6 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		orgsTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
 		orgsTable.setColumnWidth(checkColumn, 40, Unit.PX);
 
-		// First name.
 		Column<Org, String> name = new Column<Org, String>(new TextCell()) {
 			@Override
 			public String getValue(Org object) {
@@ -938,7 +937,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		Column<Org, String> description = new Column<Org, String>(new TextCell()) {
 			@Override
 			public String getValue(Org object) {
-				return object.getDisplayName();
+				return object.getDescription();
 			}
 		};
 		description.setSortable(true);

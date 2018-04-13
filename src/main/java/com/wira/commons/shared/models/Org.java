@@ -19,6 +19,7 @@ public class Org extends SerializableObj implements Listable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
+	private String description;
 	private String county;
 	
 	public Org() {
@@ -34,7 +35,7 @@ public class Org extends SerializableObj implements Listable{
 
 	@Override
 	public String getDisplayName() {
-		return name;
+		return getDescription();
 	}
 
 	public String getCounty() {
@@ -43,5 +44,13 @@ public class Org extends SerializableObj implements Listable{
 
 	public void setCounty(String county) {
 		this.county = county;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

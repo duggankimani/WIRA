@@ -33,6 +33,8 @@ public class OrgModel extends PO{
 	@Column(nullable=false)
 	private String name;
 	
+	private String description;
+	
 	private String county;
 	
 	@OneToMany(mappedBy="org")
@@ -59,12 +61,14 @@ public class OrgModel extends PO{
 		org.setRefId(getRefId());
 		org.setName(getName());
 		org.setCounty(county);
+		org.setDescription(description);
 		return org;
 	}
 	
 	public void copyFrom(Org org){
 		setName(org.getName());
 		setCounty(org.getCounty());
+		setDescription(org.getDescription());
 	}
 
 	public String getCounty() {
@@ -81,5 +85,13 @@ public class OrgModel extends PO{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
