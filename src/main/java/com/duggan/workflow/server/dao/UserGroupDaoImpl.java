@@ -90,7 +90,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		}
 		
 		if(limit == null) {
-			limit = 15;
+			return query.getResultList();
 		}
 		
 		return query.setFirstResult(offset).setMaxResults(limit).getResultList();
@@ -141,7 +141,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		}
 		
 		if(limit==null) {
-			limit = 10;
+			return query.getResultList();
 		}
 		return query.setFirstResult(offset).setMaxResults(limit).getResultList();
 	}
