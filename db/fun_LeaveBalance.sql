@@ -54,6 +54,7 @@ BEGIN
 	
 	RAISE NOTICE 'v_daysallocated = % , v_leavedays_taken = % , v_daysearned = %, v_balance_from_previous_year = % ', v_daysallocated,v_leavedays_taken,v_daysearned, v_balance_from_previous_year;
 	
+	v_daysearned = coalesce(v_daysearned,0);
 	v_leavebalance = v_daysallocated - v_leavedays_taken;
 	v_balance_from_previous_year = coalesce(v_balance_from_previous_year, 0);
 	RETURN QUERY select v_leavebalance,v_daysallocated,v_leavedays_taken,v_daysearned, v_balance_from_previous_year;
