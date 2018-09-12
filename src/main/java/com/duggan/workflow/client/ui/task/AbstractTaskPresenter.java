@@ -49,6 +49,7 @@ import com.duggan.workflow.shared.responses.MultiRequestActionResult;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -130,7 +131,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		}
 	};
 
-	protected static final int PAGE_SIZE = 15;
+	protected static final int PAGE_SIZE =1000;
 
 	protected int CURPOS = 0;
 

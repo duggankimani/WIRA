@@ -28,11 +28,12 @@ public class OrganizationDao extends BaseDaoImpl {
 		save(role);
 	}
 
-	public List<OrgModel> getAllOrgModels(String searchText, Integer offSet, Integer limit) {
+	public List<OrgModel> getAllOrgModels(String searchText, Integer offset, Integer limit) {
 		StringBuffer sql = new StringBuffer("from OrgModel where isActive=1 ");
 
 		if (searchText != null && !searchText.isEmpty()) {
-			sql.append(" and (lower(name) like :searchText)");
+			sql.append(" and (lower(name) like :searchText or "
+					+ "lower(description) like :searchText)");
 		}
 		sql.append(" order by name");
 		Query query = getEntityManager().createQuery(sql.toString());
@@ -42,7 +43,8 @@ public class OrganizationDao extends BaseDaoImpl {
 			query.setParameter("searchText", "%" + searchText.toLowerCase() + "%");
 		}
 
-		return getResultList(query, offSet, limit);
+		System.err.println("##### Offset = "+offset+", limit="+limit);
+		return getResultList(query, offset, limit);
 	}
 
 	public void updateOrgModel(OrgModel role) {

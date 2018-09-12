@@ -75,7 +75,9 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 			jpql.append(" where (lower(u.userId) like :searchTerm or "
 					+ "lower(u.lastName) like :searchTerm or "
 					+ "lower(u.firstName) like :searchTerm or "
-					+ "lower(u.email) like :searchTerm) and u.isActive=1 ");
+					+ "lower(u.email) like :searchTerm or "
+					+ "lower(u.org.description) like :searchTerm) "
+					+ "and u.isActive=1 ");
 			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
 		}
 		jpql.append(" order by u.lastName, u.firstName");

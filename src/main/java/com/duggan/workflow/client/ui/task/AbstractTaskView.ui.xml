@@ -58,6 +58,8 @@
 					<g:FlexTable ui:field="tblTasks" styleName="table table-hover table-condensed"
 						width="100%"></g:FlexTable>
 				</g:ScrollPanel>
+			
+				<g:HTMLPanel ui:field="divPaginate"></g:HTMLPanel>
 			</div>
 		</div>
 

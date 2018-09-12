@@ -41,7 +41,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -105,15 +107,21 @@ public class AbstractTaskView extends ViewImpl implements
 	private int totalCount;
 
 	private TaskType currentTaskType;
-
+//
+//	@UiField
+//	HTMLPanel divPaginate;
+//	
+//	SimplePager usersPager;
+	
 	enum DefaultFields {
 		CaseNo, Process, Task, Submitter, CurrentTask, CurrentUser, Due, Modified, Status, Priority, Notes
 	}
-
+	
 	@Inject
 	public AbstractTaskView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-
+		
+		//divPaginate.add(usersPager);
 		defaultSchema.addColumn(new Column(DefaultFields.CaseNo.name(),
 				"Case No", "Case", "50px"));
 		defaultSchema.addColumn(new Column(DefaultFields.Process.name(),

@@ -70,7 +70,7 @@
 									<tr>
 										<td valign="top">
 											<c:CellTable addStyleNames="{style.cellTable}"
-												pageSize="15" ui:field="usersTable" />
+												pageSize="10" ui:field="usersTable" />
 										</td>
 									</tr>
 									<tr>
@@ -140,7 +140,7 @@
 									<tr>
 										<td valign="top">
 											<c:CellTable addStyleNames="{style.cellTable}"
-												pageSize="15" ui:field="groupsTable" />
+												pageSize="10" ui:field="groupsTable" />
 										</td>
 									</tr>
 									<tr>

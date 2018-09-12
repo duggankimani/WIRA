@@ -46,7 +46,7 @@ public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList,
 
 		String userId = action.getUserId() == null ? SessionHelper.getCurrentUser().getUserId() : action.getUserId();
 
-		int totalCount = 0;
+		int totalCount = 100;
 		TaskType type = action.getType();
 
 		List<Doc> summaries = new ArrayList<>();

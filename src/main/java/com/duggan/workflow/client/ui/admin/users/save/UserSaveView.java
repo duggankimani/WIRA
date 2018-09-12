@@ -33,6 +33,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -167,7 +168,7 @@ public class UserSaveView extends Composite {
 	private void loadGroups() {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetGroupsRequest());
-		action.addRequest(new GetOrgsRequest(null, 0, 100));
+		action.addRequest(new GetOrgsRequest(null, 0, 1000));
 
 		AppContext.getDispatcher().execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
