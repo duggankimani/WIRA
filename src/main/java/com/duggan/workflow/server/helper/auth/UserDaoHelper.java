@@ -411,7 +411,10 @@ public class UserDaoHelper implements LoginIntf {
 				+ ","
 				+ "<p/>An account has been created for you in the IPMIS portal. "
 				+ "<a href=" + link + ">Click this link </a>"
-				+ " to create your password." + "<p>Thank you";
+				+ " to create your password. "
+				+ "<p/> Note: Your Username is <b>" + user.getUserId() + "</b> " 
+				+ "<p>Thank you, <br/>"
+				+ " IPMIS Admin";
 
 		try {
 			HTUser htuser = new HTUser(user.getUserId(), user.getEmail());
@@ -440,6 +443,38 @@ public class UserDaoHelper implements LoginIntf {
 	}
 
 	public void sendAccountResetEmail(HTUser user) {
+		Activation act = new Activation(user.getRefId());
+		DB.getUserGroupDao().save(act);
+
+		String subject = "IPMIS Password Reset";
+		String link = SessionHelper.getApplicationPath()
+				+ "/account.html#/activateacc/" +act.getRefId()+"/"+ user.getRefId() + "/reset";
+		
+		String body = "Hello "
+				+ user.getFullName()
+				+ ","
+				+ "<p>We received a request to reset the password for your IPMIS account.<br/>" 
+				+ " If you requested a reset for your account " + user.getUserId()+ ", " 
+				+ "<a href=" + link + ">Click this link </a>"
+				+ " to reset your password." + "<p>"
+				+ "<p> If you didn’t make this request, please ignore this email."
+				+ "<p> Regards, <br/>" 
+				+ " IPMIS Admin. ";
+
+		try {			
+			HTUser htuser = new HTUser(user.getUserId(), user.getEmail());
+			List<HTUser> recipients = Arrays.asList(htuser);
+			sendMail(subject, recipients, body);
+		} catch (Exception e) {
+			logger.warning("Reset Email for " + user.getEmail()
+					+ " failed. Cause: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+/*	public void sendAccountResetEmail(HTUser user) {
 		
 		Activation act = new Activation(user.getRefId());
 		DB.getUserGroupDao().save(act);
@@ -483,7 +518,7 @@ public class UserDaoHelper implements LoginIntf {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	public void login(LoginRequest action, LoginRequestResult result) {
 		execLogin(action, result);

@@ -8,6 +8,6 @@ public class TestSMSIntegration {
 
 	@Test
 	public void sendMessage(){
-		new SMSIntegration().send("0721239821", "Testing sms!!");
+		SMSIntegration.sendSMS("0704660993", "Testing sms!!");
 	}
 }

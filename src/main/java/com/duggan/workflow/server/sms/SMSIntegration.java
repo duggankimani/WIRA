@@ -1,9 +1,10 @@
 package com.duggan.workflow.server.sms;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,38 +42,53 @@ public class SMSIntegration {
 		SMS sms = new SMS(subject, to, pin);
 		DB.getEntityManager().persist(sms);
 
-		return send(to, message);
+		return sendSMS(to, message);
 	}
 	
-	public static String send(String to, String message){
-		logger.info("To: "+to+", message: "+message);
-		if(to==null || to.isEmpty() || message==null || message.isEmpty()){
-			
+	static Properties settings = new Properties();
+	static {
+		try {
+			settings.load(AfricasTalkingGateway.class.getClassLoader().getResourceAsStream("general.properties"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-		String username="dkimani";
-		String apiKey="4f91e819ea8defb7d14111c51b46769a26856fde6a15cc85545701ca71c38026";
-		
-		//String to="+254721239821";
-		AfricasTalkingGateway gateway = new AfricasTalkingGateway(username, apiKey);
-		try{
-			JSONArray resp = gateway.sendMessage(to, message);
+	}
 
-			JSONObject object = resp.getJSONObject(0);
+	public static String sendSMS(String phoneNumber, String message) {
+		return sendSMS(phoneNumber, message, null);
+	}
+
+	public static String sendSMS(String phoneNumber, String message, String from) {
+		JSONObject jsonData = new JSONObject();
+		String failureReason = null;
+		try {
 			
-			String status = object.getString("status");
-			String number = object.getString("number");
-			String messageId=object.getString("messageId");
-			String cost=object.getString("cost");
+			String username = settings.getProperty("africastalking.username");
+
+			String keyword = settings.getProperty("africastalking.keyword");
 			
-			if(!status.equals("Success")){
-				throw new RuntimeException("SMS Failed: "+status);
+			String apiKey = settings.getProperty("africastalking.apikey");
+			
+			AfricasTalkingGateway gateway = new AfricasTalkingGateway(username, apiKey);
+			JSONArray arr = null;
+			logger.trace("Sending message with keyword>>>" + keyword + ">>> username >>>" + username + ">>>password>>>>"
+					+ apiKey);
+			arr = gateway.sendMessage(phoneNumber, message, keyword);
+
+			logger.trace(arr.toString());
+			for (int n = 0; n < arr.length(); n++) {
+				jsonData = arr.getJSONObject(n);
 			}
-			logger.info(resp);
-		}catch(Exception e){
-			throw new RuntimeException(ExceptionUtils.getRootCauseMessage(e));
+
+		} catch (Exception e) {
+			try {
+				jsonData.put("failureReason", "Sms failed because: " + e.getMessage());
+				failureReason = jsonData.getString("failureReason");
+			}catch (Exception e1) {
+			}
+			
+			throw new RuntimeException(e);
 		}
-		
-		return null;
-				
+		return failureReason;
 	}
 }

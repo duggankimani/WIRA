@@ -21,8 +21,7 @@ public class SMSWorkItemHandler implements WorkItemHandler {
 			message = message.replace("{subject}", document.getCaseNo());
 		}catch(Exception e){}
 	
-		SMSIntegration integration = new SMSIntegration();
-		integration.send(telephone, message);
+		SMSIntegration.sendSMS(telephone, message);
 		manager.completeWorkItem(workItem.getId(), new HashMap<String, Object>());
 	}
 
