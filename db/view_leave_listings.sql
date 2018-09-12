@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW kam_leave_listings AS 
-SELECT DISTINCT ON (applicant,caseno,leavecategory) * from(
+SELECT DISTINCT ON (applicant,caseno,leavecategory, beginning) * from(
 SELECT d.createdby AS applicant,
     d.caseno,
     to_char(d.created, 'DD-MM-YYYY HH24:MI'::text) AS applicationdate,
