@@ -508,6 +508,7 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 	}
 	
 	private void deleteLines(boolean fireDeleteFromDB) {
+		//Window.alert("Delete all lines : "+getField().getName());
 		HashMap<String, HTMLLine> toDelete = new HashMap<String, HTMLLine>();
 		toDelete.putAll(htmlLines);
 		for (HTMLLine line : toDelete.values()) {
@@ -614,11 +615,17 @@ public class Grid extends FieldWidget implements DeleteLineHandler, ReloadGridHa
 			
 			//Remove row from table
 			flextable.removeRow(tableRow);
-			for (FieldWidget widget : inputs) {
-				Field child = widget.getField();
-				ENV.removeContext(child);
-				widget.onUnload();// disable listeners
+			//Window.alert("Removed row from flextable");
+			if(inputs!=null) {
+				for (FieldWidget widget : inputs) {
+					Field child = widget.getField();
+					ENV.removeContext(child);
+					widget.onUnload();// disable listeners
+				}
 			}
+			
+			//Window.alert(getField().getName()+": Finally Disabled fieldwidgets "+documentLine.getTempId());
+			
 			htmlLines.remove(documentLine.getTempId()+"");
 			--rowCount;
 		}

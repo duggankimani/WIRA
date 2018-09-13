@@ -127,10 +127,16 @@ public class ENV{
 		if(field.isGridColumn()){
 			//eg. GRID_particulars_qty_1
 			ArrayList<String> qualifiedNames = getQualifiedNames(fieldName);
-			qualifiedNames.remove(qualifiedFieldName);
+			if(qualifiedNames!=null) {
+				qualifiedNames.remove(qualifiedFieldName);
+			}
+			
 		}else{
 			//eg. total
-			nameToQualifieldNameMap.remove(fieldName);
+			if(nameToQualifieldNameMap!=null) {
+				nameToQualifieldNameMap.remove(fieldName);
+			}
+			
 		}
 		
 		
