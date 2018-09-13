@@ -1036,7 +1036,7 @@ public class GenericDocumentPresenter extends
 		 * 
 		 * @See Doc.addDetail()
 		 */
-
+		
 	}
 
 	private void completeIt(HashMap<String, Value> withValues) {
@@ -1575,7 +1575,9 @@ public class GenericDocumentPresenter extends
 	private void loadDynamicFields(
 			HashMap<String, ArrayList<String>> dependencies,
 			final String triggerName, final boolean reloadSteps) {
-
+		
+		//Window.alert(">> Dynamic fields : "+dependencies);
+		
 		final ArrayList<Field> dependants = new ArrayList<Field>();
 		if (dependencies != null) {
 			for (ArrayList<String> names : dependencies.values()) {

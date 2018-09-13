@@ -133,9 +133,13 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		if (value != null) {
 			return new StringValue(field.getLastValueId(), field.getName(),
 					value);
+		}else if(getPropertyValue(SQLSELECT)!=null && !getPropertyValue(SQLSELECT).isEmpty()) {
+			
+			return new StringValue(field.getLastValueId(), field.getName(),
+					tempValue);
 		}else{
 			return new StringValue(field.getLastValueId(), field.getName(),
-					null);
+					value);
 		}
 
 //		return null;
@@ -194,6 +198,8 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		return lstItems.values();
 	}
 
+	String tempValue;
+	
 	@Override
 	public void setValue(Object value) {
 		super.setValue(value);
@@ -202,6 +208,7 @@ public class SelectBasic extends FieldWidget implements IsSelectionField {
 		}
 		
 		String key = (String) value;
+		this.tempValue = key;
 		lstItems.setValueByKey(key);
 
 		if (lblComponent != null) {
