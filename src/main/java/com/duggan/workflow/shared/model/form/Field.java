@@ -247,7 +247,7 @@ public class Field extends FormModel implements Comparable<Field>{
 	}
 
 	public String getDocSpecificName(){
-		return (gridName.isEmpty()? "" : getGridPrefix()+gridName+"_")+name;//+getSeparator()+getSuffix(docId);
+		return ((gridName==null || gridName.isEmpty())? "" : getGridPrefix()+gridName+"_")+name;//+getSeparator()+getSuffix(docId);
 	}
 	
 	public static String getSuffix(String documentId){
