@@ -11,7 +11,6 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
@@ -50,7 +49,6 @@ public class TestApprovalRequest {
 	@org.junit.After
 	public void destroy() throws IOException{
 		DB.rollback();
-		LoginHelper.get().close();
 		DB.closeSession();
 	}
 	

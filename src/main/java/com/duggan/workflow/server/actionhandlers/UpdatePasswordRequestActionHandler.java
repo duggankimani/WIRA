@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.requests.UpdatePasswordRequest;
 import com.duggan.workflow.shared.responses.UpdatePasswordResponse;
 import com.google.inject.Inject;
@@ -23,7 +23,7 @@ public class UpdatePasswordRequestActionHandler extends
 		
 		String username = action.getUsername();
 		String password = action.getPassword();
-		boolean success= LoginHelper.get().updatePassword(username, password);
+		boolean success= UserDaoHelper.getInstance().updatePassword(username, password);
 		
 		UpdatePasswordResponse response = (UpdatePasswordResponse)actionResult;
 	}

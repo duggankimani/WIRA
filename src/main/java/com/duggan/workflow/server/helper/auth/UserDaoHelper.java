@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.io.IOUtils;
 import org.jbpm.executor.ExecutorModule;
 import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
@@ -35,7 +34,6 @@ import com.duggan.workflow.server.dao.model.OrgModel;
 import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.server.helper.session.SessionHelper;
@@ -50,16 +48,20 @@ import com.wira.commons.shared.models.UserGroup;
 import com.wira.login.shared.request.LoginRequest;
 import com.wira.login.shared.response.LoginRequestResult;
 
-public class UserDaoHelper implements LoginIntf {
+public class UserDaoHelper {
 
 	Logger logger = Logger.getLogger(UserDaoHelper.class.getName());
-
-	@Override
-	public void close() throws IOException {
-
+	
+	private static UserDaoHelper instance= null;
+	
+	public static UserDaoHelper getInstance() {
+		if(instance==null) {
+			instance = new UserDaoHelper();
+		}
+		
+		return instance;
 	}
 
-	@Override
 	public boolean login(String username, String password) {
 
 		User user = DB.getUserGroupDao().getUser(username);
@@ -67,7 +69,7 @@ public class UserDaoHelper implements LoginIntf {
 		return user != null && user.getPassword().equals(password);
 	}
 
-	@Override
+
 	public List<HTUser> retrieveUsers() {
 		List<HTUser> ht_users = new ArrayList<>();
 
@@ -101,7 +103,7 @@ public class UserDaoHelper implements LoginIntf {
 			htuser.setGroups(getFromDb(user.getGroups()));
 			JBPMHelper.get().setCounts(htuser);
 		}
-
+		
 		OrgModel model = user.getOrg();
 		if(model!=null) {
 			htuser.setOrg(model.toDto());
@@ -120,12 +122,12 @@ public class UserDaoHelper implements LoginIntf {
 		return (ArrayList<UserGroup>) userGroups;
 	}
 
-	@Override
+
 	public HTUser getUser(String userId) {
 		return getUser(userId, false);
 	}
 
-	@Override
+
 	public HTUser getUser(String userId, boolean loadGroups) {
 		User user = DB.getUserGroupDao().getUser(userId);
 
@@ -136,7 +138,7 @@ public class UserDaoHelper implements LoginIntf {
 		return null;
 	}
 
-	@Override
+
 	public List<UserGroup> retrieveGroups() {
 		List<Group> groups = DB.getUserGroupDao().getAllGroups(null, 0, 100);
 
@@ -165,7 +167,7 @@ public class UserDaoHelper implements LoginIntf {
 		return userGroup;
 	}
 
-	@Override
+
 	public HTUser createUser(HTUser htuser, boolean isSendActivationEmail) {
 
 		boolean isNew = htuser.getId() == null;
@@ -240,7 +242,7 @@ public class UserDaoHelper implements LoginIntf {
 		return group;
 	}
 
-	@Override
+
 	public boolean deleteUser(HTUser htuser) {
 
 		assert htuser.getId() != null;
@@ -252,7 +254,7 @@ public class UserDaoHelper implements LoginIntf {
 		return true;
 	}
 
-	@Override
+
 	public List<UserGroup> getGroupsForUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		Collection<Group> groups = dao.getAllGroupsByUserId(userId);
@@ -267,7 +269,7 @@ public class UserDaoHelper implements LoginIntf {
 		return userGroups;
 	}
 
-	@Override
+
 	public List<HTUser> getUsersForGroup(String groupName) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		Collection<User> users = dao.getAllUsersByGroupId(groupName);
@@ -282,7 +284,7 @@ public class UserDaoHelper implements LoginIntf {
 		return groupUsers;
 	}
 
-	@Override
+
 	public boolean existsUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		User user = dao.getUser(userId);
@@ -290,7 +292,7 @@ public class UserDaoHelper implements LoginIntf {
 		return user != null;
 	}
 
-	@Override
+
 	public UserGroup createGroup(UserGroup usergroup) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		Group group = dao.getGroup(usergroup.getName());
@@ -315,7 +317,7 @@ public class UserDaoHelper implements LoginIntf {
 		return get(group);
 	}
 
-	@Override
+
 	public boolean deleteGroup(UserGroup userGroup) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 
@@ -330,7 +332,7 @@ public class UserDaoHelper implements LoginIntf {
 		return true;
 	}
 
-	@Override
+
 	public List<HTUser> getAllUsers(String searchTerm, Integer offset, Integer limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		List<User> users = dao.getAllUsers(searchTerm, offset, limit);
@@ -339,33 +341,33 @@ public class UserDaoHelper implements LoginIntf {
 
 		if (users != null)
 			for (User user : users) {
-				htusers.add(get(user, true));
+				htusers.add(get(user, false));
 			}
 
 		return htusers;
 	}
 	
-	@Override
+
 	public Integer getUserCount(String searchTerm) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		return dao.getUserCount(searchTerm);
 	}
 
-	@Override
+
 	public List<UserGroup> getAllGroups(String searchTerm, Integer offset, Integer limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 
 		return getFromDb(dao.getAllGroups(searchTerm,offset, limit));
 	}
 
-	@Override
+
 	public UserGroup getGroupById(String groupId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 
 		return get(dao.getGroup(groupId));
 	}
 
-	@Override
+
 	public List<HTUser> getUsersForGroups(String[] groups) {
 		if (groups == null || groups.length == 0) {
 			return new ArrayList<>();
@@ -379,7 +381,7 @@ public class UserDaoHelper implements LoginIntf {
 		return users;
 	}
 
-	@Override
+
 	public boolean updatePassword(String username, String password) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		User user = dao.getUser(username);
@@ -663,7 +665,7 @@ public class UserDaoHelper implements LoginIntf {
 
 		if (isValid) {
 			user = (HTUser) sessionUser;
-			user.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(user.getUserId()));
+			user.setGroups((ArrayList<UserGroup>) getGroupsForUser(user.getUserId()));
 		}
 		
 		logger.info("getUserFromCookie(cookie="+loggedInCookie+") Server sessionId= "+sessionId+", validity = "+isValid+", User = "+user); 
@@ -673,9 +675,9 @@ public class UserDaoHelper implements LoginIntf {
 
 	private HTUser getUserFromCredentials(String username, String password) {
 		HTUser user = null;
-		boolean loggedIn = LoginHelper.get().login(username, password);
+		boolean loggedIn = login(username, password);
 		if (loggedIn) {
-			user = LoginHelper.get().getUser(username, true);
+			user = getUser(username, true);
 		}
 
 		return user;

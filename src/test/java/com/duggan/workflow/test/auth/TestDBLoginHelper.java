@@ -138,7 +138,6 @@ public class TestDBLoginHelper {
 
 	@After
 	public void destroy() throws IOException {
-		helper.close();
 		DB.rollback();
 		DB.closeSession();
 	}

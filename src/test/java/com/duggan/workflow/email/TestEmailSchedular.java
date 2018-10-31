@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.model.ErrorLog;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.model.RequestInfoDto;
 
 public class TestEmailSchedular {
@@ -57,7 +57,6 @@ public class TestEmailSchedular {
 	@org.junit.After
 	public void destroy() throws IOException{
 		DB.commitTransaction();
-		LoginHelper.get().close();
 		DB.closeSession();
 	}
 }

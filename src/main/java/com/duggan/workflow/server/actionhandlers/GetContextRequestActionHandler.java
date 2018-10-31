@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.duggan.workflow.server.ServerConstants;
 import com.duggan.workflow.server.dao.helper.SettingsDaoHelper;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
@@ -50,7 +50,7 @@ public class GetContextRequestActionHandler extends
 		
 		if(result.getIsValid()){
 			HTUser userDto = (HTUser)user;
-			userDto.setGroups((ArrayList<UserGroup>) LoginHelper.get().getGroupsForUser(userDto.getUserId()));
+			userDto.setGroups((ArrayList<UserGroup>) UserDaoHelper.getInstance().getGroupsForUser(userDto.getUserId()));
 			userDto.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForUser(userDto.getUserId()));
 			
 			CurrentUserDto currentUserDto = new CurrentUserDto(true, userDto);

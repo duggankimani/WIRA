@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.requests.SaveUserRequest;
 import com.duggan.workflow.shared.responses.SaveUserResponse;
 import com.google.inject.Inject;
@@ -22,14 +22,14 @@ public class SaveUserRequestActionHandler extends
 		HTUser user = action.getUser();
 		
 		if(!action.isDelete()){
-			user = LoginHelper.get().createUser(user, action.isSendActivationEmail());
+			user = UserDaoHelper.getInstance().createUser(user, action.isSendActivationEmail());
 			SaveUserResponse result = (SaveUserResponse)actionResult;
 			result.setUser(user);
 		}
 		
 		
 		if(action.isDelete()){
-			LoginHelper.get().deleteUser(user);
+			UserDaoHelper.getInstance().deleteUser(user);
 		}
 		
 	}

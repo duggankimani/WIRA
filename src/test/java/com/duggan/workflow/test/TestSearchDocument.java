@@ -16,7 +16,6 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.SearchFilter;
@@ -109,7 +108,6 @@ public class TestSearchDocument {
 	
 	@After
 	public void destroy() throws IOException{
-		LoginHelper.get().close();
 		DB.closeSession();
 	}
 }

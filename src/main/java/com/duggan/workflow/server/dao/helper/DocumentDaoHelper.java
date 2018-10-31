@@ -25,7 +25,7 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.DocumentModelJson;
 import com.duggan.workflow.server.dao.model.IDUtils;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.exceptions.InvalidSubjectExeption;
@@ -255,7 +255,7 @@ public class DocumentDaoHelper {
 		doc.setDescription(model.getDescription());
 		doc.setDocumentDate(model.getDocumentDate());
 		doc.setId(model.getId());
-		doc.setOwner(LoginHelper.get().getUser(model.getCreatedBy()));
+		doc.setOwner(UserDaoHelper.getInstance().getUser(model.getCreatedBy()));
 		doc.setCaseNo(model.getSubject());
 		doc.setType(getType(model.getType()));
 		doc.setDocumentDate(model.getDocumentDate());

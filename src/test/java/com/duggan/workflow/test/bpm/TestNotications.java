@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,7 +15,7 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.DocStatus;
@@ -26,12 +24,13 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.Notification;
 import com.wira.commons.shared.models.HTUser;
 
+import junit.framework.Assert;
+
 public class TestNotications {
 
 	@Ignore
 	public void setup(){
 		DBTrxProviderImpl.init();
-		LoginHelper.get();
 	}
 	
 	@Test
@@ -95,7 +94,7 @@ public class TestNotications {
 	
 	@Ignore
 	public void getUsersForGroup(){
-		List<HTUser> users = LoginHelper.get().getUsersForGroup("HOD_DEV");
+		List<HTUser> users = UserDaoHelper.getInstance().getUsersForGroup("HOD_DEV");
 		
 		Assert.assertTrue(users.size()>0);
 		
@@ -204,9 +203,6 @@ public class TestNotications {
 	
 	@Ignore
 	public void tearDown(){
-		try{
-			LoginHelper.get().close();
-		}catch(Exception e){}
 		DBTrxProviderImpl.close();		
 	}
 }

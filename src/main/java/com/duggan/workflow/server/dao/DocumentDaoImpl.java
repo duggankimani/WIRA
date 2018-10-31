@@ -25,7 +25,7 @@ import com.duggan.workflow.server.dao.model.DocumentModel;
 import com.duggan.workflow.server.dao.model.DocumentModelJson;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
@@ -390,7 +390,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 
 		Boolean hasAttachment = filter.hasAttachment();
 
-		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
+		List<UserGroup> groups = UserDaoHelper.getInstance().getGroupsForUser(
 				userId);
 		String groupsIds = "";
 		for (UserGroup group : groups) {

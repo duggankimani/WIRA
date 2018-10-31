@@ -11,7 +11,7 @@ import org.drools.runtime.process.WorkItemManager;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Notification;
@@ -56,7 +56,7 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		notification.setCreated(new Date());
 		notification.setDocumentId(new Long(documentId));
 		notification.setNotificationType(type);
-		notification.setOwner(LoginHelper.get().getUser(ownerId));
+		notification.setOwner(UserDaoHelper.getInstance().getUser(ownerId));
 		notification.setRead(false);
 		notification.setSubject(subject);
 		Document doc = DocumentDaoHelper.getDocument(notification.getDocumentId());
@@ -68,12 +68,12 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 		//notification.setTargetUserId(targetUserId);
 		if(actorId!=null && !actorId.trim().isEmpty()){
 			actors = new ArrayList<>();
-			actors.add(LoginHelper.get().getUser(actorId));
+			actors.add(UserDaoHelper.getInstance().getUser(actorId));
 		}
 		
 		//potential users
 		if(groupId!=null && !groupId.trim().isEmpty()){
-			potentialActors = LoginHelper.get().getUsersForGroup(groupId);
+			potentialActors = UserDaoHelper.getInstance().getUsersForGroup(groupId);
 		}
 		
 		List<HTUser> owner = new ArrayList<>();
@@ -86,7 +86,7 @@ public class GenerateNotificationWorkItemHandler implements WorkItemHandler {
 			
 			//Should return here
 		}
-		owner.add(LoginHelper.get().getUser(ownerId));
+		owner.add(UserDaoHelper.getInstance().getUser(ownerId));
 		
 		ApproverAction action =isApproved==null? ApproverAction.COMPLETED:
 			(Boolean)isApproved? ApproverAction.APPROVED: ApproverAction.REJECTED;	

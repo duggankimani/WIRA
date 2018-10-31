@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,18 +11,18 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.HTSummary;
+
+import junit.framework.Assert;
 
 public class TestMultipleSessions {
 
 	@Before
 	public void setup(){
 		DBTrxProviderImpl.init();
-		LoginHelper.get();
 	}
 	
 	@Test
@@ -94,7 +92,5 @@ public class TestMultipleSessions {
 	
 	@After
 	public void tearDown() throws IOException{
-		
-		LoginHelper.get().close();
 	}
 }

@@ -49,7 +49,7 @@ import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailUtil;
 import com.duggan.workflow.shared.model.Actions;
 import com.duggan.workflow.shared.model.BooleanValue;
@@ -225,7 +225,7 @@ public class JBPMHelper implements Closeable {
 
 		// Count Tasks
 
-		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
+		List<UserGroup> groups = UserDaoHelper.getInstance().getGroupsForUser(userId);
 		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
 			groupIds.add(group.getName());
@@ -323,7 +323,7 @@ public class JBPMHelper implements Closeable {
 	@SuppressWarnings("unchecked")
 	public List<HTSummary> getTasksForUser(String processId, String userId, Long processInstanceId,
 			boolean isLoadAsAdmin, int offset, int length) {
-		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(userId);
+		List<UserGroup> groups = UserDaoHelper.getInstance().getGroupsForUser(userId);
 		List<String> groupIds = new ArrayList<>();
 		for (UserGroup group : groups) {
 			groupIds.add(group.getName());
@@ -406,7 +406,7 @@ public class JBPMHelper implements Closeable {
 	public List<HTSummary> getTasksForUser(String processId, String userId, TaskType type, int offset, int length) {
 
 		String language = "en-UK";
-		if (!LoginHelper.get().existsUser(userId)) {
+		if (!UserDaoHelper.getInstance().existsUser(userId)) {
 			throw new RuntimeException("User " + userId + " Unknown!!");
 		}
 
@@ -641,7 +641,7 @@ public class JBPMHelper implements Closeable {
 
 	public HTUser getUser(String id) {
 
-		return LoginHelper.get().getUser(id, false);
+		return UserDaoHelper.getInstance().getUser(id, false);
 	}
 
 	public String getPotentialOwners(Long taskId) {
@@ -698,7 +698,7 @@ public class JBPMHelper implements Closeable {
 			// Task Id,
 			for (Object[] row : actualOwners) {
 				if (row[1] != null) {
-					task.setTaskActualOwner(LoginHelper.get().getUser(row[1].toString(), false));
+					task.setTaskActualOwner(UserDaoHelper.getInstance().getUser(row[1].toString(), false));
 				}
 			}
 
@@ -1206,7 +1206,7 @@ public class JBPMHelper implements Closeable {
 	private void loadActors(String actors, NodeDetail detail) {
 		String[] actorIds = actors.split(",");
 		for (String userId : actorIds) {
-			HTUser user = LoginHelper.get().getUser(userId.trim());
+			HTUser user = UserDaoHelper.getInstance().getUser(userId.trim());
 			detail.addUser(user);
 		}
 	}
@@ -1220,8 +1220,8 @@ public class JBPMHelper implements Closeable {
 	private void loadGroups(String groups, NodeDetail detail) {
 		String[] groupIds = groups.split(",");
 		for (String groupId : groupIds) {
-			UserGroup group = LoginHelper.get().getGroupById(groupId);
-			List<HTUser> lst = LoginHelper.get().getUsersForGroup(groupId);
+			UserGroup group = UserDaoHelper.getInstance().getGroupById(groupId);
+			List<HTUser> lst = UserDaoHelper.getInstance().getUsersForGroup(groupId);
 			detail.addAllUsers((ArrayList<HTUser>) lst);
 			detail.addGroup(group);
 		}

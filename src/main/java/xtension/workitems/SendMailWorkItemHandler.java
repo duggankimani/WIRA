@@ -20,7 +20,7 @@ import org.jbpm.executor.api.CommandCodes;
 import org.jbpm.executor.api.CommandContext;
 
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -75,18 +75,18 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		//notification.setTargetUserId(targetUserId);
 		if(actorId!=null && !actorId.trim().isEmpty()){
 			users = new ArrayList<>();
-			users.add(LoginHelper.get().getUser(actorId));
+			users.add(UserDaoHelper.getInstance().getUser(actorId));
 		}else if(groups!=null){
-			users = LoginHelper.get().getUsersForGroups(groups);
+			users = UserDaoHelper.getInstance().getUsersForGroups(groups);
 		}
 		
 		List<HTUser> owner = new ArrayList<>();
-		owner.add(LoginHelper.get().getUser(ownerId));
+		owner.add(UserDaoHelper.getInstance().getUser(ownerId));
 		
 		String body = "";
 		String approver = "";
 		if(groups!=null && groups.length>0){
-			List<UserGroup> groupList = LoginHelper.get().getGroupsByIds(groups);
+			List<UserGroup> groupList = new ArrayList<>();//.getInstance().getGroupsByIds(groups);
 			for(UserGroup group:groupList){
 				approver = approver.concat(group.getFullName()+", ");
 			}
@@ -98,7 +98,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		
 		if(approver==null && actorId!=null){
 			approver = actorId;
-			HTUser user = LoginHelper.get().getUser(actorId);
+			HTUser user = UserDaoHelper.getInstance().getUser(actorId);
 			if(user!=null)
 				approver = user.getFullName();
 			
@@ -247,7 +247,7 @@ public class SendMailWorkItemHandler implements WorkItemHandler {
 		
 		String owner = ownerId;
 		if(ownerId!=null){
-			HTUser user = LoginHelper.get().getUser(ownerId);
+			HTUser user = UserDaoHelper.getInstance().getUser(ownerId);
 			if(user!=null){
 				owner = user.getFullName();
 			}

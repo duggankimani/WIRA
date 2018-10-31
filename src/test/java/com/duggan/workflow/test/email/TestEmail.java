@@ -24,7 +24,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
 import com.duggan.workflow.server.export.HTMLToPDFConvertor;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.mvel.MVELExecutor;
@@ -104,9 +104,9 @@ public class TestEmail {
 		assert body!=null;
 		
 		EmailServiceHelper.sendEmail(body, "RE: Wira Enhanced mailing", 
-				Arrays.asList(LoginHelper.get().getUser("mariano"),
-						LoginHelper.get().getUser("james")),
-				LoginHelper.get().getUser("jshikuku"));
+				Arrays.asList(UserDaoHelper.getInstance().getUser("mariano"),
+						UserDaoHelper.getInstance().getUser("james")),
+				UserDaoHelper.getInstance().getUser("jshikuku"));
 	}
 	
 	@SuppressWarnings("deprecation")

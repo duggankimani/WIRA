@@ -48,22 +48,11 @@ import org.jbpm.task.service.local.LocalTaskService;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.instance.WorkflowProcessInstanceUpgrader;
 
-import xtension.workitems.FormValidationWorkItemHandler;
-import xtension.workitems.GenerateNotificationWorkItemHandler;
-import xtension.workitems.GenerateOutputDocWorkItemHandler;
-import xtension.workitems.IntegrationWorkItemHandler;
-import xtension.workitems.SMSWorkItemHandler;
-import xtension.workitems.SendMailWorkItemHandler;
-import xtension.workitems.UpdateActivityStatus;
-import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
-import xtension.workitems.WiseDigitsDocumentIntegration;
-import bitronix.tm.TransactionManagerServices;
-
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.email.EmailServiceHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Actions;
@@ -73,6 +62,17 @@ import com.duggan.workflow.shared.model.NotificationCategory;
 import com.duggan.workflow.shared.model.NotificationType;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
+
+import bitronix.tm.TransactionManagerServices;
+import xtension.workitems.FormValidationWorkItemHandler;
+import xtension.workitems.GenerateNotificationWorkItemHandler;
+import xtension.workitems.GenerateOutputDocWorkItemHandler;
+import xtension.workitems.IntegrationWorkItemHandler;
+import xtension.workitems.SMSWorkItemHandler;
+import xtension.workitems.SendMailWorkItemHandler;
+import xtension.workitems.UpdateActivityStatus;
+import xtension.workitems.UpdateApprovalStatusWorkItemHandler;
+import xtension.workitems.WiseDigitsDocumentIntegration;
 
 /**
  * 
@@ -908,18 +908,20 @@ public class BPMSessionManager {
 		doc.setCurrentTaskId(task.getId());
 		doc.setCurrentTaskName(JBPMHelper.get().getDisplayName(task));
 		User actualOwner = task.getTaskData().getActualOwner();
+		
+		UserDaoHelper helper = UserDaoHelper.getInstance();
 		if(actualOwner!=null){
-			doc.setTaskActualOwner(LoginHelper.get().getUser(actualOwner.getId(), false));
+			doc.setTaskActualOwner(helper.getUser(actualOwner.getId(), false));
 		}else{
 			StringBuffer potentialOwners = new StringBuffer();
 			List<OrganizationalEntity> entities = task.getPeopleAssignments().getPotentialOwners();
 			for(OrganizationalEntity e: entities){
 				if(e instanceof User){
-					HTUser user = LoginHelper.get().getUser(e.getId(), false);
+					HTUser user = helper.getUser(e.getId(), false);
 					if(user!=null)
 					potentialOwners.append(user.getFullName()+",");
 				}else{
-					UserGroup group = LoginHelper.get().getGroupById(e.getId());
+					UserGroup group = helper.getGroupById(e.getId());
 					potentialOwners.append(group.getFullName()+",");
 				}
 				

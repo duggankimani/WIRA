@@ -45,6 +45,8 @@ import com.wira.commons.shared.models.Module;
 import com.wira.commons.shared.models.Org;
 import com.wira.commons.shared.models.PermissionPOJO;
 import com.wira.commons.shared.models.UserGroup;
+import com.wira.commons.shared.request.GetUserRequest;
+import com.wira.commons.shared.response.GetUserRequestResult;
 
 public class UserSaveView extends Composite {
 
@@ -98,7 +100,7 @@ public class UserSaveView extends Composite {
 	// Organization/ unit
 	@UiField
 	TextField txtUnitName;
-	
+
 	@UiField
 	TextArea txtOrgDescription;
 
@@ -110,17 +112,17 @@ public class UserSaveView extends Composite {
 	private UserGroup group;
 	private Org org;
 
-	@UiField CheckBox chkSendEmail;
+	@UiField
+	CheckBox chkSendEmail;
 
-	private static Binder binder = GWT
-			.create(Binder.class);
-	
+	private static Binder binder = GWT.create(Binder.class);
+
 	public interface Binder extends UiBinder<Widget, UserSaveView> {
 	}
 
 	public UserSaveView() {
 		initWidget(binder.createAndBindUi(this));
-		
+
 		txtUserName.addValueChangeHandler(new ValueChangeHandler<String>() {
 
 			@Override
@@ -129,7 +131,7 @@ public class UserSaveView extends Composite {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onAttach() {
 		super.onAttach();
@@ -145,8 +147,7 @@ public class UserSaveView extends Composite {
 		setType(type);
 		if (dto != null) {
 			if (dto instanceof HTUser) {
-				setUser((HTUser) dto);
-				loadPermissions();
+				loadUser((HTUser)dto);
 			}
 			if (dto instanceof UserGroup) {
 				setGroup((UserGroup) dto);
@@ -160,7 +161,7 @@ public class UserSaveView extends Composite {
 		if (type == TYPE.GROUP) {
 			loadPermissions();
 		} else if (type == TYPE.USER) {
-			loadGroups();
+			//loadGroups();
 		}
 
 	}
@@ -170,25 +171,22 @@ public class UserSaveView extends Composite {
 		action.addRequest(new GetGroupsRequest());
 		action.addRequest(new GetOrgsRequest(null, 0, 1000));
 
-		AppContext.getDispatcher().execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult aResponse) {
-						GetGroupsResponse getGroups = (GetGroupsResponse) aResponse
-								.get(0);
-						lstGroups.setValues(getGroups.getGroups());
-						if (user != null && user.getGroups() != null) {
-							lstGroups.select(user.getGroups());
-						}
+		AppContext.getDispatcher().execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResponse) {
+				GetGroupsResponse getGroups = (GetGroupsResponse) aResponse.get(0);
+				lstGroups.setValues(getGroups.getGroups());
+				if (user != null && user.getGroups() != null) {
+					lstGroups.select(user.getGroups());
+				}
 
-						GetOrgsResponse getOrgs = (GetOrgsResponse) aResponse
-								.get(1);
-						lstOrg.setItems(getOrgs.getOrgs());
-						if (user != null && user.getOrg() != null) {
-							lstOrg.setValue(user.getOrg());
-						}
-					}
-				});
+				GetOrgsResponse getOrgs = (GetOrgsResponse) aResponse.get(1);
+				lstOrg.setItems(getOrgs.getOrgs());
+				if (user != null && user.getOrg() != null) {
+					lstOrg.setValue(user.getOrg());
+				}
+			}
+		});
 	}
 
 	private void loadPermissions() {
@@ -203,32 +201,27 @@ public class UserSaveView extends Composite {
 			action.addRequest(new GetPermissionsRequest(userId, roleName));
 		}
 
-		AppContext.getDispatcher().execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult aResponse) {
-						GetPermissionsResponse getPermissions = (GetPermissionsResponse) aResponse
-								.get(0);
-						ArrayList<PermissionPOJO> permissions = getPermissions
-								.getPermissions();
+		AppContext.getDispatcher().execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResponse) {
+				GetPermissionsResponse getPermissions = (GetPermissionsResponse) aResponse.get(0);
+				ArrayList<PermissionPOJO> permissions = getPermissions.getPermissions();
 
-						if (userId != null || roleName != null) {
-							GetPermissionsResponse groupPermissionsResp = (GetPermissionsResponse) aResponse
-									.get(1);
-							ArrayList<PermissionPOJO> groupPermissions = groupPermissionsResp
-									.getPermissions();
+				if (userId != null || roleName != null) {
+					GetPermissionsResponse groupPermissionsResp = (GetPermissionsResponse) aResponse.get(1);
+					ArrayList<PermissionPOJO> groupPermissions = groupPermissionsResp.getPermissions();
 
-							for (PermissionPOJO pojo : groupPermissions) {
-								int idx = permissions.indexOf(pojo);
-								permissions.remove(idx);
-								permissions.add(idx, pojo);
-							}
-
-						}
-
-						showPermissions(permissions);
+					for (PermissionPOJO pojo : groupPermissions) {
+						int idx = permissions.indexOf(pojo);
+						permissions.remove(idx);
+						permissions.add(idx, pojo);
 					}
-				});
+
+				}
+
+				showPermissions(permissions);
+			}
+		});
 
 	}
 
@@ -238,8 +231,7 @@ public class UserSaveView extends Composite {
 		Collections.sort(permissions, new Comparator<PermissionPOJO>() {
 			@Override
 			public int compare(PermissionPOJO pojo1, PermissionPOJO pojo2) {
-				return pojo1.getName().getModule()
-						.compareTo(pojo2.getName().getModule());
+				return pojo1.getName().getModule().compareTo(pojo2.getName().getModule());
 			}
 		});
 
@@ -282,8 +274,7 @@ public class UserSaveView extends Composite {
 				++i;
 			}
 
-			tblPermissions.setWidget(i, col, new PermissionPanel(permission,
-					type == TYPE.GROUP));
+			tblPermissions.setWidget(i, col, new PermissionPanel(permission, type == TYPE.GROUP));
 			HTMLPanel description = new HTMLPanel(permission.getDescription());
 			description.addStyleName("item");
 			tblPermissions.setWidget(i, col + 1, description);
@@ -401,7 +392,7 @@ public class UserSaveView extends Composite {
 		}
 		user.setEmail(txtEmail.getValue());
 		user.setName(txtFirstname.getValue());
-		//user.setPassword(txtPassword.getValue());
+		// user.setPassword(txtPassword.getValue());
 		user.setSurname(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
@@ -426,9 +417,21 @@ public class UserSaveView extends Composite {
 		txtOrgDescription.setValue(org.getDescription());
 	}
 
+	public void loadUser(HTUser dto) {
+		AppContext.getDispatcher().execute(new GetUserRequest(dto.getUserId()),
+				new TaskServiceCallback<GetUserRequestResult>() {
+					@Override
+					public void processResult(GetUserRequestResult aResponse) {
+						setUser(aResponse.getUser());
+						loadGroups();
+						loadPermissions();
+					}
+				});
+	}
+	
 	HTUser user;
-
 	public void setUser(HTUser user) {
+		Window.alert(user.getOrg().getDescription());
 		this.user = user;
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getName());
@@ -460,14 +463,14 @@ public class UserSaveView extends Composite {
 			issues.addError("Email is mandatory");
 		}
 
-//		if (isNullOrEmpty(txtPassword.getText())) {
-//			valid = false;
-//			issues.addError("Password is mandatory");
-//		} else {
-//			if (!txtPassword.getValue().equals(txtConfirmPassword.getValue())) {
-//				issues.addError("Password and confirm password fields do not match");
-//			}
-//		}
+		// if (isNullOrEmpty(txtPassword.getText())) {
+		// valid = false;
+		// issues.addError("Password is mandatory");
+		// } else {
+		// if (!txtPassword.getValue().equals(txtConfirmPassword.getValue())) {
+		// issues.addError("Password and confirm password fields do not match");
+		// }
+		// }
 
 		return valid;
 	}
@@ -518,7 +521,7 @@ public class UserSaveView extends Composite {
 	}
 
 	public boolean isSendEmail() {
-		return chkSendEmail.getValue()==null? false : chkSendEmail.getValue();
+		return chkSendEmail.getValue() == null ? false : chkSendEmail.getValue();
 	}
-	
+
 }

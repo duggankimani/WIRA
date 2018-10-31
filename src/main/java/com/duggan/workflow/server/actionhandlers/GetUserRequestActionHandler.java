@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rpc.server.ExecutionContext;
@@ -27,7 +26,7 @@ public class GetUserRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		HTUser user = null;
 		if(action.getUserId()!=null){
-			 user= LoginHelper.getHelper().getUser(action.getUserId(), true);
+			 user= UserDaoHelper.getInstance().getUser(action.getUserId(), true);
 		}else if(action.getRefId()!=null){
 			user = new UserDaoHelper().get((User)DB.getUserGroupDao().findByRefId(action.getRefId(), User.class), true);
 		}

@@ -14,7 +14,7 @@ import com.duggan.workflow.server.dao.helper.CommentDaoHelper;
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.model.Comment;
 import com.duggan.workflow.shared.model.Notification;
 import com.duggan.workflow.shared.model.NotificationType;
@@ -62,7 +62,7 @@ public class TestNotificationDao {
 		notification.setDocRefId("");
 		//notification.setDocumentType(DocType.INVOICE);
 		notification.setNotificationType(NotificationType.APPROVALREQUEST_APPROVERNOTE);
-		notification.setOwner(LoginHelper.get().getUser("calcacuervo"));
+		notification.setOwner(UserDaoHelper.getInstance().getUser("calcacuervo"));
 		notification.setRead(false);
 		notification.setSubject("Inv/001/01");
 		notification.setTargetUserId(new HTUser("mariano"));

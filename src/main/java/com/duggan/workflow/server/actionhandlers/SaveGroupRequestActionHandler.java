@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.requests.SaveGroupRequest;
 import com.duggan.workflow.shared.responses.SaveGroupResponse;
 import com.google.inject.Inject;
@@ -23,7 +23,7 @@ public class SaveGroupRequestActionHandler extends
 		
 		if(!action.isDelete()){	
 			
-			group = LoginHelper.get().createGroup(group);
+			group = UserDaoHelper.getInstance().createGroup(group);
 			
 			//save
 			SaveGroupResponse response = (SaveGroupResponse)actionResult;
@@ -32,7 +32,7 @@ public class SaveGroupRequestActionHandler extends
 		}
 		
 		if(action.isDelete()){
-			LoginHelper.get().deleteGroup(group);
+			UserDaoHelper.getInstance().deleteGroup(group);
 		}
 	}
 	

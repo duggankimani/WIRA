@@ -11,7 +11,6 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.duggan.workflow.server.dao.model.CommentModel;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Comment;
@@ -158,7 +157,7 @@ public class CommentDaoImpl extends BaseDaoImpl{
 
 		String userId = SessionHelper.getCurrentUser().getUserId();
 
-		List<UserGroup> groups = LoginHelper.getHelper().getGroupsForUser(
+		List<UserGroup> groups = UserDaoHelper.getInstance().getGroupsForUser(
 				userId);
 		String groupsIds = "";
 		for (UserGroup group : groups) {

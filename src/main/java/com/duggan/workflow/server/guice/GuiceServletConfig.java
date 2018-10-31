@@ -4,7 +4,6 @@ import javax.servlet.ServletContextEvent;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
 import com.google.inject.Guice;
@@ -49,11 +48,6 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
 		// JBPMHelper.destroy();
 		DBTrxProviderImpl.close();
-		try {
-			// close ldap connection
-			LoginHelper.get().close();
-		} catch (Exception e) {
-		}
 
 	}
 }

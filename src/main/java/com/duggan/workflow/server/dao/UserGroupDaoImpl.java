@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.duggan.workflow.server.dao.model.Group;
+import com.duggan.workflow.server.dao.model.OrgModel;
 import com.duggan.workflow.server.dao.model.User;
 import com.wira.commons.shared.models.HTUser;
 
@@ -68,7 +69,10 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers(String searchTerm, Integer offset, Integer limit) {
 			
-		StringBuffer jpql = new StringBuffer("FROM BUser u ");
+		StringBuffer jpql = new StringBuffer("select u.id, u.refid, u.firstname, u.lastname, u.userid, u.email, o.id orgid, o.refId,o.description"
+				+ " from buser u left join orgmodel o on (u.orgid=o.id) "
+				+ "where u.isActive=1 "
+				+ "and o.isActive=1 ");
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		if(searchTerm!=null){
@@ -76,26 +80,48 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 					+ "lower(u.lastName) like :searchTerm or "
 					+ "lower(u.firstName) like :searchTerm or "
 					+ "lower(u.email) like :searchTerm or "
-					+ "lower(u.org.description) like :searchTerm) "
+					+ "lower(o.description) like :searchTerm) "
 					+ "and u.isActive=1 ");
 			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
 		}
 		jpql.append(" order by u.lastName, u.firstName");
 		
-		Query query = em.createQuery(jpql.toString());
+		Query query = em.createNativeQuery(jpql.toString());
 		for(String key: params.keySet()){
 			query.setParameter(key, params.get(key));
 		}
 		
-		if(offset==null) {
-			offset = 0;
+		List<User> users = new ArrayList<>();
+		List<Object[]> rows = getResultList(query, offset, limit);
+		for(Object[] row: rows) {
+			Object val = null;
+			int col = 0;
+			Long id = (val=row[col++]) == null? null : ((Number)val).longValue();
+			String refId = (val=row[col++]) == null? null : val.toString();
+			String firstName = (val=row[col++]) == null? null : val.toString();
+			String lastName = (val=row[col++]) == null? null : val.toString();
+			String userId = (val=row[col++]) == null? null : val.toString();
+			String email = (val=row[col++]) == null? null : val.toString();
+			Long orgId = (val=row[col++]) == null? null : ((Number)val).longValue();
+			String orgRefId = (val=row[col++]) == null? null : val.toString();
+			String description = (val=row[col++]) == null? null : val.toString();
+			
+			User user = new User();
+			user.setId(id);
+			user.setRefId(refId);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setEmail(email);
+			user.setUserId(userId);
+			OrgModel org = new OrgModel();
+			org.setId(orgId);
+			org.setRefId(orgRefId);
+			org.setDescription(description);
+			user.setOrg(org);
+			users.add(user);
 		}
 		
-		if(limit == null) {
-			return query.getResultList();
-		}
-		
-		return query.setFirstResult(offset).setMaxResults(limit).getResultList();
+		return users;
 	}
 	
 	public Integer getUserCount(String searchTerm) {

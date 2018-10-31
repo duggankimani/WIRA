@@ -9,7 +9,7 @@ import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.NotificationDaoImpl;
 import com.duggan.workflow.server.dao.model.NotificationModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.DocumentType;
@@ -127,18 +127,18 @@ public class NotificationDaoHelper {
 		notificationTo.setDocRefId(modelFrom.getDocRefId());
 		
 		String owner = modelFrom.getOwner();
-		HTUser htOwner = LoginHelper.get().getUser(owner);
+		HTUser htOwner = UserDaoHelper.getInstance().getUser(owner);
 		notificationTo.setOwner(htOwner);
 		notificationTo.setNotificationType(modelFrom.getNotificationType());
 		notificationTo.setRead(modelFrom.IsRead());	
 		notificationTo.setSubject(modelFrom.getSubject());
 		notificationTo.setCreated(modelFrom.getCreated());
 		if(modelFrom.getTargetUserId()!=null)
-			notificationTo.setTargetUserId(LoginHelper.get().getUser(modelFrom.getTargetUserId()));
+			notificationTo.setTargetUserId(UserDaoHelper.getInstance().getUser(modelFrom.getTargetUserId()));
 		notificationTo.setRead(modelFrom.IsRead());
 		
 		String createdBy = modelFrom.getCreatedBy();
-		HTUser user = LoginHelper.get().getUser(createdBy);
+		HTUser user = UserDaoHelper.getInstance().getUser(createdBy);
 		notificationTo.setCreatedBy(user);
 		notificationTo.setId(modelFrom.getId());
 		

@@ -19,7 +19,7 @@ import com.duggan.workflow.server.dao.model.ADTaskNotification;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.export.DocumentHTMLMapper;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.Document;
@@ -30,6 +30,8 @@ import com.wira.commons.shared.models.HTUser;
 public class CustomEmailHandler {
 
 	private static Logger log = Logger.getLogger(CustomEmailHandler.class);
+	
+	UserDaoHelper helper = UserDaoHelper.getInstance();
 
 	public void sendNotification(ADTaskNotification template, Document doc,
 			Map<String, Object> params) throws IOException {
@@ -85,13 +87,13 @@ public class CustomEmailHandler {
 		// notification.setTargetUserId(targetUserId);
 		if (actorId != null && !actorId.trim().isEmpty()) {
 			receipients = new ArrayList<>();
-			receipients.add(LoginHelper.get().getUser(actorId));
+			receipients.add(helper.getUser(actorId));
 		} else if (groups != null) {
-			receipients = LoginHelper.get().getUsersForGroups(groups);
+			receipients = helper.getUsersForGroups(groups);
 		}
 
 		// List<HTUser> owner = new ArrayList<>();
-		// owner.add(LoginHelper.get().getUser(ownerId));
+		// owner.add(helper.getUser(ownerId));
 
 		String emailSubject = (doc.getType() == null ? "Work item" : doc
 				.getType().getDisplayName()) + " " + doc.getCaseNo();
@@ -233,7 +235,7 @@ public class CustomEmailHandler {
 
 		String owner = ownerId;
 		if (ownerId != null) {
-			HTUser user = LoginHelper.get().getUser(ownerId);
+			HTUser user = helper.getUser(ownerId);
 			if (user != null) {
 				owner = user.getFullName();
 			}

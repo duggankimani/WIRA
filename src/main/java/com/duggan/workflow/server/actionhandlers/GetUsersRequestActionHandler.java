@@ -2,7 +2,7 @@ package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
 
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
 import com.duggan.workflow.shared.responses.GetUsersResponse;
 import com.google.inject.Inject;
@@ -23,10 +23,12 @@ public class GetUsersRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		GetUsersResponse response = (GetUsersResponse)actionResult;
 		
-		response.setUsers((ArrayList<HTUser>) LoginHelper.get().getAllUsers(
+		UserDaoHelper helper = UserDaoHelper.getInstance();
+		
+		response.setUsers((ArrayList<HTUser>) helper.getAllUsers(
 				action.getSearchTerm(),
 				action.getOffset(), action.getLength()));
-		response.setTotalCount(LoginHelper.get().getUserCount(action.getSearchTerm()));
+		response.setTotalCount(helper.getUserCount(action.getSearchTerm()));
 	}
 	
 	@Override

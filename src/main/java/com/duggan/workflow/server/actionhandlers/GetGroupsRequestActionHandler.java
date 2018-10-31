@@ -3,7 +3,7 @@ package com.duggan.workflow.server.actionhandlers;
 import java.util.ArrayList;
 
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.responses.GetGroupsResponse;
 import com.google.inject.Inject;
@@ -26,14 +26,14 @@ public class GetGroupsRequestActionHandler extends
 		GetGroupsResponse response  = (GetGroupsResponse)actionResult;
 		
 		if(action.getGroupName()!=null){
-			UserGroup group = LoginHelper.get().getGroupById(action.getGroupName());
+			UserGroup group = UserDaoHelper.getInstance().getGroupById(action.getGroupName());
 			group.setPermissions((ArrayList<PermissionPOJO>) DB.getPermissionDao().getPermissionsForRole(action.getGroupName()));
 			
 			ArrayList<UserGroup> groups = new ArrayList<UserGroup>();
 			groups.add(group);
 			response.setGroups(groups);
 		}else{
-			response.setGroups((ArrayList<UserGroup>) LoginHelper.get().getAllGroups(action.getSearchTerm(), action.getOffset(), action.getLength()));
+			response.setGroups((ArrayList<UserGroup>) UserDaoHelper.getInstance().getAllGroups(action.getSearchTerm(), action.getOffset(), action.getLength()));
 			response.setTotalCount(DB.getUserGroupDao().getGroupCount(action.getSearchTerm()));
 		}
 		

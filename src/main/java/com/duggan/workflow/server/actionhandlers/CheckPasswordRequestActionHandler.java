@@ -1,6 +1,6 @@
 package com.duggan.workflow.server.actionhandlers;
 
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.requests.CheckPasswordRequest;
 import com.duggan.workflow.shared.responses.CheckPasswordRequestResult;
 import com.google.inject.Inject;
@@ -21,7 +21,7 @@ public class CheckPasswordRequestActionHandler extends
 		String userId = action.getUserId();
 		String password = action.getPassword();
 		
-		boolean isValid = LoginHelper.get().login(userId, password);
+		boolean isValid = UserDaoHelper.getInstance().login(userId, password);
 		CheckPasswordRequestResult result = (CheckPasswordRequestResult)actionResult;
 
 		result.setIsValid(isValid);

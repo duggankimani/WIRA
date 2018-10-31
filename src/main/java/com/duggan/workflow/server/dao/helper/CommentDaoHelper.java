@@ -16,7 +16,7 @@ import com.duggan.workflow.server.dao.DocumentDaoImpl;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.CommentModel;
 import com.duggan.workflow.server.db.DB;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.CustomEmailHandler;
 import com.duggan.workflow.server.helper.session.SessionHelper;
 import com.duggan.workflow.shared.model.Comment;
@@ -136,7 +136,7 @@ public class CommentDaoHelper {
 		commentTo.setDocumentId(modelFrom.getDocumentId());
 		
 		String owner = modelFrom.getCreatedBy();
-		HTUser createdBy = LoginHelper.get().getUser(owner);
+		HTUser createdBy = UserDaoHelper.getInstance().getUser(owner);
 		commentTo.setCreated(modelFrom.getCreated());
 		commentTo.setCreatedBy(createdBy);
 		commentTo.setDocumentId(modelFrom.getDocumentId());

@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
 import com.duggan.workflow.shared.model.DocumentType;
 
 public class TestGetDocTypes {
@@ -35,7 +34,6 @@ public class TestGetDocTypes {
 	@org.junit.After
 	public void destroy() throws IOException{
 		DB.rollback();
-		LoginHelper.get().close();
 		DB.closeSession();
 	}
 }

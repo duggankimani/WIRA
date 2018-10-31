@@ -14,7 +14,7 @@ import org.jbpm.executor.api.CommandContext;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.helper.FormDaoHelper;
 import com.duggan.workflow.server.dao.model.ADValue;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.rest.exception.CommandNotFoundException;
 import com.duggan.workflow.server.rest.model.BusinessKey;
@@ -116,7 +116,7 @@ public class IncomingRequestImpl implements IncomingRequestService {
 		
 		Map<String,Object> context = request.getContext();
 		doc.setDocumentDate(new Date());//(documentDate);
-		doc.setOwner(LoginHelper.get().getUser(owner.toString()));
+		doc.setOwner(UserDaoHelper.getInstance().getUser(owner.toString()));
 		
 		logger.debug(">>> DocType = "+docType);
 		DocumentType type = DocumentDaoHelper.getDocumentType(docType.toString());

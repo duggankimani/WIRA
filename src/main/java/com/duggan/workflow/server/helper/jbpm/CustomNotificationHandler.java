@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.duggan.workflow.server.dao.helper.NotificationDaoHelper;
-import com.duggan.workflow.server.helper.auth.LoginHelper;
+import com.duggan.workflow.server.helper.auth.UserDaoHelper;
 import com.duggan.workflow.shared.model.ApproverAction;
 import com.duggan.workflow.shared.model.Document;
 import com.duggan.workflow.shared.model.Notification;
@@ -19,6 +19,8 @@ public class CustomNotificationHandler {
 
 	private static Logger logger = Logger
 			.getLogger(CustomNotificationHandler.class);
+	
+	UserDaoHelper helper = UserDaoHelper.getInstance();
 
 	public void generate(Map<String, Object> params, NotificationType type) {
 
@@ -84,7 +86,7 @@ public class CustomNotificationHandler {
 		assert docRefId!=null;
 		notification.setDocRefId(docRefId);
 		notification.setNotificationType(type);
-		notification.setOwner(LoginHelper.get().getUser(ownerId));
+		notification.setOwner(helper.getUser(ownerId));
 		notification.setRead(false);
 		notification.setSubject(subject);
 		notification.setDocumentType(doc.getType());
@@ -96,17 +98,17 @@ public class CustomNotificationHandler {
 		// notification.setTargetUserId(targetUserId);
 		if (actorId != null && !actorId.trim().isEmpty()) {
 			actors = new ArrayList<>();
-			actors.add(LoginHelper.get().getUser(actorId));
+			actors.add(helper.getUser(actorId));
 		}
 
 		// potential users
 		if (groupId != null && !groupId.trim().isEmpty()) {
-			potentialActors = LoginHelper.get().getUsersForGroup(groupId);
+			potentialActors = helper.getUsersForGroup(groupId);
 		}
 
 		List<HTUser> owner = new ArrayList<>();
 		// Testing;;
-		owner.add(LoginHelper.get().getUser(ownerId));
+		owner.add(helper.getUser(ownerId));
 
 		ApproverAction action = isApproved == null ? ApproverAction.COMPLETED
 				: (Boolean) isApproved ? ApproverAction.APPROVED
