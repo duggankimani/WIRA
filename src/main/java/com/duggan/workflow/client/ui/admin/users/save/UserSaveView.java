@@ -160,8 +160,8 @@ public class UserSaveView extends Composite {
 
 		if (type == TYPE.GROUP) {
 			loadPermissions();
-		} else if (type == TYPE.USER) {
-			//loadGroups();
+		} else if (type == TYPE.USER && dto == null ) {
+			loadGroups();
 		}
 
 	}
@@ -431,7 +431,7 @@ public class UserSaveView extends Composite {
 	
 	HTUser user;
 	public void setUser(HTUser user) {
-		Window.alert(user.getOrg().getDescription());
+		//Window.alert(user.getOrg().getDescription());
 		this.user = user;
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getName());
