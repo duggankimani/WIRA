@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import org.jbpm.task.Status;
 
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
 import com.duggan.workflow.server.dao.model.ADTaskNotification;
@@ -503,13 +504,46 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		}
 		return logs;
 	}
-
-	public List<ProcessLog> getProcessInstances(CaseFilter filter) {
+	
+	public Integer getProcessInstancesCount(CaseFilter filter) {
 		if (filter == null) {
 			filter = new CaseFilter();
 		}
 
-		String sql = "select d.id docId, "
+		StringBuilder sql = new StringBuilder("select count(*) "
+				+ "from processinstancelog l "
+				+ "inner join documentjson d "
+				+ "on (d.processinstanceid=l.processinstanceid)  "
+				+ "left join task t "
+				+ "on (t.processinstanceid=l.processinstanceid and t.status!='Completed') "
+				+ "left join buser u on (u.userid=t.actualowner_id) "
+				+ "left join buser u1 on (u1.userid=d.createdby) "
+				+ "left join i18ntext i on i.task_names_id=t.id "
+				+ "where d.isActive=1");
+
+
+		Map<String, Object> params = new HashMap<>();
+		addWhereClause(sql, filter, params);
+
+		logger.debug("getProcessInstances processId=" + filter.getProcessId()
+				+ ", caseNo=" + filter.getCaseNo() + ", userId="
+				+ filter.getUserId() + "; SQL = " + sql);
+		
+		Query query = em.createNativeQuery(sql.toString());
+		for(String key: params.keySet()) {
+			query.setParameter(key, params.get(key));
+		}
+		
+		Number number = getSingleResultOrNull(query);
+		return number.intValue();
+	}
+
+	public List<ProcessLog> getProcessInstances(CaseFilter filter, Integer offset, Integer limit) {
+		if (filter == null) {
+			filter = new CaseFilter();
+		}
+
+		StringBuilder sql = new StringBuilder("select d.id docId, "
 				+ "d.refId, "
 				+ "t.id taskid, "
 				+ "l.processinstanceid, "
@@ -533,62 +567,25 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 				+ "on (t.processinstanceid=l.processinstanceid and t.status!='Completed') "
 				+ "left join buser u on (u.userid=t.actualowner_id) "
 				+ "left join buser u1 on (u1.userid=d.createdby) "
-				+ "left join i18ntext i on i.task_names_id=t.id ";
+				+ "left join i18ntext i on i.task_names_id=t.id "
+				+ "where d.isActive=1");
 
-		boolean isFirst = true;
 
-		if (filter.getProcessId() != null) {
-			if (isFirst) {
-				sql = sql + " where ";
-			} else {
-				sql = sql + " and ";
-			}
-			isFirst = false;
-
-			sql = sql + " l.processid=:processId";
-		}
-
-		if (filter.getCaseNo() != null) {
-			if (isFirst) {
-				sql = sql + " where ";
-			} else {
-				sql = sql + " and ";
-			}
-			isFirst = false;
-
-			sql = sql + " d.caseNo ilike :caseNo";
-		}
-
-		if (filter.getUserId() != null) {
-			if (isFirst) {
-				sql = sql + " where ";
-			} else {
-				sql = sql + " and ";
-			}
-			isFirst = false;
-
-			sql = sql + " (u.userid= :userId or u1.userid= :userId)";
-		}
-
-		sql = sql + " order by l.processinstanceid desc";
+		Map<String, Object> params = new HashMap<>();
+		addWhereClause(sql, filter, params);
+		
+		sql.append(" order by l.processinstanceid desc");
 
 		logger.debug("getProcessInstances processId=" + filter.getProcessId()
 				+ ", caseNo=" + filter.getCaseNo() + ", userId="
 				+ filter.getUserId() + "; SQL = " + sql);
-		Query query = em.createNativeQuery(sql);
-		if (filter.getProcessId() != null) {
-			query.setParameter("processId", filter.getProcessId());
+		
+		Query query = em.createNativeQuery(sql.toString());
+		for(String key: params.keySet()) {
+			query.setParameter(key, params.get(key));
 		}
-
-		if (filter.getCaseNo() != null) {
-			query.setParameter("caseNo", "%" + filter.getCaseNo() + "%");
-		}
-
-		if (filter.getUserId() != null) {
-			query.setParameter("userId", filter.getUserId());
-		}
-
-		List<Object[]> rows = getResultList(query);
+		
+		List<Object[]> rows = getResultList(query, offset, limit);
 		List<ProcessLog> logs = new ArrayList<>();
 
 		for (Object[] row : rows) {
@@ -653,6 +650,27 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 
 		}
 		return logs;
+	}
+
+	private void addWhereClause(StringBuilder sql, CaseFilter filter, Map<String, Object> params) {
+		String processId = filter.getProcessId();
+		String caseNo = filter.getCaseNo();
+		String userId = filter.getUserId();
+		
+		if (!StringUtils.isNullOrEmpty(filter.getProcessId())) {
+			sql.append(" and l.processid=:processId");
+			params.put("processId", processId);
+		}
+
+		if (!StringUtils.isNullOrEmpty(caseNo)) {
+			sql.append(" and d.caseNo like '%"+caseNo+"%'");
+		}
+
+		if (!StringUtils.isNullOrEmpty(userId)) {
+			sql.append(" and (u.userid= :userId or u1.userid= :userId)");
+			params.put("userId", userId);
+		}
+
 	}
 
 	public List<ADProcessCategory> getAllProcessCategories() {

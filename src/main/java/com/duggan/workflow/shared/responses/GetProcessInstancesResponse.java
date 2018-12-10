@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.duggan.workflow.shared.model.ProcessLog;
 import com.wira.commons.shared.response.BaseResponse;
 
-public class GetProcessInstancesResponse extends BaseResponse {
+public class GetProcessInstancesResponse extends BaseListResponse {
 
 	/**
 	 * 

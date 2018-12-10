@@ -277,7 +277,7 @@ public class JBPMHelper implements Closeable {
 				.setParameter("status", Status.Suspended).getSingleResult();
 		counts.put(TaskType.SUSPENDED, count3.intValue());
 
-		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassigned(processId));
+		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassignedCount(processId));
 	}
 
 	public List<Status> getStatusesForTaskType(TaskType type) {
@@ -392,6 +392,77 @@ public class JBPMHelper implements Closeable {
 		return null;
 	}
 
+	public Integer getTasksCountForUser(String processId, String userId, TaskType type) {
+
+		String language = "en-UK";
+		if (!UserDaoHelper.getInstance().existsUser(userId)) {
+			throw new RuntimeException("User " + userId + " Unknown!!");
+		}
+
+		if (processId == null) {
+			processId = "";
+		}
+
+		if (type == null) {
+			type = TaskType.INBOX;
+		}
+
+		Integer count = 0;
+
+		switch (type) {
+		case PARTICIPATED:
+		case COMPLETED:
+			// approvals - show only items I have approved
+
+			// ts = sessionManager.getTaskClient().getTasksOwned(
+			// userId,
+			// Arrays.asList(Status.Completed), language);
+
+			count = DB.getDocumentDao().getTasksOwnedCountPerProcess(processId, userId, Arrays.asList(Status.Completed),
+					language);
+			break;
+		case INBOX:
+		case MINE:
+			// ts = sessionManager.getTaskClient().getTasksOwned(
+			// userId,getStatusesForTaskType(type),language);
+
+			count = DB.getDocumentDao().getTasksOwnedCountPerProcess(processId, userId, getStatusesForTaskType(type),
+					language);
+			break;
+		case QUEUED:
+			// ts = sessionManager.getTaskClient()
+			// .getTasksAssignedAsPotentialOwnerByStatus(userId,
+			// getStatusesForTaskType(type), language);
+
+			count = DB.getDocumentDao().getTasksAssignedCountAsPotentialOwnerByStatusAndProcessId(processId, userId,
+					getStatusesForTaskType(type), language);
+			break;
+		case ALL:
+			// ts = sessionManager.getTaskClient()
+			// .getTasksAssignedAsPotentialOwnerByStatus(userId,
+			// getStatusesForTaskType(type), "en-UK");
+
+			count = DB.getDocumentDao().getTasksAssignedCountAsPotentialOwnerByStatusAndProcessId(processId, userId,
+					getStatusesForTaskType(type), language);
+			break;
+		case SUSPENDED:
+			// ts = sessionManager.getTaskClient().getTasksOwned(
+			// userId,
+			// Arrays.asList(Status.Suspended), language);
+
+			count = DB.getDocumentDao().getTasksOwnedCountPerProcess(processId, userId, Arrays.asList(Status.Suspended),
+					language);
+			break;
+		case UNASSIGNED:
+			count = DB.getDocumentDao().getUnassignedCount(processId);
+			break;
+		default:
+			break;
+		}
+
+		return count;
+	}
+
 	/**
 	 * 
 	 * This method retrieves all tasks assigned to a user.
@@ -431,7 +502,6 @@ public class JBPMHelper implements Closeable {
 
 			ts = DB.getDocumentDao().getTasksOwnedPerProcess(processId, userId, Arrays.asList(Status.Completed),
 					language, offset, length);
-
 			break;
 		case INBOX:
 		case MINE:
@@ -472,14 +542,14 @@ public class JBPMHelper implements Closeable {
 			break;
 		}
 
-		int toIndex = offset + length;
-		if (offset > ts.size()) {
-			return new ArrayList<HTSummary>();
-		}
+		// int toIndex = offset + length;
+		// if (offset > ts.size()) {
+		// return new ArrayList<HTSummary>();
+		// }
+		//
+		// toIndex = Math.min(toIndex, ts.size());
 
-		toIndex = Math.min(toIndex, ts.size());
-
-		return translateSummaries(ts.subList(offset, toIndex));
+		return translateSummaries(ts);
 
 	}
 
@@ -1434,27 +1504,29 @@ public class JBPMHelper implements Closeable {
 		Task task = getTaskClient().getTask(taskId);
 		String username = "NoCurrentUser";
 		User user = task.getTaskData().getActualOwner();
-		if(user != null) {
+		if (user != null) {
 			username = user.getId();
 		}
-		
-		if(username.equals("NoCurrentUser")) {
+
+		if (username.equals("NoCurrentUser")) {
 			assignTask(taskId, targetUserId);
-		}else {
+		} else {
 			reassignTask(taskId, username, targetUserId);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Borrowed from https://developer.jboss.org/thread/221510
 	 * <p>
-	 * Note that only the current owner of a task can reassign/ forward a task to someone else!, This means 
-	 * the administrator is limited in as far as reassignments are concerned.
+	 * Note that only the current owner of a task can reassign/ forward a task to
+	 * someone else!, This means the administrator is limited in as far as
+	 * reassignments are concerned.
 	 * <p>
 	 * 
 	 * @param taskId
-	 * @param userId Current owner of the task
+	 * @param userId
+	 *            Current owner of the task
 	 */
 	public void reassignTask(Long taskId, String username, String targetUserId) {
 

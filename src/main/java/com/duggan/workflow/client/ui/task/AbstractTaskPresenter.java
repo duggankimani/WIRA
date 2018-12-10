@@ -29,6 +29,8 @@ import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.DocMode;
 import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.event.LoadDataEvent;
+import com.duggan.workflow.shared.event.LoadDataEvent.LoadDataHandler;
 import com.duggan.workflow.shared.model.Doc;
 import com.duggan.workflow.shared.model.DocStatus;
 import com.duggan.workflow.shared.model.Document;
@@ -68,7 +70,8 @@ import com.wira.commons.shared.response.BaseResponse;
 
 public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITaskView, Proxy_ extends Proxy<?>>
 		extends Presenter<AbstractTaskPresenter.ITaskView, Proxy<?>>
-		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler, SearchHandler, AssignTaskHandler {
+		implements AfterSaveHandler, DocumentSelectionHandler, ReloadHandler, 
+		SearchHandler, AssignTaskHandler, LoadDataHandler {
 
 	public interface ITaskView extends View {
 
@@ -76,7 +79,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		void addScrollHandler(ScrollHandler scrollHandler);
 
-		void bindTasks(ArrayList<Doc> tasks, int totalCount, boolean isIncremental);
+		void bindTasks(ArrayList<Doc> tasks, int currentPage, int totalCount, boolean isIncremental);
 
 		void bindAlerts(HashMap<TaskType, Integer> alerts);
 
@@ -131,8 +134,10 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		}
 	};
 
-	protected static final int PAGE_SIZE =1000;
+	protected static final int PAGE_SIZE = 10;
 
+	protected int currentPage = 1;
+	
 	protected int CURPOS = 0;
 
 	private boolean isLoadingData;
@@ -155,17 +160,18 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		addRegisteredHandler(ReloadEvent.TYPE, this);
 		addRegisteredHandler(AssignTaskEvent.TYPE, this);
 		addRegisteredHandler(SearchEvent.TYPE, this);
+		addRegisteredHandler(LoadDataEvent.TYPE, this);
 
 		getView().addScrollHandler(new ScrollHandler() {
 			@Override
 			public void onScroll(ScrollEvent event) {
 				// Window.alert("Scrolled!");
-				ScrollPanel panel = (ScrollPanel) event.getSource();
+				/*ScrollPanel panel = (ScrollPanel) event.getSource();
 				int max = panel.getMaximumVerticalScrollPosition();
 				int currentPos = panel.getVerticalScrollPosition();
 				if (currentPos == max && !isLoadingData) {
 					loadTasks(currentTaskType, true);
-				}
+				}*/
 			}
 		});
 
@@ -188,8 +194,8 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		getView().setTaskType(currentTaskType);
 		getView().setProcessRefId(processRefId);
 
-		CURPOS = 0;
-
+		resetPage();
+		
 		clear();
 		processInstanceId = null;
 
@@ -202,6 +208,11 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 		loadTasks();
 
+	}
+
+	private void resetPage() {
+		CURPOS = 0;
+		currentPage = 1;
 	}
 
 	protected void search() {
@@ -218,6 +229,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 
 	public void search(final SearchFilter filter) {
 
+		resetPage();
 		GetTaskList request = new GetTaskList(processRefId, AppContext.getUserId(), filter);
 		request.setLength(PAGE_SIZE);
 		request.setOffset(CURPOS = 0);
@@ -253,8 +265,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	private void loadTasks(final TaskType type, final boolean isIncremental) {
 		beforeDataLoaded();
 
-		if (!isIncremental)
-			clear();
+		clear();
 
 		String userId = AppContext.getUserId();
 
@@ -273,9 +284,6 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		request.setLoadAsAdmin(isLoadAsAdmin());
 
 		action.addRequest(request);
-
-		// Window.alert("Loading - "+currentTaskType+" "+CURPOS+" -
-		// "+(PAGE_SIZE+CURPOS));
 
 		fireEvent(new ProcessingEvent());
 		dispatcher.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
@@ -350,7 +358,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 		// if (!isIncremental) {
 		// setInSlot(DATEGROUP_SLOT, null);
 		// }
-		getView().bindTasks(tasks, totalCount, isIncremental);
+		getView().bindTasks(tasks, currentPage, totalCount, isIncremental);
 
 		// final ArrayList<Date> dates = new ArrayList<Date>();
 		//
@@ -393,7 +401,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onAfterSave(AfterSaveEvent event) {
 		if (this.isVisible()) {
-			CURPOS = 0;
+			resetPage();
 			loadTasks();
 		}
 	}
@@ -444,7 +452,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onReload(ReloadEvent event) {
 		if (this.isVisible()) {
-			CURPOS = 0;
+			resetPage();
 			loadTasks();
 		}
 	}
@@ -452,8 +460,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	@Override
 	public void onSearch(SearchEvent event) {
 		if (this.isVisible()) {
-			CURPOS = 0;
-
+			resetPage();
 			SearchFilter filter = event.getFilter();
 			searchTerm = filter.getPhrase().trim();
 			if (searchTerm == null || searchTerm.isEmpty()) {
@@ -499,5 +506,13 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	 */
 	boolean isLoadAsAdmin() {
 		return false;
+	}
+	
+	@Override
+	public void onLoadData(LoadDataEvent event) {
+		int page = event.getPage().intValue();
+		CURPOS = (page-1)*PAGE_SIZE;
+		currentPage = page;
+		loadTasks();
 	}
 }

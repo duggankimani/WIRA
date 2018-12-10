@@ -949,7 +949,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		save(model);
 	}
 
-	public int getUnassigned(String processId) {
+	public int getUnassignedCount(String processId) {
 		if(processId==null){
 			processId="";
 		}
@@ -1289,6 +1289,17 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				.setParameter("status", status)
 				.setParameter("processId", processId),offset,length);
 	}
+	
+	public Integer getTasksOwnedCountPerProcess(String processId,
+			String userId, List<Status> status, String language) {
+		Number num = getSingleResultOrNull(em.createNamedQuery("TasksOwnedCountWithParticularStatusAndProcessId")
+				.setParameter("userId", userId)
+				.setParameter("language", language)
+				.setParameter("status", status)
+				.setParameter("processId", processId));
+		
+		return num.intValue();
+	}
 
 	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatusAndProcessId(
 			String processId, String userId, List<Status> status,
@@ -1308,5 +1319,26 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 				.setParameter("status", status)
 				.setParameter("processId", processId)
 				,offset,length);
+	}
+	
+	
+	public Integer getTasksAssignedCountAsPotentialOwnerByStatusAndProcessId(
+			String processId, String userId, List<Status> status,
+			String language) {
+		
+		List<String> groups = DB.getUserGroupDao().getGroupsForUser(userId);
+		if(groups.isEmpty()){
+			//DUGGAN - 25/10/2016 - ADDED TO FIX HIBERNATE 'unexpected end of subtree errors' 
+			//CAUSED BY EMPTY IN() STATEMENTS IN THE HQL QUERIES BELOW
+			groups.add("UNDEFINED");
+		}
+		
+		Number num= getSingleResultOrNull(em.createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroupsAndProcessId")
+				.setParameter("userId", userId)
+				.setParameter("groupIds", groups)
+				.setParameter("language", language)
+				.setParameter("status", status)
+				.setParameter("processId", processId));
+		return num.intValue();
 	}
 }

@@ -5,7 +5,7 @@ import com.duggan.workflow.shared.responses.GetProcessInstancesResponse;
 import com.wira.commons.shared.request.BaseRequest;
 import com.wira.commons.shared.response.BaseResponse;
 
-public class GetProcessInstancesRequest extends BaseRequest<GetProcessInstancesResponse> {
+public class GetProcessInstancesRequest extends BaseListRequest<GetProcessInstancesResponse> {
 
 	private CaseFilter filter;
 	

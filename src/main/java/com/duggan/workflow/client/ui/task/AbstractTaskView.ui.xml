@@ -6,15 +6,19 @@
 	xmlns:d='urn:import:com.duggan.workflow.client.ui.component'
 	ui:generateLocales='default'>
 
+<ui:style>
+
+</ui:style>
+
 	<g:HTMLPanel styleName="full-page" ui:field="container">
-		<!--Document View-->
+		<!--Document View -->
 		<div ui:field="divDocView" class="span12 hide" style="height:100%">
 			<g:HTMLPanel ui:field="docContainer" styleName="full-page">
 			</g:HTMLPanel>
 		</div>
 
 		<div ui:field="divTaskListing" class="row-fluid full-page">
-			<div  style="height: 40px;">
+			<div style="height: 40px;">
 				<div class="span12">
 					<h4 style="display: inline-block;padding: 10px;">
 						<a ui:field="aProcess" href="#/activities" style="color: #0088cc;">
@@ -32,8 +36,7 @@
 
 							<ul class="dropdown-menu" role="menu" style="right: 0px;left: initial;">
 								<li>
-									<d:ActionLink ui:field="aFilter"
-										title="Filter Data">
+									<d:ActionLink ui:field="aFilter" title="Filter Data">
 										<i class="icon-filter"></i>
 										Filter
 									</d:ActionLink>
@@ -53,13 +56,38 @@
 			</div>
 
 			<div class="span12 row-fluid"
-				style="overflow: auto; height: calc(100% - 40px); position: absolute; zoom: 1;margin-left: 0px;">
-				<g:ScrollPanel ui:field="divTableListing" styleName="span12 full-page">
-					<g:FlexTable ui:field="tblTasks" styleName="table table-hover table-condensed"
-						width="100%"></g:FlexTable>
+				style="overflow: auto; height: calc(100% - 80px); position: absolute; zoom: 1;margin-left: 0px;">
+				<g:ScrollPanel ui:field="divTableListing" styleName="span12">
+					<g:FlexTable ui:field="tblTasks"
+						styleName="table table-hover table-condensed" width="100%"></g:FlexTable>
 				</g:ScrollPanel>
-			
-				<g:HTMLPanel ui:field="divPaginate"></g:HTMLPanel>
+
+				<div class="span12" style="margin:0px">
+					<div class="pagination center">
+						<ul id="liPaginator">
+							<li class="active">
+								<a><span ui:field="spnCount"></span></a>
+							</li>
+
+							<li>
+								<a title="Click to jump to page…" onclick="jumpto(); return false;"
+									href="#">
+									Page
+									<strong id="page"></strong>
+									of
+									<strong id="totalPages"></strong>
+								</a>
+							</li>
+							<li>
+								<a id="btn_prev"><i class="icon icon-double-angle-left"></i></a>
+							</li>
+
+							<li>
+								<a id="btn_next"><i class="icon icon-double-angle-right"></i></a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 

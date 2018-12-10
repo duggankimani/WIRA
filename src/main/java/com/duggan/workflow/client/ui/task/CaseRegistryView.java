@@ -7,6 +7,8 @@ import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.client.ui.component.TextField;
 import com.duggan.workflow.client.ui.task.CaseRegistryPresenter.ICaseRegistryView;
 import com.duggan.workflow.client.ui.util.DateUtils;
+import com.duggan.workflow.client.util.AppContext;
+import com.duggan.workflow.shared.event.LoadDataEvent;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessLog;
@@ -95,7 +97,9 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 	}
 
 	@Override
-	public void bindProcessInstances(ArrayList<ProcessLog> logs) {
+	public void bindProcessInstances(ArrayList<ProcessLog> logs, 
+			Integer currentPage, Integer totalCount) {
+
 		tblRegistry.removeAllRows();
 		setHeaders(tblRegistry);
 		if(logs.isEmpty()){
@@ -103,6 +107,8 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		}else{
 			spnNoData.addClassName("hide");
 		}
+		
+		paginator(currentPage, totalCount);
 		
 		int row=tblRegistry.getRowCount();
 		
@@ -224,6 +230,124 @@ public class CaseRegistryView extends ViewImpl implements ICaseRegistryView{
 		
 		return filter;
 	}
+	
+	public void onPageChange(String selectedPage) {
+		AppContext.fireEvent(new LoadDataEvent(Integer.parseInt(selectedPage)));
+	}
+	
+	public native Integer paginator(int currentPage, int recordSize)/*-{
+	
+	var current_page = currentPage;
+	var instance = this;
+	var records_per_page = 10;
+	
+	function prevPage()
+	{
+	    if (current_page > 1) {
+	        current_page--;
+	        changePage(current_page);
+	        instance.@com.duggan.workflow.client.ui.task.CaseRegistryView::onPageChange(Ljava/lang/String;)(current_page);
+	    }
+	}
+	
+	function nextPage()
+	{
+	    if (current_page < numPages()) {
+	        current_page++;
+	        changePage(current_page);
+	        instance.@com.duggan.workflow.client.ui.task.CaseRegistryView::onPageChange(Ljava/lang/String;)(current_page);
+	    }
+	    
+	}
+	
+	function changePage(page)
+	{
+	    var btn_next = $doc.getElementById("btn_next");
+	    var btn_prev = $doc.getElementById("btn_prev");
+	    
+	    
+	    var listing_table = $doc.getElementById("liPaginator");
+	    var page_span = $doc.getElementById("page");
+	
+	    // Validate page
+	    if (page < 1) page = 1;
+	    if (page > numPages()) page = numPages();
+	
+	    listing_table.innerHTML = "<li class='active'>"+
+						"<a><span id='spnCount'>"+recordSize+"</span> records</a>"+
+						"</li>"+
+
+						"<li>"+
+						"	<a>"+
+						"		Page"+
+						"		<strong id='page'>"+page+"</strong>"+
+						"		of"+
+						"		<strong id='totalPages'>"+numPages()+"</strong>"+
+						"	</a>"+
+						"</li>"+
+						"<li>"+
+						"	<a id='btn_prev'><i class='icon icon-double-angle-left'></i></a>"+
+						"</li>";
+	
+	    for (var i = 1; i <= numPages(); i++) {
+	    	var elPage =  $doc.createElement('li');
+	    	if(i==page){
+	    		elPage.classList.add('active');
+	    		elPage.classList.add('currentpage');
+	    	}
+	    	
+	    	if(i<8){
+	    		elPage.innerHTML = '<a>'+ i + '</a>';
+	    	}else if(i==8){
+	    		elPage.innerHTML = '<a>...</a>';
+	    	}
+	    	if(i<=8){
+	        	listing_table.append(elPage);
+	        }
+	    }
+	    listing_table.innerHTML = listing_table.innerHTML+"<li>"+
+			"<a id='btn_next'><i class='icon icon-double-angle-right'></i></a>"+
+			"</li>";
+			
+	    page_span.innerHTML = page;
+	
+	    if (page == 1) {
+	        btn_prev.style.visibility = "hidden";
+	    } else {
+	        btn_prev.style.visibility = "visible";
+	    }
+	
+	    if (page == numPages()) {
+	        btn_next.style.visibility = "hidden";
+	    } else {
+	        btn_next.style.visibility = "visible";
+	    }
+	    
+	    
+	    initEvents();
+	}
+	
+	function initEvents(){
+		$wnd.jQuery('#btn_next').click(function(){
+			nextPage();
+		});
+		
+		$wnd.jQuery('#btn_prev').click(function(){
+			prevPage();
+		});
+	}
+	
+	function numPages()
+	{
+	    return Math.ceil(recordSize / records_per_page);
+	}
+	
+	$wnd.jQuery(document).ready(function($) {
+		changePage(currentPage);
+	});
+	
+}-*/;
+
 
 }
 

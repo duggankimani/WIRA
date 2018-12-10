@@ -15,8 +15,8 @@
 							styleName="hidden input-medium caseregistry" />
 						<d:DropDownList ui:field="listUsers" styleName="caseregistry" />
 						<d:DropDownList ui:field="listProcesses" styleName="caseregistry" />
-						<!-- d:TextField ui:field="txtSearch" placeholder="Search.."
-							styleName="hidden input-medium caseregistry" / -->
+						<!-- d:TextField ui:field="txtSearch" placeholder="Search.." styleName="hidden 
+							input-medium caseregistry" / -->
 						<div style="display:inline-block">
 							<label ui:field="lblEl" style="display:inline">Case No</label>
 							<d:TextField ui:field="txtCaseNo" placeholder="CaseNo"
@@ -31,12 +31,47 @@
 				</div>
 			</g:HTMLPanel>
 			<div class="no-overflow-x overflow-y registry-table" ui:field="divTable">
-				<g:FlexTable ui:field="tblRegistry" styleName="table table-hover table-striped table-condensed"></g:FlexTable>
+				<g:FlexTable ui:field="tblRegistry"
+					styleName="table table-hover table-striped table-condensed"></g:FlexTable>
 				<span ui:field="spnNoData" class="hide label label-info">
 					No Data To Display
 				</span>
+
+				<div class="span12" style="margin:0px">
+					<div class="pagination center">
+						<ul id="liPaginator">
+							<li class="active">
+								<a>
+									<span ui:field="spnCount"></span>
+								</a>
+							</li>
+
+							<li>
+								<a title="Click to jump to page…" onclick="jumpto(); return false;"
+									href="#">
+									Page
+									<strong id="page"></strong>
+									of
+									<strong id="totalPages"></strong>
+								</a>
+							</li>
+							<li>
+								<a id="btn_prev">
+									<i class="icon icon-double-angle-left"></i>
+								</a>
+							</li>
+
+							<li>
+								<a id="btn_next">
+									<i class="icon icon-double-angle-right"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
 			</div>
-			
+
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

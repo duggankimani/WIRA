@@ -15,6 +15,8 @@ import com.duggan.workflow.client.ui.home.HomeTabData;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.tasklistitem.DateGroupPresenter;
 import com.duggan.workflow.client.ui.util.StringUtils;
+import com.duggan.workflow.shared.event.LoadDataEvent;
+import com.duggan.workflow.shared.event.LoadDataEvent.LoadDataHandler;
 import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.ProcessLog;
@@ -52,12 +54,13 @@ import com.wira.commons.shared.models.HTUser;
 public class CaseRegistryPresenter
 		extends
 		Presenter<CaseRegistryPresenter.ICaseRegistryView, CaseRegistryPresenter.ICaseRegistryProxy>
-		implements SearchHandler {
+		implements SearchHandler, LoadDataHandler {
 
 	public interface ICaseRegistryView extends View {
 		void bindProcesses(ArrayList<DocumentType> documentTypes);
 
-		void bindProcessInstances(ArrayList<ProcessLog> logs);
+		void bindProcessInstances(ArrayList<ProcessLog> logs,
+				Integer currentPage, Integer totalRecords);
 
 		void onReveal();
 
@@ -79,6 +82,12 @@ public class CaseRegistryPresenter
 	public interface ICaseRegistryProxy extends
 			TabContentProxyPlace<CaseRegistryPresenter> {
 	}
+	
+	protected static final int PAGE_SIZE = 10;
+
+	protected int currentPage = 1;
+	
+	protected int CURPOS = 0;
 
 	public static final String TABLABEL = "Case Registry";
 
@@ -117,6 +126,7 @@ public class CaseRegistryPresenter
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(SearchEvent.getType(), this);
+		addRegisteredHandler(LoadDataEvent.TYPE, this);
 		getView().getSearch().addClickHandler(new ClickHandler() {
 
 			@Override
@@ -148,11 +158,18 @@ public class CaseRegistryPresenter
 		getView().onReveal();
 	}
 
+	private void resetPage() {
+		CURPOS = 0;
+		currentPage = 1;
+	}
+	
 	private void loadData(CaseFilter filter) {
+		resetPage();
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetProcessInstancesRequest(filter));
-//		Window.alert("{processId: "+filter.getProcessId()+", userId="+filter.getUserId()+", "
-//				+ "caseNo="+filter.getCaseNo()+"}");
+		GetProcessInstancesRequest request = new GetProcessInstancesRequest(filter);
+		request.setOffset(CURPOS);
+		request.setLength(PAGE_SIZE);
+		action.addRequest(request);
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -161,7 +178,7 @@ public class CaseRegistryPresenter
 						int i = 0;
 						GetProcessInstancesResponse response = (GetProcessInstancesResponse) aResponse
 								.get(i++);
-						getView().bindProcessInstances(response.getLogs());
+						getView().bindProcessInstances(response.getLogs(), currentPage, response.getTotalCount());
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
@@ -170,7 +187,11 @@ public class CaseRegistryPresenter
 	private void loadData() {
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetDocumentTypesRequest());
-		action.addRequest(new GetProcessInstancesRequest(null));
+		
+		GetProcessInstancesRequest request = new GetProcessInstancesRequest(null);
+		request.setOffset(CURPOS);
+		request.setLength(PAGE_SIZE);
+		action.addRequest(request);
 		action.addRequest(new GetUsersRequest());
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(action,
@@ -184,7 +205,7 @@ public class CaseRegistryPresenter
 
 						GetProcessInstancesResponse response = (GetProcessInstancesResponse) aResponse
 								.get(i++);
-						getView().bindProcessInstances(response.getLogs());
+						getView().bindProcessInstances(response.getLogs(), currentPage, response.getTotalCount());
 
 						GetUsersResponse getUsersReponse = (GetUsersResponse) aResponse
 								.get(i++);
@@ -201,11 +222,15 @@ public class CaseRegistryPresenter
 			CaseFilter filter = new CaseFilter();
 			filter.setCaseNo(event.getFilter().getPhrase());
 
-			if (StringUtils.isNullOrEmpty(filter.getCaseNo())) {
-				loadData(null);
-			} else {
-				loadData(filter);
-			}
+			loadData(filter);
 		}
+	}
+
+	@Override
+	public void onLoadData(LoadDataEvent event) {
+		int page = event.getPage().intValue();
+		CURPOS = (page-1)*PAGE_SIZE;
+		currentPage = page;
+		loadData();
 	}
 }

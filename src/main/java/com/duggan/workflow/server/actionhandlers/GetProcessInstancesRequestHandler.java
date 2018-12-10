@@ -1,6 +1,7 @@
 package com.duggan.workflow.server.actionhandlers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.shared.model.ProcessLog;
@@ -23,8 +24,12 @@ public class GetProcessInstancesRequestHandler extends
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
 		
-		((GetProcessInstancesResponse)actionResult).setLogs(
-				(ArrayList<ProcessLog>) DB.getProcessDao().getProcessInstances(action.getFilter()));
+		ArrayList<ProcessLog> logs = (ArrayList<ProcessLog>) DB.getProcessDao()
+				.getProcessInstances(action.getFilter(), action.getOffset(), action.getLength());
+		Integer count = DB.getProcessDao().getProcessInstancesCount(action.getFilter());
+		
+		((GetProcessInstancesResponse)actionResult).setLogs(logs);
+		((GetProcessInstancesResponse)actionResult).setTotalCount(count);
 	}
 
 	@Override

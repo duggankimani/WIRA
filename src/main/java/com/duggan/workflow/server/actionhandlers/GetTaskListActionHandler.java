@@ -46,7 +46,6 @@ public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList,
 
 		String userId = action.getUserId() == null ? SessionHelper.getCurrentUser().getUserId() : action.getUserId();
 
-		int totalCount = 100;
 		TaskType type = action.getType();
 
 		List<Doc> summaries = new ArrayList<>();
@@ -116,6 +115,7 @@ public class GetTaskListActionHandler extends AbstractActionHandler<GetTaskList,
 		Collections.sort(summaries);
 
 		result.setTasks((ArrayList<Doc>) summaries);
+		Integer totalCount = JBPMHelper.get().getTasksCountForUser(processId, userId, type);
 		result.setTotalCount(totalCount);
 
 	}
