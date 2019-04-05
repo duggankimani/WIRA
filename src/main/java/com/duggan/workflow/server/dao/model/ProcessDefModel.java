@@ -14,8 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,6 +35,11 @@ import com.duggan.workflow.shared.model.Status;
 @XmlRootElement(name="processdef")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@Table(indexes = {
+		@Index(name = "idx_processdef_name", columnList="name"),
+		@Index(name = "idx_processdef_processId", columnList="processId"),
+		@Index(name = "idx_processdef_description", columnList="description"),
+})
 public class ProcessDefModel extends PO {
 
 	/**

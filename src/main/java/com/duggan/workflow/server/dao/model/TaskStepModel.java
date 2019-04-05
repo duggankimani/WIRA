@@ -34,7 +34,13 @@ import com.duggan.workflow.shared.model.MODE;
 @XmlRootElement(name="step")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-@Table(indexes={@Index(name="idx_taskstepmodel_formref", columnList="formRef")})
+@Table(indexes={
+		@Index(name="idx_taskstepmodel_formref", columnList="formRef"),
+		@Index(name="idx_taskstepmodel_nodeId", columnList="nodeId"),
+		@Index(name="idx_taskstepmodel_stepName", columnList="stepName"),
+		@Index(name="idx_taskstepmodel_outputRefId", columnList="outputRefId"),
+		@Index(name="idx_taskstepmodel_stepName", columnList="stepName"),
+})
 public class TaskStepModel extends PO {
 
 	/**

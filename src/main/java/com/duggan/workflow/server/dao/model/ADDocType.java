@@ -29,7 +29,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(indexes = {
 		@Index(name = "idx_doctype_name", columnList = "name"),
-		@Index(name = "idx_doctype_display", columnList = "display")})
+		@Index(name = "idx_doctype_display", columnList = "display"),
+		@Index(name = "idx_doctype_processRefId", columnList = "processRefId"),
+})
 public class ADDocType extends PO {
 
 	/**
