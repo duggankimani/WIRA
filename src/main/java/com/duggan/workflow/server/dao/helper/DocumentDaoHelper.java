@@ -38,7 +38,7 @@ import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.GridValue;
 import com.duggan.workflow.shared.model.ProcessCategory;
 import com.duggan.workflow.shared.model.ProcessDef;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.Value;
 
@@ -609,7 +609,7 @@ public class DocumentDaoHelper {
 		return dao.getProcessInstanceIdByDocRefId(docRefId);
 	}
 
-	public static List<Document> search(String processId,String userId, SearchFilter filter) {
+	public static List<Document> search(String processId,String userId, GenericFilter filter) {
 		DocumentDaoImpl dao = DB.getDocumentDao();
 		List<DocumentModel> models = dao.search(processId,userId, filter);
 		List<Document> docs = new ArrayList<>();
@@ -620,7 +620,7 @@ public class DocumentDaoHelper {
 		return docs;
 	}
 	
-	public static List<Document> searchJson(String processId,String userId, SearchFilter filter) {
+	public static List<Document> searchJson(String processId,String userId, GenericFilter filter) {
 		List<DocumentModelJson> docs = DB.getDocumentDao().searchJson(processId, userId, filter);
 		
 		List<Document> documents = new ArrayList<Document>();

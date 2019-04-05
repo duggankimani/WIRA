@@ -60,7 +60,7 @@ public class TestReassignTask {
 		filter.setProcessId("org.kam.hr.LeaveApplication");
 		filter.setCaseNo("Case-0079");
 		filter.setUserId("kimani@wira.io");
-		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(filter);
+		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(filter, null, null);
 		
 		System.out.println("Logs Count = "+logs.size());
 		

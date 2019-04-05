@@ -1,6 +1,6 @@
 package com.duggan.workflow.client.ui.events;
 
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -8,17 +8,17 @@ import com.google.gwt.event.shared.HasHandlers;
 public class SearchEvent extends GwtEvent<SearchEvent.SearchHandler> {
 
 	public static Type<SearchHandler> TYPE = new Type<SearchHandler>();
-	private SearchFilter filter;
+	private GenericFilter filter;
 
 	public interface SearchHandler extends EventHandler {
 		void onSearch(SearchEvent event);
 	}
 
-	public SearchEvent(SearchFilter filter) {
+	public SearchEvent(GenericFilter filter) {
 		this.filter = filter;
 	}
 
-	public SearchFilter getFilter() {
+	public GenericFilter getFilter() {
 		return filter;
 	}
 
@@ -36,7 +36,7 @@ public class SearchEvent extends GwtEvent<SearchEvent.SearchHandler> {
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, SearchFilter filter) {
+	public static void fire(HasHandlers source, GenericFilter filter) {
 		source.fireEvent(new SearchEvent(filter));
 	}
 }

@@ -18,7 +18,7 @@ import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.google.gwt.editor.client.Editor.Ignore;
 
 public class TestSearchDocument {
@@ -50,7 +50,7 @@ public class TestSearchDocument {
 	@org.junit.Ignore
 	public void searchTasks(){
 		String userId ="mariano";
-		SearchFilter filter = new SearchFilter();
+		GenericFilter filter = new GenericFilter();
 		filter.setSubject("cnt");
 		//filter.setPhrase("DN");
 		//filter.setDocType(DocType.LPO);
@@ -79,7 +79,7 @@ public class TestSearchDocument {
 	
 	@Ignore
 	public void search(){
-		SearchFilter filter = new SearchFilter();
+		GenericFilter filter = new GenericFilter();
 		String userId="calcacuervo";
 		//filter.setSubject("900");
 		//filter.setPhrase("DN");

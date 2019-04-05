@@ -11,7 +11,7 @@ import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.home.HomePresenter;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
 import com.duggan.workflow.client.ui.util.DateUtils;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
 import com.duggan.workflow.shared.model.dashboard.ProcessTrend;

@@ -184,11 +184,11 @@ public class ProcessDaoHelper {
 
 	public static List<ProcessDef> getAllProcesses(String searchTerm,
 			boolean isLoadDetails) {
-		return getAllProcesses(searchTerm, isLoadDetails, 0, 0);
+		return getAllProcesses(searchTerm, isLoadDetails, null, null);
 	}
 
 	public static List<ProcessDef> getAllProcesses(String searchTerm,
-			boolean isLoadDetails, int beginIdx, int length) {
+			boolean isLoadDetails, Integer beginIdx, Integer length) {
 
 		ProcessDaoImpl dao = DB.getProcessDao();
 
@@ -199,7 +199,21 @@ public class ProcessDaoHelper {
 
 		if (processDefs != null) {
 			for (ProcessDefModel model : process) {
-				ProcessDef processDef = get(model, isLoadDetails);
+				ProcessDef processDef = new ProcessDef();
+				processDef.setName(model.getName());
+				processDef.setProcessId(model.getProcessId());
+				processDef.setId(model.getId());
+				processDef.setRefId(model.getRefId());
+				boolean running = JBPMHelper.get().isProcessingRunning(
+						model.getProcessId());
+				processDef.setStatus(running ? Status.RUNNING : Status.INACTIVE);
+				processDef.setLastModified(model.getLastModified());
+				
+				ADProcessCategory category = model.getCategory();
+				if(category!=null) {
+					processDef.setCategory(get(category));
+				}
+				//get(model, isLoadDetails);
 				processDefs.add(processDef);
 			}
 		}

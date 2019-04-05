@@ -10,14 +10,17 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.duggan.workflow.server.dao.model.Group;
+import com.duggan.workflow.server.dao.model.User;
+import com.duggan.workflow.server.dao.model.UserFilter;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
-import com.duggan.workflow.server.helper.auth.callback.DBUserGroupCallbackImpl;
+import com.duggan.workflow.shared.model.GroupFilter;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
 
-public class TestDBLoginHelper {
+public class TestUserDao {
 
 	UserDaoHelper helper;
 
@@ -29,13 +32,20 @@ public class TestDBLoginHelper {
 	}
 	
 	@Test
-	public void getGroups(){
-		//List<UserGroup> groups = LoginHelper.get().getGroupsForUser("mariano");
-	
-		//Assert.assertTrue(groups.size()==1);
+	public void getUsers(){
+		UserFilter filter = new UserFilter("ad", null, null);
 		
-		Assert.assertTrue(new DBUserGroupCallbackImpl().
-				getGroupsForUser("mariano", null, null).size()==1);
+		List<User> users = DB.getUserGroupDao().getAllUsers(filter, 0, 10);
+		System.err.println(users.size());
+	}
+	
+	@Ignore
+	public void getGroups(){
+		GroupFilter filter = new GroupFilter(null);
+		filter.setUserId("Administrator");
+		
+		List<Group> groups = DB.getUserGroupDao().getAllGroups(filter, 0, 10);
+		System.err.println(groups.size());
 	}
 	
 	@Ignore

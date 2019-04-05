@@ -6,7 +6,7 @@ import com.duggan.workflow.client.service.TaskServiceCallback;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.home.HomeView;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.requests.GetDocumentTypesRequest;
 import com.duggan.workflow.shared.requests.MultiRequestAction;
 import com.duggan.workflow.shared.responses.GetDocumentTypesResponse;
@@ -29,7 +29,7 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		HasClickHandlers getCloseButton();
 		HasClickHandlers getSearchButton();
 		HasBlurHandlers getFilterDialog();
-		SearchFilter getSearchFilter();
+		GenericFilter getSearchFilter();
 		void setDocTypes(ArrayList<DocumentType> documentTypes);
 	}
 	
@@ -52,7 +52,7 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				SearchFilter filter = getView().getSearchFilter();
+				GenericFilter filter = getView().getSearchFilter();
 				
 				if(!filter.isEmpty())
 				fireEvent(new SearchEvent(filter));

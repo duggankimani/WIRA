@@ -27,7 +27,7 @@ import com.duggan.workflow.client.ui.events.ProcessingEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent.SearchHandler;
 import com.duggan.workflow.client.ui.security.HasPermissionsGateKeeper;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.requests.GetGroupsRequest;
 import com.duggan.workflow.shared.requests.GetOrgsRequest;
 import com.duggan.workflow.shared.requests.GetUsersRequest;
@@ -528,7 +528,7 @@ public class UserPresenter extends
 	@Override
 	public void onSearch(SearchEvent event) {
 		if(isVisible()){
-			SearchFilter filter = event.getFilter();
+			GenericFilter filter = event.getFilter();
 			
 			switch (type) {
 			case GROUP:

@@ -1,7 +1,7 @@
 package com.duggan.workflow.shared.requests;
 
 import com.duggan.workflow.client.model.TaskType;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.responses.GetTaskListResult;
 import com.wira.commons.shared.response.BaseResponse;
 
@@ -13,7 +13,7 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 	private Long processInstanceId;
 	private String docRefId;
 	private Long taskId;
-	private SearchFilter filter;
+	private GenericFilter filter;
 	private boolean isLoadAsAdmin=false;
 	
 	@SuppressWarnings("unused")
@@ -27,7 +27,7 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 		
 	}
 
-	public GetTaskList(String processRefId,String userId, SearchFilter filter) {
+	public GetTaskList(String processRefId,String userId, GenericFilter filter) {
 		this.processRefId = processRefId;
 		this.userId = userId;
 		this.filter = filter;
@@ -56,7 +56,7 @@ public class GetTaskList extends BaseListRequest<GetTaskListResult> {
 		this.processInstanceId = processInstanceId;
 	}
 
-	public SearchFilter getFilter() {
+	public GenericFilter getFilter() {
 		return filter;
 	}
 

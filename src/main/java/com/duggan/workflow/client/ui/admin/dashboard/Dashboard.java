@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.ProcessesSummary;
@@ -83,7 +83,7 @@ public class Dashboard extends Composite {
 			.create(DataPropertyAccess.class);
 	ListStore<Data> pieStore = null;
 	ListStore<Data> gaugeStore = null;
-	private SearchFilter filter;
+	private GenericFilter filter;
 
 	public Dashboard() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -386,7 +386,7 @@ public class Dashboard extends Composite {
 		if(jsStartDate!=null && jsEndDate!=null){
 			Date startDate = new Date(new Double(jsStartDate.getTime()).longValue());
 			Date endDate = new Date(new Double(jsEndDate.getTime()).longValue());
-			filter = new SearchFilter();
+			filter = new GenericFilter();
 			filter.setStartDate(startDate);
 			filter.setEndDate(endDate);
 			if(fireSearchEvent){

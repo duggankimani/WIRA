@@ -38,7 +38,7 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.MODE;
 import com.duggan.workflow.shared.model.ProcessDef;
 import com.duggan.workflow.shared.model.Schema;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.requests.AssignTaskRequest;
 import com.duggan.workflow.shared.requests.GetProcessRequest;
 import com.duggan.workflow.shared.requests.GetProcessSchemaRequest;
@@ -222,12 +222,12 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 			return;
 		}
 
-		SearchFilter filter = new SearchFilter();
+		GenericFilter filter = new GenericFilter();
 		filter.setSubject(searchTerm);
 		search(filter);
 	}
 
-	public void search(final SearchFilter filter) {
+	public void search(final GenericFilter filter) {
 
 		resetPage();
 		GetTaskList request = new GetTaskList(processRefId, AppContext.getUserId(), filter);
@@ -461,7 +461,7 @@ public abstract class AbstractTaskPresenter<V extends AbstractTaskPresenter.ITas
 	public void onSearch(SearchEvent event) {
 		if (this.isVisible()) {
 			resetPage();
-			SearchFilter filter = event.getFilter();
+			GenericFilter filter = event.getFilter();
 			searchTerm = filter.getPhrase().trim();
 			if (searchTerm == null || searchTerm.isEmpty()) {
 				loadTasks();

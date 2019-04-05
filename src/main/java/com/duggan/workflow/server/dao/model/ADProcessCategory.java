@@ -60,6 +60,10 @@ public class ADProcessCategory extends PO{
 		
 		return id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 	
 }

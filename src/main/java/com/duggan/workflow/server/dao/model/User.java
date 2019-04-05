@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -21,7 +22,13 @@ import javax.persistence.UniqueConstraint;
 import com.wira.commons.shared.models.HTUser;
 
 @Entity(name = "BUser")
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "userId") })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "userId") }, 
+indexes= {
+		@Index(name="idx_buser_userId", columnList="userId"),
+		@Index(name="idx_buser_lastName", columnList="lastName"),
+		@Index(name="idx_buser_firstName", columnList="firstName"),
+		@Index(name="idx_buser_email", columnList="email"),
+})
 @NamedQuery(name = "User.getUserByUserId", query = "SELECT u from BUser u where u.userId=:userId")
 public class User extends PO {
 
@@ -61,7 +68,8 @@ public class User extends PO {
 	private Collection<Group> groups = new HashSet<>();
 
 	@ManyToMany
-	@JoinTable(name = "process_useraccess", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = { @JoinColumn(name = "processid") })
+	@JoinTable(name = "process_useraccess", joinColumns = { @JoinColumn(name = "userid") },
+	inverseJoinColumns = { @JoinColumn(name = "processid") })
 	private Collection<ProcessDefModel> processDef = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -33,10 +33,12 @@ import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.OrgModel;
 import com.duggan.workflow.server.dao.model.PermissionModel;
 import com.duggan.workflow.server.dao.model.User;
+import com.duggan.workflow.server.dao.model.UserFilter;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.jbpm.JBPMHelper;
 import com.duggan.workflow.server.helper.jbpm.VersionManager;
 import com.duggan.workflow.server.helper.session.SessionHelper;
+import com.duggan.workflow.shared.model.GroupFilter;
 import com.duggan.workflow.shared.model.settings.SETTINGNAME;
 import com.duggan.workflow.shared.model.settings.Setting;
 import com.wira.commons.shared.models.CurrentUserDto;
@@ -63,10 +65,10 @@ public class UserDaoHelper {
 	}
 
 	public boolean login(String username, String password) {
-
-		User user = DB.getUserGroupDao().getUser(username);
-
-		return user != null && user.getPassword().equals(password);
+		
+		String savedPassword = DB.getUserGroupDao().getPassword(username);
+		//Encryption/ hashing
+		return savedPassword != null && savedPassword.equals(password);
 	}
 
 
@@ -89,6 +91,8 @@ public class UserDaoHelper {
 	}
 
 	public HTUser get(User user, boolean loadGroups) {
+		
+		//Use case
 		HTUser htuser = new HTUser();
 		htuser.setEmail(user.getEmail());
 		htuser.setUserId(user.getUserId());
@@ -257,10 +261,12 @@ public class UserDaoHelper {
 
 	public List<UserGroup> getGroupsForUser(String userId) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Collection<Group> groups = dao.getAllGroupsByUserId(userId);
+		GroupFilter filter = new GroupFilter(null);
+		filter.setUserId(userId);
+		
+		Collection<Group> groups = dao.getAllGroups(filter, null, null);
 
 		List<UserGroup> userGroups = new ArrayList<>();
-
 		if (groups != null)
 			for (Group group : groups) {
 				userGroups.add(get(group));
@@ -271,17 +277,14 @@ public class UserDaoHelper {
 
 
 	public List<HTUser> getUsersForGroup(String groupName) {
-		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		Collection<User> users = dao.getAllUsersByGroupId(groupName);
-
-		List<HTUser> groupUsers = new ArrayList<>();
-
-		if (users != null)
-			for (User user : users) {
-				groupUsers.add(get(user));
-			}
-
-		return groupUsers;
+		UserFilter filter = new UserFilter(null, groupName, null);
+		List<User> users = DB.getUserGroupDao().getAllUsers(filter, null, null);
+		List<HTUser> htusers  = new ArrayList<>();
+		for(User user: users) {
+			htusers.add(get(user));
+		}
+		
+		return htusers;
 	}
 
 
@@ -335,7 +338,7 @@ public class UserDaoHelper {
 
 	public List<HTUser> getAllUsers(String searchTerm, Integer offset, Integer limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-		List<User> users = dao.getAllUsers(searchTerm, offset, limit);
+		List<User> users = dao.getAllUsers(new UserFilter(searchTerm, null, null), offset, limit);
 
 		List<HTUser> htusers = new ArrayList<>();
 
@@ -356,8 +359,9 @@ public class UserDaoHelper {
 
 	public List<UserGroup> getAllGroups(String searchTerm, Integer offset, Integer limit) {
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
-
-		return getFromDb(dao.getAllGroups(searchTerm,offset, limit));
+		List<Group> groups = dao.getAllGroups(new GroupFilter(searchTerm),offset, limit);
+		
+		return getFromDb(groups);
 	}
 
 

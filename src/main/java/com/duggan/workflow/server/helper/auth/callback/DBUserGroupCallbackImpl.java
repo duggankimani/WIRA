@@ -11,6 +11,7 @@ import org.jbpm.task.identity.UserGroupCallback;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.User;
 import com.duggan.workflow.server.db.DB;
+import com.duggan.workflow.shared.model.GroupFilter;
 
 public class DBUserGroupCallbackImpl implements UserGroupCallback{
 
@@ -43,7 +44,10 @@ public class DBUserGroupCallbackImpl implements UserGroupCallback{
 		
 		List<String> groupNames = new ArrayList<>();
 		
-		Collection<Group> groups = DB.getUserGroupDao().getAllGroupsByUserId(userId);
+		GroupFilter filter = new GroupFilter(null);
+		filter.setUserId(userId);;
+		
+		Collection<Group> groups = DB.getUserGroupDao().getAllGroups(filter, null, null);
 		
 		if(groups!=null){
 			Iterator<Group> iter = groups.iterator();

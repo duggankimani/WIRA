@@ -62,7 +62,7 @@ import com.duggan.workflow.shared.model.HTSummary;
 import com.duggan.workflow.shared.model.HTask;
 import com.duggan.workflow.shared.model.LongValue;
 import com.duggan.workflow.shared.model.NodeDetail;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.model.StringValue;
 import com.duggan.workflow.shared.model.TaskNode;
 import com.duggan.workflow.shared.model.Value;
@@ -357,7 +357,7 @@ public class JBPMHelper implements Closeable {
 		return translateSummaries(ts);
 	}
 
-	public List<HTSummary> searchTasks(String processId, String userId, SearchFilter filter) {
+	public List<HTSummary> searchTasks(String processId, String userId, GenericFilter filter) {
 		List<TaskSummary> tasks = DB.getDocumentDao().searchTasks(processId, userId, filter);
 
 		return translateSummaries(tasks);

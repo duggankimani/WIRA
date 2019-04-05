@@ -35,7 +35,7 @@ import com.duggan.workflow.shared.model.DocumentLine;
 import com.duggan.workflow.shared.model.DocumentType;
 import com.duggan.workflow.shared.model.HTStatus;
 import com.duggan.workflow.shared.model.HTSummary;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.model.Value;
 import com.wira.commons.shared.models.HTUser;
 import com.wira.commons.shared.models.UserGroup;
@@ -231,11 +231,11 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	}
 
 
-	public List<DocumentModel> search(String processId,String userId, SearchFilter filter) {
+	public List<DocumentModel> search(String processId,String userId, GenericFilter filter) {
 		return new ArrayList<DocumentModel>();
 	}
 	
-	public List<DocumentModelJson> searchJson(String processId,String userId, SearchFilter filter) {
+	public List<DocumentModelJson> searchJson(String processId,String userId, GenericFilter filter) {
 
 		String subject = filter.getSubject();
 		Date startDate = filter.getStartDate();
@@ -373,7 +373,7 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 		return list;
 	}
 
-	public List<TaskSummary> searchTasks(String processId,String userId, SearchFilter filter) {
+	public List<TaskSummary> searchTasks(String processId,String userId, GenericFilter filter) {
 
 		String subject = filter.getSubject();
 		Date startDate = filter.getStartDate();

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.duggan.workflow.client.ui.component.DropDownList;
 import com.duggan.workflow.shared.model.DocumentType;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
@@ -77,8 +77,8 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	@Override
-	public SearchFilter getSearchFilter() {
-		SearchFilter filter = new SearchFilter();
+	public GenericFilter getSearchFilter() {
+		GenericFilter filter = new GenericFilter();
 		filter.setSubject(txtSubject.getValue());
 		filter.setPhrase(txtPhrase.getValue());
 		filter.setStartDate(dateInput1.getValue());

@@ -19,7 +19,7 @@ import com.duggan.workflow.client.ui.events.NotificationsLoadEvent;
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.notifications.NotificationsPresenter;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.requests.GetAlertCount;
 import com.duggan.workflow.shared.requests.GetNotificationsAction;
 import com.duggan.workflow.shared.requests.LogoutAction;
@@ -193,7 +193,7 @@ public class HeaderPresenter extends
 			searchTerm = null;
 		}
 
-		SearchFilter filter = new SearchFilter();
+		GenericFilter filter = new GenericFilter();
 		filter.setPhrase(searchTerm);
 		filter.setSubject(searchTerm);
 

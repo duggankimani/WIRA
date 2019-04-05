@@ -61,17 +61,24 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	}
 
 	public List<ProcessDefModel> getAllProcesses() {
-		return getAllProcesses(null,0,0);
+		return getAllProcesses(null,null,null);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<ProcessDefModel> getAllProcesses(String searchTerm, int beginIdx, int length) {
+	public List<ProcessDefModel> getAllProcesses(String searchTerm, Integer beginIdx, Integer length) {
 
 		StringBuffer jpql = new StringBuffer(
-				"FROM ProcessDefModel p where p.isArchived=:isArchived ");
+				"select new com.duggan.workflow.server.dao.model.ProcessDefModel"
+				+ "(p.id, p.refId, p.created, p.updated, "
+				+ "p.name, p.processId, p.description, p.status, "
+				+ "c.name, c.id, c.refId, "
+				+ "p.targetDays) "
+				+ "from ProcessDefModel p "
+				+ "join p.documentTypes d "
+				+ "join d.category c "
+				+ "where p.isArchived=:isArchived ");
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		if (searchTerm != null) {
+		if (!StringUtils.isNullOrEmpty(searchTerm)) {
 			jpql.append(" and ( lower(p.name) like :searchTerm or "
 					+ "lower(p.processId) like :searchTerm or "
 					+ "lower(p.description) like :searchTerm ) and p.isActive=1 ");
@@ -86,12 +93,8 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		for (String key : params.keySet()) {
 			query.setParameter(key, params.get(key));
 		}
-		if(length==0){
-			return getResultList(query);
-		}else{
-			return getResultList(query,beginIdx,length);
-		}
-		
+
+		return getResultList(query,beginIdx,length);
 	}
 
 	public void remove(ProcessDefModel model) {

@@ -38,6 +38,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -184,6 +185,8 @@ class ProcessListingView extends ViewImpl implements ProcessListingPresenter.MyV
 		tblProcesses.removeAllRows();
 		setProcessHeaders(tblProcesses);
 
+	
+		
 		int i = 1;
 		for (ProcessDef user : processDefinitions) {
 			int j = 0;

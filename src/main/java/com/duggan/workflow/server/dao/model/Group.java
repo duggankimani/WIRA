@@ -63,6 +63,13 @@ public class Group extends PO {
 		this.isArchived=false;
 	}
 	
+	public Group(Long id, String refId, String name, String fullName) {
+		this.id = id;
+		this.refId = refId;
+		this.name = name;
+		this.fullName = fullName;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

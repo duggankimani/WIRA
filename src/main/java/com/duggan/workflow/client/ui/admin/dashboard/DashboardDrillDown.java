@@ -8,7 +8,7 @@ import com.duggan.workflow.client.ui.admin.dashboard.Dashboard.DataPropertyAcces
 import com.duggan.workflow.client.ui.events.SearchEvent;
 import com.duggan.workflow.client.ui.util.NumberUtils;
 import com.duggan.workflow.client.util.AppContext;
-import com.duggan.workflow.shared.model.SearchFilter;
+import com.duggan.workflow.shared.model.GenericFilter;
 import com.duggan.workflow.shared.model.dashboard.Data;
 import com.duggan.workflow.shared.model.dashboard.EmployeeWorkload;
 import com.duggan.workflow.shared.model.dashboard.LongTask;
@@ -292,7 +292,7 @@ public class DashboardDrillDown extends Composite {
 	
 	ListStore<Data> lineStore = new ListStore<Data>(dataAccess.nameKey());
 
-	private SearchFilter filter;
+	private GenericFilter filter;
 
 	public Chart<Data> createLineGraph(int maxCount) {
 		
@@ -465,7 +465,7 @@ public class DashboardDrillDown extends Composite {
 		if(jsStartDate!=null && jsEndDate!=null){
 			Date startDate = new Date(new Double(jsStartDate.getTime()).longValue());
 			Date endDate = new Date(new Double(jsEndDate.getTime()).longValue());
-			filter = new SearchFilter();
+			filter = new GenericFilter();
 			filter.setStartDate(startDate);
 			filter.setEndDate(endDate);
 			if(fireSearchEvent){

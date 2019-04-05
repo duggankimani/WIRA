@@ -3,6 +3,7 @@ package com.duggan.workflow.server.dao.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,6 +88,12 @@ public class ProcessDefModel extends PO {
 		
 	private Integer targetDays;
 	
+	@Transient
+	private ADProcessCategory category;
+	
+	@Transient
+	private Date lastModified;
+	
 	public ProcessDefModel(){
 		status = Status.INACTIVE;
 	}
@@ -99,6 +106,28 @@ public class ProcessDefModel extends PO {
 		this.isArchived = isArchived;
 		this.description = description;
 		//this.processDocuments = processDocuments;
+	}
+	
+	public ProcessDefModel(Long id, String refId, Date created, Date updated, String name, String processId, String description, Status status,
+			String categoryName, Long categoryId, String categoryRefId,
+			Integer targetDays) {
+		this.id = id;
+		this.refId = refId;
+		if(updated!=null) {
+			this.lastModified = updated;
+		}else {
+			this.lastModified = created;
+		}
+		this.name = name;
+		this.processId = processId;
+		this.description = description;
+		this.status = status;
+		this.targetDays = targetDays;
+		
+		category = new ADProcessCategory();
+		category.setId(categoryId);
+		category.setName(categoryName);
+		category.setRefId(categoryRefId);
 	}
 	
 	public Long getId() {
@@ -228,5 +257,17 @@ public class ProcessDefModel extends PO {
 
 	public void setTargetDays(Integer targetDays) {
 		this.targetDays = targetDays;
+	}
+
+	public ADProcessCategory getCategory() {
+		return category;
+	}
+
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 }

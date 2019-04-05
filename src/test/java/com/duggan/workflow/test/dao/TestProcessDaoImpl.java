@@ -40,7 +40,7 @@ public class TestProcessDaoImpl {
 	public void getProcessRegistry(){
 		CaseFilter filter = new CaseFilter();
 		filter.setUserId("Administrator");
-		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(filter);
+		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(filter, null, null);
 		System.err.println("Logs = "+logs.size());
 	}
 	

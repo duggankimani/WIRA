@@ -11,9 +11,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.server.dao.model.Group;
 import com.duggan.workflow.server.dao.model.OrgModel;
 import com.duggan.workflow.server.dao.model.User;
+import com.duggan.workflow.server.dao.model.UserFilter;
+import com.duggan.workflow.shared.model.GroupFilter;
 import com.wira.commons.shared.models.HTUser;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
@@ -66,24 +69,37 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		em.merge(user);		
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers(String searchTerm, Integer offset, Integer limit) {
+	public List<User> getAllUsers(UserFilter filter, Integer offset, Integer limit) {
 			
-		StringBuffer jpql = new StringBuffer("select u.id, u.refid, u.firstname, u.lastname, u.userid, u.email, o.id orgid, o.refId,o.description"
-				+ " from buser u left join orgmodel o on (u.orgid=o.id) "
+		StringBuffer jpql = new StringBuffer("select distinct u.id, u.refid, u.firstname, u.lastname, u.userid, u.email, o.id orgid, o.refId,o.description"
+				+ " from buser u "
+				+ "left join orgmodel o on (u.orgid=o.id) "
+				+ "left join UserGroup ug on (u.id=ug.userid) "
+				+ "left join BGroup g on (g.id=ug.groupid) "
 				+ "where u.isActive=1 "
 				+ "and o.isActive=1 ");
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(searchTerm!=null){
+		if(!StringUtils.isNullOrEmpty(filter.getSearchTerm())){
 			jpql.append(" where (lower(u.userId) like :searchTerm or "
 					+ "lower(u.lastName) like :searchTerm or "
 					+ "lower(u.firstName) like :searchTerm or "
 					+ "lower(u.email) like :searchTerm or "
 					+ "lower(o.description) like :searchTerm) "
 					+ "and u.isActive=1 ");
-			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+			params.put("searchTerm", "%"+filter.getSearchTerm().toLowerCase()+"%");
 		}
+		
+		if(!StringUtils.isNullOrEmpty(filter.getGroupId())){
+			jpql.append(" and g.groupId=:groupId");
+			params.put("groupId", filter.getGroupId());
+		}
+		
+		if(!StringUtils.isNullOrEmpty(filter.getOrgName())){
+			jpql.append(" and o.name=:orgName");
+			params.put("orgName", filter.getOrgName());
+		}
+		
 		jpql.append(" order by u.lastName, u.firstName");
 		
 		Query query = em.createNativeQuery(jpql.toString());
@@ -147,16 +163,31 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Group> getAllGroups(String searchTerm, Integer offset, Integer limit) {
+	public List<Group> getAllGroups(GroupFilter filter, Integer offset, Integer limit) {
 		
-		StringBuffer jpql = new StringBuffer("FROM BGroup b ");
+		StringBuffer jpql = new StringBuffer("select new com.duggan.workflow.server.dao.model.Group"
+				+ "(b.id, b.refId, b.name, b.fullName) from BGroup b "
+				+ "join b.members m "
+				+ "where b.isActive=1 ");
+
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(searchTerm!=null){
-			jpql.append(" where (lower(b.name) like :searchTerm "
+		if(!StringUtils.isNullOrEmpty(filter.getSearchTerm())){
+			jpql.append(" and (lower(b.name) like :searchTerm "
 					+ "or lower(b.fullName) like :searchTerm) and b.isActive=1 ");
-			params.put("searchTerm", "%"+searchTerm.toLowerCase()+"%");
+			params.put("searchTerm", "%"+filter.getSearchTerm().toLowerCase()+"%");
 		}
+		
+		if(!StringUtils.isNullOrEmpty(filter.getGroupId())) {
+			jpql.append(" and b.name=:groupId");
+			params.put("groupdId", filter.getGroupId());
+		}
+		
+		if(!StringUtils.isNullOrEmpty(filter.getUserId())) {
+			jpql.append(" and m.userId= :userId");
+			params.put("userId", filter.getUserId());
+		}
+		
 		jpql.append(" order by b.fullName");
 		
 		Query query = em.createQuery(jpql.toString());
@@ -196,25 +227,6 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 	public User getUser(Long id) {
 		
 		return em.find(User.class, id);
-	}
-
-	public Collection<Group> getAllGroupsByUserId(String userId) {
-		
-		User user = getUser(userId);
-		
-		assert user!=null;
-		
-		return user.getGroups();
-	}
-	
-	
-
-	public Collection<User> getAllUsersByGroupId(String groupId) {
-		Group group = getGroup(groupId);
-		if(group==null){
-			return new ArrayList<>();
-		}
-		return group.getMembers();
 	}
 
 	public User getUserByEmail(String email) {
@@ -289,6 +301,15 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 			return user;
 		}
 		return null;
+	}
+
+	public String getPassword(String username) {
+		StringBuilder builder = new StringBuilder("select password from buser u where u.userid=:username");
+		Query query = getEntityManager().createNativeQuery(builder.toString())
+				.setParameter("username", username);
+		
+		String password = getSingleResultOrNull(query);
+		return password;
 	}
 
 }

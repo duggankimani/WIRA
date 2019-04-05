@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.db.DBTrxProviderImpl;
 import com.duggan.workflow.server.helper.jbpm.ProcessMigrationHelper;
+import com.duggan.workflow.shared.model.CaseFilter;
 import com.duggan.workflow.shared.model.ProcessLog;
 
 public class TestGetProcessInstances {
@@ -22,7 +23,7 @@ public class TestGetProcessInstances {
 	
 	@Test
 	public void getAllProcessIntances(){
-		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(null);
+		List<ProcessLog> logs = DB.getProcessDao().getProcessInstances(new CaseFilter(), null, null);
 		for(ProcessLog log: logs){
 			System.out.println(log);
 		}
