@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import org.jbpm.task.Status;
 
+import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADProcessCategory;
@@ -19,6 +20,7 @@ import com.duggan.workflow.server.dao.model.ADTaskStepTrigger;
 import com.duggan.workflow.server.dao.model.ADTrigger;
 import com.duggan.workflow.server.dao.model.AssignmentPO;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.server.dao.model.ProcessDefFilter;
 import com.duggan.workflow.server.dao.model.ProcessDefModel;
 import com.duggan.workflow.server.dao.model.TaskStepModel;
 import com.duggan.workflow.server.db.DB;
@@ -758,5 +760,56 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 	public String getProcessId(Long processInstanceId) {
 		String q = "select processid from processinstanceinfo where instanceid=:instanceId";
 		return getSingleResultOrNull(getEntityManager().createNativeQuery(q).setParameter("instanceId", processInstanceId));
+	}
+
+	public Number getTaskCount(ProcessDefFilter filter) {
+		
+		StringBuilder sqlBulder = new StringBuilder(
+				"select count(t.*) as col_0_0_ from Task t "
+				+"inner join OrganizationalEntity o on " 
+				+"(t.createdBy_id=o.id "
+				+"or t.actualOwner_id=o.id) "
+				+"where t.archived=0 "
+				+ "and t.expirationTime is null");
+				
+	
+		Map<String, Object> params = new HashMap<>();
+		addWhereClause(filter, sqlBulder, params);
+		
+		Query query = getEntityManager().createNativeQuery(sqlBulder.toString());
+		for(String key : params.keySet()) {
+			query.setParameter(key, params.get(key));
+		}
+		
+		return getSingleResultOrNull(query);
+	}
+
+	private void addWhereClause(ProcessDefFilter filter, StringBuilder sqlBuilder, Map<String, Object> params) {
+	
+		String userId  = filter.getUserId();
+		List<String> groupIds = filter.getGroupIds();
+		String processId  = filter.getProcessId();
+		List<Status> status = filter.getStatus();
+		
+		if(!StringUtils.isNullOrEmpty(userId)) {
+			sqlBuilder.append(" and (o.id=:userId  ");
+			params.put("userId", userId);
+			if(groupIds!=null && !groupIds.isEmpty()) {
+				sqlBuilder.append("or o.id in (:groupIds)");
+				params.put("groupIds", groupIds);
+			}
+			sqlBuilder.append(")");
+		}
+		
+		if(!StringUtils.isNullOrEmpty(processId)) {
+			sqlBuilder.append(" and (t.processId = :processId  ");
+			params.put("processId", processId);
+		}
+		
+		if(status !=null && !status.isEmpty()) {
+			sqlBuilder.append(" and (t.status in (:taskStatus))  ");
+			params.put("taskStatus", processId);
+			
+		}
 	}
 }

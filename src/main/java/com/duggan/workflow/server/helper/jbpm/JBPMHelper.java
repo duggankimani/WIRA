@@ -47,6 +47,7 @@ import org.jbpm.workflow.core.node.SubProcessNode;
 import com.duggan.workflow.client.model.TaskType;
 import com.duggan.workflow.server.dao.helper.DocumentDaoHelper;
 import com.duggan.workflow.server.dao.model.LocalAttachment;
+import com.duggan.workflow.server.dao.model.ProcessDefFilter;
 import com.duggan.workflow.server.dao.model.TaskDelegation;
 import com.duggan.workflow.server.db.DB;
 import com.duggan.workflow.server.helper.auth.UserDaoHelper;
@@ -238,6 +239,84 @@ public class JBPMHelper implements Closeable {
 			groupIds.add("UNDEFINED");
 		}
 
+		ProcessDefFilter filter = new ProcessDefFilter();
+		filter.setProcessId(processId);
+		filter.setUserId(userId);
+		filter.setStatus(getStatusesForTaskType(TaskType.INBOX));
+		Number count = (Number) DB.getProcessDao().getTaskCount(filter);
+		counts.put(TaskType.INBOX, count.intValue());
+		counts.put(TaskType.ALL, count.intValue());
+
+		
+//		Number mine = (Number) DB.getEntityManager().createNamedQuery("TasksOwnedCount").setParameter("userId", userId)
+//				.setParameter("language", "en-UK").setParameter("processId", processId)
+//				.setParameter("status", getStatusesForTaskType(TaskType.MINE)).getSingleResult();
+		counts.put(TaskType.MINE, count.intValue());//mine.intValue());
+
+//		Number queued = (Number) DB.getEntityManager()
+//				.createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups").setParameter("userId", userId)
+//				.setParameter("groupIds", groupIds).setParameter("language", "en-UK")
+//				.setParameter("processId", processId).setParameter("status", getStatusesForTaskType(TaskType.QUEUED))
+//				.getSingleResult();
+//		counts.put(TaskType.QUEUED, queued.intValue());
+		counts.put(TaskType.QUEUED, count.intValue());
+
+		/**
+		 * If John & James share the Role HOD_DEV John Claims, Starts and completes a
+		 * task, should that task be presented to James as one of his completed tasks?
+		 * This mechanism creates the possibility of this scenario happening TODO: Test
+		 * the query with two users sharing a role
+		 */
+//		Number count2 = (Number) DB.getEntityManager().createNamedQuery("TasksOwnedCount")
+//				.setParameter("userId", userId).setParameter("language", "en-UK").setParameter("processId", processId)
+//				.setParameter("status", Status.Completed).getSingleResult();
+
+		// Inprogress participated requests
+		filter.setStatus(getStatusesForTaskType(TaskType.PARTICIPATED));
+		count = (Number) DB.getProcessDao().getTaskCount(filter);
+		int c = counts.get(TaskType.PARTICIPATED) == null ? 0 : counts.get(TaskType.PARTICIPATED);
+		counts.put(TaskType.PARTICIPATED, count.intValue() + c);
+
+		filter.setStatus(getStatusesForTaskType(TaskType.SUSPENDED));
+		count = (Number) DB.getProcessDao().getTaskCount(filter);
+//		Number count3 = (Number) DB.getEntityManager().createNamedQuery("TasksOwnedCount")
+//				.setParameter("userId", userId).setParameter("language", "en-UK").setParameter("processId", processId)
+//				.setParameter("status", Status.Suspended).getSingleResult();
+		counts.put(TaskType.SUSPENDED, count.intValue());
+
+		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassignedCount(processId));
+	}
+
+	public void getCount1(String processRefId, String userId, HashMap<TaskType, Integer> counts) {
+
+		String processId = "";
+		// Count drafts & initiated documents
+		if (processRefId != null) {
+			processId = DB.getProcessDao().getProcessId(processRefId);
+			DocumentDaoHelper.getCounts(processId, userId, counts);
+		} else {
+			DocumentDaoHelper.getCounts(null, userId, counts);
+		}
+
+		if (processId == null) {
+			processId = "";
+		}
+
+		// Count Tasks
+
+		List<UserGroup> groups = UserDaoHelper.getInstance().getGroupsForUser(userId);
+		List<String> groupIds = new ArrayList<>();
+		for (UserGroup group : groups) {
+			groupIds.add(group.getName());
+		}
+
+		if (groupIds.isEmpty()) {
+			// DUGGAN - 25/10/2016 - ADDED TO FIX HIBERNATE 'unexpected end of subtree
+			// errors'
+			// CAUSED BY EMPTY IN() STATEMENTS IN THE HQL QUERIES BELOW
+			groupIds.add("UNDEFINED");
+		}
+
 		Number count = (Number) DB.getEntityManager()
 				.createNamedQuery("TasksAssignedCountAsPotentialOwnerByStatusWithGroups").setParameter("userId", userId)
 				.setParameter("groupIds", groupIds).setParameter("language", "en-UK")
@@ -279,7 +358,7 @@ public class JBPMHelper implements Closeable {
 
 		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassignedCount(processId));
 	}
-
+	
 	public List<Status> getStatusesForTaskType(TaskType type) {
 
 		Task t;

@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import org.jbpm.task.Status;
 import org.jbpm.task.query.TaskSummary;
 
+import com.duggan.workflow.client.ui.util.StringUtils;
 import com.duggan.workflow.server.dao.model.ADDocType;
 import com.duggan.workflow.server.dao.model.ADValue;
 import com.duggan.workflow.server.dao.model.DetailModel;
@@ -950,16 +951,30 @@ public class DocumentDaoImpl extends BaseDaoImpl {
 	}
 
 	public int getUnassignedCount(String processId) {
-		if(processId==null){
-			processId="";
+//		if(processId==null){
+//			processId="";
+//		}
+//		Query query = em
+//				.createNamedQuery("TasksUnassignedCount")
+//				.setParameter("language", "en-UK")
+//				.setParameter("processId", processId)
+//				.setParameter("status",
+//						Arrays.asList(Status.Created, Status.Ready));
+		
+		StringBuilder sqlBuilder = new StringBuilder("select count(*) as col_0_0_ from Task t "
+				+" left join OrganizationalEntity u on " 
+				+" (t.createdBy_id=u.id or t.actualOwner_id=u.id) " 
+				+" where t.archived=0 and (t.actualOwner_id is null) "
+				+" and  "
+				+" not (exists (select a.id from PeopleAssignments_PotOwners p, OrganizationalEntity a where t.id=p.task_id and p.entity_id=a.id))" 
+				+" and (t.status in ('Created' , 'Ready')) "
+				+" and (t.expirationTime is null)" );
+		
+		if(!StringUtils.isNullOrEmpty(processId)) {
+			sqlBuilder.append("and processId='"+processId+"'");
 		}
-		Query query = em
-				.createNamedQuery("TasksUnassignedCount")
-				.setParameter("language", "en-UK")
-				.setParameter("processId", processId)
-				.setParameter("status",
-						Arrays.asList(Status.Created, Status.Ready));
 
+		Query query = em.createNativeQuery(sqlBuilder.toString());
 		Number count = getSingleResultOrNull(query);
 		return count.intValue();
 	}

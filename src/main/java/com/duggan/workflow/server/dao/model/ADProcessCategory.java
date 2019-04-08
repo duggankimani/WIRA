@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(indexes = {
-		@Index(name = "idx_processdef_name", columnList="name"),
-		@Index(name = "idx_processdef_index", columnList="index")
+		@Index(name = "idx_processcategory_name", columnList="name"),
+		@Index(name = "idx_processcategory_index", columnList="index")
 })
 public class ADProcessCategory extends PO{
 
