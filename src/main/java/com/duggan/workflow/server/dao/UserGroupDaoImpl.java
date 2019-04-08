@@ -81,12 +81,11 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		if(!StringUtils.isNullOrEmpty(filter.getSearchTerm())){
-			jpql.append(" where (lower(u.userId) like :searchTerm or "
+			jpql.append(" and (lower(u.userId) like :searchTerm or "
 					+ "lower(u.lastName) like :searchTerm or "
 					+ "lower(u.firstName) like :searchTerm or "
 					+ "lower(u.email) like :searchTerm or "
-					+ "lower(o.description) like :searchTerm) "
-					+ "and u.isActive=1 ");
+					+ "lower(o.description) like :searchTerm) ");
 			params.put("searchTerm", "%"+filter.getSearchTerm().toLowerCase()+"%");
 		}
 		

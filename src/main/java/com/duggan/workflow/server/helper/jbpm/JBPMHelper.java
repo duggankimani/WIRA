@@ -251,6 +251,9 @@ public class JBPMHelper implements Closeable {
 //		Number mine = (Number) DB.getEntityManager().createNamedQuery("TasksOwnedCount").setParameter("userId", userId)
 //				.setParameter("language", "en-UK").setParameter("processId", processId)
 //				.setParameter("status", getStatusesForTaskType(TaskType.MINE)).getSingleResult();
+		filter.setGroupIds(null);
+		filter.setStatus(getStatusesForTaskType(TaskType.MINE));
+		count = (Number) DB.getProcessDao().getTaskCount(filter);
 		counts.put(TaskType.MINE, count.intValue());//mine.intValue());
 
 //		Number queued = (Number) DB.getEntityManager()
@@ -259,6 +262,8 @@ public class JBPMHelper implements Closeable {
 //				.setParameter("processId", processId).setParameter("status", getStatusesForTaskType(TaskType.QUEUED))
 //				.getSingleResult();
 //		counts.put(TaskType.QUEUED, queued.intValue());
+		filter.setStatus(getStatusesForTaskType(TaskType.QUEUED));
+		count = (Number) DB.getProcessDao().getTaskCount(filter);
 		counts.put(TaskType.QUEUED, count.intValue());
 
 		/**
@@ -273,10 +278,12 @@ public class JBPMHelper implements Closeable {
 
 		// Inprogress participated requests
 		filter.setStatus(getStatusesForTaskType(TaskType.PARTICIPATED));
+		filter.setGroupIds(null);
 		count = (Number) DB.getProcessDao().getTaskCount(filter);
-		int c = counts.get(TaskType.PARTICIPATED) == null ? 0 : counts.get(TaskType.PARTICIPATED);
-		counts.put(TaskType.PARTICIPATED, count.intValue() + c);
+		//int c = counts.get(TaskType.PARTICIPATED) == null ? 0 : counts.get(TaskType.PARTICIPATED);
+		counts.put(TaskType.PARTICIPATED, count.intValue());
 
+		filter.setGroupIds(null);
 		filter.setStatus(getStatusesForTaskType(TaskType.SUSPENDED));
 		count = (Number) DB.getProcessDao().getTaskCount(filter);
 //		Number count3 = (Number) DB.getEntityManager().createNamedQuery("TasksOwnedCount")
@@ -286,7 +293,7 @@ public class JBPMHelper implements Closeable {
 
 		counts.put(TaskType.UNASSIGNED, DB.getDocumentDao().getUnassignedCount(processId));
 	}
-
+	
 	public void getCount1(String processRefId, String userId, HashMap<TaskType, Integer> counts) {
 
 		String processId = "";

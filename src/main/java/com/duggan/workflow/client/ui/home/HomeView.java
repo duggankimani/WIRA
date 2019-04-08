@@ -224,8 +224,7 @@ public class HomeView extends ViewImpl implements HomePresenter.IHomeView {
 	@Override
 	public void bindAlerts(HashMap<TaskType, Integer> alerts, String processRefId) {
 		this.processRefId = processRefId;
-		alerts.put(TaskType.INBOX, getValue(alerts.get(TaskType.MINE)
-				+ getValue(alerts.get(TaskType.QUEUED))));
+		alerts.put(TaskType.INBOX, alerts.get(TaskType.INBOX));
 		for (TaskType type : alerts.keySet()) {
 			String text = (type.getTitle() + " (" + alerts.get(type) + ")");
 			tabPanel.changeTab(type, text);

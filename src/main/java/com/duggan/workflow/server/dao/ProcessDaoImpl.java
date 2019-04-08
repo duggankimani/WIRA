@@ -792,23 +792,27 @@ public class ProcessDaoImpl extends BaseDaoImpl {
 		List<Status> status = filter.getStatus();
 		
 		if(!StringUtils.isNullOrEmpty(userId)) {
-			sqlBuilder.append(" and (o.id=:userId  ");
+			sqlBuilder.append(" and (o.id=:userId");
 			params.put("userId", userId);
 			if(groupIds!=null && !groupIds.isEmpty()) {
-				sqlBuilder.append("or o.id in (:groupIds)");
+				sqlBuilder.append(" or o.id in (:groupIds)");
 				params.put("groupIds", groupIds);
 			}
 			sqlBuilder.append(")");
 		}
 		
 		if(!StringUtils.isNullOrEmpty(processId)) {
-			sqlBuilder.append(" and (t.processId = :processId  ");
+			sqlBuilder.append(" and t.processId = :processId  ");
 			params.put("processId", processId);
 		}
 		
 		if(status !=null && !status.isEmpty()) {
+			List<String> statuses = new ArrayList<>();
+			for(Status s: status) {
+				statuses.add(s.name());
+			}
 			sqlBuilder.append(" and (t.status in (:taskStatus))  ");
-			params.put("taskStatus", processId);
+			params.put("taskStatus", statuses);
 			
 		}
 	}

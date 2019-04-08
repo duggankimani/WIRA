@@ -619,8 +619,7 @@ public class ActivitiesView extends ViewImpl implements
 
 	@Override
 	public void bindTaskCounts(HashMap<TaskType, Integer> counts) {
-		counts.put(TaskType.INBOX, getValue(counts.get(TaskType.MINE)
-				+ getValue(counts.get(TaskType.QUEUED))));
+		counts.put(TaskType.INBOX, counts.get(TaskType.INBOX));
 
 		int total = 0;
 		for (TaskType type : counts.keySet()) {

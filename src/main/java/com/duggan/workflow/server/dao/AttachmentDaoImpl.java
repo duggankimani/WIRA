@@ -76,17 +76,17 @@ public class AttachmentDaoImpl extends BaseDaoImpl {
 	public List<LocalAttachment> getAttachmentsForProcessDef(
 			ProcessDefModel model, String name, boolean isImage) {
 
-		String sql = "FROM LocalAttachment t where t.processDef=:processDef";
+		String sql = "FROM LocalAttachment t where t.processDef.refId=:processRefId";
 
 		if (isImage) {
-			sql = "FROM LocalAttachment t where t.processDefImage=:processDef";
+			sql = "FROM LocalAttachment t where t.processDefImage.refId=:processRefId";
 		}
 
 		if (name != null && !isImage) {
 			sql = sql.concat(" and t.name=:attachmentName");
 		}
 
-		Query query = em.createQuery(sql).setParameter("processDef", model);
+		Query query = em.createQuery(sql).setParameter("processRefId", model.getRefId());
 
 		if (name != null && !isImage) {
 			query.setParameter("attachmentName", name);
