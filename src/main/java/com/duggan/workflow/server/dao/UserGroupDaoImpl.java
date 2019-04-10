@@ -90,7 +90,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		}
 		
 		if(!StringUtils.isNullOrEmpty(filter.getGroupId())){
-			jpql.append(" and g.groupId=:groupId");
+			jpql.append(" and g.name=:groupId");
 			params.put("groupId", filter.getGroupId());
 		}
 		
